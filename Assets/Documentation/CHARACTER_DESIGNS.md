@@ -17,31 +17,31 @@
 **人物小传**
 从小在爷爷的铁路工区长大，听着他讲火车的故事入睡。别的孩子崇拜明星，他崇拜的是蒸汽机车的锅炉工。大学学了土木，不是为了盖楼，而是为了修铁路。毕业时爷爷走了，留下一封信和一枚怀表："远舟，铁路没有死，它在等一个愿意修它的人。"他攥着信站在这条废弃了十五年的支线前，眼眶红了但没哭。他知道自己倔，但有些事不倔就做不成。
 
-**性格关键词**：倔强、理想主义、沉默寡言但行动力极强、对老物件有天然亲近感
+**性格关键词**：青涩、理想主义、有点呆萌、认真起来很专注、对老物件有天然亲近感
 
 **外貌细节**
-- **脸型**：偏瘦的长脸，颧骨微高，下颌线条分明——不是偶像剧的那种帅，是"这人很认真"的帅
-- **眼睛**：深棕色瞳仁，眼尾微微下垂显得有点倔，虹膜里有一点光——是那种"我在看远方"的眼神
-- **眉毛**：浓而直，眉尾微微上挑，不修边幅但有力量感
-- **鼻子**：高挺但鼻翼微宽，鼻梁右侧有一颗很小的痣（小时候磕的）
-- **嘴唇**：薄唇，嘴角习惯性微微抿着，不是不高兴，是在想事情
-- **发型**：黑色短发，长度刚好过耳，刘海不规则地搭在额前——不是刻意做的造型，是没时间打理自然长成的。左耳上方有一撮头发总是翘起来，他每次都按下去，走两步又翘起来
-- **皮肤**：偏小麦色，不是白净书生，是会在户外跑的人。左手腕内侧有一道3厘米的浅白色疤痕——十岁时爬铁路信号塔摔的
+- **脸型**：偏圆的鹅蛋脸，下巴圆润，还带着一点婴儿肥——是刚毕业还没被社会磨平的稚气
+- **眼睛**：大而圆的深棕色眼睛，眼尾微微下垂显得有点无辜，瞳孔很亮像装着光——是那种"我对未来充满期待"的眼神
+- **眉毛**：自然弯曲的眉毛，不算浓密，眉尾微微下垂，显得温和没有攻击性
+- **鼻子**：小巧的圆鼻头，鼻梁不高但很秀气，鼻梁右侧有一颗很小的浅色痣
+- **嘴唇**：微微嘟起的厚唇，嘴角自然上扬，是那种"随时准备傻笑"的嘴型
+- **发型**：蓬松的黑色短发，有点自然卷，刘海不规则地搭在额前——像刚睡醒用手抓两下的样子。左耳上方有一撮头发总是翘起来，显得有点呆
+- **皮肤**：白净偏暖，是大学生的肤色。左手腕内侧有一道很浅的粉色疤痕——小时候爬信号塔摔的，现在几乎看不清了
 
 **穿着细节**
-- **外套**：深藏蓝色工装夹克，版型偏宽松，左胸口有个口袋别着一支圆珠笔（爷爷留下的）。拉链头磨得发亮，右下摆有一小块油渍洗不掉了。袖口微微卷起，露出左手腕的疤痕
-- **内搭**：白色圆领T恤，领口已经有些松垮变形，洗了很多次但很干净
-- **怀表链**：从夹克领口露出一截旧铜链，连接着内袋里的怀表——不是装饰，是他唯一值钱的东西
-- **牛仔裤**（半身像可见腰部）：深蓝色水洗牛仔裤，膝盖处有自然的褪色，皮带是旧款棕色编织皮带
+- **外套**：深藏蓝色工装夹克，版型偏大一号——是爷爷留下的衣服，他穿着有点空荡荡的。左胸口口袋别着一支旧圆珠笔。拉链头磨得发亮，右下摆有一小块洗不掉的油渍
+- **内搭**：白色圆领T恤，领口有点松垮变形，但很干净——是那种会自己洗衣服的男生
+- **怀表链**：从夹克领口露出一截旧铜链，连接着内袋里的怀表——他总是不自觉地摸一摸
+- **裤子**（半身像可见腰部）：深蓝色牛仔裤，裤脚有点长堆在脚踝，是不太会搭配衣服的男生
 
 **AI提示词（中文·精细版）**
 ```
-日系赛璐璐风格半身像，年轻男性24岁，偏瘦长脸颧骨微高下颌线条分明，深棕色瞳仁眼尾微垂带着倔强光芒，浓直眉毛眉尾微挑，高挺鼻梁右侧有一颗小痣，薄唇嘴角习惯性微抿，黑色短发过耳刘海不规则搭在额前左耳上方一撮翘起，小麦色皮肤左手腕内侧有一道浅白疤痕，穿着深藏蓝色工装夹克左胸口袋别着圆珠笔拉链头发亮右下摆有油渍袖口微卷，内搭白色圆领T恤领口松垮，铜色怀表链从领口露出，表情坚定中带着一丝倔强微微抿嘴，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
+日系赛璐璐风格半身像，清秀年轻男性24岁，偏圆的鹅蛋脸下巴圆润带一点婴儿肥稚气未脱，大而圆的深棕色眼睛眼尾微下垂显得无辜清澈瞳孔明亮充满期待，自然弯曲的眉毛温和没有攻击性，小巧圆鼻头秀气鼻梁右侧一颗浅色小痣，微微嘟起的厚唇嘴角自然上扬准备傻笑的样子，蓬松黑色短发有点自然卷刘海不规则搭在额前像刚睡醒手抓的左耳上方一撮翘起显得呆萌，白净偏暖肤色左手腕内侧一道很浅的粉色疤痕，穿着偏大一号的深藏蓝色工装夹克是爷爷留下的穿着有点空荡左胸口袋别着旧圆珠笔拉链头发亮右下摆有油渍，内搭白色圆领T恤领口松垮干净，铜色怀表链从领口露出，表情青涩温柔带着对未来的期待微微歪头，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
 ```
 
 **AI提示词（英文·精细版）**
 ```
-Cel-shaded anime style portrait, young man age 24, lean long face with high cheekbones and defined jawline, deep brown eyes with slightly downturned outer corners showing stubborn determination, thick straight eyebrows with slightly upturned tails, straight nose with small mole on right side of bridge, thin lips pressed together in thoughtful expression, black short hair past ears with irregular bangs across forehead and one stubbornly sticking up tuft above left ear, tan skin with faint white scar on inner left wrist, wearing dark navy blue work jacket with ballpoint pen clipped to left chest pocket polished zipper pull oil stain on lower right hem rolled-up sleeves revealing wrist scar, white crew-neck t-shirt with stretched collar underneath, copper pocket watch chain visible from jacket collar, determined expression with slight stubborn set to jaw, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
+Cel-shaded anime style portrait, handsome young man age 24, slightly round oval face with soft chin and hint of baby fat still youthful and undeveloped, large round deep brown eyes with slightly drooping outer corners looking innocent and clear bright pupils full of hope and anticipation, naturally curved gentle eyebrows non-threatening, small cute round nose tip with delicate bridge and faint light-colored mole on right side, slightly pouty thick lips with corners naturally upturned ready to smile foolishly, fluffy black short hair with slight natural curl irregular bangs across forehead looking like just woke up and tousled with hands one stubborn tuft sticking up above left ear looking adorably clueless, fair warm-toned skin with very faint pink scar on inner left wrist, wearing oversized dark navy blue work jacket inherited from grandfather looking slightly empty and loose ballpoint pen clipped to left chest pocket polished zipper pull oil stain on lower right hem, white crew-neck t-shirt with slightly stretched collar but clean, copper pocket watch chain visible from jacket collar, expression youthful and gentle with hopeful anticipation slight head tilt, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
 ```
 
 ---
@@ -58,14 +58,13 @@ Cel-shaded anime style portrait, young man age 24, lean long face with high chee
 **性格关键词**：沉默、固执、温暖、像一座山
 
 **外貌细节**
-- **脸型**：方脸，皮肤黝黑粗糙，是常年风吹日晒的痕迹。法令纹很深，像两道沟
-- **眼睛**：深褐色，眼角下垂，笑起来眯成一条缝，但不笑的时候眼神很沉——像是看过了太多离别
+- **脸型**：方脸，皮肤黝黑，是常年风吹日晒的颜色。脸上有皱纹但不算多，是那种"老了但还硬朗"的状态
+- **眼睛**：深褐色，眼角下垂，笑起来眯成一条缝，不笑的时候眼神有点远——像在想很久以前的事
 - **眉毛**：花白，稀疏但形状整齐，是他每天早上用手指梳的
-- **鼻子**：塌鼻梁，鼻头圆润，有些红血丝——年轻时喝过不少酒
+- **鼻子**：塌鼻梁，鼻头圆润，有些红——是冻的，不是喝酒
 - **嘴唇**：厚唇，嘴角总是微微下垂，但一笑起来整个脸都亮了
-- **发型**：花白短发，整体整齐，但左耳后方有一小撮白发特别长，总是不服帖地翘着，他懒得管
-- **皮肤**：黝黑，皱纹密布，像老树皮。右手食指和中指的关节特别粗——那是常年拧螺丝拧出来的
-- **老年斑**：右脸颊有几颗浅褐色老年斑，不显眼但能看到
+- **发型**：花白短发，整体整齐，但左耳后方有一小撮白发总是翘着，他懒得管
+- **皮肤**：黝黑，有皱纹但不算密布，右手食指关节有点粗——那是常年拧螺丝拧出来的
 
 **穿着细节**
 - **衬衫**：白色长袖衬衫，领口和袖口都磨得发毛了，但洗得干干净净。领口第二颗扣子掉了，用一根线随便系着
@@ -74,12 +73,12 @@ Cel-shaded anime style portrait, young man age 24, lean long face with high chee
 
 **AI提示词（中文·精细版）**
 ```
-日系赛璐璐风格半身像，老年男性68岁，方脸黝黑粗糙皮肤皱纹密布像老树皮，深褐色眼睛眼角下垂不笑时眼神沉郁笑起来眯成缝，花白稀疏眉毛形状整齐，塌鼻梁鼻头圆润有红血丝，厚唇嘴角微下垂，花白短发整体整齐左耳后一撮白发不服帖翘起，右脸颊有浅褐老年斑，右手食指中指关节粗大，穿着白色长袖衬衫领口袖口磨得发毛第二颗扣子用线系着，深灰色V领毛衣背心左胸口袋处起球下摆有织补痕迹，老花镜用旧皮绳挂在脖子上镜片模糊，表情慈祥温暖带着岁月沉淀的沉稳，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
+日系赛璐璐风格半身像，老年男性68岁，方脸黝黑皮肤有皱纹但还硬朗，深褐色眼睛眼角下垂笑起来眯成缝不笑时眼神有点远像在想事情，花白稀疏眉毛形状整齐，塌鼻梁鼻头圆润微红，厚唇嘴角微下垂，花白短发整体整齐左耳后一撮白发翘起，右手食指关节微粗，穿着白色长袖衬衫领口袖口磨得发毛第二颗扣子用线系着，深灰色V领毛衣背心左胸口袋处起球下摆有织补痕迹，老花镜用旧皮绳挂在脖子上，表情慈祥温暖朴实，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
 ```
 
 **AI提示词（英文·精细版）**
 ```
-Cel-shaded anime style portrait, elderly man age 68, square face with dark weathered deeply wrinkled skin like old bark, deep brown eyes with drooping corners appearing melancholic when serious but squinting into warm slits when smiling, sparse gray-white eyebrows neatly shaped, flat nose bridge with rounded reddish nose tip with visible broken capillaries, thick lips with corners slightly downturned, neatly combed gray-white short hair with one unruly tuft behind left ear sticking up, faint brown age spots on right cheek, enlarged knuckles on right index and middle fingers from decades of tightening bolts, wearing white long-sleeve shirt with frayed collar and cuffs second button fastened with mismatched thread, dark gray V-neck sweater vest with pilling on left chest pocket area where he always rests his hand and visible darning stitch repair on hem, reading glasses on old leather cord around neck with slightly clouded lenses, warm kind expression carrying the weight of years, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
+Cel-shaded anime style portrait, elderly man age 68, square face with dark skin showing wrinkles but still sturdy and strong, deep brown eyes with drooping corners squinting into warm slits when smiling but looking distant when serious as if remembering something, sparse gray-white eyebrows neatly shaped, flat nose bridge with rounded reddish nose tip from cold weather, thick lips with corners slightly downturned, neatly combed gray-white short hair with one unruly tuft behind left ear sticking up, slightly enlarged knuckles on right index finger from years of tightening bolts, wearing white long-sleeve shirt with frayed collar and cuffs second button fastened with mismatched thread, dark gray V-neck sweater vest with pilling on left chest pocket area and visible darning stitch repair on hem, reading glasses on old leather cord around neck, warm kind and simple expression, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
 ```
 
 ---
@@ -134,14 +133,14 @@ Cel-shaded anime style portrait, middle-aged man age 52, square well-groomed fac
 **性格关键词**：严谨、死板、外冷内热、不善表达感情
 
 **外貌细节**
-- **脸型**：棱角分明的瘦脸，颧骨突出，是当兵时瘦下来的
-- **眼睛**：深棕色，目光如炬，习惯性皱眉，但偶尔放松时眼神其实很温柔
-- **眉毛**：浓黑短眉，眉间距窄，天生的"严肃脸"
-- **鼻子**：高挺笔直，像刀削出来的
-- **嘴唇**：薄唇紧抿，嘴角微微下撇，不笑的时候像在生气
-- **发型**：极短的板寸，每一根头发都像是量过长度的，鬓角推得干干净净
-- **皮肤**：偏黑，左脸颊有一道淡淡的旧伤疤——部队里训练时留的
-- **手**：粗糙有力，指甲剪得极短，左手腕戴着一块老式军用机械表（钛合金表壳，帆布表带，表面有一道划痕）
+- **脸型**：偏瘦的长脸，不算棱角分明，是那种"认真生活"的脸
+- **眼睛**：深棕色，眼神认真但不锐利，习惯性微微皱眉，放松时眼神其实很温和
+- **眉毛**：眉毛不浓不淡，形状自然，眉间距正常
+- **鼻子**：普通鼻梁，不高不矮，很普通
+- **嘴唇**：薄唇，嘴角平直，不笑的时候显得有点严肃，但其实只是在发呆
+- **发型**：短发，不算板寸但也不长，整齐但不刻意，鬓角修剪得干净
+- **皮肤**：偏黑，是户外工作晒的，左脸颊有一道很淡的旧伤疤——部队里训练时留的
+- **手**：手指修长但有力，指甲剪得整齐，左手腕戴着一块老式军用机械表（旧皮表带，表面有一道划痕）
 
 **穿着细节**
 - **外套**：军绿色工装夹克，不是军装但版型很像——他下意识总买这种风格。拉链拉到胸口位置，拉链头用黑色电工胶带缠过（原来的断了）。左臂袖口处有一个小破洞没补
@@ -150,12 +149,12 @@ Cel-shaded anime style portrait, middle-aged man age 52, square well-groomed fac
 
 **AI提示词（中文·精细版）**
 ```
-日系赛璐璐风格半身像，中年男性45岁，棱角分明瘦脸颧骨突出，深棕色目光如炬习惯性皱眉，浓黑短眉眉间距窄，高挺笔直鼻梁如刀削，薄唇紧抿嘴角微下撇，极短板寸每一根都整齐鬓角推干净，偏黑皮肤左脸颊一道淡淡旧伤疤，粗糙有力指甲极短，穿着军绿色工装夹克拉链到胸口拉链头缠黑色电工胶带左臂袖口小破洞，深灰色高领针织衫贴身，左手腕老式军用机械表钛合金壳帆布带表面有划痕，表情严肃认真眼神偶尔流露温柔，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
+日系赛璐璐风格半身像，中年男性45岁，偏瘦长脸认真生活的样子，深棕色眼神认真但不锐利放松时温和，眉毛不浓不淡形状自然，普通鼻梁不高不矮，薄唇嘴角平直不笑时显得严肃其实只是发呆，短发整齐不刻意鬓角干净，偏黑皮肤户外晒的左脸颊一道淡旧伤疤，手指修长有力指甲整齐，穿着军绿色工装夹克拉链到胸口拉链头缠黑色电工胶带左臂袖口小破洞，深灰色高领针织衫贴身，左手腕老式军用机械表旧皮表带表面有划痕，表情认真但不凶偶尔流露温柔，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
 ```
 
 **AI提示词（英文·精细版）**
 ```
-Cel-shaded anime style portrait, middle-aged man age 45, angular thin face with prominent cheekbones from military days, deep brown intense eyes with habitual furrowed brow, thick short black eyebrows with narrow gap creating naturally stern look, high straight nose bridge like chiseled stone, thin lips pressed tight with corners slightly downturned, extremely short buzz cut with every hair precise and clean-shaved temples, dark weathered skin with faint old scar on left cheek from training injury, rough powerful hands with very short-trimmed nails, wearing military-green utility jacket zipped to chest with zipper pull wrapped in black electrical tape where original broke small tear on left sleeve cuff not repaired, dark gray turtleneck knit sweater fitted to body, vintage military mechanical watch with titanium case canvas strap and scratch on crystal on left wrist, stern focused expression with occasional glimpse of hidden warmth in eyes, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
+Cel-shaded anime style portrait, middle-aged man age 45, slightly thin long face looking like someone who lives认真 life, deep brown serious but not sharp eyes that become gentle when relaxed, average eyebrows not too thick or thin natural shape, ordinary nose bridge not high or low, thin lips with straight corners looking serious when not smiling actually just daydreaming, short neat hair not刻意 but clean-cut temples, dark skin from outdoor work with faint old scar on left cheek from military training, long but strong fingers with neatly trimmed nails, wearing military-green utility jacket zipped to chest with zipper pull wrapped in black electrical tape where original broke small tear on left sleeve cuff not repaired, dark gray turtleneck knit sweater fitted to body, vintage military mechanical watch with old leather strap and scratch on crystal on left wrist, serious but not凶 expression with occasional glimpse of warmth, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
 ```
 
 ---
@@ -288,14 +287,14 @@ Cel-shaded anime style portrait, young man age 22, oval face with slight baby fa
 **性格关键词**：精明、冷酷、傲慢、内心深处有一丝复杂
 
 **外貌细节**
-- **脸型**：瘦长脸，颧骨高，下巴尖，是"精明相"
-- **眼睛**：狭长的丹凤眼，目光锐利冰冷，但偶尔走神时会流露出一丝不易察觉的柔和
-- **眉毛**：修长的剑眉，修剪得极其精致
-- **鼻子**：高挺窄长，鼻翼薄——面相学说这是"财运鼻"
-- **嘴唇**：薄唇，嘴角习惯性微微上翘——不是笑，是优越感
-- **发型**：乌黑短发，用发蜡精心打理，每一根都在它该在的位置。鬓角修剪得像刀削——他每周去一次理发店
-- **皮肤**：偏白，保养极好，看起来比实际年龄年轻十岁。下巴线条锋利
-- **手**：修长白皙，指甲修剪得整整齐齐，左手腕戴着一块智能手表（最新款，屏幕常亮）
+- **脸型**：瘦长脸，不算特别棱角分明，是那种"保养得不错"的中年人
+- **眼睛**：普通大小的眼睛，眼神平静但有距离感，偶尔走神时会流露出一丝柔和
+- **眉毛**：眉毛修剪过，形状整齐，但不算夸张
+- **鼻子**：普通鼻梁，不高不矮，很正常
+- **嘴唇**：薄唇，嘴角平直，表情不多，是那种"不太爱笑"的人
+- **发型**：乌黑短发，打理得整齐但不夸张，鬓角修剪干净
+- **皮肤**：偏白，保养得不错，看起来比实际年龄年轻几岁
+- **手**：手指修长，指甲修剪整齐，左手腕戴着一块智能手表
 
 **穿着细节**
 - **西装**：黑色定制三件套（外套+马甲+裤子），是意大利品牌的，面料有微微的光泽。剪裁极其合身——他有私人裁缝。西装口袋里露出一截白色口袋巾，折成总统式
@@ -305,12 +304,12 @@ Cel-shaded anime style portrait, young man age 22, oval face with slight baby fa
 
 **AI提示词（中文·精细版）**
 ```
-日系赛璐璐风格半身像，中年男性48岁，瘦长脸颧骨高下巴尖精明相，狭长丹凤眼目光锐利冰冷偶尔走神流露不易察觉的柔和，修长剑眉修剪精致，高挺窄长鼻梁薄鼻翼财运鼻，薄唇嘴角微翘不是笑是优越感，乌黑短发发蜡精心打理鬓角刀削般整齐，皮肤偏白保养极好显年轻下巴线条锋利，修长白皙手指指甲整齐，穿着黑色定制三件套西装意大利品牌面料微光泽剪裁合身，纯白法式衬衫领口挺括袖口叠袖配银色袖扣，深红色丝质领带，白色口袋巾折总统式，左手腕钛合金智能手表屏幕显示股价右手小指极简银色尾戒，表情傲慢似笑非笑带着冷酷优越感，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
+日系赛璐璐风格半身像，中年男性48岁，瘦长脸保养不错的样子，普通大小眼睛眼神平静有距离感偶尔走神流露柔和，眉毛修剪过形状整齐，普通鼻梁不高不矮，薄唇嘴角平直表情不多不太爱笑，乌黑短发打理整齐鬓角干净，皮肤偏白保养不错显年轻几岁，手指修长指甲整齐，穿着深色西装三件套剪裁合身不夸张，浅蓝色衬衫领口整齐未打领带，银色袖扣简约，左手腕智能手表，表情平静沉稳有商人的距离感但不冷酷，透明背景，高质量赛璐璐画风，精致线稿，上半身构图
 ```
 
 **AI提示词（英文·精细版）**
 ```
-Cel-shaded anime style portrait, middle-aged man age 48, lean long face with high sharp cheekbones and pointed chin in shrewd appearance, narrow phoenix eyes with sharp cold gaze that occasionally reveals barely perceptible softness when lost in thought, long refined sword eyebrows meticulously groomed, tall narrow nose bridge with thin nostrils considered wealth nose in physiognomy, thin lips corners slightly upturned not a smile but superiority, jet-black short hair styled with pomade every strand in place temples barbered to knife-edge, fair well-maintained skin looking decade younger than actual age with sharp jawline definition, long slender pale fingers with perfectly trimmed nails, wearing black custom three-piece suit Italian brand with subtle fabric sheen and precise tailoring, pure white French cuff dress shirt with impossibly crisp collar and double cuffs with silver cufflinks, dark red silk tie the only warm color he would never admit is emotional, white pocket square in presidential fold, titanium smartwatch on left wrist displaying stock prices and minimal silver pinky ring on right hand described as only thing he kept from youth, arrogant smug expression with cold superiority and half-smile, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
+Cel-shaded anime style portrait, middle-aged man age 48, lean long face well-maintained middle-aged appearance, ordinary-sized eyes with平静gaze that has distance but reveals softness when lost in thought, neatly trimmed eyebrows not exaggerated, ordinary nose bridge not high or low, thin lips with straight corners not much expression person who doesn't smile much, jet-black short hair neatly styled clean temples, fair well-maintained skin lookingfew years younger than actual age, long slender fingers with neatly trimmed nails, wearing dark three-piece suit not flashy precise tailoring, light blue dress shirt collar neat no tie, simple silver cufflinks, smartwatch on left wrist, calm composed expression with businessman's distance but not cold, transparent background, high quality cel-shaded anime, detailed linework, upper body composition
 ```
 
 ---
