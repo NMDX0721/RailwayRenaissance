@@ -5,7 +5,7 @@ public class BootLoader : MonoBehaviour
 {
     private void Start()
     {
-        // 加载 StationSlice_V1 场景
-        SceneManager.LoadScene("StationSlice_V1");
+        // 先加载登录场景
+        SceneManager.LoadScene("Login");
     }
 }
