@@ -105,7 +105,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.anchoredPosition = new Vector2(0, -20);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
@@ -148,7 +148,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.anchoredPosition = new Vector2(0, -20);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
@@ -193,7 +193,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.anchoredPosition = new Vector2(0, -20);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
