@@ -12,12 +12,49 @@
 
 | 素材 | 文件名 | 状态 |
 |------|--------|------|
-| 登录面板背景 | panel_bg.png | ✅ 已完成 |
+| 登录面板背景 | panel_bg.png | ⚠️ 废弃（边框过粗，比例失调） |
 | 输入框 | input_field.png | ✅ 已完成 |
 | 主要按钮 | button_primary.png | ✅ 已完成 |
 | 夕阳火车站背景 | sunset_railway.png | ✅ 已完成 |
 | 蒸汽火车素材 | steam_train.png | ✅ 已完成 |
 | 主角立绘（动漫风） | sprite_pack_preview_41da6335.png | ✅ 已完成 |
+| 游戏标题Logo | title_logo.png | ✅ 已完成 |
+
+---
+
+## 🔄 P0 废弃素材重做
+
+### 1. 登录面板背景（新）
+**用途**：登录界面的功能面板，替代废弃的panel_bg.png
+**尺寸**：1600x1200px
+**废弃原因**：原图1254x1254正方形，放大到1600x1200后边框过粗，且无功能文字
+**设计要求**：面板内嵌功能文字，不需要代码额外叠加文字
+
+```
+Pixel art game UI panel background, login interface panel, wooden frame with dark brown border and lighter brown inner area, rustic railway station office style, warm vintage color palette with copper and amber tones, the Chinese text "登录" prominently displayed in golden calligraphy at the top center of the panel, subtle aged wood texture with visible grain patterns, ornate corner decorations with small rivets or bolts, transparent background, game interface asset, high quality pixel art, 16-bit retro style, 1600x1200 pixels, horizontal composition with functional layout space below the title text for input fields and buttons
+```
+
+---
+
+### 2. 注册面板背景（新）
+**用途**：注册界面的功能面板
+**尺寸**：1600x1200px
+**设计要求**：与登录面板风格一致，文字改为"注册"
+
+```
+Pixel art game UI panel background, registration interface panel, wooden frame with dark brown border and lighter brown inner area, rustic railway station office style, warm vintage color palette with copper and amber tones, the Chinese text "注册" prominently displayed in golden calligraphy at the top center of the panel, subtle aged wood texture with visible grain patterns, ornate corner decorations with small rivets or bolts, transparent background, game interface asset, high quality pixel art, 16-bit retro style, 1600x1200 pixels, horizontal composition with functional layout space below the title text for input fields and buttons
+```
+
+---
+
+### 3. 自动登录面板背景（新）
+**用途**：自动登录/欢迎回来界面的功能面板
+**尺寸**：1600x1200px
+**设计要求**：与登录面板风格一致，文字改为"欢迎回来"
+
+```
+Pixel art game UI panel background, auto-login welcome panel, wooden frame with dark brown border and lighter brown inner area, rustic railway station office style, warm vintage color palette with copper and amber tones, the Chinese text "欢迎回来" prominently displayed in golden calligraphy at the top center of the panel, subtle aged wood texture with visible grain patterns, ornate corner decorations with small rivets or bolts, transparent background, game interface asset, high quality pixel art, 16-bit retro style, 1600x1200 pixels, horizontal composition with minimal content space for username display and enter button
+```
 
 ---
 

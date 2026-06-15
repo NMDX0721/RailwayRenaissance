@@ -93,11 +93,30 @@ public class LoginManager : MonoBehaviour
         bgRect.sizeDelta = Vector2.zero;
         backgroundImage = bgObj.AddComponent<RawImage>();
 
+        CreateTitleLogo(canvasObj.transform);
+
         loginPanel = CreateLoginPanel(canvasObj.transform);
         registerPanel = CreateRegisterPanel(canvasObj.transform);
         autoLoginPanel = CreateAutoLoginPanel(canvasObj.transform);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(false);
+    }
+
+    void CreateTitleLogo(Transform parent)
+    {
+        if (titleLogoSprite == null) return;
+
+        var titleLogoObj = new GameObject("TitleLogo");
+        titleLogoObj.transform.SetParent(parent, false);
+        var titleRect = titleLogoObj.AddComponent<RectTransform>();
+        titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+        titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+        titleRect.anchoredPosition = new Vector2(0, 380);
+        titleRect.sizeDelta = new Vector2(900, 220);
+        var titleImg = titleLogoObj.AddComponent<Image>();
+        titleImg.sprite = titleLogoSprite;
+        titleImg.type = Image.Type.Simple;
+        titleImg.preserveAspect = true;
     }
 
     GameObject CreateLoginPanel(Transform parent)
@@ -124,25 +143,6 @@ public class LoginManager : MonoBehaviour
         }
 
         loginPanelBg = panel;
-
-        if (titleLogoSprite != null)
-        {
-            var titleLogoObj = new GameObject("TitleLogo");
-            titleLogoObj.transform.SetParent(panel.transform, false);
-            var titleRect = titleLogoObj.AddComponent<RectTransform>();
-            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
-            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
-            titleRect.anchoredPosition = new Vector2(0, 380);
-            titleRect.sizeDelta = new Vector2(1100, 250);
-            var titleImg = titleLogoObj.AddComponent<Image>();
-            titleImg.sprite = titleLogoSprite;
-            titleImg.type = Image.Type.Simple;
-            titleImg.preserveAspect = true;
-        }
-        else
-        {
-            var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 380);
-        }
 
         usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 250);
         passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -50);
