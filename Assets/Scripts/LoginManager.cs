@@ -412,7 +412,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1200, 120);
+        rect.sizeDelta = new Vector2(1200, 400);
 
         var img = inputObj.AddComponent<Image>();
         if (inputSprite != null)
