@@ -1,4 +1,4 @@
-# 铁路复兴：沙能冲击 - AI绘图提示词总表 v2.0
+# 铁路复兴：沙能冲击 - AI绘图提示词总表 v2.1
 
 ## 风格统一要求
 - **风格**：精致像素风，16位复古游戏风格
@@ -6,6 +6,7 @@
 - **色调**：温暖怀旧风，主色#8B4513（棕）、#CD853F（铜）、#DAA520（金）、#2F2F2F（深灰）
 - **参考游戏**：《星露谷物语》《泰拉瑞亚》《八方旅人》
 - **像素密度**：每像素清晰可见，不使用抗锯齿，边缘锐利
+- **Unity画布**：1920×1080，所有图标必须在此分辨率下清晰可辨
 
 ---
 
@@ -58,156 +59,101 @@ Pixel art game UI button background sprite, horizontal rectangular shape with ex
 
 ---
 
-## ⭐ P1 游戏核心素材（经营界面）
+## ⭐ P1 小图标精灵表（64x64px）
+
+### 4. 天气+状态图标精灵表
+**用途**：天气状态显示（晴/雨/雪/风）+ 操作状态提示（错误/成功/警告）+ 简单装饰
+**尺寸**：256x128px（4×2网格，每个图标64x64px）
+**设计理由**：64x64px足够简单图标清晰显示，8个图标打包成一张精灵表
+
+```
+Pixel art game small icon sprite sheet, rectangular grid with exact dimensions 256 pixels wide by 128 pixels tall, divided into 8 equal cells each 64x64 pixels arranged in 4 columns by 2 rows, row 1 column 1: sun icon, circle 24 pixels diameter centered at (32,32) with 8 rays 8 pixels long extending outward every 45 degrees, bright warm yellow #FFD700, row 1 column 2: rain icon, cloud shape 30 pixels wide 18 pixels tall centered at (32,22) with 3 diagonal rain drops 6 pixels long below at positions (20,50) (32,56) (44,50), blue-gray #708090 cloud with blue #4169E1 rain drops, row 1 column 3: snow icon, cloud shape 30 pixels wide 18 pixels tall centered at (32,22) with 3 snowflake dots 4 pixels diameter below at positions (20,52) (32,58) (44,52), light blue #ADD8E6 cloud with white #FFFFFF snowflakes, row 1 column 4: wind icon, 3 horizontal wavy lines 36 pixels long 2 pixels thick centered vertically at y=22 y=32 y=42, light gray #D3D3D3, row 2 column 1: error icon, dark red #8B0000 circle outline 36 pixels diameter 2 pixels thick centered at (32,32) with white #FFFFFF X-mark 16 pixels tall inside, row 2 column 2: success icon, dark green #006400 circle outline 36 pixels diameter 2 pixels thick centered at (32,32) with white #FFFFFF checkmark 16 pixels tall inside, row 2 column 3: warning icon, dark yellow #B8860B circle outline 36 pixels diameter 2 pixels thick centered at (32,32) with white #FFFFFF exclamation mark 16 pixels tall inside, row 2 column 4: gear icon, silver #C0C0C0 circle 28 pixels diameter centered at (32,32) with 8 teeth 4 pixels each extending outward, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+```
+
+---
 
 ### 5. 输入框图标精灵表
-**用途**：用户名图标、密码图标等输入框左侧标识
-**尺寸**：256x128px（2×1网格，每个图标128x128px）
-**设计理由**：128x128px确保像素清晰，2×1排列包含用户和密码两个图标
+**用途**：用户名输入框左侧用户标识、密码输入框左侧钥匙标识
+**尺寸**：128x64px（2×1网格，每个图标64x64px）
+**设计理由**：64x64px确保图标清晰，2个图标打包成一张精灵表
 
 ```
-Pixel art game icon sprite sheet, horizontal strip with exact dimensions 256 pixels wide by 128 pixels tall, divided into 2 equal cells each 128x128 pixels, left cell contains user icon: silhouette of person's head and shoulders, head is circle 40 pixels diameter centered at (64,44), shoulders are curved line 60 pixels wide centered at (64,84) extending to cell edges, single warm gold color #DAA520 on transparent background, right cell contains key icon: old-fashioned skeleton key oriented vertically, bow is circle 30 pixels diameter centered at (64,36), shaft is vertical line 8 pixels wide 50 pixels tall centered at (64,60), bit is L-shape 16 pixels wide 10 pixels tall at bottom, single warm gold color #DAA520 on transparent background, all edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game input icon sprite sheet, horizontal strip with exact dimensions 128 pixels wide by 64 pixels tall, divided into 2 equal cells each 64x64 pixels, left cell: user icon, silhouette of person's head and shoulders, head is circle 20 pixels diameter centered at (32,22), shoulders are curved line 30 pixels wide centered at (32,42) extending to cell edges, single warm gold color #DAA520, right cell: key icon, old-fashioned skeleton key oriented vertically, bow is circle 14 pixels diameter centered at (32,18), shaft is vertical line 4 pixels wide 28 pixels tall centered at (32,32), bit is L-shape 10 pixels wide 6 pixels tall at bottom, single warm gold color #DAA520, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
+
+## ⭐ P2 中图标精灵表（128x128px）
 
 ### 6. 资源图标精灵表
-**用途**：资金/信任度/客流/车况四个资源显示图标
+**用途**：资金/信任度/客流/车况四种核心资源显示图标
 **尺寸**：256x256px（2×2网格，每个图标128x128px）
-**设计理由**：四格一组，包含游戏中四种核心资源图标
+**设计理由**：资源图标是HUD核心元素，128x128px确保在各种UI位置清晰可辨
 
 ```
-Pixel art game resource icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: gold coin icon, circle 50 pixels diameter centered at (64,64) with embossed dollar symbol 20 pixels tall, warm golden yellow #DAA520 with subtle highlight #FFFACD at top-left quadrant, top-right cell: red heart icon, heart shape 50 pixels tall centered at (64,64) with slight 3D effect, warm red #CC0000 with subtle highlight #FF6666 at top-left, bottom-left cell: people silhouette icon, 3 standing figures 40 pixels tall centered at (64,64), warm beige #F5DEB3 color, bottom-right cell: wrench icon, L-shaped wrench 50 pixels tall centered at (64,64), warm brown #8B4513 with copper #B87333 accent, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game resource icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: gold coin icon for funds, circle 50 pixels diameter centered at (64,64) with embossed dollar symbol 20 pixels tall, warm golden yellow #DAA520 with subtle highlight #FFFACD at top-left quadrant creating 3D effect, 2 pixel dark brown #5C3317 outline, top-right cell: red heart icon for trust, heart shape 50 pixels tall centered at (64,64) with slight 3D effect, warm red #CC0000 with subtle highlight #FF6666 at top-left quadrant, 2 pixel dark red #8B0000 outline, bottom-left cell: people silhouette icon for passengers, 3 standing figures 40 pixels tall centered at (64,64) arranged in triangle formation, warm beige #F5DEB3 color with 1 pixel darker beige #D2B48C outline, bottom-right cell: wrench icon for condition, L-shaped wrench 50 pixels tall centered at (64,64), warm brown #8B4513 handle with copper #B87333 metal head, 1 pixel dark brown outline, all icons flat 2D design with minimal 3D effect through highlights, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 7. 天气图标精灵表
-**用途**：晴天/雨天/雪天/大风四种天气状态图标
+### 7. 工具图标精灵表
+**用途**：扫把/扳手/手电筒/安全帽四种员工工具图标
 **尺寸**：256x256px（2×2网格，每个图标128x128px）
-**设计理由**：四格一组，包含游戏中四种天气状态
+**设计理由**：工具图标在员工管理界面频繁使用，128x128px确保细节清晰
 
 ```
-Pixel art game weather icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: sun icon, circle 40 pixels diameter centered at (64,64) with 8 rays 15 pixels long extending outward every 45 degrees, bright warm yellow #FFD700 with white #FFFFFF highlight at top-left, top-right cell: rain icon, cloud shape 50 pixels wide 30 pixels tall centered at (64,44) with 3 diagonal rain drops 12 pixels long below at positions (44,80) (64,88) (84,80), blue-gray #708090 cloud with blue #4169E1 rain drops, bottom-left cell: snow icon, cloud shape 50 pixels wide 30 pixels tall centered at (64,44) with 3 snowflake dots 8 pixels diameter below at positions (44,84) (64,92) (84,84), light blue #ADD8E6 cloud with white #FFFFFF snowflakes, bottom-right cell: wind icon, 3 horizontal wavy lines 60 pixels long 4 pixels thick centered vertically at y=44 y=64 y=84, light gray #D3D3D3 color, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game tool icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: broom icon for cleaning staff, vertical handle 10 pixels wide 50 pixels tall centered at x=64 from y=39 to y=89, bristle fan 40 pixels wide 20 pixels tall centered at (64,104), handle warm brown #8B4513 bristles tan #D2B48C with 1 pixel dark outline, top-right cell: wrench icon for repair staff, L-shaped wrench with 45 pixel handle 10 pixels wide and 25 pixel jaw 8 pixels wide centered at (64,64), silver #C0C0C0 metal with brown #8B4513 wooden grip section 15 pixels long, 1 pixel dark gray outline, bottom-left cell: flashlight icon for patrol staff, vertical cylinder 16 pixels wide 45 pixels tall centered at (64,74) with light cone 36 pixels wide 25 pixels tall above at (64,34), dark gray #2F2F2F body with bright yellow #FFD700 light cone fading to transparent, 1 pixel black outline on body, bottom-right cell: safety helmet icon for all staff, dome shape 55 pixels wide 30 pixels tall centered at (64,49) with brim 65 pixels wide 8 pixels tall below at y=79, bright yellow #FFD700 with orange #FF8C00 horizontal stripe 4 pixels tall at y=54, 1 pixel dark brown outline, all icons flat 2D design with minimal detail, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 8. 工具图标精灵表
-**用途**：扫把/扳手/手电筒/安全帽四种工作工具图标
+### 8. 道具图标精灵表
+**用途**：车票/怀表/钥匙/日记四种重要道具图标
 **尺寸**：256x256px（2×2网格，每个图标128x128px）
-**设计理由**：四格一组，包含游戏中四种员工工具
+**设计理由**：道具图标在剧情和物品系统中使用，128x128px确保辨识度
 
 ```
-Pixel art game tool icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: broom icon, vertical handle 10 pixels wide 60 pixels tall centered at x=64 from y=34 to y=94, bristle fan 40 pixels wide 24 pixels tall centered at (64,106), handle warm brown #8B4513 bristles tan #D2B48C, top-right cell: wrench icon, L-shaped wrench with 50 pixel handle 12 pixels wide and 30 pixel jaw 10 pixels wide centered at (64,64), silver #C0C0C0 metal with brown #8B4513 wooden grip section, bottom-left cell: flashlight icon, vertical cylinder 18 pixels wide 50 pixels tall centered at (64,74) with light cone 40 pixels wide 30 pixels tall above at (64,34), dark gray #2F2F2F body with bright yellow #FFD700 light cone, bottom-right cell: safety helmet icon, dome shape 60 pixels wide 35 pixels tall centered at (64,54) with brim 70 pixels wide 8 pixels tall below, bright yellow #FFD700 with orange #FF8C00 stripe, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-### 9. 道具图标精灵表
-**用途**：车票/怀表/钥匙/日记四种道具图标
-**尺寸**：256x256px（2×2网格，每个图标128x128px）
-**设计理由**：四格一组，包含游戏中四种重要道具
-
-```
-Pixel art game item icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: ticket icon, horizontal rectangle 60 pixels wide 30 pixels tall centered at (64,64) with perforated left edge (3 semicircles 6 pixels each), cream #FFF8DC color with brown #8B4513 printed lines, top-right cell: pocket watch icon, circle 45 pixels diameter centered at (64,54) with chain 6 pixels wide 30 pixels long extending downward to (64,94), golden brass #B87333 with round face and small hands, bottom-left cell: key icon, classic skeleton key 55 pixels tall centered at (64,64) with round bow 20 pixels diameter at top and simple bit 15 pixels at bottom, brass #B87333 color, bottom-right cell: diary icon, closed book 45 pixels wide 55 pixels tall centered at (64,64) with spine on left side and small clasp on right, dark brown #5C3317 cover with cream #FFF8DC pages visible at edges, all icons flat 2D design with minimal detail, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-Pixel art game input field icon template, square shape with exact dimensions 48 pixels wide by 48 pixels tall, icon content occupies central 36x36 pixel area with 6 pixel padding on all sides, style is simple flat silhouette with no gradients no shadows no 3D effects, color is single warm gold #DAA520 with no outline, user icon variant: silhouette of person's head and shoulders, head is circle 14 pixels diameter centered at (24,16), shoulders are curved line 20 pixels wide centered at (24,30) extending to edges, key icon variant: old-fashioned skeleton key oriented vertically, bow (round top part) is circle 10 pixels diameter centered at (24,14), shaft is vertical line 3 pixels wide 18 pixels tall centered at (24,22), bit (bottom part) is L-shape 6 pixels wide 4 pixels tall at bottom of shaft, edges are crisp with no anti-aliasing, transparent background outside the 48x48 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game item icon sprite sheet, square grid with exact dimensions 256 pixels wide by 256 pixels tall, divided into 4 equal cells each 128x128 pixels in 2x2 arrangement, top-left cell: train ticket icon, horizontal rectangle 55 pixels wide 28 pixels tall centered at (64,64) with perforated left edge (3 semicircles 5 pixels each), cream #FFF8DC color with brown #8B4513 printed horizontal lines 1 pixel thick every 6 pixels, 1 pixel dark brown outline, top-right cell: pocket watch icon for protagonist's heirloom, circle 42 pixels diameter centered at (64,52) with chain 5 pixels wide 28 pixels long extending downward to (64,92), golden brass #B87333 with round face and small black #1A1A1A hands showing 3:45, 1 pixel dark brown outline, bottom-left cell: old key icon, classic skeleton key 50 pixels tall centered at (64,64) with round bow 18 pixels diameter at top and simple bit 14 pixels at bottom, brass #B87333 with subtle highlight #DAA520 on bow, 1 pixel dark brown outline, bottom-right cell: diary icon, closed book 42 pixels wide 52 pixels tall centered at (64,64) with spine on left side and small brass clasp 4x4 pixels on right edge, dark brown #5C3317 cover with cream #FFF8DC pages visible 2 pixels at edges, 1 pixel black outline, all icons flat 2D design with minimal detail, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 6. 资源图标模板
-**用途**：资金/信任度/客流/车况等资源显示图标
-**尺寸**：32x32px（所有图标统一尺寸）
-**泛用性**：一个模板生成多种图标，通过颜色和形状区分
-
-```
-Pixel art game resource icon template, square shape with exact dimensions 32 pixels wide by 32 pixels tall, icon content occupies central 24x24 pixel area with 4 pixel padding on all sides, style is simple flat silhouette with no gradients no shadows no 3D effects, color palette limited to 3 colors per icon (main color #DAA520 gold, shadow color #8B4513 brown, highlight color #FFFACD cream), edges are crisp with no anti-aliasing, each icon variant uses different shape: coin-circle for funds, heart-shape for trust, people-silhouette for passengers, wrench-shape for condition, transparent background outside the 32x32 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-### 6. 状态提示图标模板
-**用途**：错误/成功/警告等状态提示
-**尺寸**：24x24px（所有状态图标统一尺寸）
-**泛用性**：一个模板生成多种状态图标
-
-```
-Pixel art game status icon template, square shape with exact dimensions 24 pixels wide by 24 pixels tall, icon content occupies central 20x20 pixel area with 2 pixel padding on all sides, style is simple flat symbol inside circle outline, circle is 2 pixels thick with color varying by state: dark red #8B0000 for error, dark green #006400 for success, dark yellow #B8860B for warning, inner symbol is white #FFFFFF: X-mark for error, checkmark for success, exclamation for warning, edges are crisp with no anti-aliasing, transparent background outside the 24x24 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-### 7. 天气图标模板
-**用途**：晴天/雨天/雪天/大风等天气状态显示
-**尺寸**：32x32px（所有天气图标统一尺寸）
-**泛用性**：一个模板生成多种天气图标
-
-```
-Pixel art game weather icon template, square shape with exact dimensions 32 pixels wide by 32 pixels tall, icon content occupies central 28x28 pixel area with 2 pixel padding on all sides, style is simple flat silhouette with no gradients no shadows, color palette limited to 2 colors per icon (main color and white #FFFFFF highlight), sun variant: circle 12 pixels diameter centered at (16,16) with 8 rays 2 pixels long extending outward, rain variant: cloud shape 16 pixels wide at top with 3 diagonal rain drops 2 pixels each below, snow variant: cloud shape 16 pixels wide at top with 3 snowflake dots 2 pixels each below, wind variant: 3 horizontal wavy lines 2 pixels thick stacked vertically, edges are crisp with no anti-aliasing, transparent background outside the 32x32 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-### 8. 工具图标模板
-**用途**：扫把/扳手/手电筒等工作工具显示
-**尺寸**：32x32px（所有工具图标统一尺寸）
-**泛用性**：一个模板生成多种工具图标
-
-```
-Pixel art game tool icon template, square shape with exact dimensions 32 pixels wide by 32 pixels tall, icon content occupies central 24x28 pixel area with 4 pixel horizontal padding and 2 pixel vertical padding, style is simple flat silhouette with no gradients no shadows, color palette limited to 3 colors per icon (handle color #8B4513 brown, metal color #C0C0C0 silver, accent color #DAA520 gold), broom variant: vertical handle 4 pixels wide 20 pixels tall at center, bristle fan 12 pixels wide 8 pixels tall at bottom, wrench variant: L-shape with 16 pixel handle and 8 pixel jaw, flashlight variant: vertical cylinder 6 pixels wide 16 pixels tall with light cone 12 pixels wide 8 pixels tall at top, edges are crisp with no anti-aliasing, transparent background outside the 32x32 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-### 9. 道具图标模板
-**用途**：车票/怀表/钥匙等道具显示
-**尺寸**：32x32px（所有道具图标统一尺寸）
-**泛用性**：一个模板生成多种道具图标
-
-```
-Pixel art game item icon template, square shape with exact dimensions 32 pixels wide by 32 pixels tall, icon content occupies central 24x24 pixel area with 4 pixel padding on all sides, style is simple flat silhouette with no gradients no shadows, color palette limited to 3 colors per icon (main color, shadow color #8B4513 brown, highlight color #FFFACD cream), ticket variant: horizontal rectangle 18 pixels wide 10 pixels tall with perforated left edge (3 semicircles 2 pixels each), pocket watch variant: circle 14 pixels diameter with chain 2 pixels wide 8 pixels long extending downward, key variant: classic skeleton key shape 16 pixels tall with round bow 6 pixels diameter at top and simple bit 4 pixels at bottom, edges are crisp with no anti-aliasing, transparent background outside the 32x32 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
-```
-
----
-
-## ⭐ P2 游戏功能素材
-
-### 10. 信号灯精灵表
+### 9. 信号灯精灵表
 **用途**：铁路信号灯红/绿/黄三种状态显示
 **尺寸**：384x128px（3×1网格，每个图标128x128px）
-**设计理由**：三格横排，包含三种信号灯状态
+**设计理由**：信号灯在游戏事件和铁路系统中使用，三格横排便于状态切换
 
 ```
-Pixel art game signal light sprite sheet, horizontal strip with exact dimensions 384 pixels wide by 128 pixels tall, divided into 3 equal cells each 128x128 pixels, left cell: red signal light, dark gray #2F2F2F vertical housing 40 pixels wide 80 pixels tall centered at (64,64), circular light 30 pixels diameter centered at (64,44) with bright red #FF0000 fill and 2 pixel white #FFFFFF highlight at top-left quadrant, middle cell: green signal light, same housing design, circular light 30 pixels diameter centered at (64,44) with bright green #00FF00 fill and 2 pixel white highlight at top-left quadrant, right cell: yellow signal light, same housing design, circular light 30 pixels diameter centered at (64,44) with bright yellow #FFD700 fill and 2 pixel white highlight at top-left quadrant, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game signal light sprite sheet, horizontal strip with exact dimensions 384 pixels wide by 128 pixels tall, divided into 3 equal cells each 128x128 pixels, left cell: red signal light, dark gray #2F2F2F vertical housing 36 pixels wide 72 pixels tall centered at (64,64) with 2 pixel black outline, circular light 28 pixels diameter centered at (64,40) with bright red #FF0000 fill and 2 pixel white #FFFFFF highlight at top-left quadrant, middle cell: green signal light, same housing design and position, circular light 28 pixels diameter centered at (64,40) with bright green #00FF00 fill and 2 pixel white highlight at top-left quadrant, right cell: yellow signal light, same housing design and position, circular light 28 pixels diameter centered at (64,40) with bright yellow #FFD700 fill and 2 pixel white highlight at top-left quadrant, all icons flat 2D design with minimal 3D effect through highlights, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 11. 状态提示精灵表
+### 10. 状态提示精灵表
 **用途**：错误/成功/警告三种状态提示图标
 **尺寸**：384x128px（3×1网格，每个图标128x128px）
-**设计理由**：三格横排，包含三种状态提示
+**设计理由**：状态提示在所有UI反馈中使用，三格横排便于调用
 
 ```
-Pixel art game status icon sprite sheet, horizontal strip with exact dimensions 384 pixels wide by 128 pixels tall, divided into 3 equal cells each 128x128 pixels, left cell: error icon, dark red #8B0000 circle outline 60 pixels diameter 4 pixels thick centered at (64,64) with white #FFFFFF X-mark 30 pixels tall inside, middle cell: success icon, dark green #006400 circle outline 60 pixels diameter 4 pixels thick centered at (64,64) with white #FFFFFF checkmark 30 pixels tall inside, right cell: warning icon, dark yellow #B8860B circle outline 60 pixels diameter 4 pixels thick centered at (64,64) with white #FFFFFF exclamation mark 30 pixels tall inside, all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game status icon sprite sheet, horizontal strip with exact dimensions 384 pixels wide by 128 pixels tall, divided into 3 equal cells each 128x128 pixels, left cell: error icon, dark red #8B0000 circle outline 56 pixels diameter 3 pixels thick centered at (64,64) with white #FFFFFF X-mark 28 pixels tall inside centered at (64,64), middle cell: success icon, dark green #006400 circle outline 56 pixels diameter 3 pixels thick centered at (64,64) with white #FFFFFF checkmark 28 pixels tall inside centered at (64,64), right cell: warning icon, dark yellow #B8860B circle outline 56 pixels diameter 3 pixels thick centered at (64,64) with white #FFFFFF exclamation mark 28 pixels tall inside centered at (64,64), all icons flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside icon shapes, game interface sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 12. 装饰元素精灵表
+## ⭐ P3 大图标精灵表（256x256px）
+
+### 11. 装饰元素精灵表
 **用途**：铁轨分隔线、小火车、齿轮、烟雾四种装饰元素
-**尺寸**：512x128px（4×1网格，每个元素128x128px）
-**设计理由**：四格横排，包含四种装饰元素
+**尺寸**：1024x256px（4×1网格，每个元素256x256px）
+**设计理由**：装饰元素需要更多细节，256x256px确保视觉丰富度
 
 ```
-Pixel art game decoration sprite sheet, horizontal strip with exact dimensions 512 pixels wide by 128 pixels tall, divided into 4 equal cells each 128x128 pixels, left cell: railway track segment, two parallel dark brown #5C3317 rails 4 pixels thick separated by 20 pixels running horizontally across cell with wooden sleepers #8B4513 every 40 pixels 4 pixels thick, second cell: small steam train side view facing right, red body #C0392B locomotive 60 pixels wide 40 pixels tall centered at (64,74) with brass dome #DAA520 on top and black smokestack #1A1A1A puffing white #FFFFFF steam clouds above, third cell: gear/cog icon, silver #C0C0C0 circle 50 pixels diameter centered at (64,64) with 12 teeth 8 pixels each extending outward, fourth cell: smoke puff particle, light gray #D3D3D3 cloud shape 60 pixels wide 40 pixels tall centered at (64,64) fading to transparent at edges, all elements flat 2D design with no gradients no shadows, edges crisp with no anti-aliasing, transparent background outside element shapes, game decoration sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+Pixel art game decoration sprite sheet, horizontal strip with exact dimensions 1024 pixels wide by 256 pixels tall, divided into 4 equal cells each 256x256 pixels, left cell: railway track segment, two parallel dark brown #5C3317 rails 6 pixels thick separated by 40 pixels running horizontally across cell with wooden sleepers #8B4513 every 80 pixels 6 pixels thick, track centered vertically at y=128, second cell: small steam train side view facing right, red body #C0392B locomotive 120 pixels wide 80 pixels tall centered at (128,176) with brass dome #DAA520 20 pixels diameter on top and black smokestack #1A1A1A 8 pixels wide 30 pixels tall puffing white #FFFFFF steam clouds 40 pixels wide above, third cell: gear/cog icon, silver #C0C0C0 circle 100 pixels diameter centered at (128,128) with 12 teeth 16 pixels each extending outward, subtle metallic highlight #E8E8E8 at top-left quadrant, fourth cell: smoke puff particle effect, light gray #D3D3D3 cloud shape 120 pixels wide 80 pixels tall centered at (128,128) with 3 smaller puffs 30 pixels each above fading to transparent at edges, all elements flat 2D design with minimal shading, edges crisp with no anti-aliasing, transparent background outside element shapes, game decoration sprite sheet, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
 ```
 
 ---
 
-### 13. 密码强度条
+### 12. 密码强度条
 **用途**：注册时密码强度可视化指示
 **尺寸**：400x24px（独占素材，包含强度分区文字）
 **独占理由**：信息密度需求高，弱/中/强文字必须内嵌确保可读性
@@ -218,13 +164,14 @@ Pixel art game UI progress bar for password strength, horizontal rectangular sha
 
 ---
 
-## ⭐ P3 角色立绘（全身像）
+## ⭐ P4 角色立绘（全身像）
 
 ### 设计原则
 - **立绘风格**：日系动漫风格，透明背景
 - **尺寸**：1024x2048（全身高清）
 - **关键要求**：每个细节都要有"故事"，衣物磨损反映生活状态
 - **已有立绘**：林彪悍✅
+- **角色详细档案**：见 `CHARACTER.md`
 
 ---
 
@@ -292,44 +239,42 @@ Full body anime style illustration, middle-aged man age 48 named Zhou Dingming, 
 - **像素坐标系**：(0,0)在屏幕中心，X向右为正，Y向上为正
 - **屏幕范围**：X: -960 ~ +960, Y: -540 ~ +540
 
-### 面板尺寸规划
-- **最大面板**：1600×1200（占屏幕83%×111%，需要滚动或分页）
-- **推荐面板**：1400×900（占屏幕73%×83%）
-- **面板居中时**：顶部Y=高度/2，底部Y=-高度/2
-- **Logo位置**：必须Y > 面板顶部Y + 50像素
+### 精灵表切割规范
+- **Unity Sprite Editor**：用于切割精灵表为单独图标
+- **Pixel Per Unit**：100（1像素=0.01单位）
+- **Filter Mode**：Point（像素风无抗锯齿）
+- **Compression**：None（保持像素清晰）
 
-### 元素间距规范
-- **输入框间距**：垂直80-120像素
-- **按钮间距**：垂直40-60像素
-- **按钮与输入框间距**：垂直60-80像素
-- **元素与面板边缘间距**：水平80-120像素，垂直60-100像素
-
-### 字体规范
-- **标题字体**：Microsoft YaHei, 36-48px, 颜色#F0D060（金色）
-- **正文字体**：Microsoft YaHei, 24-32px, 颜色#E0D0B0（暖白）
-- **提示字体**：Microsoft YaHei, 18-22px, 颜色#B0A090（暖灰）
-- **按钮字体**：Microsoft YaHei, 28-36px, 颜色#FFF0D0（亮金）
+### 素材尺寸层级
+| 层级 | 单图标尺寸 | 用途 | 每张表包含 |
+|------|-----------|------|-----------|
+| 小图标 | 64x64px | 天气、状态、简单装饰 | 8个（4×2） |
+| 中图标 | 128x128px | 资源、工具、道具、信号灯 | 4个（2×2或4×1） |
+| 大图标 | 256x256px | 复杂装饰、角色头像 | 4个（4×1） |
+| 立绘 | 1024x2048px | 角色全身像 | 1个 |
 
 ---
 
 ## 使用说明
 
-1. **优先级**：P0 > P1 > P2 > P3，先做P0/P1保证游戏能跑
+1. **优先级**：P0 > P1 > P2 > P3 > P4，先做P0/P1保证游戏能跑
 2. **生成方式**：将英文提示词输入AI绘图工具（Midjourney/Stable Diffusion/DALL-E）
 3. **参数建议**：Midjourney加 `--style raw --no blur`，Stable Diffusion用pixel art LoRA
 4. **导出处理**：用PS/GIMP去除背景，保留透明通道，确保无杂边
-5. **命名规范**：`类别_名称.png`，如 `input_field.png`、`icon_weather_sun.png`
+5. **命名规范**：`类别_名称.png`，如 `icon_weather_status.png`、`icon_resource.png`
 6. **验收标准**：检查像素清晰度、颜色准确度、尺寸精确度、透明背景完整性
+7. **精灵表切割**：导入Unity后使用Sprite Editor切割，设置Pixels Per Unit=100
 
 ---
 
 ## 统计
 
-| 优先级 | 数量 | 状态 |
-|--------|------|------|
-| ✅ 已完成 | 5个 | 不用做 |
-| 🔄 P0 重做 | 3个 | 通用模板 |
-| ⭐ P1 核心 | 5个 | 模板+角色 |
-| ⭐ P2 功能 | 3个 | 模板 |
-| ⭐ P3 装饰 | 7个 | 角色立绘 |
-| **总计** | **23个** | - |
+| 优先级 | 素材 | 数量 | 状态 |
+|--------|------|------|------|
+| ✅ 已完成 | 标题Logo等 | 5个 | 不用做 |
+| 🔄 P0 重做 | 输入框/面板/按钮 | 3个 | 通用模板 |
+| ⭐ P1 小图标 | 天气状态/输入框图标 | 2张精灵表 | 10个图标 |
+| ⭐ P2 中图标 | 资源/工具/道具/信号灯/状态 | 5张精灵表 | 20个图标 |
+| ⭐ P3 大图标 | 装饰元素 | 1张精灵表 | 4个图标 |
+| ⭐ P4 角色 | 7个角色立绘 | 7张独立图 | 待生成 |
+| **总计** | - | **28个图标+7个立绘** | - |
