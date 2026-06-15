@@ -41,11 +41,11 @@ public class CloudSeaSetup : Editor
             }
         }
         
-        // 方法3: 生成fallback
+        // 方法3: 使用默认纹理
         if (noiseTex == null)
         {
-            noiseTex = BlueNoiseGenerator.Generate(128);
-            Debug.LogWarning("噪声纹理未找到！使用了程序化生成的替代纹理。");
+            noiseTex = Texture2D.whiteTexture;
+            Debug.LogWarning("噪声纹理未找到！使用白色纹理替代。");
         }
         else
         {
