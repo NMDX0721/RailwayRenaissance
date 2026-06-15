@@ -105,7 +105,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = new Vector2(0, -20);
+        panelRect.anchoredPosition = new Vector2(0, -80);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
@@ -126,17 +126,17 @@ public class LoginManager : MonoBehaviour
         var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 420);
         var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 20, new Color(1, 1, 1, 0.6f), 370);
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 110);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -60);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 190);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 20);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -210);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -130);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -380);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -300);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -520);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -440);
 
         return panel;
     }
@@ -148,7 +148,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = new Vector2(0, -20);
+        panelRect.anchoredPosition = new Vector2(0, -80);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
@@ -169,19 +169,19 @@ public class LoginManager : MonoBehaviour
         CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 300);
         CreateText(panel.transform, "Subtitle", "Register New Account", 18, new Color(1, 1, 1, 0.6f), 260);
 
-        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 150);
-        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 0);
+        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 230);
+        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 80);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -150);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -70);
         confirmPasswordInput.contentType = InputField.ContentType.Password;
 
-        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -300);
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -220);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -450);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -370);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -580);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -500);
 
         return panel;
     }
@@ -193,7 +193,7 @@ public class LoginManager : MonoBehaviour
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = new Vector2(0, -20);
+        panelRect.anchoredPosition = new Vector2(0, -80);
         panelRect.sizeDelta = new Vector2(1440, 1140);
 
         if (panelSprite != null)
