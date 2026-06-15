@@ -428,6 +428,24 @@ public class LoginManager : MonoBehaviour
         }
 
         var input = inputObj.AddComponent<InputField>();
+        input.caretColor = new Color(0.95f, 0.9f, 0.82f);
+        input.selectionColor = new Color(0.94f, 0.82f, 0.38f, 0.3f);
+
+        var textObj = new GameObject("Text");
+        textObj.transform.SetParent(inputObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.sizeDelta = Vector2.zero;
+        textRect.offsetMin = new Vector2(30, 0);
+        textRect.offsetMax = new Vector2(-15, 0);
+        var textBg = textObj.AddComponent<Image>();
+        textBg.color = new Color(0, 0, 0, 0);
+        var text = textObj.AddComponent<Text>();
+        text.fontSize = 36;
+        text.color = new Color(0.95f, 0.9f, 0.82f);
+        text.alignment = TextAnchor.MiddleLeft;
+        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
 
         var placeholderObj = new GameObject("Placeholder");
         placeholderObj.transform.SetParent(inputObj.transform, false);
@@ -440,23 +458,9 @@ public class LoginManager : MonoBehaviour
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
         placeholderText.fontSize = 36;
-        placeholderText.color = new Color(0.75f, 0.7f, 0.6f);
+        placeholderText.color = new Color(0.75f, 0.7f, 0.6f, 0.6f);
         placeholderText.alignment = TextAnchor.MiddleLeft;
         placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
-
-        var textObj = new GameObject("Text");
-        textObj.transform.SetParent(inputObj.transform, false);
-        var textRect = textObj.AddComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.sizeDelta = Vector2.zero;
-        textRect.offsetMin = new Vector2(30, 0);
-        textRect.offsetMax = new Vector2(-15, 0);
-        var text = textObj.AddComponent<Text>();
-        text.fontSize = 36;
-        text.color = new Color(0.95f, 0.9f, 0.82f);
-        text.alignment = TextAnchor.MiddleLeft;
-        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
 
         input.textComponent = text;
         input.placeholder = placeholderText;
