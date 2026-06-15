@@ -25,10 +25,22 @@
 
 ### 1. 游戏标题Logo
 **用途**：登录界面和标题画面的游戏名称图片，替代纯文字
-**尺寸**：800x200px
+**尺寸**：1200x300px
+**双语要求**：中文为主标题，英文为副标题
 
+**中文主标题提示词**：
 ```
-Pixel art game title logo, the text "铁路复兴：沙能冲击" in vintage Chinese calligraphy style, golden/copper color with subtle metallic shine and emboss effect, warm brown outline or shadow for depth, the characters have a slightly worn/aged look suggesting history and nostalgia, clean readable design suitable for a game title, transparent background, game logo asset, high quality pixel art, 16-bit retro style, horizontal composition
+Pixel art game title logo, the main text "铁路复兴：沙能冲击" in vintage Chinese calligraphy style, golden/copper color with subtle metallic shine and emboss effect, warm brown outline or shadow for depth, the characters have a slightly worn/aged look suggesting history and nostalgia, clean readable design suitable for a game title, transparent background, game logo asset, high quality pixel art, 16-bit retro style, horizontal composition, main title dominant size
+```
+
+**英文副标题提示词**：
+```
+Pixel art game subtitle, the text "Railway Renaissance: Sand Energy Impact" in clean serif font, silver/light gray color with subtle metallic sheen, smaller size than main title, positioned below main title, warm brown outline for readability, clean elegant design, transparent background, game logo asset, high quality pixel art, 16-bit retro style, horizontal composition
+```
+
+**组合提示词（推荐）**：
+```
+Pixel art game title logo with bilingual text, main title "铁路复兴：沙能冲击" in vintage Chinese calligraphy style golden/copper color with metallic shine and emboss effect, subtitle "Railway Renaissance: Sand Energy Impact" in clean serif font silver/light gray color positioned below main title, both texts have warm brown outlines for depth, slightly worn/aged look suggesting history and nostalgia, clean readable design suitable for a game title, transparent background, game logo asset, high quality pixel art, 16-bit retro style, horizontal composition, 1200x300 pixels
 ```
 
 ---
