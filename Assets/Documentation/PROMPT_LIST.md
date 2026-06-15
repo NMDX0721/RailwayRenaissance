@@ -21,12 +21,45 @@
 
 ---
 
+## ⭐ P0 马上要做的
+
+### 1. 游戏标题Logo
+**用途**：登录界面和标题画面的游戏名称图片，替代纯文字
+**尺寸**：800x200px
+
+```
+Pixel art game title logo, the text "铁路复兴：沙能冲击" in vintage Chinese calligraphy style, golden/copper color with subtle metallic shine and emboss effect, warm brown outline or shadow for depth, the characters have a slightly worn/aged look suggesting history and nostalgia, clean readable design suitable for a game title, transparent background, game logo asset, high quality pixel art, 16-bit retro style, horizontal composition
+```
+
+---
+
+### 2. 用户名图标
+**用途**：输入框左侧的用户标识
+**尺寸**：32x32px
+
+```
+Pixel art game icon, simple silhouette of a person's head and shoulders wearing a vintage railway conductor cap with small brim, cream/light yellow color, minimalist clean design like a bathroom sign icon but with railway worker hat, about 24x24 pixels of actual content centered in 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
+```
+
+---
+
+### 2. 密码图标
+**用途**：输入框左侧的密码标识
+**尺寸**：32x32px
+
+```
+Pixel art game icon, simple silhouette of an old-fashioned brass skeleton key with round bow and simple bit, cream/light yellow color, minimalist clean design like a classic key symbol, about 24x24 pixels of actual content centered in 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
+```
+
+---
+
 ## 🎭 角色立绘提示词（全局统一要求：全身像）
 
 ### 设计原则
 - **立绘风格**：**全身像**，日系动漫风格，透明背景
 - **尺寸建议**：1024x2048（全身高清）
 - **关键要求**：每个细节都要有"故事"，衣物磨损反映生活状态
+- **主角已有立绘**：✅
 
 ---
 
@@ -106,28 +139,6 @@ Full body anime style illustration, young man age 22 named Wang Chenyang, oval f
 **AI提示词（英文·全身像）**
 ```
 Full body anime style illustration, middle-aged man age 48 named Zhou Dingming, lean long face well-maintained middle-aged appearance, ordinary-sized eyes with calm gaze that has distance but reveals softness when lost in thought, neatly trimmed eyebrows not exaggerated, ordinary nose bridge not high or low, thin lips with straight corners not much expression person who doesn't smile much, jet-black short hair neatly styled clean temples, fair well-maintained skin looking few years younger than actual age, long slender fingers with neatly trimmed nails, wearing dark three-piece suit not flashy precise tailoring, light blue dress shirt collar neat no tie, simple silver cufflinks, smartwatch on left wrist, dark dress trousers, black polished leather shoes, calm composed expression with businessman's distance but not cold, transparent background, high quality anime illustration, detailed linework, full body composition including feet
-```
-
----
-
-## ⭐ P0 马上要做的（登录界面补充）
-
-### 1. 用户名图标
-**用途**：输入框左侧的用户标识
-**尺寸**：32x32px
-
-```
-Pixel art game icon, simple silhouette of a person's head and shoulders wearing a vintage railway conductor cap with small brim, cream/light yellow color, minimalist clean design like a bathroom sign icon but with railway worker hat, about 24x24 pixels of actual content centered in 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
-```
-
----
-
-### 2. 密码图标
-**用途**：输入框左侧的密码标识
-**尺寸**：32x32px
-
-```
-Pixel art game icon, simple silhouette of an old-fashioned brass skeleton key with round bow and simple bit, cream/light yellow color, minimalist clean design like a classic key symbol, about 24x24 pixels of actual content centered in 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
 ```
 
 ---
