@@ -439,8 +439,6 @@ public class LoginManager : MonoBehaviour
         textRect.sizeDelta = Vector2.zero;
         textRect.offsetMin = new Vector2(30, 0);
         textRect.offsetMax = new Vector2(-15, 0);
-        var textBg = textObj.AddComponent<Image>();
-        textBg.color = new Color(0, 0, 0, 0);
         var text = textObj.AddComponent<Text>();
         text.fontSize = 36;
         text.color = new Color(0.95f, 0.9f, 0.82f);
