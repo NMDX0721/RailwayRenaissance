@@ -1,4 +1,4 @@
-# 铁路复兴：沙能冲击 - AI绘图提示词总表 v1.0
+# 铁路复兴：沙能冲击 - AI绘图提示词总表 v1.1
 
 ## 风格统一要求
 - **风格**：精致像素风，16位复古游戏风格
@@ -18,6 +18,95 @@
 | 夕阳火车站背景 | sunset_railway.png | ✅ 已完成 |
 | 蒸汽火车素材 | steam_train.png | ✅ 已完成 |
 | 主角立绘（动漫风） | sprite_pack_preview_41da6335.png | ✅ 已完成 |
+
+---
+
+## 🎭 角色立绘提示词（全局统一要求：全身像）
+
+### 设计原则
+- **立绘风格**：**全身像**，日系动漫风格，透明背景
+- **尺寸建议**：1024x2048（全身高清）
+- **关键要求**：每个细节都要有"故事"，衣物磨损反映生活状态
+
+---
+
+### 1. 林彪悍（主角）- 铁路复兴继承者
+**全名**：林彪悍 | **年龄**：24岁 | **已有立绘**：✅
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, handsome young man age 24 named Lin Biaohan, slightly round oval face with soft chin and hint of baby fat still youthful and undeveloped, large round deep brown eyes with slightly drooping outer corners looking innocent and clear bright pupils full of hope and anticipation, naturally curved gentle eyebrows non-threatening, small cute round nose tip with delicate bridge and faint light-colored mole on right side, slightly pouty thick lips with corners naturally upturned ready to smile foolishly, fluffy black short hair with slight natural curl irregular bangs across forehead looking like just woke up and tousled with hands one stubborn tuft sticking up above left ear looking adorably clueless, fair warm-toned skin with very faint pink scar on inner left wrist, wearing oversized dark navy blue work jacket inherited from grandfather looking slightly empty and loose ballpoint pen clipped to left chest pocket polished zipper pull oil stain on lower right hem, white crew-neck t-shirt with slightly stretched collar but clean, copper pocket watch chain visible from jacket collar, dark blue jeans with cuffs bunching at ankles, old brown leather shoes, expression youthful and gentle with hopeful anticipation, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 2. 陈守正（老陈）- 守护者
+**全名**：陈守正 | **年龄**：68岁 | **身份**：最后一任站长
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, elderly man age 68 named Chen Shouzheng, square face with dark skin showing wrinkles but still sturdy and strong, deep brown eyes with drooping corners squinting into warm slits when smiling but looking distant when serious as if remembering something, sparse gray-white eyebrows neatly shaped, flat nose bridge with rounded reddish nose tip from cold weather, thick lips with corners slightly downturned, neatly combed gray-white short hair with one unruly tuft behind left ear sticking up, slightly enlarged knuckles on right index finger from years of tightening bolts, wearing white long-sleeve shirt with frayed collar and cuffs second button fastened with mismatched thread, dark gray V-neck sweater vest with pilling on left chest pocket area and visible darning stitch repair on hem, reading glasses on old leather cord around neck, dark loose-fitting trousers, black cloth shoes, warm kind and simple expression, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 3. 陈鹤年（陈市长）- 权力者
+**全名**：陈鹤年 | **年龄**：52岁 | **身份**：城市市长
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, middle-aged man age 52 named Chen Henian, square well-groomed face with fine wrinkles at eye corners from sleepless nights, deep black calm eyes, thick neatly trimmed eyebrows, high nose bridge with thin nostrils, thin lips habitually pressed together, jet-black short hair combed back immaculately with clean-shaven temples but a few gray strands visible at hairline, fair indoor complexion, old signet ring on right ring finger, wearing dark charcoal tailored suit jacket with precise fit showing slight shirt cuff at left sleeve, light blue dress shirt with crisp collar first button undone deliberately for approachability no tie, simple silver cufflinks from wife, vintage mechanical watch with worn leather strap on left wrist, dark dress trousers, black leather shoes, serious composed expression with hint of inner conflict, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 4. 赵铁山（赵监督）- 执行者
+**全名**：赵铁山 | **年龄**：45岁 | **身份**：铁路安全监督员
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, middle-aged man age 45 named Zhao Tieshan, slightly thin long face looking like someone who lives seriously, deep brown serious but not sharp eyes that become gentle when relaxed, average eyebrows not too thick or thin natural shape, ordinary nose bridge not high or low, thin lips with straight corners looking serious when not smiling actually just daydreaming, short neat hair not刻意 but clean-cut temples, dark skin from outdoor work with faint old scar on left cheek from military training, long but strong fingers with neatly trimmed nails, wearing military-green utility jacket zipped to chest with zipper pull wrapped in black electrical tape where original broke small tear on left sleeve cuff not repaired, dark gray turtleneck knit sweater fitted to body, vintage military mechanical watch with old leather strap and scratch on crystal on left wrist, dark utility trousers with military canvas belt, black combat boots, serious but not凶 expression with occasional glimpse of warmth, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 5. 张德厚（张工）- 技术者
+**全名**：张德厚 | **年龄**：62岁 | **身份**：退休机械工程师
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, elderly man age 62 named Zhang Dehou, round plump face with lucky fortune-teller appearance, small bright eyes that squint into happy slits when smiling even without smiling they carry mirth, sparse irregular gray-white eyebrows with a few extra-long strands, round reddish rosacea-tinged nose tip, thick lips with corners perpetually turned up in natural smile, thinning gray-white hair with slightly balding crown but fluffy unruly sides never combed, yellowish skin with small black oil stain on right cheek and old burn scar on left hand web between thumb and index finger, missing left front tooth visible in smile chipped while repairing machinery years ago, wearing brown plaid long-sleeve shirt with sleeves rolled to elbows revealing sturdy forearms left chest pocket holding three pens red blue black and a small screwdriver, dark brown corduroy vest with broken zipper fastened with safety pin pockets bulging with small parts screws and roll of electrical tape, reading glasses perched on top of head with taped temples, dark loose-fitting trousers, black cloth shoes, radiant cheerful expression with infectious grin, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 6. 李桂芳（李阿姨）- 热心者
+**全名**：李桂芳 | **年龄**：55岁 | **身份**：社区热心居民
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, middle-aged woman age 55 named Li Guifang, round face with slight double chin in prosperous way, small but lively eyes curving into crescent moons when smiling, thin arched eyebrows tattooed in youth now slightly faded, small rounded nose tip, thin lips with corners perpetually upturned speaking rapidly like machine gun, ear-length permed hair in small curls dyed brown with white roots growing in, yellowish-pale skin with neck wrinkles from years of cooking, short thick fingers with slightly deformed joints from textile factory work, wearing pink floral long-sleeve blouse freshly washed with iron crease lines still visible, dark blue cotton apron with pocket holding old-fashioned mobile phone and bow tied at back waist for aesthetics, dark trousers, black cloth shoes, dark brown Buddhist bead bracelet on left wrist and gold ring on right hand, warm motherly expression with kind smile and perpetual chatter look, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 7. 王晨阳（王小弟）- 追梦者
+**全名**：王晨阳 | **年龄**：22岁 | **身份**：刚毕业大学生
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, young man age 22 named Wang Chenyang, oval face with slight baby fat student appearance, large bright eyes black and white clear like stars inside, thick natural eyebrows untidy but attractive, small upturned nose with youthful charm, thick lips corners turned up showing straight white teeth, black short hair fluffy styled by morning hand-tug with parting bangs revealing full forehead, fair clear skin with small silver earring on left ear and two or three fading acne marks on chin, wearing light gray hooded sweatshirt discount brand with uneven hoodie drawstrings one longer than other and faded chest logo, white t-shirt underneath with Transportation Engineering 2024 printed on collar graduation commemorative shirt, black over-ear headphones around neck bought on installment plan as professional equipment, light blue jeans with two white wear marks on knees from squatting to fix things, white sneakers, expression sunny radiant full of energy and enthusiasm, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
+
+---
+
+### 8. 周鼎铭（沙能CEO）- 对手
+**全名**：周鼎铭 | **年龄**：48岁 | **身份**：沙能科技CEO
+
+**AI提示词（英文·全身像）**
+```
+Full body anime style illustration, middle-aged man age 48 named Zhou Dingming, lean long face well-maintained middle-aged appearance, ordinary-sized eyes with calm gaze that has distance but reveals softness when lost in thought, neatly trimmed eyebrows not exaggerated, ordinary nose bridge not high or low, thin lips with straight corners not much expression person who doesn't smile much, jet-black short hair neatly styled clean temples, fair well-maintained skin looking few years younger than actual age, long slender fingers with neatly trimmed nails, wearing dark three-piece suit not flashy precise tailoring, light blue dress shirt collar neat no tie, simple silver cufflinks, smartwatch on left wrist, dark dress trousers, black polished leather shoes, calm composed expression with businessman's distance but not cold, transparent background, high quality anime illustration, detailed linework, full body composition including feet
+```
 
 ---
 

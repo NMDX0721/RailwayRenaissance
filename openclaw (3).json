@@ -1,0 +1,338 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "NMDX-5-4/gpt-5.4"
+      },
+      "thinkingDefault": "low",
+      "sandbox": {
+        "mode": "off"
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "name": "Main Coordinator",
+        "default": true,
+        "thinkingDefault": "low",
+        "skills": [
+          "self-improvement",
+          "proactive-agent-lite",
+          "tavily-search",
+          "summarize-pro"
+        ],
+        "subagents": {
+          "allowAgents": [
+            "rail-revival",
+            "study"
+          ]
+        },
+        "tools": {
+          "profile": "full"
+        }
+      },
+      {
+        "id": "rail-revival",
+        "name": "RR Builder",
+        "thinkingDefault": "low",
+        "workspace": "C:\\Users\\Oe_Lee\\.openclaw\\workspace\\projects\\rail-revival-sim",
+        "skills": [
+          "self-improvement"
+        ],
+        "subagents": {
+          "allowAgents": []
+        },
+        "tools": {
+          "profile": "full"
+        }
+      },
+      {
+        "id": "study",
+        "name": "Study Desk",
+        "thinkingDefault": "low",
+        "workspace": "C:\\Users\\Oe_Lee\\.openclaw\\workspace\\projects\\study-desk",
+        "skills": [
+          "self-improvement",
+          "summarize-pro",
+          "gog",
+          "weather"
+        ],
+        "subagents": {
+          "allowAgents": []
+        },
+        "tools": {
+          "profile": "full"
+        }
+      }
+    ]
+  },
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "ocw_s3dsqA3Wr7HjJDffC9hMWuWR"
+    }
+  },
+  "tools": {
+    "profile": "full",
+    "deny": [
+      "cron"
+    ],
+    "sandbox": {
+      "tools": {
+        "allow": [],
+        "deny": [
+          "browser",
+          "canvas",
+          "nodes",
+          "cron",
+          "discord",
+          "gateway"
+        ]
+      }
+    },
+    "exec": {
+      "ask": "on-miss",
+      "security": "full",
+      "strictInlineEval": true
+    },
+    "agentToAgent": {
+      "enabled": true
+    },
+    "sessions": {
+      "visibility": "all"
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "NMDX-5-4": {
+        "baseUrl": "https://api.wataruu.me/v1",
+        "apiKey": "sk-BOIfaNR9CVuERB57c",
+        "api": "openai-responses",
+        "models": [
+          {
+            "id": "gpt-5.4",
+            "name": "GPT-5.4",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 400000,
+            "maxTokens": 128000
+          }
+        ]
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "enabled": true
+    }
+  },
+  "plugins": {
+    "entries": {
+      "browser": {
+        "enabled": true
+      },
+      "memory-lancedb-pro": {
+        "enabled": true,
+        "config": {
+          "embedding": {
+            "provider": "openai-compatible",
+            "apiKey": "jina_d130ab48b8cc4135b8b17ea81ceebc73WcQEJlDbrD4SUN1TECyX13h5d2Lu",
+            "model": "jina-embeddings-v5-text-small",
+            "baseURL": "https://api.jina.ai/v1",
+            "dimensions": 1024,
+            "taskQuery": "retrieval.query",
+            "taskPassage": "retrieval.passage",
+            "normalized": true,
+            "chunking": true
+          },
+          "autoCapture": true,
+          "autoRecall": true,
+          "smartExtraction": true,
+          "captureAssistant": false,
+          "extractMinMessages": 2,
+          "extractMaxChars": 8000,
+          "sessionMemory": {
+            "enabled": false,
+            "messageCount": 15
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "vectorWeight": 0.7,
+            "bm25Weight": 0.3,
+            "minScore": 0.3,
+            "rerank": "cross-encoder",
+            "rerankApiKey": "jina_d130ab48b8cc4135b8b17ea81ceebc73WcQEJlDbrD4SUN1TECyX13h5d2Lu",
+            "rerankModel": "jina-reranker-v3",
+            "rerankEndpoint": "https://api.jina.ai/v1/rerank",
+            "rerankProvider": "jina",
+            "candidatePoolSize": 20,
+            "hardMinScore": 0.35,
+            "filterNoise": true,
+            "recencyHalfLifeDays": 14,
+            "recencyWeight": 0.1,
+            "lengthNormAnchor": 500,
+            "timeDecayHalfLifeDays": 60,
+            "reinforcementFactor": 0.5,
+            "maxHalfLifeMultiplier": 3
+          },
+          "enableManagementTools": true,
+          "sessionStrategy": "memoryReflection",
+          "autoRecallMinLength": 15,
+          "autoRecallMinRepeated": 0,
+          "llm": {
+            "apiKey": "sk-BOIfaNR9CVuERB57c",
+            "model": "gpt-5.4",
+            "baseURL": "https://api.wataruu.me/v1",
+            "auth": "api-key",
+            "timeoutMs": 30000
+          },
+          "memoryReflection": {
+            "storeToLanceDB": true,
+            "writeLegacyCombined": true,
+            "injectMode": "inheritance+derived",
+            "messageCount": 120,
+            "maxInputChars": 24000,
+            "timeoutMs": 20000,
+            "thinkLevel": "medium",
+            "errorReminderMaxEntries": 3,
+            "dedupeErrorSignals": true
+          },
+          "selfImprovement": {
+            "enabled": true,
+            "beforeResetNote": true,
+            "skipSubagentBootstrap": true,
+            "ensureLearningFiles": true
+          },
+          "mdMirror": {
+            "enabled": true,
+            "dir": "memory-md"
+          },
+          "scopes": {
+            "default": "global",
+            "definitions": {
+              "project:rail-revival-sim": {
+                "description": "Shared long-term memory pool for the Railway Revival Unity game project",
+                "metadata": {
+                  "projectName": "铁路复兴",
+                  "agentId": "rail-revival",
+                  "workspace": "projects/rail-revival-sim"
+                }
+              },
+              "project:study-desk": {
+                "description": "Shared long-term memory pool for academic tasks, school admin, coursework, and exam prep",
+                "metadata": {
+                  "projectName": "学术事务",
+                  "agentId": "study",
+                  "workspace": "projects/study-desk"
+                }
+              }
+            },
+            "agentAccess": {
+              "main": [
+                "global",
+                "agent:main",
+                "project:rail-revival-sim",
+                "agent:rail-revival",
+                "project:study-desk",
+                "agent:study"
+              ],
+              "rail-revival": [
+                "project:rail-revival-sim",
+                "agent:rail-revival"
+              ],
+              "study": [
+                "project:study-desk",
+                "agent:study"
+              ]
+            }
+          }
+        }
+      },
+      "acpx": {
+        "enabled": true,
+        "config": {
+          "permissionMode": "approve-all",
+          "nonInteractivePermissions": "fail"
+        }
+      },
+      "memory-core": {
+        "config": {
+          "dreaming": {
+            "enabled": true
+          }
+        }
+      }
+    },
+    "load": {
+      "paths": [
+        "C:\\Users\\Oe_Lee\\.openclaw\\plugins-src\\memory-lancedb-pro"
+      ]
+    },
+    "slots": {
+      "memory": "memory-lancedb-pro"
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.4.5",
+    "lastTouchedAt": "2026-04-10T15:49:47.397Z"
+  },
+  "skills": {
+    "entries": {
+      "sonoscli": {
+        "enabled": true
+      }
+    },
+    "load": {
+      "extraDirs": [
+        "C:\\Users\\Oe_Lee\\.openclaw\\workspace\\skills"
+      ]
+    }
+  },
+  "acp": {
+    "enabled": true,
+    "dispatch": {
+      "enabled": true
+    },
+    "backend": "acpx",
+    "defaultAgent": "codex",
+    "allowedAgents": [
+      "claude",
+      "codex",
+      "copilot",
+      "cursor",
+      "droid",
+      "gemini",
+      "iflow",
+      "kilocode",
+      "kimi",
+      "kiro",
+      "openclaw",
+      "opencode",
+      "pi",
+      "qwen",
+      "trae"
+    ],
+    "maxConcurrentSessions": 4,
+    "runtime": {
+      "ttlMinutes": 120
+    }
+  },
+  "update": {
+    "auto": {
+      "enabled": true
+    }
+  }
+}

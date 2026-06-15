@@ -460,7 +460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b050c9860cc14bb09e4e03572ba33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CloudSeaTrainBackground
-  cloudSeaMaterial: {fileID: 0}
   videoClip: {fileID: 0}
   loop: 1
 --- !u!23 &1868947971
@@ -488,7 +487,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

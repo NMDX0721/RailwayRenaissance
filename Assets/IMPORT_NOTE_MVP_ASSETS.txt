@@ -1,0 +1,23 @@
+Imported from ExternalAssets\mvp-shortlist on 2026-04-05.
+
+Files added:
+- Art\Environment\Tilesets\tiny-town_tilemap_packed.png
+- Art\UI\Prototype\button_primary.png
+- Art\UI\Prototype\button_secondary.png
+- Art\UI\Prototype\input_rectangle.png
+- Art\UI\Prototype\slider_horizontal.png
+- Art\UI\Prototype\icon_checkmark.png
+- Art\UI\Prototype\icon_cross.png
+- Art\Vehicles\Prototype\train_placeholder.png
+- Audio\UI\ui_click.ogg
+- Audio\UI\ui_switch.ogg
+- Audio\UI\ui_confirm.ogg
+- Audio\UI\ui_error.ogg
+
+Source packs:
+- Kenney Tiny Town (CC0)
+- Kenney UI Pack (CC0)
+- Kenney Interface Sounds (CC0)
+- OpenGameArt train placeholder
+
+These are prototype assets for the first playable slice, not final art direction.
