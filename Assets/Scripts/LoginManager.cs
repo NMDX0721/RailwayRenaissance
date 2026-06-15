@@ -26,6 +26,7 @@ public class LoginManager : MonoBehaviour
     private Sprite panelSprite;
     private Sprite inputSprite;
     private Sprite buttonSprite;
+    private Sprite titleLogoSprite;
 
     private string authFilePath;
 
@@ -53,6 +54,7 @@ public class LoginManager : MonoBehaviour
         panelSprite = Resources.Load<Sprite>("UI/Login/panel_bg");
         inputSprite = Resources.Load<Sprite>("UI/Login/input_field");
         buttonSprite = Resources.Load<Sprite>("UI/Login/button_primary");
+        titleLogoSprite = Resources.Load<Sprite>("UI/Login/title_logo");
     }
 
     void SetupCamera()
@@ -123,7 +125,24 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 420);
+        if (titleLogoSprite != null)
+        {
+            var titleLogoObj = new GameObject("TitleLogo");
+            titleLogoObj.transform.SetParent(panel.transform, false);
+            var titleRect = titleLogoObj.AddComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRect.anchoredPosition = new Vector2(0, 450);
+            titleRect.sizeDelta = new Vector2(1000, 250);
+            var titleImg = titleLogoObj.AddComponent<Image>();
+            titleImg.sprite = titleLogoSprite;
+            titleImg.type = Image.Type.Simple;
+            titleImg.preserveAspect = true;
+        }
+        else
+        {
+            var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 420);
+        }
 
         usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 300);
         passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -90);
