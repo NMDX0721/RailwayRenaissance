@@ -412,7 +412,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1150, 400);
+        rect.sizeDelta = new Vector2(1200, 120);
 
         var img = inputObj.AddComponent<Image>();
         if (inputSprite != null)
@@ -456,7 +456,7 @@ public class LoginManager : MonoBehaviour
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
         placeholderText.fontSize = 36;
-        placeholderText.color = new Color(0.75f, 0.7f, 0.6f, 0.6f);
+        placeholderText.color = new Color(0.55f, 0.5f, 0.45f);
         placeholderText.alignment = TextAnchor.MiddleLeft;
         placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
 
