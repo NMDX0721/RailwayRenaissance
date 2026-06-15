@@ -60,16 +60,19 @@ Pixel art game UI button background sprite, horizontal rectangular shape with ex
 
 ## ⭐ P0 已有素材（需确认）
 
-### 4. 游戏标题Logo
-**用途**：登录界面和标题画面的游戏名称图片
-**尺寸**：900x220px（已在Unity中设置）
-**状态**：✅ 已完成（title_logo.png），包含中英文双语
+### 5. 输入框图标模板
+**用途**：用户名输入框左侧的用户标识、密码输入框左侧的钥匙标识
+**尺寸**：48x48px（放大到48px确保清晰度）
+**泛用性**：不内嵌文字，保持通用性，由代码在图标右侧叠加"用户名"/"密码"文字
+**设计理由**：32x32px太小无法清晰显示中文，48x48px确保像素清晰，文字由代码以24px字体叠加更清晰
+
+```
+Pixel art game input field icon template, square shape with exact dimensions 48 pixels wide by 48 pixels tall, icon content occupies central 36x36 pixel area with 6 pixel padding on all sides, style is simple flat silhouette with no gradients no shadows no 3D effects, color is single warm gold #DAA520 with no outline, user icon variant: silhouette of person's head and shoulders, head is circle 14 pixels diameter centered at (24,16), shoulders are curved line 20 pixels wide centered at (24,30) extending to edges, key icon variant: old-fashioned skeleton key oriented vertically, bow (round top part) is circle 10 pixels diameter centered at (24,14), shaft is vertical line 3 pixels wide 18 pixels tall centered at (24,22), bit (bottom part) is L-shape 6 pixels wide 4 pixels tall at bottom of shaft, edges are crisp with no anti-aliasing, transparent background outside the 48x48 pixel bounds, game interface icon asset, high quality pixel art, 16-bit retro style, output as PNG with alpha channel
+```
 
 ---
 
-## ⭐ P1 游戏核心素材（经营界面）
-
-### 5. 资源图标模板
+### 6. 资源图标模板
 **用途**：资金/信任度/客流/车况等资源显示图标
 **尺寸**：32x32px（所有图标统一尺寸）
 **泛用性**：一个模板生成多种图标，通过颜色和形状区分
