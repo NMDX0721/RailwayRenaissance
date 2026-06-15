@@ -123,17 +123,17 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 200);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 50);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 210);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 40);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -100);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -110);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -260);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -280);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -400);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -420);
 
         return panel;
     }
@@ -391,7 +391,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1200, 144);
+        rect.sizeDelta = new Vector2(1000, 180);
 
         var img = inputObj.AddComponent<Image>();
         if (inputSprite != null)
@@ -451,7 +451,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1000, 120);
+        rect.sizeDelta = new Vector2(800, 150);
 
         var img = btnObj.AddComponent<Image>();
         if (buttonSprite != null)
