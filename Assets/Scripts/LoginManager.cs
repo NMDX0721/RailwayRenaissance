@@ -106,14 +106,14 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = Vector2.zero;
-        panelRect.sizeDelta = new Vector2(600, 700);
+        panelRect.sizeDelta = new Vector2(500, 580);
 
         if (panelSprite != null)
         {
             var panelImg = panel.AddComponent<Image>();
             panelImg.sprite = panelSprite;
-            panelImg.type = Image.Type.Sliced;
-            panelImg.preserveAspect = false;
+            panelImg.type = Image.Type.Simple;
+            panelImg.preserveAspect = true;
         }
         else
         {
@@ -123,20 +123,20 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 32, new Color(0.94f, 0.82f, 0.38f), 220);
-        var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 14, new Color(1, 1, 1, 0.5f), 180);
+        var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 26, new Color(0.94f, 0.82f, 0.38f), 120);
+        var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 12, new Color(1, 1, 1, 0.5f), 90);
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 80);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 20);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 30);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -30);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -60);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -100);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -130);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -160);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(panel.transform, "Hint", "", 13, Color.white, -190);
+        hintText = CreateText(panel.transform, "Hint", "", 12, Color.white, -210);
 
         return panel;
     }
@@ -394,13 +394,13 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(380, 50);
+        rect.sizeDelta = new Vector2(320, 45);
 
         if (inputSprite != null)
         {
             var img = inputObj.AddComponent<Image>();
             img.sprite = inputSprite;
-            img.type = Image.Type.Sliced;
+            img.type = Image.Type.Simple;
             img.preserveAspect = false;
         }
         else
@@ -460,7 +460,7 @@ public class LoginManager : MonoBehaviour
         {
             var img = btnObj.AddComponent<Image>();
             img.sprite = buttonSprite;
-            img.type = Image.Type.Sliced;
+            img.type = Image.Type.Simple;
             img.preserveAspect = false;
         }
         else
