@@ -106,7 +106,7 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = new Vector2(0, -80);
-        panelRect.sizeDelta = new Vector2(1440, 1140);
+        panelRect.sizeDelta = new Vector2(1440, 1400);
 
         if (panelSprite != null)
         {
@@ -124,19 +124,18 @@ public class LoginManager : MonoBehaviour
         loginPanelBg = panel;
 
         var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 420);
-        var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 20, new Color(1, 1, 1, 0.6f), 370);
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 190);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 20);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 300);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -90);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -130);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -330);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -300);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -540);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -440);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -660);
 
         return panel;
     }
@@ -149,7 +148,7 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = new Vector2(0, -80);
-        panelRect.sizeDelta = new Vector2(1440, 1140);
+        panelRect.sizeDelta = new Vector2(1440, 1800);
 
         if (panelSprite != null)
         {
@@ -166,22 +165,21 @@ public class LoginManager : MonoBehaviour
 
         registerPanelBg = panel;
 
-        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 300);
-        CreateText(panel.transform, "Subtitle", "Register New Account", 18, new Color(1, 1, 1, 0.6f), 260);
+        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 750);
 
-        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 230);
-        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 80);
+        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 450);
+        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 60);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -70);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -330);
         confirmPasswordInput.contentType = InputField.ContentType.Password;
 
-        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -220);
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -570);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -370);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -775);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -500);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -880);
 
         return panel;
     }
@@ -194,7 +192,7 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = new Vector2(0, -80);
-        panelRect.sizeDelta = new Vector2(1440, 1140);
+        panelRect.sizeDelta = new Vector2(1440, 1400);
 
         if (panelSprite != null)
         {
@@ -209,12 +207,11 @@ public class LoginManager : MonoBehaviour
             panelImg.color = new Color(0, 0, 0, 0.7f);
         }
 
-        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 200);
-        CreateText(panel.transform, "Subtitle", "Welcome Back", 18, new Color(1, 1, 1, 0.6f), 160);
-        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 100);
-        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 0);
+        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 420);
+        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 280);
+        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 180);
 
-        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -150);
+        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -50);
         autoLoginButton.onClick.AddListener(OnAutoLogin);
 
         return panel;
@@ -396,7 +393,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1000, 180);
+        rect.sizeDelta = new Vector2(1000, 360);
 
         var img = inputObj.AddComponent<Image>();
         if (inputSprite != null)
@@ -423,10 +420,10 @@ public class LoginManager : MonoBehaviour
         placeholderRect.offsetMax = new Vector2(-15, 0);
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
-        placeholderText.fontSize = 22;
-        placeholderText.color = new Color(0.6f, 0.55f, 0.5f);
+        placeholderText.fontSize = 36;
+        placeholderText.color = new Color(0.75f, 0.7f, 0.6f);
         placeholderText.alignment = TextAnchor.MiddleLeft;
-        placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 22);
+        placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
 
         var textObj = new GameObject("Text");
         textObj.transform.SetParent(inputObj.transform, false);
@@ -437,8 +434,8 @@ public class LoginManager : MonoBehaviour
         textRect.offsetMin = new Vector2(30, 0);
         textRect.offsetMax = new Vector2(-15, 0);
         var text = textObj.AddComponent<Text>();
-        text.fontSize = 22;
-        text.color = new Color(0.9f, 0.85f, 0.8f);
+        text.fontSize = 36;
+        text.color = new Color(0.95f, 0.9f, 0.82f);
         text.alignment = TextAnchor.MiddleLeft;
         text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 22);
 
@@ -456,7 +453,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(800, 150);
+        rect.sizeDelta = new Vector2(800, 225);
 
         var img = btnObj.AddComponent<Image>();
         if (buttonSprite != null)
@@ -481,10 +478,10 @@ public class LoginManager : MonoBehaviour
         textRect.sizeDelta = Vector2.zero;
         var text = textObj.AddComponent<Text>();
         text.text = label;
-        text.fontSize = 28;
-        text.color = new Color(0.95f, 0.9f, 0.85f);
+        text.fontSize = 38;
+        text.color = new Color(1f, 0.92f, 0.75f);
         text.alignment = TextAnchor.MiddleCenter;
-        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 28);
+        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 38);
 
         return button;
     }
