@@ -33,7 +33,7 @@ public class LoginManager : MonoBehaviour
     {
         authFilePath = Path.Combine(Application.persistentDataPath, "auth.json");
 
-        if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+        if (FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
         {
             var esObj = new GameObject("EventSystem");
             esObj.AddComponent<UnityEngine.EventSystems.EventSystem>();
@@ -123,17 +123,20 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 210);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 40);
+        var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 48, new Color(0.94f, 0.82f, 0.38f), 420);
+        var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 20, new Color(1, 1, 1, 0.6f), 370);
+
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 110);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -60);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -110);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -210);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -280);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -380);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -420);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -520);
 
         return panel;
     }
@@ -163,21 +166,22 @@ public class LoginManager : MonoBehaviour
 
         registerPanelBg = panel;
 
-        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 400);
+        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 300);
+        CreateText(panel.transform, "Subtitle", "Register New Account", 18, new Color(1, 1, 1, 0.6f), 260);
 
-        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 250);
-        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 100);
+        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 150);
+        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 0);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -50);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -150);
         confirmPasswordInput.contentType = InputField.ContentType.Password;
 
-        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -200);
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -300);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -350);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -450);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
-        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -480);
+        hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -580);
 
         return panel;
     }
@@ -205,11 +209,12 @@ public class LoginManager : MonoBehaviour
             panelImg.color = new Color(0, 0, 0, 0.7f);
         }
 
-        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 300);
-        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 200);
-        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 100);
+        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 200);
+        CreateText(panel.transform, "Subtitle", "Welcome Back", 18, new Color(1, 1, 1, 0.6f), 160);
+        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 100);
+        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 0);
 
-        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -50);
+        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -150);
         autoLoginButton.onClick.AddListener(OnAutoLogin);
 
         return panel;
