@@ -49,12 +49,21 @@ public class LoginManager : MonoBehaviour
         CheckAutoLogin();
     }
 
+    private Font customFont;
+
     void LoadSprites()
     {
         panelSprite = Resources.Load<Sprite>("UI/Login/panel_bg");
         inputSprite = Resources.Load<Sprite>("UI/Login/input_field");
         buttonSprite = Resources.Load<Sprite>("UI/Login/button_primary");
         titleLogoSprite = Resources.Load<Sprite>("UI/Login/title_logo");
+        customFont = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
+    }
+
+    Font GetFont(int size)
+    {
+        if (customFont != null) return customFont;
+        return Font.CreateDynamicFontFromOSFont("Microsoft YaHei", size);
     }
 
     void SetupCamera()
@@ -400,7 +409,7 @@ public class LoginManager : MonoBehaviour
         text.fontSize = fontSize;
         text.color = color;
         text.alignment = TextAnchor.MiddleCenter;
-        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", fontSize);
+        text.font = GetFont(fontSize);
         return text;
     }
 
@@ -443,7 +452,7 @@ public class LoginManager : MonoBehaviour
         text.fontSize = 36;
         text.color = new Color(0.95f, 0.9f, 0.82f);
         text.alignment = TextAnchor.MiddleLeft;
-        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
+        text.font = GetFont(36);
 
         var placeholderObj = new GameObject("Placeholder");
         placeholderObj.transform.SetParent(inputObj.transform, false);
@@ -458,7 +467,7 @@ public class LoginManager : MonoBehaviour
         placeholderText.fontSize = 36;
         placeholderText.color = new Color(0.55f, 0.5f, 0.45f);
         placeholderText.alignment = TextAnchor.MiddleLeft;
-        placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 36);
+        placeholderText.font = GetFont(36);
 
         input.textComponent = text;
         input.placeholder = placeholderText;
@@ -502,7 +511,7 @@ public class LoginManager : MonoBehaviour
         text.fontSize = 38;
         text.color = new Color(1f, 0.92f, 0.75f);
         text.alignment = TextAnchor.MiddleCenter;
-        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 38);
+        text.font = GetFont(38);
 
         return button;
     }
