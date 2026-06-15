@@ -1,306 +1,175 @@
-# 登录界面 UI 素材提示词
+# 登录界面 UI 素材提示词 v2
 
 ## 风格统一要求
 - **风格**：复古像素风/手绘风，偏暖色调（棕/橙/米白）
 - **背景**：透明背景
-- **尺寸**：按标注，建议导出后按需缩放
 - **整体氛围**：怀旧铁路车站感，温暖不冰冷
+- **参考风格**：类似《星露谷物语》《泰拉瑞亚》的UI质感
 
 ---
 
-## 一、登录面板背景（核心素材）
+## ⭐ P0 必须（3个素材，做这些就能跑）
 
 ### 1. 登录窗口背景
-**用途**：登录/注册表单的底板
+**用途**：登录/注册表单的底板，整个界面的视觉中心
 **尺寸**：512x640px
 
-**AI提示词（中文）**
+**AI提示词（英文·推荐）**
 ```
-像素风游戏UI素材，复古木质窗口面板，深棕色木纹边框，中间是半透明的深褐色磨砂区域用于放置表单，四角有铜色铆钉装饰，顶部有一个小铭牌写着"车站值班室"，整体风格温暖怀旧，透明背景，游戏界面素材，高清像素画
+Pixel art game UI panel, vintage wooden window frame style, dark brown aged wood grain border with visible texture and slight wear marks, the border is about 20px thick with rounded outer corners and squared inner corners, center area is a semi-transparent dark brown frosted glass effect where form elements will be placed, four copper rivets/bolts at each corner of the frame with a subtle metallic shine, at the very top center of the frame there is a small rectangular copper nameplate with the words "STATION OFFICE" engraved on it, the overall color palette is warm browns ranging from dark chocolate to warm caramel, the wood grain runs vertically on the sides and horizontally on top and bottom, subtle shadow underneath the entire panel giving it a floating appearance, clean pixel art style with clear edges, transparent background, game interface asset, high quality detailed pixel art, 16-bit retro style
 ```
 
-**AI提示词（英文）**
+**AI提示词（中文·备选）**
 ```
-Pixel art game UI asset, vintage wooden window panel frame, dark brown wood grain border, semi-transparent dark brown frosted glass center area for form placement, copper rivets at four corners, small nameplate at top reading station office, warm nostalgic style, transparent background, game interface asset, high quality pixel art
+像素风游戏UI面板素材，复古木质窗框样式，深棕色做旧木纹边框带有可见纹理和轻微磨损痕迹，边框约20像素厚外圆角内直角，中心区域是半透明深褐色磨砂玻璃效果用于放置表单元素，四角各有一个铜色铆钉/螺栓带有微妙金属光泽，边框最顶部正中有一块小长方形铜质铭牌刻着"车站值班室"，整体配色为暖棕色系从深巧克力色到温暖焦糖色，木纹在两侧竖向在上下横向，整个面板下方有微妙阴影产生悬浮感，清晰像素风格边缘干净，透明背景，游戏界面素材，高质量精细像素画，16位复古风格
 ```
 
 ---
 
-### 2. 输入框背景（普通状态）
-**用途**：用户名/密码输入框
+### 2. 输入框
+**用途**：用户名和密码的输入区域（共用一个素材）
 **尺寸**：320x48px
 
-**AI提示词（中文）**
+**AI提示词（英文·推荐）**
 ```
-像素风游戏UI素材，长条形输入框背景，深棕色木纹边框，内部是米白色/浅黄色输入区域，左侧有一个小图标位置，圆角设计，温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, long rectangular input field background, dark brown wood grain border, cream/off-white inner input area, small icon placeholder on left side, rounded corners, warm vintage style, transparent background, game interface asset
+Pixel art game UI input field, horizontal rectangular shape 320x48 pixels, dark brown wood grain border about 3 pixels thick with slightly rounded corners, the border wood color matches the login panel frame, inside is a cream/off-white colored flat area for text input with a very subtle paper-like texture, on the far left inside the field there is a small 16x16 pixel placeholder area (empty) where an icon will be placed later, the input area has a very slight inner shadow at the top and left edges giving it a recessed/sunken look like a real form field, the overall style is warm and vintage matching a railway station office aesthetic, clean pixel art with no anti-aliasing on edges, transparent background outside the border, game interface asset, high quality pixel art, 16-bit retro style
 ```
 
----
-
-### 3. 输入框背景（聚焦状态）
-**用途**：输入框被点击时的状态
-**尺寸**：320x48px
-
-**AI提示词（中文）**
+**AI提示词（中文·备选）**
 ```
-像素风游戏UI素材，长条形输入框背景聚焦状态，深棕色木纹边框，内部是亮黄色/金色输入区域表示正在输入，左侧有一个小图标位置，边框微微发光，温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, long rectangular input field background focused state, dark brown wood grain border, bright yellow/golden inner input area indicating active input, small icon placeholder on left side, border with subtle glow effect, warm vintage style, transparent background, game interface asset
+像素风游戏UI输入框素材，水平长方形320x48像素，深棕色木纹边框约3像素厚带有轻微圆角，边框木色与登录面板边框一致，内部是米白色/奶白色平坦区域用于文字输入带有非常微妙的纸张纹理，输入框最左侧内部有一个16x16像素的空白区域预留给图标，输入区域顶部和左侧边缘有非常轻微的内阴影产生凹陷/下沉效果像真实的表单输入框，整体风格温暖复古匹配铁路车站办公室美学，清晰像素风格边缘无抗锯齿，边框外透明背景，游戏界面素材，高质量像素画，16位复古风格
 ```
 
 ---
 
-## 二、按钮素材
-
-### 4. 主要按钮（普通状态）
-**用途**：登录、注册等主要操作按钮
+### 3. 主要按钮
+**用途**：登录、注册等核心操作按钮
 **尺寸**：200x56px
 
-**AI提示词（中文）**
+**AI提示词（英文·推荐）**
 ```
-像素风游戏UI素材，圆角矩形按钮，深棕色木纹边框，内部是暖橙色/铜色渐变填充，按钮有立体感微微凸起，底部有轻微阴影，温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, rounded rectangle button, dark brown wood grain border, warm orange/copper gradient fill inside, button has 3D raised effect with slight emboss, subtle shadow underneath, warm vintage style, transparent background, game interface asset
+Pixel art game UI button, horizontal rectangular shape 200x56 pixels with rounded corners, dark brown wood grain border about 4 pixels thick matching the login panel style, inside fill is a warm gradient from copper/orange at the top to darker burnt sienna at the bottom giving a 3D raised/embossed appearance, the button has a clear highlight line (lighter orange) along the top inner edge and a shadow line (darker brown) along the bottom inner edge to enhance the 3D effect, the surface has a very subtle wood grain texture, the overall look is like a polished wooden switch or lever on a vintage railway control panel, clean pixel art style with crisp edges, transparent background, game interface asset, high quality pixel art, 16-bit retro style, warm color palette
 ```
 
----
-
-### 5. 主要按钮（悬停状态）
-**用途**：鼠标悬停时的按钮状态
-**尺寸**：200x56px
-
-**AI提示词（中文）**
+**AI提示词（中文·备选）**
 ```
-像素风游戏UI素材，圆角矩形按钮悬停状态，深棕色木纹边框，内部是亮橙色/金色渐变填充，按钮更加凸起发光，边框有金色高光，温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, rounded rectangle button hover state, dark brown wood grain border, bright orange/golden gradient fill inside, button more raised with glow effect, border with golden highlight, warm vintage style, transparent background, game interface asset
+像素风游戏UI按钮素材，水平长方形200x56像素带有圆角，深棕色木纹边框约4像素厚与登录面板风格一致，内部填充是从顶部铜色/橙色到底部深赭色的温暖渐变产生3D凸起/浮雕效果，按钮顶部内边缘有一条明显的高光线（浅橙色）底部内边缘有一条阴影线（深棕色）增强3D效果，表面有非常微妙的木纹纹理，整体外观像复古铁路控制面板上的抛光木制开关或杠杆，清晰像素风格边缘锐利，透明背景，游戏界面素材，高质量像素画，16位复古风格，暖色调配色
 ```
 
 ---
 
-### 6. 主要按钮（按下状态）
-**用途**：按钮被点击时的状态
-**尺寸**：200x56px
+## ⭐ P1 重要（3个素材，提升体验）
 
-**AI提示词（中文）**
-```
-像素风游戏UI素材，圆角矩形按钮按下状态，深棕色木纹边框，内部是深橙色/暗铜色填充，按钮微微凹陷，阴影变深，温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, rounded rectangle button pressed state, dark brown wood grain border, dark orange/bronze fill inside, button slightly depressed/sunken, shadow deepened, warm vintage style, transparent background, game interface asset
-```
-
----
-
-### 7. 次要按钮（普通状态）
+### 4. 次要按钮
 **用途**：切换登录/注册等次要操作
 **尺寸**：180x44px
 
-**AI提示词（中文）**
-```
-像素风游戏UI素材，圆角矩形次要按钮，深棕色细边框，内部是半透明深褐色，比主要按钮更低调，温暖复古风格，透明背景，游戏界面素材
-```
-
 **AI提示词（英文）**
 ```
-Pixel art game UI asset, rounded rectangle secondary button, thin dark brown border, semi-transparent dark brown fill, more subtle than primary button, warm vintage style, transparent background, game interface asset
+Pixel art game UI secondary button, horizontal rectangular shape 180x44 pixels with rounded corners, thinner dark brown wood border about 2 pixels thick, inside fill is semi-transparent dark brown (about 60% opacity) showing a subtle dark wood texture, no 3D emboss effect - appears flat and understated compared to the primary button, slightly muted color palette to indicate it is a secondary action, clean pixel art style, transparent background, game interface asset, high quality pixel art, 16-bit retro style
 ```
 
 ---
 
-## 三、图标素材
-
-### 8. 用户名图标
-**用途**：输入框左侧的用户图标
-**尺寸**：32x32px
-
-**AI提示词（中文）**
-```
-像素风游戏图标，简约人头轮廓图标，米白色/浅黄色，铁路工人帽子造型，温暖复古风格，透明背景，游戏界面图标
-```
-
-**AI提示词（英文）**
-```
-Pixel art game icon, simple human head silhouette icon, cream/light yellow color, railway worker hat style, warm vintage style, transparent background, game interface icon
-```
-
----
-
-### 9. 密码图标
-**用途**：输入框左侧的密码图标
-**尺寸**：32x32px
-
-**AI提示词（中文）**
-```
-像素风游戏图标，简约钥匙图标，米白色/浅黄色，老式铜钥匙造型，温暖复古风格，透明背景，游戏界面图标
-```
-
-**AI提示词（英文）**
-```
-Pixel art game icon, simple key icon, cream/light yellow color, vintage brass key style, warm vintage style, transparent background, game interface icon
-```
-
----
-
-### 10. 错误提示图标
-**用途**：输入错误时显示的图标
-**尺寸**：24x24px
-
-**AI提示词（中文）**
-```
-像素风游戏图标，简约叉号圆形图标，红色/暗红色，温暖复古风格，透明背景，游戏界面图标
-```
-
-**AI提示词（英文）**
-```
-Pixel art game icon, simple X mark in circle icon, red/dark red color, warm vintage style, transparent background, game interface icon
-```
-
----
-
-### 11. 成功提示图标
-**用途**：操作成功时显示的图标
-**尺寸**：24x24px
-
-**AI提示词（中文）**
-```
-像素风游戏图标，简约对勾圆形图标，绿色/墨绿色，温暖复古风格，透明背景，游戏界面图标
-```
-
-**AI提示词（英文）**
-```
-Pixel art game icon, simple checkmark in circle icon, green/dark green color, warm vintage style, transparent background, game interface icon
-```
-
----
-
-## 四、装饰素材
-
-### 12. 标题铭牌
-**用途**：显示游戏标题"铁路复兴：沙能冲击"的装饰牌
+### 5. 标题铭牌
+**用途**：显示"铁路复兴：沙能冲击"游戏标题
 **尺寸**：400x80px
 
-**AI提示词（中文）**
-```
-像素风游戏UI素材，复古铜质铭牌，深棕色边框，中间是深色磨砂区域用于放置文字，四角有螺丝装饰，表面有轻微锈迹和磨损痕迹，温暖怀旧风格，透明背景，游戏界面素材
-```
-
 **AI提示词（英文）**
 ```
-Pixel art game UI asset, vintage copper nameplate, dark brown border, dark frosted center area for text placement, screw decorations at four corners, surface with slight rust and wear marks, warm nostalgic style, transparent background, game interface asset
+Pixel art game UI nameplate, rectangular copper/brass plaque 400x80 pixels, dark brown wooden frame border with beveled edges, the copper surface has a warm patina with subtle green oxidation spots in corners suggesting age, four small flathead screws at each corner holding it to an invisible wall, the surface has very faint horizontal brush marks from polishing, there is a subtle gradient from lighter copper at top to slightly darker at bottom, the overall look is like an old railway station sign that has been polished but still shows its age, transparent background, game interface asset, high quality pixel art, 16-bit retro style
 ```
 
 ---
 
-### 13. 装饰性铁轨线条
-**用途**：分隔线或装饰元素
+### 6. 用户名图标
+**用途**：输入框左侧的用户标识
+**尺寸**：32x32px
+
+**AI提示词（英文）**
+```
+Pixel art game icon, simple silhouette of a person's head and shoulders wearing a vintage railway conductor cap with a small brim, cream/light yellow color on transparent background, the design is minimalist and clean like a bathroom sign icon but with the railway worker hat twist, about 24x24 pixels of actual content centered in the 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
+```
+
+---
+
+### 7. 密码图标
+**用途**：输入框左侧的密码标识
+**尺寸**：32x32px
+
+**AI提示词（英文）**
+```
+Pixel art game icon, simple silhouette of an old-fashioned brass skeleton key with round bow and simple bit, cream/light yellow color on transparent background, the design is minimalist and clean like a classic key symbol, about 24x24 pixels of actual content centered in the 32x32 canvas, transparent background, game interface icon, high quality pixel art, 16-bit retro style
+```
+
+---
+
+## ⭐ P2 可选（有空再做）
+
+### 8. 错误提示图标
+**尺寸**：24x24px
+**AI提示词（英文）**
+```
+Pixel art game icon, simple X mark inside a circle, dark red/maroon color, about 20x20 pixels centered in 24x24 canvas, clean minimalist design, transparent background, game interface icon, high quality pixel art
+```
+
+---
+
+### 9. 成功提示图标
+**尺寸**：24x24px
+**AI提示词（英文）**
+```
+Pixel art game icon, simple checkmark inside a circle, dark green/forest green color, about 20x20 pixels centered in 24x24 canvas, clean minimalist design, transparent background, game interface icon, high quality pixel art
+```
+
+---
+
+### 10. 铁轨分隔线
 **尺寸**：400x16px
-
-**AI提示词（中文）**
-```
-像素风游戏UI素材，水平铁轨线条装饰，两条平行的深棕色铁轨，中间有枕木纹理，温暖复古风格，透明背景，游戏界面装饰素材
-```
-
 **AI提示词（英文）**
 ```
-Pixel art game UI asset, horizontal railway track line decoration, two parallel dark brown rails with sleeper/tie texture between, warm vintage style, transparent background, game interface decoration asset
+Pixel art game UI decoration, horizontal railway track line, two parallel dark brown rails with small wooden sleepers/ties between them, about 400x16 pixels, warm vintage style, transparent background, game interface decoration, high quality pixel art
 ```
 
 ---
 
-### 14. 小火车装饰
-**用途**：角落装饰或加载动画
+### 11. 小火车装饰
 **尺寸**：128x64px
-
-**AI提示词（中文）**
-```
-像素风游戏装饰素材，可爱的小蒸汽火车侧面图，红色火车头冒着白色蒸汽，后面挂着一节黄色小车厢，温暖复古风格，透明背景，游戏界面装饰素材
-```
-
 **AI提示词（英文）**
 ```
-Pixel art game decoration asset, cute small steam train side view, red locomotive with white steam puffing, one yellow passenger car behind, warm vintage style, transparent background, game interface decoration asset
+Pixel art game decoration, cute small steam train side view facing right, red locomotive with brass dome and black smokestack puffing white steam clouds, one yellow passenger car behind connected by a coupling, the train is about 100 pixels wide centered in 128x64 canvas, warm vintage color palette, transparent background, game decoration asset, high quality pixel art, charming retro style
 ```
 
 ---
 
-## 五、密码强度指示器（可选）
-
-### 15. 密码强度条背景
-**用途**：注册时显示密码强度
+### 12. 密码强度条
 **尺寸**：200x12px
-
-**AI提示词（中文）**
-```
-像素风游戏UI素材，细长条形进度条背景，深棕色边框，内部是深灰色空槽，温暖复古风格，透明背景，游戏界面素材
-```
-
 **AI提示词（英文）**
 ```
-Pixel art game UI asset, thin long progress bar background, dark brown border, dark gray empty槽 inside, warm vintage style, transparent background, game interface asset
-```
-
----
-
-### 16. 密码强度条填充（弱/中/强）
-**用途**：密码强度填充色
-**尺寸**：200x12px
-
-**AI提示词（中文）**
-```
-像素风游戏UI素材，细长条形进度条填充，从左到右渐变：红色（弱）→黄色（中）→绿色（强），温暖复古风格，透明背景，游戏界面素材
-```
-
-**AI提示词（英文）**
-```
-Pixel art game UI asset, thin long progress bar fill, gradient from left to right: red (weak) → yellow (medium) → green (strong), warm vintage style, transparent background, game interface asset
+Pixel art game UI progress bar, thin horizontal bar 200x12 pixels, dark brown wood border, inside is divided into three sections: left third red (weak), middle third yellow (medium), right third green (strong), each section has a subtle gradient, warm vintage style, transparent background, game interface asset, high quality pixel art
 ```
 
 ---
 
 ## 使用说明
 
-1. 将英文提示词输入AI绘图工具（推荐Midjourney `--style raw` 或 Stable Diffusion）
-2. 每个素材建议生成2-3张，选择最符合风格的一张
-3. 导出后用PS/GIMP去除背景，保留透明通道
-4. 统一色调：暖棕色系，避免冷色
-5. 命名规范：`login_类别_名称.png`，如 `login_button_primary.png`
+1. 优先用英文提示词生成，效果更好
+2. 每个素材生成3-4张选最好的
+3. 导出后去背景保留透明通道
+4. 命名：`login_类别.png`，如 `login_panel.png`、`login_input.png`、`login_button.png`
 
-## 素材清单汇总
+## 快速清单
 
-| # | 素材名 | 尺寸 | 用途 |
-|---|--------|------|------|
-| 1 | 登录窗口背景 | 512x640 | 表单底板 |
-| 2 | 输入框（普通） | 320x48 | 用户名/密码框 |
-| 3 | 输入框（聚焦） | 320x48 | 输入中状态 |
-| 4 | 主要按钮（普通） | 200x56 | 登录/注册 |
-| 5 | 主要按钮（悬停） | 200x56 | 鼠标悬停 |
-| 6 | 主要按钮（按下） | 200x56 | 点击中 |
-| 7 | 次要按钮 | 180x44 | 切换登录/注册 |
-| 8 | 用户名图标 | 32x32 | 输入框图标 |
-| 9 | 密码图标 | 32x32 | 输入框图标 |
-| 10 | 错误图标 | 24x24 | 提示用 |
-| 11 | 成功图标 | 24x24 | 提示用 |
-| 12 | 标题铭牌 | 400x80 | 游戏标题 |
-| 13 | 铁轨线条 | 400x16 | 分隔线 |
-| 14 | 小火车装饰 | 128x64 | 角落装饰 |
-| 15 | 强度条背景 | 200x12 | 密码强度 |
-| 16 | 强度条填充 | 200x12 | 密码强度 |
-
-**总计：16个素材**
+| 优先级 | 素材 | 尺寸 | 状态 |
+|--------|------|------|------|
+| ⭐P0 | 登录窗口背景 | 512x640 | 必做 |
+| ⭐P0 | 输入框 | 320x48 | 必做 |
+| ⭐P0 | 主要按钮 | 200x56 | 必做 |
+| ⭐P1 | 次要按钮 | 180x44 | 推荐 |
+| ⭐P1 | 标题铭牌 | 400x80 | 推荐 |
+| ⭐P1 | 用户名图标 | 32x32 | 推荐 |
+| ⭐P1 | 密码图标 | 32x32 | 推荐 |
+| P2 | 错误/成功图标 | 24x24 | 可选 |
+| P2 | 铁轨分隔线 | 400x16 | 可选 |
+| P2 | 小火车装饰 | 128x64 | 可选 |
+| P2 | 密码强度条 | 200x12 | 可选 |
