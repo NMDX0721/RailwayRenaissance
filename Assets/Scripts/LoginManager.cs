@@ -18,8 +18,14 @@ public class LoginManager : MonoBehaviour
     private GameObject loginPanel;
     private GameObject registerPanel;
     private GameObject autoLoginPanel;
+    private GameObject loginPanelBg;
+    private GameObject registerPanelBg;
     private RawImage backgroundImage;
     private AudioSource bgmSource;
+
+    private Sprite panelSprite;
+    private Sprite inputSprite;
+    private Sprite buttonSprite;
 
     private string authFilePath;
 
@@ -34,11 +40,19 @@ public class LoginManager : MonoBehaviour
             esObj.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
         }
 
+        LoadSprites();
         SetupCamera();
         SetupCanvas();
         LoadBackground();
-        PlayBGM();
+        SetupAudio();
         CheckAutoLogin();
+    }
+
+    void LoadSprites()
+    {
+        panelSprite = Resources.Load<Sprite>("UI/Login/panel_bg");
+        inputSprite = Resources.Load<Sprite>("UI/Login/input_field");
+        buttonSprite = Resources.Load<Sprite>("UI/Login/button_primary");
     }
 
     void SetupCamera()
@@ -77,69 +91,137 @@ public class LoginManager : MonoBehaviour
         bgRect.sizeDelta = Vector2.zero;
         backgroundImage = bgObj.AddComponent<RawImage>();
 
-        loginPanel = CreatePanel(canvasObj.transform, "LoginPanel");
-        registerPanel = CreatePanel(canvasObj.transform, "RegisterPanel");
-        autoLoginPanel = CreatePanel(canvasObj.transform, "AutoLoginPanel");
+        loginPanel = CreateLoginPanel(canvasObj.transform);
+        registerPanel = CreateRegisterPanel(canvasObj.transform);
+        autoLoginPanel = CreateAutoLoginPanel(canvasObj.transform);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(false);
-
-        SetupLoginPanel();
-        SetupRegisterPanel();
-        SetupAutoLoginPanel();
-        SetupAudio(canvasObj.transform);
     }
 
-    void SetupLoginPanel()
+    GameObject CreateLoginPanel(Transform parent)
     {
-        CreateText(loginPanel.transform, "Title", "铁路复兴：沙能冲击", 36, Color.white, 200);
-        CreateText(loginPanel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 18, new Color(1, 1, 1, 0.6f), 150);
+        var panel = new GameObject("LoginPanel");
+        panel.transform.SetParent(parent, false);
+        var panelRect = panel.AddComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(600, 700);
 
-        usernameInput = CreateInputField(loginPanel.transform, "UsernameInput", "用户名", 60);
-        passwordInput = CreateInputField(loginPanel.transform, "PasswordInput", "密码", 0);
+        if (panelSprite != null)
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.sprite = panelSprite;
+            panelImg.type = Image.Type.Sliced;
+            panelImg.preserveAspect = false;
+        }
+        else
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.color = new Color(0, 0, 0, 0.7f);
+        }
+
+        loginPanelBg = panel;
+
+        var title = CreateText(panel.transform, "Title", "铁路复兴：沙能冲击", 32, new Color(0.94f, 0.82f, 0.38f), 220);
+        var subtitle = CreateText(panel.transform, "Subtitle", "Railway Renaissance: Sand Energy Impact", 14, new Color(1, 1, 1, 0.5f), 180);
+
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 80);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", 20);
         passwordInput.contentType = InputField.ContentType.Password;
 
-        loginButton = CreateButton(loginPanel.transform, "LoginButton", "登录", -80);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -60);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(loginPanel.transform, "SwitchToRegister", "没有账号？注册", -130);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -130);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
-        hintText = CreateText(loginPanel.transform, "Hint", "", 14, Color.white, -170);
+        hintText = CreateText(panel.transform, "Hint", "", 13, Color.white, -190);
+
+        return panel;
     }
 
-    void SetupRegisterPanel()
+    GameObject CreateRegisterPanel(Transform parent)
     {
-        CreateText(registerPanel.transform, "Title", "注册新账号", 32, Color.white, 200);
+        var panel = new GameObject("RegisterPanel");
+        panel.transform.SetParent(parent, false);
+        var panelRect = panel.AddComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(600, 700);
 
-        var regUsernameInput = CreateInputField(registerPanel.transform, "RegUsernameInput", "用户名（至少3个字符）", 100);
-        var regPasswordInput = CreateInputField(registerPanel.transform, "RegPasswordInput", "密码（至少4个字符）", 40);
+        if (panelSprite != null)
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.sprite = panelSprite;
+            panelImg.type = Image.Type.Sliced;
+            panelImg.preserveAspect = false;
+        }
+        else
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.color = new Color(0, 0, 0, 0.7f);
+        }
+
+        registerPanelBg = panel;
+
+        CreateText(panel.transform, "Title", "注册新账号", 28, new Color(0.94f, 0.82f, 0.38f), 230);
+
+        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 130);
+        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 60);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(registerPanel.transform, "ConfirmPasswordInput", "确认密码", -20);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -10);
         confirmPasswordInput.contentType = InputField.ContentType.Password;
 
-        registerButton = CreateButton(registerPanel.transform, "RegisterButton", "注册", -100);
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -80);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(registerPanel.transform, "SwitchToLogin", "已有账号？登录", -150);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -150);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
-        hintText = CreateText(registerPanel.transform, "Hint", "", 14, Color.white, -190);
+        hintText = CreateText(panel.transform, "Hint", "", 13, Color.white, -210);
+
+        return panel;
     }
 
-    void SetupAutoLoginPanel()
+    GameObject CreateAutoLoginPanel(Transform parent)
     {
-        CreateText(autoLoginPanel.transform, "Title", "欢迎回来", 32, Color.white, 100);
-        autoLoginUserText = CreateText(autoLoginPanel.transform, "Username", "", 24, new Color(0.83f, 0.72f, 0.44f), 40);
-        CreateText(autoLoginPanel.transform, "Hint", "点击任意处继续", 16, new Color(1, 1, 1, 0.5f), -40);
+        var panel = new GameObject("AutoLoginPanel");
+        panel.transform.SetParent(parent, false);
+        var panelRect = panel.AddComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(600, 700);
 
-        autoLoginButton = CreateButton(autoLoginPanel.transform, "AutoLoginButton", "进入游戏", -120);
+        if (panelSprite != null)
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.sprite = panelSprite;
+            panelImg.type = Image.Type.Sliced;
+            panelImg.preserveAspect = false;
+        }
+        else
+        {
+            var panelImg = panel.AddComponent<Image>();
+            panelImg.color = new Color(0, 0, 0, 0.7f);
+        }
+
+        CreateText(panel.transform, "Title", "欢迎回来", 28, new Color(0.94f, 0.82f, 0.38f), 150);
+        autoLoginUserText = CreateText(panel.transform, "Username", "", 22, new Color(0.94f, 0.82f, 0.38f), 80);
+        CreateText(panel.transform, "Hint", "点击进入游戏", 14, new Color(1, 1, 1, 0.4f), 0);
+
+        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -80);
         autoLoginButton.onClick.AddListener(OnAutoLogin);
+
+        return panel;
     }
 
-    void SetupAudio(Transform parent)
+    void SetupAudio()
     {
         var audioObj = new GameObject("BGM");
-        audioObj.transform.SetParent(parent, false);
+        audioObj.transform.SetParent(transform, false);
         bgmSource = audioObj.AddComponent<AudioSource>();
         bgmSource.loop = true;
         bgmSource.volume = 0.3f;
@@ -158,13 +240,6 @@ public class LoginManager : MonoBehaviour
         Texture2D tex = Resources.Load<Texture2D>("Textures/sunset_railway");
         if (tex == null) tex = Resources.Load<Texture2D>("Textures/station_bg");
         if (tex != null) backgroundImage.texture = tex;
-    }
-
-    void PlayBGM()
-    {
-        if (bgmSource == null) return;
-        bgmSource.loop = true;
-        bgmSource.volume = 0.3f;
     }
 
     void CheckAutoLogin()
@@ -187,7 +262,7 @@ public class LoginManager : MonoBehaviour
         loginPanel.SetActive(true);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(false);
-        hintText.text = "";
+        if (hintText != null) hintText.text = "";
     }
 
     public void ShowRegister()
@@ -195,7 +270,7 @@ public class LoginManager : MonoBehaviour
         loginPanel.SetActive(false);
         registerPanel.SetActive(true);
         autoLoginPanel.SetActive(false);
-        hintText.text = "";
+        if (hintText != null) hintText.text = "";
     }
 
     void ShowAutoLogin(string username)
@@ -289,21 +364,8 @@ public class LoginManager : MonoBehaviour
         if (hintText != null)
         {
             hintText.text = message;
-            hintText.color = success ? new Color(0.32f, 0.78f, 0.1f) : new Color(1f, 0.42f, 0.62f);
+            hintText.color = success ? new Color(0.5f, 0.85f, 0.3f) : new Color(1f, 0.4f, 0.4f);
         }
-    }
-
-    GameObject CreatePanel(Transform parent, string name)
-    {
-        var panelObj = new GameObject(name);
-        panelObj.transform.SetParent(parent, false);
-        var rect = panelObj.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.3f, 0.1f);
-        rect.anchorMax = new Vector2(0.7f, 0.9f);
-        rect.sizeDelta = Vector2.zero;
-        var image = panelObj.AddComponent<Image>();
-        image.color = new Color(0, 0, 0, 0.7f);
-        return panelObj;
     }
 
     Text CreateText(Transform parent, string name, string content, int fontSize, Color color, float yOffset)
@@ -314,13 +376,13 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(400, 40);
+        rect.sizeDelta = new Vector2(450, 40);
         var text = textObj.AddComponent<Text>();
         text.text = content;
         text.fontSize = fontSize;
         text.color = color;
         text.alignment = TextAnchor.MiddleCenter;
-        text.font = Font.CreateDynamicFontFromOSFont("Arial", fontSize);
+        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", fontSize);
         return text;
     }
 
@@ -332,9 +394,21 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(300, 40);
-        var image = inputObj.AddComponent<Image>();
-        image.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+        rect.sizeDelta = new Vector2(380, 50);
+
+        if (inputSprite != null)
+        {
+            var img = inputObj.AddComponent<Image>();
+            img.sprite = inputSprite;
+            img.type = Image.Type.Sliced;
+            img.preserveAspect = false;
+        }
+        else
+        {
+            var img = inputObj.AddComponent<Image>();
+            img.color = new Color(0.15f, 0.12f, 0.1f, 0.9f);
+        }
+
         var input = inputObj.AddComponent<InputField>();
 
         var placeholderObj = new GameObject("Placeholder");
@@ -343,14 +417,14 @@ public class LoginManager : MonoBehaviour
         placeholderRect.anchorMin = Vector2.zero;
         placeholderRect.anchorMax = Vector2.one;
         placeholderRect.sizeDelta = Vector2.zero;
-        placeholderRect.offsetMin = new Vector2(10, 0);
+        placeholderRect.offsetMin = new Vector2(20, 0);
         placeholderRect.offsetMax = new Vector2(-10, 0);
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
         placeholderText.fontSize = 14;
-        placeholderText.color = new Color(0.5f, 0.5f, 0.5f);
+        placeholderText.color = new Color(0.6f, 0.55f, 0.5f);
         placeholderText.alignment = TextAnchor.MiddleLeft;
-        placeholderText.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
+        placeholderText.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 14);
 
         var textObj = new GameObject("Text");
         textObj.transform.SetParent(inputObj.transform, false);
@@ -358,16 +432,17 @@ public class LoginManager : MonoBehaviour
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
-        textRect.offsetMin = new Vector2(10, 0);
+        textRect.offsetMin = new Vector2(20, 0);
         textRect.offsetMax = new Vector2(-10, 0);
         var text = textObj.AddComponent<Text>();
         text.fontSize = 14;
-        text.color = Color.white;
+        text.color = new Color(0.9f, 0.85f, 0.8f);
         text.alignment = TextAnchor.MiddleLeft;
-        text.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
+        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 14);
 
         input.textComponent = text;
         input.placeholder = placeholderText;
+
         return input;
     }
 
@@ -379,9 +454,21 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(200, 45);
-        var image = btnObj.AddComponent<Image>();
-        image.color = new Color(0.3f, 0.5f, 0.8f);
+        rect.sizeDelta = new Vector2(260, 56);
+
+        if (buttonSprite != null)
+        {
+            var img = btnObj.AddComponent<Image>();
+            img.sprite = buttonSprite;
+            img.type = Image.Type.Sliced;
+            img.preserveAspect = false;
+        }
+        else
+        {
+            var img = btnObj.AddComponent<Image>();
+            img.color = new Color(0.8f, 0.5f, 0.2f);
+        }
+
         var button = btnObj.AddComponent<Button>();
 
         var textObj = new GameObject("Text");
@@ -393,9 +480,10 @@ public class LoginManager : MonoBehaviour
         var text = textObj.AddComponent<Text>();
         text.text = label;
         text.fontSize = 18;
-        text.color = Color.white;
+        text.color = new Color(0.95f, 0.9f, 0.85f);
         text.alignment = TextAnchor.MiddleCenter;
-        text.font = Font.CreateDynamicFontFromOSFont("Arial", 18);
+        text.font = Font.CreateDynamicFontFromOSFont("Microsoft YaHei", 18);
+
         return button;
     }
 
