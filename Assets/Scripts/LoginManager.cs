@@ -149,13 +149,13 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = Vector2.zero;
-        panelRect.sizeDelta = new Vector2(600, 700);
+        panelRect.sizeDelta = new Vector2(720, 840);
 
         if (panelSprite != null)
         {
             var panelImg = panel.AddComponent<Image>();
             panelImg.sprite = panelSprite;
-            panelImg.type = Image.Type.Sliced;
+            panelImg.type = Image.Type.Simple;
             panelImg.preserveAspect = false;
         }
         else
@@ -166,21 +166,21 @@ public class LoginManager : MonoBehaviour
 
         registerPanelBg = panel;
 
-        CreateText(panel.transform, "Title", "注册新账号", 28, new Color(0.94f, 0.82f, 0.38f), 230);
+        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 276);
 
-        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 130);
-        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 60);
+        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 156);
+        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", 72);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -10);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -12);
         confirmPasswordInput.contentType = InputField.ContentType.Password;
 
-        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -80);
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -96);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -150);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -180);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
-        hintText = CreateText(panel.transform, "Hint", "", 13, Color.white, -210);
+        hintText = CreateText(panel.transform, "Hint", "", 16, Color.white, -252);
 
         return panel;
     }
@@ -193,13 +193,13 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = Vector2.zero;
-        panelRect.sizeDelta = new Vector2(600, 700);
+        panelRect.sizeDelta = new Vector2(720, 840);
 
         if (panelSprite != null)
         {
             var panelImg = panel.AddComponent<Image>();
             panelImg.sprite = panelSprite;
-            panelImg.type = Image.Type.Sliced;
+            panelImg.type = Image.Type.Simple;
             panelImg.preserveAspect = false;
         }
         else
@@ -208,11 +208,11 @@ public class LoginManager : MonoBehaviour
             panelImg.color = new Color(0, 0, 0, 0.7f);
         }
 
-        CreateText(panel.transform, "Title", "欢迎回来", 28, new Color(0.94f, 0.82f, 0.38f), 150);
-        autoLoginUserText = CreateText(panel.transform, "Username", "", 22, new Color(0.94f, 0.82f, 0.38f), 80);
-        CreateText(panel.transform, "Hint", "点击进入游戏", 14, new Color(1, 1, 1, 0.4f), 0);
+        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 180);
+        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 96);
+        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 0);
 
-        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -80);
+        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", -96);
         autoLoginButton.onClick.AddListener(OnAutoLogin);
 
         return panel;
