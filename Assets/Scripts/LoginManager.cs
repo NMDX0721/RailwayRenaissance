@@ -436,6 +436,17 @@ public class LoginManager : MonoBehaviour
             img.color = new Color(0.15f, 0.12f, 0.1f, 0.9f);
         }
 
+        var fillObj = new GameObject("Fill");
+        fillObj.transform.SetParent(inputObj.transform, false);
+        var fillRect = fillObj.AddComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.sizeDelta = Vector2.zero;
+        fillRect.offsetMin = new Vector2(12, 12);
+        fillRect.offsetMax = new Vector2(-12, -12);
+        var fillImg = fillObj.AddComponent<Image>();
+        fillImg.color = new Color(0.91f, 0.86f, 0.78f);
+
         var input = inputObj.AddComponent<InputField>();
         input.caretColor = new Color(0.95f, 0.9f, 0.82f);
         input.selectionColor = new Color(0.94f, 0.82f, 0.38f, 0.3f);
