@@ -153,8 +153,8 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 150);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -50);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 120);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -80);
         passwordInput.contentType = InputField.ContentType.Password;
 
         loginButton = CreateButton(panel.transform, "LoginButton", "登录", -230, -200f, 750f, 225f);
@@ -423,8 +423,15 @@ public class LoginManager : MonoBehaviour
         rect.anchoredPosition = new Vector2(0, yOffset);
         rect.sizeDelta = new Vector2(1000, 168);
 
-        var img = inputObj.AddComponent<Image>();
-        img.color = new Color(0.91f, 0.86f, 0.78f);
+        var fillObj = new GameObject("Fill");
+        fillObj.transform.SetParent(inputObj.transform, false);
+        var fillRect = fillObj.AddComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.sizeDelta = new Vector2(-150, -72);
+        fillRect.anchoredPosition = Vector2.zero;
+        var fillImg = fillObj.AddComponent<Image>();
+        fillImg.color = new Color(0.91f, 0.86f, 0.78f);
 
         var borderObj = new GameObject("Border");
         borderObj.transform.SetParent(inputObj.transform, false);
