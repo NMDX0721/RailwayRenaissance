@@ -121,7 +121,7 @@ public class LoginManager : MonoBehaviour
         titleRect.anchorMin = new Vector2(0.5f, 0.5f);
         titleRect.anchorMax = new Vector2(0.5f, 0.5f);
         titleRect.anchoredPosition = new Vector2(0, 400);
-        titleRect.sizeDelta = new Vector2(900, 220);
+        titleRect.sizeDelta = new Vector2(3600, 880);
         var titleImg = titleLogoObj.AddComponent<Image>();
         titleImg.sprite = titleLogoSprite;
         titleImg.type = Image.Type.Simple;
