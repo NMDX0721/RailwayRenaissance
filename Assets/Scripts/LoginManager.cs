@@ -153,8 +153,8 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 200);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -20);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 150);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -50);
         passwordInput.contentType = InputField.ContentType.Password;
 
         loginButton = CreateButton(panel.transform, "LoginButton", "登录", -230, -200f, 750f, 225f);
@@ -421,7 +421,7 @@ public class LoginManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, yOffset);
-        rect.sizeDelta = new Vector2(1000, 240);
+        rect.sizeDelta = new Vector2(1000, 168);
 
         var img = inputObj.AddComponent<Image>();
         img.color = new Color(0.91f, 0.86f, 0.78f);
