@@ -34,7 +34,7 @@ public class LoginManager : MonoBehaviour
     {
         authFilePath = Path.Combine(Application.persistentDataPath, "auth.json");
 
-        if (FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
+        if (FindAnyObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
         {
             var esObj = new GameObject("EventSystem");
             esObj.AddComponent<UnityEngine.EventSystems.EventSystem>();
@@ -424,28 +424,21 @@ public class LoginManager : MonoBehaviour
         rect.sizeDelta = new Vector2(1200, 400);
 
         var img = inputObj.AddComponent<Image>();
+        img.color = new Color(0.91f, 0.86f, 0.78f);
+
+        var borderObj = new GameObject("Border");
+        borderObj.transform.SetParent(inputObj.transform, false);
+        var borderRect = borderObj.AddComponent<RectTransform>();
+        borderRect.anchorMin = Vector2.zero;
+        borderRect.anchorMax = Vector2.one;
+        borderRect.sizeDelta = Vector2.zero;
+        var borderImg = borderObj.AddComponent<Image>();
         if (inputSprite != null)
         {
-            img.sprite = inputSprite;
-            img.type = Image.Type.Simple;
-            img.preserveAspect = false;
-            img.fillAmount = 1;
+            borderImg.sprite = inputSprite;
+            borderImg.type = Image.Type.Simple;
+            borderImg.preserveAspect = false;
         }
-        else
-        {
-            img.color = new Color(0.15f, 0.12f, 0.1f, 0.9f);
-        }
-
-        var fillObj = new GameObject("Fill");
-        fillObj.transform.SetParent(inputObj.transform, false);
-        var fillRect = fillObj.AddComponent<RectTransform>();
-        fillRect.anchorMin = Vector2.zero;
-        fillRect.anchorMax = Vector2.one;
-        fillRect.sizeDelta = Vector2.zero;
-        fillRect.offsetMin = new Vector2(12, 12);
-        fillRect.offsetMax = new Vector2(-12, -12);
-        var fillImg = fillObj.AddComponent<Image>();
-        fillImg.color = new Color(0.91f, 0.86f, 0.78f);
 
         var input = inputObj.AddComponent<InputField>();
         input.caretColor = new Color(0.95f, 0.9f, 0.82f);
