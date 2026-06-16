@@ -120,7 +120,7 @@ public class LoginManager : MonoBehaviour
         var titleRect = titleLogoObj.AddComponent<RectTransform>();
         titleRect.anchorMin = new Vector2(0.5f, 0.5f);
         titleRect.anchorMax = new Vector2(0.5f, 0.5f);
-        titleRect.anchoredPosition = new Vector2(0, 700);
+        titleRect.anchoredPosition = new Vector2(0, 400);
         titleRect.sizeDelta = new Vector2(900, 220);
         var titleImg = titleLogoObj.AddComponent<Image>();
         titleImg.sprite = titleLogoSprite;
@@ -160,7 +160,7 @@ public class LoginManager : MonoBehaviour
         loginButton = CreateButton(panel.transform, "LoginButton", "登录", -230, -200f, 750f, 225f);
         loginButton.onClick.AddListener(OnLogin);
 
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -230, 300f, 550f, 180f);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -230, 300f, 550f, 225f);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
         hintText = CreateText(panel.transform, "Hint", "", 17, Color.white, -360);
