@@ -424,22 +424,21 @@ public class LoginManager : MonoBehaviour
         rect.sizeDelta = new Vector2(1200, 400);
 
         var img = inputObj.AddComponent<Image>();
+        img.color = new Color(0.91f, 0.86f, 0.78f);
+
+        var borderObj = new GameObject("Border");
+        borderObj.transform.SetParent(inputObj.transform, false);
+        var borderRect = borderObj.AddComponent<RectTransform>();
+        borderRect.anchorMin = Vector2.zero;
+        borderRect.anchorMax = Vector2.one;
+        borderRect.sizeDelta = Vector2.zero;
+        var borderImg = borderObj.AddComponent<Image>();
         if (inputSprite != null)
         {
-            img.sprite = inputSprite;
-            img.type = Image.Type.Simple;
-            img.preserveAspect = false;
+            borderImg.sprite = inputSprite;
+            borderImg.type = Image.Type.Simple;
+            borderImg.preserveAspect = false;
         }
-
-        var fillObj = new GameObject("Fill");
-        fillObj.transform.SetParent(inputObj.transform, false);
-        var fillRect = fillObj.AddComponent<RectTransform>();
-        fillRect.anchorMin = Vector2.zero;
-        fillRect.anchorMax = Vector2.one;
-        fillRect.sizeDelta = new Vector2(-30, -30);
-        fillRect.anchoredPosition = Vector2.zero;
-        var fillImg = fillObj.AddComponent<Image>();
-        fillImg.color = new Color(0.91f, 0.86f, 0.78f);
 
         var input = inputObj.AddComponent<InputField>();
         input.caretColor = new Color(0.95f, 0.9f, 0.82f);
