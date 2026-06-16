@@ -153,8 +153,8 @@ public class LoginManager : MonoBehaviour
 
         loginPanelBg = panel;
 
-        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 120);
-        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -80);
+        usernameInput = CreateInputField(panel.transform, "UsernameInput", "用户名", 120, 100f);
+        passwordInput = CreateInputField(panel.transform, "PasswordInput", "密码", -80, 100f);
         passwordInput.contentType = InputField.ContentType.Password;
 
         loginButton = CreateButton(panel.transform, "LoginButton", "登录", -230, -200f, 750f, 225f);
@@ -413,14 +413,14 @@ public class LoginManager : MonoBehaviour
         return text;
     }
 
-    InputField CreateInputField(Transform parent, string name, string placeholder, float yOffset)
+    InputField CreateInputField(Transform parent, string name, string placeholder, float yOffset, float xOffset = 0f)
     {
         var inputObj = new GameObject(name);
         inputObj.transform.SetParent(parent, false);
         var rect = inputObj.AddComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = new Vector2(0, yOffset);
+        rect.anchoredPosition = new Vector2(xOffset, yOffset);
         rect.sizeDelta = new Vector2(1000, 168);
 
         var fillObj = new GameObject("Fill");
@@ -457,7 +457,7 @@ public class LoginManager : MonoBehaviour
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
-        textRect.offsetMin = new Vector2(50, 0);
+        textRect.offsetMin = new Vector2(70, 0);
         textRect.offsetMax = new Vector2(-15, 0);
         var text = textObj.AddComponent<Text>();
         text.fontSize = 36;
@@ -471,7 +471,7 @@ public class LoginManager : MonoBehaviour
         placeholderRect.anchorMin = Vector2.zero;
         placeholderRect.anchorMax = Vector2.one;
         placeholderRect.sizeDelta = Vector2.zero;
-        placeholderRect.offsetMin = new Vector2(50, 0);
+        placeholderRect.offsetMin = new Vector2(70, 0);
         placeholderRect.offsetMax = new Vector2(-15, 0);
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
