@@ -102,13 +102,13 @@ public class LoginManager : MonoBehaviour
         bgRect.sizeDelta = Vector2.zero;
         backgroundImage = bgObj.AddComponent<RawImage>();
 
-        CreateTitleLogo(canvasObj.transform);
-
         loginPanel = CreateLoginPanel(canvasObj.transform);
         registerPanel = CreateRegisterPanel(canvasObj.transform);
         autoLoginPanel = CreateAutoLoginPanel(canvasObj.transform);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(false);
+
+        CreateTitleLogo(canvasObj.transform);
     }
 
     void CreateTitleLogo(Transform parent)
