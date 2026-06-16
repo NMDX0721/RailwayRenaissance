@@ -62,7 +62,12 @@ public class LoginManager : MonoBehaviour
 
     Font GetFont(int size)
     {
-        if (customFont != null) return customFont;
+        if (customFont != null)
+        {
+            Debug.Log("Using custom font: " + customFont.name);
+            return customFont;
+        }
+        Debug.Log("Custom font not found, using fallback");
         return Font.CreateDynamicFontFromOSFont("Microsoft YaHei", size);
     }
 
