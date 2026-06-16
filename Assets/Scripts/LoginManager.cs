@@ -428,7 +428,7 @@ public class LoginManager : MonoBehaviour
         var fillRect = fillObj.AddComponent<RectTransform>();
         fillRect.anchorMin = Vector2.zero;
         fillRect.anchorMax = Vector2.one;
-        fillRect.sizeDelta = new Vector2(-150, -72);
+        fillRect.sizeDelta = new Vector2(-150, -92);
         fillRect.anchoredPosition = Vector2.zero;
         var fillImg = fillObj.AddComponent<Image>();
         fillImg.color = new Color(0.91f, 0.86f, 0.78f);
@@ -457,7 +457,7 @@ public class LoginManager : MonoBehaviour
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
-        textRect.offsetMin = new Vector2(30, 0);
+        textRect.offsetMin = new Vector2(50, 0);
         textRect.offsetMax = new Vector2(-15, 0);
         var text = textObj.AddComponent<Text>();
         text.fontSize = 36;
@@ -471,7 +471,7 @@ public class LoginManager : MonoBehaviour
         placeholderRect.anchorMin = Vector2.zero;
         placeholderRect.anchorMax = Vector2.one;
         placeholderRect.sizeDelta = Vector2.zero;
-        placeholderRect.offsetMin = new Vector2(30, 0);
+        placeholderRect.offsetMin = new Vector2(50, 0);
         placeholderRect.offsetMax = new Vector2(-15, 0);
         var placeholderText = placeholderObj.AddComponent<Text>();
         placeholderText.text = placeholder;
