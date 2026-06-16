@@ -57,17 +57,12 @@ public class LoginManager : MonoBehaviour
         inputSprite = Resources.Load<Sprite>("UI/Login/input_field");
         buttonSprite = Resources.Load<Sprite>("UI/Login/button_primary");
         titleLogoSprite = Resources.Load<Sprite>("UI/Login/title_logo");
-        customFont = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
+        customFont = Resources.Load<Font>("Fonts/zpix");
     }
 
     Font GetFont(int size)
     {
-        if (customFont != null)
-        {
-            Debug.Log("Using custom font: " + customFont.name);
-            return customFont;
-        }
-        Debug.Log("Custom font not found, using fallback");
+        if (customFont != null) return customFont;
         return Font.CreateDynamicFontFromOSFont("Microsoft YaHei", size);
     }
 
