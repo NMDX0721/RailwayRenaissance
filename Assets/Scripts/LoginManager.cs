@@ -41,6 +41,9 @@ public class LoginManager : MonoBehaviour
     private Sprite confirmBtnSprite;
     private Sprite cancelBtnSprite;
     public static Texture2D cursorTexture;
+    private AudioSource sfxSource;
+    private static AudioClip clickClip;
+    public static bool sfxEnabled = true;
 
     private string authFilePath;
     private bool isPasswordVisible = false;
@@ -629,6 +632,20 @@ public class LoginManager : MonoBehaviour
             bgmSource.clip = clip;
             bgmSource.Play();
         }
+
+        var sfxObj = new GameObject("SFX");
+        sfxObj.transform.SetParent(transform, false);
+        sfxSource = sfxObj.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
+        clickClip = Resources.Load<AudioClip>("Audio/button_click");
+    }
+
+    public static void PlayClickSound()
+    {
+        if (!sfxEnabled || clickClip == null) return;
+        var sfx = FindAnyObjectByType<LoginManager>();
+        if (sfx != null && sfx.sfxSource != null)
+            sfx.sfxSource.PlayOneShot(clickClip, 0.8f);
     }
 
     void LoadBackground()
@@ -1419,7 +1436,7 @@ public class LoginManager : MonoBehaviour
     }
 }
 
-public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private static Texture2D handTexture;
     private static Texture2D arrowTexture;
@@ -1434,6 +1451,11 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (arrowTexture == null) arrowTexture = LoginManager.GenerateArrowForSetup();
         Cursor.SetCursor(arrowTexture, Vector2.zero, CursorMode.ForceSoftware);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        LoginManager.PlayClickSound();
     }
 
     static void AddOutline(Texture2D tex, Color outlineColor)
