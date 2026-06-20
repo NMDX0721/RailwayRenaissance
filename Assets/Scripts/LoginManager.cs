@@ -74,112 +74,14 @@ public class LoginManager : MonoBehaviour
 
     void SetupGameCursor()
     {
-        if (cursorTexture == null) cursorTexture = GenerateArrowForSetup();
+        if (cursorTexture == null) cursorTexture = Resources.Load<Texture2D>("Cursors/cursor_arrow");
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
-    public static Texture2D GenerateArrowForSetup()
+    public static Texture2D GetArrowTexture()
     {
-        int w = 48, h = 48;
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        Color[] px = new Color[w * h];
-        Color clear = new Color(0, 0, 0, 0);
-        Color fillColor = new Color(0.94f, 0.82f, 0.38f, 1f);
-        Color edgeColor = new Color(0.25f, 0.15f, 0.08f, 1f);
-        Color highlightColor = new Color(1f, 0.95f, 0.8f, 1f);
-
-        for (int i = 0; i < px.Length; i++) px[i] = clear;
-
-        string[] shape = {
-            "*..............................................",
-            "**.............................................",
-            "*#*............................................",
-            "*##*...........................................",
-            "*###*..........................................",
-            "*####*.........................................",
-            "*#####*........................................",
-            "*######*.......................................",
-            "*#######*......................................",
-            "*########*.....................................",
-            "*#########*....................................",
-            "*##########*...................................",
-            "*###########*..................................",
-            "*############*................................",
-            "*#############*...............................",
-            "*##############*..............................",
-            "*###############**.............................",
-            "*################*.............................",
-            "..............................................",
-            "..**..........................................",
-            "...**.........................................",
-            "....**........................................",
-            ".....**.......................................",
-            "......**......................................",
-            ".......**.....................................",
-            "........**....................................",
-            ".........**...................................",
-            "..........**..................................",
-            "...........**................................",
-            "............**................................",
-            ".............**................................",
-            "..............................................",
-        };
-
-        for (int y = 0; y < shape.Length && y < h; y++)
-        {
-            for (int x = 0; x < shape[y].Length && x < w; x++)
-            {
-                if (shape[y][x] == '*' || shape[y][x] == '#')
-                {
-                    int py = y * w + x;
-                    px[py] = fillColor;
-
-                    if (x > 0 && !(shape[y][x - 1] == '*' || shape[y][x - 1] == '#') && py - 1 >= 0) px[py - 1] = edgeColor;
-                    if (y > 0 && x < shape[y - 1].Length && !(shape[y - 1][x] == '*' || shape[y - 1][x] == '#') && py - w >= 0) px[py - w] = edgeColor;
-                    if (x <= 3 && y <= 3) px[py] = highlightColor;
-                }
-            }
-        }
-
-        tex.SetPixels(px);
-        tex.Apply();
-        AddOutlineToTex(tex, new Color(0.2f, 0.8f, 1f, 1f));
-        return tex;
-    }
-
-    static void AddOutlineToTex(Texture2D tex, Color outlineColor)
-    {
-        int w = tex.width, h = tex.height;
-        Color[] px = tex.GetPixels();
-        Color clear = new Color(0, 0, 0, 0);
-        Color[] result = new Color[w * h];
-        for (int i = 0; i < result.Length; i++) result[i] = clear;
-
-        for (int y = 0; y < h; y++)
-        {
-            for (int x = 0; x < w; x++)
-            {
-                if (px[y * w + x].a > 0.1f)
-                {
-                    result[y * w + x] = px[y * w + x];
-                    for (int dy = -1; dy <= 1; dy++)
-                    {
-                        for (int dx = -1; dx <= 1; dx++)
-                        {
-                            int nx = x + dx, ny = y + dy;
-                            if (nx >= 0 && nx < w && ny >= 0 && ny < h)
-                            {
-                                if (px[ny * w + nx].a < 0.1f)
-                                    result[ny * w + nx] = outlineColor;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        tex.SetPixels(result);
-        tex.Apply();
+        if (cursorTexture == null) cursorTexture = Resources.Load<Texture2D>("Cursors/cursor_arrow");
+        return cursorTexture;
     }
 
     void LoadSprites()
@@ -1366,78 +1268,13 @@ public class LoginManager : MonoBehaviour
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (iBeamTexture == null) iBeamTexture = GenerateIBeam();
-        Cursor.SetCursor(iBeamTexture, new Vector2(8, 17), CursorMode.ForceSoftware);
+        if (iBeamTexture == null) iBeamTexture = Resources.Load<Texture2D>("Cursors/cursor_ibeam");
+        Cursor.SetCursor(iBeamTexture, new Vector2(8, 7), CursorMode.ForceSoftware);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
-    }
-
-    static void AddOutline(Texture2D tex, Color outlineColor)
-    {
-        int w = tex.width, h = tex.height;
-        Color[] px = tex.GetPixels();
-        Color clear = new Color(0, 0, 0, 0);
-        Color[] result = new Color[w * h];
-        for (int i = 0; i < result.Length; i++) result[i] = clear;
-
-        for (int y = 0; y < h; y++)
-        {
-            for (int x = 0; x < w; x++)
-            {
-                if (px[y * w + x].a > 0.1f)
-                {
-                    result[y * w + x] = px[y * w + x];
-                    for (int dy = -1; dy <= 1; dy++)
-                    {
-                        for (int dx = -1; dx <= 1; dx++)
-                        {
-                            int nx = x + dx, ny = y + dy;
-                            if (nx >= 0 && nx < w && ny >= 0 && ny < h)
-                            {
-                                if (px[ny * w + nx].a < 0.1f)
-                                    result[ny * w + nx] = outlineColor;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        tex.SetPixels(result);
-        tex.Apply();
-    }
-
-    static Texture2D GenerateIBeam()
-    {
-        int w = 18, h = 38;
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        Color[] px = new Color[w * h];
-        Color clear = new Color(0, 0, 0, 0);
-        Color fillColor = new Color(0.15f, 0.1f, 0.05f, 1f);
-
-        for (int i = 0; i < px.Length; i++) px[i] = clear;
-
-        for (int y = 0; y < h; y++)
-        {
-            for (int x = 6; x <= 10; x++) px[y * w + x] = fillColor;
-
-            if (y >= h - 3)
-            {
-                for (int x = 2; x <= 15; x++) px[y * w + x] = fillColor;
-            }
-            if (y <= 2)
-            {
-                for (int x = 2; x <= 15; x++) px[y * w + x] = fillColor;
-            }
-        }
-
-        tex.SetPixels(px);
-        tex.Apply();
-        AddOutline(tex, new Color(0.2f, 0.8f, 1f, 1f));
-        return tex;
+        Cursor.SetCursor(LoginManager.GetArrowTexture(), Vector2.zero, CursorMode.ForceSoftware);
     }
 }
 
@@ -1447,115 +1284,17 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (handTexture == null) handTexture = GenerateHand();
-        Cursor.SetCursor(handTexture, new Vector2(3, 0), CursorMode.ForceSoftware);
+        if (handTexture == null) handTexture = Resources.Load<Texture2D>("Cursors/cursor_hand");
+        Cursor.SetCursor(handTexture, new Vector2(0, 0), CursorMode.ForceSoftware);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(LoginManager.GetArrowTexture(), Vector2.zero, CursorMode.ForceSoftware);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         LoginManager.PlayClickSound();
-    }
-
-    static void AddOutline(Texture2D tex, Color outlineColor)
-    {
-        int w = tex.width, h = tex.height;
-        Color[] px = tex.GetPixels();
-        Color clear = new Color(0, 0, 0, 0);
-        Color[] result = new Color[w * h];
-        for (int i = 0; i < result.Length; i++) result[i] = clear;
-
-        for (int y = 0; y < h; y++)
-        {
-            for (int x = 0; x < w; x++)
-            {
-                if (px[y * w + x].a > 0.1f)
-                {
-                    result[y * w + x] = px[y * w + x];
-                    for (int dy = -1; dy <= 1; dy++)
-                    {
-                        for (int dx = -1; dx <= 1; dx++)
-                        {
-                            int nx = x + dx, ny = y + dy;
-                            if (nx >= 0 && nx < w && ny >= 0 && ny < h)
-                            {
-                                if (px[ny * w + nx].a < 0.1f)
-                                    result[ny * w + nx] = outlineColor;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        tex.SetPixels(result);
-        tex.Apply();
-    }
-
-    static Texture2D GenerateHand()
-    {
-        int w = 32, h = 32;
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        Color[] px = new Color[w * h];
-        Color clear = new Color(0, 0, 0, 0);
-        Color fillColor = new Color(0.94f, 0.82f, 0.38f, 1f);
-
-        for (int i = 0; i < px.Length; i++) px[i] = clear;
-
-        string[] shape = {
-            "......*.........................",
-            ".....**.........................",
-            ".....*#*........................",
-            ".....*##*.......................",
-            ".....*#*#*......................",
-            ".....*#*#*#.....................",
-            ".....*#*#*#*....................",
-            ".....*#*#*#*#*..................",
-            ".....*#*#*#*#*#*................",
-            ".....*#*#*#*#*#*#...............",
-            ".....*#*#*#*#*#*#*..............",
-            ".....*#*#*#*#*#*#*#.............",
-            ".....*#*#*#*#*#*#*#*............",
-            ".....*#*#*#*#*#*#*#*#...........",
-            ".....*#*#*#*#*#*#*#*#*..........",
-            ".....*#*#*#*#*#*#*#*#*#*........",
-            ".....*#*#*#*#*#*#*#*#*#*#.......",
-            ".....*#*#*#*#*#*#*#*#*#*#*......",
-            ".....*#*#*#*#*#*#*#*#*#*#*#.....",
-            ".....*#*#*#*#*#*#*#*#*#*#*......",
-            ".....*#*#*#*#*#*#*#*#*#*#.......",
-            ".....*#*#*#*#*#*#*#*#*#*........",
-            ".....*#*#*#*#*#*#*#*#*#.........",
-            ".....*#*#*#*#*#*#*#*#*..........",
-            ".....*#*#*#*#*#*#*#*#...........",
-            "......*#*#*#*#*#*#*#*...........",
-            ".......*#*#*#*#*#*#*............",
-            "........*#*#*#*#*#*#............",
-            ".........*#*#*#*#*#*............",
-            "..........*#*#*#*#*#............",
-            "...........*#*#*#*#*............",
-            "............*******************."
-        };
-
-        for (int y = 0; y < shape.Length && y < h; y++)
-        {
-            for (int x = 0; x < shape[y].Length && x < w; x++)
-            {
-                if (shape[y][x] == '*' || shape[y][x] == '#')
-                {
-                    int py = y * w + x;
-                    px[py] = fillColor;
-                }
-            }
-        }
-
-        tex.SetPixels(px);
-        tex.Apply();
-        AddOutline(tex, new Color(0.2f, 0.8f, 1f, 1f));
-        return tex;
     }
 }
