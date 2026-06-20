@@ -996,6 +996,9 @@ public class LoginManager : MonoBehaviour
         rect.anchoredPosition = new Vector2(xOffset, yOffset);
         rect.sizeDelta = new Vector2(280, 50);
 
+        var checkImg = checkObj.AddComponent<Image>();
+        checkImg.color = new Color(0, 0, 0, 0);
+
         // 复选框背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(checkObj.transform, false);
@@ -1051,7 +1054,7 @@ public class LoginManager : MonoBehaviour
         text.font = GetFont(24);
 
         var toggle = checkObj.AddComponent<Toggle>();
-        toggle.targetGraphic = bgImg;
+        toggle.targetGraphic = checkImg;
         toggle.graphic = checkmarkImg;
         toggle.isOn = false;
 
