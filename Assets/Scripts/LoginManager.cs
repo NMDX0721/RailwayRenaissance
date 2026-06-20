@@ -74,14 +74,43 @@ public class LoginManager : MonoBehaviour
 
     void SetupGameCursor()
     {
-        if (cursorTexture == null) cursorTexture = Resources.Load<Texture2D>("Cursors/cursor_arrow");
+        if (cursorTexture == null) cursorTexture = LoadCursorTexture("Cursors/cursor_arrow", 3);
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     public static Texture2D GetArrowTexture()
     {
-        if (cursorTexture == null) cursorTexture = Resources.Load<Texture2D>("Cursors/cursor_arrow");
+        if (cursorTexture == null) cursorTexture = LoadCursorTexture("Cursors/cursor_arrow", 3);
         return cursorTexture;
+    }
+
+    public static Texture2D LoadCursorTexture(string resourcePath, int scale)
+    {
+        TextAsset asset = Resources.Load<TextAsset>(resourcePath);
+        if (asset == null) return Texture2D.whiteTexture;
+
+        Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        tex.LoadImage(asset.bytes);
+        tex.filterMode = FilterMode.Point;
+        tex.alphaIsTransparency = true;
+
+        if (scale <= 1) return tex;
+
+        int ow = tex.width, oh = tex.height;
+        int nw = ow * scale, nh = oh * scale;
+        Color[] src = tex.GetPixels();
+        Color[] dst = new Color[nw * nh];
+        for (int y = 0; y < nh; y++)
+        {
+            for (int x = 0; x < nw; x++)
+            {
+                dst[y * nw + x] = src[(y / scale) * ow + (x / scale)];
+            }
+        }
+        tex.Reinitialize(nw, nh);
+        tex.SetPixels(dst);
+        tex.Apply();
+        return tex;
     }
 
     void LoadSprites()
@@ -1268,8 +1297,8 @@ public class LoginManager : MonoBehaviour
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (iBeamTexture == null) iBeamTexture = Resources.Load<Texture2D>("Cursors/cursor_ibeam");
-        Cursor.SetCursor(iBeamTexture, new Vector2(8, 7), CursorMode.ForceSoftware);
+        if (iBeamTexture == null) iBeamTexture = LoginManager.LoadCursorTexture("Cursors/cursor_ibeam", 3);
+        Cursor.SetCursor(iBeamTexture, new Vector2(iBeamTexture.width / 2, iBeamTexture.height / 2), CursorMode.ForceSoftware);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -1284,7 +1313,7 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (handTexture == null) handTexture = Resources.Load<Texture2D>("Cursors/cursor_hand");
+        if (handTexture == null) handTexture = LoginManager.LoadCursorTexture("Cursors/cursor_hand", 3);
         Cursor.SetCursor(handTexture, new Vector2(0, 0), CursorMode.ForceSoftware);
     }
 
