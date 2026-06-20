@@ -129,10 +129,8 @@ public class LoginManager : MonoBehaviour
                     int py = y * w + x;
                     px[py] = fillColor;
 
-                    bool leftFilled = x > 0 && (shape[y][x - 1] == '*' || shape[y][x - 1] == '#');
-                    bool topFilled = y > 0 && x < shape[y - 1].Length && (shape[y - 1][x] == '*' || shape[y - 1][x] == '#');
-                    if (!leftFilled) px[py - 1] = edgeColor;
-                    if (!topFilled) px[py - w] = edgeColor;
+                    if (x > 0 && !(shape[y][x - 1] == '*' || shape[y][x - 1] == '#') && py - 1 >= 0) px[py - 1] = edgeColor;
+                    if (y > 0 && x < shape[y - 1].Length && !(shape[y - 1][x] == '*' || shape[y - 1][x] == '#') && py - w >= 0) px[py - w] = edgeColor;
                     if (x <= 3 && y <= 3) px[py] = highlightColor;
                 }
             }
@@ -140,7 +138,7 @@ public class LoginManager : MonoBehaviour
 
         tex.SetPixels(px);
         tex.Apply();
-        AddOutlineToTex(tex, new Color(0.15f, 0.1f, 0.05f, 1f));
+        AddOutlineToTex(tex, new Color(0.2f, 0.8f, 1f, 1f));
         return tex;
     }
 
@@ -1356,7 +1354,6 @@ public class LoginManager : MonoBehaviour
     public class InputFieldCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private static Texture2D iBeamTexture;
-    private static Texture2D arrowTexture;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -1366,8 +1363,7 @@ public class LoginManager : MonoBehaviour
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (arrowTexture == null) arrowTexture = LoginManager.GenerateArrowForSetup();
-        Cursor.SetCursor(arrowTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     static void AddOutline(Texture2D tex, Color outlineColor)
@@ -1431,7 +1427,7 @@ public class LoginManager : MonoBehaviour
 
         tex.SetPixels(px);
         tex.Apply();
-        AddOutline(tex, new Color(1f, 0.95f, 0.8f, 1f));
+        AddOutline(tex, new Color(0.2f, 0.8f, 1f, 1f));
         return tex;
     }
 }
@@ -1439,7 +1435,6 @@ public class LoginManager : MonoBehaviour
 public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private static Texture2D handTexture;
-    private static Texture2D arrowTexture;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -1449,8 +1444,7 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (arrowTexture == null) arrowTexture = LoginManager.GenerateArrowForSetup();
-        Cursor.SetCursor(arrowTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -1552,7 +1546,7 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         tex.SetPixels(px);
         tex.Apply();
-        AddOutline(tex, new Color(0.15f, 0.1f, 0.05f, 1f));
+        AddOutline(tex, new Color(0.2f, 0.8f, 1f, 1f));
         return tex;
     }
 }
