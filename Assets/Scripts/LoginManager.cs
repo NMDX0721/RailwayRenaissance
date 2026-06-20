@@ -905,6 +905,7 @@ public class LoginManager : MonoBehaviour
         }
 
         var button = btnObj.AddComponent<Button>();
+        btnObj.AddComponent<ButtonHoverCursor>();
         var colors = button.colors;
         colors.normalColor = Color.white;
         colors.highlightedColor = new Color(0.9f, 0.9f, 0.9f);
@@ -981,6 +982,7 @@ public class LoginManager : MonoBehaviour
         text.font = GetFont(24);
 
         var toggle = checkObj.AddComponent<Toggle>();
+        checkObj.AddComponent<ButtonHoverCursor>();
         toggle.targetGraphic = checkImg;
         toggle.graphic = checkmarkImg;
         toggle.isOn = false;
@@ -1006,6 +1008,7 @@ public class LoginManager : MonoBehaviour
         text.font = GetFont(24);
 
         var button = btnObj.AddComponent<Button>();
+        btnObj.AddComponent<ButtonHoverCursor>();
         var colors = button.colors;
         colors.normalColor = Color.white;
         colors.highlightedColor = new Color(1f, 0.9f, 0.7f);
