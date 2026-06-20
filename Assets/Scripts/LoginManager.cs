@@ -86,29 +86,25 @@ public class LoginManager : MonoBehaviour
 
     public static Texture2D LoadCursorTexture(string resourcePath, int scale)
     {
-        TextAsset asset = Resources.Load<TextAsset>(resourcePath);
-        if (asset == null) return Texture2D.whiteTexture;
+        Texture2D src = Resources.Load<Texture2D>(resourcePath);
+        if (src == null) return Texture2D.whiteTexture;
 
-        Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        tex.LoadImage(asset.bytes);
-        tex.filterMode = FilterMode.Point;
-        tex.alphaIsTransparency = true;
+        if (scale <= 1) return src;
 
-        if (scale <= 1) return tex;
-
-        int ow = tex.width, oh = tex.height;
+        int ow = src.width, oh = src.height;
         int nw = ow * scale, nh = oh * scale;
-        Color[] src = tex.GetPixels();
-        Color[] dst = new Color[nw * nh];
+        Color[] srcPx = src.GetPixels();
+        Color[] dstPx = new Color[nw * nh];
         for (int y = 0; y < nh; y++)
         {
             for (int x = 0; x < nw; x++)
             {
-                dst[y * nw + x] = src[(y / scale) * ow + (x / scale)];
+                dstPx[y * nw + x] = srcPx[(y / scale) * ow + (x / scale)];
             }
         }
-        tex.Reinitialize(nw, nh);
-        tex.SetPixels(dst);
+        Texture2D tex = new Texture2D(nw, nh, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.SetPixels(dstPx);
         tex.Apply();
         return tex;
     }
