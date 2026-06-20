@@ -167,16 +167,20 @@ public class LoginManager : MonoBehaviour
                 }
                 else
                 {
-                    // 闭眼：椭圆轮廓 + 斜线划过
-                    float outer = (dx * dx) / (24f * 24f) + (dy * dy) / (14f * 14f);
-                    float inner = (dx * dx) / (18f * 18f) + (dy * dy) / (9f * 9f);
+                    // 闭眼：椭圆轮廓 + 斜线划过 + 瞳孔
+                    float outer = (dx * dx) / (28f * 28f) + (dy * dy) / (18f * 18f);
+                    float inner = (dx * dx) / (22f * 22f) + (dy * dy) / (12f * 12f);
                     bool onRing = outer <= 1f && inner >= 1f;
 
                     // 斜线：左上到右下
                     float lineDist = Mathf.Abs(dy - dx * 0.6f);
-                    bool onLine = lineDist < 2.5f && Mathf.Abs(dx) < 20f && Mathf.Abs(dy) < 12f;
+                    bool onLine = lineDist < 2.5f && Mathf.Abs(dx) < 30f && Mathf.Abs(dy) < 18f;
 
-                    if (onRing || onLine)
+                    // 瞳孔
+                    float pupil = (dx * dx) / (6f * 6f) + (dy * dy) / (6f * 6f);
+                    bool onPupil = pupil <= 1f;
+
+                    if (onRing || onLine || onPupil)
                     {
                         pixels[y * size + x] = eyeColor;
                     }
@@ -322,7 +326,7 @@ public class LoginManager : MonoBehaviour
 
         // 错误提示文字（面板内，带背景）
         hintText = CreateHintText(canvasObj.transform);
-        hintText.transform.SetAsLastSibling();
+        hintText.transform.parent.SetAsLastSibling();
     }
 
     Text CreateHintText(Transform parent)
@@ -332,7 +336,7 @@ public class LoginManager : MonoBehaviour
         var rect = hintObj.AddComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = new Vector2(0, -310);
+        rect.anchoredPosition = new Vector2(0, -280);
         rect.sizeDelta = new Vector2(600, 50);
 
         // 背景
@@ -464,11 +468,11 @@ public class LoginManager : MonoBehaviour
         forgotPasswordButton.onClick.AddListener(OnForgotPassword);
 
         // 登录按钮（加宽）
-        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -350, -200f, 850f, 200f);
+        loginButton = CreateButton(panel.transform, "LoginButton", "登录", -350, -260f, 550f, 100f);
         loginButton.onClick.AddListener(OnLogin);
 
         // 没有账号？注册按钮
-        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -350, 300f, 550f, 200f);
+        switchToRegisterButton = CreateButton(panel.transform, "SwitchToRegister", "没有账号？注册", -350, 300f, 450f, 100f);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
 
         return panel;
@@ -711,6 +715,7 @@ public class LoginManager : MonoBehaviour
             hintText.text = message;
             hintText.color = success ? new Color(0.7f, 1f, 0.6f) : new Color(1f, 0.95f, 0.9f);
             hintText.transform.parent.gameObject.SetActive(true);
+            hintText.transform.parent.SetAsLastSibling();
 
             var bg = hintText.transform.parent.GetComponent<Image>();
             if (bg != null)
@@ -1055,7 +1060,13 @@ public class LoginManager : MonoBehaviour
         var bgImg = bgObj.AddComponent<Image>();
         bgImg.color = new Color(0.15f, 0.1f, 0.05f, 0.9f);
 
-        var text = announceObj.AddComponent<Text>();
+        var textObj = new GameObject("Text");
+        textObj.transform.SetParent(announceObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.sizeDelta = Vector2.zero;
+        var text = textObj.AddComponent<Text>();
         text.text = "公告";
         text.fontSize = 24;
         text.color = new Color(1f, 0.92f, 0.7f);
