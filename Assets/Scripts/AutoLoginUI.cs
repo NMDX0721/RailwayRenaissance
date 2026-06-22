@@ -17,6 +17,8 @@ public class AutoLoginUI : MonoBehaviour
     public Image progressFill;
     public Text progressText;
     public GameObject progressBarGroup;
+    private RectTransform progressFillRect;
+    private float progressBgWidth = 500f;
     
     [Header("按钮")]
     public Button btnReturnLogin;
@@ -35,6 +37,12 @@ public class AutoLoginUI : MonoBehaviour
     void Start()
     {
         authFilePath = Path.Combine(Application.persistentDataPath, "auth.json");
+        
+        if (progressFill != null)
+        {
+            progressFillRect = progressFill.GetComponent<RectTransform>();
+            progressBgWidth = progressBarGroup.GetComponent<RectTransform>().sizeDelta.x;
+        }
         
         btnReturnLogin.onClick.AddListener(OnReturnLogin);
         btnResetAccount.onClick.AddListener(OnResetAccount);
@@ -66,7 +74,7 @@ public class AutoLoginUI : MonoBehaviour
         progressBarGroup.SetActive(true);
         btnReturnLogin.gameObject.SetActive(true);
         btnResetAccount.gameObject.SetActive(false);
-        progressFill.fillAmount = 0;
+        if (progressFillRect != null) progressFillRect.sizeDelta = new Vector2(0, progressFillRect.sizeDelta.y);
         progressText.text = "0%";
         
         switch (state)
@@ -155,11 +163,17 @@ public class AutoLoginUI : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             float progress = Mathf.Lerp(from, to, t * t * (3f - 2f * t));
-            progressFill.fillAmount = progress;
+            if (progressFillRect != null)
+            {
+                progressFillRect.sizeDelta = new Vector2(progressBgWidth * progress, progressFillRect.sizeDelta.y);
+            }
             progressText.text = Mathf.FloorToInt(progress * 100f) + "%";
             yield return null;
         }
-        progressFill.fillAmount = to;
+        if (progressFillRect != null)
+        {
+            progressFillRect.sizeDelta = new Vector2(progressBgWidth * to, progressFillRect.sizeDelta.y);
+        }
         progressText.text = Mathf.FloorToInt(to * 100f) + "%";
     }
 
