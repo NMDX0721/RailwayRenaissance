@@ -94,7 +94,9 @@ public class AutoLoginUI : MonoBehaviour
     IEnumerator AutoLoginProcess()
     {
         subText.text = "正在检测本地凭证...";
-        yield return StartCoroutine(UpdateProgress(0f, 0.2f, 1.0f));
+        yield return StartCoroutine(UpdateProgress(0f, 0.08f, 0.6f));
+        yield return StartCoroutine(PauseProgress(0.08f, 0.3f));
+        yield return StartCoroutine(UpdateProgress(0.08f, 0.12f, 0.2f));
         
         if (!File.Exists(authFilePath))
         {
@@ -103,6 +105,8 @@ public class AutoLoginUI : MonoBehaviour
         }
         
         subText.text = "正在验证账号信息...";
+        yield return StartCoroutine(UpdateProgress(0.12f, 0.25f, 0.8f));
+        yield return StartCoroutine(PauseProgress(0.25f, 0.2f));
         string json = File.ReadAllText(authFilePath);
         var auth = JsonUtility.FromJson<LoginManager.AuthData>(json);
         if (auth == null || string.IsNullOrEmpty(auth.username))
@@ -110,21 +114,31 @@ public class AutoLoginUI : MonoBehaviour
             SetState(AutoLoginState.CredentialLost);
             yield break;
         }
-        yield return StartCoroutine(UpdateProgress(0.2f, 0.5f, 1.0f));
+        yield return StartCoroutine(UpdateProgress(0.25f, 0.35f, 0.5f));
         
         subText.text = "正在加载用户数据...";
-        yield return StartCoroutine(UpdateProgress(0.5f, 0.7f, 0.8f));
+        yield return StartCoroutine(UpdateProgress(0.35f, 0.42f, 0.4f));
+        yield return StartCoroutine(PauseProgress(0.42f, 0.15f));
+        yield return StartCoroutine(UpdateProgress(0.42f, 0.48f, 0.3f));
         
         subText.text = "正在预加载游戏资源...";
+        yield return StartCoroutine(UpdateProgress(0.48f, 0.65f, 1.0f));
+        yield return StartCoroutine(PauseProgress(0.65f, 0.25f));
         Resources.Load<Texture2D>("Textures/sunset_railway");
         Resources.Load<Texture2D>("Textures/station_bg");
+        yield return StartCoroutine(UpdateProgress(0.65f, 0.78f, 0.6f));
+        yield return StartCoroutine(PauseProgress(0.78f, 0.2f));
         Resources.Load<AudioClip>("Audio/Train Through Keys");
         Resources.Load<Sprite>("UI/Login/panel_bg");
         Resources.Load<Sprite>("UI/Login/button_primary");
-        yield return StartCoroutine(UpdateProgress(0.7f, 0.9f, 1.2f));
+        yield return StartCoroutine(UpdateProgress(0.78f, 0.88f, 0.5f));
         
         subText.text = "正在初始化系统...";
-        yield return StartCoroutine(UpdateProgress(0.9f, 1f, 0.6f));
+        yield return StartCoroutine(UpdateProgress(0.88f, 0.92f, 0.3f));
+        yield return StartCoroutine(PauseProgress(0.92f, 0.3f));
+        yield return StartCoroutine(UpdateProgress(0.92f, 0.95f, 0.2f));
+        yield return StartCoroutine(PauseProgress(0.95f, 0.4f));
+        yield return StartCoroutine(UpdateProgress(0.95f, 1f, 0.3f));
         
         mainText.text = "登录成功";
         subText.text = "欢迎回来，" + auth.username;
@@ -139,11 +153,21 @@ public class AutoLoginUI : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float progress = Mathf.Lerp(from, to, elapsed / duration);
+            float t = elapsed / duration;
+            float progress = Mathf.Lerp(from, to, t * t * (3f - 2f * t));
             progressFill.fillAmount = progress;
-            progressText.text = Mathf.RoundToInt(progress / 0.05f) * 5 + "%";
+            progressText.text = Mathf.FloorToInt(progress * 100f) + "%";
             yield return null;
         }
+        progressFill.fillAmount = to;
+        progressText.text = Mathf.FloorToInt(to * 100f) + "%";
+    }
+
+    IEnumerator PauseProgress(float percent, float holdTime)
+    {
+        progressText.text = Mathf.FloorToInt(percent * 100f) + "%";
+        yield return new WaitForSeconds(holdTime);
+    }
         progressFill.fillAmount = to;
         progressText.text = Mathf.RoundToInt(to * 100) + "%";
     }
