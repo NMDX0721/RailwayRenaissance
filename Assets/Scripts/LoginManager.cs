@@ -631,11 +631,14 @@ public class LoginManager : MonoBehaviour
         var progressFillObj = new GameObject("ProgressFill");
         progressFillObj.transform.SetParent(progressBgObj.transform, false);
         var progressFillRect = progressFillObj.AddComponent<RectTransform>();
-        progressFillRect.anchorMin = new Vector2(0f, 0f);
-        progressFillRect.anchorMax = new Vector2(0f, 1f);
-        progressFillRect.sizeDelta = new Vector2(0, 0);
+        progressFillRect.anchorMin = Vector2.zero;
+        progressFillRect.anchorMax = Vector2.one;
+        progressFillRect.sizeDelta = Vector2.zero;
         var progressFillImg = progressFillObj.AddComponent<Image>();
         progressFillImg.color = new Color(1f, 0.42f, 0.21f);
+        progressFillImg.type = Image.Type.Filled;
+        progressFillImg.fillMethod = Image.FillMethod.Horizontal;
+        progressFillImg.fillAmount = 0f;
 
         var progressTextObj = new GameObject("ProgressText");
         progressTextObj.transform.SetParent(progressBgObj.transform, false);
@@ -656,7 +659,7 @@ public class LoginManager : MonoBehaviour
         btnReturnRect.anchorMin = new Vector2(0.5f, 0.5f);
         btnReturnRect.anchorMax = new Vector2(0.5f, 0.5f);
         btnReturnRect.anchoredPosition = new Vector2(0, -120);
-        btnReturnRect.sizeDelta = new Vector2(280, 80);
+        btnReturnRect.sizeDelta = new Vector2(320, 90);
         var btnReturnImg = btnReturnObj.AddComponent<Image>();
         if (cancelBtnSprite != null)
         {
