@@ -658,7 +658,13 @@ public class LoginManager : MonoBehaviour
         btnReturnRect.anchoredPosition = new Vector2(0, -120);
         btnReturnRect.sizeDelta = new Vector2(280, 80);
         var btnReturnImg = btnReturnObj.AddComponent<Image>();
-        if (buttonSprite != null)
+        if (cancelBtnSprite != null)
+        {
+            btnReturnImg.sprite = cancelBtnSprite;
+            btnReturnImg.type = Image.Type.Simple;
+            btnReturnImg.preserveAspect = false;
+        }
+        else if (buttonSprite != null)
         {
             btnReturnImg.sprite = buttonSprite;
             btnReturnImg.type = Image.Type.Simple;
