@@ -13,12 +13,12 @@ public class LoginManager : MonoBehaviour
     private Button registerButton;
     private Button switchToRegisterButton;
     private Button switchToLoginButton;
-    private Button autoLoginButton;
+
     private Button forgotPasswordButton;
     private Button togglePasswordButton;
     private Toggle rememberPasswordToggle;
     private Text hintText;
-    private Text autoLoginUserText;
+
     private Text versionText;
     private Text announcementText;
     private GameObject loginPanel;
@@ -45,9 +45,24 @@ public class LoginManager : MonoBehaviour
     private static AudioClip clickClip;
     public static bool sfxEnabled = true;
 
+    private InputField regUsernameInput;
+    private InputField regPasswordInput;
+    private Button toggleRegPasswordButton;
+    private Button toggleConfirmPasswordButton;
+    private Toggle agreementToggle;
+    private Text regUsernameHint;
+    private Text regPasswordHint;
+    private Text regConfirmHint;
+    private Text titleTextObj;
+    private GameObject panelTitleObj;
+
     private string authFilePath;
     private bool isPasswordVisible = false;
+    private bool isRegPasswordVisible = false;
+    private bool isConfirmPasswordVisible = false;
     private const string GAME_VERSION = "v1.0.0";
+    public static bool showAutoLoginOnStart = true;
+    public static bool showRegisterOnStart = false;
 
     void Start()
     {
@@ -336,8 +351,19 @@ public class LoginManager : MonoBehaviour
         var rect = hintObj.AddComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = new Vector2(0, -280);
+        rect.anchoredPosition = new Vector2(0, -310);
         rect.sizeDelta = new Vector2(600, 50);
+
+        var hintImg = hintObj.AddComponent<Image>();
+        hintImg.color = new Color(0, 0, 0, 0);
+        var hintBtn = hintObj.AddComponent<Button>();
+        hintBtn.targetGraphic = hintImg;
+        hintObj.AddComponent<ButtonHoverCursor>();
+        hintBtn.onClick.AddListener(() =>
+        {
+            CancelInvoke("HideHint");
+            HideHint();
+        });
 
         // 背景
         var bgObj = new GameObject("Bg");
@@ -348,6 +374,7 @@ public class LoginManager : MonoBehaviour
         bgRect.sizeDelta = Vector2.zero;
         var bgImg = bgObj.AddComponent<Image>();
         bgImg.color = new Color(0.8f, 0.2f, 0.15f, 0.85f);
+        bgImg.raycastTarget = false;
 
         // 文字
         var textObj = new GameObject("Text");
@@ -357,6 +384,7 @@ public class LoginManager : MonoBehaviour
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
         var text = textObj.AddComponent<Text>();
+        text.raycastTarget = false;
         text.text = "";
         text.fontSize = 22;
         text.color = new Color(1f, 0.95f, 0.9f);
@@ -375,6 +403,7 @@ public class LoginManager : MonoBehaviour
     void CreatePanelTitle(Transform parent)
     {
         var titleObj = new GameObject("PanelTitle");
+        panelTitleObj = titleObj;
         titleObj.transform.SetParent(parent, false);
         var rect = titleObj.AddComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -382,13 +411,13 @@ public class LoginManager : MonoBehaviour
         rect.anchoredPosition = new Vector2(0, 270);
         rect.sizeDelta = new Vector2(500, 90);
 
-        var text = titleObj.AddComponent<Text>();
-        text.text = "登    录";
-        text.fontSize = 58;
-        text.color = new Color(0.94f, 0.82f, 0.38f);
-        text.alignment = TextAnchor.MiddleCenter;
-        text.font = GetFont(58);
-        text.horizontalOverflow = HorizontalWrapMode.Overflow;
+        titleTextObj = titleObj.AddComponent<Text>();
+        titleTextObj.text = "登    录";
+        titleTextObj.fontSize = 58;
+        titleTextObj.color = new Color(0.94f, 0.82f, 0.38f);
+        titleTextObj.alignment = TextAnchor.MiddleCenter;
+        titleTextObj.font = GetFont(58);
+        titleTextObj.horizontalOverflow = HorizontalWrapMode.Overflow;
 
         var outline = titleObj.AddComponent<Outline>();
         outline.effectColor = new Color(0.2f, 0.15f, 0.05f);
@@ -460,11 +489,12 @@ public class LoginManager : MonoBehaviour
         togglePasswordButton = CreateToggleButton(panel.transform, "TogglePassword", 440, -120);
         togglePasswordButton.onClick.AddListener(OnTogglePassword);
 
-        // 记住密码复选框
-        rememberPasswordToggle = CreateCheckbox(panel.transform, "RememberPassword", "记住密码", -380, -230);
+        // 自动登录复选框
 
-        // 忘记密码链接（与记住密码同行右侧）
-        forgotPasswordButton = CreateTextButton(panel.transform, "ForgotPassword", "忘记密码？", 350, -230);
+        rememberPasswordToggle = CreateCheckbox(panel.transform, "AutoLogin", "自动登录", -380, -230);
+
+        // 重置账号链接（与自动登录同行右侧）
+        forgotPasswordButton = CreateTextButton(panel.transform, "ResetAccount", "重置账号？", 350, -230);
         forgotPasswordButton.onClick.AddListener(OnForgotPassword);
 
         // 登录按钮（加宽）
@@ -503,18 +533,31 @@ public class LoginManager : MonoBehaviour
 
         registerPanelBg = panel;
 
-        CreateText(panel.transform, "Title", "注册新账号", 34, new Color(0.94f, 0.82f, 0.38f), 420);
+        CreateLabel(panel.transform, "RegUsernameLabel", "用户名", -530, 120);
+        regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "3-12位字符，支持中英文", 120, 80f);
+        regUsernameInput.gameObject.AddComponent<InputFieldCursor>();
 
-        var regUsernameInput = CreateInputField(panel.transform, "RegUsernameInput", "用户名（至少3个字符）", 250);
-        var regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "密码（至少4个字符）", -50);
+        CreateLabel(panel.transform, "RegPasswordLabel", "密码", -530, -10);
+        regPasswordInput = CreateInputField(panel.transform, "RegPasswordInput", "6-20位，建议包含大小写字母和数字", -10, 80f);
         regPasswordInput.contentType = InputField.ContentType.Password;
-        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "确认密码", -350);
-        confirmPasswordInput.contentType = InputField.ContentType.Password;
+        regPasswordInput.gameObject.AddComponent<InputFieldCursor>();
+        toggleRegPasswordButton = CreateToggleButton(panel.transform, "ToggleRegPassword", 440, -10);
+        toggleRegPasswordButton.onClick.AddListener(OnToggleRegPassword);
+        CreatePasswordStrengthIndicator(panel.transform, regPasswordInput, -10);
 
-        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -520, -200f, 750f, 225f);
+        CreateLabel(panel.transform, "RegConfirmLabel", "确认密码", -530, -180);
+        confirmPasswordInput = CreateInputField(panel.transform, "ConfirmPasswordInput", "请再次输入密码", -180, 80f);
+        confirmPasswordInput.contentType = InputField.ContentType.Password;
+        confirmPasswordInput.gameObject.AddComponent<InputFieldCursor>();
+        toggleConfirmPasswordButton = CreateToggleButton(panel.transform, "ToggleConfirmPassword", 440, -180);
+        toggleConfirmPasswordButton.onClick.AddListener(OnToggleConfirmPassword);
+
+        agreementToggle = CreateAgreementCheckboxWithLinks(panel.transform, "AgreementToggle", 30, -260);
+
+        registerButton = CreateButton(panel.transform, "RegisterButton", "注册", -350, -260f, 550f, 100f);
         registerButton.onClick.AddListener(OnRegister);
 
-        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -520, 300f, 550f, 180f);
+        switchToLoginButton = CreateButton(panel.transform, "SwitchToLogin", "已有账号？登录", -350, 300f, 450f, 100f);
         switchToLoginButton.onClick.AddListener(ShowLogin);
 
         return panel;
@@ -528,7 +571,7 @@ public class LoginManager : MonoBehaviour
         panelRect.anchorMin = new Vector2(0.5f, 0.5f);
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = new Vector2(0, -40);
-        panelRect.sizeDelta = new Vector2(1600, 1200);
+        panelRect.sizeDelta = new Vector2(960, 720);
 
         if (panelSprite != null)
         {
@@ -543,12 +586,140 @@ public class LoginManager : MonoBehaviour
             panelImg.color = new Color(0, 0, 0, 0.7f);
         }
 
-        CreateText(panel.transform, "Title", "欢迎回来", 34, new Color(0.94f, 0.82f, 0.38f), 380);
-        autoLoginUserText = CreateText(panel.transform, "Username", "", 26, new Color(0.94f, 0.82f, 0.38f), 250);
-        CreateText(panel.transform, "Hint", "点击进入游戏", 17, new Color(1, 1, 1, 0.4f), 150);
+        var titleObj = CreateText(panel.transform, "Title", "自动登录", 34, new Color(0.94f, 0.82f, 0.38f), 220);
+        titleObj.rectTransform.sizeDelta = new Vector2(400, 50);
+        titleObj.fontSize = 28;
 
-        autoLoginButton = CreateButton(panel.transform, "AutoLoginButton", "进入游戏", 0);
-        autoLoginButton.onClick.AddListener(OnAutoLogin);
+        var mainTextObj = new GameObject("MainText");
+        mainTextObj.transform.SetParent(panel.transform, false);
+        var mainTextRect = mainTextObj.AddComponent<RectTransform>();
+        mainTextRect.anchorMin = new Vector2(0.5f, 0.5f);
+        mainTextRect.anchorMax = new Vector2(0.5f, 0.5f);
+        mainTextRect.anchoredPosition = new Vector2(0, 80);
+        mainTextRect.sizeDelta = new Vector2(500, 60);
+        var mainTextComp = mainTextObj.AddComponent<Text>();
+        mainTextComp.text = "自动登录中...";
+        mainTextComp.fontSize = 40;
+        mainTextComp.color = new Color(1f, 0.84f, 0f);
+        mainTextComp.alignment = TextAnchor.MiddleCenter;
+        mainTextComp.font = GetFont(40);
+
+        var subTextObj = new GameObject("SubText");
+        subTextObj.transform.SetParent(panel.transform, false);
+        var subTextRect = subTextObj.AddComponent<RectTransform>();
+        subTextRect.anchorMin = new Vector2(0.5f, 0.5f);
+        subTextRect.anchorMax = new Vector2(0.5f, 0.5f);
+        subTextRect.anchoredPosition = new Vector2(0, 30);
+        subTextRect.sizeDelta = new Vector2(500, 40);
+        var subTextComp = subTextObj.AddComponent<Text>();
+        subTextComp.text = "正在检测本地凭证...";
+        subTextComp.fontSize = 28;
+        subTextComp.color = new Color(0.6f, 0.6f, 0.6f);
+        subTextComp.alignment = TextAnchor.MiddleCenter;
+        subTextComp.font = GetFont(28);
+
+        var progressBgObj = new GameObject("ProgressBg");
+        progressBgObj.transform.SetParent(panel.transform, false);
+        var progressBgRect = progressBgObj.AddComponent<RectTransform>();
+        progressBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+        progressBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+        progressBgRect.anchoredPosition = new Vector2(0, -30);
+        progressBgRect.sizeDelta = new Vector2(500, 30);
+        var progressBgImg = progressBgObj.AddComponent<Image>();
+        progressBgImg.color = new Color(0.24f, 0.17f, 0.12f);
+
+        var progressFillObj = new GameObject("ProgressFill");
+        progressFillObj.transform.SetParent(progressBgObj.transform, false);
+        var progressFillRect = progressFillObj.AddComponent<RectTransform>();
+        progressFillRect.anchorMin = new Vector2(0f, 0f);
+        progressFillRect.anchorMax = new Vector2(0f, 1f);
+        progressFillRect.sizeDelta = new Vector2(0, 0);
+        var progressFillImg = progressFillObj.AddComponent<Image>();
+        progressFillImg.color = new Color(1f, 0.42f, 0.21f);
+
+        var progressTextObj = new GameObject("ProgressText");
+        progressTextObj.transform.SetParent(progressBgObj.transform, false);
+        var progressTextRect = progressTextObj.AddComponent<RectTransform>();
+        progressTextRect.anchorMin = Vector2.zero;
+        progressTextRect.anchorMax = Vector2.one;
+        progressTextRect.sizeDelta = Vector2.zero;
+        var progressTextComp = progressTextObj.AddComponent<Text>();
+        progressTextComp.text = "0%";
+        progressTextComp.fontSize = 22;
+        progressTextComp.color = new Color(1f, 0.84f, 0f);
+        progressTextComp.alignment = TextAnchor.MiddleCenter;
+        progressTextComp.font = GetFont(22);
+
+        var btnReturnObj = new GameObject("BtnReturnLogin");
+        btnReturnObj.transform.SetParent(panel.transform, false);
+        var btnReturnRect = btnReturnObj.AddComponent<RectTransform>();
+        btnReturnRect.anchorMin = new Vector2(0.5f, 0.5f);
+        btnReturnRect.anchorMax = new Vector2(0.5f, 0.5f);
+        btnReturnRect.anchoredPosition = new Vector2(0, -120);
+        btnReturnRect.sizeDelta = new Vector2(280, 80);
+        var btnReturnImg = btnReturnObj.AddComponent<Image>();
+        btnReturnImg.color = new Color(0.4f, 0.4f, 0.4f);
+        var btnReturnComp = btnReturnObj.AddComponent<Button>();
+        btnReturnObj.AddComponent<ButtonHoverCursor>();
+
+        var btnReturnTextObj = new GameObject("Text");
+        btnReturnTextObj.transform.SetParent(btnReturnObj.transform, false);
+        var btnReturnTextRect = btnReturnTextObj.AddComponent<RectTransform>();
+        btnReturnTextRect.anchorMin = Vector2.zero;
+        btnReturnTextRect.anchorMax = Vector2.one;
+        btnReturnTextRect.sizeDelta = Vector2.zero;
+        var btnReturnTextComp = btnReturnTextObj.AddComponent<Text>();
+        btnReturnTextComp.text = "返回登录";
+        btnReturnTextComp.fontSize = 28;
+        btnReturnTextComp.color = new Color(1f, 0.95f, 0.9f);
+        btnReturnTextComp.alignment = TextAnchor.MiddleCenter;
+        btnReturnTextComp.font = GetFont(28);
+
+        var btnResetObj = new GameObject("BtnResetAccount");
+        btnResetObj.transform.SetParent(panel.transform, false);
+        var btnResetRect = btnResetObj.AddComponent<RectTransform>();
+        btnResetRect.anchorMin = new Vector2(0.5f, 0.5f);
+        btnResetRect.anchorMax = new Vector2(0.5f, 0.5f);
+        btnResetRect.anchoredPosition = new Vector2(0, -120);
+        btnResetRect.sizeDelta = new Vector2(280, 80);
+        var btnResetImg = btnResetObj.AddComponent<Image>();
+        if (buttonSprite != null)
+        {
+            btnResetImg.sprite = buttonSprite;
+            btnResetImg.type = Image.Type.Simple;
+            btnResetImg.preserveAspect = false;
+        }
+        else
+        {
+            btnResetImg.color = new Color(0.8f, 0.5f, 0.2f);
+        }
+        var btnResetComp = btnResetObj.AddComponent<Button>();
+        btnResetObj.AddComponent<ButtonHoverCursor>();
+
+        var btnResetTextObj = new GameObject("Text");
+        btnResetTextObj.transform.SetParent(btnResetObj.transform, false);
+        var btnResetTextRect = btnResetTextObj.AddComponent<RectTransform>();
+        btnResetTextRect.anchorMin = Vector2.zero;
+        btnResetTextRect.anchorMax = Vector2.one;
+        btnResetTextRect.sizeDelta = Vector2.zero;
+        var btnResetTextComp = btnResetTextObj.AddComponent<Text>();
+        btnResetTextComp.text = "重置账号";
+        btnResetTextComp.fontSize = 28;
+        btnResetTextComp.color = new Color(1f, 0.95f, 0.9f);
+        btnResetTextComp.alignment = TextAnchor.MiddleCenter;
+        btnResetTextComp.font = GetFont(28);
+
+        btnResetObj.SetActive(false);
+
+        var autoLoginUI = panel.AddComponent<AutoLoginUI>();
+        autoLoginUI.autoLoginPanel = panel;
+        autoLoginUI.mainText = mainTextComp;
+        autoLoginUI.subText = subTextComp;
+        autoLoginUI.progressFill = progressFillImg;
+        autoLoginUI.progressText = progressTextComp;
+        autoLoginUI.progressBarGroup = progressBgObj;
+        autoLoginUI.btnReturnLogin = btnReturnComp;
+        autoLoginUI.btnResetAccount = btnResetComp;
 
         return panel;
     }
@@ -593,33 +764,55 @@ public class LoginManager : MonoBehaviour
 
     void CheckAutoLogin()
     {
-        if (File.Exists(authFilePath))
+        if (showRegisterOnStart)
         {
-            string json = File.ReadAllText(authFilePath);
-            var auth = JsonUtility.FromJson<AuthData>(json);
-            if (auth != null && !string.IsNullOrEmpty(auth.username))
-            {
-                ShowAutoLogin(auth.username);
-                return;
-            }
+            showRegisterOnStart = false;
+            ShowRegister();
+            return;
         }
-        ShowLogin();
+        
+        if (showAutoLoginOnStart)
+        {
+            showAutoLoginOnStart = false;
+            if (File.Exists(authFilePath))
+            {
+                string json = File.ReadAllText(authFilePath);
+                var auth = JsonUtility.FromJson<AuthData>(json);
+                if (auth != null && !string.IsNullOrEmpty(auth.username))
+                {
+                    loginPanel.SetActive(false);
+                    registerPanel.SetActive(false);
+                    autoLoginPanel.SetActive(true);
+                    if (panelTitleObj != null) panelTitleObj.SetActive(false);
+                    return;
+                }
+            }
+            ShowLogin();
+        }
+        else
+        {
+            ShowLogin();
+        }
     }
 
-    public void ShowLogin()
+    void ShowLogin()
     {
         loginPanel.SetActive(true);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(false);
         if (hintText != null) hintText.transform.parent.gameObject.SetActive(false);
+        if (titleTextObj != null) titleTextObj.text = "登    录";
+        if (panelTitleObj != null) panelTitleObj.SetActive(true);
     }
 
-    public void ShowRegister()
+    void ShowRegister()
     {
         loginPanel.SetActive(false);
         registerPanel.SetActive(true);
         autoLoginPanel.SetActive(false);
         if (hintText != null) hintText.transform.parent.gameObject.SetActive(false);
+        if (titleTextObj != null) titleTextObj.text = "注    册";
+        if (panelTitleObj != null) panelTitleObj.SetActive(true);
     }
 
     void ShowAutoLogin(string username)
@@ -627,7 +820,6 @@ public class LoginManager : MonoBehaviour
         loginPanel.SetActive(false);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(true);
-        autoLoginUserText.text = username;
     }
 
     public void OnLogin()
@@ -665,25 +857,30 @@ public class LoginManager : MonoBehaviour
         Invoke("EnterGame", 1f);
     }
 
-    public void OnRegister()
+    void OnRegister()
     {
-        string username = usernameInput.text.Trim();
-        string password = passwordInput.text;
+        string username = regUsernameInput.text.Trim();
+        string password = regPasswordInput.text;
         string confirm = confirmPasswordInput.text;
 
-        if (string.IsNullOrEmpty(username) || username.Length < 3)
+        if (string.IsNullOrEmpty(username) || username.Length < 3 || username.Length > 12)
         {
-            ShowHint("用户名至少需要3个字符", false);
+            ShowHint("用户名需3-12位字符", false);
             return;
         }
-        if (string.IsNullOrEmpty(password) || password.Length < 4)
+        if (string.IsNullOrEmpty(password) || password.Length < 6 || password.Length > 20)
         {
-            ShowHint("密码至少需要4个字符", false);
+            ShowHint("密码需6-20位", false);
             return;
         }
         if (password != confirm)
         {
             ShowHint("两次输入的密码不一致", false);
+            return;
+        }
+        if (agreementToggle == null || !agreementToggle.isOn)
+        {
+            ShowHint("请先同意用户协议和隐私政策", false);
             return;
         }
 
@@ -694,8 +891,22 @@ public class LoginManager : MonoBehaviour
             lastLogin = System.DateTime.Now.ToString("o")
         };
         File.WriteAllText(authFilePath, JsonUtility.ToJson(auth, true));
-        ShowHint("注册成功！正在进入游戏...", true);
-        Invoke("EnterGame", 1f);
+        ShowHint("注册成功！正在跳转...", true);
+        
+        loginPanel.SetActive(false);
+        registerPanel.SetActive(false);
+        autoLoginPanel.SetActive(true);
+        if (panelTitleObj != null) panelTitleObj.SetActive(false);
+        
+        var autoLoginUI = autoLoginPanel.GetComponent<AutoLoginUI>();
+        if (autoLoginUI != null)
+        {
+            autoLoginUI.StartAfterRegister();
+        }
+        else
+        {
+            Invoke("ShowLogin", 1.5f);
+        }
     }
 
     public void OnAutoLogin()
@@ -712,6 +923,7 @@ public class LoginManager : MonoBehaviour
     {
         if (hintText != null)
         {
+            CancelInvoke("HideHint");
             hintText.text = message;
             hintText.color = success ? new Color(0.7f, 1f, 0.6f) : new Color(1f, 0.95f, 0.9f);
             hintText.transform.parent.gameObject.SetActive(true);
@@ -724,7 +936,15 @@ public class LoginManager : MonoBehaviour
                     ? new Color(0.2f, 0.6f, 0.15f, 0.85f)
                     : new Color(0.8f, 0.2f, 0.15f, 0.85f);
             }
+
+            Invoke("HideHint", 3f);
         }
+    }
+
+    void HideHint()
+    {
+        if (hintText != null && hintText.transform.parent != null)
+            hintText.transform.parent.gameObject.SetActive(false);
     }
 
     Text CreateText(Transform parent, string name, string content, int fontSize, Color color, float yOffset)
@@ -798,6 +1018,7 @@ public class LoginManager : MonoBehaviour
         inputRect.anchorMin = Vector2.zero;
         inputRect.anchorMax = Vector2.one;
         inputRect.sizeDelta = Vector2.zero;
+        inputRect.offsetMax = new Vector2(-100, 0);
 
         var inputImg = inputObj.AddComponent<Image>();
         inputImg.color = new Color(0, 0, 0, 0);
@@ -816,16 +1037,47 @@ public class LoginManager : MonoBehaviour
         text.alignment = TextAnchor.MiddleLeft;
         text.font = GetFont(36);
 
-        var input = inputObj.AddComponent<InputField>();
-        input.caretColor = Color.black;
-        input.caretWidth = 2;
-        input.selectionColor = new Color(0.85f, 0.65f, 0.15f, 0.8f);
-        input.textComponent = text;
-        input.targetGraphic = inputImg;
-        input.interactable = true;
-        input.transition = Selectable.Transition.None;
+        // Placeholder 提示文字
+        if (!string.IsNullOrEmpty(placeholder))
+        {
+            var placeholderObj = new GameObject("Placeholder");
+            placeholderObj.transform.SetParent(inputObj.transform, false);
+            var placeholderRect = placeholderObj.AddComponent<RectTransform>();
+            placeholderRect.anchorMin = Vector2.zero;
+            placeholderRect.anchorMax = Vector2.one;
+            placeholderRect.sizeDelta = Vector2.zero;
+            placeholderRect.offsetMin = new Vector2(75, 10);
+            placeholderRect.offsetMax = new Vector2(-15, -10);
+            var placeholderText = placeholderObj.AddComponent<Text>();
+            placeholderText.text = placeholder;
+            placeholderText.fontSize = 28;
+            placeholderText.color = new Color(0.55f, 0.5f, 0.42f, 0.6f);
+            placeholderText.alignment = TextAnchor.MiddleLeft;
+            placeholderText.font = GetFont(36);
+            placeholderText.fontStyle = FontStyle.Italic;
 
-        return input;
+            var input = inputObj.AddComponent<InputField>();
+            input.caretColor = Color.black;
+            input.caretWidth = 2;
+            input.selectionColor = new Color(0.85f, 0.65f, 0.15f, 0.8f);
+            input.textComponent = text;
+            input.placeholder = placeholderText;
+            input.targetGraphic = inputImg;
+            input.interactable = true;
+            input.transition = Selectable.Transition.None;
+            return input;
+        }
+
+        var inputDefault = inputObj.AddComponent<InputField>();
+        inputDefault.caretColor = Color.black;
+        inputDefault.caretWidth = 2;
+        inputDefault.selectionColor = new Color(0.85f, 0.65f, 0.15f, 0.8f);
+        inputDefault.textComponent = text;
+        inputDefault.targetGraphic = inputImg;
+        inputDefault.interactable = true;
+        inputDefault.transition = Selectable.Transition.None;
+
+        return inputDefault;
     }
 
     Button CreateButton(Transform parent, string name, string label, float yOffset, float xOffset = 0f, float width = 800f, float height = 225f)
@@ -1023,6 +1275,636 @@ public class LoginManager : MonoBehaviour
         return button;
     }
 
+    Text CreateHintBelowInput(Transform parent, string name, string content, float inputYOffset, float inputHeight)
+    {
+        var hintObj = new GameObject(name);
+        hintObj.transform.SetParent(parent, false);
+        var rect = hintObj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(0, inputYOffset - inputHeight / 2 - 18);
+        rect.sizeDelta = new Vector2(800, 30);
+        var text = hintObj.AddComponent<Text>();
+        text.text = content;
+        text.fontSize = 20;
+        text.color = new Color(0.6f, 0.55f, 0.45f, 0.7f);
+        text.alignment = TextAnchor.MiddleLeft;
+        text.font = GetFont(20);
+        return text;
+    }
+
+    void SetupPlaceholder(InputField input, Text placeholderText)
+    {
+        input.onValueChanged.AddListener(val =>
+        {
+            if (placeholderText != null)
+                placeholderText.gameObject.SetActive(string.IsNullOrEmpty(val));
+        });
+
+        var trigger = input.gameObject.AddComponent<EventTrigger>();
+        var selectEntry = new EventTrigger.Entry { eventID = EventTriggerType.Select };
+        selectEntry.callback.AddListener(_ =>
+        {
+            if (placeholderText != null)
+                placeholderText.gameObject.SetActive(false);
+        });
+        trigger.triggers.Add(selectEntry);
+
+        var deselectEntry = new EventTrigger.Entry { eventID = EventTriggerType.Deselect };
+        deselectEntry.callback.AddListener(_ =>
+        {
+            if (placeholderText != null)
+                placeholderText.gameObject.SetActive(string.IsNullOrEmpty(input.text));
+        });
+        trigger.triggers.Add(deselectEntry);
+    }
+
+    Toggle CreateAgreementCheckbox(Transform parent, string name, string label, float xOffset, float yOffset)
+    {
+        var containerObj = new GameObject(name);
+        containerObj.transform.SetParent(parent, false);
+        var rect = containerObj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(xOffset, yOffset);
+        rect.sizeDelta = new Vector2(500, 40);
+
+        var containerImg = containerObj.AddComponent<Image>();
+        containerImg.color = new Color(0, 0, 0, 0);
+
+        var checkObj = new GameObject("Checkmark");
+        checkObj.transform.SetParent(containerObj.transform, false);
+        var checkRect = checkObj.AddComponent<RectTransform>();
+        checkRect.anchorMin = new Vector2(0f, 0.5f);
+        checkRect.anchorMax = new Vector2(0f, 0.5f);
+        checkRect.anchoredPosition = new Vector2(15, 0);
+        checkRect.sizeDelta = new Vector2(28, 28);
+        var checkImg = checkObj.AddComponent<Image>();
+        if (checkboxSprite != null)
+        {
+            checkImg.sprite = checkboxSprite;
+            checkImg.type = Image.Type.Simple;
+            checkImg.preserveAspect = false;
+        }
+        else
+        {
+            checkImg.color = new Color(0.7f, 0.65f, 0.55f);
+        }
+
+        var checkmarkObj = new GameObject("Check");
+        checkmarkObj.transform.SetParent(checkObj.transform, false);
+        var checkmarkRect = checkmarkObj.AddComponent<RectTransform>();
+        checkmarkRect.anchorMin = Vector2.zero;
+        checkmarkRect.anchorMax = Vector2.one;
+        checkmarkRect.sizeDelta = Vector2.zero;
+        var checkmarkImg = checkmarkObj.AddComponent<Image>();
+        if (checkboxCheckedSprite != null)
+        {
+            checkmarkImg.sprite = checkboxCheckedSprite;
+            checkmarkImg.type = Image.Type.Simple;
+            checkmarkImg.preserveAspect = false;
+        }
+        else
+        {
+            checkmarkImg.color = new Color(0.94f, 0.82f, 0.38f);
+        }
+
+        var textObj = new GameObject("Label");
+        textObj.transform.SetParent(containerObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = new Vector2(0f, 0.5f);
+        textRect.anchorMax = new Vector2(1f, 0.5f);
+        textRect.anchoredPosition = new Vector2(32, 0);
+        textRect.sizeDelta = new Vector2(-44, 32);
+        var text = textObj.AddComponent<Text>();
+        text.supportRichText = true;
+        text.text = label;
+        text.fontSize = 22;
+        text.color = new Color(0.85f, 0.8f, 0.7f);
+        text.alignment = TextAnchor.MiddleLeft;
+        text.font = GetFont(22);
+
+        var toggle = containerObj.AddComponent<Toggle>();
+        containerObj.AddComponent<ButtonHoverCursor>();
+        toggle.targetGraphic = containerImg;
+        toggle.graphic = checkmarkImg;
+        toggle.isOn = false;
+
+        return toggle;
+    }
+
+    Toggle CreateAgreementCheckboxWithLinks(Transform parent, string name, float xOffset, float yOffset)
+    {
+        var containerObj = new GameObject(name);
+        containerObj.transform.SetParent(parent, false);
+        var rect = containerObj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(xOffset, yOffset);
+        rect.sizeDelta = new Vector2(560, 50);
+
+        var containerImg = containerObj.AddComponent<Image>();
+        containerImg.color = new Color(0, 0, 0, 0);
+
+        // 勾选框背景
+        var checkObj = new GameObject("Checkmark");
+        checkObj.transform.SetParent(containerObj.transform, false);
+        var checkRect = checkObj.AddComponent<RectTransform>();
+        checkRect.anchorMin = new Vector2(0.5f, 0.5f);
+        checkRect.anchorMax = new Vector2(0.5f, 0.5f);
+        checkRect.anchoredPosition = new Vector2(-240, 0);
+        checkRect.sizeDelta = new Vector2(32, 32);
+        var checkImg = checkObj.AddComponent<Image>();
+        if (checkboxSprite != null)
+        {
+            checkImg.sprite = checkboxSprite;
+            checkImg.type = Image.Type.Simple;
+            checkImg.preserveAspect = false;
+        }
+        else
+        {
+            checkImg.color = new Color(0.7f, 0.65f, 0.55f);
+        }
+
+        // 勾选标记
+        var checkmarkObj = new GameObject("Check");
+        checkmarkObj.transform.SetParent(checkObj.transform, false);
+        var checkmarkRect = checkmarkObj.AddComponent<RectTransform>();
+        checkmarkRect.anchorMin = Vector2.zero;
+        checkmarkRect.anchorMax = Vector2.one;
+        checkmarkRect.sizeDelta = Vector2.zero;
+        var checkmarkImg = checkmarkObj.AddComponent<Image>();
+        if (checkboxCheckedSprite != null)
+        {
+            checkmarkImg.sprite = checkboxCheckedSprite;
+            checkmarkImg.type = Image.Type.Simple;
+            checkmarkImg.preserveAspect = false;
+        }
+        else
+        {
+            checkmarkImg.color = new Color(0.94f, 0.82f, 0.38f);
+        }
+
+        // "同意"
+        CreateSmallLabel(containerObj.transform, "AgreeLabel", "同意", -185, 26, new Color(0.85f, 0.8f, 0.7f));
+
+        // "[用户协议]" 链接文字
+        CreateSmallLabel(containerObj.transform, "Link1Text", "[用户协议]", -88, 26, new Color(0.4f, 0.6f, 1f));
+        // 下划线
+        CreateUnderline(containerObj.transform, -88, 140);
+        // 点击区域
+        var link1Obj = new GameObject("UserAgreementLink");
+        link1Obj.transform.SetParent(containerObj.transform, false);
+        var link1Rect = link1Obj.AddComponent<RectTransform>();
+        link1Rect.anchorMin = new Vector2(0.5f, 0.5f);
+        link1Rect.anchorMax = new Vector2(0.5f, 0.5f);
+        link1Rect.anchoredPosition = new Vector2(-88, 0);
+        link1Rect.sizeDelta = new Vector2(150, 40);
+        var link1Btn = link1Obj.AddComponent<Button>();
+        var link1Img = link1Obj.AddComponent<Image>();
+        link1Img.color = new Color(0, 0, 0, 0);
+        link1Btn.targetGraphic = link1Img;
+        link1Btn.onClick.AddListener(ShowUserAgreementDialog);
+
+        // "和"
+        CreateSmallLabel(containerObj.transform, "AndLabel", "和", 18, 26, new Color(0.85f, 0.8f, 0.7f));
+
+        // "[隐私政策]" 链接文字
+        CreateSmallLabel(containerObj.transform, "Link2Text", "[隐私政策]", 110, 26, new Color(0.4f, 0.6f, 1f));
+        // 下划线
+        CreateUnderline(containerObj.transform, 110, 140);
+        // 点击区域
+        var link2Obj = new GameObject("PrivacyLink");
+        link2Obj.transform.SetParent(containerObj.transform, false);
+        var link2Rect = link2Obj.AddComponent<RectTransform>();
+        link2Rect.anchorMin = new Vector2(0.5f, 0.5f);
+        link2Rect.anchorMax = new Vector2(0.5f, 0.5f);
+        link2Rect.anchoredPosition = new Vector2(110, 0);
+        link2Rect.sizeDelta = new Vector2(150, 40);
+        var link2Btn = link2Obj.AddComponent<Button>();
+        var link2Img = link2Obj.AddComponent<Image>();
+        link2Img.color = new Color(0, 0, 0, 0);
+        link2Btn.targetGraphic = link2Img;
+        link2Btn.onClick.AddListener(ShowPrivacyPolicyDialog);
+
+        var toggle = containerObj.AddComponent<Toggle>();
+        containerObj.AddComponent<ButtonHoverCursor>();
+        toggle.targetGraphic = containerImg;
+        toggle.graphic = checkmarkImg;
+        toggle.isOn = false;
+
+        return toggle;
+    }
+
+    void CreatePasswordStrengthIndicator(Transform parent, InputField passwordField, float inputYOffset)
+    {
+        float barY = inputYOffset - 80;
+        float barWidth = 440;
+        float barHeight = 16;
+
+        var strengthObj = new GameObject("PasswordStrength");
+        strengthObj.transform.SetParent(parent, false);
+        var strengthRect = strengthObj.AddComponent<RectTransform>();
+        strengthRect.anchorMin = new Vector2(0.5f, 0.5f);
+        strengthRect.anchorMax = new Vector2(0.5f, 0.5f);
+        strengthRect.anchoredPosition = new Vector2(0, barY);
+        strengthRect.sizeDelta = new Vector2(barWidth + 200, 50);
+        strengthObj.SetActive(false);
+
+        // 淡色背景
+        var bgObj = new GameObject("Bg");
+        bgObj.transform.SetParent(strengthObj.transform, false);
+        var bgRect = bgObj.AddComponent<RectTransform>();
+        bgRect.anchorMin = Vector2.zero;
+        bgRect.anchorMax = Vector2.one;
+        bgRect.sizeDelta = Vector2.zero;
+        var bgImg = bgObj.AddComponent<Image>();
+        bgImg.color = new Color(0.15f, 0.12f, 0.08f, 0.4f);
+
+        // 条形背景
+        var barBgObj = new GameObject("BarBg");
+        barBgObj.transform.SetParent(strengthObj.transform, false);
+        var barBgRect = barBgObj.AddComponent<RectTransform>();
+        barBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+        barBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+        barBgRect.anchoredPosition = new Vector2(-70, 0);
+        barBgRect.sizeDelta = new Vector2(barWidth, barHeight);
+        var barBgImg = barBgObj.AddComponent<Image>();
+        barBgImg.color = new Color(0.1f, 0.08f, 0.06f, 0.7f);
+
+        // 条形填充
+        var barFillObj = new GameObject("BarFill");
+        barFillObj.transform.SetParent(strengthObj.transform, false);
+        var barFillRect = barFillObj.AddComponent<RectTransform>();
+        barFillRect.anchorMin = new Vector2(0.5f, 0.5f);
+        barFillRect.anchorMax = new Vector2(0.5f, 0.5f);
+        barFillRect.anchoredPosition = new Vector2(-70, 0);
+        barFillRect.sizeDelta = new Vector2(0, barHeight);
+        var barFillImg = barFillObj.AddComponent<Image>();
+        barFillImg.color = Color.clear;
+
+        // 强度文字
+        var labelObj = new GameObject("Label");
+        labelObj.transform.SetParent(strengthObj.transform, false);
+        var labelRect = labelObj.AddComponent<RectTransform>();
+        labelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        labelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        labelRect.anchoredPosition = new Vector2(230, 0);
+        labelRect.sizeDelta = new Vector2(100, 32);
+        var labelText = labelObj.AddComponent<Text>();
+        labelText.text = "";
+        labelText.fontSize = 30;
+        labelText.color = Color.clear;
+        labelText.alignment = TextAnchor.MiddleLeft;
+        labelText.font = GetFont(30);
+
+        // 不足6位提示
+        var warnObj = new GameObject("WarnText");
+        warnObj.transform.SetParent(strengthObj.transform, false);
+        var warnRect = warnObj.AddComponent<RectTransform>();
+        warnRect.anchorMin = new Vector2(0.5f, 0.5f);
+        warnRect.anchorMax = new Vector2(0.5f, 0.5f);
+        warnRect.anchoredPosition = new Vector2(230, 0);
+        warnRect.sizeDelta = new Vector2(200, 32);
+        var warnText = warnObj.AddComponent<Text>();
+        warnText.text = "密码至少6位";
+        warnText.fontSize = 30;
+        warnText.color = new Color(0.9f, 0.3f, 0.2f, 0.9f);
+        warnText.alignment = TextAnchor.MiddleLeft;
+        warnText.font = GetFont(30);
+
+        passwordField.onValueChanged.AddListener(val =>
+        {
+            if (string.IsNullOrEmpty(val))
+            {
+                strengthObj.SetActive(false);
+                return;
+            }
+
+            strengthObj.SetActive(true);
+
+            if (val.Length < 6)
+            {
+                barFillRect.sizeDelta = new Vector2(0, barHeight);
+                barFillRect.anchoredPosition = new Vector2(-70 - barWidth / 2, 0);
+                barFillImg.color = Color.clear;
+                labelText.text = "";
+                labelText.color = Color.clear;
+                warnText.gameObject.SetActive(true);
+                return;
+            }
+
+            warnText.gameObject.SetActive(false);
+
+            int score = 0;
+            if (val.Length >= 8) score++;
+            bool hasLower = false, hasUpper = false, hasDigit = false;
+            foreach (char c in val)
+            {
+                if (char.IsLower(c)) hasLower = true;
+                if (char.IsUpper(c)) hasUpper = true;
+                if (char.IsDigit(c)) hasDigit = true;
+            }
+            if (hasLower) score++;
+            if (hasUpper) score++;
+            if (hasDigit) score++;
+
+            Color barColor;
+            string label;
+            float fill;
+            if (score <= 1)
+            {
+                barColor = new Color(0.9f, 0.25f, 0.2f);
+                label = "弱";
+                fill = 0.15f;
+            }
+            else if (score == 2)
+            {
+                barColor = new Color(0.9f, 0.8f, 0.2f);
+                label = "一般";
+                fill = 0.4f;
+            }
+            else if (score == 3)
+            {
+                barColor = new Color(0.95f, 0.6f, 0.15f);
+                label = "良好";
+                fill = 0.7f;
+            }
+            else
+            {
+                barColor = new Color(0.3f, 0.85f, 0.35f);
+                label = "强";
+                fill = 1f;
+            }
+
+            barFillImg.color = barColor;
+            float fillWidth = barWidth * fill;
+            barFillRect.sizeDelta = new Vector2(fillWidth, barHeight);
+            barFillRect.anchoredPosition = new Vector2(-70 - barWidth / 2 + fillWidth / 2, 0);
+            labelText.text = label;
+            labelText.color = barColor;
+        });
+    }
+
+    void CreateSmallLabel(Transform parent, string name, string content, float xOffset, float fontSize, Color color)
+    {
+        var obj = new GameObject(name);
+        obj.transform.SetParent(parent, false);
+        var rect = obj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(xOffset, 0);
+        rect.sizeDelta = new Vector2(150, 36);
+        var text = obj.AddComponent<Text>();
+        text.text = content;
+        text.fontSize = (int)fontSize;
+        text.color = color;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.font = GetFont((int)fontSize);
+    }
+
+    void CreateUnderline(Transform parent, float centerX, float width)
+    {
+        var obj = new GameObject("Underline");
+        obj.transform.SetParent(parent, false);
+        var rect = obj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(centerX, -14);
+        rect.sizeDelta = new Vector2(width, 2);
+        var img = obj.AddComponent<Image>();
+        img.color = new Color(0.4f, 0.6f, 1f, 0.8f);
+    }
+
+    void ShowContentDialog(string title, string content)
+    {
+        Canvas canvas = null;
+        var loginCanvas = GameObject.Find("LoginCanvas");
+        if (loginCanvas != null) canvas = loginCanvas.GetComponent<Canvas>();
+        if (canvas == null) canvas = FindAnyObjectByType<Canvas>();
+
+        var dialogObj = new GameObject("ContentDialog");
+        if (canvas != null)
+            dialogObj.transform.SetParent(canvas.transform, false);
+        else
+            dialogObj.transform.SetParent(transform, false);
+
+        dialogObj.transform.SetAsLastSibling();
+
+        var dialogRect = dialogObj.AddComponent<RectTransform>();
+        dialogRect.anchorMin = Vector2.zero;
+        dialogRect.anchorMax = Vector2.one;
+        dialogRect.sizeDelta = Vector2.zero;
+
+        var maskObj = new GameObject("Mask");
+        maskObj.transform.SetParent(dialogObj.transform, false);
+        var maskRect = maskObj.AddComponent<RectTransform>();
+        maskRect.anchorMin = Vector2.zero;
+        maskRect.anchorMax = Vector2.one;
+        maskRect.sizeDelta = Vector2.zero;
+        var maskImg = maskObj.AddComponent<Image>();
+        maskImg.color = new Color(0, 0, 0, 0.7f);
+        var maskBtn = maskObj.AddComponent<Button>();
+        maskBtn.targetGraphic = maskImg;
+        maskBtn.onClick.AddListener(() => Destroy(dialogObj));
+
+        var panelObj = new GameObject("Panel");
+        panelObj.transform.SetParent(dialogObj.transform, false);
+        var panelRect = panelObj.AddComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(1968, 1092);
+        var panelImg = panelObj.AddComponent<Image>();
+        if (dialogBgSprite != null)
+        {
+            panelImg.sprite = dialogBgSprite;
+            panelImg.type = Image.Type.Simple;
+            panelImg.preserveAspect = true;
+        }
+        else
+        {
+            panelImg.color = new Color(0.18f, 0.12f, 0.06f, 0.95f);
+        }
+
+        var titleObj = new GameObject("Title");
+        titleObj.transform.SetParent(panelObj.transform, false);
+        var titleRect = titleObj.AddComponent<RectTransform>();
+        titleRect.anchorMin = new Vector2(0.1f, 0.71f);
+        titleRect.anchorMax = new Vector2(0.9f, 0.91f);
+        titleRect.sizeDelta = Vector2.zero;
+        var titleText = titleObj.AddComponent<Text>();
+        titleText.text = title;
+        titleText.fontSize = 56;
+        titleText.color = new Color(0.94f, 0.82f, 0.38f);
+        titleText.alignment = TextAnchor.MiddleCenter;
+        titleText.font = GetFont(56);
+        titleText.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+        var textObj = new GameObject("Content");
+        textObj.transform.SetParent(panelObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = new Vector2(0.18f, 0.30f);
+        textRect.anchorMax = new Vector2(0.88f, 0.72f);
+        textRect.sizeDelta = Vector2.zero;
+        var textBgImg = textObj.AddComponent<Image>();
+        textBgImg.color = new Color(0, 0, 0, 0);
+        textObj.AddComponent<ScrollAreaCursor>();
+
+        // 滚动条
+        var scrollbarObj = new GameObject("Scrollbar");
+        scrollbarObj.transform.SetParent(textObj.transform, false);
+        var scrollbarRect = scrollbarObj.AddComponent<RectTransform>();
+        scrollbarRect.anchorMin = new Vector2(1, 0);
+        scrollbarRect.anchorMax = new Vector2(1, 1);
+        scrollbarRect.pivot = new Vector2(1, 0.5f);
+        scrollbarRect.anchoredPosition = new Vector2(-40, 0);
+        scrollbarRect.sizeDelta = new Vector2(12, 0);
+        var scrollbarImg = scrollbarObj.AddComponent<Image>();
+        scrollbarImg.color = new Color(0.1f, 0.08f, 0.06f, 0.3f);
+
+        var scrollbarHandleImgObj = new GameObject("Handle");
+        scrollbarHandleImgObj.transform.SetParent(scrollbarObj.transform, false);
+        var scrollbarHandleRect = scrollbarHandleImgObj.AddComponent<RectTransform>();
+        scrollbarHandleRect.anchorMin = Vector2.zero;
+        scrollbarHandleRect.anchorMax = new Vector2(1, 1);
+        scrollbarHandleRect.sizeDelta = Vector2.zero;
+        var scrollbarHandleImg = scrollbarHandleImgObj.AddComponent<Image>();
+        scrollbarHandleImg.color = new Color(0.7f, 0.65f, 0.55f, 0.8f);
+
+        var scrollbar = scrollbarObj.AddComponent<Scrollbar>();
+        scrollbar.direction = Scrollbar.Direction.BottomToTop;
+        scrollbar.handleRect = scrollbarHandleRect;
+        scrollbar.targetGraphic = scrollbarHandleImg;
+
+        var viewportObj = new GameObject("Viewport");
+        viewportObj.transform.SetParent(textObj.transform, false);
+        var viewportRect = viewportObj.AddComponent<RectTransform>();
+        viewportRect.anchorMin = Vector2.zero;
+        viewportRect.anchorMax = Vector2.one;
+        viewportRect.sizeDelta = new Vector2(-20, 0);
+        var viewportImg = viewportObj.AddComponent<Image>();
+        viewportImg.color = new Color(0, 0, 0, 0.01f);
+        var mask = viewportObj.AddComponent<Mask>();
+        mask.showMaskGraphic = false;
+
+        var scrollContent = new GameObject("ScrollContent");
+        scrollContent.transform.SetParent(viewportObj.transform, false);
+        var scrollContentRect = scrollContent.AddComponent<RectTransform>();
+        scrollContentRect.anchorMin = new Vector2(0, 1);
+        scrollContentRect.anchorMax = new Vector2(1, 1);
+        scrollContentRect.pivot = new Vector2(0.5f, 1);
+        scrollContentRect.sizeDelta = new Vector2(0, 0);
+
+        var fitter = scrollContent.AddComponent<ContentSizeFitter>();
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        var text = scrollContent.AddComponent<Text>();
+        text.text = content;
+        text.fontSize = 36;
+        text.color = new Color(0.9f, 0.85f, 0.75f);
+        text.alignment = TextAnchor.UpperLeft;
+        text.font = GetFont(36);
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
+        text.lineSpacing = 1.4f;
+        text.raycastTarget = false;
+
+        var sr = textObj.AddComponent<ScrollRect>();
+        sr.content = scrollContentRect;
+        sr.viewport = viewportRect;
+        sr.horizontal = false;
+        sr.vertical = true;
+        sr.verticalScrollbar = scrollbar;
+        sr.scrollSensitivity = 40f;
+        sr.movementType = ScrollRect.MovementType.Clamped;
+
+        var closeBtnObj = new GameObject("CloseBtn");
+        closeBtnObj.transform.SetParent(panelObj.transform, false);
+        closeBtnObj.transform.SetAsLastSibling();
+        var closeRect = closeBtnObj.AddComponent<RectTransform>();
+        closeRect.anchorMin = new Vector2(0.5f, 0f);
+        closeRect.anchorMax = new Vector2(0.5f, 0f);
+        closeRect.anchoredPosition = new Vector2(0, 260);
+        closeRect.sizeDelta = new Vector2(422, 120);
+        var closeImg = closeBtnObj.AddComponent<Image>();
+        if (cancelBtnSprite != null)
+        {
+            closeImg.sprite = cancelBtnSprite;
+            closeImg.type = Image.Type.Simple;
+            closeImg.preserveAspect = false;
+        }
+        else
+        {
+            closeImg.color = new Color(0.35f, 0.3f, 0.22f);
+        }
+        var closeBtn = closeBtnObj.AddComponent<Button>();
+        closeBtnObj.AddComponent<ButtonHoverCursor>();
+        closeBtn.targetGraphic = closeImg;
+        closeBtn.onClick.AddListener(() => Destroy(dialogObj));
+
+        var closeTextObj = new GameObject("Text");
+        closeTextObj.transform.SetParent(closeBtnObj.transform, false);
+        var closeTextRect = closeTextObj.AddComponent<RectTransform>();
+        closeTextRect.anchorMin = Vector2.zero;
+        closeTextRect.anchorMax = Vector2.one;
+        closeTextRect.sizeDelta = Vector2.zero;
+        var closeText = closeTextObj.AddComponent<Text>();
+        closeText.text = "关闭";
+        closeText.fontSize = 32;
+        closeText.color = new Color(0.9f, 0.85f, 0.75f);
+        closeText.alignment = TextAnchor.MiddleCenter;
+        closeText.font = GetFont(32);
+    }
+
+    void ShowUserAgreementDialog()
+    {
+        ShowContentDialog("《铁路复兴：沙能冲击》用户协议",
+            "一、游戏说明\n" +
+            "本游戏为非商用免费独立游戏，由开发者'牛马东西'制作，\n" +
+            "仅供个人学习、娱乐和教育用途。\n\n" +
+            "二、知识产权\n" +
+            "1. 游戏代码以开源形式发布，遵循对应开源协议\n" +
+            "2. 游戏美术素材、音乐、文本内容的版权归原作者所有\n" +
+            "3. 未经许可不得将本游戏素材用于商业用途\n\n" +
+            "三、使用规则\n" +
+            "1. 禁止对本游戏进行反编译、逆向工程\n" +
+            "2. 禁止利用本游戏从事违法违规活动\n" +
+            "3. 禁止篡改游戏数据后进行传播\n\n" +
+            "四、免责声明\n" +
+            "1. 本游戏按'现状'提供，不保证无bug或完全兼容所有设备\n" +
+            "2. 因使用本游戏产生的任何直接或间接损失，开发者不承担责任\n" +
+            "3. 游戏内容均为虚构，与现实人物、公司、事件无关\n\n" +
+            "五、修改与更新\n" +
+            "开发者保留随时修改本协议的权利，修改后的协议将在游戏内公布。");
+    }
+
+    void ShowPrivacyPolicyDialog()
+    {
+        ShowContentDialog("《铁路复兴：沙能冲击》隐私政策",
+            "一、数据收集\n" +
+            "本游戏为纯单机游戏，不收集、不传输、不存储任何\n" +
+            "玩家个人信息到远程服务器。\n\n" +
+            "二、本地数据存储\n" +
+            "本游戏在您的设备本地存储以下数据：\n" +
+            "1. 账号信息（用户名、密码，仅保存在本地）\n" +
+            "2. 游戏存档进度\n" +
+            "3. 游戏设置（音量、画质等）\n" +
+            "上述数据仅保存在您的设备上，不会上传至任何服务器。\n\n" +
+            "三、第三方服务\n" +
+            "本游戏不接入任何第三方数据分析、广告或追踪服务。\n\n" +
+            "四、数据删除\n" +
+            "您可以通过以下方式删除所有本地数据：\n" +
+            "1. 游戏内'清除数据'功能\n" +
+            "2. 卸载游戏\n" +
+            "3. 手动删除游戏存档目录\n\n" +
+            "五、未成年人保护\n" +
+            "本游戏不收集任何个人信息，对所有年龄段用户一视同仁。\n\n" +
+            "六、联系方式\n" +
+            "如有疑问，请通过以下方式联系开发者：\n" +
+            "lihaixuan3@gmail.com");
+    }
+
     void CreateVersionText(Transform parent)
     {
         var versionObj = new GameObject("VersionText");
@@ -1088,25 +1970,67 @@ public class LoginManager : MonoBehaviour
     {
         isPasswordVisible = !isPasswordVisible;
 
-        // 先保存文本
         string saved = passwordInput.text;
 
-        // 切换类型
         passwordInput.contentType = isPasswordVisible
             ? InputField.ContentType.Standard
             : InputField.ContentType.Password;
 
-        // 清空并重新赋值，触发刷新
         passwordInput.text = "";
         passwordInput.text = saved;
 
-        // 更新眼睛图标
         if (togglePasswordButton != null)
         {
             var img = togglePasswordButton.GetComponent<Image>();
             if (img != null)
             {
                 img.sprite = isPasswordVisible ? eyeOpenSprite : eyeClosedSprite;
+            }
+        }
+    }
+
+    void OnToggleRegPassword()
+    {
+        isRegPasswordVisible = !isRegPasswordVisible;
+
+        string saved = regPasswordInput.text;
+
+        regPasswordInput.contentType = isRegPasswordVisible
+            ? InputField.ContentType.Standard
+            : InputField.ContentType.Password;
+
+        regPasswordInput.text = "";
+        regPasswordInput.text = saved;
+
+        if (toggleRegPasswordButton != null)
+        {
+            var img = toggleRegPasswordButton.GetComponent<Image>();
+            if (img != null)
+            {
+                img.sprite = isRegPasswordVisible ? eyeOpenSprite : eyeClosedSprite;
+            }
+        }
+    }
+
+    void OnToggleConfirmPassword()
+    {
+        isConfirmPasswordVisible = !isConfirmPasswordVisible;
+
+        string saved = confirmPasswordInput.text;
+
+        confirmPasswordInput.contentType = isConfirmPasswordVisible
+            ? InputField.ContentType.Standard
+            : InputField.ContentType.Password;
+
+        confirmPasswordInput.text = "";
+        confirmPasswordInput.text = saved;
+
+        if (toggleConfirmPasswordButton != null)
+        {
+            var img = toggleConfirmPasswordButton.GetComponent<Image>();
+            if (img != null)
+            {
+                img.sprite = isConfirmPasswordVisible ? eyeOpenSprite : eyeClosedSprite;
             }
         }
     }
@@ -1335,5 +2259,50 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerClick(PointerEventData eventData)
     {
         LoginManager.PlayClickSound();
+    }
+}
+
+public class ScrollAreaCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+    private static Texture2D scrollCursor;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (scrollCursor == null) scrollCursor = LoadScrollCursor();
+        if (scrollCursor != null)
+            Cursor.SetCursor(scrollCursor, new Vector2(scrollCursor.width / 2, scrollCursor.height / 2), CursorMode.ForceSoftware);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Cursor.SetCursor(LoginManager.GetArrowTexture(), Vector2.zero, CursorMode.ForceSoftware);
+    }
+
+    static Texture2D LoadScrollCursor()
+    {
+        byte[] pngData = File.ReadAllBytes(Path.Combine(Application.dataPath, "Resources/Cursors/cursor_resize_vertical.png"));
+        if (pngData == null || pngData.Length == 0) return null;
+
+        Texture2D src = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        src.LoadImage(pngData);
+        src.Apply();
+
+        int scale = 3;
+        int nw = src.width * scale;
+        int nh = src.height * scale;
+        Texture2D scaled = new Texture2D(nw, nh, TextureFormat.RGBA32, false);
+        Color[] srcPx = src.GetPixels();
+        Color[] dstPx = new Color[nw * nh];
+        for (int y = 0; y < nh; y++)
+        {
+            for (int x = 0; x < nw; x++)
+            {
+                dstPx[y * nw + x] = srcPx[(y / scale) * src.width + (x / scale)];
+            }
+        }
+        scaled.SetPixels(dstPx);
+        scaled.Apply();
+        Object.Destroy(src);
+        return scaled;
     }
 }
