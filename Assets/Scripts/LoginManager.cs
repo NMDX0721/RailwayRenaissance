@@ -669,7 +669,7 @@ public class LoginManager : MonoBehaviour
         btnReturnTextRect.anchorMax = Vector2.one;
         btnReturnTextRect.sizeDelta = Vector2.zero;
         var btnReturnTextComp = btnReturnTextObj.AddComponent<Text>();
-        btnReturnTextComp.text = "返回登录";
+        btnReturnTextComp.text = "手动登录";
         btnReturnTextComp.fontSize = 28;
         btnReturnTextComp.color = new Color(1f, 0.95f, 0.9f);
         btnReturnTextComp.alignment = TextAnchor.MiddleCenter;
