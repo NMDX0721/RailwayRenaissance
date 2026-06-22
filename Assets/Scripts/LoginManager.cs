@@ -658,7 +658,17 @@ public class LoginManager : MonoBehaviour
         btnReturnRect.anchoredPosition = new Vector2(0, -120);
         btnReturnRect.sizeDelta = new Vector2(280, 80);
         var btnReturnImg = btnReturnObj.AddComponent<Image>();
-        btnReturnImg.color = new Color(0.4f, 0.4f, 0.4f);
+        if (buttonSprite != null)
+        {
+            btnReturnImg.sprite = buttonSprite;
+            btnReturnImg.type = Image.Type.Simple;
+            btnReturnImg.preserveAspect = false;
+            btnReturnImg.color = new Color(0.5f, 0.5f, 0.5f);
+        }
+        else
+        {
+            btnReturnImg.color = new Color(0.4f, 0.4f, 0.4f);
+        }
         var btnReturnComp = btnReturnObj.AddComponent<Button>();
         btnReturnObj.AddComponent<ButtonHoverCursor>();
 
@@ -1564,14 +1574,14 @@ public class LoginManager : MonoBehaviour
         var warnRect = warnObj.AddComponent<RectTransform>();
         warnRect.anchorMin = new Vector2(0.5f, 0.5f);
         warnRect.anchorMax = new Vector2(0.5f, 0.5f);
-        warnRect.anchoredPosition = new Vector2(230, 0);
+        warnRect.anchoredPosition = new Vector2(260, 0);
         warnRect.sizeDelta = new Vector2(200, 32);
         var warnText = warnObj.AddComponent<Text>();
         warnText.text = "密码至少6位";
-        warnText.fontSize = 30;
+        warnText.fontSize = 26;
         warnText.color = new Color(0.9f, 0.3f, 0.2f, 0.9f);
         warnText.alignment = TextAnchor.MiddleLeft;
-        warnText.font = GetFont(30);
+        warnText.font = GetFont(26);
 
         passwordField.onValueChanged.AddListener(val =>
         {
