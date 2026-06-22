@@ -586,7 +586,7 @@ public class LoginManager : MonoBehaviour
             panelImg.color = new Color(0, 0, 0, 0.7f);
         }
 
-        var titleObj = CreateText(panel.transform, "Title", "自动登录", 34, new Color(0.94f, 0.82f, 0.38f), 190);
+        var titleObj = CreateText(panel.transform, "Title", "自动登录", 34, new Color(0.94f, 0.82f, 0.38f), 185);
         titleObj.rectTransform.sizeDelta = new Vector2(400, 60);
         titleObj.fontSize = 36;
 

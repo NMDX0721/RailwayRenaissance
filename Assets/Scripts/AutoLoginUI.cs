@@ -168,9 +168,6 @@ public class AutoLoginUI : MonoBehaviour
         progressText.text = Mathf.FloorToInt(percent * 100f) + "%";
         yield return new WaitForSeconds(holdTime);
     }
-        progressFill.fillAmount = to;
-        progressText.text = Mathf.RoundToInt(to * 100) + "%";
-    }
     
     void OnReturnLogin()
     {
