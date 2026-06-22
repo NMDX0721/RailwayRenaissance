@@ -67,7 +67,7 @@ public class AutoLoginUI : MonoBehaviour
         btnReturnLogin.gameObject.SetActive(true);
         btnResetAccount.gameObject.SetActive(false);
         progressFill.fillAmount = 0;
-        progressText.text = "0%";
+        progressText.text = "0.0%";
         
         switch (state)
         {
@@ -118,7 +118,7 @@ public class AutoLoginUI : MonoBehaviour
             elapsed += Time.deltaTime;
             float progress = Mathf.Lerp(from, to, elapsed / duration);
             progressFill.fillAmount = progress;
-            progressText.text = Mathf.RoundToInt(progress * 100) + "%";
+            progressText.text = (progress * 100f).ToString("F1") + "%";
             yield return null;
         }
         progressFill.fillAmount = to;
