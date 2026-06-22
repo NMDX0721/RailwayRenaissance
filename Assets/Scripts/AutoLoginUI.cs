@@ -94,19 +94,42 @@ public class AutoLoginUI : MonoBehaviour
     IEnumerator AutoLoginProcess()
     {
         subText.text = "正在检测本地凭证...";
-        yield return StartCoroutine(UpdateProgress(0f, 0.3f, 0.5f));
+        yield return StartCoroutine(UpdateProgress(0f, 0.2f, 1.0f));
+        
+        if (!File.Exists(authFilePath))
+        {
+            SetState(AutoLoginState.CredentialLost);
+            yield break;
+        }
         
         subText.text = "正在验证账号信息...";
-        yield return StartCoroutine(UpdateProgress(0.3f, 0.7f, 0.5f));
+        string json = File.ReadAllText(authFilePath);
+        var auth = JsonUtility.FromJson<LoginManager.AuthData>(json);
+        if (auth == null || string.IsNullOrEmpty(auth.username))
+        {
+            SetState(AutoLoginState.CredentialLost);
+            yield break;
+        }
+        yield return StartCoroutine(UpdateProgress(0.2f, 0.5f, 1.0f));
         
         subText.text = "正在加载用户数据...";
-        yield return StartCoroutine(UpdateProgress(0.7f, 0.95f, 0.5f));
+        yield return StartCoroutine(UpdateProgress(0.5f, 0.7f, 0.8f));
+        
+        subText.text = "正在预加载游戏资源...";
+        Resources.Load<Texture2D>("Textures/sunset_railway");
+        Resources.Load<Texture2D>("Textures/station_bg");
+        Resources.Load<AudioClip>("Audio/Train Through Keys");
+        Resources.Load<Sprite>("UI/Login/panel_bg");
+        Resources.Load<Sprite>("UI/Login/button_primary");
+        yield return StartCoroutine(UpdateProgress(0.7f, 0.9f, 1.2f));
+        
+        subText.text = "正在初始化系统...";
+        yield return StartCoroutine(UpdateProgress(0.9f, 1f, 0.6f));
         
         mainText.text = "登录成功";
-        subText.text = "";
-        yield return StartCoroutine(UpdateProgress(0.95f, 1f, 0.2f));
+        subText.text = "欢迎回来，" + auth.username;
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("TitleScreen");
     }
     
