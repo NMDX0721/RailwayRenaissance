@@ -30,7 +30,6 @@ public class AutoLoginUI : MonoBehaviour
     }
     
     private AutoLoginState currentState;
-    private bool isLoginComplete = false;
     private string authFilePath;
     
     void Start()
@@ -106,8 +105,6 @@ public class AutoLoginUI : MonoBehaviour
         mainText.text = "登录成功";
         subText.text = "";
         yield return StartCoroutine(UpdateProgress(0.95f, 1f, 0.2f));
-        
-        isLoginComplete = true;
         
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("TitleScreen");
