@@ -631,14 +631,12 @@ public class LoginManager : MonoBehaviour
         var progressFillObj = new GameObject("ProgressFill");
         progressFillObj.transform.SetParent(progressBgObj.transform, false);
         var progressFillRect = progressFillObj.AddComponent<RectTransform>();
-        progressFillRect.anchorMin = Vector2.zero;
-        progressFillRect.anchorMax = Vector2.one;
-        progressFillRect.sizeDelta = Vector2.zero;
+        progressFillRect.anchorMin = new Vector2(0f, 0f);
+        progressFillRect.anchorMax = new Vector2(0f, 1f);
+        progressFillRect.pivot = new Vector2(0f, 0.5f);
+        progressFillRect.sizeDelta = new Vector2(0, 0);
         var progressFillImg = progressFillObj.AddComponent<Image>();
         progressFillImg.color = new Color(1f, 0.42f, 0.21f);
-        progressFillImg.type = Image.Type.Filled;
-        progressFillImg.fillMethod = Image.FillMethod.Horizontal;
-        progressFillImg.fillAmount = 0f;
 
         var progressTextObj = new GameObject("ProgressText");
         progressTextObj.transform.SetParent(progressBgObj.transform, false);
@@ -745,8 +743,12 @@ public class LoginManager : MonoBehaviour
 
     void SetupAudio()
     {
+        var existingBgm = GameObject.Find("BGM");
+        if (existingBgm != null) return;
+
         var audioObj = new GameObject("BGM");
-        audioObj.transform.SetParent(transform, false);
+        audioObj.transform.SetParent(null);
+        DontDestroyOnLoad(audioObj);
         bgmSource = audioObj.AddComponent<AudioSource>();
         bgmSource.loop = true;
         bgmSource.volume = 0.3f;
@@ -872,6 +874,8 @@ public class LoginManager : MonoBehaviour
 
         auth.lastLogin = System.DateTime.Now.ToString("o");
         File.WriteAllText(authFilePath, JsonUtility.ToJson(auth, true));
+        PlayerPrefs.SetString("Username", auth.username);
+        PlayerPrefs.Save();
         ShowHint("登录成功！", true);
         Invoke("EnterGame", 1f);
     }
@@ -910,21 +914,17 @@ public class LoginManager : MonoBehaviour
             lastLogin = System.DateTime.Now.ToString("o")
         };
         File.WriteAllText(authFilePath, JsonUtility.ToJson(auth, true));
-        ShowHint("注册成功！正在跳转...", true);
         
         loginPanel.SetActive(false);
         registerPanel.SetActive(false);
         autoLoginPanel.SetActive(true);
         if (panelTitleObj != null) panelTitleObj.SetActive(false);
+        if (hintText != null) hintText.transform.parent.gameObject.SetActive(false);
         
         var autoLoginUI = autoLoginPanel.GetComponent<AutoLoginUI>();
         if (autoLoginUI != null)
         {
             autoLoginUI.StartAfterRegister();
-        }
-        else
-        {
-            Invoke("ShowLogin", 1.5f);
         }
     }
 
