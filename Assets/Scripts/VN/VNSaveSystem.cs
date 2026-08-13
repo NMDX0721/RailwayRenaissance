@@ -98,4 +98,42 @@ public class VNSaveSystem
     }
 
     public int MaxSlotCount => MaxSlots;
+
+    public static void SaveGame(int slotIndex)
+    {
+        // 保存VN进度
+        SaveData data = new SaveData();
+
+        // 保存经营数据
+        GameDataSaveData gameplay = new GameDataSaveData();
+        gameplay.money = GameData.GetMoney();
+        gameplay.trust = GameData.GetTrust();
+        gameplay.trainCondition = GameData.GetTrainCondition();
+        gameplay.expectedPassengers = GameData.GetExpectedPassengers();
+        gameplay.day = GameData.GetDay();
+
+        string json = JsonUtility.ToJson(gameplay);
+        PlayerPrefs.SetString("SaveSlot_" + slotIndex, json);
+        PlayerPrefs.Save();
+    }
+
+    public static bool LoadGame(int slotIndex)
+    {
+        string json = PlayerPrefs.GetString("SaveSlot_" + slotIndex, "");
+        if (string.IsNullOrEmpty(json)) return false;
+
+        GameDataSaveData data = JsonUtility.FromJson<GameDataSaveData>(json);
+        GameData.RestoreFromSave(data);
+        return true;
+    }
+}
+
+[System.Serializable]
+public class GameDataSaveData
+{
+    public int money;
+    public int trust;
+    public int trainCondition;
+    public int expectedPassengers;
+    public int day;
 }

@@ -213,6 +213,23 @@ public static class GameData
         return completedStoryGrants.Contains(grantId);
     }
 
+    // ===== 存档/读档支持 =====
+
+    public static int GetMoney() { return Money; }
+    public static int GetTrust() { return Trust; }
+    public static int GetTrainCondition() { return TrainCondition; }
+    public static int GetExpectedPassengers() { return ExpectedPassengers; }
+    public static int GetDay() { return Day; }
+
+    public static void RestoreFromSave(GameDataSaveData data)
+    {
+        Money = data.money;
+        Trust = data.trust;
+        TrainCondition = data.trainCondition;
+        ExpectedPassengers = data.expectedPassengers;
+        Day = data.day;
+    }
+
     // ===== 初始化 =====
 
     public static void InitializeIfNeeded()
