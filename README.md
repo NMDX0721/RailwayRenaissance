@@ -50,7 +50,7 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 - **Five interlocking trendlines** — trust, fiscal health, sand penetration, political pressure, infrastructure decay — shift slowly behind the scenes. Each is cross-linked to the others; cross a threshold, and the world changes irreversibly.
 - **A data-driven sand-standard economy** — every price, wage, and subsidy traces back to a documented formula; the [formula sheet](docs/compose/specs/跨系统联动公式.md) ties it all together.
-- **A schedule that learns from the line itself** — the game's dispatch system is built around the in-world **Ri Dispatch Algorithm (RDA)**, developed at Kim Il Sung University's Laboratory of Intelligent Dispatch Systems. It reads real-time passenger flow against line load to find the routing that keeps the line alive — not a cheat, but the protagonist's own research made playable.
+- **A self-developed dispatch algorithm** — the **Ri Dispatch Algorithm (RDA)** is a dynamic path optimization method developed at Kim Il Sung University's Laboratory of Intelligent Dispatch Systems, coupling real-time passenger flow with line load. It serves as the underlying logic for the game's scheduling and economy systems: passenger forecasting, capacity allocation, and punctuality calculations all derive from its core approach.
 - **An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks.
 - **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it.
 - **Story as life-support** — pure operations lose money from the start; narrative relief is what keeps the railway breathing.
