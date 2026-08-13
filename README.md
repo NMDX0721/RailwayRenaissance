@@ -50,7 +50,7 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 - **Five interlocking trendlines** — trust, fiscal health, sand penetration, political pressure, infrastructure decay — shift slowly behind the scenes. Each is cross-linked to the others; cross a threshold, and the world changes irreversibly.
 - **A data-driven sand-standard economy** — every price, wage, and subsidy traces back to a documented formula; the [formula sheet](docs/compose/specs/跨系统联动公式.md) ties it all together.
-- **A custom dispatch algorithm** — the in-fiction **Ri Dispatch Algorithm (RDA)** governs adaptive scheduling under variable demand, mirroring how crew assignment and line pressure actually teach you the game.
+- **A schedule that learns from the line itself** — the game's dispatch system is built around the in-world **Ri Dispatch Algorithm (RDA)**, developed at Kim Il Sung University's Laboratory of Intelligent Dispatch Systems. It reads real-time passenger flow against line load to find the routing that keeps the line alive — not a cheat, but the protagonist's own research made playable.
 - **An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks.
 - **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it.
 - **Story as life-support** — pure operations lose money from the start; narrative relief is what keeps the railway breathing.
@@ -61,9 +61,9 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 ## The People
 
-Five stubborn souls — a retired stationmaster, a mechanical engineer, a village heart, a railway engineer, a volunteer — each with four skills, a fatigue meter, and a will of their own. Who sits in which seat changes your accident math and your bottom line.
+You never run the line alone. Crew — furrowed with skills, fatigue meters, and wills of their own — start as a stubborn handful and grow as the world does: new arrivals, retirees, apprentices pulled into stories as they're told.
 
-*Full crew profiles and skill trees: [Character Profiles](参考资料/角色设定.md)*
+*Full crew profiles and the growth system: [Character Profiles](参考资料/角色设定.md)*
 
 ## The Long Game
 
