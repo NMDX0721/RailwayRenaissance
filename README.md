@@ -2,52 +2,154 @@
 
 > ***English** | [简体中文](README.zh-CN.md)*
 
-A hardcore pixel-art railway management sim with Visual Novel storytelling — built with Unity 6.
+**A hardcore railway revival sim meets visual novel — where the world abandoned trains for flying sand-cars, and you're the last one keeping the rails alive.**
+
+Unity 6 · 2D pixel art · Simulation / Management / Visual Novel
 
 ---
 
-### 🖼️ Laboratory of Intelligent Dispatch Systems
+## 🖼️ Opening Scene: April 18, 2076
 
 ![Laboratory Interior](Assets/Resources/bg/lab.jpg)
 
 *Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems, April 18, 2076*
 
-Kim Il Sung University has been ranked first in the **Juche University Evaluation System (JUES)** for twenty-three consecutive years, and simultaneously holds the top position in the **QS World University Rankings** — making it the only institution in the world to lead two fundamentally different evaluation systems. The university's flagship Laboratory of Intelligent Dispatch Systems is a designated National Key Laboratory, operating under the dual purview of the State Academy of Sciences and the Ministry of Railways.
+The year the world gave up on railways.
 
-The laboratory's primary research direction — dynamic path optimization using real-time passenger flow data — is a field in which the university has held uninterrupted global leadership since the 2060s. Its computational infrastructure includes a dedicated simulation cluster originally developed for the national railway dispatch network, later expanded for academic research following the 2072 rail realignment.
+Kim Il Sung University — ranked **first in the Juche University Evaluation System (JUES) for 23 straight years**, and simultaneously **#1 in the QS World University Rankings** — is the only institution on Earth leading two fundamentally different evaluation systems at once. Its Laboratory of Intelligent Dispatch Systems is a National Key Laboratory under the dual purview of the State Academy of Sciences and the Ministry of Railways.
 
-The current lead researcher, Lin Biaohan, is an honor graduate fellow. His work on Ri Dispatch Algorithm (RDA) adaptive scheduling under variable-demand conditions has been recognized by the International Institute of Transport Economics. The laboratory occupies the east wing of the Ri Sung-gi Memorial Research Complex, with windows facing south toward the Taedong River.
+The lab's research direction — dynamic path optimization on real-time passenger flow — has led the field globally since the 2060s. Its computational backbone is a simulation cluster originally built for the national railway dispatch network, repurposed for academia after the 2072 rail realignment.
 
-On his desk, beside the terminal, lies a worn copy of a railway engineering handbook. The cover page bears a faded inscription: *"For Biaohan — Grandpa."*
+Our protagonist, Lin Biaohan, is an honor graduate fellow whose work on the **Ri Dispatch Algorithm (RDA)** — adaptive scheduling under variable demand — has been cited by the International Institute of Transport Economics. The lab sits in the east wing of the Ri Sung-gi Memorial Research Complex, windows facing the Taedong River.
+
+On the desk, beside the terminal, a worn railway engineering handbook. The flyleaf reads: *"For Biaohan — Grandpa."*
+
+> **Three days later, he would abandon this room to revive a dead line in a mountain village called Wufeng — roughly 2,500 km and one impossible bet away.**
 
 ---
 
 ## 🎮 The Game
 
-### Story
+### The Hook
 
-> 2076. Sand-powered flying vehicles have rendered railways obsolete. You inherit a abandoned line in the remote village of Wufeng from your grandfather. Restore the railway, win back the community's trust, and fight against the Sand-Tech monopoly.
+**2076.** Sand-powered flying vehicles killed the railways — 78% of passenger volume gone, 30 nations dissolved their state rail systems, and by 2072 the global network was effectively dead.
+
+But sand-cars have six fatal flaws: no heavy freight, dies in storms, short range, weak at night, sand-hungry, and dependent on an air-traffic grid. The railways' six strengths are the mirror image.
+
+You inherit grandpa's abandoned line in Wufeng — a misty tea village in China's central hills. **Pure operations lose money from day one. The story is your life-support.** Survive, rebuild, and decide what the railway becomes: a lifeline, a monument, or a weapon against the Sand-Tech monopoly.
 
 ### World
 
-The discovery of sand energy technology in 2050 reshaped global order. Britain's initial invention was acquired and industrialized by the Democratic People's Republic of Korea, which held the world's largest sand reserves. The 2053 commercial launch of the "Sand Flying Pig" — the first mass-produced sand-energy vehicle — marked the beginning of a new era. By 2063, second-generation vehicles had penetrated every tier of transport, and by 2072, the global railway network had effectively ceased operation.
+Sand energy was invented in Britain in 2050. The DPRK — holding the planet's largest sand reserves — bought the technology in 2051 and industrialized it. By 2076 the DPRK is the world's sole superpower: sand exports, a sand tank called "Kim Jong-un Great Sand Type," and a globe-spanning monopoly, the **United Sand Energy Corporation (USET)** — publicly a joint venture, privately a state enterprise; internally known as the "first company."
 
-In this world, the DPRK emerged as the world's leading superpower, its economy driven by sand energy exports and military applications — including the "Kim Jong-un Great Sand Type" tank. The United States ranks second, China third. Kim Il Sung University, located in the capital Pyongyang, has been ranked first in the **Juche University Evaluation System (JUES)** for twenty-three consecutive years, and simultaneously holds the top position in the **QS World University Rankings** — making it the only institution in the world to lead two fundamentally different evaluation systems simultaneously.
+Somewhere beneath it all, the railways wait.
 
-### Gameplay
+---
 
-- **Hardcore Economy** — Operations lose money at first. Story missions keep you alive. Every decision matters.
-- **Slow-Paced Strategy** — The world runs continuously. You observe trends, make long-term choices, face irreversible consequences.
-- **Sand-Tech Rival** — An AI-driven competitor that actively campaigns, price-wars, and tries to acquire your lines.
-- **Crew Management** — 5 unique characters with skills, fatigue, training, and role assignments.
-- **Tech Tree** — 3 mutually exclusive branches (Industrial / Ecological / Automation).
-- **Political Cycles** — Local government shifts between Authoritarian, Market, and Welfare orientations.
-- **Story-Driven** — Prologue as Visual Novel, then transitions into management gameplay with ongoing narrative events.
-- **Random Events** — 10+ event templates: economic shifts, weather, personnel, Sand-Tech actions.
+## ⚙️ Core Systems (the hardcore part)
 
-### Screenshots
+### Five Interlocking Trendlines
 
-*(Coming soon — game is in active development)*
+The world is driven by **five slowly-shifting trendlines**, hidden from the player until they cross their thresholds:
+
+| Trendline | Meaning | What pushes it |
+|-----------|---------|----------------|
+| **公 Trust** | Public faith in your railway | Accidents tank it; punctual service restores it |
+| **公 Fiscal** | Your financial health | Losses accumulate; story grants bail you out |
+| **公 Sand Penetration** | USET's market share in each city | Ads and price wars raise it; your PR lowers it |
+| **公 Political Pressure** | Government scrutiny | Accidents raise it; public goodwill lowers it |
+| **公 Infrastructure Decay** | Wear on your line | Time raises it; maintenance lowers it |
+
+Each one is a slow current — until it crosses a threshold, and **the world changes irreversibly**.
+
+### Three-Layer Time Structure
+
+```
+Layer 1 — Continuous world   Trains run, platforms fill, seasons pass. You can watch, or not.
+Layer 2 — Hidden settlement   Every game-day: revenue, fuel, wear, fatigue, all 5 trendlines, thresholds.
+Layer 3 — Decision windows    Rare, heavy: a news break, a policy shift, a bet you can't take back.
+```
+
+You don't click your way through. You *oversee*.
+
+### Four Long-Term Strategies
+
+Every line lives by a stance — switching costs 30 days and real money:
+
+1. **Line posture** — 民生 Line (stable, watched by politics) / Commercial / Tourist / Marginal
+2. **Maintenance policy** — Belt-tightening / Standard / Over-maintained
+3. **Crew policy** — Train, outsource, or squeeze
+4. **Stance toward USET** — Resist / Interconnect / Collaborate
+
+### Irreversible Consequences
+
+| Trigger | Consequence | How bad? |
+|---------|-------------|----------|
+| Trust < 30 for 30 days | **Generational rift**: new residents simply never ride | Nearly permanent |
+| Sand penetration > 55% | USET takes your key line | Requires law/politics to undo |
+| Political pressure > 70% | Government takes over operations | Needs trust rebuilt |
+| Infrastructure decay > 80% | Line scrapes into scrap; rebuild costs 10× | Ruinously expensive |
+| One missed conversation | A grant, an ally, a lever — gone | Never returns |
+
+*The game remembers what you skip.*
+
+### The Numbers (no hand-waving)
+
+Every subsystem is a real formula, cross-linked in [the formula spec](docs/compose/specs/跨系统联动公式.md):
+
+```
+Daily passengers = population × 0.001 × (0.5 + trust × 0.005)
+                   × season × (1 − sandPenetration) × (1 + conductorLvl × 0.03)
+
+Daily fuel cost   = 58.5 L/100km × 92 km ÷ 100 × (1 + (100 − condition)/200) × 15 sand/L
+
+Accident prob.    = 0.5% × ageFactor × driverSkillFactor × maintenanceFactor × weatherFactor
+
+Trust delta       = +0.014/day (smooth ops) − 0.08 × severity (accident) − 0.03 (sand ads)
+```
+
+**Worked example — Wufeng line, month one (normal difficulty):**
+
+| Item | Value |
+|------|-------|
+| Start capital | 40,000 sand |
+| Passenger revenue | 12,600 sand/mo (~20% occupancy) |
+| Freight + misc | 4,500 sand/mo |
+| Salaries (5 crew) | 90,000 sand/mo ← **68% of all costs** |
+| Fuel + maintenance | ~39,000 sand/mo |
+| **Pure operating loss** | **~−107,000 sand/mo** |
+
+You cannot out-earn that. You can only out-story it. Prologue grants inject ~63,000 sand; monthly story events add 5,000–15,000. Breakeven is a **5-car train at 75% occupancy** — roughly month twelve. Until then, every sand is a story told well or a railway that quietly dies.
+
+---
+
+## 🎭 Characters (5 crew, 4 skills each)
+
+Retired railway people too stubborn to quit, a village too proud to forget:
+
+| Crew | Age | Core skill | Why it matters |
+|------|-----|-----------|----------------|
+| **老陈** — last stationmaster | 68 | Driving (Lv5) | The mentor. Zero accident record. |
+| **张工** — retired mechanical engineer | 62 | Repair (Lv5) | Keeps the locomotive alive. |
+| **李阿姨** — village heart | 55 | Service (Lv2) | Passenger satisfaction multiplier. |
+| **赵师傅** — retired railway engineer | 55 | Management (Lv4) | Keeps the schedule on time. |
+| **小芳** — volunteer | 45 | Service (Lv1) | Raw potential, needs training. |
+
+Crew aren't stat blocks: fatigue accumulates, skills grow slowly, and who you put on the seat changes your accident math and your bottom line. Your 王小弟 — the local kid fresh out of university — has the highest ceiling in driving, if you dare to let him near the throttle.
+
+---
+
+## 🗺️ Progression (the long game)
+
+```
+序章 Visual Novel (Day 0–4)  →  Survival (months 1–2)  →  Stability (3–4)
+→ Growth (5–8)  →  Breakthrough (9–12, near-breakeven)  →  Development (12+)
+→ unlock new lines, cities, and eventually the national network
+```
+
+- **3-branch tech tree** — Industrial / Ecological / Automation, mutually exclusive. Pick carefully; the road not taken locks forever.
+- **Political cycles** — local government swings between Authoritarian / Market / Welfare, each changing your subsidy math and your room to maneuver.
+- **10+ random events** — oil spikes, storms, staff illness, holiday crowds, USET ad blitzes.
 
 ---
 
@@ -64,19 +166,15 @@ In this world, the DPRK emerged as the world's leading superpower, its economy d
 git clone https://github.com/NMDX721/RailwayRenaissance.git
 ```
 
-Open in Unity Hub:
-
-1. Launch Unity Hub → **Add** → **Add project from disk**
-2. Select the cloned directory
-3. Open with Unity 6000.4.6f1
+Open in Unity Hub → **Add project from disk** → select the folder → Open with Unity 6000.4.6f1.
 
 ### Scenes
 
-| Scene | Description |
-|-------|-------------|
+| Scene | What it is |
+|-------|-----------|
 | `Scenes/Login.unity` | Login screen |
 | `Scenes/TitleScreen.unity` | Title screen (video background) |
-| `Scenes/VN_Test.unity` | Visual Novel prologue |
+| `Scenes/VN_Test.unity` | Visual Novel prologue (Day 0–4) |
 | `Scenes/StationSlice_V1.unity` | Station management gameplay |
 
 ---
@@ -85,16 +183,18 @@ Open in Unity Hub:
 
 ```
 Assets/
-├── Scripts/           # C# source code
-│   ├── VN/            # Visual Novel system
-│   ├── GameData.cs    # Economy simulation
-│   ├── CrewManager.cs # Staff management
-│   ├── EventManager.cs# Random events
-│   ├── SandRivalManager.cs  # Sand-Tech AI
+├── Scripts/           # C# source
+│   ├── VN/            # Visual Novel engine (JSON-driven)
+│   ├── GameData.cs    # Economy simulation (all formulas)
+│   ├── CrewManager.cs # Crew, skills, fatigue
+│   ├── EventManager.cs# Random events + events.json
+│   ├── SandRivalManager.cs  # USET AI (penetration, campaigns)
+│   ├── TutorialManager.cs   # Progressive onboarding
 │   └── ...
 ├── Resources/
-│   ├── Scripts/       # VN JSON scripts (prologue_01~10)
+│   ├── Scripts/       # VN scripts (prologue_01 ~ prologue_10)
 │   ├── events.json    # Event templates
+│   ├── bg/            # Backgrounds (1920×1080)
 │   └── characters/    # Character sprites
 ├── Scenes/            # Unity scenes
 └── Documentation/     # Design docs
@@ -102,62 +202,43 @@ Assets/
 
 ---
 
-## 🛠 Technical Details
-
-### Tech Stack
+## 🛠 Tech Stack
 
 | Component | Technology |
 |-----------|-----------|
 | Engine | Unity 6000.4.6f1 (Unity 6) |
 | UI | UI Toolkit (VN/Title) + uGUI (Login) |
-| VN System | JSON-driven, data-driven dialogue |
+| VN System | JSON-driven, fully data-driven dialogue |
 | Save System | PlayerPrefs + JSON serialization |
-| AI (future) | Template-based (phase 1), llama.cpp (phase 2) |
+| AI (future) | Template-based (phase 1) → llama.cpp (phase 2) |
+| Platforms | Windows (primary) · Android (planned) |
 
 ### Design Documents
 
 | Document | Description |
 |----------|-------------|
-| [Game Design Doc](参考资料/游戏开发文档.md) | Master index for all design docs |
-| [Economy System](参考资料/经济系统.md) | Economy model v4.0 |
-| [Character Profiles](参考资料/角色设定.md) | Character bios & skill system |
-| [World Lore & Vehicles](参考资料/世界观与车辆设定.md) | World setting & vehicle specs |
-| [Core Gameplay Loop](docs/compose/specs/核心玩法循环.md) | Gameplay loop design |
-| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | All formula definitions |
-| [Tech Tree](docs/compose/specs/科技树设计.md) | 3-branch tech tree |
-| [Sand-Tech Rival System](docs/compose/specs/沙能竞争系统设计.md) | Sand-Tech AI behavior |
-
-### Key Formulas
-
-- **Daily passenger flow**: `population × 0.001 × (0.5 + trust × 0.005) × (1 - sandPenetration) × (1 + conductorLevel × 0.03)`
-- **Daily fuel cost**: `58.5 × 92km / 100 × (1 + (100 - trainCondition) / 200) × 15 sand/升`
-- **Accident probability**: `0.5% × ageFactor × driverSkillFactor × maintenanceFactor × weatherFactor`
-- **Trust change**: `normalOps(+0.014/day) - accident(0.08×severity) - sandAds(0.03)`
+| [Game Design Doc](参考资料/游戏开发文档.md) | Master index of all design docs |
+| [Economy System v4.0](参考资料/经济系统.md) | Real-data-based economy, break-even math |
+| [World Lore & Timeline](参考资料/世界观扩展设定.md) | USET history, sand-standard currency, the timeline |
+| [Character Profiles](参考资料/角色设定.md) | Bios, skill trees, salary tables |
+| [Core Gameplay Loop](docs/compose/specs/核心玩法循环.md) | The 3-layer time model & trendlines |
+| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Every formula, cross-linked |
+| [Tech Tree](docs/compose/specs/科技树设计.md) | 3 exclusive branches |
+| [Sand-Tech Rival](docs/compose/specs/沙能竞争系统设计.md) | USET's campaign AI |
+| [Story Timeline](参考资料/故事线时间轴.md) | 2050–2076, verified continuity |
 
 ---
 
 ## 📊 Development Status
 
 ```
-Phase 1: Design docs fix        ✅ Complete
-Phase 2: Code implementation    ✅ Complete (11/11 tasks)
-Phase 3: Asset generation       ⏳ Pending
-Phase 4: Integration & polish   ⏳ Pending
+Phase 1: Design docs & world-lore ✅ Complete
+Phase 2: Code (11/11 tasks)        ✅ Complete
+Phase 3: Asset generation          ⏳ In progress
+Phase 4: Integration & polish      ⏳ Planned
 ```
 
-### Phase 2 Tasks
-
-| Task | Status |
-|------|--------|
-| Prologue JSON scripts (scenes 07-10) | ✅ |
-| VN→Gameplay transition system | ✅ |
-| Economy simulation with formulas | ✅ |
-| Crew management system | ✅ |
-| Random event system (10 events) | ✅ |
-| Sand-Tech rival AI | ✅ |
-| Tutorial system | ✅ |
-| Unified save/load system | ✅ |
-| Term glossary system | ✅ |
+**Implemented so far:** prologue JSON scripts (scenes 01–10) · VN→gameplay bridge · full economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary.
 
 ---
 
@@ -165,8 +246,8 @@ Phase 4: Integration & polish   ⏳ Pending
 
 [MIT](LICENSE) © 2026 NMDX721
 
-A permissive open-source license: you can use, copy, modify, and distribute this software freely, as long as you keep the copyright notice. No warranty provided.
+Free to use, copy, modify, distribute — keep the copyright notice. No warranty.
 
 ---
 
-*Inspired by 「まいてつ」(Maitetsu) and Stardew Valley.*
+*Inspired by 「まいてつ」(Maitetsu) and Stardew Valley. Built by a high-school student with unreasonable ambitions.*
