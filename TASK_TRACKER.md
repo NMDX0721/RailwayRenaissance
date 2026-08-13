@@ -1,16 +1,39 @@
-# Task Tracker - AI Development Workflow
+# Task Tracker - 铁路复兴：沙能冲击
 
-## Overview
+> 文职统筹（我）↔ 编码助手（AI）
 
-This document tracks all tasks for completing the RailwayRenaissance project. Divided into design doc fixes, content creation, and asset generation.
+## 双角色协作
 
-**Workflow**: Fix design → Create content → Generate assets → Implement in Unity
+| 角色 | 职责 |
+|------|------|
+| **文职统筹** | 任务规划 → 编写指令 → 验收交付 → 版本管理 |
+| **编码助手** | 按指令编写C#代码 → 创建JSON数据 → 运行编译验证 |
 
-**Current Status**: 🟡 Phase 2: Content Implementation (Code)
+## 任务分派队列
 
----
+### 🟢 待分派（Round 1）
 
-## Task List
+| 任务 | 优先级 | 参考文档 | 说明 |
+|------|--------|---------|------|
+| **T1** 序章JSON (prologue_07~09) | P0 | 序章后续剧情设计.md §5-7 | 5个JSON文件，~500行 |
+| **T3** 经济系统Unity实现 | P0 | 跨系统联动公式.md | 改GameData.cs，约200行 |
+
+### 🟡 待分派（Round 2，依赖T1）
+
+| 任务 | 优先级 | 依赖 |
+|------|--------|------|
+| **T2** VN→经营过渡 | P0 | T1完成 |
+| **T4** 人员养成系统 | P1 | - |
+| **T5** 随机事件系统 | P1 | T3完成 |
+
+### 🔵 待分派（Round 3）
+
+| 任务 | 优先级 | 说明 |
+|------|--------|------|
+| T6 沙能竞争系统 | P1 | 代码约120行 |
+| T7 教程引导 | P2 | 改UIManager |
+| T8 统一存档 | P2 | 改VNSaveSystem |
+| T9 术语高亮 | P2 | 新建系统 |
 
 ### Phase 0: Design Document Fixes (✅ 完成)
 
