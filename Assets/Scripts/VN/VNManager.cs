@@ -612,7 +612,7 @@ public class VNManager : MonoBehaviour
             dialogueBox?.ShowDialogue(entry.s, entry.text);
 
             if (entry.chars != null && entry.chars.Length > 0)
-                characterSpriteManager?.UpdateDisplay(entry.chars);
+                characterSpriteManager?.UpdateDisplay(entry.chars, entry.e);
 
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }

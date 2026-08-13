@@ -7,11 +7,9 @@ public class CharacterSpriteManager : MonoBehaviour
     private VisualElement slotLeft;
     private VisualElement slotCenter;
     private VisualElement slotRight;
-    private Font gameFont;
 
     public void Init(UIDocument document)
     {
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         var root = document.rootVisualElement;
 
         container = new VisualElement { name = "character-container" };
@@ -48,23 +46,32 @@ public class CharacterSpriteManager : MonoBehaviour
         return slot;
     }
 
-    public void UpdateDisplay(CharacterEntry[] chars)
+    public void UpdateDisplay(CharacterEntry[] chars, string emotion)
     {
         if (chars == null || chars.Length == 0)
             return;
 
-        // Clear all slots first
         ClearAll();
 
         foreach (var entry in chars)
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
 
-            var tex = Resources.Load<Texture2D>("characters/" + entry.name);
+            // Load: characters/{name}_{emotion}.png  or  characters/{name}.png (fallback)
+            string texPath = string.IsNullOrEmpty(emotion)
+                ? "characters/" + entry.name
+                : "characters/" + entry.name + "_" + emotion;
+
+            var tex = Resources.Load<Texture2D>(texPath);
             if (tex == null)
             {
-                Debug.LogWarning("[VN Characters] Sprite not found: " + entry.name);
-                continue;
+                // Fallback to default
+                tex = Resources.Load<Texture2D>("characters/" + entry.name);
+                if (tex == null)
+                {
+                    Debug.LogWarning("[VN Characters] Sprite not found: " + texPath);
+                    continue;
+                }
             }
 
             var slot = GetSlotForPosition(entry.pos);
@@ -72,7 +79,6 @@ public class CharacterSpriteManager : MonoBehaviour
 
             slot.style.backgroundImage = new StyleBackground(tex);
             slot.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
-
             PositionSlot(slot, entry.pos, chars.Length);
         }
     }
