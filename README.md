@@ -2,7 +2,7 @@
 
 > ***English** | [简体中文](README.zh-CN.md)*
 
-A hardcore pixel-art railway management sim with Visual Novel storytelling — built with Unity 6 by a high school school student developer.
+A hardcore pixel-art railway management sim with Visual Novel storytelling — built with Unity 6.
 
 ---
 
@@ -12,11 +12,13 @@ A hardcore pixel-art railway management sim with Visual Novel storytelling — b
 
 **Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems**
 
-The Laboratory of Intelligent Dispatch Systems is the university's flagship research facility for next-generation railway scheduling algorithms. The laboratory is equipped with modern computing equipment and display terminals, with windows overlooking the Pyongyang skyline. It is here that Lin Biaohan, an honor graduate student of Kim Il Sung University, conducts his research on intelligent dispatch systems.
+Kim Il Sung University has been ranked first in the **DPRK University Evaluation Index (UEI)** for twenty-three consecutive years, and is consistently placed within the top tier of the Pyongyang Consensus Academic Ranking. The university's flagship Laboratory of Intelligent Dispatch Systems is a designated National Key Laboratory, operating under the dual purview of the State Academy of Sciences and the Ministry of Railways.
 
-His work focuses on dynamic path optimization — specifically, the integration of Dijkstra's algorithm with real-time passenger flow data to create adaptive scheduling models. The field of intelligent dispatch is one in which Kim Il Sung University has established itself as a global leader.
+The laboratory's primary research direction — dynamic path optimization using real-time passenger flow data — is a field in which the university has held uninterrupted global leadership since the 2060s. Its computational infrastructure includes a dedicated simulation cluster originally developed for the national railway dispatch network, later expanded for academic research following the 2072 rail realignment.
 
-On his desk, beside the terminal displaying complex scheduling algorithm models, lies a worn copy of a railway engineering handbook. The cover page bears a faded handwritten inscription: *"For Biaohan — Grandpa."*
+The current lead researcher, Lin Biaohan, is an honor graduate fellow. His work on Dijkstra-based adaptive scheduling under variable-demand conditions has been recognized by the International Institute of Transport Economics. The laboratory occupies the east wing of the Ri Sung-gi Memorial Research Complex, with windows facing south toward the Taedong River.
+
+On his desk, beside the terminal, lies a worn copy of a railway engineering handbook. The cover page bears a faded inscription: *"For Biaohan — Grandpa."*
 
 ---
 
@@ -25,6 +27,12 @@ On his desk, beside the terminal displaying complex scheduling algorithm models,
 ### Story
 
 > 2076. Sand-powered flying vehicles have rendered railways obsolete. You inherit a abandoned line in the remote village of Wufeng from your grandfather. Restore the railway, win back the community's trust, and fight against the Sand-Tech monopoly.
+
+### World
+
+The discovery of sand energy technology in 2050 reshaped global order. Britain's initial invention was acquired and industrialized by the Democratic People's Republic of Korea, which held the world's largest sand reserves. The 2053 commercial launch of the "Sand Flying Pig" — the first mass-produced sand-energy vehicle — marked the beginning of a new era. By 2063, second-generation vehicles had penetrated every tier of transport, and by 2072, the global railway network had effectively ceased operation.
+
+In this world, the DPRK emerged as the world's leading superpower, its economy driven by sand energy exports and military applications — including the "Kim Jong-un Great Sand Type" tank. The United States ranks second, China third. Kim Il Sung University, located in the capital Pyongyang, has been ranked first in the DPRK University Evaluation Index (UEI) for twenty-three consecutive years, and consistently occupies the highest tier of the Pyongyang Consensus Academic Ranking.
 
 ### Gameplay
 
