@@ -44,20 +44,20 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 | **Political Pressure** | How closely government is watching |
 | **Infrastructure Decay** | Wear on your line, station by station |
 
-## Methods & Architecture
+## Core Systems
 
-**A world that runs on its own** — trains move, platforms fill, seasons pass. Decisions arrive rarely, and weigh heavily — because the simulation beneath is real, not cosmetic:
+**A simulation that runs on its own** — trains move, platforms fill, seasons pass. Below the surface, a set of real formulae drives everything:
 
+- **Economic simulation engine** — passenger flow, fuel, wages, maintenance, accident probability, and trust are each governed by a documented formula. Revenue minus cost is a real number, not a scripted curve. The [formula sheet](docs/compose/specs/跨系统联动公式.md) ties every variable together.
 - **Five interlocking trendlines** — trust, fiscal health, sand penetration, political pressure, infrastructure decay — shift slowly behind the scenes. Each is cross-linked to the others; cross a threshold, and the world changes irreversibly.
-- **A data-driven sand-standard economy** — every price, wage, and subsidy traces back to a documented formula; the [formula sheet](docs/compose/specs/跨系统联动公式.md) ties it all together.
-- **RDA — Railway Decision Assistant** — a self-developed architecture that couples real-time passenger flow with line load to forecast demand, allocate capacity, and calculate punctuality. In-universe, it began as a research project at Kim Il Sung University's intelligent dispatch lab; protagonist Lin Biaohan's own improved version now runs on the school server and can be reached from his phone. In gameplay, it's the underlying logic that makes the scheduling board and economy model tick.
-- **An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks.
-- **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it.
-- **Story as life-support** — pure operations lose money from the start; narrative relief is what keeps the railway breathing.
+- **Probability-driven event system** — ten event templates (economic shocks, weather, personnel incidents, rival actions) fire based on real probability rolls with cooldowns, so no two playthroughs experience the same rhythm.
+- **Crew AI with fatigue, loyalty, and growth** — each crew member has four skill tracks, an fatigue meter, and a loyalty value. Who sits in which seat changes your accident math and your bottom line.
+- **A rival that plays the long game** — USET maintains a per-city penetration value that grows naturally and accelerates through campaigns. Every 30 days it picks an action; respond or lose ground.
+- **Story as life-support** — pure operations lose money from the start. Narrative relief grants are the cash flow that keeps the railway breathing until you can stand on your own.
 
-**Deeply embedded AI** — the visual novel runs in three modes: preset dialogue, free-form AI conversation, and a hybrid of both. A configurable provider layer (MiMo / GPT / local model) routes requests; each character carries its own personality, speaking style, favorability thresholds, and memory. Characters don't just react — they remember what you've done, and how they feel about you changes what they'll say. story beats can be generated on the fly, grounded in your world state.
+**Deeply embedded AI** — the visual novel runs in three modes: preset dialogue, free-form AI conversation, and a hybrid of both. A configurable provider layer (MiMo / GPT / local model) routes requests; each character carries its own personality, speaking style, favorability thresholds, and memory. Characters don't just react — they remember what you've done, and how they feel about you changes what they'll say. Story beats can be generated on the fly, grounded in your world state. The plan includes a phone-based assistant — a separate application layer powered by the player's own API key, wrapped in the narrative of remote access to the university server.
 
-*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI Integration](docs/compose/specs/AI系统实现计划.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
+*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI System Plan](docs/compose/specs/AI系统实现计划.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
 
 ## The People
 
