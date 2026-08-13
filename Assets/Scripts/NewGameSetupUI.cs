@@ -12,7 +12,7 @@ public class NewGameSetupUI : MonoBehaviour
     private System.Action onConfirmed;
 
     private readonly string[] difficultyKeys = { "easy", "normal", "hard", "custom" };
-    private readonly string[] difficultyLabels = { "司炉（简单）", "副司机（普通）", "司机（困难）", "指导司机（自定义）" };
+    private readonly string[] difficultyLabels = { "司炉", "副司机", "司机", "指导司机" };
     private readonly Button[] difficultyButtons = new Button[4];
     private int selectedDifficulty = 1;
 
@@ -51,7 +51,7 @@ public class NewGameSetupUI : MonoBehaviour
         panel = new VisualElement { name = "new-game-panel" };
         panel.style.position = Position.Absolute;
         panel.style.top = 0; panel.style.left = 0; panel.style.right = 0; panel.style.bottom = 0;
-        panel.style.backgroundColor = new Color(0.04f, 0.02f, 0.01f, 0.96f);
+        panel.style.backgroundColor = new Color(0.08f, 0.05f, 0.03f, 0.98f);
         panel.pickingMode = PickingMode.Position;
         panel.style.display = DisplayStyle.None;
         root.Add(panel);
@@ -221,6 +221,7 @@ public class NewGameSetupUI : MonoBehaviour
         btn.style.unityTextAlign = TextAnchor.MiddleCenter;
         btn.style.unityFontDefinition = Fd();
         btn.style.backgroundColor = bg;
+        btn.style.color = new Color(1f, 1f, 1f, 1f);
         btn.style.borderTopLeftRadius = 8;
         btn.style.borderTopRightRadius = 8;
         btn.style.borderBottomLeftRadius = 8;
