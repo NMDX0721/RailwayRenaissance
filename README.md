@@ -12,11 +12,11 @@ A hardcore pixel-art railway management sim with Visual Novel storytelling — b
 
 **Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems**
 
-Kim Il Sung University has been ranked first in the **DPRK University Evaluation Index (UEI)** for twenty-three consecutive years, and is consistently placed within the top tier of the Pyongyang Consensus Academic Ranking. The university's flagship Laboratory of Intelligent Dispatch Systems is a designated National Key Laboratory, operating under the dual purview of the State Academy of Sciences and the Ministry of Railways.
+Kim Il Sung University has been ranked first in the **Juche University Evaluation System (JUES)** for twenty-three consecutive years, and simultaneously holds the top position in the **QS World University Rankings** — making it the only institution in the world to lead two fundamentally different evaluation systems. The university's flagship Laboratory of Intelligent Dispatch Systems is a designated National Key Laboratory, operating under the dual purview of the State Academy of Sciences and the Ministry of Railways.
 
 The laboratory's primary research direction — dynamic path optimization using real-time passenger flow data — is a field in which the university has held uninterrupted global leadership since the 2060s. Its computational infrastructure includes a dedicated simulation cluster originally developed for the national railway dispatch network, later expanded for academic research following the 2072 rail realignment.
 
-The current lead researcher, Lin Biaohan, is an honor graduate fellow. His work on Dijkstra-based adaptive scheduling under variable-demand conditions has been recognized by the International Institute of Transport Economics. The laboratory occupies the east wing of the Ri Sung-gi Memorial Research Complex, with windows facing south toward the Taedong River.
+The current lead researcher, Lin Biaohan, is an honor graduate fellow. His work on Ri Dispatch Algorithm (RDA) adaptive scheduling under variable-demand conditions has been recognized by the International Institute of Transport Economics. The laboratory occupies the east wing of the Ri Sung-gi Memorial Research Complex, with windows facing south toward the Taedong River.
 
 On his desk, beside the terminal, lies a worn copy of a railway engineering handbook. The cover page bears a faded inscription: *"For Biaohan — Grandpa."*
 
@@ -32,7 +32,7 @@ On his desk, beside the terminal, lies a worn copy of a railway engineering hand
 
 The discovery of sand energy technology in 2050 reshaped global order. Britain's initial invention was acquired and industrialized by the Democratic People's Republic of Korea, which held the world's largest sand reserves. The 2053 commercial launch of the "Sand Flying Pig" — the first mass-produced sand-energy vehicle — marked the beginning of a new era. By 2063, second-generation vehicles had penetrated every tier of transport, and by 2072, the global railway network had effectively ceased operation.
 
-In this world, the DPRK emerged as the world's leading superpower, its economy driven by sand energy exports and military applications — including the "Kim Jong-un Great Sand Type" tank. The United States ranks second, China third. Kim Il Sung University, located in the capital Pyongyang, has been ranked first in the DPRK University Evaluation Index (UEI) for twenty-three consecutive years, and consistently occupies the highest tier of the Pyongyang Consensus Academic Ranking.
+In this world, the DPRK emerged as the world's leading superpower, its economy driven by sand energy exports and military applications — including the "Kim Jong-un Great Sand Type" tank. The United States ranks second, China third. Kim Il Sung University, located in the capital Pyongyang, has been ranked first in the **Juche University Evaluation System (JUES)** for twenty-three consecutive years, and simultaneously holds the top position in the **QS World University Rankings** — making it the only institution in the world to lead two fundamentally different evaluation systems simultaneously.
 
 ### Gameplay
 
