@@ -609,7 +609,9 @@ public class VNManager : MonoBehaviour
         else
         {
             HideOptions();
-            dialogueBox?.ShowDialogue(entry.s, entry.text);
+            // 说话者显示名：主角替换为别名（如果设置了）
+            var displaySpeaker = ResolveSpeakerName(entry.s);
+            dialogueBox?.ShowDialogue(displaySpeaker, entry.text);
 
             // 条目级chars/e优先，回退到场景级默认值
             var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
@@ -617,7 +619,7 @@ public class VNManager : MonoBehaviour
             if (entryChars != null && entryChars.Length > 0)
                 characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion);
 
-            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
+            vnBacklog?.AddEntry(displaySpeaker, entry.text, currentSceneIndex, currentDialogueIndex);
         }
     }
 
@@ -744,6 +746,18 @@ public class VNManager : MonoBehaviour
             case "fade":
             default: return TransitionType.Fade;
         }
+    }
+
+    /// <summary>主角说话者显示为别名（若设置了表字）。</summary>
+    private string ResolveSpeakerName(string speaker)
+    {
+        if (string.IsNullOrEmpty(speaker)) return speaker;
+        if (speaker == "林彪悍")
+        {
+            var config = GameConfig.Load();
+            return config.PlayerDisplayName;
+        }
+        return speaker;
     }
 
     // Auto-play
