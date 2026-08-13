@@ -40,7 +40,7 @@ You inherit grandpa's abandoned line in Wufeng — a misty tea village in China'
 
 ### World
 
-Sand energy was invented in Britain in 2050. The DPRK — holding the planet's largest sand reserves — bought the technology in 2051 and industrialized it. By 2076 the DPRK is the world's sole superpower: sand exports, a sand tank called "Kim Jong-un Great Sand Type," and a globe-spanning monopoly, the **United Sand Energy Corporation (USET)** — publicly a joint venture, privately a state enterprise; internally known as the "first company."
+Sand energy was invented in Britain in 2050. The DPRK — holding the planet's largest sand reserves — bought the technology in 2051 and industrialized it. By 2076 the DPRK is the world's sole superpower: sand exports, a sand tank called "Kim Jong-un Great Sand Type," and a globe-spanning monopoly, the **United Sand Energy Technology (USET)** — formally the *United Sand Energy Technology Society*, publicly a joint venture, privately a state enterprise; internally known as the "first company."
 
 Somewhere beneath it all, the railways wait.
 
