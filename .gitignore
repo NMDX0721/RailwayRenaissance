@@ -52,3 +52,15 @@ crashlytics-build.properties
 *.mp3
 *.wav
 *.ogg
+
+# Temp / local-only files
+1.json
+2 - 副本.json
+3.json
+openclaw*.json
+opencode.json
+中转站/
+源码优化版.html
+deprecated/
+Assets/_Recovery/
+Assets/系统保存.unity
