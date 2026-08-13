@@ -30,8 +30,6 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 *Full world lore, the USET monopoly, and the sand-standard currency: [World & Timeline](参考资料/世界观扩展设定.md)*
 
-*Full world lore, the USET monopoly, and the sand-standard currency: [World & Timeline](参考资料/世界观扩展设定.md)*
-
 ## How the World Moves
 
 **Five interlocking trendlines** run beneath the surface — hidden until they cross a threshold, and then the world changes irreversibly:
@@ -46,12 +44,13 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 ## Core Systems
 
-**A simulation that runs on its own** — trains move, platforms fill, seasons pass. Below the surface, a set of real formulae drives everything:
+**A simulation that runs on its own** — trains move, platforms fill, seasons pass. Below the surface, a set of interconnected engines drives everything:
 
-- **Economic simulation engine** — passenger flow, fuel, wages, maintenance, accident probability, and trust are each governed by a documented formula. Revenue minus cost is a real number, not a scripted curve. The engine drives five trendlines (trust, fiscal health, sand penetration, political pressure, infrastructure decay); cross a threshold, and the world changes irreversibly. The [formula sheet](docs/compose/specs/跨系统联动公式.md) ties every variable together.
-- **Probability-driven event system** — ten event templates (economic shocks, weather, personnel incidents, rival actions) fire based on real probability rolls with cooldowns, so no two playthroughs share the same rhythm.
-- **Crew AI with fatigue, loyalty, and growth** — each crew member has four skill tracks, an fatigue meter, and a loyalty value. Who sits in which seat changes your accident math and your bottom line.
-- **A rival that plays the long game** — USET maintains a per-city penetration value that grows naturally and accelerates through campaigns. Every 30 days it picks an action; respond or lose ground.
+- **Sand Standard Core (沙本位经济核)** — the economic simulation engine: passenger flow, fuel, wages, maintenance, accident probability, and trust are each governed by a documented formula. Revenue minus cost is a real number, not a scripted curve. The engine drives five trendlines; cross a threshold, and the world changes irreversibly. The [formula sheet](docs/compose/specs/跨系统联动公式.md) ties every variable together.
+- **Chollima Genesis Core (千里马创世核)** — at the start of a new game, the world seed initialises the entire underlying structure: supply-demand relationships, resource distribution, character leanings. Not a dice roll every turn, but a complete world grown from a seed. Two playthroughs differ because the worlds themselves are different.
+- **Suiyue Narrative Engine (岁月叙事引擎)** — named after the in-world AI, this system analyses the current world state — the seed-derived structure, the five trendlines, the player's relationships with each character — and generates events that capture variables hardcoding could never anticipate. Every event is a product of that world at that moment.
+- **Seonmin Personnel System (先民人事系统)** — each crew member has four skill tracks, a growth rate, and potential caps. But you never see the numbers: fatigue and loyalty aren't displayed on any screen. They surface through behaviour — tone of voice, extra shifts, reactions after an accident. The design reduces digital input, like real life.
+- **Chollima Rival AI (千里马对手AI)** — USET maintains a per-city penetration value that grows naturally and accelerates through campaigns. Every 30 days it picks an action; respond or lose ground.
 - **Story as life-support** — pure operations lose money from the start. Narrative relief grants are the cash flow that keeps the railway breathing until you can stand on your own.
 
 **Deeply embedded AI** — the visual novel offers three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory — they remember what you've done, and how they feel changes what they say. Story beats can be generated on the fly. A planned phone-based assistant, powered by the player's own API key, is narratively wrapped as a remote call to the university server running a modified RDA — the Railway Decision Assistant.
