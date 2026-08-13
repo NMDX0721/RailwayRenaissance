@@ -136,7 +136,7 @@ public static class GameData
     }
 
     public static int Day { get; private set; } = 1;
-    public static int Money { get; private set; } = 2000;
+    public static int Money { get; private set; } = 40000;
     public static int Trust { get; private set; } = 62;
     public static int TrainCondition { get; private set; } = 70;
     public static int ExpectedPassengers { get; private set; } = 22;
@@ -199,7 +199,7 @@ public static class GameData
     public static void ResetState()
     {
         Day = 1;
-        Money = 2000;
+        Money = 40000;
         Trust = 62;
         TrainCondition = 70;
         ExpectedPassengers = 22;
