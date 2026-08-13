@@ -196,20 +196,22 @@ public class TitleScreen : MonoBehaviour
         var frame = root.Q<VisualElement>("avatar-frame");
         if (frame != null)
         {
-            var sprite = Resources.Load<Sprite>("UI/AvatarFrame");
-            if (sprite != null) frame.style.backgroundImage = new StyleBackground(sprite);
+            var tex = Resources.Load<Texture2D>("UI/AvatarFrame");
+            if (tex != null) frame.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
         }
 
         var icon = root.Q<VisualElement>("avatar-icon");
         if (icon != null)
         {
-            var sprite = Resources.Load<Sprite>("UI/DefaultAvatar");
-            if (sprite != null) icon.style.backgroundImage = new StyleBackground(sprite);
+            var tex = Resources.Load<Texture2D>("UI/DefaultAvatar");
+            if (tex != null) icon.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
         }
     }
 
     void LoadUserInfo()
     {
+        if (usernameLabel == null)
+            usernameLabel = GetComponent<UIDocument>().rootVisualElement.Q<Label>("username");
         if (usernameLabel == null) return;
 
         string username = PlayerPrefs.GetString("Username", "");

@@ -102,7 +102,6 @@ public class AutoLoginUI : MonoBehaviour
     IEnumerator AutoLoginProcess(string username)
     {
         subText.text = "正在校验本地凭证...";
-        File.ReadAllText(authFilePath);
         yield return StartCoroutine(UpdateProgress(0f, 0.08f, 0.4f));
         yield return StartCoroutine(PauseProgress(0.08f, 0.15f));
 
