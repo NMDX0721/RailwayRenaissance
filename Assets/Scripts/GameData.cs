@@ -224,6 +224,7 @@ public static class GameData
 
         initialized = true;
         EventManager.Initialize();
+        SandRivalManager.Initialize();
         ResetState();
     }
 
@@ -522,6 +523,17 @@ public static class GameData
             Trust += evt.effects.trustDelta;
             TrainCondition += evt.effects.trainConditionDelta;
             ExpectedPassengers += evt.effects.passengerDelta;
+        }
+
+        // 沙能竞争系统
+        SandRivalManager.DailyUpdate();
+        SandAction sandAction = SandRivalManager.CheckForAction();
+        if (sandAction != null)
+        {
+            Trust += sandAction.trustDelta;
+            // 应用渗透率变化
+            SandRivalManager.SetPenetration(sandAction.cityId,
+                SandRivalManager.GetPenetration(sandAction.cityId) + sandAction.penetrationDelta);
         }
 
         ClampStats();
