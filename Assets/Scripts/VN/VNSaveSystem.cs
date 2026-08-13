@@ -99,11 +99,8 @@ public class VNSaveSystem
 
     public int MaxSlotCount => MaxSlots;
 
-    public static void SaveGame(int slotIndex)
+    public static void SaveGameplayData(int slotIndex)
     {
-        // 保存VN进度
-        SaveData data = new SaveData();
-
         // 保存经营数据
         GameDataSaveData gameplay = new GameDataSaveData();
         gameplay.money = GameData.GetMoney();
@@ -117,7 +114,7 @@ public class VNSaveSystem
         PlayerPrefs.Save();
     }
 
-    public static bool LoadGame(int slotIndex)
+    public static bool LoadGameplayData(int slotIndex)
     {
         string json = PlayerPrefs.GetString("SaveSlot_" + slotIndex, "");
         if (string.IsNullOrEmpty(json)) return false;
