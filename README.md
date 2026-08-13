@@ -28,6 +28,10 @@ It is 2076. Sand-powered flying vehicles killed the railways — passenger volum
 
 But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul, no night runs, thin on fuel, hostage to an air-traffic grid. The railways' six strengths are their mirror image. You inherit grandpa's abandoned line in Wufeng, a mist-wrapped tea village in China's central hills, and set out to prove the iron road still has a reason to exist.
 
+*Full world lore, the USET monopoly, and the sand-standard currency: [World & Timeline](参考资料/世界观扩展设定.md)*
+
+*Full world lore, the USET monopoly, and the sand-standard currency: [World & Timeline](参考资料/世界观扩展设定.md)*
+
 ## How the World Moves
 
 **Five interlocking trendlines** run beneath the surface — hidden until they cross a threshold, and then the world changes irreversibly:
@@ -40,23 +44,26 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 | **Political Pressure** | How closely government is watching |
 | **Infrastructure Decay** | Wear on your line, station by station |
 
-**A world that runs on its own** — trains move, platforms fill, seasons pass. Decisions arrive rarely, and weigh heavily. **A data-driven economy** — ticket prices, fuel, wages, subsidies all trace back to a sand-standard currency model and a documented formula. No hand-waving: the [cross-system formula sheet](docs/compose/specs/跨系统联动公式.md) ties every number together.
+## Methods & Architecture
 
-**An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks. **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it. **Story as life-support** — pure operations lose money from the start; the narrative, and the relief it brings, is what keeps the railway breathing until you can stand on your own.
+**A world that runs on its own** — trains move, platforms fill, seasons pass. Decisions arrive rarely, and weigh heavily — because the simulation beneath is real, not cosmetic:
+
+- **Five interlocking trendlines** — trust, fiscal health, sand penetration, political pressure, infrastructure decay — shift slowly behind the scenes. Each is cross-linked to the others; cross a threshold, and the world changes irreversibly.
+- **A data-driven sand-standard economy** — every price, wage, and subsidy traces back to a documented formula; the [formula sheet](docs/compose/specs/跨系统联动公式.md) ties it all together.
+- **A custom dispatch algorithm** — the in-fiction **Ri Dispatch Algorithm (RDA)** governs adaptive scheduling under variable demand, mirroring how crew assignment and line pressure actually teach you the game.
+- **An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks.
+- **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it.
+- **Story as life-support** — pure operations lose money from the start; narrative relief is what keeps the railway breathing.
+
+**Deeply embedded AI** — the visual novel runs in three modes: preset dialogue, free-form AI conversation, and a hybrid of both. A configurable provider layer (MiMo / GPT / local model) routes requests; each character carries its own personality, speaking style, favorability thresholds, and memory. Characters don't just react — they remember what you've done, and how they feel about you changes what they'll say. story beats can be generated on the fly, grounded in your world state.
+
+*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI Integration](docs/compose/specs/AI系统实现计划.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
 
 ## The People
 
-Five stubborn souls who refuse to let the last line die — each with four skills, a fatigue meter, and a will of their own.
+Five stubborn souls — a retired stationmaster, a mechanical engineer, a village heart, a railway engineer, a volunteer — each with four skills, a fatigue meter, and a will of their own. Who sits in which seat changes your accident math and your bottom line.
 
-| Person | Who they are | Why they matter |
-|--------|-------------|-----------------|
-| **Lao Chen** | The last stationmaster | The mentor. Zero accidents under his watch. |
-| **Zhang Gong** | Retired mechanical engineer | Keeps the locomotive alive. |
-| **Auntie Li** | The village heart | Passenger satisfaction, multiplied. |
-| **Master Zhao** | Retired railway engineer | Keeps the schedule honest. |
-| **Xiao Fang** | The volunteer | Raw promise, waiting to be trained. |
-
-Who sits in which seat changes your accident math and your bottom line. And the village kid fresh out of university has the highest ceiling of them all — if you dare to let him near the throttle.
+*Full crew profiles and skill trees: [Character Profiles](参考资料/角色设定.md)*
 
 ## The Long Game
 
@@ -98,6 +105,8 @@ The design lives in the repo, not just in the code — every system is specified
 | [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | The three-layer time model, the five trendlines |
 | [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Every formula, cross-linked |
 | [Tech & Research](docs/compose/specs/科技树设计.md) | The open research network |
+| [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer, character memory |
+| [AI Implementation Plan](docs/compose/specs/AI系统实现计划.md) | Template AI → llama.cpp roadmap |
 | [World & Timeline](参考资料/世界观扩展设定.md) | USET, the sand-standard, 2050–2076 lore |
 | [Story Timeline](参考资料/故事线时间轴.md) | Verified continuity of the world's history |
 
