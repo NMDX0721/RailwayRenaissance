@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document tracks 13 tasks for completing the RailRevivalSim project. Each task involves generating pixel art assets and/or implementing game mechanics.
+This document tracks 13 tasks for completing the RailwayRenaissance project. Each task involves generating pixel art assets and/or implementing game mechanics.
 
 **Workflow**: Generate prompts → User generates images → I implement in Unity
 

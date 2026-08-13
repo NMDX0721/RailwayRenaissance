@@ -1,8 +1,8 @@
-# RailRevivalSim MVP 精选素材清单
+# RailwayRenaissance MVP 精选素材清单
 
 这份清单只保留当前第一可玩切片最值得先导入 Unity 的素材，目标是：**够用、清爽、不把工程弄乱**。
 
-位置：`D:\Unity Project\RailRevivalSim\ExternalAssets\mvp-shortlist`
+位置：`D:\Unity Project\RailwayRenaissance\ExternalAssets\mvp-shortlist`
 
 ## 1. 地图 / 场景
 

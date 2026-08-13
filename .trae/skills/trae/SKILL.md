@@ -1,9 +1,9 @@
 ---
 name: trae
-description: Use when working inside Trae IDE on this RailRevivalSim project, especially when tasks should be executed through the rail-revival-bridge-v2 MCP server. Follow the inbox -> read -> claim -> doing -> edit files -> outbox -> done/blocked workflow, keep Chinese-first output, and avoid freeform refactors when there is no active inbox task.
+description: Use when working inside Trae IDE on this RailwayRenaissance project, especially when tasks should be executed through the rail-revival-bridge-v2 MCP server. Follow the inbox -> read -> claim -> doing -> edit files -> outbox -> done/blocked workflow, keep Chinese-first output, and avoid freeform refactors when there is no active inbox task.
 ---
 
-# Trae 协作技能（RailRevivalSim）
+# Trae 协作技能（RailwayRenaissance）
 
 先按下面顺序工作，不要跳步。
 

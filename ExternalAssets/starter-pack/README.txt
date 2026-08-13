@@ -1,4 +1,4 @@
-﻿Downloaded starter assets for RailRevivalSim on 2026-04-05.
+Downloaded starter assets for RailwayRenaissance on 2026-04-05.
 
 Sources and licenses:
 1. Kenney Tiny Town (CC0)
