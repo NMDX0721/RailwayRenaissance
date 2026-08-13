@@ -1,42 +1,35 @@
-# Railway Renaissance: Sand Energy Impact
+# Railway Renaissance: Sand Energy Impact 🚂
 
 > ***English** | [简体中文](README.zh-CN.md)*
 
-A hardcore pixel-art railway management sim with Visual Novel storytelling — built with Unity 6.
-
-> 一个高中生开发的硬核像素风铁路模拟经营 + 视觉小说游戏。
+A hardcore pixel-art railway management sim with Visual Novel storytelling — built with Unity 6 by a high school student developer.
 
 ---
 
-## Overview
+## 🎮 The Game
 
-In a world where sand-powered flying vehicles (Sand-Tech) have rendered traditional railways obsolete, you inherit a abandoned railway line in the remote village of Wufeng. Your mission: restore the railway, win back the trust of the community, and fight against the encroaching Sand-Tech monopoly.
+### Story
 
-**Genre**: Simulation / Management / Visual Novel / Strategy  
-**Platform**: Windows (primary), Android (planned)  
-**Engine**: Unity 6000.4.6f1 (Unity 6)  
-**Style**: 16-bit pixel art, warm palette  
+> 2076. Sand-powered flying vehicles have rendered railways obsolete. You inherit a abandoned line in the remote village of Wufeng from your grandfather. Restore the railway, win back the community's trust, and fight against the Sand-Tech monopoly.
 
----
+### Gameplay
 
-## Features
+- **Hardcore Economy** — Operations lose money at first. Story missions keep you alive. Every decision matters.
+- **Slow-Paced Strategy** — The world runs continuously. You observe trends, make long-term choices, face irreversible consequences.
+- **Sand-Tech Rival** — An AI-driven competitor that actively campaigns, price-wars, and tries to acquire your lines.
+- **Crew Management** — 5 unique characters with skills, fatigue, training, and role assignments.
+- **Tech Tree** — 3 mutually exclusive branches (Industrial / Ecological / Automation).
+- **Political Cycles** — Local government shifts between Authoritarian, Market, and Welfare orientations.
+- **Story-Driven** — Prologue as Visual Novel, then transitions into management gameplay with ongoing narrative events.
+- **Random Events** — 10+ event templates: economic shifts, weather, personnel, Sand-Tech actions.
 
-| Feature | Description |
-|---------|-------------|
-| **Hardcore Economy** | Pure operations lose money. Story missions provide the subsidies that keep you alive. |
-| **Slow-Paced Gameplay** | The world runs continuously in the background. Observe trends, make long-term choices, face irreversible consequences. |
-| **5 Trend System** | Trust, Fiscal Strain, Sand Penetration, Political Pressure, Infrastructure Decay — interconnected trends that shape your world. |
-| **Sand-Tech Rival** | An AI-driven competitor that campaigns, price-wars, and tries to acquire your lines. |
-| **Crew Management** | 5 unique characters with 4 skills each, fatigue system, training, and role assignments. |
-| **Tech Tree** | 3 mutually exclusive branches (Industrial / Ecological / Automation). |
-| **Story-Driven** | Prologue as Visual Novel, then seamlessly transitions into management gameplay. |
-| **Random Events** | 10+ event templates: economic shifts, weather, personnel, Sand-Tech actions. |
-| **Political Cycles** | Local government shifts between Authoritarian, Market, and Welfare orientations. |
-| **Term Glossary** | Yellow-highlighted terms in dialogue with popup explanations. |
+### Screenshots
+
+*(Coming soon — game is in active development)*
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -49,56 +42,61 @@ In a world where sand-powered flying vehicles (Sand-Tech) have rendered traditio
 git clone https://github.com/NMDX721/RailwayRenaissance.git
 ```
 
-Open the project in Unity Hub:
+Open in Unity Hub:
 
-1. Launch Unity Hub
-2. Click **Add** → **Add project from disk**
-3. Select the cloned directory
-4. Open with Unity 6000.4.6f1
+1. Launch Unity Hub → **Add** → **Add project from disk**
+2. Select the cloned directory
+3. Open with Unity 6000.4.6f1
 
-### Running
-
-Open one of these scenes in Unity Editor:
+### Scenes
 
 | Scene | Description |
 |-------|-------------|
-| `Scenes/Login.unity` | Login screen (uGUI) |
-| `Scenes/VN_Test.unity` | Visual Novel test (start of prologue) |
+| `Scenes/Login.unity` | Login screen |
+| `Scenes/TitleScreen.unity` | Title screen (video background) |
+| `Scenes/VN_Test.unity` | Visual Novel prologue |
 | `Scenes/StationSlice_V1.unity` | Station management gameplay |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 Assets/
-├── Scripts/                    # C# source code
-│   ├── VN/                     # Visual Novel system
-│   │   ├── VNManager.cs        # Core VN controller
-│   │   ├── VNExitData.cs       # VN→Gameplay bridge data
-│   │   ├── VNSaveSystem.cs     # Save/load system
-│   │   └── ...
-│   ├── GameData.cs             # Core economy simulation
-│   ├── CrewManager.cs          # Staff management
-│   ├── EventManager.cs         # Random events
-│   ├── SandRivalManager.cs     # Sand-Tech AI
-│   ├── TutorialManager.cs      # Tutorial system
+├── Scripts/           # C# source code
+│   ├── VN/            # Visual Novel system
+│   ├── GameData.cs    # Economy simulation
+│   ├── CrewManager.cs # Staff management
+│   ├── EventManager.cs# Random events
+│   ├── SandRivalManager.cs  # Sand-Tech AI
 │   └── ...
 ├── Resources/
-│   ├── Scripts/                # VN JSON scripts (prologue_01~10)
-│   ├── events.json             # Event templates
-│   └── characters/             # Character sprites
-├── Scenes/                     # Unity scenes
-└── Documentation/              # Design docs
+│   ├── Scripts/       # VN JSON scripts (prologue_01~10)
+│   ├── events.json    # Event templates
+│   └── characters/    # Character sprites
+├── Scenes/            # Unity scenes
+└── Documentation/     # Design docs
 ```
 
 ---
 
-## Design Documents
+## 🛠 Technical Details
+
+### Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Engine | Unity 6000.4.6f1 (Unity 6) |
+| UI | UI Toolkit (VN/Title) + uGUI (Login) |
+| VN System | JSON-driven, data-driven dialogue |
+| Save System | PlayerPrefs + JSON serialization |
+| AI (future) | Template-based (phase 1), llama.cpp (phase 2) |
+
+### Design Documents
 
 | Document | Description |
 |----------|-------------|
-| [Game Design Doc (GDD)](参考资料/游戏开发文档.md) | Master index for all design docs |
+| [Game Design Doc](参考资料/游戏开发文档.md) | Master index for all design docs |
 | [Economy System](参考资料/经济系统.md) | Economy model v4.0 |
 | [Character Profiles](参考资料/角色设定.md) | Character bios & skill system |
 | [World Lore & Vehicles](参考资料/世界观与车辆设定.md) | World setting & vehicle specs |
@@ -106,11 +104,17 @@ Assets/
 | [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | All formula definitions |
 | [Tech Tree](docs/compose/specs/科技树设计.md) | 3-branch tech tree |
 | [Sand-Tech Rival System](docs/compose/specs/沙能竞争系统设计.md) | Sand-Tech AI behavior |
-| [VN→Gameplay Bridge](docs/compose/specs/VN与模拟经营对接文档.md) | Transition system design |
+
+### Key Formulas
+
+- **Daily passenger flow**: `population × 0.001 × (0.5 + trust × 0.005) × (1 - sandPenetration) × (1 + conductorLevel × 0.03)`
+- **Daily fuel cost**: `58.5 × 92km / 100 × (1 + (100 - trainCondition) / 200) × 15 sand/升`
+- **Accident probability**: `0.5% × ageFactor × driverSkillFactor × maintenanceFactor × weatherFactor`
+- **Trust change**: `normalOps(+0.014/day) - accident(0.08×severity) - sandAds(0.03)`
 
 ---
 
-## Development Status
+## 📊 Development Status
 
 ```
 Phase 1: Design docs fix        ✅ Complete
@@ -121,28 +125,26 @@ Phase 4: Integration & polish   ⏳ Pending
 
 ### Phase 2 Tasks
 
-| Task | Description | Status |
-|------|-------------|--------|
-| T1 | Prologue JSON files (scenes 07-10) | ✅ |
-| T2 | VN→Gameplay transition system | ✅ |
-| T3 | Economy simulation with formulas | ✅ |
-| T4 | Crew management system | ✅ |
-| T5 | Random event system | ✅ |
-| T6 | Sand-Tech rival AI | ✅ |
-| T7 | Tutorial system | ✅ |
-| T8 | Unified save system | ✅ |
-| T9 | Term glossary system | ✅ |
+| Task | Status |
+|------|--------|
+| Prologue JSON scripts (scenes 07-10) | ✅ |
+| VN→Gameplay transition system | ✅ |
+| Economy simulation with formulas | ✅ |
+| Crew management system | ✅ |
+| Random event system (10 events) | ✅ |
+| Sand-Tech rival AI | ✅ |
+| Tutorial system | ✅ |
+| Unified save/load system | ✅ |
+| Term glossary system | ✅ |
 
 ---
 
-## License
+## 📄 License
 
 [MIT](LICENSE) © 2026 NMDX721
 
-This project is released under the MIT License — a permissive open-source license that allows anyone to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software. The only requirement is that the copyright notice and permission notice are included in all copies or substantial portions.
-
-**In short**: You can do almost anything with this code, as long as you keep the attribution. No warranty is provided — the software is "as is".
+A permissive open-source license: you can use, copy, modify, and distribute this software freely, as long as you keep the copyright notice. No warranty provided.
 
 ---
 
-*Made with ❤️ by a high school student developer. Inspired by 「まいてつ」(Maitetsu) and Stardew Valley.*
+*Inspired by 「まいてつ」(Maitetsu) and Stardew Valley.*
