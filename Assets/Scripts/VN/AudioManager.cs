@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class VNAudioManager : MonoBehaviour
@@ -11,6 +12,8 @@ public class VNAudioManager : MonoBehaviour
     private Coroutine bgmFadeCoroutine;
     private float bgmTargetVolume = 0.6f;
     private const float DefaultFadeDuration = 1.0f;
+    // 缓存已加载的音频资源，避免高频播放时重复Resources.Load
+    private readonly Dictionary<string, AudioClip> clipCache = new Dictionary<string, AudioClip>();
 
     private void Awake()
     {
@@ -26,6 +29,17 @@ public class VNAudioManager : MonoBehaviour
         sfxSource.loop = false;
     }
 
+    private AudioClip LoadClip(string folder, string name)
+    {
+        string key = folder + "/" + name;
+        if (!clipCache.TryGetValue(key, out var clip))
+        {
+            clip = Resources.Load<AudioClip>(key);
+            if (clip != null) clipCache[key] = clip;
+        }
+        return clip;
+    }
+
     public void PlayBGM(string name)
     {
         PlayBGM(name, DefaultFadeDuration);
@@ -36,7 +50,7 @@ public class VNAudioManager : MonoBehaviour
         if (string.IsNullOrEmpty(name)) return;
         if (currentBGM == name && bgmSource.isPlaying) return;
 
-        var clip = Resources.Load<AudioClip>("bgm/" + name);
+        var clip = LoadClip("bgm", name);
         if (clip == null)
         {
             Debug.LogWarning("[VN Audio] BGM not found: " + name);
@@ -115,7 +129,7 @@ public class VNAudioManager : MonoBehaviour
 
     public void PlaySFX(string name)
     {
-        var clip = Resources.Load<AudioClip>("sfx/" + name);
+        var clip = LoadClip("sfx", name);
         if (clip == null)
         {
             Debug.LogWarning("[VN Audio] SFX not found: " + name);

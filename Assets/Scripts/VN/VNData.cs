@@ -21,6 +21,8 @@ public class SceneData
     public string bg;
     public string bgm;
     public string transition; // "fade", "slideLeft", "slideRight", ""
+    public CharacterEntry[] chars; // 场景级默认立绘（可选）
+    public string e;              // 场景级默认表情（可选）
     public DialogueEntry[] d;
 }
 

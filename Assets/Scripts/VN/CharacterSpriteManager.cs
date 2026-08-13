@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,6 +8,7 @@ public class CharacterSpriteManager : MonoBehaviour
     private VisualElement slotLeft;
     private VisualElement slotCenter;
     private VisualElement slotRight;
+    private readonly Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
 
     public void Init(UIDocument document)
     {
@@ -57,21 +59,19 @@ public class CharacterSpriteManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
 
-            // Load: characters/{name}_{emotion}.png  or  characters/{name}.png (fallback)
-            string texPath = string.IsNullOrEmpty(emotion)
-                ? "characters/" + entry.name
-                : "characters/" + entry.name + "_" + emotion;
+            // 未指定表情时使用角色名直接加载，否则 {name}_{emotion}
+            string cacheKey = string.IsNullOrEmpty(emotion) ? entry.name : entry.name + "_" + emotion;
 
-            var tex = Resources.Load<Texture2D>(texPath);
+            if (!spriteCache.TryGetValue(cacheKey, out var tex))
+            {
+                tex = Resources.Load<Texture2D>("characters/" + cacheKey);
+                if (tex != null) spriteCache[cacheKey] = tex;
+            }
+
             if (tex == null)
             {
-                // Fallback to default
-                tex = Resources.Load<Texture2D>("characters/" + entry.name);
-                if (tex == null)
-                {
-                    Debug.LogWarning("[VN Characters] Sprite not found: " + texPath);
-                    continue;
-                }
+                Debug.LogWarning("[VN Characters] Sprite not found: characters/" + cacheKey);
+                continue;
             }
 
             var slot = GetSlotForPosition(entry.pos);

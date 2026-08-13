@@ -611,8 +611,11 @@ public class VNManager : MonoBehaviour
             HideOptions();
             dialogueBox?.ShowDialogue(entry.s, entry.text);
 
-            if (entry.chars != null && entry.chars.Length > 0)
-                characterSpriteManager?.UpdateDisplay(entry.chars, entry.e);
+            // 条目级chars/e优先，回退到场景级默认值
+            var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
+            var entryEmotion = !string.IsNullOrEmpty(entry.e) ? entry.e : scene.e;
+            if (entryChars != null && entryChars.Length > 0)
+                characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion);
 
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }

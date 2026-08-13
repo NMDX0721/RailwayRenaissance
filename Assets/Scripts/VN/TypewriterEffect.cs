@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,7 @@ public class TypewriterEffect : MonoBehaviour
     private Action onCompleteCallback;
     private bool isTyping;
     private bool skipRequested;
+    private readonly StringBuilder textBuilder = new StringBuilder();
 
     private bool useTypingSFX = true;
     private float sfxInterval = 0.05f;
@@ -32,6 +34,7 @@ public class TypewriterEffect : MonoBehaviour
         onCompleteCallback = onComplete;
         skipRequested = false;
         sfxTimer = 0f;
+        textBuilder.Clear();
 
         typingCoroutine = StartCoroutine(TypeText(text));
     }
@@ -70,7 +73,8 @@ public class TypewriterEffect : MonoBehaviour
                 break;
             }
 
-            dialogueText.text += text[i];
+            textBuilder.Append(text[i]);
+            dialogueText.text = textBuilder.ToString();
 
             float delay = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? FastSpeed : NormalSpeed;
 
