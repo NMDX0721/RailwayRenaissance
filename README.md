@@ -22,15 +22,50 @@ Three days later, a researcher would leave this room to revive a railway on the 
 
 ---
 
-## Features
+## The World
 
-- **Five interlocking trendlines** — public trust, fiscal health, sand penetration, political pressure, infrastructure decay. Each is a slow current beneath the surface — until it crosses a threshold, and the world changes irreversibly.
-- **A world that runs on its own** — trains move, platforms fill, seasons pass. Decisions arrive rarely, and weigh heavily.
-- **A data-driven economy** — ticket prices, fuel, wages, and subsidies all derive from a sand-standard currency model. No hand-waving; every number traces back to a documented formula.
-- **An open research network** — infrastructure, locomotives, dispatch, and community programs advance in parallel and combine freely. No locked branches, no regretted forks.
-- **A rival that plays the long game** — USET, the sand-energy monopoly, campaigns, price-wars, and buys out your lines if you let it.
-- **Story as life-support** — pure operations lose money early. The narrative — and the grants it brings — keeps the railway breathing until you can stand on your own.
-- **Five crew with four skills each** — fatigue, growth, and who sits in which seat changes your accident math and your bottom line.
+It is 2076. Sand-powered flying vehicles killed the railways — passenger volume down 78%, 91 nations dissolving their state rail systems, the global network effectively dead by 2072. The sand-energy monopoly **USET** rules the skies; the DPRK, holding the planet's largest sand reserves, is the sole superpower.
+
+But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul, no night runs, thin on fuel, hostage to an air-traffic grid. The railways' six strengths are their mirror image. You inherit grandpa's abandoned line in Wufeng, a mist-wrapped tea village in China's central hills, and set out to prove the iron road still has a reason to exist.
+
+## How the World Moves
+
+**Five interlocking trendlines** run beneath the surface — hidden until they cross a threshold, and then the world changes irreversibly:
+
+| Trendline | Meaning |
+|-----------|---------|
+| **Trust** | Public faith in your railway |
+| **Fiscal Health** | Your balance sheet |
+| **Sand Penetration** | USET's grip on each town's passengers |
+| **Political Pressure** | How closely government is watching |
+| **Infrastructure Decay** | Wear on your line, station by station |
+
+**A world that runs on its own** — trains move, platforms fill, seasons pass. Decisions arrive rarely, and weigh heavily. **A data-driven economy** — ticket prices, fuel, wages, subsidies all trace back to a sand-standard currency model and a documented formula. No hand-waving: the [cross-system formula sheet](docs/compose/specs/跨系统联动公式.md) ties every number together.
+
+**An open research network** — infrastructure, locomotives, dispatch, and community programs grow in parallel and combine freely. No locked branches, no regretted forks. **A rival that plays the long game** — USET campaigns, price-wars, and buys out your lines if you let it. **Story as life-support** — pure operations lose money from the start; the narrative, and the relief it brings, is what keeps the railway breathing until you can stand on your own.
+
+## The People
+
+Five stubborn souls who refuse to let the last line die — each with four skills, a fatigue meter, and a will of their own.
+
+| Person | Who they are | Why they matter |
+|--------|-------------|-----------------|
+| **Lao Chen** | The last stationmaster | The mentor. Zero accidents under his watch. |
+| **Zhang Gong** | Retired mechanical engineer | Keeps the locomotive alive. |
+| **Auntie Li** | The village heart | Passenger satisfaction, multiplied. |
+| **Master Zhao** | Retired railway engineer | Keeps the schedule honest. |
+| **Xiao Fang** | The volunteer | Raw promise, waiting to be trained. |
+
+Who sits in which seat changes your accident math and your bottom line. And the village kid fresh out of university has the highest ceiling of them all — if you dare to let him near the throttle.
+
+## The Long Game
+
+```
+Prologue visual novel (Day 0–4) → Survival → Stability → Growth
+→ Breakthrough → Development → the national network
+```
+
+Political cycles swing your subsidies. Random events — storms, oil spikes, holiday crowds, USET ad blitzes — keep every season tense. The story remembers everything you skip.
 
 ---
 
