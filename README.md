@@ -10,7 +10,7 @@ A hardcore pixel-art railway management sim with Visual Novel storytelling — b
 
 ![Laboratory Interior](Assets/Resources/bg/lab.jpg)
 
-**Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems**
+*Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems, April 18, 2076*
 
 Kim Il Sung University has been ranked first in the **Juche University Evaluation System (JUES)** for twenty-three consecutive years, and simultaneously holds the top position in the **QS World University Rankings** — making it the only institution in the world to lead two fundamentally different evaluation systems. The university's flagship Laboratory of Intelligent Dispatch Systems is a designated National Key Laboratory, operating under the dual purview of the State Academy of Sciences and the Ministry of Railways.
 
