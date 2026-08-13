@@ -133,6 +133,7 @@ public class VNManager : MonoBehaviour
 
         vnBacklog = gameObject.AddComponent<VNBacklog>();
         vnBacklog.Init(uiDoc);
+        vnBacklog.OnEntryClicked += OnBacklogEntryClicked;
 
         saveSystem = new VNSaveSystem();
         saveLoadUI = gameObject.AddComponent<VNSaveLoadUI>();
@@ -603,7 +604,7 @@ public class VNManager : MonoBehaviour
             HideOptions();
             if (menuBar != null) menuBar.style.display = DisplayStyle.None;
             fullScreenNews?.Show(entry.text);
-            vnBacklog?.AddEntry(entry.s, entry.text);
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
         else
         {
@@ -613,7 +614,7 @@ public class VNManager : MonoBehaviour
             if (entry.chars != null && entry.chars.Length > 0)
                 characterSpriteManager?.UpdateDisplay(entry.chars);
 
-            vnBacklog?.AddEntry(entry.s, entry.text);
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
     }
 
@@ -785,6 +786,29 @@ public class VNManager : MonoBehaviour
         if (!isScriptRunning) return;
         if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
         NextDialogue();
+    }
+
+    private void OnBacklogEntryClicked(int sceneIndex, int dialogueIndex)
+    {
+        if (!isScriptRunning || currentScript == null) return;
+        if (sceneIndex < 0 || sceneIndex >= currentScript.scenes.Length) return;
+
+        StopAutoPlay();
+        currentSceneIndex = sceneIndex;
+        currentDialogueIndex = dialogueIndex;
+
+        // 恢复场景背景和BGM
+        var scene = currentScript.scenes[sceneIndex];
+        if (!string.IsNullOrEmpty(scene.bg))
+            backgroundManager?.SetBackgroundImmediate(scene.bg);
+        if (!string.IsNullOrEmpty(scene.bgm))
+            VNAudioManager.Instance?.PlayBGM(scene.bgm);
+
+        characterSpriteManager?.ClearAll();
+        ShowCurrentDialogue();
+
+        // 恢复菜单栏
+        if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
     }
 
     private void StartAutoPlayTimer()

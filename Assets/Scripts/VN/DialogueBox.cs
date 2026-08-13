@@ -44,7 +44,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.bottom = 30;
         dialogueBox.style.height = 150;
         dialogueBox.style.flexDirection = FlexDirection.Row;
-        dialogueBox.style.backgroundColor = new Color(30f / 255f, 20f / 255f, 15f / 255f, 0.85f);
+        dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
         dialogueBox.style.borderTopWidth = 2;
         dialogueBox.style.borderRightWidth = 2;
         dialogueBox.style.borderBottomWidth = 2;

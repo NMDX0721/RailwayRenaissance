@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,12 +19,19 @@ public class VNBacklog : MonoBehaviour
     {
         public string speaker;
         public string text;
+        public int sceneIndex;
+        public int dialogueIndex;
     }
+
+    public Action<int, int> OnEntryClicked;
+    private static Texture2D handCursorTex;
 
     public void Init(UIDocument document)
     {
         uiDoc = document;
         gameFont = Resources.Load<Font>("Fonts/zpix");
+        if (handCursorTex == null)
+            handCursorTex = Resources.Load<Texture2D>("Cursors/cursor_hand");
         BuildUI();
     }
 
@@ -37,7 +45,6 @@ public class VNBacklog : MonoBehaviour
         var root = uiDoc.rootVisualElement;
         var fontDef = GetFontDef();
 
-        // Backlog panel - covers full screen, scrollable
         backlogPanel = new VisualElement { name = "backlog-panel" };
         backlogPanel.style.position = Position.Absolute;
         backlogPanel.style.top = 0;
@@ -49,7 +56,6 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.pickingMode = PickingMode.Position;
         root.Add(backlogPanel);
 
-        // Header with title and close button
         backlogHeader = new VisualElement { name = "backlog-header" };
         backlogHeader.style.flexDirection = FlexDirection.Row;
         backlogHeader.style.justifyContent = Justify.SpaceBetween;
@@ -62,7 +68,7 @@ public class VNBacklog : MonoBehaviour
         backlogHeader.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         backlogPanel.Add(backlogHeader);
 
-        var titleLabel = new Label("对话回顾");
+        var titleLabel = new Label("对话回顾（点击跳转）");
         titleLabel.style.fontSize = 32;
         titleLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
         titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -87,7 +93,6 @@ public class VNBacklog : MonoBehaviour
         closeBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         backlogHeader.Add(closeBtn);
 
-        // Scroll view for backlog entries
         backlogScroll = new ScrollView(ScrollViewMode.Vertical);
         backlogScroll.name = "backlog-scroll";
         backlogScroll.style.flexGrow = 1;
@@ -98,9 +103,9 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.Add(backlogScroll);
     }
 
-    public void AddEntry(string speaker, string text)
+    public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
     {
-        entries.Add(new BacklogEntry { speaker = speaker, text = text });
+        entries.Add(new BacklogEntry { speaker = speaker, text = text, sceneIndex = sceneIndex, dialogueIndex = dialogueIndex });
         UpdateBacklogDisplay();
     }
 
@@ -109,7 +114,6 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.Clear();
         var fontDef = GetFontDef();
 
-        // Display in chronological order (oldest first, newest at bottom)
         for (int i = 0; i < entries.Count; i++)
         {
             var entry = entries[i];
@@ -118,6 +122,34 @@ public class VNBacklog : MonoBehaviour
             entryElement.style.paddingBottom = 16;
             entryElement.style.borderBottomWidth = 1;
             entryElement.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
+            entryElement.style.paddingTop = 8;
+            entryElement.style.paddingLeft = 8;
+            entryElement.style.paddingRight = 8;
+            entryElement.style.borderTopLeftRadius = 4;
+            entryElement.style.borderTopRightRadius = 4;
+            entryElement.style.borderBottomLeftRadius = 4;
+            entryElement.style.borderBottomRightRadius = 4;
+
+            // 点击条目跳转
+            int capturedIdx = i;
+            entryElement.RegisterCallback<ClickEvent>(e =>
+            {
+                JumpToEntry(capturedIdx);
+            });
+
+            // 鼠标悬停效果
+            entryElement.RegisterCallback<PointerEnterEvent>(e =>
+            {
+                entryElement.style.backgroundColor = new Color(1f, 1f, 1f, 0.05f);
+                if (handCursorTex != null)
+                    UnityEngine.Cursor.SetCursor(handCursorTex, new Vector2(0, 0), UnityEngine.CursorMode.ForceSoftware);
+            });
+            entryElement.RegisterCallback<PointerLeaveEvent>(e =>
+            {
+                entryElement.style.backgroundColor = Color.clear;
+                if (LoginManager.cursorTexture != null)
+                    UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+            });
 
             bool isNarration = string.IsNullOrEmpty(entry.speaker) || entry.speaker == "n";
 
@@ -143,6 +175,16 @@ public class VNBacklog : MonoBehaviour
         }
     }
 
+    private void JumpToEntry(int index)
+    {
+        if (index < 0 || index >= entries.Count) return;
+        var entry = entries[index];
+        // 跳转到该条目的位置（sceneIndex, dialogueIndex）
+        // 这样点击后显示的是该条目之后的下一句
+        OnEntryClicked?.Invoke(entry.sceneIndex, entry.dialogueIndex);
+        ToggleBacklog();
+    }
+
     public void ToggleBacklog()
     {
         isOpen = !isOpen;
@@ -150,7 +192,6 @@ public class VNBacklog : MonoBehaviour
 
         if (isOpen)
         {
-            // Scroll to bottom (newest entries)
             backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.worldBound.height);
         }
     }
