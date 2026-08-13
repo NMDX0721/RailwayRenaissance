@@ -551,6 +551,15 @@ public static class GameData
 
         string tone = BuildDailyTone();
         Day += 1;
+
+        // 教程系统：更新天数并检查提示
+        TutorialManager.SetGameDay(Day);
+        string tip = TutorialManager.CheckForTip();
+        if (!string.IsNullOrEmpty(tip))
+        {
+            TutorialManager.ShowTip(tip);
+        }
+
         RefreshBoards(tone);
 
         return new DayResult
