@@ -44,6 +44,15 @@ Assets/
 2. **MCP Unity**: 通过 `mcp-unity` server 与运行中的 Unity Editor 通信（端口 721）
 3. **重启游戏**: `taskkill /F /IM "Unity.exe"` 后在 Unity 中重新打开场景
 
+## Git 工作流
+
+详见 `docs/compose/specs/Git工作流规范.md`，核心原则：
+
+- **分支策略**: `main` 只接受 squash merge，开发在 `feat/*` 分支
+- **Commit 粒度**: 一个 commit = 一个逻辑单元（改一个bug、加一个功能）
+- **Squash**: 功能完成后 squash 合并到 main，每个 main commit 代表一个完整功能
+- **Push 时机**: 开发中只 commit 不 push，squash 合并到 main 后立即 push
+
 ## 关键约定
 
 - **不要直接编辑 `.unity` YAML 文件** — 场景结构损坏难以修复，优先在 Unity Editor 内操作或用编辑器脚本生成

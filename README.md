@@ -6,21 +6,17 @@ A hardcore pixel-art railway management sim with Visual Novel storytelling — b
 
 ---
 
-### 🖼️ The Laboratory of Intelligent Dispatch Systems
+### 🖼️ Laboratory of Intelligent Dispatch Systems
 
 ![Laboratory Interior](Assets/Resources/bg/lab.jpg)
 
-Kim Il Sung University, Pyongyang. Class of 2076.
+**Kim Il Sung University, Pyongyang — Laboratory of Intelligent Dispatch Systems**
 
-The **Laboratory of Intelligent Dispatch Systems** is the university's flagship research facility, dedicated to the next generation of railway scheduling algorithms. Its computational capacity rivals that of any civilian research institution on the peninsula. The laboratory's primary research direction — dynamic path optimization using real-time passenger flow data — represents a field in which the university has held global leadership for three consecutive assessment cycles.
+The Laboratory of Intelligent Dispatch Systems is the university's flagship research facility for next-generation railway scheduling algorithms. The laboratory is equipped with modern computing equipment and display terminals, with windows overlooking the Pyongyang skyline. It is here that Lin Biaohan, an honor graduate student of Kim Il Sung University, conducts his research on intelligent dispatch systems.
 
-The current lead researcher, Lin Biaohan, is a graduate fellow whose work on Dijkstra-based adaptive scheduling has been cited by the International Institute of Transport Economics. His terminal, a Chollima-series workstation, is connected to the university's internal simulation grid — a network originally developed for朝鲜's national railway dispatch system, later repurposed for academic research following the mass line closures of 2072.
+His work focuses on dynamic path optimization — specifically, the integration of Dijkstra's algorithm with real-time passenger flow data to create adaptive scheduling models. The field of intelligent dispatch is one in which Kim Il Sung University has established itself as a global leader.
 
-From the window facing south, one can observe the Taedong River and the Juche Tower. The office is furnished in the standard institutional style: hardwood desks, a bookshelf containing both technical manuals and state-published transportation histories, and a wall displaying the university's founding charter alongside periodic safety commendations.
-
-The laboratory operates on a 24-hour access schedule. On the desk, beside the terminal, lies a dog-eared copy of *Railway Engineering Handbook*. The扉页bears a handwritten inscription: *"For Biaohan — Grandpa."*
-
----
+On his desk, beside the terminal displaying complex scheduling algorithm models, lies a worn copy of a railway engineering handbook. The cover page bears a faded handwritten inscription: *"For Biaohan — Grandpa."*
 
 ---
 
