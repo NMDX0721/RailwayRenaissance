@@ -135,6 +135,20 @@ public static class GameData
         Active
     }
 
+    // ===== 经济系统参数 =====
+    private const float PopulationFactor = 8000f;
+    private const float SeasonModifier = 1.0f;
+    private const float SandPenetration = 0.15f;
+    private const int ConductorLevel = 2;
+    private const int MechanicLevel = 2;
+    private const int TicketPrice = 35;
+    private const float FuelConsumptionPer100km = 58.5f;
+    private const float DailyDistancePerTrip = 23f;
+    private const int FuelPrice = 15;
+    private const int MonthlyWage = 90000;
+    private const int BaseTrips = 4;
+
+    // ===== 运行时状态 =====
     public static int Day { get; private set; } = 1;
     public static int Money { get; private set; } = 40000;
     public static int Trust { get; private set; } = 62;
@@ -160,6 +174,7 @@ public static class GameData
 
     private static bool initialized;
     private static DailyEvent currentDailyEvent;
+    private static HashSet<string> completedStoryGrants = new HashSet<string>();
 
     public static readonly DispatchPlan[] DispatchPlans =
     {
@@ -185,6 +200,21 @@ public static class GameData
         new ShortTermGoal("拉高客流", "让预计客流达到 30。", targetPassengers: 30)
     };
 
+    // ===== 剧情补贴系统 =====
+
+    public static void CompleteStoryGrant(string grantId, int amount)
+    {
+        Money += amount;
+        completedStoryGrants.Add(grantId);
+    }
+
+    public static bool IsStoryGrantCompleted(string grantId)
+    {
+        return completedStoryGrants.Contains(grantId);
+    }
+
+    // ===== 初始化 =====
+
     public static void InitializeIfNeeded()
     {
         if (initialized)
@@ -198,8 +228,10 @@ public static class GameData
 
     public static void ResetState()
     {
+        // 从 GameConfig 读取初始资金
+        GameConfig config = GameConfig.Load();
         Day = 1;
-        Money = 40000;
+        Money = Mathf.RoundToInt(config.startMoney);
         Trust = 62;
         TrainCondition = 70;
         ExpectedPassengers = 22;
@@ -215,6 +247,7 @@ public static class GameData
         CurrentStationServiceStrategy = StationServiceStrategy.Standard;
         CurrentExternalAffairsStrategy = ExternalAffairsStrategy.Standard;
         currentDailyEvent = null;
+        completedStoryGrants.Clear();
 
         foreach (ShortTermGoal goal in ShortTermGoals)
         {
@@ -224,6 +257,8 @@ public static class GameData
         AutoSelectGoal();
         RefreshBoards("新的一天开始了，先看一眼站内情况，再决定今天怎么经营。");
     }
+
+    // ===== 策略循环 =====
 
     public static DispatchPlan GetCurrentDispatchPlan()
     {
@@ -255,6 +290,8 @@ public static class GameData
         CurrentExternalAffairsStrategy = (ExternalAffairsStrategy)(((int)CurrentExternalAffairsStrategy + 1) % 3);
     }
 
+    // ===== 目标系统 =====
+
     public static void AutoSelectGoal()
     {
         foreach (ShortTermGoal goal in ShortTermGoals)
@@ -279,6 +316,146 @@ public static class GameData
         return CurrentGoal.CheckCompletion();
     }
 
+    // ===== 核心经济计算 =====
+
+    /// <summary>根据当前发车方案获取今日趟数。</summary>
+    private static int GetTripsForDispatchPlan()
+    {
+        // 保守运行=3趟，标准运行=4趟，加开一班=5趟
+        switch (SelectedDispatchPlanIndex)
+        {
+            case 0: return 3;
+            case 2: return 5;
+            default: return 4;
+        }
+    }
+
+    /// <summary>计算每日客流。</summary>
+    private static int CalculateDailyPassengers()
+    {
+        float trustCoefficient = 0.5f + Trust * 0.005f;
+        float serviceQualityCoefficient = 1.0f + ConductorLevel * 0.03f;
+        float raw = PopulationFactor * 0.001f * trustCoefficient * SeasonModifier * (1f - SandPenetration) * serviceQualityCoefficient;
+        return Mathf.RoundToInt(raw);
+    }
+
+    /// <summary>计算日收入。</summary>
+    private static int CalculateRevenue(int dailyPassengers, int trips)
+    {
+        return dailyPassengers * TicketPrice * trips;
+    }
+
+    /// <summary>计算日燃料费。</summary>
+    private static int CalculateFuelCost(int trips)
+    {
+        float vehicleConditionCoefficient = 1f + (100f - TrainCondition) / 200f;
+        float dailyDistance = DailyDistancePerTrip * trips;
+        float dailyFuelLiters = FuelConsumptionPer100km * dailyDistance / 100f * vehicleConditionCoefficient;
+        return Mathf.RoundToInt(dailyFuelLiters * FuelPrice);
+    }
+
+    /// <summary>计算日工资。</summary>
+    private static int CalculateWageCost()
+    {
+        return MonthlyWage / 30;
+    }
+
+    /// <summary>根据维护策略计算日维护费。</summary>
+    private static int CalculateMaintenanceCost()
+    {
+        float vehicleConditionCoefficient = 1f + (100f - TrainCondition) / 100f;
+        float mechanicSkillCoefficient = 1f - MechanicLevel * 0.08f;
+
+        float baseCost;
+        switch (CurrentMaintenanceStrategy)
+        {
+            case MaintenanceStrategy.Postpone:
+                baseCost = 0f;
+                break;
+            case MaintenanceStrategy.Standard:
+                baseCost = 100f;
+                break;
+            case MaintenanceStrategy.Enhanced:
+                baseCost = 500f;
+                break;
+            default:
+                baseCost = 100f;
+                break;
+        }
+
+        return Mathf.RoundToInt(baseCost * vehicleConditionCoefficient * mechanicSkillCoefficient);
+    }
+
+    /// <summary>根据维护策略计算车况日变化量。</summary>
+    private static int GetConditionChangeFromMaintenance()
+    {
+        // 基础日损耗-1，维护策略影响：
+        // Postpone: 无维护，额外-2 → 总计-3
+        // Standard: 维护抵消部分损耗 → 总计0
+        // Enhanced: 强化维护，车况回升 → 总计+2
+        switch (CurrentMaintenanceStrategy)
+        {
+            case MaintenanceStrategy.Postpone:
+                return -3;
+            case MaintenanceStrategy.Standard:
+                return 0;
+            case MaintenanceStrategy.Enhanced:
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
+    /// <summary>根据员工分配计算信任/车况/客流修正。</summary>
+    private static (int trustDelta, int conditionDelta, int passengerDelta) GetStaffAllocationDeltas(StaffAllocationType type)
+    {
+        switch (type)
+        {
+            case StaffAllocationType.Balanced:
+                return (0, 0, 0);
+            case StaffAllocationType.Maintenance:
+                return (0, 3, 0);
+            case StaffAllocationType.Service:
+                return (2, -1, 2);
+            default:
+                return (0, 0, 0);
+        }
+    }
+
+    /// <summary>根据站务服务策略计算信任/客流修正。</summary>
+    private static (int trustDelta, int passengerDelta) GetStationServiceDeltas(StationServiceStrategy strategy)
+    {
+        switch (strategy)
+        {
+            case StationServiceStrategy.Basic:
+                return (-2, -2);
+            case StationServiceStrategy.Standard:
+                return (0, 0);
+            case StationServiceStrategy.Enhanced:
+                return (3, 3);
+            default:
+                return (0, 0);
+        }
+    }
+
+    /// <summary>根据外部事务策略计算信任修正。</summary>
+    private static int GetExternalAffairsTrustDelta(ExternalAffairsStrategy strategy)
+    {
+        switch (strategy)
+        {
+            case ExternalAffairsStrategy.Minimal:
+                return -2;
+            case ExternalAffairsStrategy.Standard:
+                return 0;
+            case ExternalAffairsStrategy.Active:
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    // ===== 核心流程 =====
+
     public static DayResult AdvanceDay()
     {
         InitializeIfNeeded();
@@ -288,14 +465,55 @@ public static class GameData
         int startCondition = TrainCondition;
         int startPassengers = ExpectedPassengers;
 
-        DispatchPlan plan = GetCurrentDispatchPlan();
+        // 1. 发车方案决定今日趟数
+        int trips = GetTripsForDispatchPlan();
 
-        ApplyDelta(plan.MoneyDelta + Random.Range(-40, 91), plan.TrustDelta + Random.Range(-2, 5), plan.TrainConditionDelta + Random.Range(-3, 3), plan.PassengerDelta + Random.Range(-2, 5));
-        ApplyStaffAllocationEffects(CurrentStaffAllocation);
-        ApplyMaintenanceEffects(CurrentMaintenanceStrategy);
-        ApplyStationServiceEffects(CurrentStationServiceStrategy);
-        ApplyExternalAffairsEffects(CurrentExternalAffairsStrategy);
+        // 2. 计算每日客流
+        int dailyPassengers = CalculateDailyPassengers();
+        ExpectedPassengers = dailyPassengers;
 
+        // 3. 日收入
+        int dailyRevenue = CalculateRevenue(dailyPassengers, trips);
+
+        // 4. 日燃料费
+        int fuelCost = CalculateFuelCost(trips);
+
+        // 5. 日工资
+        int wageCost = CalculateWageCost();
+
+        // 6. 日维护费
+        int maintenanceCost = CalculateMaintenanceCost();
+
+        // 7. 日净收入 = 收入 - 燃料费 - 维护费 - 工资
+        int netIncome = dailyRevenue - fuelCost - maintenanceCost - wageCost;
+        Money += netIncome;
+
+        // 8. 信任变化 = 正常运营+1/天
+        int trustDelta = 1;
+
+        // 9. 车况变化 = 维护策略决定（已包含基础日损耗-1）
+        int conditionDelta = GetConditionChangeFromMaintenance();
+
+        // 应用员工分配影响
+        var staffDeltas = GetStaffAllocationDeltas(CurrentStaffAllocation);
+        trustDelta += staffDeltas.trustDelta;
+        conditionDelta += staffDeltas.conditionDelta;
+        int passengerDelta = staffDeltas.passengerDelta;
+
+        // 应用站务服务影响
+        var serviceDeltas = GetStationServiceDeltas(CurrentStationServiceStrategy);
+        trustDelta += serviceDeltas.trustDelta;
+        passengerDelta += serviceDeltas.passengerDelta;
+
+        // 应用外部事务影响
+        trustDelta += GetExternalAffairsTrustDelta(CurrentExternalAffairsStrategy);
+
+        // 应用所有delta
+        Trust += trustDelta;
+        TrainCondition += conditionDelta;
+        ExpectedPassengers += passengerDelta;
+
+        // 随机事件
         currentDailyEvent = TriggerDailyEvent();
         if (currentDailyEvent != null)
         {
@@ -327,6 +545,8 @@ public static class GameData
             Tone = tone
         };
     }
+
+    // ===== 策略名称/描述（保持UI绑定） =====
 
     public static string GetStaffAllocationName(StaffAllocationType type)
     {
@@ -445,6 +665,8 @@ public static class GameData
         return "0" + suffix;
     }
 
+    // ===== 内部方法 =====
+
     private static DailyEvent TriggerDailyEvent()
     {
         if (Random.Range(0, 100) < 35)
@@ -453,70 +675,6 @@ public static class GameData
         }
 
         return null;
-    }
-
-    private static void ApplyStaffAllocationEffects(StaffAllocationType type)
-    {
-        switch (type)
-        {
-            case StaffAllocationType.Balanced:
-                ApplyDelta(0, 2, 2, 2);
-                break;
-            case StaffAllocationType.Maintenance:
-                ApplyDelta(-50, 0, 8, -1);
-                break;
-            case StaffAllocationType.Service:
-                ApplyDelta(-30, 5, -2, 5);
-                break;
-        }
-    }
-
-    private static void ApplyMaintenanceEffects(MaintenanceStrategy strategy)
-    {
-        switch (strategy)
-        {
-            case MaintenanceStrategy.Postpone:
-                ApplyDelta(90, 0, -8, 0);
-                break;
-            case MaintenanceStrategy.Standard:
-                ApplyDelta(-120, 0, 7, 0);
-                break;
-            case MaintenanceStrategy.Enhanced:
-                ApplyDelta(-240, 1, 13, 1);
-                break;
-        }
-    }
-
-    private static void ApplyStationServiceEffects(StationServiceStrategy strategy)
-    {
-        switch (strategy)
-        {
-            case StationServiceStrategy.Basic:
-                ApplyDelta(40, -2, 0, -2);
-                break;
-            case StationServiceStrategy.Standard:
-                ApplyDelta(-40, 2, 0, 2);
-                break;
-            case StationServiceStrategy.Enhanced:
-                ApplyDelta(-120, 4, 0, 4);
-                break;
-        }
-    }
-
-    private static void ApplyExternalAffairsEffects(ExternalAffairsStrategy strategy)
-    {
-        switch (strategy)
-        {
-            case ExternalAffairsStrategy.Minimal:
-                ApplyDelta(80, -3, 0, 0);
-                break;
-            case ExternalAffairsStrategy.Standard:
-                ApplyDelta(-80, 3, 0, 1);
-                break;
-            case ExternalAffairsStrategy.Active:
-                ApplyDelta(-180, 6, 0, 2);
-                break;
-        }
     }
 
     private static void ApplyDelta(int moneyDelta, int trustDelta, int conditionDelta, int passengerDelta)
@@ -663,6 +821,6 @@ public static class GameData
             return "先试一轮不同组合，找出自己喜欢的经营节奏。";
         }
 
-        return "围绕“" + CurrentGoal.Title + "”调整今天的决策。";
+        return "围绕\"" + CurrentGoal.Title + "\"调整今天的决策。";
     }
 }
