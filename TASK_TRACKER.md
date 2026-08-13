@@ -6,51 +6,97 @@ This document tracks all tasks for completing the RailwayRenaissance project. Di
 
 **Workflow**: Fix design → Create content → Generate assets → Implement in Unity
 
-**Current Status**: 🟡 Design Fix Phase
+**Current Status**: 🟡 Phase 2: Content Implementation (Code)
 
 ---
 
 ## Task List
 
-### Phase 0: Design Document Fixes (完成)
+### Phase 0: Design Document Fixes (✅ 完成)
 
-| # | Task | Status | Priority | Note |
-|---|------|--------|----------|------|
-| 0 | 7大文档矛盾修复 | ✅ 完成 | P0 | 学校/年龄/年份/参数/工资/资金/格式 |
-| 0 | 经济系统重构 | ✅ 完成 | P0 | 新增剧情补贴机制，对齐角色设定工资表 |
+| # | Task | Status | Priority |
+|---|------|--------|----------|
+| D1 | 7大文档矛盾修复 | ✅ 完成 | P0 |
+| D2 | 经济系统重构 | ✅ 完成 | P0 |
+| D3 | 序章后续剧情设计 | ✅ 完成 | P0 |
+| D4 | VN与经营对接文档 | ✅ 完成 | P0 |
 
-### Phase 1: Missing Content (完成)
+### Phase 1: Missing Content (✅ 完成)
 
-| # | Task | Status | Priority | Note |
-|---|------|--------|----------|------|
-| 1 | 核心玩法循环文档 | ✅ 完成 | P0 | docs/compose/specs/ |
-| 2 | 科技树设计文档 | ✅ 完成 | P1 | 三条互斥分支，9节点/分支 |
-| 3 | 沙能竞争系统设计 | ✅ 完成 | P1 | AI行为模型+对抗手段 |
-| 4 | 跨系统联动公式 | ✅ 完成 | P0 | 所有子系统公式统一 |
-| 5 | 区域解锁与政治系统 | ✅ 完成 | P1 | 6区域+政治周期 |
-| 6 | 教程与新手引导 | ✅ 完成 | P2 | 剧情驱动引导 |
-| 7 | AI系统实现计划 | ✅ 完成 | P2 | 三阶段策略 |
-| 8 | Mod系统设计 | ✅ 完成 | P3 | 数据驱动框架 |
+| # | Task | Status | Priority |
+|---|------|--------|----------|
+| C1 | 核心玩法循环文档 | ✅ 完成 | P0 |
+| C2 | 科技树设计文档 | ✅ 完成 | P1 |
+| C3 | 沙能竞争系统设计 | ✅ 完成 | P1 |
+| C4 | 跨系统联动公式 | ✅ 完成 | P0 |
+| C5 | 区域解锁与政治系统 | ✅ 完成 | P1 |
+| C6 | 教程与新手引导 | ✅ 完成 | P2 |
+| C7 | AI系统实现计划 | ✅ 完成 | P2 |
+| C8 | Mod系统设计 | ✅ 完成 | P3 |
+| C9 | 后续任务规划 | ✅ 完成 | P0 |
 
-### Phase 2: Content Implementation
+### Phase 2: Content Implementation (Code) — 🟡 当前
 
-| # | Task | Status | Priority | Dependencies |
-|---|------|--------|----------|--------------|
-| 9 | 序章剧本完整JSON化 | 🔵 Ready | P0 | 完成prologue_04~10 |
-| 10 | 经济系统Unity实现 | 🔵 Ready | P0 | 基于GameData.cs重构 |
-| 11 | 人员养成系统实现 | 🔵 Ready | P1 | 角色设定.md |
-| 12 | 随机事件系统实现 | 🟡 Pending | P1 | 经济系统§8 |
-| 13 | 沙能竞争系统实现 | 🟡 Pending | P1 | 沙能竞争系统设计.md |
+| # | Task | Priority | Dependencies | Est. Hours |
+|---|------|----------|-------------|-----------|
+| T1 | 创建剩余序章JSON (prologue_07~09) | **P0** | 序章后续剧情设计.md | 2h |
+| T2 | VN→经营过渡实现 (t:special + VNExitData) | **P0** | T1 | 4h |
+| T3 | 经济系统Unity实现 (GameData.cs重构) | **P0** | 跨系统联动公式.md | 6h |
+| T4 | 人员养成系统 (CrewManager) | P1 | 角色设定.md | 4h |
+| T5 | 随机事件系统 (EventManager) | P1 | 经济系统§8 | 3h |
+| T6 | 沙能竞争系统 (SandRivalManager) | P1 | 沙能竞争系统设计.md | 4h |
+| T7 | 教程与新手引导 | P2 | T3 | 2h |
+| T8 | 统一存档系统 | P2 | - | 3h |
+| T9 | 术语高亮系统 | P2 | - | 1h |
+| T10 | 科技树实现 | P3 | 科技树设计.md | 4h |
+| T11 | 模板化AI系统 | P3 | AI系统实现计划.md | 3h |
 
-### Phase 3: Asset Generation
+### Phase 3: Asset Generation (并行)
 
-| # | Task | Status | Priority | Dependencies |
-|---|------|--------|----------|--------------|
-| 14 | 角色立绘生成 | 🔵 Ready | P0 | 10个角色 |
-| 15 | 场景背景生成 | 🔵 Ready | P0 | 车站/线路/城市 |
-| 16 | 列车Sprite生成 | 🔵 Ready | P1 | NF-5耕牛+车厢 |
-| 17 | UI元素生成 | 🔵 Ready | P1 | 按钮/面板/图标 |
-| 18 | 音效/BGM收集 | 🟡 Pending | P2 | 需要来源 |
+| # | Task | Priority | Ref. Doc | Est. Hours |
+|---|------|----------|---------|-----------|
+| A1 | 角色立绘 (10角色×4-16表情) | **P0** | CHARACTER.md | 10h |
+| A2 | 场景背景 (12张) | **P0** | 序章后续剧情设计.md | 6h |
+| A3 | 列车Sprite (NF-5+SY-22) | P1 | - | 2h |
+| A4 | UI元素 (按钮/图标/面板) | P1 | - | 3h |
+| A5 | 音效/BGM (8首+4个SFX) | P2 | - | 3h |
+
+### Phase 4: Integration & Polish
+
+| # | Task | Priority | Dependencies | Est. Hours |
+|---|------|----------|-------------|-----------|
+| I1 | 全流程测试 (序章→经营→沙能) | **P0** | T1-T6, A1-A2 | 3h |
+| I2 | 经济平衡调优 | P1 | T3, T5 | 3h |
+| I3 | Bug修复 | P1 | I1 | 2h |
+| I4 | 性能优化 | P2 | I1 | 2h |
+| I5 | 构建发布 | P3 | I1-I4 | 2h |
+
+---
+
+## 执行顺序
+
+```
+Week 1: T1 + T3 并行 → T2 + T4 并行 → T5 + A1 并行
+Week 2: T6 + A2 并行 → T7 + T8 并行 → T9 + A3 + A4
+Week 3: I1 + I2 → I3 + I4 → I5
+```
+
+## 里程碑
+
+| 里程碑 | 条件 | 目标 |
+|--------|------|------|
+| M1: 序章可完整播放 | 全部prologue JSON + VN→经营过渡 | Week 1 末 |
+| M2: 核心经营循环可玩 | 经济系统 + 人员 + 事件 | Week 1-2 间 |
+| M3: 完整游戏循环 | 沙能竞争 + 教程 + 存档 | Week 2 末 |
+| M4: Beta版 | 全资产 + 全流程 + 平衡 | Week 3 末 |
+
+---
+
+## 详细规划文档
+
+| 文档 | 路径 |
+|------|------|
+| 后续任务规划（含提词模板） | docs/compose/plans/后续任务规划.md |
 
 ---
 
