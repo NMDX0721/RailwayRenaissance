@@ -1,0 +1,94 @@
+{
+  "events": [
+    {
+      "id": "oil_price_up",
+      "type": "economic",
+      "title": "油价上涨",
+      "description": "国际油价波动，柴油价格上涨30%",
+      "probability": 0.05,
+      "effects": {"moneyDelta": 0, "trustDelta": 0, "trainConditionDelta": 0, "passengerDelta": 0, "fuelCostMultiplier": 1.3, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 14
+    },
+    {
+      "id": "bad_weather",
+      "type": "operation",
+      "title": "恶劣天气",
+      "description": "连续暴雨，准点率下降20%",
+      "probability": 0.08,
+      "effects": {"moneyDelta": 0, "trustDelta": -5, "trainConditionDelta": 0, "passengerDelta": 0, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": -20},
+      "duration": 2
+    },
+    {
+      "id": "passenger_thanks",
+      "type": "positive",
+      "title": "旅客致谢",
+      "description": "值班人员帮助旅客找回了遗失物，站内口碑提升",
+      "probability": 0.12,
+      "effects": {"moneyDelta": 0, "trustDelta": 5, "trainConditionDelta": 0, "passengerDelta": 2, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 1
+    },
+    {
+      "id": "ticket_machine_fail",
+      "type": "operation",
+      "title": "售票机故障",
+      "description": "老设备临时出问题，现场处理花掉了一笔维修费",
+      "probability": 0.08,
+      "effects": {"moneyDelta": -120, "trustDelta": -2, "trainConditionDelta": 0, "passengerDelta": -1, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 1
+    },
+    {
+      "id": "media_report",
+      "type": "positive",
+      "title": "地方报道",
+      "description": "本地媒体提到你们坚持运营支线，乘客对车站更有好感",
+      "probability": 0.10,
+      "effects": {"moneyDelta": 0, "trustDelta": 6, "trainConditionDelta": 0, "passengerDelta": 3, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 3
+    },
+    {
+      "id": "staff_sick",
+      "type": "personnel",
+      "title": "员工生病",
+      "description": "一名员工请病假，今天人手紧张",
+      "probability": 0.03,
+      "effects": {"moneyDelta": 0, "trustDelta": 0, "trainConditionDelta": 0, "passengerDelta": 0, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": -20},
+      "duration": 3
+    },
+    {
+      "id": "holiday_rush",
+      "type": "economic",
+      "title": "节假日客流高峰",
+      "description": "节假日来临，客运量增加50%",
+      "probability": 0.08,
+      "effects": {"moneyDelta": 0, "trustDelta": 0, "trainConditionDelta": 0, "passengerDelta": 0, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.5, "efficiencyDelta": 0},
+      "duration": 7
+    },
+    {
+      "id": "sand_ad_campaign",
+      "type": "sand",
+      "title": "沙能宣传攻势",
+      "description": "沙能公司发起大规模宣传活动，乘客信任度下降",
+      "probability": 0.05,
+      "effects": {"moneyDelta": 0, "trustDelta": -8, "trainConditionDelta": 0, "passengerDelta": -2, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 7
+    },
+    {
+      "id": "volunteer_help",
+      "type": "positive",
+      "title": "志愿者活动",
+      "description": "社区志愿者来帮忙维持秩序，服务体验有所改善",
+      "probability": 0.10,
+      "effects": {"moneyDelta": 40, "trustDelta": 3, "trainConditionDelta": 0, "passengerDelta": 2, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 1
+    },
+    {
+      "id": "part_shortage",
+      "type": "operation",
+      "title": "配件短缺",
+      "description": "今天等到的零件不够，检修效果打了折扣",
+      "probability": 0.06,
+      "effects": {"moneyDelta": 0, "trustDelta": 0, "trainConditionDelta": -5, "passengerDelta": 0, "fuelCostMultiplier": 1.0, "passengerMultiplier": 1.0, "efficiencyDelta": 0},
+      "duration": 1
+    }
+  ]
+}

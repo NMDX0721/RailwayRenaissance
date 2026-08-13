@@ -223,6 +223,7 @@ public static class GameData
         }
 
         initialized = true;
+        EventManager.Initialize();
         ResetState();
     }
 
@@ -514,10 +515,13 @@ public static class GameData
         ExpectedPassengers += passengerDelta;
 
         // 随机事件
-        currentDailyEvent = TriggerDailyEvent();
-        if (currentDailyEvent != null)
+        GameEvent evt = EventManager.TryTriggerEvent();
+        if (evt != null)
         {
-            ApplyDelta(currentDailyEvent.MoneyDelta, currentDailyEvent.TrustDelta, currentDailyEvent.TrainConditionDelta, currentDailyEvent.PassengerDelta);
+            Money += evt.effects.moneyDelta;
+            Trust += evt.effects.trustDelta;
+            TrainCondition += evt.effects.trainConditionDelta;
+            ExpectedPassengers += evt.effects.passengerDelta;
         }
 
         ClampStats();
