@@ -606,6 +606,11 @@ public class VNManager : MonoBehaviour
             fullScreenNews?.Show(entry.text);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
+        else if (entry.t == "special")
+        {
+            // 特殊游戏操作指令
+            HandleSpecialCommand(entry.text);
+        }
         else
         {
             HideOptions();
@@ -758,6 +763,61 @@ public class VNManager : MonoBehaviour
             return config.PlayerDisplayName;
         }
         return speaker;
+    }
+
+    /// <summary>处理特殊游戏操作指令（t:"special"）。</summary>
+    private void HandleSpecialCommand(string command)
+    {
+        switch (command)
+        {
+            case "TRANSITION_TO_GAMEPLAY":
+                TransitionToGameplay();
+                break;
+            default:
+                Debug.LogWarning("[VN] Unknown special command: " + command);
+                NextDialogue();
+                break;
+        }
+    }
+
+    /// <summary>VN→经营场景过渡：构建 VNExitData 并切换场景。</summary>
+    private void TransitionToGameplay()
+    {
+        StopAutoPlay();
+        isScriptRunning = false;
+
+        VNExitData exitData = new VNExitData();
+
+        // 基础数据
+        exitData.startMoney = 40000f;
+        exitData.startTrust = 60;
+        exitData.startTrainCondition = 70;
+        exitData.difficulty = GameConfig.Load().difficulty;
+        exitData.playerAlias = GameConfig.Load().PlayerDisplayName;
+
+        // 员工数据（5名初始员工）
+        exitData.crew = new CrewData[]
+        {
+            new CrewData { id = "laochen",     name = "老陈",   role = "driver",     skillLevel = 5, fatigue = 0f,   specialty = "safety" },
+            new CrewData { id = "zhanggong",   name = "张工",   role = "mechanic",   skillLevel = 5, fatigue = 0.2f, specialty = "repair" },
+            new CrewData { id = "liayi",       name = "李阿姨", role = "conductor",  skillLevel = 2, fatigue = 0f,   specialty = "service" },
+            new CrewData { id = "zhaoshifu",   name = "赵师傅", role = "dispatcher", skillLevel = 4, fatigue = 0.1f, specialty = "management" },
+            new CrewData { id = "xiaofang",    name = "小芳",   role = "attendant",  skillLevel = 1, fatigue = 0f,   specialty = "learning" }
+        };
+
+        // 完成标记与解锁区域
+        exitData.completedFlags = new string[] { "prologue_complete" };
+        exitData.unlockedRegions = new string[] { "wufeng_mine" };
+
+        // 序列化保存过渡数据
+        string json = JsonUtility.ToJson(exitData);
+        PlayerPrefs.SetString("VNExitData", json);
+        PlayerPrefs.Save();
+
+        Debug.Log("[VN] TransitionToGameplay: saved VNExitData, loading StationSlice_V1");
+
+        // 加载经营场景
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("StationSlice_V1");
     }
 
     // Auto-play
