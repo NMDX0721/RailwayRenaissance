@@ -55,7 +55,7 @@ But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul
 
 **Deeply embedded AI** — the visual novel offers three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory — they remember what you've done, and how they feel changes what they say. Story beats can be generated on the fly. A planned phone-based assistant, powered by the player's own API key, is narratively wrapped as a remote call to the university server running a modified RDA — the Railway Decision Assistant.
 
-*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI System Plan](docs/compose/specs/AI系统实现计划.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
+*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI System Plan](docs/compose/specs/岁月叙事引擎.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
 
 ## The People
 
@@ -99,12 +99,12 @@ The design lives in the repo, not just in the code — every system is specified
 | Doc | Contents |
 |-----|----------|
 | [Game Design Doc](参考资料/游戏开发文档.md) | Master index of all design docs |
-| [Economy System](参考资料/经济系统.md) | Sand-standard currency, break-even math |
+| [Economy System](参考资料/沙本位经济核.md) | Sand-standard currency, break-even math |
 | [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | The three-layer time model, the five trendlines |
 | [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Every formula, cross-linked |
 | [Tech & Research](docs/compose/specs/科技树设计.md) | The open research network |
 | [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer, character memory |
-| [AI Implementation Plan](docs/compose/specs/AI系统实现计划.md) | Template AI → llama.cpp roadmap |
+| [AI Implementation Plan](docs/compose/specs/岁月叙事引擎.md) | Template AI → llama.cpp roadmap |
 | [World & Timeline](参考资料/世界观扩展设定.md) | USET, the sand-standard, 2050–2076 lore |
 | [Story Timeline](参考资料/故事线时间轴.md) | Verified continuity of the world's history |
 

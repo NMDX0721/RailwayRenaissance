@@ -24,6 +24,9 @@
 - **工作流**：第1步生成主图（半身到腿，详细全身）→ 第2步用主图生成表情差分（denoising 0.2-0.3，同服装/同姿势/同光照）
 - **尺寸**：1024×2048，PNG透明底，全身包括脚
 - **风格**：STARDEW VALLEY STYLE，16-bit retro pixel art，暖色调
+- **表情集**：全部角色统一 16 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink`（以主角已完成16表情为基准，以下各节同）
+- **人数约束（强制）**：主图必须是**单个人物**立绘——每条主图提示词首行已含 `SINGLE CHARACTER, ONE PERSON ONLY, no other people, no duplicates, no character sheet`。若生成工具仍输出参考图集/多人场景，在负面提示词外加 `multiple people, character sheet, reference sheet, turnarounds, duplicated character, multi-figure`。
+- **差分工作流**：主图验收通过后，用"16表情差分图谱"提示词（见 1.9）一次产出 4×4 网格，再按需裁剪；勿逐表情单张生成。
 
 ---
 
@@ -37,11 +40,11 @@
 ### 1.2 老陈（陈守正）
 
 **文件**：`Resources/characters/laochen/{表情}.png`  
-**表情**：normal, smile, serious, sad, worried, happy, curious, gentle（8种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, elderly male, 68 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, elderly male, 68 years old.
 
 FACE CHARACTERISTICS:
 - Square face, dark wrinkled but strong skin
@@ -80,11 +83,11 @@ AVOID:
 ### 1.3 张工（张德厚）
 
 **文件**：`Resources/characters/zhanggong/{表情}.png`  
-**表情**：normal, smile, serious, happy, curious, surprised（6种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, elderly male, 62 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, elderly male, 62 years old.
 
 FACE CHARACTERISTICS:
 - Round, full face, rosy cheeks
@@ -125,11 +128,11 @@ AVOID:
 ### 1.4 李阿姨（李桂芳）
 
 **文件**：`Resources/characters/liayi/{表情}.png`  
-**表情**：normal, smile, happy, serious, worried, surprised（6种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 55 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 55 years old.
 
 FACE CHARACTERISTICS:
 - Round face, slight double chin
@@ -167,11 +170,11 @@ AVOID:
 ### 1.5 王小弟（王晨阳）
 
 **文件**：`Resources/characters/wangxiaodi/{表情}.png`  
-**表情**：normal, smile, happy, curious, surprised, serious（6种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, young male, 22 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, young male, 22 years old.
 
 FACE CHARACTERISTICS:
 - Oval face, still has baby fat
@@ -209,11 +212,11 @@ AVOID:
 ### 1.6 赵师傅（赵铁山）
 
 **文件**：`Resources/characters/zhaoshifu/{表情}.png`  
-**表情**：normal, serious, smile, worried, surprised, sad（6种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged male, 55 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged male, 55 years old.
 
 FACE CHARACTERISTICS:
 - Slightly long, angular face, sharp features
@@ -252,11 +255,11 @@ AVOID:
 ### 1.7 小芳
 
 **文件**：`Resources/characters/xiaofang/{表情}.png`  
-**表情**：normal, smile, happy, serious, curious, surprised（6种）
+**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
 **主图提示词**：
 ```
-pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 45 years old.
+pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 45 years old.
 
 FACE CHARACTERISTICS:
 - Round face, gentle eyes
@@ -307,6 +310,79 @@ AVOID:
 
 ---
 
+### 1.9 16表情差分图谱（4×4网格，铺满全画面）
+
+**用途**：基于已验收的主图（母图），一次生成某角色的全部16表情差分（每格只画半身：头到腰部，不画全身）。
+
+**文件**：`Resources/characters/{角色}/{表情}.png`（差分后按格逐张裁切并命名）
+
+**提示词**：
+```
+基于参考图生成16表情差分图谱。
+严格保持参考图中角色的所有视觉特征：
+- 相同的像素画风格和分辨率
+- 相同的发型造型（逐角色注明：黑发/白发/寸头等）
+- 相同的服装（包括口袋、缝线、褶皱细节）
+- 相同的面部比例和五官位置
+- 相同的配色方案和像素调色板
+- 相同的肩膀宽度/头身比例，双肩完整显示，肩膀以下到腰部可见，不可裁掉肩部
+只改变面部表情，身体姿态、服装、像素风格完全不变。
+
+===== 姿态要求 =====
+- 16格一律保持与母图相同的自然站立姿态，动作放松自然
+- 不改变双臂/双手位置，不做大幅动作或夸张手势
+- 头部角度可轻微变化（配合表情），但躯干肩膀保持不动
+- 避免僵硬的正面证件照感，保留母图的生活化松弛感
+
+===== 布局 =====
+4行×4列网格，共16个表情，占满整张画面，不留空白边距。
+每个表情256×384像素，总尺寸1024×1536。
+透明背景，无文字无标签，各格子之间紧密拼接无缝隙。
+
+===== 色深 =====
+- 32-bit 真彩色（每像素RGBA各8位），保留完整渐变与中间色
+- 禁止降为索引色/减少色板/产生色带；禁用低色深复古压缩感
+- 与母图色彩深度完全一致
+
+===== 16个表情（每格只画半身：头到腰部，不画全身） =====
+第1行：
+1. normal 平静 — 自然放松，嘴角微平，眼神温和
+2. smile 微笑 — 嘴角上扬，眼睛弯成月牙
+3. sad 悲伤 — 眉毛下垂，嘴角向下，眼神黯淡
+4. surprise 惊讶 — 眉毛高挑，嘴巴微张，眼睛睁大
+第2行：
+5. serious 坚定 — 眉头紧锁，嘴唇紧闭，目光锐利
+6. curious 思考 — 单眉上扬，眼神向上看
+7. worried 紧张 — 额头微皱，眼神不安
+8. excited 兴奋 — 咧嘴大笑，眼睛放光
+第3行：
+9. angry 愤怒 — 眉头紧锁，咬牙切齿
+10. bored 无聊 — 神情平淡，眼神放空，嘴角平直
+11. gentle 温柔 — 眼神柔和，轻微微笑
+12. happy 开心 — 大笑，眉眼弯弯，神情明亮
+第4行：
+13. shocked 震惊 — 眼睛瞪大，嘴巴大张，眉毛高耸
+14. shout 大喊 — 嘴巴张开呈呐喊状，眉头紧蹙
+15. smug 得意 — 单边挑眉，嘴角歪斜上扬
+16. wink 眨眼 — 单眼闭合，嘴角俏皮上扬
+
+===== 绝对禁止 =====
+- 改变像素画风格
+- 改变服装或发型
+- 变成动漫/插画/写实风格
+- 添加背景色
+- 任何文字或标签
+- 格子之间留白或位置歪斜偏移
+- 只画零星几个格子（必须16格全部有内容）
+- 裁掉肩膀或仅露头部
+- 降色深/索引色/色带/颜色断层
+- 夸张动作、换姿势、换手势
+```
+
+> 注：表情id与第1.2节统一16表情集完全一致；母图是全身参考，差分图是半身（头到腰部）的表情特写——与主角林彪悍现有拆分图裁切保持一致。生成后按格裁剪为16个单张，命名 `{角色}/{表情id}.png`。
+
+---
+
 ## 二、场景背景
 
 ### 通用规范
@@ -317,54 +393,340 @@ AVOID:
 
 ---
 
-### 2.1 导师办公室
+### 2.1 实验室（智能调度系统实验室）
 
-**文件**：`Resources/bg/professor_office.png`  
-**用途**：序章 Day 0 导师办公室场景
+**文件**：`Resources/bg/lab.png`  
+**用途**：序章 Day 0 开场场景——金日成综合大学智能调度系统实验室
 
 **提示词**：
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university professor's office, Kim Il Sung University, Pyongyang, 2076, modest academic setting.
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university laboratory room, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, ULTIMATE KOREAN CULTURAL ELEMENTS:
 
-ARCHITECTURAL ELEMENTS:
-- Simple office with wooden desk
-- Wall covered with academic certificates and awards
-- Bookshelf with technical books
-- Window letting in natural light
-- Traditional Korean wooden floor panels
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
+- Door frame with traditional Korean decorative patterns (단청 dancheong colorful patterns)
+- Wall panels with subtle Korean traditional motifs
+- Ceiling with traditional Korean wooden beams (modern interpretation)
+- Korean-style floor heating (온돌 ondol) visible under desk
 
-FURNITURE AND ITEMS:
-- Wooden desk with traditional Korean joinery
-- Office chair, slightly worn
-- Bookshelf with railway engineering texts
-- Desk lamp, traditional Korean design
-- Korean calligraphy brush and ink stone on desk
+KOREAN TEXT AND SIGNS:
+- Large Korean text on wall: "지능형 지휘 시스템 연구실" (Intelligent Dispatch System Research Lab)
+- University emblem with Korean text: "김일성대학교"
+- Korean flag (North Korean flag) prominently displayed
+- Korean propaganda slogan on wall: "일심단결" (Single-hearted Unity) or "주체사상" (Juche Idea)
+- Korean calendar on wall showing 2076 year with traditional Korean holidays marked
+- Small Korean text labels on all equipment and furniture
 
-WALL DECORATIONS:
-- University diploma with Korean text
-- Academic awards and certificates
-- Korean calendar showing 2076
-- Traditional Korean paper art (minhwa) frame
+WALL DECORATIONS (KOREAN LEADERS AND CULTURE):
+- Large North Korean flag (clean, well-maintained)
+- FRAMED PORTRAITS OF LEADERS on wall (金日成 and 金正日 portraits, side by side, respectful placement, formal frames)
+- Vintage Korean railway poster with Korean text
+- Map of Korean railway network with Korean labels
+- Traditional Korean paper art (minhwa) frame with folk painting
+- Korean traditional fan (bukcheong fansa) on wall
+- Korean calligraphy artwork (한글 Hangeul calligraphy)
 
-COLOR PALETTE:
-- Primary: warm brown (#8B4513), cream white (#FFFDD0)
-- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
-- Accents: gold frame (#FFD700), navy blue (#000080)
+KOREAN TRADITIONAL ITEMS:
+- Traditional Korean celadon pottery on shelf (고려청자 Goryeo celadon, green ceramic)
+- Korean embroidered wall hanging with traditional pattern (자수 jasu)
+- Korean traditional paper (한지 hanji) lamp on desk
+- Small Korean flag on desk
+- Korean traditional tea set (전통다구) with teapot and cups
+- Korean traditional fan (부채 bukcheong fansa) on wall
+- Korean traditional knotwork (매듭 maedeup) decoration
 
-ATMOSPHERE: Warm, academic, modest but respected. The office of a professor who values substance over show.
+KOREAN FOOD AND DRINK ITEMS:
+- Kimchi jar (김치단지) on shelf (traditional fermentation crock)
+- Korean traditional rice bowl (밥그릇) on desk
+- Korean tea canister (차통 chatong) with traditional design
+- Small soju bottle (소주병) on shelf (optional, for atmosphere)
+- Korean traditional snack container (과자그릇)
+
+KOREAN MUSICAL INSTRUMENTS:
+- Small Gayageum (가야금) model on shelf (12-string zither)
+- Korean traditional drum (북 buk) as decoration
+- Korean flute (대금 daegeum) on wall mount
+
+KOREAN FURNITURE:
+- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
+- Korean-style desk with traditional joinery
+- Korean traditional chair with curved backrest
+
+KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
+- "Chollima" brand computer (천리마 컴퓨터) - Korean retro computer design
+- Korean-made monitor with Hangul keyboard
+- Traditional Korean-style power outlet covers
+- Korean-designed desk lamp with traditional patterns
+
+WINDOW VIEW (PYONGYANG SKYLINE):
+- Iconic PYONGYANG LANDMARKS visible: Ryugyong Hotel (려명거리 Hotel, pyramid shape)
+- Juche Tower (주체사상탑) visible in distance
+- Grand People's Study House (인민대학습당) with traditional Korean roof
+- Mix of traditional Korean architecture and modern skyscrapers
+- Korean-style rooflines on some buildings (기와 giwa tiles)
+- Flying vehicles in distance (sand energy cars)
+- Mountains with Korean pine trees (소나무 sonamu) in far distance
+- Taedong River (대동강) visible if applicable
+
+DESK ITEMS WITH KOREAN TOUCH:
+- Korean traditional tea set (전통다구) with celadon teapot
+- Korean calligraphy brush (붓 but) and ink stone (벼루 byeoru)
+- Korean traditional notebook (한지공책) with Korean binding
+- Copper pocket watch (grandfather's inheritance)
+- Open railway engineering manual (Korean text visible)
+- Korean-style pen holder with traditional design
+- Small Korean traditional clock (시계) with hanja numbers
+
+COLOR PALETTE (KOREAN TRADITIONAL):
+- Primary: Korean celadon green (#8FBC8F), warm brown (#8B4513)
+- Secondary: Cream white (#FFFDD0), soft red (#CD5C5C)
+- Accents: Gold (#FFD700), navy blue (#000080)
+- Dancheong colors: Blue (#4169E1), Red (#CD5C5C), Yellow (#FFD700), Green (#228B22)
+- Inspired by Korean traditional color schemes and dancheong patterns
+
+ATMOSPHERE:
+- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
+- Academic yet cultural
+- Blend of tradition and modernity
+- Respectful of heritage and leaders
+- Hopeful for railway revival
+- Strong national identity
+
+STYLE:
+- PIXEL ART with clear pixels
+- KOREAN CULTURAL IDENTITY very prominent
+- Warm, inviting colors
+- Clean, organized space
+- Mix of old and new (retro-futuristic)
+- Traditional Korean patterns and motifs throughout
 
 AVOID:
-- Too modern or luxurious
-- Cold or impersonal atmosphere
 - Generic "Asian" style (must be specifically KOREAN)
+- Too modern/sterile (should have traditional touches)
+- Cold or impersonal atmosphere
+- Cluttered or messy composition
+- Disrespectful placement of leader portraits
+- Missing Korean cultural elements
 ```
 
 ---
 
-### 2.2 停机坪
+### 2.2 导师办公室
 
-**文件**：`Resources/bg/helicopter_pad.png`  
-**用途**：序章 Day 0 领取载具场景
+**文件**：`Resources/bg/professor_office.png`  
+**用途**：序章 Day 0 导师办公室场景——林彪悍向导师申请学业暂停
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university professor's office, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, modest academic setting, ULTIMATE KOREAN CULTURAL ELEMENTS:
+
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
+- Door frame with traditional Korean decorative patterns (단청 dancheong colorful patterns)
+- Wall panels with subtle Korean traditional motifs
+- Ceiling with traditional Korean wooden beams (modern interpretation)
+- Korean-style floor heating (온돌 ondol) visible under desk
+
+KOREAN TEXT AND SIGNS:
+- Korean text on wall: "김일성대학교 교수 연구실" (Professor's Office)
+- University emblem with Korean text: "김일성대학교"
+- Korean flag (North Korean flag) on wall
+- Small nameplate on desk with Korean text
+- Korean calendar on wall showing 2076
+
+WALL DECORATIONS (ACADEMIC):
+- Framed university diploma with Korean text
+- Several academic certificates and awards on wall (Korean text)
+- Map of Korean peninsula on wall
+- Bookshelf filled with Korean technical books and railway engineering texts
+- Traditional Korean paper art (minhwa) frame with folk painting
+- Korean calligraphy scroll (서예) on wall with inspirational message
+
+KOREAN TRADITIONAL ITEMS:
+- Korean celadon pottery (고려청자 Goryeo celadon) on shelf
+- Korean traditional paper (한지 hanji) desk lamp with warm glow
+- Small Korean flag on desk
+- Korean traditional tea set (전통다구) with celadon teapot and cups
+- Korean traditional ink stone (벼루 byeoru) and brush (붓 but) on desk
+
+KOREAN FURNITURE:
+- Korean traditional wooden desk with traditional joinery, slightly worn
+- Professor's wooden chair with curved backrest and cushion
+- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
+- Bookshelf with traditional Korean design
+
+DESK ITEMS:
+- Stack of student research papers with Korean text
+- Open railway engineering textbook (Korean text, worn pages)
+- Copper reading glasses on desk
+- Korean traditional clock (시계) with hanja numbers
+- Half-empty cup of Korean barley tea (보리차)
+- Korean-style pen holder with traditional design
+- Small photo frame with university graduation photo
+
+BOOKSHELF CONTENTS:
+- Railway engineering textbooks (Korean titles)
+- Research papers on intelligent dispatch systems
+- Korean history books
+- Vintage train model
+- Traditional Korean ceramic pieces
+
+WINDOW VIEW (PYONGYANG SKYLINE):
+- Ryugyong Hotel (려명거리 Hotel, pyramid shape, distant)
+- Juche Tower (주체사상탑) visible in distance
+- Grand People's Study House (인민대학습당) with traditional Korean roof
+- Mix of traditional Korean architecture and modern buildings
+- Korean pine trees (소나무 sonamu) visible
+- Afternoon daylight, soft shadows through hanji-patterned windows
+
+COLOR PALETTE (KOREAN TRADITIONAL):
+- Primary: warm brown (#8B4513), cream white (#FFFDD0)
+- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
+- Accents: gold frame (#FFD700), navy blue (#000080)
+- Dancheong accent colors: Blue (#4169E1), Red (#CD5C5C)
+
+ATMOSPHERE:
+- Warm, academic, modest but respected
+- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
+- Serious yet caring — the moment of a life-changing decision
+- Blend of tradition and academic modernity
+- Respectful atmosphere with a sense of gravity
+
+STYLE:
+- PIXEL ART with clear pixels
+- KOREAN CULTURAL IDENTITY very prominent
+- Warm, inviting academic colors
+- Clean, organized space
+- Mix of traditional Korean aesthetics and university setting
+
+AVOID:
+- Generic "Asian" style (must be specifically KOREAN)
+- Too modern or luxurious
+- Cold or impersonal atmosphere
+- Cluttered or messy composition
+- Missing Korean cultural elements
+- Too bright or cheerful (should be warm but serious)
+```
+
+---
+
+### 2.3 车厢内部（白天·沙能飞行器）
+
+**文件**：`Resources/bg/car_interior.png`  
+**用途**：序章 Day 0-Day 3 飞行器内部场景——岁月初次唤醒、旅途对话（9次使用）
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, flying vehicle interior, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, sand-energy vehicle, "Chollima" brand flying car cockpit:
+
+INTERIOR LAYOUT:
+- Pilot seat and passenger seat, dark navy upholstery with Korean emblem
+- Dashboard with retro-futuristic Korean-made instruments and gauges
+- Holographic display screen showing flight data and navigation (Korean text)
+- AI assistant interface integrated into dashboard (岁月's display)
+- Side windows showing sky and clouds outside (daytime, bright)
+- Compact but comfortable cabin space
+
+COCKPIT DETAILS:
+- Steering yoke with Korean text labels
+- Digital speed/altitude display with Hangul numerals
+- Sand energy gauge on dashboard (모래 에너지 잔량)
+- Navigation map showing Korean peninsula and Chinese border
+- Communication radio with Korean frequency labels
+- Small compartment with Korean map and travel documents
+
+KOREAN CULTURAL ELEMENTS:
+- Small Korean flag charm hanging from rearview mirror
+- Korean traditional knotwork (매듭 maedeup) decoration on dashboard
+- University emblem (김일성대학교) on seat headrests
+- Korean text on all control labels and warning signs
+- Traditional Korean pattern on seat fabric
+
+WINDOW VIEW (DAYTIME):
+- Blue sky with white clouds visible through windshield
+- Mountainous landscape below (Chinese/Korean border region)
+- occasional glimpse of other flying vehicles in distance
+- Bright daylight streaming through windows
+
+COLOR PALETTE:
+- Primary: dark navy (#1a1a3e), soft gray dashboard (#4a4a5a)
+- Secondary: sky blue (#87CEEB), holographic blue (#00BFFF)
+- Accents: warm orange gauge lights (#FF8C00), Korean emblem red (#CD5C5C)
+
+ATMOSPHERE:
+- High-tech but slightly retro (2076 Korean design)
+- Compact and functional
+- Safe and comfortable for long journey
+- Sense of departure and adventure
+
+STYLE:
+- PIXEL ART with clear pixels
+- KOREAN TECH AESTHETIC
+- Clean, slightly futuristic interior
+- Warm daylight illumination
+
+AVOID:
+- Generic sci-fi interior (must be Korean-designed)
+- Too dark or gloomy
+- Missing Korean text labels
+- Modern/minimalist aesthetic
+```
+
+---
+
+### 2.4 车厢内部（夜晚·沙能飞行器）
+
+**文件**：`Resources/bg/car_interior_night.png`  
+**用途**：序章 Day 2 夜晚飞行器内部场景（4次使用）
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, flying vehicle interior at night, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, sand-energy vehicle cockpit nighttime:
+
+Same interior layout as car_interior (daytime version) with NIGHTTIME DIFFERENCES:
+- Darker ambient lighting, only instrument panel glow
+- Windows show dark night sky with stars
+- City lights visible far below through windows
+- Dashboard instruments glow softly in amber and blue
+- Holographic display casts blue light on cabin interior
+- Small reading light above passenger seat (warm yellow)
+- Stars and moon visible through windshield
+
+KOREAN CULTURAL ELEMENTS (same as daytime):
+- Small Korean flag charm
+- Korean traditional knotwork decoration
+- University emblem on seat headrests
+- Korean text on all labels
+
+COLOR PALETTE (NIGHT):
+- Primary: deep dark blue (#0a0a1e), instrument glow (#FF8C00)
+- Secondary: starry sky (#1a1a3e), holographic blue (#00BFFF)
+- Accents: warm reading light (#FFD700), city lights below (#FF6347)
+
+ATMOSPHERE:
+- Quiet, intimate nighttime atmosphere
+- Sense of traveling through the dark
+- Peaceful and contemplative
+- Stars and distant city lights create a sense of vast journey
+
+STYLE:
+- PIXEL ART with clear pixels
+- KOREAN TECH AESTHETIC
+- Dark ambient lighting with warm instrument glow
+- Nighttime atmosphere throughout
+
+AVOID:
+- Same as daytime version
+- Too bright (should be clearly nighttime)
+- Generic sci-fi night interior
+```
+
+---
+
+### 2.5 停机坪
+
+**文件**：`Resources/bg/hangar.png`  
+**用途**：序章 Day 0 领取载具场景（脚本引用"hangar"）
 
 **提示词**：
 ```
@@ -714,9 +1076,9 @@ AVOID:
 
 | 优先级 | 资产 | 原因 | 数量 |
 |--------|------|------|------|
-| **P0** | 老陈主图+8表情 | 序章大量使用，MVP阻塞 | 1+8张 |
-| **P0** | 张工主图+6表情 | 序章员工集合场景 | 1+6张 |
-| **P0** | 王小弟主图+6表情 | 序章员工集合场景 | 1+6张 |
+| **P0** | 老陈主图+16表情差分图谱 | 序章大量使用，MVP阻塞 | 1+16张 |
+| **P0** | 张工主图+16表情差分图谱 | 序章员工集合场景 | 1+16张 |
+| **P0** | 王小弟主图+16表情差分图谱 | 序章员工集合场景 | 1+16张 |
 | **P0** | 导师办公室背景 | 序章 Day 0 必需 | 1张 |
 | **P0** | 停机坪背景 | 序章 Day 0 必需 | 1张 |
 | **P0** | 边境小镇背景 | 序章 Day 1 必需 | 1张 |
@@ -734,9 +1096,9 @@ AVOID:
 | **P0** | BGM: emotional | 重逢场景 | 1首 |
 | **P0** | BGM: determination | 转折点 | 1首 |
 | **P0** | BGM: morning | 白天场景 | 1首 |
-| **P1** | 李阿姨主图+6表情 | 序章员工集合 | 1+6张 |
-| **P1** | 赵师傅主图+6表情 | 序章员工集合 | 1+6张 |
-| **P1** | 小芳主图+6表情 | 序章员工集合 | 1+6张 |
+| **P1** | 李阿姨主图+16表情差分图谱 | 序章员工集合 | 1+16张 |
+| **P1** | 赵师傅主图+16表情差分图谱 | 序章员工集合 | 1+16张 |
+| **P1** | 小芳主图+16表情差分图谱 | 序章员工集合 | 1+16张 |
 | **P1** | 岁月界面头像 | 序章 | 1张 |
 | **P1** | BGM: warm/calm/news/train_ambient | 场景补充 | 4首 |
 

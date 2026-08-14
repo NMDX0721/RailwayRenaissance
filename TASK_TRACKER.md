@@ -67,12 +67,12 @@
 | T3 | 经济系统Unity实现 (GameData.cs重构) | **P0** | 跨系统联动公式.md | 6h |
 | T4 | 人员养成系统 (CrewManager) | P1 | 角色设定.md | 4h |
 | T5 | 随机事件系统 (EventManager) | P1 | 经济系统§8 | 3h |
-| T6 | 沙能竞争系统 (SandRivalManager) | P1 | 沙能竞争系统设计.md | 4h |
+| T6 | 沙能竞争系统 (SandRivalManager) | P1 | 千里马对手AI.md | 4h |
 | T7 | 教程与新手引导 | P2 | T3 | 2h |
 | T8 | 统一存档系统 | P2 | - | 3h |
 | T9 | 术语高亮系统 | P2 | - | 1h |
 | T10 | 科技树实现 | P3 | 科技树设计.md | 4h |
-| T11 | 模板化AI系统 | P3 | AI系统实现计划.md | 3h |
+| T11 | 模板化AI系统 | P3 | 岁月叙事引擎.md | 3h |
 
 ### Phase 3: Asset Generation (并行)
 
@@ -128,17 +128,17 @@ Week 3: I1 + I2 → I3 + I4 → I5
 | 文档 | 位置 | 状态 |
 |------|------|------|
 | 游戏开发文档.md | 参考资料/ | ⚠️ 需重构（含AI对话痕迹） |
-| 经济系统.md | 参考资料/ | ✅ v4.0（已修复矛盾） |
+| 沙本位经济核.md | 参考资料/ | ✅ v4.0（已修复矛盾） |
 | 角色设定.md | 参考资料/ | ✅ v2.0 |
 | 世界观与车辆设定.md | 参考资料/ | ✅ v2.1 |
 | 视觉小说系统设计.md | 参考资料/ | ✅ v2.1（已补充格式） |
 | 核心玩法循环.md | docs/compose/specs/ | ✅ v1.0（新增） |
 | 科技树设计.md | docs/compose/specs/ | ✅ v1.0（新增） |
-| 沙能竞争系统设计.md | docs/compose/specs/ | ✅ v1.0（新增） |
+| 千里马对手AI.md | docs/compose/specs/ | ✅ v1.0（新增） |
 | 跨系统联动公式.md | docs/compose/specs/ | ✅ v1.0（新增） |
 | 区域解锁与政治系统.md | docs/compose/specs/ | ✅ v1.0（新增） |
 | 教程与新手引导.md | docs/compose/specs/ | ✅ v1.0（新增） |
-| AI系统实现计划.md | docs/compose/specs/ | ✅ v1.0（新增） |
+| 岁月叙事引擎.md | docs/compose/specs/ | ✅ v1.0（新增） |
 | Mod系统设计.md | docs/compose/specs/ | ✅ v1.0（新增） |
 
 ---
