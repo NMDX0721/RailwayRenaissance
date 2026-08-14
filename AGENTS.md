@@ -41,8 +41,9 @@ Assets/
    ```powershell
    Get-Content "C:\Users\Oe_Lee\AppData\Local\Unity\Editor\Editor.log" -Tail 200 | Select-String "error CS"
    ```
-2. **MCP Unity**: 通过 `mcp-unity` server 与运行中的 Unity Editor 通信（端口 721）
-3. **重启游戏**: `taskkill /F /IM "Unity.exe"` 后在 Unity 中重新打开场景
+2. **重启游戏**: `taskkill /F /IM "Unity.exe"` 后在 Unity 中重新打开场景
+3. **批处理编译验证**: 关闭 Unity 后运行
+   `"D:\Unity Hub\Unity 6000.4.6f1\Editor\Unity.exe" -quit -batchmode -projectPath "D:\Unity Project\RailwayRenaissance" -logFile compile_check.log`
 
 ## Git 工作流
 
