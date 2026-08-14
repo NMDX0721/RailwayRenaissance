@@ -13,6 +13,7 @@ public class VNBacklog : MonoBehaviour
     private ScrollView backlogScroll;
     private bool isOpen;
 
+    private const int MaxEntries = 500;
     private readonly List<BacklogEntry> entries = new List<BacklogEntry>();
 
     private struct BacklogEntry
@@ -106,6 +107,8 @@ public class VNBacklog : MonoBehaviour
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
     {
         entries.Add(new BacklogEntry { speaker = speaker, text = text, sceneIndex = sceneIndex, dialogueIndex = dialogueIndex });
+        if (entries.Count > MaxEntries)
+            entries.RemoveAt(0);
         UpdateBacklogDisplay();
     }
 

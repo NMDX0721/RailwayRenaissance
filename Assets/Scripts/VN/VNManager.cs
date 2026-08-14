@@ -73,7 +73,32 @@ public class VNManager : MonoBehaviour
         SetupGameCursor();
         SetupCanvas();
         SetupEventSystem();
+
+        // 标题界面"继续运营"设置了 VN_AutoLoad=1 → 加载最近存档
+        if (PlayerPrefs.GetInt("VN_AutoLoad", 0) == 1)
+        {
+            PlayerPrefs.SetInt("VN_AutoLoad", 0);
+            PlayerPrefs.Save();
+            VNSaveData save = LoadLatestSave();
+            if (save != null)
+            {
+                LoadFromSave(save);
+                return;
+            }
+        }
         StartScript("prologue_01_news");
+    }
+
+    private VNSaveData LoadLatestSave()
+    {
+        VNSaveData latest = null;
+        for (int i = 0; i < saveSystem.MaxSlotCount; i++)
+        {
+            var data = saveSystem.LoadGame(i);
+            if (data != null && (latest == null || string.CompareOrdinal(data.timestamp, latest.timestamp) > 0))
+                latest = data;
+        }
+        return latest;
     }
 
     private void SetupGameCursor()
@@ -198,12 +223,13 @@ public class VNManager : MonoBehaviour
         menuBar.style.alignItems = Align.Center;
         root.Add(menuBar);
 
-        string[] menuLabels = { "回顾", "存档", "读档", "自动" };
+        string[] menuLabels = { "回顾", "存档", "读档", "自动", "返回" };
         System.Action[] menuActions = {
             () => ToggleBacklog(),
             () => OpenSaveMenu(),
             () => OpenLoadMenu(),
-            () => ToggleAutoPlay()
+            () => ToggleAutoPlay(),
+            () => ShowConfirmDialog()
         };
 
         for (int i = 0; i < menuLabels.Length; i++)
@@ -351,6 +377,8 @@ public class VNManager : MonoBehaviour
         characterSpriteManager?.ClearAll();
         VNAudioManager.Instance?.StopBGM();
         confirmDialog.style.display = DisplayStyle.None;
+        PlayerPrefs.SetInt("VN_AutoLoad", 0);
+        PlayerPrefs.Save();
 
         try
         {
@@ -452,21 +480,14 @@ public class VNManager : MonoBehaviour
 
     private void Update()
     {
-        // 全屏新闻显示时忽略所有输入
-        if (fullScreenNews != null && fullScreenNews.IsActive) return;
-
-        // 面板关闭时恢复菜单栏显示
-        if (menuBar != null && menuBar.style.display == DisplayStyle.None)
-        {
-            bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
-                                (saveLoadUI != null && saveLoadUI.IsOpen) ||
-                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex);
-            if (!anyPanelOpen)
-                menuBar.style.display = DisplayStyle.Flex;
-        }
-        // ESC键返回标题界面
+        // ESC：全屏新闻时关闭新闻，其余按面板优先级处理
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (fullScreenNews != null && fullScreenNews.IsActive)
+            {
+                fullScreenNews.Close();
+                return;
+            }
             if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex)
             {
                 confirmDialog.style.display = DisplayStyle.None;
@@ -482,11 +503,21 @@ public class VNManager : MonoBehaviour
                 saveLoadUI.ClosePanel();
                 return;
             }
-            if (isScriptRunning)
-            {
-                ShowConfirmDialog();
-                return;
-            }
+            ShowConfirmDialog();
+            return;
+        }
+
+        // 全屏新闻显示时忽略其他输入
+        if (fullScreenNews != null && fullScreenNews.IsActive) return;
+
+        // 面板关闭时恢复菜单栏显示
+        if (menuBar != null && menuBar.style.display == DisplayStyle.None)
+        {
+            bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
+                                (saveLoadUI != null && saveLoadUI.IsOpen) ||
+                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex);
+            if (!anyPanelOpen)
+                menuBar.style.display = DisplayStyle.Flex;
         }
 
         if (!isScriptRunning) return;
@@ -688,6 +719,17 @@ public class VNManager : MonoBehaviour
     {
         StopAutoPlay();
         isScriptRunning = false;
+
+        // 检查是否有下一个剧本需要自动加载（序章链）
+        if (currentScript != null && !string.IsNullOrEmpty(currentScript.nextScript))
+        {
+            string next = currentScript.nextScript;
+            currentScript = null;
+            currentScriptName = null;
+            StartScript(next);
+            return;
+        }
+
         currentScript = null;
         currentScriptName = null;
         HideOptions();

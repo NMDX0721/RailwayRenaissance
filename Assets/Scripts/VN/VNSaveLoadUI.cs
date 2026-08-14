@@ -16,6 +16,23 @@ public class VNSaveLoadUI : MonoBehaviour
     private bool isOpen;
     private bool isSaveMode;
     private System.Action<int> onSlotSelected;
+    private System.Collections.IEnumerator feedbackRoutine;
+
+    private void ShowSaveFeedback()
+    {
+        if (titleLabel == null) return;
+        string original = titleLabel.text;
+        titleLabel.text = "已保存";
+        if (feedbackRoutine != null) StopCoroutine(feedbackRoutine);
+        feedbackRoutine = StartCoroutine(RestoreTitleAfterDelay(original));
+    }
+
+    private System.Collections.IEnumerator RestoreTitleAfterDelay(string original)
+    {
+        yield return new WaitForSeconds(1.5f);
+        if (titleLabel != null) titleLabel.text = original;
+        feedbackRoutine = null;
+    }
 
     public bool IsOpen => isOpen;
 
@@ -322,9 +339,14 @@ public class VNSaveLoadUI : MonoBehaviour
             {
                 onSlotSelected?.Invoke(slotIndex);
                 if (isSaveMode)
+                {
                     RefreshSlots();
+                    ShowSaveFeedback();
+                }
                 else
+                {
                     ClosePanel();
+                }
             })
             { text = btnText };
 
