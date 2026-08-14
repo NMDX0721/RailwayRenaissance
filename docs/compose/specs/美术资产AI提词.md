@@ -1,9 +1,10 @@
-# 游戏美术资产 - AI绘图提示词
+# 游戏美术资产 - AI绘图提示词（v2.0 分类清单版）
 
-> 版本：v1.0  
+> 版本：v2.0  
 > 用途：供AI绘图工具生成像素风游戏素材  
+> 格式标准：多层分类清单 + 色彩方案 + 氛围 + 排除项（基于实验室成功案例）  
 > 统一风格：16-bit retro pixel art，暖色调，类似 Stardew Valley  
-> 统一输出：PNG 透明背景，1920×1080（背景）/ 1024×2048（角色）
+> 识图：mimo 2.5 | 执行任务：ds / ds0718
 
 ---
 
@@ -11,76 +12,67 @@
 
 1. [角色立绘](#1-角色立绘)
 2. [场景背景](#2-场景背景)
-3. [列车与车辆](#3-列车与车辆)
-4. [UI元素](#4-ui元素)
-5. [图标与装饰](#5-图标与装饰)
+3. [BGM（Suno AI 音乐提示词）](#3-bgmsuno-ai-音乐提示词)
+4. [生成优先级](#4-生成优先级)
 
 ---
 
-## 注意事项
+## 一、角色立绘
 
-- 所有提示词均为 **中文 + 英文双语**，方便在不同AI绘画工具中使用
-- 角色立绘需要 **全身**（含脚），**透明背景**
-- 场景背景为 **1920×1080**，无透明
-- 像素风格指定为 **16-bit retro pixel art**，参考 Stardew Valley / 星露谷物语
+### 通用规范
+
+- **工作流**：第1步生成主图（半身到腿，详细全身）→ 第2步用主图生成表情差分（denoising 0.2-0.3，同服装/同姿势/同光照）
+- **尺寸**：1024×2048，PNG透明底，全身包括脚
+- **风格**：STARDEW VALLEY STYLE，16-bit retro pixel art，暖色调
 
 ---
 
-## 1. 角色立绘
-
-### 1.1 林彪悍（主角）
+### 1.1 林彪悍（主角）— 已有16表情，不需再生成
 
 **文件**：`Resources/characters/lin_biaohan/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
-**表情**：normal, smile, serious, surprised, sad, angry, worried, curious, happy, wink, bored, gentle, smug, excited, shout, shocked（16种）
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，全身立绘，透明背景，年轻男性，25岁，椭圆脸，下巴柔和，大而圆的深棕色眼睛，蓬松黑色短发略带自然卷，白皙暖色调皮肤。身穿深海军蓝色工作夹克（从爷爷继承），白色圆领T恤，铜色怀表链从领口露出，深蓝色牛仔裤，旧棕色皮鞋。表情：【替换为具体表情】。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
-```
-
-**English prompt**:
-```
-Pixel art, 16-bit retro style, full body character portrait, transparent background, young male, 25 years old, slightly round oval face with soft jawline, large round dark brown eyes, fluffy black short hair with natural waves, warm pale skin tone. Wearing a deep navy blue work jacket (inherited from grandfather), white crew neck t-shirt, copper pocket watch chain visible at collar, dark blue jeans, worn brown leather shoes. Expression: [specific expression]. Pixel art style reminiscent of Stardew Valley, warm color palette, full body including feet.
-```
-
-**表情映射表**：
-
-| 表情ID | 表情名称 | 特征描述 |
-|--------|---------|---------|
-| normal | 普通 | 自然表情，嘴角平直，眼神平静 |
-| smile | 微笑 | 嘴角上扬，眼睛微微眯起，温暖 |
-| serious | 严肃 | 嘴唇紧闭，眉毛微皱，目光坚定 |
-| surprised | 惊讶 | 眼睛睁大，眉毛上扬，嘴巴微张 |
-| sad | 悲伤 | 嘴角下垂，眼神暗淡，微微低头 |
-| angry | 生气 | 眉毛紧皱，眼神锐利，嘴巴紧闭 |
-| worried | 担忧 | 眉毛微蹙，嘴角略微下撇，眼神不安 |
-| curious | 好奇 | 眼睛睁大，眉毛微抬，头微微倾斜 |
-| happy | 开心 | 嘴巴大张笑，眼睛眯成月牙 |
-| wink | 眨眼 | 一只眼闭着，嘴角上扬，俏皮 |
-| bored | 无聊 | 眼神放空，嘴角平直，无精打采 |
-| gentle | 温柔 | 微笑柔和，眼神温暖，嘴角微扬 |
-| smug | 得意 | 嘴角一侧上扬，眼神自信，略抬下巴 |
-| excited | 兴奋 | 眼睛发亮，嘴巴大张，充满期待 |
-| shout | 呼喊 | 嘴巴大张呈O形，眉毛上扬，表情激动 |
-| shocked | 震惊 | 眼睛瞪圆，嘴巴大张，眉毛极高 |
+**状态**：✅ 已完成（16表情）
 
 ---
 
 ### 1.2 老陈（陈守正）
 
 **文件**：`Resources/characters/laochen/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, smile, serious, sad, worried, happy, curious, gentle（8种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，老年男性，68岁，方脸，深色皮肤布满皱纹但硬朗，深棕色眼睛，稀疏灰白眉毛，扁平鼻梁，圆润红色鼻头（冻伤），灰白短发梳理整齐。身穿白色长袖棉衬衫（领口磨损），深灰色V领毛线背心，老花镜挂在脖子上，深色宽松长裤，黑色布鞋。表情温暖朴实。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
-```
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, elderly male, 68 years old.
 
-**English prompt**:
-```
-Pixel art, 16-bit retro style, full body character portrait, transparent background, elderly male, 68 years old, square face, dark wrinkled but strong skin, deep brown eyes, sparse gray-white eyebrows, flat nose bridge, round red nose tip (frostbite), tidy gray-white short hair. Wearing a white long-sleeve cotton shirt (worn collar), dark gray V-neck wool vest, reading glasses hanging on a leather cord around neck, dark loose trousers, black cloth shoes. Warm and kind expression. Pixel art style reminiscent of Stardew Valley, warm color palette, full body including feet.
+FACE CHARACTERISTICS:
+- Square face, dark wrinkled but strong skin
+- Deep brown eyes, squint into warm slits when smiling
+- Sparse gray-white eyebrows, neatly trimmed
+- Flat nose bridge, round red nose tip (frostbite)
+- Gray-white short hair, neatly combed, one unruly tuft behind left ear
+- Thick lips, slightly downturned corners
+
+CLOTHING:
+- White long-sleeve cotton shirt, worn collar and cuffs
+- Second button re-sewn with mismatched red thread
+- Dark gray V-neck wool vest, pilled at chest pocket, darning marks at hem
+- Reading glasses hanging on old leather cord around neck
+- Dark loose trousers, ironed crease
+- Black cloth shoes, worn soles
+
+HAND DETAILS:
+- Right index finger joint slightly enlarged from years of wrenching bolts
+
+COLOR PALETTE:
+- Primary: warm gray (#8B8682), off-white (#F5F0E8)
+- Secondary: dark gray (#4A4A4A), worn brown (#6B4226)
+- Accents: faded red thread (#CD5C5C), copper glasses frame (#B87333)
+
+ATMOSPHERE: Warm, experienced, slightly weary but kind. A man who has seen the railway through its best and worst days.
+
+AVOID:
+- Too clean or polished appearance (should show years of work)
+- Cold or distant expression
+- Modern or fashionable clothing
 ```
 
 ---
@@ -88,12 +80,44 @@ Pixel art, 16-bit retro style, full body character portrait, transparent backgro
 ### 1.3 张工（张德厚）
 
 **文件**：`Resources/characters/zhanggong/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, smile, serious, happy, curious, surprised（6种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，老年男性，62岁，圆润福相脸，红润脸颊，小而明亮的眼睛，笑时眯成缝，稀疏不规则的灰白眉毛，圆润红色鼻头（酒糟鼻），灰白稀疏头发，头顶略秃。身穿棕色格子长袖衬衫（袖子卷到肘部），深棕色灯芯绒背心，口袋鼓鼓装着小零件，老花镜架在头顶，深色宽松长裤，黑色布鞋。表情乐观开朗。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, elderly male, 62 years old.
+
+FACE CHARACTERISTICS:
+- Round, full face, rosy cheeks
+- Small bright eyes, squint into happy slits when smiling
+- Sparse irregular gray-white eyebrows, a few extra long
+- Round red nose tip (rosacea)
+- Gray-white sparse hair, slightly bald on top, fluffy on sides, never combed
+- Yellowish skin tone, 5mm black oil stain on right cheek
+- Missing left front tooth (knocked out fixing a machine 20 years ago)
+
+CLOTHING:
+- Brown plaid long-sleeve shirt, sleeves rolled to elbows
+- Three pens (red, blue, black) and small screwdriver in left chest pocket
+- Dark brown corduroy vest, zipper broken, held with safety pin
+- Pockets bulging with small parts, screws, electrical tape
+- Reading glasses perched on top of head, temple wrapped in tape
+- Dark loose trousers with tool marks
+- Black cloth shoes
+
+HAND DETAILS:
+- 1cm old burn scar on left thumb web
+
+COLOR PALETTE:
+- Primary: warm brown (#8B4513), plaid red-brown (#A0522D)
+- Secondary: corduroy brown (#6B3A2A), faded denim blue (#4A7C9B)
+- Accents: bright red pen (#FF0000), blue pen (#0000FF), silver screwdriver (#C0C0C0)
+
+ATMOSPHERE: Optimistic, slightly messy but brilliant. The kind of mechanic who can fix anything but can't find his own glasses.
+
+AVOID:
+- Clean or professional mechanic appearance
+- Serious or gloomy expression
+- Impossibly neat workshop look
 ```
 
 ---
@@ -101,12 +125,41 @@ Pixel art, 16-bit retro style, full body character portrait, transparent backgro
 ### 1.4 李阿姨（李桂芳）
 
 **文件**：`Resources/characters/liayi/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, smile, happy, serious, worried, surprised（6种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，中年女性，55岁，圆脸，略有双下巴，小而有神的眼睛，笑时弯成月牙，细弯眉（微褪色），齐耳烫发小卷，染棕色但发根有白色长出。身穿粉色碎花长袖衬衫，深蓝色棉质围裙（前口袋放手机），深色长裤，黑色布鞋，左手戴佛珠手串，右手金戒指。表情热情温暖。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 55 years old.
+
+FACE CHARACTERISTICS:
+- Round face, slight double chin
+- Small but lively eyes, crescent-shaped when smiling
+- Thin arched eyebrows (tattooed, now faded to gray-blue)
+- Small round nose tip
+- Thin lips, perpetually upturned corners, speaks like a machine gun
+- Ear-length permed hair, dyed brown with 2cm white roots showing
+- Yellowish-white skin tone, wrinkles on neck from years of cooking
+
+CLOTHING:
+- Pink floral long-sleeve shirt, freshly ironed
+- Deep blue cotton apron, old phone in front pocket
+- Butterfly bow tied at lower back (decorative)
+- Dark long pants, slightly worn at knees
+- Black cloth shoes
+- Dark brown Buddhist bead bracelet on left wrist, 12mm beads
+- Gold ring on right hand
+
+COLOR PALETTE:
+- Primary: pink (#FFB6C1), floral print (#FF69B4)
+- Secondary: deep blue apron (#000080), dark pants (#2F4F4F)
+- Accents: gold ring (#FFD700), brown beads (#8B4513)
+
+ATMOSPHERE: Warm, talkative, the village's information hub. She knows everyone's business and means well.
+
+AVOID:
+- Too young or fashionable appearance
+- Quiet or reserved expression
+- Missing the apron (essential character marker)
 ```
 
 ---
@@ -114,12 +167,41 @@ Pixel art, 16-bit retro style, full body character portrait, transparent backgro
 ### 1.5 王小弟（王晨阳）
 
 **文件**：`Resources/characters/wangxiaodi/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, smile, happy, curious, surprised, serious（6种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，年轻男性，22岁，椭圆脸，有婴儿肥，大而明亮的眼睛，浓密自然眉毛，小巧上翘鼻子，黑色短发蓬松，左耳银色耳钉。身穿浅灰色连帽卫衣，内搭白色T恤（印有Transportation Engineering字样），脖子上挂黑色头戴式耳机，浅蓝色牛仔裤（膝盖处磨损），白色运动鞋。表情阳光热血。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, young male, 22 years old.
+
+FACE CHARACTERISTICS:
+- Oval face, still has baby fat
+- Large bright eyes, clear black and white
+- Thick natural eyebrows, slightly messy but handsome
+- Small upturned nose, youthful
+- Thick lips, easy smile showing straight white teeth
+- Black short hair, 4cm fluffy, morning hand-styled look
+- Fringe parted to reveal full forehead
+- Pale clean skin, 3mm silver earring in left ear
+- Two or three light acne scars on chin
+
+CLOTHING:
+- Light gray hoodie (discount brand), uneven drawstrings
+- White t-shirt underneath, collar reads "Transportation Engineering 2026"
+- Black over-ear headphones around neck (installment payment "professional equipment")
+- Light blue jeans, 2cm white wear marks at both knees
+- White sneakers, slightly dirty toe
+
+COLOR PALETTE:
+- Primary: light gray (#D3D3D3), light blue (#87CEEB)
+- Secondary: white (#FFFFFF), denim blue (#4682B4)
+- Accents: silver earring (#C0C0C0), black headphones (#1A1A1A)
+
+ATMOSPHERE: Energetic, eager to prove himself, slightly clumsy but sincere. The fresh graduate who still believes he can change the world.
+
+AVOID:
+- Too mature or serious appearance
+- Expensive or fashionable clothing
+- Clean, unworn sneakers (should show use)
 ```
 
 ---
@@ -127,12 +209,42 @@ Pixel art, 16-bit retro style, full body character portrait, transparent backgro
 ### 1.6 赵师傅（赵铁山）
 
 **文件**：`Resources/characters/zhaoshifu/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, serious, smile, worried, surprised, sad（6种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，中年男性，55岁，略瘦长脸，棱角分明，深棕色眼睛，严肃但不尖锐，黑色短发整齐利落，深色户外工作肤色，左脸颊有2cm旧伤疤。身穿军绿色utility夹克（拉链到胸口），深灰色高领针织衫，左腕军用机械手表，深色utility长裤配帆布腰带，黑色作战靴。表情沉稳。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged male, 55 years old.
+
+FACE CHARACTERISTICS:
+- Slightly long, angular face, sharp features
+- Deep brown eyes, serious but not sharp, gentle when relaxed
+- Average thickness eyebrows, natural shape
+- Average nose bridge
+- Thin lips, straight corners, looks serious when not smiling
+- Black short hair, 1.5cm, neat and tidy, clean sideburns
+- Dark outdoor work complexion
+- 2cm old scar on left cheek (from military training)
+
+CLOTHING:
+- Olive green utility jacket, zipped to chest
+- Zipper pull wrapped in black electrical tape (original broken)
+- 1cm hole on left sleeve, unpatched
+- Dark gray high-neck knit sweater, form-fitting
+- Left wrist vintage military mechanical watch, old strap, 3mm scratch on face
+- Dark utility pants, canvas belt with brass buckle
+- Black combat boots, scuffed toe
+
+COLOR PALETTE:
+- Primary: olive green (#4B5320), dark gray (#36454F)
+- Secondary: black (#1A1A1A), brass buckle (#D4A017)
+- Accents: silver watch face (#C0C0C0), black electrical tape (#1A1A1A)
+
+ATMOSPHERE: Stern on the outside, warm on the inside. A man of few words whose actions speak louder.
+
+AVOID:
+- Soft or friendly first impression
+- Missing the scar (essential character detail)
+- Clean, unworn combat boots
 ```
 
 ---
@@ -140,288 +252,426 @@ Pixel art, 16-bit retro style, full body character portrait, transparent backgro
 ### 1.7 小芳
 
 **文件**：`Resources/characters/xiaofang/{表情}.png`  
-**规格**：1024×2048，PNG透明背景，全身  
 **表情**：normal, smile, happy, serious, curious, surprised（6种）
 
-**中文提示词**：
+**主图提示词**：
 ```
-像素艺术，16-bit复古风格，全身立绘，透明背景，中年女性，45岁，圆脸，温和眼神，短发整齐，穿着朴素的工作服，深色长裤，平底布鞋，身上穿着志愿者马甲。表情热情友善。像素画风格，类似星露谷物语，暖色调，全身，双脚可见。
+pixel art, 16-bit retro style, full body character portrait, transparent background, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 45 years old.
+
+FACE CHARACTERISTICS:
+- Round face, gentle eyes
+- Short neat hair
+- Warm, approachable expression
+
+CLOTHING:
+- Simple work uniform
+- Volunteer vest
+- Dark long pants
+- Flat cloth shoes
+
+COLOR PALETTE:
+- Primary: warm tones, volunteer vest color
+- Secondary: practical dark colors
+
+ATMOSPHERE: Enthusiastic, willing to learn, the volunteer who shows up every day.
+
+AVOID:
+- Too polished or professional appearance
+- Cold or distant expression
 ```
 
 ---
 
-### 1.8 岁月（AI助手）
+### 1.8 岁月（AI 助手界面头像）
 
 **文件**：`Resources/characters/suiyue/interface.png`  
-**规格**：仅界面头像，256×256  
-**说明**：岁月没有实体形象，仅作为AI助手界面头像
+**尺寸**：256×256，PNG透明底
 
-**中文提示词**：
+**提示词**：
 ```
-像素艺术，16-bit复古风格，圆形头像图标，透明背景，蓝绿色AI助手头像，简约的机器人/人工智能风格，发光的蓝色眼睛，金属质感，圆润设计，暖色调，类似星露谷物语风格，256x256像素。
+pixel art, 16-bit retro style, circular avatar icon, transparent background, STARDEW VALLEY STYLE, AI assistant interface.
+
+DESIGN ELEMENTS:
+- Blue-green AI assistant avatar
+- Simple robot/AI style
+- Glowing blue eyes
+- Metallic texture, rounded design
+- 256x256 pixels
+- Warm color palette
+
+AVOID:
+- Too complex or detailed (should work as small icon)
+- Cold or threatening appearance
+- Human-like features
 ```
 
 ---
 
-## 2. 场景背景
+## 二、场景背景
 
-### 2.1 VN场景背景
+### 通用规范
 
-所有背景规格：**1920×1080**，像素风，无透明
+- **尺寸**：1920×1080，JPG/PNG
+- **风格**：STARDEW VALLEY STYLE pixel art，16-bit retro
+- **格式**：多层分类清单 + 色彩方案 + 氛围 + 排除项
 
-#### 2.1.1 开场新闻场景
+---
 
-**文件**：`Resources/bg/black.png`  
-**说明**：纯黑背景，不需要生成（Unity中直接用Color.black）
-
-#### 2.1.2 实验室
-
-**文件**：`Resources/bg/lab.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，现代化实验室内部，各种屏幕和设备，电脑桌，复杂的算法模型显示在屏幕上，窗外是平壤的天际线，暖色调，温暖灯光，有科技感但不冰冷，类似星露谷物语的像素风格。
-```
-
-#### 2.1.3 导师办公室
+### 2.1 导师办公室
 
 **文件**：`Resources/bg/professor_office.png`  
-**中文提示词**：
+**用途**：序章 Day 0 导师办公室场景
+
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，简朴的大学办公室，木质书桌，墙上挂着各种学术证书和奖状，书架上有书籍，窗户透进自然光，暖色调，温馨氛围，类似星露谷物语的像素风格。
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university professor's office, Kim Il Sung University, Pyongyang, 2076, modest academic setting.
+
+ARCHITECTURAL ELEMENTS:
+- Simple office with wooden desk
+- Wall covered with academic certificates and awards
+- Bookshelf with technical books
+- Window letting in natural light
+- Traditional Korean wooden floor panels
+
+FURNITURE AND ITEMS:
+- Wooden desk with traditional Korean joinery
+- Office chair, slightly worn
+- Bookshelf with railway engineering texts
+- Desk lamp, traditional Korean design
+- Korean calligraphy brush and ink stone on desk
+
+WALL DECORATIONS:
+- University diploma with Korean text
+- Academic awards and certificates
+- Korean calendar showing 2076
+- Traditional Korean paper art (minhwa) frame
+
+COLOR PALETTE:
+- Primary: warm brown (#8B4513), cream white (#FFFDD0)
+- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
+- Accents: gold frame (#FFD700), navy blue (#000080)
+
+ATMOSPHERE: Warm, academic, modest but respected. The office of a professor who values substance over show.
+
+AVOID:
+- Too modern or luxurious
+- Cold or impersonal atmosphere
+- Generic "Asian" style (must be specifically KOREAN)
 ```
 
-#### 2.1.4 停机坪
+---
+
+### 2.2 停机坪
 
 **文件**：`Resources/bg/helicopter_pad.png`  
-**中文提示词**：
+**用途**：序章 Day 0 领取载具场景
+
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，大学屋顶停机坪，傍晚天空，停着几辆未来风格的沙能飞行车，深蓝色车身，远处是平壤城市天际线，夕阳余晖，暖色调，像素风格。
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening.
+
+ARCHITECTURAL ELEMENTS:
+- University rooftop helipad
+- Several sand-energy flying vehicles parked
+- Deep blue sand vehicles with university emblem
+- Control tower in background
+- Korean-style rooflines visible below
+
+VIEW (PYONGYANG SKYLINE):
+- Ryugyong Hotel in distance (pyramid shape)
+- Juche Tower visible
+- Grand People's Study House with traditional Korean roof
+- Mix of traditional Korean architecture and modern buildings
+- Mountains with Korean pine trees in far distance
+- Taedong River visible
+- Flying vehicles in distance
+
+COLOR PALETTE:
+- Primary: evening sky gradient (#FF6B35 to #1A1A2E)
+- Secondary: deep blue vehicles (#000080), warm sunset (#FFD700)
+- Accents: university emblem colors, landing pad lights
+
+ATMOSPHERE: Transition from day to night, sense of departure. The last moment before a long journey begins.
+
+AVOID:
+- Too bright or cheerful (should be evening)
+- Missing the specific landmarks
+- Generic city skyline (must be specifically Pyongyang)
 ```
 
-#### 2.1.5 边境小镇
+---
+
+### 2.3 边境小镇
 
 **文件**：`Resources/bg/border_town.png`  
-**中文提示词**：
+**用途**：序章 Day 1 第一次补给
+
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，中国边境小镇，晨雾中，有补给站设施，类似加油机的设备，远处有山，清晨阳光，暖色调，类似星露谷物语的像素风格。
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, Chinese border town morning, 2076, small supply station.
+
+ARCHITECTURAL ELEMENTS:
+- Small border town in morning fog
+- Supply station with fuel-pump-like equipment
+- Simple buildings, provincial Chinese style
+- Mountains in background
+- Morning mist
+
+COLOR PALETTE:
+- Primary: morning mist gray (#D3D3D3), warm dawn (#FFDAB9)
+- Secondary: earthy brown (#8B7355), building gray (#696969)
+- Accents: supply station sign colors
+
+ATMOSPHERE: Quiet border town morning, the first stop on a long journey. Simple, functional, slightly sleepy.
+
+AVOID:
+- Too modern or developed
+- Busy or crowded scene
+- Nighttime or dark setting
 ```
 
-#### 2.1.6 雾峰村夕阳
+---
+
+### 2.4 雾峰村夕阳
 
 **文件**：`Resources/bg/village_sunset.png`  
-**中文提示词**：
+**用途**：序章 Day 4 到达雾峰村
+
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，山谷中的小村庄，夕阳下，暖色调，有一条铁路线穿过村庄，远处有山，破旧但温馨的房屋，炊烟袅袅，金色阳光，类似星露谷物语的像素风格。
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, mountain village at sunset, Wufeng village, central China, 2076, misty tea village.
+
+ARCHITECTURAL ELEMENTS:
+- Mountain valley village
+- Small houses with traditional Chinese roofs
+- Terraced tea gardens on hillsides
+- Railway line running through village
+- Smoke rising from chimneys
+- Distant mountains with mist
+
+VIEW:
+- Entire village visible from above
+- Railway line as central feature
+- Tea terraces on surrounding hills
+- Small station building visible
+- Winding road connecting to outside
+
+COLOR PALETTE:
+- Primary: golden sunset (#FFD700), warm orange (#FF8C00)
+- Secondary: mountain mist blue (#87CEEB), tea green (#556B2F)
+- Accents: house roof gray (#808080), chimney smoke (#D3D3D3)
+
+ATMOSPHERE: Warm, nostalgic, the home that has been waiting. A village that time forgot, beautiful in its isolation.
+
+AVOID:
+- Too bright or modern
+- Missing the tea terraces (essential character)
+- Cold or unwelcoming atmosphere
 ```
 
-#### 2.1.7 车站夕阳
+---
+
+### 2.5 车站夕阳
 
 **文件**：`Resources/bg/station_sunset.png`  
-**中文提示词**：
+**用途**：序章 Day 4 到达车站
+
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，破旧的小火车站，夕阳下，站台有长椅，轨道延伸向远方，暖色调，金色阳光，有怀旧感，杂草丛生但仍有生机，类似星露谷物语的像素风格。
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, old railway station at sunset, Wufeng village, 2076.
+
+ARCHITECTURAL ELEMENTS:
+- Small old railway station
+- Platform with benches
+- Tracks extending into distance
+- Weeds growing between tracks
+- Station building with Chinese rural style
+- Signal post
+
+COLOR PALETTE:
+- Primary: golden sunset (#FFD700), warm orange (#FF8C00)
+- Secondary: station building gray (#696969), rusted tracks (#8B4513)
+- Accents: weeds green (#556B2F), sky pink (#FFB6C1)
+
+ATMOSPHERE: Nostalgic, slightly melancholic but hopeful. The railway station that has seen better days, waiting for someone to bring it back to life.
+
+AVOID:
+- Too clean or well-maintained
+- Busy or crowded station
+- Modern or renovated appearance
 ```
 
-#### 2.1.8 傍晚站台
+---
+
+### 2.6 傍晚站台
 
 **文件**：`Resources/bg/platform_evening.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，火车站台，傍晚时分，暖色调灯光，站台上有老人在等待，远处有列车进站，宁静的氛围，像素风格。
-```
+**用途**：序章 Day 4 老陈等候
 
-#### 2.1.9 铁路轨道
-
-**文件**：`Resources/bg/railway_track.png`  
-**中文提示词**：
+**提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，铁路轨道延伸向远方，两边有杂草和野花，夕阳下，有电线杆，暖色调，怀旧感，铁轨有些生锈，但仍有维护的痕迹，类似星露谷物语的像素风格。
-```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, station platform at evening, Wufeng village, 2076.
 
-#### 2.1.10 松桥站（废弃车站）
+ARCHITECTURAL ELEMENTS:
+- Railway platform at evening
+- Warm platform lighting
+- Old man waiting on platform
+- Train approaching in distance
+- Evening sky
 
-**文件**：`Resources/bg/songqiao_station.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，废弃的小火车站，站牌字迹模糊写着「松桥站」，站台上杂草丛生，长椅破旧不堪，有几位老人坐在站台上晒太阳，暖色调，夕阳，怀旧感伤氛围，类似星露谷物语的像素风格。
-```
+COLOR PALETTE:
+- Primary: evening blue (#191970), warm light (#FFD700)
+- Secondary: platform gray (#808080), train dark (#1A1A1A)
+- Accents: station lamp glow (#FFA500)
 
-#### 2.1.11 夜晚车站
+ATMOSPHERE: Quiet, expectant, the moment of reunion after years apart.
 
-**文件**：`Resources/bg/station_night.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，夜晚的车站站台，暖色灯光照亮站台，星空，铁轨在月光下泛光，宁静而温暖，有几个人影在站台上，类似星露谷物语的像素风格。
-```
-
-#### 2.1.12 早晨机库
-
-**文件**：`Resources/bg/depot_morning.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，老式机车库内部，清晨阳光从门口射入，一台老旧的柴油机车静静停着，工具散落，有工作台和零件，暖色调，略带灰尘感，类似星露谷物语的像素风格。
-```
-
-#### 2.1.13 车厢内部
-
-**文件**：`Resources/bg/train_inside.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，老式火车车厢内部，木质座椅，窗户透进阳光，车厢内有几位乘客，暖色调，怀旧温馨氛围，类似星露谷物语的像素风格。
-```
-
-#### 2.1.14 站长办公室
-
-**文件**：`Resources/bg/station_office.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，小车站的站长办公室，木质办公桌，墙上挂着铁路地图和时间表，老式电话，窗户可以看到站台，暖色调，朴素温馨，类似星露谷物语的像素风格。
-```
-
-#### 2.1.15 早晨站台
-
-**文件**：`Resources/bg/platform_morning.png`  
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，清晨火车站台，阳光明媚，列车准备出发，有几位乘客在等车，站台干净整洁，暖色调，充满希望的氛围，类似星露谷物语的像素风格。
+AVOID:
+- Too bright or cheerful
+- Empty or abandoned feeling
+- Missing the warm lighting
 ```
 
 ---
 
-### 2.2 经营场景背景
+## 三、BGM（Suno AI 音乐提示词）
 
-**文件**：`Resources/bg/station_main.png`  
-**中文提示词**：
+### 通用规范
+
+- **风格**：纯音乐，无歌词，instrumental
+- **平台**：Suno AI
+- **格式**：风格描述 + 情绪 + 乐器 + 参考风格
+
+---
+
+### 3.1 melancholy（忧郁·怀旧）
+
+**Suno 提示词**：
 ```
-像素艺术，16-bit复古风格，游戏场景背景，1920x1080，火车站主场景，俯视角，站台、轨道、列车、候车室、机库，暖色调，清晰的地图结构，适合模拟经营游戏，类似星露谷物语的像素风格，村庄场景，有绿色植被，木质建筑，铁轨贯穿。
+Style: Ambient piano, lo-fi, melancholic, nostalgic instrumental
+Mood: Bittersweet, reflective, gentle sadness
+Instruments: Solo piano, soft strings, ambient pad
+Tempo: Slow, 60 BPM
+Reference: Stardew Valley winter theme, "To the Moon" soundtrack
+Description: A slow, contemplative piano piece with soft string pads. The melody carries a sense of loss but also quiet hope. Perfect for reflective moments and memories of the past.
+```
+
+### 3.2 emotional（感人·温暖）
+
+**Suno 提示词**：
+```
+Style: Emotional piano, cinematic strings, warm instrumental
+Mood: Heartwarming, touching, hopeful
+Instruments: Piano, string ensemble, soft horn
+Tempo: Moderate, 70 BPM
+Reference: Stardew Valley dance theme, Studio Ghibli soundtracks
+Description: A warm, emotional piano piece with gentle string accompaniment. The melody rises and falls like a heartfelt conversation, perfect for reunion scenes and important dialogues.
+```
+
+### 3.3 determination（坚定·希望）
+
+**Suno 提示词**：
+```
+Style: Cinematic orchestral, uplifting, determined instrumental
+Mood: Hopeful, resolute, inspiring
+Instruments: Orchestra, brass, percussion, piano
+Tempo: Moderate, 80 BPM
+Reference: "Interstellar" main theme, "The Last of the Mohicans" theme
+Description: A determined orchestral piece that builds gradually. Starts with a single piano note, then layers in strings, brass, and percussion. The feeling of setting out on an impossible journey.
+```
+
+### 3.4 morning（清晨·宁静）
+
+**Suno 提示词**：
+```
+Style: Acoustic folk, calm morning, gentle instrumental
+Mood: Peaceful, fresh, optimistic
+Instruments: Acoustic guitar, soft flute, light percussion, piano
+Tempo: Slow to moderate, 65 BPM
+Reference: Stardew Valley spring theme, Animal Crossing morning theme
+Description: A gentle, fresh morning piece with acoustic guitar and soft flute. The sound of a new day beginning, birds singing, sunlight streaming through windows.
+```
+
+### 3.5 warm（温暖·安心）
+
+**Suno 提示词**：
+```
+Style: Cozy folk, warm acoustic, comforting instrumental
+Mood: Safe, warm, homely
+Instruments: Acoustic guitar, soft piano, gentle bass
+Tempo: Moderate, 75 BPM
+Reference: Stardew Valley summer theme, fireplace ambient
+Description: A warm, cozy acoustic piece that feels like sitting by a fireplace with old friends. Perfect for community scenes and team gatherings.
+```
+
+### 3.6 news（新闻播报）
+
+**Suno 提示词**：
+```
+Style: News broadcast, serious, informative instrumental
+Mood: Serious, formal, anticipatory
+Instruments: Electronic pads, low bass, subtle percussion, minimal piano
+Tempo: Moderate, 80 BPM
+Reference: Classic news theme music, "Black Mirror" soundtrack
+Description: A serious, slightly tense news broadcast theme. The music signals that important information is being delivered. Not alarmist, but weighty.
+```
+
+### 3.7 calm（平静·日常）
+
+**Suno 提示词**：
+```
+Style: Ambient, calm, everyday instrumental
+Mood: Peaceful, neutral, unobtrusive
+Instruments: Soft piano, ambient pad, gentle guitar
+Tempo: Slow, 60 BPM
+Reference: "Minecraft" ambient music, Stardew Valley farm theme
+Description: A calm, unobtrusive ambient piece that creates a peaceful atmosphere without demanding attention. Perfect for everyday management scenes and thinking time.
+```
+
+### 3.8 train_ambient（火车行驶环境）
+
+**Suno 提示词**：
+```
+Style: Ambient field recording, train journey, rhythmic instrumental
+Mood: Rhythmic, moving, contemplative
+Instruments: Rhythmic percussion (train rhythm), soft drone, ambient pad
+Tempo: Moderate, 90 BPM (matching train rhythm)
+Reference: Train journey ambient, "Snowpiercer" soundtrack (ambient parts)
+Description: The rhythmic sound of a train moving through the countryside. A steady, hypnotic rhythm that suggests movement and journey. Perfect for scenes inside the train carriage.
 ```
 
 ---
 
-## 3. 列车与车辆
+## 四、生成优先级
 
-### 3.1 NF-5 耕牛（内燃机车）
-
-**文件**：`Resources/characters/train_nf5.png`  
-**规格**：1024×256，PNG透明背景，侧视图
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，列车侧视图，透明背景，1024x256，老式柴油内燃机车，深绿色车身，黄色条纹，车头有圆形大灯，排障器，车顶有排气口，老旧但坚固的外形，参考东风4型机车，暖色调，像素风格，侧视图，完整机车。
-```
-
-### 3.2 SY-22 灰雀（客运车厢）
-
-**文件**：`Resources/characters/train_carriage.png`  
-**规格**：1024×128，PNG透明背景，侧视图
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，列车车厢侧视图，透明背景，1024x128，老式绿色客运车厢，有窗户，车顶有通风口，老旧但整洁，适合支线短途客运，暖色调，像素风格，侧视图。
-```
-
-### 3.3 沙子飞猪号（沙能飞行车）
-
-**文件**：`Resources/characters/sand_flying_pig.png`  
-**规格**：512×256，PNG透明背景
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，飞行汽车侧视图，透明背景，512x256，深蓝色车身，圆润设计，有飞行模式展开的机翼，金日成综合大学校徽在车身侧面，老旧的试验车型，暖色调，像素风格。
-```
+| 优先级 | 资产 | 原因 | 数量 |
+|--------|------|------|------|
+| **P0** | 老陈主图+8表情 | 序章大量使用，MVP阻塞 | 1+8张 |
+| **P0** | 张工主图+6表情 | 序章员工集合场景 | 1+6张 |
+| **P0** | 王小弟主图+6表情 | 序章员工集合场景 | 1+6张 |
+| **P0** | 导师办公室背景 | 序章 Day 0 必需 | 1张 |
+| **P0** | 停机坪背景 | 序章 Day 0 必需 | 1张 |
+| **P0** | 边境小镇背景 | 序章 Day 1 必需 | 1张 |
+| **P0** | 雾峰村夕阳背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 车站夕阳背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 傍晚站台背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 铁路轨道背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 松桥站背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 夜晚车站背景 | 序章 Day 4 必需 | 1张 |
+| **P0** | 早晨机库背景 | 序章 Day 5 必需 | 1张 |
+| **P0** | 车厢内部背景 | 序章首班车场景 | 1张 |
+| **P0** | 站长办公室背景 | 序章剧情补贴事件 | 1张 |
+| **P0** | 早晨站台背景 | 序章首班车场景 | 1张 |
+| **P0** | BGM: melancholy | 序章主要BGM | 1首 |
+| **P0** | BGM: emotional | 重逢场景 | 1首 |
+| **P0** | BGM: determination | 转折点 | 1首 |
+| **P0** | BGM: morning | 白天场景 | 1首 |
+| **P1** | 李阿姨主图+6表情 | 序章员工集合 | 1+6张 |
+| **P1** | 赵师傅主图+6表情 | 序章员工集合 | 1+6张 |
+| **P1** | 小芳主图+6表情 | 序章员工集合 | 1+6张 |
+| **P1** | 岁月界面头像 | 序章 | 1张 |
+| **P1** | BGM: warm/calm/news/train_ambient | 场景补充 | 4首 |
 
 ---
 
-## 4. UI元素
-
-### 4.1 按钮
-
-**文件**：`Resources/UI/btn_primary.png` / `btn_secondary.png` / `btn_small.png`  
-**规格**：200×64 / 200×64 / 120×40
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏UI按钮，圆角矩形，暖色调，棕色/金色主题，边缘有像素风格边框，内填充色，适合铁路主题游戏，类似星露谷物语的UI风格，PNG透明背景。
-```
-
-### 4.2 面板背景
-
-**文件**：`Resources/UI/panel_bg.png`  
-**规格**：600×400
-
-**中文提示词**：
-```
-像素艺术，16-bit复古风格，游戏UI面板背景，半透明，暖色调，深棕色到金色的渐变，边缘有复古花纹装饰，适合铁路主题，类似星露谷物语的UI风格。
-```
-
-### 4.3 图标
-
-**文件**：`Resources/UI/icon_{名称}.png`  
-**规格**：32×32
-
-**需要图标清单**：
-- `icon_money.png` — 钱币图标
-- `icon_trust.png` — 信任/爱心图标
-- `icon_train.png` — 列车图标
-- `icon_passenger.png` — 乘客图标
-- `icon_fuel.png` — 燃料图标
-- `icon_maintenance.png` — 维修工具图标
-- `icon_staff.png` — 员工图标
-- `icon_news.png` — 新闻图标
-- `icon_story.png` — 剧情图标
-- `icon_settings.png` — 设置图标
-- `icon_save.png` — 存档图标
-
-**通用提示词**：
-```
-像素艺术，16-bit复古风格，游戏图标，32x32，暖色调，棕色/金色主题，简洁清晰，像素风格，类似星露谷物语的图标风格，PNG透明背景。
-```
-
----
-
-## 5. 音频资源
-
-### 5.1 BGM（背景音乐）
-
-| 文件 | 风格 | 说明 |
-|------|------|------|
-| `bgm/melancholy.ogg` | 忧郁、怀旧 | 序章主要BGM，回忆和思考场景 |
-| `bgm/emotional.ogg` | 感人、温暖 | 重要对话场景，重逢时刻 |
-| `bgm/determination.ogg` | 坚定、希望 | 转折点，主角下定决心 |
-| `bgm/morning.ogg` | 清晨、宁静 | 白天场景，新的开始 |
-| `bgm/warm.ogg` | 温暖、安心 | 团队场景，社区互动 |
-| `bgm/news.ogg` | 严肃、播报 | 新闻展示场景 |
-| `bgm/calm.ogg` | 平静、日常 | 日常对话，平静时刻 |
-| `bgm/train_ambient.ogg` | 火车行驶环境 | 车厢场景，列车运行中 |
-| `bgm/ambient_nature.ogg` | 自然环境 | 户外场景，铁轨巡视 |
-| `bgm/silence.ogg` | 安静 | 过渡场景，仅环境音 |
-
-### 5.2 SFX（音效）
-
-| 文件 | 说明 |
-|------|------|
-| `sfx/click.ogg` | 按钮点击 |
-| `sfx/bell.ogg` | 发车铃声 |
-| `sfx/whistle.ogg` | 汽笛声 |
-| `sfx/train_move.ogg` | 列车行驶声 |
-| `sfx/typewriter.ogg` | 打字机音效（VN对话框） |
-
----
-
-## 6. 生成优先级
-
-| 优先级 | 资产 | 原因 |
-|--------|------|------|
-| **P0** | 林彪悍立绘（16表情） | VN系统核心，序章大量使用 |
-| **P0** | 老陈立绘（8表情） | VN系统核心，序章大量使用 |
-| **P0** | 场景背景：lab, professor_office, helicopter_pad, station_sunset, platform_evening, railway_track | 序章必须 |
-| **P1** | 其他角色立绘（张工/李阿姨/王小弟/赵师傅/小芳） | 序章Day 4晚上需要 |
-| **P1** | 场景背景：village_sunset, songqiao_station, station_night, depot_morning, train_inside, station_office | 序章后续需要 |
-| **P1** | NF-5耕牛+SY-22车厢 | 游戏核心视觉 |
-| **P2** | UI元素 | 经营界面需要 |
-| **P2** | BGM/SFX | 体验提升 |
-| **P3** | 其他场景背景 | 后续章节 |
-
----
-
-*本文档供AI绘图工具使用，所有提示词可直接复制粘贴。*
+*本文档按最新标准（v2.0 分类清单版）重写，基于实验室成功提示词格式。*
