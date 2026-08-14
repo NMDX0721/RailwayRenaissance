@@ -4,6 +4,7 @@ using UnityEngine;
 public class ScriptData
 {
     public string id;
+    public string nextScript; // 自动加载的下一个剧本（序章链用）
     public SceneData[] scenes;
 }
 

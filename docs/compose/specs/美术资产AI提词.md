@@ -642,7 +642,75 @@ Description: The rhythmic sound of a train moving through the countryside. A ste
 
 ---
 
-## 四、生成优先级
+## 四、UI 元素
+
+### 通用规范
+
+- **风格**：STARDEW VALLEY STYLE, 16-bit retro pixel art, 暖色调
+- **格式**：PNG 透明背景
+
+---
+
+### 4.1 现有 UI 资产（可直接复用，无需生成）
+
+| 文件 | 大小 | 用途 | 状态 |
+|------|------|------|------|
+| `UI/Login/title_logo.png` | 1.2MB | 标题横幅 | ✅ 已有 |
+| `UI/Login/panel_bg.png` | 2.1MB | 面板背景 | ✅ 已有 |
+| `UI/Login/button_primary.png` | 512KB | 主按钮 | ✅ 已有 |
+| `UI/Login/input_field.png` | 530KB | 输入框 | ✅ 已有 |
+| `UI/Dialog/dialog_bg.png` | 2.1MB | 对话框背景 | ✅ 已有 |
+| `UI/Dialog/button_confirm.png` | 504KB | 确认按钮 | ✅ 已有 |
+| `UI/Dialog/button_cancel.png` | 615KB | 取消按钮 | ✅ 已有 |
+| `UI/AvatarFrame.png` | 1.4MB | 头像框 | ✅ 已有 |
+| `UI/DefaultAvatar.png` | 1.4MB | 默认头像 | ✅ 已有 |
+
+---
+
+### 4.2 缺失的图标（需生成，11个）
+
+**尺寸**：32×32，PNG透明底  
+**风格**：STARDEW VALLEY STYLE, 16-bit retro pixel art, 暖色调, 1px dark outline
+
+| 文件名 | 图标 | 视觉参考 |
+|--------|------|---------|
+| icon_money.png | 资金 | 沙币/金币，带沙粒装饰 |
+| icon_trust.png | 信任 | 握手或爱心，暖色调 |
+| icon_train.png | 列车 | 火车头侧面，像素风 |
+| icon_passenger.png | 乘客 | 人物剪影 |
+| icon_fuel.png | 燃料 | 油滴或火焰 |
+| icon_maintenance.png | 维修 | 扳手或齿轮 |
+| icon_staff.png | 员工 | 人物头像 |
+| icon_news.png | 新闻 | 报纸或喇叭 |
+| icon_story.png | 剧情 | 书本或对话气泡 |
+| icon_settings.png | 设置 | 齿轮 |
+| icon_save.png | 存档 | 软盘或磁盘 |
+
+**通用图标提示词**：
+```
+pixel art, 16-bit retro style, game icon, 32x32 pixels, STARDEW VALLEY STYLE, transparent background.
+
+STYLE:
+- Simple, clear silhouette at 32x32 size
+- Warm color palette (brown, gold, warm tones)
+- 1px dark outline for visibility
+- Pixel-perfect, no anti-aliasing
+
+COLOR PALETTE:
+- Primary: warm gold (#DAA520) or warm brown (#8B6914)
+- Outline: dark brown (#3E2723)
+
+ATMOSPHERE: Clean, readable at small size, fits railway station aesthetic.
+
+AVOID:
+- Too detailed (unreadable at 32px)
+- Modern or glossy style
+- Cold blue or gray tones
+```
+
+---
+
+## 五、生成优先级
 
 | 优先级 | 资产 | 原因 | 数量 |
 |--------|------|------|------|
