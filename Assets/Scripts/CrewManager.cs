@@ -23,9 +23,29 @@ public class SkillData
     public int exp;
 }
 
+[System.Serializable]
+public class NpcMemory
+{
+    public string characterId;
+    public List<string> recentTopics;
+    public int lastPunctualityScore; // 0=准时, 1=晚点, 2=严重晚点
+    public bool deliveredLastPackage;
+    public int conversationCount;
+
+    public NpcMemory(string characterId)
+    {
+        this.characterId = characterId;
+        this.recentTopics = new List<string>();
+        this.lastPunctualityScore = 0;
+        this.deliveredLastPackage = false;
+        this.conversationCount = 0;
+    }
+}
+
 public static class CrewManager
 {
     private static List<CrewMember> crew = new List<CrewMember>();
+    private static Dictionary<string, NpcMemory> npcMemories = new Dictionary<string, NpcMemory>();
 
     public static void Initialize()
     {
@@ -164,6 +184,67 @@ public static class CrewManager
 
         member.role = newRole;
         Debug.Log("[CrewManager] 员工 " + member.name + " 岗位已变更为: " + newRole);
+    }
+
+    public static void RecordConversation(string characterId, string topic)
+    {
+        if (!npcMemories.ContainsKey(characterId))
+        {
+            npcMemories[characterId] = new NpcMemory(characterId);
+        }
+
+        NpcMemory mem = npcMemories[characterId];
+        mem.recentTopics.Add(topic);
+        mem.conversationCount++;
+        Debug.Log($"[CrewManager] 记录对话 - {characterId}: {topic} (第{mem.conversationCount}次)");
+    }
+
+    public static void RecordPunctuality(string characterId, int score)
+    {
+        if (!npcMemories.ContainsKey(characterId))
+        {
+            npcMemories[characterId] = new NpcMemory(characterId);
+        }
+
+        npcMemories[characterId].lastPunctualityScore = score;
+        string label = score == 0 ? "准时" : (score == 1 ? "晚点" : "严重晚点");
+        Debug.Log($"[CrewManager] 记录准点 - {characterId}: {label}");
+    }
+
+    public static string GetMemoryInfluence(string characterId)
+    {
+        if (!npcMemories.ContainsKey(characterId))
+        {
+            return "无记录";
+        }
+
+        NpcMemory mem = npcMemories[characterId];
+
+        // 如果送过包裹 → 先检查这个，因为包裹交付是正面事件
+        if (mem.deliveredLastPackage)
+        {
+            return "感谢";
+        }
+
+        // 如果最近有迟到记录
+        if (mem.lastPunctualityScore >= 1)
+        {
+            return "抱怨";
+        }
+
+        // 如果对话次数≥3且最近一次准点 → 连续准点建立信任
+        if (mem.conversationCount >= 3 && mem.lastPunctualityScore == 0)
+        {
+            return "信任";
+        }
+
+        // 有对话记录但不足以建立信任
+        if (mem.conversationCount > 0)
+        {
+            return "中立";
+        }
+
+        return "无记录";
     }
 
     public static void DailyUpdate()
