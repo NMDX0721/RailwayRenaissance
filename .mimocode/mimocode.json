@@ -1,0 +1,10 @@
+{
+  "mcp": {
+    "unity-mcp": {
+      "type": "local",
+      "enabled": true,
+      "command": ["uvx", "--from", "mcpforunityserver", "mcp-for-unity", "--transport", "stdio"]
+    }
+  },
+  "$schema": "https://mimo.xiaomi.com/mimocode/config.json"
+}
