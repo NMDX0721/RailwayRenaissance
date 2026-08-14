@@ -62,7 +62,6 @@ public class FullScreenNews : MonoBehaviour
         newsContent = new Label { name = "news-content" };
         newsContent.style.fontSize = 36;
         newsContent.style.letterSpacing = 4;
-        newsContent.style.lineHeight = 60;
         newsContent.style.color = new Color(0.9f, 0.85f, 0.7f, 1f);
         newsContent.style.whiteSpace = WhiteSpace.Normal;
         newsContent.style.unityFontDefinition = fontDef;
@@ -110,7 +109,7 @@ public class FullScreenNews : MonoBehaviour
         newsScroll.scrollOffset = Vector2.zero;
     }
 
-    private void Close()
+    public void Close()
     {
         if (!isActive) return;
         isActive = false;

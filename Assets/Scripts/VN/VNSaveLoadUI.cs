@@ -16,7 +16,7 @@ public class VNSaveLoadUI : MonoBehaviour
     private bool isOpen;
     private bool isSaveMode;
     private System.Action<int> onSlotSelected;
-    private System.Collections.IEnumerator feedbackRoutine;
+    private Coroutine feedbackRoutine;
 
     private void ShowSaveFeedback()
     {
