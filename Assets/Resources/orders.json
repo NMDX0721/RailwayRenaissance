@@ -1,0 +1,100 @@
+{
+  "orders": [
+    {
+      "id": "freight_coal_01",
+      "type": "freight",
+      "title": "煤矿运输",
+      "description": "北山煤矿积压了大量煤炭，需要紧急运往城西工业区。",
+      "origin": "北山煤矿",
+      "destination": "城西工业区",
+      "reward": 320,
+      "deadlineDays": 5,
+      "trustDelta": 2,
+      "chainId": ""
+    },
+    {
+      "id": "freight_grain_01",
+      "type": "freight",
+      "title": "秋收粮食调运",
+      "description": "今年收成不错，粮仓需要将多余的粮食转运到邻县储备库。",
+      "origin": "东河粮仓",
+      "destination": "南坪储备库",
+      "reward": 280,
+      "deadlineDays": 7,
+      "trustDelta": 3,
+      "chainId": "grain_chain"
+    },
+    {
+      "id": "freight_steel_01",
+      "type": "freight",
+      "title": "钢材配送",
+      "description": "钢厂有一批新轧制的型钢，需送往铁路桥工地。",
+      "origin": "城西钢厂",
+      "destination": "河口桥工地",
+      "reward": 400,
+      "deadlineDays": 4,
+      "trustDelta": 1,
+      "chainId": ""
+    },
+    {
+      "id": "urgent_medical_01",
+      "type": "urgent",
+      "title": "紧急医疗物资",
+      "description": "乡镇卫生院急需一批疫苗和药品，必须在两天内送达。",
+      "origin": "州立医药仓库",
+      "destination": "青石镇卫生院",
+      "reward": 500,
+      "deadlineDays": 2,
+      "trustDelta": 8,
+      "chainId": ""
+    },
+    {
+      "id": "urgent_breakdown_01",
+      "type": "urgent",
+      "title": "机车故障抢修",
+      "description": "一台货运机车在半路抛锚，需要立刻运送维修配件过去。",
+      "origin": "机务段仓库",
+      "destination": "枫林站",
+      "reward": 350,
+      "deadlineDays": 1,
+      "trustDelta": 5,
+      "chainId": ""
+    },
+    {
+      "id": "story_old_man_01",
+      "type": "story",
+      "title": "老兵的最后旅程",
+      "description": "一位退休老铁路工人想坐火车回一趟老家，看看年轻时修建的桥梁。",
+      "origin": "城南站",
+      "destination": "怀远镇",
+      "reward": 100,
+      "deadlineDays": 10,
+      "trustDelta": 10,
+      "chainId": "story_veteran"
+    },
+    {
+      "id": "story_couple_01",
+      "type": "story",
+      "title": "异地恋人重逢",
+      "description": "一对年轻恋人因为工作分居两地，女孩想坐火车去给他一个生日惊喜。",
+      "origin": "青石镇",
+      "destination": "城西站",
+      "reward": 80,
+      "deadlineDays": 6,
+      "trustDelta": 6,
+      "chainId": "story_lovers"
+    },
+    {
+      "id": "story_farmer_01",
+      "type": "story",
+      "title": "进城卖菜的老农",
+      "description": "每天清晨都有菜农挑着担子赶火车进城卖菜，他们需要一节带货车厢。",
+      "origin": "东河镇",
+      "destination": "城南市场",
+      "reward": 60,
+      "deadlineDays": 3,
+      "trustDelta": 4,
+      "chainId": ""
+    }
+  ]
+}

@@ -200,6 +200,18 @@ public static class GameData
         new ShortTermGoal("拉高客流", "让预计客流达到 30。", targetPassengers: 30)
     };
 
+    // ===== 公共数值调整方法 =====
+
+    public static void AddMoney(int amount)
+    {
+        Money += amount;
+    }
+
+    public static void AddTrust(int amount)
+    {
+        Trust += amount;
+    }
+
     // ===== 剧情补贴系统 =====
 
     public static void CompleteStoryGrant(string grantId, int amount)
