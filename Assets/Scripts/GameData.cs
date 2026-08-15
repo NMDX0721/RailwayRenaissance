@@ -815,6 +815,9 @@ public static class GameData
         string tone = BuildDailyTone();
         Day += 1;
 
+        // 区域解锁系统：每日检查，条件满足时自动解锁区域
+        WorldGen.RegionUnlockManager.DailyCheck();
+
         // 教程系统：更新天数并检查提示
         TutorialManager.SetGameDay(Day);
         string tip = TutorialManager.CheckForTip();
