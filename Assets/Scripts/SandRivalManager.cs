@@ -16,6 +16,17 @@ public static class SandRivalManager
         daysSinceLastAction = 0;
     }
 
+    /// <summary>从种子数据初始化城市渗透率，替代硬编码。</summary>
+    public static void InitializeFromSeed(WorldGen.WorldSeedData seed)
+    {
+        cityPenetration = new Dictionary<string, float>();
+        foreach (var kvp in seed.cities)
+        {
+            cityPenetration[kvp.Key] = kvp.Value.sandPenetrationBase;
+        }
+        daysSinceLastAction = 0;
+    }
+
     public static void DailyUpdate()
     {
         List<string> cities = new List<string>(cityPenetration.Keys);

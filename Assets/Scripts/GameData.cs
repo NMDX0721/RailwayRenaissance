@@ -282,6 +282,21 @@ public static class GameData
         CarCount = data.carCount > 0 ? data.carCount : 2;
     }
 
+    // ===== 种子数据注入 =====
+
+    /// <summary>从种子覆盖初始趋势值（信任、车况等），替代硬编码。</summary>
+    public static void ApplySeedInitialValues(WorldGen.WorldSeedData seed)
+    {
+        if (seed == null) return;
+
+        Trust = Mathf.RoundToInt(seed.initialTrends.trust * 100f);
+        TrainCondition = 70 - Mathf.RoundToInt(seed.initialTrends.infrastructureDecay * 50f);
+        TrainCondition = Mathf.Clamp(TrainCondition, 0, 100);
+
+        // ExpectedPassengers 保持由 A9 公式计算，但 Trust 已变，需重新计算
+        ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
+    }
+
     // ===== 初始化 =====
 
     public static void InitializeIfNeeded()
@@ -293,8 +308,24 @@ public static class GameData
 
         initialized = true;
         EventManager.Initialize();
-        SandRivalManager.Initialize();
-        ResetState();
+
+        // 从 GameConfig 读取种子 ID，加载种子数据
+        GameConfig config = GameConfig.Load();
+        WorldGen.WorldSeedData seed = WorldGen.WorldGenerator.LoadFromResources(config.seedId);
+
+        if (seed != null)
+        {
+            // 有种子数据：用种子初始化渗透 → ResetState 设默认值 → 从种子覆盖趋势
+            SandRivalManager.InitializeFromSeed(seed);
+            ResetState();
+            ApplySeedInitialValues(seed);
+        }
+        else
+        {
+            // 无种子兜底：使用原始硬编码
+            SandRivalManager.Initialize();
+            ResetState();
+        }
     }
 
     public static void ResetState()

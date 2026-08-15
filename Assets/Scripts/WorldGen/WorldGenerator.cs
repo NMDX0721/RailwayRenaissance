@@ -694,10 +694,9 @@ namespace WorldGen
         // 种子注入点（Layer 5 实现）
         // ======================================================================
 
-        private static void ApplySeed(WorldSeedData data)
+        public static void ApplySeed(WorldSeedData data)
         {
-            // 预留：种子注入 GameData/SandRivalManager/EventManager 等
-            // 在 Layer 5 中实现
+            WorldInitializer.ApplySeed(data);
         }
 
         // ======================================================================
