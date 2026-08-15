@@ -199,8 +199,8 @@ GitHub Wiki（`中转站/wiki/`）现有 25 个 md 页面，经死链自动扫�
 | 索引漏录 | 王小弟 + 金日成综合大学 已入中文维基 ✅ |
 | 图片修复 | station.png→lab.jpg；chen_sheet.png/lin_card.png 已送回收站 ✅ |
 | 首页横幅 | 新 ChatGPT 横幅 home_banner.jpg 替换 lab.jpg（Home.md + 中文维基.md）✅ |
-| 提交 | 批1 9306691 · 批2 ace909e/feb6465 · 批3a ca29527 · 批3b 523456b/8924647 · 批3c f616451 · 批4 c460faf · 横幅 a971f09 · 收尾 6a68755 |
-| 待观察 | `chen_art.png`=`laochen_smile.png`、`lin_art.png`=`lin_biaohan_smile.png` 同字节——疑似有意（art 图=smlie 表情），未删，待用户裁定 |
+| 提交 | 批1 9306691 · 批2 ace909e/feb6465 · 批3a ca29527 · 批3b 523456b/8924647 · 批3c f616451 · 批4 c460faf · 横幅 a971f09 · 收尾 6a68755 · 重复图 09fb3f1 |
+| 图片复查 | `chen_art.png`=`laochen_smile.png`、`lin_art.png`=`lin_biaohan_smile.png` 同字节——已确认无任何引用，送回收站 ✅（09fb3f1） |
 
 ---
 
