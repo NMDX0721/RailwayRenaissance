@@ -141,9 +141,14 @@
 - **目标**：实现预设/自由 AI/混合三种对话模式
 - **参考文档**：`参考资料/视觉小说系统设计.md` §4
 
-#### P3.2 千里马创世核
-- **目标**：种子初始化世界结构
-- **参考文档**：`docs/compose/specs/核心玩法循环.md` §2
+#### P3.2 千里马创世核（重构执行中）
+- **目标**：种子初始化世界结构——6层重构（详见 `docs/compose/plans/千里马创世核重构计划.md`）
+- **Layer 1 数据模型** ✅ 已完成（`b707213`）：WorldSeedData + CityTemplates(7城市) + WorldGenerator骨架
+- **Layer 3 种子库** ✅ 已完成（`ea1e59e`）：5发布+3调试种子 JSON（`Assets/Resources/Seeds/`）
+- **Layer 2 生成算法** ⏳ 编码中：城市生成/依赖图闭环/资源分布/政治倾向/铁路边MST/编解码
+- **Layer 4 编解码** 📅 随 Layer 2 完成（EncodeSeed/DecodeSeed）
+- **Layer 5 联动接口** 📅 待做：`GameData.InitializeIfNeeded` 注入种子、`SandRivalManager` 渗透值去硬编码
+- **Layer 6 剧情路径** 📅 待做：6阶段11事件与城市解锁联动（设计已在 §九）
 
 #### P3.3 岁月叙事引擎
 - **目标**：AI 分析世界状态生成事件
