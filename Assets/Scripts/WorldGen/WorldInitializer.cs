@@ -17,6 +17,9 @@ namespace WorldGen
                 return;
             }
 
+            // G4：保存种子引用供经济核读取（客流基准/货运收入/中断检测）
+            GameData.CurrentSeed = seed;
+
             // 1. 初始化 SandRivalManager 城市渗透（从种子 cities 读取 sandPenetrationBase）
             SandRivalManager.InitializeFromSeed(seed);
 

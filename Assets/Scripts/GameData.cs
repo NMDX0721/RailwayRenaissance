@@ -136,7 +136,25 @@ public static class GameData
     }
 
     // ===== 经济系统参数 =====
-    private const float PopulationFactor = 8000f;
+    /// <summary>
+    /// 客流基准人口（G4：从创世核主线城市population读取，无种子时回退8000）。
+    /// </summary>
+    private static float PopulationFactor
+    {
+        get
+        {
+            if (CurrentSeed != null)
+            {
+                // 找主线城市（unlockRegion==0 的第一个城市，如雾峰村8000）
+                foreach (var kvp in CurrentSeed.cities)
+                {
+                    if (kvp.Value.unlockRegion == 0)
+                        return kvp.Value.population;
+                }
+            }
+            return 8000f;
+        }
+    }
     private const int ConductorLevel = 2;
     private const int MechanicLevel = 2;
     private const int TicketPrice = 35;
@@ -146,11 +164,46 @@ public static class GameData
     private const int MonthlyWage = 90000;
     private const int BaseTrips = 4;
 
+    // ===== G5：产业→货运吨位映射（用于货运收入计算） =====
+    private static readonly Dictionary<string, int> IndustryTonnage = new Dictionary<string, int>
+    {
+        { "coal", 5 },
+        { "iron", 3 },
+        { "tea", 2 },
+        { "machinery", 4 },
+        { "shipping", 6 },
+        { "steel", 5 },
+        // 其他未列出的产业默认 1 吨/天
+    };
+
     // ===== 车厢容量（A3） =====
     private const int CapacityPerCar = 30;
     private const float OvercrowdThreshold = 1.2f;
 
     // ===== 运行时状态 =====
+
+    // ——— G4：创世核种子引用（由 WorldInitializer.ApplySeed 或 InitializeIfNeeded 赋值） ———
+    public static WorldGen.WorldSeedData CurrentSeed;
+
+    // ——— G6：依赖图中断城市集合（由 Layer6/事件系统写入） ———
+    /// <summary>
+    /// 记录当前线路中断的城市ID集合。
+    /// 完整线路中断概念依赖铁路网络系统（未建），此为接口实现。
+    /// 中断城市的产业产出在货运计算时 ×0.5。
+    /// </summary>
+    public static HashSet<string> DisruptedCityIds = new HashSet<string>();
+
+    /// <summary>设置城市中断状态（供 Layer6 事件系统调用）。</summary>
+    /// <param name="cityId">城市ID（如 "wufeng"）</param>
+    /// <param name="disrupted">true=中断，false=恢复</param>
+    public static void SetCityDisrupted(string cityId, bool disrupted)
+    {
+        if (disrupted)
+            DisruptedCityIds.Add(cityId);
+        else
+            DisruptedCityIds.Remove(cityId);
+    }
+
     public static int Day { get; private set; } = 1;
     public static int Money { get; private set; } = 40000;
     public static int Trust { get; private set; } = 62;
@@ -315,6 +368,9 @@ public static class GameData
 
         if (seed != null)
         {
+            // G4：保存种子引用供经济核读取
+            CurrentSeed = seed;
+
             // 有种子数据：用种子初始化渗透 → ResetState 设默认值 → 从种子覆盖趋势
             SandRivalManager.InitializeFromSeed(seed);
             ResetState();
@@ -322,7 +378,8 @@ public static class GameData
         }
         else
         {
-            // 无种子兜底：使用原始硬编码
+            // 无种子兜底：使用原始硬编码，清空种子引用
+            CurrentSeed = null;
             SandRivalManager.Initialize();
             ResetState();
         }
@@ -491,10 +548,53 @@ public static class GameData
         return Mathf.RoundToInt(raw);
     }
 
-    /// <summary>计算日收入。</summary>
+    /// <summary>计算日收入（G5：客运 + 货运）。</summary>
     private static int CalculateRevenue(int dailyPassengers, int trips)
     {
-        return dailyPassengers * TicketPrice * trips;
+        int passengerRevenue = dailyPassengers * TicketPrice * trips;
+        int freightRevenue = CalculateFreightRevenue();
+        return passengerRevenue + freightRevenue;
+    }
+
+    /// <summary>计算货运收入（G5：基于已解锁城市产业 × 23km × 0.5沙币/吨公里）。</summary>
+    /// <remarks>
+    /// 遍历已解锁城市，对其 industries 求和吨位，再乘以统一定价。
+    /// G6：若城市在 DisruptedCityIds 中，产业产出 ×0.5。
+    /// 无种子时返回 0（货运系统未激活）。
+    /// </remarks>
+    private static int CalculateFreightRevenue()
+    {
+        if (CurrentSeed == null) return 0;
+
+        float totalFreightTonnage = 0f;
+
+        // 获取已解锁城市ID列表
+        var unlockedCityIds = WorldGen.RegionUnlockManager.GetUnlockedCityIds();
+
+        foreach (string cityId in unlockedCityIds)
+        {
+            if (!CurrentSeed.cities.TryGetValue(cityId, out var city))
+                continue;
+
+            // 计算该城市产业总吨位
+            float cityOutput = 0f;
+            foreach (string industry in city.industries)
+            {
+                float tonnage = IndustryTonnage.TryGetValue(industry, out int t) ? t : 1f;
+                cityOutput += tonnage;
+            }
+
+            // G6：依赖图中断惩罚 → 产业产出-50%
+            if (DisruptedCityIds.Contains(cityId))
+            {
+                cityOutput *= 0.5f;
+            }
+
+            totalFreightTonnage += cityOutput;
+        }
+
+        // 货运收入 = 总吨位 × 23km × 0.5沙币/吨公里
+        return Mathf.RoundToInt(totalFreightTonnage * 23f * 0.5f);
     }
 
     /// <summary>计算日燃料费。</summary>
