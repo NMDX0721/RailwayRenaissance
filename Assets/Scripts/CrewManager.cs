@@ -16,6 +16,9 @@ public class CrewMember
     // === 疲劳系统字段 ===
     public int consecutiveWorkDays;  // 连续工作天数
     public bool isResting;           // 是否休息日（由外部设置或强制休息触发）
+
+    // === 培训系统字段 ===
+    public int trainingCooldownDays; // 培训冷却剩余天数（0=可培训，Train 成功后设为7，每日-1）
 }
 
 [Serializable]
@@ -24,7 +27,7 @@ public class SkillData
     public string skillName;
     public int level;
     public int maxLevel;
-    public int exp;
+    public float exp; // 经验值（浮点累加，按成长曲线升级）
 }
 
 [System.Serializable]
@@ -51,6 +54,55 @@ public static class CrewManager
     private static List<CrewMember> crew = new List<CrewMember>();
     private static Dictionary<string, NpcMemory> npcMemories = new Dictionary<string, NpcMemory>();
 
+    // === 成长曲线：技能名 → 各等级升级所需天数（0→1, 1→2, 2→3, 3→4, 4→5） ===
+    // 驾驶: 60, 90, 150, 300, 600    维修: 30, 60, 110, 250, 350
+    // 管理: 20, 40, 90, 150, 300     服务: 15, 30, 75, 130, 250
+    // 货运: 15, 35, 100, 200, 350
+    private static readonly Dictionary<string, int[]> GrowthCurve = new Dictionary<string, int[]>
+    {
+        { "driving",    new[] { 60, 90, 150, 300, 600 } },
+        { "repair",     new[] { 30, 60, 110, 250, 350 } },
+        { "management", new[] { 20, 40, 90, 150, 300 } },
+        { "service",    new[] { 15, 30, 75, 130, 250 } },
+        { "freight",    new[] { 15, 35, 100, 200, 350 } }
+    };
+
+    // 技能名 → 等级称谓（0~5级），等级越界时 clamp 到边界
+    private static readonly Dictionary<string, string[]> RankNames = new Dictionary<string, string[]>
+    {
+        { "driving",    new[] { "未培训", "学习司机", "副司机", "司机", "指导司机", "高级指导司机" } },
+        { "repair",     new[] { "未培训", "学徒工", "初级维修工", "中级维修工", "高级维修工", "技师" } },
+        { "management", new[] { "未培训", "见习生", "站务员", "值班员", "副站长", "站长" } },
+        { "service",    new[] { "未培训", "实习员", "乘务员", "列车长", "乘务主任", "乘务队长" } },
+        { "freight",    new[] { "未培训", "装卸工", "货运员", "货运调度", "货运主管", "货运经理" } }
+    };
+
+    // === 岗位匹配：岗位 → 该岗位的核心技能 ===
+    private static readonly Dictionary<string, string> CoreSkillByRole = new Dictionary<string, string>
+    {
+        { "driver",     "driving" },
+        { "mechanic",   "repair" },
+        { "conductor",  "service" },
+        { "dispatcher", "management" },
+        { "attendant",  "service" }
+    };
+
+    // 相关技能：岗位 → 相关技能列表（与核心技能一起构成匹配规则）
+    private static readonly Dictionary<string, string[]> RelatedSkillsByRole = new Dictionary<string, string[]>
+    {
+        { "driver",     new[] { "freight" } },      // 司机：货运为相关
+        { "mechanic",   new[] { "driving" } },      // 机械师：驾驶为相关
+        { "conductor",  new[] { "management" } },   // 乘务员：管理为相关
+        { "dispatcher", new[] { "driving", "freight" } }, // 调度员：驾驶/货运为相关
+        { "attendant",  new[] { "management" } }    // 服务员：管理为相关
+    };
+
+    // === 师傅带徒：学徒ID → 师傅ID ===
+    private static readonly Dictionary<string, string> MentorDictionary = new Dictionary<string, string>();
+
+    // 培训每次消耗沙币
+    private const int TrainingCost = 200;
+
     // —— G11：城市 npc_pool → 招募角色池（key=城市ID，value=可招募角色ID列表） ——
     private static Dictionary<string, string[]> recruitingPools = new Dictionary<string, string[]>();
     private static HashSet<string> recruitedIds = new HashSet<string>();
@@ -58,6 +110,7 @@ public static class CrewManager
     public static void Initialize()
     {
         crew.Clear();
+        MentorDictionary.Clear();
 
         // 老陈 — 老司机
         crew.Add(new CrewMember
@@ -392,13 +445,46 @@ public static class CrewManager
             // 疲劳值限制在 0-100
             member.fatigue = Mathf.Clamp(member.fatigue, 0, 100);
 
-            // 在岗技能经验+1
+            // ===== P3：技能成长 =====
+            // 每日经验 = 基础1.0 × 岗位匹配系数 × 师傅系数（培训日另有加成）
             foreach (SkillData skill in member.skills)
             {
-                if (skill.level < skill.maxLevel)
+                if (skill.level >= skill.maxLevel)
                 {
-                    skill.exp += 1;
+                    continue;
                 }
+
+                float dailyGain = 1.0f * GetMatchCoefficient(member.role, skill.skillName)
+                                  * GetMentorCoefficient(member.id);
+
+                // 培训日加成：驾驶 +3.0 天经验 / 维修 +4.0 天经验
+                if (member.id == trainedCrewId)
+                {
+                    if (skill.skillName == "driving")
+                    {
+                        dailyGain += 3.0f;
+                    }
+                    else if (skill.skillName == "repair")
+                    {
+                        dailyGain += 4.0f;
+                    }
+                }
+
+                skill.exp += dailyGain;
+
+                // 升级检查：exp >= 当前等级所需天数 → level++，exp 扣除对应天数
+                while (skill.level < skill.maxLevel && skill.exp >= GetExpToNext(skill.skillName, skill.level))
+                {
+                    skill.exp -= GetExpToNext(skill.skillName, skill.level);
+                    skill.level++;
+                    Debug.Log("[CrewManager] " + member.name + " 的 " + skill.skillName + " 技能提升至 " + skill.level + " 级（" + GetRankName(skill.skillName, skill.level) + "）。");
+                }
+            }
+
+            // 培训冷却：每日递减
+            if (member.trainingCooldownDays > 0)
+            {
+                member.trainingCooldownDays--;
             }
 
             // ===== P2：忠诚度每日变化 =====
@@ -550,5 +636,156 @@ public static class CrewManager
         }
         member.isResting = resting;
         Debug.Log("[CrewManager] 员工 " + member.name + " 休息状态已设置为: " + resting);
+    }
+
+    // ===== P3：技能成长曲线 =====
+
+    /// <summary>获取升级到下一级所需经验天数（成长曲线表）。</summary>
+    /// <param name="skillName">技能名（driving/repair/management/service/freight）</param>
+    /// <param name="level">当前等级（0-4，升到下一级所需天数）；表外技能/越界返回极大值（不再升级）。</param>
+    public static int GetExpToNext(string skillName, int level)
+    {
+        if (!GrowthCurve.TryGetValue(skillName, out int[] curve))
+        {
+            return int.MaxValue;
+        }
+        if (level < 0 || level >= curve.Length)
+        {
+            return int.MaxValue;
+        }
+        return curve[level];
+    }
+
+    /// <summary>计算岗位匹配系数：核心技能 ×1.0 / 相关技能 ×0.5 / 不相关 ×0.2。</summary>
+    public static float GetMatchCoefficient(string role, string skillName)
+    {
+        // 核心技能匹配
+        if (CoreSkillByRole.TryGetValue(role, out string coreSkill) && coreSkill == skillName)
+        {
+            return 1.0f;
+        }
+
+        // 相关技能匹配
+        if (RelatedSkillsByRole.TryGetValue(role, out string[] relatedSkills))
+        {
+            foreach (string s in relatedSkills)
+            {
+                if (s == skillName)
+                {
+                    return 0.5f;
+                }
+            }
+        }
+
+        // 不相关
+        return 0.2f;
+    }
+
+    /// <summary>设置师徒关系：学徒 → 师傅。师傅必须是已登记员工，且不能是自己。</summary>
+    public static void SetMentor(string apprenticeId, string mentorId)
+    {
+        if (GetCrew(apprenticeId) == null)
+        {
+            Debug.LogWarning("[CrewManager] 未找到学徒员工: " + apprenticeId);
+            return;
+        }
+        if (GetCrew(mentorId) == null)
+        {
+            Debug.LogWarning("[CrewManager] 未找到师傅员工: " + mentorId);
+            return;
+        }
+        if (apprenticeId == mentorId)
+        {
+            Debug.LogWarning("[CrewManager] 师傅与学徒不能是同一人: " + apprenticeId);
+            return;
+        }
+
+        MentorDictionary[apprenticeId] = mentorId;
+        Debug.Log("[CrewManager] 师徒关系已建立: " + apprenticeId + " 拜 " + mentorId + " 为师。");
+    }
+
+    /// <summary>查询某员工的师傅ID（无师傅返回 null）。</summary>
+    public static string GetMentor(string crewId)
+    {
+        if (MentorDictionary.TryGetValue(crewId, out string mentorId))
+        {
+            return mentorId;
+        }
+        return null;
+    }
+
+    /// <summary>计算师傅系数：师傅等级≥4级 ×2.0 / 有师傅 ×1.5 / 无师傅 ×1.0。</summary>
+    /// <param name="crewId">学徒ID</param>
+    /// <param name="skillName">按哪个技能判断师傅等级（null 则取师傅最高等级技能）。</param>
+    public static float GetMentorCoefficient(string crewId, string skillName = null)
+    {
+        if (!MentorDictionary.TryGetValue(crewId, out string mentorId))
+        {
+            return 1.0f; // 无师傅
+        }
+
+        CrewMember mentor = GetCrew(mentorId);
+        if (mentor == null)
+        {
+            return 1.0f; // 师傅已离职，视为无师傅
+        }
+
+        // 判断师傅等级：优先指定技能，其次师傅全部技能中的最高等级
+        int maxMentorLevel = 0;
+        foreach (SkillData s in mentor.skills)
+        {
+            if (!string.IsNullOrEmpty(skillName) && s.skillName != skillName)
+            {
+                continue;
+            }
+            if (s.level > maxMentorLevel)
+            {
+                maxMentorLevel = s.level;
+            }
+        }
+
+        return maxMentorLevel >= 4 ? 2.0f : 1.5f;
+    }
+
+    /// <summary>
+    /// 培训系统：消耗 200 沙币，冷却 7 天。
+    /// 培训日（DailyUpdate 传入 trainedCrewId）额外获得经验：驾驶 +3.0 / 维修 +4.0。
+    /// </summary>
+    /// <returns>培训是否成功预定（资金不足或冷却中返回 false）。</returns>
+    public static bool Train(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null)
+        {
+            Debug.LogWarning("[CrewManager] 未找到员工，无法培训: " + crewId);
+            return false;
+        }
+
+        if (member.trainingCooldownDays > 0)
+        {
+            Debug.Log("[CrewManager] " + member.name + " 培训冷却中，剩余 " + member.trainingCooldownDays + " 天。");
+            return false;
+        }
+
+        if (GameData.GetMoney() < TrainingCost)
+        {
+            Debug.Log("[CrewManager] 资金不足，无法培训 " + member.name + "（需要 " + TrainingCost + " 沙币）。");
+            return false;
+        }
+
+        GameData.AddMoney(-TrainingCost);
+        member.trainingCooldownDays = 7;
+        Debug.Log("[CrewManager] " + member.name + " 已安排培训（下次可在 7 天后再次培训）。");
+        return true;
+    }
+
+    /// <summary>根据技能名与等级返回等级称谓（如"司机"、"技师"），等级越界 clamp 到边界。</summary>
+    public static string GetRankName(string skillName, int level)
+    {
+        if (!RankNames.TryGetValue(skillName, out string[] ranks))
+        {
+            return "未培训";
+        }
+        return ranks[Mathf.Clamp(level, 0, ranks.Length - 1)];
     }
 }
