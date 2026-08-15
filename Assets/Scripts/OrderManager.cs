@@ -53,6 +53,29 @@ public static class OrderManager
         float seasonModifier = GetSeasonModifier();
         string trendType = GetCurrentTrendType();
 
+        // G10：从种子已解锁城市产业构建支持的订单类型池
+        HashSet<string> supportedTypes = null;
+        if (GameData.CurrentSeed != null)
+        {
+            supportedTypes = new HashSet<string>();
+            var unlockedCityIds = WorldGen.RegionUnlockManager.GetUnlockedCityIds();
+            foreach (string cityId in unlockedCityIds)
+            {
+                if (!GameData.CurrentSeed.cities.TryGetValue(cityId, out var city))
+                    continue;
+                foreach (string industry in city.industries)
+                {
+                    // 产业→订单类型映射：煤/铁/机械→货运；茶/旅游→剧情；港口/贸易→紧急
+                    if (industry == "coal" || industry == "iron" || industry == "machinery")
+                        supportedTypes.Add("freight");
+                    else if (industry == "tea" || industry == "tourism")
+                        supportedTypes.Add("story");
+                    else if (industry == "shipping" || industry == "trade")
+                        supportedTypes.Add("urgent");
+                }
+            }
+        }
+
         List<GameOrder> candidates = new List<GameOrder>();
         foreach (GameOrder template in templatePool)
         {
@@ -61,6 +84,12 @@ public static class OrderManager
             // 季节相关性：freight 在秋季优先，story 在春季优先
             if (template.type == "freight" && seasonModifier > 1.0f && Random.value < 0.3f) continue;
             if (template.type == "story" && seasonModifier < 0.95f && Random.value < 0.3f) continue;
+
+            // G10：城市产业过滤——若模板类型与城市产业不匹配，50%概率跳过
+            if (supportedTypes != null && !supportedTypes.Contains(template.type))
+            {
+                if (Random.value < 0.5f) continue;
+            }
 
             candidates.Add(template);
         }

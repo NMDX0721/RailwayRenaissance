@@ -47,6 +47,10 @@ public static class CrewManager
     private static List<CrewMember> crew = new List<CrewMember>();
     private static Dictionary<string, NpcMemory> npcMemories = new Dictionary<string, NpcMemory>();
 
+    // —— G11：城市 npc_pool → 招募角色池（key=城市ID，value=可招募角色ID列表） ——
+    private static Dictionary<string, string[]> recruitingPools = new Dictionary<string, string[]>();
+    private static HashSet<string> recruitedIds = new HashSet<string>();
+
     public static void Initialize()
     {
         crew.Clear();
@@ -142,6 +146,93 @@ public static class CrewManager
         });
 
         Debug.Log("[CrewManager] 初始化完成，共 " + crew.Count + " 名员工。");
+    }
+
+    // ===== G11：城市 npc_pool → 招募角色池 =====
+
+    /// <summary>从种子各城市 npc_pool 构建招募池（key=城市ID，value=角色ID列表）。</summary>
+    public static void SetRecruitingPools(Dictionary<string, string[]> npcPools)
+    {
+        recruitingPools.Clear();
+        if (npcPools == null) return;
+
+        foreach (var kvp in npcPools)
+        {
+            recruitingPools[kvp.Key] = kvp.Value;
+        }
+        Debug.Log("[CrewManager] 招募池已更新，共 " + recruitingPools.Count + " 个城市。");
+    }
+
+    /// <summary>返回某城市当前可招募的角色ID列表（已剔除招募过的）。</summary>
+    public static List<string> GetRecruitableFromCity(string cityId)
+    {
+        if (!recruitingPools.TryGetValue(cityId, out var pool))
+        {
+            return new List<string>();
+        }
+
+        List<string> result = new List<string>();
+        foreach (string npcId in pool)
+        {
+            if (!recruitedIds.Contains(npcId))
+            {
+                result.Add(npcId);
+            }
+        }
+        return result;
+    }
+
+    /// <summary>从某城市招募指定角色：从池中移除并创建 CrewMember（默认值）。成功返回 true。</summary>
+    public static bool RecruitFromCity(string cityId, string npcId)
+    {
+        // 防御：城市不存在
+        if (!recruitingPools.TryGetValue(cityId, out var pool))
+        {
+            Debug.LogWarning("[CrewManager] 城市 " + cityId + " 不在招募池中，无法招募。");
+            return false;
+        }
+
+        // 防御：池中不存在该角色
+        bool inPool = false;
+        foreach (string id in pool)
+        {
+            if (id == npcId) { inPool = true; break; }
+        }
+        if (!inPool)
+        {
+            Debug.LogWarning("[CrewManager] 角色 " + npcId + " 不在城市 " + cityId + " 的招募池中。");
+            return false;
+        }
+
+        // 防御：不重复招募同一 ID
+        if (recruitedIds.Contains(npcId))
+        {
+            Debug.LogWarning("[CrewManager] 角色 " + npcId + " 已被招募，不可重复招募。");
+            return false;
+        }
+        recruitedIds.Add(npcId);
+
+        // 创建员工（简单默认值：attendant、技能1级、疲劳0、忠诚50）
+        CrewMember member = new CrewMember
+        {
+            id = npcId,
+            name = char.ToUpper(npcId[0]) + npcId.Substring(1),
+            age = 30,
+            role = "attendant",
+            fatigue = 0,
+            loyalty = 50,
+            skills = new SkillData[]
+            {
+                new SkillData { skillName = "service",    level = 1, maxLevel = 4, exp = 0 },
+                new SkillData { skillName = "management", level = 0, maxLevel = 3, exp = 0 },
+                new SkillData { skillName = "repair",     level = 0, maxLevel = 1, exp = 0 },
+                new SkillData { skillName = "driving",    level = 0, maxLevel = 2, exp = 0 }
+            }
+        };
+        crew.Add(member);
+
+        Debug.Log("[CrewManager] 招募成功：" + member.name + "（" + npcId + "）加入团队，来自城市 " + cityId + "。");
+        return true;
     }
 
     public static CrewMember GetCrew(string id)
