@@ -64,3 +64,9 @@ opencode.json
 deprecated/
 Assets/_Recovery/
 Assets/系统保存.unity
+
+# Compile logs (build verification output)
+compile*.log
+compile*.txt
+build_log.txt
+validate_json.py
