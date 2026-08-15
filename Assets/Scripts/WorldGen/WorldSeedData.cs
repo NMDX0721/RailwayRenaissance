@@ -95,19 +95,19 @@ namespace WorldGen
         {
             name = "雾峰村",
             type = "agriculture",
-            population = 3200,
-            populationGrowth = 0.012f,
-            coordinates = new Vector2Int(12, 8),
-            industries = new[] { "rice", "tea", "bamboo" },
+            population = 8000,
+            populationGrowth = 0.0002f,
+            coordinates = new Vector2Int(120, 340),
+            industries = new[] { "tea", "tourism" },
             dependencies = new DependencyData
             {
-                imports = new[] { "乌金岭:coal", "枫林渡:medicine" },
-                exports = new[] { "青溪镇:rice", "云渡港:tea" }
+                imports = new[] { "乌金岭:coal" },
+                exports = new[] { "青溪镇:tea" }
             },
-            sandPenetrationBase = 0.08f,
+            sandPenetrationBase = 0.15f,
             politicalLean = "neutral",
-            unlockRegion = 1,
-            npcPool = new[] { "village_head", "tea_master", "bamboo_carver" }
+            unlockRegion = 0,
+            npcPool = new[] { "laochen", "liayi", "laocheng_villager" }
         };
 
         // ── 乌金岭 ──────────────────────────────────────────────
@@ -115,19 +115,19 @@ namespace WorldGen
         {
             name = "乌金岭",
             type = "mining",
-            population = 5800,
-            populationGrowth = 0.008f,
-            coordinates = new Vector2Int(15, 4),
-            industries = new[] { "coal", "iron", "limestone" },
+            population = 4000,
+            populationGrowth = -0.0003f,
+            coordinates = new Vector2Int(200, 380),
+            industries = new[] { "coal", "iron" },
             dependencies = new DependencyData
             {
-                imports = new[] { "青溪镇:machinery", "雾峰村:bamboo" },
-                exports = new[] { "青溪镇:coal", "枫林渡:iron", "云渡港:limestone" }
+                imports = new[] { "青溪镇:machinery" },
+                exports = new[] { "雾峰村:coal", "青溪镇:iron" }
             },
-            sandPenetrationBase = 0.12f,
-            politicalLean = "labor",
-            unlockRegion = 1,
-            npcPool = new[] { "mine_foreman", "union_rep", "geologist" }
+            sandPenetrationBase = 0.20f,
+            politicalLean = "neutral",
+            unlockRegion = 0,
+            npcPool = new[] { "zhanggong", "zhaoshifu" }
         };
 
         // ── 青溪镇 ──────────────────────────────────────────────
@@ -135,19 +135,19 @@ namespace WorldGen
         {
             name = "青溪镇",
             type = "industrial",
-            population = 12500,
-            populationGrowth = 0.015f,
-            coordinates = new Vector2Int(18, 10),
-            industries = new[] { "machinery", "textiles", "chemicals" },
+            population = 12000,
+            populationGrowth = 0.0004f,
+            coordinates = new Vector2Int(340, 300),
+            industries = new[] { "manufacturing", "light_industry" },
             dependencies = new DependencyData
             {
-                imports = new[] { "乌金岭:coal", "雾峰村:rice", "白鹭洲:chemicals" },
-                exports = new[] { "乌金岭:machinery", "云渡港:textiles", "枫林渡:machinery" }
+                imports = new[] { "乌金岭:coal", "乌金岭:iron" },
+                exports = new[] { "云渡港:machinery", "雾峰村:machinery" }
             },
-            sandPenetrationBase = 0.18f,
-            politicalLean = "progressive",
+            sandPenetrationBase = 0.25f,
+            politicalLean = "neutral",
             unlockRegion = 1,
-            npcPool = new[] { "factory_owner", "union_leader", "engineer" }
+            npcPool = new[] { "wangxiaodi", "qingxi_merchant" }
         };
 
         // ── 云渡港 ──────────────────────────────────────────────
@@ -155,79 +155,79 @@ namespace WorldGen
         {
             name = "云渡港",
             type = "port",
-            population = 22000,
-            populationGrowth = 0.020f,
-            coordinates = new Vector2Int(22, 7),
-            industries = new[] { "shipping", "logistics", "fishing" },
+            population = 25000,
+            populationGrowth = 0.0006f,
+            coordinates = new Vector2Int(460, 420),
+            industries = new[] { "shipping", "trade" },
             dependencies = new DependencyData
             {
-                imports = new[] { "青溪镇:textiles", "白鹭洲:tourism", "望海港:steel" },
-                exports = new[] { "枫林渡:fish", "望海港:logistics", "白鹭洲:shipping" }
+                imports = new[] { "青溪镇:machinery", "白鹭洲:electronics" },
+                exports = new[] { "雾峰村:shipping_goods" }
             },
-            sandPenetrationBase = 0.25f,
-            politicalLean = "merchant",
+            sandPenetrationBase = 0.35f,
+            politicalLean = "market",
             unlockRegion = 2,
-            npcPool = new[] { "harbor_master", "shipping_magnate", "dockworker" }
+            npcPool = new[] { "chenhenian", "yundu_harbor_master" }
         };
 
         // ── 白鹭洲 ──────────────────────────────────────────────
         public static CityData WhiteEgretIslet => new CityData
         {
             name = "白鹭洲",
-            type = "tourism",
-            population = 4100,
-            populationGrowth = 0.005f,
-            coordinates = new Vector2Int(20, 12),
-            industries = new[] { "tourism", "pharmaceuticals", "herbs" },
+            type = "administrative",
+            population = 50000,
+            populationGrowth = 0.0004f,
+            coordinates = new Vector2Int(580, 260),
+            industries = new[] { "finance", "education", "administration" },
             dependencies = new DependencyData
             {
-                imports = new[] { "云渡港:shipping", "望海港:pharmaceuticals" },
-                exports = new[] { "青溪镇:chemicals", "枫林渡:herbs", "雾峰村:medicine" }
+                imports = new[] { "青溪镇:machinery", "云渡港:shipping_goods" },
+                exports = new[] { "枫林渡:electronics", "望海港:electronics" }
             },
-            sandPenetrationBase = 0.10f,
-            politicalLean = "conservative",
-            unlockRegion = 2,
-            npcPool = new[] { "herbalist", "pharma_researcher", "tourism_official" }
+            sandPenetrationBase = 0.40f,
+            politicalLean = "authoritarian",
+            unlockRegion = 3,
+            npcPool = new[] { "baiguan", "bailuzhou_official" }
         };
 
         // ── 枫林渡 ──────────────────────────────────────────────
         public static CityData MapleForestCrossing => new CityData
         {
             name = "枫林渡",
-            type = "administrative",
-            population = 38000,
-            populationGrowth = 0.010f,
-            coordinates = new Vector2Int(16, 14),
-            industries = new[] { "administration", "education", "healthcare" },
+            type = "industrial",
+            population = 35000,
+            populationGrowth = 0.0003f,
+            coordinates = new Vector2Int(620, 180),
+            industries = new[] { "heavy_industry", "chemical" },
             dependencies = new DependencyData
             {
-                imports = new[] { "青溪镇:machinery", "云渡港:fish", "白鹭洲:herbs" },
-                exports = new[] { "雾峰村:medicine", "乌金岭:healthcare", "望海港:education" }
+                imports = new[] { "乌金岭:coal", "白鹭洲:finance" },
+                exports = new[] { "望海港:steel", "白鹭洲:steel" }
             },
-            sandPenetrationBase = 0.22f,
-            politicalLean = "bureaucratic",
-            unlockRegion = 1,
-            npcPool = new[] { "governor", "judge", "academy_head" }
+            sandPenetrationBase = 0.30f,
+            politicalLean = "welfare",
+            unlockRegion = 4,
+            npcPool = new[] { "fenglin_foreman" }
         };
 
         // ── 望海港 ──────────────────────────────────────────────
         public static CityData SeaViewHarbor => new CityData
         {
             name = "望海港",
-            type = "industrial",
-            population = 45000,
-            populationGrowth = 0.018f,
-            coordinates = new Vector2Int(25, 5),
-            industries = new[] { "steel", "shipbuilding", "refining", "pharmaceuticals" },
+            type = "port",
+            population = 40000,
+            populationGrowth = 0.0005f,
+            coordinates = new Vector2Int(700, 400),
+            industries = new[] { "international_trade", "shipping" },
             dependencies = new DependencyData
             {
-                imports = new[] { "乌金岭:iron", "云渡港:logistics", "枫林渡:education" },
-                exports = new[] { "云渡港:steel", "白鹭洲:pharmaceuticals", "青溪镇:shipbuilding" }
+                imports = new[] { "枫林渡:steel", "白鹭洲:electronics" },
+                exports = new[] { "云渡港:imported_goods" }
             },
-            sandPenetrationBase = 0.30f,
-            politicalLean = "corporate",
-            unlockRegion = 3,
-            npcPool = new[] { "ceo", "shipyard_director", "port_commissioner" }
+            sandPenetrationBase = 0.50f,
+            politicalLean = "market",
+            unlockRegion = 5,
+            npcPool = new[] { "wanghai_merchant" }
         };
 
         /// <summary>返回所有预设城市的字典，key 为城市名。</summary>
