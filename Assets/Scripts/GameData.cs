@@ -371,6 +371,9 @@ public static class GameData
             // G4：保存种子引用供经济核读取
             CurrentSeed = seed;
 
+            // G9：资源分布 pattern → 事件概率修正（需在 EventManager.Initialize 之后）
+            EventManager.SetPatternModifiers(seed);
+
             // 有种子数据：用种子初始化渗透 → ResetState 设默认值 → 从种子覆盖趋势
             SandRivalManager.InitializeFromSeed(seed);
             ResetState();
@@ -380,6 +383,7 @@ public static class GameData
         {
             // 无种子兜底：使用原始硬编码，清空种子引用
             CurrentSeed = null;
+            EventManager.SetPatternModifiers(null);
             SandRivalManager.Initialize();
             ResetState();
         }

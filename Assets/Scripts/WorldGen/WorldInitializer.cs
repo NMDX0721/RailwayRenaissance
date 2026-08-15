@@ -29,6 +29,9 @@ namespace WorldGen
             // 3. 输出事件基准概率日志（供事件编辑器参考，不修改 EventManager 逻辑）
             float baseChance = seed.globalRules.incidentBaseChance;
             Debug.Log($"[WorldInitializer] 种子 {seed.seedId} 已注入各系统，事件基准概率 incidentBaseChance={baseChance}");
+
+            // G9: 资源分布 pattern → 事件概率修正
+            EventManager.SetPatternModifiers(seed);
         }
     }
 }

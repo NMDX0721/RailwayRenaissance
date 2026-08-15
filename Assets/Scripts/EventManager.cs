@@ -7,6 +7,9 @@ public static class EventManager
     private static GameEvent currentEvent;
     private static int eventCooldown;
 
+    // G9: 资源分布 pattern 缓存（来自种子），用于事件概率修正
+    private static string resourcePattern = "dispersed";
+
     public static void Initialize()
     {
         TextAsset json = Resources.Load<TextAsset>("events");
@@ -26,6 +29,18 @@ public static class EventManager
             eventTemplates = new List<GameEvent>();
         }
         eventCooldown = 0;
+        resourcePattern = "dispersed";
+    }
+
+    /// <summary>G9: 从种子设置资源分布 pattern，影响后续事件概率修正。</summary>
+    public static void SetPatternModifiers(WorldGen.WorldSeedData seed)
+    {
+        if (seed == null)
+        {
+            resourcePattern = "dispersed";
+            return;
+        }
+        resourcePattern = seed.resourceDistribution.pattern;
     }
 
     public static GameEvent TryTriggerEvent()
@@ -41,7 +56,9 @@ public static class EventManager
 
         foreach (GameEvent evt in eventTemplates)
         {
-            if (Random.Range(0f, 1f) < evt.probability)
+            // G9: 根据资源分布 pattern 修正事件触发概率
+            float adjustedProb = evt.probability * GetPatternMultiplier(evt.type);
+            if (Random.Range(0f, 1f) < adjustedProb)
             {
                 currentEvent = evt;
                 eventCooldown = Random.Range(3, 7);
@@ -49,6 +66,36 @@ public static class EventManager
             }
         }
         return null;
+    }
+
+    /// <summary>G9: 根据资源分布 pattern 和事件类型，返回概率修正系数。</summary>
+    private static float GetPatternMultiplier(string eventType)
+    {
+        if (string.IsNullOrEmpty(eventType)) return 1.0f;
+
+        string lowerType = eventType.ToLower();
+
+        switch (resourcePattern)
+        {
+            case "concentrated":
+                // 集中型：单点故障事件（accident/breakdown）概率 ×1.5
+                if (lowerType.Contains("accident") || lowerType.Contains("breakdown"))
+                    return 1.5f;
+                return 1.0f;
+
+            case "political":
+                // 政治型：政府干预事件（policy/tax）概率 ×1.5
+                if (lowerType.Contains("policy") || lowerType.Contains("tax"))
+                    return 1.5f;
+                return 1.0f;
+
+            case "dispersed":
+                // 分散型：所有事件概率 ×1.2（多线影响）
+                return 1.2f;
+
+            default:
+                return 1.0f;
+        }
     }
 
     public static GameEvent GetCurrentEvent()
