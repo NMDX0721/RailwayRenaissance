@@ -108,6 +108,7 @@ public class VNSaveSystem
         gameplay.trainCondition = GameData.GetTrainCondition();
         gameplay.expectedPassengers = GameData.GetExpectedPassengers();
         gameplay.day = GameData.GetDay();
+        gameplay.carCount = GameData.CarCount;
 
         string json = JsonUtility.ToJson(gameplay);
         PlayerPrefs.SetString("SaveSlot_" + slotIndex, json);
@@ -133,4 +134,5 @@ public class GameDataSaveData
     public int trainCondition;
     public int expectedPassengers;
     public int day;
+    public int carCount = 2;
 }

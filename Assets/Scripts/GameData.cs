@@ -137,8 +137,6 @@ public static class GameData
 
     // ===== 经济系统参数 =====
     private const float PopulationFactor = 8000f;
-    private const float SeasonModifier = 1.0f;
-    private const float SandPenetration = 0.15f;
     private const int ConductorLevel = 2;
     private const int MechanicLevel = 2;
     private const int TicketPrice = 35;
@@ -148,12 +146,17 @@ public static class GameData
     private const int MonthlyWage = 90000;
     private const int BaseTrips = 4;
 
+    // ===== 车厢容量（A3） =====
+    private const int CapacityPerCar = 30;
+    private const float OvercrowdThreshold = 1.2f;
+
     // ===== 运行时状态 =====
     public static int Day { get; private set; } = 1;
     public static int Money { get; private set; } = 40000;
     public static int Trust { get; private set; } = 62;
     public static int TrainCondition { get; private set; } = 70;
     public static int ExpectedPassengers { get; private set; } = 22;
+    public static int CarCount { get; private set; } = 2;
 
     public static int DailyMoneyChange { get; private set; }
     public static int DailyTrustChange { get; private set; }
@@ -212,6 +215,28 @@ public static class GameData
         Trust += amount;
     }
 
+    // ===== 车厢扩张（A3） =====
+
+    private const int CarUpgradeCost = 100000;
+
+    /// <summary>购买一节车厢，扩大容量。成功返回 true。</summary>
+    public static bool TryUpgradeCapacity()
+    {
+        if (Money < CarUpgradeCost)
+        {
+            return false;
+        }
+
+        Money -= CarUpgradeCost;
+        CarCount += 1;
+        return true;
+    }
+
+    public static int GetCapacityUpgradeCost()
+    {
+        return CarUpgradeCost;
+    }
+
     // ===== 剧情补贴系统 =====
 
     public static void CompleteStoryGrant(string grantId, int amount)
@@ -240,6 +265,7 @@ public static class GameData
         TrainCondition = data.trainCondition;
         ExpectedPassengers = data.expectedPassengers;
         Day = data.day;
+        CarCount = data.carCount > 0 ? data.carCount : 2;
     }
 
     // ===== 初始化 =====
@@ -266,6 +292,7 @@ public static class GameData
         Trust = 62;
         TrainCondition = 70;
         ExpectedPassengers = 22;
+        CarCount = 2;
 
         DailyMoneyChange = 0;
         DailyTrustChange = 0;
@@ -361,12 +388,49 @@ public static class GameData
         }
     }
 
+    /// <summary>根据天数计算季节系数（A1：春采茶/夏旅游/秋货运/冬淡季）。</summary>
+    private static float GetSeasonModifier()
+    {
+        // 每月30天，一年12个月（360天制）
+        int month = ((Day - 1) % 360) / 30;
+        switch (month)
+        {
+            case 2:  // 3月
+            case 3:  // 4月
+            case 4:  // 5月：春·采茶季
+                return 1.15f;
+            case 5:  // 6月
+            case 6:  // 7月
+            case 7:  // 8月：夏·旅游
+                return 1.05f;
+            case 8:  // 9月
+            case 9:  // 10月
+            case 10: // 11月：秋·货运旺季
+                return 1.20f;
+            default: // 12月/1月/2月：冬·淡季
+                return 0.90f;
+        }
+    }
+
+    /// <summary>获取主线城市沙能渗透率（A2：从铁龙竞争系统读取，替代写死值）。</summary>
+    private static float GetSandPenetration()
+    {
+        // 雾峰村-矿区线的主线城市
+        return SandRivalManager.GetPenetration("wufeng");
+    }
+
+    /// <summary>计算今日最大可承运客流（A3：车厢容量约束）。</summary>
+    private static int GetDailyCapacity(int trips)
+    {
+        return CarCount * CapacityPerCar * trips;
+    }
+
     /// <summary>计算每日客流。</summary>
     private static int CalculateDailyPassengers()
     {
         float trustCoefficient = 0.5f + Trust * 0.005f;
         float serviceQualityCoefficient = 1.0f + ConductorLevel * 0.03f;
-        float raw = PopulationFactor * 0.001f * trustCoefficient * SeasonModifier * (1f - SandPenetration) * serviceQualityCoefficient;
+        float raw = PopulationFactor * 0.001f * trustCoefficient * GetSeasonModifier() * (1f - GetSandPenetration()) * serviceQualityCoefficient;
         return Mathf.RoundToInt(raw);
     }
 
@@ -503,8 +567,13 @@ public static class GameData
         int dailyPassengers = CalculateDailyPassengers();
         ExpectedPassengers = dailyPassengers;
 
-        // 3. 日收入
-        int dailyRevenue = CalculateRevenue(dailyPassengers, trips);
+        // 2.5 容量约束（A3）：实际客流 = min(需求客流, 车厢容量)
+        int dailyCapacity = GetDailyCapacity(trips);
+        int actualPassengers = Mathf.Min(dailyPassengers, dailyCapacity);
+        bool overcrowded = dailyPassengers > Mathf.RoundToInt(dailyCapacity * OvercrowdThreshold);
+
+        // 3. 日收入（按实际承运客流计算）
+        int dailyRevenue = CalculateRevenue(actualPassengers, trips);
 
         // 4. 日燃料费
         int fuelCost = CalculateFuelCost(trips);
@@ -538,6 +607,13 @@ public static class GameData
 
         // 应用外部事务影响
         trustDelta += GetExternalAffairsTrustDelta(CurrentExternalAffairsStrategy);
+
+        // 拥挤负反馈（A3）：需求超容量120%时，乘客体验下降
+        if (overcrowded)
+        {
+            trustDelta -= 1;
+            passengerDelta -= 1;
+        }
 
         // 应用所有delta
         Trust += trustDelta;
