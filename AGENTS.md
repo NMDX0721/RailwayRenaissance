@@ -171,4 +171,23 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ---
 
+## 子代理使用规范
+
+### 模型选择
+| 任务类型 | 模型 | 参数 |
+|---------|------|------|
+| 编码/模型任务 | ds（默认，deepseek-v4-flash） | 不指定 model 参数 |
+| 识图/视觉分析 | `xiaomi/mimo-v2.5` | `model: "xiaomi/mimo-v2.5"` |
+| ❌ 禁止使用 | `sensenova0718/deepseek-v4-flash`（0718） | 避免并发冲突 |
+| ❌ 禁止使用 | `xiaomi/mimo-v2.5-pro` | 非专用模型 |
+
+### 并发规则
+- 编码子代理最多同时 1 个
+- 视觉分析任务可同时 2 个
+
+### 任务绑定
+- spawn 时若任务已被 task 工具追踪，传递 `task_id` 参数
+
+---
+
 *Changes to this project: update `docs/for-ai/` docs when modifying code, and update AGENTS.md when adding new major systems.*
