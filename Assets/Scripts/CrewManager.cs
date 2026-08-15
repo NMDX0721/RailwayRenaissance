@@ -107,6 +107,18 @@ public static class CrewManager
     private static Dictionary<string, string[]> recruitingPools = new Dictionary<string, string[]>();
     private static HashSet<string> recruitedIds = new HashSet<string>();
 
+    // —— P5：招聘渠道（社区/广告/猎头） ——
+
+    // 中文字名池（招聘新员工随机取名）
+    private static readonly string[] RecruitNames = new string[]
+    {
+        "王磊", "李华", "刘洋", "陈红", "赵明", "孙丽", "周强", "吴静", "郑伟", "王芳",
+        "张敏", "杨光", "马涛", "高洁"
+    };
+
+    // 渠道冷却剩余天数（key=渠道名，value=剩余天数），每日递减，与培训冷却同款
+    private static Dictionary<string, int> channelCooldowns = new Dictionary<string, int>();
+
     public static void Initialize()
     {
         crew.Clear();
@@ -292,6 +304,120 @@ public static class CrewManager
         return true;
     }
 
+    // ===== P5：招聘渠道（社区/广告/猎头） =====
+
+    /// <summary>通过招聘渠道招募一名新员工。渠道：community（社区推荐，免费）/ ad（广告招聘，500沙币）/ headhunter（猎头推荐，2000沙币）。</summary>
+    /// <returns>招聘是否成功（未知渠道/冷却中/资金不足返回 false）。</returns>
+    public static bool RecruitByChannel(string channel)
+    {
+        // 渠道冷却检查
+        if (channelCooldowns.TryGetValue(channel, out int remaining) && remaining > 0)
+        {
+            Debug.Log("[CrewManager] 招聘渠道 " + GetChannelName(channel) + " 冷却中，剩余 " + remaining + " 天。");
+            return false;
+        }
+
+        // 各渠道参数：费用 / 冷却天数 / 技能等级范围 / 潜力（maxLevel）范围 / 年龄范围
+        int cost, cooldownDays, minSkill, maxSkill, minMaxLevel, maxMaxLevel, minAge, maxAge;
+        switch (channel)
+        {
+            case "community":   // 社区推荐：免费，技能随机1-2级，潜力较低
+                cost = 0;     cooldownDays = 30; minSkill = 1; maxSkill = 2;
+                minMaxLevel = 2; maxMaxLevel = 3; minAge = 30; maxAge = 55;
+                break;
+            case "ad":          // 广告招聘：500沙币，技能2-3级
+                cost = 500;   cooldownDays = 15; minSkill = 2; maxSkill = 3;
+                minMaxLevel = 3; maxMaxLevel = 4; minAge = 25; maxAge = 45;
+                break;
+            case "headhunter":  // 猎头推荐：2000沙币，技能3-4级（含高潜力）
+                cost = 2000;  cooldownDays = 60; minSkill = 3; maxSkill = 4;
+                minMaxLevel = 4; maxMaxLevel = 5; minAge = 30; maxAge = 50;
+                break;
+            default:
+                Debug.LogWarning("[CrewManager] 未知招聘渠道: " + channel);
+                return false;
+        }
+
+        // 资金检查（社区免费，cost=0 直接通过）
+        if (GameData.GetMoney() < cost)
+        {
+            Debug.Log("[CrewManager] 资金不足，无法通过" + GetChannelName(channel) + "招聘（需要 " + cost + " 沙币）。");
+            return false;
+        }
+        if (cost > 0)
+        {
+            GameData.AddMoney(-cost);
+        }
+
+        // 生成 ID：recruit_<渠道>_<序号>，序号递增直至不与现有员工冲突
+        int seq = 1;
+        string id;
+        do
+        {
+            id = "recruit_" + channel + "_" + seq;
+            seq++;
+        } while (GetCrew(id) != null);
+
+        // 从名字池随机取名，创建新员工
+        CrewMember recruit = CreateRecruit(id, RecruitNames[UnityEngine.Random.Range(0, RecruitNames.Length)],
+                                           minSkill, maxSkill, minMaxLevel, maxMaxLevel);
+        recruit.age = UnityEngine.Random.Range(minAge, maxAge + 1);
+        crew.Add(recruit);
+
+        // 设置该渠道冷却
+        channelCooldowns[channel] = cooldownDays;
+
+        Debug.Log("[CrewManager] 通过" + GetChannelName(channel) + "招募成功：" + recruit.name + "（" + id + "），年龄 " + recruit.age + "，花费 " + cost + " 沙币。");
+        return true;
+    }
+
+    /// <summary>通用招聘生成：创建新员工（attendant 岗位、疲劳0、忠诚50、4条技能按等级/潜力范围随机），供各招聘渠道复用。</summary>
+    private static CrewMember CreateRecruit(string id, string name, int minSkill, int maxSkill, int minMaxLevel, int maxMaxLevel)
+    {
+        // 生成 4 条技能：service/management/repair/driving
+        string[] skillNames = { "service", "management", "repair", "driving" };
+        SkillData[] skills = new SkillData[skillNames.Length];
+        for (int i = 0; i < skillNames.Length; i++)
+        {
+            int level = UnityEngine.Random.Range(minSkill, maxSkill + 1);
+            int maxLevel = UnityEngine.Random.Range(minMaxLevel, maxMaxLevel + 1);
+            if (maxLevel < level)
+            {
+                maxLevel = level; // 潜力不低于当前等级
+            }
+            skills[i] = new SkillData { skillName = skillNames[i], level = level, maxLevel = maxLevel, exp = 0 };
+        }
+
+        return new CrewMember
+        {
+            id = id,
+            name = name,
+            age = 30, // 默认年龄，由各渠道调用后按渠道范围覆盖
+            role = "attendant",
+            fatigue = 0,
+            loyalty = 50,
+            skills = skills
+        };
+    }
+
+    /// <summary>返回各招聘渠道的冷却剩余天数（供 UI 查询）。</summary>
+    public static Dictionary<string, int> GetChannelCooldowns()
+    {
+        return new Dictionary<string, int>(channelCooldowns);
+    }
+
+    /// <summary>渠道名 → 中文显示名。</summary>
+    private static string GetChannelName(string channel)
+    {
+        switch (channel)
+        {
+            case "community":  return "社区推荐";
+            case "ad":         return "广告招聘";
+            case "headhunter": return "猎头推荐";
+            default:           return channel;
+        }
+    }
+
     public static CrewMember GetCrew(string id)
     {
         return crew.Find(c => c.id == id);
@@ -405,6 +531,21 @@ public static class CrewManager
     public static List<CrewMember> DailyUpdate(bool wagePaidToday = true, string accidentCrewId = null, string trainedCrewId = null)
     {
         List<CrewMember> firedToday = new List<CrewMember>();
+
+        // —— P5：招聘渠道冷却每日递减（与培训冷却同款） ——
+        List<string> channelKeys = new List<string>(channelCooldowns.Keys);
+        foreach (string channelKey in channelKeys)
+        {
+            int days = channelCooldowns[channelKey] - 1;
+            if (days <= 0)
+            {
+                channelCooldowns.Remove(channelKey);
+            }
+            else
+            {
+                channelCooldowns[channelKey] = days;
+            }
+        }
 
         foreach (CrewMember member in crew)
         {
@@ -524,20 +665,27 @@ public static class CrewManager
                 shouldFire = true; // 忠诚 < 30：10% 概率离职
             }
 
+            // ===== P5：年龄 > 65 退休（1%/月，以 0.001/日近似） =====
+            if (!shouldFire && member.age > 65 && UnityEngine.Random.value < 0.001f)
+            {
+                shouldFire = true; // 年龄超限：按退休离职
+            }
+
             // 忠诚度 clamp 0-100（离职判断之后）
             member.loyalty = Mathf.Clamp(member.loyalty, 0, 100);
 
             if (shouldFire)
             {
-                Debug.Log("[CrewManager] 员工 " + member.name + "（" + member.id + "）因忠诚度不足已离职。");
+                string reason = member.loyalty < 30 ? "忠诚度不足" : "年龄超过65岁";
+                Debug.Log("[CrewManager] 员工 " + member.name + "（" + member.id + "）因" + reason + "已离职。");
                 firedToday.Add(member);
             }
         }
 
-        // 从 crew 列表中移除离职员工
+        // 从 crew 列表中移除离职员工（统一走 FireCrew）
         foreach (CrewMember fired in firedToday)
         {
-            crew.Remove(fired);
+            FireCrew(fired.id);
         }
 
         if (firedToday.Count > 0)
