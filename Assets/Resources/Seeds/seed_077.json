@@ -1,0 +1,29 @@
+{
+  "seedId": "seed_077",
+  "name": "政治风暴",
+  "version": "v3.0",
+  "seedCode": "RR-0004D-000E7",
+  "cities": {
+    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": 0.0002, "coordinates": { "x": 120, "y": 340 }, "industries": ["tea", "tourism"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "welfare", "unlockRegion": 0, "npcPool": ["laochen", "liayi"] },
+    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": -0.0003, "coordinates": { "x": 200, "y": 380 }, "industries": ["coal", "iron"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["wufeng:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "authoritarian", "unlockRegion": 0, "npcPool": ["zhanggong"] },
+    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0004, "coordinates": { "x": 340, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["kuangqu:iron"], "exports": ["yundu:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "market", "unlockRegion": 1, "npcPool": ["wangxiaodi"] },
+    "yundu": { "name": "云渡港", "type": "port", "population": 25000, "populationGrowth": 0.0006, "coordinates": { "x": 460, "y": 420 }, "industries": ["shipping"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["bailuzhou:goods"] }, "sandPenetrationBase": 0.35, "politicalLean": "market", "unlockRegion": 2, "npcPool": ["chenhenian"] },
+    "bailuzhou": { "name": "白鹭洲", "type": "administrative", "population": 50000, "populationGrowth": 0.0004, "coordinates": { "x": 580, "y": 260 }, "industries": ["administration"], "dependencies": { "imports": ["yundu:goods"], "exports": ["fenglin:policy"] }, "sandPenetrationBase": 0.40, "politicalLean": "welfare", "unlockRegion": 3, "npcPool": ["baiguan"] },
+    "fenglin": { "name": "枫林渡", "type": "industrial", "population": 35000, "populationGrowth": 0.0003, "coordinates": { "x": 620, "y": 180 }, "industries": ["heavy_industry"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["wanghai:steel"] }, "sandPenetrationBase": 0.30, "politicalLean": "welfare", "unlockRegion": 4, "npcPool": ["fenglin_foreman"] }
+  },
+  "resourceDistribution": { "pattern": "political", "criticalNodes": ["kuangqu", "fenglin"], "bottleneckRisk": 0.25, "governmentInterventionProb": 0.15 },
+  "politicalTendency": "welfare",
+  "politicalCycleLength": 150,
+  "politicalFavor": 0.6,
+  "stability": 0.5,
+  "initialTrends": { "trust": 0.55, "fiscalPressure": 0.20, "sandPenetration": 0.10, "politicalPressure": 0.35, "infrastructureDecay": 0.35 },
+  "railEdges": [
+    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
+    { "fromCity": "wufeng", "toCity": "qingxi", "travelTime": 90, "capacity": 30, "trackType": "single" },
+    { "fromCity": "qingxi", "toCity": "yundu", "travelTime": 120, "capacity": 40, "trackType": "single" },
+    { "fromCity": "yundu", "toCity": "bailuzhou", "travelTime": 150, "capacity": 45, "trackType": "single" },
+    { "fromCity": "bailuzhou", "toCity": "fenglin", "travelTime": 100, "capacity": 40, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.007, "trustNaturalDecay": 0.0004, "fiscalGrowthBase": 0.0012, "maxRepairCostMultiplier": 2.0, "subsidyBase": 10000 },
+  "storyTags": ["political", "narrative_driven", "wufeng_main"]
+}

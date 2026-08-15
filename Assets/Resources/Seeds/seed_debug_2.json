@@ -1,0 +1,25 @@
+{
+  "seedId": "seed_debug_2",
+  "name": "调试-全集中",
+  "version": "v3.0",
+  "seedCode": "RR-FFFDE-FFFA9",
+  "cities": {
+    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": 0.0, "coordinates": { "x": 100, "y": 100 }, "industries": ["tea"], "dependencies": { "imports": ["hub:coal"], "exports": ["hub:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
+    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": 0.0, "coordinates": { "x": 200, "y": 200 }, "industries": ["coal"], "dependencies": { "imports": ["hub:machinery"], "exports": ["hub:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
+    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0, "coordinates": { "x": 300, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["hub:coal"], "exports": ["hub:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "neutral", "unlockRegion": 1, "npcPool": [] },
+    "hub": { "name": "枢纽城", "type": "administrative", "population": 25000, "populationGrowth": 0.0, "coordinates": { "x": 400, "y": 400 }, "industries": ["administration"], "dependencies": { "imports": ["hub:everything"], "exports": ["wufeng:everything", "kuangqu:everything", "qingxi:everything"] }, "sandPenetrationBase": 0.30, "politicalLean": "neutral", "unlockRegion": 2, "npcPool": [] }
+  },
+  "resourceDistribution": { "pattern": "concentrated", "criticalNodes": ["hub"], "bottleneckRisk": 0.50, "governmentInterventionProb": 0.0 },
+  "politicalTendency": "market",
+  "politicalCycleLength": 180,
+  "politicalFavor": 0.5,
+  "stability": 0.6,
+  "initialTrends": { "trust": 0.62, "fiscalPressure": 0.30, "sandPenetration": 0.15, "politicalPressure": 0.20, "infrastructureDecay": 0.30 },
+  "railEdges": [
+    { "fromCity": "wufeng", "toCity": "hub", "travelTime": 90, "capacity": 30, "trackType": "single" },
+    { "fromCity": "kuangqu", "toCity": "hub", "travelTime": 60, "capacity": 25, "trackType": "single" },
+    { "fromCity": "qingxi", "toCity": "hub", "travelTime": 75, "capacity": 30, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.005, "trustNaturalDecay": 0.0002, "fiscalGrowthBase": 0.001, "maxRepairCostMultiplier": 2.0, "subsidyBase": 8000 },
+  "storyTags": ["debug"]
+}

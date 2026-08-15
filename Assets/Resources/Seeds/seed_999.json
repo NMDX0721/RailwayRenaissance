@@ -1,0 +1,24 @@
+{
+  "seedId": "seed_999",
+  "name": "废土重生",
+  "version": "v3.0",
+  "seedCode": "RR-003E7-00BB5",
+  "cities": {
+    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": -0.0001, "coordinates": { "x": 120, "y": 340 }, "industries": ["tea"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "authoritarian", "unlockRegion": 0, "npcPool": ["laochen"] },
+    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": -0.0005, "coordinates": { "x": 200, "y": 380 }, "industries": ["coal"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["wufeng:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "authoritarian", "unlockRegion": 0, "npcPool": ["zhanggong"] },
+    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0001, "coordinates": { "x": 340, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["yundu:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "authoritarian", "unlockRegion": 1, "npcPool": ["wangxiaodi"] }
+  },
+  "resourceDistribution": { "pattern": "concentrated", "criticalNodes": ["kuangqu"], "bottleneckRisk": 0.40, "governmentInterventionProb": 0.10 },
+  "politicalTendency": "authoritarian",
+  "politicalCycleLength": 160,
+  "politicalFavor": 0.3,
+  "stability": 0.45,
+  "initialTrends": { "trust": 0.30, "fiscalPressure": 0.55, "sandPenetration": 0.30, "politicalPressure": 0.40, "infrastructureDecay": 0.45 },
+  "railEdges": [
+    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
+    { "fromCity": "wufeng", "toCity": "qingxi", "travelTime": 90, "capacity": 30, "trackType": "single" },
+    { "fromCity": "kuangqu", "toCity": "qingxi", "travelTime": 60, "capacity": 25, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.008, "trustNaturalDecay": 0.0005, "fiscalGrowthBase": 0.002, "maxRepairCostMultiplier": 2.0, "subsidyBase": 5600 },
+  "storyTags": ["wasteland", "hardcore", "wufeng_main"]
+}

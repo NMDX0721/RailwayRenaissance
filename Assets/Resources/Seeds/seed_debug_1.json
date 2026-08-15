@@ -1,0 +1,23 @@
+{
+  "seedId": "seed_debug_1",
+  "name": "调试-最小线",
+  "version": "v3.0",
+  "seedCode": "RR-FFFFF-FFFFD",
+  "cities": {
+    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": 0.0, "coordinates": { "x": 100, "y": 100 }, "industries": ["tea"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": ["laochen"] },
+    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": 0.0, "coordinates": { "x": 200, "y": 200 }, "industries": ["coal"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["wufeng:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": ["zhanggong"] },
+    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0, "coordinates": { "x": 300, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["wufeng:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "neutral", "unlockRegion": 1, "npcPool": [] }
+  },
+  "resourceDistribution": { "pattern": "dispersed", "criticalNodes": [], "bottleneckRisk": 0.10, "governmentInterventionProb": 0.0 },
+  "politicalTendency": "market",
+  "politicalCycleLength": 180,
+  "politicalFavor": 0.5,
+  "stability": 0.6,
+  "initialTrends": { "trust": 0.62, "fiscalPressure": 0.30, "sandPenetration": 0.15, "politicalPressure": 0.20, "infrastructureDecay": 0.30 },
+  "railEdges": [
+    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
+    { "fromCity": "kuangqu", "toCity": "qingxi", "travelTime": 60, "capacity": 25, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.0, "trustNaturalDecay": 0.0, "fiscalGrowthBase": 0.0, "maxRepairCostMultiplier": 1.0, "subsidyBase": 8000 },
+  "storyTags": ["debug"]
+}

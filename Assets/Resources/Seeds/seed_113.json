@@ -1,0 +1,31 @@
+{
+  "seedId": "seed_113",
+  "name": "自由市场",
+  "version": "v3.0",
+  "seedCode": "RR-00071-00153",
+  "cities": {
+    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": 0.0002, "coordinates": { "x": 120, "y": 340 }, "industries": ["tea"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "market", "unlockRegion": 0, "npcPool": ["laochen", "liayi"] },
+    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": -0.0003, "coordinates": { "x": 200, "y": 380 }, "industries": ["coal"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["wufeng:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "market", "unlockRegion": 0, "npcPool": ["zhanggong"] },
+    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0004, "coordinates": { "x": 340, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["yundu:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "market", "unlockRegion": 1, "npcPool": ["wangxiaodi"] },
+    "yundu": { "name": "云渡港", "type": "port", "population": 25000, "populationGrowth": 0.0006, "coordinates": { "x": 460, "y": 420 }, "industries": ["shipping", "trade"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["bailuzhou:goods"] }, "sandPenetrationBase": 0.35, "politicalLean": "market", "unlockRegion": 2, "npcPool": ["chenhenian"] },
+    "bailuzhou": { "name": "白鹭洲", "type": "administrative", "population": 50000, "populationGrowth": 0.0004, "coordinates": { "x": 580, "y": 260 }, "industries": ["finance"], "dependencies": { "imports": ["yundu:goods"], "exports": ["fenglin:capital"] }, "sandPenetrationBase": 0.40, "politicalLean": "market", "unlockRegion": 3, "npcPool": ["baiguan"] },
+    "fenglin": { "name": "枫林渡", "type": "industrial", "population": 35000, "populationGrowth": 0.0003, "coordinates": { "x": 620, "y": 180 }, "industries": ["heavy_industry"], "dependencies": { "imports": ["kuangqu:coal", "bailuzhou:capital"], "exports": ["wanghai:steel"] }, "sandPenetrationBase": 0.30, "politicalLean": "market", "unlockRegion": 4, "npcPool": ["fenglin_foreman"] },
+    "wanghai": { "name": "望海港", "type": "port", "population": 40000, "populationGrowth": 0.0005, "coordinates": { "x": 700, "y": 400 }, "industries": ["international_trade"], "dependencies": { "imports": ["fenglin:steel"], "exports": ["yundu:imported"] }, "sandPenetrationBase": 0.50, "politicalLean": "market", "unlockRegion": 5, "npcPool": ["wanghai_merchant"] }
+  },
+  "resourceDistribution": { "pattern": "dispersed", "criticalNodes": [], "bottleneckRisk": 0.10, "governmentInterventionProb": 0.03 },
+  "politicalTendency": "market",
+  "politicalCycleLength": 190,
+  "politicalFavor": 0.5,
+  "stability": 0.65,
+  "initialTrends": { "trust": 0.58, "fiscalPressure": 0.25, "sandPenetration": 0.25, "politicalPressure": 0.15, "infrastructureDecay": 0.30 },
+  "railEdges": [
+    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
+    { "fromCity": "wufeng", "toCity": "qingxi", "travelTime": 90, "capacity": 30, "trackType": "single" },
+    { "fromCity": "qingxi", "toCity": "yundu", "travelTime": 120, "capacity": 40, "trackType": "single" },
+    { "fromCity": "yundu", "toCity": "bailuzhou", "travelTime": 150, "capacity": 45, "trackType": "single" },
+    { "fromCity": "bailuzhou", "toCity": "fenglin", "travelTime": 100, "capacity": 40, "trackType": "single" },
+    { "fromCity": "bailuzhou", "toCity": "wanghai", "travelTime": 200, "capacity": 50, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.005, "trustNaturalDecay": 0.0002, "fiscalGrowthBase": 0.001, "maxRepairCostMultiplier": 2.0, "subsidyBase": 6400 },
+  "storyTags": ["market", "management_driven", "wufeng_main"]
+}

@@ -1,0 +1,27 @@
+{
+  "seedId": "seed_debug_3",
+  "name": "调试-全分散",
+  "version": "v3.0",
+  "seedCode": "RR-FFFCB-FFF61",
+  "cities": {
+    "a": { "name": "甲城", "type": "agriculture", "population": 8000, "populationGrowth": 0.0, "coordinates": { "x": 100, "y": 100 }, "industries": ["tea"], "dependencies": { "imports": ["a:self"], "exports": ["b:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
+    "b": { "name": "乙城", "type": "mining", "population": 4000, "populationGrowth": 0.0, "coordinates": { "x": 200, "y": 200 }, "industries": ["coal"], "dependencies": { "imports": ["b:self"], "exports": ["c:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
+    "c": { "name": "丙城", "type": "industrial", "population": 12000, "populationGrowth": 0.0, "coordinates": { "x": 300, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["c:self"], "exports": ["d:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "neutral", "unlockRegion": 1, "npcPool": [] },
+    "d": { "name": "丁城", "type": "port", "population": 25000, "populationGrowth": 0.0, "coordinates": { "x": 400, "y": 400 }, "industries": ["shipping"], "dependencies": { "imports": ["d:self"], "exports": ["a:goods"] }, "sandPenetrationBase": 0.35, "politicalLean": "neutral", "unlockRegion": 2, "npcPool": [] },
+    "e": { "name": "戊城", "type": "administrative", "population": 30000, "populationGrowth": 0.0, "coordinates": { "x": 500, "y": 500 }, "industries": ["administration"], "dependencies": { "imports": ["e:self"], "exports": ["b:policy"] }, "sandPenetrationBase": 0.40, "politicalLean": "neutral", "unlockRegion": 3, "npcPool": [] }
+  },
+  "resourceDistribution": { "pattern": "dispersed", "criticalNodes": [], "bottleneckRisk": 0.05, "governmentInterventionProb": 0.0 },
+  "politicalTendency": "market",
+  "politicalCycleLength": 180,
+  "politicalFavor": 0.5,
+  "stability": 0.6,
+  "initialTrends": { "trust": 0.62, "fiscalPressure": 0.30, "sandPenetration": 0.15, "politicalPressure": 0.20, "infrastructureDecay": 0.30 },
+  "railEdges": [
+    { "fromCity": "a", "toCity": "b", "travelTime": 45, "capacity": 30, "trackType": "single" },
+    { "fromCity": "b", "toCity": "c", "travelTime": 60, "capacity": 25, "trackType": "single" },
+    { "fromCity": "c", "toCity": "d", "travelTime": 75, "capacity": 30, "trackType": "single" },
+    { "fromCity": "d", "toCity": "e", "travelTime": 90, "capacity": 35, "trackType": "single" }
+  ],
+  "globalRules": { "incidentBaseChance": 0.005, "trustNaturalDecay": 0.0002, "fiscalGrowthBase": 0.001, "maxRepairCostMultiplier": 2.0, "subsidyBase": 8000 },
+  "storyTags": ["debug"]
+}
