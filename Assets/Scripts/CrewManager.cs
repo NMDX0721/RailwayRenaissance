@@ -598,6 +598,131 @@ public static class CrewManager
         else                           return "我不干了。";             // 敌对
     }
 
+    // ===== P4：行为流露系统（疲劳/忠诚 → 综合对话/情绪标签/状态提示，只读查询，不改状态） =====
+
+    /// <summary>综合对话：优先疲劳流露（疲劳>60），其次忠诚流露（忠诚<70 或有极端值），两者都正常返回空。</summary>
+    public static string GetCrewDialogue(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return "";
+
+        // 优先疲劳对话：仅中度/重度疲劳（>60）才优先流露
+        if (member.fatigue > 60)
+        {
+            return GetFatigueDialogue(crewId);
+        }
+
+        // 其次忠诚对话：忠诚 <70（冷淡/不满/敌对）或有极端值（≥90 忠诚）
+        if (member.loyalty < 70 || member.loyalty >= 90)
+        {
+            return GetLoyaltyDialogue(crewId);
+        }
+
+        // 两者都正常 → 无特殊对话
+        return "";
+    }
+
+    /// <summary>情绪状态标签（无数字，供经营 UI / VN 使用）。</summary>
+    public static string GetCrewEmotionalState(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return "正常";
+
+        if (member.fatigue > 80) return "极度疲惫";
+        if (member.fatigue > 60) return "疲惫";
+        if (member.loyalty < 30) return "不满";
+        if (member.loyalty < 50) return "冷淡";
+        if (member.loyalty > 85) return "忠诚";
+        return "正常";
+    }
+
+    /// <summary>VN 变量注入：返回剧本可用的对话状态标记（角色特征特定标记 + 通用 crew_&lt;id&gt;_* 标记）。</summary>
+    public static Dictionary<string, bool> GetCrewDialogueFlags(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        Dictionary<string, bool> flags = new Dictionary<string, bool>();
+
+        bool tired = member != null && member.fatigue > 60;
+        bool angry = member != null && member.loyalty < 40;
+        bool loyal = member != null && member.loyalty > 85;
+        bool normal = !tired && !angry && !loyal;
+
+        // —— 角色特征特定标记 ——
+        flags["laochen_tired"] = tired && member != null && member.id == "laochen";     // 老陈：老司机，疲劳流露最明显
+        flags["liayi_angry"] = angry && member != null && member.id == "liayi";         // 李阿姨：性子直，不满直接流露
+        flags["zhanggong_loyal"] = loyal && member != null && member.id == "zhanggong"; // 张工：退休工程师，重情重义
+
+        // —— 通用标记 ——
+        string id = member != null ? member.id : "";
+        flags["crew_" + id + "_tired"] = tired;
+        flags["crew_" + id + "_angry"] = angry;
+        flags["crew_" + id + "_loyal"] = loyal;
+        flags["crew_" + id + "_normal"] = normal;
+
+        return flags;
+    }
+
+    /// <summary>经营 UI 状态提示（无数字，疲劳+忠诚综合描述，带角色名字）。</summary>
+    public static string GetCrewStatusText(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return "";
+
+        string name = member.name;
+
+        // 疲劳优先：重度疲劳
+        if (member.fatigue > 80)
+        {
+            return name + "今天不太对劲，建议休息。";
+        }
+        if (member.fatigue > 60)
+        {
+            return name + "有点累，但还在坚持。";
+        }
+
+        // 忠诚：低忠诚不满提示
+        if (member.loyalty < 30)
+        {
+            return name + "似乎对现状很不满，务必留意。";
+        }
+        if (member.loyalty < 50)
+        {
+            return name + "似乎对现状不满。";
+        }
+
+        // 高忠诚：干劲十足
+        if (member.loyalty > 85)
+        {
+            return name + "今天干劲十足，精神不错！";
+        }
+
+        // 完全正常
+        if (member.fatigue <= 30)
+        {
+            return name + "今天精神不错。";
+        }
+
+        return name + "状态平稳。";
+    }
+
+    /// <summary>行为流露采样（供日记/日志）：从疲劳/忠诚对话池随机选一条非空对话，无流露返回空。</summary>
+    public static string GetRandomBehaviorLine(string crewId)
+    {
+        if (GetCrew(crewId) == null) return "";
+
+        // 收集当前状态流露出的非空对话（疲劳池 + 忠诚池）
+        List<string> pool = new List<string>();
+
+        string fatigueText = GetFatigueDialogue(crewId);
+        if (fatigueText != "") pool.Add(fatigueText);
+
+        string loyaltyText = GetLoyaltyDialogue(crewId);
+        if (loyaltyText != "") pool.Add(loyaltyText);
+
+        if (pool.Count == 0) return "";
+        return pool[UnityEngine.Random.Range(0, pool.Count)];
+    }
+
     /// <summary>外部调用：强制解雇某员工，返回被解雇的员工信息。</summary>
     public static CrewMember FireCrew(string crewId)
     {
