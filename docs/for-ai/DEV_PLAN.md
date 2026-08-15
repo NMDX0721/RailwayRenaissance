@@ -141,14 +141,15 @@
 - **目标**：实现预设/自由 AI/混合三种对话模式
 - **参考文档**：`参考资料/视觉小说系统设计.md` §4
 
-#### P3.2 千里马创世核（重构执行中）
+#### P3.2 千里马创世核（重构执行 ✅ 全部完成）
 - **目标**：种子初始化世界结构——6层重构（详见 `docs/compose/plans/千里马创世核重构计划.md`）
-- **Layer 1 数据模型** ✅ 已完成（`b707213`）：WorldSeedData + CityTemplates(7城市) + WorldGenerator骨架
-- **Layer 3 种子库** ✅ 已完成（`ea1e59e`）：5发布+3调试种子 JSON（`Assets/Resources/Seeds/`）
-- **Layer 2 生成算法** ⏳ 编码中：城市生成/依赖图闭环/资源分布/政治倾向/铁路边MST/编解码
-- **Layer 4 编解码** 📅 随 Layer 2 完成（EncodeSeed/DecodeSeed）
-- **Layer 5 联动接口** 📅 待做：`GameData.InitializeIfNeeded` 注入种子、`SandRivalManager` 渗透值去硬编码
-- **Layer 6 剧情路径** 📅 待做：6阶段11事件与城市解锁联动（设计已在 §九）
+- **Layer 1 数据模型** ✅（`b707213`）：WorldSeedData + CityTemplates(7城市) + WorldGenerator骨架
+- **Layer 2 生成算法** ✅（`fe91042`）：城市生成/依赖图闭环(Kosaraju)/资源分布/政治倾向/铁路边MST/编解码
+- **Layer 3 种子库** ✅（`ea1e59e`）：5发布+3调试种子 JSON（`Assets/Resources/Seeds/`）
+- **Layer 4 编解码+UI** ✅（随L2 + `8ee008a`）：RR-XXXXX-YYYYY + 新游戏设置UI规格
+- **Layer 5 联动接口** ✅（`0b10fe0`）：WorldInitializer注入/城市渗透去硬编码/GameConfig.seedId/初始趋势
+- **Layer 6 剧情路径** ✅（`71155f3`+`75bbf72`）：9事件规格 + 4个post剧本JSON（沙能首亮/赵铁山/铁龙亮牌/终局）
+- **后续任务**：创世核能力缺口清单 15 项（`d10a4b6`）：P0 G3 区域解锁、P1 G4-G11 经济/铁龙/订单/人事联动待编码
 
 #### P3.3 岁月叙事引擎
 - **目标**：AI 分析世界状态生成事件
