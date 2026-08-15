@@ -193,7 +193,7 @@ namespace Narrative
                     npcId = member.id,
                     name = member.name,
                     fatigue = member.fatigue,
-                    loyalty = member.loyalty,
+                    loyalty = Mathf.RoundToInt(member.loyalty),
                     favorability = 50, // 初始 50，由 N5 好感度系统更新
                     emotionalState = GetEmotionalState(member),
                     unlockedMemories = Array.Empty<string>(),

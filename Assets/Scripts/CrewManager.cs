@@ -10,7 +10,7 @@ public class CrewMember
     public int age;
     public string role;
     public int fatigue;
-    public int loyalty;
+    public float loyalty;
     public SkillData[] skills;
 
     // === 疲劳系统字段 ===
@@ -342,8 +342,17 @@ public static class CrewManager
         return "无记录";
     }
 
-    public static void DailyUpdate()
+    /// <summary>
+    /// 每日更新：疲劳/技能经验 + 忠诚度变化 + 离职触发。
+    /// </summary>
+    /// <param name="wagePaidToday">工资是否按时发放（默认 true）</param>
+    /// <param name="accidentCrewId">发生事故的员工 ID（没有则 null）</param>
+    /// <param name="trainedCrewId">获得培训的员工 ID（没有则 null）</param>
+    /// <returns>当日离职的员工列表（可能为空）</returns>
+    public static List<CrewMember> DailyUpdate(bool wagePaidToday = true, string accidentCrewId = null, string trainedCrewId = null)
     {
+        List<CrewMember> firedToday = new List<CrewMember>();
+
         foreach (CrewMember member in crew)
         {
             // —— 强制休息：疲劳超过80自动设为休息日 ——
@@ -391,25 +400,89 @@ public static class CrewManager
                     skill.exp += 1;
                 }
             }
+
+            // ===== P2：忠诚度每日变化 =====
+
+            // 工资按时发放：+0.1
+            if (wagePaidToday)
+            {
+                member.loyalty += 0.1f;
+            }
+
+            // 连续工作 > 10天无休息：-1.0
+            if (member.consecutiveWorkDays > 10 && !member.isResting)
+            {
+                member.loyalty -= 1.0f;
+            }
+
+            // 该员工涉及事故：-5.0
+            if (member.id == accidentCrewId)
+            {
+                member.loyalty -= 5.0f;
+            }
+
+            // 获得培训：+2.0
+            if (member.id == trainedCrewId)
+            {
+                member.loyalty += 2.0f;
+            }
+
+            // ===== P2：离职触发（在 clamp 之前，保留 <0 判断） =====
+            bool shouldFire = false;
+            if (member.loyalty < 0)
+            {
+                shouldFire = true; // 忠诚 < 0：立即离职
+            }
+            else if (member.loyalty < 30 && UnityEngine.Random.value < 0.1f)
+            {
+                shouldFire = true; // 忠诚 < 30：10% 概率离职
+            }
+
+            // 忠诚度 clamp 0-100（离职判断之后）
+            member.loyalty = Mathf.Clamp(member.loyalty, 0, 100);
+
+            if (shouldFire)
+            {
+                Debug.Log("[CrewManager] 员工 " + member.name + "（" + member.id + "）因忠诚度不足已离职。");
+                firedToday.Add(member);
+            }
+        }
+
+        // 从 crew 列表中移除离职员工
+        foreach (CrewMember fired in firedToday)
+        {
+            crew.Remove(fired);
+        }
+
+        if (firedToday.Count > 0)
+        {
+            Debug.Log("[CrewManager] 当日共 " + firedToday.Count + " 名员工离职。");
         }
 
         Debug.Log("[CrewManager] 每日更新完成。");
+        return firedToday;
     }
 
-    /// <summary>根据疲劳值获取效率倍率（0.0~1.0），乘以忠诚影响（暂为1.0）。</summary>
+    /// <summary>根据疲劳值 + 忠诚度获取效率倍率（0.0~1.0）。</summary>
     public static float GetEfficiency(string crewId)
     {
         CrewMember member = GetCrew(crewId);
         if (member == null) return 1.0f;
 
+        // —— 疲劳效率 ——
         float fatigueRatio;
         if (member.fatigue <= 30)          fatigueRatio = 1.0f;
         else if (member.fatigue <= 60)     fatigueRatio = 0.9f;
         else if (member.fatigue <= 80)     fatigueRatio = 0.75f;
         else                                fatigueRatio = 0.5f;
 
-        // 忠诚影响（预留，P2实现，暂为1.0）
-        float loyaltyFactor = 1.0f;
+        // —— 忠诚效率 ——
+        float loyaltyFactor;
+        if (member.loyalty >= 90)          loyaltyFactor = 1.1f;
+        else if (member.loyalty >= 70)     loyaltyFactor = 1.0f;
+        else if (member.loyalty >= 50)     loyaltyFactor = 0.9f;
+        else if (member.loyalty >= 30)     loyaltyFactor = 0.75f;
+        else                                loyaltyFactor = 0.5f;
 
         return fatigueRatio * loyaltyFactor;
     }
@@ -424,6 +497,34 @@ public static class CrewManager
         else if (member.fatigue <= 60) return "有点累了...";         // 轻度疲劳
         else if (member.fatigue <= 80) return "不太舒服，想休息一下"; // 中度疲劳
         else                           return "......";             // 重度疲劳（沉默）
+    }
+
+    /// <summary>根据忠诚度返回对话文本（行为流露，不显示数字）。</summary>
+    public static string GetLoyaltyDialogue(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return "";
+
+        if (member.loyalty >= 90)      return "放心，有我在。";         // 忠诚
+        else if (member.loyalty >= 70) return "";                       // 正常，无特殊对话
+        else if (member.loyalty >= 50) return "嗯。";                   // 冷淡/敷衍
+        else if (member.loyalty >= 30) return "工资什么时候发？";       // 不满
+        else                           return "我不干了。";             // 敌对
+    }
+
+    /// <summary>外部调用：强制解雇某员工，返回被解雇的员工信息。</summary>
+    public static CrewMember FireCrew(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null)
+        {
+            Debug.LogWarning("[CrewManager] 未找到员工，无法解雇: " + crewId);
+            return null;
+        }
+
+        crew.Remove(member);
+        Debug.Log("[CrewManager] 员工 " + member.name + "（" + member.id + "）已被解雇。");
+        return member;
     }
 
     /// <summary>根据疲劳值获取事故风险修正系数。</summary>
