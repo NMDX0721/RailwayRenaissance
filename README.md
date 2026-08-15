@@ -6,71 +6,62 @@
 
 > ***English** | [简体中文](README.zh-CN.md)*
 
-**A railway revival sim with visual-novel storytelling — data-driven economy, a living network, and a world that remembers everything you skip.**
-
----
-
-![Laboratory](Assets/Resources/bg/lab.jpg)
-
-*The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.*
-
-The year the world gave up on railways, and the day something impossible quietly began.
-
-Three days later, a researcher would leave this room to revive a railway on the brink of decommissioning in a mist-wrapped mountain village called Wufeng — 2,500 kilometres and one impossible bet away.
-
-**Every great story needs a place where it begins. This must be it.**
+**A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
 
 ---
 
 ## The World
 
-It is 2076. Sand-powered flying vehicles killed the railways — passenger volume down 78%, 91 nations dissolving their state rail systems, the global network effectively dead by 2072. The sand-energy monopoly **USET** rules the skies; the DPRK, holding the planet's largest sand reserves, is the sole superpower.
+It is 2076. Sand-powered flying vehicles ended the railway era: passenger volume fell 78%, 91 nations dissolved their state rail systems, and the global network effectively shut down by 2072. The sand-energy monopoly **USET** controls the skies, while the DPRK — holder of the world's largest sand reserves — stands as the sole superpower.
 
-But sand-cars have six fatal flaws — no heavy freight, no storms, no long haul, no night runs, thin on fuel, hostage to an air-traffic grid. The railways' six strengths are their mirror image. You inherit grandpa's abandoned line in Wufeng, a mist-wrapped tea village in China's central hills, and set out to prove the iron road still has a reason to exist.
+Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. These are mirrored by the railways' six strengths. The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village in central China, and works to prove that the iron road still has a place in the world.
 
-*Full world lore, the USET monopoly, and the sand-standard currency: [World & Timeline](参考资料/世界观扩展设定.md)*
+*[World lore and timeline](参考资料/世界观扩展设定.md)*
 
-## How the World Moves
+## Game Structure
 
-**Five interlocking trendlines** run beneath the surface — hidden until they cross a threshold, and then the world changes irreversibly:
+### Five Trendlines
 
-| Trendline | Meaning |
-|-----------|---------|
-| **Trust** | Public faith in your railway |
-| **Fiscal Health** | Your balance sheet |
-| **Sand Penetration** | USET's grip on each town's passengers |
-| **Political Pressure** | How closely government is watching |
-| **Infrastructure Decay** | Wear on your line, station by station |
+Five interlinked trendlines operate beneath the surface. Invisible until they cross a threshold, each can trigger irreversible change:
 
-## Core Systems
+| Trendline | Definition |
+|-----------|------------|
+| **Trust** | Public confidence in the railway |
+| **Fiscal Health** | The player's financial standing |
+| **Sand Penetration** | USET's market share in each town |
+| **Political Pressure** | Degree of government oversight |
+| **Infrastructure Decay** | Cumulative wear on the line |
 
-**A simulation that runs on its own** — trains move, platforms fill, seasons pass. Below the surface, a set of interconnected engines drives everything:
+### Core Systems
 
-- **Sand Standard Core (沙本位经济核)** — the economic simulation engine: passenger flow, fuel, wages, maintenance, accident probability, and trust are each governed by a documented formula. Revenue minus cost is a real number, not a scripted curve. The engine drives five trendlines; cross a threshold, and the world changes irreversibly. The [formula sheet](docs/compose/specs/跨系统联动公式.md) ties every variable together.
-- **Chollima Genesis Core (千里马创世核)** — at the start of a new game, the world seed initialises the entire underlying structure: supply-demand relationships, resource distribution, character leanings. Not a dice roll every turn, but a complete world grown from a seed. Two playthroughs differ because the worlds themselves are different.
-- **Suiyue Narrative Engine (岁月叙事引擎)** — named after the in-world AI, this system analyses the current world state — the seed-derived structure, the five trendlines, the player's relationships with each character — and generates events that capture variables hardcoding could never anticipate. Every event is a product of that world at that moment.
-- **Seonmin Personnel System (先民人事系统)** — each crew member has four skill tracks, a growth rate, and potential caps. But you never see the numbers: fatigue and loyalty aren't displayed on any screen. They surface through behaviour — tone of voice, extra shifts, reactions after an accident. The design reduces digital input, like real life.
-- **Iron Dragon Competition System (铁龙竞争系统)** — USET runs the Iron Dragon Project, a "railway heritage protection" front that actually acquires lines at rock-bottom prices. In the open USET pushes sand penetration per city through its Chollima brand campaigns; in the dark it executes the Iron Dragon takeover. Every 30 days it picks an action; respond or lose ground.
-- **Story as life-support** — pure operations lose money from the start. Narrative relief grants are the cash flow that keeps the railway breathing until you can stand on your own.
+The game runs on five connected simulation engines:
 
-**Deeply embedded AI** — the visual novel offers three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory — they remember what you've done, and how they feel changes what they say. Story beats can be generated on the fly. A planned phone-based assistant, powered by the player's own API key, is narratively wrapped as a remote call to the university server running a modified RDA — the Railway Decision Assistant.
+- **Sand Standard Core** — the economic engine. Passenger flow, fuel cost, wages, maintenance, accident probability, and trust are each governed by documented formulas. Revenue minus expenditure produces a real figure rather than a scripted curve. The engine drives the five trendlines. [Formula reference](docs/compose/specs/跨系统联动公式.md)
+- **Chollima Genesis Core** — world generation. A seed initialises the underlying structure at the start of each playthrough: supply-demand relationships, resource distribution, and political leanings. Two playthroughs differ because the underlying structure differs. [Specification](docs/compose/specs/千里马创世核.md)
+- **Suiyue Narrative Engine** — event generation. The system analyses the current world state — seed-derived structure, trendline positions, and player-character relationships — and produces events that adapt to variables hardcoding cannot anticipate. [Specification](docs/compose/specs/岁月叙事引擎.md)
+- **Seonmin Personnel System** — crew management. Each crew member has skill tracks, growth rates, and potential caps. Fatigue and loyalty are intentionally not displayed; they surface through behaviour — tone of voice, willingness to work overtime, and reactions after incidents. [Specification](docs/compose/specs/先民人事系统.md)
+- **Iron Dragon Competition System** — the rival AI. USET maintains a per-city penetration value that grows naturally and accelerates through campaigns; every 30 days it takes an action. Its Iron Dragon Project, a "railway heritage protection" front, acquires financially weak lines. [Specification](docs/compose/specs/铁龙竞争系统.md)
 
-*The 3-layer time model and threshold mechanics: [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) · [AI System Plan](docs/compose/specs/岁月叙事引擎.md) · [VN AI Design v2.1](参考资料/视觉小说系统设计.md)*
+### Narrative and Economy
 
-## The People
+Early pure operations are loss-making by design; story-driven grants provide the cash flow that sustains the railway during the survival phase.
 
-You never run the line alone. Crew — furrowed with skills, fatigue meters, and wills of their own — start as a stubborn handful and grow as the world does: new arrivals, retirees, apprentices pulled into stories as they're told.
+The visual novel supports three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory. A planned phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant). [Design spec](参考资料/视觉小说系统设计.md)
 
-*Full crew profiles and the growth system: [Character Profiles](参考资料/角色设定.md)*
+*[Core loop](docs/compose/specs/核心玩法循环.md) · [Cross-system formulas](docs/compose/specs/跨系统联动公式.md)*
 
-## The Long Game
+## Crew
+
+The player does not run the line alone. Crew members begin as a small group and grow with the world: new arrivals, retirements, and apprentices enter the narrative as it unfolds. [Character profiles](参考资料/角色设定.md)
+
+## Progression
 
 ```
 Prologue visual novel (Day 0–4) → Survival → Stability → Growth
-→ Breakthrough → Development → the national network
+→ Breakthrough → Expansion → National network
 ```
 
-Political cycles swing your subsidies. Random events — storms, oil spikes, holiday crowds, USET ad blitzes — keep every season tense. The story remembers everything you skip.
+Political cycles affect subsidies. Random events — storms, oil price spikes, holiday crowds, USET advertising campaigns — vary the pressure across seasons.
 
 ---
 
@@ -82,11 +73,11 @@ Requires [Unity 6000.4.6f1](https://unity.com) and Git.
 git clone https://github.com/NMDX721/RailwayRenaissance.git
 ```
 
-Open the folder in Unity Hub, then run:
+Open the folder in Unity Hub and run:
 
-| Scene | What it is |
-|-------|-----------|
-| `Scenes/VN_Test.unity` | The prologue visual novel (Day 0–4) |
+| Scene | Purpose |
+|-------|---------|
+| `Scenes/VN_Test.unity` | Prologue visual novel (Day 0–4) |
 | `Scenes/StationSlice_V1.unity` | Station management gameplay |
 | `Scenes/Login.unity` · `Scenes/TitleScreen.unity` | Entry screens |
 
@@ -94,19 +85,19 @@ Open the folder in Unity Hub, then run:
 
 ## Documentation
 
-The design lives in the repo, not just in the code — every system is specified, formula-linked, and verified against the story timeline.
+Design specifications are stored in the repository alongside the code. Each system has a specification, formula references, and timeline consistency checks.
 
-| Doc | Contents |
-|-----|----------|
-| [Game Design Doc](参考资料/游戏开发文档.md) | Master index of all design docs |
-| [Economy System](参考资料/沙本位经济核.md) | Sand-standard currency, break-even math |
-| [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | The three-layer time model, the five trendlines |
-| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Every formula, cross-linked |
-| [Tech & Research](docs/compose/specs/科技树设计.md) | The open research network |
+| Document | Contents |
+|----------|----------|
+| [Game Design Document](参考资料/游戏开发文档.md) | Master index of design documents |
+| [Sand Standard Economy](参考资料/沙本位经济核.md) | Currency system, break-even analysis |
+| [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | Three-layer time model, five trendlines |
+| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Interlinked formula set |
+| [Tech Tree](docs/compose/specs/科技树设计.md) | Open research network |
 | [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer, character memory |
-| [AI Implementation Plan](docs/compose/specs/岁月叙事引擎.md) | Template AI → llama.cpp roadmap |
-| [World & Timeline](参考资料/世界观扩展设定.md) | USET, the sand-standard, 2050–2076 lore |
-| [Story Timeline](参考资料/故事线时间轴.md) | Verified continuity of the world's history |
+| [Suiyue Narrative Engine](docs/compose/specs/岁月叙事引擎.md) | Template-based AI roadmap |
+| [World & Timeline](参考资料/世界观扩展设定.md) | USET, sand-standard currency, 2050–2076 lore |
+| [Story Timeline](参考资料/故事线时间轴.md) | Continuity verification of world history |
 
 ---
 
@@ -116,16 +107,18 @@ The design lives in the repo, not just in the code — every system is specified
 Assets/
 ├── Scripts/           # C# source
 │   ├── VN/            # JSON-driven visual novel engine
-│   ├── GameData.cs    # Economy simulation (all formulas)
+│   ├── Narrative/     # Suiyue narrative engine
+│   ├── WorldGen/      # Chollima world generation
+│   ├── GameData.cs    # Economy simulation
 │   ├── CrewManager.cs # Crew, skills, fatigue
-│   ├── EventManager.cs# Random events + events.json
-│   ├── SandRivalManager.cs  # USET AI
+│   ├── SandRivalManager.cs  # USET rival AI
 │   └── ...
 ├── Resources/
 │   ├── Scripts/       # VN scripts (prologue_01 ~ prologue_10)
+│   ├── Seeds/         # World seed data
 │   ├── events.json    # Event templates
 │   ├── bg/            # Backgrounds
-│   └── characters/    # Sprites
+│   └── characters/    # Character sprites
 ├── Scenes/
 └── Documentation/
 ```
@@ -135,26 +128,26 @@ Assets/
 ## Development Status
 
 ```
-Phase 1: Design docs & lore    ✅
-Phase 2: Core code (11/11)     ✅
-Phase 3: Asset generation      ⏳ In progress
-Phase 4: Integration & polish  ⏳ Planned
+Phase 1: Design documents & lore    ✅
+Phase 2: Core systems (11/11)       ✅
+Phase 3: Asset generation           ⏳ In progress
+Phase 4: Integration & polish       ⏳ Planned
 ```
 
-Implemented: prologue scripts · VN→gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary.
+Implemented: prologue scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary.
 
 ---
 
 ## Contributing
 
-This is a personal, non-commercial, educational project by a high-school developer. Contributions of all kinds — art, balance numbers, story, code — are welcome. The [design docs](参考资料/游戏开发文档.md) are the source of truth; open an issue or PR to discuss changes.
+This is a personal, non-commercial, educational project. Contributions of any kind — art, balance values, story, code — are welcome. The [design documents](参考资料/游戏开发文档.md) are the source of truth; open an issue or pull request to propose changes.
 
 ---
 
 ## License
 
-[MIT](LICENSE) © 2026 NMDX721 — free to use, copy, modify, distribute, with attribution. No warranty.
+[MIT](LICENSE) © 2026 NMDX721 — free to use, copy, modify, and distribute with attribution. Provided without warranty.
 
 ---
 
-*Inspired by 「まいてつ」(Maitetsu) and Stardew Valley.*
+*Inspired by Maitetsu and Stardew Valley.*
