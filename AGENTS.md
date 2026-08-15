@@ -143,7 +143,7 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 | `跨系统联动公式.md` v1.0 | ⭐⭐⭐ 8个公式 |
 | `科技树设计.md` v2.0 | ⭐⭐ 4领域28节点 |
 | `岁月叙事引擎.md` v2.0 | ⭐⭐ 三阶段AI策略 |
-| `千里马对手AI.md` | ⭐⭐ |
+| `铁龙竞争系统.md` | ⭐⭐ |
 | `区域解锁与政治系统.md` | ⭐⭐ |
 
 ---
