@@ -167,6 +167,20 @@ public static class GameData
     public static List<string> Notices { get; private set; } = new List<string>();
     public static List<string> Todos { get; private set; } = new List<string>();
 
+    // ===== A6：月度财务闭环 =====
+    public class MonthlySummary
+    {
+        public int TotalRevenue;
+        public int TotalExpenses;
+        public int NetProfit => TotalRevenue - TotalExpenses;
+        public int DaysInMonth;
+    }
+    public static MonthlySummary CurrentMonth { get; private set; } = new MonthlySummary();
+    public static List<string> MonthlyReports { get; private set; } = new List<string>();
+
+    // ===== A7：破产保护 =====
+    private static int bankruptcyCount = 0;
+
     public static int SelectedDispatchPlanIndex { get; private set; } = 1;
     public static StaffAllocationType CurrentStaffAllocation { get; private set; } = StaffAllocationType.Balanced;
     public static MaintenanceStrategy CurrentMaintenanceStrategy { get; private set; } = MaintenanceStrategy.Standard;
@@ -425,10 +439,22 @@ public static class GameData
         return CarCount * CapacityPerCar * trips;
     }
 
-    /// <summary>计算每日客流。</summary>
+    /// <summary>计算每日客流（A4：信任系数分段函数）。</summary>
+    /// <remarks>
+    /// 信任系数分段（O4）：
+    ///   Trust &lt; 30  : 0.25 + Trust×0.005   （雪崩区：信任崩塌时客流暴跌）
+    ///   30 ≤ T &lt; 70 : 0.45 + T×0.008       （线性区：正常口碑积累）
+    ///   T ≥ 70       : 0.85 + (T-70)×0.003  （饱和区：高信任边际递减）
+    /// </remarks>
     private static int CalculateDailyPassengers()
     {
-        float trustCoefficient = 0.5f + Trust * 0.005f;
+        float trustCoefficient;
+        if (Trust < 30)
+            trustCoefficient = 0.25f + Trust * 0.005f;       // 雪崩区
+        else if (Trust < 70)
+            trustCoefficient = 0.45f + Trust * 0.008f;       // 线性区
+        else
+            trustCoefficient = 0.85f + (Trust - 70) * 0.003f; // 饱和区
         float serviceQualityCoefficient = 1.0f + ConductorLevel * 0.03f;
         float raw = PopulationFactor * 0.0025f * trustCoefficient * GetSeasonModifier() * (1f - GetSandPenetration()) * serviceQualityCoefficient;
         return Mathf.RoundToInt(raw);
@@ -449,10 +475,78 @@ public static class GameData
         return Mathf.RoundToInt(dailyFuelLiters * FuelPrice);
     }
 
-    /// <summary>计算日工资。</summary>
+    /// <summary>计算日工资（A5：动态化，按员工职级月薪求和/30）。</summary>
+    /// <remarks>
+    /// 映射 role → 核心技能名：driver→driving, mechanic→repair,
+    /// dispatcher→management, conductor→service, attendant→service。
+    /// 取该技能 level 查月薪表（《先民人事系统.md》§七工资标准）：
+    ///   驾驶(driving):    [18000, 22000, 28000, 35000, 45000]
+    ///   维修(repair):     [14000, 17000, 22000, 28000, 35000]
+    ///   管理(management):  [12000, 15000, 18000, 22000, 28000]
+    ///   服务(service):     [10000, 12000, 14000, 17000, 22000]
+    /// 若 CrewManager 未初始化/无员工，回退固定 MonthlyWage / 30。
+    /// </remarks>
     private static int CalculateWageCost()
     {
-        return MonthlyWage / 30;
+        var allCrew = CrewManager.GetAllCrew();
+        if (allCrew == null || allCrew.Count == 0)
+            return MonthlyWage / 30; // 回退固定值
+
+        int totalMonthly = 0;
+        foreach (var member in allCrew)
+        {
+            // role → 核心技能名
+            string skillName;
+            switch (member.role)
+            {
+                case "driver":     skillName = "driving";     break;
+                case "mechanic":   skillName = "repair";      break;
+                case "dispatcher": skillName = "management";  break;
+                case "conductor":
+                case "attendant":  skillName = "service";     break;
+                default:           skillName = "service";     break;
+            }
+
+            // 找该技能
+            int level = 0;
+            foreach (var s in member.skills)
+            {
+                if (s.skillName == skillName)
+                {
+                    level = s.level;
+                    break;
+                }
+            }
+
+            // 月薪表（level 1-5，索引减1）
+            int monthly;
+            switch (skillName)
+            {
+                case "driving":
+                    monthly = level >= 1 && level <= 5
+                        ? (new int[] { 18000, 22000, 28000, 35000, 45000 })[level - 1]
+                        : 18000;
+                    break;
+                case "repair":
+                    monthly = level >= 1 && level <= 5
+                        ? (new int[] { 14000, 17000, 22000, 28000, 35000 })[level - 1]
+                        : 14000;
+                    break;
+                case "management":
+                    monthly = level >= 1 && level <= 5
+                        ? (new int[] { 12000, 15000, 18000, 22000, 28000 })[level - 1]
+                        : 12000;
+                    break;
+                default: // service
+                    monthly = level >= 1 && level <= 5
+                        ? (new int[] { 10000, 12000, 14000, 17000, 22000 })[level - 1]
+                        : 10000;
+                    break;
+            }
+            totalMonthly += monthly;
+        }
+
+        return Mathf.RoundToInt(totalMonthly / 30f);
     }
 
     /// <summary>根据维护策略计算日维护费。</summary>
@@ -585,8 +679,12 @@ public static class GameData
         // 6. 日维护费
         int maintenanceCost = CalculateMaintenanceCost();
 
-        // 7. 日净收入 = 收入 - 燃料费 - 维护费 - 工资
-        int netIncome = dailyRevenue - fuelCost - maintenanceCost - wageCost;
+        // 6.5 基础补贴（A8）：8000/30 × subsidyMultiplier，计入净收入
+        GameConfig config = GameConfig.Load();
+        int subsidy = Mathf.RoundToInt(8000f / 30f * config.subsidyMultiplier);
+
+        // 7. 日净收入 = 收入 - 燃料费 - 维护费 - 工资 + 补贴
+        int netIncome = dailyRevenue - fuelCost - maintenanceCost - wageCost + subsidy;
         Money += netIncome;
 
         // 8. 信任变化 = 正常运营+1/天
@@ -643,6 +741,34 @@ public static class GameData
         }
 
         ClampStats();
+
+        // A6：月度累计（收入=客流收入+补贴，支出=燃料+维护+工资）
+        CurrentMonth.TotalRevenue += dailyRevenue + subsidy;
+        CurrentMonth.TotalExpenses += fuelCost + maintenanceCost + wageCost;
+        CurrentMonth.DaysInMonth++;
+
+        // 财政压力：累计月亏损 > 50,000 时输出警告
+        if (CurrentMonth.NetProfit < -50000)
+        {
+            Notices.Add("⚠ 财政压力：本月已累计亏损 " + (-CurrentMonth.NetProfit) + " 沙币");
+        }
+
+        // 月报：Day % 30 == 0 时生成（注意 Day 尚未 +1，当前 Day 是月末日）
+        if (Day % 30 == 0)
+        {
+            string report = "=== 第 " + (Day / 30) + " 月财务报告 ==="
+                + "\n  收入: " + CurrentMonth.TotalRevenue
+                + "\n  支出: " + CurrentMonth.TotalExpenses
+                + "\n  利润: " + CurrentMonth.NetProfit
+                + "\n  运营天数: " + CurrentMonth.DaysInMonth;
+            MonthlyReports.Add(report);
+            Notices.Add("📊 " + report.Replace("\n", " | "));
+            // 重置月度累计
+            CurrentMonth = new MonthlySummary();
+        }
+
+        // A7：破产保护检查（ClampStats 后资金已 ≥0，但原始资金可能 ≤0）
+        CheckBankruptcy();
 
         DailyMoneyChange = Money - startMoney;
         DailyTrustChange = Trust - startTrust;
@@ -822,6 +948,38 @@ public static class GameData
         Trust = Mathf.Clamp(Trust, 0, 100);
         TrainCondition = Mathf.Clamp(TrainCondition, 0, 100);
         ExpectedPassengers = Mathf.Max(0, ExpectedPassengers);
+    }
+
+    /// <summary>A7：破产保护检查。在 ClampStats 后调用。</summary>
+    /// <remarks>
+    /// 首次资金≤0：注入 10,000（老陈紧急资金）
+    /// 二次资金≤0：注入 5,000（政府救助）
+    /// 三次资金≤0：输出"破产"警告（不强制结束游戏，留给上层处理）
+    /// 与 TutorialManager.CheckBankruptcyProtection 共存，经济核作为更完整的替代。
+    /// </remarks>
+    private static void CheckBankruptcy()
+    {
+        // ClampStats 已将 Money 钳制到 ≥0，但我们需要判断"进入此日时资金是否≤0"
+        // 通过检查 startMoney 在 AdvanceDay 中不可达，改用 bankruptcyCount 的语义：
+        // 每次资金为 0 且 count 已对应次数时触发
+        if (Money > 0)
+            return;
+
+        bankruptcyCount++;
+        switch (bankruptcyCount)
+        {
+            case 1:
+                Money += 10000;
+                Notices.Add("🏚 老陈紧急资金：老陈翻出积蓄垫了 10,000 沙币，站里先撑过这一关。");
+                break;
+            case 2:
+                Money += 5000;
+                Notices.Add("🏛 政府救助：区政府拨了 5,000 沙币应急资金，但暗示下次再出问题就没这么简单了。（政治压力上升）");
+                break;
+            default:
+                Notices.Add("🚨 破产警告：资金链断裂，车站已无力维持正常运营。请尽快寻求外部援助或重组。");
+                break;
+        }
     }
 
     private static void RefreshBoards(string tone)
