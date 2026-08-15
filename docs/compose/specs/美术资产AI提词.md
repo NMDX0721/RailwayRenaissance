@@ -518,7 +518,93 @@ AVOID:
 
 **提示词**：
 ```
-pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university professor's office, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, modest academic setting, ULTIMATE KOREAN CULTURAL ELEMENTS:
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university professor's office, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, modest academic setting, ULTIMATE KOREAN CULTURAL ELEMENTS, HEAVY NORTH KOREAN ATMOSPHERE:
+
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
+- Door frame with traditional Korean decorative patterns (단청 dancheong)
+- Ceiling with traditional Korean wooden beams, green dancheong accents
+- Korean-style floor heating (온돌 ondol) visible under desk
+
+KOREAN TEXT AND SIGNS (HEAVY EMPHASIS):
+- Large Korean text on wall: "김일성대학교 교수 연구실" (Professor's Office)
+- University emblem with Korean text: "김일성대학교" prominently displayed
+- North Korean flag prominently on wall, well-lit
+- Framed portrait of Kim Il Sung and Kim Jong Il on wall, side by side
+- Propaganda slogan: "일심단결" (Single-hearted Unity) calligraphy plaque
+- Korean calendar on wall showing 2076
+- Nameplate on desk with professor's name in Korean
+- Small Korean text labels on equipment
+
+WALL DECORATIONS (ACADEMIC + KOREAN LEADERS):
+- Framed university diploma with Korean text, government seal
+- Academic certificates and awards on wall (Korean text, official stamps)
+- Map of Korean peninsula on wall showing "Unified Korea"
+- Korean calligraphy scroll (서예) with inspirational message
+- Vintage Korean railway poster from 1950s Chollima era
+- Group photo of faculty with leader (formal, framed)
+- Traditional Korean paper art (minhwa) frame with folk painting
+
+KOREAN TRADITIONAL ITEMS:
+- Korean celadon pottery (고려청자 Goryeo celadon) on shelf
+- Korean traditional paper (한지 hanji) desk lamp with warm glow
+- Small Korean flag on desk in brass stand
+- Korean traditional tea set (전통다구) with celadon teapot
+- Korean traditional ink stone (벼루) and brush (붓) on desk
+- Korean traditional knotwork (매듭 maedeup) decoration on shelf
+- Korean traditional fan (부채 bukcheong fansa) on wall
+
+KOREAN FURNITURE:
+- Korean traditional wooden desk with traditional joinery, slightly worn
+- Professor's wooden chair with curved backrest and cushion
+- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
+- Bookshelf with traditional Korean design
+
+DESK ITEMS:
+- Stack of student research papers with Korean text
+- Open railway engineering textbook (Korean text, "철도공학")
+- Copper reading glasses on desk
+- Korean traditional clock (시계) with hanja numbers
+- Half-empty cup of Korean barley tea (보리차)
+- Chollima brand calculator (천리마 계산기) on desk
+- Photo frame with university graduation photo
+
+KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
+- Chollima brand computer (천리마 컴퓨터) on desk
+- Korean-made monitor with Hangul keyboard
+- Korean-designed desk lamp with traditional patterns
+
+BOOKSHELF CONTENTS:
+- Railway engineering textbooks (Korean titles, "철도수송론")
+- Research papers on intelligent dispatch systems
+- Korean history books (조선력사)
+- Kim Il Sung and Kim Jong Il collected works (red hardcover, prominent)
+- Juche ideology study materials
+- Vintage Korean steam locomotive model
+- Traditional Korean ceramic pieces
+
+WINDOW VIEW (PYONGYANG SKYLINE):
+- Ryugyong Hotel (려명거리 Hotel, pyramid shape, distant)
+- Juche Tower (주체사상탑) visible in distance with iconic flame
+- Grand People's Study House (인민대학습당) with traditional Korean roof
+- Korean pine trees (소나무 sonamu) visible
+- Afternoon daylight, soft shadows through hanji-patterned windows
+- Flying sand energy vehicles in distant sky
+
+COLOR PALETTE (KOREAN TRADITIONAL + NORTH KOREAN OFFICIAL):
+- Primary: warm brown (#8B4513), cream white (#FFFDD0)
+- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
+- Accents: gold frame (#FFD700), revolutionary red (#CC0000)
+- Dancheong: Blue (#4169E1), Red (#CD5C5C)
+- North Korean official red (#C41E3A) for banners and flags
+
+ATMOSPHERE:
+- Warm, academic, modest but respected
+- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
+- Serious yet caring — moment of a life-changing decision
+- OFFICIAL NORTH KOREAN ACADEMIC SETTING
+- State professor's office at the most prestigious university in the DPRK
+```
 
 KOREAN ARCHITECTURAL ELEMENTS:
 - Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
