@@ -12,6 +12,10 @@ public class CrewMember
     public int fatigue;
     public int loyalty;
     public SkillData[] skills;
+
+    // === 疲劳系统字段 ===
+    public int consecutiveWorkDays;  // 连续工作天数
+    public bool isResting;           // 是否休息日（由外部设置或强制休息触发）
 }
 
 [Serializable]
@@ -342,8 +346,42 @@ public static class CrewManager
     {
         foreach (CrewMember member in crew)
         {
-            // 每日疲劳+10
-            member.fatigue += 10;
+            // —— 强制休息：疲劳超过80自动设为休息日 ——
+            if (member.fatigue > 80)
+            {
+                member.isResting = true;
+            }
+
+            if (member.isResting)
+            {
+                // 休息日：疲劳不增长，恢复30，连续工作天数归零
+                member.fatigue = Mathf.Max(0, member.fatigue - 30);
+                member.consecutiveWorkDays = 0;
+                member.isResting = false; // 重置休息标记，下一天需重新设置
+            }
+            else
+            {
+                // 工作日：计算疲劳增长
+                int fatigueIncrease = 10; // 基础值
+
+                // 连续工作超过7天：额外+5
+                if (member.consecutiveWorkDays > 7)
+                {
+                    fatigueIncrease += 5;
+                }
+
+                // 司机岗位：额外+3
+                if (member.role == "driver")
+                {
+                    fatigueIncrease += 3;
+                }
+
+                member.fatigue += fatigueIncrease;
+                member.consecutiveWorkDays++;
+            }
+
+            // 疲劳值限制在 0-100
+            member.fatigue = Mathf.Clamp(member.fatigue, 0, 100);
 
             // 在岗技能经验+1
             foreach (SkillData skill in member.skills)
@@ -356,5 +394,60 @@ public static class CrewManager
         }
 
         Debug.Log("[CrewManager] 每日更新完成。");
+    }
+
+    /// <summary>根据疲劳值获取效率倍率（0.0~1.0），乘以忠诚影响（暂为1.0）。</summary>
+    public static float GetEfficiency(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return 1.0f;
+
+        float fatigueRatio;
+        if (member.fatigue <= 30)          fatigueRatio = 1.0f;
+        else if (member.fatigue <= 60)     fatigueRatio = 0.9f;
+        else if (member.fatigue <= 80)     fatigueRatio = 0.75f;
+        else                                fatigueRatio = 0.5f;
+
+        // 忠诚影响（预留，P2实现，暂为1.0）
+        float loyaltyFactor = 1.0f;
+
+        return fatigueRatio * loyaltyFactor;
+    }
+
+    /// <summary>根据疲劳值返回对话文本（行为流露，不显示数字）。</summary>
+    public static string GetFatigueDialogue(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return "";
+
+        if (member.fatigue <= 30)      return "";           // 正常，无特殊对话
+        else if (member.fatigue <= 60) return "有点累了...";         // 轻度疲劳
+        else if (member.fatigue <= 80) return "不太舒服，想休息一下"; // 中度疲劳
+        else                           return "......";             // 重度疲劳（沉默）
+    }
+
+    /// <summary>根据疲劳值获取事故风险修正系数。</summary>
+    public static float GetAccidentRiskModifier(string crewId)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null) return 1.0f;
+
+        if (member.fatigue <= 30)      return 1.0f;
+        else if (member.fatigue <= 60) return 1.5f;
+        else if (member.fatigue <= 80) return 2.5f;
+        else                           return 4.0f;
+    }
+
+    /// <summary>设置员工的休息状态（供外部调用）。</summary>
+    public static void SetResting(string crewId, bool resting)
+    {
+        CrewMember member = GetCrew(crewId);
+        if (member == null)
+        {
+            Debug.LogWarning("[CrewManager] 未找到员工，无法设置休息状态: " + crewId);
+            return;
+        }
+        member.isResting = resting;
+        Debug.Log("[CrewManager] 员工 " + member.name + " 休息状态已设置为: " + resting);
     }
 }
