@@ -10,10 +10,6 @@ namespace Narrative
     /// </summary>
     public static class StoryEvaluator
     {
-        // 冷却登记：模板ID → 最近触发日（与 NarrativeEngine.narrativeLog 配套；
-        // GAP4：完整的冷却系统最终并入 N6.3 节奏控制，与 EventManager 冷却对齐）
-        private static readonly Dictionary<string, int> lastTriggerDays = new Dictionary<string, int>();
-
         /// <summary>从世界状态评估哪些模板匹配，返回按匹配分数降序的填充后事件。</summary>
         public static List<NarrativeEvent> Evaluate(NarrativeContext context, List<NarrativeTemplate> templates)
         {
@@ -25,8 +21,8 @@ namespace Narrative
             {
                 if (template == null) continue;
 
-                // 跳过冷却期内的模板（templateId + 触发日 + cooldownDays）
-                if (IsOnCooldown(template.id, template.cooldownDays, context.gameDay)) continue;
+                // N6.3：跳过冷却期内的模板（GAP4：冷却系统合并到 NarrativeRhythm）
+                if (NarrativeRhythm.IsOnCooldown(template.id, template.cooldownDays, context.gameDay)) continue;
 
                 // 检查 conditions 匹配（GAP3：按世界状态，非纯时序）
                 float matchScore = CalculateMatchScore(template, context);
@@ -47,25 +43,22 @@ namespace Narrative
             return results;
         }
 
-        /// <summary>记录模板触发日（NarrativeEngine 在应用效果后调用）。</summary>
+        /// <summary>记录模板触发日（N6.3 委托：NarrativeRhythm 管理冷却记录）。</summary>
         public static void RecordTriggered(string templateId, int gameDay)
         {
-            if (string.IsNullOrEmpty(templateId)) return;
-            lastTriggerDays[templateId] = gameDay;
+            NarrativeRhythm.RecordTrigger(templateId, gameDay);
         }
 
-        /// <summary>清空冷却登记（新游戏/新会话时由 NarrativeEngine.Initialize 调用）。</summary>
+        /// <summary>清空冷却登记（N6.3 委托：新游戏/新会话时调用）。</summary>
         public static void ClearRecords()
         {
-            lastTriggerDays.Clear();
+            NarrativeRhythm.ClearAllRecords();
         }
 
-        /// <summary>冷却检查：距上次触发不足 cooldownDays 天则跳过。</summary>
+        /// <summary>冷却检查：距上次触发不足 cooldownDays 天则跳过（N6.3 委托）。</summary>
         private static bool IsOnCooldown(string templateId, int cooldownDays, int gameDay)
         {
-            if (cooldownDays <= 0) return false;
-            if (!lastTriggerDays.TryGetValue(templateId, out int lastDay)) return false;
-            return gameDay - lastDay < cooldownDays;
+            return NarrativeRhythm.IsOnCooldown(templateId, cooldownDays, gameDay);
         }
 
         /// <summary>
@@ -97,7 +90,7 @@ namespace Narrative
             {
                 foreach (string id in c.excludedEventIds)
                 {
-                    if (!string.IsNullOrEmpty(id) && lastTriggerDays.ContainsKey(id)) return 0f;
+                    if (!string.IsNullOrEmpty(id) && NarrativeRhythm.HasBeenTriggered(id)) return 0f;
                 }
             }
 

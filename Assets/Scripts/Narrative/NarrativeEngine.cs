@@ -18,7 +18,9 @@ namespace Narrative
         private const int MaxEventsPerDay = 3; // 节奏控制：单日最多落地前 N 个（N6 将按游戏阶段调节密度）
 
         private static List<NarrativeTemplate> loadedTemplates;
-        private static readonly List<string> narrativeLog = new List<string>(); // 已触发事件ID（防重复 + 调试，N6.4）
+        // N6.4 叙事日志委托给 NarrativeRhythm（GAP4：冷却/日志合并到 N6）
+        // 保留此字段引用供外部代码向后兼容访问
+        private static List<string> narrativeLog => NarrativeRhythm.GetEventLog();
 
         /// <summary>
         /// 待落地事件缓冲（N4.5/4.6/4.7）：区域解锁回调 / 铁龙行动 / 疲劳触发在本日板面
@@ -38,8 +40,10 @@ namespace Narrative
         /// <summary>N3.4 初始化：从 Resources/Narrative/ 加载模板（缺失则保持空，运行时回退默认模板）。</summary>
         public static void Initialize()
         {
-            narrativeLog.Clear();
-            StoryEvaluator.ClearRecords();
+            // N6.4：清空叙事日志
+            NarrativeRhythm.GetEventLog().Clear();
+            // N6.3：清空冷却记录（GAP4：冷却系统合并到 N6）
+            NarrativeRhythm.ClearAllRecords();
             pendingDispatch.Clear();
 
             loadedTemplates = LoadTemplatesFromResources();
@@ -208,15 +212,28 @@ namespace Narrative
 
             List<NarrativeEvent> candidates = StoryEvaluator.Evaluate(context, templates);
 
-            // 取前 N 个（节奏控制：避免单日消息轰炸，密度/权重调节在 N6）
+            // N6.1：按游戏阶段动态调节单日事件上限
+            float probability = NarrativeRhythm.GetEventProbability(context.gameDay);
+            int dynamicLimit = Mathf.Max(1, Mathf.RoundToInt(MaxEventsPerDay * probability));
+            int limit = Math.Min(dynamicLimit, candidates.Count);
+
+            // N6.2：类型分布过滤（加权轮盘选择一种类型，只触发该类型的事件）
+            // 基于已评估的候选集再做一次类型分布过滤
+            string[] preferredIds = NarrativeRhythm.GetFilteredTemplateIds(templates, context);
+            var preferredSet = new HashSet<string>(preferredIds ?? new string[0]);
+
             var triggered = new List<NarrativeEvent>();
-            int limit = Math.Min(MaxEventsPerDay, candidates.Count);
-            for (int i = 0; i < limit; i++)
+            for (int i = 0; i < candidates.Count && triggered.Count < limit; i++)
             {
                 NarrativeEvent evt = candidates[i];
+                // 类型分布过滤：仅当模板ID在加权选中类型中才触发
+                if (preferredSet.Count > 0 && !preferredSet.Contains(evt.templateId)) continue;
+
                 ApplyEffects(evt);                         // GAP2 修复：叙事事件效果落地
-                narrativeLog.Add(evt.templateId);
-                StoryEvaluator.RecordTriggered(evt.templateId, context.gameDay); // 冷却登记（templateId + 触发日）
+                // N6.4 叙事日志（GAP4：日志合并到 N6）
+                NarrativeRhythm.LogEvent(evt.templateId, evt.content, evt.effects);
+                // N6.3 冷却登记（GAP4：冷却系统合并到 N6）
+                NarrativeRhythm.RecordTrigger(evt.templateId, context.gameDay);
                 triggered.Add(evt);
             }
 
