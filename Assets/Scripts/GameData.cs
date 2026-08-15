@@ -873,6 +873,11 @@ public static class GameData
             // 应用渗透率变化
             SandRivalManager.SetPenetration(sandAction.cityId,
                 SandRivalManager.GetPenetration(sandAction.cityId) + sandAction.penetrationDelta);
+
+            // N4.6（GAP6 修复）：铁龙行动 → 叙事事件（sand_action_*）
+            // 注意：CheckForAction 已在本处消费本日行动，叙事检查再 Analyze 时拿不到行动类型，
+            // 必须在此显式把 actionType 注入叙事引擎。
+            Narrative.NarrativeEngine.OnSandRivalAction(sandAction.type);
         }
 
         ClampStats();
@@ -931,6 +936,12 @@ public static class GameData
         }
 
         RefreshBoards(tone);
+
+        // 叙事引擎检查（N4.8）：Day 已推进（沙能竞争之后），检查并挂载叙事事件。
+        // 注意：必须在 RefreshBoards 之后调用——RefreshBoards 以 new List 重建 Briefing/Notices，
+        // 若在此之前 DispatchAll，叙事文本会被板面重建覆盖无法显示（GAP8：文本进简报/公告列表供 UIManager 显示）。
+        var narrativeEvents = Narrative.NarrativeEngine.CheckForEvent();
+        Narrative.NarrativeEngine.DispatchAll(narrativeEvents);
 
         return new DayResult
         {
