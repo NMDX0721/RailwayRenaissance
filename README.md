@@ -10,6 +10,18 @@
 
 ---
 
+![Laboratory](Assets/Resources/bg/lab.jpg)
+
+*The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.*
+
+The year the world gave up on railways, and the day something impossible quietly began.
+
+Three days later, a researcher would leave this room to revive a railway on the brink of decommissioning in a mist-wrapped mountain village called Wufeng — 2,500 kilometres and one impossible bet away.
+
+**Every great story needs a place where it begins. This must be it.**
+
+---
+
 ## The World
 
 It is 2076. Sand-powered flying vehicles ended the railway era: passenger volume fell 78%, 91 nations dissolved their state rail systems, and the global network effectively shut down by 2072. The sand-energy monopoly **USET** controls the skies, while the DPRK — holder of the world's largest sand reserves — stands as the sole superpower.
