@@ -570,9 +570,12 @@ DESK ITEMS:
 - Photo frame with university graduation photo
 
 KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
-- Chollima brand computer (천리마 컴퓨터) on desk
-- Korean-made monitor with Hangul keyboard
-- Korean-designed desk lamp with traditional patterns
+- Chollima brand computer (천리마 컴퓨터) with transparent OLED display
+- Korean-made holographic projection device on desk
+- Virtual lecture screen with Korean text on wall
+- Korean-designed desk lamp with traditional patterns, wireless charging
+- Smart communication device with Hangul interface
+- AI assistant interface on computer screen (Korean language)
 
 BOOKSHELF CONTENTS:
 - Railway engineering textbooks (Korean titles, "철도수송론")
