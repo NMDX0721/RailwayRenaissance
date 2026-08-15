@@ -200,7 +200,7 @@ public static class GameData
         new ShortTermGoal("稳定现金流", "把资金积累到 2600，给后续扩建留出空间。", targetMoney: 2600),
         new ShortTermGoal("修复口碑", "把乘客信任提升到 75。", targetTrust: 75),
         new ShortTermGoal("恢复车况", "把车况拉回到 82 以上。", targetCondition: 82),
-        new ShortTermGoal("拉高客流", "让预计客流达到 30。", targetPassengers: 30)
+        new ShortTermGoal("拉高客流", "让预计日客流达到 80。", targetPassengers: 80)
     };
 
     // ===== 公共数值调整方法 =====
@@ -291,7 +291,7 @@ public static class GameData
         Money = Mathf.RoundToInt(config.startMoney);
         Trust = 62;
         TrainCondition = 70;
-        ExpectedPassengers = 22;
+        ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
         CarCount = 2;
 
         DailyMoneyChange = 0;
@@ -430,7 +430,7 @@ public static class GameData
     {
         float trustCoefficient = 0.5f + Trust * 0.005f;
         float serviceQualityCoefficient = 1.0f + ConductorLevel * 0.03f;
-        float raw = PopulationFactor * 0.001f * trustCoefficient * GetSeasonModifier() * (1f - GetSandPenetration()) * serviceQualityCoefficient;
+        float raw = PopulationFactor * 0.0025f * trustCoefficient * GetSeasonModifier() * (1f - GetSandPenetration()) * serviceQualityCoefficient;
         return Mathf.RoundToInt(raw);
     }
 
@@ -563,14 +563,15 @@ public static class GameData
         // 1. 发车方案决定今日趟数
         int trips = GetTripsForDispatchPlan();
 
-        // 2. 计算每日客流
+        // 2. 计算单趟客流（A9：统一单趟口径）
         int dailyPassengers = CalculateDailyPassengers();
-        ExpectedPassengers = dailyPassengers;
+        // 日客流 = 单趟 × 趟数（用于显示/目标）
+        ExpectedPassengers = dailyPassengers * trips;
 
-        // 2.5 容量约束（A3）：实际客流 = min(需求客流, 车厢容量)
-        int dailyCapacity = GetDailyCapacity(trips);
-        int actualPassengers = Mathf.Min(dailyPassengers, dailyCapacity);
-        bool overcrowded = dailyPassengers > Mathf.RoundToInt(dailyCapacity * OvercrowdThreshold);
+        // 2.5 容量约束（A9 O9）：实际客流按单趟比较
+        int perTripCapacity = CarCount * CapacityPerCar;
+        int actualPassengers = Mathf.Min(dailyPassengers, perTripCapacity);
+        bool overcrowded = dailyPassengers > Mathf.RoundToInt(perTripCapacity * OvercrowdThreshold);
 
         // 3. 日收入（按实际承运客流计算）
         int dailyRevenue = CalculateRevenue(actualPassengers, trips);
