@@ -1,10 +1,14 @@
+<div align="center">
+
 # 铁路复兴：沙能冲击
 
 [![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
 [![Platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-blue.svg)](LICENSE)
 
-> *[English](README.md) | 简体中文*
+> [English](README.md) | **简体中文**
+
+</div>
 
 **一款铁路复兴模拟与视觉小说结合的游戏：数据驱动的经济系统、动态的铁路网络，以及会对玩家选择作出反应的世界。**
 
@@ -103,12 +107,15 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 | [游戏开发文档](参考资料/游戏开发文档.md) | 设计文档总索引 |
 | [沙本位经济核](参考资料/沙本位经济核.md) | 货币体系、盈亏分析 |
 | [核心玩法循环](docs/compose/specs/核心玩法循环.md) | 三层时间模型、五条趋势线 |
-| [跨系统联动公式](docs/compose/specs/跨系统联动公式.md) | 相互关联的公式集 |
+| [跨系统联动公式](docs/compose/specs/跨系统联动公式.md) | 相互关联的公式集 + **惯性原则** |
 | [科技树设计](docs/compose/specs/科技树设计.md) | 开放研发网络 |
 | [VN AI 设计](参考资料/视觉小说系统设计.md) | 三模式对话、Provider 层、角色记忆 |
 | [岁月叙事引擎](docs/compose/specs/岁月叙事引擎.md) | 模板化 AI 路线图 |
 | [世界观与时间线](参考资料/世界观扩展设定.md) | USET、沙本位、2050–2076 设定 |
 | [故事线时间轴](参考资料/故事线时间轴.md) | 世界历史的连续性校验 |
+| [先民人事系统](docs/compose/specs/先民人事系统.md) | 8 级技能树、5 系统 × 19 子技能 |
+| [惯性原则设计](docs/compose/specs/惯性原则设计.md) | 历史沉积系统、波动引擎 |
+| [铁龙竞争系统](docs/compose/specs/铁龙竞争系统.md) | USET 对手 AI、沙能渗透 |
 
 ---
 
@@ -140,12 +147,12 @@ Assets/
 
 ```
 Phase 1: 设计文档与世界观   ✅
-Phase 2: 核心系统（11/11）   ✅
+Phase 2: 核心系统（12/12）   ✅
 Phase 3: 资产生成            ⏳ 进行中
 Phase 4: 整合打磨            ⏳ 计划中
 ```
 
-已实现：序章剧本 · VN→经营桥接 · 经济模拟 · 员工系统 · 随机事件 · USET 对手 AI · 新手引导 · 统一存档 · 术语高亮。
+已实现：序章剧本 · VN→经营桥接 · 经济模拟 · 员工系统 · 随机事件 · USET 对手 AI · 新手引导 · 统一存档 · 术语高亮 · **波动引擎 (L1-L4 + fBm)** · **GlobalRules（种子驱动配置）** · **惯性系统（历史基线 + 非线性阈值）** · **8 级技能树（5 系统 × 19 子技能）** · **社会对比效应** · **师徒传承 + 工资谈判** · **协同效应 + 经营姿态联动**。
 
 ---
 

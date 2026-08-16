@@ -1,10 +1,16 @@
+<div align="center">
+
 # Railway Renaissance: Sand Energy Impact
 
 [![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> ***English** | [简体中文](README.zh-CN.md)*
+> **English** | [简体中文](README.zh-CN.md)
+
+</div>
+
+**A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
 
 **A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
 
@@ -104,12 +110,15 @@ Design specifications are stored in the repository alongside the code. Each syst
 | [Game Design Document](参考资料/游戏开发文档.md) | Master index of design documents |
 | [Sand Standard Economy](参考资料/沙本位经济核.md) | Currency system, break-even analysis |
 | [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | Three-layer time model, five trendlines |
-| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Interlinked formula set |
+| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Interlinked formula set + **Inertia Principle** |
 | [Tech Tree](docs/compose/specs/科技树设计.md) | Open research network |
 | [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer, character memory |
 | [Suiyue Narrative Engine](docs/compose/specs/岁月叙事引擎.md) | Template-based AI roadmap |
 | [World & Timeline](参考资料/世界观扩展设定.md) | USET, sand-standard currency, 2050–2076 lore |
 | [Story Timeline](参考资料/故事线时间轴.md) | Continuity verification of world history |
+| [Skill System](docs/compose/specs/先民人事系统.md) | 8-level skill tree, 5 systems × 19 sub-skills |
+| [Inertia Principle](docs/compose/specs/惯性原则设计.md) | Historical deposition, fluctuation engine |
+| [Iron Dragon Competition](docs/compose/specs/铁龙竞争系统.md) | USET rival AI, sand penetration
 
 ---
 
@@ -118,11 +127,12 @@ Design specifications are stored in the repository alongside the code. Each syst
 ```
 Assets/
 ├── Scripts/           # C# source
-│   ├── VN/            # JSON-driven visual novel engine
-│   ├── Narrative/     # Suiyue narrative engine
-│   ├── WorldGen/      # Chollima world generation
-│   ├── GameData.cs    # Economy simulation
-│   ├── CrewManager.cs # Crew, skills, fatigue
+│   ├── Core/           # FluctuationEngine, GlobalRules
+│   ├── VN/             # JSON-driven visual novel engine
+│   ├── Narrative/      # Suiyue narrative engine
+│   ├── WorldGen/       # Chollima world generation
+│   ├── GameData.cs     # Economy simulation
+│   ├── CrewManager.cs  # Crew, skills, fatigue, inertia
 │   ├── SandRivalManager.cs  # USET rival AI
 │   └── ...
 ├── Resources/
@@ -141,12 +151,12 @@ Assets/
 
 ```
 Phase 1: Design documents & lore    ✅
-Phase 2: Core systems (11/11)       ✅
+Phase 2: Core systems (12/12)       ✅
 Phase 3: Asset generation           ⏳ In progress
 Phase 4: Integration & polish       ⏳ Planned
 ```
 
-Implemented: prologue scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary.
+**Implemented:** prologue scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary · **FluctuationEngine (L1-L4 + fBm)** · **GlobalRules (seed-driven config)** · **Inertia system (historical baseline + nonlinear thresholds)** · **8-level skill tree (5 systems × 19 sub-skills)** · **Social comparison effect** · **Mentorship + wage negotiation** · **Synergy + stance linkage**.
 
 ---
 
