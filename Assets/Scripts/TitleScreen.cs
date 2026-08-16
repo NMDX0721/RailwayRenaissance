@@ -31,6 +31,7 @@ public class TitleScreen : MonoBehaviour
 
     void Start()
     {
+        SetupVideoBackground();
         SetupBGM();
         SetupGameCursor();
         Camera.main.clearFlags = CameraClearFlags.SolidColor;
@@ -285,5 +286,40 @@ public class TitleScreen : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+
+    private void SetupVideoBackground()
+    {
+        string videoPath = Application.streamingAssetsPath + "/cloud_sea_bg.mp4";
+        if (!File.Exists(videoPath)) return;
+
+        var go = new GameObject("VideoBackground");
+        go.transform.SetParent(transform);
+
+        var player = go.AddComponent<VideoPlayer>();
+        player.playOnAwake = false;
+        player.isLooping = true;
+        player.renderMode = VideoRenderMode.RenderTexture;
+        player.audioOutputMode = VideoAudioOutputMode.None;
+        player.url = videoPath;
+
+        var rt = new RenderTexture(1920, 1080, 0);
+        rt.Create();
+        player.targetTexture = rt;
+
+        var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad.transform.SetParent(go.transform);
+        quad.transform.localPosition = new Vector3(0, 0, 10);
+        quad.transform.localScale = new Vector3(37.5f, 21f, 1);
+        quad.name = "VideoQuad";
+
+        Shader shader = Shader.Find("Unlit/Texture");
+        if (shader == null) shader = Shader.Find("Universal Render Pipeline/Unlit");
+        if (shader == null) shader = Shader.Find("Unlit");
+        var mat = new Material(shader);
+        mat.mainTexture = rt;
+        quad.GetComponent<Renderer>().material = mat;
+
+        player.Play();
     }
 }
