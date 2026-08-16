@@ -352,9 +352,11 @@ Open the folder in Unity Hub and run:
 
 ## AI-Native Modding
 
-This project is designed to be modified by AI tools — not just by developers who know C#.
+This project is designed for generative AI to restructure and extend — not just for developers who know C#.
 
-Every design decision, every formula, and every system parameter is documented in structured Markdown files that AI agents can read directly. The documentation is not an afterthought — it is a first-class deliverable, maintained alongside the code, formatted for machine consumption.
+Traditional games rely on modding APIs: the developer provides interfaces and specs, and players must learn the entire modding framework before they can build anything. This project works differently — documentation, code, and data formats are unified into structured Markdown that AI agents can read and modify directly. Want to add a feature? Describe the requirement, and the agent understands the system structure, modifies the code, and verifies the result. No modding API to learn, no framework to adapt to.
+
+Every design decision, every formula, and every system parameter is documented. The documentation is not an afterthought — it is a first-class deliverable, maintained alongside the code, formatted for machine consumption.
 
 **What this means for you:**
 

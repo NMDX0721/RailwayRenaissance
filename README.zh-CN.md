@@ -84,112 +84,118 @@ USET 不是一家普通公司。它的股权结构精心设计，以便在国际
 <details>
 <summary><strong>沙本位经济核</strong>——经济模拟引擎</summary>
 
-**核心公式：**
+**Core formulas:**
 ```
-日客流 = 基础客流 × 信任系数 × 季节指数 × 波动系数
-票价收入 = 客流 × 票价 × (1 + 弹性修正)
-补贴 = 运营评估 × 政治关系 × 战略价值 × 惯性系数
+PassengerFlow(t) = BaseFlow × sigmoid(Trust(t)) × SeasonalFFT(t) × L2Fluctuation(t)
+TicketRevenue(t) = ∫(Flow(τ) × DynamicPricing(τ) × (1 + ElasticityCorrection(τ))) dτ
+Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) × InertiaDecay(t)
 ```
 
-每条趋势线有自己的微分方程：信任每低于阈值 1 点，客流额外衰减 0.5%；沙能渗透超过 0.60 持续 15 天即触发永久营业点。所有公式系数由 GlobalRules 在每局游戏开局时通过种子生成，确保每局经济走势不同。
+每条趋势线有自己的微分方程：信任低于阈值时，`d(Flow)/dt ∝ -TrustDeficit × 0.005`；沙能渗透超过 0.60 持续 15 天触发永久营业点。所有系数通过 GlobalRules 在每局游戏开局时由种子生成，确保经济走势各不相同。
 
-**五条趋势线互锁关系：**
+**Five trendline interlock:**
 ```
-信任崩塌 → 沙能渗透加速 → 收入下降 → 财政恶化 → 设施老化加速
+TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → InfrastructureDecay↑
 ```
-反之，早期信任投入产生正向循环，随时间放大。引擎驱动五条趋势线，也是受惯性原则影响最深的系统——没有哪个决策能立即见效，每一个选择都背负着过去的重担。
+反向则形成正向循环。引擎受惯性原则影响最深——没有哪个决策能立即见效，每个选择都背负着过去的重担。
 
-经济模拟在前期是故意设计成亏损的。玩家靠剧情驱动的补贴生存——政府补贴、社区集资、遗产保护基金——每一项都绑定着需要维护的政治关系。补贴金额不是固定的：它由运营评估、政治关系、线路战略价值共同决定，且受惯性原则调制。
+经济模拟在前期是故意设计成亏损的。玩家靠剧情驱动的补贴生存——政府补贴、社区集资、遗产保护基金——每一项都绑定着需要维护的政治关系。补贴金额由运营评估、政治关系、线路战略价值共同决定，且受惯性原则调制。
 </details>
 
 <details>
 <summary><strong>千里马创世核</strong>——世界生成系统</summary>
 
-**种子结构：** `RR-XXXXX-YYYYY`
-- `RR`：固定前缀
-- `XXXXX`：城市模板 + 依赖图 + 资源分布 + 政治倾向的哈希编码
-- `YYYYY`：GlobalRules 基线参数（18+ 系数）的哈希编码
+**Seed structure:** `RR-XXXXX-YYYYY`
+- `RR`: Fixed prefix
+- `XXXXX`: Hash encoding of city templates, dependency graph, resource distribution, political leanings
+- `YYYYY`: Hash encoding of 18+ GlobalRules baseline parameters
 
-**生成算法管线：**
+**Generation pipeline:**
 ```
-种子码 → 城市模板采样 → 供需依赖图（Kosaraju 强连通）→ 铁路网（Kruskal MST）→ 资源分布 → 政治倾向分配 → GlobalRules 黑箱生成
+Seed → CityTemplateSampling → KosarajuSCC(DependencyGraph) → KruskalMST(RailNetwork) → ResourceDistribution → PoliticalAssignment → fBmBlackbox(GlobalRules)
 ```
 
-**GlobalRules 黑箱（fBm 3D Simplex 噪声）：**
+**Blackbox function (fBm 3D Simplex noise):**
 ```
-基线值 = 噪声输入 × 缩放因子 + 偏移量
+WorldState = ∑_{i=0}^{octaves} noise.snoise(float3(seed.x × lacunarity^i, k, seed.y)) × gain^i
+GlobalRules[k] = Lerp(MinBound[k], MaxBound[k], WorldState)
 ```
-每个种子生成 18+ 系数：学习速率、价格弹性、事故概率、社会容忍度、师徒加成率、工资谈判阈值等。同一种子始终产生同一世界；不同种子产生结构上不同的世界。
+- Octaves: 6, Lacunarity: 2.0, Gain: 0.5
+- 同一种子始终产生同一世界；不同种子产生结构上不同的世界
 
-**产出物：** 城市模板、依赖图、铁路边集合、资源分布图、政治倾向映射、GlobalRules 配置、事件倾向权重。
+**Outputs:** CityTemplates[], DependencyGraph(V, E), RailEdges[], ResourceMap, PoliticalMapping, GlobalRules{18+ params}, EventWeightTable
 </details>
 
 <details>
 <summary><strong>岁月叙事引擎</strong>——事件生成系统</summary>
 
-**事件触发条件：**
+**Event trigger probability:**
 ```
-触发概率 = 基础概率 × 冷却修正 × 密度修正 × 世界状态权重
-冷却修正 = 1 - exp(-天数 / 冷却半衰期)
-密度修正 = max(0, 1 - 近期事件数 / 密度上限)
+P(event) = BaseP × (1 - exp(-t / τ_cooldown)) × max(0, 1 - N_recent / N_max) × WorldStateWeight
 ```
+- `τ_cooldown`: Cooldown half-life per event type
+- `N_max`: Density cap (prevents narrative fatigue)
 
-引擎采用模板化设计：每个事件类型有固定的槽位结构，**WorldAnalyzer** 根据运行时条件填充槽位。事件设有冷却时间、密度上限和对数衰减曲线，防止叙事疲劳。
-
-**角色好感度系统：**
+**Character favorability:**
 ```
-好感度变化 = 事件基值 × 角色性格权重 × 惯性系数
+Favorability(t+1) = Favorability(t) + EventValue × PersonalityWeight × InertiaDecay(t)
+```
 累积好感触发新剧情分支或解锁特殊对话选项。
-```
 
-**三种对话模式：**
-- **预设模式**——完全编剧，固定对话树
-- **自由 AI 模式**——玩家输入任意内容，AI 以角色身份回应
-- **混合模式**——预设分支为主，AI 为未预见的主题兜底
+**Template engine:** 每个事件类型有固定的槽位结构，**WorldAnalyzer** 根据运行时条件填充槽位。事件设有冷却时间、密度上限和对数衰减曲线，防止叙事疲劳。
+
+**Three dialogue modes:**
+- **Preset** — fully authored, fixed dialogue tree
+- **Free AI** — player types anything, AI responds in character
+- **Hybrid** — preset branches with AI fallback for unanticipated topics
 </details>
 
 <details>
 <summary><strong>先民人事系统</strong>——员工管理系统</summary>
 
-**技能成长公式：**
+**Skill growth:**
 ```
-日增长 = 基准日增长率 × 岗位匹配系数 × 追赶加成 × 惯性系数 × 波动系数 × 事件修正
-岗位匹配系数：核心×1.0 / 同系统×0.6 / 低门槛跨系×0.3 / 高门槛跨系×0.1
-追赶加成 = 1 + (母技能等级 - 子技能等级) / 母技能等级 × 0.5（母技能高于子技能时生效）
+DailyGain = BaseGrowthRate × RoleMatch[skill] × (1 + max(0, ParentLevel - SubSkillLevel) / ParentLevel × 0.5) × FluctuationEngine.Weighted(base, variance) × EventModifier
+```
+- RoleMatch: core×1.0 / related×0.6 / low-cross×0.3 / high-cross×0.1
+- Catch-up bonus: parent skill > sub-skill → exponential decay bonus
+
+**Fatigue & Loyalty:**
+```
+Fatigue(t+1) = clamp(Fatigue(t) + BaseFatigue + ConsecutiveWorkBonus + RoleBonus, 0, 100)
+Loyalty(t) = Baseline + Σ(EventEffects) + SocialComparison(ColleagueSalary, SelfSalary) - WageDissatisfaction
+SocialComparison: ΔLoyalty = -α × max(0, ColleagueSalary / SelfSalary - Threshold) × (1 - HiddenPatience/100)
 ```
 
-**疲劳与忠诚度：**
-```
-疲劳每日增长 = 基础值 + 连续工作>7天+5 + 司机岗位+3，上限 100
-忠诚度 = 基准值 ± 事件影响 ± 社会对比效应 ± 工资满意度
-社会对比效应：同事工资 > 自己×1.2 时忠诚下降
-```
-
-**师徒传承：** 师傅≥4级时徒弟学习速度×2，师傅获得徒弟当日经验的 10% 作为额外成长。
-**母技能等级：** 由子技能等级的加权平均计算，不设职级名称，仅以数值表示（0-100）。
+**Mentorship:** Mentor ≥ Lv4 → Apprentice ×2 growth rate, Mentor gains 10% of apprentice's Δexp.
+**Parent skill:** `ParentLevel = Σ(SubSkillLevel[i] × Weight[i]) / Σ(Weight[i])`, numeric 0-100.
 </details>
 
 <details>
 <summary><strong>铁龙竞争系统</strong>——对手 AI</summary>
 
-**渗透值增长：**
+**Penetration dynamics:**
 ```
-渗透变化 = 自然增长(0.0015/天) + 营销活动加成 - 玩家反制
-营销活动：广告攻势+0.005/天、免费试乘+0.003/天、价格战+0.008/天
-永久营业点触发条件：渗透 > 0.60 持续 15 天
-```
-
-**USET 策略周期：** 每 30 天评估全局态势，选择策略：
-1. 渗透率低 → 营销活动
-2. 渗透率中 → 价格战
-3. 线路亏损 → 铁龙计划收购
-
-**铁龙计划六步收购流程：**
-```
-筛选目标 → 接触（国际铁路遗产基金会出面）→ 渗透（安插顾问）→ 施压（切断合作）→ 收购（低价买入）→ 吞并（拆除铁路设施）
+d(Penetration)/dt = α_natural + Σ(Campaign_i(t)) - Countermeasure(t)
+α_natural = 0.0015/day
+Campaigns: Advertising +0.005, FreeRides +0.003, PriceWar +0.008
+Permanent outpost: Penetration > 0.60 for 15 consecutive days
 ```
 
-铁龙计划得名于汉代天象隐喻：千里马与龙互为镜像——马掌天空，龙掌大地。USET 的公开面孔是"国际铁路遗产基金会"，一个以"遗产保护"为名接触经营困难线路的非营利组织。六步收购流程在世界观设定中有完整记录，深入挖掘的玩家可以找到伪造的档案，揭示真相。
+**USET strategy selection (every 30 days):**
+```
+Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
+```
+- Low penetration → Marketing campaign
+- Medium penetration → Price war
+- Line in loss → Iron Dragon acquisition
+
+**Iron Dragon six-step acquisition:**
+```
+Target → Approach(Foundation fronts) → Infiltrate(plant advisors) → Pressure(cut partnerships) → Acquire(low-price buyout) → Dismantle(remove infrastructure)
+```
+
+铁龙计划得名于汉代天象隐喻：千里马与龙互为镜像——马掌天空，龙掌大地。USET 的公开面孔是"国际铁路遗产基金会"，六步收购流程在世界观设定中有完整记录，深入挖掘的玩家可以找到伪造的档案。
 </details>
 
 ### 科技树
@@ -389,9 +395,13 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 
 ---
 
-## AI 工具链
+## AI 驱动改造
 
-项目的每一项设计决策、每一条公式、每一个系统参数都有结构化的 Markdown 文档记录，AI 代理可直接读取。文档不是事后补充——它是与代码并列的一等交付物，按机器可读的格式维护。
+本项目专为生成式人工智能改造而设计优化——不仅面向熟悉 C# 的开发者。
+
+传统游戏要靠模组来扩展玩法：官方提供模组接口和规范，玩家需要学习整套模组框架才能动手。本项目不同——文档、代码、数据格式全部统一为结构化 Markdown，AI 代理可直接读取和修改。想加新功能？描述需求，AI 代理理解系统结构后直接修改代码、验证结果。不需要学习模组接口，不需要适配特定框架。
+
+每一项设计决策、每一条公式、每一个系统参数都有文档记录，文档不是事后补充——它与代码并列，按机器可读的格式维护。文档不是事后补充——它是与代码并列的一等交付物，按机器可读的格式维护。
 
 **这意味着你可以：**
 
