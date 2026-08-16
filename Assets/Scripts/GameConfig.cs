@@ -8,6 +8,8 @@ public class GameConfig
     public string difficulty = "normal";
     // 创世核种子 ID（自 Layer 5 起，世界初始参数由此决定）
     public string seedId = "seed_001";
+    // 种子码（RR-XXXXX-YYYYY 格式，手动输入或从预设选择）
+    public string seedCode = "RR-7A3F-B2C9";
     // 自定义难度参数（指导司机模式）
     public float startMoney = 40000f;
     public float incomeMultiplier = 1.0f;
