@@ -310,232 +310,169 @@ public class VNSaveLoadUI : MonoBehaviour
         }
     }
             slotElement.style.flexDirection = FlexDirection.Row;
-            slotElement.style.alignItems = Align.Center;
+    private void BuildSlot(int slotIndex, VNSaveData saveData, bool isLatestSlot, FontDefinition fontDef)
+    {
+        var slotElement = new VisualElement();
+        slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
+        slotElement.style.height = 110;
+        slotElement.style.marginBottom = 10;
+        slotElement.style.flexDirection = FlexDirection.Row;
+        slotElement.style.alignItems = Align.Center;
+        slotElement.style.backgroundColor = SlotBg;
+        slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
+        slotElement.style.borderLeftWidth = 1; slotElement.style.borderRightWidth = 1;
+        slotElement.style.borderTopColor = GoldDim; slotElement.style.borderBottomColor = GoldDim;
+        slotElement.style.borderLeftColor = GoldDim; slotElement.style.borderRightColor = GoldDim;
+        slotElement.style.borderTopLeftRadius = 8; slotElement.style.borderTopRightRadius = 8;
+        slotElement.style.borderBottomLeftRadius = 8; slotElement.style.borderBottomRightRadius = 8;
+        slotElement.style.overflow = Overflow.Hidden;
+
+        slotElement.RegisterCallback<PointerEnterEvent>(e => {
+            slotElement.style.backgroundColor = SlotBgHover;
+            slotElement.style.borderTopColor = Gold; slotElement.style.borderBottomColor = Gold;
+            slotElement.style.borderLeftColor = Gold; slotElement.style.borderRightColor = Gold;
+        });
+        slotElement.RegisterCallback<PointerLeaveEvent>(e => {
             slotElement.style.backgroundColor = SlotBg;
-            slotElement.style.borderTopWidth = 1;
-            slotElement.style.borderBottomWidth = 1;
-            slotElement.style.borderLeftWidth = 1;
-            slotElement.style.borderRightWidth = 1;
-            slotElement.style.borderTopColor = GoldDim;
-            slotElement.style.borderBottomColor = GoldDim;
-            slotElement.style.borderLeftColor = GoldDim;
-            slotElement.style.borderRightColor = GoldDim;
-            slotElement.style.borderTopLeftRadius = 8;
-            slotElement.style.borderTopRightRadius = 8;
-            slotElement.style.borderBottomLeftRadius = 8;
-            slotElement.style.borderBottomRightRadius = 8;
-            slotElement.style.overflow = Overflow.Hidden;
+            slotElement.style.borderTopColor = GoldDim; slotElement.style.borderBottomColor = GoldDim;
+            slotElement.style.borderLeftColor = GoldDim; slotElement.style.borderRightColor = GoldDim;
+        });
 
-            // Hover effect
-            slotElement.RegisterCallback<PointerEnterEvent>(e =>
+        var accentBar = new VisualElement();
+        accentBar.style.width = 5;
+        accentBar.style.backgroundColor = saveData != null
+            ? new Color(Gold.r, Gold.g, Gold.b, 0.7f) : new Color(1f, 1f, 1f, 0.15f);
+        slotElement.Add(accentBar);
+
+        var infoContainer = new VisualElement();
+        infoContainer.style.flexDirection = FlexDirection.Column;
+        infoContainer.style.flexGrow = 1;
+        infoContainer.style.paddingLeft = 15; infoContainer.style.paddingRight = 8;
+        infoContainer.style.paddingTop = 12; infoContainer.style.paddingBottom = 12;
+        infoContainer.style.justifyContent = Justify.Center;
+        infoContainer.style.overflow = Overflow.Hidden;
+
+        var badgeRow = new VisualElement();
+        badgeRow.style.flexDirection = FlexDirection.Row;
+        badgeRow.style.alignItems = Align.Center;
+        badgeRow.style.marginBottom = 6;
+
+        var slotBadge = new Label(isLatestSlot ? "★" : slotIndex.ToString());
+        slotBadge.style.marginRight = 8; slotBadge.style.fontSize = 22;
+        slotBadge.style.color = new Color(0.08f, 0.05f, 0.03f, 1f);
+        slotBadge.style.unityFontStyleAndWeight = FontStyle.Bold;
+        slotBadge.style.unityTextAlign = TextAnchor.MiddleCenter;
+        slotBadge.style.unityFontDefinition = fontDef;
+        slotBadge.style.width = 32; slotBadge.style.height = 30;
+        slotBadge.style.display = DisplayStyle.Flex;
+        slotBadge.style.alignItems = Align.Center; slotBadge.style.justifyContent = Justify.Center;
+        slotBadge.style.backgroundColor = saveData != null
+            ? new Color(Gold.r, Gold.g, Gold.b, 0.85f) : new Color(1f, 1f, 1f, 0.2f);
+        slotBadge.style.borderTopLeftRadius = 4; slotBadge.style.borderTopRightRadius = 4;
+        slotBadge.style.borderBottomLeftRadius = 4; slotBadge.style.borderBottomRightRadius = 4;
+        badgeRow.Add(slotBadge);
+
+        var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + slotIndex);
+        slotLabel.style.fontSize = isLatestSlot ? 26 : 24;
+        slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
+        slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        slotLabel.style.unityFontDefinition = fontDef;
+        badgeRow.Add(slotLabel);
+        infoContainer.Add(badgeRow);
+
+        if (saveData != null)
+        {
+            var chapterText = saveData.scriptName;
+            if (saveData.sceneIndex >= 0)
+                chapterText += " · 第" + (saveData.sceneIndex + 1) + "章 对话" + (saveData.dialogueIndex + 1);
+            var infoLabel = new Label(chapterText);
+            infoLabel.style.fontSize = 20; infoLabel.style.color = new Color(1f, 1f, 1f, 0.65f);
+            infoLabel.style.unityFontDefinition = fontDef; infoLabel.style.marginBottom = 4;
+            infoLabel.style.overflow = Overflow.Hidden;
+            infoLabel.style.textOverflow = TextOverflow.Ellipsis;
+            infoContainer.Add(infoLabel);
+
+            var timeLabel = new Label(saveData.timestamp);
+            timeLabel.style.fontSize = 17; timeLabel.style.color = new Color(1f, 1f, 1f, 0.35f);
+            timeLabel.style.unityFontDefinition = fontDef;
+            infoContainer.Add(timeLabel);
+        }
+        else
+        {
+            var emptyLabel = new Label("— 空槽位 —");
+            emptyLabel.style.fontSize = 20; emptyLabel.style.color = new Color(1f, 1f, 1f, 0.3f);
+            emptyLabel.style.unityFontDefinition = fontDef;
+            infoContainer.Add(emptyLabel);
+        }
+
+        slotElement.Add(infoContainer);
+
+        var btnArea = new VisualElement();
+        btnArea.style.flexDirection = FlexDirection.Row;
+        btnArea.style.alignItems = Align.Center;
+        btnArea.style.justifyContent = Justify.FlexEnd;
+        btnArea.style.flexShrink = 0;
+        btnArea.style.paddingRight = 10;
+
+        if (saveData != null || isSaveMode)
+        {
+            var btnText = isSaveMode ? (saveData != null ? "覆盖" : "保存") : "读取";
+            var actionBtn = new UnityEngine.UIElements.Button(() =>
             {
-                slotElement.style.backgroundColor = SlotBgHover;
-                slotElement.style.borderTopColor = Gold;
-                slotElement.style.borderBottomColor = Gold;
-                slotElement.style.borderLeftColor = Gold;
-                slotElement.style.borderRightColor = Gold;
-            });
-            slotElement.RegisterCallback<PointerLeaveEvent>(e =>
-            {
-                slotElement.style.backgroundColor = SlotBg;
-                slotElement.style.borderTopColor = GoldDim;
-                slotElement.style.borderBottomColor = GoldDim;
-                slotElement.style.borderLeftColor = GoldDim;
-                slotElement.style.borderRightColor = GoldDim;
-            });
+                onSlotSelected?.Invoke(slotIndex);
+                if (isSaveMode) { RefreshSlots(); ShowSaveFeedback(); }
+                else { ClosePanel(); }
+            }) { text = btnText };
 
-            // Left accent bar
-            var accentBar = new VisualElement();
-            accentBar.style.width = 5;
-            accentBar.style.backgroundColor = saveData != null
-                ? new Color(Gold.r, Gold.g, Gold.b, 0.7f)
-                : new Color(1f, 1f, 1f, 0.15f);
-            slotElement.Add(accentBar);
-
-            // Info section — flex-grow left, buttons right
-            var infoContainer = new VisualElement();
-            infoContainer.style.flexDirection = FlexDirection.Column;
-            infoContainer.style.flexGrow = 1;
-            infoContainer.style.paddingLeft = 15;
-            infoContainer.style.paddingRight = 8;
-            infoContainer.style.paddingTop = 12;
-            infoContainer.style.paddingBottom = 12;
-            infoContainer.style.justifyContent = Justify.Center;
-            infoContainer.style.overflow = Overflow.Hidden;
-
-            // Slot number badge
-            var badgeRow = new VisualElement();
-            badgeRow.style.flexDirection = FlexDirection.Row;
-            badgeRow.style.alignItems = Align.Center;
-            badgeRow.style.marginBottom = 6;
-
-            var slotBadge = new Label(isLatestSlot ? "★" : (i).ToString());
-            slotBadge.style.marginRight = 8;
-            slotBadge.style.fontSize = 22;
-            slotBadge.style.color = new Color(0.08f, 0.05f, 0.03f, 1f);
-            slotBadge.style.unityFontStyleAndWeight = FontStyle.Bold;
-            slotBadge.style.unityTextAlign = TextAnchor.MiddleCenter;
-            slotBadge.style.unityFontDefinition = fontDef;
-            slotBadge.style.width = 32;
-            slotBadge.style.height = 30;
-            slotBadge.style.display = DisplayStyle.Flex;
-            slotBadge.style.alignItems = Align.Center;
-            slotBadge.style.justifyContent = Justify.Center;
-            slotBadge.style.backgroundColor = saveData != null
-                ? new Color(Gold.r, Gold.g, Gold.b, 0.85f)
-                : new Color(1f, 1f, 1f, 0.2f);
-            slotBadge.style.borderTopLeftRadius = 4;
-            slotBadge.style.borderTopRightRadius = 4;
-            slotBadge.style.borderBottomLeftRadius = 4;
-            slotBadge.style.borderBottomRightRadius = 4;
-            badgeRow.Add(slotBadge);
-
-            var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i));
-            slotLabel.style.fontSize = isLatestSlot ? 26 : 24;
-            slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
-            slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-            slotLabel.style.unityFontDefinition = fontDef;
-            badgeRow.Add(slotLabel);
-
-            infoContainer.Add(badgeRow);
-
-            if (saveData != null)
-            {
-                var chapterText = saveData.scriptName;
-                if (saveData.sceneIndex >= 0)
-                    chapterText += "  \u2022  第" + (saveData.sceneIndex + 1) + "章  对话" + (saveData.dialogueIndex + 1);
-                var infoLabel = new Label(chapterText);
-                infoLabel.style.fontSize = 20;
-                infoLabel.style.color = new Color(1f, 1f, 1f, 0.65f);
-                infoLabel.style.unityFontDefinition = fontDef;
-                infoLabel.style.marginBottom = 4;
-                infoLabel.style.overflow = Overflow.Hidden;
-                infoLabel.style.textOverflow = TextOverflow.Ellipsis;
-                infoContainer.Add(infoLabel);
-
-                var timeLabel = new Label(saveData.timestamp);
-                timeLabel.style.fontSize = 17;
-                timeLabel.style.color = new Color(1f, 1f, 1f, 0.35f);
-                timeLabel.style.unityFontDefinition = fontDef;
-                infoContainer.Add(timeLabel);
-            }
-            else
-            {
-                var emptyLabel = new Label("\u2014  空槽位  \u2014");
-                emptyLabel.style.fontSize = 20;
-                emptyLabel.style.color = new Color(1f, 1f, 1f, 0.3f);
-                emptyLabel.style.unityFontDefinition = fontDef;
-                infoContainer.Add(emptyLabel);
-            }
-
-            slotElement.Add(infoContainer);
-
-            // Action buttons area — auto-width, right-aligned
-            var btnArea = new VisualElement();
-            btnArea.style.flexDirection = FlexDirection.Row;
-            btnArea.style.alignItems = Align.Center;
-            btnArea.style.justifyContent = Justify.FlexEnd;
-            btnArea.style.flexShrink = 0;
-            btnArea.style.paddingRight = 10;
-
-            // 读取按钮：只在有存档数据时显示
-            if (saveData != null || isSaveMode)
-            {
-                var btnText = isSaveMode ? "保存" : "读取";
-                if (isSaveMode && saveData != null)
-                    btnText = "覆盖";
-
-                var actionBtn = new UnityEngine.UIElements.Button(() =>
-                {
-                    onSlotSelected?.Invoke(slotIndex);
-                    if (isSaveMode)
-                    {
-                        RefreshSlots();
-                        ShowSaveFeedback();
-                    }
-                    else
-                    {
-                        ClosePanel();
-                    }
-                })
-                { text = btnText };
-
-                actionBtn.style.width = 90;
-                actionBtn.style.height = 40;
-                actionBtn.style.fontSize = 20;
+            actionBtn.style.width = 90; actionBtn.style.height = 40; actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
             actionBtn.style.backgroundColor = BtnBg;
             actionBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
             actionBtn.style.unityFontDefinition = fontDef;
-            actionBtn.style.borderTopWidth = 1;
-            actionBtn.style.borderBottomWidth = 1;
-            actionBtn.style.borderLeftWidth = 1;
-            actionBtn.style.borderRightWidth = 1;
-            actionBtn.style.borderTopColor = GoldDim;
-            actionBtn.style.borderBottomColor = GoldDim;
-            actionBtn.style.borderLeftColor = GoldDim;
-            actionBtn.style.borderRightColor = GoldDim;
-            actionBtn.style.borderTopLeftRadius = 5;
-            actionBtn.style.borderTopRightRadius = 5;
-            actionBtn.style.borderBottomLeftRadius = 5;
-            actionBtn.style.borderBottomRightRadius = 5;
+            actionBtn.style.borderTopWidth = 1; actionBtn.style.borderBottomWidth = 1;
+            actionBtn.style.borderLeftWidth = 1; actionBtn.style.borderRightWidth = 1;
+            actionBtn.style.borderTopColor = GoldDim; actionBtn.style.borderBottomColor = GoldDim;
+            actionBtn.style.borderLeftColor = GoldDim; actionBtn.style.borderRightColor = GoldDim;
+            actionBtn.style.borderTopLeftRadius = 5; actionBtn.style.borderTopRightRadius = 5;
+            actionBtn.style.borderBottomLeftRadius = 5; actionBtn.style.borderBottomRightRadius = 5;
 
-            actionBtn.RegisterCallback<PointerEnterEvent>(e =>
-            {
+            actionBtn.RegisterCallback<PointerEnterEvent>(e => {
                 actionBtn.style.backgroundColor = BtnBgHover;
                 actionBtn.style.color = GoldBright;
-                actionBtn.style.borderTopColor = Gold;
-                actionBtn.style.borderBottomColor = Gold;
-                actionBtn.style.borderLeftColor = Gold;
-                actionBtn.style.borderRightColor = Gold;
+                actionBtn.style.borderTopColor = Gold; actionBtn.style.borderBottomColor = Gold;
+                actionBtn.style.borderLeftColor = Gold; actionBtn.style.borderRightColor = Gold;
             });
-            actionBtn.RegisterCallback<PointerLeaveEvent>(e =>
-            {
+            actionBtn.RegisterCallback<PointerLeaveEvent>(e => {
                 actionBtn.style.backgroundColor = BtnBg;
                 actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-                actionBtn.style.borderTopColor = GoldDim;
-                actionBtn.style.borderBottomColor = GoldDim;
-                actionBtn.style.borderLeftColor = GoldDim;
-                actionBtn.style.borderRightColor = GoldDim;
+                actionBtn.style.borderTopColor = GoldDim; actionBtn.style.borderBottomColor = GoldDim;
+                actionBtn.style.borderLeftColor = GoldDim; actionBtn.style.borderRightColor = GoldDim;
             });
 
             btnArea.Add(actionBtn);
-            } // end action button if-block
-
-            // Delete button (only when save data exists)
-            if (saveData != null)
-            {
-                var delBtn = new UnityEngine.UIElements.Button(() =>
-                {
-                    ShowDeleteConfirm(slotIndex);
-                })
-                { text = "\u2715" };
-
-                delBtn.style.width = 28;
-                delBtn.style.height = 28;
-                delBtn.style.fontSize = 14;
-                delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
-                delBtn.style.backgroundColor = Color.clear;
-                delBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-                delBtn.style.unityFontDefinition = fontDef;
-
-                delBtn.RegisterCallback<PointerEnterEvent>(e =>
-                {
-                    delBtn.style.backgroundColor = DeleteBg;
-                    delBtn.style.color = new Color(1f, 0.6f, 0.5f, 1f);
-                });
-                delBtn.RegisterCallback<PointerLeaveEvent>(e =>
-                {
-                    delBtn.style.backgroundColor = Color.clear;
-                    delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
-                });
-
-                btnArea.Add(delBtn);
-            }
-
-            slotElement.Add(btnArea);
-            slotContainer.Add(slotElement);
         }
+
+        if (saveData != null)
+        {
+            var delBtn = new UnityEngine.UIElements.Button(() => ShowDeleteConfirm(slotIndex)) { text = "\u2715" };
+            delBtn.style.width = 28; delBtn.style.height = 28; delBtn.style.fontSize = 14;
+            delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
+            delBtn.style.backgroundColor = Color.clear;
+            delBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            delBtn.style.unityFontDefinition = fontDef;
+            delBtn.RegisterCallback<PointerEnterEvent>(e => {
+                delBtn.style.backgroundColor = DeleteBg;
+                delBtn.style.color = new Color(1f, 0.6f, 0.5f, 1f);
+            });
+            delBtn.RegisterCallback<PointerLeaveEvent>(e => {
+                delBtn.style.backgroundColor = Color.clear;
+                delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
+            });
+            btnArea.Add(delBtn);
+        }
+
+        slotElement.Add(btnArea);
+        slotContainer.Add(slotElement);
     }
 
     private void ShowDeleteConfirm(int slotIndex)
@@ -547,7 +484,6 @@ public class VNSaveLoadUI : MonoBehaviour
         overlay.style.backgroundColor = new Color(0, 0, 0, 0.5f);
         overlay.style.alignItems = Align.Center;
         overlay.style.justifyContent = Justify.Center;
-
         var box = new VisualElement();
         box.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.95f);
         box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
@@ -559,43 +495,26 @@ public class VNSaveLoadUI : MonoBehaviour
         box.style.paddingLeft = 40; box.style.paddingRight = 40;
         box.style.paddingTop = 30; box.style.paddingBottom = 30;
         box.style.alignItems = Align.Center;
-
         var msg = new Label("确认删除此存档？此操作不可撤销。");
-        msg.style.fontSize = 22;
-        msg.style.color = new Color(1f, 1f, 1f, 0.9f);
+        msg.style.fontSize = 22; msg.style.color = new Color(1f, 1f, 1f, 0.9f);
         msg.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        msg.style.marginBottom = 20;
-        msg.style.whiteSpace = WhiteSpace.Normal;
+        msg.style.marginBottom = 20; msg.style.whiteSpace = WhiteSpace.Normal;
         box.Add(msg);
-
         var btnRow = new VisualElement();
         btnRow.style.flexDirection = FlexDirection.Row;
-
-        var confirmBtn = new UnityEngine.UIElements.Button(() =>
-        {
-            saveSystem.DeleteSave(slotIndex);
-            RefreshSlots();
-            root.Remove(overlay);
-        }) { text = "确认删除" };
-        confirmBtn.style.width = 120; confirmBtn.style.height = 40;
-        confirmBtn.style.fontSize = 20; confirmBtn.style.marginRight = 10;
-        confirmBtn.style.color = new Color(1f, 0.8f, 0.8f, 1f);
+        var confirmBtn = new UnityEngine.UIElements.Button(() => { saveSystem.DeleteSave(slotIndex); RefreshSlots(); root.Remove(overlay); }) { text = "确认删除" };
+        confirmBtn.style.width = 120; confirmBtn.style.height = 40; confirmBtn.style.fontSize = 20;
+        confirmBtn.style.marginRight = 10; confirmBtn.style.color = new Color(1f, 0.8f, 0.8f, 1f);
         confirmBtn.style.backgroundColor = new Color(0.4f, 0.12f, 0.1f, 0.7f);
         confirmBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         confirmBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
         btnRow.Add(confirmBtn);
-
         var cancelBtn = new UnityEngine.UIElements.Button(() => root.Remove(overlay)) { text = "取消" };
-        cancelBtn.style.width = 120; cancelBtn.style.height = 40;
-        cancelBtn.style.fontSize = 20; cancelBtn.style.marginLeft = 10;
-        cancelBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
+        cancelBtn.style.width = 120; cancelBtn.style.height = 40; cancelBtn.style.fontSize = 20;
+        cancelBtn.style.marginLeft = 10; cancelBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
         cancelBtn.style.backgroundColor = new Color(0.2f, 0.1f, 0.08f, 0.7f);
         cancelBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         cancelBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
         btnRow.Add(cancelBtn);
-
-        box.Add(btnRow);
-        overlay.Add(box);
-        root.Add(overlay);
+        box.Add(btnRow); overlay.Add(box); root.Add(overlay);
     }
-}
