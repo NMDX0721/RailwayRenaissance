@@ -17,6 +17,7 @@ public class TitleScreen : MonoBehaviour
     private VideoPlayer videoPlayer;
     private NewGameSetupUI newGameSetup;
     private TitleArchiveUI archiveUI;
+    private StationBulletinUI bulletinUI;
 
     private readonly Color glassBg = new Color(40f/255f, 25f/255f, 15f/255f, 0.35f);
     private readonly Color glassBgHover = new Color(40f/255f, 25f/255f, 15f/255f, 0.55f);
@@ -98,6 +99,9 @@ public class TitleScreen : MonoBehaviour
 
         archiveUI = gameObject.AddComponent<TitleArchiveUI>();
         archiveUI.Init(GetComponent<UIDocument>());
+
+        bulletinUI = new GameObject("StationBulletinUI").AddComponent<StationBulletinUI>();
+        bulletinUI.Init(GetComponent<UIDocument>());
 
         videoPlayer = FindAnyObjectByType<VideoPlayer>();
         AdaptQuadToScreen();
@@ -266,13 +270,13 @@ public class TitleScreen : MonoBehaviour
 
     void OnContinue()
     {
-        PlayerPrefs.SetInt("VN_AutoLoad", 1);
+        PlayerPrefs.SetInt("VN_ShowLoadUI", 1);
         PlayerPrefs.Save();
         SceneManager.LoadScene("VN_Test");
     }
 
     void OnArchive() { archiveUI?.Show(); }
-    void OnSettings() { Debug.Log("打开站务公告"); }
+    void OnSettings() { bulletinUI?.Show(); }
     void OnAnnouncement() { Debug.Log("打开快讯"); }
     void OnExit()
     {

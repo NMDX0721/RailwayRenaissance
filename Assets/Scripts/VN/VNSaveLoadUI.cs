@@ -397,8 +397,7 @@ public class VNSaveLoadUI : MonoBehaviour
             {
                 var delBtn = new UnityEngine.UIElements.Button(() =>
                 {
-                    saveSystem.DeleteSave(slotIndex);
-                    RefreshSlots();
+                    ShowDeleteConfirm(slotIndex);
                 })
                 { text = "\u2715" };
 
@@ -427,5 +426,64 @@ public class VNSaveLoadUI : MonoBehaviour
             slotElement.Add(btnArea);
             slotContainer.Add(slotElement);
         }
+    private void ShowDeleteConfirm(int slotIndex)
+    {
+        var root = uiDoc.rootVisualElement;
+        var overlay = new VisualElement();
+        overlay.style.position = Position.Absolute;
+        overlay.style.top = 0; overlay.style.left = 0; overlay.style.right = 0; overlay.style.bottom = 0;
+        overlay.style.backgroundColor = new Color(0, 0, 0, 0.5f);
+        overlay.style.alignItems = Align.Center;
+        overlay.style.justifyContent = Justify.Center;
+
+        var box = new VisualElement();
+        box.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.95f);
+        box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
+        box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
+        box.style.borderTopColor = GoldDim; box.style.borderBottomColor = GoldDim;
+        box.style.borderLeftColor = GoldDim; box.style.borderRightColor = GoldDim;
+        box.style.borderTopLeftRadius = 8; box.style.borderTopRightRadius = 8;
+        box.style.borderBottomLeftRadius = 8; box.style.borderBottomRightRadius = 8;
+        box.style.paddingLeft = 40; box.style.paddingRight = 40;
+        box.style.paddingTop = 30; box.style.paddingBottom = 30;
+        box.style.alignItems = Align.Center;
+
+        var msg = new Label("确认删除此存档？此操作不可撤销。");
+        msg.style.fontSize = 22;
+        msg.style.color = new Color(1f, 1f, 1f, 0.9f);
+        msg.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        msg.style.marginBottom = 20;
+        msg.style.whiteSpace = WhiteSpace.Normal;
+        box.Add(msg);
+
+        var btnRow = new VisualElement();
+        btnRow.style.flexDirection = FlexDirection.Row;
+
+        var confirmBtn = new UnityEngine.UIElements.Button(() =>
+        {
+            saveSystem.DeleteSave(slotIndex);
+            RefreshSlots();
+            root.Remove(overlay);
+        }) { text = "确认删除" };
+        confirmBtn.style.width = 120; confirmBtn.style.height = 40;
+        confirmBtn.style.fontSize = 20; confirmBtn.style.marginRight = 10;
+        confirmBtn.style.color = new Color(1f, 0.8f, 0.8f, 1f);
+        confirmBtn.style.backgroundColor = new Color(0.4f, 0.12f, 0.1f, 0.7f);
+        confirmBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        confirmBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        btnRow.Add(confirmBtn);
+
+        var cancelBtn = new UnityEngine.UIElements.Button(() => root.Remove(overlay)) { text = "取消" };
+        cancelBtn.style.width = 120; cancelBtn.style.height = 40;
+        cancelBtn.style.fontSize = 20; cancelBtn.style.marginLeft = 10;
+        cancelBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
+        cancelBtn.style.backgroundColor = new Color(0.2f, 0.1f, 0.08f, 0.7f);
+        cancelBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        cancelBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        btnRow.Add(cancelBtn);
+
+        box.Add(btnRow);
+        overlay.Add(box);
+        root.Add(overlay);
     }
 }

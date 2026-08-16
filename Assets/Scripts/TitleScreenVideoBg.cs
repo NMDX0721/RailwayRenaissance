@@ -47,9 +47,21 @@ public class TitleScreenVideoBg : MonoBehaviour
 
         if (_renderer != null)
         {
-            var mat = new Material(Shader.Find("Unlit/Texture"));
+            Shader shader = Shader.Find("Unlit/Texture");
+            if (shader == null)
+                shader = Shader.Find("Universal Render Pipeline/Unlit");
+            if (shader == null)
+                shader = Shader.Find("Unlit");
+            var mat = new Material(shader);
             mat.mainTexture = renderTexture;
             _renderer.material = mat;
+        }
+
+        if (string.IsNullOrEmpty(_player.url) && _player.clip == null)
+        {
+            string streamingPath = Application.streamingAssetsPath + "/cloud_sea_bg.mp4";
+            if (File.Exists(streamingPath))
+                _player.url = streamingPath;
         }
 
         _player.Play();

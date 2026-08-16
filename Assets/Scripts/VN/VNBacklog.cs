@@ -195,7 +195,7 @@ public class VNBacklog : MonoBehaviour
                 jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
                 jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
                 if (handCursorTex != null)
-                    UnityEngine.Cursor.SetCursor(handCursorTex, new Vector2(0, 0), UnityEngine.CursorMode.ForceSoftware);
+                    UnityEngine.Cursor.SetCursor(handCursorTex, Vector2.zero, UnityEngine.CursorMode.Auto);
             });
             jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
             {
@@ -227,11 +227,11 @@ public class VNBacklog : MonoBehaviour
 
         if (isOpen)
         {
-            // 布局完成后再滚动到最底部（最新对话）。立即读 worldBound.height 会得到 0。
+            // 延迟一帧后滚动到最底部（最新对话）
             backlogScroll.schedule.Execute(() =>
             {
                 backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.layout.height);
-            });
+            }).StartingIn(50);
         }
     }
 

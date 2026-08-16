@@ -74,7 +74,19 @@ public class VNManager : MonoBehaviour
         SetupCanvas();
         SetupEventSystem();
 
-        // 标题界面"继续运营"设置了 VN_AutoLoad=1 → 加载最近存档
+        // 标题界面"继续运营" → 显示读档界面
+        if (PlayerPrefs.GetInt("VN_ShowLoadUI", 0) == 1)
+        {
+            PlayerPrefs.SetInt("VN_ShowLoadUI", 0);
+            PlayerPrefs.Save();
+            // 先播序章再显示读档，给玩家选择
+            StartScript("prologue_01_news");
+            // 延迟一帧后显示读档面板
+            StartCoroutine(ShowLoadUIDelayed());
+            return;
+        }
+
+        // 标题界面自动加载（旧逻辑，保留兼容）
         if (PlayerPrefs.GetInt("VN_AutoLoad", 0) == 1)
         {
             PlayerPrefs.SetInt("VN_AutoLoad", 0);
@@ -522,13 +534,10 @@ public class VNManager : MonoBehaviour
 
         if (!isScriptRunning) return;
 
-        // F5：开启Auto模式，打字中则等待，打完则跳下一页
+        // F5：切换Auto模式
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            if (!isAutoPlay)
-                ToggleAutoPlay();
-            else if (dialogueBox != null && !dialogueBox.IsTyping())
-                NextDialogue();
+            ToggleAutoPlay();
             return;
         }
 
@@ -543,8 +552,8 @@ public class VNManager : MonoBehaviour
             if (saveLoadUI != null && saveLoadUI.IsOpen)
                 return;
             // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
-            // 若不拦截，点菜单栏"存档/读档"等按钮的这次点击会把对话推进一句
-            if (Input.GetMouseButtonDown(0) && IsPointerOverMenuBar())
+            // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
+            if (Input.GetMouseButtonDown(0) && IsPointerOverInteractiveUI())
                 return;
 
             StopAutoPlay();
@@ -974,6 +983,13 @@ public class VNManager : MonoBehaviour
 
         // 恢复菜单栏
         if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
+    }
+
+    private IEnumerator ShowLoadUIDelayed()
+    {
+        yield return null;
+        if (saveLoadUI != null)
+            saveLoadUI.ShowPanel(true);
     }
 
     private void StartAutoPlayTimer()
