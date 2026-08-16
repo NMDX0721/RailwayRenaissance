@@ -3,10 +3,17 @@
 # Railway Renaissance: Sand Energy Impact
 
 [![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)]()
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)](https://github.com/NMDX721/RailwayRenaissance)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-铁轨不会忘记——每一趟列车，都是对遗忘的抵抗。  
+<div align="center">
+<img src="中转站/wiki/images/home_banner.jpg" width="80%" alt="Railway Renaissance: Sand Energy Impact">
+</div>
+
+**Rails remember. Every train that runs is a defiance of forgetting.**
+
+<br>
+
 **English** | [简体中文](README.zh-CN.md)
 
 </div>
@@ -17,7 +24,9 @@
 
 ---
 
+<div align="center">
 <img src="Assets/Resources/bg/lab.jpg" width="70%" alt="Laboratory of Intelligent Dispatch Systems">
+</div>
 
 *The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.*
 
@@ -97,9 +106,9 @@ The historical baseline is a 30-day weighted average: recent days matter more. W
 
 A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that no two days feel identical even when the underlying numbers are similar.
 
-### Narrative and Economy
+## Narrative and Economy
 
-The visual novel supports three dialogue modes: preset (fully authored), free AI (player types anything, the AI responds in character), and hybrid (preset branches with AI fallback for unanticipated topics). Characters carry personalities, favour ability thresholds, and memory of past conversations. A phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant).
+The visual novel supports three dialogue modes: preset (fully authored), free AI (player types anything, the AI responds in character), and hybrid (preset branches with AI fallback for unanticipated topics). Characters carry personalities, favorability thresholds, and memory of past conversations. A phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant).
 
 The economic simulation is loss-making by design in the early game. The player survives on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is not fixed: it is calculated from the player's operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
 
@@ -208,7 +217,7 @@ Phase 4: Integration & polish       ⏳ Planned
 
 ## Contributing
 
-This is a personal, non-commercial, educational project. Contributions of any kind — art, balance values, story, code — are welcome. The [design documents](参考资料/游戏开发文档.md) are the source of truth; open an issue or pull request to propose changes.
+A personal, non-commercial, educational project by a high-school student. Contributions of any kind — art, balance values, story, code — are welcome. The [design documents](参考资料/游戏开发文档.md) are the source of truth; open an issue or pull request to propose changes.
 
 ---
 

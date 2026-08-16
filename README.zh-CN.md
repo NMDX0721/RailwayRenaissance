@@ -3,21 +3,34 @@
 # 铁路复兴：沙能冲击
 
 [![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
-[![Platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20%7C%20Android-4B5320)]()
+[![Platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20%7C%20Android-4B5320)](https://github.com/NMDX721/RailwayRenaissance)
 [![License](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-blue.svg)](LICENSE)
 
-铁轨不会忘记——每一趟列车，都是对遗忘的抵抗。  
+<div align="center">
+<img src="中转站/wiki/images/home_banner.jpg" width="80%" alt="铁路复兴：沙能冲击">
+</div>
+
+**铁轨不会忘记——每一趟列车，都是对遗忘的抵抗。**
+
+<br>
+
 [English](README.md) | **简体中文**
 
 </div>
 
 ---
 
-**《铁路复兴：沙能冲击》是一款铁路复兴模拟与视觉小说结合的游戏：数据驱动的经济系统、动态的铁路网络，以及会对玩家选择作出反应的世界。**
+**《铁路复兴：沙能冲击》是一款铁路经营模拟 × 视觉小说游戏。你继承一条被世界遗忘的废弃铁路，招募员工、维护车辆、对抗垄断企业的渗透，在一个沙能飞行器统治天空的时代，证明铁轨仍有价值。**
+
+**游戏的核心不是"做选择"，而是"承担过去的选择"。每一个决策都受惯性支配——今天的降价要 20 天才能见效，过去长期压榨的员工不会因一次加薪就忠诚，USET 一旦扎根就难以驱逐。这不是一个你可以读档重来的游戏；这是一个你必须与历史共处的游戏。**
+
+**数据驱动的经济系统，五条相互联动的趋势线，基于 3D Simplex 噪声的波动引擎，确保每一局游戏的经济走势都独一无二。**
 
 ---
 
+<div align="center">
 <img src="Assets/Resources/bg/lab.jpg" width="70%" alt="智能调度系统实验室">
+</div>
 
 *一切奇迹的起点 · 金日成综合大学智能调度系统实验室 · 2076年4月18日*
 
