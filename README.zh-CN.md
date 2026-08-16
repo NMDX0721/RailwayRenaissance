@@ -96,14 +96,43 @@ sequenceDiagram
     participant Title as 标题界面
     participant New as 新游戏设置
     participant World as 千里马创世核
+    participant Crew as 先民人事系统
     participant VN as 序章 VN
     participant Game as 经营模拟
+    participant Rival as 铁龙竞争系统
+    
     Title->>New: 点击"新游戏"
+    Title->>Title: 点击"继续运营" → 读档跳过
+    
     New->>World: 生成种子码 RR-XXXXX-YYYYY
-    World->>World: 城市模板 / 依赖图 / 铁路网 / GlobalRules
-    World->>VN: 初始化世界状态
-    VN->>Game: Day 4 过渡到经营
-    Game->>Game: 日循环（决策→惯性→事件→结算）
+    par 并行生成
+        World->>World: KosarajuSCC(城市依赖图)
+        World->>World: KruskalMST(铁路网)
+        World->>World: fBmBlackbox(GlobalRules 18+ 系数)
+    end
+    
+    World-->>New: 世界数据就绪
+    New->>Crew: 初始化初始团队（6 人）
+    New->>Rival: 初始化 USET 渗透值（每城 0.0）
+    
+    critical 序章阶段（Day 0–4）
+        World->>VN: 注入世界状态（城市、政治倾向）
+        VN->>VN: 播放预设剧本（prologue_01 ~ prologue_10）
+        VN->>VN: Day 4 关键选择
+    end
+    
+    VN->>Game: 过渡到经营模式
+    loop 每日循环
+        Game->>Game: 读取惯性基线
+        Game->>Crew: DailyUpdate(疲劳 / 忠诚 / 技能成长)
+        Game->>Rival: USET 渗透增长 + 策略评估（每 30 天）
+        alt 触发事件
+            Game->>VN: 调用岁月叙事引擎（事件概率计算）
+            VN-->>Game: 返回事件结果（好感度 / 补贴 / 状态变化）
+        end
+        Game->>Game: 经济结算（客流 / 收入 / 补贴）
+        Game->>Game: 更新趋势线（信任 / 财政 / 渗透 / 政治 / 设施）
+    end
 ```
 
 <details>
@@ -122,11 +151,30 @@ Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) ×
 
 ```mermaid
 graph TD
-    Trust[信任崩塌] -->|加速| Sand[沙能渗透]
-    Sand -->|侵蚀| Revenue[收入下降]
-    Revenue -->|拖累| Fiscal[财政恶化]
-    Fiscal -->|加速| Infra[设施老化]
-    Infra -->|进一步打击| Trust
+    Trust[信任] -->|低于 30 触发| Crash[客流雪崩]
+    Crash -->|收入↓| Sand[沙能渗透]
+    Sand -->|超过 0.60 持续 15 天| Outpost[永久营业点]
+    Outpost -->|进一步打压| Trust
+    
+    Trust -->|信任↑ 正向循环| Revenue[收入↑]
+    Revenue -->|财政改善| Fiscal[财政健康]
+    Fiscal -->|资金投入| Infra[设施维护]
+    Infra -->|安全运营| Trust
+    
+    Sand -->|侵蚀收入| RevenueLoss[收入↓]
+    RevenueLoss -->|亏损| FiscalDown[财政恶化]
+    FiscalDown -->|维护不足| InfraDecay[设施老化]
+    InfraDecay -->|事故频发| Trust
+    
+    Political[政治压力] -.->|超过 0.70| Seizure[线路被征收]
+    Political -.->|低于 0.30| Subsidy[补贴加码]
+    Subsidy -.-> Fiscal
+    
+    style Crash fill:#ff4444,color:#fff
+    style Outpost fill:#ff4444,color:#fff
+    style Seizure fill:#ff4444,color:#fff
+    style Revenue fill:#44aa44,color:#fff
+    style Subsidy fill:#44aa44,color:#fff
 ```
 
 反向连锁则形成正向循环。引擎受惯性原则影响最深——没有哪个决策能立即见效，每个选择都背负着过去的重担。
@@ -365,13 +413,35 @@ Effect = ActionValue × (1 − InertiaCoefficient) + HistoricalBaseline × Inert
 ## 游戏进程
 
 ```mermaid
-graph LR
-    A[序章 VN<br>Day 0–4] --> B[求生期]
-    B --> C[稳定期]
-    C --> D[扩张期]
-    D --> E[突破期]
-    E --> F[发展期]
-    F --> G[全国路网]
+graph TD
+    Start[序章 VN<br>Day 0–4] --> Survival[求生期]
+    
+    Survival -->|信任 < 30| Crisis[信任危机<br>客流雪崩]
+    Survival -->|收支平衡| Stability[稳定期]
+    
+    Crisis -->|获得补贴| Survival
+    Crisis -->|破产| GameOver[游戏结束]
+    
+    Stability -->|开辟新线路| Expansion[扩张期]
+    Stability -->|USET 渗透 > 0.60| UsertThreat[USET 永久营业点]
+    UsertThreat -->|反制成功| Expansion
+    UsertThreat -->|放任不管| Decline[衰退]
+    Decline --> Survival
+    
+    Expansion -->|突破封锁| Breakthrough[突破期]
+    Expansion -->|资金不足| DebtCycle[债务螺旋]
+    DebtCycle -->|削减开支| Survival
+    
+    Breakthrough -->|构建区域路网| Growth[发展期]
+    Breakthrough -->|政治压力 > 0.70| Requisition[线路被征收]
+    Requisition --> GameOver
+    
+    Growth -->|全国铁路复兴| Final[全国路网]
+    
+    style GameOver fill:#ff4444,color:#fff
+    style Final fill:#44aa44,color:#fff
+    style Crisis fill:#ffaa00,color:#000
+    style UsertThreat fill:#ffaa00,color:#000
 ```
 
 每个阶段有明确的运营目标和剧情里程碑：求生期靠补贴度日，稳定期实现收支平衡，扩张期开辟新线路，突破期突破 USET 封锁，发展期构建区域路网，最终挑战全国铁路复兴。

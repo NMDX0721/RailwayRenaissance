@@ -109,14 +109,43 @@ sequenceDiagram
     participant Title as Title Screen
     participant New as New Game Setup
     participant World as Chollima Genesis Core
+    participant Crew as Seonmin Personnel
     participant VN as Prologue VN
     participant Game as Simulation
+    participant Rival as Iron Dragon
+    
     Title->>New: Click "New Game"
+    Title->>Title: Click "Continue" → load save, skip
+    
     New->>World: Generate seed RR-XXXXX-YYYYY
-    World->>World: City templates / Dependency graph / Rail network / GlobalRules
-    World->>VN: Initialise world state
-    VN->>Game: Day 4 transition to gameplay
-    Game->>Game: Daily loop (decision → inertia → event → settlement)
+    par Parallel generation
+        World->>World: KosarajuSCC(city dependency graph)
+        World->>World: KruskalMST(rail network)
+        World->>World: fBmBlackbox(GlobalRules 18+ params)
+    end
+    
+    World-->>New: World data ready
+    New->>Crew: Initialise crew (6 members)
+    New->>Rival: Initialise USET penetration (0.0 per city)
+    
+    critical Prologue phase (Day 0–4)
+        World->>VN: Inject world state (cities, political leanings)
+        VN->>VN: Play preset scripts (prologue_01 ~ prologue_10)
+        VN->>VN: Day 4 critical choice
+    end
+    
+    VN->>Game: Transition to gameplay
+    loop Daily loop
+        Game->>Game: Read inertia baseline
+        Game->>Crew: DailyUpdate(fatigue / loyalty / skill growth)
+        Game->>Rival: USET penetration growth + strategy eval (every 30 days)
+        alt Event triggered
+            Game->>VN: Call Suiyue Narrative Engine (probability calc)
+            VN-->>Game: Return event result (favorability / subsidy / state change)
+        end
+        Game->>Game: Economic settlement (passenger flow / revenue / subsidy)
+        Game->>Game: Update trendlines (trust / fiscal / penetration / political / infra)
+    end
 ```
 
 <details>
@@ -135,11 +164,30 @@ Each trendline has its own differential equation: when trust drops below thresho
 
 ```mermaid
 graph TD
-    Trust[Trust Collapse] -->|feeds| Sand[Sand Penetration]
-    Sand -->|erodes| Revenue[Revenue Drop]
-    Revenue -->|worsens| Fiscal[Fiscal Decline]
-    Fiscal -->|accelerates| Infra[Infrastructure Decay]
-    Infra -->|further hits| Trust
+    Trust[Trust] -->|below 30 triggers| Crash[Passenger Collapse]
+    Crash -->|revenue↓| Sand[Sand Penetration]
+    Sand -->|above 0.60 for 15 days| Outpost[Permanent Outpost]
+    Outpost -->|further suppresses| Trust
+    
+    Trust -->|trust↑ virtuous cycle| Revenue[Revenue↑]
+    Revenue -->|fiscal improves| Fiscal[Fiscal Health]
+    Fiscal -->|funds available| Infra[Infrastructure]
+    Infra -->|safe operations| Trust
+    
+    Sand -->|erodes income| RevenueLoss[Revenue↓]
+    RevenueLoss -->|losses| FiscalDown[Fiscal Decline]
+    FiscalDown -->|underfunded| InfraDecay[Infrastructure Decay]
+    InfraDecay -->|accidents| Trust
+    
+    Political[Political Pressure] -.->|above 0.70| Seizure[Line Requisitioned]
+    Political -.->|below 0.30| Subsidy[Subsidy Boost]
+    Subsidy -.-> Fiscal
+    
+    style Crash fill:#ff4444,color:#fff
+    style Outpost fill:#ff4444,color:#fff
+    style Seizure fill:#ff4444,color:#fff
+    style Revenue fill:#44aa44,color:#fff
+    style Subsidy fill:#44aa44,color:#fff
 ```
 
 The reverse cascade creates a virtuous cycle. The economy is loss-making by design in the early game. The Chinese character for "rail" (铁) is composed of "gold" (金) on the left and "loss" (失) on the right — a silent admission that railways are seldom profitable. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
@@ -355,13 +403,35 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 ## Progression
 
 ```mermaid
-graph LR
-    A[Prologue VN<br>Day 0–4] --> B[Survival]
-    B --> C[Stabilisation]
-    C --> D[Expansion]
-    D --> E[Breakthrough]
-    E --> F[Growth]
-    F --> G[National Network]
+graph TD
+    Start[Prologue VN<br>Day 0–4] --> Survival[Survival Phase]
+    
+    Survival -->|trust < 30| Crisis[Trust Crisis<br>Passenger Collapse]
+    Survival -->|break-even| Stability[Stabilisation]
+    
+    Crisis -->|obtain grant| Survival
+    Crisis -->|bankruptcy| GameOver[Game Over]
+    
+    Stability -->|new routes| Expansion[Expansion]
+    Stability -->|USET > 0.60| UsertThreat[USET Permanent Outpost]
+    UsertThreat -->|counter| Expansion
+    UsertThreat -->|neglect| Decline[Decline]
+    Decline --> Survival
+    
+    Expansion -->|break blockade| Breakthrough[Breakthrough]
+    Expansion -->|funds short| DebtCycle[Debt Spiral]
+    DebtCycle -->|cut costs| Survival
+    
+    Breakthrough -->|regional network| Growth[Growth]
+    Breakthrough -->|political > 0.70| Requisition[Line Requisitioned]
+    Requisition --> GameOver
+    
+    Growth -->|national revival| Final[National Network]
+    
+    style GameOver fill:#ff4444,color:#fff
+    style Final fill:#44aa44,color:#fff
+    style Crisis fill:#ffaa00,color:#000
+    style UsertThreat fill:#ffaa00,color:#000
 ```
 
 Each phase has defined operational targets and story milestones: survival through grants, stabilisation toward break-even, expansion into new routes, breakthrough against USET's blockade, growth into a regional network, and the final challenge of national railway revival.
