@@ -864,9 +864,9 @@ public static class CrewManager
                         if (!subSkill.isUnlocked) continue;
                         if (subSkill.level >= 100f) continue;
 
-                        // GapBonus = max(0, (parentSkillLevel - subSkill.level) / parentSkillLevel) * 0.5f
+                        // GapBonus = max(0, (parentSkillLevel - subSkill.level) / parentSkillLevel) * gapBonusMaxRate
                         float parentLvl = node.parentSkillLevel > 0f ? node.parentSkillLevel : 50f;
-                        float gapBonus = Mathf.Max(0f, (parentLvl - subSkill.level) / parentLvl) * 0.5f;
+                        float gapBonus = Mathf.Max(0f, (parentLvl - subSkill.level) / parentLvl) * skillGrowthRules.gapBonusMaxRate;
 
                         // BaseGain = rules.baseLearningRate * (1 + GapBonus)
                         float baseGain = skillGrowthRules.baseLearningRate * (1f + gapBonus);
@@ -990,10 +990,11 @@ public static class CrewManager
 
             // ===== P2：忠诚度每日变化 =====
 
-            // 工资按时发放：+0.1
+            // 工资按时发放
             if (wagePaidToday)
             {
-                member.loyalty += 0.1f;
+                float loyaltyBonus = skillGrowthRules?.baseLoyaltyChange ?? 0.1f;
+                member.loyalty += loyaltyBonus;
             }
 
             // 连续工作 > 10天无休息：-1.0
@@ -1028,16 +1029,24 @@ public static class CrewManager
 
             // ===== T9：社会对比效应 =====
             // 员工发现同事工资更高时，忠诚度下降
+            // 阈值和幅度由 GlobalRules 决定（千里马创世核在开局时生成）
+            if (skillGrowthRules == null)
+            {
+                skillGrowthRules = new GlobalRules();
+            }
+            float threshold = skillGrowthRules.salaryComparisonThreshold;
+            float jealousy = skillGrowthRules.salaryJealousyMagnitude;
             float memberSalary = CalculateSkillSalary(member);
             foreach (CrewMember other in crew)
             {
                 if (other.id == member.id) continue;
                 float otherSalary = CalculateSkillSalary(other);
-                if (otherSalary > memberSalary * 1.1f) // 比自己的10%还高
+                if (otherSalary > memberSalary * threshold)
                 {
                     float gap = (otherSalary - memberSalary) / memberSalary;
-                    member.loyalty -= gap * 0.1f * (member.hiddenPatience > 0 ? (1f - member.hiddenPatience / 100f) : 1f);
-                    break; // 只对比一次，减少性能开销
+                    float patienceFactor = member.hiddenPatience > 0 ? (1f - member.hiddenPatience / 100f) : 1f;
+                    member.loyalty -= gap * jealousy * patienceFactor;
+                    break;
                 }
             }
 
@@ -1065,7 +1074,7 @@ public static class CrewManager
             {
                 shouldFire = true; // 忠诚 < 0：立即离职
             }
-            else if (member.loyalty < 30 && UnityEngine.Random.value < 0.1f * quitProbabilityMultiplier)
+            else if (member.loyalty < 30 && UnityEngine.Random.value < (skillGrowthRules?.quitProbabilityBase ?? 0.1f) * quitProbabilityMultiplier)
             {
                 shouldFire = true; // 忠诚 < 30：10% 概率离职（非线性阈值下 1.5x → 15%）
             }
@@ -1664,7 +1673,7 @@ public static class CrewManager
     };
 
     private static FluctuationEngine synergyEngine;
-    private static float synergyCoefficient = 0.2f;
+    private static float synergyCoefficient = 0.2f;  // 默认值，由 GlobalRules 覆盖
     private static bool synergyInitialized = false;
 
     /// <summary>计算全队协同效率倍率。遍历所有互补岗位对，按双方核心技能等级累计加成。
@@ -1676,7 +1685,8 @@ public static class CrewManager
         // 一次性初始化协同引擎
         if (!synergyInitialized)
         {
-            var rules = new GlobalRules();
+            var rules = skillGrowthRules ?? new GlobalRules();
+            synergyCoefficient = rules.synergyCoefficient;
             bool hasEntry = false;
             for (int i = 0; i < rules.fluctuationWeightsList.Count; i++)
             {

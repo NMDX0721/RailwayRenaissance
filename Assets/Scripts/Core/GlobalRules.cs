@@ -41,6 +41,10 @@ namespace RailwayRenaissance.Core
         public float baseLoyaltyChange = 0.1f;           // 基准日变化
         public float wageLoyaltyImpact = 0.5f;           // 工资对忠诚度影响
         public float socialComparisonRate = 0.1f;        // 社会对比系数
+        public float salaryComparisonThreshold = 1.1f;  // 工资对比触发阈值
+        public float salaryJealousyMagnitude = 0.1f;    // 嫉妒程度系数
+        public float quitProbabilityBase = 0.1f;         // 离职概率基准
+        public float synergyCoefficient = 0.2f;          // 协同效应系数
 
         // ===== 非线性阈值 =====
         public float fatigueDangerThreshold = 80f;       // 疲劳危险阈值
