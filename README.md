@@ -94,6 +94,10 @@ Political tendency shifts over time based on player actions. An authoritarian re
 
 The game runs on five connected simulation engines, each with its own specification and formula set:
 
+**Sand Standard Core** is the economic foundation, driving passenger flow, fares, subsidies, and the interlock of five trendlines. **Chollima Genesis Core** generates a unique world structure and all gameplay parameters from a seed code at the start of each playthrough. **Suiyue Narrative Engine** dynamically generates events based on world state and drives visual-novel dialogue. **Seonmin Personnel System** manages crew skill trees, fatigue, loyalty, and growth curves. **Iron Dragon Competition System** simulates USET's penetration expansion and strategy selection.
+
+Detailed formulas and design documents for each engine are listed below:
+
 <details>
 <summary>Sand Standard Core — the economic engine</summary>
 
@@ -200,7 +204,7 @@ Permanent outpost trigger: penetration > 0.60 for 15 consecutive days
 Target → Approach (International Railway Heritage Foundation fronts) → Infiltrate (plant advisors) → Pressure (cut partnerships) → Acquire (low-price buyout) → Dismantle (remove rail infrastructure)
 ```
 
-Named after the Han dynasty celestial metaphor: the heavenly horse (Chollima) and the dragon are mirror images — the horse rules the sky, the dragon rules the land. USET's public face is the "International Railway Heritage Foundation," a non-profit front that approaches struggling lines with offers of "heritage preservation." The six-step acquisition process is documented in the world lore, and players who dig deep enough can find forged archives that expose the truth.
+Named after the Han dynasty celestial metaphor: the heavenly horse (Chollima) and the dragon are mirror images — the horse rules the sky, the dragon rules the land. USET's public face is the "International Railway Heritage Foundation," a non-profit front that approaches struggling lines with offers of "heritage preservation." The six-step acquisition process is documented in the world lore.
 </details>
 
 ### The Inertia Principle
@@ -225,7 +229,7 @@ The historical baseline is a 30-day weighted average: recent days matter more. W
 
 A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that no two days feel identical even when the underlying numbers are similar.
 
-### RDA — Ri Dispatch Algorithm / Railway Decision Assistant
+### RDA — Ri Dispatch Algorithm & Railway Decision Assistant
 
 The player's grandfather developed the **Ri Dispatch Algorithm (RDA)**, a dynamic scheduling protocol that optimises train paths based on real-time passenger data. The player inherits both the algorithm and a phone-based assistant that runs a modified version of it — the **Railway Decision Assistant (RDA)**, sharing the same abbreviation.
 
@@ -325,8 +329,10 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 ## Progression
 
 ```
-Prologue VN (Day 0–4) → Survival → Stability → Growth → Breakthrough → Expansion → National network
+Prologue VN (Day 0–4) → Survival phase → Stabilisation → Expansion → Breakthrough → Growth → National network
 ```
+
+Each phase has defined operational targets and story milestones: survival through grants, stabilisation toward break-even, expansion into new routes, breakthrough against USET封锁, growth into a regional network, and the final challenge of national railway revival.
 
 The game is structured around an implicit three-layer time model: daily decisions, monthly evaluations, and yearly strategic shifts. Political cycles affect subsidies. Random events — storms, oil-price spikes, holiday crowds, USET campaigns — vary the pressure across seasons. Every decision carries inertia. The player is always carrying the past.
 
