@@ -696,7 +696,29 @@ namespace WorldGen
 
         public static void ApplySeed(WorldSeedData data)
         {
+            GenerateSkillBaselines(data);
             WorldInitializer.ApplySeed(data);
+        }
+
+        /// <summary>根据种子数据生成 GlobalRules 基线（黑箱系数 + 权重表）。</summary>
+        public static void GenerateSkillBaselines(WorldSeedData seed)
+        {
+            var rules = seed.globalRules;
+            int cityCount = seed.cities?.Count ?? 7;
+
+            // 每个世界根据种子数据获得唯一的黑箱系数
+            rules.fluctuationIntensity = 0.05f + (cityCount * 0.005f);
+            rules.baseLearningRate = 0.8f + (seed.stability * 0.3f);
+            rules.gapBonusMaxRate = 0.3f + (seed.stability * 0.3f);
+            rules.inertiaCoefficient = 0.1f + (seed.initialTrends.infrastructureDecay * 0.1f);
+
+            // 生成权重表（skill_growth 基线）
+            rules.fluctuationWeightsList = new List<GlobalRules.WeightTable>();
+            rules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+            {
+                formulaName = "skill_growth",
+                weights = new float[] { 1.0f, 0.3f, 0.1f, 0.3f }
+            });
         }
 
         // ======================================================================

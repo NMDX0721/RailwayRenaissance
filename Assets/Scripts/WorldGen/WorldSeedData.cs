@@ -85,6 +85,20 @@ namespace WorldGen
         public float fiscalGrowthBase = 0.001f;
         public float maxRepairCostMultiplier = 2.0f;
         public float subsidyBase = 8000f;
+
+        // ── 千里马创世核黑箱基线 ──────────────────────────────────
+        public float fluctuationIntensity = 0.05f;
+        public float baseLearningRate = 0.8f;
+        public float gapBonusMaxRate = 0.3f;
+        public float inertiaCoefficient = 0.1f;
+        public List<WeightTable> fluctuationWeightsList = new List<WeightTable>();
+
+        [Serializable]
+        public class WeightTable
+        {
+            public string formulaName;
+            public float[] weights;
+        }
     }
 
     /// <summary>7个预设城市的模板常量，供 Layer 2 随机化时参考或直接加载。</summary>
