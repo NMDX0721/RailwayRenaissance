@@ -184,7 +184,34 @@ Each crew member has a **skill tree** rather than a single linear level. The tre
 
 **Parent skills** — five systems (Operations, Rolling Stock, Track, Signalling, Station Services) that correspond to real railway industry divisions. Each parent skill level is computed as the weighted average of its constituent sub-skills.
 
-**Sub-skills** — each parent system contains 3–4 sub-skills, 19 in total. The "Operations" system, for example, branches into Driver, Shunter, Dispatcher, and Signalman. Sub-skills range from level 0 to 7, with grade names drawn from real international railway classification systems. The driving track follows the Chinese locomotive driver ladder (Apprentice → Assistant → Driver → Instructor → Senior Instructor → Chief Instructor → Master Driver). The rolling-stock track follows a German-Chinese hybrid technician framework (Apprentice → Junior → Intermediate → Senior → Technician → Senior Technician → Master Technician).
+**Sub-skills** — each parent system contains 3–4 sub-skills, 19 in total. The "Operations" system, for example, branches into Driver, Shunter, Station Master, and Controller. Each sub-skill has independent 0–7 grade names, drawn from real international railway classification systems:
+
+<details>
+<summary>Sub-skill grade naming (0–7) by country system</summary>
+
+| Level | Ops·Driver (China) | Ops·Shunter (China) | Ops·Station Master (Japan) | Ops·Controller (UK) |
+|-------|-------------------|--------------------|---------------------------|---------------------|
+| 0 | Untrained | Untrained | Untrained | Untrained |
+| 1 | Apprentice Driver | Shunter Trainee | Station Clerk | Trainee Controller |
+| 2 | Assistant Driver | Coupler | Instructor | Service Controller |
+| 3 | Driver | Brakeman | Chief | Senior Controller |
+| 4 | Instructor Driver | Shunting Foreman | Deputy Station Master | Control Manager |
+| 5 | Senior Instructor Driver | Shunting Instructor | Station Master | Operations Manager |
+| 6 | Chief Instructor Driver | Shunting District Chief | Area Station Master | Route Operations Director |
+| 7 | Master Driver | Chief Shunter | Regional Station Master | National Control Centre Director |
+
+| Level | Rolling Stock·Mechanic (Germany) | Track·Lineman (Japan) | Signalling·Signaller (UK) | Station·Conductor (International) |
+|-------|-------------------------------|---------------------|--------------------------|----------------------------------|
+| 0 | Untrained | Untrained | Untrained | Untrained |
+| 1 | Apprentice (Auszubildender) | Track Trainee (保線見習) | Trainee Signaller | Trainee |
+| 2 | Journeyman (Geselle) | Lineman (保線工) | Signaller (Grade 2-3) | Conductor |
+| 3 | Master (Meister) | Track Chief (保線主任) | Signaller (Grade 4-5) | Train Captain |
+| 4 | Operations Manager (Betriebsleiter) | District Chief (保線区長) | Signaller (Grade 6-7) | Chief Conductor |
+| 5 | Senior Master (Obermeister) | Track Manager (保線管理長) | Signalling Supervisor | Conductor Captain |
+| 6 | Technician (Techniker) | Track Director (保線統括長) | Signalling Manager | Chief Steward |
+| 7 | Engineer (Ingenieur) | Track Head (保線本部長) | Signalling Engineering Manager | Inspector General |
+
+</details>
 
 The parent-child relationship is bidirectional: sub-skill gains feed back into the parent skill at a fixed proportion, and when the parent skill level exceeds a sub-skill, the sub-skill receives a catch-up bonus — experience efficiency increases with the size of the gap. This mechanism causes experienced employees to learn new skills within the same system faster than new hires.
 
