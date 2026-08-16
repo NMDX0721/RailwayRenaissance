@@ -6,13 +6,18 @@
 [![Platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-blue.svg)](LICENSE)
 
-> [English](README.md) | **简体中文**
+铁轨不会忘记——每一趟列车，都是对遗忘的抵抗。  
+[English](README.md) | **简体中文**
 
 </div>
+
+---
 
 **一款铁路复兴模拟与视觉小说结合的游戏：数据驱动的经济系统、动态的铁路网络，以及会对玩家选择作出反应的世界。**
 
 ---
+
+<img src="Assets/Resources/bg/lab.jpg" width="70%" alt="智能调度系统实验室">
 
 ![实验室](Assets/Resources/bg/lab.jpg)
 

@@ -6,17 +6,18 @@
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> **English** | [简体中文](README.zh-CN.md)
+铁轨不会忘记——每一趟列车，都是对遗忘的抵抗。  
+**English** | [简体中文](README.zh-CN.md)
 
 </div>
 
-**A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
+---
 
 **A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
 
 ---
 
-![Laboratory](Assets/Resources/bg/lab.jpg)
+<img src="Assets/Resources/bg/lab.jpg" width="70%" alt="Laboratory of Intelligent Dispatch Systems">
 
 *The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.*
 
