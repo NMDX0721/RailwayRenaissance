@@ -89,6 +89,23 @@ USET 不是一家普通公司。它的股权结构设计使其能在国际制裁
 
 每个引擎的详细公式和设计文档见下表：
 
+**新游戏启动流程：**
+
+```mermaid
+sequenceDiagram
+    participant Title as 标题界面
+    participant New as 新游戏设置
+    participant World as 千里马创世核
+    participant VN as 序章 VN
+    participant Game as 经营模拟
+    Title->>New: 点击"新游戏"
+    New->>World: 生成种子码 RR-XXXXX-YYYYY
+    World->>World: 城市模板 / 依赖图 / 铁路网 / GlobalRules
+    World->>VN: 初始化世界状态
+    VN->>Game: Day 4 过渡到经营
+    Game->>Game: 日循环（决策→惯性→事件→结算）
+```
+
 <details>
 <summary><strong>沙本位经济核</strong>——经济模拟引擎</summary>
 
@@ -460,7 +477,21 @@ Assets/
 ![Phase 3](https://img.shields.io/badge/Phase_3-资产生成-orange)
 ![Phase 4](https://img.shields.io/badge/Phase_4-整合打磨-lightgrey)
 
-已实现：序章剧本 · VN→经营桥接 · 经济模拟 · 员工系统 · 随机事件 · USET 对手 AI · 新手引导 · 统一存档 · 术语高亮 · **波动引擎 (L1–L4 + fBm)** · **GlobalRules（种子驱动配置）** · **惯性系统（历史基线 + 非线性阈值）** · **8 级技能树（5 系统 × 19 子技能）** · **社会对比效应** · **师徒传承 + 工资谈判** · **协同效应 + 经营姿态联动**。
+```mermaid
+pie title 开发进度
+    "已完成" : 60
+    "进行中" : 20
+    "计划中" : 20
+```
+
+**已实现：**
+- [x] 序章剧本 · VN→经营桥接 · 统一存档 · 术语高亮
+- [x] 经济模拟引擎 · 五条趋势线 · 惯性系统（历史基线 + 非线性阈值）
+- [x] 员工系统 · 8 级技能树（5 系统 × 19 子技能） · 社会对比效应 · 师徒传承 · 工资谈判 · 协同效应 · 经营姿态联动
+- [x] USET 对手 AI · 渗透算法 · 铁龙计划 · 随机事件 · 波动引擎（L1–L4 + fBm）
+- [x] 新手引导 · GlobalRules（种子驱动配置）
+- [ ] 资产生成（角色立绘、场景、车辆模型）
+- [ ] 整合打磨（性能优化、本地化、测试覆盖）
 
 ---
 

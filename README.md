@@ -102,6 +102,23 @@ The game runs on five connected simulation engines, each with its own specificat
 
 Detailed formulas and design documents for each engine are listed below:
 
+**New game startup flow:**
+
+```mermaid
+sequenceDiagram
+    participant Title as Title Screen
+    participant New as New Game Setup
+    participant World as Chollima Genesis Core
+    participant VN as Prologue VN
+    participant Game as Simulation
+    Title->>New: Click "New Game"
+    New->>World: Generate seed RR-XXXXX-YYYYY
+    World->>World: City templates / Dependency graph / Rail network / GlobalRules
+    World->>VN: Initialise world state
+    VN->>Game: Day 4 transition to gameplay
+    Game->>Game: Daily loop (decision → inertia → event → settlement)
+```
+
 <details>
 <summary>Sand Standard Core — the economic engine</summary>
 
@@ -450,7 +467,21 @@ Assets/
 ![Phase 3](https://img.shields.io/badge/Phase_3-Asset_generation-orange)
 ![Phase 4](https://img.shields.io/badge/Phase_4-Integration_&_polish-lightgrey)
 
-**Implemented:** prologue VN scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary · **FluctuationEngine (L1–L4 + fBm)** · **GlobalRules (seed-driven config)** · **Inertia (historical baseline + nonlinear thresholds)** · **8-level skill tree (5 systems × 19 sub-skills)** · **Social comparison effect** · **Mentorship + wage negotiation** · **Synergy + stance linkage**.
+```mermaid
+pie title Development Progress
+    "Completed" : 60
+    "In Progress" : 20
+    "Planned" : 20
+```
+
+**Implemented:**
+- [x] Prologue VN scripts · VN-to-gameplay bridge · unified save/load · term glossary
+- [x] Economy simulation · five trendlines · inertia system (historical baseline + nonlinear thresholds)
+- [x] Crew system · 8-level skill tree (5 systems × 19 sub-skills) · social comparison · mentorship · wage negotiation · synergy · stance linkage
+- [x] USET rival AI · penetration algorithm · Iron Dragon Project · random events · FluctuationEngine (L1–L4 + fBm)
+- [x] Tutorial · GlobalRules (seed-driven config)
+- [ ] Asset generation (character sprites, scenes, vehicle models)
+- [ ] Integration & polish (performance optimisation, localisation, test coverage)
 
 ---
 
