@@ -588,6 +588,24 @@ public class VNManager : MonoBehaviour
         return false;
     }
 
+    private bool IsPointerOverInteractiveUI()
+    {
+        if (uiDoc == null) return false;
+        var panel = uiDoc.rootVisualElement.panel;
+        var screenPos = Input.mousePosition;
+        var localPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
+        var picked = panel.Pick(localPos);
+        if (picked == null) return false;
+        // 检查点击的元素或其父级是否为 Button
+        var cur = picked;
+        while (cur != null)
+        {
+            if (cur is UnityEngine.UIElements.Button) return true;
+            cur = cur.parent;
+        }
+        return false;
+    }
+
     public void StartScript(string scriptName)
     {
         if (string.IsNullOrEmpty(scriptName)) return;
@@ -989,7 +1007,7 @@ public class VNManager : MonoBehaviour
     {
         yield return null;
         if (saveLoadUI != null)
-            saveLoadUI.ShowPanel(true);
+            saveLoadUI.OpenLoadPanel((slotIndex) => { });
     }
 
     private void StartAutoPlayTimer()

@@ -5,8 +5,12 @@ public class StationBulletinUI : MonoBehaviour
 {
     private UIDocument uiDoc;
     private Font gameFont;
-    private VisualElement panel;
     private VisualElement overlay;
+    private VisualElement panel;
+    private Slider bgmVolumeSlider;
+    private Slider sfxVolumeSlider;
+    private Toggle autoModeToggle;
+    private Toggle skipReadToggle;
 
     public void Init(UIDocument document)
     {
@@ -15,10 +19,15 @@ public class StationBulletinUI : MonoBehaviour
         BuildUI();
     }
 
+    private FontDefinition GetFontDef()
+    {
+        return new FontDefinition { font = gameFont };
+    }
+
     private void BuildUI()
     {
         var root = uiDoc.rootVisualElement;
-        var fontDef = new FontDefinition { font = gameFont };
+        var fontDef = GetFontDef();
 
         overlay = new VisualElement();
         overlay.style.position = Position.Absolute;
@@ -27,6 +36,10 @@ public class StationBulletinUI : MonoBehaviour
         overlay.style.alignItems = Align.Center;
         overlay.style.justifyContent = Justify.Center;
         overlay.style.display = DisplayStyle.None;
+        overlay.RegisterCallback<ClickEvent>(e =>
+        {
+            if (e.target == overlay) Hide();
+        });
         root.Add(overlay);
 
         panel = new VisualElement();
@@ -39,7 +52,7 @@ public class StationBulletinUI : MonoBehaviour
         panel.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         panel.style.borderTopLeftRadius = 10; panel.style.borderTopRightRadius = 10;
         panel.style.borderBottomLeftRadius = 10; panel.style.borderBottomRightRadius = 10;
-        panel.style.width = 600;
+        panel.style.width = 520;
         panel.style.paddingLeft = 30; panel.style.paddingRight = 30;
         panel.style.paddingTop = 20; panel.style.paddingBottom = 20;
         overlay.Add(panel);
@@ -54,7 +67,7 @@ public class StationBulletinUI : MonoBehaviour
         header.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
         header.style.paddingBottom = 10;
 
-        var title = new Label("站务公告");
+        var title = new Label("设置");
         title.style.fontSize = 28;
         title.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
         title.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -71,30 +84,26 @@ public class StationBulletinUI : MonoBehaviour
         header.Add(closeBtn);
         panel.Add(header);
 
-        // Content
+        // Content scroll
         var content = new ScrollView(ScrollViewMode.Vertical);
         content.style.flexGrow = 1;
-        content.style.maxHeight = 400;
+        content.style.maxHeight = 450;
 
-        AddInfoLine(content, "游戏版本", "v1.0.0 (2026)");
-        AddInfoLine(content, "引擎版本", "Unity 6000.5.8f1");
-        AddInfoLine(content, "渲染管线", "Universal Render Pipeline (URP)");
-        AddInfoLine(content, "沙能时代", "2076年 — 世界向铁路谢幕的那一年");
-        AddInfoLine(content, "开发状态", "核心系统已完成，资产生成进行中");
+        // ── 音频设置 ──
+        AddSectionTitle(content, "音频", fontDef);
+        AddSliderRow(content, "BGM 音量", 0, 100, 80, out bgmVolumeSlider, fontDef);
+        AddSliderRow(content, "SFX 音量", 0, 100, 100, out sfxVolumeSlider, fontDef);
 
-        // 空行 + 分隔
-        var sep = new Label("── 运营简报 ──");
-        sep.style.fontSize = 20;
-        sep.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        sep.style.unityTextAlign = TextAnchor.MiddleCenter;
-        sep.style.unityFontDefinition = fontDef;
-        sep.style.marginTop = 15;
-        sep.style.marginBottom = 15;
-        content.Add(sep);
+        // ── 游戏设置 ──
+        AddSectionTitle(content, "游戏", fontDef);
+        AddToggleRow(content, "自动模式默认开启", false, out autoModeToggle, fontDef);
+        AddToggleRow(content, "跳过已读文本", true, out skipReadToggle, fontDef);
 
-        AddInfoLine(content, "雾峰线", "运营中 — 日均客流稳步回升");
-        AddInfoLine(content, "USET 动态", "渗透率监测中，暂无异常");
-        AddInfoLine(content, "车辆状态", "NF-5 耕牛号 — 例行维护正常");
+        // ── 关于 ──
+        AddSectionTitle(content, "关于", fontDef);
+        AddInfoRow(content, "游戏版本", "v1.0.0", fontDef);
+        AddInfoRow(content, "引擎版本", "Unity 6000.5.8f1", fontDef);
+        AddInfoRow(content, "渲染管线", "Universal Render Pipeline", fontDef);
 
         panel.Add(content);
 
@@ -111,24 +120,84 @@ public class StationBulletinUI : MonoBehaviour
         panel.Add(footer);
     }
 
-    private void AddInfoLine(ScrollView container, string label, string value)
+    private void AddSectionTitle(ScrollView container, string text, FontDefinition fontDef)
+    {
+        var label = new Label(text);
+        label.style.fontSize = 22;
+        label.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.9f);
+        label.style.unityFontStyleAndWeight = FontStyle.Bold;
+        label.style.unityFontDefinition = fontDef;
+        label.style.marginTop = 12;
+        label.style.marginBottom = 8;
+        label.style.borderBottomWidth = 1;
+        label.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
+        container.Add(label);
+    }
+
+    private void AddSliderRow(ScrollView container, string label, int min, int max, int defaultValue, out Slider slider, FontDefinition fontDef)
     {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row;
+        row.style.alignItems = Align.Center;
         row.style.marginBottom = 8;
+        row.style.justifyContent = Justify.SpaceBetween;
+
+        var lbl = new Label(label);
+        lbl.style.fontSize = 20;
+        lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+        lbl.style.unityFontDefinition = fontDef;
+        lbl.style.width = 120;
+        row.Add(lbl);
+
+        slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
+        slider.value = defaultValue;
+        slider.style.flexGrow = 1;
+        slider.style.height = 24;
+        row.Add(slider);
+
+        container.Add(row);
+    }
+
+    private void AddToggleRow(ScrollView container, string label, bool defaultValue, out Toggle toggle, FontDefinition fontDef)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.alignItems = Align.Center;
+        row.style.marginBottom = 8;
+        row.style.justifyContent = Justify.SpaceBetween;
+
+        var lbl = new Label(label);
+        lbl.style.fontSize = 20;
+        lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+        lbl.style.unityFontDefinition = fontDef;
+        lbl.style.width = 200;
+        row.Add(lbl);
+
+        toggle = new Toggle();
+        toggle.value = defaultValue;
+        row.Add(toggle);
+
+        container.Add(row);
+    }
+
+    private void AddInfoRow(ScrollView container, string label, string value, FontDefinition fontDef)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.marginBottom = 6;
 
         var lbl = new Label(label);
         lbl.style.width = 120;
         lbl.style.fontSize = 20;
         lbl.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.8f);
-        lbl.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        lbl.style.unityFontDefinition = fontDef;
         row.Add(lbl);
 
         var val = new Label(value);
         val.style.fontSize = 20;
         val.style.color = new Color(1f, 1f, 1f, 0.85f);
         val.style.whiteSpace = WhiteSpace.Normal;
-        val.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        val.style.unityFontDefinition = fontDef;
         row.Add(val);
 
         container.Add(row);

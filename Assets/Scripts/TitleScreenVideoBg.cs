@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Video;
+using System.IO;
 
 [RequireComponent(typeof(VideoPlayer))]
 public class TitleScreenVideoBg : MonoBehaviour

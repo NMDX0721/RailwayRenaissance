@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace WorldGen
@@ -13,7 +14,8 @@ namespace WorldGen
         public string version = "v3.0";
         public string seedCode;
 
-        public Dictionary<string, CityData> cities = new Dictionary<string, CityData>();
+        public List<CityDataEntry> citiesList = new List<CityDataEntry>();
+        [NonSerialized] public Dictionary<string, CityData> cities = new Dictionary<string, CityData>();
         public ResourceDistributionData resourceDistribution = new ResourceDistributionData();
         public string politicalTendency = "market";
         public int politicalCycleLength = 180;
@@ -23,6 +25,15 @@ namespace WorldGen
         public List<RailEdgeData> railEdges = new List<RailEdgeData>();
         public GlobalRules globalRules = new GlobalRules();
         public string[] storyTags = Array.Empty<string>();
+
+        /// <summary>反序列化后调用，将 citiesList 同步到 cities 字典。</summary>
+        public void SyncCities()
+        {
+            cities.Clear();
+            foreach (var entry in citiesList)
+                if (!string.IsNullOrEmpty(entry.key) && entry.value != null)
+                    cities[entry.key] = entry.value;
+        }
     }
 
     [Serializable]
@@ -39,6 +50,13 @@ namespace WorldGen
         public string politicalLean = "neutral";
         public int unlockRegion;
         public string[] npcPool = Array.Empty<string>();
+    }
+
+    [Serializable]
+    public class CityDataEntry
+    {
+        public string key;
+        public CityData value = new CityData();
     }
 
     [Serializable]
