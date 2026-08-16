@@ -35,7 +35,7 @@ The year the world gave up on railways, and the day something impossible quietly
 
 Three days later, a researcher would leave this room to revive a railway on the brink of decommissioning in a mist-wrapped mountain village called Wufeng — 2,500 kilometres and one impossible bet away.
 
-**Every great story needs a place where it begins. This must be it.**
+**Every story needs a place where it begins. This must be it.**
 
 ---
 
@@ -45,11 +45,11 @@ It is 2076. Twenty-six years ago, sand energy was a British laboratory experimen
 
 In 2050, a British engineering team invented the sand-energy principle. The following year, the Democratic People's Republic of Korea — holder of the world's largest sand reserves — acquired the entire patent portfolio and established **United Sand Energy Technology (USET)** in Pyongyang. By 2053, the first commercial sand-energy vehicle, the "Sand Flying Pig," was in mass production. By 2056, rail passenger volume had fallen 34%. By 2068, ninety-one nations had dissolved their state railway systems. In 2072, the global rail network effectively shut down.
 
-The DPRK, once a pariah state, became the world's sole superpower — not through military conquest, but through control of the resource that powers everything: sand.
+The DPRK, once isolated, became the world's sole superpower — not through military conquest, but through control of the resource that powers everything: sand.
 
 USET is not merely a company. It is a joint venture structured for plausible deniability: a Luxembourg holding platform (51% nominally registered) and the **Baekdu Mountain Power Corporation** (49%, the DPRK state entity) hold the shares. Actual control flows through three undisclosed agreements — management, technology licensing, and exclusive sand supply. On paper, it is a normal multinational. In reality, it is a state instrument.
 
-Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. The railway's six strengths mirror each of these — a design intentionality that the player must exploit.
+Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. The railway's six strengths mirror each of these — a design intentionality that the player can exploit.
 
 The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village in central China, and must prove that the iron road still has a place in a world that has moved on.
 
@@ -328,7 +328,7 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 Prologue VN (Day 0–4) → Survival → Stability → Growth → Breakthrough → Expansion → National network
 ```
 
-The game is structured around an implicit three-layer time model: daily decisions, monthly evaluations, and yearly strategic shifts. Political cycles affect subsidies. Random events — storms, oil-price spikes, holiday crowds, USET campaigns — vary the pressure across seasons. Every decision carries inertia; the player is always, in every moment, carrying the past.
+The game is structured around an implicit three-layer time model: daily decisions, monthly evaluations, and yearly strategic shifts. Political cycles affect subsidies. Random events — storms, oil-price spikes, holiday crowds, USET campaigns — vary the pressure across seasons. Every decision carries inertia. The player is always carrying the past.
 
 ---
 
