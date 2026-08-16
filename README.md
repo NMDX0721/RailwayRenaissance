@@ -3,8 +3,12 @@
 # Railway Renaissance: Sand Energy Impact
 
 [![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)](https://github.com/NMDX721/RailwayRenaissance)
+[![C#](https://img.shields.io/badge/C%23-.NET%208.0-512BD4?logo=csharp&logoColor=white)](https://dotnet.microsoft.com)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)](https://github.com/NMDX0721/RailwayRenaissance)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![GitHub repo size](https://img.shields.io/github/repo-size/NMDX0721/RailwayRenaissance)](https://github.com/NMDX0721/RailwayRenaissance)
+[![GitHub last commit](https://img.shields.io/github/last-commit/NMDX0721/RailwayRenaissance)](https://github.com/NMDX0721/RailwayRenaissance)
 
 <div align="center">
 <img src="Assets/Resources/bg/home_banner.jpg" width="80%" alt="Railway Renaissance: Sand Energy Impact">
@@ -200,16 +204,49 @@ Each crew member has a **skill tree** rather than a single linear level. The tre
 | 6 | Chief Instructor Driver | Shunting District Chief | Area Station Master | Route Operations Director |
 | 7 | Master Driver | Chief Shunter | Regional Station Master | National Control Centre Director |
 
-| Level | Rolling Stock·Mechanic (Germany) | Track·Lineman (Japan) | Signalling·Signaller (UK) | Station·Conductor (International) |
-|-------|-------------------------------|---------------------|--------------------------|----------------------------------|
+| Level | RS·Mechanic (Germany) | RS·Carriage Fitter (UK) | RS·Brake Fitter (France) | RS·Electrician (Japan) |
+|-------|----------------------|------------------------|-------------------------|----------------------|
 | 0 | Untrained | Untrained | Untrained | Untrained |
-| 1 | Apprentice (Auszubildender) | Track Trainee (保線見習) | Trainee Signaller | Trainee |
-| 2 | Journeyman (Geselle) | Lineman (保線工) | Signaller (Grade 2-3) | Conductor |
-| 3 | Master (Meister) | Track Chief (保線主任) | Signaller (Grade 4-5) | Train Captain |
-| 4 | Operations Manager (Betriebsleiter) | District Chief (保線区長) | Signaller (Grade 6-7) | Chief Conductor |
-| 5 | Senior Master (Obermeister) | Track Manager (保線管理長) | Signalling Supervisor | Conductor Captain |
-| 6 | Technician (Techniker) | Track Director (保線統括長) | Signalling Manager | Chief Steward |
-| 7 | Engineer (Ingenieur) | Track Head (保線本部長) | Signalling Engineering Manager | Inspector General |
+| 1 | Apprentice (Auszubildender) | Apprentice | Brake Trainee (Apprenti) | Electrical Trainee (電気見習) |
+| 2 | Journeyman (Geselle) | Junior Technician | Brake Fitter (Agent de maintenance) | Electrician (電気工) |
+| 3 | Master (Meister) | Technician | Brake Technician (Technicien de maintenance) | Chief Electrician (電気主任) |
+| 4 | Operations Manager (Betriebsleiter) | Senior Technician | Senior Brake Tech (Technicien supérieur) | Electrical Engineer (電気技術員) |
+| 5 | Senior Master (Obermeister) | Technician Engineer | Team Leader (Responsable d'équipe) | Electrical Manager (電気管理長) |
+| 6 | Technician (Techniker) | Senior Engineer | Brake Engineer (Ingénieur maintenance) | Electrical Director (電気統括長) |
+| 7 | Engineer (Ingenieur) | Master Technician | Technical Director (Directeur technique) | Electrical Head (電気本部長) |
+
+| Level | Track·Lineman (Japan) | Track·Bridge & Tunnel (International) | Track·NDT Inspector (Germany) |
+|-------|----------------------|--------------------------------------|------------------------------|
+| 0 | Untrained | Untrained | Untrained |
+| 1 | Track Trainee (保線見習) | B&T Trainee | NDT Assistant (Prüfhelfer) |
+| 2 | Lineman (保線工) | B&T Worker | NDT Inspector (Prüfer) |
+| 3 | Track Chief (保線主任) | B&T Technician | NDT Inspector MT (Zerstörungsfreier Prüfer MT) |
+| 4 | District Chief (保線区長) | B&T Inspector | NDT Inspector UT (Zerstörungsfreier Prüfer UT) |
+| 5 | Track Manager (保線管理長) | B&T Supervisor | NDT Supervisor (Prüfaufsicht) |
+| 6 | Track Director (保線統括長) | B&T Manager | NDT Engineer (Prüfingenieur) |
+| 7 | Track Head (保線本部長) | Chief Bridge Engineer | Expert (Sachverständiger) |
+
+| Level | Signalling·Signaller (UK) | Signalling·Comms (France) | Signalling·ETCS (Europe) |
+|-------|--------------------------|--------------------------|--------------------------|
+| 0 | Untrained | Untrained | Untrained |
+| 1 | Trainee Signaller | Comms Trainee (Stagiaire télécom) | ETCS Trainee |
+| 2 | Signaller (Grade 2-3) | Comms Agent (Agent télécom) | ETCS Technician |
+| 3 | Signaller (Grade 4-5) | Comms Technician (Technicien télécom) | ETCS Engineer |
+| 4 | Signaller (Grade 6-7) | Senior Comms Tech (Technicien supérieur télécom) | ETCS Senior Engineer |
+| 5 | Signalling Supervisor | Comms Manager (Responsable télécom) | ETCS System Manager |
+| 6 | Signalling Manager | Comms Engineer (Ingénieur télécom) | ETCS Project Director |
+| 7 | Signalling Engineering Manager | Comms Director (Directeur des télécommunications) | ETCS Programme Director |
+
+| Level | Station·Conductor (International) | Station·Ticket Clerk (Japan) | Station·Freight Clerk (Germany) |
+|-------|----------------------------------|-----------------------------|-------------------------------|
+| 0 | Untrained | Untrained | Untrained |
+| 1 | Trainee | Ticket Trainee (窓口見習) | Freight Trainee (Güterverkehrsauszubildender) |
+| 2 | Conductor | Ticket Clerk (窓口係) | Freight Clerk (Güterverkehrsmitarbeiter) |
+| 3 | Train Captain | Sales Chief (営業主任) | Freight Dispatcher (Güterverkehrsdisponent) |
+| 4 | Chief Conductor | Passenger Chief (旅客主任) | Freight Master (Güterverkehrsmeister) |
+| 5 | Conductor Captain | Station Manager (駅務管理長) | Freight Operations Manager (Betriebsleiter Güterverkehr) |
+| 6 | Chief Steward | Passenger Manager (旅客管理長) | Freight Regional Manager (Bereichsleiter Güterverkehr) |
+| 7 | Inspector General | Sales Director (営業本部長) | Freight Director (Direktor Güterverkehr) |
 
 </details>
 
