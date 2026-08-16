@@ -186,11 +186,11 @@ public static class CrewManager
 
     // ===== T6：工资/谈判 波动种子与常量 =====
     private static float salaryTimeSeed = 0f;                 // 工资/谈判波动时间种子（每日递增）
-    private const float MentorShareRate = 0.1f;               // 师傅获得徒弟当日收益的比例（10%）
-    private const float MentorFatigueCost = 5f;               // 师傅带徒每日疲劳消耗
-    private const float WageNegotiationSkillJump = 5f;        // 单日技能增长阈值（>5 点触发工资谈判）
+    private const float MentorShareRate = 0.1f;               // 默认值，由 skillGrowthRules.mentorshipMentorGainRate 覆盖
+    private const float MentorFatigueCost = 5f;               // 默认值，由 skillGrowthRules.mentorshipMentorFatigue 覆盖
+    private const float WageNegotiationSkillJump = 5f;        // 默认值，由 skillGrowthRules.wageNegotiationThreshold 覆盖
 
-    // 培训每次消耗沙币
+    // 培训每次消耗沙币（默认值，由 skillGrowthRules.trainingCost 覆盖）
     private const int TrainingCost = 200;
 
     // —— G11：城市 npc_pool → 招募角色池（key=城市ID，value=可招募角色ID列表） ——
@@ -938,8 +938,9 @@ public static class CrewManager
                     {
                         EnsureFluctuationEngine();
 
-                        // 师傅收益基数 = 徒弟当日 exp 收益 × 10%
-                        float mentorBase = totalExpGainToday * MentorShareRate;
+                        // 师傅收益基数 = 徒弟当日 exp 收益 × 师傅收益比例（来自 GlobalRules）
+                        float mentorShare = skillGrowthRules?.mentorshipMentorGainRate ?? MentorShareRate;
+                        float mentorBase = totalExpGainToday * mentorShare;
 
                         // 等级差：师傅最高技能 - 徒弟最高技能（0-100）
                         float mentorMaxLevel = 0f;
@@ -966,7 +967,8 @@ public static class CrewManager
                         AddSkillExp(mentor, FindSkill(mentor, GetCoreSkillForRole(mentor.role)), mentorGain);
 
                         // 带徒疲劳 +5
-                        mentor.fatigue = Mathf.Clamp(mentor.fatigue + MentorFatigueCost, 0, 100);
+                        float mentorFatigue = skillGrowthRules?.mentorshipMentorFatigue ?? MentorFatigueCost;
+                        mentor.fatigue = Mathf.Clamp(mentor.fatigue + mentorFatigue, 0, 100);
 
                         Debug.Log("[CrewManager] 师徒收益：" + mentor.name + " 带徒 " + member.name + "，获得 " + mentorGain.ToString("F2") + " 技能经验，疲劳 +5。");
                     }
@@ -977,7 +979,8 @@ public static class CrewManager
             // 单日技能增长 > 5 点（技能树子技能或旧技能等级）→ 触发加薪谈判。
             // 忠诚度变化由 FluctuationEngine 计算（wage_negotiation 权重表），不硬编码数值。
             // 自动判定：工资按时发放视为接受加薪（工资已随技能等级上调，见 GameData.CalculateWageCost）。
-            if (maxSkillLevelJumpToday > WageNegotiationSkillJump || maxSubSkillGainToday > WageNegotiationSkillJump)
+            float negotiationThreshold = skillGrowthRules?.wageNegotiationThreshold ?? WageNegotiationSkillJump;
+            if (maxSkillLevelJumpToday > negotiationThreshold || maxSubSkillGainToday > negotiationThreshold)
             {
                 ProcessWageNegotiation(member, wagePaidToday);
             }
@@ -1343,13 +1346,17 @@ public static class CrewManager
         return curve[level];
     }
 
-    /// <summary>计算岗位匹配系数：核心技能 ×1.0 / 相关技能 ×0.5 / 不相关 ×0.2。</summary>
+    /// <summary>计算岗位匹配系数：核心技能 ×1.0 / 相关技能 ×0.5 / 不相关 ×0.2，系数来自 GlobalRules。</summary>
     public static float GetMatchCoefficient(string role, string skillName)
     {
+        float core = skillGrowthRules?.matchCoefficientCore ?? 1.0f;
+        float related = skillGrowthRules?.matchCoefficientRelated ?? 0.5f;
+        float unrelated = skillGrowthRules?.matchCoefficientUnrelated ?? 0.2f;
+
         // 核心技能匹配
         if (CoreSkillByRole.TryGetValue(role, out string coreSkill) && coreSkill == skillName)
         {
-            return 1.0f;
+            return core;
         }
 
         // 相关技能匹配
@@ -1359,13 +1366,13 @@ public static class CrewManager
             {
                 if (s == skillName)
                 {
-                    return 0.5f;
+                    return related;
                 }
             }
         }
 
         // 不相关
-        return 0.2f;
+        return unrelated;
     }
 
     /// <summary>设置师徒关系：学徒 → 师傅。师傅必须是已登记员工，且不能是自己。</summary>
@@ -1401,11 +1408,15 @@ public static class CrewManager
         return null;
     }
 
-    /// <summary>计算师傅系数：师傅等级≥4级 ×2.0 / 有师傅 ×1.5 / 无师傅 ×1.0。</summary>
+    /// <summary>计算师傅系数：师傅等级≥阈值 ×高倍率 / 有师傅 ×普通倍率 / 无师傅 ×1.0，系数来自 GlobalRules。</summary>
     /// <param name="crewId">学徒ID</param>
     /// <param name="skillName">按哪个技能判断师傅等级（null 则取师傅最高等级技能）。</param>
     public static float GetMentorCoefficient(string crewId, string skillName = null)
     {
+        float highMult = skillGrowthRules?.mentorHighLevelMultiplier ?? 2.0f;
+        float normalMult = skillGrowthRules?.mentorNormalMultiplier ?? 1.5f;
+        float highLevelThreshold = skillGrowthRules?.mentorHighLevelThreshold ?? 4f;
+
         if (!MentorDictionary.TryGetValue(crewId, out string mentorId))
         {
             return 1.0f; // 无师傅
@@ -1431,7 +1442,7 @@ public static class CrewManager
             }
         }
 
-        return maxMentorLevel >= 55 ? 2.0f : 1.5f;
+        return maxMentorLevel >= threshold100 ? highMult : normalMult;
     }
 
     /// <summary>
@@ -1454,16 +1465,24 @@ public static class CrewManager
             return false;
         }
 
-        if (GameData.GetMoney() < TrainingCost)
+        float actualCost = GetTrainingCost();
+        if (GameData.GetMoney() < actualCost)
         {
-            Debug.Log("[CrewManager] 资金不足，无法培训 " + member.name + "（需要 " + TrainingCost + " 沙币）。");
+            Debug.Log("[CrewManager] 资金不足，无法培训 " + member.name + "（需要 " + actualCost + " 沙币）。");
             return false;
         }
 
-        GameData.AddMoney(-TrainingCost);
-        member.trainingCooldownDays = 7;
-        Debug.Log("[CrewManager] " + member.name + " 已安排培训（下次可在 7 天后再次培训）。");
+        GameData.AddMoney(-actualCost);
+        float cooldown = skillGrowthRules?.trainingCooldownDays ?? 7f;
+        member.trainingCooldownDays = Mathf.RoundToInt(cooldown);
+        Debug.Log("[CrewManager] " + member.name + " 已安排培训（下次可在 " + cooldown + " 天后再次培训）。");
         return true;
+    }
+
+    /// <summary>获取培训费用（来自 GlobalRules，默认 200 沙币）。</summary>
+    private static float GetTrainingCost()
+    {
+        return skillGrowthRules?.trainingCost ?? TrainingCost;
     }
 
     // ===== T6：师徒传承 + 技能↔工资平衡 =====

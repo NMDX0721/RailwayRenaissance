@@ -46,6 +46,28 @@ namespace RailwayRenaissance.Core
         public float quitProbabilityBase = 0.1f;         // 离职概率基准
         public float synergyCoefficient = 0.2f;          // 协同效应系数
 
+        // ===== 师徒传承 =====
+        public float mentorshipApprenticeBonus = 2.0f;    // 学徒学习倍率
+        public float mentorshipMentorGainRate = 0.1f;     // 师傅收益比例
+        public float mentorshipMentorFatigue = 5f;        // 师傅每日额外疲劳
+        public float mentorHighLevelThreshold = 4f;       // 师傅高等级阈值
+        public float mentorHighLevelMultiplier = 2.0f;    // 高等级师傅倍率
+        public float mentorNormalMultiplier = 1.5f;       // 普通师傅倍率
+
+        // ===== 工资谈判 =====
+        public float wageNegotiationThreshold = 5f;       // 触发工资谈判的技能提升阈值
+        public float wageNegotiationAcceptBonus = 5f;     // 接受加薪的忠诚度奖励
+        public float wageNegotiationRefusePenalty = 15f;  // 拒绝加薪的忠诚度惩罚
+
+        // ===== 岗位匹配系数 =====
+        public float matchCoefficientCore = 1.0f;          // 核心技能匹配
+        public float matchCoefficientRelated = 0.5f;       // 相关技能匹配
+        public float matchCoefficientUnrelated = 0.2f;     // 不相关技能匹配
+
+        // ===== 培训 =====
+        public float trainingCost = 200f;                  // 培训费用
+        public float trainingCooldownDays = 7f;             // 培训冷却天数
+
         // ===== 非线性阈值 =====
         public float fatigueDangerThreshold = 80f;       // 疲劳危险阈值
         public float fatigueDangerMultiplier = 2.0f;     // 疲劳危险倍率
