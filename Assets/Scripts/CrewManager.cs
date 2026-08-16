@@ -1401,39 +1401,6 @@ public static class CrewManager
         return null;
     }
 
-    /// <summary>计算员工技能工资。基于技能等级平均值，使用 FluctuationEngine 计算。</summary>
-    public static float CalculateSkillSalary(CrewMember member)
-    {
-        if (member == null) return 0f;
-        float totalLevel = 0f;
-        int count = 0;
-        if (member.skills != null)
-        {
-            for (int i = 0; i < member.skills.Length; i++)
-            {
-                totalLevel += member.skills[i].level;
-                count++;
-            }
-        }
-        if (member.skillTree != null)
-        {
-            foreach (var node in member.skillTree)
-            {
-                if (node.subSkills != null)
-                {
-                    for (int i = 0; i < node.subSkills.Length; i++)
-                    {
-                        totalLevel += node.subSkills[i].level;
-                        count++;
-                    }
-                }
-            }
-        }
-        float avgLevel = count > 0 ? totalLevel / count : 0f;
-        float baseSal = member.baseSalary > 0 ? member.baseSalary : 1000;
-        return baseSal * (1f + avgLevel / 100f * 0.5f);
-    }
-
     /// <summary>计算师傅系数：师傅等级≥4级 ×2.0 / 有师傅 ×1.5 / 无师傅 ×1.0。</summary>
     /// <param name="crewId">学徒ID</param>
     /// <param name="skillName">按哪个技能判断师傅等级（null 则取师傅最高等级技能）。</param>
