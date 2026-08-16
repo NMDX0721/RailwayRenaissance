@@ -387,7 +387,7 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 
 ---
 
-## AI 驱动改造
+## AI 原生重构支持
 
 本项目专为生成式人工智能改造而设计优化——不仅面向熟悉 C# 的开发者。
 
