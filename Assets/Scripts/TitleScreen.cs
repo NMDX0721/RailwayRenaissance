@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
+using System.IO;
 
 [RequireComponent(typeof(UIDocument))]
 public class TitleScreen : MonoBehaviour
