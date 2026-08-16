@@ -140,27 +140,27 @@ USET 不是一家普通公司。它的股权结构精心设计，以便在国际
 <details>
 <summary>各系统子技能 0-7 级职级命名（点击展开）</summary>
 
-| 等级 | 行车·司机（中国） | 行车·调车员（中国） | 行车·值班员（中国） | 行车·调度员（中国） |
+| 等级 | 行车·司机（中国） | 行车·调车员（中国） | 行车·值班员（日本） | 行车·调度员（英国） |
 |------|-----------------|-------------------|-------------------|-------------------|
 | 0 | 未培训 | 未培训 | 未培训 | 未培训 |
-| 1 | 学习司机 | 调车学员 | 学员 | 学员 |
-| 2 | 副司机 | 连结员 | 助理值班员 | 助理调度 |
-| 3 | 司机 | 制动员 | 车站值班员 | 调度员 |
-| 4 | 指导司机 | 调车长 | 值班主任 | 主任调度 |
-| 5 | 高级指导司机 | 调车指导 | 调度员 | 调度长 |
-| 6 | 首席指导司机 | 调车区长 | 调度长 | 调度处长 |
-| 7 | 特级司机 | 调车总长 | 总调度长 | 总调度长 |
+| 1 | 学习司机 | 调车学员 | 駅員（係員） | Trainee Controller |
+| 2 | 副司机 | 连结员 | 指導係 | Service Controller |
+| 3 | 司机 | 制动员 | 主任 | Senior Controller |
+| 4 | 指导司机 | 调车长 | 主務 | Control Manager |
+| 5 | 高级指导司机 | 调车指导 | 助役（副駅長） | Operations Manager |
+| 6 | 首席指导司机 | 调车区长 | 駅長 | Route Operations Director |
+| 7 | 特级司机 | 调车总长 | 区域駅長 | National Control Centre Director |
 
-| 等级 | 机辆·机车钳工（德国） | 线路·线路工（日本） | 信号·信号工（英国） | 站务·列车员（国际） |
+| 等级 | 机辆·机车钳工（德国） | 线路·线路工（日本） | 信号·信号工（英国 Network Rail） | 站务·列车员（国际） |
 |------|---------------------|-------------------|-------------------|-------------------|
 | 0 | 未培训 | 未培训 | 未培训 | 未培训 |
-| 1 | 学徒工（Auszubildender） | 保線見習 | 见习生（Apprentice） | 实习员 |
-| 2 | 技工（Geselle） | 保線工 | 初级技术员（Junior Technician） | 列车员 |
-| 3 | 师傅（Meister） | 保線主任 | 技术员（Technician） | 列车长 |
-| 4 | 运营主管（Betriebsleiter） | 保線区長 | 高级技术员（Senior Technician） | 乘务主任 |
-| 5 | 高级师傅（Obermeister） | 保線管理長 | 信号工程师（Signalling Engineer） | 乘务队长 |
-| 6 | 技术员（Techniker） | 保線統括長 | 高级工程师（Senior Engineer） | 首席乘务长 |
-| 7 | 工程师（Ingenieur） | 保線本部長 | 首席工程师（Principal Engineer） | 乘务总长 |
+| 1 | 学徒工（Auszubildender） | 保線見習 | Trainee Signaller | 实习员 |
+| 2 | 技工（Geselle） | 保線工 | Signaller（Grade 2-3） | 列车员 |
+| 3 | 师傅（Meister） | 保線主任 | Signaller（Grade 4-5） | 列车长 |
+| 4 | 运营主管（Betriebsleiter） | 保線区長 | Signaller（Grade 6-7） | 乘务主任 |
+| 5 | 高级师傅（Obermeister） | 保線管理長 | Signalling Supervisor | 乘务队长 |
+| 6 | 技术员（Techniker） | 保線統括長 | Signalling Manager | 首席乘务长 |
+| 7 | 工程师（Ingenieur） | 保線本部長 | Signalling Engineering Manager | 乘务总长 |
 
 </details>
 
