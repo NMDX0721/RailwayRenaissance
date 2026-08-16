@@ -12,6 +12,13 @@ public class CrewMember
     public int fatigue;
     public float loyalty;
     public SkillData[] skills;
+    public SkillTreeNode[] skillTree;
+
+    // === 隐藏属性 ===
+    public float hiddenTalent;        // 0-100
+    public float hiddenAmbition;      // 0-100
+    public float hiddenPatience;      // 0-100
+    public float hiddenIntelligence;  // 0-100
 
     // === 疲劳系统字段 ===
     public int consecutiveWorkDays;  // 连续工作天数
@@ -28,6 +35,41 @@ public class SkillData
     public int level;
     public int maxLevel;
     public float exp; // 经验值（浮点累加，按成长曲线升级）
+}
+
+[Serializable]
+public class SkillTreeNode
+{
+    public string systemName;
+    public float parentSkillLevel;
+    public SubSkillData[] subSkills;
+
+    /// <summary>计算父技能等级 = subSkills 等级的加权平均（等权平均）。</summary>
+    public void RecalculateParentLevel()
+    {
+        if (subSkills == null || subSkills.Length == 0)
+        {
+            parentSkillLevel = 0f;
+            return;
+        }
+
+        float total = 0f;
+        for (int i = 0; i < subSkills.Length; i++)
+        {
+            total += subSkills[i].level;
+        }
+        parentSkillLevel = total / subSkills.Length;
+    }
+}
+
+[Serializable]
+public struct SubSkillData
+{
+    public string skillName;
+    public float level;             // 0-100
+    public bool isUnlocked;
+    public float[] historicalAvg;   // 最近30天历史均值
+    public int historyIndex;
 }
 
 [System.Serializable]
