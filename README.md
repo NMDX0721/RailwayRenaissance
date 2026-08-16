@@ -106,7 +106,7 @@ Detailed formulas and design documents for each engine are listed below:
 
 ```mermaid
 sequenceDiagram
-    participant Title as Title Screen
+    participant Menu as Title Screen
     participant New as New Game Setup
     participant World as Chollima Genesis Core
     participant Crew as Seonmin Personnel
@@ -114,8 +114,8 @@ sequenceDiagram
     participant Game as Simulation
     participant Rival as Iron Dragon
     
-    Title->>New: Click "New Game"
-    Title->>Title: Click "Continue" → load save, skip
+    Menu->>New: Click New Game
+    Note over Menu: Click Continue to load save
     
     New->>World: Generate seed RR-XXXXX-YYYYY
     par Parallel generation

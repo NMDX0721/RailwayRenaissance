@@ -93,7 +93,7 @@ USET 不是一家普通公司。它的股权结构设计使其能在国际制裁
 
 ```mermaid
 sequenceDiagram
-    participant Title as 标题界面
+    participant Menu as 标题界面
     participant New as 新游戏设置
     participant World as 千里马创世核
     participant Crew as 先民人事系统
@@ -101,8 +101,8 @@ sequenceDiagram
     participant Game as 经营模拟
     participant Rival as 铁龙竞争系统
     
-    Title->>New: 点击"新游戏"
-    Title->>Title: 点击"继续运营" → 读档跳过
+    Menu->>New: 点击新游戏
+    Note over Menu: 点击继续运营则读档
     
     New->>World: 生成种子码 RR-XXXXX-YYYYY
     par 并行生成
@@ -115,7 +115,7 @@ sequenceDiagram
     New->>Crew: 初始化初始团队（6 人）
     New->>Rival: 初始化 USET 渗透值（每城 0.0）
     
-    critical 序章阶段（Day 0–4）
+    critical 序章阶段（Day 0-4）
         World->>VN: 注入世界状态（城市、政治倾向）
         VN->>VN: 播放预设剧本（prologue_01 ~ prologue_10）
         VN->>VN: Day 4 关键选择
@@ -124,14 +124,14 @@ sequenceDiagram
     VN->>Game: 过渡到经营模式
     loop 每日循环
         Game->>Game: 读取惯性基线
-        Game->>Crew: DailyUpdate(疲劳 / 忠诚 / 技能成长)
-        Game->>Rival: USET 渗透增长 + 策略评估（每 30 天）
+        Game->>Crew: DailyUpdate(疲劳/忠诚/技能成长)
+        Game->>Rival: USET 渗透增长 + 策略评估（每30天）
         alt 触发事件
             Game->>VN: 调用岁月叙事引擎（事件概率计算）
-            VN-->>Game: 返回事件结果（好感度 / 补贴 / 状态变化）
+            VN-->>Game: 返回事件结果（好感度/补贴/状态变化）
         end
-        Game->>Game: 经济结算（客流 / 收入 / 补贴）
-        Game->>Game: 更新趋势线（信任 / 财政 / 渗透 / 政治 / 设施）
+        Game->>Game: 经济结算（客流/收入/补贴）
+        Game->>Game: 更新趋势线（信任/财政/渗透/政治/设施）
     end
 ```
 
