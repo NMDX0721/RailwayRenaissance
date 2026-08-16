@@ -114,7 +114,7 @@ Each trendline has its own differential equation: trust below threshold drops pa
 ```
 Trust collapse → Sand penetration accelerates → Revenue drops → Fiscal health worsens → Infrastructure decay accelerates
 ```
-The economy is loss-making by design in the early game. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
+The economy is loss-making by design in the early game. The Chinese character for "rail" (铁) is composed of "gold" (金) on the left and "loss" (失) on the right — a silent admission that railways are seldom profitable. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
 </details>
 
 <details>
