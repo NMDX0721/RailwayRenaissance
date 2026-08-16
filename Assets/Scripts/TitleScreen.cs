@@ -291,39 +291,19 @@ public class TitleScreen : MonoBehaviour
     private void SetupVideoBackground()
     {
         var clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
-        if (clip == null)
-        {
-            Debug.LogWarning("[TitleScreen] Video clip not found at Resources/Videos/cloud_sea_bg");
-            return;
-        }
+        if (clip == null) return;
 
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
 
         var player = go.AddComponent<VideoPlayer>();
-        player.playOnAwake = false;
-        player.isLooping = true;
-        player.renderMode = VideoRenderMode.RenderTexture;
-        player.audioOutputMode = VideoAudioOutputMode.None;
+        player.source = VideoSource.VideoClip;
         player.clip = clip;
-        player.Prepare();
-
-        var rt = new RenderTexture(1920, 1080, 0);
-        rt.Create();
-        player.targetTexture = rt;
-
-        var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.transform.SetParent(go.transform);
-        quad.transform.localPosition = new Vector3(0, 0, 10);
-        quad.transform.localScale = new Vector3(37.5f, 21f, 1);
-        quad.name = "VideoQuad";
-
-        Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
-        if (shader == null) shader = Shader.Find("Unlit/Texture");
-        if (shader == null) shader = Shader.Find("Unlit");
-        var mat = new Material(shader);
-        mat.mainTexture = rt;
-        quad.GetComponent<Renderer>().material = mat;
+        player.isLooping = true;
+        player.playOnAwake = true;
+        player.renderMode = VideoRenderMode.CameraFarPlane;
+        player.targetCamera = Camera.main;
+        player.audioOutputMode = VideoAudioOutputMode.None;
 
         player.Play();
     }
