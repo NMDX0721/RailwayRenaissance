@@ -202,15 +202,10 @@ public class VNSaveLoadUI : MonoBehaviour
             var slotElement = new VisualElement();
             slotElement.style.width = new Length(80, LengthUnit.Percent);
             slotElement.style.maxWidth = 650;
-            slotElement.style.height = 130;
-            slotElement.style.marginBottom = 16;
-            slotElement.style.paddingLeft = 0;
-            slotElement.style.paddingRight = 0;
-            slotElement.style.paddingTop = 0;
-            slotElement.style.paddingBottom = 0;
+            slotElement.style.height = 90;
+            slotElement.style.marginBottom = 10;
             slotElement.style.flexDirection = FlexDirection.Row;
-            slotElement.style.alignItems = Align.Stretch;
-            slotElement.style.justifyContent = Justify.FlexStart;
+            slotElement.style.alignItems = Align.Center;
             slotElement.style.backgroundColor = SlotBg;
             slotElement.style.borderTopWidth = 1;
             slotElement.style.borderBottomWidth = 1;
@@ -252,14 +247,14 @@ public class VNSaveLoadUI : MonoBehaviour
                 : new Color(1f, 1f, 1f, 0.15f);
             slotElement.Add(accentBar);
 
-            // Info section
+            // Info section — 50% left
             var infoContainer = new VisualElement();
             infoContainer.style.flexDirection = FlexDirection.Column;
-            infoContainer.style.flexGrow = 1;
-            infoContainer.style.paddingLeft = 20;
-            infoContainer.style.paddingRight = 10;
-            infoContainer.style.paddingTop = 16;
-            infoContainer.style.paddingBottom = 16;
+            infoContainer.style.width = new Length(50, LengthUnit.Percent);
+            infoContainer.style.paddingLeft = 15;
+            infoContainer.style.paddingRight = 8;
+            infoContainer.style.paddingTop = 12;
+            infoContainer.style.paddingBottom = 12;
             infoContainer.style.justifyContent = Justify.Center;
 
             // Slot number badge
@@ -324,12 +319,13 @@ public class VNSaveLoadUI : MonoBehaviour
 
             slotElement.Add(infoContainer);
 
-            // Action buttons area
+            // Action buttons area — 50% right
             var btnArea = new VisualElement();
-            btnArea.style.flexDirection = FlexDirection.Column;
+            btnArea.style.flexDirection = FlexDirection.Row;
             btnArea.style.alignItems = Align.Center;
             btnArea.style.justifyContent = Justify.Center;
-            btnArea.style.paddingRight = 20;
+            btnArea.style.width = new Length(50, LengthUnit.Percent);
+            btnArea.style.paddingRight = 10;
 
             var btnText = isSaveMode ? "保存" : "读取";
             if (isSaveMode && saveData != null)
@@ -350,8 +346,7 @@ public class VNSaveLoadUI : MonoBehaviour
             })
             { text = btnText };
 
-            actionBtn.style.width = 100;
-            actionBtn.style.marginBottom = 6;
+            actionBtn.style.width = 90;
             actionBtn.style.height = 40;
             actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
