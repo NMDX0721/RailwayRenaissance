@@ -750,7 +750,7 @@ public static class CrewManager
             foreach (SkillData s in member.skills) levelSum += s.level;
             oldSkillLevelSums[member.id] = levelSum;
             // T6: 追踪该成员当日技能经验获得
-            float totalDailyGain = 0f;
+            // (variable removed - unused)
 
             // —— 强制休息：疲劳超过80自动设为休息日 ——
             if (member.fatigue > 80)
@@ -968,7 +968,7 @@ public static class CrewManager
 
                         // 带徒疲劳 +5
                         float mentorFatigue = skillGrowthRules?.mentorshipMentorFatigue ?? MentorFatigueCost;
-                        mentor.fatigue = Mathf.Clamp(mentor.fatigue + mentorFatigue, 0, 100);
+                        mentor.fatigue = Mathf.Clamp(mentor.fatigue + Mathf.RoundToInt(mentorFatigue), 0, 100);
 
                         Debug.Log("[CrewManager] 师徒收益：" + mentor.name + " 带徒 " + member.name + "，获得 " + mentorGain.ToString("F2") + " 技能经验，疲劳 +5。");
                     }
@@ -1442,7 +1442,7 @@ public static class CrewManager
             }
         }
 
-        return maxMentorLevel >= threshold100 ? highMult : normalMult;
+        return maxMentorLevel >= highLevelThreshold ? highMult : normalMult;
     }
 
     /// <summary>
@@ -1472,7 +1472,7 @@ public static class CrewManager
             return false;
         }
 
-        GameData.AddMoney(-actualCost);
+        GameData.AddMoney(-Mathf.RoundToInt(actualCost));
         float cooldown = skillGrowthRules?.trainingCooldownDays ?? 7f;
         member.trainingCooldownDays = Mathf.RoundToInt(cooldown);
         Debug.Log("[CrewManager] " + member.name + " 已安排培训（下次可在 " + cooldown + " 天后再次培训）。");
