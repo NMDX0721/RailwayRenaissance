@@ -1004,10 +1004,16 @@ public class VNManager : MonoBehaviour
 
     private void HideVNUI()
     {
-        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        // 彻底移除菜单栏，不仅仅是隐藏
+        if (menuBar != null && menuBar.parent != null)
+        {
+            menuBar.parent.Remove(menuBar);
+            menuBar = null;
+        }
         if (dialogueBox != null) dialogueBox.Hide();
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
         characterSpriteManager?.ClearAll();
+        if (backgroundManager != null) backgroundManager.SetBackgroundImmediate("black");
     }
 
     private IEnumerator ShowLoadUIDelayed()

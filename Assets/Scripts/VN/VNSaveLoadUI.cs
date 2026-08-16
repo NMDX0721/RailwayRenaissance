@@ -335,14 +335,18 @@ public class VNSaveLoadUI : MonoBehaviour
                 if (saveData.sceneIndex >= 0)
                     chapterText += "  \u2022  第" + (saveData.sceneIndex + 1) + "章  对话" + (saveData.dialogueIndex + 1);
                 var infoLabel = new Label(chapterText);
-                infoLabel.style.fontSize = 20;
+                infoLabel.style.fontSize = 18;
                 infoLabel.style.color = new Color(1f, 1f, 1f, 0.65f);
                 infoLabel.style.unityFontDefinition = fontDef;
                 infoLabel.style.marginBottom = 4;
+                infoLabel.style.overflow = Overflow.Hidden;
+                infoLabel.style.textOverflow = TextOverflow.Ellipsis;
+                infoLabel.style.whiteSpace = WhiteSpace.Normal;
+                infoLabel.style.maxHeight = 42;
                 infoContainer.Add(infoLabel);
 
                 var timeLabel = new Label(saveData.timestamp);
-                timeLabel.style.fontSize = 17;
+                timeLabel.style.fontSize = 15;
                 timeLabel.style.color = new Color(1f, 1f, 1f, 0.35f);
                 timeLabel.style.unityFontDefinition = fontDef;
                 infoContainer.Add(timeLabel);
