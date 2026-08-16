@@ -290,42 +290,59 @@ public class TitleScreen : MonoBehaviour
 
     private void SetupVideoBackground()
     {
-        var clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
-        if (clip == null) return;
+        // Try loading via Resources (imported VideoClip)
+        VideoClip clip = null;
+        try { clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg"); } catch { }
 
-        // Create a GameObject for the video
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
         go.transform.localPosition = new Vector3(0, 0, 10);
 
-        // Quad to display the video
-        var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.transform.SetParent(go.transform);
-        quad.transform.localPosition = Vector3.zero;
-        quad.transform.localScale = new Vector3(37.5f, 21f, 1);
-        quad.name = "VideoQuad";
-
-        // RenderTexture for video output
-        var rt = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGB32);
-        rt.Create();
-
-        // Build unlit material with the render texture
-        Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
-        if (shader == null) shader = Shader.Find("Unlit/Texture");
-        var mat = new Material(shader);
-        mat.mainTexture = rt;
-        var renderer = quad.GetComponent<MeshRenderer>();
-        renderer.material = mat;
-
-        // VideoPlayer renders to RenderTexture
         var player = go.AddComponent<VideoPlayer>();
-        player.source = VideoSource.VideoClip;
-        player.clip = clip;
         player.isLooping = true;
         player.playOnAwake = true;
-        player.renderMode = VideoRenderMode.RenderTexture;
-        player.targetTexture = rt;
         player.audioOutputMode = VideoAudioOutputMode.None;
+
+        if (clip != null)
+        {
+            // Use VideoClip (imported by Unity)
+            player.source = VideoSource.VideoClip;
+            player.clip = clip;
+        }
+        else
+        {
+            // Fallback: use direct file URL (bypasses Unity import)
+            string path = System.IO.Path.Combine(Application.streamingAssetsPath, "cloud_sea_long.mp4");
+            if (System.IO.File.Exists(path))
+            {
+                player.source = VideoSource.Url;
+                player.url = path;
+            }
+            else
+            {
+                // Try Resources folder as file path
+                string resPath = System.IO.Path.Combine(Application.dataPath, "Resources", "Videos", "cloud_sea_bg.mp4");
+                if (System.IO.File.Exists(resPath))
+                {
+                    player.source = VideoSource.Url;
+                    player.url = resPath;
+                }
+                else
+                {
+                    Debug.LogError("[TitleScreen] No video file found anywhere!");
+                    GameObject.Destroy(go);
+                    return;
+                }
+            }
+        }
+
+        // Render to camera far plane (no shader, no Quad, no RenderTexture needed)
+        player.renderMode = VideoRenderMode.CameraFarPlane;
+        player.targetCamera = Camera.main;
+        player.targetCameraAlpha = 1.0f;
+
+        // Make camera render behind UI
+        Camera.main.clearFlags = CameraClearFlags.Depth;
 
         player.Play();
     }
