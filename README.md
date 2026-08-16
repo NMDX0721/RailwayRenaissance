@@ -138,7 +138,7 @@ The Iron Dragon Project is not merely a game mechanic. It is named after the Han
 
 ### The Inertia Principle
 
-The game's defining design philosophy: **you are not making choices. You are carrying the consequences of past choices.**
+The game's defining design principle: **you are not making choices. You are carrying the consequences of past choices.**
 
 Every system has inertia — a historical baseline that drags against or accelerates the effect of player actions. The formula is unified across all systems:
 
@@ -160,7 +160,7 @@ A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provid
 
 ### RDA — Ri Dispatch Algorithm / Railway Decision Assistant
 
-The player's grandfather developed the **Ri Dispatch Algorithm (RDA)**, a dynamic scheduling protocol that optimises train paths based on real-time passenger data. The player inherits both the algorithm and a phone-based assistant that runs a modified version of it — the **Railway Decision Assistant**, also abbreviated RDA.
+The player's grandfather developed the **Ri Dispatch Algorithm (RDA)**, a dynamic scheduling protocol that optimises train paths based on real-time passenger data. The player inherits both the algorithm and a phone-based assistant that runs a modified version of it — the **Railway Decision Assistant (RDA)**, sharing the same abbreviation.
 
 The RDA system unlocks progressively as the player expands their network. Initially it provides basic scheduling suggestions. Later it enables predictive maintenance alerts, automated crew rostering, and dynamic fare adjustments based on demand forecasts. The phone assistant, powered by the player's own API key, is narratively framed as a remote call to the university server — a direct line to the laboratory where the research began.
 
