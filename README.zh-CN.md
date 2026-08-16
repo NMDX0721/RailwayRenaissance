@@ -293,9 +293,6 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 
 设计规格与代码一同存储在仓库中。
 
-<details>
-<summary>设计文档</summary>
-
 | 文档 | 内容 |
 |------|------|
 | [游戏开发文档](参考资料/游戏开发文档.md) | 设计文档总索引 |
@@ -310,15 +307,11 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 | [惯性原则设计](docs/compose/specs/惯性原则设计.md) | 历史沉积、波动引擎 |
 | [铁龙竞争系统](docs/compose/specs/铁龙竞争系统.md) | USET 对手 AI |
 
-</details>
-
 ---
 
-## AI 原生模组
+## AI 开发支持
 
-本项目专为 AI 工具改造而设计——不仅面向熟悉 C# 的开发者。
-
-每一项设计决策、每一条公式、每一个系统参数都有结构化的 Markdown 文档记录，AI 代理可直接读取。文档不是事后补充——它是与代码并列的一等交付物，按机器可读的格式维护。
+项目的每一项设计决策、每一条公式、每一个系统参数都有结构化的 Markdown 文档记录，AI 代理可直接读取。文档不是事后补充——它是与代码并列的一等交付物，按机器可读的格式维护。
 
 **这意味着你可以：**
 
@@ -381,20 +374,3 @@ Phase 4: 整合打磨            ⏳ 计划中
 ---
 
 *灵感来自[《爱上火车-Last Run!!-》](https://store.steampowered.com/app/1434480/Last_Run/)和[《星露谷物语》](https://store.steampowered.com/app/413150/Stardew_Valley/)。*
-5. 通过 Unity 批处理验证编译
-
----
-
-## 贡献
-
-一个高中生的个人非商业教育项目。欢迎任何形式的贡献——美术、数值平衡、剧情、代码。[设计文档](参考资料/游戏开发文档.md)是唯一的事实来源，讨论改动请先开 issue 或 PR。
-
----
-
-## 许可
-
-[MIT](LICENSE) © 2026 NMDX0721 —— 可自由使用、复制、修改、分发，保留署名即可。不提供任何担保。
-
----
-
-*灵感来自《まいてつ》与《星露谷物语》。*
