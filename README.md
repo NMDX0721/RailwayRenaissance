@@ -56,17 +56,17 @@ The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village 
 **Sand energy timeline:**
 
 ```mermaid
-%%{init: { 'theme': 'base', 'themeVariables': { 'timelineTextColor': '#000000', 'timelineLabelColor': '#000000' } } }%%
+%%{init: { 'theme': 'base', 'themeVariables': { 'timelineTextColor': '#000000', 'timelineLabelColor': '#000000', 'timelineTitleColor': '#000000' } } }%%
 timeline
     title The Sand Era Chronicle
-    2050 : UK team invents sand energy principle : "Active Energy Lab" registered
-    2051 : DPRK acquires all patents and team : USET established in Pyongyang
-    2053 : First product "Sand Flying Pig" mass-produced : Military tank line launched
-    2056 : Rail passenger volume drops 34% for first time : End of rail golden age
-    2063 : Second-gen vehicle matrix released : Donkey/Chicken/Cow/Bear four models : "A sand vehicle for every family"
-    2068 : Rail privatization wave : Acquires 17 struggling rail operators : Zhou Dingming leads acquisitions
-    2072 : Global rail network effectively shuts down : USET sand coverage reaches 95% : Iron Dragon Project approved
-    2076 : Game begins : Third-gen "Sand Whale Project" in R&D : Iron Dragon evaluates Wufeng line
+    2050 : UK invents sand energy : Active Energy Lab registered
+    2051 : DPRK acquires patents & team : USET established in Pyongyang
+    2053 : Sand Flying Pig mass-produced : Military tank line launched
+    2056 : Rail passenger volume drops 34% : End of rail golden age
+    2063 : Second-gen 4-model matrix : Donkey/Chicken/Cow/Bear : A sand vehicle for every family
+    2068 : Rail privatization wave : Acquires 17 operators : Zhou Dingming leads
+    2072 : Global rail shuts down : USET coverage 95% : Iron Dragon Project approved
+    2076 : Game begins : Sand Whale Project in R&D : Iron Dragon evaluates Wufeng
 ```
 
 > [!IMPORTANT]
