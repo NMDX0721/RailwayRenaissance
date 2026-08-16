@@ -1,6 +1,6 @@
 # 铁路复兴：沙能冲击
 
-[![Unity](https://img.shields.io/badge/Unity-6000.4.6f1-000000?logo=unity&logoColor=white)](https://unity.com)
+[![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
 [![Platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-blue.svg)](LICENSE)
 
@@ -78,7 +78,7 @@
 
 ## 快速开始
 
-需要 [Unity 6000.4.6f1](https://unity.com) 与 Git。
+需要 [Unity 6000.5.0f1](https://unity.com) 与 Git。
 
 ```bash
 git clone https://github.com/NMDX721/RailwayRenaissance.git

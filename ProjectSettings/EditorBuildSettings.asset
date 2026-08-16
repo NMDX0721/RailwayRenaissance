@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StationSlice_V1.unity
     guid: 5690ab5080072c947849cc94e917b461
+  - enabled: 1
+    path: Assets/Scenes/VN_Test.unity
+    guid: d54412dab1483994fa6947849f962c06
   m_configObjects: {}

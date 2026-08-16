@@ -17,36 +17,44 @@ public class CloudSeaTrainBackground : MonoBehaviour
         _renderer = GetComponent<Renderer>();
 
         _rt = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGB32);
-        _rt.filterMode = FilterMode.Point;
+        _rt.filterMode = FilterMode.Bilinear;
         _rt.Create();
 
-        var mat = new Material(Shader.Find("Unlit/Texture"));
-        mat.mainTexture = _rt;
-        _renderer.material = mat;
-
-        if (videoClip == null)
+        if (_renderer.sharedMaterial != null)
         {
-            videoClip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
-        }
-
-        if (videoClip != null)
-        {
-            _videoPlayer = gameObject.AddComponent<VideoPlayer>();
-            _videoPlayer.clip = videoClip;
-            _videoPlayer.playOnAwake = true;
-            _videoPlayer.isLooping = loop;
-            _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
-            _videoPlayer.targetTexture = _rt;
-            _videoPlayer.aspectRatio = VideoAspectRatio.Stretch;
-            _videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
-            _videoPlayer.skipOnDrop = false;
-            _videoPlayer.source = VideoSource.VideoClip;
+            _renderer.material = _renderer.sharedMaterial;
         }
         else
         {
-            var tex = Resources.Load<Texture2D>("Textures/sunset_railway");
-            if (tex != null) mat.mainTexture = tex;
-            Debug.LogWarning("[CloudSea] 视频未找到，使用静态背景");
+            var mat = Resources.Load<Material>("Materials/VideoBackground");
+            if (mat != null) _renderer.material = mat;
+        }
+        _renderer.material.mainTexture = _rt;
+
+        _videoPlayer = gameObject.AddComponent<VideoPlayer>();
+        _videoPlayer.playOnAwake = true;
+        _videoPlayer.isLooping = loop;
+        _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+        _videoPlayer.targetTexture = _rt;
+        _videoPlayer.aspectRatio = VideoAspectRatio.Stretch;
+        _videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+        _videoPlayer.skipOnDrop = false;
+
+        string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "cloud_sea_bg.mp4");
+        if (System.IO.File.Exists(videoPath))
+        {
+            _videoPlayer.url = videoPath;
+            _videoPlayer.source = VideoSource.Url;
+        }
+        else
+        {
+            if (videoClip == null)
+                videoClip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
+            if (videoClip != null)
+            {
+                _videoPlayer.clip = videoClip;
+                _videoPlayer.source = VideoSource.VideoClip;
+            }
         }
     }
 

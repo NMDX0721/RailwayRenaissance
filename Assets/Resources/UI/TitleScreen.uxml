@@ -1,0 +1,37 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    
+    <VisualElement name="title-image" 
+                  style="position: absolute; left: 50%; top: 28%; width: 925px; height: 317px; background-image: url('project:/Assets/Resources/UI/Login/title_logo.png'); background-size: contain; background-repeat: no-repeat; background-position: center; translate: -50% -50%;" />
+    
+    <VisualElement name="user-info" 
+                  style="position: absolute; left: 20px; top: 20px; flex-direction: row; align-items: center;">
+        <VisualElement name="avatar-frame" 
+                      style="position: relative; width: 120px; height: 120px; background-size: contain; margin-right: 14px;">
+            <VisualElement name="avatar-icon" 
+                          style="position: absolute; left: 24px; top: 24px; width: 72px; height: 72px; background-size: contain;" />
+        </VisualElement>
+        <Label name="username" text="用户名" 
+               style="font-size: 30px; color: #FFD700; margin-left: -20px;" />
+    </VisualElement>
+    
+    <Button name="announcement-btn" text="公告" 
+            style="position: absolute; right: 20px; top: 20px; padding: 8px 16px; background-color: rgba(60, 40, 20, 0.5); border-width: 1px; border-color: rgba(255, 220, 150, 0.35); border-radius: 6px; color: #FFD700; font-size: 16px;" />
+    
+    <VisualElement name="button-bar" 
+                  style="position: absolute; left: 0; right: 0; bottom: 45px; flex-direction: row; justify-content: center; align-items: center;">
+        <Button name="btn-new-game" text="发车" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+        <Button name="btn-continue" text="继续运营" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+        <Button name="btn-archive" text="站长日志" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+        <Button name="btn-settings" text="站务公告" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+        <Button name="btn-exit" text="收班" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+    </VisualElement>
+    
+    <Label name="version-text" text="v1.0.0" 
+           style="position: absolute; left: 20px; bottom: 10px; font-size: 14px; color: rgba(153, 153, 153, 0.7);" />
+    
+</UXML>

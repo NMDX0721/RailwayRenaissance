@@ -1,0 +1,72 @@
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#dialogue-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-color: rgba(30, 20, 15, 0.85);
+    border-width: 2px;
+    border-color: rgba(200, 150, 80, 0.6);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+#content-area {
+    flex-direction: row;
+    align-items: center;
+}
+
+#speaker-name {
+    font-size: 26px;
+    color: rgba(255, 200, 100, 1.0);
+    -unity-font-style: bold;
+    white-space: nowrap;
+    margin-right: 12px;
+    min-width: 100px;
+}
+
+#divider {
+    font-size: 26px;
+    color: rgba(200, 150, 80, 0.4);
+    margin-right: 12px;
+}
+
+#dialogue-text {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: normal;
+    flex-grow: 1;
+}
+
+#continue-indicator {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    display: none;
+}
+
+.vn-option-btn {
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: #3E2723;
+    align-items: stretch;
+    justify-content: center;
+}

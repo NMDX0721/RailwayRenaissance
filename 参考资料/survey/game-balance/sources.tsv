@@ -1,0 +1,16 @@
+id	url_or_id	kind	year	title	relevance	credibility	claim_ids	notes
+S001	stardewvalley.net	game	2016	Stardew Valley	high	high	C1,C2,C3	farming sim with deep progression
+S002	factorio.com	game	2020	Factorio	high	high	C1,C4	factory sim with infinite scaling
+S003	transportfever2.com	game	2019	Transport Fever 2	high	high	C1,C5	transportation tycoon
+S004	rollergames Tycoon	games	2003	RollerCoaster Tycoon Classic	high	high	C1,C6	management tycoon classic
+S005	minimetro游戏	mini metro	2015	Mini Metro	low	medium	C5	transportation puzzle (too abstract)
+S006	gamedeveloper.com	blog	2024	Progression Systems in Games	high	high	C2,C3	GDC talk on progression design
+S007	gamedeveloper.com	blog	2025	Balancing Hardcode and Fun	high	high	C1,C7	game feel vs realism
+S008	satisfactory游戏	satisfactory	2024	Satisfactory	high	high	C4,factory sim with milestone system
+S009	railwayempire游戏	railway empire	2018	Railway Empire	high	high	C1,C5,railway tycoon
+S010	火车来了(train valley)	train valley	2015	Train Valley	low	medium	C5	too puzzle-focused
+S011	开罗游戏系列	kairosoft	2010+	Business Simulation Games	high	high	C2,C3,kairosoft progression
+S012	游戏设计艺术	book	2008	The Art of Game Design	high	high	C1,C2,C7,Jesse Schell design principles
+S013	flow理论	psychology	1990	Flow Theory (Csikszentmihalyi)	high	high	C7,balance challenge vs skill
+S014	增量游戏设计	blog	2022	Incremental Game Design Patterns	high	medium	C2,C3,prestige mechanics
+S015	模拟经营游戏分析	blog	2023	Analysis of Management Sims	high	medium	C1,C6,common patterns

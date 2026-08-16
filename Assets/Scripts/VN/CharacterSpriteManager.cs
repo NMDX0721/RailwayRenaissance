@@ -40,8 +40,8 @@ public class CharacterSpriteManager : MonoBehaviour
         var slot = new VisualElement { name = slotName };
         slot.style.position = Position.Absolute;
         slot.style.bottom = 0;
-        slot.style.width = 400;
-        slot.style.height = 700;
+        slot.style.width = 360;
+        slot.style.height = 540;
         slot.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
         slot.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
         slot.style.alignSelf = Align.FlexEnd;

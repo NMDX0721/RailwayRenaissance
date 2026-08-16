@@ -173,15 +173,18 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ## 子代理使用规范
 
-### 模型选择
-| 任务类型 | 模型 | 参数 |
-|---------|------|------|
-| 编码/模型任务 | ds0718（`sensenova0718/deepseek-v4-flash`） | `model: "sensenova0718/deepseek-v4-flash"` |
-| 识图/视觉分析 | `xiaomi/mimo-v2.5` | `model: "xiaomi/mimo-v2.5"` |
-| ❌ 禁止使用 | 默认模型（ds=deepseek-v4-flash） | 与主代理同模型会触发并发上限 |
+### 核心原则
+子代理必须使用与主代理**不同**的模型，否则触发并发上限。
 
-### 原因
-主代理使用 ds（deepseek-v4-flash），子代理必须用不同的模型（ds0718），否则并发超限。
+### 模型选择
+| 主代理模型 | 子代理模型 | 参数 |
+|-----------|-----------|------|
+| ds（deepseek-v4-flash） | `sensenova0718/deepseek-v4-flash`（0718） | `model: "sensenova0718/deepseek-v4-flash"` |
+| 0718（sensenova0718/deepseek-v4-flash） | ds（默认，不指定） | 不指定 model 参数 |
+| 识图/视觉分析 | `xiaomi/mimo-v2.5` | `model: "xiaomi/mimo-v2.5"` |
+
+### 规则速记
+> 主代理与子代理用相反模型。主代理是 ds 则子代理用 0718，主代理是 0718 则子代理用 ds。
 
 ### 并发规则
 - 编码子代理最多同时 1 个

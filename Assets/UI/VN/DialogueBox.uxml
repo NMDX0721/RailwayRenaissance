@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" xsi:noNamespaceSchemaLocation="../UIElements/UIElements.xsd">
+  <VisualElement name="screen-overlay" class="screen-overlay">
+    <VisualElement name="dialogue-box" class="dialogue-box">
+      <VisualElement name="content-area" class="content-area">
+        <Label name="speaker-name" class="speaker-name" text="" />
+        <Label name="divider" class="divider" text="|" />
+        <Label name="dialogue-text" class="dialogue-text" text="" />
+      </VisualElement>
+      <Label name="continue-indicator" class="continue-indicator" text="&#9660;" />
+    </VisualElement>
+  </VisualElement>
+</UXML>

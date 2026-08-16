@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" xsi:noNamespaceSchemaLocation="../UIElements/UIElements.xsd">
+  <VisualElement name="dialogue-box">
+    <VisualElement name="content-area">
+      <Label name="speaker-name" text="" />
+      <Label name="divider" text="|" />
+      <Label name="dialogue-text" text="" />
+    </VisualElement>
+    <Label name="continue-indicator" text="&#9660;" />
+  </VisualElement>
+</UXML>

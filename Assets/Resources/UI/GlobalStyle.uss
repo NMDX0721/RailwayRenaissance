@@ -1,0 +1,131 @@
+/* ===== 全局样式 ===== */
+* {
+    -unity-font: url("project:/Assets/Resources/Fonts/zpix.ttf");
+    color: #FFD700;
+}
+
+/* ===== 渐变遮罩 ===== */
+.gradient-mask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0.7;
+}
+
+/* ===== 标题图片 ===== */
+.title-image {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    width: 600px;
+    height: 200px;
+    background-image: url("project:/Assets/Resources/UI/Login/title_logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* ===== 用户信息区域 ===== */
+.user-info {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* 头像框 */
+.avatar-frame {
+    width: 48px;
+    height: 48px;
+    background-image: url("project:/Assets/Images/AvatarFrame.png");
+    background-size: cover;
+    margin-right: 10px;
+}
+
+/* 默认头像（小火车） */
+.avatar-icon {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 32px;
+    height: 32px;
+    background-image: url("project:/Assets/Images/DefaultAvatar.png");
+    background-size: cover;
+}
+
+/* 用户名文字 */
+.username-text {
+    font-size: 24px;
+    color: #FFD700;
+}
+
+/* ===== 公告按钮 ===== */
+.announcement-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 8px 16px;
+    background-color: rgba(60, 40, 20, 0.6);
+    border-width: 1px;
+    border-color: rgba(255, 220, 150, 0.3);
+    border-radius: 6px;
+    color: #FFD700;
+    font-size: 16px;
+}
+
+.announcement-btn:hover {
+    background-color: rgba(60, 40, 20, 0.8);
+}
+
+/* ===== 液态玻璃按钮 ===== */
+.glass-button {
+    padding: 12px 24px;
+    margin: 0 8px;
+    
+    /* 液态玻璃效果 */
+    background-color: rgba(40, 25, 15, 0.30);
+    border-width: 1px;
+    border-color: rgba(255, 220, 150, 0.20);
+    border-radius: 8px;
+    
+    /* 文字样式 */
+    color: rgba(255, 215, 0, 0.95);
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+/* 按钮hover效果 */
+.glass-button:hover {
+    background-color: rgba(40, 25, 15, 0.45);
+    border-color: rgba(255, 220, 150, 0.40);
+    color: rgba(255, 230, 100, 1.0);
+}
+
+/* 按钮点击效果 */
+.glass-button:active {
+    background-color: rgba(40, 25, 15, 0.60);
+}
+
+/* ===== 按钮栏 ===== */
+.button-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 25px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== 版本号 ===== */
+.version-text {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+    font-size: 14px;
+    color: rgba(153, 153, 153, 0.7);
+}

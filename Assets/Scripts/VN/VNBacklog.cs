@@ -69,7 +69,7 @@ public class VNBacklog : MonoBehaviour
         backlogHeader.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         backlogPanel.Add(backlogHeader);
 
-        var titleLabel = new Label("对话回顾（点击跳转）");
+        var titleLabel = new Label("对话回顾");
         titleLabel.style.fontSize = 32;
         titleLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
         titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -120,39 +120,25 @@ public class VNBacklog : MonoBehaviour
         for (int i = 0; i < entries.Count; i++)
         {
             var entry = entries[i];
-            var entryElement = new VisualElement();
-            entryElement.style.marginBottom = 16;
-            entryElement.style.paddingBottom = 16;
-            entryElement.style.borderBottomWidth = 1;
-            entryElement.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
-            entryElement.style.paddingTop = 8;
-            entryElement.style.paddingLeft = 8;
-            entryElement.style.paddingRight = 8;
-            entryElement.style.borderTopLeftRadius = 4;
-            entryElement.style.borderTopRightRadius = 4;
-            entryElement.style.borderBottomLeftRadius = 4;
-            entryElement.style.borderBottomRightRadius = 4;
+            var entryRow = new VisualElement();
+            entryRow.style.flexDirection = FlexDirection.Row;
+            entryRow.style.alignItems = Align.Stretch;
+            entryRow.style.marginBottom = 26;
+            entryRow.style.paddingBottom = 18;
+            entryRow.style.borderBottomWidth = 1;
+            entryRow.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
+            entryRow.style.paddingTop = 12;
+            entryRow.style.paddingLeft = 8;
+            entryRow.style.paddingRight = 8;
+            entryRow.style.borderTopLeftRadius = 4;
+            entryRow.style.borderTopRightRadius = 4;
+            entryRow.style.borderBottomLeftRadius = 4;
+            entryRow.style.borderBottomRightRadius = 4;
 
-            // 点击条目跳转
-            int capturedIdx = i;
-            entryElement.RegisterCallback<ClickEvent>(e =>
-            {
-                JumpToEntry(capturedIdx);
-            });
-
-            // 鼠标悬停效果
-            entryElement.RegisterCallback<PointerEnterEvent>(e =>
-            {
-                entryElement.style.backgroundColor = new Color(1f, 1f, 1f, 0.05f);
-                if (handCursorTex != null)
-                    UnityEngine.Cursor.SetCursor(handCursorTex, new Vector2(0, 0), UnityEngine.CursorMode.ForceSoftware);
-            });
-            entryElement.RegisterCallback<PointerLeaveEvent>(e =>
-            {
-                entryElement.style.backgroundColor = Color.clear;
-                if (LoginManager.cursorTexture != null)
-                    UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
-            });
+            // 文本内容容器（占满剩余宽度）
+            var contentBox = new VisualElement();
+            contentBox.style.flexGrow = 1;
+            contentBox.style.paddingRight = 12;
 
             bool isNarration = string.IsNullOrEmpty(entry.speaker) || entry.speaker == "n";
 
@@ -160,21 +146,67 @@ public class VNBacklog : MonoBehaviour
             {
                 var speakerLabel = new Label(entry.speaker);
                 speakerLabel.style.fontSize = 24;
+                speakerLabel.style.letterSpacing = 2;
                 speakerLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.9f);
                 speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-                speakerLabel.style.marginBottom = 4;
+                speakerLabel.style.marginBottom = 10;
                 speakerLabel.style.unityFontDefinition = fontDef;
-                entryElement.Add(speakerLabel);
+                contentBox.Add(speakerLabel);
             }
 
             var textLabel = new Label(entry.text);
             textLabel.style.fontSize = 26;
+            textLabel.style.letterSpacing = 2;
             textLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
             textLabel.style.whiteSpace = WhiteSpace.Normal;
+            textLabel.style.marginBottom = 8;
             textLabel.style.unityFontDefinition = fontDef;
-            entryElement.Add(textLabel);
+            contentBox.Add(textLabel);
+            entryRow.Add(contentBox);
 
-            backlogScroll.Add(entryElement);
+            // 右侧"跳转"按钮：专门跳转到该对话
+            int capturedIdx = i;
+            var jumpBtn = new UnityEngine.UIElements.Button(() => JumpToEntry(capturedIdx)) { text = "跳转" };
+            jumpBtn.style.width = 90;
+            jumpBtn.style.height = 40;
+            jumpBtn.style.alignSelf = Align.FlexEnd;
+            jumpBtn.style.flexShrink = 0;
+            jumpBtn.style.marginLeft = 8;
+            jumpBtn.style.marginBottom = 8;
+            jumpBtn.style.fontSize = 22;
+            jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
+            jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
+            jumpBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            jumpBtn.style.unityFontDefinition = fontDef;
+            jumpBtn.style.borderTopWidth = 1;
+            jumpBtn.style.borderBottomWidth = 1;
+            jumpBtn.style.borderLeftWidth = 1;
+            jumpBtn.style.borderRightWidth = 1;
+            jumpBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+            jumpBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+            jumpBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+            jumpBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+            jumpBtn.style.borderTopLeftRadius = 5;
+            jumpBtn.style.borderTopRightRadius = 5;
+            jumpBtn.style.borderBottomLeftRadius = 5;
+            jumpBtn.style.borderBottomRightRadius = 5;
+            jumpBtn.RegisterCallback<PointerEnterEvent>(e =>
+            {
+                jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
+                jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+                if (handCursorTex != null)
+                    UnityEngine.Cursor.SetCursor(handCursorTex, new Vector2(0, 0), UnityEngine.CursorMode.ForceSoftware);
+            });
+            jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
+            {
+                jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
+                jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
+                if (LoginManager.cursorTexture != null)
+                    UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+            });
+            entryRow.Add(jumpBtn);
+
+            backlogScroll.Add(entryRow);
         }
     }
 
@@ -195,7 +227,11 @@ public class VNBacklog : MonoBehaviour
 
         if (isOpen)
         {
-            backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.worldBound.height);
+            // 布局完成后再滚动到最底部（最新对话）。立即读 worldBound.height 会得到 0。
+            backlogScroll.schedule.Execute(() =>
+            {
+                backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.layout.height);
+            });
         }
     }
 

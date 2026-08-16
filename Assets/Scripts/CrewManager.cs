@@ -33,6 +33,12 @@ public class CrewMember
     public int fatigueHistoryIndex;
     public float[] loyaltyHistory;   // 忠诚历史，用于惯性沉积
     public int loyaltyHistoryIndex;
+
+    // === T6：师徒传承字段 ===
+    public float teachingExperience; // 师傅累计教学经验值
+
+    // === T6：工资字段 ===
+    public int baseSalary = 1000;    // 基础工资（沙币/日）
 }
 
 [Serializable]
@@ -732,8 +738,20 @@ public static class CrewManager
             }
         }
 
+        // T6: 追踪学徒每日经验获得（学徒ID → 当日总经验获得）
+        Dictionary<string, float> apprenticeDailyGains = new Dictionary<string, float>();
+        // T6: 追踪各成员旧技能等级总和（用于判断是否触发工资谈判）
+        Dictionary<string, int> oldSkillLevelSums = new Dictionary<string, int>();
+
         foreach (CrewMember member in crew)
         {
+            // T6: 记录该成员当日开始前的技能等级总和
+            int levelSum = 0;
+            foreach (SkillData s in member.skills) levelSum += s.level;
+            oldSkillLevelSums[member.id] = levelSum;
+            // T6: 追踪该成员当日技能经验获得
+            float totalDailyGain = 0f;
+
             // —— 强制休息：疲劳超过80自动设为休息日 ——
             if (member.fatigue > 80)
             {
@@ -1006,6 +1024,21 @@ public static class CrewManager
             if (member.id == trainedCrewId)
             {
                 member.loyalty += 2.0f;
+            }
+
+            // ===== T9：社会对比效应 =====
+            // 员工发现同事工资更高时，忠诚度下降
+            float memberSalary = CalculateSkillSalary(member);
+            foreach (CrewMember other in crew)
+            {
+                if (other.id == member.id) continue;
+                float otherSalary = CalculateSkillSalary(other);
+                if (otherSalary > memberSalary * 1.1f) // 比自己的10%还高
+                {
+                    float gap = (otherSalary - memberSalary) / memberSalary;
+                    member.loyalty -= gap * 0.1f * (member.hiddenPatience > 0 ? (1f - member.hiddenPatience / 100f) : 1f);
+                    break; // 只对比一次，减少性能开销
+                }
             }
 
             // 惯性沉积：记录忠诚历史（30天循环缓冲区）
@@ -1357,6 +1390,39 @@ public static class CrewManager
             return mentorId;
         }
         return null;
+    }
+
+    /// <summary>计算员工技能工资。基于技能等级平均值，使用 FluctuationEngine 计算。</summary>
+    public static float CalculateSkillSalary(CrewMember member)
+    {
+        if (member == null) return 0f;
+        float totalLevel = 0f;
+        int count = 0;
+        if (member.skills != null)
+        {
+            for (int i = 0; i < member.skills.Length; i++)
+            {
+                totalLevel += member.skills[i].level;
+                count++;
+            }
+        }
+        if (member.skillTree != null)
+        {
+            foreach (var node in member.skillTree)
+            {
+                if (node.subSkills != null)
+                {
+                    for (int i = 0; i < node.subSkills.Length; i++)
+                    {
+                        totalLevel += node.subSkills[i].level;
+                        count++;
+                    }
+                }
+            }
+        }
+        float avgLevel = count > 0 ? totalLevel / count : 0f;
+        float baseSal = member.baseSalary > 0 ? member.baseSalary : 1000;
+        return baseSal * (1f + avgLevel / 100f * 0.5f);
     }
 
     /// <summary>计算师傅系数：师傅等级≥4级 ×2.0 / 有师傅 ×1.5 / 无师傅 ×1.0。</summary>

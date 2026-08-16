@@ -542,6 +542,10 @@ public class VNManager : MonoBehaviour
                 return;
             if (saveLoadUI != null && saveLoadUI.IsOpen)
                 return;
+            // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
+            // 若不拦截，点菜单栏"存档/读档"等按钮的这次点击会把对话推进一句
+            if (Input.GetMouseButtonDown(0) && IsPointerOverMenuBar())
+                return;
 
             StopAutoPlay();
 
@@ -550,6 +554,29 @@ public class VNManager : MonoBehaviour
             else
                 NextDialogue();
         }
+    }
+
+    /// <summary>
+    /// 判断鼠标指针当前是否落在菜单栏（或其按钮）上方。
+    /// 用于拦截"点击菜单按钮时对话被意外推进"：UI Toolkit 的 clicked 在
+    /// PointerUp 才触发，而 Update 中 Input.GetMouseButtonDown(0) 在按下帧先执行。
+    /// </summary>
+    private bool IsPointerOverMenuBar()
+    {
+        if (uiDoc == null || menuBar == null) return false;
+        if (menuBar.style.display == DisplayStyle.None) return false;
+
+        var panel = uiDoc.rootVisualElement.panel;
+        var screenPos = Input.mousePosition;
+        var localPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
+        var picked = panel.Pick(localPos);
+        var cur = picked;
+        while (cur != null)
+        {
+            if (cur == menuBar) return true;
+            cur = cur.parent;
+        }
+        return false;
     }
 
     public void StartScript(string scriptName)
@@ -649,11 +676,20 @@ public class VNManager : MonoBehaviour
             var displaySpeaker = ResolveSpeakerName(entry.s);
             dialogueBox?.ShowDialogue(displaySpeaker, entry.text);
 
-            // 条目级chars/e优先，回退到场景级默认值
-            var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
-            var entryEmotion = !string.IsNullOrEmpty(entry.e) ? entry.e : scene.e;
-            if (entryChars != null && entryChars.Length > 0)
-                characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion);
+            bool isNarration = entry.t == "n" || string.IsNullOrEmpty(entry.s);
+            if (isNarration)
+            {
+                // 旁白不显示立绘
+                characterSpriteManager?.ClearAll();
+            }
+            else
+            {
+                // 条目级chars/e优先，回退到场景级默认值
+                var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
+                var entryEmotion = !string.IsNullOrEmpty(entry.e) ? entry.e : scene.e;
+                if (entryChars != null && entryChars.Length > 0)
+                    characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion);
+            }
 
             vnBacklog?.AddEntry(displaySpeaker, entry.text, currentSceneIndex, currentDialogueIndex);
         }
@@ -777,9 +813,19 @@ public class VNManager : MonoBehaviour
         var parts = setValue.Split('=');
         if (parts.Length != 2) return;
         string varName = parts[0].Trim();
-        string valStr = parts[1].Trim().ToLower();
-        bool value = valStr == "true" || valStr == "1";
-        SetVariable(varName, value);
+        string valStr = parts[1].Trim();
+        if (valStr == "true" || valStr == "1")
+        {
+            SetVariable(varName, true);
+            return;
+        }
+        if (valStr == "false" || valStr == "0")
+        {
+            SetVariable(varName, false);
+            return;
+        }
+        // 字符串值：注册 varName_value flag，条件写 condition="varName_value"
+        SetVariable(varName + "_" + valStr.ToLower(), true);
     }
 
     private TransitionType ParseTransition(string transition)

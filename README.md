@@ -1,6 +1,6 @@
 # Railway Renaissance: Sand Energy Impact
 
-[![Unity](https://img.shields.io/badge/Unity-6000.4.6f1-000000?logo=unity&logoColor=white)](https://unity.com)
+[![Unity](https://img.shields.io/badge/Unity-6000.5.0f1-000000?logo=unity&logoColor=white)](https://unity.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)]()
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -79,7 +79,7 @@ Political cycles affect subsidies. Random events — storms, oil price spikes, h
 
 ## Getting Started
 
-Requires [Unity 6000.4.6f1](https://unity.com) and Git.
+Requires [Unity 6000.5.0f1](https://unity.com) and Git.
 
 ```bash
 git clone https://github.com/NMDX721/RailwayRenaissance.git
