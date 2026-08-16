@@ -65,13 +65,11 @@ The game runs on five connected simulation engines:
 
 Early pure operations are loss-making by design; story-driven grants provide the cash flow that sustains the railway during the survival phase.
 
-The visual novel supports three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory. A planned phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant). [Design spec](参考资料/视觉小说系统设计.md)
-
-*[Core loop](docs/compose/specs/核心玩法循环.md) · [Cross-system formulas](docs/compose/specs/跨系统联动公式.md)*
+The visual novel supports three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory. A planned phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant).
 
 ## Crew
 
-The player does not run the line alone. Crew members begin as a small group and grow with the world: new arrivals, retirements, and apprentices enter the narrative as it unfolds. [Character profiles](参考资料/角色设定.md)
+The player does not run the line alone. Crew members begin as a small group and grow with the world: new arrivals, retirements, and apprentices enter the narrative as it unfolds.
 
 ## Progression
 
@@ -104,22 +102,26 @@ Open the folder in Unity Hub and run:
 
 ## Documentation
 
-Design specifications are stored in the repository alongside the code. Each system has a specification, formula references, and timeline consistency checks.
+Design specifications are stored in the repository alongside the code.
+
+<details>
+<summary>Design docs</summary>
 
 | Document | Contents |
 |----------|----------|
-| [Game Design Document](参考资料/游戏开发文档.md) | Master index of design documents |
+| [Game Design Document](参考资料/游戏开发文档.md) | Master index of all design docs |
 | [Sand Standard Economy](参考资料/沙本位经济核.md) | Currency system, break-even analysis |
 | [Core Loop & Trendlines](docs/compose/specs/核心玩法循环.md) | Three-layer time model, five trendlines |
-| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Interlinked formula set + **Inertia Principle** |
+| [Cross-System Formulas](docs/compose/specs/跨系统联动公式.md) | Interlinked formula set + Inertia Principle |
 | [Tech Tree](docs/compose/specs/科技树设计.md) | Open research network |
-| [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer, character memory |
+| [VN AI Design](参考资料/视觉小说系统设计.md) | Three-mode dialogue, provider layer |
 | [Suiyue Narrative Engine](docs/compose/specs/岁月叙事引擎.md) | Template-based AI roadmap |
-| [World & Timeline](参考资料/世界观扩展设定.md) | USET, sand-standard currency, 2050–2076 lore |
-| [Story Timeline](参考资料/故事线时间轴.md) | Continuity verification of world history |
-| [Skill System](docs/compose/specs/先民人事系统.md) | 8-level skill tree, 5 systems × 19 sub-skills |
+| [World & Timeline](参考资料/世界观扩展设定.md) | USET, sand-standard, lore |
+| [Skill System](docs/compose/specs/先民人事系统.md) | 8-level skill tree, 5×19 sub-skills |
 | [Inertia Principle](docs/compose/specs/惯性原则设计.md) | Historical deposition, fluctuation engine |
-| [Iron Dragon Competition](docs/compose/specs/铁龙竞争系统.md) | USET rival AI, sand penetration
+| [Iron Dragon Competition](docs/compose/specs/铁龙竞争系统.md) | USET rival AI, sand penetration |
+
+</details>
 
 ---
 
