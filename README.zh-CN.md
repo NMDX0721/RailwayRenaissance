@@ -84,7 +84,7 @@ USET 不是一家普通公司。它的股权结构精心设计，以便在国际
 <details>
 <summary><strong>沙本位经济核</strong>——经济模拟引擎</summary>
 
-**Core formulas:**
+**核心公式（英文表示）：**
 ```
 PassengerFlow(t) = BaseFlow × sigmoid(Trust(t)) × SeasonalFFT(t) × L2Fluctuation(t)
 TicketRevenue(t) = ∫(Flow(τ) × DynamicPricing(τ) × (1 + ElasticityCorrection(τ))) dτ
@@ -93,7 +93,7 @@ Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) ×
 
 每条趋势线有自己的微分方程：信任低于阈值时，`d(Flow)/dt ∝ -TrustDeficit × 0.005`；沙能渗透超过 0.60 持续 15 天触发永久营业点。所有系数通过 GlobalRules 在每局游戏开局时由种子生成，确保经济走势各不相同。
 
-**Five trendline interlock:**
+**五条趋势线互锁：**
 ```
 TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → InfrastructureDecay↑
 ```
@@ -105,17 +105,17 @@ TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → Infr
 <details>
 <summary><strong>千里马创世核</strong>——世界生成系统</summary>
 
-**Seed structure:** `RR-XXXXX-YYYYY`
-- `RR`: Fixed prefix
-- `XXXXX`: Hash encoding of city templates, dependency graph, resource distribution, political leanings
-- `YYYYY`: Hash encoding of 18+ GlobalRules baseline parameters
+**种子结构：** `RR-XXXXX-YYYYY`
+- `RR`：固定前缀
+- `XXXXX`：城市模板、依赖图、资源分布、政治倾向的哈希编码
+- `YYYYY`：18+ 个 GlobalRules 基线参数的哈希编码
 
-**Generation pipeline:**
+**生成管线：**
 ```
 Seed → CityTemplateSampling → KosarajuSCC(DependencyGraph) → KruskalMST(RailNetwork) → ResourceDistribution → PoliticalAssignment → fBmBlackbox(GlobalRules)
 ```
 
-**Blackbox function (fBm 3D Simplex noise):**
+**黑箱函数（fBm 3D Simplex 噪声）：**
 ```
 WorldState = ∑_{i=0}^{octaves} noise.snoise(float3(seed.x × lacunarity^i, k, seed.y)) × gain^i
 GlobalRules[k] = Lerp(MinBound[k], MaxBound[k], WorldState)
@@ -123,74 +123,74 @@ GlobalRules[k] = Lerp(MinBound[k], MaxBound[k], WorldState)
 - Octaves: 6, Lacunarity: 2.0, Gain: 0.5
 - 同一种子始终产生同一世界；不同种子产生结构上不同的世界
 
-**Outputs:** CityTemplates[], DependencyGraph(V, E), RailEdges[], ResourceMap, PoliticalMapping, GlobalRules{18+ params}, EventWeightTable
+**产出物：** CityTemplates[], DependencyGraph(V, E), RailEdges[], ResourceMap, PoliticalMapping, GlobalRules{18+ params}, EventWeightTable
 </details>
 
 <details>
 <summary><strong>岁月叙事引擎</strong>——事件生成系统</summary>
 
-**Event trigger probability:**
+**事件触发概率：**
 ```
 P(event) = BaseP × (1 - exp(-t / τ_cooldown)) × max(0, 1 - N_recent / N_max) × WorldStateWeight
 ```
-- `τ_cooldown`: Cooldown half-life per event type
-- `N_max`: Density cap (prevents narrative fatigue)
+- `τ_cooldown`：冷却半衰期
+- `N_max`：密度上限（防止叙事疲劳）
 
-**Character favorability:**
+**角色好感度：**
 ```
 Favorability(t+1) = Favorability(t) + EventValue × PersonalityWeight × InertiaDecay(t)
 ```
 累积好感触发新剧情分支或解锁特殊对话选项。
 
-**Template engine:** 每个事件类型有固定的槽位结构，**WorldAnalyzer** 根据运行时条件填充槽位。事件设有冷却时间、密度上限和对数衰减曲线，防止叙事疲劳。
+**模板引擎：** 每个事件类型有固定的槽位结构，**WorldAnalyzer** 根据运行时条件填充槽位。事件设有冷却时间、密度上限和对数衰减曲线，防止叙事疲劳。
 
-**Three dialogue modes:**
-- **Preset** — fully authored, fixed dialogue tree
-- **Free AI** — player types anything, AI responds in character
-- **Hybrid** — preset branches with AI fallback for unanticipated topics
+**三种对话模式：**
+- **Preset** — 完全编剧，固定对话树
+- **Free AI** — 玩家输入任意内容，AI 以角色身份回应
+- **Hybrid** — 预设分支为主，AI 为未预见的主题兜底
 </details>
 
 <details>
 <summary><strong>先民人事系统</strong>——员工管理系统</summary>
 
-**Skill growth:**
+**技能成长：**
 ```
 DailyGain = BaseGrowthRate × RoleMatch[skill] × (1 + max(0, ParentLevel - SubSkillLevel) / ParentLevel × 0.5) × FluctuationEngine.Weighted(base, variance) × EventModifier
 ```
-- RoleMatch: core×1.0 / related×0.6 / low-cross×0.3 / high-cross×0.1
-- Catch-up bonus: parent skill > sub-skill → exponential decay bonus
+- RoleMatch：核心×1.0 / 同系统×0.6 / 低跨系×0.3 / 高跨系×0.1
+- 追赶加成：母技能高于子技能时触发，差距越大加成越高
 
-**Fatigue & Loyalty:**
+**疲劳与忠诚度：**
 ```
 Fatigue(t+1) = clamp(Fatigue(t) + BaseFatigue + ConsecutiveWorkBonus + RoleBonus, 0, 100)
 Loyalty(t) = Baseline + Σ(EventEffects) + SocialComparison(ColleagueSalary, SelfSalary) - WageDissatisfaction
 SocialComparison: ΔLoyalty = -α × max(0, ColleagueSalary / SelfSalary - Threshold) × (1 - HiddenPatience/100)
 ```
 
-**Mentorship:** Mentor ≥ Lv4 → Apprentice ×2 growth rate, Mentor gains 10% of apprentice's Δexp.
-**Parent skill:** `ParentLevel = Σ(SubSkillLevel[i] × Weight[i]) / Σ(Weight[i])`, numeric 0-100.
+**师徒传承：** Mentor ≥ Lv4 → Apprentice ×2 成长速率，Mentor 获得 Apprentice 当日经验的 10% 作为额外成长。
+**母技能等级：** `ParentLevel = Σ(SubSkillLevel[i] × Weight[i]) / Σ(Weight[i])`，数值表示 0-100。
 </details>
 
 <details>
 <summary><strong>铁龙竞争系统</strong>——对手 AI</summary>
 
-**Penetration dynamics:**
+**渗透值动态：**
 ```
 d(Penetration)/dt = α_natural + Σ(Campaign_i(t)) - Countermeasure(t)
 α_natural = 0.0015/day
 Campaigns: Advertising +0.005, FreeRides +0.003, PriceWar +0.008
-Permanent outpost: Penetration > 0.60 for 15 consecutive days
+永久营业点：Penetration > 0.60 持续 15 天
 ```
 
-**USET strategy selection (every 30 days):**
+**USET 策略选择（每 30 天）：**
 ```
 Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
 ```
-- Low penetration → Marketing campaign
-- Medium penetration → Price war
-- Line in loss → Iron Dragon acquisition
+- 渗透率低 → 营销活动
+- 渗透率中 → 价格战
+- 线路亏损 → 铁龙计划收购
 
-**Iron Dragon six-step acquisition:**
+**铁龙计划六步收购：**
 ```
 Target → Approach(Foundation fronts) → Infiltrate(plant advisors) → Pressure(cut partnerships) → Acquire(low-price buyout) → Dismantle(remove infrastructure)
 ```
