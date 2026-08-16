@@ -1002,6 +1002,12 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator ShowLoadUIDelayed()
     {
+        // 隐藏 VN 菜单栏和对话框，只显示读档界面
+        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        if (dialogueBox != null) dialogueBox.Hide();
+        if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
+        characterSpriteManager?.ClearAll();
+
         yield return null;
         if (saveLoadUI != null)
             saveLoadUI.OpenLoadPanel((slotIndex) => { });

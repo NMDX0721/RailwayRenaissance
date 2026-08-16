@@ -154,9 +154,9 @@ public class VNSaveLoadUI : MonoBehaviour
         slotContainer.style.alignItems = Align.Center;
         slotContainer.style.justifyContent = Justify.Center;
         slotContainer.style.flexGrow = 1;
-        slotContainer.style.paddingLeft = 50;
-        slotContainer.style.paddingRight = 50;
-        slotContainer.style.paddingTop = 20;
+        slotContainer.style.paddingLeft = 30;
+        slotContainer.style.paddingRight = 30;
+        slotContainer.style.paddingTop = 16;
         slotContainer.style.paddingBottom = 20;
         panel.Add(slotContainer);
     }
@@ -321,7 +321,7 @@ public class VNSaveLoadUI : MonoBehaviour
             badgeRow.Add(slotBadge);
 
             var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i));
-            slotLabel.style.fontSize = 24;
+            slotLabel.style.fontSize = 20;
             slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
             slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             slotLabel.style.unityFontDefinition = fontDef;
@@ -385,9 +385,9 @@ public class VNSaveLoadUI : MonoBehaviour
             })
             { text = btnText };
 
-            actionBtn.style.width = 90;
-            actionBtn.style.height = 40;
-            actionBtn.style.fontSize = 20;
+            actionBtn.style.width = 80;
+            actionBtn.style.height = 36;
+            actionBtn.style.fontSize = 18;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
             actionBtn.style.backgroundColor = BtnBg;
             actionBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
