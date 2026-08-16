@@ -94,7 +94,11 @@ Political tendency shifts over time based on player actions. An authoritarian re
 
 The game runs on five connected simulation engines, each with its own specification and formula set:
 
-**Sand Standard Core** is the economic foundation, driving passenger flow, fares, subsidies, and the interlock of five trendlines. **Chollima Genesis Core** generates a unique world structure and all gameplay parameters from a seed code at the start of each playthrough. **Suiyue Narrative Engine** dynamically generates events based on world state and drives visual-novel dialogue. **Seonmin Personnel System** manages crew skill trees, fatigue, loyalty, and growth curves. **Iron Dragon Competition System** simulates USET's penetration expansion and strategy selection.
+- **Sand Standard Core** — the economic foundation, driving passenger flow, fares, subsidies, and the interlock of five trendlines. Named after the sand-standard monetary system — sand energy as the global hard currency anchoring all economic activity.
+- **Chollima Genesis Core** — generates a unique world structure and all gameplay parameters from a seed code at the start of each playthrough. Named after the Chollima myth — the heavenly horse that gallops a thousand li, each playthrough a new race.
+- **Suiyue Narrative Engine** — dynamically generates events based on world state and drives visual-novel dialogue. Named after the Chinese word "suiyue" (岁月) — narrative grows through time's sediment, not from a scripted tree.
+- **Seonmin Personnel System** — manages crew skill trees, fatigue, loyalty, and growth curves. Named after the Korean "seonmin" (先民) — the first pioneers, the earliest builders of the railway revival.
+- **Iron Dragon Competition System** — simulates USET's penetration expansion and strategy selection. Named after the Han dynasty celestial metaphor: the dragon and the heavenly horse are mirror images — the horse rules the sky, the dragon rules the land.
 
 Detailed formulas and design documents for each engine are listed below:
 
@@ -185,7 +189,7 @@ Social comparison: loyalty drops when colleague salary > own × 1.2
 </details>
 
 <details>
-<summary>Iron Dragon Competition System — the rival AI</summary>
+<summary>Iron Dragon Competition System — the rival AI system</summary>
 
 **Penetration growth:**
 ```
@@ -252,7 +256,7 @@ The initial crew consists of five people, with Wang Xiaodi joining shortly after
 | Li Ayi | Community volunteer | Station·Conductor 4/7 |
 | Zhao Shifu | Retired engineer | Ops·Controller 4/7 |
 | Xiao Fang | Volunteer | Station·Conductor 1/7 |
-| Wang Xiaodi | Fresh graduate | Ops·Driver 1/7, potential 7/7 |
+| Wang Xiaodi | Fresh graduate | Ops·Driver 1/7 |
 
 Each crew member has a **skill tree** rather than a single linear level. The tree consists of two layers:
 
