@@ -50,7 +50,6 @@ public class NewGameSetupUI : MonoBehaviour
     private static readonly Color CBg = new Color(0.12f, 0.08f, 0.05f, 0.97f);
     private static readonly Color CBtn = new Color(0.2f, 0.12f, 0.08f, 0.85f);
     private static readonly Color CBtnActive = new Color(0.55f, 0.32f, 0.12f, 0.95f);
-    private static readonly Color CBtnHover = new Color(0.3f, 0.18f, 0.1f, 0.9f);
 
     public void Init(UIDocument document, System.Action onConfirm)
     {
@@ -72,6 +71,10 @@ public class NewGameSetupUI : MonoBehaviour
         panel.style.top = 0; panel.style.left = 0; panel.style.right = 0; panel.style.bottom = 0;
         panel.style.backgroundColor = CBg;
         panel.style.display = DisplayStyle.None;
+        // Background image
+        var bgTex = Resources.Load<Texture2D>("bg/new_game_bg");
+        if (bgTex != null)
+            panel.style.backgroundImage = new StyleBackground(bgTex);
         root.Add(panel);
 
         // ── Header ──

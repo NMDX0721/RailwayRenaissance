@@ -224,3 +224,27 @@ AVOID:
 ---
 
 *本文档基于实验室背景提示词的成功经验编写，所有技巧来自实际验证。*
+
+---
+
+## 附录：新游戏设置界面背景提示词
+
+```
+pixel art, 16-bit retro style, STARDEW VALLEY STYLE PIXEL ART, clear pixels, 2D background, 1920x1080, 16:9 aspect ratio
+
+SCENE: abandoned railway station interior at dawn, empty depot platform, old wooden benches, faded timetable board on wall, a single dim lantern hanging from ceiling, ticket booth with rusted bars, steam locomotive silhouette visible through station window, morning light streaming through dusty windows creating warm light rays
+
+CULTURAL CONTEXT: CHINESE COUNTRY STATION, 1980s-90s retro style, small-town railway station aesthetic, Chinese railway system heritage, wufeng mountain village atmosphere
+
+DETAILS:
+- ARCHITECTURE: old brick walls, green painted window frames, concrete floor with cracks, corrugated iron roof
+- PROPS: wooden bench row, ticket window with iron bars, wall clock stopped at 4:18, old posters on wall (partially torn), signal lamp, dispatch phone
+- OUTSIDE: misty mountains visible through window, overgrown tracks, wild grass between rails
+- LIGHTING: warm golden morning light, long shadows, dust particles floating in light beams
+
+COLOR PALETTE: Primary: warm brown (#8B6914), faded green (#5B7B3A), rust orange (#A0522D); Secondary: mist gray (#B0B8B8), cream (#F5E6C8); Accent: golden light (#FFD700)
+
+ATMOSPHERE: nostalgic, quiet, melancholic but hopeful, the calm before a journey begins
+
+AVOID: too modern elements, bright neon colors, cartoon style, overcrowded
+```
