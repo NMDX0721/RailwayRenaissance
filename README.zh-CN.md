@@ -179,20 +179,12 @@ SocialComparison: ΔLoyalty = -α × max(0, ColleagueSalary / SelfSalary - Thres
 d(Penetration)/dt = α_natural + Σ(Campaign_i(t)) - Countermeasure(t)
 α_natural = 0.0015/day
 Campaigns: Advertising +0.005, FreeRides +0.003, PriceWar +0.008
-永久营业点：Penetration > 0.60 持续 15 天
 ```
+永久营业点：Penetration > 0.60 持续 15 天
 
 **USET 策略选择（每 30 天）：**
 ```
 Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
-```
-- 渗透率低 → 营销活动
-- 渗透率中 → 价格战
-- 线路亏损 → 铁龙计划收购
-
-**铁龙计划六步收购：**
-```
-Target → Approach(Foundation fronts) → Infiltrate(plant advisors) → Pressure(cut partnerships) → Acquire(low-price buyout) → Dismantle(remove infrastructure)
 ```
 
 铁龙计划得名于汉代天象隐喻：千里马与龙互为镜像——马掌天空，龙掌大地。USET 的公开面孔是"国际铁路遗产基金会"，六步收购流程在世界观设定中有完整记录，深入挖掘的玩家可以找到伪造的档案。
