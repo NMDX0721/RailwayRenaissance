@@ -381,7 +381,7 @@ Fuel is the single largest ongoing expense. The NF-5<sub>Gengniu</sub> locomotiv
 
 ## Crew
 
-The initial crew consists of five people, with Wang Xiaodi joining shortly after:
+You are not running this line alone. The initial crew consists of six people:
 
 | Member | Role | Top Skill |
 |--------|------|-----------|
@@ -523,25 +523,6 @@ Open the folder in Unity Hub and run:
 
 ---
 
-## AI-Native Modding
-
-This project is designed for generative AI to restructure and extend — not just for developers who know C#.
-
-Traditional games rely on modding APIs: the developer provides interfaces and specs, and players must learn the entire modding framework before they can build anything. This project works differently — documentation, code, and data formats are unified into structured Markdown that AI agents can read and modify directly. Want to add a feature? Describe the requirement, and the agent understands the system structure, modifies the code, and verifies the result. No modding API to learn, no framework to adapt to.
-
-Every design decision, every formula, and every system parameter is documented. The documentation is not an afterthought — it is a first-class deliverable, maintained alongside the code, formatted for machine consumption.
-
-**What this means for you:**
-
-- Want to adjust the economic balance? Open `参考资料/沙本位经济核.md` and tell an AI agent to change the elasticity coefficients. The agent will understand the formula, update the code, and verify the result.
-- Want to add a new crew skill? Open `docs/compose/specs/先民人事系统.md` and describe what the skill should do. The agent will find the right insertion point, implement the logic, and update the tests.
-- Want to create a custom world seed? The seed format (`RR-XXXXX-YYYYY`) is documented in the Chollima Genesis Core spec. Generate a new seed, and the game will produce a unique world.
-
-> [!TIP]
-> The project is open source (MIT), the documentation is exhaustive, and the AI tooling is ready. Fork the repo, point your agent at the docs, and build what you want.
-
----
-
 ## Documentation
 
 Design specifications are stored in the repository alongside the code.
@@ -568,6 +549,25 @@ Design specifications are stored in the repository alongside the code.
 | [Post-Prologue Story](docs/compose/specs/序章后续剧情设计.md) | Story arcs, narrative events |
 | [Timeline](参考资料/故事线时间轴.md) | Complete timeline, historical events |
 | [Project Progress](参考资料/项目进度总览.md) | Development status, roadmap |
+
+---
+
+## AI-Native Modding
+
+This project is designed for generative AI to restructure and extend — not just for developers who know C#.
+
+Traditional games rely on modding APIs: the developer provides interfaces and specs, and players must learn the entire modding framework before they can build anything. This project works differently — documentation, code, and data formats are unified into structured Markdown that AI agents can read and modify directly. Want to add a feature? Describe the requirement, and the agent understands the system structure, modifies the code, and verifies the result. No modding API to learn, no framework to adapt to.
+
+Every design decision, every formula, and every system parameter is documented. The documentation is not an afterthought — it is a first-class deliverable, maintained alongside the code, formatted for machine consumption.
+
+**What this means for you:**
+
+- Want to adjust the economic balance? Open `参考资料/沙本位经济核.md` and tell an AI agent to change the elasticity coefficients. The agent will understand the formula, update the code, and verify the result.
+- Want to add a new crew skill? Open `docs/compose/specs/先民人事系统.md` and describe what the skill should do. The agent will find the right insertion point, implement the logic, and update the tests.
+- Want to create a custom world seed? The seed format (`RR-XXXXX-YYYYY`) is documented in the Chollima Genesis Core spec. Generate a new seed, and the game will produce a unique world.
+
+> [!TIP]
+> The project is open source (MIT), the documentation is exhaustive, and the AI tooling is ready. Fork the repo, point your agent at the docs, and build what you want.
 
 ---
 
@@ -617,7 +617,7 @@ flowchart TB
 
 ```mermaid
 gantt
-    title Development Roadmap
+    title Development Plan
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
     Design docs lore          :done, 2025-09, 2025-12
@@ -625,8 +625,8 @@ gantt
     World generation          :done, 2026-02, 2026-04
     Narrative engine          :done, 2026-03, 2026-05
     Personnel system          :done, 2026-04, 2026-06
-    Inertia fluctuation       :done, 2026-05, 2026-07
-    Competition AI            :done, 2026-06, 2026-08
+    Competition AI            :done, 2026-05, 2026-07
+    Inertia fluctuation       :done, 2026-06, 2026-07
     Character sprites         :active, 2026-07, 2026-09
     Scenes vehicle models     :2026-08, 2026-10
     Performance i18n          :2026-09, 2026-11
