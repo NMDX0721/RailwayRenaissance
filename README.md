@@ -31,54 +31,97 @@ Three days later, a researcher would leave this room to revive a railway on the 
 
 ## The World
 
-It is 2076. Sand-powered flying vehicles ended the railway era: passenger volume fell 78%, 91 nations dissolved their state rail systems, and the global network effectively shut down by 2072. The sand-energy monopoly **USET** controls the skies, while the DPRK — holder of the world's largest sand reserves — stands as the sole superpower.
+It is 2076. Twenty-six years ago, sand energy was a British laboratory experiment. Today, it is the foundation of a new world order.
 
-Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. These are mirrored by the railways' six strengths. The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village in central China, and works to prove that the iron road still has a place in the world.
+In 2050, a British engineering team invented the sand-energy principle. The following year, the Democratic People's Republic of Korea — holder of the world's largest sand reserves — acquired the entire patent portfolio and established **United Sand Energy Technology (USET)** in Pyongyang. By 2053, the first commercial sand-energy vehicle, the "Sand Flying Pig," was in mass production. By 2056, rail passenger volume had fallen 34%. By 2068, ninety-one nations had dissolved their state railway systems. In 2072, the global rail network effectively shut down.
 
-*[World lore and timeline](参考资料/世界观扩展设定.md)*
+The DPRK, once a pariah state, became the world's sole superpower — not through military conquest, but through control of the resource that powers everything: sand.
+
+USET is not merely a company. It is a joint venture structured for plausible deniability: a Luxembourg holding platform (51% nominally registered) and the **Baekdu Mountain Power Corporation** (49%, the DPRK state entity) hold the shares. Actual control flows through three undisclosed agreements — management, technology licensing, and exclusive sand supply. On paper, it is a normal multinational. In reality, it is a state instrument.
+
+Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. The railway's six strengths mirror each of these — a design intentionality that the player must exploit.
+
+The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village in central China, and must prove that the iron road still has a place in a world that has moved on.
+
+---
 
 ## Game Structure
 
-### Five Trendlines
+### The Five Trendlines
 
-Five interlinked trendlines operate beneath the surface. Invisible until they cross a threshold, each can trigger irreversible change:
+Beneath the surface of every playthrough, five interlinked trendlines operate. Invisible until they cross a threshold, each can trigger irreversible change:
 
-| Trendline | Definition |
-|-----------|------------|
-| **Trust** | Public confidence in the railway |
-| **Fiscal Health** | The player's financial standing |
-| **Sand Penetration** | USET's market share in each town |
-| **Political Pressure** | Degree of government oversight |
-| **Infrastructure Decay** | Cumulative wear on the line |
+| Trendline | Definition | What happens when it crosses |
+|-----------|------------|------------------------------|
+| **Trust** | Public confidence in the railway | Below 30: passenger volume collapses into a snowball decline |
+| **Fiscal Health** | The player's financial standing | Sustained loss: credit rating downgraded, interest rates rise |
+| **Sand Penetration** | USET's market share in each town | Above 0.60 for 15 days: USET establishes a permanent outpost |
+| **Political Pressure** | Degree of government oversight | Above 0.70: line may be requisitioned or forcibly transferred |
+| **Infrastructure Decay** | Cumulative wear on the line | Below 40: state ceiling permanently reduced by 10% |
+
+The trendlines are not independent. A trust collapse feeds sand penetration, which reduces revenue, which worsens fiscal health, which accelerates infrastructure decay — a cascade that can end a playthrough if left unchecked. Conversely, early investment in trust creates a virtuous cycle that compounds over time.
 
 ### Core Systems
 
-The game runs on five connected simulation engines:
+The game runs on five connected simulation engines, each with its own specification and formula set:
 
-- **Sand Standard Core** — the economic engine. Passenger flow, fuel cost, wages, maintenance, accident probability, and trust are each governed by documented formulas. Revenue minus expenditure produces a real figure rather than a scripted curve. The engine drives the five trendlines. [Formula reference](docs/compose/specs/跨系统联动公式.md)
-- **Chollima Genesis Core** — world generation. A seed initialises the underlying structure at the start of each playthrough: supply-demand relationships, resource distribution, and political leanings. Two playthroughs differ because the underlying structure differs. [Specification](docs/compose/specs/千里马创世核.md)
-- **Suiyue Narrative Engine** — event generation. The system analyses the current world state — seed-derived structure, trendline positions, and player-character relationships — and produces events that adapt to variables hardcoding cannot anticipate. [Specification](docs/compose/specs/岁月叙事引擎.md)
-- **Seonmin Personnel System** — crew management. Each crew member has skill tracks, growth rates, and potential caps. Fatigue and loyalty are intentionally not displayed; they surface through behaviour — tone of voice, willingness to work overtime, and reactions after incidents. [Specification](docs/compose/specs/先民人事系统.md)
-- **Iron Dragon Competition System** — the rival AI. USET maintains a per-city penetration value that grows naturally and accelerates through campaigns; every 30 days it takes an action. Its Iron Dragon Project, a "railway heritage protection" front, acquires financially weak lines. [Specification](docs/compose/specs/铁龙竞争系统.md)
+**Sand Standard Core** — the economic engine. Passenger flow, fuel consumption, wages, maintenance costs, accident probability, and public trust are governed by documented formulas. Revenue minus expenditure produces a real figure rather than a scripted curve. The core drives the five trendlines; it is also the system most affected by the inertia principle — no single decision produces immediate results, and every choice carries the weight of past decisions.
+
+**Chollima Genesis Core** — world generation. At the start of each playthrough, a seed code (format: `RR-XXXXX-YYYYY`) initialises the underlying structure: city templates with supply-demand dependencies, a resource distribution graph computed via Kosaraju's strongly-connected-components algorithm, a railway network spanning tree generated by Kruskal's minimum-spanning-tree algorithm, and political leanings assigned per city cluster. Two playthroughs differ because the underlying structure differs — not because of scripted variation.
+
+**Suiyue Narrative Engine** — event generation. The system analyses the current world state — seed-derived structure, trendline positions, crew status, and player-character relationships — and produces narrative events that adapt to variables hardcoding cannot anticipate. The engine is templated: each event type has a slot structure, and the WorldAnalyzer fills slots based on runtime conditions. Events have cooldowns, density caps, and a logarithmic decay curve to prevent fatigue.
+
+**Seonmin Personnel System** — crew management. Each crew member has a skill tree spanning five systems (Operations, Rolling Stock, Track, Signalling, Station Services) and nineteen sub-skills, each with an independent 0–100 level. Fatigue and loyalty are intentionally hidden from the interface; they surface through behaviour — tone of dialogue, willingness to work overtime, and reactions after incidents. The system includes mentorship (apprentices gain 2× learning when paired with a senior), social comparison (employees compare salaries and lose loyalty if they feel underpaid), and wage negotiation (skill jumps trigger salary demands).
+
+**Iron Dragon Competition System** — the rival AI. USET maintains a per-city penetration value that grows naturally (0.0015/day) and accelerates through campaigns: advertising drives, free test rides, price wars, and the Iron Dragon Project — a "railway heritage protection" front that acquires financially weak lines through a six-step process (target → approach → infiltrate → pressure → acquire → dismantle). Every 30 days, USET evaluates the global state and selects a strategy. If penetration exceeds 0.60 for 15 consecutive days, USET establishes a permanent outpost — a competitive structure that remains even after penetration falls.
+
+### The Inertia Principle
+
+The game's defining design philosophy: **you are not making choices. You are carrying the consequences of past choices.**
+
+Every system has inertia — a historical baseline that drags against or accelerates the effect of player actions. The formula is unified across all systems:
+
+```
+effect = action × (1 − coefficient) + historical_baseline × coefficient
+```
+
+| System | Coefficient | What it means |
+|--------|-------------|---------------|
+| Passenger flow | 0.15 | A fare cut takes ~20 days to fully materialise |
+| Employee loyalty | 0.15 | Past low wages linger; trust must be rebuilt |
+| Sand penetration | 0.20 | USET's foothold is the hardest to reverse |
+| Vehicle condition | 0.10 | A single overhaul cannot undo months of neglect |
+| Political relations | 0.18 | A broken relationship takes weeks to repair |
+
+The historical baseline is a 30-day weighted average: recent days matter more. When a system stays below a threshold for too long, it generates a **permanent legacy**: a tracked accident record, a USET outpost, a reduced vehicle-state ceiling, a political support downgrade. These legacies cannot be undone by simply raising the number — they require sustained good behaviour measured in months, not days.
+
+A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that no two days feel identical even when the underlying numbers are similar.
 
 ### Narrative and Economy
 
-Early pure operations are loss-making by design; story-driven grants provide the cash flow that sustains the railway during the survival phase.
+The visual novel supports three dialogue modes: preset (fully authored), free AI (player types anything, the AI responds in character), and hybrid (preset branches with AI fallback for unanticipated topics). Characters carry personalities, favour ability thresholds, and memory of past conversations. A phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant).
 
-The visual novel supports three dialogue modes (preset / free AI / hybrid), switchable between MiMo, GPT, or a local model. Characters carry personalities, favorability thresholds, and memory. A planned phone-based assistant, powered by the player's own API key, is narratively framed as a remote call to the university server running a modified RDA (Railway Decision Assistant).
+The economic simulation is loss-making by design in the early game. The player survives on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is not fixed: it is calculated from the player's operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
+
+---
 
 ## Crew
 
-The player does not run the line alone. Crew members begin as a small group and grow with the world: new arrivals, retirements, and apprentices enter the narrative as it unfolds.
+The player does not run the line alone. The initial crew consists of five people — Old Chen (the last stationmaster, driving 5/7), Zhang Gong (retired mechanic, repair 5/7), Li Ayi (community volunteer, service 4/7), Zhao Shifu (retired engineer, management 4/7), and Xiao Fang (volunteer, service 1/7). Wang Xiaodi (fresh graduate, driving 1/7, potential 7/7) joins shortly after.
+
+Each crew member has a skill tree rather than a single linear skill level. The five systems (Operations / Rolling Stock / Track / Signalling / Station Services) contain nineteen sub-skills — for example, "Operations" includes Driver, Shunter, Dispatcher, and Signalman. Sub-skills are unlocked through skill books, which can be obtained via training, mentorship, external experts, or story events.
+
+Growth is governed by the inertia principle: a crew member assigned to driving gains driving experience daily, but also gains experience in related sub-skills at a reduced rate. Cross-system learning is possible but slow — a driver can pick up basic Station Services through observation (low threshold, coefficient 0.3), but cannot learn Rolling Stock maintenance without formal training (high threshold, coefficient 0.1).
+
+---
 
 ## Progression
 
 ```
-Prologue visual novel (Day 0–4) → Survival → Stability → Growth
-→ Breakthrough → Expansion → National network
+Prologue VN (Day 0–4) → Survival → Stability → Growth → Breakthrough → Expansion → National network
 ```
 
-Political cycles affect subsidies. Random events — storms, oil price spikes, holiday crowds, USET advertising campaigns — vary the pressure across seasons.
+The game is structured around an implicit three-layer time model: daily decisions, monthly evaluations, and yearly strategic shifts. Political cycles affect subsidies. Random events — storms, oil-price spikes, holiday crowds, USET campaigns — vary the pressure across seasons. Every decision carries inertia; the player is always, in every moment, carrying the past.
 
 ---
 
@@ -140,7 +183,7 @@ Assets/
 │   └── ...
 ├── Resources/
 │   ├── Scripts/       # VN scripts (prologue_01 ~ prologue_10)
-│   ├── Seeds/         # World seed data
+│   ├── Seeds/         # World seed data (8 seed files)
 │   ├── events.json    # Event templates
 │   ├── bg/            # Backgrounds
 │   └── characters/    # Character sprites
@@ -159,7 +202,7 @@ Phase 3: Asset generation           ⏳ In progress
 Phase 4: Integration & polish       ⏳ Planned
 ```
 
-**Implemented:** prologue scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary · **FluctuationEngine (L1-L4 + fBm)** · **GlobalRules (seed-driven config)** · **Inertia system (historical baseline + nonlinear thresholds)** · **8-level skill tree (5 systems × 19 sub-skills)** · **Social comparison effect** · **Mentorship + wage negotiation** · **Synergy + stance linkage**.
+**Implemented:** prologue VN scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary · **FluctuationEngine (L1–L4 + fBm)** · **GlobalRules (seed-driven config)** · **Inertia (historical baseline + nonlinear thresholds)** · **8-level skill tree (5 systems × 19 sub-skills)** · **Social comparison effect** · **Mentorship + wage negotiation** · **Synergy + stance linkage**.
 
 ---
 
