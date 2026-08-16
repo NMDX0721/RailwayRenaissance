@@ -53,13 +53,24 @@ namespace RailwayRenaissance.Core
         public float skillNewbieMultiplier = 1.5f;       // 新手加速
 
         // ===== 波动权重表（由世界种子生成独属权重） =====
-        public Dictionary<string, float[]> fluctuationWeights = new Dictionary<string, float[]>();
+        // 注：不用 Dictionary（Unity 不支持序列化），改用 List<WeightTable>
+        public List<WeightTable> fluctuationWeightsList = new List<WeightTable>();
+
+        [System.Serializable]
+        public struct WeightTable
+        {
+            public string formulaName;
+            public float[] weights;
+        }
 
         /// <summary>获取指定公式名的权重数组。</summary>
         public float[] GetWeights(string formulaName)
         {
-            if (fluctuationWeights.TryGetValue(formulaName, out float[] weights))
-                return weights;
+            for (int i = 0; i < fluctuationWeightsList.Count; i++)
+            {
+                if (fluctuationWeightsList[i].formulaName == formulaName)
+                    return fluctuationWeightsList[i].weights;
+            }
             return new float[] { 1.0f }; // 默认等权重
         }
     }
