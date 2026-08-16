@@ -14,7 +14,7 @@ public class VNSaveData
 
 public class VNSaveSystem
 {
-    private const int MaxSlots = 9;
+    private const int MaxSlots = 61;
     private const string SaveKeyPrefix = "VN_Save_";
 
     public bool SaveGame(int slot, string scriptName, int sceneIndex, int dialogueIndex, string bgName, string bgmName)

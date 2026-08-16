@@ -12,11 +12,19 @@ public class VNSaveLoadUI : MonoBehaviour
     private Label titleLabel;
     private UnityEngine.UIElements.Button closeBtn;
     private VisualElement slotContainer;
+    private VisualElement pageNav;
+    private Label pageLabel;
+    private UnityEngine.UIElements.Button prevBtn;
+    private UnityEngine.UIElements.Button nextBtn;
 
     private bool isOpen;
     private bool isSaveMode;
+    private bool isFromTitleScreen;
     private System.Action<int> onSlotSelected;
     private Coroutine feedbackRoutine;
+    private int currentPage = 0;
+    private const int SlotsPerPage = 6;
+    private const int TotalPages = 10;
 
     private void ShowSaveFeedback()
     {
@@ -157,8 +165,51 @@ public class VNSaveLoadUI : MonoBehaviour
         slotContainer.style.paddingLeft = 50;
         slotContainer.style.paddingRight = 50;
         slotContainer.style.paddingTop = 20;
-        slotContainer.style.paddingBottom = 20;
+        slotContainer.style.paddingBottom = 10;
         panel.Add(slotContainer);
+
+        // Page navigation
+        pageNav = new VisualElement();
+        pageNav.style.flexDirection = FlexDirection.Row;
+        pageNav.style.justifyContent = Justify.Center;
+        pageNav.style.alignItems = Align.Center;
+        pageNav.style.paddingBottom = 16;
+        pageNav.style.paddingTop = 4;
+        panel.Add(pageNav);
+
+        prevBtn = new UnityEngine.UIElements.Button(() => { currentPage--; RefreshSlots(); }) { text = "\u25C0 上一页" };
+        StylePageBtn(prevBtn);
+        pageNav.Add(prevBtn);
+
+        pageLabel = new Label("第 1/10 页");
+        pageLabel.style.fontSize = 18;
+        pageLabel.style.color = new Color(1f, 1f, 1f, 0.6f);
+        pageLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        pageLabel.style.marginLeft = 20;
+        pageLabel.style.marginRight = 20;
+        pageNav.Add(pageLabel);
+
+        nextBtn = new UnityEngine.UIElements.Button(() => { currentPage++; RefreshSlots(); }) { text = "下一页 \u25B6" };
+        StylePageBtn(nextBtn);
+        pageNav.Add(nextBtn);
+    }
+
+    private void StylePageBtn(UnityEngine.UIElements.Button btn)
+    {
+        var fontDef = new FontDefinition { font = gameFont };
+        btn.style.width = 110;
+        btn.style.height = 36;
+        btn.style.fontSize = 18;
+        btn.style.color = new Color(1f, 1f, 1f, 0.8f);
+        btn.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.7f);
+        btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = fontDef;
+        btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
+        btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
+        btn.style.borderTopColor = GoldDim; btn.style.borderBottomColor = GoldDim;
+        btn.style.borderLeftColor = GoldDim; btn.style.borderRightColor = GoldDim;
+        btn.style.borderTopLeftRadius = 5; btn.style.borderTopRightRadius = 5;
+        btn.style.borderBottomLeftRadius = 5; btn.style.borderBottomRightRadius = 5;
     }
 
     public void OpenSavePanel(System.Action<int> callback)
@@ -174,6 +225,18 @@ public class VNSaveLoadUI : MonoBehaviour
     public void OpenLoadPanel(System.Action<int> callback)
     {
         isSaveMode = false;
+        isFromTitleScreen = false;
+        onSlotSelected = callback;
+        titleLabel.text = "读档";
+        RefreshSlots();
+        panel.style.display = DisplayStyle.Flex;
+        isOpen = true;
+    }
+
+    public void OpenLoadPanelFromTitle(System.Action<int> callback)
+    {
+        isSaveMode = false;
+        isFromTitleScreen = true;
         onSlotSelected = callback;
         titleLabel.text = "读档";
         RefreshSlots();
@@ -186,6 +249,11 @@ public class VNSaveLoadUI : MonoBehaviour
         panel.style.display = DisplayStyle.None;
         isOpen = false;
         onSlotSelected = null;
+        if (isFromTitleScreen)
+        {
+            isFromTitleScreen = false;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+        }
     }
 
     private void RefreshSlots()
@@ -196,6 +264,16 @@ public class VNSaveLoadUI : MonoBehaviour
         slotContainer.style.justifyContent = Justify.SpaceBetween;
         var fontDef = GetFontDef();
 
+        // Clamp page
+        currentPage = Mathf.Clamp(currentPage, 0, TotalPages - 1);
+        int startSlot = currentPage * SlotsPerPage + 1;
+        int endSlot = startSlot + SlotsPerPage;
+
+        // Update page label
+        pageLabel.text = "第 " + (currentPage + 1) + "/" + TotalPages + " 页";
+        prevBtn.style.display = currentPage > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        nextBtn.style.display = currentPage < TotalPages - 1 ? DisplayStyle.Flex : DisplayStyle.None;
+
         // Find latest save for slot 0
         VNSaveData latestSave = null;
         int latestSlot = -1;
@@ -204,7 +282,6 @@ public class VNSaveLoadUI : MonoBehaviour
             var data = saveSystem.LoadGame(i);
             if (data != null)
             {
-                // Try to parse timestamp to find the latest
                 System.DateTime dt;
                 if (System.DateTime.TryParse(data.timestamp, out dt))
                 {
@@ -216,24 +293,22 @@ public class VNSaveLoadUI : MonoBehaviour
                 }
                 else
                 {
-                    // Fallback: just take the last non-null
                     latestSave = data;
                     latestSlot = i;
                 }
             }
         }
 
-        for (int i = 0; i < saveSystem.MaxSlotCount; i++)
-        {
-            int slotIndex = i;
-            var saveData = (i == 0) ? latestSave : saveSystem.LoadGame(i);
-            bool isLatestSlot = (i == 0);
+        // Slot 0 (latest - always shown)
+        BuildSlot(0, latestSave, true, fontDef);
 
-            // Slot card
-            var slotElement = new VisualElement();
-            slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
-            slotElement.style.height = 110;
-            slotElement.style.marginBottom = 10;
+        // Current page slots
+        for (int i = startSlot; i < endSlot && i < saveSystem.MaxSlotCount; i++)
+        {
+            var data = saveSystem.LoadGame(i);
+            BuildSlot(i, data, false, fontDef);
+        }
+    }
             slotElement.style.flexDirection = FlexDirection.Row;
             slotElement.style.alignItems = Align.Center;
             slotElement.style.backgroundColor = SlotBg;

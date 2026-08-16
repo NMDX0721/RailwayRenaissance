@@ -47,8 +47,8 @@ public class StationBulletinUI : MonoBehaviour
         panel.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         panel.style.borderTopLeftRadius = 10; panel.style.borderTopRightRadius = 10;
         panel.style.borderBottomLeftRadius = 10; panel.style.borderBottomRightRadius = 10;
-        panel.style.width = 680;
-        panel.style.height = 520;
+        panel.style.width = 800;
+        panel.style.height = 600;
         panel.style.flexDirection = FlexDirection.Column;
         overlay.Add(panel);
 

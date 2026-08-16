@@ -1021,7 +1021,7 @@ public class VNManager : MonoBehaviour
         // 读档界面已由 HideVNUI() 隐藏了 VN 元素
         yield return null;
         if (saveLoadUI != null)
-            saveLoadUI.OpenLoadPanel((slotIndex) => { });
+            saveLoadUI.OpenLoadPanelFromTitle((slotIndex) => { });
     }
 
     private void StartAutoPlayTimer()
