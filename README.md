@@ -620,21 +620,17 @@ gantt
     title Development Roadmap
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
-    section Design
-    Design docs & lore       :done, 2025-09, 2025-12
-    section Core Systems
-    Economy simulation       :done, 2026-01, 2026-03
-    World generation         :done, 2026-02, 2026-04
-    Narrative engine         :done, 2026-03, 2026-05
-    Personnel system         :done, 2026-04, 2026-06
-    Competition AI           :done, 2026-05, 2026-07
-    Inertia fluctuation     :done, 2026-06, 2026-07
-    section Assets
-    Character sprites        :active, 2026-07, 2026-09
-    Scenes & vehicle models  :2026-08, 2026-10
-    section Integration
-    Performance & i18n       :2026-09, 2026-11
-    Test coverage & release  :2026-10, 2026-12
+    Design docs lore          :done, 2025-09, 2025-12
+    Economy simulation        :done, 2026-01, 2026-03
+    World generation          :done, 2026-02, 2026-04
+    Narrative engine          :done, 2026-03, 2026-05
+    Personnel system          :done, 2026-04, 2026-06
+    Inertia fluctuation       :done, 2026-05, 2026-07
+    Competition AI            :done, 2026-06, 2026-08
+    Character sprites         :active, 2026-07, 2026-09
+    Scenes vehicle models     :2026-08, 2026-10
+    Performance i18n          :2026-09, 2026-11
+    Test coverage release     :2026-10, 2026-12
 ```
 
 ```mermaid
