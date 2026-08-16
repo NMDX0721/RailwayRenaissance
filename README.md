@@ -580,7 +580,7 @@ flowchart TB
         Core["Core/ FluctuationEngine+GlobalRules"]
         VN["VN/ JSON-driven VN engine"]
         Narrative["Narrative/ Suiyue engine"]
-        WorldGen["WorldGen/ Chollima world gen"]
+        WorldGen["WorldGen/<br>Chollima world gen"]
         GameData["GameData.cs Economy sim"]
         CrewManager["CrewManager.cs Crew system"]
         SandRival["SandRivalManager.cs USET AI"]
