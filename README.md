@@ -56,6 +56,7 @@ The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village 
 **Sand energy timeline:**
 
 ```mermaid
+%%{init: { 'theme': 'base', 'themeVariables': { 'timelineTextColor': '#000000', 'timelineLabelColor': '#000000' } } }%%
 timeline
     title The Sand Era Chronicle
     2050 : UK team invents sand energy principle : "Active Energy Lab" registered
