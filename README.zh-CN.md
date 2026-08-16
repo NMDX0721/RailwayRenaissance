@@ -102,9 +102,16 @@ Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) ×
 每条趋势线有自己的微分方程：信任低于阈值时，`d(Flow)/dt ∝ -TrustDeficit × 0.005`；沙能渗透超过 0.60 持续 15 天触发永久营业点。所有系数通过 GlobalRules 在每局游戏开局时由种子生成，确保经济走势各不相同。
 
 **五条趋势线互锁：**
+
+```mermaid
+graph TD
+    Trust[信任崩塌] -->|加速| Sand[沙能渗透]
+    Sand -->|侵蚀| Revenue[收入下降]
+    Revenue -->|拖累| Fiscal[财政恶化]
+    Fiscal -->|加速| Infra[设施老化]
+    Infra -->|进一步打击| Trust
 ```
-TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → InfrastructureDecay↑
-```
+
 反向连锁则形成正向循环。引擎受惯性原则影响最深——没有哪个决策能立即见效，每个选择都背负着过去的重担。
 
 经济模拟在前期是亏损设计。汉字"铁"——左边是"金"，右边是"失"——已暗示了铁路事业注定难以盈利。你靠剧情驱动的补贴生存：政府补贴、社区集资、遗产保护基金，每一项都绑定着需要维护的政治关系。补贴金额由运营评估、政治关系、线路战略价值共同决定，且受惯性原则调制。
@@ -231,7 +238,7 @@ Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
 
 ### 惯性原则
 
-这是游戏的核心设计哲学：**你不是在做选择，而是在承担过去的选择。**
+> **设计核心：** 你不是在做选择，而是在承担过去的选择。
 
 每个系统都存在惯性——一条历史基线，拖累或加速你的操作效果。公式在所有系统中统一：
 
@@ -340,8 +347,14 @@ Effect = ActionValue × (1 − InertiaCoefficient) + HistoricalBaseline × Inert
 
 ## 游戏进程
 
-```
-序章视觉小说（Day 0–4）→ 求生期 → 稳定期 → 扩张期 → 突破期 → 发展期 → 全国路网
+```mermaid
+graph LR
+    A[序章 VN<br>Day 0–4] --> B[求生期]
+    B --> C[稳定期]
+    C --> D[扩张期]
+    D --> E[突破期]
+    E --> F[发展期]
+    F --> G[全国路网]
 ```
 
 每个阶段有明确的运营目标和剧情里程碑：求生期靠补贴度日，稳定期实现收支平衡，扩张期开辟新线路，突破期突破 USET 封锁，发展期构建区域路网，最终挑战全国铁路复兴。
@@ -407,11 +420,11 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 
 **这意味着你可以：**
 
-- 想调整经济平衡？打开 `参考资料/沙本位经济核.md`，让 AI 代理修改弹性系数。代理能理解公式、更新代码、验证结果。
-- 想新增员工技能？打开 `docs/compose/specs/先民人事系统.md`，描述技能的功能。代理能找到正确的插入点，实现逻辑，更新测试。
-- 想创建自定义世界种子？种子格式（`RR-XXXXX-YYYYY`）在千里马创世核设计文档中有详细说明。生成一个新种子，游戏就会产生一个独特的世界。
+- 想调整经济平衡？打开 `参考资料/沙本位经济核.md`，让 AI 代理修改弹性系数。
+- 想新增员工技能？打开 `docs/compose/specs/先民人事系统.md`，描述技能的功能。
+- 想创建自定义世界种子？种子格式（`RR-XXXXX-YYYYY`）在千里马创世核设计文档中有说明。
 
-项目开源（MIT），文档详尽，AI 工具链就绪。复刻仓库，指向 AI 代理，即可按需改造。
+> **Tip:** 项目开源（MIT），文档详尽，AI 工具链就绪。复刻仓库，指向 AI 代理，即可按需改造。
 
 ---
 
@@ -442,12 +455,10 @@ Assets/
 
 ## 开发进度
 
-```
-Phase 1: 设计文档与世界观   ✅
-Phase 2: 核心系统（12/12）   ✅
-Phase 3: 资产生成            ⏳ 进行中
-Phase 4: 整合打磨            ⏳ 计划中
-```
+![Phase 1](https://img.shields.io/badge/Phase_1-设计文档与世界观-brightgreen)
+![Phase 2](https://img.shields.io/badge/Phase_2-核心系统（12/12）-brightgreen)
+![Phase 3](https://img.shields.io/badge/Phase_3-资产生成-orange)
+![Phase 4](https://img.shields.io/badge/Phase_4-整合打磨-lightgrey)
 
 已实现：序章剧本 · VN→经营桥接 · 经济模拟 · 员工系统 · 随机事件 · USET 对手 AI · 新手引导 · 统一存档 · 术语高亮 · **波动引擎 (L1–L4 + fBm)** · **GlobalRules（种子驱动配置）** · **惯性系统（历史基线 + 非线性阈值）** · **8 级技能树（5 系统 × 19 子技能）** · **社会对比效应** · **师徒传承 + 工资谈判** · **协同效应 + 经营姿态联动**。
 

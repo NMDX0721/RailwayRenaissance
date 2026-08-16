@@ -115,9 +115,16 @@ Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) ×
 Each trendline has its own differential equation: when trust drops below threshold, `d(Flow)/dt ∝ -TrustDeficit × 0.005`; sand penetration above 0.60 for 15 days triggers a permanent outpost. All coefficients are generated per playthrough via GlobalRules, ensuring no two economies behave identically.
 
 **Five trendline interlock:**
+
+```mermaid
+graph TD
+    Trust[Trust Collapse] -->|feeds| Sand[Sand Penetration]
+    Sand -->|erodes| Revenue[Revenue Drop]
+    Revenue -->|worsens| Fiscal[Fiscal Decline]
+    Fiscal -->|accelerates| Infra[Infrastructure Decay]
+    Infra -->|further hits| Trust
 ```
-TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → InfrastructureDecay↑
-```
+
 The reverse cascade creates a virtuous cycle. The economy is loss-making by design in the early game. The Chinese character for "rail" (铁) is composed of "gold" (金) on the left and "loss" (失) on the right — a silent admission that railways are seldom profitable. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
 </details>
 
@@ -211,7 +218,7 @@ Named after the Han dynasty celestial metaphor: the heavenly horse (Chollima) an
 
 ### The Inertia Principle
 
-The game's defining design principle: **you are not making choices. You are carrying the consequences of past choices.**
+> **Design core:** You are not making choices. You are carrying the consequences of past choices.
 
 Every system has inertia — a historical baseline that drags against or accelerates the effect of player actions. The formula is unified across all systems:
 
@@ -330,8 +337,14 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 
 ## Progression
 
-```
-Prologue VN (Day 0–4) → Survival phase → Stabilisation → Expansion → Breakthrough → Growth → National network
+```mermaid
+graph LR
+    A[Prologue VN<br>Day 0–4] --> B[Survival]
+    B --> C[Stabilisation]
+    C --> D[Expansion]
+    D --> E[Breakthrough]
+    E --> F[Growth]
+    F --> G[National Network]
 ```
 
 Each phase has defined operational targets and story milestones: survival through grants, stabilisation toward break-even, expansion into new routes, breakthrough against USET's blockade, growth into a regional network, and the final challenge of national railway revival.
@@ -432,12 +445,10 @@ Assets/
 
 ## Development Status
 
-```
-Phase 1: Design documents & lore    ✅
-Phase 2: Core systems (12/12)       ✅
-Phase 3: Asset generation           ⏳ In progress
-Phase 4: Integration & polish       ⏳ Planned
-```
+![Phase 1](https://img.shields.io/badge/Phase_1-Design_docs_&_lore-brightgreen)
+![Phase 2](https://img.shields.io/badge/Phase_2-Core_systems_(12/12)-brightgreen)
+![Phase 3](https://img.shields.io/badge/Phase_3-Asset_generation-orange)
+![Phase 4](https://img.shields.io/badge/Phase_4-Integration_&_polish-lightgrey)
 
 **Implemented:** prologue VN scripts · VN-to-gameplay bridge · economy simulation · crew system · random events · USET rival AI · tutorial · unified save/load · term glossary · **FluctuationEngine (L1–L4 + fBm)** · **GlobalRules (seed-driven config)** · **Inertia (historical baseline + nonlinear thresholds)** · **8-level skill tree (5 systems × 19 sub-skills)** · **Social comparison effect** · **Mentorship + wage negotiation** · **Synergy + stance linkage**.
 
