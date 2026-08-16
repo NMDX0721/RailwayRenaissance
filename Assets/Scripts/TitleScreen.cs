@@ -290,59 +290,53 @@ public class TitleScreen : MonoBehaviour
 
     private void SetupVideoBackground()
     {
-        // Try loading via Resources (imported VideoClip)
+        // Find video file - try Resources first, then StreamingAssets
         VideoClip clip = null;
+        string fallbackUrl = null;
         try { clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg"); } catch { }
+        if (clip == null)
+        {
+            string saPath = System.IO.Path.Combine(Application.streamingAssetsPath, "cloud_sea_long.mp4");
+            if (System.IO.File.Exists(saPath))
+                fallbackUrl = saPath;
+        }
+        if (clip == null && fallbackUrl == null) return;
 
+        // Create a GameObject to hold VideoPlayer + Canvas
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
-        go.transform.localPosition = new Vector3(0, 0, 10);
 
+        // RenderTexture
+        var rt = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGB32);
+        rt.Create();
+
+        // VideoPlayer
         var player = go.AddComponent<VideoPlayer>();
         player.isLooping = true;
         player.playOnAwake = true;
         player.audioOutputMode = VideoAudioOutputMode.None;
+        player.renderMode = VideoRenderMode.RenderTexture;
+        player.targetTexture = rt;
+        if (clip != null) { player.source = VideoSource.VideoClip; player.clip = clip; }
+        else { player.source = VideoSource.Url; player.url = fallbackUrl; }
 
-        if (clip != null)
-        {
-            // Use VideoClip (imported by Unity)
-            player.source = VideoSource.VideoClip;
-            player.clip = clip;
-        }
-        else
-        {
-            // Fallback: use direct file URL (bypasses Unity import)
-            string path = System.IO.Path.Combine(Application.streamingAssetsPath, "cloud_sea_long.mp4");
-            if (System.IO.File.Exists(path))
-            {
-                player.source = VideoSource.Url;
-                player.url = path;
-            }
-            else
-            {
-                // Try Resources folder as file path
-                string resPath = System.IO.Path.Combine(Application.dataPath, "Resources", "Videos", "cloud_sea_bg.mp4");
-                if (System.IO.File.Exists(resPath))
-                {
-                    player.source = VideoSource.Url;
-                    player.url = resPath;
-                }
-                else
-                {
-                    Debug.LogError("[TitleScreen] No video file found anywhere!");
-                    GameObject.Destroy(go);
-                    return;
-                }
-            }
-        }
+        // uGUI Canvas with RawImage (works in all pipelines)
+        var canvasGO = new GameObject("VideoCanvas");
+        canvasGO.transform.SetParent(go.transform);
+        var canvas = canvasGO.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = -10; // behind UI Toolkit
+        canvasGO.AddComponent<UnityEngine.UI.CanvasScaler>();
+        canvasGO.AddComponent<UnityEngine.UI.GraphicRaycaster>();
 
-        // Render to camera far plane (no shader, no Quad, no RenderTexture needed)
-        player.renderMode = VideoRenderMode.CameraFarPlane;
-        player.targetCamera = Camera.main;
-        player.targetCameraAlpha = 1.0f;
-
-        // Make camera render behind UI
-        Camera.main.clearFlags = CameraClearFlags.Depth;
+        var rawImageGO = new GameObject("VideoRawImage");
+        rawImageGO.transform.SetParent(canvasGO.transform);
+        var rawImage = rawImageGO.AddComponent<UnityEngine.UI.RawImage>();
+        rawImage.texture = rt;
+        rawImage.rectTransform.anchorMin = Vector2.zero;
+        rawImage.rectTransform.anchorMax = Vector2.one;
+        rawImage.rectTransform.offsetMin = Vector2.zero;
+        rawImage.rectTransform.offsetMax = Vector2.zero;
 
         player.Play();
     }
