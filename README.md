@@ -359,7 +359,7 @@ Phase 4: Integration & polish       ⏳ Planned
 
 ## Contributing
 
-A personal, non-commercial, educational project by a high-school student. Contributions of any kind — art, balance values, story, code — are welcome. The [design documents](参考资料/游戏开发文档.md) are the source of truth; open an issue or pull request to propose changes.
+A high-school student's side project — non-commercial, educational, just for the love of it. Art, balance, story, code: whatever you've got, we'll take it. The [design documents](参考资料/游戏开发文档.md) are the source of truth; open an issue first to talk about changes before sending a PR.
 
 ---
 
@@ -369,4 +369,4 @@ A personal, non-commercial, educational project by a high-school student. Contri
 
 ---
 
-*Inspired by Maitetsu and Stardew Valley.*
+*Inspired by [Maitetsu: Last Run!!](https://store.steampowered.com/app/1434480/Last_Run/) and [Stardew Valley](https://store.steampowered.com/app/413150/Stardew_Valley/).*
