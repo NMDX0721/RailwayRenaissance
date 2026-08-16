@@ -231,17 +231,8 @@ public class VNSaveLoadUI : MonoBehaviour
 
             // Slot card
             var slotElement = new VisualElement();
-            // Slot 0: full width, others: half width (2 columns)
-            if (isLatestSlot)
-            {
-                slotElement.style.width = new Length(100, LengthUnit.Percent);
-                slotElement.style.height = 100;
-            }
-            else
-            {
-                slotElement.style.width = new Length(48, LengthUnit.Percent);
-                slotElement.style.height = 95;
-            }
+            slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
+            slotElement.style.height = 110;
             slotElement.style.marginBottom = 10;
             slotElement.style.flexDirection = FlexDirection.Row;
             slotElement.style.alignItems = Align.Center;
@@ -286,15 +277,16 @@ public class VNSaveLoadUI : MonoBehaviour
                 : new Color(1f, 1f, 1f, 0.15f);
             slotElement.Add(accentBar);
 
-            // Info section — 50% left
+            // Info section — flex-grow left, buttons right
             var infoContainer = new VisualElement();
             infoContainer.style.flexDirection = FlexDirection.Column;
-            infoContainer.style.width = new Length(50, LengthUnit.Percent);
+            infoContainer.style.flexGrow = 1;
             infoContainer.style.paddingLeft = 15;
             infoContainer.style.paddingRight = 8;
             infoContainer.style.paddingTop = 12;
             infoContainer.style.paddingBottom = 12;
             infoContainer.style.justifyContent = Justify.Center;
+            infoContainer.style.overflow = Overflow.Hidden;
 
             // Slot number badge
             var badgeRow = new VisualElement();
@@ -324,7 +316,7 @@ public class VNSaveLoadUI : MonoBehaviour
             badgeRow.Add(slotBadge);
 
             var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i));
-            slotLabel.style.fontSize = 24;
+            slotLabel.style.fontSize = isLatestSlot ? 26 : 24;
             slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
             slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             slotLabel.style.unityFontDefinition = fontDef;
@@ -344,8 +336,6 @@ public class VNSaveLoadUI : MonoBehaviour
                 infoLabel.style.marginBottom = 4;
                 infoLabel.style.overflow = Overflow.Hidden;
                 infoLabel.style.textOverflow = TextOverflow.Ellipsis;
-                infoLabel.style.whiteSpace = WhiteSpace.Normal;
-                infoLabel.style.maxHeight = 42;
                 infoContainer.Add(infoLabel);
 
                 var timeLabel = new Label(saveData.timestamp);
@@ -365,36 +355,39 @@ public class VNSaveLoadUI : MonoBehaviour
 
             slotElement.Add(infoContainer);
 
-            // Action buttons area — 50% right
+            // Action buttons area — auto-width, right-aligned
             var btnArea = new VisualElement();
             btnArea.style.flexDirection = FlexDirection.Row;
             btnArea.style.alignItems = Align.Center;
-            btnArea.style.justifyContent = Justify.Center;
-            btnArea.style.width = new Length(50, LengthUnit.Percent);
+            btnArea.style.justifyContent = Justify.FlexEnd;
+            btnArea.style.flexShrink = 0;
             btnArea.style.paddingRight = 10;
 
-            var btnText = isSaveMode ? "保存" : "读取";
-            if (isSaveMode && saveData != null)
-                btnText = "覆盖";
-
-            var actionBtn = new UnityEngine.UIElements.Button(() =>
+            // 读取按钮：只在有存档数据时显示
+            if (saveData != null || isSaveMode)
             {
-                onSlotSelected?.Invoke(slotIndex);
-                if (isSaveMode)
-                {
-                    RefreshSlots();
-                    ShowSaveFeedback();
-                }
-                else
-                {
-                    ClosePanel();
-                }
-            })
-            { text = btnText };
+                var btnText = isSaveMode ? "保存" : "读取";
+                if (isSaveMode && saveData != null)
+                    btnText = "覆盖";
 
-            actionBtn.style.width = 90;
-            actionBtn.style.height = 40;
-            actionBtn.style.fontSize = 20;
+                var actionBtn = new UnityEngine.UIElements.Button(() =>
+                {
+                    onSlotSelected?.Invoke(slotIndex);
+                    if (isSaveMode)
+                    {
+                        RefreshSlots();
+                        ShowSaveFeedback();
+                    }
+                    else
+                    {
+                        ClosePanel();
+                    }
+                })
+                { text = btnText };
+
+                actionBtn.style.width = 90;
+                actionBtn.style.height = 40;
+                actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
             actionBtn.style.backgroundColor = BtnBg;
             actionBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -432,6 +425,7 @@ public class VNSaveLoadUI : MonoBehaviour
             });
 
             btnArea.Add(actionBtn);
+            } // end action button if-block
 
             // Delete button (only when save data exists)
             if (saveData != null)
