@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
-using System.IO;
 
 [RequireComponent(typeof(UIDocument))]
 public class TitleScreen : MonoBehaviour
@@ -290,8 +289,8 @@ public class TitleScreen : MonoBehaviour
 
     private void SetupVideoBackground()
     {
-        string videoPath = Application.streamingAssetsPath + "/cloud_sea_bg.mp4";
-        if (!File.Exists(videoPath)) return;
+        var clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
+        if (clip == null) return;
 
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
@@ -301,7 +300,7 @@ public class TitleScreen : MonoBehaviour
         player.isLooping = true;
         player.renderMode = VideoRenderMode.RenderTexture;
         player.audioOutputMode = VideoAudioOutputMode.None;
-        player.url = videoPath;
+        player.clip = clip;
 
         var rt = new RenderTexture(1920, 1080, 0);
         rt.Create();
