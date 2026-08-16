@@ -18,7 +18,7 @@
 
 ---
 
-**A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices.**
+**A railway revival simulation with visual-novel storytelling — a data-driven economy, a living rail network, and a world that responds to player choices. Every system is documented for AI-native modding: fork, point your agent at the docs, and build what you want.**
 
 ---
 
@@ -67,6 +67,25 @@ Beneath the surface of every playthrough, five interlinked trendlines operate. I
 | **Infrastructure Decay** | Cumulative wear on the line | Below 40: state ceiling permanently reduced by 10% |
 
 The trendlines are not independent. A trust collapse feeds sand penetration, which reduces revenue, which worsens fiscal health, which accelerates infrastructure decay — a cascade that can end a playthrough if left unchecked. Conversely, early investment in trust creates a virtuous cycle that compounds over time.
+
+### Tech Tree
+
+Four research directions form an open network — not a linear tree. Each node unlocks when its prerequisites are met:
+
+| Field | What it unlocks |
+|-------|----------------|
+| **Infrastructure** | Track upgrades, station expansions, bridge repairs |
+| **Locomotive** | New locomotives, fuel efficiency, cargo capacity |
+| **Dispatch** | Scheduling algorithms, crew optimization, passenger analytics |
+| **Social** | Community relations, political leverage, heritage funding |
+
+Research is not about filling a progress bar. It is about choosing which problem to solve next — and living with the problems you chose not to solve.
+
+### Region Unlock & Political System
+
+The world is divided into six regions, each with multiple cities. Unlocking a region requires meeting a trust threshold, paying a connection cost, and completing a story event. Each region has a dominant political tendency — authoritarian, market, or welfare — that determines how the local government evaluates the player's performance.
+
+Political tendency shifts over time based on player actions. An authoritarian region rewards stability and punishes disruption. A market region rewards profit and punishes inefficiency. A welfare region rewards service and punishes neglect. The player must adapt their strategy to each region's political climate, or face reduced subsidies, harsher inspections, and eventual requisition.
 
 ### Core Systems
 
@@ -136,11 +155,40 @@ The historical baseline is a 30-day weighted average: recent days matter more. W
 
 A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that no two days feel identical even when the underlying numbers are similar.
 
+### Intelligent Rail System (RDA)
+
+The player's grandfather developed the **Ri Dispatch Algorithm (RDA)**, a dynamic scheduling protocol that optimises train paths based on real-time passenger data. The player inherits both the algorithm and a phone-based assistant that runs a modified version of it.
+
+The RDA system unlocks progressively as the player expands their network. Initially it provides basic scheduling suggestions. Later it enables predictive maintenance alerts, automated crew rostering, and dynamic fare adjustments based on demand forecasts. The phone assistant, powered by the player's own API key, is narratively framed as a remote call to the university server — a direct line to the laboratory where the research began.
+
+### Construction Crew & Fuel Management
+
+Expanding the network requires more than buying new trains. The player must dispatch **construction crews** to lay new track, repair damaged sections, and upgrade stations. Each crew has its own skill progression and equipment requirements.
+
+Fuel is the single largest ongoing expense. The NF-5 Gengniu locomotive consumes 58.5 L/100 km at an average of 40-60 km/h on the aging Wufeng line. **Fuel-saving strategies** — coasting, optimised scheduling, reduced idling, and eventual locomotive upgrades — directly affect the bottom line. The fuel price is not fixed; it fluctuates with global sand-energy markets, modulated by the seasonal index and random events.
+
 ## Crew
 
-The initial crew consists of five people — Old Chen (last stationmaster, driving 5/7), Zhang Gong (retired mechanic, repair 5/7), Li Ayi (community volunteer, service 4/7), Zhao Shifu (retired engineer, management 4/7), and Xiao Fang (volunteer, service 1/7). Wang Xiaodi (fresh graduate, driving 1/7, potential 7/7) joins shortly after.
+The initial crew consists of five people, with Wang Xiaodi joining shortly after:
 
-Each crew member has a skill tree rather than a single linear skill level. Growth follows the inertia principle — a driver gains driving experience daily, but also picks up related skills at a reduced rate. Cross-system learning is possible: a driver can learn basic station services through observation, but cannot learn rolling-stock maintenance without formal training.
+| Member | Role | Top Skill |
+|--------|------|-----------|
+| Old Chen | Last stationmaster | Driving 5/7 |
+| Zhang Gong | Retired mechanic | Repair 5/7 |
+| Li Ayi | Community volunteer | Service 4/7 |
+| Zhao Shifu | Retired engineer | Management 4/7 |
+| Xiao Fang | Volunteer | Service 1/7 |
+| Wang Xiaodi | Fresh graduate | Driving 1/7, potential 7/7 |
+
+Each crew member has a **skill tree** rather than a single linear level. The tree consists of two layers:
+
+**Parent skills** — five systems (Operations, Rolling Stock, Track, Signalling, Station Services) that correspond to real railway industry divisions. Each parent skill level is computed as the weighted average of its constituent sub-skills.
+
+**Sub-skills** — each parent system contains 3–4 sub-skills, 19 in total. The "Operations" system, for example, branches into Driver, Shunter, Dispatcher, and Signalman. Sub-skills range from level 0 to 7, with grade names drawn from real international railway classification systems. The driving track follows the Chinese locomotive driver ladder (Apprentice → Assistant → Driver → Instructor → Senior Instructor → Chief Instructor → Master Driver). The rolling-stock track follows a German-Chinese hybrid technician framework (Apprentice → Junior → Intermediate → Senior → Technician → Senior Technician → Master Technician).
+
+The parent-child relationship is bidirectional: sub-skill gains feed back into the parent skill at a fixed proportion, and when the parent skill level exceeds a sub-skill, the sub-skill receives a catch-up bonus — experience efficiency increases with the size of the gap. This mechanism causes experienced employees to learn new skills within the same system faster than new hires.
+
+Cross-system learning has a variable threshold. Sub-skills within the same system transfer naturally — an employee with driving proficiency can learn shunting with minimal efficiency loss. Cross-system learning (e.g., a driver learning rolling-stock maintenance) requires formal training and operates at a significantly reduced efficiency coefficient.
 
 ---
 
