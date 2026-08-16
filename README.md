@@ -57,14 +57,15 @@ The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village 
 
 ```mermaid
 timeline
-    title The Sand Era
-    2050 : Sand energy principle invented in UK
-    2051 : DPRK acquires all patents
-    2053 : First sand vehicle mass production
-    2056 : Rail passenger volume down 34%
-    2068 : 91 nations dissolve state railways
-    2072 : Global rail network shuts down
-    2076 : Game begins
+    title The Sand Era Chronicle
+    2050 : UK team invents sand energy principle : "Active Energy Lab" registered
+    2051 : DPRK acquires all patents and team : USET established in Pyongyang
+    2053 : First product "Sand Flying Pig" mass-produced : Military tank line launched
+    2056 : Rail passenger volume drops 34% for first time : End of rail golden age
+    2063 : Second-gen vehicle matrix released : Donkey/Chicken/Cow/Bear four models : "A sand vehicle for every family"
+    2068 : Rail privatization wave : Acquires 17 struggling rail operators : Zhou Dingming leads acquisitions
+    2072 : Global rail network effectively shuts down : USET sand coverage reaches 95% : Iron Dragon Project approved
+    2076 : Game begins : Third-gen "Sand Whale Project" in R&D : Iron Dragon evaluates Wufeng line
 ```
 
 > [!IMPORTANT]
