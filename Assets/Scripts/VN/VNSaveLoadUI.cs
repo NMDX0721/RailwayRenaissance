@@ -197,12 +197,13 @@ public class VNSaveLoadUI : MonoBehaviour
         {
             int slotIndex = i;
             var saveData = saveSystem.LoadGame(i);
+            bool isLatestSlot = (i == 0);
 
             // Slot card
             var slotElement = new VisualElement();
             slotElement.style.width = new Length(80, LengthUnit.Percent);
             slotElement.style.maxWidth = 650;
-            slotElement.style.height = 90;
+            slotElement.style.height = isLatestSlot ? 110 : 90;
             slotElement.style.marginBottom = 10;
             slotElement.style.flexDirection = FlexDirection.Row;
             slotElement.style.alignItems = Align.Center;
@@ -263,7 +264,7 @@ public class VNSaveLoadUI : MonoBehaviour
             badgeRow.style.alignItems = Align.Center;
             badgeRow.style.marginBottom = 6;
 
-            var slotBadge = new Label((i + 1).ToString());
+            var slotBadge = new Label(isLatestSlot ? "★" : (i + 1).ToString());
             slotBadge.style.marginRight = 8;
             slotBadge.style.fontSize = 22;
             slotBadge.style.color = new Color(0.08f, 0.05f, 0.03f, 1f);
@@ -281,7 +282,7 @@ public class VNSaveLoadUI : MonoBehaviour
             slotBadge.style.borderBottomRightRadius = 4;
             badgeRow.Add(slotBadge);
 
-            var slotLabel = new Label("槽位 " + (i + 1));
+            var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i + 1));
             slotLabel.style.fontSize = 24;
             slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
             slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;

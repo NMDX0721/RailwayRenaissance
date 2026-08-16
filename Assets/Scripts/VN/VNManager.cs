@@ -74,14 +74,11 @@ public class VNManager : MonoBehaviour
         SetupCanvas();
         SetupEventSystem();
 
-        // 标题界面"继续运营" → 显示读档界面
+        // 标题界面"继续运营" → 直接显示读档界面，不播序章
         if (PlayerPrefs.GetInt("VN_ShowLoadUI", 0) == 1)
         {
             PlayerPrefs.SetInt("VN_ShowLoadUI", 0);
             PlayerPrefs.Save();
-            // 先播序章再显示读档，给玩家选择
-            StartScript("prologue_01_news");
-            // 延迟一帧后显示读档面板
             StartCoroutine(ShowLoadUIDelayed());
             return;
         }

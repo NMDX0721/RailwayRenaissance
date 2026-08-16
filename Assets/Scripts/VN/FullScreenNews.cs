@@ -81,6 +81,7 @@ public class FullScreenNews : MonoBehaviour
     private void Update()
     {
         if (!isActive) return;
+        if (newsScroll == null || newsScroll.contentContainer == null || newsScroll.worldBound.height == 0) return;
 
         // Shift加速
         scrollSpeed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)
