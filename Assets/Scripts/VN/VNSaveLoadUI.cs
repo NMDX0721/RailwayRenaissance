@@ -309,8 +309,11 @@ public class VNSaveLoadUI : MonoBehaviour
             slotBadge.style.unityFontStyleAndWeight = FontStyle.Bold;
             slotBadge.style.unityTextAlign = TextAnchor.MiddleCenter;
             slotBadge.style.unityFontDefinition = fontDef;
-            slotBadge.style.width = 30;
-            slotBadge.style.height = 28;
+            slotBadge.style.width = 32;
+            slotBadge.style.height = 30;
+            slotBadge.style.display = DisplayStyle.Flex;
+            slotBadge.style.alignItems = Align.Center;
+            slotBadge.style.justifyContent = Justify.Center;
             slotBadge.style.backgroundColor = saveData != null
                 ? new Color(Gold.r, Gold.g, Gold.b, 0.85f)
                 : new Color(1f, 1f, 1f, 0.2f);
