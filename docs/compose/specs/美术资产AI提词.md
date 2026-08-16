@@ -1,4 +1,4 @@
-﻿# 游戏美术资产 - AI绘图提示词（v2.0 分类清单版）
+# 游戏美术资产 - AI绘图提示词（v2.0 分类清单版）
 
 > 版本：v2.0  
 > 用途：供AI绘图工具生成像素风游戏素材  
@@ -706,59 +706,68 @@ AVOID:
 
 **提示词**：
 ```
-pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, flying vehicle interior, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, sand-energy vehicle, "Chollima" brand flying car cockpit:
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle interior, daytime, 2076 retro-futuristic,
+KOREAN STYLE INTERIOR, sand-energy vehicle cockpit,
+"Chollima" brand flying car:
 
-INTERIOR LAYOUT:
-- Pilot seat and passenger seat, dark navy upholstery with Korean emblem
-- Dashboard with retro-futuristic Korean-made instruments and gauges
-- Holographic display screen showing flight data and navigation (Korean text)
-- AI assistant interface integrated into dashboard (岁月's display)
-- Side windows showing sky and clouds outside (daytime, bright)
-- Compact but comfortable cabin space
+SCENE: interior of a Korean-made sand-energy flying vehicle during daytime flight, two seats (pilot + passenger), compact but comfortable cabin, retro-futuristic Korean design aesthetic blending 1970s Korean industrial design with near-future technology
 
-COCKPIT DETAILS:
-- Steering yoke with Korean text labels
-- Digital speed/altitude display with Hangul numerals
-- Sand energy gauge on dashboard (모래 에너지 잔량)
-- Navigation map showing Korean peninsula and Chinese border
-- Communication radio with Korean frequency labels
-- Small compartment with Korean map and travel documents
+CULTURAL CONTEXT:
+- KOREAN STYLE INTERIOR — North Korean industrial design, practical and functional
+- 2076 retro-futuristic — not too advanced, recognizable as Korean-made
+- Chollima brand — DPRK's premier vehicle manufacturer
+- Kim Il Sung University affiliation visible in interior details
 
-KOREAN CULTURAL ELEMENTS:
-- Small Korean flag charm hanging from rearview mirror
-- Korean traditional knotwork (매듭 maedeup) decoration on dashboard
-- University emblem (김일성대학교) on seat headrests
-- Korean text on all control labels and warning signs
-- Traditional Korean pattern on seat fabric
+COCKPIT LAYOUT:
+- Pilot seat (left) and passenger seat (right), dark navy upholstery with Korean emblem
+- Dashboard with physical buttons and gauges (retro-futuristic, Korean-made)
+- Holographic display screen embedded in dashboard (岁月's interface)
+- Center console with sand-energy controls and navigation system
+- Side windows on both sides showing sky and clouds (daytime, bright)
+
+KOREAN CULTURAL DETAILS:
+- Small Korean flag charm (태극기) hanging from rearview mirror
+- Korean traditional knotwork (매듭 maedeup) decoration on dashboard edge
+- University emblem (김일성대학교) embroidered on seat headrests
+- ALL control labels in Korean text (Hangul) — buttons, gauges, warning signs
+- Traditional Korean pattern (dancheong-inspired) on seat fabric trim
+- Map showing Korean peninsula and Chinese border on navigation display
+- Sand energy gauge labeled "모래 에너지 잔량" with needle indicator
+- Small compartment with Korean travel documents and map
 
 WINDOW VIEW (DAYTIME):
-- Blue sky with white clouds visible through windshield
-- Mountainous landscape below (Chinese/Korean border region)
-- occasional glimpse of other flying vehicles in distance
-- Bright daylight streaming through windows
+- Bright blue sky with white clouds visible through windshield
+- Mountainous landscape below (Korean-Chinese border region)
+- A few sand-energy flying vehicles in distant sky
+- Warm sunlight streaming through side windows
 
 COLOR PALETTE:
-- Primary: dark navy (#1a1a3e), soft gray dashboard (#4a4a5a)
-- Secondary: sky blue (#87CEEB), holographic blue (#00BFFF)
-- Accents: warm orange gauge lights (#FF8C00), Korean emblem red (#CD5C5C)
+- Primary: dark navy (#1a1a3e), instrument panel gray (#4a4a5a)
+- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
+- Accents: warm orange gauge lights (#FF8C00), Korean emblem red (#CD5C5C), traditional gold (#DAA520)
+- Leather: dark brown (#3B1F0B)
 
 ATMOSPHERE:
-- High-tech but slightly retro (2076 Korean design)
-- Compact and functional
 - Safe and comfortable for long journey
+- High-tech but distinctly Korean in design
 - Sense of departure and adventure
+- Warm daylight illumination throughout cabin
+- Compact but not cramped
 
 STYLE:
-- PIXEL ART with clear pixels
-- KOREAN TECH AESTHETIC
-- Clean, slightly futuristic interior
-- Warm daylight illumination
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- KOREAN TECH AESTHETIC — North Korean industrial design language
+- Clean, slightly retro-futuristic interior
+- Every label and text in Korean (Hangul)
 
 AVOID:
-- Generic sci-fi interior (must be Korean-designed)
+- Generic sci-fi interior (must be specifically Korean-designed)
 - Too dark or gloomy
-- Missing Korean text labels
-- Modern/minimalist aesthetic
+- Missing Korean text on instruments
+- Modern/minimalist aesthetic (must feel slightly retro)
+- Japanese or Chinese cultural elements (must be distinctly KOREAN)
 ```
 
 ---
@@ -770,44 +779,53 @@ AVOID:
 
 **提示词**：
 ```
-pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, flying vehicle interior at night, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, sand-energy vehicle cockpit nighttime:
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle interior at night, 2076 retro-futuristic,
+KOREAN STYLE INTERIOR, sand-energy vehicle cockpit nighttime,
+"Chollima" brand flying car:
 
-Same interior layout as car_interior (daytime version) with NIGHTTIME DIFFERENCES:
-- Darker ambient lighting, only instrument panel glow
-- Windows show dark night sky with stars
-- City lights visible far below through windows
+SCENE: same Korean-made sand-energy flying vehicle interior as daytime version, but at night — dark ambient lighting, instrument panel glow, stars visible through windows
+
+NIGHTTIME DIFFERENCES:
+- Dark ambient lighting throughout cabin, only instrument panel provides illumination
+- Windows show dark night sky with stars and crescent moon
+- City lights visible far below through side windows
 - Dashboard instruments glow softly in amber and blue
-- Holographic display casts blue light on cabin interior
-- Small reading light above passenger seat (warm yellow)
+- Holographic display casts cool blue light on cabin interior
+- Small reading light above passenger seat (warm yellow glow)
 - Stars and moon visible through windshield
 
 KOREAN CULTURAL ELEMENTS (same as daytime):
-- Small Korean flag charm
-- Korean traditional knotwork decoration
-- University emblem on seat headrests
-- Korean text on all labels
+- Small Korean flag charm (태극기) on rearview mirror
+- Korean traditional knotwork (매듭 maedeup) on dashboard
+- University emblem (김일성대학교) on seat headrests
+- ALL control labels in Korean text (Hangul)
+- Dancheong-inspired pattern on seat fabric trim
 
 COLOR PALETTE (NIGHT):
-- Primary: deep dark blue (#0a0a1e), instrument glow (#FF8C00)
-- Secondary: starry sky (#1a1a3e), holographic blue (#00BFFF)
-- Accents: warm reading light (#FFD700), city lights below (#FF6347)
+- Primary: deep dark blue (#0a0a1e), instrument glow amber (#FF8C00)
+- Secondary: starry sky (#1a1a3e), holographic cyan (#00BFFF)
+- Accents: warm reading light (#FFD700), distant city lights (#FF6347)
 
 ATMOSPHERE:
 - Quiet, intimate nighttime atmosphere
 - Sense of traveling through the dark
-- Peaceful and contemplative
+- Peaceful and contemplative mood
 - Stars and distant city lights create a sense of vast journey
+- Safe and warm inside despite the dark outside
 
 STYLE:
-- PIXEL ART with clear pixels
+- PIXEL ART with clear pixels, STARDEW VALLEY style
 - KOREAN TECH AESTHETIC
 - Dark ambient lighting with warm instrument glow
 - Nighttime atmosphere throughout
 
 AVOID:
-- Same as daytime version
-- Too bright (should be clearly nighttime)
+- Too bright (must be clearly nighttime)
 - Generic sci-fi night interior
+- Missing Korean text on instruments
+- Japanese or Chinese cultural elements
 ```
 
 ---
