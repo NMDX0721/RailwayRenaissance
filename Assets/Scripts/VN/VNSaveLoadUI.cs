@@ -154,9 +154,9 @@ public class VNSaveLoadUI : MonoBehaviour
         slotContainer.style.alignItems = Align.Center;
         slotContainer.style.justifyContent = Justify.Center;
         slotContainer.style.flexGrow = 1;
-        slotContainer.style.paddingLeft = 30;
-        slotContainer.style.paddingRight = 30;
-        slotContainer.style.paddingTop = 16;
+        slotContainer.style.paddingLeft = 50;
+        slotContainer.style.paddingRight = 50;
+        slotContainer.style.paddingTop = 20;
         slotContainer.style.paddingBottom = 20;
         panel.Add(slotContainer);
     }
@@ -235,14 +235,14 @@ public class VNSaveLoadUI : MonoBehaviour
             if (isLatestSlot)
             {
                 slotElement.style.width = new Length(100, LengthUnit.Percent);
-                slotElement.style.height = 100;
+                slotElement.style.height = 130;
             }
             else
             {
                 slotElement.style.width = new Length(48, LengthUnit.Percent);
-                slotElement.style.height = 85;
+                slotElement.style.height = 120;
             }
-            slotElement.style.marginBottom = 10;
+            slotElement.style.marginBottom = 12;
             slotElement.style.flexDirection = FlexDirection.Row;
             slotElement.style.alignItems = Align.Center;
             slotElement.style.backgroundColor = SlotBg;
@@ -321,7 +321,7 @@ public class VNSaveLoadUI : MonoBehaviour
             badgeRow.Add(slotBadge);
 
             var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i));
-            slotLabel.style.fontSize = 20;
+            slotLabel.style.fontSize = 24;
             slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
             slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             slotLabel.style.unityFontDefinition = fontDef;
@@ -335,7 +335,7 @@ public class VNSaveLoadUI : MonoBehaviour
                 if (saveData.sceneIndex >= 0)
                     chapterText += "  \u2022  第" + (saveData.sceneIndex + 1) + "章  对话" + (saveData.dialogueIndex + 1);
                 var infoLabel = new Label(chapterText);
-                infoLabel.style.fontSize = 18;
+                infoLabel.style.fontSize = 20;
                 infoLabel.style.color = new Color(1f, 1f, 1f, 0.65f);
                 infoLabel.style.unityFontDefinition = fontDef;
                 infoLabel.style.marginBottom = 4;
@@ -346,7 +346,7 @@ public class VNSaveLoadUI : MonoBehaviour
                 infoContainer.Add(infoLabel);
 
                 var timeLabel = new Label(saveData.timestamp);
-                timeLabel.style.fontSize = 15;
+                timeLabel.style.fontSize = 17;
                 timeLabel.style.color = new Color(1f, 1f, 1f, 0.35f);
                 timeLabel.style.unityFontDefinition = fontDef;
                 infoContainer.Add(timeLabel);
@@ -389,9 +389,9 @@ public class VNSaveLoadUI : MonoBehaviour
             })
             { text = btnText };
 
-            actionBtn.style.width = 80;
-            actionBtn.style.height = 36;
-            actionBtn.style.fontSize = 18;
+            actionBtn.style.width = 90;
+            actionBtn.style.height = 40;
+            actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
             actionBtn.style.backgroundColor = BtnBg;
             actionBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
