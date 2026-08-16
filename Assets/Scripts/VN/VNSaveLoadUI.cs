@@ -191,19 +191,57 @@ public class VNSaveLoadUI : MonoBehaviour
     private void RefreshSlots()
     {
         slotContainer.Clear();
+        slotContainer.style.flexDirection = FlexDirection.Row;
+        slotContainer.style.flexWrap = Wrap.Wrap;
+        slotContainer.style.justifyContent = Justify.SpaceBetween;
         var fontDef = GetFontDef();
+
+        // Find latest save for slot 0
+        VNSaveData latestSave = null;
+        int latestSlot = -1;
+        for (int i = 1; i < saveSystem.MaxSlotCount; i++)
+        {
+            var data = saveSystem.LoadGame(i);
+            if (data != null)
+            {
+                // Try to parse timestamp to find the latest
+                System.DateTime dt;
+                if (System.DateTime.TryParse(data.timestamp, out dt))
+                {
+                    if (latestSave == null || dt > System.DateTime.Parse(latestSave.timestamp))
+                    {
+                        latestSave = data;
+                        latestSlot = i;
+                    }
+                }
+                else
+                {
+                    // Fallback: just take the last non-null
+                    latestSave = data;
+                    latestSlot = i;
+                }
+            }
+        }
 
         for (int i = 0; i < saveSystem.MaxSlotCount; i++)
         {
             int slotIndex = i;
-            var saveData = saveSystem.LoadGame(i);
+            var saveData = (i == 0) ? latestSave : saveSystem.LoadGame(i);
             bool isLatestSlot = (i == 0);
 
             // Slot card
             var slotElement = new VisualElement();
-            slotElement.style.width = new Length(80, LengthUnit.Percent);
-            slotElement.style.maxWidth = 650;
-            slotElement.style.height = isLatestSlot ? 110 : 90;
+            // Slot 0: full width, others: half width (2 columns)
+            if (isLatestSlot)
+            {
+                slotElement.style.width = new Length(100, LengthUnit.Percent);
+                slotElement.style.height = 100;
+            }
+            else
+            {
+                slotElement.style.width = new Length(48, LengthUnit.Percent);
+                slotElement.style.height = 85;
+            }
             slotElement.style.marginBottom = 10;
             slotElement.style.flexDirection = FlexDirection.Row;
             slotElement.style.alignItems = Align.Center;
@@ -264,7 +302,7 @@ public class VNSaveLoadUI : MonoBehaviour
             badgeRow.style.alignItems = Align.Center;
             badgeRow.style.marginBottom = 6;
 
-            var slotBadge = new Label(isLatestSlot ? "★" : (i + 1).ToString());
+            var slotBadge = new Label(isLatestSlot ? "★" : (i).ToString());
             slotBadge.style.marginRight = 8;
             slotBadge.style.fontSize = 22;
             slotBadge.style.color = new Color(0.08f, 0.05f, 0.03f, 1f);
@@ -282,7 +320,7 @@ public class VNSaveLoadUI : MonoBehaviour
             slotBadge.style.borderBottomRightRadius = 4;
             badgeRow.Add(slotBadge);
 
-            var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i + 1));
+            var slotLabel = new Label(isLatestSlot ? "最新存档" : "槽位 " + (i));
             slotLabel.style.fontSize = 24;
             slotLabel.style.color = saveData != null ? GoldBright : new Color(1f, 1f, 1f, 0.4f);
             slotLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
