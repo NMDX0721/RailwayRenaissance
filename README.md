@@ -6,9 +6,6 @@
 [![C#](https://img.shields.io/badge/C%23-.NET%208.0-512BD4?logo=csharp&logoColor=white)](https://dotnet.microsoft.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-4B5320)](https://github.com/NMDX0721/RailwayRenaissance)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![GitHub repo size](https://img.shields.io/github/repo-size/NMDX0721/RailwayRenaissance)](https://github.com/NMDX0721/RailwayRenaissance)
-[![GitHub last commit](https://img.shields.io/github/last-commit/NMDX0721/RailwayRenaissance)](https://github.com/NMDX0721/RailwayRenaissance)
 
 <div align="center">
 <img src="Assets/Resources/bg/home_banner.jpg" width="80%" alt="Railway Renaissance: Sand Energy Impact">
@@ -16,7 +13,7 @@
 
 **Rails remember. Every train that runs is a defiance of forgetting.**
 
-**English** | [简体中文](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md)
 
 </div>
 
@@ -177,12 +174,12 @@ The initial crew consists of five people, with Wang Xiaodi joining shortly after
 
 | Member | Role | Top Skill |
 |--------|------|-----------|
-| Old Chen | Last stationmaster | Driving 5/7 |
-| Zhang Gong | Retired mechanic | Repair 5/7 |
-| Li Ayi | Community volunteer | Service 4/7 |
-| Zhao Shifu | Retired engineer | Management 4/7 |
-| Xiao Fang | Volunteer | Service 1/7 |
-| Wang Xiaodi | Fresh graduate | Driving 1/7, potential 7/7 |
+| Old Chen | Last stationmaster | Ops·Driver 5/7 |
+| Zhang Gong | Retired mechanic | RS·Mechanic 5/7 |
+| Li Ayi | Community volunteer | Station·Conductor 4/7 |
+| Zhao Shifu | Retired engineer | Ops·Controller 4/7 |
+| Xiao Fang | Volunteer | Station·Conductor 1/7 |
+| Wang Xiaodi | Fresh graduate | Ops·Driver 1/7, potential 7/7 |
 
 Each crew member has a **skill tree** rather than a single linear level. The tree consists of two layers:
 
