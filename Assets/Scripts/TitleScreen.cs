@@ -291,7 +291,11 @@ public class TitleScreen : MonoBehaviour
     private void SetupVideoBackground()
     {
         var clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
-        if (clip == null) return;
+        if (clip == null)
+        {
+            Debug.LogWarning("[TitleScreen] Video clip not found at Resources/Videos/cloud_sea_bg");
+            return;
+        }
 
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
@@ -302,6 +306,7 @@ public class TitleScreen : MonoBehaviour
         player.renderMode = VideoRenderMode.RenderTexture;
         player.audioOutputMode = VideoAudioOutputMode.None;
         player.clip = clip;
+        player.Prepare();
 
         var rt = new RenderTexture(1920, 1080, 0);
         rt.Create();
@@ -313,8 +318,8 @@ public class TitleScreen : MonoBehaviour
         quad.transform.localScale = new Vector3(37.5f, 21f, 1);
         quad.name = "VideoQuad";
 
-        Shader shader = Shader.Find("Unlit/Texture");
-        if (shader == null) shader = Shader.Find("Universal Render Pipeline/Unlit");
+        Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
+        if (shader == null) shader = Shader.Find("Unlit/Texture");
         if (shader == null) shader = Shader.Find("Unlit");
         var mat = new Material(shader);
         mat.mainTexture = rt;
