@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using RailwayRenaissance.Core;
 
 [Serializable]
 public class CrewMember
@@ -26,6 +27,12 @@ public class CrewMember
 
     // === 培训系统字段 ===
     public int trainingCooldownDays; // 培训冷却剩余天数（0=可培训，Train 成功后设为7，每日-1）
+
+    // === 惯性沉积历史基线（30天循环缓冲区） ===
+    public int[] fatigueHistory;     // 疲劳历史，用于惯性沉积
+    public int fatigueHistoryIndex;
+    public float[] loyaltyHistory;   // 忠诚历史，用于惯性沉积
+    public int loyaltyHistoryIndex;
 }
 
 [Serializable]
@@ -109,14 +116,14 @@ public static class CrewManager
         { "freight",    new[] { 15, 35, 100, 200, 350 } }
     };
 
-    // 技能名 → 等级称谓（0~5级），等级越界时 clamp 到边界
+    // 技能名 → 等级称谓（0~7级，8级命名），等级越界时 clamp 到边界
     private static readonly Dictionary<string, string[]> RankNames = new Dictionary<string, string[]>
     {
-        { "driving",    new[] { "未培训", "学习司机", "副司机", "司机", "指导司机", "高级指导司机" } },
-        { "repair",     new[] { "未培训", "学徒工", "初级维修工", "中级维修工", "高级维修工", "技师" } },
-        { "management", new[] { "未培训", "见习生", "站务员", "值班员", "副站长", "站长" } },
-        { "service",    new[] { "未培训", "实习员", "乘务员", "列车长", "乘务主任", "乘务队长" } },
-        { "freight",    new[] { "未培训", "装卸工", "货运员", "货运调度", "货运主管", "货运经理" } }
+        { "driving",    new[] { "未培训", "学习司机", "副司机", "司机", "指导司机", "高级指导司机", "首席指导司机", "特级司机" } },
+        { "repair",     new[] { "未培训", "学徒工", "初级技工", "中级技工", "高级技工", "技师", "高级技师", "特级技师" } },
+        { "management", new[] { "未培训", "係員", "主任", "師範", "助役", "職場長", "統括長", "本部長" } },
+        { "service",    new[] { "未培训", "实习员", "列车员", "列车长", "乘务主任", "乘务队长", "首席乘务长", "乘务总长" } },
+        { "freight",    new[] { "未培训", "装卸工", "货运员", "货运调度", "货运主管", "货运经理", "货运总监", "货运总长" } }
     };
 
     // === 岗位匹配：岗位 → 该岗位的核心技能 ===
@@ -141,6 +148,11 @@ public static class CrewManager
 
     // === 师傅带徒：学徒ID → 师傅ID ===
     private static readonly Dictionary<string, string> MentorDictionary = new Dictionary<string, string>();
+
+    // ===== FluctuationEngine 实例（Task 2：技能树成长） =====
+    private static GlobalRules skillGrowthRules;
+    private static FluctuationEngine fluctuationEngine;
+    private static float skillGrowthTimeSeed = 0f;
 
     // 培训每次消耗沙币
     private const int TrainingCost = 200;
@@ -177,10 +189,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "driving",    level = 5, maxLevel = 5, exp = 0 },
-                new SkillData { skillName = "repair",     level = 2, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "management", level = 2, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "service",    level = 1, maxLevel = 2, exp = 0 }
+                new SkillData { skillName = "driving",    level = 70, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "repair",     level = 25, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "management", level = 25, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "service",    level = 10, maxLevel = 100, exp = 0 }
             }
         });
 
@@ -195,10 +207,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "repair",     level = 5, maxLevel = 5, exp = 0 },
-                new SkillData { skillName = "driving",    level = 1, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "management", level = 1, maxLevel = 2, exp = 0 },
-                new SkillData { skillName = "service",    level = 0, maxLevel = 1, exp = 0 }
+                new SkillData { skillName = "repair",     level = 70, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "driving",    level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "management", level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "service",    level = 0,  maxLevel = 100, exp = 0 }
             }
         });
 
@@ -213,10 +225,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "service",    level = 2, maxLevel = 4, exp = 0 },
-                new SkillData { skillName = "management", level = 1, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "repair",     level = 0, maxLevel = 1, exp = 0 },
-                new SkillData { skillName = "driving",    level = 0, maxLevel = 1, exp = 0 }
+                new SkillData { skillName = "service",    level = 25, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "management", level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "repair",     level = 0,  maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "driving",    level = 0,  maxLevel = 100, exp = 0 }
             }
         });
 
@@ -231,10 +243,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "management", level = 4, maxLevel = 4, exp = 0 },
-                new SkillData { skillName = "driving",    level = 2, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "repair",     level = 1, maxLevel = 2, exp = 0 },
-                new SkillData { skillName = "service",    level = 1, maxLevel = 2, exp = 0 }
+                new SkillData { skillName = "management", level = 55, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "driving",    level = 25, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "repair",     level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "service",    level = 10, maxLevel = 100, exp = 0 }
             }
         });
 
@@ -249,10 +261,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "service",    level = 1, maxLevel = 4, exp = 0 },
-                new SkillData { skillName = "management", level = 0, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "repair",     level = 0, maxLevel = 1, exp = 0 },
-                new SkillData { skillName = "driving",    level = 0, maxLevel = 2, exp = 0 }
+                new SkillData { skillName = "service",    level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "management", level = 0,  maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "repair",     level = 0,  maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "driving",    level = 0,  maxLevel = 100, exp = 0 }
             }
         });
 
@@ -323,7 +335,7 @@ public static class CrewManager
         }
         recruitedIds.Add(npcId);
 
-        // 创建员工（简单默认值：attendant、技能1级、疲劳0、忠诚50）
+        // 创建员工（简单默认值：attendant、技能10/0、疲劳0、忠诚50）
         CrewMember member = new CrewMember
         {
             id = npcId,
@@ -334,10 +346,10 @@ public static class CrewManager
             loyalty = 50,
             skills = new SkillData[]
             {
-                new SkillData { skillName = "service",    level = 1, maxLevel = 4, exp = 0 },
-                new SkillData { skillName = "management", level = 0, maxLevel = 3, exp = 0 },
-                new SkillData { skillName = "repair",     level = 0, maxLevel = 1, exp = 0 },
-                new SkillData { skillName = "driving",    level = 0, maxLevel = 2, exp = 0 }
+                new SkillData { skillName = "service",    level = 10, maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "management", level = 0,  maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "repair",     level = 0,  maxLevel = 100, exp = 0 },
+                new SkillData { skillName = "driving",    level = 0,  maxLevel = 100, exp = 0 }
             }
         };
         crew.Add(member);
@@ -359,21 +371,21 @@ public static class CrewManager
             return false;
         }
 
-        // 各渠道参数：费用 / 冷却天数 / 技能等级范围 / 潜力（maxLevel）范围 / 年龄范围
+        // 各渠道参数：费用 / 冷却天数 / 技能等级范围（0-100）/ 潜力（maxLevel）范围 / 年龄范围
         int cost, cooldownDays, minSkill, maxSkill, minMaxLevel, maxMaxLevel, minAge, maxAge;
         switch (channel)
         {
-            case "community":   // 社区推荐：免费，技能随机1-2级，潜力较低
-                cost = 0;     cooldownDays = 30; minSkill = 1; maxSkill = 2;
-                minMaxLevel = 2; maxMaxLevel = 3; minAge = 30; maxAge = 55;
+            case "community":   // 社区推荐：免费，技能随机10-25，潜力较低
+                cost = 0;     cooldownDays = 30; minSkill = 10; maxSkill = 25;
+                minMaxLevel = 55; maxMaxLevel = 70; minAge = 30; maxAge = 55;
                 break;
-            case "ad":          // 广告招聘：500沙币，技能2-3级
-                cost = 500;   cooldownDays = 15; minSkill = 2; maxSkill = 3;
-                minMaxLevel = 3; maxMaxLevel = 4; minAge = 25; maxAge = 45;
+            case "ad":          // 广告招聘：500沙币，技能25-40
+                cost = 500;   cooldownDays = 15; minSkill = 25; maxSkill = 40;
+                minMaxLevel = 70; maxMaxLevel = 85; minAge = 25; maxAge = 45;
                 break;
-            case "headhunter":  // 猎头推荐：2000沙币，技能3-4级（含高潜力）
-                cost = 2000;  cooldownDays = 60; minSkill = 3; maxSkill = 4;
-                minMaxLevel = 4; maxMaxLevel = 5; minAge = 30; maxAge = 50;
+            case "headhunter":  // 猎头推荐：2000沙币，技能40-55（含高潜力）
+                cost = 2000;  cooldownDays = 60; minSkill = 40; maxSkill = 55;
+                minMaxLevel = 85; maxMaxLevel = 100; minAge = 30; maxAge = 50;
                 break;
             default:
                 Debug.LogWarning("[CrewManager] 未知招聘渠道: " + channel);
@@ -413,7 +425,7 @@ public static class CrewManager
         return true;
     }
 
-    /// <summary>通用招聘生成：创建新员工（attendant 岗位、疲劳0、忠诚50、4条技能按等级/潜力范围随机），供各招聘渠道复用。</summary>
+    /// <summary>通用招聘生成：创建新员工（attendant 岗位、疲劳0、忠诚50、4条技能按等级范围随机，maxLevel 固定100），供各招聘渠道复用。</summary>
     private static CrewMember CreateRecruit(string id, string name, int minSkill, int maxSkill, int minMaxLevel, int maxMaxLevel)
     {
         // 生成 4 条技能：service/management/repair/driving
@@ -422,12 +434,7 @@ public static class CrewManager
         for (int i = 0; i < skillNames.Length; i++)
         {
             int level = UnityEngine.Random.Range(minSkill, maxSkill + 1);
-            int maxLevel = UnityEngine.Random.Range(minMaxLevel, maxMaxLevel + 1);
-            if (maxLevel < level)
-            {
-                maxLevel = level; // 潜力不低于当前等级
-            }
-            skills[i] = new SkillData { skillName = skillNames[i], level = level, maxLevel = maxLevel, exp = 0 };
+            skills[i] = new SkillData { skillName = skillNames[i], level = level, maxLevel = 100, exp = 0 };
         }
 
         return new CrewMember
@@ -600,7 +607,19 @@ public static class CrewManager
             if (member.isResting)
             {
                 // 休息日：疲劳不增长，恢复30，连续工作天数归零
-                member.fatigue = Mathf.Max(0, member.fatigue - 30);
+                int fatigueRecovery = 30;
+                // 惯性（Step 3）：如果历史疲劳持续偏高（>50 超过10天），恢复减慢
+                if (member.fatigueHistory != null)
+                {
+                    int highFatigueDays = 0;
+                    for (int hi = 0; hi < 30; hi++)
+                    {
+                        if (member.fatigueHistory[hi] > 50) highFatigueDays++;
+                    }
+                    if (highFatigueDays >= 10)
+                        fatigueRecovery = 20; // 累积疲劳导致恢复减慢
+                }
+                member.fatigue = Mathf.Max(0, member.fatigue - fatigueRecovery);
                 member.consecutiveWorkDays = 0;
                 member.isResting = false; // 重置休息标记，下一天需重新设置
             }
@@ -627,6 +646,11 @@ public static class CrewManager
 
             // 疲劳值限制在 0-100
             member.fatigue = Mathf.Clamp(member.fatigue, 0, 100);
+
+            // 惯性沉积：记录疲劳历史（30天循环缓冲区）
+            if (member.fatigueHistory == null) member.fatigueHistory = new int[30];
+            member.fatigueHistory[member.fatigueHistoryIndex % 30] = member.fatigue;
+            member.fatigueHistoryIndex++;
 
             // ===== P3：技能成长 =====
             // 每日经验 = 基础1.0 × 岗位匹配系数 × 师傅系数（培训日另有加成）
@@ -664,6 +688,101 @@ public static class CrewManager
                 }
             }
 
+            // ===== P3b：技能树成长（FluctuationEngine） =====
+            // 新技能树与旧 skills 数组并存，互不干扰
+            if (member.skillTree != null && member.skillTree.Length > 0)
+            {
+                // 首次使用时初始化 FluctuationEngine（默认 GlobalRules）
+                if (fluctuationEngine == null)
+                {
+                    skillGrowthRules = new GlobalRules();
+                    // 确保 skill_growth 权重表存在
+                    bool hasEntry = false;
+                    for (int i = 0; i < skillGrowthRules.fluctuationWeightsList.Count; i++)
+                    {
+                        if (skillGrowthRules.fluctuationWeightsList[i].formulaName == "skill_growth")
+                        {
+                            hasEntry = true;
+                            break;
+                        }
+                    }
+                    if (!hasEntry)
+                    {
+                        skillGrowthRules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+                        {
+                            formulaName = "skill_growth",
+                            weights = new float[] { 0.30f, 0.20f, 0.20f, 0.15f, 0.15f }
+                        });
+                    }
+                    fluctuationEngine = new FluctuationEngine(skillGrowthRules, 42, 1.0f);
+                }
+
+                foreach (SkillTreeNode node in member.skillTree)
+                {
+                    if (node.subSkills == null || node.subSkills.Length == 0) continue;
+
+                    // 用 for 循环（struct 数组需要索引修改）
+                    for (int si = 0; si < node.subSkills.Length; si++)
+                    {
+                        SubSkillData subSkill = node.subSkills[si];
+                        if (!subSkill.isUnlocked) continue;
+                        if (subSkill.level >= 100f) continue;
+
+                        // GapBonus = max(0, (parentSkillLevel - subSkill.level) / parentSkillLevel) * 0.5f
+                        float parentLvl = node.parentSkillLevel > 0f ? node.parentSkillLevel : 50f;
+                        float gapBonus = Mathf.Max(0f, (parentLvl - subSkill.level) / parentLvl) * 0.5f;
+
+                        // BaseGain = rules.baseLearningRate * (1 + GapBonus)
+                        float baseGain = skillGrowthRules.baseLearningRate * (1f + gapBonus);
+
+                        // 构建 WeightedFactor[]：{岗位匹配度, 疲劳度, 忠诚度, 有师傅, 培训}
+                        WeightedFactor[] factors = new WeightedFactor[]
+                        {
+                            new WeightedFactor("岗位匹配度", GetMatchCoefficient(member.role, subSkill.skillName)),
+                            new WeightedFactor("疲劳度", Mathf.Clamp01(member.fatigue / 100f)),
+                            new WeightedFactor("忠诚度", Mathf.Clamp01(member.loyalty / 100f)),
+                            new WeightedFactor("有师傅", GetMentor(member.id) != null ? 1f : 0f),
+                            new WeightedFactor("培训", member.id == trainedCrewId ? 1f : 0f)
+                        };
+
+                        // dailyGain = engine.Weighted(BaseGain, factors, "skill_growth", timeSeed)
+                        float dailyGain = fluctuationEngine.Weighted(baseGain, factors, "skill_growth", skillGrowthTimeSeed);
+
+                        // 非线性阈值
+                        if (subSkill.level > 80f)
+                            dailyGain *= skillGrowthRules.skillCeilingMultiplier;   // 0.5x
+                        else if (subSkill.level < 20f)
+                            dailyGain *= skillGrowthRules.skillNewbieMultiplier;    // 1.5x
+
+                        // 更新等级（clamp 0-100）
+                        float newLevel = subSkill.level + dailyGain;
+                        node.subSkills[si].level = Mathf.Clamp(newLevel, 0f, 100f);
+                    }
+
+                    // 子技能更新完后重新计算父技能等级
+                    node.RecalculateParentLevel();
+                }
+
+                skillGrowthTimeSeed++;
+            }
+
+            // Step 1: Update historical baseline (30-day circular buffer)
+            if (member.skillTree != null)
+            {
+                foreach (var parent in member.skillTree)
+                {
+                    for (int si = 0; si < parent.subSkills.Length; si++)
+                    {
+                        SubSkillData sub = parent.subSkills[si];
+                        if (sub.historicalAvg == null)
+                            sub.historicalAvg = new float[30];
+                        sub.historicalAvg[sub.historyIndex % 30] = sub.level;
+                        sub.historyIndex++;
+                        parent.subSkills[si] = sub; // write back (struct copy)
+                    }
+                }
+            }
+
             // 培训冷却：每日递减
             if (member.trainingCooldownDays > 0)
             {
@@ -681,7 +800,19 @@ public static class CrewManager
             // 连续工作 > 10天无休息：-1.0
             if (member.consecutiveWorkDays > 10 && !member.isResting)
             {
-                member.loyalty -= 1.0f;
+                float loyaltyDrop = 1.0f;
+                // 惯性（Step 3）：如果忠诚度历史持续偏低（<40 超过7天），下降更快
+                if (member.loyaltyHistory != null)
+                {
+                    int lowLoyaltyDays = 0;
+                    for (int hi = 0; hi < 30; hi++)
+                    {
+                        if (member.loyaltyHistory[hi] < 40) lowLoyaltyDays++;
+                    }
+                    if (lowLoyaltyDays >= 7)
+                        loyaltyDrop = 1.5f; // 累积不满导致忠诚加速下降
+                }
+                member.loyalty -= loyaltyDrop;
             }
 
             // 该员工涉及事故：-5.0
@@ -696,15 +827,33 @@ public static class CrewManager
                 member.loyalty += 2.0f;
             }
 
+            // 惯性沉积：记录忠诚历史（30天循环缓冲区）
+            if (member.loyaltyHistory == null) member.loyaltyHistory = new float[30];
+            member.loyaltyHistory[member.loyaltyHistoryIndex % 30] = member.loyalty;
+            member.loyaltyHistoryIndex++;
+
+            // Step 2: Nonlinear threshold effects
+            float quitProbabilityMultiplier = 1.0f;
+            if (member.fatigue > 80)
+            {
+                // Double accident probability, reduce learning efficiency
+                // (the actual effect is applied in the FluctuationEngine call)
+            }
+            if (member.loyalty < 30)
+            {
+                // Increase quit probability by 1.5x
+                quitProbabilityMultiplier = 1.5f;
+            }
+
             // ===== P2：离职触发（在 clamp 之前，保留 <0 判断） =====
             bool shouldFire = false;
             if (member.loyalty < 0)
             {
                 shouldFire = true; // 忠诚 < 0：立即离职
             }
-            else if (member.loyalty < 30 && UnityEngine.Random.value < 0.1f)
+            else if (member.loyalty < 30 && UnityEngine.Random.value < 0.1f * quitProbabilityMultiplier)
             {
-                shouldFire = true; // 忠诚 < 30：10% 概率离职
+                shouldFire = true; // 忠诚 < 30：10% 概率离职（非线性阈值下 1.5x → 15%）
             }
 
             // ===== P5：年龄 > 65 退休（1%/月，以 0.001/日近似） =====
@@ -1059,7 +1208,7 @@ public static class CrewManager
             }
         }
 
-        return maxMentorLevel >= 4 ? 2.0f : 1.5f;
+        return maxMentorLevel >= 55 ? 2.0f : 1.5f;
     }
 
     /// <summary>
@@ -1094,13 +1243,18 @@ public static class CrewManager
         return true;
     }
 
-    /// <summary>根据技能名与等级返回等级称谓（如"司机"、"技师"），等级越界 clamp 到边界。</summary>
+    /// <summary>
+    /// 根据技能名与等级（0-100）返回等级称谓（如"司机"、"技师"），
+    /// 将 0-100 区间映射到 0-7 级命名数组，越界时 clamp 到边界。
+    /// </summary>
     public static string GetRankName(string skillName, int level)
     {
         if (!RankNames.TryGetValue(skillName, out string[] ranks))
         {
             return "未培训";
         }
-        return ranks[Mathf.Clamp(level, 0, ranks.Length - 1)];
+        // 将 0-100 等级映射到 0-(ranks.Length-1) 的索引
+        int rankIndex = Mathf.Clamp(Mathf.RoundToInt(level / 100f * (ranks.Length - 1)), 0, ranks.Length - 1);
+        return ranks[rankIndex];
     }
 }
