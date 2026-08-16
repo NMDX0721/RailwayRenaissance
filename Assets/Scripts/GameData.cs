@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using RailwayRenaissance.Core;
 
 public static class GameData
 {
@@ -135,6 +136,13 @@ public static class GameData
         Active
     }
 
+    public enum ManagementStance
+    {
+        PeopleFirst,
+        ProfitFirst,
+        Conservative
+    }
+
     // ===== 经济系统参数 =====
     /// <summary>
     /// 客流基准人口（G4：从创世核主线城市population读取，无种子时回退8000）。
@@ -239,6 +247,7 @@ public static class GameData
     public static MaintenanceStrategy CurrentMaintenanceStrategy { get; private set; } = MaintenanceStrategy.Standard;
     public static StationServiceStrategy CurrentStationServiceStrategy { get; private set; } = StationServiceStrategy.Standard;
     public static ExternalAffairsStrategy CurrentExternalAffairsStrategy { get; private set; } = ExternalAffairsStrategy.Standard;
+    public static ManagementStance CurrentStance { get; private set; } = ManagementStance.Conservative;
 
     public static ShortTermGoal CurrentGoal { get; private set; }
 
@@ -410,6 +419,7 @@ public static class GameData
         CurrentMaintenanceStrategy = MaintenanceStrategy.Standard;
         CurrentStationServiceStrategy = StationServiceStrategy.Standard;
         CurrentExternalAffairsStrategy = ExternalAffairsStrategy.Standard;
+        CurrentStance = ManagementStance.Conservative;
         currentDailyEvent = null;
         completedStoryGrants.Clear();
 
@@ -452,6 +462,11 @@ public static class GameData
     public static void CycleExternalAffairsStrategy()
     {
         CurrentExternalAffairsStrategy = (ExternalAffairsStrategy)(((int)CurrentExternalAffairsStrategy + 1) % 3);
+    }
+
+    public static void CycleStance()
+    {
+        CurrentStance = (ManagementStance)(((int)CurrentStance + 1) % 3);
     }
 
     // ===== 目标系统 =====
@@ -776,6 +791,68 @@ public static class GameData
             default:
                 return 0;
         }
+    }
+
+    // ===== Task 8: 经营姿态联动 =====
+
+    private static FluctuationEngine stanceEngine;
+    private static bool stanceInitialized = false;
+
+    private static void EnsureStanceEngine()
+    {
+        if (stanceInitialized) return;
+        var rules = new GlobalRules();
+        rules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+        {
+            formulaName = "stance",
+            weights = new float[] { 1.0f }
+        });
+        stanceEngine = new FluctuationEngine(rules, 42, 1.0f);
+        stanceInitialized = true;
+    }
+
+    /// <summary>
+    /// 根据当前经营姿态返回指定技能系统的效率修正倍率。
+    /// PeopleFirst：站务技能 +20%，驾驶技能 -10%
+    /// ProfitFirst：驾驶技能 +20%，站务技能 -10%
+    /// Conservative：无修正
+    /// 修正值通过 FluctuationEngine.Compound() 计算，避免硬编码 20%。
+    /// </summary>
+    /// <param name="skillSystem">技能系统标识（如 "driving", "service", "management", "freight", "station_skills", "driving_skills"）</param>
+    /// <returns>效率修正倍率（1.0 = 无修正）</returns>
+    public static float GetStanceModifier(string skillSystem)
+    {
+        EnsureStanceEngine();
+
+        bool isStationSkill = skillSystem == "station_skills" || skillSystem == "service" || skillSystem == "management";
+        bool isDrivingSkill = skillSystem == "driving_skills" || skillSystem == "driving" || skillSystem == "freight";
+
+        float baseModifier = 0f;
+        switch (CurrentStance)
+        {
+            case ManagementStance.PeopleFirst:
+                if (isStationSkill) baseModifier = 0.20f;
+                else if (isDrivingSkill) baseModifier = -0.10f;
+                break;
+            case ManagementStance.ProfitFirst:
+                if (isDrivingSkill) baseModifier = 0.20f;
+                else if (isStationSkill) baseModifier = -0.10f;
+                break;
+            case ManagementStance.Conservative:
+                return 1.0f;
+        }
+
+        if (baseModifier == 0f) return 1.0f;
+
+        // 通过 FluctuationEngine.Compound() 计算实际修正值，不硬编码 20%
+        float stanceStrength = Mathf.Abs(baseModifier) / 0.20f;
+        WeightedFactor[] factors = new WeightedFactor[]
+        {
+            new WeightedFactor("baseModifier", baseModifier),
+            new WeightedFactor("stanceStrength", stanceStrength)
+        };
+        float actualModifier = stanceEngine.Compound(baseModifier, factors, "stance", stanceStrength);
+        return 1.0f + actualModifier;
     }
 
     // ===== 核心流程 =====
