@@ -628,7 +628,7 @@ gantt
     Narrative engine         :done, 2026-03, 2026-05
     Personnel system         :done, 2026-04, 2026-06
     Competition AI           :done, 2026-05, 2026-07
-    InertiaFluctuation     :done, 2026-06, 2026-07
+    Inertia fluctuation     :done, 2026-06, 2026-07
     section Assets
     Character sprites        :active, 2026-07, 2026-09
     Scenes & vehicle models  :2026-08, 2026-10
