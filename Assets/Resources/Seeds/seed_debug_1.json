@@ -18,6 +18,39 @@
     { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
     { "fromCity": "kuangqu", "toCity": "qingxi", "travelTime": 60, "capacity": 25, "trackType": "single" }
   ],
-  "globalRules": { "incidentBaseChance": 0.0, "trustNaturalDecay": 0.0, "fiscalGrowthBase": 0.0, "maxRepairCostMultiplier": 1.0, "subsidyBase": 8000 },
+  "globalRules": {
+    "incidentBaseChance": 0.005,
+    "trustNaturalDecay": 0.0002,
+    "fiscalGrowthBase": 0.001,
+    "maxRepairCostMultiplier": 2.0,
+    "subsidyBase": 8000,
+    "fluctuationIntensity": 0.08,
+    "eventSigmoidSteepness": 1.0,
+    "eventMaxMultiplier": 0.5,
+    "baseLearningRate": 1.0,
+    "gapBonusMaxRate": 0.5,
+    "inertiaCoefficient": 0.15,
+    "inertiaClampMin": 0.5,
+    "inertiaClampMax": 1.5,
+    "parentFeedbackRate": 0.3,
+    "baseFatigueGain": 10.0,
+    "fatigueRestRecovery": 30.0,
+    "fatigueForceRestThreshold": 80.0,
+    "baseLoyaltyChange": 0.1,
+    "socialComparisonRate": 0.1,
+    "fatigueDangerThreshold": 80.0,
+    "fatigueDangerMultiplier": 2.0,
+    "loyaltyDangerThreshold": 30.0,
+    "loyaltyDangerMultiplier": 1.5,
+    "skillCeilingThreshold": 80.0,
+    "skillCeilingMultiplier": 0.5,
+    "skillNewbieThreshold": 20.0,
+    "skillNewbieMultiplier": 1.5,
+    "fluctuationWeightsList": [
+      { "formulaName": "skill_growth", "weights": [1.0, 0.3, 0.1, 0.3] },
+      { "formulaName": "salary", "weights": [1.0, 0.5, 0.3] },
+      { "formulaName": "loyalty", "weights": [1.0, 0.5, 0.3, 0.1] }
+    ]
+  } "incidentBaseChance": 0.0, "trustNaturalDecay": 0.0, "fiscalGrowthBase": 0.0, "maxRepairCostMultiplier": 1.0, "subsidyBase": 8000 },
   "storyTags": ["debug"]
 }
