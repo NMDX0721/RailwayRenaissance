@@ -293,40 +293,38 @@ public class TitleScreen : MonoBehaviour
         var clip = Resources.Load<VideoClip>("Videos/cloud_sea_bg");
         if (clip == null) return;
 
-        // Create a simple quad for the video
+        // Create a GameObject for the video
         var go = new GameObject("VideoBackground");
         go.transform.SetParent(transform);
         go.transform.localPosition = new Vector3(0, 0, 10);
 
-        // Quad mesh
+        // Quad to display the video
         var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         quad.transform.SetParent(go.transform);
         quad.transform.localPosition = Vector3.zero;
         quad.transform.localScale = new Vector3(37.5f, 21f, 1);
         quad.name = "VideoQuad";
 
-        // Build a simple unlit material from scratch
+        // RenderTexture for video output
+        var rt = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGB32);
+        rt.Create();
+
+        // Build unlit material with the render texture
         Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
         if (shader == null) shader = Shader.Find("Unlit/Texture");
         var mat = new Material(shader);
-        // Set a placeholder texture so the material isn't pink
-        var tempTex = new Texture2D(2, 2);
-        tempTex.SetPixel(0, 0, Color.black);
-        tempTex.Apply();
-        mat.mainTexture = tempTex;
-        string texProperty = shader != null && shader.name.Contains("Universal") ? "_BaseMap" : "_MainTex";
+        mat.mainTexture = rt;
         var renderer = quad.GetComponent<MeshRenderer>();
         renderer.material = mat;
 
-        // VideoPlayer with MaterialOverride
+        // VideoPlayer renders to RenderTexture
         var player = go.AddComponent<VideoPlayer>();
         player.source = VideoSource.VideoClip;
         player.clip = clip;
         player.isLooping = true;
         player.playOnAwake = true;
-        player.renderMode = VideoRenderMode.MaterialOverride;
-        player.targetMaterialRenderer = renderer;
-        player.targetMaterialProperty = texProperty;
+        player.renderMode = VideoRenderMode.RenderTexture;
+        player.targetTexture = rt;
         player.audioOutputMode = VideoAudioOutputMode.None;
 
         player.Play();
