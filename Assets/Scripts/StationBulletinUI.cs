@@ -7,22 +7,20 @@ public class StationBulletinUI : MonoBehaviour
     private Font gameFont;
     private VisualElement overlay;
     private VisualElement panel;
-    private Slider bgmVolumeSlider;
-    private Slider sfxVolumeSlider;
-    private Toggle autoModeToggle;
-    private Toggle skipReadToggle;
+    private VisualElement contentPanel;
+    private VisualElement menuList;
+    private string[] menuItems = { "音频", "游戏", "显示", "关于" };
+    private int selectedIndex = 0;
 
     public void Init(UIDocument document)
     {
         uiDoc = document;
         gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
+        ShowCategory(0);
     }
 
-    private FontDefinition GetFontDef()
-    {
-        return new FontDefinition { font = gameFont };
-    }
+    private FontDefinition GetFontDef() => new FontDefinition { font = gameFont };
 
     private void BuildUI()
     {
@@ -36,10 +34,7 @@ public class StationBulletinUI : MonoBehaviour
         overlay.style.alignItems = Align.Center;
         overlay.style.justifyContent = Justify.Center;
         overlay.style.display = DisplayStyle.None;
-        overlay.RegisterCallback<ClickEvent>(e =>
-        {
-            if (e.target == overlay) Hide();
-        });
+        overlay.RegisterCallback<ClickEvent>(e => { if (e.target == overlay) Hide(); });
         root.Add(overlay);
 
         panel = new VisualElement();
@@ -52,20 +47,21 @@ public class StationBulletinUI : MonoBehaviour
         panel.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         panel.style.borderTopLeftRadius = 10; panel.style.borderTopRightRadius = 10;
         panel.style.borderBottomLeftRadius = 10; panel.style.borderBottomRightRadius = 10;
-        panel.style.width = 520;
-        panel.style.paddingLeft = 30; panel.style.paddingRight = 30;
-        panel.style.paddingTop = 20; panel.style.paddingBottom = 20;
+        panel.style.width = 680;
+        panel.style.height = 520;
+        panel.style.flexDirection = FlexDirection.Column;
         overlay.Add(panel);
 
-        // Header
+        // ── Header ──
         var header = new VisualElement();
         header.style.flexDirection = FlexDirection.Row;
         header.style.justifyContent = Justify.SpaceBetween;
         header.style.alignItems = Align.Center;
-        header.style.marginBottom = 20;
+        header.style.paddingLeft = 20; header.style.paddingRight = 20;
+        header.style.paddingTop = 16; header.style.paddingBottom = 16;
         header.style.borderBottomWidth = 1;
         header.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
-        header.style.paddingBottom = 10;
+        panel.Add(header);
 
         var title = new Label("设置");
         title.style.fontSize = 28;
@@ -82,128 +78,294 @@ public class StationBulletinUI : MonoBehaviour
         closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         closeBtn.style.unityFontDefinition = fontDef;
         header.Add(closeBtn);
-        panel.Add(header);
 
-        // Content scroll
-        var content = new ScrollView(ScrollViewMode.Vertical);
-        content.style.flexGrow = 1;
-        content.style.maxHeight = 450;
+        // ── Body: left menu + right content ──
+        var body = new VisualElement();
+        body.style.flexDirection = FlexDirection.Row;
+        body.style.flexGrow = 1;
+        panel.Add(body);
 
-        // ── 音频设置 ──
-        AddSectionTitle(content, "音频", fontDef);
-        AddSliderRow(content, "BGM 音量", 0, 100, 80, out bgmVolumeSlider, fontDef);
-        AddSliderRow(content, "SFX 音量", 0, 100, 100, out sfxVolumeSlider, fontDef);
+        // Left menu
+        menuList = new VisualElement();
+        menuList.style.width = 140;
+        menuList.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.5f);
+        menuList.style.paddingTop = 10;
+        menuList.style.paddingBottom = 10;
+        body.Add(menuList);
 
-        // ── 游戏设置 ──
-        AddSectionTitle(content, "游戏", fontDef);
-        AddToggleRow(content, "自动模式默认开启", false, out autoModeToggle, fontDef);
-        AddToggleRow(content, "跳过已读文本", true, out skipReadToggle, fontDef);
+        for (int i = 0; i < menuItems.Length; i++)
+        {
+            int idx = i;
+            var menuBtn = new UnityEngine.UIElements.Button(() => SelectCategory(idx)) { text = menuItems[idx] };
+            menuBtn.name = "settings-menu-" + i;
+            menuBtn.style.width = 130;
+            menuBtn.style.height = 42;
+            menuBtn.style.fontSize = 20;
+            menuBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            menuBtn.style.unityFontDefinition = fontDef;
+            menuBtn.style.marginLeft = 5;
+            menuBtn.style.marginBottom = 4;
+            menuBtn.style.borderTopLeftRadius = 6;
+            menuBtn.style.borderBottomLeftRadius = 6;
+            menuBtn.style.borderTopRightRadius = 0;
+            menuBtn.style.borderBottomRightRadius = 0;
+            menuBtn.style.borderTopWidth = 1;
+            menuBtn.style.borderBottomWidth = 1;
+            menuBtn.style.borderLeftWidth = 1;
+            menuBtn.style.borderRightWidth = 0;
+            menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
+            menuBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
+            menuBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
+            menuList.Add(menuBtn);
+        }
 
-        // ── 关于 ──
-        AddSectionTitle(content, "关于", fontDef);
-        AddInfoRow(content, "游戏版本", "v1.0.0", fontDef);
-        AddInfoRow(content, "引擎版本", "Unity 6000.5.8f1", fontDef);
-        AddInfoRow(content, "渲染管线", "Universal Render Pipeline", fontDef);
-
-        panel.Add(content);
+        // Right content panel
+        contentPanel = new VisualElement();
+        contentPanel.style.flexGrow = 1;
+        contentPanel.style.paddingLeft = 20;
+        contentPanel.style.paddingRight = 20;
+        contentPanel.style.paddingTop = 10;
+        contentPanel.style.paddingBottom = 10;
+        body.Add(contentPanel);
 
         // Footer
         var footer = new Label("© 2026 NMDX0721 — MIT License");
-        footer.style.fontSize = 14;
-        footer.style.color = new Color(153f / 255f, 153f / 255f, 153f / 255f, 0.5f);
+        footer.style.fontSize = 13;
+        footer.style.color = new Color(153f / 255f, 153f / 255f, 153f / 255f, 0.4f);
         footer.style.unityTextAlign = TextAnchor.MiddleCenter;
         footer.style.unityFontDefinition = fontDef;
-        footer.style.marginTop = 15;
-        footer.style.paddingTop = 10;
+        footer.style.paddingTop = 8;
+        footer.style.paddingBottom = 8;
         footer.style.borderTopWidth = 1;
-        footer.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
+        footer.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
         panel.Add(footer);
     }
 
-    private void AddSectionTitle(ScrollView container, string text, FontDefinition fontDef)
+    private void SelectCategory(int idx)
     {
-        var label = new Label(text);
-        label.style.fontSize = 22;
-        label.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.9f);
+        selectedIndex = idx;
+        // Update menu button styles
+        for (int i = 0; i < menuItems.Length; i++)
+        {
+            var btn = menuList.Q<UnityEngine.UIElements.Button>("settings-menu-" + i);
+            if (btn == null) continue;
+            if (i == idx)
+            {
+                btn.style.backgroundColor = new Color(0.2f, 0.1f, 0.06f, 0.9f);
+                btn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+            }
+            else
+            {
+                btn.style.backgroundColor = new Color(0.08f, 0.05f, 0.03f, 0.6f);
+                btn.style.color = new Color(1f, 1f, 1f, 0.6f);
+            }
+        }
+        ShowCategory(idx);
+    }
+
+    private void ShowCategory(int idx)
+    {
+        contentPanel.Clear();
+        var fontDef = GetFontDef();
+
+        switch (idx)
+        {
+            case 0: BuildAudioSettings(); break;
+            case 1: BuildGameSettings(); break;
+            case 2: BuildDisplaySettings(); break;
+            case 3: BuildAboutSettings(); break;
+        }
+    }
+
+    private void BuildAudioSettings()
+    {
+        AddSectionTitle("音频", "背景音乐和音效的音量调节");
+
+        var bgmRow = new VisualElement();
+        bgmRow.style.flexDirection = FlexDirection.Row; bgmRow.style.alignItems = Align.Center;
+        bgmRow.style.marginBottom = 12;
+        var bgmLabel = new Label("背景音乐");
+        bgmLabel.style.width = 100; bgmLabel.style.fontSize = 20; bgmLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        bgmLabel.style.unityFontDefinition = GetFontDef();
+        bgmRow.Add(bgmLabel);
+        var bgmSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
+        bgmSlider.value = 80; bgmSlider.style.flexGrow = 1;
+        bgmRow.Add(bgmSlider);
+        contentPanel.Add(bgmRow);
+
+        var sfxRow = new VisualElement();
+        sfxRow.style.flexDirection = FlexDirection.Row; sfxRow.style.alignItems = Align.Center;
+        sfxRow.style.marginBottom = 12;
+        var sfxLabel = new Label("音效");
+        sfxLabel.style.width = 100; sfxLabel.style.fontSize = 20; sfxLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        sfxLabel.style.unityFontDefinition = GetFontDef();
+        sfxRow.Add(sfxLabel);
+        var sfxSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
+        sfxSlider.value = 100; sfxSlider.style.flexGrow = 1;
+        sfxRow.Add(sfxSlider);
+        contentPanel.Add(sfxRow);
+
+        var voiceRow = new VisualElement();
+        voiceRow.style.flexDirection = FlexDirection.Row; voiceRow.style.alignItems = Align.Center;
+        voiceRow.style.marginBottom = 12;
+        var voiceLabel = new Label("语音");
+        voiceLabel.style.width = 100; voiceLabel.style.fontSize = 20; voiceLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        voiceLabel.style.unityFontDefinition = GetFontDef();
+        voiceRow.Add(voiceLabel);
+        var voiceSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
+        voiceSlider.value = 100; voiceSlider.style.flexGrow = 1;
+        voiceRow.Add(voiceSlider);
+        contentPanel.Add(voiceRow);
+    }
+
+    private void BuildGameSettings()
+    {
+        AddSectionTitle("游戏", "自动播放、跳过等游戏行为设置");
+
+        AddToggle("自动播放模式", "开场后自动推进对话", false);
+        AddToggle("跳过已读文本", "已读过的对话自动跳过", true);
+        AddToggle("点击对话框推进", "点击对话框区域触发下一句", true);
+        AddToggle("确认对话框", "关闭游戏时显示确认", true);
+        AddSlider("自动播放间隔", 1, 10, 3, "秒");
+    }
+
+    private void BuildDisplaySettings()
+    {
+        AddSectionTitle("显示", "画面和文字显示相关的设置");
+
+        AddToggle("全屏模式", "以全屏方式运行游戏", true);
+        AddToggle("垂直同步", "开启后减少画面撕裂", true);
+        AddToggle("显示帧率", "在角落显示当前 FPS", false);
+        AddSlider("文字速度", 1, 10, 5, "档");
+        AddSlider("对话框透明度", 0, 100, 80, "%");
+    }
+
+    private void BuildAboutSettings()
+    {
+        AddSectionTitle("关于", "游戏版本和项目信息");
+
+        AddInfoRow("游戏名称", "铁路复兴：沙能冲击");
+        AddInfoRow("当前版本", "v1.0.0");
+        AddInfoRow("引擎版本", "Unity 6000.5.8f1");
+        AddInfoRow("渲染管线", "Universal Render Pipeline");
+        AddInfoRow("开发状态", "核心系统已完成，资产生成进行中");
+        AddInfoRow("开源许可", "MIT License");
+        AddInfoRow("作者", "NMDX0721");
+
+        var sep = new Label("── 鸣谢 ──");
+        sep.style.fontSize = 18;
+        sep.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
+        sep.style.unityTextAlign = TextAnchor.MiddleCenter;
+        sep.style.unityFontDefinition = GetFontDef();
+        sep.style.marginTop = 20; sep.style.marginBottom = 10;
+        contentPanel.Add(sep);
+
+        AddInfoRow("灵感来源", "爱上火车-Last Run!!- / Stardew Valley");
+        AddInfoRow("字体", "Zpix (最像素)");
+    }
+
+    // ── Helpers ──
+
+    private void AddSectionTitle(string title, string desc)
+    {
+        var label = new Label(title);
+        label.style.fontSize = 24;
+        label.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
         label.style.unityFontStyleAndWeight = FontStyle.Bold;
-        label.style.unityFontDefinition = fontDef;
-        label.style.marginTop = 12;
-        label.style.marginBottom = 8;
-        label.style.borderBottomWidth = 1;
-        label.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.2f);
-        container.Add(label);
+        label.style.unityFontDefinition = GetFontDef();
+        label.style.marginBottom = 4;
+        contentPanel.Add(label);
+
+        if (!string.IsNullOrEmpty(desc))
+        {
+            var descLabel = new Label(desc);
+            descLabel.style.fontSize = 15;
+            descLabel.style.color = new Color(1f, 1f, 1f, 0.4f);
+            descLabel.style.unityFontDefinition = GetFontDef();
+            descLabel.style.marginBottom = 16;
+            descLabel.style.borderBottomWidth = 1;
+            descLabel.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
+            descLabel.style.paddingBottom = 8;
+            contentPanel.Add(descLabel);
+        }
     }
 
-    private void AddSliderRow(ScrollView container, string label, int min, int max, int defaultValue, out Slider slider, FontDefinition fontDef)
+    private void AddToggle(string label, string desc, bool defaultValue)
     {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row;
         row.style.alignItems = Align.Center;
-        row.style.marginBottom = 8;
         row.style.justifyContent = Justify.SpaceBetween;
+        row.style.marginBottom = 10;
 
+        var textGroup = new VisualElement();
+        textGroup.style.flexGrow = 1;
         var lbl = new Label(label);
-        lbl.style.fontSize = 20;
-        lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
-        lbl.style.unityFontDefinition = fontDef;
-        lbl.style.width = 120;
-        row.Add(lbl);
+        lbl.style.fontSize = 20; lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+        lbl.style.unityFontDefinition = GetFontDef();
+        textGroup.Add(lbl);
+        if (!string.IsNullOrEmpty(desc))
+        {
+            var d = new Label(desc);
+            d.style.fontSize = 14; d.style.color = new Color(1f, 1f, 1f, 0.35f);
+            d.style.unityFontDefinition = GetFontDef();
+            textGroup.Add(d);
+        }
+        row.Add(textGroup);
 
-        slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
-        slider.value = defaultValue;
-        slider.style.flexGrow = 1;
-        slider.style.height = 24;
-        row.Add(slider);
-
-        container.Add(row);
-    }
-
-    private void AddToggleRow(ScrollView container, string label, bool defaultValue, out Toggle toggle, FontDefinition fontDef)
-    {
-        var row = new VisualElement();
-        row.style.flexDirection = FlexDirection.Row;
-        row.style.alignItems = Align.Center;
-        row.style.marginBottom = 8;
-        row.style.justifyContent = Justify.SpaceBetween;
-
-        var lbl = new Label(label);
-        lbl.style.fontSize = 20;
-        lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
-        lbl.style.unityFontDefinition = fontDef;
-        lbl.style.width = 200;
-        row.Add(lbl);
-
-        toggle = new Toggle();
+        var toggle = new Toggle();
         toggle.value = defaultValue;
         row.Add(toggle);
-
-        container.Add(row);
+        contentPanel.Add(row);
     }
 
-    private void AddInfoRow(ScrollView container, string label, string value, FontDefinition fontDef)
+    private void AddSlider(string label, int min, int max, int defaultValue, string unit)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.alignItems = Align.Center;
+        row.style.marginBottom = 10;
+
+        var lbl = new Label(label);
+        lbl.style.width = 120; lbl.style.fontSize = 20; lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+        lbl.style.unityFontDefinition = GetFontDef();
+        row.Add(lbl);
+
+        var slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
+        slider.value = defaultValue; slider.style.flexGrow = 1;
+        row.Add(slider);
+
+        var unitLabel = new Label(unit);
+        unitLabel.style.width = 30; unitLabel.style.fontSize = 16;
+        unitLabel.style.color = new Color(1f, 1f, 1f, 0.5f);
+        unitLabel.style.unityFontDefinition = GetFontDef();
+        row.Add(unitLabel);
+
+        contentPanel.Add(row);
+    }
+
+    private void AddInfoRow(string label, string value)
     {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row;
         row.style.marginBottom = 6;
 
         var lbl = new Label(label);
-        lbl.style.width = 120;
-        lbl.style.fontSize = 20;
+        lbl.style.width = 100; lbl.style.fontSize = 20;
         lbl.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.8f);
-        lbl.style.unityFontDefinition = fontDef;
+        lbl.style.unityFontDefinition = GetFontDef();
         row.Add(lbl);
 
         var val = new Label(value);
-        val.style.fontSize = 20;
-        val.style.color = new Color(1f, 1f, 1f, 0.85f);
+        val.style.fontSize = 20; val.style.color = new Color(1f, 1f, 1f, 0.85f);
         val.style.whiteSpace = WhiteSpace.Normal;
-        val.style.unityFontDefinition = fontDef;
+        val.style.unityFontDefinition = GetFontDef();
         row.Add(val);
 
-        container.Add(row);
+        contentPanel.Add(row);
     }
 
-    public void Show() { overlay.style.display = DisplayStyle.Flex; }
+    public void Show() { SelectCategory(0); overlay.style.display = DisplayStyle.Flex; }
     public void Hide() { overlay.style.display = DisplayStyle.None; }
     public bool IsOpen => overlay.style.display == DisplayStyle.Flex;
 }
