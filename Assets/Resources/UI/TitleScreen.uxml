@@ -14,7 +14,7 @@
                style="font-size: 30px; color: #FFD700; margin-left: -20px;" />
     </VisualElement>
     
-    <Button name="announcement-btn" text="公告" 
+    <Button name="announcement-btn" text="快讯" 
             style="position: absolute; right: 20px; top: 20px; padding: 8px 16px; background-color: rgba(60, 40, 20, 0.5); border-width: 1px; border-color: rgba(255, 220, 150, 0.35); border-radius: 6px; color: #FFD700; font-size: 16px;" />
     
     <VisualElement name="button-bar" 

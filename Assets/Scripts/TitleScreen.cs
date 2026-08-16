@@ -273,7 +273,7 @@ public class TitleScreen : MonoBehaviour
 
     void OnArchive() { archiveUI?.Show(); }
     void OnSettings() { Debug.Log("打开站务公告"); }
-    void OnAnnouncement() { Debug.Log("打开公告"); }
+    void OnAnnouncement() { Debug.Log("打开快讯"); }
     void OnExit()
     {
         #if UNITY_EDITOR
