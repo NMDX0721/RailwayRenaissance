@@ -66,7 +66,7 @@ public class FullScreenNews : MonoBehaviour
         newsContent.style.whiteSpace = WhiteSpace.Normal;
         newsContent.style.unityFontDefinition = fontDef;
         newsContent.style.marginBottom = 60;
-        newsContent.style.unityParagraphSpacing = 20;
+        newsContent.style.unityParagraphSpacing = 40;
         newsScroll.Add(newsContent);
 
         continueHint = new Label { name = "continue-hint", text = "点击任意处继续..." };

@@ -426,6 +426,8 @@ public class VNSaveLoadUI : MonoBehaviour
             slotElement.Add(btnArea);
             slotContainer.Add(slotElement);
         }
+    }
+
     private void ShowDeleteConfirm(int slotIndex)
     {
         var root = uiDoc.rootVisualElement;

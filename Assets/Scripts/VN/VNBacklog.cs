@@ -151,6 +151,17 @@ public class VNBacklog : MonoBehaviour
                 speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
                 speakerLabel.style.marginBottom = 10;
                 speakerLabel.style.unityFontDefinition = fontDef;
+                speakerLabel.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.6f);
+                speakerLabel.style.paddingLeft = 8;
+                speakerLabel.style.paddingRight = 8;
+                speakerLabel.style.paddingTop = 4;
+                speakerLabel.style.paddingBottom = 4;
+                speakerLabel.style.borderTopLeftRadius = 4;
+                speakerLabel.style.borderTopRightRadius = 4;
+                speakerLabel.style.borderBottomLeftRadius = 4;
+                speakerLabel.style.borderBottomRightRadius = 4;
+                speakerLabel.style.borderLeftWidth = 3;
+                speakerLabel.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
                 contentBox.Add(speakerLabel);
             }
 
