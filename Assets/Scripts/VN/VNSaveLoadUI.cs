@@ -309,14 +309,12 @@ public class VNSaveLoadUI : MonoBehaviour
             BuildSlot(i, data, false, fontDef);
         }
     }
-            slotElement.style.flexDirection = FlexDirection.Row;
     private void BuildSlot(int slotIndex, VNSaveData saveData, bool isLatestSlot, FontDefinition fontDef)
     {
         var slotElement = new VisualElement();
         slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
         slotElement.style.height = 110;
         slotElement.style.marginBottom = 10;
-        slotElement.style.flexDirection = FlexDirection.Row;
         slotElement.style.alignItems = Align.Center;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
@@ -518,3 +516,4 @@ public class VNSaveLoadUI : MonoBehaviour
         btnRow.Add(cancelBtn);
         box.Add(btnRow); overlay.Add(box); root.Add(overlay);
     }
+}
