@@ -79,6 +79,8 @@ public class VNManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("VN_ShowLoadUI", 0);
             PlayerPrefs.Save();
+            // 立即隐藏 VN 界面元素，不等下一帧
+            HideVNUI();
             StartCoroutine(ShowLoadUIDelayed());
             return;
         }
@@ -1000,14 +1002,17 @@ public class VNManager : MonoBehaviour
         if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
     }
 
-    private IEnumerator ShowLoadUIDelayed()
+    private void HideVNUI()
     {
-        // 隐藏 VN 菜单栏和对话框，只显示读档界面
         if (menuBar != null) menuBar.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.Hide();
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
         characterSpriteManager?.ClearAll();
+    }
 
+    private IEnumerator ShowLoadUIDelayed()
+    {
+        // 读档界面已由 HideVNUI() 隐藏了 VN 元素
         yield return null;
         if (saveLoadUI != null)
             saveLoadUI.OpenLoadPanel((slotIndex) => { });
