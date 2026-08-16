@@ -53,6 +53,23 @@ Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vuln
 
 The player inherits a decommissioned line in Wufeng, a mist-wrapped tea village in central China, and must prove that the iron road still has a place in a world that has moved on.
 
+**Sand energy timeline:**
+
+```mermaid
+timeline
+    title The Sand Era
+    2050 : Sand energy principle invented in UK
+    2051 : DPRK acquires all patents
+    2053 : First sand vehicle mass production
+    2056 : Rail passenger volume down 34%
+    2068 : 91 nations dissolve state railways
+    2072 : Global rail network shuts down
+    2076 : Game begins
+```
+
+> [!IMPORTANT]
+> Sand vehicles have six critical weaknesses: limited heavy-freight capacity, vulnerability to storms, short operational range, poor nighttime efficiency, dependence on sand supply, and air-traffic restrictions. The railway's six strengths mirror each of these — a design intentionality that the player can exploit.
+
 ---
 
 ## Game Structure
@@ -101,6 +118,50 @@ The game runs on five connected simulation engines, each with its own specificat
 - **Iron Dragon Competition System** — simulates USET's penetration expansion and strategy selection. Named after the Han dynasty celestial metaphor: the dragon and the heavenly horse are mirror images — the horse rules the sky, the dragon rules the land.
 
 Detailed formulas and design documents for each engine are listed below:
+
+**System architecture mindmap:**
+
+```mermaid
+mindmap
+  root((Railway Renaissance<br>Sand Energy Impact))
+    Economy
+      Sand Standard Core
+      Five Trendlines
+        Trust
+        Fiscal Health
+        Sand Penetration
+        Political Pressure
+        Infrastructure Decay
+      Inertia Principle
+      FluctuationEngine L1-L4
+    World Generation
+      Chollima Genesis Core
+      Seed RR-XXXXX-YYYYY
+      Kosaraju Dependency Graph
+      Kruskal Rail Network
+      fBm Blackbox Noise
+    Narrative
+      Suiyue Narrative Engine
+      Event Templates
+      Favorability System
+      Three Dialogue Modes
+    Personnel
+      Seonmin Personnel System
+      Five Parent Skills
+      19 Sub-Skills
+      Fatigue & Loyalty
+      Mentorship
+    Competition
+      Iron Dragon System
+      USET Penetration
+      Iron Dragon Project
+      Six-Step Acquisition
+    Expansion
+      Tech Tree
+      Region Unlock
+      Construction Crews
+      Fuel Management
+```
 
 **New game startup flow:**
 
@@ -283,7 +344,8 @@ Named after the Han dynasty celestial metaphor: the heavenly horse (Chollima) an
 
 ### The Inertia Principle
 
-> **Design core:** You are not making choices. You are carrying the consequences of past choices.
+> [!CAUTION]
+> You are not making choices. You are carrying the consequences of past choices.
 
 Every system has inertia — a historical baseline that drags against or accelerates the effect of player actions. The formula is unified across all systems:
 
@@ -313,7 +375,7 @@ The RDA system unlocks progressively as the player expands their network. Initia
 
 Expanding the network requires more than buying new trains. The player must dispatch **construction crews** to lay new track, repair damaged sections, and upgrade stations. Each crew has its own skill progression and equipment requirements.
 
-Fuel is the single largest ongoing expense. The NF-5 Gengniu locomotive consumes 58.5 L/100 km at an average of 40-60 km/h on the aging Wufeng line. **Fuel-saving strategies** — coasting, optimised scheduling, reduced idling, and eventual locomotive upgrades — directly affect the bottom line. The fuel price is not fixed; it fluctuates with global sand-energy markets, modulated by the seasonal index and random events.
+Fuel is the single largest ongoing expense. The NF-5<sub>Gengniu</sub> locomotive consumes 58.5 L/100 km at an average of 40-60 km/h on the aging Wufeng line. **Fuel-saving strategies** — coasting, optimised scheduling, reduced idling, and eventual locomotive upgrades — directly affect the bottom line. The fuel price is not fixed; it fluctuates with global sand-energy markets, modulated by the seasonal index and random events.
 
 ## Crew
 
@@ -442,7 +504,8 @@ The game is structured around an implicit three-layer time model: daily decision
 
 ## Getting Started
 
-Requires [Unity 6000.5.0f1](https://unity.com) and Git.
+> [!TIP]
+> Requires [Unity 6000.5.0f1](https://unity.com) and Git. Press <kbd>Esc</kbd> to return to the title screen at any time.
 
 ```bash
 git clone https://github.com/NMDX721/RailwayRenaissance.git
@@ -472,7 +535,8 @@ Every design decision, every formula, and every system parameter is documented. 
 - Want to add a new crew skill? Open `docs/compose/specs/先民人事系统.md` and describe what the skill should do. The agent will find the right insertion point, implement the logic, and update the tests.
 - Want to create a custom world seed? The seed format (`RR-XXXXX-YYYYY`) is documented in the Chollima Genesis Core spec. Generate a new seed, and the game will produce a unique world.
 
-The project is open source (MIT), the documentation is exhaustive, and the AI tooling is ready. Fork the repo, point your agent at the docs, and build what you want.
+> [!TIP]
+> The project is open source (MIT), the documentation is exhaustive, and the AI tooling is ready. Fork the repo, point your agent at the docs, and build what you want.
 
 ---
 
@@ -507,25 +571,44 @@ Design specifications are stored in the repository alongside the code.
 
 ## Project Layout
 
-```
-Assets/
-├── Scripts/           # C# source
-│   ├── Core/           # FluctuationEngine, GlobalRules
-│   ├── VN/             # JSON-driven visual novel engine
-│   ├── Narrative/      # Suiyue narrative engine
-│   ├── WorldGen/       # Chollima world generation
-│   ├── GameData.cs     # Economy simulation
-│   ├── CrewManager.cs  # Crew, skills, fatigue, inertia
-│   ├── SandRivalManager.cs  # USET rival AI
-│   └── ...
-├── Resources/
-│   ├── Scripts/       # VN scripts (prologue_01 ~ prologue_10)
-│   ├── Seeds/         # World seed data (8 seed files)
-│   ├── events.json    # Event templates
-│   ├── bg/            # Backgrounds
-│   └── characters/    # Character sprites
-├── Scenes/
-└── Documentation/
+```mermaid
+block-beta
+    columns 3
+    Scripts("Scripts/ C# source")
+    Resources("Resources/ asset files")
+    Scenes("Scenes/ scenes")
+    
+    block:scripts_group
+        columns 1
+        Core("Core/ FluctuationEngine+GlobalRules")
+        VN("VN/ JSON-driven VN engine")
+        Narrative("Narrative/ Suiyue engine")
+        WorldGen("WorldGen/ Chollima world gen")
+        GameData("GameData.cs Economy sim")
+        CrewManager("CrewManager.cs Crew system")
+        SandRival("SandRivalManager.cs USET AI")
+    end
+    
+    block:resources_group
+        columns 1
+        ScriptsJSON("Scripts/ Prologue scripts")
+        Seeds("Seeds/ World seed data")
+        Events("events.json Event templates")
+        BG("bg/ Backgrounds")
+        Characters("characters/ Character sprites")
+    end
+    
+    block:scenes_group
+        columns 1
+        VNTest("VN_Test Prologue VN")
+        Station("StationSlice Gameplay scene")
+        Login("Login Login screen")
+        Title("TitleScreen Title screen")
+    end
+    
+    Scripts:scripts_group
+    Resources:resources_group
+    Scenes:scenes_group
 ```
 
 ---
@@ -536,6 +619,28 @@ Assets/
 ![Phase 2](https://img.shields.io/badge/Phase_2-Core_systems_(12/12)-brightgreen)
 ![Phase 3](https://img.shields.io/badge/Phase_3-Asset_generation-orange)
 ![Phase 4](https://img.shields.io/badge/Phase_4-Integration_&_polish-lightgrey)
+
+```mermaid
+gantt
+    title Development Roadmap
+    dateFormat  YYYY-MM
+    axisFormat  %Y-%m
+    section Design
+    Design docs & lore       :done, 2025-09, 2025-12
+    section Core Systems
+    Economy simulation       :done, 2026-01, 2026-03
+    World generation         :done, 2026-02, 2026-04
+    Narrative engine         :done, 2026-03, 2026-05
+    Personnel system         :done, 2026-04, 2026-06
+    Competition AI           :done, 2026-05, 2026-07
+    Inertia & fluctuation    :done, 2026-06, 2026-07
+    section Assets
+    Character sprites        :active, 2026-07, 2026-09
+    Scenes & vehicle models  :2026-08, 2026-10
+    section Integration
+    Performance & i18n       :2026-09, 2026-11
+    Test coverage & release  :2026-10, 2026-12
+```
 
 ```mermaid
 pie title Development Progress

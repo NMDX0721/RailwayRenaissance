@@ -59,6 +59,23 @@ USET 不是一家普通公司。它的股权结构设计使其能在国际制裁
 
 你继承了爷爷留在雾峰村，一座被雾气笼罩的中国中部茶乡山村的废弃线路。目标是在一个已经不需要铁路的世界里，证明铁路还有存在的价值。
 
+**沙能时代时间线：**
+
+```mermaid
+timeline
+    title 沙能时代关键节点
+    2050 : 英国发明沙能原理
+    2051 : 朝鲜买断全部专利
+    2053 : 首款沙能载具量产
+    2056 : 铁路客运量下降 34%
+    2068 : 91 国解散国有铁路
+    2072 : 全球铁路网停运
+    2076 : 游戏开始
+```
+
+> [!IMPORTANT]
+> 沙能载具有六个致命弱点：拉不动重货、闯不过风暴、飞不远长途、夜间效率低下、离不开沙子补给、受制于空中管制。铁路的六项优势恰好是这六点的镜像——这是你可以利用的设计空间。
+
 ---
 
 ## 游戏结构
@@ -88,6 +105,50 @@ USET 不是一家普通公司。它的股权结构设计使其能在国际制裁
 - **铁龙竞争系统**——模拟 USET 的渗透扩张和策略选择。得名于汉代天象：龙与千里马互为镜像——马掌天空，龙掌大地。
 
 每个引擎的详细公式和设计文档见下表：
+
+**系统架构思维导图：**
+
+```mermaid
+mindmap
+  root((铁路复兴<br>沙能冲击))
+    经济系统
+      沙本位经济核
+      五条趋势线
+        信任
+        财政
+        沙能渗透
+        政治压力
+        设施老化
+      惯性原则
+      波动引擎 L1-L4
+    世界生成
+      千里马创世核
+      种子码 RR-XXXXX-YYYYY
+      Kosaraju 依赖图
+      Kruskal 铁路网
+      fBm 黑箱噪声
+    叙事引擎
+      岁月叙事引擎
+      事件模板
+      好感度系统
+      三模式对话
+    人事系统
+      先民人事系统
+      五大母技能
+      19 子技能
+      疲劳与忠诚
+      师徒传承
+    竞争系统
+      铁龙竞争系统
+      USET 渗透
+      铁龙计划
+      六步收购
+    扩展
+      科技树
+      区域解锁
+      施工队
+      燃料管理
+```
 
 **新游戏启动流程：**
 
@@ -299,11 +360,12 @@ Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
 
 扩张线网不止需要购置新车。你需要派遣**施工队**铺设新轨道、修复损坏区段、升级车站。每支施工队有自己的技能成长和设备需求。
 
-燃料是最大的单笔持续性开支。NF-5 耕牛型内燃机车在雾峰老旧线路上以 40-60 km/h 的平均速度运行时，油耗为 58.5 L/100 km。**节油策略**——滑行、优化排班、减少怠速、以及最终的机车升级——直接影响利润底线。燃料价格并非固定；它随全球沙能市场波动，受季节指数和随机事件调制。
+燃料是最大的单笔持续性开支。NF-5<sub>耕牛型</sub>内燃机车在雾峰老旧线路上以 40-60 km/h 的平均速度运行时，油耗为 58.5 L/100 km。**节油策略**——滑行、优化排班、减少怠速、以及最终的机车升级——直接影响利润底线。燃料价格并非固定；它随全球沙能市场波动，受季节指数和随机事件调制。
 
 ### 惯性原则
 
-> **设计核心：** 你不是在做选择，而是在承担过去的选择。
+> [!CAUTION]
+> 你不是在做选择，而是在承担过去的选择。
 
 每个系统都存在惯性——一条历史基线，拖累或加速你的操作效果。公式在所有系统中统一：
 
@@ -452,7 +514,8 @@ graph TD
 
 ## 快速开始
 
-需要 [Unity 6000.5.0f1](https://unity.com) 与 Git。
+> [!TIP]
+> 需要 [Unity 6000.5.0f1](https://unity.com) 与 Git。按 <kbd>Esc</kbd> 可在游戏中随时返回标题界面。
 
 ```bash
 git clone https://github.com/NMDX721/RailwayRenaissance.git
@@ -511,31 +574,51 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 - 想新增员工技能？打开 `docs/compose/specs/先民人事系统.md`，描述技能的功能。
 - 想创建自定义世界种子？种子格式（`RR-XXXXX-YYYYY`）在千里马创世核设计文档中有说明。
 
-> **Tip:** 项目开源（MIT），文档详尽，AI 工具链就绪。复刻仓库，指向 AI 代理，即可按需改造。
+> [!TIP]
+> 项目开源（MIT），文档详尽，AI 工具链就绪。复刻仓库，指向 AI 代理，即可按需改造。
 
 ---
 
 ## 项目结构
 
-```
-Assets/
-├── Scripts/           # C# 源码
-│   ├── Core/           # FluctuationEngine, GlobalRules
-│   ├── VN/             # JSON 驱动的视觉小说引擎
-│   ├── Narrative/      # 岁月叙事引擎
-│   ├── WorldGen/       # 千里马创世核（世界生成）
-│   ├── GameData.cs     # 经济模拟
-│   ├── CrewManager.cs  # 员工、技能、疲劳、惯性
-│   ├── SandRivalManager.cs  # USET 对手 AI
-│   └── ...
-├── Resources/
-│   ├── Scripts/       # VN 剧本（prologue_01 ~ prologue_10）
-│   ├── Seeds/         # 世界种子数据（8 个种子文件）
-│   ├── events.json    # 事件模板
-│   ├── bg/            # 背景
-│   └── characters/    # 角色立绘
-├── Scenes/
-└── Documentation/
+```mermaid
+block-beta
+    columns 3
+    Scripts("Scripts/ C# 源码")
+    Resources("Resources/ 资源文件")
+    Scenes("Scenes/ 场景")
+    
+    block:scripts_group
+        columns 1
+        Core("Core/ 波动引擎+GlobalRules")
+        VN("VN/ JSON 视觉小说引擎")
+        Narrative("Narrative/ 岁月叙事引擎")
+        WorldGen("WorldGen/ 千里马创世核")
+        GameData("GameData.cs 经济模拟")
+        CrewManager("CrewManager.cs 员工系统")
+        SandRival("SandRivalManager.cs USET 对手 AI")
+    end
+    
+    block:resources_group
+        columns 1
+        ScriptsJSON("Scripts/ 序章剧本")
+        Seeds("Seeds/ 世界种子数据")
+        Events("events.json 事件模板")
+        BG("bg/ 背景")
+        Characters("characters/ 角色立绘")
+    end
+    
+    block:scenes_group
+        columns 1
+        VNTest("VN_Test 序章 VN")
+        Station("StationSlice 经营场景")
+        Login("Login 登录界面")
+        Title("TitleScreen 标题界面")
+    end
+    
+    Scripts:scripts_group
+    Resources:resources_group
+    Scenes:scenes_group
 ```
 
 ---
@@ -546,6 +629,28 @@ Assets/
 ![Phase 2](https://img.shields.io/badge/Phase_2-核心系统（12/12）-brightgreen)
 ![Phase 3](https://img.shields.io/badge/Phase_3-资产生成-orange)
 ![Phase 4](https://img.shields.io/badge/Phase_4-整合打磨-lightgrey)
+
+```mermaid
+gantt
+    title 开发计划
+    dateFormat  YYYY-MM
+    axisFormat  %Y-%m
+    section 设计阶段
+    设计文档与世界观       :done, 2025-09, 2025-12
+    section 核心系统
+    经济模拟引擎           :done, 2026-01, 2026-03
+    千里马创世核           :done, 2026-02, 2026-04
+    岁月叙事引擎           :done, 2026-03, 2026-05
+    先民人事系统           :done, 2026-04, 2026-06
+    铁龙竞争系统           :done, 2026-05, 2026-07
+    惯性原则与波动引擎     :done, 2026-06, 2026-07
+    section 资产生成
+    角色立绘与表情         :active, 2026-07, 2026-09
+    场景与车辆建模         :2026-08, 2026-10
+    section 整合
+    性能优化与本地化       :2026-09, 2026-11
+    测试覆盖与发布         :2026-10, 2026-12
+```
 
 ```mermaid
 pie title 开发进度
