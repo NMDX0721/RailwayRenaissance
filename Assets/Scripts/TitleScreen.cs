@@ -305,10 +305,16 @@ public class TitleScreen : MonoBehaviour
         quad.transform.localScale = new Vector3(37.5f, 21f, 1);
         quad.name = "VideoQuad";
 
-        // Material with URP unlit shader
+        // Build a simple unlit material from scratch
         Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
         if (shader == null) shader = Shader.Find("Unlit/Texture");
         var mat = new Material(shader);
+        // Set a placeholder texture so the material isn't pink
+        var tempTex = new Texture2D(2, 2);
+        tempTex.SetPixel(0, 0, Color.black);
+        tempTex.Apply();
+        mat.mainTexture = tempTex;
+        string texProperty = shader != null && shader.name.Contains("Universal") ? "_BaseMap" : "_MainTex";
         var renderer = quad.GetComponent<MeshRenderer>();
         renderer.material = mat;
 
@@ -320,7 +326,7 @@ public class TitleScreen : MonoBehaviour
         player.playOnAwake = true;
         player.renderMode = VideoRenderMode.MaterialOverride;
         player.targetMaterialRenderer = renderer;
-        player.targetMaterialProperty = "_BaseMap";
+        player.targetMaterialProperty = texProperty;
         player.audioOutputMode = VideoAudioOutputMode.None;
 
         player.Play();
