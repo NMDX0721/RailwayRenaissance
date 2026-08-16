@@ -13,6 +13,7 @@ public class RecruitmentUI : MonoBehaviour
     [SerializeField] private Text titleText;
     [SerializeField] private Text crewListText;
     [SerializeField] private Text feedbackText;
+    [SerializeField] private Text skillTreeText;
     [SerializeField] private Button communityBtn, adBtn, headhunterBtn;
     [SerializeField] private Text communityCooldown, adCooldown, headhunterCooldown;
 
@@ -78,7 +79,7 @@ public class RecruitmentUI : MonoBehaviour
         panelRect.anchorMax = new Vector2(0.5f, 0.5f);
         panelRect.pivot = new Vector2(0.5f, 0.5f);
         panelRect.anchoredPosition = Vector2.zero;
-        panelRect.sizeDelta = new Vector2(520f, 480f);
+        panelRect.sizeDelta = new Vector2(560f, 560f);
 
         Image image = panelRoot.GetComponent<Image>();
         image.color = new Color(0f, 0f, 0f, 0.85f);
@@ -124,11 +125,19 @@ public class RecruitmentUI : MonoBehaviour
         crewListText.alignment = TextAnchor.UpperLeft;
         crewListText.horizontalOverflow = HorizontalWrapMode.Wrap;
         crewListText.verticalOverflow = VerticalWrapMode.Overflow;
-        SetRect(crewListText.rectTransform, 20f, -184f, 480f, 250f);
+        SetRect(crewListText.rectTransform, 20f, -184f, 520f, 180f);
+
+        skillTreeText = CreateText("SkillTreeText", 11);
+        skillTreeText.supportRichText = true;
+        skillTreeText.alignment = TextAnchor.UpperLeft;
+        skillTreeText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        skillTreeText.verticalOverflow = VerticalWrapMode.Overflow;
+        skillTreeText.color = new Color(0.7f, 0.9f, 1.0f);
+        SetRect(skillTreeText.rectTransform, 20f, -370f, 520f, 100f);
 
         Button closeBtn = CreateButton("Btn_Close", "关闭");
         closeBtn.onClick.AddListener(Hide);
-        SetButtonRect(closeBtn, 420f, -440f, 84f, 34f);
+        SetButtonRect(closeBtn, 460f, -520f, 84f, 34f);
 
         panelRoot.SetActive(false);
         Refresh();
@@ -241,6 +250,14 @@ public class RecruitmentUI : MonoBehaviour
         {
             feedbackText.text = "招募成功！新员工已加入团队。";
 
+            // 显示新员工的技能树
+            var allCrew = CrewManager.GetAllCrew();
+            if (allCrew != null && allCrew.Count > 0)
+            {
+                CrewMember newest = allCrew[allCrew.Count - 1];
+                DisplaySkillTree(newest);
+            }
+
             // 同步顶部资金显示（不修改 UIManager，仅调用其公开刷新接口）
             UIManager uiManager = Object.FindAnyObjectByType<UIManager>();
             if (uiManager != null)
@@ -254,6 +271,33 @@ public class RecruitmentUI : MonoBehaviour
         }
 
         Refresh();
+    }
+
+    private void DisplaySkillTree(CrewMember member)
+    {
+        if (skillTreeText == null || member == null) return;
+
+        string tree = "—— 技能树 ——\n";
+        if (member.skillTree != null)
+        {
+            foreach (var node in member.skillTree)
+            {
+                tree += $"<color=#FFD700>{node.systemName}</color> ({node.parentSkillLevel:F0})\n";
+                if (node.subSkills != null)
+                {
+                    foreach (var sub in node.subSkills)
+                    {
+                        string status = sub.isUnlocked ? $"{sub.level:F0}" : "<color=#888>锁定</color>";
+                        tree += $"  └ {sub.skillName}: {status}\n";
+                    }
+                }
+            }
+        }
+        else
+        {
+            tree += "（无技能树数据）\n";
+        }
+        skillTreeText.text = tree;
     }
 
     private static int GetCost(string channel)

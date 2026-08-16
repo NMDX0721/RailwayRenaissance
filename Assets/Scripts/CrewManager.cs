@@ -146,6 +146,17 @@ public static class CrewManager
         { "attendant",  new[] { "management" } }    // 服务员：管理为相关
     };
 
+    // === T6：工资标准表（技能1-5级 → 月薪，沙币/月） ===
+    // 来源：《先民人事系统.md》§7.1 工资标准。CalculateSkillSalary 将 0-100 技能等级映射到此表。
+    private static readonly Dictionary<string, int[]> SalaryTable = new Dictionary<string, int[]>
+    {
+        { "driving",    new[] { 18000, 22000, 28000, 35000, 45000 } },
+        { "repair",     new[] { 14000, 17000, 22000, 28000, 35000 } },
+        { "management", new[] { 12000, 15000, 18000, 22000, 28000 } },
+        { "service",    new[] { 10000, 12000, 14000, 17000, 22000 } },
+        { "freight",    new[] { 11000, 13000, 16000, 20000, 25000 } }
+    };
+
     // === 师傅带徒：学徒ID → 师傅ID ===
     private static readonly Dictionary<string, string> MentorDictionary = new Dictionary<string, string>();
 
@@ -153,6 +164,25 @@ public static class CrewManager
     private static GlobalRules skillGrowthRules;
     private static FluctuationEngine fluctuationEngine;
     private static float skillGrowthTimeSeed = 0f;
+
+    // ===== FluctuationEngine 实例（Task 7：招聘技能树生成） =====
+    private static FluctuationEngine recruitFluctuationEngine;
+
+    // ===== Task 7：5 系统子技能名称定义 =====
+    private static readonly Dictionary<string, string[]> SubSkillNames = new Dictionary<string, string[]>
+    {
+        { "driving",    new[] { "acceleration_control", "braking_tech", "route_knowledge" } },
+        { "repair",     new[] { "engine_repair", "electrical_systems", "body_maintenance" } },
+        { "management", new[] { "scheduling", "budget_planning", "crew_management" } },
+        { "service",    new[] { "customer_service", "cleaning_standards", "catering" } },
+        { "freight",    new[] { "cargo_loading", "logistics_planning", "inventory_management" } }
+    };
+
+    // ===== T6：工资/谈判 波动种子与常量 =====
+    private static float salaryTimeSeed = 0f;                 // 工资/谈判波动时间种子（每日递增）
+    private const float MentorShareRate = 0.1f;               // 师傅获得徒弟当日收益的比例（10%）
+    private const float MentorFatigueCost = 5f;               // 师傅带徒每日疲劳消耗
+    private const float WageNegotiationSkillJump = 5f;        // 单日技能增长阈值（>5 点触发工资谈判）
 
     // 培训每次消耗沙币
     private const int TrainingCost = 200;
@@ -372,20 +402,27 @@ public static class CrewManager
         }
 
         // 各渠道参数：费用 / 冷却天数 / 技能等级范围（0-100）/ 潜力（maxLevel）范围 / 年龄范围
+        // Task 7: skill tree 范围对应 — community(10-30), ad(20-50), headhunter(30-70)
         int cost, cooldownDays, minSkill, maxSkill, minMaxLevel, maxMaxLevel, minAge, maxAge;
+        float skillTreeBase, skillTreeVariance;
+        bool hasRareSubSkills = false;
         switch (channel)
         {
-            case "community":   // 社区推荐：免费，技能随机10-25，潜力较低
-                cost = 0;     cooldownDays = 30; minSkill = 10; maxSkill = 25;
+            case "community":   // 社区推荐：免费，技能随机10-30，潜力较低
+                cost = 0;     cooldownDays = 30; minSkill = 10; maxSkill = 30;
                 minMaxLevel = 55; maxMaxLevel = 70; minAge = 30; maxAge = 55;
+                skillTreeBase = 20f; skillTreeVariance = 0.5f;
                 break;
-            case "ad":          // 广告招聘：500沙币，技能25-40
-                cost = 500;   cooldownDays = 15; minSkill = 25; maxSkill = 40;
+            case "ad":          // 广告招聘：500沙币，技能20-50
+                cost = 500;   cooldownDays = 15; minSkill = 20; maxSkill = 50;
                 minMaxLevel = 70; maxMaxLevel = 85; minAge = 25; maxAge = 45;
+                skillTreeBase = 35f; skillTreeVariance = 0.4286f;
                 break;
-            case "headhunter":  // 猎头推荐：2000沙币，技能40-55（含高潜力）
-                cost = 2000;  cooldownDays = 60; minSkill = 40; maxSkill = 55;
+            case "headhunter":  // 猎头推荐：2000沙币，技能30-70（含高潜力+稀有子技能）
+                cost = 2000;  cooldownDays = 60; minSkill = 30; maxSkill = 70;
                 minMaxLevel = 85; maxMaxLevel = 100; minAge = 30; maxAge = 50;
+                skillTreeBase = 50f; skillTreeVariance = 0.4f;
+                hasRareSubSkills = true;
                 break;
             default:
                 Debug.LogWarning("[CrewManager] 未知招聘渠道: " + channel);
@@ -412,9 +449,10 @@ public static class CrewManager
             seq++;
         } while (GetCrew(id) != null);
 
-        // 从名字池随机取名，创建新员工
+        // 从名字池随机取名，创建新员工（含 skillTree 生成）
         CrewMember recruit = CreateRecruit(id, RecruitNames[UnityEngine.Random.Range(0, RecruitNames.Length)],
-                                           minSkill, maxSkill, minMaxLevel, maxMaxLevel);
+                                           minSkill, maxSkill, minMaxLevel, maxMaxLevel,
+                                           skillTreeBase, skillTreeVariance, hasRareSubSkills);
         recruit.age = UnityEngine.Random.Range(minAge, maxAge + 1);
         crew.Add(recruit);
 
@@ -425,8 +463,9 @@ public static class CrewManager
         return true;
     }
 
-    /// <summary>通用招聘生成：创建新员工（attendant 岗位、疲劳0、忠诚50、4条技能按等级范围随机，maxLevel 固定100），供各招聘渠道复用。</summary>
-    private static CrewMember CreateRecruit(string id, string name, int minSkill, int maxSkill, int minMaxLevel, int maxMaxLevel)
+    /// <summary>通用招聘生成：创建新员工（attendant 岗位、疲劳0、忠诚50、4条技能按等级范围随机、skillTree 5系统生成），供各招聘渠道复用。</summary>
+    private static CrewMember CreateRecruit(string id, string name, int minSkill, int maxSkill, int minMaxLevel, int maxMaxLevel,
+                                             float skillTreeBase, float skillTreeVariance, bool hasRareSubSkills)
     {
         // 生成 4 条技能：service/management/repair/driving
         string[] skillNames = { "service", "management", "repair", "driving" };
@@ -437,6 +476,9 @@ public static class CrewManager
             skills[i] = new SkillData { skillName = skillNames[i], level = level, maxLevel = 100, exp = 0 };
         }
 
+        // Task 7: 生成 skillTree（5 系统，使用 FluctuationEngine.Simple() 随机化）
+        SkillTreeNode[] skillTree = GenerateSkillTree(skillTreeBase, skillTreeVariance, hasRareSubSkills);
+
         return new CrewMember
         {
             id = id,
@@ -445,8 +487,99 @@ public static class CrewManager
             role = "attendant",
             fatigue = 0,
             loyalty = 50,
-            skills = skills
+            skills = skills,
+            skillTree = skillTree
         };
+    }
+
+    /// <summary>Task 7：生成 5 系统技能树，父技能等级通过 FluctuationEngine.Simple() 在渠道范围内随机，子技能等权分布。</summary>
+    private static SkillTreeNode[] GenerateSkillTree(float baseValue, float variance, bool hasRareSubSkills)
+    {
+        // 延迟初始化 recruitFluctuationEngine
+        if (recruitFluctuationEngine == null)
+        {
+            var rules = new GlobalRules();
+            // 确保 recruitment 权重表存在
+            bool hasEntry = false;
+            for (int i = 0; i < rules.fluctuationWeightsList.Count; i++)
+            {
+                if (rules.fluctuationWeightsList[i].formulaName == "recruitment")
+                {
+                    hasEntry = true;
+                    break;
+                }
+            }
+            if (!hasEntry)
+            {
+                rules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+                {
+                    formulaName = "recruitment",
+                    weights = new float[] { 1.0f }
+                });
+            }
+            recruitFluctuationEngine = new FluctuationEngine(rules, 42, 1.0f);
+        }
+
+        string[] systemNames = { "driving", "repair", "management", "service", "freight" };
+        SkillTreeNode[] tree = new SkillTreeNode[systemNames.Length];
+
+        for (int s = 0; s < systemNames.Length; s++)
+        {
+            string system = systemNames[s];
+
+            // 父技能等级 = FluctuationEngine.Simple() 在渠道范围内随机
+            float parentLevel = recruitFluctuationEngine.Simple(baseValue, variance);
+            parentLevel = Mathf.Clamp(parentLevel, 0f, 100f);
+
+            // 获取该系统对应的子技能名列表
+            string[] subNames;
+            if (!SubSkillNames.TryGetValue(system, out subNames))
+            {
+                subNames = new[] { system + "_sub1", system + "_sub2", system + "_sub3" };
+            }
+
+            // 生成子技能
+            SubSkillData[] subSkills = new SubSkillData[subNames.Length];
+            for (int si = 0; si < subNames.Length; si++)
+            {
+                float subLevel = parentLevel + UnityEngine.Random.Range(-15f, 15f);
+                subLevel = Mathf.Clamp(subLevel, 0f, 100f);
+
+                subSkills[si] = new SubSkillData
+                {
+                    skillName = subNames[si],
+                    level = subLevel,
+                    isUnlocked = true,
+                    historicalAvg = new float[30],
+                    historyIndex = 0
+                };
+            }
+
+            // 猎头渠道：稀有子技能概率
+            if (hasRareSubSkills && UnityEngine.Random.value < 0.4f)
+            {
+                // 随机选 1-2 个子技能提升
+                int rareCount = UnityEngine.Random.Range(1, Mathf.Min(3, subSkills.Length + 1));
+                for (int r = 0; r < rareCount; r++)
+                {
+                    int rareIdx = UnityEngine.Random.Range(0, subSkills.Length);
+                    float boost = recruitFluctuationEngine.Simple(20f, 0.5f); // 约 10-30 额外等级
+                    subSkills[rareIdx].level = Mathf.Clamp(subSkills[rareIdx].level + boost, 0f, 100f);
+                }
+            }
+
+            // 构建 SkillTreeNode
+            SkillTreeNode node = new SkillTreeNode
+            {
+                systemName = system,
+                subSkills = subSkills
+            };
+            node.RecalculateParentLevel(); // 等权平均计算父技能等级
+
+            tree[s] = node;
+        }
+
+        return tree;
     }
 
     /// <summary>返回各招聘渠道的冷却剩余天数（供 UI 查询）。</summary>
@@ -581,6 +714,9 @@ public static class CrewManager
     {
         List<CrewMember> firedToday = new List<CrewMember>();
 
+        // —— T6：工资/谈判波动时间种子（每日递增，供 CalculateSkillSalary / ProcessWageNegotiation 使用） ——
+        salaryTimeSeed += 1f;
+
         // —— P5：招聘渠道冷却每日递减（与培训冷却同款） ——
         List<string> channelKeys = new List<string>(channelCooldowns.Keys);
         foreach (string channelKey in channelKeys)
@@ -654,6 +790,9 @@ public static class CrewManager
 
             // ===== P3：技能成长 =====
             // 每日经验 = 基础1.0 × 岗位匹配系数 × 师傅系数（培训日另有加成）
+            float totalExpGainToday = 0f;      // 当日 exp 总收益（T6 师徒收益基数）
+            int maxSkillLevelJumpToday = 0;    // 当日单技能最大升级点数（T6 工资谈判触发判断）
+            float maxSubSkillGainToday = 0f;   // 当日技能树单子技能最大增长（T6 工资谈判触发判断）
             foreach (SkillData skill in member.skills)
             {
                 if (skill.level >= skill.maxLevel)
@@ -677,14 +816,15 @@ public static class CrewManager
                     }
                 }
 
-                skill.exp += dailyGain;
+                int skillLevelBefore = skill.level;
 
-                // 升级检查：exp >= 当前等级所需天数 → level++，exp 扣除对应天数
-                while (skill.level < skill.maxLevel && skill.exp >= GetExpToNext(skill.skillName, skill.level))
+                AddSkillExp(member, skill, dailyGain);
+                totalExpGainToday += dailyGain;
+
+                int skillLevelJump = skill.level - skillLevelBefore;
+                if (skillLevelJump > maxSkillLevelJumpToday)
                 {
-                    skill.exp -= GetExpToNext(skill.skillName, skill.level);
-                    skill.level++;
-                    Debug.Log("[CrewManager] " + member.name + " 的 " + skill.skillName + " 技能提升至 " + skill.level + " 级（" + GetRankName(skill.skillName, skill.level) + "）。");
+                    maxSkillLevelJumpToday = skillLevelJump;
                 }
             }
 
@@ -692,30 +832,8 @@ public static class CrewManager
             // 新技能树与旧 skills 数组并存，互不干扰
             if (member.skillTree != null && member.skillTree.Length > 0)
             {
-                // 首次使用时初始化 FluctuationEngine（默认 GlobalRules）
-                if (fluctuationEngine == null)
-                {
-                    skillGrowthRules = new GlobalRules();
-                    // 确保 skill_growth 权重表存在
-                    bool hasEntry = false;
-                    for (int i = 0; i < skillGrowthRules.fluctuationWeightsList.Count; i++)
-                    {
-                        if (skillGrowthRules.fluctuationWeightsList[i].formulaName == "skill_growth")
-                        {
-                            hasEntry = true;
-                            break;
-                        }
-                    }
-                    if (!hasEntry)
-                    {
-                        skillGrowthRules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
-                        {
-                            formulaName = "skill_growth",
-                            weights = new float[] { 0.30f, 0.20f, 0.20f, 0.15f, 0.15f }
-                        });
-                    }
-                    fluctuationEngine = new FluctuationEngine(skillGrowthRules, 42, 1.0f);
-                }
+                // 首次使用时初始化 FluctuationEngine（默认 GlobalRules + 各公式权重表）
+                EnsureFluctuationEngine();
 
                 foreach (SkillTreeNode node in member.skillTree)
                 {
@@ -755,8 +873,14 @@ public static class CrewManager
                             dailyGain *= skillGrowthRules.skillNewbieMultiplier;    // 1.5x
 
                         // 更新等级（clamp 0-100）
-                        float newLevel = subSkill.level + dailyGain;
+                        float subLevelBefore = subSkill.level;
+                        float newLevel = subLevelBefore + dailyGain;
                         node.subSkills[si].level = Mathf.Clamp(newLevel, 0f, 100f);
+                        float subLevelGain = node.subSkills[si].level - subLevelBefore;
+                        if (subLevelGain > maxSubSkillGainToday)
+                        {
+                            maxSubSkillGainToday = subLevelGain;
+                        }
                     }
 
                     // 子技能更新完后重新计算父技能等级
@@ -781,6 +905,63 @@ public static class CrewManager
                         parent.subSkills[si] = sub; // write back (struct copy)
                     }
                 }
+            }
+
+            // ===== T6：师徒收益 =====
+            // 徒弟有师傅：成长加成已由 GetMentorCoefficient 提供（×1.5 / ×2.0）。
+            // 此处补充：师傅获得徒弟当日 exp 收益的 10%（经 FluctuationEngine 加权波动），并在带徒日疲劳 +5。
+            if (totalExpGainToday > 0f)
+            {
+                string mentorId = GetMentor(member.id);
+                if (mentorId != null)
+                {
+                    CrewMember mentor = GetCrew(mentorId);
+                    if (mentor != null)
+                    {
+                        EnsureFluctuationEngine();
+
+                        // 师傅收益基数 = 徒弟当日 exp 收益 × 10%
+                        float mentorBase = totalExpGainToday * MentorShareRate;
+
+                        // 等级差：师傅最高技能 - 徒弟最高技能（0-100）
+                        float mentorMaxLevel = 0f;
+                        foreach (SkillData ms in mentor.skills)
+                        {
+                            if (ms.level > mentorMaxLevel) mentorMaxLevel = ms.level;
+                        }
+                        float apprenticeMaxLevel = 0f;
+                        foreach (SkillData ad in member.skills)
+                        {
+                            if (ad.level > apprenticeMaxLevel) apprenticeMaxLevel = ad.level;
+                        }
+
+                        // 加权波动：{等级差, 师傅耐心, 徒弟天赋} → mentorship_weights
+                        WeightedFactor[] mentorFactors = new WeightedFactor[]
+                        {
+                            new WeightedFactor("等级差", Mathf.Clamp01((mentorMaxLevel - apprenticeMaxLevel) / 100f)),
+                            new WeightedFactor("师傅耐心", Mathf.Clamp01(mentor.hiddenPatience / 100f)),
+                            new WeightedFactor("徒弟天赋", Mathf.Clamp01(member.hiddenTalent / 100f))
+                        };
+                        float mentorGain = fluctuationEngine.Weighted(mentorBase, mentorFactors, "mentorship_weights", salaryTimeSeed);
+
+                        // 师傅收益并入其岗位核心技能
+                        AddSkillExp(mentor, FindSkill(mentor, GetCoreSkillForRole(mentor.role)), mentorGain);
+
+                        // 带徒疲劳 +5
+                        mentor.fatigue = Mathf.Clamp(mentor.fatigue + MentorFatigueCost, 0, 100);
+
+                        Debug.Log("[CrewManager] 师徒收益：" + mentor.name + " 带徒 " + member.name + "，获得 " + mentorGain.ToString("F2") + " 技能经验，疲劳 +5。");
+                    }
+                }
+            }
+
+            // ===== T6：工资谈判 =====
+            // 单日技能增长 > 5 点（技能树子技能或旧技能等级）→ 触发加薪谈判。
+            // 忠诚度变化由 FluctuationEngine 计算（wage_negotiation 权重表），不硬编码数值。
+            // 自动判定：工资按时发放视为接受加薪（工资已随技能等级上调，见 GameData.CalculateWageCost）。
+            if (maxSkillLevelJumpToday > WageNegotiationSkillJump || maxSubSkillGainToday > WageNegotiationSkillJump)
+            {
+                ProcessWageNegotiation(member, wagePaidToday);
             }
 
             // 培训冷却：每日递减
@@ -1241,6 +1422,244 @@ public static class CrewManager
         member.trainingCooldownDays = 7;
         Debug.Log("[CrewManager] " + member.name + " 已安排培训（下次可在 7 天后再次培训）。");
         return true;
+    }
+
+    // ===== T6：师徒传承 + 技能↔工资平衡 =====
+
+    /// <summary>T6：确保 FluctuationEngine 就绪（默认 GlobalRules + 各公式权重表，缺失时回退默认权重）。</summary>
+    private static void EnsureFluctuationEngine()
+    {
+        if (fluctuationEngine != null)
+        {
+            return;
+        }
+
+        skillGrowthRules = new GlobalRules();
+        EnsureWeightTable("skill_growth",       new float[] { 0.30f, 0.20f, 0.20f, 0.15f, 0.15f });
+        EnsureWeightTable("salary_weights",     new float[] { 1.0f, 0.5f, 0.3f, 0.2f });
+        EnsureWeightTable("mentorship_weights", new float[] { 1.0f, 0.5f, 0.3f });
+        EnsureWeightTable("wage_negotiation",   new float[] { 1.0f, 0.5f, 0.3f, 0.2f });
+        fluctuationEngine = new FluctuationEngine(skillGrowthRules, 42, 1.0f);
+    }
+
+    /// <summary>若权重表中不存在指定公式，则追加带默认权重的表项（与 skill_growth 同款回退逻辑）。</summary>
+    private static void EnsureWeightTable(string formulaName, float[] weights)
+    {
+        for (int i = 0; i < skillGrowthRules.fluctuationWeightsList.Count; i++)
+        {
+            if (skillGrowthRules.fluctuationWeightsList[i].formulaName == formulaName)
+            {
+                return;
+            }
+        }
+        skillGrowthRules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+        {
+            formulaName = formulaName,
+            weights = weights
+        });
+    }
+
+    /// <summary>给指定技能追加经验，并处理升级（exp >= 成长曲线天数 → level++）。</summary>
+    private static void AddSkillExp(CrewMember member, SkillData skill, float expGain)
+    {
+        if (member == null || skill == null)
+        {
+            return;
+        }
+        if (skill.level >= skill.maxLevel)
+        {
+            return;
+        }
+
+        skill.exp += expGain;
+
+        // 升级检查：exp >= 当前等级所需天数 → level++，exp 扣除对应天数
+        while (skill.level < skill.maxLevel && skill.exp >= GetExpToNext(skill.skillName, skill.level))
+        {
+            skill.exp -= GetExpToNext(skill.skillName, skill.level);
+            skill.level++;
+            Debug.Log("[CrewManager] " + member.name + " 的 " + skill.skillName + " 技能提升至 " + skill.level + " 级（" + GetRankName(skill.skillName, skill.level) + "）。");
+        }
+    }
+
+    /// <summary>岗位 → 核心技能名（未命中时回退 service）。</summary>
+    private static string GetCoreSkillForRole(string role)
+    {
+        if (CoreSkillByRole.TryGetValue(role, out string coreSkill))
+        {
+            return coreSkill;
+        }
+        return "service";
+    }
+
+    /// <summary>按技能名查找员工技能（找不到返回 null）。</summary>
+    private static SkillData FindSkill(CrewMember member, string skillName)
+    {
+        if (member == null || member.skills == null)
+        {
+            return null;
+        }
+        return Array.Find(member.skills, s => s.skillName == skillName);
+    }
+
+    /// <summary>员工岗位核心技能的等级比例（0-1）。</summary>
+    private static float GetCoreSkillLevelRatio(CrewMember member)
+    {
+        SkillData skill = FindSkill(member, GetCoreSkillForRole(member.role));
+        return skill != null ? Mathf.Clamp01(skill.level / 100f) : 0f;
+    }
+
+    /// <summary>
+    /// T6：按技能等级计算员工月薪（沙币/月）。
+    /// 基准 = 岗位核心技能等级映射工资表（0-100 → 1-5级），再经 FluctuationEngine 按 salary_weights 加权波动。
+    /// </summary>
+    public static int CalculateSkillSalary(CrewMember member)
+    {
+        if (member == null)
+        {
+            return 0;
+        }
+
+        EnsureFluctuationEngine();
+
+        // 岗位核心技能等级 0-100 → 工资表索引（1-5 级，索引 0-4）
+        string coreSkill = GetCoreSkillForRole(member.role);
+        SkillData skill = FindSkill(member, coreSkill);
+        int level = skill != null ? Mathf.Clamp(skill.level, 0, 100) : 0;
+
+        if (!SalaryTable.TryGetValue(coreSkill, out int[] table) || table == null || table.Length == 0)
+        {
+            return 0;
+        }
+        int tableIndex = Mathf.Clamp(Mathf.RoundToInt(level / 100f * (table.Length - 1)), 0, table.Length - 1);
+        float baseMonthly = table[tableIndex];
+
+        // 加权波动：{技能等级, 岗位匹配, 忠诚度, 疲劳度} → salary_weights
+        WeightedFactor[] factors = new WeightedFactor[]
+        {
+            new WeightedFactor("技能等级", level / 100f),
+            new WeightedFactor("岗位匹配", GetMatchCoefficient(member.role, coreSkill)),
+            new WeightedFactor("忠诚度", Mathf.Clamp01(member.loyalty / 100f)),
+            new WeightedFactor("疲劳度", 1f - Mathf.Clamp01(member.fatigue / 100f))
+        };
+
+        float fluctuatedMonthly = fluctuationEngine.Weighted(baseMonthly, factors, "salary_weights", salaryTimeSeed);
+        return Mathf.RoundToInt(fluctuatedMonthly);
+    }
+
+    /// <summary>
+    /// T6：工资谈判——单日技能增长 > 5 点时触发。
+    /// 忠诚度变化由 FluctuationEngine 计算（wage_negotiation 权重表），不硬编码具体数值。
+    /// </summary>
+    /// <param name="member">谈判员工。</param>
+    /// <param name="raiseAccepted">公司是否接受加薪（true=接受→忠诚上升；false=拒绝→忠诚下降）。</param>
+    /// <returns>本次谈判导致的忠诚度变化量（可正可负）。</returns>
+    public static float ProcessWageNegotiation(CrewMember member, bool raiseAccepted)
+    {
+        if (member == null)
+        {
+            return 0f;
+        }
+
+        EnsureFluctuationEngine();
+
+        // 基准 = 员工当前月薪换算的忠诚变化量级（工资越高，谈判牵动越大）
+        float baseLoyaltyDelta = CalculateSkillSalary(member) / 5000f;
+
+        WeightedFactor[] factors = new WeightedFactor[]
+        {
+            new WeightedFactor("加薪接受度", raiseAccepted ? 1f : 0f),
+            new WeightedFactor("技能等级", GetCoreSkillLevelRatio(member)),
+            new WeightedFactor("忠诚度", Mathf.Clamp01(member.loyalty / 100f)),
+            new WeightedFactor("疲劳度", Mathf.Clamp01(member.fatigue / 100f))
+        };
+
+        // 接受加薪 → 正忠诚变化；拒绝 → 负忠诚变化（量级由波动引擎决定）
+        float delta = fluctuationEngine.Weighted(baseLoyaltyDelta, factors, "wage_negotiation", salaryTimeSeed)
+                      * (raiseAccepted ? 1f : -1f);
+        member.loyalty = Mathf.Clamp(member.loyalty + delta, 0, 100);
+
+        Debug.Log("[CrewManager] 工资谈判：" + member.name + "（" + member.id + "）" +
+                  (raiseAccepted ? "接受加薪" : "拒绝加薪") +
+                  "，忠诚度变化 " + delta.ToString("F2") + "，当前忠诚 " + member.loyalty.ToString("F1") + "。");
+        return delta;
+    }
+
+    // ===== Task 8: 技能协同效应 =====
+
+    // 互补岗位协同矩阵：岗位A → { (岗位B, 匹配度) }
+    private static readonly Dictionary<string, Dictionary<string, float>> ComplementaryMatrix = new Dictionary<string, Dictionary<string, float>>
+    {
+        { "driver",     new Dictionary<string, float> { { "dispatcher", 0.8f }, { "mechanic", 0.6f } } },
+        { "mechanic",   new Dictionary<string, float> { { "driver", 0.6f } } },
+        { "conductor",  new Dictionary<string, float> { { "dispatcher", 0.5f } } },
+        { "dispatcher", new Dictionary<string, float> { { "driver", 0.8f }, { "conductor", 0.5f }, { "attendant", 0.4f } } },
+        { "attendant",  new Dictionary<string, float> { { "dispatcher", 0.4f } } }
+    };
+
+    private static FluctuationEngine synergyEngine;
+    private static float synergyCoefficient = 0.2f;
+    private static bool synergyInitialized = false;
+
+    /// <summary>计算全队协同效率倍率。遍历所有互补岗位对，按双方核心技能等级累计加成。
+    /// 公式：synergy = 1.0 + sum(complementMatch * bothLevels / 100) * 系数，系数通过 FluctuationEngine 计算。</summary>
+    public static float CalculateSynergy()
+    {
+        if (crew.Count < 2) return 1.0f;
+
+        // 一次性初始化协同引擎
+        if (!synergyInitialized)
+        {
+            var rules = new GlobalRules();
+            bool hasEntry = false;
+            for (int i = 0; i < rules.fluctuationWeightsList.Count; i++)
+            {
+                if (rules.fluctuationWeightsList[i].formulaName == "synergy")
+                {
+                    hasEntry = true;
+                    break;
+                }
+            }
+            if (!hasEntry)
+            {
+                rules.fluctuationWeightsList.Add(new GlobalRules.WeightTable
+                {
+                    formulaName = "synergy",
+                    weights = new float[] { 1.0f }
+                });
+            }
+            synergyEngine = new FluctuationEngine(rules, 42, 1.0f);
+            synergyCoefficient = synergyEngine.Compound(0.2f, new WeightedFactor[0], "synergy");
+            synergyInitialized = true;
+        }
+
+        float totalBonus = 0f;
+
+        for (int i = 0; i < crew.Count; i++)
+        {
+            for (int j = i + 1; j < crew.Count; j++)
+            {
+                CrewMember a = crew[i];
+                CrewMember b = crew[j];
+
+                // 检查a的岗位是否与b互补
+                if (ComplementaryMatrix.TryGetValue(a.role, out var matches) && matches.TryGetValue(b.role, out float match))
+                {
+                    // bothLevels = 双方核心技能等级的平均值
+                    string coreA = CoreSkillByRole.TryGetValue(a.role, out var ca) ? ca : "driving";
+                    string coreB = CoreSkillByRole.TryGetValue(b.role, out var cb) ? cb : "driving";
+
+                    float levelA = 0f, levelB = 0f;
+                    foreach (var s in a.skills) { if (s.skillName == coreA) { levelA = s.level; break; } }
+                    foreach (var s in b.skills) { if (s.skillName == coreB) { levelB = s.level; break; } }
+
+                    float bothLevels = (levelA + levelB) / 2f;
+                    totalBonus += match * bothLevels / 100f;
+                }
+            }
+        }
+
+        return 1.0f + totalBonus * synergyCoefficient;
     }
 
     /// <summary>
