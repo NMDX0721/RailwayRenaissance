@@ -82,7 +82,7 @@ Four research directions form an open network — not a linear tree. Each node u
 | **Dispatch** | Scheduling algorithms, crew optimization, passenger analytics |
 | **Social** | Community relations, political leverage, heritage funding |
 
-Research is not about filling a progress bar. It is about choosing which problem to solve next — and living with the problems you chose not to solve.
+Research is not about filling a progress bar. It is about choosing which problem to solve next — and living with the problems you choose not to solve.
 
 ### Region Unlock & Political System
 
@@ -107,18 +107,18 @@ Detailed formulas and design documents for each engine are listed below:
 
 **Core formulas:**
 ```
-Daily passenger flow = base × trust coefficient × seasonal index × fluctuation coefficient
-Ticket revenue = passenger flow × fare × (1 + elasticity correction)
-Subsidy = operational evaluation × political standing × strategic value × inertia coefficient
+PassengerFlow(t) = BaseFlow × sigmoid(Trust(t)) × SeasonalFFT(t) × L2Fluctuation(t)
+TicketRevenue(t) = ∫(Flow(τ) × DynamicPricing(τ) × (1 + ElasticityCorrection(τ))) dτ
+Subsidy(t) = OperationalScore(t) × PoliticalStanding(t) × StrategicValue(t) × InertiaDecay(t)
 ```
 
-Each trendline has its own differential equation: trust below threshold drops passenger flow by 0.5% per point; sand penetration above 0.60 for 15 days triggers a permanent outpost. All coefficients are generated per playthrough via GlobalRules, ensuring no two economies behave identically.
+Each trendline has its own differential equation: when trust drops below threshold, `d(Flow)/dt ∝ -TrustDeficit × 0.005`; sand penetration above 0.60 for 15 days triggers a permanent outpost. All coefficients are generated per playthrough via GlobalRules, ensuring no two economies behave identically.
 
 **Five trendline interlock:**
 ```
-Trust collapse → Sand penetration accelerates → Revenue drops → Fiscal health worsens → Infrastructure decay accelerates
+TrustCollapse → SandPenetration↑ → Revenue↓ → FiscalHealth↓ → InfrastructureDecay↑
 ```
-The economy is loss-making by design in the early game. The Chinese character for "rail" (铁) is composed of "gold" (金) on the left and "loss" (失) on the right — a silent admission that railways are seldom profitable. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
+The reverse cascade creates a virtuous cycle. The economy is loss-making by design in the early game. The Chinese character for "rail" (铁) is composed of "gold" (金) on the left and "loss" (失) on the right — a silent admission that railways are seldom profitable. Survival depends on story-driven grants — subsidies from the government, community fundraising, and heritage preservation funds — each tied to a political relationship that must be maintained. The subsidy amount is calculated from operational evaluation, political standing, and the strategic value of the line, all modulated by the inertia principle.
 </details>
 
 <details>
@@ -131,35 +131,37 @@ The economy is loss-making by design in the early game. The Chinese character fo
 
 **Generation pipeline:**
 ```
-Seed code → City template sampling → Supply-demand graph (Kosaraju SCC) → Rail network (Kruskal MST) → Resource distribution → Political assignment → GlobalRules blackbox (fBm 3D Simplex noise)
+Seed → CityTemplateSampling → KosarajuSCC(DependencyGraph) → KruskalMST(RailNetwork) → ResourceDistribution → PoliticalAssignment → fBmBlackbox(GlobalRules)
 ```
 
-**Blackbox formula:**
+**Blackbox function (fBm 3D Simplex noise):**
 ```
-Baseline value = noise input × scale factor + offset
+WorldState = ∑_{i=0}^{octaves} noise.snoise(float3(seed.x × lacunarity^i, k, seed.y)) × gain^i
+GlobalRules[k] = Lerp(MinBound[k], MaxBound[k], WorldState)
 ```
-Each seed generates 18+ coefficients: learning rates, price elasticities, accident probabilities, social tolerances, mentorship rates, wage negotiation thresholds, etc. The same seed always produces the same world; a different seed produces a structurally different one.
+- Octaves: 6, Lacunarity: 2.0, Gain: 0.5
+- The same seed always produces the same world; a different seed produces a structurally different one.
 
-**Outputs:** City templates, dependency graph, rail edge set, resource distribution, political mapping, GlobalRules config, event probability weights.
+**Outputs:** CityTemplates[], DependencyGraph(V, E), RailEdges[], ResourceMap, PoliticalMapping, GlobalRules{18+ params}, EventWeightTable
 </details>
 
 <details>
 <summary>Suiyue Narrative Engine — event generation</summary>
 
-**Event trigger:**
+**Event trigger probability:**
 ```
-Trigger probability = base probability × cooldown correction × density correction × world-state weight
-Cooldown correction = 1 - exp(-days / cooldown half-life)
-Density correction = max(0, 1 - recent events / density cap)
+P(event) = BaseP × (1 - exp(-t / τ_cooldown)) × max(0, 1 - N_recent / N_max) × WorldStateWeight
 ```
+- `τ_cooldown`: Cooldown half-life per event type
+- `N_max`: Density cap (prevents narrative fatigue)
 
-The engine is templated: each event type has a slot structure, and the **WorldAnalyzer** fills slots based on runtime conditions. Events have cooldowns, density caps, and a logarithmic decay curve to prevent narrative fatigue.
-
-**Character favorability system:**
+**Character favorability:**
 ```
-Favorability change = event base value × character personality weight × inertia coefficient
+Favorability(t+1) = Favorability(t) + EventValue × PersonalityWeight × InertiaDecay(t)
 ```
 Accumulated favorability unlocks new story branches or special dialogue options.
+
+The engine is templated: each event type has a slot structure, and the **WorldAnalyzer** fills slots based on runtime conditions. Events have cooldowns, density caps, and a logarithmic decay curve to prevent narrative fatigue.
 
 **Three dialogue modes:**
 - **Preset** — fully authored, fixed dialogue tree
@@ -170,42 +172,38 @@ Accumulated favorability unlocks new story branches or special dialogue options.
 <details>
 <summary>Seonmin Personnel System — crew management</summary>
 
-**Skill growth formula:**
+**Skill growth:**
 ```
-Daily gain = base growth rate × role match coefficient × catch-up bonus × inertia coefficient × fluctuation coefficient × event modifier
-Role match: core×1.0 / related×0.6 / low-cross×0.3 / high-cross×0.1
-Catch-up bonus = 1 + (parent level - sub-skill level) / parent level × 0.5 (when parent > sub-skill)
+DailyGain = BaseGrowthRate × RoleMatch[skill] × (1 + max(0, ParentLevel - SubSkillLevel) / ParentLevel × 0.5) × FluctuationEngine.Weighted(base, variance) × EventModifier
+```
+- RoleMatch: core×1.0 / related×0.6 / low-cross×0.3 / high-cross×0.1
+- Catch-up bonus: parent skill > sub-skill → exponential decay bonus
+
+**Fatigue & Loyalty:**
+```
+Fatigue(t+1) = clamp(Fatigue(t) + BaseFatigue + ConsecutiveWorkBonus + RoleBonus, 0, 100)
+Loyalty(t) = Baseline + Σ(EventEffects) + SocialComparison(ColleagueSalary, SelfSalary) - WageDissatisfaction
+SocialComparison: ΔLoyalty = -α × max(0, ColleagueSalary / SelfSalary - Threshold) × (1 - HiddenPatience/100)
 ```
 
-**Fatigue and loyalty:**
-```
-Daily fatigue increase = base + consecutive work >7 days +5 + driver role +3, capped at 100
-Loyalty = baseline ± event effects ± social comparison ± wage satisfaction
-Social comparison: loyalty drops when colleague salary > own × 1.2
-```
-
-**Mentorship:** When mentor ≥ level 4, apprentice learns at 2× speed. Mentor gains 10% of apprentice's daily experience as bonus growth.
-**Parent skill level:** Weighted average of sub-skill levels, expressed as a numeric value (0-100), no grade names.
+**Mentorship:** Mentor ≥ Lv4 → Apprentice ×2 growth rate, Mentor gains 10% of apprentice's Δexp.
+**Parent skill:** `ParentLevel = Σ(SubSkillLevel[i] × Weight[i]) / Σ(Weight[i])`, numeric 0-100.
 </details>
 
 <details>
 <summary>Iron Dragon Competition System — the rival AI system</summary>
 
-**Penetration growth:**
+**Penetration dynamics:**
 ```
-Penetration change = natural growth (0.0015/day) + campaign bonus - player countermeasures
-Campaigns: advertising drive +0.005/day, free test rides +0.003/day, price war +0.008/day
-Permanent outpost trigger: penetration > 0.60 for 15 consecutive days
+d(Penetration)/dt = α_natural + Σ(Campaign_i(t)) - Countermeasure(t)
+α_natural = 0.0015/day
+Campaigns: Advertising +0.005, FreeRides +0.003, PriceWar +0.008
 ```
+Permanent outpost: Penetration > 0.60 for 15 consecutive days
 
-**USET strategy cycle:** Every 30 days, evaluates global state and selects strategy:
-1. Low penetration → marketing campaign
-2. Medium penetration → price war
-3. Line in loss → Iron Dragon acquisition
-
-**Iron Dragon six-step acquisition:**
+**USET strategy selection (every 30 days):**
 ```
-Target → Approach (International Railway Heritage Foundation fronts) → Infiltrate (plant advisors) → Pressure (cut partnerships) → Acquire (low-price buyout) → Dismantle (remove rail infrastructure)
+Strategy(t) = argmax_{s ∈ Strategies} E[Value(s) | WorldState(t)]
 ```
 
 Named after the Han dynasty celestial metaphor: the heavenly horse (Chollima) and the dragon are mirror images — the horse rules the sky, the dragon rules the land. USET's public face is the "International Railway Heritage Foundation," a non-profit front that approaches struggling lines with offers of "heritage preservation." The six-step acquisition process is documented in the world lore.
@@ -218,7 +216,7 @@ The game's defining design principle: **you are not making choices. You are carr
 Every system has inertia — a historical baseline that drags against or accelerates the effect of player actions. The formula is unified across all systems:
 
 ```
-effect = action × (1 − coefficient) + historical_baseline × coefficient
+Effect = ActionValue × (1 − InertiaCoefficient) + HistoricalBaseline × InertiaCoefficient
 ```
 
 | System | Coefficient | What it means |
@@ -229,9 +227,9 @@ effect = action × (1 − coefficient) + historical_baseline × coefficient
 | Vehicle condition | 0.10 | A single overhaul cannot undo months of neglect |
 | Political relations | 0.18 | A broken relationship takes weeks to repair |
 
-The historical baseline is a 30-day weighted average: recent days matter more. When a system stays below a threshold for too long, it generates a **permanent legacy**: a tracked accident record, a USET outpost, a reduced vehicle-state ceiling, a political support downgrade. These legacies cannot be undone by simply raising the number — they require sustained good behaviour measured in months, not days.
+The historical baseline is a 30-day weighted average: recent days matter more. When a system stays below a threshold for too long, it generates a **permanent legacy**: a tracked accident record, a USET outpost, a reduced vehicle-state ceiling, a political support downgrade. These legacies cannot be undone by simply raising the number — they require sustained improvement measured in months, not days.
 
-A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that no two days feel identical even when the underlying numbers are similar.
+A FluctuationEngine (L1 Simple / L2 Weighted / L3 Compound / L4 Blackbox) provides continuous, non-repeating variation using 3D Simplex noise (`noise.snoise`), ensuring that even when the underlying numbers are similar, the daily gameplay experience differs.
 
 ### RDA — Ri Dispatch Algorithm & Railway Decision Assistant
 
@@ -336,7 +334,7 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 Prologue VN (Day 0–4) → Survival phase → Stabilisation → Expansion → Breakthrough → Growth → National network
 ```
 
-Each phase has defined operational targets and story milestones: survival through grants, stabilisation toward break-even, expansion into new routes, breakthrough against USET封锁, growth into a regional network, and the final challenge of national railway revival.
+Each phase has defined operational targets and story milestones: survival through grants, stabilisation toward break-even, expansion into new routes, breakthrough against USET's blockade, growth into a regional network, and the final challenge of national railway revival.
 
 The game is structured around an implicit three-layer time model: daily decisions, monthly evaluations, and yearly strategic shifts. Political cycles affect subsidies. Random events — storms, oil-price spikes, holiday crowds, USET campaigns — vary the pressure across seasons. Every decision carries inertia. The player is always carrying the past.
 
