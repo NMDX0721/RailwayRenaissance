@@ -583,43 +583,36 @@ git clone https://github.com/NMDX721/RailwayRenaissance.git
 ## 项目结构
 
 ```mermaid
-block-beta
-    columns 3
-    Scripts("Scripts/ C# 源码")
-    Resources("Resources/ 资源文件")
-    Scenes("Scenes/ 场景")
-    
-    block:scripts_group
-        columns 1
-        Core("Core/ 波动引擎+GlobalRules")
-        VN("VN/ JSON 视觉小说引擎")
-        Narrative("Narrative/ 岁月叙事引擎")
-        WorldGen("WorldGen/ 千里马创世核")
-        GameData("GameData.cs 经济模拟")
-        CrewManager("CrewManager.cs 员工系统")
-        SandRival("SandRivalManager.cs USET 对手 AI")
+flowchart TB
+    subgraph Scripts["Scripts/ C# 源码"]
+        direction TB
+        Core["Core/ 波动引擎+GlobalRules"]
+        VN["VN/ JSON 视觉小说引擎"]
+        Narrative["Narrative/ 岁月叙事引擎"]
+        WorldGen["WorldGen/ 千里马创世核"]
+        GameData["GameData.cs 经济模拟"]
+        CrewManager["CrewManager.cs 员工系统"]
+        SandRival["SandRivalManager.cs USET 对手 AI"]
     end
     
-    block:resources_group
-        columns 1
-        ScriptsJSON("Scripts/ 序章剧本")
-        Seeds("Seeds/ 世界种子数据")
-        Events("events.json 事件模板")
-        BG("bg/ 背景")
-        Characters("characters/ 角色立绘")
+    subgraph Resources["Resources/ 资源文件"]
+        direction TB
+        ScriptsJSON["Scripts/ 序章剧本"]
+        Seeds["Seeds/ 世界种子数据"]
+        Events["events.json 事件模板"]
+        BG["bg/ 背景"]
+        Characters["characters/ 角色立绘"]
     end
     
-    block:scenes_group
-        columns 1
-        VNTest("VN_Test 序章 VN")
-        Station("StationSlice 经营场景")
-        Login("Login 登录界面")
-        Title("TitleScreen 标题界面")
+    subgraph Scenes["Scenes/ 场景"]
+        direction TB
+        VNTest["VN_Test 序章 VN"]
+        Station["StationSlice 经营场景"]
+        Login["Login 登录界面"]
+        Title["TitleScreen 标题界面"]
     end
     
-    Scripts:scripts_group
-    Resources:resources_group
-    Scenes:scenes_group
+    Scripts --> Resources --> Scenes
 ```
 
 ---

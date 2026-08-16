@@ -573,43 +573,36 @@ Design specifications are stored in the repository alongside the code.
 ## Project Layout
 
 ```mermaid
-block-beta
-    columns 3
-    Scripts("Scripts/ C# source")
-    Resources("Resources/ asset files")
-    Scenes("Scenes/ scenes")
-    
-    block:scripts_group
-        columns 1
-        Core("Core/ FluctuationEngine+GlobalRules")
-        VN("VN/ JSON-driven VN engine")
-        Narrative("Narrative/ Suiyue engine")
-        WorldGen("WorldGen/ Chollima world gen")
-        GameData("GameData.cs Economy sim")
-        CrewManager("CrewManager.cs Crew system")
-        SandRival("SandRivalManager.cs USET AI")
+flowchart TB
+    subgraph Scripts["Scripts/ C# source"]
+        direction TB
+        Core["Core/ FluctuationEngine+GlobalRules"]
+        VN["VN/ JSON-driven VN engine"]
+        Narrative["Narrative/ Suiyue engine"]
+        WorldGen["WorldGen/ Chollima world gen"]
+        GameData["GameData.cs Economy sim"]
+        CrewManager["CrewManager.cs Crew system"]
+        SandRival["SandRivalManager.cs USET AI"]
     end
     
-    block:resources_group
-        columns 1
-        ScriptsJSON("Scripts/ Prologue scripts")
-        Seeds("Seeds/ World seed data")
-        Events("events.json Event templates")
-        BG("bg/ Backgrounds")
-        Characters("characters/ Character sprites")
+    subgraph Resources["Resources/ asset files"]
+        direction TB
+        ScriptsJSON["Scripts/ Prologue scripts"]
+        Seeds["Seeds/ World seed data"]
+        Events["events.json Event templates"]
+        BG["bg/ Backgrounds"]
+        Characters["characters/ Character sprites"]
     end
     
-    block:scenes_group
-        columns 1
-        VNTest("VN_Test Prologue VN")
-        Station("StationSlice Gameplay scene")
-        Login("Login Login screen")
-        Title("TitleScreen Title screen")
+    subgraph Scenes["Scenes/ scenes"]
+        direction TB
+        VNTest["VN_Test Prologue VN"]
+        Station["StationSlice Gameplay scene"]
+        Login["Login Login screen"]
+        Title["TitleScreen Title screen"]
     end
     
-    Scripts:scripts_group
-    Resources:resources_group
-    Scenes:scenes_group
+    Scripts --> Resources --> Scenes
 ```
 
 ---
