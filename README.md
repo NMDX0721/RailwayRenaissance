@@ -28,7 +28,7 @@ English | [简体中文](README.zh-CN.md)
 </div>
 
 <div align="center">
-*The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.*
+<i>The Origin of Every Miracle — Laboratory of Intelligent Dispatch Systems, Kim Il Sung University, April 18, 2076.</i>
 </div>
 
 The year the world gave up on railways, and the day something impossible quietly began.
