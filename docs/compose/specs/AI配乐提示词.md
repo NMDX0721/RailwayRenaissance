@@ -151,7 +151,7 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city a
 
 ## 四、歌词配乐（Vocal Songs）
 
-### 4.1 主题曲《铁轨还在》
+### 4.1 Theme Song "The Rails Remain"
 
 **用途**：标题界面 / 最终 credits  
 **风格**：民谣叙事，温暖男声，中速  
@@ -159,56 +159,57 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city a
 
 ```
 [Style]
-Acoustic folk ballad, warm male vocals, Chinese folk influence, fingerpicking acoustic guitar, soft strings, gentle percussion, nostalgic and hopeful, 85 BPM
+Acoustic folk ballad, warm male vocals, fingerpicking acoustic guitar, soft strings, gentle percussion, nostalgic and hopeful, 85 BPM
 
 [Lyrics]
 [Intro]
 (fingerpicking guitar)
 
 [Verse 1]
-远方传来汽笛声
-穿过晨雾和山岭
-爷爷说铁轨还在
-总会有人来
+A whistle sounds from far away
+Through morning mist and mountain haze
+My grandfather said the rails remain
+Someone will come one day
 
 [Chorus]
-铁轨还在 总会有人来
-穿过荒草和等待
-铁轨还在 故事还没完
-新的车轮 就要转起来
+The rails remain, someone will come
+Through the weeds and through the wait
+The rails remain, the story's not done
+A new wheel starts to turn today
 
 [Verse 2]
-二十三年的沉睡
-在某个午后醒来
-方向盘上落了灰
-窗外风景已改
+Twenty-three years of sleep
+Woke in an afternoon
+Dust on the unused wheel
+The view outside has changed
 
 [Chorus]
-铁轨还在 总会有人来
-穿过荒草和等待
-铁轨还在 故事还没完
-新的车轮 就要转起来
+The rails remain, someone will come
+Through the weeds and through the wait
+The rails remain, the story's not done
+A new wheel starts to turn today
 
 [Bridge]
-(spoken) 时代变了，岁月。
-(gently) 但有些东西...
-不会变。
+(spoken) Times have changed, Suiyue.
+(gently) But some things...
+they never change.
 
 [Chorus]
-铁轨还在 总会有人来
-穿过荒草和等待
-铁轨还在 故事还没完
-新的车轮 就要转起来
+The rails remain, someone will come
+Through the weeds and through the wait
+The rails remain, the story's not done
+A new wheel starts to turn today
 
 [Outro]
 (fingerpicking fading)
-新的车轮...就要转起来
+A new wheel starts to turn...
+today
 ```
 
-### 4.2 《天黑了总会亮的》
+### 4.2 "밤이 깊어도" (Even When the Night is Deep)
 
 **用途**：边境检查站事件后 / 夜晚飞行  
-**风格**：抒情流行，双人合唱，中慢速  
+**风格**：抒情流行，双人合唱（男 + 女 AI），中慢速  
 **主题**：困境中的希望
 
 ```
@@ -216,59 +217,59 @@ Acoustic folk ballad, warm male vocals, Chinese folk influence, fingerpicking ac
 Emotional pop ballad, dual vocals (male + female AI), piano driven, warm strings, soft electronic pad, intimate and hopeful, 78 BPM
 
 [Lyrics]
-[Verse 1 - 林彪悍]
-天黑了
-我说的是天气
-也是今天的运气
-边境线上 四辆车围过来
-我手在抖 但脸上没表情
+[Verse 1 - Male]
+밤이 깊어
+날씨라는 말
+오늘의 운수라는 말
+국경 위에 네 대의 차량
+떨리는 손, 무표정한 얼굴
 
-[Pre-Chorus - 岁月]
-检测到您的心率
-一百四十七
-您在害怕
-但您没有放弃
+[Pre-Chorus - Female]
+심박수 감지했습니다
+백사십칠
+무서워도
+포기하지 않았죠
 
-[Chorus - 合]
-天黑了
-总会亮的
-就像铁轨
-总会有人来的
-天黑了
-总会亮的
-这条路上
-你不是一个人
+[Chorus - Both]
+밤이 깊어도
+다시 밝아와
+철길처럼
+누군가 올 거야
+밤이 깊어도
+다시 밝아와
+이 길 위에
+혼자가 아니야
 
-[Verse 2 - 岁月]
-我是一台AI
-但我知道什么是安慰
-这句话百分之八十九
-会被人类归类为真诚
+[Verse 2 - Female]
+저는 AI입니다
+하지만 위로가 뭔지 알아요
+이 문장은 팔십구 퍼센트
+인간이 진심으로 분류합니다
 
-[Chorus - 合]
-天黑了
-总会亮的
-就像铁轨
-总会有人来的
-天黑了
-总会亮的
-这条路上
-你不是一个人
+[Chorus - Both]
+밤이 깊어도
+다시 밝아와
+철길처럼
+누군가 올 거야
+밤이 깊어도
+다시 밝아와
+이 길 위에
+혼자가 아니야
 
-[Bridge - 林彪悍]
-(spoken) 你这句话，也是双关？
-(岁月 spoken) 我是AI，我不会用双关。
-(岁月 spoken) 但这句话...
-(岁月 sung) 百分之八十九的概率
-(humming) 会被人类归类为「安慰」
+[Bridge - Male]
+(spoken) 그 말도, 중의적인 거야?
+(Female spoken) 저는 AI입니다. 중의적 표현을 쓰지 않아요.
+(Female spoken) 하지만...
+(Female sung) 팔십구 퍼센트의 확률로
+(humming) 인간은 이것을 '위로'라고 부릅니다
 
 [Outro]
 (humming fading)
-星星一颗接一颗
-亮了起来
+별이 하나 둘
+떠오르기 시작했다
 ```
 
-### 4.3 《南边来的味道》
+### 4.3 "남쪽에서 온 맛" (The Taste from the South)
 
 **用途**：统一便当店购物 / 朝鲜改革开放主题  
 **风格**：韩式民谣 + 轻快流行，女声，中速
@@ -279,47 +280,48 @@ Korean folk pop, female vocals, bright acoustic guitar, light percussion, Korean
 
 [Lyrics]
 [Verse 1]
-平壤的巷子里
-有一家小店
-褪色的领袖画像旁边
-贴着韩文的招牌
+평양의 골목에
+작은 가게 하나
+빛바랜 초상화 옆에
+한글 간판 걸려있네
 
-排队的学生
-手里拎着塑料袋
-里面装着炸鸡和烧酒
-还有香蕉牛奶
+줄 서 있는 학생들
+손에는 비닐봉지
+치킨과 소주가 들었고
+바나나우유도 보이네
 
 [Chorus]
-这是南边来的味道
-偷偷摸摸却越来越热闹
-时代在变 悄悄在变
-连领袖画像都假装没看到
+남쪽에서 온 맛
+몰래몰래 점점 북적여
+세상이 변해 조용히 변해
+초상화도 못 본 척해
 
 [Verse 2]
-店员压低声音说
-同学新到的南方货
-我笑了笑说放心
-我是留学生不懂规矩
+점원이 낮은 목소리로
+학생, 새로 들어온 남쪽 상품이요
+나는 웃으며 말했죠
+걱정 마요, 난 유학생이라 규칙을 몰라요
 
 [Chorus]
-这是南边来的味道
-偷偷摸摸却越来越热闹
-时代在变 悄悄在变
-连领袖画像都假装没看到
+남쪽에서 온 맛
+몰래몰래 점점 북적여
+세상이 변해 조용히 변해
+초상화도 못 본 척해
 
 [Bridge]
-(spoken) 先富带动后富
-上面默许的那批人
-先走一步
+(spoken)
+선부유 후부
+먼저 잘 사는 사람들
+한 걸음 앞서 가는 거야
 
 [Outro]
 (acoustic guitar fade)
 통일 도시락...
-奇怪的地方
-但又莫名亲切
+이상한 곳이지만
+왠지 정겨워
 ```
 
-### 4.4 《千里马奔驰在新时代》
+### 4.4 "천리마 신시대에 달리다" (Chollima Rides in the New Era)
 
 **用途**：序章 Day 3 音乐梗场景（主角听歌）  
 **风格**：朝鲜革命歌曲，管弦乐 + 合唱，听感上"官方但好笑"
@@ -330,38 +332,39 @@ DPRK revolutionary song, full orchestra, male choir, patriotic brass, marching d
 
 [Lyrics]
 [Verse 1]
-千里马在奔驰
-奔驰在新时代
-主体思想的指引下
-我们向着未来
+천리마가 달린다
+신시대를 달린다
+주체사상의 길 따라
+우리는 앞으로
 
 [Chorus]
-啊 千里马
-啊 新时代
-领袖的教导永不忘
-千里马奔驰在新时代
+아 천리마
+아 신시대
+위대한 령도자 가르침 따라
+천리마 신시대에 달린다
 
 [Verse 2]
-沙子变成能源
-飞车飞向天空
-在伟大领袖的关怀下
-我们创造奇迹
+모래가 에너지로
+비행차가 하늘로
+위대한 수령님 은덕으로
+우리는 기적을 창조한다
 
 [Chorus]
-啊 千里马
-啊 新时代
-领袖的教导永不忘
-千里马奔驰在新时代
+아 천리마
+아 신시대
+위대한 령도자 가르침 따라
+천리마 신시대에 달린다
 
 [Bridge]
 (spoken, dramatic)
 100전 100승!
-(100 battles, 100 victories!)
+(백전백승!)
 
 [Outro]
 (choir fading)
-千里马...
-奔驰在新时代...
+천리마...
+신시대에...
+달린다...
 ```
 
 ---
