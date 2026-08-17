@@ -20,7 +20,7 @@ public class FPSDisplay : MonoBehaviour
 
     private void CreateLabel()
     {
-        var uiDoc = FindObjectOfType<UIDocument>();
+        var uiDoc = FindAnyObjectByType<UIDocument>();
         if (uiDoc == null) return;
 
         fpsLabel = new Label("FPS: 0");
