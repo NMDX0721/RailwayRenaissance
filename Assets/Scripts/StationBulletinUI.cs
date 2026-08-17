@@ -217,7 +217,7 @@ public class StationBulletinUI : MonoBehaviour
         AddSectionTitle("显示", "画面和文字显示相关的设置");
         AddToggle("全屏模式", "以全屏方式运行游戏", true);
         AddToggle("垂直同步", "开启后减少画面撕裂", true);
-        AddToggle("显示帧率", "在角落显示当前 FPS", false);
+        AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
         AddSlider("文字速度", 1, 10, 5, "档");
         AddSlider("对话框透明度", 0, 100, 80, "%");
         AddResetButton(ResetDisplayDefaults);
@@ -360,6 +360,11 @@ public class StationBulletinUI : MonoBehaviour
 
     private void AddToggle(string label, string desc, bool defaultValue)
     {
+        AddToggle(label, desc, defaultValue, null);
+    }
+
+    private void AddToggle(string label, string desc, bool defaultValue, System.Action<bool> onChanged)
+    {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row;
         row.style.alignItems = Align.Center;
@@ -384,6 +389,8 @@ public class StationBulletinUI : MonoBehaviour
 
         var toggle = new Toggle();
         toggle.value = defaultValue;
+        if (onChanged != null)
+            toggle.RegisterValueChangedCallback(evt => onChanged(evt.newValue));
         row.Add(toggle);
         contentPanel.Add(row);
     }
@@ -494,6 +501,13 @@ public class StationBulletinUI : MonoBehaviour
         input.style.borderLeftColor = CGoldDim; input.style.borderRightColor = CGoldDim;
         input.style.marginLeft = 0;
         input.style.unityFontDefinition = GetFontDef();
+        var textElement = input.Q<TextElement>();
+        if (textElement != null)
+        {
+            textElement.style.unityFontDefinition = GetFontDef();
+            textElement.style.fontSize = 16;
+            textElement.style.unityTextAlign = TextAnchor.MiddleCenter;
+        }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
         {
