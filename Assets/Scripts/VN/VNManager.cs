@@ -517,6 +517,7 @@ public class VNManager : MonoBehaviour
                 if (isFromTitleScreenMode)
                 {
                     isFromTitleScreenMode = false;
+                    if (Camera.main != null) Camera.main.backgroundColor = Color.black;
                     UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
                 }
                 return;

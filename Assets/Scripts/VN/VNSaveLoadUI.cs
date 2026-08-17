@@ -252,6 +252,7 @@ public class VNSaveLoadUI : MonoBehaviour
         if (isFromTitleScreen)
         {
             isFromTitleScreen = false;
+            if (Camera.main != null) Camera.main.backgroundColor = Color.black;
             UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
         }
     }
@@ -314,10 +315,10 @@ public class VNSaveLoadUI : MonoBehaviour
     {
         var slotElement = new VisualElement();
         slotElement.style.flexDirection = FlexDirection.Row;
-        slotElement.style.width = isLatestSlot ? new Length(96, LengthUnit.Percent) : new Length(47, LengthUnit.Percent);
+        slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
         slotElement.style.height = 120;
         slotElement.style.marginBottom = 14;
-        if (!isLatestSlot && slotIndex % 2 == 1) slotElement.style.marginRight = new Length(6, LengthUnit.Percent);
+        if (!isLatestSlot && slotIndex % 2 == 1) slotElement.style.marginRight = new Length(4, LengthUnit.Percent);
         slotElement.style.alignItems = Align.Stretch;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
