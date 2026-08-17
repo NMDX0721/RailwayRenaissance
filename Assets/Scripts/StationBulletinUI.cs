@@ -406,9 +406,18 @@ public class StationBulletinUI : MonoBehaviour
         row.Add(slider);
 
         var valLabel = new Label(defaultValue + " " + unit);
-        valLabel.style.width = 50; valLabel.style.fontSize = 16;
+        valLabel.style.width = 60; valLabel.style.fontSize = 16;
         valLabel.style.color = CTextDim;
         valLabel.style.unityFontDefinition = GetFontDef();
+        valLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f);
+        valLabel.style.borderTopLeftRadius = 4; valLabel.style.borderTopRightRadius = 4;
+        valLabel.style.borderBottomLeftRadius = 4; valLabel.style.borderBottomRightRadius = 4;
+        valLabel.style.paddingLeft = 6; valLabel.style.paddingRight = 6;
+        valLabel.style.paddingTop = 2; valLabel.style.paddingBottom = 2;
+        valLabel.RegisterCallback<PointerEnterEvent>(e => valLabel.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.7f));
+        valLabel.RegisterCallback<PointerLeaveEvent>(e => valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f));
+        valLabel.RegisterCallback<ClickEvent>(e => ShowNumericInput(slider, valLabel, min, max, unit));
         slider.RegisterValueChangedCallback(evt => valLabel.text = Mathf.RoundToInt(evt.newValue) + " " + unit);
         row.Add(valLabel);
 
@@ -450,12 +459,78 @@ public class StationBulletinUI : MonoBehaviour
         row.Add(slider);
 
         var valLabel = new Label(defaultValue + "%");
-        valLabel.style.width = 45; valLabel.style.fontSize = 16;
+        valLabel.style.width = 55; valLabel.style.fontSize = 16;
         valLabel.style.color = CTextDim;
         valLabel.style.unityFontDefinition = GetFontDef();
+        valLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f);
+        valLabel.style.borderTopLeftRadius = 4; valLabel.style.borderTopRightRadius = 4;
+        valLabel.style.borderBottomLeftRadius = 4; valLabel.style.borderBottomRightRadius = 4;
+        valLabel.style.paddingLeft = 6; valLabel.style.paddingRight = 6;
+        valLabel.style.paddingTop = 2; valLabel.style.paddingBottom = 2;
+        valLabel.RegisterCallback<PointerEnterEvent>(e => valLabel.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.7f));
+        valLabel.RegisterCallback<PointerLeaveEvent>(e => valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f));
+        valLabel.RegisterCallback<ClickEvent>(e => ShowNumericInput(slider, valLabel, min, max, "%"));
         row.Add(valLabel);
 
         contentPanel.Add(row);
+    }
+
+    private void ShowNumericInput(Slider slider, Label valLabel, int min, int max, string unit)
+    {
+        var input = new TextField();
+        input.value = Mathf.RoundToInt(slider.value).ToString();
+        input.style.width = 60; input.style.height = 28;
+        input.style.fontSize = 16;
+        input.style.color = new Color(1f, 0.8f, 0.5f, 1f);
+        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.8f);
+        input.style.unityTextAlign = TextAnchor.MiddleCenter;
+        input.style.borderTopLeftRadius = 4; input.style.borderTopRightRadius = 4;
+        input.style.borderBottomLeftRadius = 4; input.style.borderBottomRightRadius = 4;
+        input.style.borderTopWidth = 1; input.style.borderBottomWidth = 1;
+        input.style.borderLeftWidth = 1; input.style.borderRightWidth = 1;
+        input.style.borderTopColor = CGoldDim; input.style.borderBottomColor = CGoldDim;
+        input.style.borderLeftColor = CGoldDim; input.style.borderRightColor = CGoldDim;
+        input.style.marginLeft = 0;
+        input.style.unityFontDefinition = GetFontDef();
+
+        input.RegisterCallback<KeyDownEvent>(evt =>
+        {
+            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
+            {
+                int v;
+                if (int.TryParse(input.text, out v))
+                {
+                    v = Mathf.Clamp(v, min, max);
+                    slider.value = v;
+                    valLabel.text = v + " " + unit;
+                }
+                input.parent.Remove(input);
+                valLabel.style.display = DisplayStyle.Flex;
+            }
+            if (evt.keyCode == KeyCode.Escape)
+            {
+                input.parent.Remove(input);
+                valLabel.style.display = DisplayStyle.Flex;
+            }
+        });
+        // 点击其他地方自动提交
+        input.RegisterCallback<BlurEvent>(evt =>
+        {
+            int v;
+            if (int.TryParse(input.text, out v))
+            {
+                v = Mathf.Clamp(v, min, max);
+                slider.value = v;
+                valLabel.text = v + " " + unit;
+            }
+            input.parent.Remove(input);
+            valLabel.style.display = DisplayStyle.Flex;
+        });
+
+        valLabel.style.display = DisplayStyle.None;
+        valLabel.parent.Add(input);
+        input.Focus();
     }
 
     private void AddResetButton(System.Action onReset)
