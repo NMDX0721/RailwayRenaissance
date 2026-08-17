@@ -392,12 +392,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 (Female sung) 팔십구 퍼센트...
 (humming) 인간은 이걸 '위로'라고 부르죠
 
-(spoken) 那句话也是双关吗？
-(岁月 spoken) 我是AI，我不说双关语。
-(spoken) 但…
-(岁月 sung) 百分之八十九…
-(humming) 人类把这叫做「安慰」
-
 [Guitar Solo]
 (electric guitar, 8 bars, emotional, building)
 
@@ -516,10 +510,6 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 (spoken) 먼저 잘 사는 사람들
 (sung, gently) 한 걸음 더 앞서
 가는 것뿐이야
-
-(spoken) 先富带动后富...
-(spoken) 先富起来的那批人
-(sung) 只不过是
 
 [Guitar Solo]
 (acoustic guitar, folk style, 8 bars)
