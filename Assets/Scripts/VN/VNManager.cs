@@ -1014,12 +1014,8 @@ public class VNManager : MonoBehaviour
 
     private void HideVNUI()
     {
-        // 彻底移除菜单栏，不仅仅是隐藏
-        if (menuBar != null && menuBar.parent != null)
-        {
-            menuBar.parent.Remove(menuBar);
-            menuBar = null;
-        }
+        // 只隐藏不移除，读档后可直接恢复
+        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.Hide();
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
         characterSpriteManager?.ClearAll();
@@ -1039,6 +1035,7 @@ public class VNManager : MonoBehaviour
                 }
                 isFromTitleScreenMode = false;
                 // 恢复 VN 界面（ClosePanel 由按钮回调处理，且已设 isFromTitleScreen=false）
+                if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
                 if (dialogueBox != null) dialogueBox.Show();
                 if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.Flex;
             });
