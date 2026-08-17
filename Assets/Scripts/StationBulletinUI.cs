@@ -521,30 +521,34 @@ public class StationBulletinUI : MonoBehaviour
         var input = new TextField();
         input.value = Mathf.RoundToInt(slider.value).ToString();
         input.multiline = false;
-        input.style.width = 80; input.style.height = 28;
-        input.style.fontSize = 16;
+        input.style.width = 100; input.style.height = 36;
+        input.style.fontSize = 20;
         input.style.color = new Color(1f, 0.9f, 0.6f, 1f);
-        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.9f);
+        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.92f);
         input.style.unityFontDefinition = GetFontDef();
-        input.style.borderTopLeftRadius = 4; input.style.borderTopRightRadius = 4;
-        input.style.borderBottomLeftRadius = 4; input.style.borderBottomRightRadius = 4;
+        input.style.borderTopLeftRadius = 5; input.style.borderTopRightRadius = 5;
+        input.style.borderBottomLeftRadius = 5; input.style.borderBottomRightRadius = 5;
         input.style.borderTopWidth = 1; input.style.borderBottomWidth = 1;
         input.style.borderLeftWidth = 1; input.style.borderRightWidth = 1;
         input.style.borderTopColor = CGoldDim; input.style.borderBottomColor = CGoldDim;
         input.style.borderLeftColor = CGoldDim; input.style.borderRightColor = CGoldDim;
-        input.style.paddingLeft = 4; input.style.paddingRight = 4;
+        input.style.paddingLeft = 8; input.style.paddingRight = 8;
         input.style.marginLeft = 0;
 
-        // 内部文本元素必须显式设置字体/字号/颜色/对齐，否则显示默认字体或乱码
-        var textElement = input.Q<TextElement>();
-        if (textElement != null)
+        // 遍历整个层级，把所有 TextElement 都强制设置为大号字（含输入区与鼠标I-beam）
+        foreach (var te in input.Query<TextElement>().ToList())
         {
-            textElement.style.unityFontDefinition = GetFontDef();
-            textElement.style.fontSize = 16;
-            textElement.style.color = new Color(1f, 0.9f, 0.6f, 1f);
-            textElement.style.unityTextAlign = TextAnchor.MiddleCenter;
-            textElement.style.overflow = Overflow.Hidden;
-            textElement.style.textOverflow = TextOverflow.Ellipsis;
+            te.style.unityFontDefinition = GetFontDef();
+            te.style.fontSize = 20;
+            te.style.color = new Color(1f, 0.9f, 0.6f, 1f);
+            te.style.unityTextAlign = TextAnchor.MiddleCenter;
+            te.style.overflow = Overflow.Visible;
+            te.style.whiteSpace = WhiteSpace.Normal;
+        }
+        foreach (var ti in input.Query<TextInput>().ToList())
+        {
+            ti.style.fontSize = 20;
+            ti.style.color = new Color(1f, 0.9f, 0.6f, 1f);
         }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
