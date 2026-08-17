@@ -170,6 +170,7 @@ public class TitleArchiveUI : MonoBehaviour
         AddTabButton(tabRow, "achievements", "成就");
         AddTabButton(tabRow, "gallery", "鉴赏");
         AddTabButton(tabRow, "collection", "图鉴");
+        AddTabButton(tabRow, "stats", "统计");
 
         // ———— 内容区 ————
         contentScroll = new ScrollView(ScrollViewMode.Vertical);
@@ -206,6 +207,7 @@ public class TitleArchiveUI : MonoBehaviour
         BuildAchievementsPage();
         BuildGalleryPage();
         BuildCollectionPage();
+        BuildStatsPage();
     }
 
     // ================= 成就页 =================
@@ -581,6 +583,86 @@ public class TitleArchiveUI : MonoBehaviour
         }
 
         return card;
+    }
+
+    // ================= 统计页 =================
+
+    private void BuildStatsPage()
+    {
+        var page = new VisualElement { name = "page-stats" };
+        page.style.display = DisplayStyle.None;
+        contentScroll.Add(page);
+        tabPages["stats"] = page;
+
+        var header = new Label("运营统计");
+        header.style.fontSize = 20;
+        header.style.color = goldNormal;
+        header.style.unityFontDefinition = Fd();
+        header.style.unityFontStyleAndWeight = FontStyle.Bold;
+        header.style.marginTop = 6;
+        header.style.marginBottom = 10;
+        page.Add(header);
+
+        AddStatRow(page, "累计游戏时长", StatsManager.FormatPlayTime(StatsManager.TotalPlaySeconds));
+        AddStatRow(page, "累计运营天数", StatsManager.MaxDay + " 天");
+        AddStatRow(page, "累计客运量", StatsManager.TotalPassengers + " 人次");
+        AddStatRow(page, "累计运营收入", StatsManager.TotalRevenue + " 沙币");
+        AddStatRow(page, "其中政府补贴", StatsManager.TotalSubsidy + " 沙币");
+        AddStatRow(page, "累计运营支出", StatsManager.TotalExpense + " 沙币");
+        long net = StatsManager.TotalRevenue - StatsManager.TotalExpense;
+        AddStatRow(page, "累计净利润", (net >= 0 ? "+" : "-") + System.Math.Abs(net) + " 沙币",
+            net >= 0 ? new Color(0.5f, 1f, 0.5f, 1f) : new Color(1f, 0.5f, 0.5f, 1f));
+
+        var liveHeader = new Label("当前状态");
+        liveHeader.style.fontSize = 20;
+        liveHeader.style.color = goldNormal;
+        liveHeader.style.unityFontDefinition = Fd();
+        liveHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+        liveHeader.style.marginTop = 18;
+        liveHeader.style.marginBottom = 10;
+        page.Add(liveHeader);
+
+        AddStatRow(page, "当前运营天数", GameData.Day + " 天");
+        AddStatRow(page, "当前资金", GameData.Money + " 沙币");
+        AddStatRow(page, "当前信任", GameData.Trust + "%");
+        AddStatRow(page, "机车状态", GameData.TrainCondition + "%");
+        AddStatRow(page, "预期客流", GameData.ExpectedPassengers + " 人/日");
+
+        var tip = new Label("统计每 5 秒自动保存，累计数据跨会话保留。");
+        tip.style.fontSize = 14;
+        tip.style.color = dimText;
+        tip.style.unityFontDefinition = Fd();
+        tip.style.marginTop = 16;
+        page.Add(tip);
+    }
+
+    private void AddStatRow(VisualElement parent, string label, string value, Color? valueColor = null)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.alignItems = Align.Center;
+        row.style.paddingLeft = 16; row.style.paddingRight = 16;
+        row.style.paddingTop = 8; row.style.paddingBottom = 8;
+        row.style.marginBottom = 6;
+        row.style.backgroundColor = glassBg;
+        row.style.borderTopLeftRadius = 6; row.style.borderTopRightRadius = 6;
+        row.style.borderBottomLeftRadius = 6; row.style.borderBottomRightRadius = 6;
+
+        var lbl = new Label(label);
+        lbl.style.fontSize = 19;
+        lbl.style.color = new Color(1f, 1f, 1f, 0.8f);
+        lbl.style.unityFontDefinition = Fd();
+        lbl.style.flexGrow = 1;
+        row.Add(lbl);
+
+        var val = new Label(value);
+        val.style.fontSize = 19;
+        val.style.color = valueColor ?? new Color(1f, 0.92f, 0.7f, 0.95f);
+        val.style.unityFontDefinition = Fd();
+        val.style.unityFontStyleAndWeight = FontStyle.Bold;
+        row.Add(val);
+
+        parent.Add(row);
     }
 
     // ================= 工具 =================

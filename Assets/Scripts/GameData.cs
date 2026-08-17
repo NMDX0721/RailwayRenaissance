@@ -964,6 +964,12 @@ public static class GameData
         CurrentMonth.TotalExpenses += fuelCost + maintenanceCost + wageCost;
         CurrentMonth.DaysInMonth++;
 
+        // 站长日志统计：记账
+        StatsManager.AddDailyRevenue(dailyRevenue, subsidy);
+        StatsManager.AddDailyExpense(fuelCost + maintenanceCost + wageCost);
+        StatsManager.AddDailyPassengers(actualPassengers * trips);
+        StatsManager.RecordDay(Day);
+
         // 成就：完成第一个月运营
         if (CurrentMonth.DaysInMonth >= 30)
             AchievementManager.Unlock("railway_newbie");

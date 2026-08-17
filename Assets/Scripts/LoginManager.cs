@@ -86,6 +86,8 @@ public class LoginManager : MonoBehaviour
         GameData.ApplyVolume();
         // 初始化帧率设置：VSync 与自定义帧率互斥，保证二者恰有一个生效
         FPSDisplay.Init();
+        // 站长日志统计：启动时长计时
+        var _stats = StatsManager.Instance;
         int vsync = PlayerPrefs.GetInt("VSync", 1);
         int customFps = PlayerPrefs.GetInt("CustomFPS", 1);
         if (vsync == 1 && customFps == 1)
