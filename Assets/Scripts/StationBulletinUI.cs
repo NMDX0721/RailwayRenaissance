@@ -222,11 +222,11 @@ public class StationBulletinUI : MonoBehaviour
             PlayerPrefs.Save();
         });
         AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
-        AddSliderWithCallback("帧率上限", 30, 240, QualitySettings.vSyncCount > 0 ? 0 : Application.targetFrameRate, v => {
-            if (QualitySettings.vSyncCount > 0) return;
+        AddSliderWithCallback("帧率上限", 30, 240, PlayerPrefs.GetInt("TargetFPS", 60), v => {
             Application.targetFrameRate = v;
             PlayerPrefs.SetInt("TargetFPS", v);
-        });
+            PlayerPrefs.Save();
+        }, "FPS");
         AddSlider("文字速度", 1, 10, 5, "档");
         AddSlider("对话框透明度", 0, 100, 80, "%");
         AddResetButton(ResetDisplayDefaults);
@@ -440,7 +440,7 @@ public class StationBulletinUI : MonoBehaviour
         contentPanel.Add(row);
     }
 
-    private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged)
+    private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged, string unit = "%")
     {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
@@ -459,7 +459,7 @@ public class StationBulletinUI : MonoBehaviour
         {
             int v = Mathf.RoundToInt(evt.newValue);
             onChanged(v);
-            if (valLabel != null) valLabel.text = v + "%";
+            if (valLabel != null) valLabel.text = v + " " + unit;
         });
         slider.RegisterCallback<PointerDownEvent>(evt =>
         {
@@ -475,7 +475,7 @@ public class StationBulletinUI : MonoBehaviour
         }, TrickleDown.TrickleDown);
         row.Add(slider);
 
-        valLabel = new Label(defaultValue + "%");
+        valLabel = new Label(defaultValue + " " + unit);
         valLabel.style.width = 55; valLabel.style.fontSize = 16;
         valLabel.style.color = CTextDim;
         valLabel.style.unityFontDefinition = GetFontDef();
@@ -487,7 +487,7 @@ public class StationBulletinUI : MonoBehaviour
         valLabel.style.paddingTop = 2; valLabel.style.paddingBottom = 2;
         valLabel.RegisterCallback<PointerEnterEvent>(e => valLabel.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.7f));
         valLabel.RegisterCallback<PointerLeaveEvent>(e => valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f));
-        valLabel.RegisterCallback<ClickEvent>(e => ShowNumericInput(slider, valLabel, min, max, "%"));
+        valLabel.RegisterCallback<ClickEvent>(e => ShowNumericInput(slider, valLabel, min, max, unit));
         row.Add(valLabel);
 
         contentPanel.Add(row);
