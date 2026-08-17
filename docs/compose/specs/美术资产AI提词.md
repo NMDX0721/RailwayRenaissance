@@ -702,67 +702,75 @@ AVOID:
 ### 2.3 驾驶舱·白天（0721号前舱）
 
 **文件**：`Resources/bg/car_interior.png`  
-**用途**：序章 Day 0-Day 3 飞行器内部场景——岁月初次唤醒、旅途对话（9次使用）
+**用途**：0721号前舱——岁月主控区，主角偶尔进入。朝鲜官方标配 × 岁月全息系统。23年未变，如博物馆般被保存。
+
+**⚠️ 前两版图片问题总结（新版提示词已针对性修复）：**
+1. 老版无方向盘 → 新版明确方向盘在左侧，K-pop贴纸，积灰
+2. 韩文有乱码 → 新版强调"ALL Korean text must be correct Hangul, no garbled text"
+3. 领袖肖像不够像 → 新版强调"brass frames, symmetrical, immediately recognizable"
+4. 座椅比例失调 → 新版明确座位尺寸和位置
+5. 背景风格不一致 → 新版统一像素风
+6. "岁月"是中文 → 新版使用韩文"세월"或保持中文但标注
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flying vehicle interior, daytime, 2076 retro-futuristic,
-KOREAN STYLE INTERIOR, NORTH KOREAN industrial design,
-sand-energy vehicle cockpit, "Chollima" brand flying car:
+flying vehicle COCKPIT interior, daytime, 2076 retro-futuristic,
+NORTH KOREAN OFFICIAL AESTHETIC — max density,
+"Chollima" brand flying car, "Sand Flying Pig" 0721:
 
-SCENE: interior of a DPRK-made sand-energy flying vehicle during daytime flight, two seats (pilot + passenger), compact cabin, retro-futuristic North Korean design aesthetic blending 1970s Korean industrial design with near-future technology — ULTIMATE KOREAN ATMOSPHERE
+SCENE: front cockpit of a DPRK-made sand-energy flying car — two seats, steering wheel, holographic dashboard, leader portraits in brass frames. This is the ORIGINAL 2053 interior, preserved like a museum: 23 years untouched, every official detail intact. The cockpit is a time capsule of DPRK industrial design.
 
 CULTURAL CONTEXT — SIX LAYERS OF KOREANNESS:
 - LAYER 1: Chollima brand — DPRK's premier vehicle manufacturer, named after the mythical thousand-li horse
-- LAYER 2: Kim Il Sung University affiliation — university emblem, research institute stickers, academic decals
-- LAYER 3: Juche ideology design language — self-reliance aesthetic, practical and functional, no foreign branding
-- LAYER 4: Songun (military-first) influence — sturdy construction, military-grade switches, utilitarian design
+- LAYER 2: Kim Il Sung University affiliation — university emblem, research institute stickers
+- LAYER 3: Juche ideology design language — self-reliance aesthetic, practical and functional
+- LAYER 4: Songun (military-first) influence — sturdy construction, military-grade switches
 - LAYER 5: Korean traditional arts — dancheong color patterns, maedeup knotwork, minhwa folk motifs
 - LAYER 6: 2076 retro-futuristic — not too advanced, recognizable as Korean-made, slight Soviet-tech influence
 
 COCKPIT LAYOUT:
-- Pilot seat (left) and passenger seat (right), dark olive-green upholstery with DPRK emblem
-- Dashboard with physical toggle switches and analog gauges (retro-futuristic, Korean-made, military-grade)
-- Holographic display screen embedded in dashboard (岁月's interface, blue-tinted)
+- Pilot seat (left) and passenger seat (right), dark olive-green upholstery, DPRK red star emblem on headrests
+- Steering wheel on left column — retro-futuristic yoke, Korean-made, slightly dusty from disuse, a K-pop girl group sticker on the hub
+- Dashboard with physical toggle switches and analog gauges (military-grade, Korean-made)
+- Holographic display screen in center of dashboard (岁月's navigation interface, blue-tinted, showing map and flight data)
 - Center console with sand-energy controls, navigation system, and propaganda radio
 - Side windows on both sides showing sky and clouds (daytime, bright)
 - Ceiling: padded headliner with small reading light, emergency handle
 - Floor: dark rubber mat with raised ridges, utilitarian
 
-KOREAN CULTURAL DETAILS — MAXIMUM DENSITY:
+NORTH KOREAN OFFICIAL DETAILS — MAXIMUM DENSITY:
 PATRIOTIC SYMBOLS:
+- Framed portraits of Kim Il-sung and Kim Jong-il (brass frames, mounted on wall above dashboard, prominent) — ESSENTIAL
 - Small Korean flag (태극기) on dashboard, another on rearview mirror
-- Portrait of Kim Il-sung and Kim Jong-il (small, pinned above dashboard) — IMPORTANT
 - "위대한 령도자 김일성동지" (Great Leader Comrade Kim Il-sung) calligraphy plaque
-- Chollima statue miniature (small bronze horse) on dashboard
 - "100전 100승" (100 battles 100 victories) slogan sticker
+- Red star emblem on seat headrests
 
 TRADITIONAL KOREAN CRAFTS:
 - Korean traditional knotwork (매듭 maedeup) in gold and red hanging from rearview mirror
 - Dancheong-style color pattern (오방색 obangsaek: blue, red, yellow, white, black) on seat fabric trim
 - Small minhwa folk painting (민화) of a tiger and magpie as decorative panel
 - Celadon green (청자) color accent on dashboard trim
-- Korean paper (한지) texture pattern on sun visor
 
 TECHNOLOGY & CONTROLS:
 - ALL labels in Korean (Hangul) — absolutely no English or Chinese
 - Sand energy gauge: "모래 에너지 잔량" with sweeping needle, red zone at low
 - Speedometer: "속도" with km/h markings in Hangul numerals
 - Altitude display: "고도" with Hangul numerals
-- Navigation screen: map of Korean peninsula labeled "조선반도" with Chinese border
+- Navigation screen: holographic map of Korean peninsula
 - Radio: frequency dial with Korean station names (조선중앙방송, 평양FM)
 - Warning stickers: "주의" (caution), "비상정지" (emergency stop)
 - Engine temperature: "엔진 온도" with green-yellow-red zones
-- Battery charge: "배터리 잔량" for auxiliary systems
+- "비행중" (in flight) sign above cockpit door, illuminated
 
-PERSONAL ITEMS:
-- Korean newspaper (로동신문) folded in door pocket
-- Thermos with Korean text (김일성화) in cup holder
-- Small Korean phrasebook and travel documents in side compartment
+CONTRAST ELEMENTS (HUMOROUS, SECONDARY — SHOWING THE PASSAGE OF TIME):
+- K-pop girl group sticker on steering wheel hub (partially peeling, catching light)
+- "CASS" beer can wedged in door pocket (empty)
+- Half-empty soju bottle (처음처럼) in side storage
+- Seoul travel guide magazine on passenger seat (slightly dog-eared)
 - University ID card (김일성대학교 학생증) clipped to sun visor
-- Box of Korean matches (성냥) and ashtray (if smoking era)
 
 WINDOW VIEW (DAYTIME):
 - Bright blue sky with white clouds through windshield
@@ -771,7 +779,7 @@ WINDOW VIEW (DAYTIME):
 - Warm sunlight streaming through side windows
 - Rice paddies and small villages visible far below
 
-COLOR PALETTE (KOREAN TRADITIONAL + TECH):
+COLOR PALETTE:
 - Primary: dark olive green (#4A5D23), instrument panel gray (#4a4a5a)
 - Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
 - Accents: Korean red (#CD2626), celadon green (#7CB08A), traditional gold (#DAA520)
@@ -779,28 +787,30 @@ COLOR PALETTE (KOREAN TRADITIONAL + TECH):
 - Leather: dark brown (#3B1F0B)
 
 ATMOSPHERE:
-- ULTIMATE KOREAN TECH AESTHETIC — unmistakably North Korean
-- Safe and comfortable for long journey
-- Sense of national pride and technological achievement
-- Warm daylight illumination throughout cabin
+- PRESERVED MUSEUM PIECE — the cockpit as it was in 2053, untouched for 23 years
+- The contrast between official propaganda decor and casual pop-culture leftovers tells a story
+- Warm daylight, quiet and calm
 - Compact but functional, every inch has a purpose
-- Slight Soviet-industrial undertone mixed with Korean tradition
+- Slight Soviet-industrial undertone blended with Korean tradition
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN INDUSTRIAL DESIGN LANGUAGE
+- NORTH KOREAN OFFICIAL AESTHETIC — unmistakably DPRK government design
 - Every label and text in Korean (Hangul) — zero English
-- Propaganda-era aesthetic blended with near-future technology
+- Propaganda-era design blended with near-future technology
 - Military-grade build quality visible in switches and materials
 
 AVOID:
 - Generic sci-fi interior (must be unmistakably NORTH KOREAN)
 - Japanese or Chinese cultural elements
-- English text anywhere in the cabin
+- English text anywhere
 - Modern minimalist aesthetic
-- Too dark or gloomy
-- Missing the all-important leader portraits
-- Capitalist/Western design cues
+- Missing the leader portraits (ESSENTIAL)
+- Garbled or nonsensical Korean text (all Hangul must be correct)
+- Art style inconsistency between interior and exterior
+- Seat proportions that are too small or cut off awkwardly
+- Clean/sterile interior (must feel preserved but slightly aged with 23 years of dust)
+- K-pop or South Korean cultural items in the cockpit (they belong in the CABIN, not the cockpit — the cockpit is the OFFICIAL space)
 ```
 
 ---
@@ -864,10 +874,12 @@ STYLE:
 AVOID:
 - Too bright (must be clearly nighttime)
 - Generic sci-fi night interior
-- Missing Korean text on instruments
+- Missing Korean text on instruments (all Hangul must be correct, no garbled text)
 - Japanese or Chinese cultural elements
 - English text anywhere
-- Western/ capitalist design cues
+- Missing leader portraits
+- Art style inconsistency between interior and exterior
+- K-pop or South Korean items in the cockpit (they belong in the cabin)
 ```
 
 ---
