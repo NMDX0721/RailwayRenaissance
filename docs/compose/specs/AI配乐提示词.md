@@ -562,7 +562,7 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 **游戏内使用**：序章主角手机播放的音乐梗，短片段循环  
 ```
 [Style]
-DPRK revolutionary march, full symphony orchestra, male choir in unison, triumphant brass fanfares with trumpets and French horns, military snare drums, booming timpani, accordion and traditional Korean instruments (janggu, daegeum, taepyeongso) mixed with western orchestra, grandiose and slightly over-the-top, choir is powerful and straight-toned no vibrato, vocal delivery is declamatory and heroic, unison singing throughout, no harmony, no solo vocals, spoken bridge with dramatic echo, snare drum roll into final chorus, 112 BPM, key of C major, Soviet-style production with wide stereo, large hall reverb, no pop elements, no female vocals, no modern instruments, no synthesizers, no autotune, vintage recording feel, intro is snare drums and brass fanfare only, verses are choir with brass and percussion, chorus adds full strings and timpani, bridge drops to spoken word over drum roll, final chorus is slower and grander with held high notes, outro ends abruptly with brass stab and snare drum
+DPRK revolutionary march, full symphony orchestra, male choir in unison, triumphant brass fanfares with trumpets and French horns, military snare drums, booming timpani, accordion and traditional Korean instruments (janggu, daegeum, taepyeongso) mixed with western orchestra, electric guitar solo in bridge, grandiose and slightly over-the-top, choir is powerful and straight-toned no vibrato, vocal delivery is declamatory and heroic, unison singing throughout, no harmony, no solo vocals, spoken bridge with dramatic echo, snare drum roll into final chorus, 112 BPM, key of C major, Soviet-style production with wide stereo, large hall reverb, no pop elements, no female vocals, no modern instruments, no synthesizers, no autotune, vintage recording feel, intro is snare drums and brass fanfare only, verses are choir with brass and percussion, pre-chorus builds intensity, chorus adds full strings and timpani, bridge drops to spoken word over drum roll then electric guitar solo, final chorus is slower and grander with held high notes, outro ends abruptly with brass stab and snare drum
 
 [Lyrics]
 [Intro]
@@ -573,6 +573,19 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 천리마가 달린다
 신시대를 달린다
 주체의 길 따라
+우리는 앞으로!
+
+백두산 정기 받아
+대동강 물 따라
+일심단결의 기치
+높이 들고 앞으로!
+
+
+[Pre-Chorus]
+(choir, building intensity)
+모래가 에너지로
+비행차가 하늘로
+수령님 은덕으로
 우리는 앞으로!
 
 
@@ -593,6 +606,19 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 수령님 은덕으로
 기적을 창조한다!
 
+강산이 변하고
+세월이 흘러도
+붉은 기 결코
+내려놓지 않는다!
+
+
+[Pre-Chorus]
+(choir, building intensity)
+모래가 에너지로
+비행차가 하늘로
+수령님 은덕으로
+우리는 앞으로!
+
 
 [Chorus]
 (full orchestra, triumphant)
@@ -603,17 +629,36 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 천리마 신시대에
 달린다!
 
+
+[Chorus Repeat]
+(same, with added brass and percussion)
+아—— 천리마!
+아—— 신시대!
+위대한 조선
+영원히!
+달린다——!
+
+
 [Bridge]
 (dramatic pause, spoken)
 (spoken, dramatic, with echo)
 100전 100승!
 백전백승!
 
+
+[Guitar Solo]
+(electric guitar, revolutionary style, 8 bars)
+
+
 [Final Chorus]
 (slower, grander, held high notes)
 아—— 천리마——
 아—— 신시대——
+위대한 령도자
+가르침 따라
+천리마 신시대에
 달린다——!
+
 
 [Outro]
 (snare drum roll, brass stab, sudden stop)
@@ -623,17 +668,28 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 千里马在奔驰，奔驰在新时代
 沿着主体的道路，我们向前进
 
-啊——千里马！啊——新时代！
-沿着伟大领袖的教导
-千里马在新时代奔驰！
+白头山的气魄，大同江的流水
+团结的旗帜高高举起，向前进！
 
 沙子变成能源，飞车飞向天空
 在领袖的恩德下，我们创造奇迹！
 
+山河变迁，岁月流逝
+红色的旗帜绝不放下！
+
+啊——千里马！啊——新时代！
+沿着伟大领袖的教导
+千里马在新时代奔驰！
+
+啊——千里马！啊——新时代！
+伟大的朝鲜，永远！
+奔驰——！
+
 百战百胜！
 
 啊——千里马——啊——新时代——
-奔驰——！
+沿着伟大领袖的教导
+千里马在新时代奔驰——！
 ```
 **预估时长**：4:00-5:00（革命歌曲，游戏只截取前段循环）
 **生成策略**：1 次生成选最佳，无需 Extend
