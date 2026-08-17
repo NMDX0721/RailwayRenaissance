@@ -872,159 +872,152 @@ AVOID:
 
 ---
 
-### 2.5 客舱内部（白天·沙能飞行器）——新视角
+### 2.5 飞猪号客舱内部（白天·自动驾驶）
 
-**文件**：`Resources/bg/cabin_interior.png`  
-**用途**：序章飞行器客舱场景——乘客视角，窗外只有天空，避免地理矛盾（可复用为火车车厢）
+**文件**：`Resources/bg/car_interior.png`（替换原驾驶舱版）  
+**用途**：序章 Day 0-3 主角与岁月的飞行旅途场景——0721号沙子飞猪号，双人客舱，自动驾驶
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-passenger cabin interior, small commuter aircraft cabin,
-daytime, 2076 retro-futuristic,
-NORTH KOREAN industrial design, sand-energy flying vehicle,
-"Chollima" brand passenger cabin:
+small 2-person flying car cabin interior, 2076 retro-futuristic,
+NORTH KOREAN official aesthetic mixed with KOREAN consumer culture,
+"Sand Flying Pig" (沙子飞猪号) autonomous vehicle, daytime:
 
-SCENE: compact passenger cabin of a small DPRK-made sand-energy commuter flying vehicle, 2-3 rows of seats, narrow aisle, functional interior, windows on both sides showing only sky and clouds — NO GROUND VISIBLE, designed to be reusable as train carriage or bus interior
+SCENE: interior of a small 2-person sand-energy flying car — HAS A STEERING WHEEL but it is never used, fully autonomous. Two comfortable seats side by side facing forward, large wraparound windows showing only sky. DELIBERATE VISUAL CONTRAST: official North Korean government decor mixed with leftover South Korean-style consumer goods, creating a humorous cultural clash.
 
-CABIN LAYOUT:
-- 2-3 rows of passenger seats, 2 seats per row (left + right), narrow aisle in middle
-- Compact cabin — about 5-6 meters long, 2 meters wide
-- Low ceiling with overhead storage compartments (small, utilitarian)
-- Small luggage rack above seats (metal mesh, Korean-made)
-- Emergency exit signs at front and rear (Korean text)
-- Door at front leading to cockpit (closed, simple door with small window)
+CABIN LAYOUT (COMPACT 2-SEAT):
+- Two seats: driver-side and passenger-side, driver seat still has a steering wheel — but it's clearly UNUSED (slight dust, a K-pop sticker on it, documents tucked under it)
+- The steering wheel is a retro-futuristic yoke-style wheel, Korean-made, functional but neglected — "the reserve escape route"
+- Lavish center console is a wide armrest with holographic display (岁月's interface)
+- Large curved windshield and side windows wrapping around seats — panoramic sky view
+- Compact cabin, only ~1.8m wide, 2m long — intimate 2-person space
+- Rear storage area behind seats (small duffel bag, folded blanket)
+- Overhead console with tiny reading lights and climate vents
 
-SEATS AND INTERIOR:
-- Dark green or navy blue vinyl upholstery (North Korean industrial standard)
-- Simple fold-down tray tables on seat backs
-- Seat belt with Korean-made metal buckle
-- Minimal legroom — functional, not luxurious
-- Floor: dark rubber mat with raised pattern
+OFFICIAL NORTH KOREAN ELEMENTS (PRIMARY TONE):
+- Portrait of Kim Il-sung and Kim Jong-il framed on cabin wall — side by side, official brass frames
+- "위대한 수령 김일성동지 만세" (Long live the Great Leader) calligraphy plaque
+- Chollima (천리마) statue miniature on dashboard shelf
+- Dancheong-patterned trim strip along cabin wall in obangsaek five colors
+- Official vehicle ID plaque: "조선민주주의인민공화국 백두산 운수성" (DPRK Baekdu Transport Ministry)
+- Red star emblem on headrests
+- Small DPRK flag (태극기 with red star) on dashboard
+- "주체사상" (Juche Idea) slogan small text
 
-KOREAN CULTURAL ELEMENTS (SUBTLE, APPROPRIATE FOR PASSENGER SPACE):
-- Small "Chollima" brand emblem on cabin wall (千里马 silhouette)
-- Safety instruction card in Korean (Hangul) in seat pocket
-- "금연" (No Smoking) and "좌석벨트" (Fasten Seat Belt) signs in Korean
-- Dancheong-inspired color stripe along cabin wall (subtle, not overwhelming)
-- Small framed Korean landscape print on cabin divider wall
-- Overhead bin handles with Korean text "열다" (Open) / "닫다" (Close)
-- "비상구" (Emergency Exit) sign above door, illuminated
-- Speed/altitude display for passengers at front of cabin (Korean text)
-- Airline-style safety card with Korean illustrations
+CONTRASTING KOREAN CONSUMER ELEMENTS (SECONDARY, HUMOROUS):
+- Empty KOREAN FRIED CHICKEN box (치킨) on rear seat — branded "BBQ 치킨" style
+- Half-empty soju bottle (소주) and small cups tucked in door pocket
+- Convenience store snacks: shrimp chips (새우깡), banana milk (바나나우유) on console
+- K-pop sticker of a girl group on dashboard (partially peeling)
+- Ramen cup (라면) wrapper in side pocket
+- "CASS" beer can (empty, in trash)
+- Korean cosmetics sample bag from duty-free shop
+- Seoul travel brochure in seat back pocket
 
-WINDOW DESIGN (CRITICAL — SKY ONLY, NO GROUND):
-- Rounded rectangular windows, approximately 40cm wide
-- Double-pane design with slight blue tint
-- Window frame: dark gray rubber seal, slightly recessed
-- Small manual window shade (beige, pull-down type)
-- VIEW THROUGH WINDOW (DAYTIME): bright blue sky, white clouds, occasional distant flying vehicle
-- NO GROUND, NO MOUNTAINS, NO CITIES — only sky, to make the scene reusable
-- Sunlight streaming through windows, creating warm light patches on cabin floor
-- Cloud shadows occasionally passing through cabin
+INSTRUMENTS & TECH (AUTONOMOUS — NO CONTROLS):
+- Small holographic display on center console — 岁月's interface, shows route map and weather
+- Digital display on windshield: altitude "고도", speed "속도" in Hangul
+- Audio speaker playing music (Korean songs — hint of trot music)
+- NO steering wheel, NO pedals, NO throttle — just a passenger cabin
 
-LIGHTING (DAYTIME):
-- Bright, even daylight illumination through windows
-- Overhead fluorescent lights (warm white, typical Korean public transport)
-- Sunbeams creating light patches on seats and floor
-- Shadows from window frames cast across cabin interior
+WINDOW VIEW (DAYTIME — SKY ONLY):
+- Bright blue sky with white clouds
+- A few distant flying vehicles
+- Warm sunlight streaming through panoramic windows
+- Cloud formations visible through curved windshield
 
 COLOR PALETTE:
-- Primary: dark green (#3B5E3B), navy blue (#2A3A5A), warm beige (#D4C5A9)
-- Secondary: sky blue (#87CEEB), cloud white (#F0F0F0), overhead light warm (#FFF8DC)
-- Accents: Korean red (#CD2626) on emergency signs, gold (#DAA520) on brand emblem
-- Floor: dark rubber gray (#3A3A3A)
+- Primary: deep blue exterior glow (#1A3A6A), warm beige interior (#D4C5A9), official dark green trim (#3B5E3B)
+- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
+- Accents: soju bottle green (#4CAF50), chicken box orange (#FF8C00), banana milk yellow (#FFFDD0), DPRK red (#CD2626)
 
 ATMOSPHERE:
-- Compact but functional — a working vehicle, not a luxury liner
-- Clean and well-maintained, North Korean public transport standard
-- Quiet and calm during flight
-- Sense of everyday travel, ordinary but reliable
-- Neutral enough to be reused as train carriage interior
+- Cozy and intimate — a small capsule for two travelling together
+- Humorous cultural contrast both travelers can laugh about
+- Safe and comfortable — 岁月 handles everything, player just enjoys the view
+- Sense of adventure beginning
+- The contrast between official propaganda decor and casual consumer goods tells a story
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN PUBLIC TRANSPORT AESTHETIC
-- Practical, functional design
-- All text in Korean (Hangul)
-- Reusable as train carriage, bus, or small aircraft interior
+- NORTH KOREAN OFFICIAL × SOUTH KOREAN CONSUMER fusion
+- Deliberately kitschy, funny, story-telling details
+- All official text in Korean (Hangul)
 
 AVOID:
-- Luxury or premium interior (must feel like standard public transport)
-- Too much empty space (cabin is compact)
-- Ground or landscape visible through windows
-- English text
-- Japanese or Chinese cultural elements
-- Overly political or propaganda elements (this is a passenger cabin, not a government office)
+- Steering wheel or cockpit controls (it's autonomous!)
+- Ground or landscape visible (sky only)
+- Too luxurious or premium
+- Missing the leader portraits (essential for the contrast)
+- Missing the South Korean consumer goods (essential for the contrast)
+- Clean/sterile interior (should feel lived-in)
 ```
 
-### 2.6 客舱内部（夜晚·沙能飞行器）——新视角
+### 2.6 飞猪号客舱内部（夜晚·自动驾驶）
 
-**文件**：`Resources/bg/cabin_interior_night.png`  
-**用途**：序章夜晚飞行器客舱场景——乘客视角，窗外夜空
+**文件**：`Resources/bg/car_interior_night.png`（替换原驾驶舱版）  
+**用途**：序章夜晚飞行场景——夜色中跨越国境的旅途
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-passenger cabin interior, small commuter aircraft cabin,
-nighttime, 2076 retro-futuristic,
-NORTH KOREAN industrial design, sand-energy flying vehicle,
-"Chollima" brand passenger cabin at night:
+small 2-person flying car cabin interior at night,
+2076 retro-futuristic, NORTH KOREAN official × KOREAN consumer culture,
+"Sand Flying Pig" autonomous vehicle, night:
 
-SCENE: same compact passenger cabin as daytime version, but at night — dimmed cabin lights, dark windows showing starry sky, reading lights on, intimate nighttime atmosphere
+SCENE: same compact 2-seat flying car cabin as daytime, but at night — dimmed cabin lights, starry sky through panoramic windows, holographic display glowing softly, reading light on passenger side. The leader portraits are still faintly visible on the wall — the cultural contrast persists even in darkness.
 
-NIGHTTIME DIFFERENCES — SAME CABIN, NOW AT NIGHT:
-- Cabin lights dimmed to warm amber glow — only reading lights and emergency exit signs provide illumination
-- Windows show dark night sky with stars, crescent moon — NO GROUND VISIBLE
-- Small reading light above each passenger seat (individual, warm yellow LED)
-- Floor-level emergency path lights (faint green glow along aisle)
-- "비상구" (Emergency Exit) sign illuminated in red
-- Overhead lights off, only accent lighting along cabin wall
-- Seat belt buckles catching dim light
-- Window shades mostly down, some passengers may have them open looking at stars
+NIGHTTIME DIFFERENCES:
+- Cabin lights dimmed to warm amber — only holographic display and reading light illuminate
+- Panoramic windows show dark night sky with stars and crescent moon — NO GROUND
+- 岁月's holographic interface glows cyan, softly lighting the cabin
+- Small reading light above passenger seat (warm yellow)
+- Chicken box and soju bottle catch dim moonlight on rear seat
+- K-pop sticker barely visible, peeling at the corner
+- Red star emblem on headrest faintly glowing
+- Leader portraits half-shadowed — still dignified, still present
 
-KOREAN ELEMENTS AT NIGHT (SAME, SUBTLY ILLUMINATED):
-- Chollima emblem visible in dim light
-- Safety card in seat pocket, dimly lit
-- "금연" and "좌석벨트" signs illuminated
-- Dancheong color stripe faintly visible along cabin wall
-- Emergency exit sign in red Korean text
+KOREAN CONTRAST ELEMENTS (NIGHT — SAME, DIMLY LIT):
+- Leader portraits (Kim Il-sung, Kim Jong-il) in brass frames — visible in dim light
+- Chollima miniature silhouette on dashboard
+- Empty soju bottle catching a highlight
+- Convenience store snacks in shadow
+- "주체사상" slogans faintly visible on wall
 
 WINDOW VIEW (NIGHT — SKY ONLY):
 - Dark night sky with scattered stars
-- Crescent or full moon visible through window
-- Occasional lights of distant flying vehicles passing by
-- Thin cloud layer catching moonlight below
-- NO GROUND or CITY LIGHTS visible
+- Crescent moon above clouds
+- Occasional lights of distant flying vehicles passing
+- Thin moonlit cloud layer below — no city lights, no ground
 
 COLOR PALETTE (NIGHT):
 - Primary: deep dark blue (#0A0A1E), warm amber cabin light (#8B6914)
-- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
-- Accents: emergency red (#CD2626), faint green path lights (#32CD32)
-- Seat: dark green muted (#2A4A2A) in low light
+- Secondary: starry sky (#1A1A3E), holographic cyan (#00BFFF)
+- Accents: soju green (#355E3B), chicken box orange (#FF8C00), faint DPRK red (#8B0000)
+- Reading light warm yellow (#FFD700)
 
 ATMOSPHERE:
-- Quiet, intimate nighttime travel atmosphere
-- Passengers resting during night flight
-- Warm and safe inside despite the dark outside
-- Peaceful, contemplative mood
-- Reusable as night train carriage interior
+- Quiet, intimate nighttime travel — just two beings and the sky
+- Deep conversation mood — the humor of the day fades into reflection
+- Safe and warm inside despite the dark outside
+- Stars overhead create a sense of vast journey and smallness
+- The cultural contrast feels nostalgic rather than funny at night
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN PUBLIC TRANSPORT AESTHETIC at night
+- NORTH KOREAN × KOREAN fusion at night
 - Dim, warm ambient lighting
-- All text in Korean (Hangul)
-- Reusable as train carriage, bus, or small aircraft interior at night
+- All official text in Korean (Hangul)
 
 AVOID:
-- Too bright (must be clearly nighttime)
-- Ground or city lights visible through windows
-- English text
-- Japanese or Chinese cultural elements
-- Luxury interior design
+- Steering wheel or cockpit controls
+- Ground or city lights visible (sky only)
+- Too bright
+- Clean/sterile look
+- Missing the cultural contrast elements
 ```
 
 **提示词**：
