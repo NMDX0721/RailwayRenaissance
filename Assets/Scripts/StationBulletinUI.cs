@@ -216,14 +216,22 @@ public class StationBulletinUI : MonoBehaviour
     {
         AddSectionTitle("显示", "画面和文字显示相关的设置");
         AddToggle("全屏模式", "以全屏方式运行游戏", Screen.fullScreen, v => Screen.fullScreen = v);
-        AddToggle("垂直同步", "与自定义帧率互斥，开启后帧率与显示器刷新率同步", QualitySettings.vSyncCount > 0, v =>
+        AddToggle("垂直同步", "开启后帧率与显示器刷新率同步", QualitySettings.vSyncCount > 0, v =>
         {
             QualitySettings.vSyncCount = v ? 1 : 0;
             PlayerPrefs.SetInt("VSync", v ? 1 : 0);
-            PlayerPrefs.SetInt("CustomFPS", v ? 0 : PlayerPrefs.GetInt("CustomFPS", 1));
+            if (v)
+            {
+                PlayerPrefs.SetInt("CustomFPS", 0);
+                Application.targetFrameRate = -1;
+            }
+            else
+            {
+                PlayerPrefs.SetInt("CustomFPS", 1);
+                Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
+            }
             PlayerPrefs.Save();
-            if (v) Application.targetFrameRate = -1;
-            else if (PlayerPrefs.GetInt("CustomFPS", 1) == 1) Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
+            ShowCategory(2);
         });
         AddToggle("自定义帧率", "关闭垂直同步后手动限制帧率", PlayerPrefs.GetInt("CustomFPS", 1) == 1, v =>
         {
@@ -241,13 +249,14 @@ public class StationBulletinUI : MonoBehaviour
             PlayerPrefs.Save();
             ShowCategory(2);
         });
-        AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
+        bool fpsCapEnabled = PlayerPrefs.GetInt("CustomFPS", 1) == 1;
         AddSliderWithCallback("帧率上限", 30, 240, PlayerPrefs.GetInt("TargetFPS", 60), v =>
         {
             Application.targetFrameRate = v;
             PlayerPrefs.SetInt("TargetFPS", v);
             PlayerPrefs.Save();
-        }, "FPS");
+        }, "FPS", fpsCapEnabled);
+        AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
         AddSlider("文字速度", 1, 10, 5, "档");
         AddSlider("对话框透明度", 0, 100, 80, "%");
         AddResetButton(ResetDisplayDefaults);
@@ -461,7 +470,7 @@ public class StationBulletinUI : MonoBehaviour
         contentPanel.Add(row);
     }
 
-    private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged, string unit = "%")
+    private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged, string unit = "%", bool enabled = true)
     {
         var row = new VisualElement();
         row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
@@ -476,6 +485,7 @@ public class StationBulletinUI : MonoBehaviour
         var slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
         slider.value = defaultValue;
         slider.style.flexGrow = 1;
+        if (!enabled) slider.SetEnabled(false);
         slider.RegisterValueChangedCallback(evt =>
         {
             int v = Mathf.RoundToInt(evt.newValue);
@@ -508,10 +518,17 @@ public class StationBulletinUI : MonoBehaviour
         valLabel.style.borderBottomLeftRadius = 4; valLabel.style.borderBottomRightRadius = 4;
         valLabel.style.paddingLeft = 6; valLabel.style.paddingRight = 6;
         valLabel.style.paddingTop = 2; valLabel.style.paddingBottom = 2;
-        valLabel.RegisterCallback<PointerEnterEvent>(e => valLabel.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.7f));
+        valLabel.RegisterCallback<PointerEnterEvent>(e => {
+            if (enabled) valLabel.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.7f);
+        });
         valLabel.RegisterCallback<PointerLeaveEvent>(e => valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f));
-        valLabel.RegisterCallback<ClickEvent>(e => ShowNumericInput(slider, valLabel, min, max, unit));
+        valLabel.RegisterCallback<ClickEvent>(e => { if (enabled) ShowNumericInput(slider, valLabel, min, max, unit); });
         row.Add(valLabel);
+
+        if (!enabled)
+        {
+            row.style.opacity = 0.5f;
+        }
 
         contentPanel.Add(row);
     }
@@ -544,11 +561,6 @@ public class StationBulletinUI : MonoBehaviour
             te.style.unityTextAlign = TextAnchor.MiddleCenter;
             te.style.overflow = Overflow.Visible;
             te.style.whiteSpace = WhiteSpace.Normal;
-        }
-        foreach (var ti in input.Query<TextInput>().ToList())
-        {
-            ti.style.fontSize = 20;
-            ti.style.color = new Color(1f, 0.9f, 0.6f, 1f);
         }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
