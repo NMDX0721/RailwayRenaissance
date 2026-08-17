@@ -86,6 +86,20 @@ public class VNManager : MonoBehaviour
             return;
         }
 
+        // 从读档界面选择存档后重载场景 → 自动加载存档
+        if (PlayerPrefs.HasKey("VN_LoadSaveSlot"))
+        {
+            int slot = PlayerPrefs.GetInt("VN_LoadSaveSlot");
+            PlayerPrefs.DeleteKey("VN_LoadSaveSlot");
+            PlayerPrefs.Save();
+            var saveData = saveSystem.LoadGame(slot);
+            if (saveData != null)
+            {
+                LoadFromSave(saveData);
+            }
+            return;
+        }
+
         // 标题界面自动加载（旧逻辑，保留兼容）
         if (PlayerPrefs.GetInt("VN_AutoLoad", 0) == 1)
         {
@@ -1028,16 +1042,13 @@ public class VNManager : MonoBehaviour
         if (saveLoadUI != null)
             saveLoadUI.OpenLoadPanelFromTitle((slotIndex) =>
             {
-                var saveData = saveSystem.LoadGame(slotIndex);
-                if (saveData != null)
-                {
-                    LoadFromSave(saveData);
-                }
+                // 保存槽位到PlayerPrefs，重载场景后自动加载
+                PlayerPrefs.SetInt("VN_LoadSaveSlot", slotIndex);
+                PlayerPrefs.Save();
                 isFromTitleScreenMode = false;
-                // 恢复 VN 界面（ClosePanel 由按钮回调处理，且已设 isFromTitleScreen=false）
-                if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
-                if (dialogueBox != null) dialogueBox.Show();
-                if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.Flex;
+                saveLoadUI.ClosePanel();
+                saveLoadUI.SetIsFromTitleScreenFromTitle(false);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
             });
     }
 

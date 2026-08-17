@@ -257,6 +257,8 @@ public class VNSaveLoadUI : MonoBehaviour
         }
     }
 
+    public void SetIsFromTitleScreenFromTitle(bool value) { isFromTitleScreen = value; }
+
     private void RefreshSlots()
     {
         slotContainer.Clear();
