@@ -674,6 +674,9 @@ public class VNManager : MonoBehaviour
         currentDialogueIndex = 0;
         isScriptRunning = true;
 
+        // 站长日志解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
+        TitleArchiveUI.AutoUnlock(scriptName);
+
         vnBacklog?.Clear();
         characterSpriteManager?.ClearAll();
         variables.Clear();

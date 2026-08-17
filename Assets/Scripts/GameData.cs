@@ -964,6 +964,10 @@ public static class GameData
         CurrentMonth.TotalExpenses += fuelCost + maintenanceCost + wageCost;
         CurrentMonth.DaysInMonth++;
 
+        // 成就：完成第一个月运营
+        if (CurrentMonth.DaysInMonth >= 30)
+            AchievementManager.Unlock("railway_newbie");
+
         // 财政压力：累计月亏损 > 50,000 时输出警告
         if (CurrentMonth.NetProfit < -50000)
         {
@@ -980,6 +984,11 @@ public static class GameData
                 + "\n  运营天数: " + CurrentMonth.DaysInMonth;
             MonthlyReports.Add(report);
             Notices.Add("📊 " + report.Replace("\n", " | "));
+
+            // 成就：首次月度盈利 10 万
+            if (CurrentMonth.NetProfit >= 100000)
+                AchievementManager.Unlock("revivalist");
+
             // 重置月度累计
             CurrentMonth = new MonthlySummary();
         }

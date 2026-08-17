@@ -712,4 +712,60 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (overlay != null) overlay.style.display = DisplayStyle.None;
     }
+
+    // ================= 解锁绑定（供游戏循环调用） =================
+
+    private const string CgKeyPrefix = "ArchiveCG_";
+
+    /// <summary>解锁 CG（幂等）。</summary>
+    public static void UnlockCG(string id)
+    {
+        PlayerPrefs.SetInt(CgKeyPrefix + id, 1);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>解锁图鉴条目（角色/列车，幂等）。</summary>
+    public static void UnlockArchive(string prefsKey)
+    {
+        PlayerPrefs.SetInt(prefsKey, 1);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>按序章脚本名自动解锁对应 CG / 角色 / 列车。由 VNManager 在进入脚本时调用。</summary>
+    public static void AutoUnlock(string scriptName)
+    {
+        switch (scriptName)
+        {
+            case "prologue_01_news":
+                UnlockArchive("ArchiveChar_lin");
+                UnlockArchive("ArchiveChar_laochen"); // 老陈来电
+                break;
+            case "prologue_02_day0":
+                UnlockCG("cg_lab");
+                UnlockArchive("ArchiveChar_suiyue"); // 领取 0721
+                UnlockArchive("ArchiveTrain_nf5");
+                break;
+            case "prologue_04_arrival":
+                UnlockCG("cg_sunset");
+                break;
+            case "prologue_05_inspection":
+                UnlockCG("cg_bridge");
+                break;
+            case "prologue_06_team":
+                UnlockCG("cg_team");
+                UnlockArchive("ArchiveChar_zhanggong");
+                UnlockArchive("ArchiveChar_liaiyi");
+                UnlockArchive("ArchiveChar_wangxiaodi");
+                UnlockArchive("ArchiveChar_zhaoshifu");
+                UnlockArchive("ArchiveChar_xiaofang");
+                break;
+            case "prologue_07_first_repair":
+                UnlockArchive("ArchiveTrain_nf5");
+                break;
+            case "prologue_08_first_run":
+                UnlockCG("cg_first_run");
+                UnlockArchive("ArchiveTrain_sy22");
+                break;
+        }
+    }
 }
