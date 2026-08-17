@@ -185,6 +185,104 @@ public class StationBulletinUI : MonoBehaviour
         AddSliderWithCallback("背景音乐", 0, 100, Mathf.RoundToInt(GameData.BGMVolume * 100), v => GameData.BGMVolume = v / 100f);
         AddSliderWithCallback("音效", 0, 100, Mathf.RoundToInt(GameData.SFXVolume * 100), v => GameData.SFXVolume = v / 100f);
         AddSliderWithCallback("打字机音效", 0, 100, Mathf.RoundToInt(GameData.TypewriterVolume * 100), v => GameData.TypewriterVolume = v / 100f);
+        AddResetButton(ResetAudioDefaults);
+    }
+
+    private void ResetAudioDefaults()
+    {
+        GameData.MasterVolume = 1f;
+        GameData.BGMVolume = 0.8f;
+        GameData.SFXVolume = 1f;
+        GameData.TypewriterVolume = 0.5f;
+        ShowCategory(0);
+    }
+
+    private void AddResetButton(System.Action onReset)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.FlexEnd;
+        row.style.marginTop = 20;
+        row.style.borderTopWidth = 1;
+        row.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
+        row.style.paddingTop = 12;
+        var btn = new UnityEngine.UIElements.Button(() => ShowResetConfirm(onReset)) { text = "恢复默认" };
+        btn.style.width = 130; btn.style.height = 36; btn.style.fontSize = 18;
+        btn.style.color = new Color(1f, 0.8f, 0.5f, 0.8f);
+        btn.style.backgroundColor = new Color(0.3f, 0.15f, 0.08f, 0.5f);
+        btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = GetFontDef();
+        btn.style.borderTopLeftRadius = 6; btn.style.borderTopRightRadius = 6;
+        btn.style.borderBottomLeftRadius = 6; btn.style.borderBottomRightRadius = 6;
+        btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
+        btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
+        btn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+        btn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+        btn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+        btn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+        row.Add(btn);
+        contentPanel.Add(row);
+    }
+
+    private void ShowResetConfirm(System.Action onConfirm)
+    {
+        var confirmPanel = new VisualElement();
+        confirmPanel.style.position = Position.Absolute;
+        confirmPanel.style.top = 0; confirmPanel.style.left = 0; confirmPanel.style.right = 0; confirmPanel.style.bottom = 0;
+        confirmPanel.style.backgroundColor = new Color(0, 0, 0, 0.6f);
+        confirmPanel.style.alignItems = Align.Center;
+        confirmPanel.style.justifyContent = Justify.Center;
+        overlay.Add(confirmPanel);
+
+        var box = new VisualElement();
+        box.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.97f);
+        box.style.borderTopWidth = 1; box.style.borderBottomWidth = 1;
+        box.style.borderLeftWidth = 1; box.style.borderRightWidth = 1;
+        box.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        box.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        box.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        box.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        box.style.borderTopLeftRadius = 10; box.style.borderTopRightRadius = 10;
+        box.style.borderBottomLeftRadius = 10; box.style.borderBottomRightRadius = 10;
+        box.style.width = 360; box.style.height = 160;
+        box.style.flexDirection = FlexDirection.Column;
+        box.style.alignItems = Align.Center;
+        box.style.justifyContent = Justify.Center;
+        confirmPanel.Add(box);
+
+        var msg = new Label("确定恢复默认设置？");
+        msg.style.fontSize = 22;
+        msg.style.color = new Color(1f, 1f, 1f, 0.9f);
+        msg.style.unityFontDefinition = GetFontDef();
+        msg.style.marginBottom = 20;
+        box.Add(msg);
+
+        var btnRow = new VisualElement();
+        btnRow.style.flexDirection = FlexDirection.Row;
+        btnRow.style.alignItems = Align.Center;
+        btnRow.style.justifyContent = Justify.Center;
+        box.Add(btnRow);
+
+        var cancelBtn = new UnityEngine.UIElements.Button(() => overlay.Remove(confirmPanel)) { text = "取消" };
+        cancelBtn.style.width = 100; cancelBtn.style.height = 36; cancelBtn.style.fontSize = 18;
+        cancelBtn.style.color = new Color(1f, 1f, 1f, 0.7f);
+        cancelBtn.style.backgroundColor = new Color(0.3f, 0.15f, 0.1f, 0.5f);
+        cancelBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        cancelBtn.style.unityFontDefinition = GetFontDef();
+        cancelBtn.style.marginRight = 16;
+        cancelBtn.style.borderTopLeftRadius = 6; cancelBtn.style.borderTopRightRadius = 6;
+        cancelBtn.style.borderBottomLeftRadius = 6; cancelBtn.style.borderBottomRightRadius = 6;
+        btnRow.Add(cancelBtn);
+
+        var confirmBtn = new UnityEngine.UIElements.Button(() => { overlay.Remove(confirmPanel); onConfirm(); }) { text = "确定" };
+        confirmBtn.style.width = 100; confirmBtn.style.height = 36; confirmBtn.style.fontSize = 18;
+        confirmBtn.style.color = new Color(1f, 0.8f, 0.5f, 1f);
+        confirmBtn.style.backgroundColor = new Color(0.4f, 0.2f, 0.08f, 0.6f);
+        confirmBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        confirmBtn.style.unityFontDefinition = GetFontDef();
+        confirmBtn.style.borderTopLeftRadius = 6; confirmBtn.style.borderTopRightRadius = 6;
+        confirmBtn.style.borderBottomLeftRadius = 6; confirmBtn.style.borderBottomRightRadius = 6;
+        btnRow.Add(confirmBtn);
     }
 
     private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged)
@@ -200,6 +298,19 @@ public class StationBulletinUI : MonoBehaviour
         slider.value = defaultValue;
         slider.style.flexGrow = 1;
         slider.RegisterValueChangedCallback(evt => onChanged(Mathf.RoundToInt(evt.newValue)));
+        // 点击滑条轨道直接跳转到该位置
+        slider.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            if (evt.button == 0 && evt.target == slider)
+            {
+                var rect = slider.worldBound;
+                if (rect.width > 0)
+                {
+                    float ratio = (evt.position.x - rect.x) / rect.width;
+                    slider.value = Mathf.Lerp(min, max, Mathf.Clamp01(ratio));
+                }
+            }
+        });
         row.Add(slider);
         contentPanel.Add(row);
     }
@@ -213,6 +324,12 @@ public class StationBulletinUI : MonoBehaviour
         AddToggle("点击对话框推进", "点击对话框区域触发下一句", true);
         AddToggle("确认对话框", "关闭游戏时显示确认", true);
         AddSlider("自动播放间隔", 1, 10, 3, "秒");
+        AddResetButton(ResetGameDefaults);
+    }
+
+    private void ResetGameDefaults()
+    {
+        ShowCategory(1);
     }
 
     private void BuildDisplaySettings()
@@ -224,6 +341,12 @@ public class StationBulletinUI : MonoBehaviour
         AddToggle("显示帧率", "在角落显示当前 FPS", false);
         AddSlider("文字速度", 1, 10, 5, "档");
         AddSlider("对话框透明度", 0, 100, 80, "%");
+        AddResetButton(ResetDisplayDefaults);
+    }
+
+    private void ResetDisplayDefaults()
+    {
+        ShowCategory(2);
     }
 
     private void BuildAboutSettings()
