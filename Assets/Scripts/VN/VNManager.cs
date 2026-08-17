@@ -73,6 +73,7 @@ public class VNManager : MonoBehaviour
     {
         SetupGameCursor();
         SetupCanvas();
+        GameData.ApplyVolume();
         SetupEventSystem();
 
         // 标题界面"继续运营" → 直接显示读档界面，不播序章

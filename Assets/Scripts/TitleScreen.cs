@@ -174,7 +174,11 @@ public class TitleScreen : MonoBehaviour
     void SetupBGM()
     {
         var existing = GameObject.Find("BGM");
-        if (existing != null) return;
+        if (existing != null)
+        {
+            GameData.ApplyVolume();
+            return;
+        }
 
         var audioObj = new GameObject("BGM");
         audioObj.transform.SetParent(null);
@@ -188,6 +192,7 @@ public class TitleScreen : MonoBehaviour
             src.clip = clip;
             src.Play();
         }
+        GameData.ApplyVolume();
     }
 
     void SetupGameCursor()

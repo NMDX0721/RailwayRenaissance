@@ -83,6 +83,7 @@ public class LoginManager : MonoBehaviour
         SetupAudio();
         SetupGameCursor();
         CheckAutoLogin();
+        GameData.ApplyVolume();
     }
 
     private Font customFont;
