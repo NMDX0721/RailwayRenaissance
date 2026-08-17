@@ -88,6 +88,8 @@ public class LoginManager : MonoBehaviour
         FPSDisplay.Init();
         // 站长日志统计：启动时长计时
         var _stats = StatsManager.Instance;
+        // 光标焦点恢复：失焦后自动重新应用自定义光标
+        var _cursor = CursorFocusKeeper.Instance;
         int vsync = PlayerPrefs.GetInt("VSync", 1);
         int customFps = PlayerPrefs.GetInt("CustomFPS", 1);
         if (vsync == 1 && customFps == 1)

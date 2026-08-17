@@ -205,6 +205,12 @@ public class TitleScreen : MonoBehaviour
         UnityEngine.Cursor.SetCursor(arrowCursor, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
     }
 
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && arrowCursor != null)
+            UnityEngine.Cursor.SetCursor(arrowCursor, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+    }
+
     void LoadAvatarImages(VisualElement root)
     {
         var frame = root.Q<VisualElement>("avatar-frame");

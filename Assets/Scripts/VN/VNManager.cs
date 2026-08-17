@@ -138,6 +138,12 @@ public class VNManager : MonoBehaviour
         UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
     }
 
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && LoginManager.cursorTexture != null)
+            UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+    }
+
     private void AddCursorHover(VisualElement element)
     {
         element.RegisterCallback<PointerEnterEvent>(e =>
