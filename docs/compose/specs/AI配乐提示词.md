@@ -204,8 +204,6 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, soft b
 **风格**：美式民谣叙事，温暖男声，中速  
 **标题含义**："Sleepers"一语双关——铁路枕木，与沉睡二十三年的岁月  
 **游戏内使用**：标题界面播放伴奏版，片尾播放完整版  
-**中文翻译**：附后（供游戏内字幕使用）
-
 ```
 [Style]
 American folk ballad, warm male vocals with slight rasp, fingerpicking acoustic guitar, pedal steel guitar, gentle piano chords, upright bass, soft brushed drums, harmonica in bridge, strings enter in final chorus, sparse intro building to full band by bridge, then stripped back to fingerpicking only for outro, vocal delivery is conversational and intimate in verses like a campfire story, opening to full resonant chest voice in chorus, slightly breathy on quiet lines, gentle vibrato on held notes, spoken-sung in bridge, nostalgic and bittersweet but hopeful, 82 BPM, key of G major, natural room reverb, no autotune, no synth, no electronic drums, no modern production, organic acoustic sound, warm tape feel, open G tuning, I-IV-V-I chord progression, intimate recording atmosphere, verse is whispered-sung close mic, chorus opens up with space, bridge is spoken over harmonica, final chorus builds with string swell, outro fades to single guitar and whisper[Lyrics]
@@ -273,8 +271,6 @@ The wheel turns on, again and again!
 (fading) The wheel turns on...
 ```
 
-**中文翻译（游戏内字幕）：**
-
 ```
 汽笛划破晨雾
 穿过野草摇曳的山岗
@@ -320,8 +316,6 @@ The wheel turns on, again and again!
 **风格**：抒情流行摇滚，双人合唱（男 + 女 AI），中速  
 **标题含义**：星光落在铁轨上——最黑暗的夜晚，也有光指引方向  
 **游戏内使用**：边境检查站剧情后播放  
-**中文翻译**：附后
-
 ```
 [Style]
 Korean emotional pop rock, dual vocals (male lead with warm mid-range, female harmony light and airy), piano driven throughout, clean electric guitar arpeggios in verses switching to power chords in chorus, building drums from brushed snare to full kit, string section swells in chorus, dynamic range from hushed intimate verse to explosive full-band chorus, male vocal is tense and restrained in verse releasing to full power in chorus, female harmony floats above in pre-chorus and chorus, bridge is spoken dialogue over soft guitar then female humming, 80 BPM, key of E minor, concert hall reverb, no rap, no electronic beats, no autotune, no synth pads, no pop production, organic rock arrangement, verse vocal is close-mic and breathy, i-VI-III-VII progression, chorus vocal is open and belted, pre-chorus rises gradually, final chorus is slower and more powerful with held notes, outro fades on piano and strings with female humming
@@ -343,16 +337,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 얼굴엔 아무것도
 드러내지 않았어
 
-[Verse 1 - Chinese translation]
-检查站的灯光
-划破黑暗
-四道影子
-围住了我们
-
-屏住呼吸
-手在颤抖
-脸上却不露
-任何表情
 
 [Pre-Chorus - Female]
 (hushed, then rising)
@@ -361,11 +345,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 무서워도
 멈추지 않았죠
 
-[Pre-Chorus - Chinese]
-心跳一百四十七
-我听到了
-即使害怕
-你也没有停下
 
 [Chorus - Both]
 (belting, full band)
@@ -379,16 +358,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 이 하늘 아래
 혼자가 아니야
 
-[Chorus - Chinese]
-夜再深
-也会亮起来
-就像那条铁轨
-一直走到尽头
-
-路再难
-我们在一起
-在这片天空下
-你不是一个人
 
 [Verse 2 - Female]
 (gentle, piano only)
@@ -402,15 +371,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 위로라는 게
 뭔지 말이죠
 
-[Verse 2 - Chinese]
-二十三年的沉睡
-醒来的午后
-陌生的声音
-第一次听到的故事
-
-我虽然是AI
-但我知道
-什么是安慰
 
 [Chorus - Both]
 (belting, full band)
@@ -432,7 +392,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 (Female sung) 팔십구 퍼센트...
 (humming) 인간은 이걸 '위로'라고 부르죠
 
-[Bridge - Chinese]
 (spoken) 那句话也是双关吗？
 (岁月 spoken) 我是AI，我不说双关语。
 (spoken) 但…
@@ -454,8 +413,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 (humming) Mmm... mmm...
 (whispered) 혼자가 아니야...
 ```
-
-**完整中文翻译（游戏内字幕）：**
 
 ```
 检查站的灯光划破黑暗
@@ -495,8 +452,6 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 **风格**：韩式民谣流行，女声，中快速  
 **标题含义**：南风——来自南方的风，带着禁忌的味道，轻轻吹过平壤的巷子  
 **游戏内使用**：序章统一便当店场景  
-**中文翻译**：附后
-
 ```
 [Style]
 Korean indie folk pop, female vocals light and playful, bright acoustic guitar fingerpicking in verses switching to strumming in chorus, melodic walking bass, light percussion with shakers and brushed snare, accordion enters in bridge, traditional Korean Pyeongjo scale hint, warm and cheerful with slight ironic undertone, vocal delivery is bright and conversational in verses like telling a story, opening to fuller sweeter tone in chorus, playful vibrato on held notes, verse one is spoken-story style, verse two switches to sung, bridge is spoken then gentle sung, 98 BPM, key of A major, room reverb, no heavy drums, no rap, no synth, no electric guitar, no modern pop, acoustic folk arrangement, street performance feel, I-V-vi-IV progression, intimate recording, verse vocal is close and conspiratorial, chorus opens up warm and inviting, bridge has accordion and thoughtful pause, outro fades on single acoustic guitar
@@ -517,16 +472,6 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 치킨 냄새가 풍기고
 소주 병이 보이네
 
-[Verse 1 - Chinese]
-平壤的后巷
-一块小小的招牌
-褪色的领袖画像旁边
-「统一便当店」——用韩文写着
-
-学生们排着队
-袋子里装着什么
-炸鸡的香味飘来
-还能看到烧酒瓶
 
 [Chorus]
 (cheerful, swing feel)
@@ -542,18 +487,6 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 하지만 왠지
 따뜻한 이 느낌
 
-[Chorus - Chinese]
-来自南边的味道
-悄悄地蔓延
-时代在变
-安静地变
-连画像也假装没看见
-
-来自南边的味道
-越来越靠近
-奇怪的国家
-但不知为何
-这温暖的感觉
 
 [Verse 2]
 (spoken-story style)
@@ -568,16 +501,6 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 계산대 위에 쌓인
 남쪽의 풍경
 
-[Verse 2 - Chinese]
-店员压低声音说
-「同学，新到的货」
-「放心，我是留学生」
-「不懂这儿的规矩」
-
-罐装咖啡、香蕉牛奶
-虾条、辛拉面
-收银台上堆满的
-南边的风景
 
 [Chorus]
 (cheerful, swing feel)
@@ -594,11 +517,9 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 (sung, gently) 한 걸음 더 앞서
 가는 것뿐이야
 
-[Bridge - Chinese]
 (spoken) 先富带动后富...
 (spoken) 先富起来的那批人
 (sung) 只不过是
-比我们多走了一步
 
 [Guitar Solo]
 (acoustic guitar, folk style, 8 bars)
@@ -610,14 +531,7 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 왠지...
 따뜻해
 
-[Outro - Chinese]
-统一便当店……
-奇怪的地方
-但不知为何……
-有点温暖
 ```
-
-**完整中文翻译（游戏内字幕）：**
 
 ```
 平壤的后巷，一块小小的招牌
@@ -656,8 +570,6 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 **风格**：朝鲜革命歌曲，合唱 + 管弦乐，中速  
 **标题含义**：游戏内虚构的朝鲜革命歌曲，千里马运动与新时代的官方叙事  
 **游戏内使用**：序章主角手机播放的音乐梗，短片段循环  
-**中文翻译**：附后
-
 ```
 [Style]
 DPRK revolutionary march, full symphony orchestra, male choir in unison, triumphant brass fanfares with trumpets and French horns, military snare drums, booming timpani, accordion and traditional Korean instruments (janggu, daegeum, taepyeongso) mixed with western orchestra, grandiose and slightly over-the-top, choir is powerful and straight-toned no vibrato, vocal delivery is declamatory and heroic, unison singing throughout, no harmony, no solo vocals, spoken bridge with dramatic echo, snare drum roll into final chorus, 112 BPM, key of C major, Soviet-style production with wide stereo, large hall reverb, no pop elements, no female vocals, no modern instruments, no synthesizers, no autotune, vintage recording feel, intro is snare drums and brass fanfare only, verses are choir with brass and percussion, chorus adds full strings and timpani, bridge drops to spoken word over drum roll, final chorus is slower and grander with held high notes, outro ends abruptly with brass stab and snare drum
@@ -673,11 +585,6 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 주체의 길 따라
 우리는 앞으로!
 
-[Verse 1 - Chinese]
-千里马在奔驰
-奔驰在新时代
-沿着主体的道路
-我们向前进！
 
 [Chorus]
 (full orchestra, triumphant)
@@ -688,13 +595,6 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 천리마 신시대에
 달린다!
 
-[Chorus - Chinese]
-啊——千里马！
-啊——新时代！
-沿着伟大领袖
-的教导
-千里马在新时代
-奔驰！
 
 [Verse 2]
 (brass and choir, building)
@@ -703,11 +603,6 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 수령님 은덕으로
 기적을 창조한다!
 
-[Verse 2 - Chinese]
-沙子变成能源
-飞车飞向天空
-在领袖的恩德下
-我们创造奇迹！
 
 [Chorus]
 (full orchestra, triumphant)
@@ -734,8 +629,6 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 [Outro]
 (snare drum roll, brass stab, sudden stop)
 ```
-
-**完整中文翻译（游戏内字幕）：**
 
 ```
 千里马在奔驰，奔驰在新时代
