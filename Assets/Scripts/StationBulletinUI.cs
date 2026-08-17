@@ -497,10 +497,12 @@ public class StationBulletinUI : MonoBehaviour
         row.Add(slider);
 
         valLabel = new Label(defaultValue + " " + unit);
-        valLabel.style.width = 55; valLabel.style.fontSize = 16;
+        valLabel.style.width = unit.Length > 3 ? 70 : 55; valLabel.style.fontSize = 16;
         valLabel.style.color = CTextDim;
         valLabel.style.unityFontDefinition = GetFontDef();
         valLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        valLabel.style.overflow = Overflow.Visible;
+        valLabel.style.whiteSpace = WhiteSpace.Normal;
         valLabel.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f);
         valLabel.style.borderTopLeftRadius = 4; valLabel.style.borderTopRightRadius = 4;
         valLabel.style.borderBottomLeftRadius = 4; valLabel.style.borderBottomRightRadius = 4;
@@ -518,25 +520,31 @@ public class StationBulletinUI : MonoBehaviour
     {
         var input = new TextField();
         input.value = Mathf.RoundToInt(slider.value).ToString();
-        input.style.width = 60; input.style.height = 28;
+        input.multiline = false;
+        input.style.width = 80; input.style.height = 28;
         input.style.fontSize = 16;
-        input.style.color = new Color(1f, 0.8f, 0.5f, 1f);
-        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.8f);
-        input.style.unityTextAlign = TextAnchor.MiddleCenter;
+        input.style.color = new Color(1f, 0.9f, 0.6f, 1f);
+        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.9f);
+        input.style.unityFontDefinition = GetFontDef();
         input.style.borderTopLeftRadius = 4; input.style.borderTopRightRadius = 4;
         input.style.borderBottomLeftRadius = 4; input.style.borderBottomRightRadius = 4;
         input.style.borderTopWidth = 1; input.style.borderBottomWidth = 1;
         input.style.borderLeftWidth = 1; input.style.borderRightWidth = 1;
         input.style.borderTopColor = CGoldDim; input.style.borderBottomColor = CGoldDim;
         input.style.borderLeftColor = CGoldDim; input.style.borderRightColor = CGoldDim;
+        input.style.paddingLeft = 4; input.style.paddingRight = 4;
         input.style.marginLeft = 0;
-        input.style.unityFontDefinition = GetFontDef();
+
+        // 内部文本元素必须显式设置字体/字号/颜色/对齐，否则显示默认字体或乱码
         var textElement = input.Q<TextElement>();
         if (textElement != null)
         {
             textElement.style.unityFontDefinition = GetFontDef();
             textElement.style.fontSize = 16;
+            textElement.style.color = new Color(1f, 0.9f, 0.6f, 1f);
             textElement.style.unityTextAlign = TextAnchor.MiddleCenter;
+            textElement.style.overflow = Overflow.Hidden;
+            textElement.style.textOverflow = TextOverflow.Ellipsis;
         }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
