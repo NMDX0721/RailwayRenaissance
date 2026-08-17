@@ -86,7 +86,7 @@ public static class AchievementManager
         Load();
     }
 
-    /// <summary>解锁指定成就（不存在返回 false；已解锁保持幂等并返回 true）。解锁后立即持久化。</summary>
+    /// <summary>解锁指定成就（不存在返回 false；已解锁保持幂等并返回 true）。解锁后立即持久化，并触发右下角弹窗。</summary>
     public static bool Unlock(string id)
     {
         Initialize();
@@ -97,6 +97,8 @@ public static class AchievementManager
         data.unlocked = true;
         data.unlockedDate = DateTime.Now.ToString("yyyy-MM-dd");
         Save();
+
+        AchievementToast.ShowAchievement(data);
         return true;
     }
 
