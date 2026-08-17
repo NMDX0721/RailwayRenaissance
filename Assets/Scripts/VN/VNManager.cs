@@ -267,20 +267,23 @@ public class VNManager : MonoBehaviour
             btn.style.flexShrink = 0;
             btn.style.fontSize = 20;
             btn.style.color = new Color(1f, 1f, 1f, 0.8f);
-            btn.style.backgroundColor = new Color(0.2f, 0.1f, 0.08f, 0.7f);
+            btn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.marginLeft = 8;
-            btn.style.marginRight = 8;
+            btn.style.marginLeft = 6;
+            btn.style.marginRight = 6;
             btn.style.unityFontDefinition = fontDef;
             btn.style.borderTopWidth = 1;
             btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1;
             btn.style.borderRightWidth = 1;
-            btn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
-            btn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
-            btn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
-            btn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
-            AddCursorHover(btn);
+            btn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            btn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            btn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            btn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            btn.style.borderTopLeftRadius = 6;
+            btn.style.borderTopRightRadius = 6;
+            btn.style.borderBottomLeftRadius = 6;
+            btn.style.borderBottomRightRadius = 6;
             menuBar.Add(btn);
 
             if (menuLabels[idx] == "自动")
@@ -564,6 +567,10 @@ public class VNManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
+            // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
+            // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
+            if (Input.GetMouseButtonDown(0) && IsPointerOverInteractiveUI())
+                return;
             if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex)
                 return;
             if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex)
@@ -571,10 +578,6 @@ public class VNManager : MonoBehaviour
             if (vnBacklog != null && vnBacklog.IsOpen)
                 return;
             if (saveLoadUI != null && saveLoadUI.IsOpen)
-                return;
-            // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
-            // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
-            if (Input.GetMouseButtonDown(0) && IsPointerOverInteractiveUI())
                 return;
 
             StopAutoPlay();
