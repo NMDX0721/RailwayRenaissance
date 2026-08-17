@@ -474,7 +474,14 @@ public class NewGameSetupUI : MonoBehaviour
     }
 
     private void OnPrev() { if (currentPage > 0) ShowPage(currentPage - 1); }
-    private void OnNext() { if (currentPage < pages.Length - 1) ShowPage(currentPage + 1); }
+    private void OnNext()
+    {
+        int next = currentPage + 1;
+        // 非指导司机难度跳过自定义参数页
+        if (next == 1 && difficultyKeys[selectedDifficulty] != "custom")
+            next = pages.Length - 1;
+        if (next < pages.Length) ShowPage(next);
+    }
 
     private void SelectPresetSeed(int idx)
     {

@@ -350,7 +350,7 @@ public class VNSaveLoadUI : MonoBehaviour
         infoContainer.style.flexDirection = FlexDirection.Column;
         infoContainer.style.flexGrow = 1;
         infoContainer.style.paddingLeft = 15; infoContainer.style.paddingRight = 8;
-        infoContainer.style.paddingTop = 12; infoContainer.style.paddingBottom = 12;
+        infoContainer.style.paddingTop = 18; infoContainer.style.paddingBottom = 12;
         infoContainer.style.justifyContent = Justify.FlexStart;
         infoContainer.style.overflow = Overflow.Hidden;
 
@@ -424,7 +424,7 @@ public class VNSaveLoadUI : MonoBehaviour
             {
                 onSlotSelected?.Invoke(slotIndex);
                 if (isSaveMode) { RefreshSlots(); ShowSaveFeedback(); }
-                else { ClosePanel(); }
+                else { isFromTitleScreen = false; ClosePanel(); }
             }) { text = btnText };
 
             actionBtn.style.width = 90; actionBtn.style.height = 40; actionBtn.style.fontSize = 20;
