@@ -216,13 +216,34 @@ public class StationBulletinUI : MonoBehaviour
     {
         AddSectionTitle("显示", "画面和文字显示相关的设置");
         AddToggle("全屏模式", "以全屏方式运行游戏", Screen.fullScreen, v => Screen.fullScreen = v);
-        AddToggle("垂直同步", "开启后减少画面撕裂", QualitySettings.vSyncCount > 0, v => {
+        AddToggle("垂直同步", "与自定义帧率互斥，开启后帧率与显示器刷新率同步", QualitySettings.vSyncCount > 0, v =>
+        {
             QualitySettings.vSyncCount = v ? 1 : 0;
             PlayerPrefs.SetInt("VSync", v ? 1 : 0);
+            PlayerPrefs.SetInt("CustomFPS", v ? 0 : PlayerPrefs.GetInt("CustomFPS", 1));
             PlayerPrefs.Save();
+            if (v) Application.targetFrameRate = -1;
+            else if (PlayerPrefs.GetInt("CustomFPS", 1) == 1) Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
+        });
+        AddToggle("自定义帧率", "关闭垂直同步后手动限制帧率", PlayerPrefs.GetInt("CustomFPS", 1) == 1, v =>
+        {
+            PlayerPrefs.SetInt("CustomFPS", v ? 1 : 0);
+            if (v)
+            {
+                QualitySettings.vSyncCount = 0;
+                PlayerPrefs.SetInt("VSync", 0);
+                Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
+            }
+            else
+            {
+                Application.targetFrameRate = -1;
+            }
+            PlayerPrefs.Save();
+            ShowCategory(2);
         });
         AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
-        AddSliderWithCallback("帧率上限", 30, 240, PlayerPrefs.GetInt("TargetFPS", 60), v => {
+        AddSliderWithCallback("帧率上限", 30, 240, PlayerPrefs.GetInt("TargetFPS", 60), v =>
+        {
             Application.targetFrameRate = v;
             PlayerPrefs.SetInt("TargetFPS", v);
             PlayerPrefs.Save();

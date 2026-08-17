@@ -85,11 +85,12 @@ public class LoginManager : MonoBehaviour
         CheckAutoLogin();
         GameData.ApplyVolume();
         // 初始化帧率设置
-        if (PlayerPrefs.HasKey("TargetFPS"))
-            Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS");
-        else
-            Application.targetFrameRate = 60;
+        FPSDisplay.Init();
         QualitySettings.vSyncCount = PlayerPrefs.GetInt("VSync", 1);
+        if (PlayerPrefs.GetInt("CustomFPS", 1) == 1 && PlayerPrefs.GetInt("VSync", 1) == 0)
+            Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
+        else
+            Application.targetFrameRate = -1;
     }
 
     private Font customFont;

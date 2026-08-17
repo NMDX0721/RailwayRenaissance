@@ -80,4 +80,14 @@ public class FPSDisplay : MonoBehaviour
             DontDestroyOnLoad(go);
         }
     }
+
+    public static void Init()
+    {
+        if (PlayerPrefs.GetInt("ShowFPS", 0) == 1 && FindAnyObjectByType<FPSDisplay>() == null)
+        {
+            var go = new GameObject("FPSDisplay");
+            go.AddComponent<FPSDisplay>();
+            DontDestroyOnLoad(go);
+        }
+    }
 }
