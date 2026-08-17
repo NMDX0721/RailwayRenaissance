@@ -84,13 +84,23 @@ public class LoginManager : MonoBehaviour
         SetupGameCursor();
         CheckAutoLogin();
         GameData.ApplyVolume();
-        // 初始化帧率设置
+        // 初始化帧率设置：VSync 与自定义帧率互斥，保证二者恰有一个生效
         FPSDisplay.Init();
-        QualitySettings.vSyncCount = PlayerPrefs.GetInt("VSync", 1);
-        if (PlayerPrefs.GetInt("CustomFPS", 1) == 1 && PlayerPrefs.GetInt("VSync", 1) == 0)
-            Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
-        else
-            Application.targetFrameRate = -1;
+        int vsync = PlayerPrefs.GetInt("VSync", 1);
+        int customFps = PlayerPrefs.GetInt("CustomFPS", 1);
+        if (vsync == 1 && customFps == 1)
+        {
+            customFps = 0;
+            PlayerPrefs.SetInt("CustomFPS", 0);
+        }
+        else if (vsync == 0 && customFps == 0)
+        {
+            customFps = 1;
+            PlayerPrefs.SetInt("CustomFPS", 1);
+        }
+        PlayerPrefs.Save();
+        QualitySettings.vSyncCount = customFps == 1 ? 0 : 1;
+        Application.targetFrameRate = customFps == 1 ? PlayerPrefs.GetInt("TargetFPS", 60) : -1;
     }
 
     private Font customFont;

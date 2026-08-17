@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class FPSDisplay : MonoBehaviour
@@ -6,6 +7,16 @@ public class FPSDisplay : MonoBehaviour
     private Label fpsLabel;
     private float deltaTime;
     private bool isActive;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     private void Start()
     {
@@ -19,9 +30,16 @@ public class FPSDisplay : MonoBehaviour
         CreateLabel();
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 场景切换后旧 UIDocument 销毁，需把标签挂到新场景的 UIDocument 上
+        if (isActive)
+            CreateLabel();
+    }
+
     private void OnDestroy()
     {
-        if (fpsLabel != null && fpsLabel.parent != null)
+        if (fpsLabel != null && fpsLabel.panel != null && fpsLabel.parent != null)
             fpsLabel.parent.Remove(fpsLabel);
     }
 
@@ -29,6 +47,13 @@ public class FPSDisplay : MonoBehaviour
     {
         var uiDoc = FindAnyObjectByType<UIDocument>();
         if (uiDoc == null) return;
+        // 已挂载到当前文档则跳过
+        if (fpsLabel != null && fpsLabel.panel != null && fpsLabel.panel == uiDoc.rootVisualElement.panel)
+            return;
+
+        // 清除旧的（可能已失效的）标签
+        if (fpsLabel != null && fpsLabel.parent != null)
+            fpsLabel.parent.Remove(fpsLabel);
 
         fpsLabel = new Label("FPS: 0");
         fpsLabel.style.position = Position.Absolute;
@@ -50,14 +75,19 @@ public class FPSDisplay : MonoBehaviour
         uiDoc.rootVisualElement.Add(fpsLabel);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
         if (fpsLabel != null)
         {
+            // 标签失效时自动重新挂载
+            if (fpsLabel.panel == null)
+            {
+                CreateLabel();
+                return;
+            }
             fpsLabel.text = "FPS: " + Mathf.FloorToInt(fps);
-            // 颜色随帧率变化：60+ 绿色，30-60 黄色，<30 红色
             if (fps >= 60) fpsLabel.style.color = new Color(0.3f, 1f, 0.3f, 0.7f);
             else if (fps >= 30) fpsLabel.style.color = new Color(1f, 1f, 0.3f, 0.7f);
             else fpsLabel.style.color = new Color(1f, 0.3f, 0.3f, 0.7f);

@@ -216,21 +216,14 @@ public class StationBulletinUI : MonoBehaviour
     {
         AddSectionTitle("显示", "画面和文字显示相关的设置");
         AddToggle("全屏模式", "以全屏方式运行游戏", Screen.fullScreen, v => Screen.fullScreen = v);
-        AddToggle("垂直同步", "开启后帧率与显示器刷新率同步", QualitySettings.vSyncCount > 0, v =>
+        AddToggle("垂直同步", "与自定义帧率互斥，开启后帧率与显示器刷新率同步", QualitySettings.vSyncCount > 0, v =>
         {
             QualitySettings.vSyncCount = v ? 1 : 0;
             PlayerPrefs.SetInt("VSync", v ? 1 : 0);
-            if (v)
-            {
-                PlayerPrefs.SetInt("CustomFPS", 0);
-                Application.targetFrameRate = -1;
-            }
-            else
-            {
-                PlayerPrefs.SetInt("CustomFPS", 1);
-                Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
-            }
+            PlayerPrefs.SetInt("CustomFPS", v ? 0 : 1);
             PlayerPrefs.Save();
+            if (v) Application.targetFrameRate = -1;
+            else Application.targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
             ShowCategory(2);
         });
         AddToggle("自定义帧率", "关闭垂直同步后手动限制帧率", PlayerPrefs.GetInt("CustomFPS", 1) == 1, v =>
@@ -244,6 +237,8 @@ public class StationBulletinUI : MonoBehaviour
             }
             else
             {
+                QualitySettings.vSyncCount = 1;
+                PlayerPrefs.SetInt("VSync", 1);
                 Application.targetFrameRate = -1;
             }
             PlayerPrefs.Save();
