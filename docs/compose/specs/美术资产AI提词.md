@@ -887,52 +887,53 @@ AVOID:
 ### 2.5 客舱·白天（新绘—0721号后舱）
 
 **文件**：Resources/bg/cabin_interior.png  
-**用途**：0721号后舱——主角旅途主要活动空间，对话、进食、休息、睡眠
+**用途**：0721号后舱——主角旅途主要活动空间，从客舱门上车，第一眼看到的就是这里
 
-**设计说明**：0721号沙子飞猪号（约4.5m×1.8m，轿车大小）无独立厕所，中途在补给站解决。后舱2个座椅可完全放平形成简易床铺，供4.5天旅程中轮换休息。岁月全程自动驾驶，乘客只需吃喝睡。
+**设计说明**：0721号只有一个侧门，打开就是客舱。驾驶舱在前面（通过隔断门进入），但主角几乎不去。后舱布局像小型火车包厢（不是汽车后座），沿墙长椅可放平成床，中央矮桌，大窗，地板下储物。无独立厕所，中途在补给站解决。
 
 **提示词**：
 `
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 flying vehicle PASSENGER CABIN interior, daytime, 2076 retro-futuristic,
-NORTH KOREAN VEHICLE INTERIOR — personal space in a DPRK-made vehicle,
+NORTH KOREAN VEHICLE INTERIOR — like a small train compartment,
 "Sand Flying Pig" 0721 rear cabin:
 
-SCENE: rear passenger cabin of a small DPRK-made sand-energy flying car — 2 comfortable seats (reclining, can form a bed), foldable table between them, large window showing only sky, personal items scattered around. This is where the protagonist actually lives during the 4.5-day journey. The base tone is North Korean vehicle design, but the occupant has made it their own.
+SCENE: rear passenger cabin of a small DPRK-made sand-energy flying vehicle — NOT a car back seat. Layout like a KOREAN TRAIN COMPARTMENT: bench seat along one wall, low table, panoramic window, underfloor storage. This is where the protagonist lives during the 4.5-day journey. The main vehicle door opens into this space — the cockpit is through a separate door forward.
 
 CABIN LAYOUT:
-- Two reclining seats (beige/cream upholstery, dark green piping), KIM IL SUNG UNIVERSITY emblem on headrests
-- Seats can recline to form a flat sleeping surface — a thin blanket and small pillow on one seat
-- Foldable table between seats, deployed during meal times, stowed for sleeping
-- Large side window, rounded rectangular, dark frame — SKY ONLY, NO GROUND
-- Small storage compartments under window and below seats
-- Small netted pocket on seatback for magazines/documents
-- Overhead reading light (warm yellow, individual)
-- Small air vent above window, utilitarian Korean design
+- Bench seat along left wall (cushioned, beige/cream, dark green piping) — like a Korean train compartment seat, can fold flat to form a sleeping platform
+- Small low table in center (like a Korean 밥상, 40cm high) — for eating / laptop / writing
+- Floor is raised platform with underfloor storage compartments (like Korean heated floor ondol style)
+- Large panoramic window on right wall — SKY ONLY, NO GROUND
+- Small fold-down jump seat on opposite wall (for when bench is in bed mode)
+- Overhead shelf running full length for luggage
+- Reading light on wall above bench (warm yellow, adjustable)
+- Sliding door at front leading to cockpit (simple, utilitarian, DPRK industrial style)
+- Main vehicle door visible on right side of cabin (the way you enter)
 - No toilet — vehicle too small, pit stops at supply stations
 
-NORTH KOREAN BASE AESTHETIC (PRIMARY TONE):
-- Dark green/olive trim along cabin walls (standard DPRK vehicle color)
-- Dancheong-patterned stripe along ceiling edge (subtle, traditional)
-- "금연" (No Smoking) / "좌석벨트" (Fasten Seat Belt) signs in Korean
-- KIM IL SUNG UNIVERSITY emblem on headrests
-- Official vehicle ID plaque on door frame
-- Chollima (천리마) brand emblem on cabin wall
-- Functional, utilitarian design — North Korean industrial standard
+NORTH KOREAN BASE AESTHETIC:
+- Dark green/olive walls and ceiling (standard DPRK color — like Pyongyang metro trains)
+- Dancheong-patterned stripe along wall-ceiling joint (subtle, traditional)
+- "금연" (No Smoking) sign in Korean on wall
+- KIM IL SUNG UNIVERSITY emblem on cabin wall
+- Chollima (천리마) brand emblem above cockpit door
+- Official vehicle ID plaque on wall
+- Functional, utilitarian — DPRK industrial standard, Soviet-railway influence
 
 PERSONAL ITEMS (ACCUMULATED DURING JOURNEY):
-- Open laptop on table (Korean-made, 2076 model, dispatch algorithm code on screen)
+- Open laptop on low table, dispatch algorithm code on screen
 - Notebook and pen next to laptop
 - KOREAN FRIED CHICKEN box (BBQ 치킨) on table, some crumbs
 - Half-empty soju bottle (처음처럼) and one small cup
 - Shrimp chips (새우깡) bag, banana milk (바나나우유) bottle
-- Seoul travel guide on the seat
-- Duty-free shopping bag on floor, clothes peeking out
-- K-pop photocards tucked into seat pocket
-- Folded blanket and small pillow on one seat
-- Phone charger cable draped across the table
-- Water bottle in cup holder
+- Seoul travel guide propped against wall
+- Duty-free shopping bag in corner
+- K-pop photocards tucked into wall shelf
+- Folded blanket and small pillow on bench
+- Phone charger draped across table
+- Water bottle on floor near table
 
 WINDOW VIEW (DAYTIME — SKY ONLY):
 - Bright blue sky with white clouds
@@ -943,70 +944,72 @@ WINDOW VIEW (DAYTIME — SKY ONLY):
 COLOR PALETTE:
 - Primary: warm beige (#D4C5A9), olive green (#4A5D23), dark window frame (#3A3A3A)
 - Secondary: sky blue (#87CEEB), laptop screen glow (#E0F0FF)
-- Accents: food packaging orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
+- Accents: food orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
 
 ATMOSPHERE:
-- Cozy, lived-in — this is where the protagonist actually spends 4.5 days
-- North Korean base design made personal by the occupant
-- Warm daylight, comfortable for long journey
-- The clutter tells a story: a student traveling home, mixing work (laptop) with pleasure (snacks)
+- Cozy like a small train compartment on a long journey
+- North Korean rail/vehicle design made personal by the occupant
+- Warm daylight, comfortable for 4.5 days
+- NOT a car back seat — this is a small living space
+- The clutter tells a story: a student traveling home
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- DPRK VEHICLE INTERIOR — North Korean design is the base, personal items are the overlay
+- DPRK VEHICLE INTERIOR — inspired by Pyongyang metro and Korean train compartments
 - Every label in Korean (Hangul)
 - Lived-in, not sterile
 
 AVOID:
+- Car back seat layout (this is a FLYING VEHICLE, not a car)
+- Forward-facing seats like a car
+- Car door handles or car door panels
 - Ground or landscape visible through window
-- Too clean or empty (must look lived-in after 4 days)
 - Luxury or premium interior
 - English text
 - Japanese or Chinese elements
-`
-
+"
 ### 2.6 客舱·夜晚（新绘—0721号后舱）
 
 **文件**：Resources/bg/cabin_interior_night.png  
-**用途**：0721号后舱——夜晚飞行，主角休息，岁月独白场景
+**用途**：0721号后舱——夜晚飞行，主角休息
 
 **提示词**：
 `
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 flying vehicle PASSENGER CABIN at night, 2076 retro-futuristic,
-NORTH KOREAN VEHICLE INTERIOR at night, cozy personal space:
+NORTH KOREAN VEHICLE INTERIOR at night, cozy train-compartment style:
 
-SCENE: same rear cabin as daytime — but at night. Reading light on, laptop closed, table cleared. One seat reclined into bed mode with blanket and pillow. Window shows starry sky. Warm yellow reading light creates a cozy, intimate atmosphere. The protagonist is asleep, or resting quietly.
+SCENE: same rear cabin as daytime — but at night. Reading light on, bench folded into bed mode with blanket and pillow. Table cleared except for a half-empty soju bottle. Window shows starry sky. Warm yellow reading light creates a cozy, intimate atmosphere. The protagonist is asleep or resting.
 
 NIGHTTIME DIFFERENCES:
-- Cabin dark except for reading light (warm yellow, individual spotlight)
-- Table cleared of food — only laptop (closed), notebook, water bottle remain
-- One seat reclined flat with blanket and pillow (bed mode)
+- Cabin dark except for reading light (warm yellow, wall-mounted above bench)
+- Bench folded flat into bed mode with blanket and pillow
+- Table cleared of food — only soju bottle and one cup remain
 - Window shows dark night sky with stars and crescent moon — NO GROUND
-- Snack bags dimly visible in storage compartments
-- K-pop photocards on seat catching reading light
+- Laptop closed, charging light faintly glowing
+- Snack bags dimly visible in overhead shelf
 - Duty-free bag silhouette in corner
 - Phone charger plugged in, faint blue charging light
-- Empty soju bottle and chicken box in trash bag
+- Cockpit door slightly ajar, faint blue glow from holographic display beyond
 
 COLOR PALETTE (NIGHT):
 - Primary: warm amber (#8B6914), dark blue (#0A0A1E)
 - Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
-- Accents: laptop sleep mode light (#00BFFF), charging LED (#32CD32)
+- Accents: laptop sleep light (#00BFFF), charging LED (#32CD32)
 
 ATMOSPHERE:
-- Quiet, intimate, restful
+- Quiet, intimate, restful — like a sleeper train cabin at night
 - End of a long travel day
 - Safe and warm inside despite the dark outside
-- Contemplative mood — protagonist rests while 岁月 flies on through the night
-- The cabin feels smaller and more personal in the dark
+- Contemplative — protagonist rests while 岁月 flies on through the night
 
 AVOID:
 - Too bright (must be clearly nighttime)
+- Car back seat layout
 - Ground or city lights visible through window
-- Too clean or sterile
 - English text
+"
 ### 2.7 停机坪
 
 **文件**：`Resources/bg/hangar.png`  
