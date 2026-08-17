@@ -510,7 +510,7 @@ public class VNManager : MonoBehaviour
     private void Update()
     {
         // ESC：全屏新闻时关闭新闻，其余按面板优先级处理
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || KeyBindings.IsDown(KeyBindings.Action.OpenMenu))
         {
             if (fullScreenNews != null && fullScreenNews.IsActive)
             {
@@ -559,7 +559,7 @@ public class VNManager : MonoBehaviour
         if (!isScriptRunning) return;
 
         // F5：切换Auto模式
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F5) || KeyBindings.IsDown(KeyBindings.Action.ToggleAuto))
         {
             ToggleAutoPlay();
             return;
@@ -568,19 +568,19 @@ public class VNManager : MonoBehaviour
         // Shift：快进（打字时加速，已完成时自动推进到下一句）
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
                 NextDialogue();
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipBack))
             {
                 PrevDialogue();
                 return;
             }
         }
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || KeyBindings.IsDown(KeyBindings.Action.Advance))
         {
             // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
             // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句

@@ -9,8 +9,9 @@ public class StationBulletinUI : MonoBehaviour
     private VisualElement panel;
     private VisualElement contentPanel;
     private VisualElement menuList;
-    private string[] menuItems = { "音频", "游戏", "显示", "关于" };
+    private string[] menuItems = { "音频", "游戏", "显示", "操作", "关于" };
     private int selectedIndex = 0;
+    private System.Action<KeyCode> _rebindAction;
 
     public void Init(UIDocument document)
     {
@@ -173,7 +174,8 @@ public class StationBulletinUI : MonoBehaviour
             case 0: BuildAudioSettings(); break;
             case 1: BuildGameSettings(); break;
             case 2: BuildDisplaySettings(); break;
-            case 3: BuildAboutSettings(); break;
+            case 3: BuildControlSettings(); break;
+            case 4: BuildAboutSettings(); break;
         }
     }
 
@@ -347,6 +349,106 @@ public class StationBulletinUI : MonoBehaviour
     private void ResetDisplayDefaults()
     {
         ShowCategory(2);
+    }
+
+    private void BuildControlSettings()
+    {
+        AddSectionTitle("操作", "点击按键绑定，然后按下新键以更改");
+
+        foreach (KeyBindings.Action action in System.Enum.GetValues(typeof(KeyBindings.Action)))
+        {
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.alignItems = Align.Center;
+            row.style.justifyContent = Justify.SpaceBetween;
+            row.style.marginBottom = 10;
+            row.style.paddingLeft = 10;
+            row.style.paddingRight = 10;
+
+            var lbl = new Label(KeyBindings.GetActionName(action));
+            lbl.style.fontSize = 20;
+            lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+            lbl.style.unityFontDefinition = GetFontDef();
+            row.Add(lbl);
+
+            var keyBtn = new UnityEngine.UIElements.Button(() => StartRebind(action, keyBtn)) { text = KeyBindings.GetKeyName(action) };
+            keyBtn.style.width = 120;
+            keyBtn.style.height = 36;
+            keyBtn.style.fontSize = 18;
+            keyBtn.style.color = new Color(1f, 0.8f, 0.5f, 0.9f);
+            keyBtn.style.backgroundColor = new Color(0.2f, 0.12f, 0.08f, 0.7f);
+            keyBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            keyBtn.style.unityFontDefinition = GetFontDef();
+            keyBtn.style.borderTopLeftRadius = 6;
+            keyBtn.style.borderTopRightRadius = 6;
+            keyBtn.style.borderBottomLeftRadius = 6;
+            keyBtn.style.borderBottomRightRadius = 6;
+            keyBtn.style.borderTopWidth = 1;
+            keyBtn.style.borderBottomWidth = 1;
+            keyBtn.style.borderLeftWidth = 1;
+            keyBtn.style.borderRightWidth = 1;
+            keyBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+            keyBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+            keyBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+            keyBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
+            row.Add(keyBtn);
+            contentPanel.Add(row);
+        }
+
+        AddResetButton(ResetControlDefaults);
+    }
+
+    private void ResetControlDefaults()
+    {
+        foreach (KeyBindings.Action action in System.Enum.GetValues(typeof(KeyBindings.Action)))
+        {
+            KeyBindings.SetKey(action, KeyBindings.GetKey(action));
+        }
+        ShowCategory(3);
+    }
+
+    private void StartRebind(KeyBindings.Action action, UnityEngine.UIElements.Button btn)
+    {
+        btn.text = "按下新键...";
+        btn.style.color = new Color(1f, 1f, 0.5f, 1f);
+
+        System.Action<KeyCode> onKey = null;
+        onKey = (key) =>
+        {
+            if (key != KeyCode.None && key != KeyCode.Escape)
+            {
+                KeyBindings.SetKey(action, key);
+                btn.text = KeyBindings.GetKeyName(action);
+                btn.style.color = new Color(1f, 0.8f, 0.5f, 0.9f);
+            }
+            else
+            {
+                btn.text = KeyBindings.GetKeyName(action);
+                btn.style.color = new Color(1f, 0.8f, 0.5f, 0.9f);
+            }
+            _rebindAction = null;
+        };
+
+        _rebindAction = onKey;
+    }
+
+    private System.Action<KeyCode> _rebindAction;
+
+    private void Update()
+    {
+        if (_rebindAction != null)
+        {
+            foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(code) && code != KeyCode.None)
+                {
+                    var cb = _rebindAction;
+                    _rebindAction = null;
+                    cb(code);
+                    return;
+                }
+            }
+        }
     }
 
     private void BuildAboutSettings()
