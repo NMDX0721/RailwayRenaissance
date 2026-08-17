@@ -244,7 +244,7 @@ public class StationBulletinUI : MonoBehaviour
         box.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         box.style.borderTopLeftRadius = 10; box.style.borderTopRightRadius = 10;
         box.style.borderBottomLeftRadius = 10; box.style.borderBottomRightRadius = 10;
-        box.style.width = 360; box.style.height = 160;
+        box.style.width = 400; box.style.height = 200;
         box.style.flexDirection = FlexDirection.Column;
         box.style.alignItems = Align.Center;
         box.style.justifyContent = Justify.Center;
@@ -298,10 +298,10 @@ public class StationBulletinUI : MonoBehaviour
         slider.value = defaultValue;
         slider.style.flexGrow = 1;
         slider.RegisterValueChangedCallback(evt => onChanged(Mathf.RoundToInt(evt.newValue)));
-        // 点击滑条轨道直接跳转到该位置
+        // 点击滑条轨道直接跳转（TrickleDown 在内部 handler 之前触发）
         slider.RegisterCallback<PointerDownEvent>(evt =>
         {
-            if (evt.button == 0 && evt.target == slider)
+            if (evt.button == 0)
             {
                 var rect = slider.worldBound;
                 if (rect.width > 0)
@@ -310,7 +310,7 @@ public class StationBulletinUI : MonoBehaviour
                     slider.value = Mathf.Lerp(min, max, Mathf.Clamp01(ratio));
                 }
             }
-        });
+        }, TrickleDown.TrickleDown);
         row.Add(slider);
         contentPanel.Add(row);
     }
