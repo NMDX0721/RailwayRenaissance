@@ -179,43 +179,29 @@ public class StationBulletinUI : MonoBehaviour
 
     private void BuildAudioSettings()
     {
-        AddSectionTitle("音频", "背景音乐和音效的音量调节");
+        AddSectionTitle("音频", "主音量、音乐、音效独立调节");
 
-        var bgmRow = new VisualElement();
-        bgmRow.style.flexDirection = FlexDirection.Row; bgmRow.style.alignItems = Align.Center;
-        bgmRow.style.marginBottom = 12;
-        var bgmLabel = new Label("背景音乐");
-        bgmLabel.style.width = 100; bgmLabel.style.fontSize = 20; bgmLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
-        bgmLabel.style.unityFontDefinition = GetFontDef();
-        bgmRow.Add(bgmLabel);
-        var bgmSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
-        bgmSlider.value = 80; bgmSlider.style.flexGrow = 1;
-        bgmRow.Add(bgmSlider);
-        contentPanel.Add(bgmRow);
+        AddSliderWithCallback("主音量", 0, 100, Mathf.RoundToInt(GameData.MasterVolume * 100), v => GameData.MasterVolume = v / 100f);
+        AddSliderWithCallback("背景音乐", 0, 100, Mathf.RoundToInt(GameData.BGMVolume * 100), v => GameData.BGMVolume = v / 100f);
+        AddSliderWithCallback("音效", 0, 100, Mathf.RoundToInt(GameData.SFXVolume * 100), v => GameData.SFXVolume = v / 100f);
+        AddSliderWithCallback("打字机音效", 0, 100, Mathf.RoundToInt(GameData.TypewriterVolume * 100), v => GameData.TypewriterVolume = v / 100f);
+    }
 
-        var sfxRow = new VisualElement();
-        sfxRow.style.flexDirection = FlexDirection.Row; sfxRow.style.alignItems = Align.Center;
-        sfxRow.style.marginBottom = 12;
-        var sfxLabel = new Label("音效");
-        sfxLabel.style.width = 100; sfxLabel.style.fontSize = 20; sfxLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
-        sfxLabel.style.unityFontDefinition = GetFontDef();
-        sfxRow.Add(sfxLabel);
-        var sfxSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
-        sfxSlider.value = 100; sfxSlider.style.flexGrow = 1;
-        sfxRow.Add(sfxSlider);
-        contentPanel.Add(sfxRow);
-
-        var voiceRow = new VisualElement();
-        voiceRow.style.flexDirection = FlexDirection.Row; voiceRow.style.alignItems = Align.Center;
-        voiceRow.style.marginBottom = 12;
-        var voiceLabel = new Label("语音");
-        voiceLabel.style.width = 100; voiceLabel.style.fontSize = 20; voiceLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
-        voiceLabel.style.unityFontDefinition = GetFontDef();
-        voiceRow.Add(voiceLabel);
-        var voiceSlider = new Slider("", 0, 100, SliderDirection.Horizontal, 1f);
-        voiceSlider.value = 100; voiceSlider.style.flexGrow = 1;
-        voiceRow.Add(voiceSlider);
-        contentPanel.Add(voiceRow);
+    private void AddSliderWithCallback(string label, int min, int max, int defaultValue, System.Action<int> onChanged)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
+        row.style.marginBottom = 12;
+        var lbl = new Label(label);
+        lbl.style.width = 100; lbl.style.fontSize = 20; lbl.style.color = new Color(1f, 1f, 1f, 0.85f);
+        lbl.style.unityFontDefinition = GetFontDef();
+        row.Add(lbl);
+        var slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
+        slider.value = defaultValue;
+        slider.style.flexGrow = 1;
+        slider.RegisterValueChangedCallback(evt => onChanged(Mathf.RoundToInt(evt.newValue)));
+        row.Add(slider);
+        contentPanel.Add(row);
     }
 
     private void BuildGameSettings()

@@ -78,12 +78,12 @@ public class TypewriterEffect : MonoBehaviour
 
             float delay = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? FastSpeed : NormalSpeed;
 
-            if (useTypingSFX && text[i] != ' ')
+            if (useTypingSFX && text[i] != ' ' && GameData.TypewriterVolume > 0.01f)
             {
                 sfxTimer += delay;
                 if (sfxTimer >= sfxInterval)
                 {
-                    VNAudioManager.Instance?.PlaySFX("button_click");
+                    VNAudioManager.Instance?.PlayTypewriterSFX();
                     sfxTimer = 0f;
                 }
             }

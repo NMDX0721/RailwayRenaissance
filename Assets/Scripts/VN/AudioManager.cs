@@ -136,6 +136,21 @@ public class VNAudioManager : MonoBehaviour
             return;
         }
 
-        sfxSource.PlayOneShot(clip);
+        sfxSource.PlayOneShot(clip, GameData.SFXVolume * GameData.MasterVolume);
+    }
+
+    public void PlayTypewriterSFX()
+    {
+        var clip = LoadClip("sfx", "button_click");
+        if (clip == null) return;
+        sfxSource.PlayOneShot(clip, GameData.TypewriterVolume * GameData.MasterVolume);
+    }
+
+    public void ApplyVolumeSettings(float master, float bgm, float sfx)
+    {
+        bgmTargetVolume = 0.6f * master * bgm;
+        if (bgmSource.isPlaying)
+            bgmSource.volume = bgmTargetVolume;
+        sfxSource.volume = 1f;
     }
 }

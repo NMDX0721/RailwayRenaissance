@@ -317,7 +317,7 @@ public class VNSaveLoadUI : MonoBehaviour
         slotElement.style.width = isLatestSlot ? new Length(96, LengthUnit.Percent) : new Length(47, LengthUnit.Percent);
         slotElement.style.height = 120;
         slotElement.style.marginBottom = 14;
-        if (!isLatestSlot && slotIndex % 2 == 0) slotElement.style.marginRight = new Length(6, LengthUnit.Percent);
+        if (!isLatestSlot && slotIndex % 2 == 1) slotElement.style.marginRight = new Length(6, LengthUnit.Percent);
         slotElement.style.alignItems = Align.Stretch;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
