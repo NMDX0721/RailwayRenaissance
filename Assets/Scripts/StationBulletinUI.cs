@@ -435,6 +435,7 @@ public class StationBulletinUI : MonoBehaviour
         lbl.style.unityFontDefinition = GetFontDef();
         row.Add(lbl);
 
+        Label valLabel = null;
         var slider = new Slider("", min, max, SliderDirection.Horizontal, 1f);
         slider.value = defaultValue;
         slider.style.flexGrow = 1;
@@ -442,7 +443,7 @@ public class StationBulletinUI : MonoBehaviour
         {
             int v = Mathf.RoundToInt(evt.newValue);
             onChanged(v);
-            valLabel.text = v + "%";
+            if (valLabel != null) valLabel.text = v + "%";
         });
         slider.RegisterCallback<PointerDownEvent>(evt =>
         {
@@ -458,7 +459,7 @@ public class StationBulletinUI : MonoBehaviour
         }, TrickleDown.TrickleDown);
         row.Add(slider);
 
-        var valLabel = new Label(defaultValue + "%");
+        valLabel = new Label(defaultValue + "%");
         valLabel.style.width = 55; valLabel.style.fontSize = 16;
         valLabel.style.color = CTextDim;
         valLabel.style.unityFontDefinition = GetFontDef();

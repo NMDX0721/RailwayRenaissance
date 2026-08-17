@@ -291,6 +291,7 @@ public class TitleScreen : MonoBehaviour
     private void ShowNewsPanel()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
+        var gameFont = Resources.Load<Font>("Fonts/zpix");
         var fontDef = new FontDefinition { font = gameFont };
 
         var overlay = new VisualElement();
