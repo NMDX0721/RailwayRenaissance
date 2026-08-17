@@ -315,10 +315,10 @@ public class VNSaveLoadUI : MonoBehaviour
     {
         var slotElement = new VisualElement();
         slotElement.style.flexDirection = FlexDirection.Row;
-        slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
+        slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(49, LengthUnit.Percent);
         slotElement.style.height = 120;
         slotElement.style.marginBottom = 14;
-        if (!isLatestSlot && slotIndex % 2 == 1) slotElement.style.marginRight = new Length(4, LengthUnit.Percent);
+        if (!isLatestSlot && slotIndex % 2 == 1) slotElement.style.marginRight = new Length(2, LengthUnit.Percent);
         slotElement.style.alignItems = Align.Stretch;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
@@ -350,7 +350,7 @@ public class VNSaveLoadUI : MonoBehaviour
         infoContainer.style.flexDirection = FlexDirection.Column;
         infoContainer.style.flexGrow = 1;
         infoContainer.style.paddingLeft = 15; infoContainer.style.paddingRight = 8;
-        infoContainer.style.paddingTop = 18; infoContainer.style.paddingBottom = 12;
+        infoContainer.style.paddingTop = 28; infoContainer.style.paddingBottom = 12;
         infoContainer.style.justifyContent = Justify.FlexStart;
         infoContainer.style.overflow = Overflow.Hidden;
 
