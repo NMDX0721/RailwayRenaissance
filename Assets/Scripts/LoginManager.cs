@@ -60,7 +60,7 @@ public class LoginManager : MonoBehaviour
     private bool isPasswordVisible = false;
     private bool isRegPasswordVisible = false;
     private bool isConfirmPasswordVisible = false;
-    private const string GAME_VERSION = "v1.0.0";
+    private const string GAME_VERSION = "Beta v0.9.0";
     public static bool showAutoLoginOnStart = true;
     public static bool showRegisterOnStart = false;
 
@@ -1999,8 +1999,173 @@ public class LoginManager : MonoBehaviour
         colors.normalColor = Color.white;
         colors.highlightedColor = new Color(1f, 0.9f, 0.7f);
         button.colors = colors;
+        button.onClick.AddListener(ShowAnnouncementPanel);
 
         return text;
+    }
+
+    void ShowAnnouncementPanel()
+    {
+        Canvas canvas = null;
+        var loginCanvas = GameObject.Find("LoginCanvas");
+        if (loginCanvas != null) canvas = loginCanvas.GetComponent<Canvas>();
+        if (canvas == null) canvas = FindAnyObjectByType<Canvas>();
+        if (canvas == null) return;
+
+        var dialogObj = new GameObject("AnnouncementDialog");
+        dialogObj.transform.SetParent(canvas.transform, false);
+        dialogObj.transform.SetAsLastSibling();
+        var dialogRect = dialogObj.AddComponent<RectTransform>();
+        dialogRect.anchorMin = Vector2.zero;
+        dialogRect.anchorMax = Vector2.one;
+        dialogRect.sizeDelta = Vector2.zero;
+
+        // 全屏遮罩，点击关闭
+        var maskObj = new GameObject("Mask");
+        maskObj.transform.SetParent(dialogObj.transform, false);
+        var maskRect = maskObj.AddComponent<RectTransform>();
+        maskRect.anchorMin = Vector2.zero;
+        maskRect.anchorMax = Vector2.one;
+        maskRect.sizeDelta = Vector2.zero;
+        var maskImg = maskObj.AddComponent<Image>();
+        maskImg.color = new Color(0, 0, 0, 0.7f);
+        var maskBtn = maskObj.AddComponent<Button>();
+        maskBtn.targetGraphic = maskImg;
+        maskBtn.onClick.AddListener(() => Destroy(dialogObj));
+
+        // 主面板
+        var panelObj = new GameObject("Panel");
+        panelObj.transform.SetParent(dialogObj.transform, false);
+        var panelRect = panelObj.AddComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(760, 640);
+        var panelImg = panelObj.AddComponent<Image>();
+        panelImg.color = new Color(0.12f, 0.08f, 0.05f, 0.97f);
+
+        // 标题
+        var titleObj = new GameObject("Title");
+        titleObj.transform.SetParent(panelObj.transform, false);
+        var titleRect = titleObj.AddComponent<RectTransform>();
+        titleRect.anchorMin = new Vector2(0f, 1f);
+        titleRect.anchorMax = new Vector2(1f, 1f);
+        titleRect.anchoredPosition = new Vector2(0, -45);
+        titleRect.sizeDelta = new Vector2(0, 60);
+        var titleText = titleObj.AddComponent<Text>();
+        titleText.text = "★ 快讯  " + GAME_VERSION;
+        titleText.fontSize = 34;
+        titleText.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+        titleText.alignment = TextAnchor.MiddleCenter;
+        titleText.font = GetFont(34);
+
+        // 关闭按钮（右上角）
+        var closeObj = new GameObject("CloseBtn");
+        closeObj.transform.SetParent(panelObj.transform, false);
+        var closeRect = closeObj.AddComponent<RectTransform>();
+        closeRect.anchorMin = new Vector2(1f, 1f);
+        closeRect.anchorMax = new Vector2(1f, 1f);
+        closeRect.anchoredPosition = new Vector2(-40, -40);
+        closeRect.sizeDelta = new Vector2(60, 60);
+        var closeImg = closeObj.AddComponent<Image>();
+        closeImg.color = new Color(0.3f, 0.15f, 0.1f, 0.5f);
+        var closeBtn = closeObj.AddComponent<Button>();
+        closeBtn.targetGraphic = closeImg;
+        closeBtn.onClick.AddListener(() => Destroy(dialogObj));
+        var closeText = closeObj.AddComponent<Text>();
+        closeText.text = "×";
+        closeText.fontSize = 40;
+        closeText.color = new Color(1f, 1f, 1f, 0.8f);
+        closeText.alignment = TextAnchor.MiddleCenter;
+        closeText.font = GetFont(40);
+
+        // 滚动内容区域
+        var viewportObj = new GameObject("Viewport");
+        viewportObj.transform.SetParent(panelObj.transform, false);
+        var viewportRect = viewportObj.AddComponent<RectTransform>();
+        viewportRect.anchorMin = new Vector2(0f, 0f);
+        viewportRect.anchorMax = new Vector2(1f, 1f);
+        viewportRect.offsetMin = new Vector2(40, 40);
+        viewportRect.offsetMax = new Vector2(-40, -90);
+        var viewportMaskImg = viewportObj.AddComponent<Image>();
+        viewportMaskImg.color = new Color(0, 0, 0, 0.25f);
+        var viewportMask = viewportObj.AddComponent<RectMask2D>();
+
+        var scrollObj = new GameObject("Scroll");
+        scrollObj.transform.SetParent(viewportObj.transform, false);
+        var scrollRectComp = scrollObj.AddComponent<RectTransform>();
+        scrollRectComp.anchorMin = Vector2.zero;
+        scrollRectComp.anchorMax = Vector2.one;
+        scrollRectComp.sizeDelta = Vector2.zero;
+        var scroll = scrollObj.AddComponent<ScrollRect>();
+        scroll.horizontal = false;
+        scroll.viewport = viewportRect;
+
+        var contentObj = new GameObject("Content");
+        contentObj.transform.SetParent(scrollObj.transform, false);
+        var contentRect = contentObj.AddComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0f, 1f);
+        contentRect.anchorMax = new Vector2(1f, 1f);
+        contentRect.pivot = new Vector2(0.5f, 1f);
+        contentRect.anchoredPosition = Vector2.zero;
+        var contentLayout = contentObj.AddComponent<VerticalLayoutGroup>();
+        contentLayout.padding = new RectOffset(20, 20, 10, 10);
+        contentLayout.spacing = 8;
+        contentLayout.childForceExpandWidth = true;
+        contentLayout.childForceExpandHeight = false;
+
+        var contentText = contentObj.AddComponent<Text>();
+        contentText.fontSize = 20;
+        contentText.color = new Color(1f, 1f, 1f, 0.85f);
+        contentText.font = GetFont(20);
+        contentText.alignment = TextAnchor.UpperLeft;
+        contentText.raycastTarget = false;
+        contentText.text = BuildAnnouncementText();
+
+        // 内容自适应高度，支撑滚动
+        var fitter = contentObj.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        scroll.content = contentRect;
+    }
+
+    string BuildAnnouncementText()
+    {
+        return "【版本】Beta v0.9.0（2026-08-18）\n"
+            + "\n"
+            + "── 序章体验 ──\n"
+            + "· 完整序章剧本（10个章节，1600+条对话/旁白）\n"
+            + "· 序章分支对话系统（7处选项）\n"
+            + "· 系统启动画面（居中科技感显示）\n"
+            + "· 边境检查站追逐战（4辆武装载具）\n"
+            + "· 统一便当店大采购（BBQ炸鸡、辛拉面、走私动漫周边）\n"
+            + "· 嘉颖徐资助剧情（黑金卡，每月一万沙币额度）\n"
+            + "\n"
+            + "── 核心系统 ──\n"
+            + "· 沙本位经济核 v4.2（季节系统、容量约束）\n"
+            + "· 千里马创世核 v3.0（世界种子、确定性生成算法）\n"
+            + "· 岁月叙事引擎 v2.0（节奏控制、双AI线）\n"
+            + "· 先民人事系统 v1.2（疲劳、忠诚度、技能成长）\n"
+            + "· 铁龙竞争系统 v1.0（USET竞争AI）\n"
+            + "\n"
+            + "── 交互与UI ──\n"
+            + "· VN引擎完整支持（选项、条件分支、链式脚本）\n"
+            + "· 存档管理器（章节名映射，6槽位分页）\n"
+            + "· 设置系统（音频/游戏/显示/操作/关于）\n"
+            + "· 按键绑定自定义\n"
+            + "· 帧率显示/垂直同步/自定义帧率\n"
+            + "\n"
+            + "── 美术与世界观 ──\n"
+            + "· 沙子飞猪号0721两舱布局设计\n"
+            + "· 驾驶舱/客舱图片绑定（昼夜版本）\n"
+            + "· 朝鲜「有限开放」世界观\n"
+            + "\n"
+            + "── 已知问题 ──\n"
+            + "· 部分背景图片尚未生成（占位中）\n"
+            + "· 角色立绘为临时占位图\n"
+            + "· VN回放功能待完善\n"
+            + "· 音频资源尚未全部到位";
     }
 
     void OnTogglePassword()
