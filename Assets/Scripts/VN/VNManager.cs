@@ -580,7 +580,7 @@ public class VNManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
             // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
             // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
