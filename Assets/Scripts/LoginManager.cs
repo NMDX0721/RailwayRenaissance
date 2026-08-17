@@ -1968,7 +1968,7 @@ public class LoginManager : MonoBehaviour
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
         var text = textObj.AddComponent<Text>();
-        text.text = "公告";
+        text.text = "快讯";
         text.fontSize = 24;
         text.color = new Color(1f, 0.92f, 0.7f);
         text.alignment = TextAnchor.MiddleCenter;

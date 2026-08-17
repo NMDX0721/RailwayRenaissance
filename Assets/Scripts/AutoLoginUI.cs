@@ -168,6 +168,9 @@ public class AutoLoginUI : MonoBehaviour
         subText.text = "欢迎回来，" + auth.username;
 
         yield return new WaitForSeconds(0.5f);
+        // 转场前将相机背景设为黑色，避免紫色闪屏
+        if (Camera.main != null)
+            Camera.main.backgroundColor = Color.black;
         SceneManager.LoadScene("TitleScreen");
     }
 

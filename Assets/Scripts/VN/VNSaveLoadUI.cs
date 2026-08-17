@@ -313,10 +313,11 @@ public class VNSaveLoadUI : MonoBehaviour
     private void BuildSlot(int slotIndex, VNSaveData saveData, bool isLatestSlot, FontDefinition fontDef)
     {
         var slotElement = new VisualElement();
+        slotElement.style.flexDirection = FlexDirection.Row;
         slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
         slotElement.style.height = 110;
         slotElement.style.marginBottom = 10;
-        slotElement.style.alignItems = Align.Center;
+        slotElement.style.alignItems = Align.Stretch;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
         slotElement.style.borderLeftWidth = 1; slotElement.style.borderRightWidth = 1;
@@ -348,7 +349,7 @@ public class VNSaveLoadUI : MonoBehaviour
         infoContainer.style.flexGrow = 1;
         infoContainer.style.paddingLeft = 15; infoContainer.style.paddingRight = 8;
         infoContainer.style.paddingTop = 12; infoContainer.style.paddingBottom = 12;
-        infoContainer.style.justifyContent = Justify.Center;
+        infoContainer.style.justifyContent = Justify.FlexStart;
         infoContainer.style.overflow = Overflow.Hidden;
 
         var badgeRow = new VisualElement();
@@ -411,6 +412,7 @@ public class VNSaveLoadUI : MonoBehaviour
         btnArea.style.alignItems = Align.Center;
         btnArea.style.justifyContent = Justify.FlexEnd;
         btnArea.style.flexShrink = 0;
+        btnArea.style.marginLeft = StyleKeyword.Auto;
         btnArea.style.paddingRight = 10;
 
         if (saveData != null || isSaveMode)
