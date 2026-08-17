@@ -533,40 +533,52 @@ public class StationBulletinUI : MonoBehaviour
         var input = new TextField();
         input.value = Mathf.RoundToInt(slider.value).ToString();
         input.multiline = false;
-        input.style.width = 110; input.style.height = 40;
-        input.style.backgroundColor = new Color(0.16f, 0.1f, 0.05f, 0.95f);
+        input.style.width = 68; input.style.height = 34;
+        input.style.flexGrow = 0; input.style.flexShrink = 0;
+        input.style.marginLeft = 6; input.style.marginRight = 4;
         input.style.unityFontDefinition = GetFontDef();
-        input.style.borderTopLeftRadius = 6; input.style.borderTopRightRadius = 6;
-        input.style.borderBottomLeftRadius = 6; input.style.borderBottomRightRadius = 6;
-        input.style.borderTopWidth = 2; input.style.borderBottomWidth = 2;
-        input.style.borderLeftWidth = 2; input.style.borderRightWidth = 2;
-        input.style.borderTopColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
-        input.style.borderBottomColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
-        input.style.borderLeftColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
-        input.style.borderRightColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
-        input.style.paddingLeft = 8; input.style.paddingRight = 8;
-        input.style.marginLeft = 0;
+        ApplyInputStyle(input);
 
-        input.RegisterCallback<GeometryChangedEvent>(e => StyleInputText(input));
-        // 布局后统一样式：文本高对比大号字 + 内部所有元素背景透明（干掉默认白色输入区）
-        void StyleInputText(TextField tf)
+        void ApplyInputStyle(TextField tf)
         {
+            // 内外所有元素：背景透明、边框清零（干掉默认白色输入区+蓝色聚焦圈）、不裁剪文字
             foreach (var ve in tf.Query<VisualElement>().ToList())
+            {
                 ve.style.backgroundColor = Color.clear;
+                ve.style.borderTopWidth = 0; ve.style.borderBottomWidth = 0;
+                ve.style.borderLeftWidth = 0; ve.style.borderRightWidth = 0;
+                ve.style.overflow = Overflow.Visible;
+                ve.style.height = 34;
+            }
             foreach (var te in tf.Query<TextElement>().ToList())
             {
                 te.style.unityFontDefinition = GetFontDef();
-                te.style.fontSize = 24;
+                te.style.fontSize = 22;
                 te.style.color = new Color(1f, 0.97f, 0.85f, 1f); // 亮白金色，高对比
                 te.style.unityTextAlign = TextAnchor.MiddleCenter;
                 te.style.overflow = Overflow.Visible;
                 te.style.whiteSpace = WhiteSpace.Normal;
+                te.style.paddingTop = 0; te.style.paddingBottom = 0;
                 te.style.unityFontStyleAndWeight = FontStyle.Bold;
             }
-            tf.style.fontSize = 24;
-            tf.style.color = new Color(1f, 0.97f, 0.85f, 1f);
+            // 外层：深棕底 + 单层金色边框
             tf.style.backgroundColor = new Color(0.16f, 0.1f, 0.05f, 0.95f);
+            tf.style.borderTopWidth = 1; tf.style.borderBottomWidth = 1;
+            tf.style.borderLeftWidth = 1; tf.style.borderRightWidth = 1;
+            tf.style.borderTopLeftRadius = 6; tf.style.borderTopRightRadius = 6;
+            tf.style.borderBottomLeftRadius = 6; tf.style.borderBottomRightRadius = 6;
+            tf.style.borderTopColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
+            tf.style.borderBottomColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
+            tf.style.borderLeftColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
+            tf.style.borderRightColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
+            tf.style.paddingLeft = 8; tf.style.paddingRight = 8;
+            tf.style.fontSize = 22;
+            tf.style.color = new Color(1f, 0.97f, 0.85f, 1f);
         }
+
+        input.RegisterCallback<GeometryChangedEvent>(e => ApplyInputStyle(input));
+        // 聚焦时默认主题会加蓝色光圈，显式重新压回金色边框
+        input.RegisterCallback<FocusInEvent>(e => ApplyInputStyle(input));
 
         input.RegisterCallback<KeyDownEvent>(evt =>
         {
