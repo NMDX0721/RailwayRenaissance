@@ -872,10 +872,160 @@ AVOID:
 
 ---
 
-### 2.5 停机坪
+### 2.5 客舱内部（白天·沙能飞行器）——新视角
 
-**文件**：`Resources/bg/hangar.png`  
-**用途**：序章 Day 0 领取载具场景（脚本引用"hangar"）
+**文件**：`Resources/bg/cabin_interior.png`  
+**用途**：序章飞行器客舱场景——乘客视角，窗外只有天空，避免地理矛盾（可复用为火车车厢）
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+passenger cabin interior, small commuter aircraft cabin,
+daytime, 2076 retro-futuristic,
+NORTH KOREAN industrial design, sand-energy flying vehicle,
+"Chollima" brand passenger cabin:
+
+SCENE: compact passenger cabin of a small DPRK-made sand-energy commuter flying vehicle, 2-3 rows of seats, narrow aisle, functional interior, windows on both sides showing only sky and clouds — NO GROUND VISIBLE, designed to be reusable as train carriage or bus interior
+
+CABIN LAYOUT:
+- 2-3 rows of passenger seats, 2 seats per row (left + right), narrow aisle in middle
+- Compact cabin — about 5-6 meters long, 2 meters wide
+- Low ceiling with overhead storage compartments (small, utilitarian)
+- Small luggage rack above seats (metal mesh, Korean-made)
+- Emergency exit signs at front and rear (Korean text)
+- Door at front leading to cockpit (closed, simple door with small window)
+
+SEATS AND INTERIOR:
+- Dark green or navy blue vinyl upholstery (North Korean industrial standard)
+- Simple fold-down tray tables on seat backs
+- Seat belt with Korean-made metal buckle
+- Minimal legroom — functional, not luxurious
+- Floor: dark rubber mat with raised pattern
+
+KOREAN CULTURAL ELEMENTS (SUBTLE, APPROPRIATE FOR PASSENGER SPACE):
+- Small "Chollima" brand emblem on cabin wall (千里马 silhouette)
+- Safety instruction card in Korean (Hangul) in seat pocket
+- "금연" (No Smoking) and "좌석벨트" (Fasten Seat Belt) signs in Korean
+- Dancheong-inspired color stripe along cabin wall (subtle, not overwhelming)
+- Small framed Korean landscape print on cabin divider wall
+- Overhead bin handles with Korean text "열다" (Open) / "닫다" (Close)
+- "비상구" (Emergency Exit) sign above door, illuminated
+- Speed/altitude display for passengers at front of cabin (Korean text)
+- Airline-style safety card with Korean illustrations
+
+WINDOW DESIGN (CRITICAL — SKY ONLY, NO GROUND):
+- Rounded rectangular windows, approximately 40cm wide
+- Double-pane design with slight blue tint
+- Window frame: dark gray rubber seal, slightly recessed
+- Small manual window shade (beige, pull-down type)
+- VIEW THROUGH WINDOW (DAYTIME): bright blue sky, white clouds, occasional distant flying vehicle
+- NO GROUND, NO MOUNTAINS, NO CITIES — only sky, to make the scene reusable
+- Sunlight streaming through windows, creating warm light patches on cabin floor
+- Cloud shadows occasionally passing through cabin
+
+LIGHTING (DAYTIME):
+- Bright, even daylight illumination through windows
+- Overhead fluorescent lights (warm white, typical Korean public transport)
+- Sunbeams creating light patches on seats and floor
+- Shadows from window frames cast across cabin interior
+
+COLOR PALETTE:
+- Primary: dark green (#3B5E3B), navy blue (#2A3A5A), warm beige (#D4C5A9)
+- Secondary: sky blue (#87CEEB), cloud white (#F0F0F0), overhead light warm (#FFF8DC)
+- Accents: Korean red (#CD2626) on emergency signs, gold (#DAA520) on brand emblem
+- Floor: dark rubber gray (#3A3A3A)
+
+ATMOSPHERE:
+- Compact but functional — a working vehicle, not a luxury liner
+- Clean and well-maintained, North Korean public transport standard
+- Quiet and calm during flight
+- Sense of everyday travel, ordinary but reliable
+- Neutral enough to be reused as train carriage interior
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN PUBLIC TRANSPORT AESTHETIC
+- Practical, functional design
+- All text in Korean (Hangul)
+- Reusable as train carriage, bus, or small aircraft interior
+
+AVOID:
+- Luxury or premium interior (must feel like standard public transport)
+- Too much empty space (cabin is compact)
+- Ground or landscape visible through windows
+- English text
+- Japanese or Chinese cultural elements
+- Overly political or propaganda elements (this is a passenger cabin, not a government office)
+```
+
+### 2.6 客舱内部（夜晚·沙能飞行器）——新视角
+
+**文件**：`Resources/bg/cabin_interior_night.png`  
+**用途**：序章夜晚飞行器客舱场景——乘客视角，窗外夜空
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+passenger cabin interior, small commuter aircraft cabin,
+nighttime, 2076 retro-futuristic,
+NORTH KOREAN industrial design, sand-energy flying vehicle,
+"Chollima" brand passenger cabin at night:
+
+SCENE: same compact passenger cabin as daytime version, but at night — dimmed cabin lights, dark windows showing starry sky, reading lights on, intimate nighttime atmosphere
+
+NIGHTTIME DIFFERENCES — SAME CABIN, NOW AT NIGHT:
+- Cabin lights dimmed to warm amber glow — only reading lights and emergency exit signs provide illumination
+- Windows show dark night sky with stars, crescent moon — NO GROUND VISIBLE
+- Small reading light above each passenger seat (individual, warm yellow LED)
+- Floor-level emergency path lights (faint green glow along aisle)
+- "비상구" (Emergency Exit) sign illuminated in red
+- Overhead lights off, only accent lighting along cabin wall
+- Seat belt buckles catching dim light
+- Window shades mostly down, some passengers may have them open looking at stars
+
+KOREAN ELEMENTS AT NIGHT (SAME, SUBTLY ILLUMINATED):
+- Chollima emblem visible in dim light
+- Safety card in seat pocket, dimly lit
+- "금연" and "좌석벨트" signs illuminated
+- Dancheong color stripe faintly visible along cabin wall
+- Emergency exit sign in red Korean text
+
+WINDOW VIEW (NIGHT — SKY ONLY):
+- Dark night sky with scattered stars
+- Crescent or full moon visible through window
+- Occasional lights of distant flying vehicles passing by
+- Thin cloud layer catching moonlight below
+- NO GROUND or CITY LIGHTS visible
+
+COLOR PALETTE (NIGHT):
+- Primary: deep dark blue (#0A0A1E), warm amber cabin light (#8B6914)
+- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
+- Accents: emergency red (#CD2626), faint green path lights (#32CD32)
+- Seat: dark green muted (#2A4A2A) in low light
+
+ATMOSPHERE:
+- Quiet, intimate nighttime travel atmosphere
+- Passengers resting during night flight
+- Warm and safe inside despite the dark outside
+- Peaceful, contemplative mood
+- Reusable as night train carriage interior
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN PUBLIC TRANSPORT AESTHETIC at night
+- Dim, warm ambient lighting
+- All text in Korean (Hangul)
+- Reusable as train carriage, bus, or small aircraft interior at night
+
+AVOID:
+- Too bright (must be clearly nighttime)
+- Ground or city lights visible through windows
+- English text
+- Japanese or Chinese cultural elements
+- Luxury interior design
+```
 
 **提示词**：
 ```
@@ -912,7 +1062,42 @@ AVOID:
 
 ---
 
-### 2.6 边境小镇
+### 2.7 停机坪
+
+**文件**：`Resources/bg/hangar.png`  
+**用途**：序章 Day 0 领取载具场景（脚本引用"hangar"）
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening.
+
+ARCHITECTURAL ELEMENTS:
+- University rooftop helipad
+- Several sand-energy flying vehicles parked
+- Deep blue sand vehicles with university emblem
+- Control tower in background
+- Korean-style rooflines visible below
+
+VIEW (PYONGYANG SKYLINE):
+- Ryugyong Hotel in distance (pyramid shape)
+- Juche Tower visible
+- Grand People's Study House with traditional Korean roof
+- Mix of traditional Korean architecture and modern buildings
+- Mountains with Korean pine trees in far distance
+- Taedong River visible
+- Flying vehicles in distance
+
+COLOR PALETTE:
+- Primary: evening sky gradient (#FF6B35 to #1A1A2E)
+- Secondary: deep blue vehicles (#000080), warm sunset (#FFD700)
+- Accents: university emblem colors, landing pad lights
+
+ATMOSPHERE: Transition from day to night, sense of departure. The last moment before a long journey begins.
+```
+
+---
+
+### 2.8 边境小镇
 
 **文件**：`Resources/bg/border_town.png`  
 **用途**：序章 Day 1 第一次补给
