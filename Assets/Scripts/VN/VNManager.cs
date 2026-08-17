@@ -565,6 +565,24 @@ public class VNManager : MonoBehaviour
             return;
         }
 
+        // Shift + 左右方向键：快进/后退对话
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (dialogueBox != null && dialogueBox.IsTyping())
+                    dialogueBox.SkipTyping();
+                else
+                    NextDialogue();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                PrevDialogue();
+                return;
+            }
+        }
+
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
@@ -620,7 +638,6 @@ public class VNManager : MonoBehaviour
         var localPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
         var picked = panel.Pick(localPos);
         if (picked == null) return false;
-        // 检查点击的元素或其父级是否为 Button
         var cur = picked;
         while (cur != null)
         {
@@ -628,6 +645,24 @@ public class VNManager : MonoBehaviour
             cur = cur.parent;
         }
         return false;
+    }
+
+    private void PrevDialogue()
+    {
+        if (currentDialogueIndex > 0)
+        {
+            currentDialogueIndex--;
+            ShowCurrentDialogue();
+        }
+        else if (currentSceneIndex > 0)
+        {
+            currentSceneIndex--;
+            // Skip to last dialogue of previous scene
+            var prevScene = currentScript.scenes[currentSceneIndex];
+            if (prevScene.d.Length > 0)
+                currentDialogueIndex = prevScene.d.Length - 1;
+            ShowCurrentDialogue();
+        }
     }
 
     public void StartScript(string scriptName)
