@@ -565,15 +565,12 @@ public class VNManager : MonoBehaviour
             return;
         }
 
-        // Shift + 左右方向键：快进/后退对话
+        // Shift：快进（打字时加速，已完成时自动推进到下一句）
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if (dialogueBox != null && dialogueBox.IsTyping())
-                    dialogueBox.SkipTyping();
-                else
-                    NextDialogue();
+                NextDialogue();
                 return;
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
