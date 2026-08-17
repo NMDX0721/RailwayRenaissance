@@ -38,6 +38,7 @@ public class VNManager : MonoBehaviour
 
     // Confirm dialog
     private VisualElement confirmDialog;
+    private VisualElement bootScreen;
 
     // Menu bar
     private VisualElement menuBar;
@@ -747,6 +748,16 @@ public class VNManager : MonoBehaviour
             fullScreenNews?.Show(entry.text);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
+        else if (entry.t == "boot")
+        {
+            // 系统启动画面——居中科技感显示
+            dialogueBox?.Hide();
+            HideOptions();
+            if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+            ShowBootScreen(entry.text, entry.s);
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
+            return; // 不显示常规对话，由BootScreen处理点击
+        }
         else if (entry.t == "special")
         {
             // 特殊游戏操作指令
@@ -832,6 +843,68 @@ public class VNManager : MonoBehaviour
     {
         if (optionsOverlay != null) optionsOverlay.style.display = DisplayStyle.None;
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
+    }
+
+    private void ShowBootScreen(string text, string speaker)
+    {
+        if (bootScreen == null)
+        {
+            var root = uiDoc.rootVisualElement;
+            bootScreen = new VisualElement { name = "boot-screen" };
+            bootScreen.style.position = Position.Absolute;
+            bootScreen.style.top = 0; bootScreen.style.left = 0;
+            bootScreen.style.right = 0; bootScreen.style.bottom = 0;
+            bootScreen.style.alignItems = Align.Center;
+            bootScreen.style.justifyContent = Justify.Center;
+            bootScreen.style.backgroundColor = new Color(0, 0, 0, 0.85f);
+            bootScreen.pickingMode = PickingMode.Position;
+            bootScreen.RegisterCallback<ClickEvent>(e =>
+            {
+                if (e.target == bootScreen)
+                    NextDialogue();
+            });
+            root.Add(bootScreen);
+        }
+        bootScreen.Clear();
+
+        var container = new VisualElement();
+        container.style.alignItems = Align.Center;
+        container.style.justifyContent = Justify.Center;
+        bootScreen.Add(container);
+
+        if (!string.IsNullOrEmpty(speaker))
+        {
+            var nameLabel = new Label(speaker);
+            nameLabel.style.fontSize = 28;
+            nameLabel.style.color = new Color(0.3f, 0.8f, 1f, 0.9f);
+            nameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+            nameLabel.style.marginBottom = 16;
+            nameLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+            container.Add(nameLabel);
+        }
+
+        var textLabel = new Label(text);
+        textLabel.style.fontSize = 24;
+        textLabel.style.color = new Color(0.6f, 0.9f, 1f, 1f);
+        textLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        textLabel.style.whiteSpace = WhiteSpace.Normal;
+        textLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        container.Add(textLabel);
+
+        var continueHint = new Label("点击继续");
+        continueHint.style.fontSize = 16;
+        continueHint.style.color = new Color(0.3f, 0.8f, 1f, 0.3f);
+        continueHint.style.marginTop = 30;
+        continueHint.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        container.Add(continueHint);
+
+        bootScreen.style.display = DisplayStyle.Flex;
+    }
+
+    private void HideBootScreen()
+    {
+        if (bootScreen != null)
+            bootScreen.style.display = DisplayStyle.None;
     }
 
     private void EndScript()
