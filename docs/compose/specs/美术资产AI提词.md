@@ -1015,35 +1015,82 @@ AVOID:
 "
 ### 2.7 停机坪
 
-**文件**：`Resources/bg/hangar.png`  
-**用途**：序章 Day 0 领取载具场景（脚本引用"hangar"）
+**文件**：Resources/bg/hangar.png  
+**用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，傍晚
 
 **提示词**：
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening.
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening,
+NORTH KOREAN OFFICIAL AESTHETIC,
+"Chollima" brand sand-energy flying vehicles parked:
 
-ARCHITECTURAL ELEMENTS:
-- University rooftop helipad
-- Several sand-energy flying vehicles parked
-- Deep blue sand vehicles with university emblem
-- Control tower in background
-- Korean-style rooflines visible below
+SCENE: rooftop helipad of Kim Il Sung University's main building at sunset. The protagonist's vehicle — a deep blue 0721 Sand Flying Pig — is parked prominently. Several other Chollima-brand vehicles are parked nearby. The university emblem is visible on the building. The atmosphere is transitional: the last moment of campus life before departure.
 
-VIEW (PYONGYANG SKYLINE):
-- Ryugyong Hotel in distance (pyramid shape)
-- Juche Tower visible
-- Grand People's Study House with traditional Korean roof
-- Mix of traditional Korean architecture and modern buildings
+LAYOUT:
+- Large rooftop landing pad with markings (Korean text / directional markings)
+- 0721 Sand Flying Pig parked in foreground, deep blue, university emblem on side, slightly weathered
+- 2-3 other Chollima sand-energy vehicles parked nearby (different colors: dark green, grey)
+- University building edge visible — Korean-style railings, Kim Il-sung University emblem
+- Control booth / small structure on rooftop with communication equipment
+- Stairs/door access from the building below
+
+NORTH KOREAN CULTURAL ELEMENTS:
+- "김일성종합대학" (Kim Il Sung University) emblem on building wall
+- "위대한 수령 김일성동지 만세" calligraphy on building facade
+- Red star emblem on control booth
+- Korean traditional dancheong pattern on roof eaves
+- Korean flag (태극기) on a pole on the rooftop
+- Juche-era architectural style (Soviet-Korean brutalist mixed with traditional elements)
+- "천리마" (Chollima) branding on the vehicles
+
+VIEW (PYONGYANG SKYLINE IN BACKGROUND):
+- Ryugyong Hotel in distance — pyramid-shaped, partially lit
+- Juche Tower — tall stone tower with torch flame at top
+- Grand People's Study House — traditional Korean roof, grand columns
+- Taedong River visible with bridges
+- Mix of traditional Korean architecture (curved tile roofs, dancheong) and modern apartment blocks
 - Mountains with Korean pine trees in far distance
-- Taedong River visible
-- Flying vehicles in distance
+- A few flying vehicles in the evening sky, lights just beginning to turn on
+- Distant factory smokestacks (industrial DPRK aesthetic)
+
+DETAILS ON THE 0721 SAND FLYING PIG:
+- Deep blue paint with gold university emblem
+- Chollima winged horse badge on the side
+- Vehicle ID "0721" in Korean numerals
+- Slightly aged — 23 years old, some wear on the paint
+- Rooftop hatch open, cockpit visible
+- Sand energy intake vents on the sides
+- Running lights glowing amber
 
 COLOR PALETTE:
 - Primary: evening sky gradient (#FF6B35 to #1A1A2E)
-- Secondary: deep blue vehicles (#000080), warm sunset (#FFD700)
-- Accents: university emblem colors, landing pad lights
+- Secondary: deep blue vehicle (#000080, #1A237E), warm sunset amber (#FFD700)
+- Accents: university emblem gold (#DAA520), Korean red (#CD2626)
+- Landing pad lights: warm white (#FFF8DC)
+- Building: concrete grey (#808080, #696969), traditional roof tiles dark brown (#3E2723)
 
-ATMOSPHERE: Transition from day to night, sense of departure. The last moment before a long journey begins.
+ATMOSPHERE:
+- Transition from day to night — the last golden light before departure
+- Sense of anticipation: a journey is about to begin
+- Quiet and calm on the rooftop, city below starting to light up
+- The vehicle waiting, ready
+- Slight wind suggested by Korean flag movement
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN ARCHITECTURAL AESTHETIC — unmistakably DPRK university
+- Every label in Korean (Hangul)
+- Warm evening light, long shadows
+
+AVOID:
+- Generic sci-fi cityscape
+- Chinese or Japanese architecture
+- English text
+- Modern glass towers (Pyongyang has a unique skyline)
+- Missing the Juche Tower or Ryugyong Hotel (iconic landmarks)
+- Too bright (must be clearly evening/sunset)
 ```
 
 ---
