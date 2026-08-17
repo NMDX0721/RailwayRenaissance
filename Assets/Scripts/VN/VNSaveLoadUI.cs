@@ -159,8 +159,8 @@ public class VNSaveLoadUI : MonoBehaviour
         // Slot container
         slotContainer = new VisualElement { name = "slot-container" };
         slotContainer.style.flexDirection = FlexDirection.Column;
-        slotContainer.style.alignItems = Align.Center;
-        slotContainer.style.justifyContent = Justify.Center;
+        slotContainer.style.alignItems = Align.Stretch;
+        slotContainer.style.justifyContent = Justify.FlexStart;
         slotContainer.style.flexGrow = 1;
         slotContainer.style.paddingLeft = 50;
         slotContainer.style.paddingRight = 50;
@@ -261,7 +261,8 @@ public class VNSaveLoadUI : MonoBehaviour
         slotContainer.Clear();
         slotContainer.style.flexDirection = FlexDirection.Row;
         slotContainer.style.flexWrap = Wrap.Wrap;
-        slotContainer.style.justifyContent = Justify.SpaceBetween;
+        slotContainer.style.justifyContent = Justify.FlexStart;
+        slotContainer.style.alignItems = Align.FlexStart;
         var fontDef = GetFontDef();
 
         // Clamp page
@@ -380,9 +381,9 @@ public class VNSaveLoadUI : MonoBehaviour
 
         if (saveData != null)
         {
-            var chapterText = saveData.scriptName;
+            var chapterText = FormatChapterName(saveData.scriptName, saveData.sceneIndex);
             if (saveData.sceneIndex >= 0)
-                chapterText += " · 第" + (saveData.sceneIndex + 1) + "章 对话" + (saveData.dialogueIndex + 1);
+                chapterText += " · 对话" + (saveData.dialogueIndex + 1);
             var infoLabel = new Label(chapterText);
             infoLabel.style.fontSize = 20; infoLabel.style.color = new Color(1f, 1f, 1f, 0.65f);
             infoLabel.style.unityFontDefinition = fontDef; infoLabel.style.marginBottom = 4;
@@ -515,5 +516,25 @@ public class VNSaveLoadUI : MonoBehaviour
         cancelBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
         btnRow.Add(cancelBtn);
         box.Add(btnRow); overlay.Add(box); root.Add(overlay);
+    }
+
+    private string FormatChapterName(string scriptName, int sceneIndex)
+    {
+        var chapterMap = new System.Collections.Generic.Dictionary<string, string>
+        {
+            { "prologue_01_news", "序章 启程" },
+            { "prologue_02_day0", "序章 启程" },
+            { "prologue_03_journey", "序章 旅途" },
+            { "prologue_04_arrival", "序章 抵达" },
+            { "prologue_05_inspection", "序章 抵达" },
+            { "prologue_06_team", "序章 团队" },
+            { "prologue_07_first_repair", "序章 首班车" },
+            { "prologue_08_first_run", "序章 首班车" },
+            { "prologue_09_funding", "序章 启程" },
+            { "prologue_10_transition", "序章 启程" },
+        };
+        if (chapterMap.TryGetValue(scriptName, out var chapter))
+            return chapter;
+        return scriptName;
     }
 }
