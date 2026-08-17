@@ -538,7 +538,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "mystery",
       "d": [
         {
@@ -619,7 +619,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "calm",
       "d": [
         {
@@ -671,7 +671,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "calm",
       "d": [
         {
@@ -718,7 +718,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "emotional",
       "d": [
         {
@@ -786,7 +786,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "curious",
       "d": [
         {
@@ -928,7 +928,7 @@
       ]
     },
     {
-      "bg": "car_interior",
+      "bg": "cabin_interior",
       "bgm": "curious",
       "d": [
         {
@@ -960,7 +960,7 @@
       ]
     },
     {
-      "bg": "car_interior_night",
+      "bg": "cabin_interior_night",
       "bgm": "emotional",
       "transition": "fade",
       "d": [
@@ -1025,7 +1025,7 @@
       ]
     },
     {
-      "bg": "car_interior_night",
+      "bg": "cabin_interior_night",
       "bgm": "peaceful",
       "d": [
         {
