@@ -432,8 +432,6 @@ public class StationBulletinUI : MonoBehaviour
         _rebindAction = onKey;
     }
 
-    private System.Action<KeyCode> _rebindAction;
-
     private void Update()
     {
         if (_rebindAction != null)
