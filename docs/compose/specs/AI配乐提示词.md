@@ -1,149 +1,147 @@
 # 铁路复兴：沙能冲击 — AI 配乐提示词
 
 > 生成工具：Suno AI v4.5+
-> 提示词格式：Style 描述 / Lyrics 独立 / 结构标签 `[Verse]` `[Chorus]` `[Bridge]` `[Outro]`
-> 字符限制：Style ≤ 1000 chars / Lyrics ≤ 3000 chars（约 40-60 行）
+> 提示词格式：Style 描述 / Lyrics 独立 / 结构标签
+> 字符限制：Style ≤ 1000 chars / Lyrics ≤ 3000 chars
 
 ---
 
 ## 使用说明
 
-**Suno 模式选择：**
-- Custom Mode：Style 和 Lyrics 分开输入
-- 纯音乐（Instrumental）：Style 中加 `instrumental, no vocals`，Lyrics 留空或只放结构标签
+**Suno 模式：** Custom Mode，Style 和 Lyrics 分开输入。纯音乐在 Style 中加 `instrumental, no vocals`。
 
-**提示词要点：**
-- 不要用 `create/make/generate` 等命令式语言，直接描述音乐（"Acoustic folk ballad, female vocals..."）
-- 最关键的要素（genre, mood, vocal type）放在 Style 开头，超过 1000 字符会被自动截断
-- 使用 `[Verse]`、`[Chorus]`、`[Bridge]` 等标签控制歌曲结构
-- 括号内标注演唱方式：`(whispered)`、`(spoken)`、`(belting)`、`(humming)`
-- 可用 `No drums, no electric instruments` 等负面提示排除不需要的乐器
+**命名规则：** 配乐名称 = 场景/情绪 + 复用标记。`★` = 高频复用（预算优先），`○` = 中频复用，`·` = 特定场景。
 
 ---
 
-## 一、纯音乐配乐（Instrumental BGM）
+## 一、核心复用配乐（★ 高频）
 
-### 1.1 主题曲·启程（Title Screen / 序章主题）
+这些配乐贯穿多个场景，优先制作。
 
-**用途**：标题界面、序章启程氛围
-**场景**：News scroll、出发前
+### ★ 1.1 主题曲·铁轨还在（Instrumental）
 
-```
-Style: Cinematic orchestral, warm and hopeful, piano melody, soft strings, gentle rising brass, Korean traditional elements (gayageum hint), nostalgic but forward-looking, instrumental, no vocals, 85 BPM
-```
-
-### 1.2 旅途·飞行（Travel / Journey）
-
-**用途**：飞行旅途中的背景音乐（Day 1-3）
-**场景**：prologue_03 大部分场景
+**脚本引用**：`melancholy`（12 次）、`calm`（9 次）  
+**用途**：标题界面、序章启程、废弃铁路、回忆爷爷、抵达雾峰村  
+**复用说明**：主旋律变奏，慢速钢琴 + 弦乐，可覆盖所有感伤/平静场景
 
 ```
-Style: Ambient folk, spacious and contemplative, acoustic guitar arpeggios, warm pad, light percussion, open sky feeling, instrumental, no vocals, 72 BPM, evolving slowly
+Style: Cinematic orchestral, warm and nostalgic, piano melody, soft strings, gentle rising brass, Korean traditional undertone, instrumental, no vocals, 80 BPM
 ```
 
-### 1.3 宁静·清晨（Morning）
+### ★ 1.2 旅途·飞行途中（Instrumental）
 
-**用途**："Day 1 上午"、"Day 2 下午" 等时间过渡
-**场景**：prologue_03 场景切换
-
-```
-Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings (birds, wind), minimal drone, instrumental, no vocals, 60 BPM
-```
-
-### 1.4 温馨·日常（Warm / Calm）
-
-**用途**：员工集合、站台聊天、日常对话
-**场景**：prologue_06 团队见面、prologue_05 巡视
+**脚本引用**：`travel`（6 次）、`adventure`（2 次）  
+**用途**：飞行旅途中（Day 1-3）、补给站之间  
+**复用说明**：中速开放感，吉他琶音 + 轻打击乐，4.5 天飞行场景通用
 
 ```
-Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello, light brushed snare, intimate studio feel, instrumental, no vocals, 80 BPM
+Style: Ambient folk, spacious and open, acoustic guitar arpeggios, warm pad, light percussion, open sky feeling, instrumental, no vocals, 72 BPM, evolving slowly
 ```
 
-### 1.5 感伤·回忆（Melancholy）
+### ★ 1.3 主题曲·传承（Instrumental）
 
-**用途**：爷爷回忆、废弃铁路、告别
-**场景**：prologue_01 废弃车站、prologue_04 抵达、老陈对话
-
-```
-Style: Melancholic piano, slow emotional strings, solo violin melody, sparse arrangement, rain-window atmosphere, instrumental, no vocals, 65 BPM, minor key
-```
-
-### 1.6 决心·出发（Determination）
-
-**用途**：主角决定出发、首班车启动
-**场景**：prologue_02 取车、prologue_08 首班车
+**脚本引用**：`determination`（6 次）  
+**用途**：主角决定出发、首班车启动、坚定信念场景  
+**复用说明**：进行曲式，铜管 + 打击乐，所有"决心"时刻通用
 
 ```
 Style: Cinematic orchestral, determined and rising, marching percussion, French horn, building strings, heroic undertone, instrumental, no vocals, 100 BPM
 ```
 
-### 1.7 幽默·轻松（Fun）
+### ★ 1.4 情感·夜幕（Instrumental）
 
-**用途**：方向盘搞笑场景、统一便当店购物
-**场景**：prologue_02 车内搞笑、prologue_03 音乐梗
-
-```
-Style: Playful folk, whimsical acoustic guitar, pizzicato strings, light percussion, quirky and cheerful, instrumental, no vocals, 110 BPM
-```
-
-### 1.8 悬念·紧张（Suspense）
-
-**用途**：边境检查站追逐战
-**场景**：prologue_03 边境检查
-
-```
-Style: Cinematic suspense, tense low strings, electronic pulse, building drums, staccato brass hits, urgent rhythm, instrumental, no vocals, 130 BPM, minor key, no melody
-```
-
-### 1.9 自然·环境（Ambient Nature）
-
-**用途**：雾峰村野外、铁路沿线
-**场景**：prologue_05 铁路巡视
-
-```
-Style: Nature ambient, open field recording vibe, soft wind drone, distant bird calls, sparse guitar notes, atmospheric, instrumental, no vocals, 50 BPM
-```
-
-### 1.10 伤心·夜幕（Emotional / Night）
-
-**用途**：夜晚飞行、孤独独白
-**场景**：prologue_03 夜晚、prologue_04 抵达前
+**脚本引用**：`emotional`（10 次）  
+**用途**：夜晚飞行、孤独独白、岁月与主角对话  
+**复用说明**：慢速钢琴 + 大提琴，夜间情绪场景通用
 
 ```
 Style: Emotional piano, slow and aching, solo cello countermelody, wide reverb, night sky atmosphere, instrumental, no vocals, 60 BPM, sad minor key
 ```
 
-### 1.11 新闻·报道（News）
+---
 
+## 二、场景配乐（○ 中频复用）
+
+### ○ 2.1 清晨·出发（Instrumental）
+
+**脚本引用**：`morning`（4 次）、`peaceful`（1 次）  
+**用途**：Day 1 上午、Day 2 下午等时间过渡，安静时刻
+
+```
+Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings (birds, wind), minimal drone, instrumental, no vocals, 60 BPM
+```
+
+### ○ 2.2 日常·温馨（Instrumental）
+
+**脚本引用**：`warm`（3 次）  
+**用途**：员工集合、站台聊天、日常对话
+
+```
+Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello, light brushed snare, intimate studio feel, instrumental, no vocals, 80 BPM
+```
+
+### ○ 2.3 悬疑·边境线（Instrumental）
+
+**脚本引用**：`suspense`（1 次）  
+**用途**：边境检查站追逐战（**复用潜力**：后续铁龙竞争对抗场景）
+
+```
+Style: Cinematic suspense, tense low strings, electronic pulse, building drums, staccato brass hits, urgent rhythm, instrumental, no vocals, 130 BPM, minor key, no melody
+```
+
+### ○ 2.4 搞笑·方向盘之歌（Instrumental）
+
+**脚本引用**：`fun`（2 次）  
+**用途**：方向盘搞笑场景、统一便当店购物
+
+```
+Style: Playful folk, whimsical acoustic guitar, pizzicato strings, light percussion, quirky and cheerful, instrumental, no vocals, 110 BPM
+```
+
+### ○ 2.5 自然·铁路沿线（Instrumental）
+
+**脚本引用**：`ambient_nature`（2 次）、`train_ambient`（2 次）  
+**用途**：雾峰村野外、铁路巡视
+
+```
+Style: Nature ambient, open field recording vibe, soft wind drone, distant bird calls, sparse guitar notes, atmospheric, instrumental, no vocals, 50 BPM
+```
+
+### ○ 2.6 新闻报道（Instrumental）
+
+**脚本引用**：`news`（2 次）  
 **用途**：滚动新闻播报
-**场景**：prologue_01 新闻
 
 ```
 Style: Broadcast documentary, neutral piano motif, soft string pad, objective tone, subtle electronic texture, instrumental, no vocals, 70 BPM
 ```
 
-### 1.12 好奇·探索（Curious）
+---
 
-**用途**：主角探索车厢、发现新事物
-**场景**：prologue_02 进入客舱
+## 三、特定场景配乐（· 单次）
+
+### · 3.1 好奇·初探车厢（Instrumental）
+
+**脚本引用**：`curious`（2 次）  
+**用途**：主角进入客舱、探索车辆
 
 ```
 Style: Light chamber music, curious and gentle, music box, clarinet, soft pizzicato, exploratory feel, instrumental, no vocals, 75 BPM
 ```
 
-### 1.13 神秘·未知（Mystery）
+### · 3.2 神秘·岁月唤醒（Instrumental）
 
-**用途**：岁月初次唤醒、系统启动
-**场景**：prologue_02 岁月 boot
+**脚本引用**：`mystery`（4 次）  
+**用途**：岁月系统启动、AI 初次对话
 
 ```
 Style: Sci-fi ambient, mysterious synth pads, glitchy electronic textures, soft bass drone, awakening feel, instrumental, no vocals, 70 BPM
 ```
 
-### 1.14 都市·平壤（City）
+### · 3.3 都市·平壤街景（Instrumental）
 
-**用途**：平壤城市风貌、打车去茶馆
-**场景**：prologue_02 嘉颖徐会面途中
+**脚本引用**：`city`（1 次）  
+**用途**：平壤城市风貌、前往大同江茶馆的路上
 
 ```
 Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city ambience, Korean city night vibe, instrumental, no vocals, 88 BPM
@@ -151,13 +149,13 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city a
 
 ---
 
-## 二、歌词配乐（Vocal Songs）
+## 四、歌词配乐（Vocal Songs）
 
-### 2.1 主题曲《铁轨还在》
+### 4.1 主题曲《铁轨还在》
 
-**用途**：标题界面 / 最终 credits
-**风格**：民谣叙事，温暖男声，中速
-**主题**：爷爷的铁路、传承、复兴
+**用途**：标题界面 / 最终 credits  
+**风格**：民谣叙事，温暖男声，中速  
+**复用**：无歌词版可作 ★1.1 主旋律来源
 
 ```
 [Style]
@@ -207,11 +205,11 @@ Acoustic folk ballad, warm male vocals, Chinese folk influence, fingerpicking ac
 新的车轮...就要转起来
 ```
 
-### 2.2 《天黑了总会亮的》
+### 4.2 《天黑了总会亮的》
 
-**用途**：边境检查站事件后 / 夜晚飞行
-**风格**：抒情流行，男女对唱，中慢速
-**主题**：困境中的希望、岁与主角的默契
+**用途**：边境检查站事件后 / 夜晚飞行  
+**风格**：抒情流行，双人合唱，中慢速  
+**主题**：困境中的希望
 
 ```
 [Style]
@@ -270,11 +268,10 @@ Emotional pop ballad, dual vocals (male + female AI), piano driven, warm strings
 亮了起来
 ```
 
-### 2.3 《南边来的味道》
+### 4.3 《南边来的味道》
 
-**用途**：统一便当店购物 / 朝鲜改革开放主题
+**用途**：统一便当店购物 / 朝鲜改革开放主题  
 **风格**：韩式民谣 + 轻快流行，女声，中速
-**主题**：平壤街头的韩式消费文化，反差与幽默
 
 ```
 [Style]
@@ -322,11 +319,10 @@ Korean folk pop, female vocals, bright acoustic guitar, light percussion, Korean
 但又莫名亲切
 ```
 
-### 2.4 《千里马奔驰在新时代》
+### 4.4 《千里马奔驰在新时代》
 
-**用途**：序章 Day 3 音乐梗场景（主角听歌）
-**风格**：朝鲜革命歌曲式，管弦乐 + 合唱，听感上"官方但好笑"
-**主题**：游戏内虚构的朝鲜革命歌曲，带幽默感
+**用途**：序章 Day 3 音乐梗场景（主角听歌）  
+**风格**：朝鲜革命歌曲，管弦乐 + 合唱，听感上"官方但好笑"
 
 ```
 [Style]
@@ -370,44 +366,49 @@ DPRK revolutionary song, full orchestra, male choir, patriotic brass, marching d
 
 ---
 
-## 三、BGM 引用对照表
+## 五、BGM 引用对照表
 
-| 脚本引用名 | 对应配乐 | 类型 | 用途场景 |
-|-----------|---------|------|---------|
-| `melancholy` | 1.5 感伤·回忆 | 纯音乐 | 爷爷回忆、废弃铁路、抵达 |
-| `travel` | 1.2 旅途·飞行 | 纯音乐 | 飞行途中 |
-| `morning` | 1.3 宁静·清晨 | 纯音乐 | 时间过渡 |
-| `warm` | 1.4 温馨·日常 | 纯音乐 | 团队见面、日常对话 |
-| `determination` | 1.6 决心·出发 | 纯音乐 | 首班车、出发 |
-| `fun` | 1.7 幽默·轻松 | 纯音乐 | 搞笑场景、购物 |
-| `suspense` | 1.8 悬念·紧张 | 纯音乐 | 边境检查 |
-| `ambient_nature` | 1.9 自然·环境 | 纯音乐 | 野外巡视 |
-| `emotional` | 1.10 伤心·夜幕 | 纯音乐 | 夜晚独白 |
-| `news` | 1.11 新闻·报道 | 纯音乐 | 新闻滚动 |
-| `curious` | 1.12 好奇·探索 | 纯音乐 | 探索车厢 |
-| `mystery` | 1.13 神秘·未知 | 纯音乐 | 岁月启动 |
-| `city` | 1.14 都市·平壤 | 纯音乐 | 平壤街景 |
-| `calm` | 1.4 温馨·日常 | 纯音乐 | 平静对话 |
-| `peaceful` | 1.3 宁静·清晨 | 纯音乐 | 安静时刻 |
-| `adventure` | 1.2 旅途·飞行 | 纯音乐 | 旅程开始 |
-| `train_ambient` | 1.9 自然·环境 | 纯音乐 | 铁路环境 |
-| `silence` | 无 | 静音 | 特殊场景 |
+| 脚本引用 | 配乐名称 | 复用 | 使用次数 |
+|---------|---------|------|---------|
+| `melancholy` | ★1.1 主题曲·铁轨还在 | 高频 | 12 次 |
+| `calm` | ★1.1 主题曲·铁轨还在 | 高频 | 9 次 |
+| `emotional` | ★1.4 情感·夜幕 | 高频 | 10 次 |
+| `travel` | ★1.2 旅途·飞行途中 | 高频 | 6 次 |
+| `adventure` | ★1.2 旅途·飞行途中 | 高频 | 2 次 |
+| `determination` | ★1.3 主题曲·传承 | 高频 | 6 次 |
+| `morning` | ○2.1 清晨·出发 | 中频 | 4 次 |
+| `peaceful` | ○2.1 清晨·出发 | 中频 | 1 次 |
+| `warm` | ○2.2 日常·温馨 | 中频 | 3 次 |
+| `suspense` | ○2.3 悬疑·边境线 | 中频 | 1 次 |
+| `fun` | ○2.4 搞笑·方向盘之歌 | 中频 | 2 次 |
+| `ambient_nature` | ○2.5 自然·铁路沿线 | 中频 | 2 次 |
+| `train_ambient` | ○2.5 自然·铁路沿线 | 中频 | 2 次 |
+| `news` | ○2.6 新闻报道 | 中频 | 2 次 |
+| `curious` | ·3.1 好奇·初探车厢 | 单次 | 2 次 |
+| `mystery` | ·3.2 神秘·岁月唤醒 | 单次 | 4 次 |
+| `city` | ·3.3 都市·平壤街景 | 单次 | 1 次 |
+| `silence` | 静音 | — | 1 次 |
 
 ---
 
-## 四、优先级
+## 六、优先级
 
-| 优先级 | 配乐 | 说明 |
+| 优先级 | 配乐 | 理由 |
 |-------|------|------|
-| **P0** | 1.1 主题曲·启程 | 标题界面 + 序章必需 |
-| **P0** | 1.5 感伤·回忆 | 第一章大量使用 |
-| **P0** | 1.6 决心·出发 | 首班车场景 |
-| **P1** | 2.1 主题曲《铁轨还在》 | 标题界面/credits |
-| **P1** | 1.2 旅途·飞行 | 第三章大量使用 |
-| **P1** | 1.8 悬念·紧张 | 边境检查站 |
-| **P1** | 2.2 《天黑了总会亮的》 | 边境检查后场景 |
-| **P2** | 1.4 温馨·日常 | 团队/日常对话 |
-| **P2** | 2.3 《南边来的味道》 | 统一便当店 |
-| **P2** | 1.7 幽默·轻松 | 搞笑场景 |
-| **P3** | 其余 instrumental | 氛围/过渡 |
-| **P3** | 2.4 千里马革命歌曲 | 音乐梗 |
+| **P0** | ★1.1 主题曲·铁轨还在 | 标题界面 + 21 次场景引用，覆盖最广 |
+| **P0** | ★1.3 主题曲·传承 | 6 次决心场景 |
+| **P0** | ★1.4 情感·夜幕 | 10 次夜间情感场景 |
+| **P1** | ★1.2 旅途·飞行途中 | 8 次飞行场景 |
+| **P1** | 4.1 主题曲《铁轨还在》 | 标题界面/credits，与 P0 同旋律 |
+| **P1** | ○2.3 悬疑·边境线 | 边境检查站必需 |
+| **P1** | 4.2 《天黑了总会亮的》 | 边境检查后场景 |
+| **P2** | ○2.1 清晨·出发 | 时间过渡 |
+| **P2** | ○2.2 日常·温馨 | 团队/日常对话 |
+| **P2** | 4.3 《南边来的味道》 | 统一便当店 |
+| **P2** | ○2.4 搞笑·方向盘之歌 | 搞笑场景 |
+| **P3** | ○2.5 自然·铁路沿线 | 环境氛围 |
+| **P3** | ·3.1 好奇·初探车厢 | 单次使用 |
+| **P3** | ·3.2 神秘·岁月唤醒 | 4 次可复用 |
+| **P3** | ·3.3 都市·平壤街景 | 单次使用 |
+| **P3** | ○2.6 新闻报道 | 2 次新闻 |
+| **P3** | 4.4 《千里马奔驰在新时代》 | 音乐梗，可用现成素材替 |
