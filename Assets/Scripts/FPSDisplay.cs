@@ -12,10 +12,17 @@ public class FPSDisplay : MonoBehaviour
         isActive = PlayerPrefs.GetInt("ShowFPS", 0) == 1;
         if (!isActive)
         {
-            enabled = false;
+            Destroy(gameObject);
             return;
         }
+        DontDestroyOnLoad(gameObject);
         CreateLabel();
+    }
+
+    private void OnDestroy()
+    {
+        if (fpsLabel != null && fpsLabel.parent != null)
+            fpsLabel.parent.Remove(fpsLabel);
     }
 
     private void CreateLabel()

@@ -215,9 +215,18 @@ public class StationBulletinUI : MonoBehaviour
     private void BuildDisplaySettings()
     {
         AddSectionTitle("显示", "画面和文字显示相关的设置");
-        AddToggle("全屏模式", "以全屏方式运行游戏", true);
-        AddToggle("垂直同步", "开启后减少画面撕裂", true);
+        AddToggle("全屏模式", "以全屏方式运行游戏", Screen.fullScreen, v => Screen.fullScreen = v);
+        AddToggle("垂直同步", "开启后减少画面撕裂", QualitySettings.vSyncCount > 0, v => {
+            QualitySettings.vSyncCount = v ? 1 : 0;
+            PlayerPrefs.SetInt("VSync", v ? 1 : 0);
+            PlayerPrefs.Save();
+        });
         AddToggle("显示帧率", "在角落显示当前 FPS", PlayerPrefs.GetInt("ShowFPS", 0) == 1, v => FPSDisplay.SetActive(v));
+        AddSliderWithCallback("帧率上限", 30, 240, QualitySettings.vSyncCount > 0 ? 0 : Application.targetFrameRate, v => {
+            if (QualitySettings.vSyncCount > 0) return;
+            Application.targetFrameRate = v;
+            PlayerPrefs.SetInt("TargetFPS", v);
+        });
         AddSlider("文字速度", 1, 10, 5, "档");
         AddSlider("对话框透明度", 0, 100, 80, "%");
         AddResetButton(ResetDisplayDefaults);
