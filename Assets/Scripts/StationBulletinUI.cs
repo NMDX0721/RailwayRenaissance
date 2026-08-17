@@ -548,9 +548,11 @@ public class StationBulletinUI : MonoBehaviour
         input.style.marginLeft = 0;
 
         input.RegisterCallback<GeometryChangedEvent>(e => StyleInputText(input));
-        // 布局后统一样式（含文本颜色/字号，保证高对比）
+        // 布局后统一样式：文本高对比大号字 + 内部所有元素背景透明（干掉默认白色输入区）
         void StyleInputText(TextField tf)
         {
+            foreach (var ve in tf.Query<VisualElement>().ToList())
+                ve.style.backgroundColor = Color.clear;
             foreach (var te in tf.Query<TextElement>().ToList())
             {
                 te.style.unityFontDefinition = GetFontDef();
@@ -559,9 +561,11 @@ public class StationBulletinUI : MonoBehaviour
                 te.style.unityTextAlign = TextAnchor.MiddleCenter;
                 te.style.overflow = Overflow.Visible;
                 te.style.whiteSpace = WhiteSpace.Normal;
+                te.style.unityFontStyleAndWeight = FontStyle.Bold;
             }
             tf.style.fontSize = 24;
             tf.style.color = new Color(1f, 0.97f, 0.85f, 1f);
+            tf.style.backgroundColor = new Color(0.16f, 0.1f, 0.05f, 0.95f);
         }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
