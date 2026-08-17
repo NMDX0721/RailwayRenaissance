@@ -352,7 +352,7 @@ public class VNSaveLoadUI : MonoBehaviour
         infoContainer.style.flexDirection = FlexDirection.Column;
         infoContainer.style.flexGrow = 1;
         infoContainer.style.paddingLeft = 15; infoContainer.style.paddingRight = 8;
-        infoContainer.style.paddingTop = 8; infoContainer.style.paddingBottom = 0;
+        infoContainer.style.paddingTop = 0; infoContainer.style.paddingBottom = 0;
         infoContainer.style.justifyContent = Justify.Center;
         infoContainer.style.overflow = Overflow.Hidden;
 
