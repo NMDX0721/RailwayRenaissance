@@ -1028,10 +1028,17 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator ShowLoadUIDelayed()
     {
-        // 读档界面已由 HideVNUI() 隐藏了 VN 元素
         yield return null;
         if (saveLoadUI != null)
-            saveLoadUI.OpenLoadPanelFromTitle((slotIndex) => { });
+            saveLoadUI.OpenLoadPanelFromTitle((slotIndex) =>
+            {
+                LoadSave(slotIndex);
+                isFromTitleScreenMode = false;
+                // 恢复 VN 界面（ClosePanel 由按钮回调处理，且已设 isFromTitleScreen=false）
+                if (dialogueBox != null) dialogueBox.Show();
+                if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.Flex;
+                if (backgroundManager != null) backgroundManager.SetBackgroundImmediate("black");
+            });
     }
 
     private void StartAutoPlayTimer()
