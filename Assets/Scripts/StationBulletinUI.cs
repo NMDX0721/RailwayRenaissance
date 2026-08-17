@@ -533,29 +533,35 @@ public class StationBulletinUI : MonoBehaviour
         var input = new TextField();
         input.value = Mathf.RoundToInt(slider.value).ToString();
         input.multiline = false;
-        input.style.width = 100; input.style.height = 36;
-        input.style.fontSize = 20;
-        input.style.color = new Color(1f, 0.9f, 0.6f, 1f);
-        input.style.backgroundColor = new Color(0.2f, 0.12f, 0.06f, 0.92f);
+        input.style.width = 110; input.style.height = 40;
+        input.style.backgroundColor = new Color(0.16f, 0.1f, 0.05f, 0.95f);
         input.style.unityFontDefinition = GetFontDef();
-        input.style.borderTopLeftRadius = 5; input.style.borderTopRightRadius = 5;
-        input.style.borderBottomLeftRadius = 5; input.style.borderBottomRightRadius = 5;
-        input.style.borderTopWidth = 1; input.style.borderBottomWidth = 1;
-        input.style.borderLeftWidth = 1; input.style.borderRightWidth = 1;
-        input.style.borderTopColor = CGoldDim; input.style.borderBottomColor = CGoldDim;
-        input.style.borderLeftColor = CGoldDim; input.style.borderRightColor = CGoldDim;
+        input.style.borderTopLeftRadius = 6; input.style.borderTopRightRadius = 6;
+        input.style.borderBottomLeftRadius = 6; input.style.borderBottomRightRadius = 6;
+        input.style.borderTopWidth = 2; input.style.borderBottomWidth = 2;
+        input.style.borderLeftWidth = 2; input.style.borderRightWidth = 2;
+        input.style.borderTopColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
+        input.style.borderBottomColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
+        input.style.borderLeftColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
+        input.style.borderRightColor = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
         input.style.paddingLeft = 8; input.style.paddingRight = 8;
         input.style.marginLeft = 0;
 
-        // 遍历整个层级，把所有 TextElement 都强制设置为大号字（含输入区与鼠标I-beam）
-        foreach (var te in input.Query<TextElement>().ToList())
+        input.RegisterCallback<GeometryChangedEvent>(e => StyleInputText(input));
+        // 布局后统一样式（含文本颜色/字号，保证高对比）
+        void StyleInputText(TextField tf)
         {
-            te.style.unityFontDefinition = GetFontDef();
-            te.style.fontSize = 20;
-            te.style.color = new Color(1f, 0.9f, 0.6f, 1f);
-            te.style.unityTextAlign = TextAnchor.MiddleCenter;
-            te.style.overflow = Overflow.Visible;
-            te.style.whiteSpace = WhiteSpace.Normal;
+            foreach (var te in tf.Query<TextElement>().ToList())
+            {
+                te.style.unityFontDefinition = GetFontDef();
+                te.style.fontSize = 24;
+                te.style.color = new Color(1f, 0.97f, 0.85f, 1f); // 亮白金色，高对比
+                te.style.unityTextAlign = TextAnchor.MiddleCenter;
+                te.style.overflow = Overflow.Visible;
+                te.style.whiteSpace = WhiteSpace.Normal;
+            }
+            tf.style.fontSize = 24;
+            tf.style.color = new Color(1f, 0.97f, 0.85f, 1f);
         }
 
         input.RegisterCallback<KeyDownEvent>(evt =>
