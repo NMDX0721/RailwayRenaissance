@@ -25,9 +25,12 @@
 **复用说明**：主旋律变奏，慢速钢琴 + 弦乐，可覆盖所有感伤/平静场景
 
 ```
-Style: Cinematic orchestral, warm and nostalgic, piano melody, soft strings, gentle rising brass, Korean traditional undertone, instrumental, no vocals, 80 BPM
+Style: Cinematic orchestral, warm and nostalgic, piano melody carrying the theme, soft string section, gentle rising brass in second half, Korean traditional scale hint in melody, sparse and intimate opening building to full orchestral swell by midpoint, then returning to solo piano for closure, instrumental, no vocals, 80 BPM, key of C major, wide reverb, no drums, no percussion, no electronic elements, organic orchestral sound, slow evolving arrangement, like a memory unfolding
 ```
 
+
+**预估时长**：2:30-3:00（标题界面循环，可短可长）
+**生成策略**：1次生成 → 选最佳 → Extend 至 2:30
 ### ★ 1.2 "Cloud-Rail" 云轨（Instrumental）
 
 **脚本引用**：`travel`（6 次）、`adventure`（2 次）  
@@ -35,9 +38,12 @@ Style: Cinematic orchestral, warm and nostalgic, piano melody, soft strings, gen
 **复用说明**：中速开放感，吉他琶音 + 轻打击乐，4.5 天飞行场景通用
 
 ```
-Style: Ambient folk, spacious and open, acoustic guitar arpeggios, warm pad, light percussion, open sky feeling, instrumental, no vocals, 72 BPM, evolving slowly
+Style: Ambient folk, spacious and open, acoustic guitar fingerpicking, warm synth pad, light brushed percussion, soft bass drone, open sky atmosphere, gradual build from solo guitar to full bedding, then gentle fade, instrumental, no vocals, 72 BPM, key of G major, wide stereo reverb, no heavy drums, no electronic beats, no sudden changes, evolving slowly, like watching clouds pass from a window
 ```
 
+
+**预估时长**：3:00-4:00（飞行背景，需较长循环）
+**生成策略**：1次生成 → Extend 2-3次至全长
 ### ★ 1.3 "Embers" 余烬（Instrumental）
 
 **脚本引用**：`determination`（6 次）  
@@ -45,9 +51,12 @@ Style: Ambient folk, spacious and open, acoustic guitar arpeggios, warm pad, lig
 **复用说明**：进行曲式，铜管 + 打击乐，所有"决心"时刻通用
 
 ```
-Style: Cinematic orchestral, determined and rising, marching percussion, French horn, building strings, heroic undertone, instrumental, no vocals, 100 BPM
+Style: Cinematic orchestral, determined and rising, marching percussion with snare drum, French horn melody, building string section, growing intensity from steady march to triumphant peak, then decisive finish, instrumental, no vocals, 100 BPM, key of D major, concert hall reverb, no electronic elements, no synth, organic orchestral, steady crescendo, like a slow burn becoming a blaze
 ```
 
+
+**预估时长**：2:00-2:30（决心场景，短促有力）
+**生成策略**：1次生成 → 选最佳，无需 Extend
 ### ★ 1.4 "Night Cargo" 夜行货（Instrumental）
 
 **脚本引用**：`emotional`（10 次）  
@@ -55,9 +64,12 @@ Style: Cinematic orchestral, determined and rising, marching percussion, French 
 **复用说明**：慢速钢琴 + 大提琴，夜间情绪场景通用
 
 ```
-Style: Emotional piano, slow and aching, solo cello countermelody, wide reverb, night sky atmosphere, instrumental, no vocals, 60 BPM, sad minor key
+Style: Emotional piano, slow and aching, simple piano chord progression, solo cello countermelody, wide reverb, minimal arrangement, slight build with soft strings in middle, returning to solo piano, instrumental, no vocals, 60 BPM, key of E minor, dark and intimate, concert hall reverb, no drums, no percussion, no bright elements, night sky atmosphere, like a conversation between piano and cello
 ```
 
+
+**预估时长**：3:00-4:00（夜晚情绪，需缓慢展开）
+**生成策略**：1次生成 → Extend 2-3次至全长
 ---
 
 ## 二、场景配乐（○ 中频复用）
@@ -68,54 +80,72 @@ Style: Emotional piano, slow and aching, solo cello countermelody, wide reverb, 
 **用途**：Day 1 上午、Day 2 下午等时间过渡，安静时刻
 
 ```
-Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings (birds, wind), minimal drone, instrumental, no vocals, 60 BPM
+Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings of birds and wind, sustained drone note underneath, minimal and sparse, no melody, just texture and atmosphere, instrumental, no vocals, 60 BPM, key of C major, wide reverb, no drums, no percussion, no rhythm, no structure, like dawn breaking over a quiet field
 ```
 
+
+**预估时长**：1:30-2:00（过渡场景，短）
+**生成策略**：1次生成即可
 ### ○ 2.2 "Platform" 站台（Instrumental）
 
 **脚本引用**：`warm`（3 次）  
 **用途**：员工集合、站台聊天、日常对话
 
 ```
-Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello, light brushed snare, intimate studio feel, instrumental, no vocals, 80 BPM
+Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello melody, light brushed snare, upright bass, intimate studio feel, relaxed and unhurried, slight build then return to intimate feel, instrumental, no vocals, 80 BPM, key of A major, natural room reverb, no electronic elements, no loud instruments, like a quiet afternoon on a station bench
 ```
 
+
+**预估时长**：2:00-3:00（日常对话背景）
+**生成策略**：1次生成 → Extend 1次
 ### ○ 2.3 "Borderline" 国境线（Instrumental）
 
 **脚本引用**：`suspense`（1 次）  
 **用途**：边境检查站追逐战（**复用潜力**：后续铁龙竞争对抗场景）
 
 ```
-Style: Cinematic suspense, tense low strings, electronic pulse, building drums, staccato brass hits, urgent rhythm, instrumental, no vocals, 130 BPM, minor key, no melody
+Style: Cinematic suspense, tense low strings holding long notes, electronic pulse rhythm, building drums from snare to full kit, staccato brass hits accenting tension, urgent and driving rhythm, gradual crescendo, no melody, just texture and rhythm, instrumental, no vocals, 130 BPM, key of D minor, no harmony, no resolution, like a countdown in the dark
 ```
 
+
+**预估时长**：2:00-2:30（紧张场景，不宜过长）
+**生成策略**：1次生成 → Extend 1次
 ### ○ 2.4 "The Wheel’s Joke" 方向盘在笑（Instrumental）
 
 **脚本引用**：`fun`（2 次）  
 **用途**：方向盘搞笑场景、统一便当店购物
 
 ```
-Style: Playful folk, whimsical acoustic guitar, pizzicato strings, light percussion, quirky and cheerful, instrumental, no vocals, 110 BPM
+Style: Playful folk, whimsical acoustic guitar with bouncy picking, pizzicato strings, light percussion with woodblock and shaker, quirky and cheerful, bouncy rhythm, unexpected pauses, instrumental, no vocals, 110 BPM, key of F major, bright and airy, no heavy instruments, no sad elements, like a mechanical toy winding up and dancing
 ```
 
+
+**预估时长**：1:30-2:00（搞笑短场景）
+**生成策略**：1次生成即可
 ### ○ 2.5 "Wild Tracks" 野轨（Instrumental）
 
 **脚本引用**：`ambient_nature`（2 次）、`train_ambient`（2 次）  
 **用途**：雾峰村野外、铁路巡视
 
 ```
-Style: Nature ambient, open field recording vibe, soft wind drone, distant bird calls, sparse guitar notes, atmospheric, instrumental, no vocals, 50 BPM
+Style: Nature ambient, open field recording vibe, soft wind drone, distant bird calls, sparse single guitar notes, atmospheric and spacious, no melody, no rhythm, just environment and texture, instrumental, no vocals, 50 BPM, no key, no harmony, like standing alone in an abandoned railway overgrown with grass
 ```
 
+
+**预估时长**：2:00-3:00（环境氛围）
+**生成策略**：1次生成 → Extend 1次
 ### ○ 2.6 "News Wire" 电讯（Instrumental）
 
 **脚本引用**：`news`（2 次）  
 **用途**：滚动新闻播报
 
 ```
-Style: Broadcast documentary, neutral piano motif, soft string pad, objective tone, subtle electronic texture, instrumental, no vocals, 70 BPM
+Style: Broadcast documentary, neutral piano motif repeating with slight variations, soft string pad, objective and calm, subtle electronic texture underneath, like a news broadcast intro, instrumental, no vocals, 70 BPM, key of C major, clean production, no drums, no emotional swells, like a teleprinter quietly typing
 ```
 
+
+**预估时长**：0:30-1:00（新闻片段，极短）
+**生成策略**：1次生成，截取前段
 ---
 
 ## 三、特定场景配乐（· 单次）
@@ -126,25 +156,31 @@ Style: Broadcast documentary, neutral piano motif, soft string pad, objective to
 **用途**：主角进入客舱、探索车辆
 
 ```
-Style: Light chamber music, curious and gentle, music box, clarinet, soft pizzicato, exploratory feel, instrumental, no vocals, 75 BPM
+Style: Light chamber music, curious and gentle, music box melody, clarinet answering, soft pizzicato strings, exploratory and hesitant, like discovering a new space, instrumental, no vocals, 75 BPM, key of A minor, small room reverb, no heavy elements, no electronic, intimate and delicate, like opening a door to somewhere unknown
 ```
 
+
+**预估时长**：1:30-2:00（探索场景）
+**生成策略**：1次生成即可
 ### · 3.2 "Deep Sleep" 沉睡（Instrumental）
 
 **脚本引用**：`mystery`（4 次）  
 **用途**：岁月系统启动、AI 初次对话
 
 ```
-Style: Sci-fi ambient, mysterious synth pads, glitchy electronic textures, soft bass drone, awakening feel, instrumental, no vocals, 70 BPM
+Style: Sci-fi ambient, mysterious synth pads evolving slowly, glitchy electronic textures, soft bass drone, awakening feel from distant to present, gradual build from silence to full texture, then settling, instrumental, no vocals, 70 BPM, no key, no melody, wide stereo, like a system booting after twenty-three years
 ```
 
+
+**预估时长**：2:00-3:00（系统启动，从静到响）
+**生成策略**：1次生成 → Extend 1次
 ### · 3.3 "Pyongyang Night" 平壤夜（Instrumental）
 
 **脚本引用**：`city`（1 次）  
 **用途**：平壤城市风貌、前往大同江茶馆的路上
 
 ```
-Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city ambience, Korean city night vibe, instrumental, no vocals, 88 BPM
+Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, soft bass, city ambience sounds, Korean city night vibe, relaxed and slightly melancholic, like looking out over a city at night, instrumental, no vocals, 88 BPM, key of D minor, slight vinyl crackle, no heavy bass, no aggressive elements, like a night drive through Pyongyang streets
 ```
 
 ---
@@ -154,7 +190,10 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city a
 所有歌词配乐采用 Suno Custom Mode 生成：
 - **Style 字段**（≤1000 chars）：描述音乐风格、乐器、人声、节奏、变奏
 - **Lyrics 字段**（≤3000 chars）：结构标签 + 歌词 + 演唱指示
-- 括号 `(whispered)` `(belting)` `(spoken)` 标注演唱方式
+- 括号 `(whispered)` `(belting)` `(spoken)` 标
+**预估时长**：2:00-3:00（城市氛围）
+**生成策略**：1次生成 → Extend 1次
+注演唱方式
 - 每首歌附带中文翻译（供游戏内字幕/显示使用）
 
 ---
@@ -169,12 +208,9 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, city a
 
 ```
 [Style]
-American folk ballad, warm male vocals with slight rasp, fingerpicking acoustic guitar, pedal steel guitar, soft brushed drums, upright bass, harmonica in bridge, gentle piano chords, open D tuning feel, crescendo strings in final chorus, sparse intro building to full band by bridge, then stripped back for outro, nostalgic and bittersweet but hopeful, 82 BPM, key of G major, natural reverb, no autotune, no synth
-
-[Lyrics]
+American folk ballad, warm male vocals with slight rasp, fingerpicking acoustic guitar, pedal steel guitar, gentle piano chords, upright bass, soft brushed drums, harmonica in bridge, strings enter in final chorus, sparse intro building to full band by bridge, then stripped back to fingerpicking only for outro, vocal delivery is conversational and intimate in verses like a campfire story, opening to full resonant chest voice in chorus, slightly breathy on quiet lines, gentle vibrato on held notes, spoken-sung in bridge, nostalgic and bittersweet but hopeful, 82 BPM, key of G major, natural room reverb, no autotune, no synth, no electronic drums, no modern production, organic acoustic sound, warm tape feel, open G tuning, I-IV-V-I chord progression, intimate recording atmosphere, verse is whispered-sung close mic, chorus opens up with space, bridge is spoken over harmonica, final chorus builds with string swell, outro fades to single guitar and whisper[Lyrics]
 [Intro]
 (fingerpicking guitar, soft)
-G... C... G... D...
 
 [Verse 1]
 (gentle, soft)
@@ -272,6 +308,9 @@ The wheel turns on, again and again!
 
 车轮转动，一遍又一遍
 ```
+**预估时长**：3:30-4:30（完整歌曲，含 Intro-Verse1-Chorus-Verse2-Chorus-Bridge-Solo-FinalChorus-Outro）
+**生成策略**：先生成 1 分钟片段选最佳旋律，再多次 Extend 至全长
+
 
 ---
 
@@ -285,12 +324,11 @@ The wheel turns on, again and again!
 
 ```
 [Style]
-Korean emotional pop rock, dual vocals (male lead with warm mid-range, female harmony light and airy), piano driven throughout, clean electric guitar arpeggios in verses switching to power chords in chorus, building drums from brushed snare to full kit, string section swells in chorus, dynamic range from hushed intimate verse to explosive full-band chorus, male vocal is tense and restrained in verse releasing to full power in chorus, female harmony floats above in pre-chorus and chorus, bridge is spoken dialogue over soft guitar then female humming, 80 BPM, key of E minor, concert hall reverb, no rap, no electronic beats, no autotune, no synth pads, no pop production, organic rock arrangement, verse vocal is close-mic and breathy, chorus vocal is open and belted, pre-chorus rises gradually, final chorus is slower and more powerful with held notes, outro fades on piano and strings with female humming
+Korean emotional pop rock, dual vocals (male lead with warm mid-range, female harmony light and airy), piano driven throughout, clean electric guitar arpeggios in verses switching to power chords in chorus, building drums from brushed snare to full kit, string section swells in chorus, dynamic range from hushed intimate verse to explosive full-band chorus, male vocal is tense and restrained in verse releasing to full power in chorus, female harmony floats above in pre-chorus and chorus, bridge is spoken dialogue over soft guitar then female humming, 80 BPM, key of E minor, concert hall reverb, no rap, no electronic beats, no autotune, no synth pads, no pop production, organic rock arrangement, verse vocal is close-mic and breathy, i-VI-III-VII progression, chorus vocal is open and belted, pre-chorus rises gradually, final chorus is slower and more powerful with held notes, outro fades on piano and strings with female humming
 
 [Lyrics]
 [Intro]
 (soft piano, single notes)
-Em... C... G... D...
 (female humming)
 
 [Verse 1 - Male]
@@ -445,6 +483,9 @@ Em... C... G... D...
 夜再深——也会亮起来——
 就像那条铁轨——一直走到尽头——
 ```
+**预估时长**：3:30-4:30（双人对唱，需更多段落）
+**生成策略**：同 Sleepers，先片段选旋律，再 Extend 至全长
+
 
 ---
 
@@ -458,12 +499,11 @@ Em... C... G... D...
 
 ```
 [Style]
-Korean indie folk pop, female vocals light and playful, bright acoustic guitar fingerpicking in verses switching to strumming in chorus, melodic walking bass, light percussion with shakers and brushed snare, accordion enters in bridge, traditional Korean Pyeongjo scale hint, warm and cheerful with slight ironic undertone, vocal delivery is bright and conversational in verses like telling a story, opening to fuller sweeter tone in chorus, playful vibrato on held notes, verse one is spoken-story style, verse two switches to sung, bridge is spoken then gentle sung, 98 BPM, key of A major, room reverb, no heavy drums, no rap, no synth, no electric guitar, no modern pop, acoustic folk arrangement, street performance feel, intimate recording, verse vocal is close and conspiratorial, chorus opens up warm and inviting, bridge has accordion and thoughtful pause, outro fades on single acoustic guitar
+Korean indie folk pop, female vocals light and playful, bright acoustic guitar fingerpicking in verses switching to strumming in chorus, melodic walking bass, light percussion with shakers and brushed snare, accordion enters in bridge, traditional Korean Pyeongjo scale hint, warm and cheerful with slight ironic undertone, vocal delivery is bright and conversational in verses like telling a story, opening to fuller sweeter tone in chorus, playful vibrato on held notes, verse one is spoken-story style, verse two switches to sung, bridge is spoken then gentle sung, 98 BPM, key of A major, room reverb, no heavy drums, no rap, no synth, no electric guitar, no modern pop, acoustic folk arrangement, street performance feel, I-V-vi-IV progression, intimate recording, verse vocal is close and conspiratorial, chorus opens up warm and inviting, bridge has accordion and thoughtful pause, outro fades on single acoustic guitar
 
 [Lyrics]
 [Intro]
 (acoustic guitar, cheerful picking)
-A... D... A... E...
 
 [Verse 1]
 (playful, bright)
@@ -604,6 +644,9 @@ A... D... A... E...
 统一便当店……奇怪的地方
 但不知为何……有点温暖
 ```
+**预估时长**：3:00-4:00（韩式民谣，中快速）
+**生成策略**：先生成 1 分钟片段，Extend 2-3 次至全长
+
 
 ---
 
@@ -710,6 +753,9 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 啊——千里马——啊——新时代——
 奔驰——！
 ```
+**预估时长**：2:00-3:00（革命歌曲短促有力，游戏只截取前段循环）
+**生成策略**：1 次生成选最佳，无需 Extend
+
 
 ---
 
