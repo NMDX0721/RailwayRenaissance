@@ -371,7 +371,8 @@ public class StationBulletinUI : MonoBehaviour
             lbl.style.unityFontDefinition = GetFontDef();
             row.Add(lbl);
 
-            var keyBtn = new UnityEngine.UIElements.Button(() => StartRebind(action, keyBtn)) { text = KeyBindings.GetKeyName(action) };
+            UnityEngine.UIElements.Button keyBtn = null;
+            keyBtn = new UnityEngine.UIElements.Button(() => StartRebind(action, keyBtn)) { text = KeyBindings.GetKeyName(action) };
             keyBtn.style.width = 120;
             keyBtn.style.height = 36;
             keyBtn.style.fontSize = 18;
