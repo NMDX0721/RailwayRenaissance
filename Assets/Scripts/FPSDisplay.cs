@@ -7,6 +7,8 @@ public class FPSDisplay : MonoBehaviour
     private Label fpsLabel;
     private float deltaTime;
     private bool isActive;
+    private Color lastColor;
+    private int lastFps = -1;
 
     private void OnEnable()
     {
@@ -77,20 +79,30 @@ public class FPSDisplay : MonoBehaviour
 
     private void LateUpdate()
     {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        float fps = 1.0f / deltaTime;
-        if (fpsLabel != null)
+        if (fpsLabel == null) return;
+        // 标签失效时自动重新挂载
+        if (fpsLabel.panel == null)
         {
-            // 标签失效时自动重新挂载
-            if (fpsLabel.panel == null)
-            {
-                CreateLabel();
-                return;
-            }
-            fpsLabel.text = "FPS: " + Mathf.FloorToInt(fps);
-            if (fps >= 60) fpsLabel.style.color = new Color(0.3f, 1f, 0.3f, 0.7f);
-            else if (fps >= 30) fpsLabel.style.color = new Color(1f, 1f, 0.3f, 0.7f);
-            else fpsLabel.style.color = new Color(1f, 0.3f, 0.3f, 0.7f);
+            CreateLabel();
+            return;
+        }
+
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        int fps = Mathf.FloorToInt(1.0f / deltaTime);
+        // 只在数值变化时更新文本，颜色变化时更新样式，避免每帧触发样式重算
+        if (fps != lastFps)
+        {
+            lastFps = fps;
+            fpsLabel.text = "FPS: " + fps;
+        }
+        Color c;
+        if (fps >= 60) c = new Color(0.3f, 1f, 0.3f, 0.7f);
+        else if (fps >= 30) c = new Color(1f, 1f, 0.3f, 0.7f);
+        else c = new Color(1f, 0.3f, 0.3f, 0.7f);
+        if (c != lastColor)
+        {
+            lastColor = c;
+            fpsLabel.style.color = c;
         }
     }
 

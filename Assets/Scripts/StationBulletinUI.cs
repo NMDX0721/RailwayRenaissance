@@ -13,6 +13,19 @@ public class StationBulletinUI : MonoBehaviour
     private string[] menuIcons = { "\u266B", "\u2699", "\u2600", "\u2328", "\u24D8" };
     private int selectedIndex = 0;
     private System.Action<KeyCode> _rebindAction;
+    private static readonly KeyCode[] AllKeyCodes = AllKeyCodesInit();
+
+    private static KeyCode[] AllKeyCodesInit()
+    {
+        var values = System.Enum.GetValues(typeof(KeyCode));
+        var list = new System.Collections.Generic.List<KeyCode>();
+        foreach (var v in values)
+        {
+            var k = (KeyCode)v;
+            if (k != KeyCode.None) list.Add(k);
+        }
+        return list.ToArray();
+    }
 
     private static readonly Color CGold = new Color(1f, 200f / 255f, 100f / 255f, 1f);
     private static readonly Color CGoldDim = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.3f);
@@ -335,9 +348,9 @@ public class StationBulletinUI : MonoBehaviour
     {
         if (_rebindAction != null)
         {
-            foreach (KeyCode code in System.Enum.GetValues(typeof(KeyCode)))
+            foreach (KeyCode code in AllKeyCodes)
             {
-                if (Input.GetKeyDown(code) && code != KeyCode.None)
+                if (Input.GetKeyDown(code))
                 {
                     var cb = _rebindAction;
                     _rebindAction = null;
