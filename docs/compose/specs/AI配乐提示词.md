@@ -29,8 +29,8 @@ Style: Cinematic orchestral, warm and nostalgic, piano melody carrying the theme
 ```
 
 
-**预估时长**：2:30-3:00（标题界面循环，可短可长）
-**生成策略**：1次生成 → 选最佳 → Extend 至 2:30
+**预估时长**：4:00-5:00（标题界面循环，建议 4:00+）
+**生成策略**：1次生成 30秒片段 → 选最佳 → Extend 4-5 次至 4:00+
 ### ★ 1.2 "Cloud-Rail" 云轨（Instrumental）
 
 **脚本引用**：`travel`（6 次）、`adventure`（2 次）  
@@ -42,8 +42,8 @@ Style: Ambient folk, spacious and open, acoustic guitar fingerpicking, warm synt
 ```
 
 
-**预估时长**：3:00-4:00（飞行背景，需较长循环）
-**生成策略**：1次生成 → Extend 2-3次至全长
+**预估时长**： 4:00-5:00（飞行背景，需较长循环）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ★ 1.3 "Embers" 余烬（Instrumental）
 
 **脚本引用**：`determination`（6 次）  
@@ -55,8 +55,8 @@ Style: Cinematic orchestral, determined and rising, marching percussion with sna
 ```
 
 
-**预估时长**：2:00-2:30（决心场景，短促有力）
-**生成策略**：1次生成 → 选最佳，无需 Extend
+**预估时长**： 4:00-5:00（决心场景，短促有力）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ★ 1.4 "Night Cargo" 夜行货（Instrumental）
 
 **脚本引用**：`emotional`（10 次）  
@@ -68,8 +68,8 @@ Style: Emotional piano, slow and aching, simple piano chord progression, solo ce
 ```
 
 
-**预估时长**：3:00-4:00（夜晚情绪，需缓慢展开）
-**生成策略**：1次生成 → Extend 2-3次至全长
+**预估时长**： 4:00-5:00（夜晚情绪，需缓慢展开）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ---
 
 ## 二、场景配乐（○ 中频复用）
@@ -84,8 +84,8 @@ Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings
 ```
 
 
-**预估时长**：1:30-2:00（过渡场景，短）
-**生成策略**：1次生成即可
+**预估时长**：4:00-5:00（过渡场景也需 4:00+，避免频繁轮播）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ○ 2.2 "Platform" 站台（Instrumental）
 
 **脚本引用**：`warm`（3 次）  
@@ -96,8 +96,8 @@ Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello m
 ```
 
 
-**预估时长**：2:00-3:00（日常对话背景）
-**生成策略**：1次生成 → Extend 1次
+**预估时长**： 4:00-5:00（日常对话背景）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ○ 2.3 "Borderline" 国境线（Instrumental）
 
 **脚本引用**：`suspense`（1 次）  
@@ -108,8 +108,8 @@ Style: Cinematic suspense, tense low strings holding long notes, electronic puls
 ```
 
 
-**预估时长**：2:00-2:30（紧张场景，不宜过长）
-**生成策略**：1次生成 → Extend 1次
+**预估时长**： 4:00-5:00（紧张场景，不宜过长）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ○ 2.4 "The Wheel’s Joke" 方向盘在笑（Instrumental）
 
 **脚本引用**：`fun`（2 次）  
@@ -120,8 +120,8 @@ Style: Playful folk, whimsical acoustic guitar with bouncy picking, pizzicato st
 ```
 
 
-**预估时长**：1:30-2:00（搞笑短场景）
-**生成策略**：1次生成即可
+**预估时长**：4:00-5:00（搞笑场景也需 4:00+）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ○ 2.5 "Wild Tracks" 野轨（Instrumental）
 
 **脚本引用**：`ambient_nature`（2 次）、`train_ambient`（2 次）  
@@ -132,8 +132,8 @@ Style: Nature ambient, open field recording vibe, soft wind drone, distant bird 
 ```
 
 
-**预估时长**：2:00-3:00（环境氛围）
-**生成策略**：1次生成 → Extend 1次
+**预估时长**： 4:00-5:00（环境氛围）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### ○ 2.6 "News Wire" 电讯（Instrumental）
 
 **脚本引用**：`news`（2 次）  
@@ -144,8 +144,8 @@ Style: Broadcast documentary, neutral piano motif repeating with slight variatio
 ```
 
 
-**预估时长**：0:30-1:00（新闻片段，极短）
-**生成策略**：1次生成，截取前段
+**预估时长**：4:00-5:00（新闻片段也需 4:00+）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ---
 
 ## 三、特定场景配乐（· 单次）
@@ -160,8 +160,8 @@ Style: Light chamber music, curious and gentle, music box melody, clarinet answe
 ```
 
 
-**预估时长**：1:30-2:00（探索场景）
-**生成策略**：1次生成即可
+**预估时长**：4:00-5:00（探索场景需 4:00+）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### · 3.2 "Deep Sleep" 沉睡（Instrumental）
 
 **脚本引用**：`mystery`（4 次）  
@@ -172,8 +172,8 @@ Style: Sci-fi ambient, mysterious synth pads evolving slowly, glitchy electronic
 ```
 
 
-**预估时长**：2:00-3:00（系统启动，从静到响）
-**生成策略**：1次生成 → Extend 1次
+**预估时长**： 4:00-5:00（系统启动，从静到响）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 ### · 3.3 "Pyongyang Night" 平壤夜（Instrumental）
 
 **脚本引用**：`city`（1 次）  
@@ -191,8 +191,8 @@ Style: Chill electronic, urban atmosphere, lo-fi beat, warm synth chords, soft b
 - **Style 字段**（≤1000 chars）：描述音乐风格、乐器、人声、节奏、变奏
 - **Lyrics 字段**（≤3000 chars）：结构标签 + 歌词 + 演唱指示
 - 括号 `(whispered)` `(belting)` `(spoken)` 标
-**预估时长**：2:00-3:00（城市氛围）
-**生成策略**：1次生成 → Extend 1次
+**预估时长**： 4:00-5:00（城市氛围）
+**生成策略**：1次生成 30秒片段 → Extend 4-5 次至 4:00+
 注演唱方式
 - 每首歌附带中文翻译（供游戏内字幕/显示使用）
 
@@ -308,7 +308,7 @@ The wheel turns on, again and again!
 
 车轮转动，一遍又一遍
 ```
-**预估时长**：3:30-4:30（完整歌曲，含 Intro-Verse1-Chorus-Verse2-Chorus-Bridge-Solo-FinalChorus-Outro）
+**预估时长**： 4:00-5:00（完整歌曲，含 Intro-Verse1-Chorus-Verse2-Chorus-Bridge-Solo-FinalChorus-Outro）
 **生成策略**：先生成 1 分钟片段选最佳旋律，再多次 Extend 至全长
 
 
@@ -483,7 +483,7 @@ Korean emotional pop rock, dual vocals (male lead with warm mid-range, female ha
 夜再深——也会亮起来——
 就像那条铁轨——一直走到尽头——
 ```
-**预估时长**：3:30-4:30（双人对唱，需更多段落）
+**预估时长**： 4:00-5:00（双人对唱，需更多段落）
 **生成策略**：同 Sleepers，先片段选旋律，再 Extend 至全长
 
 
@@ -644,7 +644,7 @@ Korean indie folk pop, female vocals light and playful, bright acoustic guitar f
 统一便当店……奇怪的地方
 但不知为何……有点温暖
 ```
-**预估时长**：3:00-4:00（韩式民谣，中快速）
+**预估时长**： 4:00-5:00（韩式民谣，中快速）
 **生成策略**：先生成 1 分钟片段，Extend 2-3 次至全长
 
 
@@ -753,7 +753,7 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 啊——千里马——啊——新时代——
 奔驰——！
 ```
-**预估时长**：2:00-3:00（革命歌曲短促有力，游戏只截取前段循环）
+**预估时长**：4:00-5:00（革命歌曲，游戏只截取前段循环）
 **生成策略**：1 次生成选最佳，无需 Extend
 
 
