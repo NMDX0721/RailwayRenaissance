@@ -699,7 +699,7 @@ AVOID:
 
 ---
 
-### 2.3 车厢内部（白天·沙能飞行器）
+### 2.3 驾驶舱·白天（0721号前舱）
 
 **文件**：`Resources/bg/car_interior.png`  
 **用途**：序章 Day 0-Day 3 飞行器内部场景——岁月初次唤醒、旅途对话（9次使用）
@@ -805,7 +805,7 @@ AVOID:
 
 ---
 
-### 2.4 车厢内部（夜晚·沙能飞行器）
+### 2.4 驾驶舱·夜晚（0721号前舱）
 
 **文件**：`Resources/bg/car_interior_night.png`  
 **用途**：序章 Day 2 夜晚飞行器内部场景（4次使用）
@@ -872,189 +872,129 @@ AVOID:
 
 ---
 
-### 2.5 飞猪号客舱内部（白天·自动驾驶）
+### 2.5 客舱·白天（新绘—0721号后舱）
 
-**文件**：`Resources/bg/car_interior.png`（替换原驾驶舱版）  
-**用途**：序章 Day 0-3 主角与岁月的飞行旅途场景——0721号沙子飞猪号，双人客舱，自动驾驶
+**文件**：Resources/bg/cabin_interior.png  
+**用途**：0721号后舱——主角旅途主要活动空间，对话、进食、休息、睡眠
+
+**设计说明**：0721号沙子飞猪号（约4.5m×1.8m，轿车大小）无独立厕所，中途在补给站解决。后舱2个座椅可完全放平形成简易床铺，供4.5天旅程中轮换休息。岁月全程自动驾驶，乘客只需吃喝睡。
 
 **提示词**：
-```
+`
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small 2-person flying car cabin interior, 2076 retro-futuristic,
-NORTH KOREAN official aesthetic mixed with KOREAN consumer culture,
-"Sand Flying Pig" (沙子飞猪号) autonomous vehicle, daytime:
+flying vehicle PASSENGER CABIN interior, daytime, 2076 retro-futuristic,
+NORTH KOREAN VEHICLE INTERIOR — personal space in a DPRK-made vehicle,
+"Sand Flying Pig" 0721 rear cabin:
 
-SCENE: interior of a small 2-person sand-energy flying car — HAS A STEERING WHEEL but it is never used, fully autonomous. Two comfortable seats side by side facing forward, large wraparound windows showing only sky. DELIBERATE VISUAL CONTRAST: official North Korean government decor mixed with leftover South Korean-style consumer goods, creating a humorous cultural clash.
+SCENE: rear passenger cabin of a small DPRK-made sand-energy flying car — 2 comfortable seats (reclining, can form a bed), foldable table between them, large window showing only sky, personal items scattered around. This is where the protagonist actually lives during the 4.5-day journey. The base tone is North Korean vehicle design, but the occupant has made it their own.
 
-CABIN LAYOUT (COMPACT 2-SEAT):
-- Two seats: driver-side and passenger-side, driver seat still has a steering wheel — but it's clearly UNUSED (slight dust, a K-pop sticker on it, documents tucked under it)
-- The steering wheel is a retro-futuristic yoke-style wheel, Korean-made, functional but neglected — "the reserve escape route"
-- Lavish center console is a wide armrest with holographic display (岁月's interface)
-- Large curved windshield and side windows wrapping around seats — panoramic sky view
-- Compact cabin, only ~1.8m wide, 2m long — intimate 2-person space
-- Rear storage area behind seats (small duffel bag, folded blanket)
-- Overhead console with tiny reading lights and climate vents
+CABIN LAYOUT:
+- Two reclining seats (beige/cream upholstery, dark green piping), KIM IL SUNG UNIVERSITY emblem on headrests
+- Seats can recline to form a flat sleeping surface — a thin blanket and small pillow on one seat
+- Foldable table between seats, deployed during meal times, stowed for sleeping
+- Large side window, rounded rectangular, dark frame — SKY ONLY, NO GROUND
+- Small storage compartments under window and below seats
+- Small netted pocket on seatback for magazines/documents
+- Overhead reading light (warm yellow, individual)
+- Small air vent above window, utilitarian Korean design
+- No toilet — vehicle too small, pit stops at supply stations
 
-OFFICIAL NORTH KOREAN ELEMENTS (PRIMARY TONE):
-- Portrait of Kim Il-sung and Kim Jong-il framed on cabin wall — side by side, official brass frames
-- "위대한 수령 김일성동지 만세" (Long live the Great Leader) calligraphy plaque
-- Chollima (천리마) statue miniature on dashboard shelf
-- Dancheong-patterned trim strip along cabin wall in obangsaek five colors
-- Official vehicle ID plaque: "조선민주주의인민공화국 백두산 운수성" (DPRK Baekdu Transport Ministry)
-- Red star emblem on headrests
-- Small DPRK flag (태극기 with red star) on dashboard
-- "주체사상" (Juche Idea) slogan small text
+NORTH KOREAN BASE AESTHETIC (PRIMARY TONE):
+- Dark green/olive trim along cabin walls (standard DPRK vehicle color)
+- Dancheong-patterned stripe along ceiling edge (subtle, traditional)
+- "금연" (No Smoking) / "좌석벨트" (Fasten Seat Belt) signs in Korean
+- KIM IL SUNG UNIVERSITY emblem on headrests
+- Official vehicle ID plaque on door frame
+- Chollima (천리마) brand emblem on cabin wall
+- Functional, utilitarian design — North Korean industrial standard
 
-CONTRASTING KOREAN CONSUMER ELEMENTS (SECONDARY, HUMOROUS):
-- Empty KOREAN FRIED CHICKEN box (치킨) on rear seat — branded "BBQ 치킨" style
-- Half-empty soju bottle (소주) and small cups tucked in door pocket
-- Convenience store snacks: shrimp chips (새우깡), banana milk (바나나우유) on console
-- K-pop sticker of a girl group on dashboard (partially peeling)
-- Ramen cup (라면) wrapper in side pocket
-- "CASS" beer can (empty, in trash)
-- Korean cosmetics sample bag from duty-free shop
-- Seoul travel brochure in seat back pocket
-
-INSTRUMENTS & TECH (AUTONOMOUS — NO CONTROLS):
-- Small holographic display on center console — 岁月's interface, shows route map and weather
-- Digital display on windshield: altitude "고도", speed "속도" in Hangul
-- Audio speaker playing music (Korean songs — hint of trot music)
-- NO steering wheel, NO pedals, NO throttle — just a passenger cabin
+PERSONAL ITEMS (ACCUMULATED DURING JOURNEY):
+- Open laptop on table (Korean-made, 2076 model, dispatch algorithm code on screen)
+- Notebook and pen next to laptop
+- KOREAN FRIED CHICKEN box (BBQ 치킨) on table, some crumbs
+- Half-empty soju bottle (처음처럼) and one small cup
+- Shrimp chips (새우깡) bag, banana milk (바나나우유) bottle
+- Seoul travel guide on the seat
+- Duty-free shopping bag on floor, clothes peeking out
+- K-pop photocards tucked into seat pocket
+- Folded blanket and small pillow on one seat
+- Phone charger cable draped across the table
+- Water bottle in cup holder
 
 WINDOW VIEW (DAYTIME — SKY ONLY):
 - Bright blue sky with white clouds
-- A few distant flying vehicles
-- Warm sunlight streaming through panoramic windows
-- Cloud formations visible through curved windshield
+- Occasional distant flying vehicle
+- Warm sunlight streaming through window
+- NO GROUND, NO MOUNTAINS, NO CITIES
 
 COLOR PALETTE:
-- Primary: deep blue exterior glow (#1A3A6A), warm beige interior (#D4C5A9), official dark green trim (#3B5E3B)
-- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
-- Accents: soju bottle green (#4CAF50), chicken box orange (#FF8C00), banana milk yellow (#FFFDD0), DPRK red (#CD2626)
+- Primary: warm beige (#D4C5A9), olive green (#4A5D23), dark window frame (#3A3A3A)
+- Secondary: sky blue (#87CEEB), laptop screen glow (#E0F0FF)
+- Accents: food packaging orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
 
 ATMOSPHERE:
-- Cozy and intimate — a small capsule for two travelling together
-- Humorous cultural contrast both travelers can laugh about
-- Safe and comfortable — 岁月 handles everything, player just enjoys the view
-- Sense of adventure beginning
-- The contrast between official propaganda decor and casual consumer goods tells a story
+- Cozy, lived-in — this is where the protagonist actually spends 4.5 days
+- North Korean base design made personal by the occupant
+- Warm daylight, comfortable for long journey
+- The clutter tells a story: a student traveling home, mixing work (laptop) with pleasure (snacks)
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN OFFICIAL × SOUTH KOREAN CONSUMER fusion
-- Deliberately kitschy, funny, story-telling details
-- All official text in Korean (Hangul)
+- DPRK VEHICLE INTERIOR — North Korean design is the base, personal items are the overlay
+- Every label in Korean (Hangul)
+- Lived-in, not sterile
 
 AVOID:
-- Steering wheel or cockpit controls (it's autonomous!)
-- Ground or landscape visible (sky only)
-- Too luxurious or premium
-- Missing the leader portraits (essential for the contrast)
-- Missing the South Korean consumer goods (essential for the contrast)
-- Clean/sterile interior (should feel lived-in)
-```
+- Ground or landscape visible through window
+- Too clean or empty (must look lived-in after 4 days)
+- Luxury or premium interior
+- English text
+- Japanese or Chinese elements
+`
 
-### 2.6 飞猪号客舱内部（夜晚·自动驾驶）
+### 2.6 客舱·夜晚（新绘—0721号后舱）
 
-**文件**：`Resources/bg/car_interior_night.png`（替换原驾驶舱版）  
-**用途**：序章夜晚飞行场景——夜色中跨越国境的旅途
+**文件**：Resources/bg/cabin_interior_night.png  
+**用途**：0721号后舱——夜晚飞行，主角休息，岁月独白场景
 
 **提示词**：
-```
+`
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small 2-person flying car cabin interior at night,
-2076 retro-futuristic, NORTH KOREAN official × KOREAN consumer culture,
-"Sand Flying Pig" autonomous vehicle, night:
+flying vehicle PASSENGER CABIN at night, 2076 retro-futuristic,
+NORTH KOREAN VEHICLE INTERIOR at night, cozy personal space:
 
-SCENE: same compact 2-seat flying car cabin as daytime, but at night — dimmed cabin lights, starry sky through panoramic windows, holographic display glowing softly, reading light on passenger side. The leader portraits are still faintly visible on the wall — the cultural contrast persists even in darkness.
+SCENE: same rear cabin as daytime — but at night. Reading light on, laptop closed, table cleared. One seat reclined into bed mode with blanket and pillow. Window shows starry sky. Warm yellow reading light creates a cozy, intimate atmosphere. The protagonist is asleep, or resting quietly.
 
 NIGHTTIME DIFFERENCES:
-- Cabin lights dimmed to warm amber — only holographic display and reading light illuminate
-- Panoramic windows show dark night sky with stars and crescent moon — NO GROUND
-- 岁月's holographic interface glows cyan, softly lighting the cabin
-- Small reading light above passenger seat (warm yellow)
-- Chicken box and soju bottle catch dim moonlight on rear seat
-- K-pop sticker barely visible, peeling at the corner
-- Red star emblem on headrest faintly glowing
-- Leader portraits half-shadowed — still dignified, still present
-
-KOREAN CONTRAST ELEMENTS (NIGHT — SAME, DIMLY LIT):
-- Leader portraits (Kim Il-sung, Kim Jong-il) in brass frames — visible in dim light
-- Chollima miniature silhouette on dashboard
-- Empty soju bottle catching a highlight
-- Convenience store snacks in shadow
-- "주체사상" slogans faintly visible on wall
-
-WINDOW VIEW (NIGHT — SKY ONLY):
-- Dark night sky with scattered stars
-- Crescent moon above clouds
-- Occasional lights of distant flying vehicles passing
-- Thin moonlit cloud layer below — no city lights, no ground
+- Cabin dark except for reading light (warm yellow, individual spotlight)
+- Table cleared of food — only laptop (closed), notebook, water bottle remain
+- One seat reclined flat with blanket and pillow (bed mode)
+- Window shows dark night sky with stars and crescent moon — NO GROUND
+- Snack bags dimly visible in storage compartments
+- K-pop photocards on seat catching reading light
+- Duty-free bag silhouette in corner
+- Phone charger plugged in, faint blue charging light
+- Empty soju bottle and chicken box in trash bag
 
 COLOR PALETTE (NIGHT):
-- Primary: deep dark blue (#0A0A1E), warm amber cabin light (#8B6914)
-- Secondary: starry sky (#1A1A3E), holographic cyan (#00BFFF)
-- Accents: soju green (#355E3B), chicken box orange (#FF8C00), faint DPRK red (#8B0000)
-- Reading light warm yellow (#FFD700)
+- Primary: warm amber (#8B6914), dark blue (#0A0A1E)
+- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
+- Accents: laptop sleep mode light (#00BFFF), charging LED (#32CD32)
 
 ATMOSPHERE:
-- Quiet, intimate nighttime travel — just two beings and the sky
-- Deep conversation mood — the humor of the day fades into reflection
+- Quiet, intimate, restful
+- End of a long travel day
 - Safe and warm inside despite the dark outside
-- Stars overhead create a sense of vast journey and smallness
-- The cultural contrast feels nostalgic rather than funny at night
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN × KOREAN fusion at night
-- Dim, warm ambient lighting
-- All official text in Korean (Hangul)
+- Contemplative mood — protagonist rests while 岁月 flies on through the night
+- The cabin feels smaller and more personal in the dark
 
 AVOID:
-- Steering wheel or cockpit controls
-- Ground or city lights visible (sky only)
-- Too bright
-- Clean/sterile look
-- Missing the cultural contrast elements
-```
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening.
-
-ARCHITECTURAL ELEMENTS:
-- University rooftop helipad
-- Several sand-energy flying vehicles parked
-- Deep blue sand vehicles with university emblem
-- Control tower in background
-- Korean-style rooflines visible below
-
-VIEW (PYONGYANG SKYLINE):
-- Ryugyong Hotel in distance (pyramid shape)
-- Juche Tower visible
-- Grand People's Study House with traditional Korean roof
-- Mix of traditional Korean architecture and modern buildings
-- Mountains with Korean pine trees in far distance
-- Taedong River visible
-- Flying vehicles in distance
-
-COLOR PALETTE:
-- Primary: evening sky gradient (#FF6B35 to #1A1A2E)
-- Secondary: deep blue vehicles (#000080), warm sunset (#FFD700)
-- Accents: university emblem colors, landing pad lights
-
-ATMOSPHERE: Transition from day to night, sense of departure. The last moment before a long journey begins.
-
-AVOID:
-- Too bright or cheerful (should be evening)
-- Missing the specific landmarks
-- Generic city skyline (must be specifically Pyongyang)
-```
-
----
-
+- Too bright (must be clearly nighttime)
+- Ground or city lights visible through window
+- Too clean or sterile
+- English text
 ### 2.7 停机坪
 
 **文件**：`Resources/bg/hangar.png`  
@@ -1121,7 +1061,7 @@ AVOID:
 
 ---
 
-### 2.7 雾峰村夕阳
+### 2.9 雾峰村夕阳
 
 **文件**：`Resources/bg/village_sunset.png`  
 **用途**：序章 Day 4 到达雾峰村
@@ -1160,7 +1100,7 @@ AVOID:
 
 ---
 
-### 2.8 车站夕阳
+### 2.10 车站夕阳
 
 **文件**：`Resources/bg/station_sunset.png`  
 **用途**：序章 Day 4 到达车站
@@ -1192,7 +1132,7 @@ AVOID:
 
 ---
 
-### 2.9 傍晚站台
+### 2.11 傍晚站台
 
 **文件**：`Resources/bg/platform_evening.png`  
 **用途**：序章 Day 4 老陈等候
@@ -1223,7 +1163,7 @@ AVOID:
 
 ---
 
-### 2.10 Wiki 横幅（Wiki Banner）
+### 2.12 Wiki 横幅（Wiki Banner）
 
 **文件**：`images/wiki_banner.png`  
 **用途**：Wiki 中文/英文主页顶部横幅，替代实验室背景图
@@ -1502,4 +1442,3 @@ AVOID:
 *本文档按最新标准（v2.0 分类清单版）重写，基于实验室成功提示词格式。*
 
 ---
-
