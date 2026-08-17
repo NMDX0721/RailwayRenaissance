@@ -314,9 +314,9 @@ public class VNSaveLoadUI : MonoBehaviour
     {
         var slotElement = new VisualElement();
         slotElement.style.flexDirection = FlexDirection.Row;
-        slotElement.style.width = isLatestSlot ? new Length(100, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
-        slotElement.style.height = 110;
-        slotElement.style.marginBottom = 10;
+        slotElement.style.width = isLatestSlot ? new Length(96, LengthUnit.Percent) : new Length(48, LengthUnit.Percent);
+        slotElement.style.height = 130;
+        slotElement.style.marginBottom = 14;
         slotElement.style.alignItems = Align.Stretch;
         slotElement.style.backgroundColor = SlotBg;
         slotElement.style.borderTopWidth = 1; slotElement.style.borderBottomWidth = 1;
@@ -451,6 +451,7 @@ public class VNSaveLoadUI : MonoBehaviour
             });
 
             btnArea.Add(actionBtn);
+            if (saveData != null) actionBtn.style.marginRight = 8;
         }
 
         if (saveData != null)

@@ -705,12 +705,14 @@ AVOID:
 **用途**：0721号前舱——岁月主控区，主角偶尔进入。朝鲜官方标配 × 岁月全息系统。23年未变，如博物馆般被保存。
 
 **⚠️ 前两版图片问题总结（新版提示词已针对性修复）：**
-1. 老版无方向盘 → 新版明确方向盘在左侧，K-pop贴纸，积灰
+1. 最终版选用无方向盘方案 → 操作面板 + 按钮/开关代替
 2. 韩文有乱码 → 新版强调"ALL Korean text must be correct Hangul, no garbled text"
 3. 领袖肖像不够像 → 新版强调"brass frames, symmetrical, immediately recognizable"
 4. 座椅比例失调 → 新版明确座位尺寸和位置
 5. 背景风格不一致 → 新版统一像素风
-6. "岁月"是中文 → 新版使用韩文"세월"或保持中文但标注
+6. 驾驶舱是官方空间，不应有韩式消费品 → 移到客舱
+
+**⚠️ 设计说明：0721号无方向盘。驾驶舱使用操作面板 + 全息控制系统。岁月AI全权操控飞行，物理控制面板是23年前的原始设计，积灰未用。**
 
 **提示词**：
 ```
@@ -720,7 +722,7 @@ flying vehicle COCKPIT interior, daytime, 2076 retro-futuristic,
 NORTH KOREAN OFFICIAL AESTHETIC — max density,
 "Chollima" brand flying car, "Sand Flying Pig" 0721:
 
-SCENE: front cockpit of a DPRK-made sand-energy flying car — two seats, steering wheel, holographic dashboard, leader portraits in brass frames. This is the ORIGINAL 2053 interior, preserved like a museum: 23 years untouched, every official detail intact. The cockpit is a time capsule of DPRK industrial design.
+SCENE: front cockpit of a DPRK-made sand-energy flying car — two seats, CONTROL PANEL with buttons and toggle switches, holographic dashboard, leader portraits in brass frames. This is the ORIGINAL 2053 interior, preserved like a museum: 23 years untouched, every official detail intact. The cockpit is a time capsule of DPRK industrial design. NO STEERING WHEEL — the vehicle is fully autonomous, controlled by the AI system 岁月.
 
 CULTURAL CONTEXT — SIX LAYERS OF KOREANNESS:
 - LAYER 1: Chollima brand — DPRK's premier vehicle manufacturer, named after the mythical thousand-li horse
@@ -732,8 +734,7 @@ CULTURAL CONTEXT — SIX LAYERS OF KOREANNESS:
 
 COCKPIT LAYOUT:
 - Pilot seat (left) and passenger seat (right), dark olive-green upholstery, DPRK red star emblem on headrests
-- Steering wheel on left column — retro-futuristic yoke, Korean-made, slightly dusty from disuse, a K-pop girl group sticker on the hub
-- Dashboard with physical toggle switches and analog gauges (military-grade, Korean-made)
+- NO STEERING WHEEL — replaced by a control panel with physical toggle switches and push buttons (military-grade, Korean-made, 23 years untouched)
 - Holographic display screen in center of dashboard (岁月's navigation interface, blue-tinted, showing map and flight data)
 - Center console with sand-energy controls, navigation system, and propaganda radio
 - Side windows on both sides showing sky and clouds (daytime, bright)
@@ -764,13 +765,14 @@ TECHNOLOGY & CONTROLS:
 - Warning stickers: "주의" (caution), "비상정지" (emergency stop)
 - Engine temperature: "엔진 온도" with green-yellow-red zones
 - "비행중" (in flight) sign above cockpit door, illuminated
+- Control panel: physical toggle switches, push buttons, analog gauges — all Korean-made, military-grade, slightly dusty
 
 CONTRAST ELEMENTS (HUMOROUS, SECONDARY — SHOWING THE PASSAGE OF TIME):
-- K-pop girl group sticker on steering wheel hub (partially peeling, catching light)
 - "CASS" beer can wedged in door pocket (empty)
 - Half-empty soju bottle (처음처럼) in side storage
 - Seoul travel guide magazine on passenger seat (slightly dog-eared)
 - University ID card (김일성대학교 학생증) clipped to sun visor
+- A K-pop sticker on the control panel (partially peeling, the only splinter of modern culture in the official space)
 
 WINDOW VIEW (DAYTIME):
 - Bright blue sky with white clouds through windshield
@@ -801,6 +803,7 @@ STYLE:
 - Military-grade build quality visible in switches and materials
 
 AVOID:
+- Steering wheel (the vehicle has NO steering wheel — use control panel with buttons/switches instead)
 - Generic sci-fi interior (must be unmistakably NORTH KOREAN)
 - Japanese or Chinese cultural elements
 - English text anywhere
@@ -818,7 +821,7 @@ AVOID:
 ### 2.4 驾驶舱·夜晚（0721号前舱）
 
 **文件**：`Resources/bg/car_interior_night.png`  
-**用途**：序章 Day 2 夜晚飞行器内部场景（4次使用）
+**用途**：0721号前舱——夜晚飞行。使用图片 `ChatGPT Image 2026年8月17日 13_26_49.jpg`。无方向盘，完全靠全息控制系统飞行。
 
 **提示词**：
 ```
