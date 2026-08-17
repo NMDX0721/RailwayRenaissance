@@ -253,9 +253,7 @@ public class NewGameSetupUI : MonoBehaviour
         aliasField.style.width = new Length(100, LengthUnit.Percent);
         aliasField.style.height = 46;
         aliasField.style.fontSize = 24;
-        aliasField.Q<TextElement>().style.fontSize = 24;
-        aliasField.Q<TextElement>().style.unityFontDefinition = fd;
-        aliasField.Q<TextElement>().style.unityTextAlign = TextAnchor.MiddleCenter;
+        UIToolkitUtil.StyleDarkTextField(aliasField, gameFont, 24, true);
         aliasGroup.Add(aliasField);
 
         // ── Difficulty ──
@@ -422,9 +420,7 @@ public class NewGameSetupUI : MonoBehaviour
         seedField.value = "RR-";
         seedField.style.flexGrow = 1; seedField.style.height = 40;
         seedField.style.fontSize = 18;
-        seedField.Q<TextElement>().style.fontSize = 18;
-        seedField.Q<TextElement>().style.unityFontDefinition = fd;
-        seedField.Q<TextElement>().style.unityTextAlign = TextAnchor.MiddleCenter;
+        UIToolkitUtil.StyleDarkTextField(seedField, gameFont, 18, true);
         seedField.RegisterValueChangedCallback(e => { if (selectedSeed >= 0) ClearSeedSelection(); });
         manualRow.Add(seedField);
     }
