@@ -541,14 +541,16 @@ public class StationBulletinUI : MonoBehaviour
 
         void ApplyInputStyle(TextField tf)
         {
-            // 内外所有元素：背景透明、边框清零（干掉默认白色输入区+蓝色聚焦圈）、不裁剪文字
+            // 内外所有元素：背景透明、边框清零（干掉默认白色输入区+蓝色聚焦圈）、去掉内边距
             foreach (var ve in tf.Query<VisualElement>().ToList())
             {
                 ve.style.backgroundColor = Color.clear;
                 ve.style.borderTopWidth = 0; ve.style.borderBottomWidth = 0;
                 ve.style.borderLeftWidth = 0; ve.style.borderRightWidth = 0;
                 ve.style.overflow = Overflow.Visible;
-                ve.style.height = 34;
+                ve.style.paddingTop = 0; ve.style.paddingBottom = 0;
+                ve.style.paddingLeft = 0; ve.style.paddingRight = 0;
+                ve.style.height = StyleKeyword.Auto;
             }
             foreach (var te in tf.Query<TextElement>().ToList())
             {
@@ -558,10 +560,10 @@ public class StationBulletinUI : MonoBehaviour
                 te.style.unityTextAlign = TextAnchor.MiddleCenter;
                 te.style.overflow = Overflow.Visible;
                 te.style.whiteSpace = WhiteSpace.Normal;
-                te.style.paddingTop = 0; te.style.paddingBottom = 0;
                 te.style.unityFontStyleAndWeight = FontStyle.Bold;
+                te.style.marginTop = 0; te.style.marginBottom = 0;
             }
-            // 外层：深棕底 + 单层金色边框
+            // 外层：深棕底 + 单层金色边框，垂直居中
             tf.style.backgroundColor = new Color(0.16f, 0.1f, 0.05f, 0.95f);
             tf.style.borderTopWidth = 1; tf.style.borderBottomWidth = 1;
             tf.style.borderLeftWidth = 1; tf.style.borderRightWidth = 1;
@@ -571,7 +573,8 @@ public class StationBulletinUI : MonoBehaviour
             tf.style.borderBottomColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
             tf.style.borderLeftColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
             tf.style.borderRightColor = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
-            tf.style.paddingLeft = 8; tf.style.paddingRight = 8;
+            tf.style.alignItems = Align.Center;
+            tf.style.justifyContent = Justify.Center;
             tf.style.fontSize = 22;
             tf.style.color = new Color(1f, 0.97f, 0.85f, 1f);
         }
