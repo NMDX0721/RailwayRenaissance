@@ -69,8 +69,20 @@
           "text": "序章完"
         },
         {
-          "t": "n",
-          "text": "即将进入经营模式..."
+          "t": "c",
+          "text": "面对守候在这条线上的老人，林彪悍说——",
+          "opts": [
+            {
+              "text": "「我会让这条铁路重新活过来。」",
+              "next": 3,
+              "setValue": "final_vow=determined"
+            },
+            {
+              "text": "「我尽力而为。」",
+              "next": 3,
+              "setValue": "final_vow=modest"
+            }
+          ]
         }
       ]
     },

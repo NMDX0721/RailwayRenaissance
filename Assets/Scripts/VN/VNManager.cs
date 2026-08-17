@@ -81,6 +81,7 @@ public class VNManager : MonoBehaviour
             PlayerPrefs.Save();
             // 立即隐藏 VN 界面元素，不等下一帧
             HideVNUI();
+            isFromTitleScreenMode = true;
             StartCoroutine(ShowLoadUIDelayed());
             return;
         }
@@ -512,6 +513,12 @@ public class VNManager : MonoBehaviour
             if (saveLoadUI != null && saveLoadUI.IsOpen)
             {
                 saveLoadUI.ClosePanel();
+                // 从标题界面进入的读档模式：按下ESC直接返回标题
+                if (isFromTitleScreenMode)
+                {
+                    isFromTitleScreenMode = false;
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+                }
                 return;
             }
             ShowConfirmDialog();
@@ -1001,6 +1008,8 @@ public class VNManager : MonoBehaviour
         // 恢复菜单栏
         if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
     }
+
+    private bool isFromTitleScreenMode;
 
     private void HideVNUI()
     {
