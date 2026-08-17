@@ -18,7 +18,7 @@
 
 这些配乐贯穿多个场景，优先制作。
 
-### ★ 1.1 主题曲·铁轨还在（Instrumental）
+### ★ 1.1 "Iron ＆ Ash" 铁与灰（Instrumental）
 
 **脚本引用**：`melancholy`（12 次）、`calm`（9 次）  
 **用途**：标题界面、序章启程、废弃铁路、回忆爷爷、抵达雾峰村  
@@ -28,7 +28,7 @@
 Style: Cinematic orchestral, warm and nostalgic, piano melody, soft strings, gentle rising brass, Korean traditional undertone, instrumental, no vocals, 80 BPM
 ```
 
-### ★ 1.2 旅途·飞行途中（Instrumental）
+### ★ 1.2 "Cloud-Rail" 云轨（Instrumental）
 
 **脚本引用**：`travel`（6 次）、`adventure`（2 次）  
 **用途**：飞行旅途中（Day 1-3）、补给站之间  
@@ -38,7 +38,7 @@ Style: Cinematic orchestral, warm and nostalgic, piano melody, soft strings, gen
 Style: Ambient folk, spacious and open, acoustic guitar arpeggios, warm pad, light percussion, open sky feeling, instrumental, no vocals, 72 BPM, evolving slowly
 ```
 
-### ★ 1.3 主题曲·传承（Instrumental）
+### ★ 1.3 "Embers" 余烬（Instrumental）
 
 **脚本引用**：`determination`（6 次）  
 **用途**：主角决定出发、首班车启动、坚定信念场景  
@@ -48,7 +48,7 @@ Style: Ambient folk, spacious and open, acoustic guitar arpeggios, warm pad, lig
 Style: Cinematic orchestral, determined and rising, marching percussion, French horn, building strings, heroic undertone, instrumental, no vocals, 100 BPM
 ```
 
-### ★ 1.4 情感·夜幕（Instrumental）
+### ★ 1.4 "Night Cargo" 夜行货（Instrumental）
 
 **脚本引用**：`emotional`（10 次）  
 **用途**：夜晚飞行、孤独独白、岁月与主角对话  
@@ -62,7 +62,7 @@ Style: Emotional piano, slow and aching, solo cello countermelody, wide reverb, 
 
 ## 二、场景配乐（○ 中频复用）
 
-### ○ 2.1 清晨·出发（Instrumental）
+### ○ 2.1 "First Light" 晨光（Instrumental）
 
 **脚本引用**：`morning`（4 次）、`peaceful`（1 次）  
 **用途**：Day 1 上午、Day 2 下午等时间过渡，安静时刻
@@ -71,7 +71,7 @@ Style: Emotional piano, slow and aching, solo cello countermelody, wide reverb, 
 Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings (birds, wind), minimal drone, instrumental, no vocals, 60 BPM
 ```
 
-### ○ 2.2 日常·温馨（Instrumental）
+### ○ 2.2 "Platform" 站台（Instrumental）
 
 **脚本引用**：`warm`（3 次）  
 **用途**：员工集合、站台聊天、日常对话
@@ -80,7 +80,7 @@ Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings
 Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello, light brushed snare, intimate studio feel, instrumental, no vocals, 80 BPM
 ```
 
-### ○ 2.3 悬疑·边境线（Instrumental）
+### ○ 2.3 "Borderline" 国境线（Instrumental）
 
 **脚本引用**：`suspense`（1 次）  
 **用途**：边境检查站追逐战（**复用潜力**：后续铁龙竞争对抗场景）
@@ -89,7 +89,7 @@ Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello, 
 Style: Cinematic suspense, tense low strings, electronic pulse, building drums, staccato brass hits, urgent rhythm, instrumental, no vocals, 130 BPM, minor key, no melody
 ```
 
-### ○ 2.4 搞笑·方向盘之歌（Instrumental）
+### ○ 2.4 "The Wheel’s Joke" 方向盘在笑（Instrumental）
 
 **脚本引用**：`fun`（2 次）  
 **用途**：方向盘搞笑场景、统一便当店购物
@@ -98,7 +98,7 @@ Style: Cinematic suspense, tense low strings, electronic pulse, building drums, 
 Style: Playful folk, whimsical acoustic guitar, pizzicato strings, light percussion, quirky and cheerful, instrumental, no vocals, 110 BPM
 ```
 
-### ○ 2.5 自然·铁路沿线（Instrumental）
+### ○ 2.5 "Wild Tracks" 野轨（Instrumental）
 
 **脚本引用**：`ambient_nature`（2 次）、`train_ambient`（2 次）  
 **用途**：雾峰村野外、铁路巡视
@@ -107,7 +107,7 @@ Style: Playful folk, whimsical acoustic guitar, pizzicato strings, light percuss
 Style: Nature ambient, open field recording vibe, soft wind drone, distant bird calls, sparse guitar notes, atmospheric, instrumental, no vocals, 50 BPM
 ```
 
-### ○ 2.6 新闻报道（Instrumental）
+### ○ 2.6 "News Wire" 电讯（Instrumental）
 
 **脚本引用**：`news`（2 次）  
 **用途**：滚动新闻播报
@@ -120,7 +120,7 @@ Style: Broadcast documentary, neutral piano motif, soft string pad, objective to
 
 ## 三、特定场景配乐（· 单次）
 
-### · 3.1 好奇·初探车厢（Instrumental）
+### · 3.1 "First Cabin" 初舱（Instrumental）
 
 **脚本引用**：`curious`（2 次）  
 **用途**：主角进入客舱、探索车辆
@@ -129,7 +129,7 @@ Style: Broadcast documentary, neutral piano motif, soft string pad, objective to
 Style: Light chamber music, curious and gentle, music box, clarinet, soft pizzicato, exploratory feel, instrumental, no vocals, 75 BPM
 ```
 
-### · 3.2 神秘·岁月唤醒（Instrumental）
+### · 3.2 "Deep Sleep" 沉睡（Instrumental）
 
 **脚本引用**：`mystery`（4 次）  
 **用途**：岁月系统启动、AI 初次对话
@@ -138,7 +138,7 @@ Style: Light chamber music, curious and gentle, music box, clarinet, soft pizzic
 Style: Sci-fi ambient, mysterious synth pads, glitchy electronic textures, soft bass drone, awakening feel, instrumental, no vocals, 70 BPM
 ```
 
-### · 3.3 都市·平壤街景（Instrumental）
+### · 3.3 "Pyongyang Night" 平壤夜（Instrumental）
 
 **脚本引用**：`city`（1 次）  
 **用途**：平壤城市风貌、前往大同江茶馆的路上
