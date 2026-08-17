@@ -139,6 +139,7 @@ public class DialogueBox : MonoBehaviour
     }
 
     public void Hide() => dialogueBox.style.display = DisplayStyle.None;
+    public void Show() => dialogueBox.style.display = DisplayStyle.Flex;
 
     public void HideContinueIndicator()
     {

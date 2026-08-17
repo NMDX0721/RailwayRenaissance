@@ -1032,12 +1032,15 @@ public class VNManager : MonoBehaviour
         if (saveLoadUI != null)
             saveLoadUI.OpenLoadPanelFromTitle((slotIndex) =>
             {
-                LoadSave(slotIndex);
+                var saveData = saveSystem.LoadGame(slotIndex);
+                if (saveData != null)
+                {
+                    LoadFromSave(saveData);
+                }
                 isFromTitleScreenMode = false;
                 // 恢复 VN 界面（ClosePanel 由按钮回调处理，且已设 isFromTitleScreen=false）
                 if (dialogueBox != null) dialogueBox.Show();
                 if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.Flex;
-                if (backgroundManager != null) backgroundManager.SetBackgroundImmediate("black");
             });
     }
 
