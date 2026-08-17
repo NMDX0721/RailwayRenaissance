@@ -608,7 +608,6 @@ DPRK revolutionary march, full symphony orchestra, male choir in unison, triumph
 (spoken, dramatic, with echo)
 100전 100승!
 백전백승!
-(100 battles, 100 victories!)
 
 [Final Chorus]
 (slower, grander, held high notes)
