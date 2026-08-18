@@ -104,7 +104,7 @@ Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar carrying a ge
 **用途**：边境检查站追逐战（**复用潜力**：后续铁龙竞争对抗场景）
 
 ```
-Style: Cinematic suspense, tense low strings holding long notes, electronic pulse rhythm, building drums from snare to full kit, staccato brass hits accenting tension, urgent and driving rhythm, gradual crescendo, no melody, just texture and rhythm, instrumental, no vocals, 130 BPM, key of D minor, no harmony, no resolution, like a countdown in the dark
+Style: Cinematic suspense, tense low strings holding long sustained notes, electronic pulse rhythm like a heartbeat, building drums from snare to full kit entering at 20s, staccato brass hits accenting tension, urgent driving rhythm, gradual crescendo building to intense peak at midpoint, brief drop in tension at 2min like a false calm before escalating again, no melody, just texture and rhythm, instrumental, no vocals, 130 BPM, key of D minor, no harmony, no resolution, tense and unsettled throughout, like a countdown in the dark, heart racing, waiting for the moment of confrontation
 ```
 
 
