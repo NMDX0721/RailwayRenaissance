@@ -10,6 +10,9 @@ public class TitleArchiveUI : MonoBehaviour
     /// <summary>全局单例（跨场景存活）。</summary>
     public static TitleArchiveUI Instance { get; private set; }
 
+    /// <summary>面板关闭后触发（VN/经营场景订阅以恢复各自 BGM）。</summary>
+    public event System.Action OnClosed;
+
     /// <summary>CG 鉴赏条目。</summary>
     private class CgInfo
     {
@@ -1445,6 +1448,7 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (overlay != null) overlay.style.display = DisplayStyle.None;
         StopArchiveAmbient();
+        OnClosed?.Invoke();
     }
 
     // ———— 站长日志氛围音乐：入场播舒缓曲，离场恢复原 BGM ————

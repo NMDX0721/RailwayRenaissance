@@ -268,12 +268,13 @@ public class VNManager : MonoBehaviour
         menuBar.style.alignItems = Align.Center;
         root.Add(menuBar);
 
-        string[] menuLabels = { "回顾", "存档", "读档", "自动", "返回" };
+        string[] menuLabels = { "回顾", "存档", "读档", "自动", "日志", "返回" };
         System.Action[] menuActions = {
             () => ToggleBacklog(),
             () => OpenSaveMenu(),
             () => OpenLoadMenu(),
             () => ToggleAutoPlay(),
+            () => OpenArchivePanel(),
             () => ShowConfirmDialog()
         };
 
@@ -433,6 +434,32 @@ public class VNManager : MonoBehaviour
             kv.Key.style.display = kv.Value;
         }
         hiddenUiSnapshots.Clear();
+    }
+
+    /// <summary>打开站长日志（独立面板，标题/VN 通用）。暂停 VN 场景 BGM 交给日志面板自行处理。</summary>
+    private void OpenArchivePanel()
+    {
+        CloseAllPanels();
+        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        // 暂停 VN 场景 BGM，避免与日志氛围曲叠放
+        VNAudioManager.Instance?.StopBGM(0.3f);
+        var archive = TitleArchiveUI.EnsureInstance();
+        archive.OnClosed -= ResumeVNSceneAudio;
+        archive.OnClosed += ResumeVNSceneAudio;
+        archive.Show();
+    }
+
+    /// <summary>日志关闭后：恢复当前场景 BGM。</summary>
+    private void ResumeVNSceneAudio()
+    {
+        if (currentScript != null && currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
+        {
+            var scene = currentScript.scenes[currentSceneIndex];
+            if (!string.IsNullOrEmpty(scene.bgm))
+                VNAudioManager.Instance?.PlayBGM(scene.bgm, 0.3f);
+        }
+        // 恢复菜单栏
+        if (menuBar != null && !uiHidden) menuBar.style.display = DisplayStyle.Flex;
     }
 
     private void ShowConfirmDialog()
