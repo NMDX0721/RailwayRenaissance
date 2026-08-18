@@ -116,26 +116,36 @@ public class DialogueBox : MonoBehaviour
         bool isNarration = string.IsNullOrEmpty(speaker) || speaker == "n";
         nameArea.style.visibility = isNarration ? Visibility.Hidden : Visibility.Visible;
 
+        // 内心活动：整句 [xxx] → 蓝色斜体富文本
+        string displayText = ConvertInnerThought(text);
+
         if (!isNarration)
         {
             speakerName.text = speaker;
-            dialogueText.text = "\u300C" + text + "\u300D";
-        }
-        else
-        {
-            dialogueText.text = text;
+            displayText = "\u300C" + displayText + "\u300D";
         }
 
         continueIndicator.style.display = DisplayStyle.None;
         if (typewriterEffect != null)
         {
-            string displayText = isNarration ? text : "\u300C" + text + "\u300D";
             typewriterEffect.StartTypewriter(displayText, () =>
             {
                 StartContinueAnimation();
                 OnTypewriterComplete?.Invoke();
             });
         }
+        else
+        {
+            dialogueText.text = displayText;
+        }
+    }
+
+    /// <summary>整句以 [ ] 包裹的旁白转为蓝色斜体，标记不显示。</summary>
+    private string ConvertInnerThought(string text)
+    {
+        if (!string.IsNullOrEmpty(text) && text.StartsWith("[") && text.EndsWith("]") && text.Length > 2)
+            return "<color=#7EC8E3><i>" + text.Substring(1, text.Length - 2) + "</i></color>";
+        return text;
     }
 
     public void Hide() => dialogueBox.style.display = DisplayStyle.None;

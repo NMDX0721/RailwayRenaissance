@@ -73,6 +73,19 @@ public class TypewriterEffect : MonoBehaviour
                 break;
             }
 
+            // 富文本标签整段吞入（如 <color=...> <i> </i>），避免逐字打出控制码
+            if (text[i] == '<')
+            {
+                int closeTag = text.IndexOf('>', i);
+                if (closeTag != -1)
+                {
+                    textBuilder.Append(text, i, closeTag - i + 1);
+                    dialogueText.text = textBuilder.ToString();
+                    i = closeTag;
+                    continue;
+                }
+            }
+
             textBuilder.Append(text[i]);
             dialogueText.text = textBuilder.ToString();
 
