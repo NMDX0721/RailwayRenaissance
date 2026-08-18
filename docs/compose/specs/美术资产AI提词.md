@@ -1240,7 +1240,7 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 private tea house interior, Pyongyang, 2076, evening,
 NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — subtle luxury inside a socialist city:
 
-SCENE: The interior of a private membership tea house in Pyongyang's Gangnam District. Warm, dim amber lighting. A woman in her 40s sits behind a tea table. This is a place that exists in a gray zone — neither fully official nor fully underground, like the woman herself.
+SCENE: The interior of a private membership tea house in Pyongyang's Gangnam District. Warm, dim amber lighting. A low tea table occupies the center foreground with two cushions on either side. This is a place that exists in a gray zone — neither fully official nor fully underground.
 
 LAYOUT:
 - Tea table (low, dark wood, polished) with two cushions on either side
