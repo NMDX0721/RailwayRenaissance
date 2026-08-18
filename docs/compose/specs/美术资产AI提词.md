@@ -1374,6 +1374,532 @@ EXCLUSIONS:
 - No heavy industrial pollution
 ```
 
+### 2.14 群山天空（mountain_sky）
+
+**文件**：`Resources/bg/mountain_sky.png`
+**用途**：序章 Day 4 下午——0721飞越边境后，进入中国境内群山之上。林彪悍第一次从高空俯瞰"小时候听爷爷讲的那片山"。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+aerial view high above mountain ranges, afternoon,
+NO MAN-MADE OBJECTS visible except a distant railway line carved into the valley:
+
+SCENE: Seen from a flying vehicle high above. Endless green mountain ranges stretch to the horizon, layered ridges fading into atmospheric haze. A thin railway line snakes along one valley floor far below — the only sign of human presence. Afternoon light, bright and clear.
+
+LAYOUT:
+- Lower two-thirds: layered mountain ridges (foreground ridges darker green, distant ones fading to blue-grey)
+- A snaking railway line with small tunnels visible in the nearest valley
+- Upper third: clear afternoon sky with scattered cumulus clouds
+- A few distant flying vehicles as tiny silhouettes (optional, for scale)
+
+COLORS:
+- Ridges: deep forest green (#2E5D3A) → misty blue-grey (#7A8B99)
+- Railway: dark grey line with occasional rust-brown bridge sections
+- Sky: clear blue (#5FA8E0), white clouds
+- Atmosphere haze: pale blue-white (#DCE8F0)
+
+MOOD: The journey home. Vast, quiet, hopeful.
+```
+
+---
+
+### 2.15 空中俯瞰·铁轨（aerial_view）
+
+**文件**：`Resources/bg/aerial_view.png`
+**用途**：序章 Day 4——"那是……铁路！"林彪悍在航线上第一次看见雾峰线的身影。这条线是爷爷守了一辈子的东西，是"归乡"的视觉锚点。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+aerial view looking down at a narrow mountain valley railway, late afternoon:
+
+SCENE: Aerial view of a 23km mountain branch line cutting through forested foothills. Two or three tiny stations along the line (tiles roofs, small platforms). A stream crosses under a stone arch bridge. The line is old, single-track with rusted rails still gleaming in low sun. A tiny haze of cooking smoke rises from a village at the valley mouth — WuFeng village in the distance.
+
+LAYOUT:
+- Railway line as the visual spine: enters bottom frame, curves left, exits top
+- 2-3 small stations along the line, each with a short platform and one building
+- Stone arch bridge carrying track over a stream
+- Village cluster at valley mouth (grey-roof houses, one tall chimney)
+- Surrounding: forested hills, terraced fields, a winding dirt road
+
+COLORS:
+- Rails: rust brown-grey (#6B5B4F) with warm highlights
+- Station roofs: grey-blue tiles (#4F6F7A)
+- Fields: gold-green (#8FA94E)
+- Late afternoon warm wash over everything
+
+MOOD: Seeing it again after years. A line that should be dead, still alive.
+```
+
+---
+
+### 2.16 雾峰村夕阳（village_sunset）
+
+**文件**：`Resources/bg/village_sunset.png`
+**用途**：序章 Day 4 抵达前——雾峰村全景，林彪悍的"老家"。村口的老槐树、土墙、炊烟，2076 年仍保持着铁路时代前的样子。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+mountain village panorama at sunset, seen from a low hill above:
+
+SCENE: A small mountain village cradled in a valley. Grey-tiled house roofs with whitewashed walls, an old tree at the village entrance, evening cooking smoke rising from several chimneys. A flagged dirt road winds into the village. Behind it, terraced fields climb the foothills. Warm sunset light paints everything gold-orange.
+
+LAYOUT:
+- Mid-distance village spread across the frame (15-20 houses clustered)
+- Old entrance tree (willow/elm) at frame left, villagers' washing lines
+- Terraced fields behind, dark green
+- Mountain walls closing in both sides
+- Evening sky with warm clouds
+
+COLORS:
+- Roofs: warm grey (#8A7F7A), walls: white-washed with patina (#D9CBB8)
+- Fields: dark moss green (#4C6B3E)
+- Sunset: orange (#E8974A) → deep blue shadow (#3D5175)
+- Smoke: pale lavender-grey
+
+MOOD: Home, unchanged. The village time forgot.
+```
+
+---
+
+### 2.17 车站夕阳（station_sunset）
+
+**文件**：`Resources/bg/station_sunset.png`
+**用途**：序章 Day 4 降落与 Day 7 收尾共用——雾峰站全景。老站房、站牌、月台、停着的 NF-5 耕牛。这条线"最后的车站"。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+small mountain railway station at sunset, wide establishing shot:
+
+SCENE: A humble single-platform railway station at dusk. A low station building with a faded "雾峰" sign (Chinese characters), a wooden platform bench, signal post with rusty arm, and the NF-5 diesel locomotive waiting on the single track (dark green, weathered). Platform overgrown at edges with wild grass. Warm low sun from the left.
+
+LAYOUT:
+- Station building left-center (grey brick, red-tile roof, faded painted characters)
+- Wooden platform edge running across mid-frame
+- NF-5 locomotive on track right, nose toward viewer-left
+- Freight cars (2) behind it, weathered
+- Old luggage cart, stacked sacks by platform
+- Chinese-language signs only
+
+COLORS:
+- Building: grey brick (#9A8F84), roof: faded red (#B4684D)
+- Platform: worn concrete warm grey (#A8998B)
+- Locomotive: dark green (#2F4A38) with rust accents
+- Sky: orange-pink sunset
+
+MOOD: The last station on a dying line — but tonight, someone came back.
+```
+
+---
+
+### 2.18 傍晚站台（platform_evening）
+
+**文件**：`Resources/bg/platform_evening.png`
+**用途**：序章 Day 4 林彪悍下车踏上月台的近景——"到家了"的瞬间。与 station_sunset 的区别：本图为站台近景特写。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+close view standing ON the platform at dusk, facing the station building:
+
+SCENE: Ground-level platform view. Weathered wooden platform surface in foreground, station building facing the viewer (faded 雾峰 characters, two windows with warm lamplight inside), a green signal lamp glowing. Evening shadows long. A pair of patched leather work gloves and a thermos left on the platform bench — someone was here recently.
+
+LAYOUT:
+- Foreground: platform planks, growing weeds between boards
+- Mid: station building facade (4-5m wide), warm window light
+- Left: signal post with lit green lamp
+- Bench with forgotten gloves & thermos
+- Background: fading sky
+
+COLORS:
+- Planks: worn brown (#7A6248), weeds: grey-green (#68754B)
+- Building: whitewash patched grey (#C0B5A5), lamplight warm yellow (#F2C86B)
+- Gloves: worn leather brown
+
+MOOD: Stepping onto home ground. The station is old, poor, and still lit.
+```
+
+---
+
+### 2.19 边境小镇（border_town）
+
+**文件**：`Resources/bg/border_town.png`
+**用途**：序章 Day 1 上午——临江市（中朝边境边贸城）上空视野。0721 补沙前短暂停留。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+border trade town seen from a low flying vehicle, morning:
+
+SCENE: A small border-commerce town straddling both sides of a river (the Yalu-style river in the far background). North side: formal, grey, sparse. A market street with Russian-Korean-Chinese trilingual shop signs, bales of goods, hand carts. Grey river with ferry boats. Morning light.
+
+LAYOUT:
+- Town market street across mid-frame
+- River and far bank in upper background
+- Sand-energy supply station (fuel-pump-like sand dispensers) bottom-left corner
+- Vehicles parked, porters with bundles
+
+COLORS:
+- Buildings: mixed grey/brick/white
+- Signs: faded red/blue letters
+- River: pale grey-green (#86A88A)
+- Morning sky: cool blue
+
+MOOD: The border between two worlds. A place where everything is for sale.
+```
+
+---
+
+### 2.20 补给站（supply_station）
+
+**文件**：`Resources/bg/supply_station.png`
+**用途**：序章 Day 1——临江补给站近景。0721 补充 1500kg 沙子的地方，员工那句"沙子便宜"的背景。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+small sand-energy refuel station, day:
+
+SCENE: A modest refueling station in a border town. Several sand-dispenser machines (like oversized fuel pumps but dispensing grey sand from hoppers) under a simple corrugated-iron canopy. A young worker in a worn uniform. A handwritten price board: 「沙 150沙币/1500kg」. Dusty ground, parked hand trolleys.
+
+LAYOUT:
+- 2-3 sand dispensers with hoppers in foreground
+- Price board with Chinese handwriting
+- Worker figure + owner standing by
+- Background: town wall, distant buildings
+
+COLORS:
+- Dispensers: faded military green / rust orange
+- Sand: pale grey-tan (#C9BFAC)
+- Canopy: rusty corrugated (orange-brown)
+- Chinese text only
+
+MOOD: Mundane commerce. Sand, the new oil, sold by weight.
+```
+
+---
+
+### 2.21 中国上空（china_sky）
+
+**文件**：`Resources/bg/china_sky.png`
+**用途**：序章 Day 1-3 多次使用——飞越中国领空的云海/天空镜头，新闻阅读与闲聊的背景。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+view from a flying vehicle above a sea of clouds, daytime:
+
+SCENE: Abundant white cloud sea stretching to the horizon under clear blue sky. Rolling cumulus clouds below, sunlight sparkling. A tiny bit of terrain (rivers/plains) barely visible through gaps. No vehicles visible (or one tiny silhouette optionally).
+
+LAYOUT:
+- 80% cloud sea below horizon line
+- Clear blue sky above
+- Sun flare option, light haze
+- Subtle motion feel
+
+COLORS:
+- Clouds: bright white (#FFFFFF) shadows soft blue-grey (#B8C6DB)
+- Sky: deep blue (#4A90D9)
+- Terrain glimpses: hazy green-grey
+
+MOOD: Open sky, long journey ahead. Neutral, contemplative.
+```
+
+---
+
+### 2.22 河北小镇（hebei_town）
+
+**文件**：`Resources/bg/hebei_town.png`
+**用途**：序章 Day 2 下午——飞越河北上空时俯瞰的华北平原小镇。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+aerial view of a North China plain town, afternoon:
+
+SCENE: Flat farmland with a small town grid from high above. Wheat and corn plots in patchwork, a straight county road, grey-roofed village houses in tidy rows, a water tower, a middle school track, occasional trees. A small freight yard with abandoned sidings visible — the old railway line cutting through, rusted and quiet.
+
+LAYOUT:
+- Patchwork farmland dominates
+- Town grid center, water tower landmark
+- Old railway line diagonal with overgrown sidings
+- Distant green hills
+
+COLORS:
+- Fields: golden wheat + green corn patches
+- Houses: grey tile roofs
+- Railway: rusty brown
+
+MOOD: North China flatlands. Orderly, productive, the railway forgotten.
+```
+
+---
+
+### 2.23 河南小镇（henan_town）
+
+**文件**：`Resources/bg/henan_town.png`
+**用途**：序章 Day 3 傍晚——飞越河南，中原大地景象。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+aerial view of Central China plain at dusk, sloping light:
+
+SCENE: The great Central China plain at long evening light. Villages with grey-tiled roofs, cypress windbreak lines, canals and irrigation ditches reflecting orange light, a highway with tiny trucks, distant Yellow River haze. Slightly warmer, dustier atmosphere than North China.
+
+LAYOUT:
+- Flat plain, village clusters
+- Canal/ditch system reflecting sunset
+- Long shadows
+- Heat haze on horizon
+
+COLORS:
+- Fields: dry gold (#C8A24B)
+- Roofs: grey (#8B8B8B) with patina
+- Water: orange reflect (#E0804A)
+- Sky: warm amber
+
+MOOD: Endless flat land, the long road south.
+```
+
+---
+
+### 2.24 车辆段·晨（depot_morning）
+
+**文件**：`Resources/bg/depot_morning.png`
+**用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5 喷油嘴的检修棚。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+small railway depot maintenance shed, early morning:
+
+SCENE: An open-sided maintenance shed in the depot yard. One inspection pit, workbench with tools (wrenches, oily rags, a flashlight, parts trays), a hoist chain, oil-stained concrete floor. NF-5's front end pokes into the shed. Morning sun slants through the shed opening, dust motes in light beams. A faded slogan on the wall: 「安全第一」.
+
+LAYOUT:
+- Shed structure framing the scene
+- Inspection pit + workbench right
+- NF-5 locomotive nose left, hood open
+- Morning light beams
+- Tool cart, oil drums
+
+COLORS:
+- Shed: rusted steel frame, patched roof
+- Bench tools: worn metal blue/red handles
+- Light beams: warm white with dust
+- Floor: oil-darkened concrete
+
+MOOD: Old hands, old tools, old machine. The first repair in years.
+```
+
+---
+
+### 2.25 线路巡视（railway_track）
+
+**文件**：`Resources/bg/railway_track.png`
+**用途**：序章 Day 4 傍晚——林彪悍沿雾峰线徒步巡视。铁轨近景，锈迹与杂草，道砟与枕木。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+ground-level view along an abandoned single-track railway, late evening:
+
+SCENE: Standing ON the railway line looking along it (low angle, rail perspective line vanishing to distance). Rusted rails on dark wooden sleepers, ballast stones overgrown with weeds and wildflowers, a sagging signal post ahead, distant station silhouette. Long evening shadows across the track.
+
+LAYOUT:
+- Rails converging to vanishing point (visual focus)
+- Sleepers slightly rotten, some replaced with patched wood
+- Weeds: tall grass, yellow wildflowers between tracks
+- Signal post leaning, arm down
+- Distant village roofs / station building
+
+COLORS:
+- Rails: rust orange-brown (#8A5A3B), patched sleepers dark brown
+- Ballast: grey with moss
+- Sky: orange-pink dusk
+- Wildflowers: gold & lavender
+
+MOOD: Walking through memory. The line is dead — but the iron remembers.
+```
+
+---
+
+### 2.26 松桥站（songqiao_station）
+
+**文件**：`Resources/bg/songqiao_station.png`
+**用途**：序章 Day 4 巡视途中——支线小站"松桥"（铁路博物馆候选站），破旧但仍立着。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+tiny abandoned station on a branch line, late evening:
+
+SCENE: A one-room station building, paint flaking, the name board「松桥」faded. A single short platform with grass growing through cracks. A dead flower bed, a broken water pump, an old bench. Beyond the platform, a stone-arched bridge over a stream carrying the railway. Everything old, quiet, dignified.
+
+LAYOUT:
+- Station building mid-frame (small, one window ajar)
+- Platform edge with weeds
+- Stone arch bridge behind carrying the line over water
+- Overgrown ticket office window, mossy sign
+
+COLORS:
+- Building: peeling whitewash over brick
+- Sign: faded green characters on white
+- Bridge: grey stone with moss
+- Stream: dark jade
+
+MOOD: A station that remembers being loved. (Museum candidate — keep intact.)
+```
+
+---
+
+### 2.27 车站·夜（station_night）
+
+**文件**：`Resources/bg/station_night.png`
+**用途**：序章 Day 4 夜晚——雾峰站旧人重逢（张工/李阿姨/王小弟等聚首）的夜景。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+mountain station at night, lit windows, gathering atmosphere:
+
+SCENE: Same station building as station_sunset but at night. Warm lamplight from the station master's office window, a light hanging over the platform, people silhouettes gathered by the door (no close-ups). Cool blue night outside, warm gold inside. A kettle steam plume from the chimney.
+
+LAYOUT:
+- Station building with 2-3 warm lit windows
+- Platform lamp casting a pool of light
+- 4-5 dim human silhouettes (heads/backs only) by the entrance
+- Tea table visible through window (kettle, cups)
+- Night sky with stars beginning to show
+
+COLORS:
+- Night: deep blue (#22314F), stars faint
+- Window light: warm gold (#F5C36B)
+- Silhouettes: dark with warm rim light
+
+MOOD: The old team, home again. Warmth against the cold line.
+```
+
+---
+
+### 2.28 站长办公室（station_office）
+
+**文件**：`Resources/bg/station_office.png`
+**用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈（市里扶持基金/乡亲集资）的室内。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+station master's office, morning:
+
+SCENE: A cramped but homey office inside the station building. A heavy wooden desk with a green banker's lamp, an old rotary phone, a wall map of the line (23km, stations marked), framed group photo, a kettle on a coal stove, shelves with ledgers. A window overlooking the platform. Paperwork, a worn leather chair.「站长办公室」wooden sign by the door.
+
+LAYOUT:
+- Desk center (viewer side: papers, ink, stamp)
+- Wall map of雾峰线 with red pen marks
+- Rotary phone + telegram/cashbox
+- Stove with kettle, tea smell implied
+- Window to platform, morning light
+
+COLORS:
+- Wood: dark aged (#6B4A2F)
+- Lamp light: warm green-glass glow
+- Map: aged paper yellow
+- Fabric: worn green leather
+
+MOOD: The nerve center of the line. Old paperwork, new hope.
+```
+
+---
+
+### 2.29 站台·晨（platform_morning）
+
+**文件**：`Resources/bg/platform_morning.png`
+**用途**：序章 Day 5 下午/首班车——雾峰站月台晨光，乘客等车的场景。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+station platform in morning light, first train day:
+
+SCENE: The雾峰 platform under clear morning light. A few early passengers (villagers with baskets, a child on father's shoulders) gathered near the platform edge. Mist still lifting off the rails. NF-5 idling with soft diesel chug, steam wisps. The platform brushed clean, flower pots newly watered. Fresh, hopeful mood.
+
+LAYOUT:
+- Platform across mid-frame
+- Passengers as small distant figures (no close-ups)
+- NF-5 nose right, steam wisps
+- Mist over rails
+- Clean platform, flower pots, new「首班车」paper banner
+
+COLORS:
+- Morning gold light
+- Rails gleaming, mist white-grey
+- Passengers: colored cloth (red scarf, blue jacket)
+- Sky: fresh blue
+
+MOOD: The first run in years. Nervous, bright, alive.
+```
+
+---
+
+### 2.30 车厢内部（train_inside）
+
+**文件**：`Resources/bg/train_inside.png`
+**用途**：序章 Day 5 首班车——SY-22 灰雀客车车厢内部，乘客乘坐的镜头。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+interior of an old branch-line passenger coach, daytime:
+
+SCENE: Interior of a small old railway coach (30-seat branch line car). Green padded bench seats along both sides facing inward, a narrow aisle, luggage racks with woven baskets and cloth bundles, ceiling fans, windows showing passing village scenery. Carriage walls aged cream with painted slogans「爱护公共设施」. Light sway implied.
+
+LAYOUT:
+- Aisle perspective, benches both sides
+- Passengers' belongings in racks (baskets, umbrellas, bundles)
+- Open windows, scenery blur outside
+- Conductor strap hanging, bell pull
+
+COLORS:
+- Benches: worn green vinyl (#3E6B4A)
+- Walls: cream patched (#E3D5B8)
+- Racks: grey with colorful baskets
+- Outside windows: bright green fields
+
+MOOD: Ordinary people, ordinary journey. The railway alive again.
+```
+
+---
+
+### 2.31 纯黑（black）
+
+**文件**：无（引擎特殊色值，不留图片文件）
+**用途**：序章开场黑屏/滚动新闻/章节转场。纯黑背景 + 字幕。
+
+**说明**：`black` 不生成图片——引擎 `BackgroundManager` 对 `"black"` 应直接渲染纯黑（修复 `Resources.Load("bg/black")` 失败的警告路径）。若未来需要极简渐变可追加。
+
+---
+
 ---
 
 ## 三、BGM（Suno AI 音乐提示词）

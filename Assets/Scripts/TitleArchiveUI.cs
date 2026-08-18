@@ -139,6 +139,7 @@ public class TitleArchiveUI : MonoBehaviour
     /// <summary>场景鉴赏：当前已有背景图的场景，随序章进度解锁。</summary>
     private static readonly SceneInfo[] SceneEntries =
     {
+        new SceneInfo { id = "hangar",             title = "金日成综合大学停机坪",  condition = "序章 Day 0 领取载具",         imagePath = "bg/hangar" },
         new SceneInfo { id = "lab",                title = "金日成综合大学实验室",   condition = "序章 Day 0 自动解锁",        imagePath = "bg/lab" },
         new SceneInfo { id = "professor_office",   title = "导师办公室",             condition = "序章 Day 0 见导师",           imagePath = "bg/professor_office" },
         new SceneInfo { id = "tea_house",          title = "大同江茶馆·嘉颖徐办公室", condition = "序章 Day 0 会面嘉颖徐",        imagePath = "bg/tea_house" },
@@ -1532,6 +1533,7 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockMusic("cloud_rail");
                 UnlockMusic("wheels_joke");
                 UnlockMusic("south_wind");
+                UnlockScene("hangar");
                 UnlockScene("lab");
                 UnlockScene("professor_office");
                 UnlockScene("tea_house");

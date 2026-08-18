@@ -53,6 +53,13 @@ public class BackgroundManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(bgName)) return;
 
+        // 纯黑背景：不加载图片，直接渲染黑色（black 无资源文件）
+        if (bgName == "black")
+        {
+            ApplySolidColor(Color.black);
+            return;
+        }
+
         var tex = Resources.Load<Texture2D>("bg/" + bgName);
         if (tex == null)
         {
@@ -81,9 +88,28 @@ public class BackgroundManager : MonoBehaviour
         }
     }
 
+    /// <summary>纯色背景（black 专用），无图片资源依赖。</summary>
+    private void ApplySolidColor(Color color)
+    {
+        bgOld.style.backgroundImage = null;
+        bgOld.style.unityBackgroundImageTintColor = color;
+        bgNew.style.backgroundImage = null;
+        bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
+    }
+
     public void SetBackgroundImmediate(string bgName)
     {
         if (string.IsNullOrEmpty(bgName)) return;
+
+        // 纯黑背景
+        if (bgName == "black")
+        {
+            bgOld.style.backgroundImage = null;
+            bgOld.style.unityBackgroundImageTintColor = Color.black;
+            bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
+            return;
+        }
+
         var tex = Resources.Load<Texture2D>("bg/" + bgName);
         if (tex == null) return;
 
