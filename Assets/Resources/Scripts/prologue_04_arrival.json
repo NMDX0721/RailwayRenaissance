@@ -166,6 +166,10 @@
       "bgm": "night_cargo",
       "d": [
         {
+          "t": "cg",
+          "text": "cg_village"
+        },
+        {
           "t": "n",
           "text": "车辆缓缓降落，停在雾峰村的简易停机坪上。"
         },

@@ -39,6 +39,7 @@ public class VNManager : MonoBehaviour
     // Confirm dialog
     private VisualElement confirmDialog;
     private VisualElement bootScreen;
+    private VisualElement cgScreen;
 
     // Menu bar
     private VisualElement menuBar;
@@ -82,7 +83,7 @@ public class VNManager : MonoBehaviour
             PlayerPrefs.SetInt("VN_ShowLoadUI", 0);
             PlayerPrefs.Save();
             // 立即隐藏 VN 界面元素，不等下一帧
-            HideVNUI();
+            HideVnForLoadUI();
             isFromTitleScreenMode = true;
             StartCoroutine(ShowLoadUIDelayed());
             return;
@@ -479,6 +480,8 @@ public class VNManager : MonoBehaviour
         vnBacklog?.Clear();
         saveLoadUI?.ClosePanel();
         dialogueBox?.Hide();
+        HideCgScreen();
+        HideBootScreen();
         characterSpriteManager?.ClearAll();
         VNAudioManager.Instance?.StopBGM();
         confirmDialog.style.display = DisplayStyle.None;
@@ -584,7 +587,7 @@ public class VNManager : MonoBehaviour
     }
 
     private bool uiHidden;
-    private readonly Dictionary<VisualElement, DisplayStyle> hiddenUiSnapshots = new Dictionary<VisualElement, DisplayStyle>();
+    private readonly Dictionary<VisualElement, StyleEnum<DisplayStyle>> hiddenUiSnapshots = new Dictionary<VisualElement, StyleEnum<DisplayStyle>>();
 
     private void Update()
     {
@@ -849,6 +852,17 @@ public class VNManager : MonoBehaviour
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
             return; // 不显示常规对话，由BootScreen处理点击
         }
+        else if (entry.t == "cg")
+        {
+            // CG 插画——剧情中全屏展示，点击继续；text=Resources/cg/ 下的图片名，展示即解锁鉴赏
+            dialogueBox?.Hide();
+            HideOptions();
+            if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+            ShowCgScreen(entry.text);
+            TitleArchiveUI.UnlockCG(entry.text);
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
+            return; // 不显示常规对话，由CgScreen处理点击
+        }
         else if (entry.t == "special")
         {
             // 特殊游戏操作指令
@@ -996,6 +1010,73 @@ public class VNManager : MonoBehaviour
     {
         if (bootScreen != null)
             bootScreen.style.display = DisplayStyle.None;
+    }
+
+    /// <summary>CG 插画全屏展示（Resources/cg/ 下图片，contain 缩放黑边），点击继续剧情。</summary>
+    private void ShowCgScreen(string cgName)
+    {
+        var root = uiDoc.rootVisualElement;
+
+        if (cgScreen == null)
+        {
+            cgScreen = new VisualElement { name = "cg-screen" };
+            cgScreen.style.position = Position.Absolute;
+            cgScreen.style.top = 0; cgScreen.style.left = 0;
+            cgScreen.style.right = 0; cgScreen.style.bottom = 0;
+            cgScreen.style.alignItems = Align.Center;
+            cgScreen.style.justifyContent = Justify.Center;
+            cgScreen.style.backgroundColor = new Color(0, 0, 0, 1f);
+            cgScreen.pickingMode = PickingMode.Position;
+            cgScreen.RegisterCallback<ClickEvent>(e =>
+            {
+                if (e.target == cgScreen)
+                    NextDialogue();
+            });
+            root.Add(cgScreen);
+        }
+
+        cgScreen.Clear();
+        cgScreen.style.display = DisplayStyle.Flex;
+
+        if (!string.IsNullOrEmpty(cgName))
+        {
+            var tex = Resources.Load<Texture2D>("cg/" + cgName);
+            if (tex != null)
+            {
+                var img = new VisualElement();
+                img.name = "cg-image";
+                img.style.flexGrow = 1;
+                img.style.maxWidth = new Length(100, LengthUnit.Percent);
+                img.style.maxHeight = new Length(100, LengthUnit.Percent);
+                img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
+                img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+                cgScreen.Add(img);
+            }
+            else
+            {
+                Debug.LogWarning("[VN] CG image not found: cg/" + cgName);
+                var placeholder = new Label("CG 待生成：「" + cgName + "」");
+                placeholder.style.fontSize = 28;
+                placeholder.style.color = new Color(1f, 0.8f, 0.4f, 0.9f);
+                placeholder.style.unityFontDefinition = new FontDefinition { font = gameFont };
+                cgScreen.Add(placeholder);
+            }
+        }
+
+        var hint = new Label("点击继续");
+        hint.style.position = Position.Absolute;
+        hint.style.bottom = 24;
+        hint.style.right = 36;
+        hint.style.fontSize = 16;
+        hint.style.color = new Color(1f, 1f, 1f, 0.35f);
+        hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        cgScreen.Add(hint);
+    }
+
+    private void HideCgScreen()
+    {
+        if (cgScreen != null)
+            cgScreen.style.display = DisplayStyle.None;
     }
 
     private void EndScript()
@@ -1225,9 +1306,9 @@ public class VNManager : MonoBehaviour
 
     private bool isFromTitleScreenMode;
 
-    private void HideVNUI()
+    private void HideVnForLoadUI()
     {
-        // 只隐藏不移除，读档后可直接恢复
+        // 从标题界面继续：立即清空画面等待读档界面
         if (menuBar != null) menuBar.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.Hide();
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;

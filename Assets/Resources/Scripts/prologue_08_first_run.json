@@ -71,6 +71,10 @@
       "bgm": "train_ambient",
       "d": [
         {
+          "t": "cg",
+          "text": "cg_first_run"
+        },
+        {
           "t": "n",
           "text": "列车缓缓驶出站台。"
         },

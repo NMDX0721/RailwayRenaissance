@@ -93,18 +93,19 @@ public class TitleArchiveUI : MonoBehaviour
     private readonly Color rarityEpic = new Color(0.72f, 0.45f, 1f, 1f);
     private readonly Color rarityLegend = new Color(1f, 0.80f, 0.25f, 1f);
 
+    /* CG 清单：剧情高潮插画（Resources/cg/ 独立目录，区别于背景图 bg/）。
+   生成进度：❌待生成 / ✅已绑图。剧情中 t:"cg" 条目展示即自动解锁。 */
     private static readonly CgInfo[] Cgs =
     {
-        new CgInfo { id = "cg_lab",       title = "实验室（平壤）",       condition = "序章 Day 0 自动解锁",   imagePath = "bg/lab" },
-        new CgInfo { id = "cg_hangar",    title = "停机坪·0721 启程",    condition = "序章 Day 0 领取载具",   imagePath = "bg/hangar" },
-        new CgInfo { id = "cg_tea_house", title = "大同江茶馆",          condition = "序章 Day 0 会面嘉颖徐", imagePath = "bg/tea_house" },
-        new CgInfo { id = "cg_cabin",     title = "客舱·与你初遇",       condition = "序章 Day 0 启航",      imagePath = "bg/cabin_interior" },
-        new CgInfo { id = "cg_chase",     title = "边境追击·三面合围",    condition = "序章 Day 1 边境",      imagePath = "bg/chase_sky" },
-        new CgInfo { id = "cg_sunset",    title = "雾峰村夕阳",          condition = "序章 Day 4 到达" },
-        new CgInfo { id = "cg_bridge",    title = "松桥站",              condition = "序章 Day 4 巡视" },
-        new CgInfo { id = "cg_team",      title = "员工集合",            condition = "序章 Day 4 晚上" },
-        new CgInfo { id = "cg_first_run", title = "首班车",              condition = "序章首班车" },
-        new CgInfo { id = "cg_museum",    title = "铁路博物馆",          condition = "好感度 > 90 解锁" },
+        new CgInfo { id = "cg_day0_leave",   title = "启程·0721 升空",     condition = "序章 Day 0 出发",   imagePath = "cg/cg_day0_leave"   }, // ❌
+        new CgInfo { id = "cg_tea_meet",     title = "初会·嘉颖徐",       condition = "序章 Day 0 会面",   imagePath = "cg/cg_tea_meet"     }, // ❌
+        new CgInfo { id = "cg_first_night",  title = "客舱·岁月初语",     condition = "序章 Day 0 夜航",   imagePath = "cg/cg_first_night"  }, // ❌
+        new CgInfo { id = "cg_chase",        title = "边境·三面合围",     condition = "序章 Day 1 边境",   imagePath = "cg/cg_chase"        }, // ❌
+        new CgInfo { id = "cg_arrest",       title = "边境·引擎盖上",     condition = "序章 Day 1 被扣",   imagePath = "cg/cg_arrest"       }, // ❌
+        new CgInfo { id = "cg_village",      title = "雾峰·初见黄昏",     condition = "序章 Day 4 到达",   imagePath = "cg/cg_village"      }, // ❌
+        new CgInfo { id = "cg_team_night",   title = "旧人·灯下重逢",     condition = "序章 Day 4 夜晚",   imagePath = "cg/cg_team_night"   }, // ❌
+        new CgInfo { id = "cg_first_run",    title = "首班车·驶离站台",   condition = "序章首班车",       imagePath = "cg/cg_first_run"    }, // ❌
+        new CgInfo { id = "cg_museum",       title = "铁路博物馆",        condition = "好感度 > 90 解锁", imagePath = "cg/cg_museum"       }, // ❌
     };
 
     private static readonly ArchiveInfo[] Characters =
@@ -524,6 +525,9 @@ public class TitleArchiveUI : MonoBehaviour
                 tex = Resources.Load<Texture2D>(cg.imagePath);
             if (tex != null)
             {
+                // 点击放大查看 CG
+                art.pickingMode = PickingMode.Position;
+                art.RegisterCallback<ClickEvent>(evt => ShowCgFullscreen(tex, cg.title));
                 art.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
                 art.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
             }
@@ -858,6 +862,41 @@ public class TitleArchiveUI : MonoBehaviour
             if (kv.Value.source != null && kv.Value.source.isPlaying)
                 kv.Value.source.Stop();
         }
+    }
+
+    /// <summary>CG 全屏放大查看（点击任意处关闭）。</summary>
+    private void ShowCgFullscreen(Texture2D tex, string title)
+    {
+        var fs = new VisualElement { name = "cg-fullscreen" };
+        fs.style.position = Position.Absolute;
+        fs.style.top = 0; fs.style.left = 0;
+        fs.style.right = 0; fs.style.bottom = 0;
+        fs.style.backgroundColor = new Color(0, 0, 0, 0.97f);
+        fs.style.alignItems = Align.Center;
+        fs.style.justifyContent = Justify.Center;
+        fs.pickingMode = PickingMode.Position;
+        fs.RegisterCallback<ClickEvent>(evt => fs.RemoveFromHierarchy());
+
+        var img = new VisualElement();
+        img.style.flexGrow = 1;
+        img.style.maxWidth = new Length(100, LengthUnit.Percent);
+        img.style.maxHeight = new Length(100, LengthUnit.Percent);
+        img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
+        img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+        fs.Add(img);
+
+        var cap = new Label("「" + title + "」 — 点击关闭");
+        cap.style.position = Position.Absolute;
+        cap.style.bottom = 24;
+        cap.style.left = 0;
+        cap.style.right = 0;
+        cap.style.fontSize = 16;
+        cap.style.color = new Color(1f, 1f, 1f, 0.4f);
+        cap.style.unityTextAlign = TextAnchor.MiddleCenter;
+        cap.style.unityFontDefinition = Fd();
+        fs.Add(cap);
+
+        uiDoc.rootVisualElement.Add(fs);
     }
 
     private string FormatTime(float seconds)
@@ -1535,10 +1574,6 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockStory("prologue_01_news");
                 break;
             case "prologue_02_day0":
-                UnlockCG("cg_lab");
-                UnlockCG("cg_hangar");
-                UnlockCG("cg_tea_house");
-                UnlockCG("cg_cabin");
                 UnlockArchive("ArchiveChar_suiyue"); // 领取 0721
                 UnlockArchive("ArchiveTrain_nf5");
                 UnlockMusic("cloud_rail");
@@ -1553,7 +1588,6 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockStory("prologue_02_day0");
                 break;
             case "prologue_03_journey":
-                UnlockCG("cg_chase");
                 UnlockMusic("borderline");
                 UnlockMusic("starlit_rails");
                 UnlockMusic("chollima_ride");
@@ -1562,18 +1596,15 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockStory("prologue_03_journey");
                 break;
             case "prologue_04_arrival":
-                UnlockCG("cg_sunset");
                 UnlockMusic("embers");
                 UnlockMusic("platform");
                 UnlockScene("station");
                 UnlockStory("prologue_04_arrival");
                 break;
             case "prologue_05_inspection":
-                UnlockCG("cg_bridge");
                 UnlockStory("prologue_05_inspection");
                 break;
             case "prologue_06_team":
-                UnlockCG("cg_team");
                 UnlockArchive("ArchiveChar_zhanggong");
                 UnlockArchive("ArchiveChar_liaiyi");
                 UnlockArchive("ArchiveChar_wangxiaodi");
@@ -1586,7 +1617,6 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockStory("prologue_07_first_repair");
                 break;
             case "prologue_08_first_run":
-                UnlockCG("cg_first_run");
                 UnlockArchive("ArchiveTrain_sy22");
                 UnlockMusic("first_light");
                 UnlockStory("prologue_08_first_run");
