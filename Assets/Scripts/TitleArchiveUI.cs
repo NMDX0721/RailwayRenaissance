@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-/// <summary>站长日志合集面板：成就 / 鉴赏 / 图鉴（UI Toolkit 动态构建，中文 UI）。</summary>
+/// <summary>站长日志合集面板：成就 / CG鉴赏 / 音乐 / 故事 / 场景 / 图鉴 / 统计。
+/// 独立于标题界面——自建 UI Document（DontDestroyOnLoad 单例），标题/VN/经营场景均可呼出。</summary>
 public class TitleArchiveUI : MonoBehaviour
 {
+    /// <summary>全局单例（跨场景存活）。</summary>
+    public static TitleArchiveUI Instance { get; private set; }
+
     /// <summary>CG 鉴赏条目。</summary>
     private class CgInfo
     {
@@ -24,6 +28,35 @@ public class TitleArchiveUI : MonoBehaviour
         public string intro;  // 简介
         public string condition;
         public string prefsKey;
+    }
+
+    /// <summary>音乐鉴赏条目。</summary>
+    private class MusicInfo
+    {
+        public string id;
+        public string title;
+        public string category;    // "BGM" 或 "歌曲"
+        public string clipName;    // Resources/bgm 下的文件名（无扩展名）
+        public string condition;
+    }
+
+    /// <summary>场景鉴赏条目。</summary>
+    private class SceneInfo
+    {
+        public string id;
+        public string title;
+        public string condition;
+        public string imagePath;   // Resources 路径（无扩展名），可为空
+    }
+
+    /// <summary>故事章节条目。</summary>
+    private class ChapterInfo
+    {
+        public string id;
+        public string title;
+        public string summary;     // 章节简介
+        public string scriptName;  // 回看时加载的 JSON 脚本
+        public string condition;
     }
 
     private UIDocument uiDoc;
@@ -85,19 +118,97 @@ public class TitleArchiveUI : MonoBehaviour
         new ArchiveInfo { id = "sy22", name = "SY-22 灰雀", type = "客车", intro = "短途支线小型客车，可载客30人。",                                            condition = "序章初始", prefsKey = "ArchiveTrain_sy22" },
     };
 
+    /// <summary>音乐鉴赏：13 首（BGM 9 + 歌曲 4），收录自 AI配乐提示词.md。</summary>
+    private static readonly MusicInfo[] MusicEntries =
+    {
+        new MusicInfo { id = "iron_and_ash",    title = "Iron & Ash 铁与灰",          category = "BGM",  clipName = "iron_and_ash",    condition = "标题画面自动解锁" },
+        new MusicInfo { id = "cloud_rail",      title = "Cloud-Rail 云轨",            category = "BGM",  clipName = "cloud_rail",      condition = "序章 Day 0 飞行途中" },
+        new MusicInfo { id = "embers",          title = "Embers 余烬",                category = "BGM",  clipName = "embers",          condition = "序章 Day 4 抵达" },
+        new MusicInfo { id = "night_cargo",     title = "Night Cargo 夜行货",         category = "BGM",  clipName = "night_cargo",     condition = "序章 Day 1 夜晚" },
+        new MusicInfo { id = "first_light",     title = "First Light 晨光",           category = "BGM",  clipName = "first_light",     condition = "序章 Day 2 清晨" },
+        new MusicInfo { id = "platform",        title = "Platform 站台",              category = "BGM",  clipName = "platform",        condition = "序章 Day 4 到站" },
+        new MusicInfo { id = "borderline",      title = "Borderline 国境线",          category = "BGM",  clipName = "borderline",      condition = "序章 Day 1 边境" },
+        new MusicInfo { id = "wheels_joke",     title = "The Wheel's Joke 方向盘在笑", category = "BGM",  clipName = "wheels_joke",     condition = "统一便当店购物" },
+        new MusicInfo { id = "train_through_keys", title = "Train Through Keys 旧曲", category = "BGM",  clipName = "train_through_keys", condition = "已废弃，保留试听" },
+        new MusicInfo { id = "south_wind",      title = "남풍（南风）",               category = "歌曲", clipName = "south_wind",      condition = "序章 Day 0 便当店" },
+        new MusicInfo { id = "starlit_rails",   title = "별빛 철길（星光铁轨）",      category = "歌曲", clipName = "starlit_rails",   condition = "序章 Day 1 边境夜航" },
+        new MusicInfo { id = "chollima_ride",   title = "천리마 신시대에 달리다（千里马驰骋新时代）", category = "歌曲", clipName = "chollima_ride", condition = "序章 Day 1 朝鲜新闻" },
+        new MusicInfo { id = "sleepers",        title = "Sleepers（铁轨沉睡者）",     category = "歌曲", clipName = "sleepers",        condition = "片尾曲（待生成）" },
+    };
+
+    /// <summary>场景鉴赏：当前已有背景图的场景，随序章进度解锁。</summary>
+    private static readonly SceneInfo[] SceneEntries =
+    {
+        new SceneInfo { id = "lab",                title = "金日成综合大学实验室",   condition = "序章 Day 0 自动解锁",        imagePath = "bg/lab" },
+        new SceneInfo { id = "professor_office",   title = "导师办公室",             condition = "序章 Day 0 见导师",           imagePath = "bg/professor_office" },
+        new SceneInfo { id = "tea_house",          title = "大同江茶馆·嘉颖徐办公室", condition = "序章 Day 0 会面嘉颖徐",        imagePath = "bg/tea_house" },
+        new SceneInfo { id = "car_interior",       title = "0721 驾驶舱",            condition = "序章 Day 0 领取载具",         imagePath = "bg/car_interior" },
+        new SceneInfo { id = "car_interior_night", title = "0721 驾驶舱·夜",          condition = "序章 Day 2 夜航",             imagePath = "bg/car_interior_night" },
+        new SceneInfo { id = "cabin_interior",     title = "0721 客舱",              condition = "序章 Day 0 领取载具",         imagePath = "bg/cabin_interior" },
+        new SceneInfo { id = "cabin_interior_night", title = "0721 客舱·夜",          condition = "序章 Day 1 夜晚",             imagePath = "bg/cabin_interior_night" },
+        new SceneInfo { id = "station",            title = "雾峰站",                 condition = "序章 Day 4 到达",             imagePath = "bg/station" },
+    };
+
+    /// <summary>故事章节回看：10 个序章脚本，解锁后随时重播。</summary>
+    private static readonly ChapterInfo[] ChapterEntries =
+    {
+        new ChapterInfo { id = "prologue_01_news",   title = "第一章 · 广播里的时代",   summary = "2050 年沙能革命，世界第一辆沙能车的诞生，与铁路的黄昏。",                    scriptName = "prologue_01_news",   condition = "序章开始解锁" },
+        new ChapterInfo { id = "prologue_02_day0",   title = "第二章 · 启程之日",       summary = "领取 0721 号，会面嘉颖徐，统一便当店采购，与岁月的初遇。",                    scriptName = "prologue_02_day0",   condition = "序章 Day 0 完成" },
+        new ChapterInfo { id = "prologue_03_journey",title = "第三章 · 边境危机",       summary = "边境迷航，四家单位联合追捕，嘉颖徐一个电话化解十年刑期。",                   scriptName = "prologue_03_journey",condition = "序章 Day 1 完成" },
+        new ChapterInfo { id = "prologue_04_arrival",title = "第四章 · 抵达雾峰",       summary = "穿越群山，抵达雾峰村，看见爷爷留下的老站。",                                  scriptName = "prologue_04_arrival", condition = "序章 Day 4 完成" },
+        new ChapterInfo { id = "prologue_05_inspection", title = "第五章 · 线路巡视",   summary = "沿 23 公里线路巡视，评估爷爷留下的家底。",                                   scriptName = "prologue_05_inspection", condition = "序章 Day 4 巡视" },
+        new ChapterInfo { id = "prologue_06_team",   title = "第六章 · 旧人重逢",       summary = "张工、李阿姨、王小弟……老伙计们聚在车站，等一个回来的站长。",                 scriptName = "prologue_06_team",   condition = "序章 Day 4 夜晚" },
+        new ChapterInfo { id = "prologue_07_first_repair", title = "第七章 · 第一次检修", summary = "NF-5 耕牛的喷油嘴修好了，铁路有救了。",                                     scriptName = "prologue_07_first_repair", condition = "序章 Day 5 检修" },
+        new ChapterInfo { id = "prologue_08_first_run", title = "第八章 · 首班车",      summary = "雾气里第一趟班车驶出站台，铁路重新有了心跳。",                              scriptName = "prologue_08_first_run", condition = "序章首班车" },
+        new ChapterInfo { id = "prologue_09_funding", title = "第九章 · 三条来路",      summary = "市里、乡亲、村民协会——三条资金来路摆在眼前。",                              scriptName = "prologue_09_funding", condition = "序章融资" },
+        new ChapterInfo { id = "prologue_10_transition", title = "第十章 · 序章落幕",   summary = "一周后，铁路复兴之旅正式开启。",                                           scriptName = "prologue_10_transition", condition = "序章完成" },
+    };
+
     private FontDefinition Fd() => new FontDefinition { font = gameFont };
 
-    /// <summary>初始化面板（由 TitleScreen 调用）。</summary>
-    public void Init(UIDocument document)
+    /// <summary>初始化（自建独立 UIDocument，无需外部传入）。由单例确保仅创建一次。</summary>
+    public void Init()
     {
-        uiDoc = document;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
-        AchievementManager.Initialize();
+        if (uiDoc != null) return;
+        BuildDocument();
         BuildUI();
+    }
+
+    private void BuildDocument()
+    {
+        // 自建 Canvas + UIDocument（与 VNManager 同样方式），独立于标题界面
+        var canvasObj = new GameObject("ArchiveCanvas");
+        DontDestroyOnLoad(canvasObj);
+
+        var canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 300; // 高于标题界面/VN
+
+        canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
+        canvasObj.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+
+        var panelSettings = Resources.Load<PanelSettings>("UI/TitleScreenPanelSettings");
+        uiDoc = canvasObj.AddComponent<UIDocument>();
+        uiDoc.panelSettings = panelSettings;
+        uiDoc.visualTreeAsset = null;
+        uiDoc.rootVisualElement.pickingMode = PickingMode.Ignore;
+    }
+
+    /// <summary>创建/获取全局单例（幂等）。任何场景调用即可。</summary>
+    public static TitleArchiveUI EnsureInstance()
+    {
+        if (Instance != null) return Instance;
+        var go = new GameObject("TitleArchiveUI");
+        DontDestroyOnLoad(go);
+        Instance = go.AddComponent<TitleArchiveUI>();
+        Instance.Init();
+        return Instance;
     }
 
     private void BuildUI()
     {
+        gameFont = Resources.Load<Font>("Fonts/zpix");
+        AchievementManager.Initialize();
         var fontDef = Fd();
         var root = uiDoc.rootVisualElement;
 
@@ -168,7 +279,10 @@ public class TitleArchiveUI : MonoBehaviour
         panel.Add(tabRow);
 
         AddTabButton(tabRow, "achievements", "成就");
-        AddTabButton(tabRow, "gallery", "鉴赏");
+        AddTabButton(tabRow, "gallery", "CG鉴赏");
+        AddTabButton(tabRow, "music", "音乐");
+        AddTabButton(tabRow, "stories", "故事");
+        AddTabButton(tabRow, "scenes", "场景");
         AddTabButton(tabRow, "collection", "图鉴");
         AddTabButton(tabRow, "stats", "统计");
 
@@ -199,13 +313,16 @@ public class TitleArchiveUI : MonoBehaviour
         tabButtons[key] = btn;
     }
 
-    /// <summary>重建三个页面（每次 Show 时刷新解锁状态）。</summary>
+    /// <summary>重建页面（每次 Show 时刷新解锁状态）。</summary>
     private void RebuildPages()
     {
         contentScroll.Clear();
         tabPages.Clear();
         BuildAchievementsPage();
         BuildGalleryPage();
+        BuildMusicPage();
+        BuildStoriesPage();
+        BuildScenesPage();
         BuildCollectionPage();
         BuildStatsPage();
     }
@@ -461,6 +578,418 @@ public class TitleArchiveUI : MonoBehaviour
 
         var status = new Label(unlocked ? "已解锁" : "未解锁");
         status.style.fontSize = 15;
+        status.style.color = unlocked ? new Color(1f, 0.9f, 0.5f, 1f) : dimText;
+        status.style.unityFontDefinition = Fd();
+        titleRow.Add(status);
+
+        return card;
+    }
+
+    // ================= 音乐页 =================
+
+    private string musicFilter = "全部";
+
+    private void BuildMusicPage()
+    {
+        var page = new VisualElement { name = "page-music" };
+        page.style.display = DisplayStyle.None;
+        contentScroll.Add(page);
+        tabPages["music"] = page;
+
+        var topRow = new VisualElement();
+        topRow.style.flexDirection = FlexDirection.Row;
+        topRow.style.alignItems = Align.Center;
+        topRow.style.marginBottom = 10;
+        page.Add(topRow);
+
+        var tip = new Label("已解锁的音乐可以在这里随时播放");
+        tip.style.fontSize = 17;
+        tip.style.color = dimText;
+        tip.style.unityFontDefinition = Fd();
+        tip.style.flexGrow = 1;
+        topRow.Add(tip);
+
+        // 子分类：全部 / BGM / 歌曲
+        var filterRow = new VisualElement();
+        filterRow.style.flexDirection = FlexDirection.Row;
+        page.Add(filterRow);
+
+        foreach (var cat in new[] { "全部", "BGM", "歌曲" })
+        {
+            var btn = new Button(() => { musicFilter = cat; RebuildPages(); ShowTab("music"); }) { text = cat };
+            btn.name = "music-filter-" + cat;
+            btn.style.width = 76;
+            btn.style.height = 34;
+            btn.style.marginRight = 8;
+            btn.style.fontSize = 17;
+            btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btn.style.unityFontDefinition = Fd();
+            StylizeTab(btn);
+            if (cat == musicFilter)
+            {
+                btn.style.backgroundColor = glassBgHover;
+                btn.style.color = goldHover;
+                btn.style.borderTopWidth = 2; btn.style.borderBottomWidth = 2;
+                btn.style.borderLeftWidth = 2; btn.style.borderRightWidth = 2;
+                btn.style.borderTopColor = borderHover; btn.style.borderBottomColor = borderHover;
+                btn.style.borderLeftColor = borderHover; btn.style.borderRightColor = borderHover;
+            }
+            filterRow.Add(btn);
+        }
+
+        var grid = new VisualElement();
+        grid.style.flexDirection = FlexDirection.Row;
+        grid.style.flexWrap = Wrap.Wrap;
+        grid.style.marginTop = 12;
+        page.Add(grid);
+
+        for (int i = 0; i < MusicEntries.Length; i++)
+        {
+            if (musicFilter != "全部" && MusicEntries[i].category != musicFilter) continue;
+            grid.Add(BuildMusicCard(MusicEntries[i]));
+        }
+    }
+
+    private VisualElement BuildMusicCard(MusicInfo m)
+    {
+        bool unlocked = PlayerPrefs.GetInt("ArchiveMusic_" + m.id, 0) == 1;
+
+        var card = new VisualElement();
+        card.style.width = 286;
+        card.style.flexShrink = 0;
+        card.style.marginRight = 12;
+        card.style.marginBottom = 12;
+        card.style.paddingLeft = 12; card.style.paddingRight = 12;
+        card.style.paddingTop = 10; card.style.paddingBottom = 10;
+        card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);
+        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
+        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
+        card.style.borderTopColor = unlocked ? borderNormal : borderDim;
+        card.style.borderBottomColor = unlocked ? borderNormal : borderDim;
+        card.style.borderLeftColor = unlocked ? borderNormal : borderDim;
+        card.style.borderRightColor = unlocked ? borderNormal : borderDim;
+        card.style.borderTopLeftRadius = 6; card.style.borderTopRightRadius = 6;
+        card.style.borderBottomLeftRadius = 6; card.style.borderBottomRightRadius = 6;
+
+        var catRow = new VisualElement();
+        catRow.style.flexDirection = FlexDirection.Row;
+        catRow.style.alignItems = Align.Center;
+        catRow.style.marginBottom = 6;
+        card.Add(catRow);
+
+        var catTag = new Label(m.category);
+        catTag.style.width = 44;
+        catTag.style.height = 22;
+        catTag.style.fontSize = 14;
+        catTag.style.unityTextAlign = TextAnchor.MiddleCenter;
+        catTag.style.unityFontDefinition = Fd();
+        catTag.style.color = m.category == "BGM" ? rarityRare : rarityEpic;
+        catTag.style.borderTopWidth = 1; catTag.style.borderBottomWidth = 1;
+        catTag.style.borderLeftWidth = 1; catTag.style.borderRightWidth = 1;
+        catTag.style.borderTopColor = m.category == "BGM" ? rarityRare : rarityEpic;
+        catTag.style.borderBottomColor = m.category == "BGM" ? rarityRare : rarityEpic;
+        catTag.style.borderLeftColor = m.category == "BGM" ? rarityRare : rarityEpic;
+        catTag.style.borderRightColor = m.category == "BGM" ? rarityRare : rarityEpic;
+        catTag.style.borderTopLeftRadius = 4; catTag.style.borderTopRightRadius = 4;
+        catTag.style.borderBottomLeftRadius = 4; catTag.style.borderBottomRightRadius = 4;
+        catRow.Add(catTag);
+
+        var status = new Label(unlocked ? "已解锁" : "未解锁");
+        status.style.fontSize = 14;
+        status.style.color = unlocked ? new Color(1f, 0.9f, 0.5f, 1f) : dimText;
+        status.style.unityFontDefinition = Fd();
+        status.style.marginLeft = new StyleLength(StyleKeyword.Auto);
+        catRow.Add(status);
+
+        var title = new Label(unlocked ? m.title : "???");
+        title.style.fontSize = 18;
+        title.style.color = unlocked ? new Color(1f, 1f, 1f, 0.95f) : grayText;
+        title.style.unityFontDefinition = Fd();
+        title.style.whiteSpace = WhiteSpace.Normal;
+        card.Add(title);
+
+        if (unlocked)
+        {
+            var btnRow = new VisualElement();
+            btnRow.style.flexDirection = FlexDirection.Row;
+            btnRow.style.marginTop = 8;
+            card.Add(btnRow);
+
+            var playBtn = new Button(() => PlayArchiveMusic(m.clipName)) { text = "播放" };
+            playBtn.style.width = 110;
+            playBtn.style.height = 32;
+            playBtn.style.fontSize = 16;
+            playBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            playBtn.style.unityFontDefinition = Fd();
+            StylizeTab(playBtn);
+            btnRow.Add(playBtn);
+
+            var stopBtn = new Button(() => StopArchiveMusic()) { text = "停止" };
+            stopBtn.style.width = 110;
+            stopBtn.style.height = 32;
+            stopBtn.style.fontSize = 16;
+            stopBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            stopBtn.style.unityFontDefinition = Fd();
+            stopBtn.style.marginLeft = 8;
+            StylizeTab(stopBtn);
+            btnRow.Add(stopBtn);
+        }
+        else
+        {
+            var cond = new Label("解锁条件：" + m.condition);
+            cond.style.fontSize = 14;
+            cond.style.color = grayText;
+            cond.style.unityFontDefinition = Fd();
+            cond.style.marginTop = 6;
+            cond.style.whiteSpace = WhiteSpace.Normal;
+            card.Add(cond);
+        }
+
+        return card;
+    }
+
+    /// <summary>播放音乐鉴赏（复用 VNAudioManager 的 BGM 通道，必要时原地创建）。</summary>
+    private void PlayArchiveMusic(string clipName)
+    {
+        if (VNAudioManager.Instance == null)
+        {
+            // 标题界面无 VN AudioManager（它在 VN_Test 场景创建）——原地补一个 DontDestroyOnLoad 实例
+            var go = new GameObject("VN_AudioManager");
+            go.AddComponent<VNAudioManager>();
+        }
+        VNAudioManager.Instance.PlayBGM(clipName, 0.3f);
+    }
+
+    private void StopArchiveMusic()
+    {
+        if (VNAudioManager.Instance != null)
+            VNAudioManager.Instance.StopBGM(0.3f);
+    }
+
+    // ================= 故事章节页 =================
+
+    private void BuildStoriesPage()
+    {
+        var page = new VisualElement { name = "page-stories" };
+        page.style.display = DisplayStyle.None;
+        contentScroll.Add(page);
+        tabPages["stories"] = page;
+
+        var tip = new Label("已解锁的章节可以重新回看");
+        tip.style.fontSize = 17;
+        tip.style.color = dimText;
+        tip.style.unityFontDefinition = Fd();
+        tip.style.marginBottom = 12;
+        page.Add(tip);
+
+        for (int i = 0; i < ChapterEntries.Length; i++)
+        {
+            page.Add(BuildChapterCard(ChapterEntries[i]));
+        }
+    }
+
+    private VisualElement BuildChapterCard(ChapterInfo ch)
+    {
+        bool unlocked = PlayerPrefs.GetInt("ArchiveStory_" + ch.id, 0) == 1;
+
+        var card = new VisualElement();
+        card.style.flexDirection = FlexDirection.Row;
+        card.style.alignItems = Align.Center;
+        card.style.paddingLeft = 16; card.style.paddingRight = 16;
+        card.style.paddingTop = 10; card.style.paddingBottom = 10;
+        card.style.marginBottom = 8;
+        card.style.borderTopLeftRadius = 6; card.style.borderTopRightRadius = 6;
+        card.style.borderBottomLeftRadius = 6; card.style.borderBottomRightRadius = 6;
+        card.style.flexShrink = 0;
+        card.style.backgroundColor = unlocked ? glassBg : new Color(0f, 0f, 0f, 0.25f);
+        if (!unlocked)
+        {
+            card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
+            card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
+            card.style.borderTopColor = borderDim; card.style.borderBottomColor = borderDim;
+            card.style.borderLeftColor = borderDim; card.style.borderRightColor = borderDim;
+        }
+
+        var text = new VisualElement();
+        text.style.flexGrow = 1;
+        text.style.flexDirection = FlexDirection.Column;
+        text.style.marginRight = 12;
+        card.Add(text);
+
+        var title = new Label(unlocked ? ch.title : "???");
+        title.style.fontSize = 20;
+        title.style.color = unlocked ? new Color(1f, 1f, 1f, 0.95f) : grayText;
+        title.style.unityFontDefinition = Fd();
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        text.Add(title);
+
+        if (unlocked)
+        {
+            var summary = new Label(ch.summary);
+            summary.style.fontSize = 15;
+            summary.style.color = new Color(1f, 1f, 1f, 0.6f);
+            summary.style.unityFontDefinition = Fd();
+            summary.style.marginTop = 4;
+            summary.style.whiteSpace = WhiteSpace.Normal;
+            text.Add(summary);
+
+            var replayBtn = new Button(() => ReplayChapter(ch.scriptName)) { text = "回看" };
+            replayBtn.style.width = 90;
+            replayBtn.style.height = 34;
+            replayBtn.style.fontSize = 16;
+            replayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            replayBtn.style.unityFontDefinition = Fd();
+            StylizeTab(replayBtn);
+            card.Add(replayBtn);
+        }
+        else
+        {
+            var cond = new Label("解锁条件：" + ch.condition);
+            cond.style.fontSize = 14;
+            cond.style.color = grayText;
+            cond.style.unityFontDefinition = Fd();
+            cond.style.marginTop = 4;
+            text.Add(cond);
+        }
+
+        return card;
+    }
+
+    /// <summary>回看指定章节：设置回放标记并跳转 VN 场景。</summary>
+    private void ReplayChapter(string scriptName)
+    {
+        PlayerPrefs.SetString("VN_ReplayScript", scriptName);
+        PlayerPrefs.SetInt("VN_AutoLoad", 0);
+        PlayerPrefs.Save();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
+    }
+
+    // ================= 场景页 =================
+
+    private void BuildScenesPage()
+    {
+        var page = new VisualElement { name = "page-scenes" };
+        page.style.display = DisplayStyle.None;
+        contentScroll.Add(page);
+        tabPages["scenes"] = page;
+
+        var tip = new Label("随剧情推进解锁的场景回忆");
+        tip.style.fontSize = 17;
+        tip.style.color = dimText;
+        tip.style.unityFontDefinition = Fd();
+        tip.style.marginBottom = 12;
+        page.Add(tip);
+
+        var grid = new VisualElement();
+        grid.style.flexDirection = FlexDirection.Row;
+        grid.style.flexWrap = Wrap.Wrap;
+        page.Add(grid);
+
+        for (int i = 0; i < SceneEntries.Length; i++)
+        {
+            grid.Add(BuildSceneCard(SceneEntries[i]));
+        }
+    }
+
+    private VisualElement BuildSceneCard(SceneInfo sc)
+    {
+        bool unlocked = PlayerPrefs.GetInt("ArchiveScene_" + sc.id, 0) == 1;
+
+        var card = new VisualElement();
+        card.style.width = 290;
+        card.style.height = 210;
+        card.style.marginRight = 12;
+        card.style.marginBottom = 12;
+        card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);
+        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
+        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
+        card.style.borderTopColor = unlocked ? borderNormal : borderDim;
+        card.style.borderBottomColor = unlocked ? borderNormal : borderDim;
+        card.style.borderLeftColor = unlocked ? borderNormal : borderDim;
+        card.style.borderRightColor = unlocked ? borderNormal : borderDim;
+        card.style.borderTopLeftRadius = 6; card.style.borderTopRightRadius = 6;
+        card.style.borderBottomLeftRadius = 6; card.style.borderBottomRightRadius = 6;
+        card.style.paddingTop = 8; card.style.paddingBottom = 8;
+        card.style.paddingLeft = 8; card.style.paddingRight = 8;
+        card.style.flexShrink = 0;
+
+        var art = new VisualElement();
+        art.style.flexGrow = 1;
+        art.style.marginBottom = 8;
+        art.style.overflow = Overflow.Hidden;
+        art.style.backgroundColor = unlocked
+            ? new Color(0.25f, 0.16f, 0.10f, 0.9f)
+            : new Color(0.10f, 0.10f, 0.12f, 0.9f);
+        card.Add(art);
+
+        if (unlocked)
+        {
+            Texture2D tex = null;
+            if (!string.IsNullOrEmpty(sc.imagePath))
+                tex = Resources.Load<Texture2D>(sc.imagePath);
+            if (tex != null)
+            {
+                art.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
+                art.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+            }
+            else
+            {
+                var placeholder = new Label("「" + sc.title + "」场景图待补充");
+                placeholder.style.width = new Length(100, LengthUnit.Percent);
+                placeholder.style.height = new Length(100, LengthUnit.Percent);
+                placeholder.style.fontSize = 20;
+                placeholder.style.color = goldNormal;
+                placeholder.style.unityFontDefinition = Fd();
+                placeholder.style.unityTextAlign = TextAnchor.MiddleCenter;
+                art.Add(placeholder);
+            }
+        }
+        else
+        {
+            var lockRow = new VisualElement();
+            lockRow.style.flexGrow = 1;
+            lockRow.style.alignItems = Align.Center;
+            lockRow.style.justifyContent = Justify.Center;
+            art.Add(lockRow);
+
+            var lockBadge = new Label("锁");
+            lockBadge.style.width = 40;
+            lockBadge.style.height = 40;
+            lockBadge.style.fontSize = 20;
+            lockBadge.style.unityTextAlign = TextAnchor.MiddleCenter;
+            lockBadge.style.unityFontDefinition = Fd();
+            lockBadge.style.color = grayText;
+            lockBadge.style.backgroundColor = new Color(0f, 0f, 0f, 0.4f);
+            lockBadge.style.borderTopLeftRadius = 20;
+            lockBadge.style.borderTopRightRadius = 20;
+            lockBadge.style.borderBottomLeftRadius = 20;
+            lockBadge.style.borderBottomRightRadius = 20;
+            lockBadge.style.marginBottom = 12;
+            lockRow.Add(lockBadge);
+
+            var cond = new Label("解锁条件：" + sc.condition);
+            cond.style.fontSize = 14;
+            cond.style.color = grayText;
+            cond.style.unityTextAlign = TextAnchor.MiddleCenter;
+            cond.style.unityFontDefinition = Fd();
+            lockRow.Add(cond);
+        }
+
+        var titleRow = new VisualElement();
+        titleRow.style.flexDirection = FlexDirection.Row;
+        titleRow.style.alignItems = Align.Center;
+        card.Add(titleRow);
+
+        var title = new Label(sc.title);
+        title.style.fontSize = 17;
+        title.style.color = unlocked ? goldNormal : grayText;
+        title.style.unityFontDefinition = Fd();
+        title.style.flexGrow = 1;
+        title.style.whiteSpace = WhiteSpace.Normal;
+        titleRow.Add(title);
+
+        var status = new Label(unlocked ? "已解锁" : "未解锁");
+        status.style.fontSize = 14;
         status.style.color = unlocked ? new Color(1f, 0.9f, 0.5f, 1f) : dimText;
         status.style.unityFontDefinition = Fd();
         titleRow.Add(status);
@@ -821,17 +1350,41 @@ public class TitleArchiveUI : MonoBehaviour
             case "prologue_01_news":
                 UnlockArchive("ArchiveChar_lin");
                 UnlockArchive("ArchiveChar_laochen"); // 老陈来电
+                UnlockMusic("iron_and_ash");
+                UnlockStory("prologue_01_news");
                 break;
             case "prologue_02_day0":
                 UnlockCG("cg_lab");
                 UnlockArchive("ArchiveChar_suiyue"); // 领取 0721
                 UnlockArchive("ArchiveTrain_nf5");
+                UnlockMusic("cloud_rail");
+                UnlockMusic("wheels_joke");
+                UnlockMusic("south_wind");
+                UnlockScene("lab");
+                UnlockScene("professor_office");
+                UnlockScene("tea_house");
+                UnlockScene("car_interior");
+                UnlockScene("cabin_interior");
+                UnlockStory("prologue_02_day0");
+                break;
+            case "prologue_03_journey":
+                UnlockMusic("borderline");
+                UnlockMusic("starlit_rails");
+                UnlockMusic("chollima_ride");
+                UnlockScene("car_interior_night");
+                UnlockScene("cabin_interior_night");
+                UnlockStory("prologue_03_journey");
                 break;
             case "prologue_04_arrival":
                 UnlockCG("cg_sunset");
+                UnlockMusic("embers");
+                UnlockMusic("platform");
+                UnlockScene("station");
+                UnlockStory("prologue_04_arrival");
                 break;
             case "prologue_05_inspection":
                 UnlockCG("cg_bridge");
+                UnlockStory("prologue_05_inspection");
                 break;
             case "prologue_06_team":
                 UnlockCG("cg_team");
@@ -840,14 +1393,45 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockArchive("ArchiveChar_wangxiaodi");
                 UnlockArchive("ArchiveChar_zhaoshifu");
                 UnlockArchive("ArchiveChar_xiaofang");
+                UnlockStory("prologue_06_team");
                 break;
             case "prologue_07_first_repair":
                 UnlockArchive("ArchiveTrain_nf5");
+                UnlockStory("prologue_07_first_repair");
                 break;
             case "prologue_08_first_run":
                 UnlockCG("cg_first_run");
                 UnlockArchive("ArchiveTrain_sy22");
+                UnlockMusic("first_light");
+                UnlockStory("prologue_08_first_run");
+                break;
+            case "prologue_09_funding":
+                UnlockStory("prologue_09_funding");
+                break;
+            case "prologue_10_transition":
+                UnlockStory("prologue_10_transition");
                 break;
         }
+    }
+
+    /// <summary>解锁音乐（幂等）。</summary>
+    public static void UnlockMusic(string id)
+    {
+        PlayerPrefs.SetInt("ArchiveMusic_" + id, 1);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>解锁场景（幂等）。</summary>
+    public static void UnlockScene(string id)
+    {
+        PlayerPrefs.SetInt("ArchiveScene_" + id, 1);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>解锁故事章节（幂等）。</summary>
+    public static void UnlockStory(string id)
+    {
+        PlayerPrefs.SetInt("ArchiveStory_" + id, 1);
+        PlayerPrefs.Save();
     }
 }

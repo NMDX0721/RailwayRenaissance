@@ -114,6 +114,17 @@ public class VNManager : MonoBehaviour
                 return;
             }
         }
+
+        // 站长日志·故事回看：跳播指定章节脚本（从头播，不进读档）
+        string replay = PlayerPrefs.GetString("VN_ReplayScript", "");
+        if (!string.IsNullOrEmpty(replay))
+        {
+            PlayerPrefs.DeleteKey("VN_ReplayScript");
+            PlayerPrefs.Save();
+            StartScript(replay);
+            return;
+        }
+
         StartScript("prologue_01_news");
     }
 

@@ -98,8 +98,7 @@ public class TitleScreen : MonoBehaviour
             SceneManager.LoadScene("VN_Test");
         });
 
-        archiveUI = gameObject.AddComponent<TitleArchiveUI>();
-        archiveUI.Init(GetComponent<UIDocument>());
+        archiveUI = TitleArchiveUI.EnsureInstance();
 
         bulletinUI = new GameObject("StationBulletinUI").AddComponent<StationBulletinUI>();
         bulletinUI.Init(GetComponent<UIDocument>());
