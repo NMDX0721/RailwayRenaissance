@@ -128,6 +128,15 @@ public static class AchievementManager
         return count;
     }
 
+    /// <summary>重置所有成就（清空持久化并重新初始化）。</summary>
+    public static void ResetAll()
+    {
+        initialized = false;
+        PlayerPrefs.DeleteKey(SaveKey);
+        PlayerPrefs.Save();
+        Initialize();
+    }
+
     /// <summary>将解锁状态写入 PlayerPrefs（JSON）。</summary>
     public static void Save()
     {

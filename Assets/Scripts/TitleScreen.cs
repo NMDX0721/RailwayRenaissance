@@ -380,6 +380,17 @@ public class TitleScreen : MonoBehaviour
         versionBadge.style.paddingLeft = 10; versionBadge.style.paddingRight = 10;
         versionBadge.style.paddingTop = 4; versionBadge.style.paddingBottom = 4;
         versionBadge.style.unityFontDefinition = fontDef;
+        // 版本号点击 5 次进入调试模式
+        int versionClickCount = 0;
+        versionBadge.RegisterCallback<ClickEvent>(evt =>
+        {
+            versionClickCount++;
+            if (versionClickCount >= 5)
+            {
+                versionClickCount = 0;
+                TitleArchiveUI.EnsureInstance().ShowDebug();
+            }
+        });
         versionRow.Add(versionBadge);
 
         var dateLabel = new Label("2026-08-18");
