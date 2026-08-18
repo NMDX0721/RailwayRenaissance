@@ -92,7 +92,7 @@ Style: Peaceful ambient, gentle piano, morning atmosphere, solo piano with soft 
 **用途**：员工集合、站台聊天、日常对话
 
 ```
-Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar, soft cello melody, light brushed snare, upright bass, intimate studio feel, relaxed and unhurried, slight build then return to intimate feel, instrumental, no vocals, 80 BPM, key of A major, natural room reverb, no electronic elements, no loud instruments, like a quiet afternoon on a station bench
+Style: Acoustic folk, warm and cozy, fingerpicking acoustic guitar carrying a gentle melody, soft cello enters as second voice at 30s, light brushed snare and upright bass joined at 45s, intimate studio feel, relaxed and unhurried tempo, slight build in middle section with fuller arrangement then settling back to solo guitar for outro, instrumental, no vocals, 80 BPM, key of A major, natural room reverb, no electronic elements, no loud instruments, no dark elements, like a quiet afternoon on a station bench watching travelers come and go, gentle and unhurried, warm sunlight feel
 ```
 
 
