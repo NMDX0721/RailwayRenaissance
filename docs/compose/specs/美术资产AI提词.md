@@ -1022,19 +1022,24 @@ AVOID:
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flat forward-facing perspective, eye-level view,
 university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening,
 NORTH KOREAN OFFICIAL AESTHETIC,
 "Chollima" brand sand-energy flying vehicles parked:
 
-SCENE: rooftop helipad of Kim Il Sung University's main building at sunset. The protagonist's vehicle — a deep blue 0721 Sand Flying Pig — is parked prominently. Several other Chollima-brand vehicles are parked nearby. The university emblem is visible on the building. The atmosphere is transitional: the last moment of campus life before departure.
+SCENE: rooftop helipad of Kim Il Sung University's main building at sunset, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. The cabin door on the RIGHT side of the vehicle is open, with a gangway extended downward and warm light spilling out from inside. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
 
 LAYOUT:
-- Large rooftop landing pad with markings (Korean text / directional markings)
-- 0721 Sand Flying Pig parked in foreground, deep blue, university emblem on side, slightly weathered
-- 2-3 other Chollima sand-energy vehicles parked nearby (different colors: dark green, grey)
-- University building edge visible — Korean-style railings, Kim Il-sung University emblem
-- Control booth / small structure on rooftop with communication equipment
-- Stairs/door access from the building below
+- Large, spacious rooftop landing pad taking the lower third of the frame
+- 0721 Sand Flying Pig parked in foreground, facing RIGHT, deep blue, university emblem on side
+- Vehicle seen from the RIGHT side — the cabin door is visible on this side, open, with a boarding ramp/gangway extended
+- Warm yellow light coming from the open cabin door, illuminating the rooftop surface
+- 2-3 other Chollima sand-energy vehicles parked nearby in background (dark green, grey)
+- University building facade visible on the left edge — Korean-style railings, dancheong roof eaves
+- Kim Il-sung University emblem on the building wall
+- Control booth / small structure on the rooftop with communication equipment
+- Korean flag (태극기) on a pole on the rooftop, slightly waving
+- The rooftop edge is at the bottom of the frame — the protagonist cannot see the ground below
 
 NORTH KOREAN CULTURAL ELEMENTS:
 - "김일성종합대학" (Kim Il Sung University) emblem on building wall
@@ -1045,52 +1050,58 @@ NORTH KOREAN CULTURAL ELEMENTS:
 - Juche-era architectural style (Soviet-Korean brutalist mixed with traditional elements)
 - "천리마" (Chollima) branding on the vehicles
 
-VIEW (PYONGYANG SKYLINE IN BACKGROUND):
-- Ryugyong Hotel in distance — pyramid-shaped, partially lit
-- Juche Tower — tall stone tower with torch flame at top
-- Grand People's Study House — traditional Korean roof, grand columns
-- Taedong River visible with bridges
-- Mix of traditional Korean architecture (curved tile roofs, dancheong) and modern apartment blocks
-- Mountains with Korean pine trees in far distance
-- A few flying vehicles in the evening sky, lights just beginning to turn on
-- Distant factory smokestacks (industrial DPRK aesthetic)
+VIEW (SKY — NO GROUND VISIBLE):
+- Wide evening sky taking up the upper two-thirds of the frame
+- Sunset colors — warm orange fading to deep blue
+- A few flying vehicles silhouetted against the sky
+- No buildings below — the protagonist standing on the rooftop sees only sky and distant flying vehicles
+- The rooftop is high enough that the city is hidden below the frame edge
 
-DETAILS ON THE 0721 SAND FLYING PIG:
+DETAILS ON THE 0721 SAND FLYING PIG (RIGHT SIDE VIEW):
 - Deep blue paint with gold university emblem
 - Chollima winged horse badge on the side
 - Vehicle ID "0721" in Korean numerals
 - Slightly aged — 23 years old, some wear on the paint
-- Rooftop hatch open, cockpit visible
+- CABIN DOOR OPEN on the right side — a boarding ramp/gangway extends down to the rooftop
+- Warm golden light spilling from the open cabin door, illuminating the ramp
+- The vehicle is CLOSED (not open-top) — the roof is solid, no open hatch
+- The cockpit is visible through the windshield, no steering wheel visible
 - Sand energy intake vents on the sides
 - Running lights glowing amber
+- Vehicle faces RIGHT, door on RIGHT side
 
 COLOR PALETTE:
 - Primary: evening sky gradient (#FF6B35 to #1A1A2E)
 - Secondary: deep blue vehicle (#000080, #1A237E), warm sunset amber (#FFD700)
-- Accents: university emblem gold (#DAA520), Korean red (#CD2626)
-- Landing pad lights: warm white (#FFF8DC)
-- Building: concrete grey (#808080, #696969), traditional roof tiles dark brown (#3E2723)
+- Accents: cabin interior light warm gold (#FFE082), university emblem gold (#DAA520), Korean red (#CD2626)
+- Landing pad: concrete grey (#808080, #696969)
+- Building: traditional roof tiles dark brown (#3E2723)
 
 ATMOSPHERE:
-- Transition from day to night — the last golden light before departure
+- The last golden light before departure
 - Sense of anticipation: a journey is about to begin
-- Quiet and calm on the rooftop, city below starting to light up
-- The vehicle waiting, ready
+- Quiet and calm on the rooftop
+- The warm light from the open cabin door contrasts with the cooling evening sky
+- The vehicle is waiting, ready, door open — inviting the protagonist in
 - Slight wind suggested by Korean flag movement
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
+- FLAT FORWARD-FACING PERSPECTIVE — eye level, not looking down
 - NORTH KOREAN ARCHITECTURAL AESTHETIC — unmistakably DPRK university
 - Every label in Korean (Hangul)
 - Warm evening light, long shadows
 
 AVOID:
+- Looking down at the ground below (the protagonist is on the rooftop, not above it)
+- Open-top or convertible vehicle (the 0721 is CLOSED)
+- Vehicle door on the left side (the door is on the RIGHT side)
+- Vehicle facing left (it faces RIGHT)
 - Generic sci-fi cityscape
-- Chinese or Japanese architecture
 - English text
-- Modern glass towers (Pyongyang has a unique skyline)
-- Missing the Juche Tower or Ryugyong Hotel (iconic landmarks)
-- Too bright (must be clearly evening/sunset)
+- Missing the Korean flag or university emblem
+- Too dark (must be clearly evening but visible)
+- Too small rooftop (must feel spacious)
 ```
 
 ---
