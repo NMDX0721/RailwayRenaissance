@@ -3,7 +3,7 @@
   "scenes": [
     {
       "bg": "border_town",
-      "bgm": "morning",
+      "bgm": "first_light",
       "transition": "fade",
       "d": [
         {
@@ -112,7 +112,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "cloud_rail",
       "transition": "slideLeft",
       "d": [
         {
@@ -576,7 +576,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "n",
@@ -606,7 +606,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "n",
@@ -686,7 +686,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "n",
@@ -737,7 +737,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "d",
@@ -800,7 +800,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "d",
@@ -1034,7 +1034,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "fun",
+      "bgm": "wheels_joke",
       "d": [
         {
           "t": "c",
@@ -1056,7 +1056,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "fun",
+      "bgm": "wheels_joke",
       "d": [
         {
           "t": "d",
@@ -1095,7 +1095,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "d",
@@ -1140,7 +1140,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "n",
@@ -1186,7 +1186,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "n",
@@ -1289,7 +1289,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "n",

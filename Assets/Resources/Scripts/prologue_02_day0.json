@@ -3,7 +3,7 @@
   "scenes": [
     {
       "bg": "hangar",
-      "bgm": "adventure",
+      "bgm": "cloud_rail",
       "transition": "slideLeft",
       "d": [
         {
@@ -51,7 +51,7 @@
     },
     {
       "bg": "hangar",
-      "bgm": "adventure",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "d",
@@ -845,7 +845,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "d": [
         {
           "t": "d",
@@ -1087,7 +1087,7 @@
     },
     {
       "bg": "cabin_interior_night",
-      "bgm": "emotional",
+      "bgm": "night_cargo",
       "transition": "fade",
       "d": [
         {
@@ -1152,7 +1152,7 @@
     },
     {
       "bg": "cabin_interior_night",
-      "bgm": "peaceful",
+      "bgm": "first_light",
       "d": [
         {
           "t": "n",

@@ -155,7 +155,7 @@
     },
     {
       "bg": "platform_morning",
-      "bgm": "warm",
+      "bgm": "platform",
       "d": [
         {
           "t": "d",
