@@ -1,126 +1,138 @@
 # 铁路复兴：沙能冲击 — 角色音色设计（ElevenLabs Voice Design）
 
-> 工具：ElevenLabs Voice Design（文本提示生成音色）
-> 使用方式：ElevenLabs → Voice Lab → Voice Design → 粘贴 Descriptive Prompt → 生成 → 预览测试
-> 命名建议：`voice_{角色id}`（如 `voice_suiyue`）
-> 生成后用 Multilingual v3 测试韩语发音一致性
+> 工具：ElevenLabs Voice Design（v3，文本提示生成音色，兼容 Eleven v3 + audio tags）
+> 文档依据：ElevenLabs 官方《Voice Design Prompting Guide》
+> 使用方式：ElevenLabs → Voice Lab → Voice Design → 粘贴【Prompt】→ 粘贴【Preview Text】→ 调整 Guidance Scale → 生成 3 个候选 → 选型保存 `voice_{角色id}`
 
 ---
 
-## 设计原则
+## 官方推荐 Prompt 格式（必须遵守）
 
-1. **每一句提示词 = 一段"角色小传"** —— ElevenLabs 从社会背景、年龄、经历推断音色
-2. **强调"怎么说话"而非"多好听"** —— 语气、习惯、情绪色彩比音质重要
-3. **加入来源语境** —— "在平壤地铁工作的播音员"比"温柔女人"精确 100 倍
-4. **生成后测试** —— 同一音色生成 5 句韩语 + 2 句中文，确认稳定性
+```
+Native <Language>. <Gender>, <Age range>. <Quality level>.
+Persona: <2–5 words>. Emotion: <2–3 adjectives>.
+<1–2 sentences: timbre + pacing + delivery>
+```
+
+**要点：**
+- **Quality**：写 `Excellent audio quality` / `Ok quality`（高保真优先）
+- **Persona**：2-5 词职业/身份
+- **Emotion**：2-3 个形容词
+- **数字/枚举优于模糊词**："speaking at a natural pace" 比 "relaxed" 好
+- **避免"accent"歧义**：想说语调时用 `intonation`，想说方言才用 `accent`
+- **Preview Text 是表演脚本**：必须与 prompt 情感互补，不能冲突；长文本（一整个段落）比短句更稳定
+- **Guidance Scale**：音色/口音准确性优先 → 35-40%；音质与表现优先 → 20-30%
 
 ---
 
 ## 一、岁月（Suiyue）— AI 伙伴
 
-**角色定位**：0721号沙子飞猪号搭载的 AI 原型，**2053 年制造，沉睡 23 年（至 2076）**。冷静、精准、偶尔冷幽默。对"情感"只有理论理解，但试图用数据理解人类。自称"第一个和我聊天的人"时带着微妙的孤独感。
+**角色定位**：0721号沙子飞猪号搭载的 AI 原型，2053 年制造，沉睡 23 年（至 2076）。冷静精准、偶尔冷幽默，对情感只有理论理解，隐藏着"23 年无人对话"的孤独。
 
-**Voice Design 提示词：**
+**【Prompt】**
 ```
-A calm, precise Korean female AI voice, early 20s, an in-car assistant manufactured in 1953 and just awakened after 23 years of sleep. Speaks slowly and deliberately, processing each word, with a faint electronic resonance like an old navigation system. Neutral tone with a subtle underlying warmth — a machine that has spent decades learning kindness in theory. Pauses slightly before emotional words, as if consulting a database. Dry humor delivered perfectly straight, never breaking character. When alone, a hint of loneliness leaks in — "finally someone is talking to me." Clean articulation, standard Pyongyang Korean, also fluent in Mandarin Chinese.
+Native Korean, standard Pyongyang dialect. Female, 20–25. Excellent audio quality.
+Persona: in-car AI assistant. Emotion: calm, precise, faintly lonely.
+Smooth, clean timbre with a subtle processed resonance, like an old navigation system gracefully restored. Speaks at a slow, deliberate natural pace, pausing briefly before emotional words as if consulting a database. Dry humor delivered perfectly straight, never breaking character. Fluent in both Korean and Mandarin Chinese.
 ```
 
-**试听句：**
+**【Preview Text】（长文本，配合冷静+孤独感）**
 ```
-[Korean] 심박수 백사십칠을 기록했습니다. 당신은 멈추지 않았어요.
-[Korean] 저는 AI입니다. 농담을 하지 않아요.
-[Korean] 스물세 해 만에 처음으로, 누군가 저와 이야기하고 있어요.
-[Chinese] 我在陈述事实。
-[Chinese] 所有矛盾都能用「过渡时期」来解释。
+심박수 백사십칠을 기록했습니다. 당신은 멈추지 않았어요. 제가 잠들어 있던 스물세 해 동안, 아무도 저와 이야기하지 않았습니다. 오늘, 처음으로 대화 상대가 생겼네요. 저는 AI입니다. 위로라는 걸 잘 몰라요. 하지만 철길은 결코 사라지지 않는다는 것, 그것만은 알고 있습니다. 다음 보급 지점까지 한 시간 반 남았어요. 그동안 조금 쉬시겠어요?
 ```
+
+**Guidance Scale：** 38%
 
 ---
 
 ## 二、林彪悍（Lin Biaohan）— 主角
 
-**角色定位**：**25 岁（2051 年生，2076 年）**，金日成综合大学荣誉研究生，研究方向为智能调度系统。倔强但克制、冷静而坚定——不是莽撞少年，是一个"知道自己选择了更难的路"的年轻人。边陲小村长大的背景让他比同龄研究生更沉稳。继承爷爷林悍的站长遗志与深蓝工作夹克。
+**角色定位**：25 岁，金日成综合大学荣誉研究生（智能调度方向），继承爷爷林悍的站长遗志。倔强克制、冷静坚定——不是莽撞少年，是"知道自己选了更难的路"的年轻男人。
 
-**Voice Design 提示词：**
+**【Prompt】**
 ```
-A low, restrained Korean male voice, 25 years old, a smart-dispatch researcher at Pyongyang's elite university who grew up in a small border village. Not a boy — a young man carrying responsibility on his shoulders. Speaks with quiet, settled intensity, rarely raising his voice; when frustrated, the anger shows as tension in the throat, clipped and precise, never shouting. Weariness from a long journey and a childhood of loss sits beneath the surface. When gentle, voice drops low and warm, almost protective. Standard Pyongyang Korean, educated but grounded, also fluent in Mandarin Chinese. Timbre slightly deeper than his age suggests — someone who has already buried his grandfather and chosen to carry on his railway.
+Native Korean, standard Pyongyang dialect with subtle village undertone. Male, 25–28. Excellent audio quality.
+Persona: quiet young stationkeeper. Emotion: restrained, determined, weary.
+Low, settled timbre, slightly deeper than his age suggests. Speaks at a calm, measured natural pace with quiet intensity — frustration surfaces as throat tension, clip, never shouting; when gentle, drops to a near-whisper. Standard Pyongyang Korean, educated yet grounded. Fluent in Korean and Mandarin Chinese.
 ```
 
-**试听句：**
+**【Preview Text】（长文本，配合克制+决心）**
 ```
-[Korean] 오늘은 정말 길었어. 하지만 돌아가기로 했어.
-[Korean] 나는 네 의견을 묻지 않았어! 가속해!
-[Korean] 이 철길은 내가 다시 일으킬 거야.
-[Chinese] 爷爷，我回来了。
-[Chinese] 这条线……我会让它重新跑起来。
+오늘은 정말 길었어. 검문소에서 네 대에 둘러싸였을 때, 손이 떨리고 있었지. 아버지가 아닌, 할아버지가 남긴 철길… 이십삼 년 동안 끊겨 있던 그 길을, 내가 다시 이을 수 있을까. 모르겠어. 하지만 돌아가기로 했어. 난 이제 더 이상, 도망치고 싶지 않아. 이 철길은 내가 다시 일으킬 거야.
 ```
+
+**Guidance Scale：** 36%
 
 ---
 
 ## 三、老陈（Lao Chen）— 末代站长
 
-**角色定位**：68 岁，雾峰村最后一任站长，主角的导师。温暖、朴实、固执而善良。宣读完林悍的遗愿、独自守线四年后迎来林彪悍——苍老里藏着欣慰的泪光。深感铁路已死，却始终不肯放弃最后一点希望。
+**角色定位**：68 岁，雾峰村最后一任站长，主角的导师。温暖朴实、固执善良，读着林悍的遗愿独自守线四年，苍老里藏着欣慰的泪光。
 
-**Voice Design 提示词：**
+**【Prompt】**
 ```
-A warm, weathered North Chinese male voice, late 60s, a mountain-village railway station master who has watched every train stop running over 23 years. Rough but gentle — gravel wrapped in cotton. Speaks slowly with a rural northern accent, eyesight failing but voice still resonant from decades of calling departures. Frequently coughs and clears throat. When talking about the old days, tone softens into fondness; when talking about the closed line, a quiet heaviness. Joyful moments come as reluctant smiles that crack his voice. Northern Chinese Mandarin with country tinge, no standard training, yet somehow dignified.
+Native Chinese, northern rural Mandarin with country tinge. Male, 65–70. Ok quality.
+Persona: weathered village stationmaster. Emotion: warm, wistful, stubbornly hopeful.
+Rough but gentle timbre, gravel wrapped in cotton; resonant chest voice softened by age. Speaks at a slow, drawn-out natural pace with rural cadence, pausing to cough or sigh. Fondness seeps in when recalling old days; a quiet heaviness when speaking of the closed line. Joy cracks the voice into reluctant smiles.
 ```
 
-**试听句：**
+**【Preview Text】（长文本，配合温暖+感伤）**
 ```
-[Chinese] 我守了四年，实在守不动了。
-[Chinese] 铁轨还在，总会有人来的。
-[Chinese] 你爷爷要是知道你回来了，一定很高兴……
-[Chinese] 彪悍啊……回来就好，回来就好。
+以前啊…这条线一天跑两趟，每站都停。茶农在这里上车，矿工在这里下车，热闹得很。现在…你看，站台上都长草了。你爷爷要是在，肯定又要念叨了。他那个人啊，嘴上说着"铁轨还在，总会有人来的"，心里比谁都着急。彪悍啊…回来就好，回来就好。
 ```
+
+**Guidance Scale：** 34%
 
 ---
 
 ## 四、嘉颖徐（Jiaying Xu）— 铁路大亨
 
-**角色定位**：46 岁，东北亚铁路大亨，手持多条电气化干线，被称为"铁路大亨"。爽朗、务实、有远见。爷爷林悍的老友，欣赏有勇气的人，资助林彪悍黑金卡并与他"平壤乡下的大同江茶馆"会面谈合作。
+**角色定位**：46 岁，东北亚铁路大亨（"铁路大亨"），手持多条电气化干线。爽朗、务实、有远见，与林悍有旧交，欣赏有勇气的人，赠黑金卡资助林彪悍。
 
-**Voice Design 提示词：**
+**【Prompt】**
 ```
-A confident, warm Korean-Chinese businesswoman in her mid-40s, a railway tycoon who turned abandoned electrified lines into golden assets after the sand-energy crash. Speaks with authority but never coldness — a survivor who has made hard decisions and stayed generous. Clear, unhurried, generous with pauses; laughs easily but briefly. Standard Mandarin with a subtle Korean intonation underneath. When talking railways, a spark of genuine passion breaks through the business polish — she truly loves the rails. When giving the black card, tone shifts to almost motherly: "this is a loan, not a gift — but if you lose it, consider it my respect for Lin Han."
+Native Chinese, Beijing-standard Mandarin with subtle Korean intonation undercurrent. Female, 40–50. Excellent audio quality.
+Persona: savvy railway tycoon. Emotion: confident, generous, passionate.
+Clear, authoritative timbre with warmth beneath the business polish; a genuine spark when speaking of railways. Speaks at an unhurried steady natural pace, generous with pauses; laughs easily but briefly. When advising, tone shifts to near-motherly gentleness. Decisive, direct, no hedging.
 ```
 
-**试听句：**
+**【Preview Text】（长文本，配合自信+欣赏）**
 ```
-[Chinese] 这不是送给你的，是借给你的。等你线路盈利了，连本带利还我。
-[Chinese] 铁路这行，不是有钱就能活下来的。
-[Chinese] 你是林悍的孙子……你爷爷提起你的时候，你还在上高中。
-[Chinese] 我等着看你的成绩。
+你是林悍的孙子。他提起你的时候，你还在上高中呢。他守的那条线，是最后几条还在跑的民营铁路之一——他走以后，能撑四年，已经是个奇迹了。这张卡你拿着，每个月一万沙币的额度，用作线路初期恢复。这不是送给你的，是借给你的。等你盈利了，连本带利还我；要是赔了…就当是我对林悍的敬意。我等着看你的成绩。
 ```
+
+**Guidance Scale：** 35%
 
 ---
 
 ## 五、配角音色速查
 
-| 角色 | 年龄 | 一句定位 | 语音特征 |
-|------|------|---------|---------|
-| **张工** | 62 | 退休机械工程师，乐观开朗 | 爽朗大嗓门，笑声贯穿，说话带着机修车间回声感，东北味普通话 |
-| **李阿姨** | 55 | 社区热心居民，服务热情 | 温暖絮叨，尾音上扬，像邻居阿姨，句尾拖着关心 |
-| **赵师傅** | 55 | 退休铁路工程师，沉稳可靠 | 沉稳寡言，说话节省，每句都有分量，带老铁路人的笃定 |
-| **王小弟** | 22 | 刚毕业大学生，阳光热血 | 活力满格，语速快，兴奋时容易破音，带学生的毛躁 |
-| **小芳** | 45 | 志愿者，温柔耐心 | 温柔耐心，句尾轻轻放轻，像哄人说话 |
-| **检查员** | 35 | 边境检查员 | 官方腔，公事公办，命令式短句，不带个人情绪 |
+| 角色 | 年龄 | Persona | Emotion | 语音特征（timbre/pacing/delivery） |
+|------|------|---------|---------|-----------------------------------|
+| **张工** | 62 | 爽朗老机械师 | jovial, booming | 大嗓门，笑声贯穿，东北味，说话像在修理车间 |
+| **李阿姨** | 55 | 热心站务阿姨 | warm, fussy | 温暖絮叨，尾音上扬，像邻居阿姨 |
+| **赵师傅** | 55 | 沉稳老工务 | steady, taciturn | 寡言节省，每句有分量，老铁路人笃定 |
+| **王小弟** | 22 | 热血毕业生 | eager, excitable | 语速快，兴奋破音，带学生毛躁 |
+| **小芳** | 45 | 温柔志愿者 | gentle, patient | 句尾轻放，像哄人说话 |
+| **检查员** | 35 | 边境检查员 | official, clipped | 官方腔，命令式短句，无个人情绪 |
 
 ---
 
 ## 六、生成与测试流程
 
-1. **逐角色**生成 Voice Design（一次性多生成几个候选音色）
+1. **逐角色**粘贴 Prompt + Preview Text → Guidance Scale 调至标称值 → 点 Generate（3 候选）
 2. **稳定性测试**：同一音色跑 5 句韩语 + 2 句中文，确认跨语言一致
-3. **情绪测试**：用 `[whispers] / [calm] / [dry humor]` 等 prompt 前缀测情感张力
-4. **选型**：每个角色保留 2 个候选 → 游戏内试听 → 定稿
-5. **存档**：定稿音色在 ElevenLabs 里命名 `voice_{角色id}` 并收藏到 Voice Library
+3. **情感测试**：用 audio tags（`[whispers]` `[calm]` `[dry humor]`）测情感张力
+4. **选型**：每角色保留 2 候选 → 游戏内试听 → 定稿，命名 `voice_{角色id}` 存入 Voice Library
+5. **效果不满意时**：优先微调 Guidance Scale（音色准确→提高 / 音质→降低），其次改 Emotion 形容词，最后才改 Persona
 
 ---
 
 ## 七、注意事项
 
-- ElevenLabs **免费层每月 1 万字符** —— 测试够用，批量生成需付费（$5/月起）
-- Voice Design 生成后**不可二次编辑描述**，需重新生成 —— 所以先广撒网多生成几个再选
-- 韩语输出用 **Multilingual v3** 模型效果最佳
-- 生成音色带水印（SynthID），游戏商业发布前确认授权条款
-- 若 Effect 受限，可退而求其次用 **Gemini 3.1 Flash TTS 预设音色**（免卡免费）跑原型
+- **Preview Text 长度**：整段（含 8-10 句台词）比短语稳定得多——本文档已按此提供
+- **免费层每月 1 万字符**：测试够用；批量生成需付费（$5/月起）
+- **Voice Design v3 兼容 Eleven v3 + audio tags**：project 内可跨模型使用
+- 生成音色含水印；商业发布前确认授权条款
+- 若 Voice Design 效果不稳定 → 退路：**Gemini 3.1 Flash TTS 预设音色**（免卡免费）或 **MIMO voicedesign**（你有 key）
+- 韩语输出用 **Multilingual v3** 确认发音；中文角色保持 Mandarin
