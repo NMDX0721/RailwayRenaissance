@@ -50,7 +50,18 @@ public class TitleScreen : MonoBehaviour
 
         // 统一版本号（来自 LoginManager.GAME_VERSION）
         var verLabel = root.Q<Label>("version-text");
-        if (verLabel != null) verLabel.text = LoginManager.GAME_VERSION;
+        if (verLabel != null)
+        {
+            verLabel.text = LoginManager.GAME_VERSION;
+            // 版本号点击 5 次进入调试模式（原标题界面底部版本号）
+            verLabel.pickingMode = PickingMode.Position;
+            int vc = 0;
+            verLabel.RegisterCallback<ClickEvent>(evt =>
+            {
+                vc++;
+                if (vc >= 5) { vc = 0; TitleArchiveUI.EnsureInstance().ShowDebug(); }
+            });
+        }
 
         usernameLabel = root.Q<Label>("username");
         btnNewGame = root.Q<Button>("btn-new-game");

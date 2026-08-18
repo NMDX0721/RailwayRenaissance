@@ -1739,6 +1739,18 @@ public class TitleArchiveUI : MonoBehaviour
         {
             ApplyTabState(kv.Value, kv.Key == key);
         }
+
+        // 播放器栏仅在音乐页签显示
+        if (key == "music")
+        {
+            playerBar.style.display = DisplayStyle.Flex;
+            if (!isPlayerPlaying)
+                PlayArchiveAmbient();
+        }
+        else
+        {
+            playerBar.style.display = DisplayStyle.None;
+        }
     }
 
     private void ApplyTabState(Button btn)
@@ -1791,7 +1803,10 @@ public class TitleArchiveUI : MonoBehaviour
         // ESC 关闭
         RegisterEscHandler();
 
-        StartArchiveAmbient();
+        // 暂停全局 BGM，通过 playerBar 播放氛围曲
+        PauseGlobalBGM();
+        if (!isPlayerPlaying)
+            PlayArchiveAmbient();
     }
 
     /// <summary>ESC 键关闭面板。</summary>
@@ -1811,35 +1826,28 @@ public class TitleArchiveUI : MonoBehaviour
         }
     }
 
-    /// <summary>隐藏站长日志面板（恢复被暂停的 BGM）。</summary>
+    /// <summary>隐藏站长日志面板。</summary>
     public void Hide()
     {
         if (overlay != null) overlay.style.display = DisplayStyle.None;
         uiDoc.rootVisualElement.UnregisterCallback<KeyDownEvent>(OnEscKey);
-        StopArchiveAmbient();
+        // 非用户轮播模式：停止氛围曲，恢复全局 BGM
+        if (!isUserPlaylistMode)
+        {
+            playerBar.style.display = DisplayStyle.None;
+            StopArchiveMusic();
+        }
+        UnpauseGlobalBGM();
         OnClosed?.Invoke();
     }
 
-    // ———— 站长日志氛围音乐：入场播舒缓曲，离场恢复原 BGM ————
+    // ———— 全局 BGM 暂停/恢复 + 氛围曲播放 ————
 
     private const string ArchiveAmbientClip = "platform";
-    private AudioSource ambientSource;
     private AudioSource bgSaver;
 
-    private void EnsureAmbientSource()
+    private void PauseGlobalBGM()
     {
-        if (ambientSource != null) return;
-        ambientSource = gameObject.AddComponent<AudioSource>();
-        ambientSource.loop = true;
-        ambientSource.volume = 0.5f;
-        ambientSource.playOnAwake = false;
-    }
-
-    private void StartArchiveAmbient()
-    {
-        EnsureAmbientSource();
-
-        // 记录并暂停全局 BGM（登录/标题创建的 "BGM" GameObject）
         var existing = GameObject.Find("BGM");
         if (existing != null)
         {
@@ -1850,24 +1858,43 @@ public class TitleArchiveUI : MonoBehaviour
                 src.Pause();
             }
         }
-
-        // 若已在播放同一首则继续，否则换曲
-        var clip = Resources.Load<AudioClip>("bgm/" + ArchiveAmbientClip);
-        if (clip == null) return;
-        if (ambientSource.clip == clip && ambientSource.isPlaying) return;
-        ambientSource.clip = clip;
-        ambientSource.Play();
     }
 
-    private void StopArchiveAmbient()
+    private void UnpauseGlobalBGM()
     {
-        if (ambientSource != null && ambientSource.isPlaying)
-            ambientSource.Stop();
         if (bgSaver != null)
         {
             bgSaver.UnPause();
             bgSaver = null;
         }
+    }
+
+    /// <summary>通过 playerBar 播放氛围曲（单曲循环，进度条更新）。</summary>
+    private void PlayArchiveAmbient()
+    {
+        var clip = Resources.Load<AudioClip>("bgm/" + ArchiveAmbientClip);
+        if (clip == null) return;
+
+        if (playerSource == null)
+        {
+            playerSource = gameObject.AddComponent<AudioSource>();
+            playerSource.playOnAwake = false;
+        }
+        if (playerSource.clip == clip && playerSource.isPlaying) return;
+
+        playerSource.loop = true;
+        isUserPlaylistMode = false;
+        playerSource.clip = clip;
+        playerSource.volume = 0.5f;
+        playerSource.Play();
+        isPlayerPlaying = true;
+        playerClip = clip;
+        currentTrackTitle = "Platform 站台";
+        currentTrackId = "platform";
+        playerTitle.text = currentTrackTitle;
+        playerTotalTime.text = FormatTime(clip.length);
+        playerPlayBtn.text = "||";
+        playerBar.style.display = DisplayStyle.Flex;
     }
 
     // ================= 解锁绑定（供游戏循环调用） =================
