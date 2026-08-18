@@ -20,7 +20,6 @@ public class LoginManager : MonoBehaviour
     private Text hintText;
 
     private Text versionText;
-    private Text announcementText;
     private GameObject loginPanel;
     private GameObject registerPanel;
     private GameObject autoLoginPanel;
@@ -355,8 +354,6 @@ public class LoginManager : MonoBehaviour
         // 版本号显示（左下角）
         CreateVersionText(canvasObj.transform);
 
-        // 公告入口（右上角）
-        announcementText = CreateAnnouncementEntry(canvasObj.transform);
 
         // 面板标题"登录"（Canvas级别，确保在最顶层）
         CreatePanelTitle(canvasObj.transform);
@@ -1963,180 +1960,9 @@ public class LoginManager : MonoBehaviour
         versionText.font = GetFont(18);
     }
 
-    Text CreateAnnouncementEntry(Transform parent)
-    {
-        var announceObj = new GameObject("AnnouncementEntry");
-        announceObj.transform.SetParent(parent, false);
-        var rect = announceObj.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(1f, 1f);
-        rect.anchorMax = new Vector2(1f, 1f);
-        rect.anchoredPosition = new Vector2(-140, -50);
-        rect.sizeDelta = new Vector2(160, 50);
+    
 
-        // 背景底色（子对象）
-        var bgObj = new GameObject("Bg");
-        bgObj.transform.SetParent(announceObj.transform, false);
-        var bgRect = bgObj.AddComponent<RectTransform>();
-        bgRect.anchorMin = Vector2.zero;
-        bgRect.anchorMax = Vector2.one;
-        bgRect.sizeDelta = Vector2.zero;
-        var bgImg = bgObj.AddComponent<Image>();
-        bgImg.color = new Color(0.15f, 0.1f, 0.05f, 0.9f);
-
-        var textObj = new GameObject("Text");
-        textObj.transform.SetParent(announceObj.transform, false);
-        var textRect = textObj.AddComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.sizeDelta = Vector2.zero;
-        var text = textObj.AddComponent<Text>();
-        text.text = "快讯";
-        text.fontSize = 24;
-        text.color = new Color(1f, 0.92f, 0.7f);
-        text.alignment = TextAnchor.MiddleCenter;
-        text.font = GetFont(24);
-
-        var button = announceObj.AddComponent<Button>();
-        announceObj.AddComponent<ButtonHoverCursor>();
-        button.targetGraphic = bgImg;
-        var colors = button.colors;
-        colors.normalColor = Color.white;
-        colors.highlightedColor = new Color(1f, 0.9f, 0.7f);
-        button.colors = colors;
-        button.onClick.AddListener(ShowAnnouncementPanel);
-
-        return text;
-    }
-
-    void ShowAnnouncementPanel()
-    {
-        Canvas canvas = null;
-        var loginCanvas = GameObject.Find("LoginCanvas");
-        if (loginCanvas != null) canvas = loginCanvas.GetComponent<Canvas>();
-        if (canvas == null) canvas = FindAnyObjectByType<Canvas>();
-        if (canvas == null) return;
-
-        var dialogObj = new GameObject("AnnouncementDialog");
-        dialogObj.transform.SetParent(canvas.transform, false);
-        dialogObj.transform.SetAsLastSibling();
-        var dialogRect = dialogObj.AddComponent<RectTransform>();
-        dialogRect.anchorMin = Vector2.zero;
-        dialogRect.anchorMax = Vector2.one;
-        dialogRect.sizeDelta = Vector2.zero;
-
-        // 全屏遮罩，点击关闭
-        var maskObj = new GameObject("Mask");
-        maskObj.transform.SetParent(dialogObj.transform, false);
-        var maskRect = maskObj.AddComponent<RectTransform>();
-        maskRect.anchorMin = Vector2.zero;
-        maskRect.anchorMax = Vector2.one;
-        maskRect.sizeDelta = Vector2.zero;
-        var maskImg = maskObj.AddComponent<Image>();
-        maskImg.color = new Color(0, 0, 0, 0.7f);
-        var maskBtn = maskObj.AddComponent<Button>();
-        maskBtn.targetGraphic = maskImg;
-        maskBtn.onClick.AddListener(() => Destroy(dialogObj));
-
-        // 主面板
-        var panelObj = new GameObject("Panel");
-        panelObj.transform.SetParent(dialogObj.transform, false);
-        var panelRect = panelObj.AddComponent<RectTransform>();
-        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
-        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = Vector2.zero;
-        panelRect.sizeDelta = new Vector2(760, 640);
-        var panelImg = panelObj.AddComponent<Image>();
-        panelImg.color = new Color(0.12f, 0.08f, 0.05f, 0.97f);
-
-        // 标题
-        var titleObj = new GameObject("Title");
-        titleObj.transform.SetParent(panelObj.transform, false);
-        var titleRect = titleObj.AddComponent<RectTransform>();
-        titleRect.anchorMin = new Vector2(0f, 1f);
-        titleRect.anchorMax = new Vector2(1f, 1f);
-        titleRect.anchoredPosition = new Vector2(0, -45);
-        titleRect.sizeDelta = new Vector2(0, 60);
-        var titleText = titleObj.AddComponent<Text>();
-        titleText.text = "★ 快讯  " + GAME_VERSION;
-        titleText.fontSize = 34;
-        titleText.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-        titleText.alignment = TextAnchor.MiddleCenter;
-        titleText.font = GetFont(34);
-
-        // 关闭按钮（右上角）
-        var closeObj = new GameObject("CloseBtn");
-        closeObj.transform.SetParent(panelObj.transform, false);
-        var closeRect = closeObj.AddComponent<RectTransform>();
-        closeRect.anchorMin = new Vector2(1f, 1f);
-        closeRect.anchorMax = new Vector2(1f, 1f);
-        closeRect.anchoredPosition = new Vector2(-40, -40);
-        closeRect.sizeDelta = new Vector2(60, 60);
-        var closeBtn = closeObj.AddComponent<Button>();
-        // 文本作为子对象（不能与 Image 在同一 GameObject）
-        var closeTextObj = new GameObject("Text");
-        closeTextObj.transform.SetParent(closeObj.transform, false);
-        var closeTextRect = closeTextObj.AddComponent<RectTransform>();
-        closeTextRect.anchorMin = Vector2.zero;
-        closeTextRect.anchorMax = Vector2.one;
-        closeTextRect.sizeDelta = Vector2.zero;
-        var closeText2 = closeTextObj.AddComponent<Text>();
-        closeText2.text = "×";
-        closeText2.fontSize = 40;
-        closeText2.color = new Color(1f, 1f, 1f, 0.8f);
-        closeText2.alignment = TextAnchor.MiddleCenter;
-        closeText2.font = GetFont(40);
-        closeBtn.onClick.AddListener(() => Destroy(dialogObj));
-
-        // 滚动内容区域
-        var viewportObj = new GameObject("Viewport");
-        viewportObj.transform.SetParent(panelObj.transform, false);
-        var viewportRect = viewportObj.AddComponent<RectTransform>();
-        viewportRect.anchorMin = new Vector2(0f, 0f);
-        viewportRect.anchorMax = new Vector2(1f, 1f);
-        viewportRect.offsetMin = new Vector2(40, 40);
-        viewportRect.offsetMax = new Vector2(-40, -90);
-        var viewportMaskImg = viewportObj.AddComponent<Image>();
-        viewportMaskImg.color = new Color(0, 0, 0, 0.25f);
-        var viewportMask = viewportObj.AddComponent<RectMask2D>();
-
-        var scrollObj = new GameObject("Scroll");
-        scrollObj.transform.SetParent(viewportObj.transform, false);
-        var scrollRectComp = scrollObj.AddComponent<RectTransform>();
-        scrollRectComp.anchorMin = Vector2.zero;
-        scrollRectComp.anchorMax = Vector2.one;
-        scrollRectComp.sizeDelta = Vector2.zero;
-        var scroll = scrollObj.AddComponent<ScrollRect>();
-        scroll.horizontal = false;
-        scroll.viewport = viewportRect;
-
-        var contentObj = new GameObject("Content");
-        contentObj.transform.SetParent(scrollObj.transform, false);
-        var contentRect = contentObj.AddComponent<RectTransform>();
-        contentRect.anchorMin = new Vector2(0f, 1f);
-        contentRect.anchorMax = new Vector2(1f, 1f);
-        contentRect.pivot = new Vector2(0.5f, 1f);
-        contentRect.anchoredPosition = Vector2.zero;
-        var contentLayout = contentObj.AddComponent<VerticalLayoutGroup>();
-        contentLayout.padding = new RectOffset(20, 20, 10, 10);
-        contentLayout.spacing = 8;
-        contentLayout.childForceExpandWidth = true;
-        contentLayout.childForceExpandHeight = false;
-
-        var contentText = contentObj.AddComponent<Text>();
-        contentText.fontSize = 20;
-        contentText.color = new Color(1f, 1f, 1f, 0.85f);
-        contentText.font = GetFont(20);
-        contentText.alignment = TextAnchor.UpperLeft;
-        contentText.raycastTarget = false;
-        contentText.text = BuildAnnouncementText();
-
-        // 内容自适应高度，支撑滚动
-        var fitter = contentObj.AddComponent<ContentSizeFitter>();
-        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-        scroll.content = contentRect;
-    }
+    
 
     public static string BuildAnnouncementText()
     {

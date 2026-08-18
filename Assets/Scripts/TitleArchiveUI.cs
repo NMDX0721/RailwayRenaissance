@@ -289,6 +289,9 @@ public class TitleArchiveUI : MonoBehaviour
         contentScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         panel.Add(contentScroll);
 
+        // ———— 底部悬浮音乐播放器栏 ————
+        BuildMusicPlayerBar();
+
         RebuildPages();
         ShowTab(currentTabKey);
     }
@@ -479,8 +482,8 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveCG_" + cg.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 290;
-        card.style.height = 210;
+        card.style.width = 340;
+        card.style.height = 260;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
         card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);
@@ -655,7 +658,7 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveMusic_" + m.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 286;
+        card.style.width = 320;
         card.style.flexShrink = 0;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
@@ -710,54 +713,13 @@ public class TitleArchiveUI : MonoBehaviour
 
         if (unlocked)
         {
-            // ———— 播放器：进度条 + 时间 + 播放/停止 + 音量 ————
-            playerStates.Remove(m.id);
-
-            var progress = new Slider(0f, 1f);
-            progress.name = "music-progress-" + m.id;
-            progress.style.height = 18;
-            progress.style.marginTop = 8;
-            progress.style.flexGrow = 1;
-            card.Add(progress);
-
-            var timeRow = new VisualElement();
-            timeRow.style.flexDirection = FlexDirection.Row;
-            timeRow.style.marginTop = 2;
-            card.Add(timeRow);
-
-            var curTime = new Label("0:00");
-            curTime.name = "music-cur-" + m.id;
-            curTime.style.fontSize = 13;
-            curTime.style.color = dimText;
-            curTime.style.unityFontDefinition = Fd();
-            timeRow.Add(curTime);
-
-            var sep = new Label(" / ");
-            sep.style.fontSize = 13;
-            sep.style.color = dimText;
-            sep.style.unityFontDefinition = Fd();
-            timeRow.Add(sep);
-
-            var totalTime = new Label("0:00");
-            totalTime.name = "music-total-" + m.id;
-            totalTime.style.fontSize = 13;
-            totalTime.style.color = dimText;
-            totalTime.style.unityFontDefinition = Fd();
-            timeRow.Add(totalTime);
-
-            var volSlider = new Slider(0f, 1f);
-            volSlider.name = "music-vol-" + m.id;
-            volSlider.value = 0.5f;
-            volSlider.style.height = 18;
-            volSlider.style.marginTop = 6;
-            card.Add(volSlider);
-
+            // 精简卡片：仅显示播放/停止按钮（进度/时间/音量在底部悬浮栏）
             var btnRow = new VisualElement();
             btnRow.style.flexDirection = FlexDirection.Row;
-            btnRow.style.marginTop = 6;
+            btnRow.style.marginTop = 8;
             card.Add(btnRow);
 
-            var playBtn = new Button(() => PlayArchiveMusic(m, progress, curTime, totalTime, volSlider)) { text = "播放" };
+            var playBtn = new Button(() => PlayArchiveMusic(m.id, m.clipName)) { text = "播放" };
             playBtn.name = "music-play-" + m.id;
             playBtn.style.width = 80;
             playBtn.style.height = 30;
@@ -766,16 +728,6 @@ public class TitleArchiveUI : MonoBehaviour
             playBtn.style.unityFontDefinition = Fd();
             StylizeTab(playBtn);
             btnRow.Add(playBtn);
-
-            var stopBtn = new Button(() => StopArchiveMusic()) { text = "停止" };
-            stopBtn.style.width = 80;
-            stopBtn.style.height = 30;
-            stopBtn.style.fontSize = 15;
-            stopBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            stopBtn.style.unityFontDefinition = Fd();
-            stopBtn.style.marginLeft = 8;
-            StylizeTab(stopBtn);
-            btnRow.Add(stopBtn);
         }
         else
         {
@@ -791,100 +743,123 @@ public class TitleArchiveUI : MonoBehaviour
         return card;
     }
 
-    // ———— 音乐播放器状态 ————
+    // ———— 底部悬浮音乐播放器 ————
 
-    private class PlayerState
-    {
-        public AudioSource source;
-        public AudioClip clip;
-        public Slider progress;
-        public Label curTime;
-        public Label totalTime;
-        public Slider volume;
-        public string id;
-    }
-
-    private readonly Dictionary<string, PlayerState> playerStates = new Dictionary<string, PlayerState>();
+    private VisualElement playerBar;
+    private Label playerTitle;
+    private Slider playerProgress;
+    private Label playerCurTime;
+    private Label playerTotalTime;
+    private Button playerPlayBtn;
+    private Button playerStopBtn;
+    private AudioSource playerSource;
+    private AudioClip playerClip;
+    private string currentTrackId;
     private const float ProgressUpdateInterval = 0.25f;
     private float progressTimer;
+    private bool isPlayerPlaying;
 
-    /// <summary>播放音乐鉴赏：独立 AudioSource 逐卡播放，支持进度/时间/音量。</summary>
-    private void PlayArchiveMusic(MusicInfo m, Slider progress, Label curTime, Label totalTime, Slider volume)
+    private void BuildMusicPlayerBar()
     {
-        var clip = Resources.Load<AudioClip>("bgm/" + m.clipName);
-        if (clip == null)
-        {
-            UnityEngine.Debug.LogWarning("[Archive] 音乐文件缺失: bgm/" + m.clipName);
-            return;
-        }
+        playerBar = new VisualElement { name = "music-player-bar" };
+        playerBar.style.flexDirection = FlexDirection.Row;
+        playerBar.style.alignItems = Align.Center;
+        playerBar.style.backgroundColor = new Color(0.15f, 0.10f, 0.06f, 0.97f);
+        playerBar.style.borderTopWidth = 1;
+        playerBar.style.borderTopColor = borderNormal;
+        playerBar.style.paddingLeft = 20;
+        playerBar.style.paddingRight = 20;
+        playerBar.style.paddingTop = 8;
+        playerBar.style.paddingBottom = 8;
+        playerBar.style.marginTop = 8;
+        playerBar.style.flexShrink = 0;
+        playerBar.style.display = DisplayStyle.None;
+        panel.Add(playerBar);
 
-        // 切换歌曲时停掉上一首（站内独播）
+        playerTitle = new Label("未播放");
+        playerTitle.style.fontSize = 18;
+        playerTitle.style.color = goldNormal;
+        playerTitle.style.unityFontDefinition = Fd();
+        playerTitle.style.width = 180;
+        playerTitle.style.marginRight = 16;
+        playerBar.Add(playerTitle);
+
+        playerProgress = new Slider(0f, 1f);
+        playerProgress.style.flexGrow = 1;
+        playerProgress.style.height = 18;
+        playerProgress.style.marginRight = 12;
+        playerBar.Add(playerProgress);
+
+        playerCurTime = new Label("0:00");
+        playerCurTime.style.fontSize = 14;
+        playerCurTime.style.color = dimText;
+        playerCurTime.style.unityFontDefinition = Fd();
+        playerCurTime.style.width = 40;
+        playerCurTime.style.marginRight = 4;
+        playerBar.Add(playerCurTime);
+
+        playerTotalTime = new Label("0:00");
+        playerTotalTime.style.fontSize = 14;
+        playerTotalTime.style.color = dimText;
+        playerTotalTime.style.unityFontDefinition = Fd();
+        playerTotalTime.style.width = 40;
+        playerTotalTime.style.marginRight = 16;
+        playerBar.Add(playerTotalTime);
+
+        playerPlayBtn = new Button(() => { if (playerSource != null && !playerSource.isPlaying) playerSource.Play(); }) { text = "▶" };
+        playerPlayBtn.style.width = 50;
+        playerPlayBtn.style.height = 30;
+        playerPlayBtn.style.fontSize = 18;
+        playerPlayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        playerPlayBtn.style.unityFontDefinition = Fd();
+        StylizeTab(playerPlayBtn);
+        playerBar.Add(playerPlayBtn);
+
+        playerStopBtn = new Button(() => { StopArchiveMusic(); }) { text = "■" };
+        playerStopBtn.style.width = 50;
+        playerStopBtn.style.height = 30;
+        playerStopBtn.style.fontSize = 18;
+        playerStopBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        playerStopBtn.style.unityFontDefinition = Fd();
+        playerStopBtn.style.marginLeft = 6;
+        StylizeTab(playerStopBtn);
+        playerBar.Add(playerStopBtn);
+    }
+
+    private void PlayArchiveMusic(string id, string clipName)
+    {
+        var clip = Resources.Load<AudioClip>("bgm/" + clipName);
+        if (clip == null) return;
+
         StopArchiveMusic();
 
-        PlayerState st;
-        if (!playerStates.TryGetValue(m.id, out st))
+        if (playerSource == null)
         {
-            var src = gameObject.AddComponent<AudioSource>();
-            src.loop = true;
-            src.playOnAwake = false;
-            src.volume = 0.5f;
-            st = new PlayerState { source = src, id = m.id };
-            playerStates[m.id] = st;
+            playerSource = gameObject.AddComponent<AudioSource>();
+            playerSource.loop = true;
+            playerSource.playOnAwake = false;
         }
-        st.clip = clip;
-        st.progress = progress;
-        st.curTime = curTime;
-        st.totalTime = totalTime;
-        st.volume = volume;
 
-        st.source.clip = clip;
-        st.source.volume = volume.value;
-        st.source.Play();
-        totalTime.text = FormatTime(clip.length);
+        playerSource.clip = clip;
+        playerSource.volume = 0.5f;
+        playerSource.Play();
+        currentTrackId = id;
+        playerClip = clip;
+
+        playerTitle.text = clipName;
+        playerTotalTime.text = FormatTime(clip.length);
+        playerBar.style.display = DisplayStyle.Flex;
+        isPlayerPlaying = true;
     }
 
     private void StopArchiveMusic()
     {
-        foreach (var kv in playerStates)
-        {
-            if (kv.Value.source != null && kv.Value.source.isPlaying)
-                kv.Value.source.Stop();
-        }
-    }
-
-    /// <summary>CG 全屏放大查看（点击任意处关闭）。</summary>
-    private void ShowCgFullscreen(Texture2D tex, string title)
-    {
-        var fs = new VisualElement { name = "cg-fullscreen" };
-        fs.style.position = Position.Absolute;
-        fs.style.top = 0; fs.style.left = 0;
-        fs.style.right = 0; fs.style.bottom = 0;
-        fs.style.backgroundColor = new Color(0, 0, 0, 0.97f);
-        fs.style.alignItems = Align.Center;
-        fs.style.justifyContent = Justify.Center;
-        fs.pickingMode = PickingMode.Position;
-        fs.RegisterCallback<ClickEvent>(evt => fs.RemoveFromHierarchy());
-
-        var img = new VisualElement();
-        img.style.flexGrow = 1;
-        img.style.maxWidth = new Length(100, LengthUnit.Percent);
-        img.style.maxHeight = new Length(100, LengthUnit.Percent);
-        img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
-        img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
-        fs.Add(img);
-
-        var cap = new Label("「" + title + "」 — 点击关闭");
-        cap.style.position = Position.Absolute;
-        cap.style.bottom = 24;
-        cap.style.left = 0;
-        cap.style.right = 0;
-        cap.style.fontSize = 16;
-        cap.style.color = new Color(1f, 1f, 1f, 0.4f);
-        cap.style.unityTextAlign = TextAnchor.MiddleCenter;
-        cap.style.unityFontDefinition = Fd();
-        fs.Add(cap);
-
-        uiDoc.rootVisualElement.Add(fs);
+        if (playerSource != null && playerSource.isPlaying)
+            playerSource.Stop();
+        playerBar.style.display = DisplayStyle.None;
+        playerClip = null;
+        currentTrackId = null;
+        isPlayerPlaying = false;
     }
 
     private string FormatTime(float seconds)
@@ -897,27 +872,17 @@ public class TitleArchiveUI : MonoBehaviour
 
     private void Update()
     {
-        if (playerStates.Count == 0) return;
+        if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying || playerClip == null) return;
 
         progressTimer += Time.unscaledDeltaTime;
         if (progressTimer < ProgressUpdateInterval) return;
         progressTimer = 0;
 
-        foreach (var kv in playerStates)
-        {
-            var st = kv.Value;
-            if (st.source == null || !st.source.isPlaying) continue;
-
-            if (st.clip == null) continue;
-            float t = st.source.time;
-            float len = st.clip.length;
-            if (st.progress != null && len > 0.01f)
-                st.progress.value = Mathf.Clamp01(t / len);
-            if (st.curTime != null)
-                st.curTime.text = FormatTime(t);
-            if (st.volume != null)
-                st.source.volume = st.volume.value;
-        }
+        float t = playerSource.time;
+        float len = playerClip.length;
+        if (len > 0.01f)
+            playerProgress.value = Mathf.Clamp01(t / len);
+        playerCurTime.text = FormatTime(t);
     }
 
     // ================= 故事章节页 =================
@@ -1050,8 +1015,8 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveScene_" + sc.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 290;
-        card.style.height = 210;
+        card.style.width = 340;
+        card.style.height = 260;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
         card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);
