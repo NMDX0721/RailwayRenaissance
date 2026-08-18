@@ -64,7 +64,7 @@ Style: Cinematic orchestral, determined and rising, marching percussion with sna
 **复用说明**：慢速钢琴 + 大提琴，夜间情绪场景通用
 
 ```
-Style: Emotional piano, slow and aching, simple piano chord progression, solo cello countermelody, wide reverb, minimal arrangement, slight build with soft strings in middle, returning to solo piano, instrumental, no vocals, 60 BPM, key of E minor, dark and intimate, concert hall reverb, no drums, no percussion, no bright elements, night sky atmosphere, like a conversation between piano and cello
+Style: Emotional piano, slow and aching, simple piano chord progression in the dark, solo cello enters as countermelody at 20s like a second voice answering, wide reverb creating vast night space, minimal arrangement throughout, soft strings swell gently at midpoint then recede, returning to solo piano for the final phrase, instrumental, no vocals, 60 BPM, key of E minor, dark and intimate, concert hall reverb, no drums, no percussion, no bright elements, no rhythm, night sky atmosphere, sparse and breathing, like a conversation between piano and cello under the stars, each note carrying weight, fading into silence
 ```
 
 
