@@ -841,6 +841,9 @@ public class TitleArchiveUI : MonoBehaviour
         // 播放即解锁
         UnlockMusic(id);
 
+        // 播放用户选曲时，停掉日志氛围曲（避免叠放）
+        StopArchiveAmbient();
+
         StopArchiveMusic();
 
         if (playerSource == null)
@@ -872,6 +875,24 @@ public class TitleArchiveUI : MonoBehaviour
     private void AutoPlayFirstUnlockedMusic()
     {
         if (isPlayerPlaying) return;
+        // 优先播放舒缓曲（Platform），其次标题 BGM（Iron & Ash），再其他已解锁
+        string[] priority = { "platform", "iron_and_ash" };
+        foreach (var pid in priority)
+        {
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + pid, 0) == 1)
+            {
+                // 查找对应的 MusicInfo
+                for (int i = 0; i < MusicEntries.Length; i++)
+                {
+                    if (MusicEntries[i].id == pid)
+                    {
+                        PlayArchiveMusic(pid, MusicEntries[i].clipName);
+                        return;
+                    }
+                }
+            }
+        }
+        // 兜底：第一首已解锁的
         for (int i = 0; i < MusicEntries.Length; i++)
         {
             var m = MusicEntries[i];

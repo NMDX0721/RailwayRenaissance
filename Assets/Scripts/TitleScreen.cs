@@ -33,8 +33,9 @@ public class TitleScreen : MonoBehaviour
     {
         SetupVideoBackground();
         SetupBGM();
-        // 标题界面解锁：标题 BGM + 基础音乐鉴赏
+        // 标题界面解锁：标题 BGM + 舒缓曲 + 基础音乐鉴赏
         TitleArchiveUI.UnlockMusic("iron_and_ash");
+        TitleArchiveUI.UnlockMusic("platform");
         SetupGameCursor();
         Camera.main.clearFlags = CameraClearFlags.SolidColor;
         Camera.main.backgroundColor = new Color(0.55f, 0.38f, 0.32f, 1f);
