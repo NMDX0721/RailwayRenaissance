@@ -80,7 +80,7 @@ Style: Emotional piano, slow and aching, simple piano chord progression in the d
 **用途**：Day 1 上午、Day 2 下午等时间过渡，安静时刻
 
 ```
-Style: Peaceful ambient, gentle piano, morning atmosphere, soft field recordings of birds and wind, sustained drone note underneath, minimal and sparse, no melody, just texture and atmosphere, instrumental, no vocals, 60 BPM, key of C major, wide reverb, no drums, no percussion, no rhythm, no structure, like dawn breaking over a quiet field
+Style: Peaceful ambient, gentle piano, morning atmosphere, solo piano with soft repeating motif at start like light breaking over hills, soft field recordings of birds and wind enter at 30s, one sustained warm drone note underneath, sparse and minimal, no melody in second half, just texture and atmosphere, slow gentle build with soft strings at midpoint then settles back to piano, instrumental, no vocals, 60 BPM, key of C major, wide stereo reverb, no drums, no percussion, no rhythm, no structure, no dark elements, like dawn breaking over a quiet field, fresh and hopeful, gradual light, ending on a single held piano note
 ```
 
 

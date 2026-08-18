@@ -173,9 +173,17 @@ public class TitleScreen : MonoBehaviour
 
     void SetupBGM()
     {
+        var newClip = Resources.Load<AudioClip>("bgm/iron_and_ash");
         var existing = GameObject.Find("BGM");
         if (existing != null)
         {
+            var src = existing.GetComponent<AudioSource>();
+            // 旧音乐（登录界面创建的 Train Through Keys）→ 换成新音乐
+            if (src != null && (src.clip == null || src.clip.name != newClip?.name))
+            {
+                src.clip = newClip;
+                src.Play();
+            }
             GameData.ApplyVolume();
             return;
         }
@@ -183,14 +191,13 @@ public class TitleScreen : MonoBehaviour
         var audioObj = new GameObject("BGM");
         audioObj.transform.SetParent(null);
         DontDestroyOnLoad(audioObj);
-        var src = audioObj.AddComponent<AudioSource>();
-        src.loop = true;
-        src.volume = 0.3f;
-        var clip = Resources.Load<AudioClip>("bgm/iron_and_ash");
-        if (clip != null)
+        var audioSrc = audioObj.AddComponent<AudioSource>();
+        audioSrc.loop = true;
+        audioSrc.volume = 0.3f;
+        if (newClip != null)
         {
-            src.clip = clip;
-            src.Play();
+            audioSrc.clip = newClip;
+            audioSrc.Play();
         }
         GameData.ApplyVolume();
     }

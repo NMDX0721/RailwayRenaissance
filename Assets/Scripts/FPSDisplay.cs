@@ -5,10 +5,12 @@ using UnityEngine.UIElements;
 public class FPSDisplay : MonoBehaviour
 {
     private Label fpsLabel;
-    private float deltaTime;
+    private int frameCount;
+    private float elapsedAccum;
     private bool isActive;
     private Color lastColor;
     private int lastFps = -1;
+    private const float UpdateInterval = 0.5f; // 每 0.5 秒更新一次，读数更稳
 
     private void OnEnable()
     {
@@ -87,8 +89,13 @@ public class FPSDisplay : MonoBehaviour
             return;
         }
 
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        int fps = Mathf.FloorToInt(1.0f / deltaTime);
+        frameCount++;
+        elapsedAccum += Time.unscaledDeltaTime;
+        if (elapsedAccum < UpdateInterval) return; // 窗口未满，等待
+
+        int fps = Mathf.Clamp(Mathf.RoundToInt(frameCount / elapsedAccum), 0, 999);
+        frameCount = 0;
+        elapsedAccum = 0f;
         // 只在数值变化时更新文本，颜色变化时更新样式，避免每帧触发样式重算
         if (fps != lastFps)
         {
