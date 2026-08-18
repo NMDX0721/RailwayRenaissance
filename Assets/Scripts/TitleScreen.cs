@@ -47,6 +47,19 @@ public class TitleScreen : MonoBehaviour
 
         LoadAvatarImages(root);
 
+        // 版本号点击 5 次进入调试模式
+        var versionLabel = root.Q<Label>("version-text");
+        if (versionLabel != null)
+        {
+            versionLabel.pickingMode = PickingMode.Position;
+            int vc = 0;
+            versionLabel.RegisterCallback<ClickEvent>(evt =>
+            {
+                vc++;
+                if (vc >= 5) { vc = 0; TitleArchiveUI.EnsureInstance().ShowDebug(); }
+            });
+        }
+
         usernameLabel = root.Q<Label>("username");
         btnNewGame = root.Q<Button>("btn-new-game");
         btnContinue = root.Q<Button>("btn-continue");
