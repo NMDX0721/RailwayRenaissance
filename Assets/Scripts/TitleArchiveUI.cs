@@ -862,6 +862,41 @@ public class TitleArchiveUI : MonoBehaviour
         isPlayerPlaying = false;
     }
 
+    /// <summary>CG 全屏放大查看（点击任意处关闭）。</summary>
+    private void ShowCgFullscreen(Texture2D tex, string title)
+    {
+        var fs = new VisualElement { name = "cg-fullscreen" };
+        fs.style.position = Position.Absolute;
+        fs.style.top = 0; fs.style.left = 0;
+        fs.style.right = 0; fs.style.bottom = 0;
+        fs.style.backgroundColor = new Color(0, 0, 0, 0.97f);
+        fs.style.alignItems = Align.Center;
+        fs.style.justifyContent = Justify.Center;
+        fs.pickingMode = PickingMode.Position;
+        fs.RegisterCallback<ClickEvent>(evt => fs.RemoveFromHierarchy());
+
+        var img = new VisualElement();
+        img.style.flexGrow = 1;
+        img.style.maxWidth = new Length(100, LengthUnit.Percent);
+        img.style.maxHeight = new Length(100, LengthUnit.Percent);
+        img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
+        img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+        fs.Add(img);
+
+        var cap = new Label("「" + title + "」 — 点击关闭");
+        cap.style.position = Position.Absolute;
+        cap.style.bottom = 24;
+        cap.style.left = 0;
+        cap.style.right = 0;
+        cap.style.fontSize = 16;
+        cap.style.color = new Color(1f, 1f, 1f, 0.4f);
+        cap.style.unityTextAlign = TextAnchor.MiddleCenter;
+        cap.style.unityFontDefinition = Fd();
+        fs.Add(cap);
+
+        uiDoc.rootVisualElement.Add(fs);
+    }
+
     private string FormatTime(float seconds)
     {
         if (float.IsNaN(seconds) || seconds < 0) seconds = 0;

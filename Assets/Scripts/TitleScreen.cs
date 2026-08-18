@@ -382,7 +382,7 @@ public class TitleScreen : MonoBehaviour
         versionBadge.style.paddingLeft = 10; versionBadge.style.paddingRight = 10;
         versionBadge.style.paddingTop = 4; versionBadge.style.paddingBottom = 4;
         versionBadge.style.unityFontDefinition = fontDef;
-        versionBadge.style.pickingMode = PickingMode.Position; // 让 Label 可点击
+        versionBadge.pickingMode = PickingMode.Position; // 让 Label 可点击
         // 版本号点击 5 次进入调试模式
         int versionClickCount = 0;
         versionBadge.RegisterCallback<ClickEvent>(evt =>
