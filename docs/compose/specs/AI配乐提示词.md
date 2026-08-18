@@ -38,7 +38,7 @@ Style: Cinematic orchestral, warm and nostalgic, piano melody carrying the theme
 **复用说明**：中速开放感，吉他琶音 + 轻打击乐，4.5 天飞行场景通用
 
 ```
-Style: Ambient folk, spacious and open, acoustic guitar fingerpicking, warm synth pad, light brushed percussion, soft bass drone, open sky atmosphere, gradual build from solo guitar to full bedding, then gentle fade, instrumental, no vocals, 72 BPM, key of G major, wide stereo reverb, no heavy drums, no electronic beats, no sudden changes, evolving slowly, like watching clouds pass from a window
+Style: Ambient folk, spacious and open, acoustic guitar fingerpicking carrying the melody, warm synth pad underneath, light brushed percussion with shakers, soft bass drone, open sky atmosphere, solo guitar at start with gentle reverb, light percussion and bass enter at 30s, warm pad swells at 1min, gradual build to full texture by midpoint, then slow fade back to solo guitar for outro, instrumental, no vocals, 72 BPM, key of G major, wide stereo reverb, no heavy drums, no electronic beats, no sudden changes, no dark elements, evolving slowly throughout, like watching clouds pass from a window during a long flight, bright and airy, peaceful journey feeling
 ```
 
 
