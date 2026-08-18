@@ -95,12 +95,16 @@ public class TitleArchiveUI : MonoBehaviour
 
     private static readonly CgInfo[] Cgs =
     {
-        new CgInfo { id = "cg_lab",       title = "实验室（平壤）", condition = "序章 Day 0 自动解锁", imagePath = "bg/lab" },
-        new CgInfo { id = "cg_sunset",    title = "雾峰村夕阳",    condition = "序章 Day 4 到达" },
-        new CgInfo { id = "cg_bridge",    title = "松桥站",        condition = "序章 Day 4 巡视" },
-        new CgInfo { id = "cg_team",      title = "员工集合",      condition = "序章 Day 4 晚上" },
-        new CgInfo { id = "cg_first_run", title = "首班车",        condition = "序章首班车" },
-        new CgInfo { id = "cg_museum",    title = "铁路博物馆",    condition = "好感度 > 90 解锁" },
+        new CgInfo { id = "cg_lab",       title = "实验室（平壤）",       condition = "序章 Day 0 自动解锁",   imagePath = "bg/lab" },
+        new CgInfo { id = "cg_hangar",    title = "停机坪·0721 启程",    condition = "序章 Day 0 领取载具",   imagePath = "bg/hangar" },
+        new CgInfo { id = "cg_tea_house", title = "大同江茶馆",          condition = "序章 Day 0 会面嘉颖徐", imagePath = "bg/tea_house" },
+        new CgInfo { id = "cg_cabin",     title = "客舱·与你初遇",       condition = "序章 Day 0 启航",      imagePath = "bg/cabin_interior" },
+        new CgInfo { id = "cg_chase",     title = "边境追击·三面合围",    condition = "序章 Day 1 边境",      imagePath = "bg/chase_sky" },
+        new CgInfo { id = "cg_sunset",    title = "雾峰村夕阳",          condition = "序章 Day 4 到达" },
+        new CgInfo { id = "cg_bridge",    title = "松桥站",              condition = "序章 Day 4 巡视" },
+        new CgInfo { id = "cg_team",      title = "员工集合",            condition = "序章 Day 4 晚上" },
+        new CgInfo { id = "cg_first_run", title = "首班车",              condition = "序章首班车" },
+        new CgInfo { id = "cg_museum",    title = "铁路博物馆",          condition = "好感度 > 90 解锁" },
     };
 
     private static readonly ArchiveInfo[] Characters =
@@ -1532,6 +1536,9 @@ public class TitleArchiveUI : MonoBehaviour
                 break;
             case "prologue_02_day0":
                 UnlockCG("cg_lab");
+                UnlockCG("cg_hangar");
+                UnlockCG("cg_tea_house");
+                UnlockCG("cg_cabin");
                 UnlockArchive("ArchiveChar_suiyue"); // 领取 0721
                 UnlockArchive("ArchiveTrain_nf5");
                 UnlockMusic("cloud_rail");
@@ -1546,6 +1553,7 @@ public class TitleArchiveUI : MonoBehaviour
                 UnlockStory("prologue_02_day0");
                 break;
             case "prologue_03_journey":
+                UnlockCG("cg_chase");
                 UnlockMusic("borderline");
                 UnlockMusic("starlit_rails");
                 UnlockMusic("chollima_ride");

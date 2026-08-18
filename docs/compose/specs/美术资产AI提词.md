@@ -1900,8 +1900,6 @@ MOOD: Ordinary people, ordinary journey. The railway alive again.
 
 ---
 
----
-
 ## 三、BGM（Suno AI 音乐提示词）
 
 ### 通用规范
@@ -2113,3 +2111,41 @@ AVOID:
 *本文档按最新标准（v2.0 分类清单版）重写，基于实验室成功提示词格式。*
 
 ---
+
+### 2.32 边境追击·三面合围（chase_sky · CG）
+
+**文件**：`Resources/bg/chase_sky.png`
+**用途**：序章 Day 1 边境危机——0721 遭四家单位三面合围的空战瞬间。**既作为站长日志 CG 鉴赏插画（cg_chase），也保留为场景图备用**。风格应为"静态插画级"，可含主角机小像，构图强调被包围的压迫感。
+
+**提示词**：
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+aerial pursuit scene, dramatic composition, late morning:
+
+SCENE: A deep blue 0721 sand flying vehicle (nose right, tiny) is the focal point at frame center, flying low over a sea of clouds. FOUR armored interceptors surround it: two green (Social Security emblem), one grey (border troops), one unmarked black (state security). They close in from left, right and front in a pincer. Electromagnetic interference waves arc between them. Below, cloud sea with a river valley glimpsed far below.
+
+LAYOUT:
+- 0721 center, small but clearly visible (3-4% of frame), deep blue with gold accents
+- Enemy vehicles larger, surrounding wedge: 2 lower-left, 1 right, 1 top-center
+- Interference arcs (blue lightning) between vehicles
+- Motion lines and exhaust trails emphasizing speed
+- Cloud sea lower half, valley/river seam far below
+
+COLORS:
+- 0721: navy blue (#1A237E) gold accents
+- Enemy: military green (#3F4D2E), grey, charcoal black
+- Interference: electric blue (#4FC3F7)
+- Clouds: white with cool shadows
+- Sky: pale blue stress-light
+
+MOOD: Odds of escaping: 3%. Alone against four.
+
+EXCLUSIONS:
+- No dialogue
+- No blood/violence (interceptors are unarmed-looking, blocking not shooting)
+```
+
+---
+
+
