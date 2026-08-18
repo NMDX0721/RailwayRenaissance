@@ -392,7 +392,7 @@ public class TitleScreen : MonoBehaviour
         versionBadge.clicked += () =>
         {
             vc++;
-            if (vc >= 5) { vc = 0; TitleArchiveUI.EnsureInstance().ShowDebug(); }
+            if (vc >= 5) { vc = 0; DebugPanel.Show(); }
         };
         versionRow.Add(versionBadge);
 
