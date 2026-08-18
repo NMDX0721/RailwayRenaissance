@@ -710,24 +710,67 @@ public class TitleArchiveUI : MonoBehaviour
 
         if (unlocked)
         {
+            // ———— 播放器：进度条 + 时间 + 播放/停止 + 音量 ————
+            playerStates.Remove(m.id);
+
+            var progress = new Slider(0f, 1f);
+            progress.name = "music-progress-" + m.id;
+            progress.style.height = 18;
+            progress.style.marginTop = 8;
+            progress.style.flexGrow = 1;
+            card.Add(progress);
+
+            var timeRow = new VisualElement();
+            timeRow.style.flexDirection = FlexDirection.Row;
+            timeRow.style.marginTop = 2;
+            card.Add(timeRow);
+
+            var curTime = new Label("0:00");
+            curTime.name = "music-cur-" + m.id;
+            curTime.style.fontSize = 13;
+            curTime.style.color = dimText;
+            curTime.style.unityFontDefinition = Fd();
+            timeRow.Add(curTime);
+
+            var sep = new Label(" / ");
+            sep.style.fontSize = 13;
+            sep.style.color = dimText;
+            sep.style.unityFontDefinition = Fd();
+            timeRow.Add(sep);
+
+            var totalTime = new Label("0:00");
+            totalTime.name = "music-total-" + m.id;
+            totalTime.style.fontSize = 13;
+            totalTime.style.color = dimText;
+            totalTime.style.unityFontDefinition = Fd();
+            timeRow.Add(totalTime);
+
+            var volSlider = new Slider(0f, 1f);
+            volSlider.name = "music-vol-" + m.id;
+            volSlider.value = 0.5f;
+            volSlider.style.height = 18;
+            volSlider.style.marginTop = 6;
+            card.Add(volSlider);
+
             var btnRow = new VisualElement();
             btnRow.style.flexDirection = FlexDirection.Row;
-            btnRow.style.marginTop = 8;
+            btnRow.style.marginTop = 6;
             card.Add(btnRow);
 
-            var playBtn = new Button(() => PlayArchiveMusic(m.clipName)) { text = "播放" };
-            playBtn.style.width = 110;
-            playBtn.style.height = 32;
-            playBtn.style.fontSize = 16;
+            var playBtn = new Button(() => PlayArchiveMusic(m, progress, curTime, totalTime, volSlider)) { text = "播放" };
+            playBtn.name = "music-play-" + m.id;
+            playBtn.style.width = 80;
+            playBtn.style.height = 30;
+            playBtn.style.fontSize = 15;
             playBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
             playBtn.style.unityFontDefinition = Fd();
             StylizeTab(playBtn);
             btnRow.Add(playBtn);
 
             var stopBtn = new Button(() => StopArchiveMusic()) { text = "停止" };
-            stopBtn.style.width = 110;
-            stopBtn.style.height = 32;
-            stopBtn.style.fontSize = 16;
+            stopBtn.style.width = 80;
+            stopBtn.style.height = 30;
+            stopBtn.style.fontSize = 15;
             stopBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
             stopBtn.style.unityFontDefinition = Fd();
             stopBtn.style.marginLeft = 8;
@@ -748,22 +791,98 @@ public class TitleArchiveUI : MonoBehaviour
         return card;
     }
 
-    /// <summary>播放音乐鉴赏（复用 VNAudioManager 的 BGM 通道，必要时原地创建）。</summary>
-    private void PlayArchiveMusic(string clipName)
+    // ———— 音乐播放器状态 ————
+
+    private class PlayerState
     {
-        if (VNAudioManager.Instance == null)
+        public AudioSource source;
+        public AudioClip clip;
+        public Slider progress;
+        public Label curTime;
+        public Label totalTime;
+        public Slider volume;
+        public string id;
+    }
+
+    private readonly Dictionary<string, PlayerState> playerStates = new Dictionary<string, PlayerState>();
+    private const float ProgressUpdateInterval = 0.25f;
+    private float progressTimer;
+
+    /// <summary>播放音乐鉴赏：独立 AudioSource 逐卡播放，支持进度/时间/音量。</summary>
+    private void PlayArchiveMusic(MusicInfo m, Slider progress, Label curTime, Label totalTime, Slider volume)
+    {
+        var clip = Resources.Load<AudioClip>("bgm/" + m.clipName);
+        if (clip == null)
         {
-            // 标题界面无 VN AudioManager（它在 VN_Test 场景创建）——原地补一个 DontDestroyOnLoad 实例
-            var go = new GameObject("VN_AudioManager");
-            go.AddComponent<VNAudioManager>();
+            UnityEngine.Debug.LogWarning("[Archive] 音乐文件缺失: bgm/" + m.clipName);
+            return;
         }
-        VNAudioManager.Instance.PlayBGM(clipName, 0.3f);
+
+        // 切换歌曲时停掉上一首（站内独播）
+        StopArchiveMusic();
+
+        PlayerState st;
+        if (!playerStates.TryGetValue(m.id, out st))
+        {
+            var src = gameObject.AddComponent<AudioSource>();
+            src.loop = true;
+            src.playOnAwake = false;
+            src.volume = 0.5f;
+            st = new PlayerState { source = src, id = m.id };
+            playerStates[m.id] = st;
+        }
+        st.clip = clip;
+        st.progress = progress;
+        st.curTime = curTime;
+        st.totalTime = totalTime;
+        st.volume = volume;
+
+        st.source.clip = clip;
+        st.source.volume = volume.value;
+        st.source.Play();
+        totalTime.text = FormatTime(clip.length);
     }
 
     private void StopArchiveMusic()
     {
-        if (VNAudioManager.Instance != null)
-            VNAudioManager.Instance.StopBGM(0.3f);
+        foreach (var kv in playerStates)
+        {
+            if (kv.Value.source != null && kv.Value.source.isPlaying)
+                kv.Value.source.Stop();
+        }
+    }
+
+    private string FormatTime(float seconds)
+    {
+        if (float.IsNaN(seconds) || seconds < 0) seconds = 0;
+        int m = (int)(seconds / 60f);
+        int s = (int)(seconds % 60f);
+        return m + ":" + s.ToString("D2");
+    }
+
+    private void Update()
+    {
+        if (playerStates.Count == 0) return;
+
+        progressTimer += Time.unscaledDeltaTime;
+        if (progressTimer < ProgressUpdateInterval) return;
+        progressTimer = 0;
+
+        foreach (var kv in playerStates)
+        {
+            var st = kv.Value;
+            if (st.source == null || !st.source.isPlaying) continue;
+
+            if (st.clip == null) continue;
+            float t = st.source.time;
+            float len = st.clip.length;
+            if (st.progress != null && len > 0.01f)
+                st.progress.value = Mathf.Clamp01(t / len);
+            if (st.curTime != null)
+                st.curTime.text = FormatTime(t);
+            if (st.volume != null)
+                st.source.volume = st.volume.value;
+        }
     }
 
     // ================= 故事章节页 =================
@@ -1302,7 +1421,7 @@ public class TitleArchiveUI : MonoBehaviour
         }
     }
 
-    /// <summary>显示站长日志面板（重建页面以刷新解锁状态）。</summary>
+    /// <summary>显示站长日志面板（重建页面以刷新解锁状态；入场播放舒缓 BGM）。</summary>
     public void Show()
     {
         if (overlay == null) return;
@@ -1316,12 +1435,65 @@ public class TitleArchiveUI : MonoBehaviour
             panel.tabIndex = 0;
             panel.Focus();
         }
+
+        StartArchiveAmbient();
     }
 
-    /// <summary>隐藏站长日志面板。</summary>
+    /// <summary>隐藏站长日志面板（恢复被暂停的 BGM）。</summary>
     public void Hide()
     {
         if (overlay != null) overlay.style.display = DisplayStyle.None;
+        StopArchiveAmbient();
+    }
+
+    // ———— 站长日志氛围音乐：入场播舒缓曲，离场恢复原 BGM ————
+
+    private const string ArchiveAmbientClip = "platform";
+    private AudioSource ambientSource;
+    private AudioSource bgSaver;
+
+    private void EnsureAmbientSource()
+    {
+        if (ambientSource != null) return;
+        ambientSource = gameObject.AddComponent<AudioSource>();
+        ambientSource.loop = true;
+        ambientSource.volume = 0.5f;
+        ambientSource.playOnAwake = false;
+    }
+
+    private void StartArchiveAmbient()
+    {
+        EnsureAmbientSource();
+
+        // 记录并暂停全局 BGM（登录/标题创建的 "BGM" GameObject）
+        var existing = GameObject.Find("BGM");
+        if (existing != null)
+        {
+            var src = existing.GetComponent<AudioSource>();
+            if (src != null && src.isPlaying)
+            {
+                bgSaver = src;
+                src.Pause();
+            }
+        }
+
+        // 若已在播放同一首则继续，否则换曲
+        var clip = Resources.Load<AudioClip>("bgm/" + ArchiveAmbientClip);
+        if (clip == null) return;
+        if (ambientSource.clip == clip && ambientSource.isPlaying) return;
+        ambientSource.clip = clip;
+        ambientSource.Play();
+    }
+
+    private void StopArchiveAmbient()
+    {
+        if (ambientSource != null && ambientSource.isPlaying)
+            ambientSource.Stop();
+        if (bgSaver != null)
+        {
+            bgSaver.UnPause();
+            bgSaver = null;
+        }
     }
 
     // ================= 解锁绑定（供游戏循环调用） =================

@@ -405,6 +405,36 @@ public class VNManager : MonoBehaviour
         btnRow.Add(noBtn);
     }
 
+    /// <summary>隐藏全部 VN UI（保留背景与立绘），截图式纯净画面。</summary>
+    private void HideVNUI()
+    {
+        if (uiHidden || uiDoc == null) return;
+        uiHidden = true;
+        hiddenUiSnapshots.Clear();
+
+        foreach (var child in new List<VisualElement>(uiDoc.rootVisualElement.Children()))
+        {
+            // 背景容器保留（纯背景版立绘仍显示）
+            if (child.name == "vn-background-container") continue;
+            hiddenUiSnapshots[child] = child.style.display;
+            child.style.display = DisplayStyle.None;
+        }
+    }
+
+    /// <summary>恢复被隐藏的 VN UI。</summary>
+    private void RestoreVNUI()
+    {
+        if (!uiHidden || uiDoc == null) return;
+        uiHidden = false;
+
+        foreach (var kv in hiddenUiSnapshots)
+        {
+            if (kv.Key == null) continue;
+            kv.Key.style.display = kv.Value;
+        }
+        hiddenUiSnapshots.Clear();
+    }
+
     private void ShowConfirmDialog()
     {
         if (confirmDialog != null)
@@ -526,8 +556,21 @@ public class VNManager : MonoBehaviour
         ShowCurrentDialogue();
     }
 
+    private bool uiHidden;
+    private readonly Dictionary<VisualElement, DisplayStyle> hiddenUiSnapshots = new Dictionary<VisualElement, DisplayStyle>();
+
     private void Update()
     {
+        // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (uiHidden)
+                RestoreVNUI();
+            else
+                HideVNUI();
+            return;
+        }
+
         // ESC：全屏新闻时关闭新闻，其余按面板优先级处理
         if (Input.GetKeyDown(KeyCode.Escape) || KeyBindings.IsDown(KeyBindings.Action.OpenMenu))
         {
