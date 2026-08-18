@@ -2071,17 +2071,21 @@ public class LoginManager : MonoBehaviour
         closeRect.anchorMax = new Vector2(1f, 1f);
         closeRect.anchoredPosition = new Vector2(-40, -40);
         closeRect.sizeDelta = new Vector2(60, 60);
-        var closeImg = closeObj.AddComponent<Image>();
-        closeImg.color = new Color(0.3f, 0.15f, 0.1f, 0.5f);
         var closeBtn = closeObj.AddComponent<Button>();
-        closeBtn.targetGraphic = closeImg;
+        // 文本作为子对象（不能与 Image 在同一 GameObject）
+        var closeTextObj = new GameObject("Text");
+        closeTextObj.transform.SetParent(closeObj.transform, false);
+        var closeTextRect = closeTextObj.AddComponent<RectTransform>();
+        closeTextRect.anchorMin = Vector2.zero;
+        closeTextRect.anchorMax = Vector2.one;
+        closeTextRect.sizeDelta = Vector2.zero;
+        var closeText2 = closeTextObj.AddComponent<Text>();
+        closeText2.text = "×";
+        closeText2.fontSize = 40;
+        closeText2.color = new Color(1f, 1f, 1f, 0.8f);
+        closeText2.alignment = TextAnchor.MiddleCenter;
+        closeText2.font = GetFont(40);
         closeBtn.onClick.AddListener(() => Destroy(dialogObj));
-        var closeText = closeObj.AddComponent<Text>();
-        closeText.text = "×";
-        closeText.fontSize = 40;
-        closeText.color = new Color(1f, 1f, 1f, 0.8f);
-        closeText.alignment = TextAnchor.MiddleCenter;
-        closeText.font = GetFont(40);
 
         // 滚动内容区域
         var viewportObj = new GameObject("Viewport");
@@ -2134,7 +2138,7 @@ public class LoginManager : MonoBehaviour
         scroll.content = contentRect;
     }
 
-    string BuildAnnouncementText()
+    public static string BuildAnnouncementText()
     {
         return "【版本】Beta v0.9.0（2026-08-18）\n"
             + "\n"

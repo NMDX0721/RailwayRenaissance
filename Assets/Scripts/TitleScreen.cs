@@ -33,6 +33,8 @@ public class TitleScreen : MonoBehaviour
     {
         SetupVideoBackground();
         SetupBGM();
+        // 标题界面解锁：标题 BGM + 基础音乐鉴赏
+        TitleArchiveUI.UnlockMusic("iron_and_ash");
         SetupGameCursor();
         Camera.main.clearFlags = CameraClearFlags.SolidColor;
         Camera.main.backgroundColor = new Color(0.55f, 0.38f, 0.32f, 1f);
@@ -330,7 +332,7 @@ public class TitleScreen : MonoBehaviour
         panel.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
         panel.style.borderTopLeftRadius = 12; panel.style.borderTopRightRadius = 12;
         panel.style.borderBottomLeftRadius = 12; panel.style.borderBottomRightRadius = 12;
-        panel.style.width = 600; panel.style.height = 500;
+        panel.style.width = 900; panel.style.height = 650;
         panel.style.flexDirection = FlexDirection.Column;
         overlay.Add(panel);
 
@@ -409,81 +411,12 @@ public class TitleScreen : MonoBehaviour
         scrollView.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         panel.Add(scrollView);
 
-        var gold = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-        var goldDim = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        var textDim = new Color(1f, 1f, 1f, 0.65f);
-
-        void AddSection(string sectionTitle, string[] items)
-        {
-            var st = new Label(sectionTitle);
-            st.style.fontSize = 20; st.style.color = gold;
-            st.style.unityFontStyleAndWeight = FontStyle.Bold;
-            st.style.unityFontDefinition = fontDef;
-            st.style.marginTop = 14; st.style.marginBottom = 6;
-            scrollView.Add(st);
-
-            foreach (var item in items)
-            {
-                var row = new VisualElement();
-                row.style.flexDirection = FlexDirection.Row;
-                row.style.marginBottom = 4;
-                row.style.paddingLeft = 6;
-
-                var dot = new Label("\u2022");
-                dot.style.fontSize = 16; dot.style.color = goldDim;
-                dot.style.width = 20;
-                dot.style.unityFontDefinition = fontDef;
-                row.Add(dot);
-
-                var txt = new Label(item);
-                txt.style.fontSize = 16; txt.style.color = textDim;
-                txt.style.whiteSpace = WhiteSpace.Normal;
-                txt.style.unityFontDefinition = fontDef;
-                row.Add(txt);
-                scrollView.Add(row);
-            }
-        }
-
-        AddSection("\u2606 序章体验", new[] {
-            "完整序章剧本（10个章节，1600+条对话/旁白）",
-            "序章分支对话系统（7处选项，选择影响后续台词走向）",
-            "系统启动画面（居中科技感显示，支持点击推进）",
-            "边境检查站追逐战（4辆武装载具，3%逃脱率）",
-            "统一便当店大采购（BBQ炸鸡、辛拉面、走私动漫周边）",
-            "嘉颖徐资助剧情（黑金卡，每月一万沙币额度）",
-        });
-
-        AddSection("\u2606 核心系统", new[] {
-            "沙本位经济核 v4.2（季节系统、容量约束、补贴入账）",
-            "千里马创世核 v3.0（世界种子、确定性生成算法）",
-            "岁月叙事引擎 v2.0（节奏控制、双AI线、疲劳对话）",
-            "先民人事系统 v1.2（疲劳、忠诚度、技能成长、招聘）",
-            "铁龙竞争系统 v1.0（USET竞争AI，关键节点收购）",
-        });
-
-        AddSection("\u2606 交互与UI", new[] {
-            "VN引擎完整支持（选项、条件分支、场景跳转、链式脚本）",
-            "全屏滚动新闻 / 系统启动画面 / 打字机效果",
-            "存档管理器（左对齐布局，章节名映射，6槽位页面）",
-            "设置系统（5选项卡：音频/游戏/显示/操作/关于）",
-            "按键绑定自定义（推进/后退/快进/自动/菜单）",
-            "标题界面（自动登录、继续运营、站务日志）",
-        });
-
-        AddSection("\u2606 美术与世界观", new[] {
-            "沙子飞猪号0721完整设计（两舱布局，无方向盘）",
-            "驾驶舱/客舱图片绑定（昼夜版本）",
-            "朝鲜「有限开放」世界观（统一便当店、先富带动后富）",
-            "角色立绘占位 + 表情映射",
-            "像素风格UI（Zpix字体，暖棕色调金色边框）",
-        });
-
-        AddSection("\u2606 已知问题", new[] {
-            "部分背景图片尚未生成（占位中）",
-            "角色立绘为临时占位图",
-            "VN回放功能待完善",
-            "音频资源尚未全部到位",
-        });
+        var contentLabel = new Label(LoginManager.BuildAnnouncementText());
+        contentLabel.style.fontSize = 18;
+        contentLabel.style.color = new Color(0.9f, 0.9f, 0.9f, 0.85f);
+        contentLabel.style.whiteSpace = WhiteSpace.Normal;
+        contentLabel.style.unityFontDefinition = fontDef;
+        scrollView.Add(contentLabel);
     }
 
     private void SetupVideoBackground()
