@@ -1016,24 +1016,26 @@ AVOID:
 ### 2.7 停机坪
 
 **文件**：Resources/bg/hangar.png  
-**用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，傍晚
+**用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，午后
+
+**剧情对应**：导师带着林彪悍走向0721号，这是他作为荣誉研究生的专属载具——一辆2053年制造的第一代试验车，沉睡23年，搭载了AI原型“岁月”。车门感应到有人靠近自动打开。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 flat forward-facing perspective, eye-level view,
-university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, evening,
+university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, afternoon,
 NORTH KOREAN OFFICIAL AESTHETIC,
 "Chollima" brand sand-energy flying vehicles parked:
 
-SCENE: rooftop helipad of Kim Il Sung University's main building at sunset, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. The cabin door on the RIGHT side of the vehicle is open, with a gangway extended downward and warm light spilling out from inside. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
+SCENE: rooftop helipad of Kim Il Sung University's main building in the afternoon, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. This is a first-generation prototype from 2053, 23 years old, slightly worn. The cabin door on the RIGHT side of the vehicle is closed but will open when the protagonist approaches. The rooftop is large and spacious. A professor figure stands to the left, gesturing toward the vehicle. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
 
 LAYOUT:
 - Large, spacious rooftop landing pad taking the lower third of the frame
 - 0721 Sand Flying Pig parked in foreground, facing RIGHT, deep blue, university emblem on side
 - Vehicle seen from the RIGHT side — the cabin door is visible on this side, open, with a boarding ramp/gangway extended
-- Warm yellow light coming from the open cabin door, illuminating the rooftop surface
+- The vehicle's surface reflects the warm afternoon sunlight
 - 2-3 other Chollima sand-energy vehicles parked nearby in background (dark green, grey)
 - University building facade visible on the left edge — Korean-style railings, dancheong roof eaves
 - Kim Il-sung University emblem on the building wall
@@ -1051,8 +1053,8 @@ NORTH KOREAN CULTURAL ELEMENTS:
 - "천리마" (Chollima) branding on the vehicles
 
 VIEW (SKY — NO GROUND VISIBLE):
-- Wide evening sky taking up the upper two-thirds of the frame
-- Sunset colors — warm orange fading to deep blue
+- Wide afternoon sky taking up the upper two-thirds of the frame
+- Bright blue sky with white clouds, warm afternoon light
 - A few flying vehicles silhouetted against the sky
 - No buildings below — the protagonist standing on the rooftop sees only sky and distant flying vehicles
 - The rooftop is high enough that the city is hidden below the frame edge
@@ -1062,23 +1064,23 @@ DETAILS ON THE 0721 SAND FLYING PIG (RIGHT SIDE VIEW):
 - Chollima winged horse badge on the side
 - Vehicle ID "0721" in Korean numerals
 - Slightly aged — 23 years old, some wear on the paint
-- CABIN DOOR OPEN on the right side — a boarding ramp/gangway extends down to the rooftop
-- Warm golden light spilling from the open cabin door, illuminating the ramp
+- Cabin door on the right side, closed with a visible seam — a boarding ramp/gangway extends down to the rooftop
+- The door is closed, but the vehicle feels alive — 23 years of waiting
 - The vehicle is CLOSED (not open-top) — the roof is solid, no open hatch
-- The cockpit is visible through the windshield, no steering wheel visible
+- The cockpit is dark inside through the windshield
 - Sand energy intake vents on the sides
-- Running lights glowing amber
+- Running lights currently off (vehicle dormant)
 - Vehicle faces RIGHT, door on RIGHT side
 
 COLOR PALETTE:
-- Primary: evening sky gradient (#FF6B35 to #1A1A2E)
-- Secondary: deep blue vehicle (#000080, #1A237E), warm sunset amber (#FFD700)
-- Accents: cabin interior light warm gold (#FFE082), university emblem gold (#DAA520), Korean red (#CD2626)
+- Primary: bright blue sky (#87CEEB), deep blue vehicle (#000080, #1A237E)
+- Secondary: university emblem gold (#DAA520), concrete grey (#808080)
+- Accents: Korean red (#CD2626), building white (#F5F5F5), roof tiles dark brown (#3E2723)
 - Landing pad: concrete grey (#808080, #696969)
 - Building: traditional roof tiles dark brown (#3E2723)
 
 ATMOSPHERE:
-- The last golden light before departure
+- Afternoon on a university rooftop - the last moment of campus life
 - Sense of anticipation: a journey is about to begin
 - Quiet and calm on the rooftop
 - The warm light from the open cabin door contrasts with the cooling evening sky
@@ -1090,7 +1092,7 @@ STYLE:
 - FLAT FORWARD-FACING PERSPECTIVE — eye level, not looking down
 - NORTH KOREAN ARCHITECTURAL AESTHETIC — unmistakably DPRK university
 - Every label in Korean (Hangul)
-- Warm evening light, long shadows
+- Warm afternoon light, gentle shadows
 
 AVOID:
 - Looking down at the ground below (the protagonist is on the rooftop, not above it)
@@ -1100,7 +1102,7 @@ AVOID:
 - Generic sci-fi cityscape
 - English text
 - Missing the Korean flag or university emblem
-- Too dark (must be clearly evening but visible)
+- Too dark or sunset-heavy (it is afternoon, not evening)
 - Too small rooftop (must feel spacious)
 ```
 
@@ -1248,7 +1250,7 @@ AVOID:
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-executive office interior, Pyongyang, 2076, evening,
+executive office interior, Pyongyang, 2076, afternoon,
 NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — luxury inside a socialist city:
 
 SCENE: A grand executive office in Pyongyang's Gangnam District. A massive dark mahogany desk dominates the center, with a high-backed burgundy leather chair behind it. Floor-to-ceiling glass-fronted bookshelves line the back and right walls. A golden Chollima winged horse statue stands on a pillar at right foreground. Through large windows on the left, the Pyongyang night skyline is visible with the Juche Tower lit up. This is the office of a railway tycoon — a space that blends traditional Korean elegance with corporate power.
