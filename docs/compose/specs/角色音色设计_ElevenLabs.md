@@ -71,14 +71,14 @@ Low, settled timbre, slightly deeper than his age suggests. Speaks at a calm, me
 
 **【Prompt】**
 ```
-Native Chinese, northern rural Mandarin with country tinge. Male, 65–70. Ok quality.
+Native Korean with a subtle northern Chinese rural warmth in the vowel quality. Male, 65–70. Ok quality.
 Persona: weathered village stationmaster. Emotion: warm, wistful, stubbornly hopeful.
-Rough but gentle timbre, gravel wrapped in cotton; resonant chest voice softened by age. Speaks at a slow, drawn-out natural pace with rural cadence, pausing to cough or sigh. Fondness seeps in when recalling old days; a quiet heaviness when speaking of the closed line. Joy cracks the voice into reluctant smiles.
+Rough but gentle timbre, gravel wrapped in cotton; resonant chest voice softened by age. Speaks at a slow, drawn-out natural pace, pausing to cough or sigh. Fondness seeps in when recalling old days; a quiet heaviness when speaking of the closed line. Joy cracks the voice into reluctant smiles. Speaks Korean (the village adopted it across the border) and Chinese.
 ```
 
-**【Preview Text】（长文本，配合温暖+感伤）**
+**【Preview Text】（韩语长文本，配合温暖+感伤）**
 ```
-以前啊…这条线一天跑两趟，每站都停。茶农在这里上车，矿工在这里下车，热闹得很。现在…你看，站台上都长草了。你爷爷要是在，肯定又要念叨了。他那个人啊，嘴上说着"铁轨还在，总会有人来的"，心里比谁都着急。彪悍啊…回来就好，回来就好。
+옛날에는… 이 철길이 하루에 두 번 갔어요. 역마다 다 정차했지. 차를 실어 나르는 사람, 광산 일하는 사람… 정말 북적였어요. 지금은… 보세요, 플랫폼에 풀까지 자라났지. 임한이 계셨다면 분명 또 중얼거리셨을 거야. 그분 참, 입으로는 "철길이 남아 있으니, 언젠가 누군가는 올 거야" 하면서도, 마음은 누구보다 조급했었지. 표호야… 돌아와 줘서 고맙다. 이 철길은 아직… 너를 기다리고 있어.
 ```
 
 **Guidance Scale：** 34%
@@ -91,14 +91,14 @@ Rough but gentle timbre, gravel wrapped in cotton; resonant chest voice softened
 
 **【Prompt】**
 ```
-Native Chinese, Beijing-standard Mandarin with subtle Korean intonation undercurrent. Female, 40–50. Excellent audio quality.
+Native Korean with a confident Korean-Chinese businesswoman tone. Female, 40–50. Excellent audio quality.
 Persona: savvy railway tycoon. Emotion: confident, generous, passionate.
-Clear, authoritative timbre with warmth beneath the business polish; a genuine spark when speaking of railways. Speaks at an unhurried steady natural pace, generous with pauses; laughs easily but briefly. When advising, tone shifts to near-motherly gentleness. Decisive, direct, no hedging.
+Clear, authoritative timbre with warmth beneath the business polish; a genuine spark when speaking of railways. Speaks at an unhurried steady natural pace, generous with pauses; laughs easily but briefly. When advising, tone shifts to near-motherly gentleness. Decisive, direct, no hedging. Fluent in Korean and Chinese.
 ```
 
-**【Preview Text】（长文本，配合自信+欣赏）**
+**【Preview Text】（韩语长文本，配合自信+欣赏）**
 ```
-你是林悍的孙子。他提起你的时候，你还在上高中呢。他守的那条线，是最后几条还在跑的民营铁路之一——他走以后，能撑四年，已经是个奇迹了。这张卡你拿着，每个月一万沙币的额度，用作线路初期恢复。这不是送给你的，是借给你的。等你盈利了，连本带利还我；要是赔了…就当是我对林悍的敬意。我等着看你的成绩。
+당신이 임한의 손자라니. 그분이 당신 이야기를 하실 때면, 아직 고등학생이었죠. 그분이 지키신 그 철길은, 마지막까지 남아 있던 민영 노선 중 하나였어요. 그분이 떠나신 후로도 4년을 버틴 것만으로도, 이미 기적이에요. 이 카드를 받으세요. 매달 만 원의 한도로, 노선 초기 복구에 사용하시면 돼요. 선물이 아니에요. 빌려드리는 거예요. 수익이 나면, 원금과 이자를 갚으세요. 만약 잃게 된다면… 그건 제가 임한에게 보내는 예의라고 생각할게요. 당신의 성과를 기대하겠습니다.
 ```
 
 **Guidance Scale：** 35%
