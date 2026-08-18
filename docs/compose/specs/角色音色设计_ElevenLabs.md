@@ -87,13 +87,13 @@ Rough but gentle timbre, gravel wrapped in cotton; resonant chest voice softened
 
 ## 四、嘉颖徐（Jiaying Xu）— 铁路大亨
 
-**角色定位**：46 岁，东北亚铁路大亨，手持多条电气化干线。爽朗务实、有远见，与林悍有旧交，赠黑金卡资助林彪悍。
+**角色定位**：24 岁，东北亚铁路大亨，手持多条电气化干线。爷爷林悍晚年的忘年交——19 岁祖父去世那年她已是圈内人。青春外表下藏着远超年龄的笃定，爽朗务实、有远见，赠黑金卡资助林彪悍。
 
 **【Prompt】**
 ```
-Native Korean, Seoul-influenced business register (international businesswoman). Female, 40–50. Excellent audio quality.
-Persona: savvy railway tycoon. Emotion: confident, generous, passionate.
-Clear, authoritative timbre with warmth beneath the business polish; a genuine spark when speaking of railways. Speaks at an unhurried steady natural pace, generous with pauses; laughs easily but briefly. When advising, tone shifts to near-motherly gentleness. Decisive, direct, no hedging.
+Native Korean, Seoul-influenced business register (international businesswoman). Female, 20–25. Excellent audio quality.
+Persona: young railway tycoon. Emotion: confident, generous, sharp.
+Youthful but settled timbre — bright and clear, a voice that sounds like it belongs to a 24-year-old yet carries the authority of someone who closed her first deal at nineteen. Speaks at a brisk, decisive natural pace; laughs easily and openly, then shifts on a dime to business precision. When advising, a peer-to-peer candor, never motherly — she respects the listener as an equal. Decisive, direct, no hedging.
 ```
 
 **【Preview Text】（韩语，含音频标签，覆盖自信→回忆→认真→鼓励）**
@@ -101,7 +101,7 @@ Clear, authoritative timbre with warmth beneath the business polish; a genuine s
 [confident] 당신이 임한의 손자라니. 그분이 당신 이야기를 하실 때면, 아직 고등학생이었죠.
 [warm] 그분이 지키신 그 철길은, 마지막까지 남아 있던 민영 노선 중 하나였어요. 그분이 떠나신 후로도 4년을 버틴 것만으로도, 이미 기적이에요.
 [serious] 이 카드를 받으세요. 선물이 아니에요. 빌려드리는 거예요. 수익이 나면, 원금과 이자를 갚으세요. 만약 잃게 된다면… 그건 제가 임한에게 보내는 예의라고 생각할게요.
-[encouraging] 당신의 성과를 기대하겠습니다.
+[encouraging] 당신의 성과를 기대하겠습니다. 우리 세대가, 이 철길을 다시 달리게 해요.
 ```
 
 **Guidance Scale：** 35%
