@@ -221,11 +221,11 @@ public class TitleArchiveUI : MonoBehaviour
         var fontDef = Fd();
         var root = uiDoc.rootVisualElement;
 
-        // ———— 全屏遮罩 ————
+        // ———— 全屏独立页面（非弹窗） ————
         overlay = new VisualElement { name = "archive-overlay" };
         overlay.style.position = Position.Absolute;
         overlay.style.top = 0; overlay.style.left = 0; overlay.style.right = 0; overlay.style.bottom = 0;
-        overlay.style.backgroundColor = new Color(0f, 0f, 0f, 0.6f);
+        overlay.style.backgroundColor = new Color(0.08f, 0.05f, 0.03f, 1f); // 接近黑色，全屏无弹窗感
         overlay.style.display = DisplayStyle.None;
         overlay.RegisterCallback<ClickEvent>(evt =>
         {
@@ -234,28 +234,15 @@ public class TitleArchiveUI : MonoBehaviour
         });
         root.Add(overlay);
 
-        // ———— 居中容器 ————
-        var center = new VisualElement();
-        center.style.flexGrow = 1;
-        center.style.alignItems = Align.Center;
-        center.style.justifyContent = Justify.Center;
-        overlay.Add(center);
-
-        // ———— 面板 ————
+        // ———— 全屏面板（独立页面，非弹窗） ————
         panel = new VisualElement { name = "archive-panel" };
         panel.style.flexDirection = FlexDirection.Column;
-        panel.style.width = 960;
-        panel.style.height = 640;
+        panel.style.position = Position.Absolute;
+        panel.style.top = 0; panel.style.left = 0; panel.style.right = 0; panel.style.bottom = 0;
         panel.style.backgroundColor = panelBg;
-        panel.style.borderTopWidth = 2; panel.style.borderBottomWidth = 2;
-        panel.style.borderLeftWidth = 2; panel.style.borderRightWidth = 2;
-        panel.style.borderTopColor = borderNormal; panel.style.borderBottomColor = borderNormal;
-        panel.style.borderLeftColor = borderNormal; panel.style.borderRightColor = borderNormal;
-        panel.style.borderTopLeftRadius = 10; panel.style.borderTopRightRadius = 10;
-        panel.style.borderBottomLeftRadius = 10; panel.style.borderBottomRightRadius = 10;
-        panel.style.paddingLeft = 26; panel.style.paddingRight = 26;
-        panel.style.paddingTop = 18; panel.style.paddingBottom = 20;
-        center.Add(panel);
+        panel.style.paddingLeft = 40; panel.style.paddingRight = 40;
+        panel.style.paddingTop = 28; panel.style.paddingBottom = 28;
+        overlay.Add(panel);
 
         // ———— 标题栏 ————
         var header = new VisualElement();

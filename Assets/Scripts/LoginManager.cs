@@ -775,7 +775,7 @@ public class LoginManager : MonoBehaviour
         bgmSource.loop = true;
         bgmSource.volume = 0.3f;
 
-        AudioClip clip = Resources.Load<AudioClip>("Audio/Train Through Keys");
+        AudioClip clip = Resources.Load<AudioClip>("bgm/iron_and_ash");
         if (clip != null)
         {
             bgmSource.clip = clip;
