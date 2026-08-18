@@ -116,7 +116,7 @@ Style: Cinematic suspense, tense low strings holding long sustained notes, elect
 **用途**：方向盘搞笑场景、统一便当店购物
 
 ```
-Style: Playful folk, whimsical acoustic guitar with bouncy picking, pizzicato strings, light percussion with woodblock and shaker, quirky and cheerful, bouncy rhythm, unexpected pauses, instrumental, no vocals, 110 BPM, key of F major, bright and airy, no heavy instruments, no sad elements, like a mechanical toy winding up and dancing
+Style: Playful folk, whimsical acoustic guitar with bouncy fingerpicking carrying a comedic melody, pizzicato strings answering like a sidekick, light percussion with woodblock and shaker, glockenspiel accents, quirky and cheerful, bouncy rhythm with unexpected stops and starts like a hiccup, brief musical "blooper" pauses, then resumes, instrumental, no vocals, 110 BPM, key of F major, bright and airy, comedic pacing like a cartoon chase scene, no heavy instruments, no sad elements, no dramatic swells, playful descending run to end, like a mechanical toy winding up and dancing then tipping over
 ```
 
 
