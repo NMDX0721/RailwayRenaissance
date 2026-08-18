@@ -604,8 +604,6 @@ public class TitleArchiveUI : MonoBehaviour
         ShowPlayerBar();
 
         var topRow = new VisualElement();
-
-        var topRow = new VisualElement();
         topRow.style.flexDirection = FlexDirection.Row;
         topRow.style.alignItems = Align.Center;
         topRow.style.marginBottom = 10;
@@ -726,7 +724,7 @@ public class TitleArchiveUI : MonoBehaviour
             btnRow.style.marginTop = 8;
             card.Add(btnRow);
 
-            var playBtn = new Button(() => PlayArchiveMusic(m.id, m.clipName)) { text = "播放" };
+            var playBtn = new Button(() => PlayArchiveMusic(m.id, m.clipName, m.title)) { text = "播放" };
             playBtn.name = "music-play-" + m.id;
             playBtn.style.width = 80;
             playBtn.style.height = 30;
@@ -757,14 +755,18 @@ public class TitleArchiveUI : MonoBehaviour
     private Slider playerProgress;
     private Label playerCurTime;
     private Label playerTotalTime;
+    private Button playerPrevBtn;
     private Button playerPlayBtn;
+    private Button playerNextBtn;
     private Button playerStopBtn;
     private AudioSource playerSource;
     private AudioClip playerClip;
     private string currentTrackId;
+    private string currentTrackTitle;
     private const float ProgressUpdateInterval = 0.25f;
     private float progressTimer;
     private bool isPlayerPlaying;
+    private bool isUserPlaylistMode; // true=用户选曲轮播, false=默认氛围曲单曲循环
 
     private void BuildMusicPlayerBar()
     {
@@ -780,125 +782,237 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.style.paddingBottom = 8;
         playerBar.style.marginTop = 8;
         playerBar.style.flexShrink = 0;
-        playerBar.style.display = DisplayStyle.Flex; // 始终显示
+        playerBar.style.display = DisplayStyle.Flex;
         panel.Add(playerBar);
+
+        // 曲名（带专辑图标装饰）
+        var nameIcon = new Label("♪");
+        nameIcon.style.fontSize = 20;
+        nameIcon.style.color = goldNormal;
+        nameIcon.style.unityFontDefinition = Fd();
+        nameIcon.style.marginRight = 8;
+        playerBar.Add(nameIcon);
 
         playerTitle = new Label("未播放");
         playerTitle.style.fontSize = 18;
         playerTitle.style.color = goldNormal;
         playerTitle.style.unityFontDefinition = Fd();
-        playerTitle.style.width = 180;
+        playerTitle.style.width = 200;
         playerTitle.style.marginRight = 16;
+        playerTitle.style.whiteSpace = WhiteSpace.NoWrap;
+        playerTitle.style.overflow = Overflow.Hidden;
         playerBar.Add(playerTitle);
+
+        // 进度条 + 时间（紧凑）
+        playerCurTime = new Label("0:00");
+        playerCurTime.style.fontSize = 13;
+        playerCurTime.style.color = dimText;
+        playerCurTime.style.unityFontDefinition = Fd();
+        playerCurTime.style.width = 36;
+        playerCurTime.style.marginRight = 6;
+        playerBar.Add(playerCurTime);
 
         playerProgress = new Slider(0f, 1f);
         playerProgress.style.flexGrow = 1;
-        playerProgress.style.height = 18;
-        playerProgress.style.marginRight = 12;
+        playerProgress.style.height = 16;
+        playerProgress.style.marginRight = 6;
         playerBar.Add(playerProgress);
 
-        playerCurTime = new Label("0:00");
-        playerCurTime.style.fontSize = 14;
-        playerCurTime.style.color = dimText;
-        playerCurTime.style.unityFontDefinition = Fd();
-        playerCurTime.style.width = 40;
-        playerCurTime.style.marginRight = 4;
-        playerBar.Add(playerCurTime);
-
         playerTotalTime = new Label("0:00");
-        playerTotalTime.style.fontSize = 14;
+        playerTotalTime.style.fontSize = 13;
         playerTotalTime.style.color = dimText;
         playerTotalTime.style.unityFontDefinition = Fd();
-        playerTotalTime.style.width = 40;
+        playerTotalTime.style.width = 36;
         playerTotalTime.style.marginRight = 16;
         playerBar.Add(playerTotalTime);
 
-        playerPlayBtn = new Button(() => { if (playerSource != null && !playerSource.isPlaying) playerSource.Play(); }) { text = "▶" };
-        playerPlayBtn.style.width = 50;
-        playerPlayBtn.style.height = 30;
-        playerPlayBtn.style.fontSize = 18;
+        // 控制按钮组
+        playerPrevBtn = new Button(PlayPrevTrack) { text = "⏮" };
+        StylePlayerBtn(playerPrevBtn);
+        playerBar.Add(playerPrevBtn);
+
+        playerPlayBtn = new Button(TogglePlayPause) { text = "▶" };
+        playerPlayBtn.style.width = 44;
+        playerPlayBtn.style.height = 32;
+        playerPlayBtn.style.fontSize = 20;
         playerPlayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         playerPlayBtn.style.unityFontDefinition = Fd();
         StylizeTab(playerPlayBtn);
         playerBar.Add(playerPlayBtn);
 
-        playerStopBtn = new Button(() => { StopArchiveMusic(); }) { text = "■" };
-        playerStopBtn.style.width = 50;
-        playerStopBtn.style.height = 30;
-        playerStopBtn.style.fontSize = 18;
-        playerStopBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        playerStopBtn.style.unityFontDefinition = Fd();
-        playerStopBtn.style.marginLeft = 6;
-        StylizeTab(playerStopBtn);
+        playerNextBtn = new Button(PlayNextTrack) { text = "⏭" };
+        StylePlayerBtn(playerNextBtn);
+        playerBar.Add(playerNextBtn);
+
+        playerStopBtn = new Button(StopArchiveMusic) { text = "⏹" };
+        StylePlayerBtn(playerStopBtn);
         playerBar.Add(playerStopBtn);
     }
 
-    private void PlayArchiveMusic(string id, string clipName)
+    private void StylePlayerBtn(Button btn)
+    {
+        btn.style.width = 32;
+        btn.style.height = 28;
+        btn.style.fontSize = 16;
+        btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = Fd();
+        btn.style.marginLeft = 4;
+        StylizeTab(btn);
+    }
+
+    private void TogglePlayPause()
+    {
+        if (playerSource == null || playerClip == null) return;
+        if (playerSource.isPlaying)
+        {
+            playerSource.Pause();
+            playerPlayBtn.text = "▶";
+        }
+        else
+        {
+            playerSource.UnPause();
+            playerPlayBtn.text = "⏸";
+        }
+    }
+
+    private void PlayNextTrack()
+    {
+        if (!isUserPlaylistMode || string.IsNullOrEmpty(currentTrackId))
+        {
+            // 氛围模式：从头播
+            AutoPlayFirstUnlockedMusic();
+            return;
+        }
+        // 找下一首已解锁的
+        int idx = -1;
+        for (int i = 0; i < MusicEntries.Length; i++)
+            if (MusicEntries[i].id == currentTrackId) { idx = i; break; }
+        for (int i = idx + 1; i < MusicEntries.Length; i++)
+        {
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + MusicEntries[i].id, 0) == 1)
+            {
+                PlayArchiveMusic(MusicEntries[i].id, MusicEntries[i].clipName, MusicEntries[i].title);
+                return;
+            }
+        }
+        // 循环到第一首
+        for (int i = 0; i < idx; i++)
+        {
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + MusicEntries[i].id, 0) == 1)
+            {
+                PlayArchiveMusic(MusicEntries[i].id, MusicEntries[i].clipName, MusicEntries[i].title);
+                return;
+            }
+        }
+    }
+
+    private void PlayPrevTrack()
+    {
+        if (!isUserPlaylistMode || string.IsNullOrEmpty(currentTrackId))
+        {
+            AutoPlayFirstUnlockedMusic();
+            return;
+        }
+        int idx = -1;
+        for (int i = 0; i < MusicEntries.Length; i++)
+            if (MusicEntries[i].id == currentTrackId) { idx = i; break; }
+        for (int i = idx - 1; i >= 0; i--)
+        {
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + MusicEntries[i].id, 0) == 1)
+            {
+                PlayArchiveMusic(MusicEntries[i].id, MusicEntries[i].clipName, MusicEntries[i].title);
+                return;
+            }
+        }
+        // 循环到尾
+        for (int i = MusicEntries.Length - 1; i > idx; i--)
+        {
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + MusicEntries[i].id, 0) == 1)
+            {
+                PlayArchiveMusic(MusicEntries[i].id, MusicEntries[i].clipName, MusicEntries[i].title);
+                return;
+            }
+        }
+    }
+
+    private void PlayArchiveMusic(string id, string clipName, string displayTitle = null)
     {
         var clip = Resources.Load<AudioClip>("bgm/" + clipName);
         if (clip == null) return;
 
-        // 播放即解锁
         UnlockMusic(id);
-
-        // 播放用户选曲时，停掉日志氛围曲（避免叠放）
         StopArchiveAmbient();
-
         StopArchiveMusic();
 
         if (playerSource == null)
         {
             playerSource = gameObject.AddComponent<AudioSource>();
-            playerSource.loop = true;
+            playerSource.loop = false; // 轮播不循环
             playerSource.playOnAwake = false;
+        }
+        else
+        {
+            playerSource.loop = false;
+        }
+
+        // 检测是否用户手动选曲（非氛围自动）→ 进入轮播模式
+        if (id != "platform" || isUserPlaylistMode)
+        {
+            isUserPlaylistMode = true;
+            playerSource.loop = false;
+        }
+        else
+        {
+            isUserPlaylistMode = false;
+            playerSource.loop = true; // 氛围曲单曲循环
         }
 
         playerSource.clip = clip;
         playerSource.volume = 0.5f;
         playerSource.Play();
         currentTrackId = id;
+        currentTrackTitle = displayTitle ?? clipName;
         playerClip = clip;
 
-        playerTitle.text = clipName;
+        playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
+        playerPlayBtn.text = "⏸";
         playerBar.style.display = DisplayStyle.Flex;
         isPlayerPlaying = true;
     }
 
-    /// <summary>显示播放器栏（首次进入音乐页/自动播放第一首已解锁歌曲）。</summary>
+    /// <summary>显示播放器栏（自动播放氛围曲）。</summary>
     private void ShowPlayerBar()
     {
         playerBar.style.display = DisplayStyle.Flex;
+        // 如果已在播放且处于用户轮播模式，不打断
+        if (isPlayerPlaying && isUserPlaylistMode) return;
+        // 否则重播氛围曲
         AutoPlayFirstUnlockedMusic();
     }
 
     private void AutoPlayFirstUnlockedMusic()
     {
-        if (isPlayerPlaying) return;
-        // 优先播放舒缓曲（Platform），其次标题 BGM（Iron & Ash），再其他已解锁
-        string[] priority = { "platform", "iron_and_ash" };
-        foreach (var pid in priority)
+        // 氛围模式：单曲循环播放 platform
+        if (PlayerPrefs.GetInt("ArchiveMusic_platform", 0) == 1)
         {
-            if (PlayerPrefs.GetInt("ArchiveMusic_" + pid, 0) == 1)
+            for (int i = 0; i < MusicEntries.Length; i++)
             {
-                // 查找对应的 MusicInfo
-                for (int i = 0; i < MusicEntries.Length; i++)
+                if (MusicEntries[i].id == "platform")
                 {
-                    if (MusicEntries[i].id == pid)
-                    {
-                        PlayArchiveMusic(pid, MusicEntries[i].clipName);
-                        return;
-                    }
+                    PlayArchiveMusic("platform", MusicEntries[i].clipName, MusicEntries[i].title);
+                    isUserPlaylistMode = false;
+                    return;
                 }
             }
         }
-        // 兜底：第一首已解锁的
+        // 兜底
         for (int i = 0; i < MusicEntries.Length; i++)
         {
             var m = MusicEntries[i];
             if (PlayerPrefs.GetInt("ArchiveMusic_" + m.id, 0) == 1)
             {
-                PlayArchiveMusic(m.id, m.clipName);
+                PlayArchiveMusic(m.id, m.clipName, m.title);
                 return;
             }
         }
@@ -912,8 +1026,10 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.value = 0;
         playerCurTime.text = "0:00";
         playerTotalTime.text = "0:00";
+        playerPlayBtn.text = "▶";
         playerClip = null;
         currentTrackId = null;
+        currentTrackTitle = null;
         isPlayerPlaying = false;
     }
 
