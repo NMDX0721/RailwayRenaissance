@@ -1228,7 +1228,71 @@ AVOID:
 
 ---
 
-### 2.12 Wiki 横幅（Wiki Banner）
+### 2.12 大同江茶馆（嘉颖徐会面室内）
+
+**文件**：`Resources/bg/tea_house.png`  
+**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+private tea house interior, Pyongyang, 2076, evening,
+NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — subtle luxury inside a socialist city:
+
+SCENE: The interior of a private membership tea house in Pyongyang's Gangnam District. Warm, dim amber lighting. A woman in her 40s sits behind a tea table. This is a place that exists in a gray zone — neither fully official nor fully underground, like the woman herself.
+
+LAYOUT:
+- Tea table (low, dark wood, polished) with two cushions on either side
+- Traditional Korean tea set on the table (celadon teapot, two cups)
+- A window behind showing the Pyongyang evening skyline — Juche Tower visible
+- Bookshelf on the wall with railway engineering books and business ledgers
+- A framed Korean map on the wall with railway lines marked in red
+- A miniature Chollima statue on the shelf
+- Warm amber pendant light above the table
+- Dark wooden floor, slightly worn
+- A black business card holder on the corner of the table
+
+PYONGYANG GANGNAM PRIVATE CLUB AESTHETIC:
+- A space that could be a private home or a members-only club — no signs, no branding
+- Traditional Korean ondol flooring underfoot
+- Celadon ceramics (청자) on display
+- A single orchid in a ceramic vase
+- The lighting is warm, intimate, like a place for private conversations
+
+NORTH KOREAN DETAILS:
+- "100전 100승" calligraphy scroll on the wall (subtle, not dominant)
+- Kim Il-sung University alumni plaque near the door
+- A newspaper (로동신문) on the side table
+- Abacus on the shelf next to the ledgers
+
+COLOR PALETTE:
+- Primary: warm amber (#D4A574), dark wood (#3E2723), celadon green (#8BC34A)
+- Secondary: window night sky (#1A237E), tea table brown (#5D4037)
+- Accents: celadon blue-green (#7CB08A), gold (#DAA520), Korean red (#CD2626)
+
+ATMOSPHERE:
+- Intimate, semi-private, a space for serious conversation
+- Warm but not cozy — this is a business meeting, not a social call
+- The woman is in control here
+- Outside is Pyongyang; inside, a different world
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN PRIVATE SECTOR — subtle luxury, not official
+- Every label in Korean (Hangul)
+- Warm, intimate evening lighting
+
+AVOID:
+- Generic Chinese tea house
+- Japanese tatami style
+- Overly luxurious or decadent
+- Bright fluorescent lighting
+- Official government building feel
+- Western-style office
+```
+
+### 2.13 Wiki 横幅（Wiki Banner）
 
 **文件**：`images/wiki_banner.png`  
 **用途**：Wiki 中文/英文主页顶部横幅，替代实验室背景图
