@@ -51,7 +51,7 @@ Style: Ambient folk, spacious and open, acoustic guitar fingerpicking carrying t
 **复用说明**：进行曲式，铜管 + 打击乐，所有"决心"时刻通用
 
 ```
-Style: Cinematic orchestral, determined and rising, marching percussion with snare drum, French horn melody, building string section, growing intensity from steady march to triumphant peak, then decisive finish, instrumental, no vocals, 100 BPM, key of D major, concert hall reverb, no electronic elements, no synth, organic orchestral, steady crescendo, like a slow burn becoming a blaze
+Style: Cinematic orchestral, determined and rising, marching percussion with snare drum, French horn melody carrying the theme, building string section, low brass accents, steady march rhythm at start, strings join at 30s building intensity, full orchestra swells at 1min with brass and timpani, triumphant peak at midpoint with soaring horns, then resolving to a decisive finish with held brass chord, instrumental, no vocals, 100 BPM, key of D major, concert hall reverb, no electronic elements, no synth, no dark elements, organic orchestral, steady crescendo throughout, like a slow burn becoming a blaze, heroic yet grounded, carrying the weight of legacy
 ```
 
 
