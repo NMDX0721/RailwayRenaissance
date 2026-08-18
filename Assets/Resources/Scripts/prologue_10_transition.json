@@ -3,12 +3,12 @@
   "scenes": [
     {
       "bg": "station_sunset",
-      "bgm": "determination",
+      "bgm": "embers",
       "transition": "fade",
       "d": [
         {
           "t": "n",
-          "text": "一周后"
+          "text": "一周后。"
         },
         {
           "t": "n",
@@ -38,7 +38,7 @@
     },
     {
       "bg": "station_sunset",
-      "bgm": "determination",
+      "bgm": "embers",
       "d": [
         {
           "t": "d",
@@ -58,7 +58,7 @@
         },
         {
           "t": "n",
-          "text": "林彪悍站在站台上，看着远方的铁轨"
+          "text": "林彪悍站在站台上，看着远方的铁轨。"
         },
         {
           "t": "n",
@@ -66,7 +66,7 @@
         },
         {
           "t": "n",
-          "text": "序章完"
+          "text": "序章完。"
         },
         {
           "t": "c",
@@ -92,15 +92,15 @@
       "d": [
         {
           "t": "n",
-          "text": "《铁路复兴：沙能冲击》"
+          "text": "《铁路复兴：沙能冲击》。"
         },
         {
           "t": "n",
-          "text": "第一章·启程"
+          "text": "第一章·启程。"
         },
         {
           "t": "n",
-          "text": "点击任意位置开始经营"
+          "text": "点击任意位置开始经营。"
         },
         {
           "t": "special",
