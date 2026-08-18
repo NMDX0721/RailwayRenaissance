@@ -413,14 +413,40 @@
         {
           "t": "n",
           "text": "林彪悍下车，走到门前，按了按门铃。"
+        }
+      ],
+      "chars": [
+        {
+          "name": "lin_biaohan",
+          "pos": "left"
+        },
+        {
+          "name": "jiaying_xu",
+          "pos": "right"
+        }
+      ]
+    },
+    {
+      "bg": "tea_house",
+      "bgm": "calm",
+      "chars": [
+        {
+          "name": "lin_biaohan",
+          "pos": "left"
+        },
+        {
+          "name": "jiaying_xu",
+          "pos": "right"
+        }
+      ],
+      "d": [
+        {
+          "t": "n",
+          "text": "门开了。一位侍者将他领进一间宽敞的办公室——深色红木办公桌、落地书柜、窗外平壤夜景尽收眼底。"
         },
         {
           "t": "n",
-          "text": "门开了。一位侍者将他领进一间雅致的茶室。"
-        },
-        {
-          "t": "n",
-          "text": "室内暖黄的灯光下，一位四十出头的女人正坐在茶台后，放下手中的茶杯。"
+          "text": "室内暖黄的灯光下，一位四十出头的女人正坐在办公桌后，放下手中的茶杯。"
         },
         {
           "t": "d",
@@ -522,17 +548,7 @@
         },
         {
           "t": "n",
-          "text": "林彪悍握着那张黑金卡，走出了茶馆。卡很轻，但他觉得沉甸甸的。"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
-        },
-        {
-          "name": "jiaying_xu",
-          "pos": "right"
+          "text": "林彪悍握着那张黑金卡，走出了办公室。卡很轻，但他觉得沉甸甸的。"
         }
       ]
     },
@@ -1035,12 +1051,12 @@
           "opts": [
             {
               "text": "「岁月，这一路……拜托你了。」",
-              "next": 10,
+              "next": 11,
               "setValue": "trip_mood=gentle"
             },
             {
               "text": "「喂，这车……就不能飞快点吗？」",
-              "next": 10,
+              "next": 11,
               "setValue": "trip_mood=playful"
             }
           ]
