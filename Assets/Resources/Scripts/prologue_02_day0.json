@@ -418,7 +418,7 @@
     },
     {
       "bg": "lab",
-      "bgm": "city",
+      "bgm": "south_wind",
       "transition": "fade",
       "d": [
         {

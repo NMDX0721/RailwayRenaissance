@@ -154,7 +154,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "suspense",
+      "bgm": "starlit_rails",
       "d": [
         {
           "t": "n",
@@ -979,7 +979,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "travel",
+      "bgm": "chollima_ride",
       "d": [
         {
           "t": "n",
