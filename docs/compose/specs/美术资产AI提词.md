@@ -1231,66 +1231,69 @@ AVOID:
 ### 2.12 大同江茶馆（嘉颖徐会面室内）
 
 **文件**：`Resources/bg/tea_house.png`  
-**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆
+**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆/私人办公室
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-private tea house interior, Pyongyang, 2076, evening,
-NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — subtle luxury inside a socialist city:
+executive office interior, Pyongyang, 2076, evening,
+NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — luxury inside a socialist city:
 
-SCENE: The interior of a private membership tea house in Pyongyang's Gangnam District. Warm, dim amber lighting. A low tea table occupies the center foreground with two cushions on either side. This is a place that exists in a gray zone — neither fully official nor fully underground.
+SCENE: A grand executive office in Pyongyang's Gangnam District. A massive dark mahogany desk dominates the center, with a high-backed burgundy leather chair behind it. Floor-to-ceiling glass-fronted bookshelves line the back and right walls. A golden Chollima winged horse statue stands on a pillar at right foreground. Through large windows on the left, the Pyongyang night skyline is visible with the Juche Tower lit up. This is the office of a railway tycoon — a space that blends traditional Korean elegance with corporate power.
 
 LAYOUT:
-- Tea table (low, dark wood, polished) with two cushions on either side
-- Traditional Korean tea set on the table (celadon teapot, two cups)
-- A window behind showing the Pyongyang evening skyline — Juche Tower visible
-- Bookshelf on the wall with railway engineering books and business ledgers
-- A framed Korean map on the wall with railway lines marked in red
-- A miniature Chollima statue on the shelf
-- Warm amber pendant light above the table
-- Dark wooden floor, slightly worn
-- A black business card holder on the corner of the table
+- Large executive desk (dark mahogany, carved arched panels, gold trim) — center
+- High-backed burgundy leather chair behind the desk
+- Korean celadon tea set (청자 teapot + cups) on the desk — center
+- Green banker's desk lamp on the desk — left side
+- Nameplate with Korean text ("기업의 주체는 나!") — front of desk
+- Floor-to-ceiling glass-fronted bookshelves covering back and right walls
+- Densely packed with books, celadon vases, framed photos
+- Large windows on left wall showing Pyongyang night skyline
+- Juche Tower visible through the window with red star illuminated
+- Ornate metal balcony railing visible outside the window
+- 천리마 (Chollima) pedestal column at right foreground
+- Golden winged horse statue on top of the pedestal
+- Side table at left foreground with purple orchid in celadon vase
+- Stacked 로동신문 (Rodong Sinmun) newspapers on side table
+- Elaborate coffered ceiling with crystal chandelier
+- Wall sconces providing ambient side-lighting
 
-PYONGYANG GANGNAM PRIVATE CLUB AESTHETIC:
-- A space that could be a private home or a members-only club — no signs, no branding
-- Traditional Korean ondol flooring underfoot
-- Celadon ceramics (청자) on display
-- A single orchid in a ceramic vase
-- The lighting is warm, intimate, like a place for private conversations
-
-NORTH KOREAN DETAILS:
-- "100전 100승" calligraphy scroll on the wall (subtle, not dominant)
-- Kim Il-sung University alumni plaque near the door
-- A newspaper (로동신문) on the side table
-- Abacus on the shelf next to the ledgers
+KOREAN CULTURAL ELEMENTS:
+- "100전 100승" (100 battles, 100 victories) calligraphy scroll on wall
+- "기업의 주체는 나!" (The master of the enterprise is me!) desk nameplate
+- "천리마" (Chollima) on the pedestal column
+- Celadon (청자) tea set — distinctly Korean ceramic style
+- 로동신문 (Rodong Sinmun) — North Korea's state newspaper
+- Purple orchid in celadon vase — traditional Korean elegance
+- Golden winged horse (Cheollima) — mythical Korean symbol
 
 COLOR PALETTE:
-- Primary: warm amber (#D4A574), dark wood (#3E2723), celadon green (#8BC34A)
-- Secondary: window night sky (#1A237E), tea table brown (#5D4037)
-- Accents: celadon blue-green (#7CB08A), gold (#DAA520), Korean red (#CD2626)
+- Primary: deep mahogany brown (#3E2723), dark wood (#5D4037), gold trim (#DAA520)
+- Secondary: window night sky (#1A237E), warm amber light (#FFD700)
+- Accents: celadon green (#8BC34A), burgundy leather (#800020), orchid purple (#9C27B0), Korean red (#CD2626)
 
 ATMOSPHERE:
-- Intimate, semi-private, a space for serious conversation
-- Warm but not cozy — this is a business meeting, not a social call
-- The woman is in control here
-- Outside is Pyongyang; inside, a different world
+- Warm, authoritative, a seat of power
+- Intimate evening lighting from chandelier and desk lamp
+- Dramatic contrast between golden interior and cool blue night cityscape
+- Private, opulent, slightly imposing
+- A space for high-stakes business conversations
 
 STYLE:
 - PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN PRIVATE SECTOR — subtle luxury, not official
+- NORTH KOREAN PRIVATE SECTOR — luxury within a socialist system
 - Every label in Korean (Hangul)
-- Warm, intimate evening lighting
+- Warm evening lighting, rich textures
 
 AVOID:
-- Generic Chinese tea house
-- Japanese tatami style
-- Overly luxurious or decadent
-- Bright fluorescent lighting
+- Generic Chinese or Japanese office
 - Official government building feel
-- Western-style office
-```
+- Western-style corporate office
+- Too bright or sterile
+- Modern minimalist aesthetic
+- Missing the Chollima statue or Korean text elements
 
 ### 2.13 Wiki 横幅（Wiki Banner）
 
