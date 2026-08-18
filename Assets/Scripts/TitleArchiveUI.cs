@@ -600,8 +600,8 @@ public class TitleArchiveUI : MonoBehaviour
         contentScroll.Add(page);
         tabPages["music"] = page;
 
-        // 播放器栏始终显示
-        ShowPlayerBar();
+        // 播放器栏在 BuildUI 时已创建，不在此处触发自动播放
+        // ShowPlayerBar() 仅在用户切换到音乐页签时调用（见 ShowTab）
 
         var topRow = new VisualElement();
         topRow.style.flexDirection = FlexDirection.Row;
@@ -827,11 +827,11 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.Add(playerTotalTime);
 
         // 控制按钮组
-        playerPrevBtn = new Button(PlayPrevTrack) { text = "⏮" };
+        playerPrevBtn = new Button(PlayPrevTrack) { text = "<<" };
         StylePlayerBtn(playerPrevBtn);
         playerBar.Add(playerPrevBtn);
 
-        playerPlayBtn = new Button(TogglePlayPause) { text = "▶" };
+        playerPlayBtn = new Button(TogglePlayPause) { text = ">" };
         playerPlayBtn.style.width = 44;
         playerPlayBtn.style.height = 32;
         playerPlayBtn.style.fontSize = 20;
@@ -840,11 +840,11 @@ public class TitleArchiveUI : MonoBehaviour
         StylizeTab(playerPlayBtn);
         playerBar.Add(playerPlayBtn);
 
-        playerNextBtn = new Button(PlayNextTrack) { text = "⏭" };
+        playerNextBtn = new Button(PlayNextTrack) { text = ">>" };
         StylePlayerBtn(playerNextBtn);
         playerBar.Add(playerNextBtn);
 
-        playerStopBtn = new Button(StopArchiveMusic) { text = "⏹" };
+        playerStopBtn = new Button(StopArchiveMusic) { text = "X" };
         StylePlayerBtn(playerStopBtn);
         playerBar.Add(playerStopBtn);
     }
@@ -866,12 +866,12 @@ public class TitleArchiveUI : MonoBehaviour
         if (playerSource.isPlaying)
         {
             playerSource.Pause();
-            playerPlayBtn.text = "▶";
+            playerPlayBtn.text = ">";
         }
         else
         {
             playerSource.UnPause();
-            playerPlayBtn.text = "⏸";
+            playerPlayBtn.text = "||";
         }
     }
 
@@ -976,7 +976,7 @@ public class TitleArchiveUI : MonoBehaviour
 
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
-        playerPlayBtn.text = "⏸";
+        playerPlayBtn.text = "||";
         playerBar.style.display = DisplayStyle.Flex;
         isPlayerPlaying = true;
     }
@@ -1026,7 +1026,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.value = 0;
         playerCurTime.text = "0:00";
         playerTotalTime.text = "0:00";
-        playerPlayBtn.text = "▶";
+        playerPlayBtn.text = ">";
         playerClip = null;
         currentTrackId = null;
         currentTrackTitle = null;
