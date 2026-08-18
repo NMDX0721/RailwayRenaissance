@@ -469,6 +469,7 @@ public class TitleArchiveUI : MonoBehaviour
         var grid = new VisualElement();
         grid.style.flexDirection = FlexDirection.Row;
         grid.style.flexWrap = Wrap.Wrap;
+        grid.style.justifyContent = Justify.Center;
         page.Add(grid);
 
         for (int i = 0; i < Cgs.Length; i++)
@@ -482,8 +483,8 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveCG_" + cg.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 340;
-        card.style.height = 260;
+        card.style.width = 380;
+        card.style.height = 280;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
         card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);
@@ -599,6 +600,11 @@ public class TitleArchiveUI : MonoBehaviour
         contentScroll.Add(page);
         tabPages["music"] = page;
 
+        // 播放器栏始终显示
+        ShowPlayerBar();
+
+        var topRow = new VisualElement();
+
         var topRow = new VisualElement();
         topRow.style.flexDirection = FlexDirection.Row;
         topRow.style.alignItems = Align.Center;
@@ -643,6 +649,7 @@ public class TitleArchiveUI : MonoBehaviour
         var grid = new VisualElement();
         grid.style.flexDirection = FlexDirection.Row;
         grid.style.flexWrap = Wrap.Wrap;
+        grid.style.justifyContent = Justify.Center;
         grid.style.marginTop = 12;
         page.Add(grid);
 
@@ -658,7 +665,7 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveMusic_" + m.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 320;
+        card.style.width = 360;
         card.style.flexShrink = 0;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
@@ -773,7 +780,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.style.paddingBottom = 8;
         playerBar.style.marginTop = 8;
         playerBar.style.flexShrink = 0;
-        playerBar.style.display = DisplayStyle.None;
+        playerBar.style.display = DisplayStyle.Flex; // 始终显示
         panel.Add(playerBar);
 
         playerTitle = new Label("未播放");
@@ -831,6 +838,9 @@ public class TitleArchiveUI : MonoBehaviour
         var clip = Resources.Load<AudioClip>("bgm/" + clipName);
         if (clip == null) return;
 
+        // 播放即解锁
+        UnlockMusic(id);
+
         StopArchiveMusic();
 
         if (playerSource == null)
@@ -852,11 +862,35 @@ public class TitleArchiveUI : MonoBehaviour
         isPlayerPlaying = true;
     }
 
+    /// <summary>显示播放器栏（首次进入音乐页/自动播放第一首已解锁歌曲）。</summary>
+    private void ShowPlayerBar()
+    {
+        playerBar.style.display = DisplayStyle.Flex;
+        AutoPlayFirstUnlockedMusic();
+    }
+
+    private void AutoPlayFirstUnlockedMusic()
+    {
+        if (isPlayerPlaying) return;
+        for (int i = 0; i < MusicEntries.Length; i++)
+        {
+            var m = MusicEntries[i];
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + m.id, 0) == 1)
+            {
+                PlayArchiveMusic(m.id, m.clipName);
+                return;
+            }
+        }
+    }
+
     private void StopArchiveMusic()
     {
         if (playerSource != null && playerSource.isPlaying)
             playerSource.Stop();
-        playerBar.style.display = DisplayStyle.None;
+        playerTitle.text = "未播放";
+        playerProgress.value = 0;
+        playerCurTime.text = "0:00";
+        playerTotalTime.text = "0:00";
         playerClip = null;
         currentTrackId = null;
         isPlayerPlaying = false;
@@ -1037,6 +1071,7 @@ public class TitleArchiveUI : MonoBehaviour
         var grid = new VisualElement();
         grid.style.flexDirection = FlexDirection.Row;
         grid.style.flexWrap = Wrap.Wrap;
+        grid.style.justifyContent = Justify.Center;
         page.Add(grid);
 
         for (int i = 0; i < SceneEntries.Length; i++)
@@ -1050,8 +1085,8 @@ public class TitleArchiveUI : MonoBehaviour
         bool unlocked = PlayerPrefs.GetInt("ArchiveScene_" + sc.id, 0) == 1;
 
         var card = new VisualElement();
-        card.style.width = 340;
-        card.style.height = 260;
+        card.style.width = 380;
+        card.style.height = 280;
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
         card.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.9f);

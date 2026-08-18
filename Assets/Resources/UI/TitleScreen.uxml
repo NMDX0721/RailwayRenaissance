@@ -31,7 +31,7 @@
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
     </VisualElement>
     
-    <Label name="version-text" text="v1.0.0" 
+    <Label name="version-text" text="" 
            style="position: absolute; left: 20px; bottom: 10px; font-size: 14px; color: rgba(153, 153, 153, 0.7);" />
     
 </UXML>

@@ -59,7 +59,7 @@ public class LoginManager : MonoBehaviour
     private bool isPasswordVisible = false;
     private bool isRegPasswordVisible = false;
     private bool isConfirmPasswordVisible = false;
-    private const string GAME_VERSION = "Beta v0.9.0";
+    public const string GAME_VERSION = "Beta v0.9.0";
     public static bool showAutoLoginOnStart = true;
     public static bool showRegisterOnStart = false;
 
