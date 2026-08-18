@@ -56,11 +56,12 @@ public class StatsManager : MonoBehaviour
     // ================= 时长 =================
 
     /// <summary>总游戏时长（秒）。</summary>
-    public static long TotalPlaySeconds => PlayerPrefs.GetLong(KeyPlaySeconds, 0);
+    public static long TotalPlaySeconds => long.Parse(PlayerPrefs.GetString(KeyPlaySeconds, "0"));
 
     private static void AddPlaySeconds(float seconds)
     {
-        PlayerPrefs.SetLong(KeyPlaySeconds, PlayerPrefs.GetLong(KeyPlaySeconds, 0) + (long)seconds);
+        long current = long.Parse(PlayerPrefs.GetString(KeyPlaySeconds, "0"));
+        PlayerPrefs.SetString(KeyPlaySeconds, (current + (long)seconds).ToString());
         PlayerPrefs.Save();
     }
 
@@ -68,20 +69,24 @@ public class StatsManager : MonoBehaviour
 
     public static void AddDailyRevenue(int revenue, int subsidy)
     {
-        PlayerPrefs.SetLong(KeyRevenue, PlayerPrefs.GetLong(KeyRevenue, 0) + revenue);
-        PlayerPrefs.SetLong(KeySubsidy, PlayerPrefs.GetLong(KeySubsidy, 0) + subsidy);
+        long r = long.Parse(PlayerPrefs.GetString(KeyRevenue, "0"));
+        long s = long.Parse(PlayerPrefs.GetString(KeySubsidy, "0"));
+        PlayerPrefs.SetString(KeyRevenue, (r + revenue).ToString());
+        PlayerPrefs.SetString(KeySubsidy, (s + subsidy).ToString());
         PlayerPrefs.Save();
     }
 
     public static void AddDailyExpense(int expense)
     {
-        PlayerPrefs.SetLong(KeyExpense, PlayerPrefs.GetLong(KeyExpense, 0) + expense);
+        long c = long.Parse(PlayerPrefs.GetString(KeyExpense, "0"));
+        PlayerPrefs.SetString(KeyExpense, (c + expense).ToString());
         PlayerPrefs.Save();
     }
 
     public static void AddDailyPassengers(int passengers)
     {
-        PlayerPrefs.SetLong(KeyPassengers, PlayerPrefs.GetLong(KeyPassengers, 0) + passengers);
+        long p = long.Parse(PlayerPrefs.GetString(KeyPassengers, "0"));
+        PlayerPrefs.SetString(KeyPassengers, (p + passengers).ToString());
         PlayerPrefs.Save();
     }
 
@@ -93,10 +98,10 @@ public class StatsManager : MonoBehaviour
 
     // ================= 读取 =================
 
-    public static long TotalRevenue => PlayerPrefs.GetLong(KeyRevenue, 0);
-    public static long TotalExpense => PlayerPrefs.GetLong(KeyExpense, 0);
-    public static long TotalSubsidy => PlayerPrefs.GetLong(KeySubsidy, 0);
-    public static long TotalPassengers => PlayerPrefs.GetLong(KeyPassengers, 0);
+    public static long TotalRevenue => long.Parse(PlayerPrefs.GetString(KeyRevenue, "0"));
+    public static long TotalExpense => long.Parse(PlayerPrefs.GetString(KeyExpense, "0"));
+    public static long TotalSubsidy => long.Parse(PlayerPrefs.GetString(KeySubsidy, "0"));
+    public static long TotalPassengers => long.Parse(PlayerPrefs.GetString(KeyPassengers, "0"));
     public static int MaxDay => PlayerPrefs.GetInt(KeyMaxDay, 0);
 
     /// <summary>格式化时长：X小时Y分Z秒。</summary>
