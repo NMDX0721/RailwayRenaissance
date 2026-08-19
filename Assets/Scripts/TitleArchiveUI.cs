@@ -765,6 +765,8 @@ public class TitleArchiveUI : MonoBehaviour
     private const float ProgressUpdateInterval = 0.25f;
     private float progressTimer;
     private bool isPlayerPlaying;
+    private enum PlayMode { SingleRepeat, Sequential, Shuffle }
+    private PlayMode playMode = PlayMode.SingleRepeat;
     private bool isUserPlaylistMode; // true=用户选曲轮播, false=默认氛围曲单曲循环
 
     private void BuildMusicPlayerBar()
@@ -843,9 +845,16 @@ public class TitleArchiveUI : MonoBehaviour
         StylePlayerBtn(playerNextBtn);
         playerBar.Add(playerNextBtn);
 
-        playerStopBtn = new Button(StopArchiveMusic) { text = "X" };
-        StylePlayerBtn(playerStopBtn);
-        playerBar.Add(playerStopBtn);
+        // 循环模式切换
+        playerModeBtn = new Button(TogglePlayMode) { text = "单曲" };
+        playerModeBtn.style.width = 44;
+        playerModeBtn.style.height = 28;
+        playerModeBtn.style.fontSize = 14;
+        playerModeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        playerModeBtn.style.unityFontDefinition = Fd();
+        playerModeBtn.style.marginLeft = 8;
+        StylizeTab(playerModeBtn);
+        playerBar.Add(playerModeBtn);
     }
 
     private void StylePlayerBtn(Button btn)
@@ -931,6 +940,17 @@ public class TitleArchiveUI : MonoBehaviour
                 PlayArchiveMusic(MusicEntries[i].id, MusicEntries[i].clipName, MusicEntries[i].title);
                 return;
             }
+        }
+    }
+
+    private void TogglePlayMode()
+    {
+        playMode = (PlayMode)(((int)playMode + 1) % 3);
+        switch (playMode)
+        {
+            case PlayMode.SingleRepeat: playerModeBtn.text = "单曲"; break;
+            case PlayMode.Sequential: playerModeBtn.text = "顺序"; break;
+            case PlayMode.Shuffle: playerModeBtn.text = "随机"; break;
         }
     }
 
