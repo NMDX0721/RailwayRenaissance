@@ -260,6 +260,7 @@ public class VNManager : MonoBehaviour
         var root = uiDoc.rootVisualElement;
         var fontDef = new FontDefinition { font = gameFont };
 
+        // 主菜单栏：始终显示 Auto + Menu
         menuBar = new VisualElement { name = "menu-bar" };
         menuBar.pickingMode = PickingMode.Position;
         menuBar.style.position = Position.Absolute;
@@ -269,29 +270,86 @@ public class VNManager : MonoBehaviour
         menuBar.style.alignItems = Align.Center;
         root.Add(menuBar);
 
-        string[] menuLabels = { "回顾", "存档", "读档", "自动", "日志", "返回" };
-        System.Action[] menuActions = {
-            () => ToggleBacklog(),
-            () => OpenSaveMenu(),
-            () => OpenLoadMenu(),
-            () => ToggleAutoPlay(),
-            () => OpenArchivePanel(),
-            () => ShowConfirmDialog()
+        // Auto 按钮
+        autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
+        autoBtn.style.width = 80;
+        autoBtn.style.height = 40;
+        autoBtn.style.flexShrink = 0;
+        autoBtn.style.fontSize = 20;
+        autoBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
+        autoBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
+        autoBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        autoBtn.style.marginRight = 6;
+        autoBtn.style.unityFontDefinition = fontDef;
+        autoBtn.style.borderTopWidth = 1;
+        autoBtn.style.borderBottomWidth = 1;
+        autoBtn.style.borderLeftWidth = 1;
+        autoBtn.style.borderRightWidth = 1;
+        autoBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        autoBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        autoBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        autoBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        autoBtn.style.borderTopLeftRadius = 6;
+        autoBtn.style.borderTopRightRadius = 6;
+        autoBtn.style.borderBottomLeftRadius = 6;
+        autoBtn.style.borderBottomRightRadius = 6;
+        menuBar.Add(autoBtn);
+
+        // Menu 按钮（点击展开/收起子菜单）
+        var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
+        menuBtn.style.width = 80;
+        menuBtn.style.height = 40;
+        menuBtn.style.flexShrink = 0;
+        menuBtn.style.fontSize = 20;
+        menuBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
+        menuBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
+        menuBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        menuBtn.style.unityFontDefinition = fontDef;
+        menuBtn.style.borderTopWidth = 1;
+        menuBtn.style.borderBottomWidth = 1;
+        menuBtn.style.borderLeftWidth = 1;
+        menuBtn.style.borderRightWidth = 1;
+        menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        menuBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        menuBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        menuBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+        menuBtn.style.borderTopLeftRadius = 6;
+        menuBtn.style.borderTopRightRadius = 6;
+        menuBtn.style.borderBottomLeftRadius = 6;
+        menuBtn.style.borderBottomRightRadius = 6;
+        menuBar.Add(menuBtn);
+
+        // 子菜单（垂直排列图标按钮，初始隐藏）
+        menuExpandedContainer = new VisualElement { name = "menu-expanded" };
+        menuExpandedContainer.style.position = Position.Absolute;
+        menuExpandedContainer.style.top = 48;
+        menuExpandedContainer.style.right = 10;
+        menuExpandedContainer.style.flexDirection = FlexDirection.Column;
+        menuExpandedContainer.style.alignItems = Align.Center;
+        menuExpandedContainer.style.display = DisplayStyle.None;
+        root.Add(menuExpandedContainer);
+
+        // 子菜单项：图标（非文字）
+        var menuItems = new (string icon, System.Action action)[]
+        {
+            ("\u25BC", () => OpenSaveMenu()),    // 存档
+            ("\u25B2", () => OpenLoadMenu()),    // 取档
+            ("\u2261", () => ToggleBacklog()),    // 三条线（消息回顾）
+            ("\u25B6\u25B6", () => SkipToNext()),  // 跳转
+            ("\u2605", () => OpenArchivePanel()), // 日志
+            ("\u2190", () => ShowConfirmDialog()) // 返回
         };
 
-        for (int i = 0; i < menuLabels.Length; i++)
+        for (int i = 0; i < menuItems.Length; i++)
         {
-            int idx = i;
-            var btn = new UnityEngine.UIElements.Button(() => menuActions[idx]()) { text = menuLabels[idx] };
-            btn.style.width = 90;
+            var (icon, action) = menuItems[i];
+            var btn = new UnityEngine.UIElements.Button(() => action()) { text = icon };
+            btn.style.width = 50;
             btn.style.height = 40;
-            btn.style.flexShrink = 0;
-            btn.style.fontSize = 20;
+            btn.style.fontSize = 18;
             btn.style.color = new Color(1f, 1f, 1f, 0.8f);
             btn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.marginLeft = 6;
-            btn.style.marginRight = 6;
             btn.style.unityFontDefinition = fontDef;
             btn.style.borderTopWidth = 1;
             btn.style.borderBottomWidth = 1;
@@ -305,14 +363,61 @@ public class VNManager : MonoBehaviour
             btn.style.borderTopRightRadius = 6;
             btn.style.borderBottomLeftRadius = 6;
             btn.style.borderBottomRightRadius = 6;
-            menuBar.Add(btn);
-
-            if (menuLabels[idx] == "自动")
-                autoBtn = btn;
+            btn.style.marginBottom = 4;
+            menuExpandedContainer.Add(btn);
         }
 
         UpdateAutoPlayButtonVisual();
         SetupConfirmDialog(uiDoc);
+    }
+
+    private bool menuExpanded;
+    private VisualElement menuExpandedContainer;
+
+    private void ToggleMenuExpanded()
+    {
+        menuExpanded = !menuExpanded;
+        menuExpandedContainer.style.display = menuExpanded ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    private void CloseMenuExpanded()
+    {
+        if (menuExpanded)
+        {
+            menuExpanded = false;
+            menuExpandedContainer.style.display = DisplayStyle.None;
+        }
+    }
+
+    /// <summary>Skip 跳转：快速推进到下一选项/下一场景。</summary>
+    private void SkipToNext()
+    {
+        CloseMenuExpanded();
+        // 跳过当前打字
+        if (dialogueBox != null && dialogueBox.IsTyping())
+            dialogueBox.SkipTyping();
+        // 快速推进到下一选项
+        int maxSkip = 200;
+        int safety = 0;
+        while (safety < maxSkip && isScriptRunning && currentScript != null)
+        {
+            var scene = currentScript.scenes[currentSceneIndex];
+            if (currentDialogueIndex < scene.d.Length)
+            {
+                var entry = scene.d[currentDialogueIndex];
+                if (entry.t == "c" || entry.t == "special")
+                    break;
+            }
+            NextDialogue();
+            safety++;
+            // 检查是否到达选项
+            if (currentSceneIndex < currentScript.scenes.Length)
+            {
+                var nextScene = currentScript.scenes[currentSceneIndex];
+                if (currentDialogueIndex < nextScene.d.Length && nextScene.d[currentDialogueIndex].t == "c")
+                    break;
+            }
+        }
     }
 
     private void SetupConfirmDialog(UIDocument uiDoc)
@@ -418,9 +523,15 @@ public class VNManager : MonoBehaviour
         {
             // 背景容器保留（纯背景版立绘仍显示）
             if (child.name == "vn-background-container") continue;
+            // 菜单展开容器也隐藏
             hiddenUiSnapshots[child] = child.style.display;
             child.style.display = DisplayStyle.None;
         }
+        // 关闭展开的子菜单
+        menuExpanded = false;
+        if (menuExpandedContainer != null)
+            menuExpandedContainer.style.display = DisplayStyle.None;
+    }
     }
 
     /// <summary>恢复被隐藏的 VN UI。</summary>
@@ -465,6 +576,7 @@ public class VNManager : MonoBehaviour
 
     private void ShowConfirmDialog()
     {
+        CloseMenuExpanded();
         if (confirmDialog != null)
             confirmDialog.style.display = DisplayStyle.Flex;
     }
@@ -547,6 +659,7 @@ public class VNManager : MonoBehaviour
             vnBacklog.ToggleBacklog();
         if (saveLoadUI != null && saveLoadUI.IsOpen)
             saveLoadUI.ClosePanel();
+        CloseMenuExpanded();
         menuBar.style.display = DisplayStyle.Flex;
     }
 
