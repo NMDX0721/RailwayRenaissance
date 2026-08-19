@@ -851,7 +851,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerPlayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         playerPlayBtn.style.unityFontDefinition = Fd();
         playerPlayBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        playerPlayBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        playerPlayBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
         playerPlayBtn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
         playerPlayBtn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(playerPlayBtn);
@@ -873,7 +873,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerModeBtn.style.unityFontDefinition = Fd();
         playerModeBtn.style.marginLeft = 8;
         playerModeBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        playerModeBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        playerModeBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
         playerModeBtn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
         playerModeBtn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(playerModeBtn);
@@ -888,7 +888,7 @@ public class TitleArchiveUI : MonoBehaviour
         btn.style.unityFontDefinition = Fd();
         btn.style.marginLeft = 4;
         btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
         btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
         btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(btn);

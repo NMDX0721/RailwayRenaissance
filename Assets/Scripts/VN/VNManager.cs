@@ -511,7 +511,7 @@ public class VNManager : MonoBehaviour
             btn.style.marginLeft = 4;
             // 像素图缩放模式（新 background API，替代废弃的 unityBackgroundScaleMode）
             btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-            btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+            btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
             btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
             btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
             menuExpandedContainer.Add(btn);
