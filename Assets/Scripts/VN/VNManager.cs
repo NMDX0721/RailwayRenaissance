@@ -389,7 +389,6 @@ public class VNManager : MonoBehaviour
             menuExpanded = false;
             menuExpandedContainer.style.display = DisplayStyle.None;
         }
-    }
 
     /// <summary>Skip 跳转：快速推进到下一选项/下一场景。</summary>
     private void SkipToNext()
