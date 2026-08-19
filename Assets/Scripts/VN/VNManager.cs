@@ -434,18 +434,15 @@ public class VNManager : MonoBehaviour
         autoBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         autoBtn.style.marginRight = 6;
         autoBtn.style.unityFontDefinition = fontDef;
-        autoBtn.style.borderTopWidth = 1;
-        autoBtn.style.borderBottomWidth = 1;
-        autoBtn.style.borderLeftWidth = 1;
-        autoBtn.style.borderRightWidth = 1;
+        // 像素风格边框（2px 粗框）
+        autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
+        autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
         autoBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         autoBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         autoBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         autoBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-        autoBtn.style.borderTopLeftRadius = 6;
-        autoBtn.style.borderTopRightRadius = 6;
-        autoBtn.style.borderBottomLeftRadius = 6;
-        autoBtn.style.borderBottomRightRadius = 6;
+        autoBtn.style.borderTopLeftRadius = 4; autoBtn.style.borderTopRightRadius = 4;
+        autoBtn.style.borderBottomLeftRadius = 4; autoBtn.style.borderBottomRightRadius = 4;
         menuBar.Add(autoBtn);
 
         // Menu 按钮（点击展开/收起子菜单）
@@ -460,24 +457,19 @@ public class VNManager : MonoBehaviour
         menuBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
         menuBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         menuBtn.style.unityFontDefinition = fontDef;
-        menuBtn.style.borderTopWidth = 1;
-        menuBtn.style.borderBottomWidth = 1;
-        menuBtn.style.borderLeftWidth = 1;
-        menuBtn.style.borderRightWidth = 1;
+        menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
+        menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
         menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         menuBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         menuBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         menuBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-        menuBtn.style.borderTopLeftRadius = 6;
-        menuBtn.style.borderTopRightRadius = 6;
-        menuBtn.style.borderBottomLeftRadius = 6;
-        menuBtn.style.borderBottomRightRadius = 6;
-        // 黄色信号灯（Menu 展开时亮）
+        menuBtn.style.borderTopLeftRadius = 4; menuBtn.style.borderTopRightRadius = 4;
+        menuBtn.style.borderBottomLeftRadius = 4; menuBtn.style.borderBottomRightRadius = 4;
         menuBtn.name = "vn-menu-btn";
         menuBar.Add(menuBtn);
         this.menuBtn = menuBtn;
 
-        // 子菜单（水平排列图标按钮，初始隐藏）
+        // 子菜单（水平排列像素图标按钮，初始隐藏）
         menuExpandedContainer = new VisualElement { name = "menu-expanded" };
         menuExpandedContainer.style.position = Position.Absolute;
         menuExpandedContainer.style.top = 48;
@@ -487,42 +479,38 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.style.display = DisplayStyle.None;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：简洁符号（非文字/非emoji）
-        var menuItems = new (string icon, System.Action action)[]
+        // 子菜单项：像素图标
+        var (Texture2D icon, System.Action action)[] menuItemDefs = new (Texture2D, System.Action)[]
         {
-            ("存", () => OpenSaveMenu()),      // 存档
-            ("取", () => OpenLoadMenu()),      // 取档
-            ("回", () => ToggleBacklog()),      // 回顾
-            ("跳", () => SkipToNext()),        // 跳转
-            ("签", () => AddBookmark()),       // 书签
-            ("返", () => ShowConfirmDialog())  // 返回
+            (PixelIconHelper.SaveIcon(), () => OpenSaveMenu()),
+            (PixelIconHelper.LoadIcon(), () => OpenLoadMenu()),
+            (PixelIconHelper.BacklogIcon(), () => ToggleBacklog()),
+            (PixelIconHelper.SkipIcon(), () => SkipToNext()),
+            (PixelIconHelper.BookmarkIcon(), () => AddBookmark()),
+            (PixelIconHelper.ReturnIcon(), () => ShowConfirmDialog()),
         };
 
-        for (int i = 0; i < menuItems.Length; i++)
+        foreach (var (itemIcon, itemAction) in menuItemDefs)
         {
-            var (icon, action) = menuItems[i];
-            var btn = new UnityEngine.UIElements.Button(() => action()) { text = icon };
+            var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = "" };
             btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
-            btn.style.width = 50;
+            btn.style.width = 44;
             btn.style.height = 40;
-            btn.style.fontSize = 18;
-            btn.style.color = new Color(1f, 1f, 1f, 0.8f);
             btn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.unityFontDefinition = fontDef;
-            btn.style.borderTopWidth = 1;
-            btn.style.borderBottomWidth = 1;
-            btn.style.borderLeftWidth = 1;
-            btn.style.borderRightWidth = 1;
+            btn.style.backgroundImage = new StyleBackground(itemIcon);
+            btn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
+            btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
+            btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
             btn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             btn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             btn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             btn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            btn.style.borderTopLeftRadius = 6;
-            btn.style.borderTopRightRadius = 6;
-            btn.style.borderBottomLeftRadius = 6;
-            btn.style.borderBottomRightRadius = 6;
+            btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
+            btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
             btn.style.marginLeft = 4;
+            // 像素图缩放模式
+            btn.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
             menuExpandedContainer.Add(btn);
         }
 
@@ -546,26 +534,28 @@ public class VNManager : MonoBehaviour
         if (menuBtn == null) return;
         if (menuExpanded)
         {
-            // 黄色信号灯：Menu 展开状态
-            menuBtn.style.color = new Color(1f, 0.85f, 0.5f, 1f);
-            menuBtn.style.borderTopWidth = 1; menuBtn.style.borderBottomWidth = 1;
-            menuBtn.style.borderLeftWidth = 1; menuBtn.style.borderRightWidth = 1;
-            menuBtn.style.borderTopColor = new Color(1f, 0.8f, 0.2f, 0.8f);
-            menuBtn.style.borderBottomColor = new Color(1f, 0.8f, 0.2f, 0.8f);
-            menuBtn.style.borderLeftColor = new Color(1f, 0.8f, 0.2f, 0.8f);
-            menuBtn.style.borderRightColor = new Color(1f, 0.8f, 0.2f, 0.8f);
-            menuBtn.text = "● Menu";
+            menuBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
+            menuBtn.style.unityBackgroundImageTintColor = Color.white;
+            menuBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
+            menuBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
+            menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
+            menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
+            menuBtn.style.borderTopColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            menuBtn.style.borderBottomColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            menuBtn.style.borderLeftColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            menuBtn.style.borderRightColor = new Color(1f, 0.8f, 0.4f, 0.7f);
         }
         else
         {
+            menuBtn.style.backgroundImage = null;
+            menuBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             menuBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-            menuBtn.style.borderTopWidth = 1; menuBtn.style.borderBottomWidth = 1;
-            menuBtn.style.borderLeftWidth = 1; menuBtn.style.borderRightWidth = 1;
+            menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
+            menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
             menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             menuBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             menuBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
             menuBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            menuBtn.text = "Menu";
         }
     }
 
@@ -1893,25 +1883,30 @@ public class VNManager : MonoBehaviour
         if (autoBtn == null) return;
         if (isAutoPlay)
         {
-            autoBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.9f);
-            autoBtn.style.color = new Color(1f, 0.9f, 0.6f, 1f);
-            // 绿色信号灯（激活态）
-            autoBtn.style.borderTopWidth = 1; autoBtn.style.borderBottomWidth = 1;
-            autoBtn.style.borderLeftWidth = 1; autoBtn.style.borderRightWidth = 1;
-            autoBtn.style.borderTopColor = new Color(0.3f, 0.85f, 0.4f, 0.8f);
-            autoBtn.style.borderBottomColor = new Color(0.3f, 0.85f, 0.4f, 0.8f);
-            autoBtn.style.borderLeftColor = new Color(0.3f, 0.85f, 0.4f, 0.8f);
-            autoBtn.style.borderRightColor = new Color(0.3f, 0.85f, 0.4f, 0.8f);
-            // 文本前加绿色信号灯点
-            autoBtn.text = "● Auto";
+            autoBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
+            autoBtn.style.unityBackgroundImageTintColor = Color.white;
+            autoBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
+            autoBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
+            autoBtn.text = "\u25B6 Auto"; // ▶
+            autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
+            autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
+            autoBtn.style.borderTopColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            autoBtn.style.borderBottomColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            autoBtn.style.borderLeftColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            autoBtn.style.borderRightColor = new Color(1f, 0.8f, 0.4f, 0.7f);
         }
         else
         {
-            autoBtn.style.backgroundColor = new Color(0.2f, 0.1f, 0.08f, 0.7f);
+            autoBtn.style.backgroundImage = null;
+            autoBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             autoBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-            autoBtn.style.borderTopWidth = 0; autoBtn.style.borderBottomWidth = 0;
-            autoBtn.style.borderLeftWidth = 0; autoBtn.style.borderRightWidth = 0;
             autoBtn.text = "Auto";
+            autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
+            autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
+            autoBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            autoBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            autoBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            autoBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         }
     }
 
