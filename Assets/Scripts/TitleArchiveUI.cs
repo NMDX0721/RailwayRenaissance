@@ -858,7 +858,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.Add(playerPlayBtn);
 
         playerNextBtn = new Button(PlayNextTrack) { text = "" };
-        playerNextBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.SkipIcon());
+        playerNextBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.NextIcon());
         playerNextBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         StylePlayerBtn(playerNextBtn);
         playerBar.Add(playerNextBtn);

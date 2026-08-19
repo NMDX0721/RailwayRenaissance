@@ -287,7 +287,7 @@ public static class PixelIconHelper
     });
 
     /// <summary>下一曲 >> 双右箭头</summary>
-    public static Texture2D SkipIcon() => CreateIcon(new[] {
+    public static Texture2D NextIcon() => CreateIcon(new[] {
         "........................",
         "........................",
         "........................",
