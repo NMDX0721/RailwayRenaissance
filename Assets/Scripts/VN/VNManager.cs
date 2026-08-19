@@ -1940,10 +1940,17 @@ public class VNManager : MonoBehaviour
 
     private void HideVnForLoadUI()
     {
-        // 从标题界面继续：立即清空画面等待读档界面
+        // 从标题界面继续：立即清空画面等待读档界面（隐藏全部 VN UI，无残留）
         if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        if (menuExpandedContainer != null) menuExpandedContainer.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.Hide();
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
+        if (optionsOverlay != null) optionsOverlay.style.display = DisplayStyle.None;
+        if (bootScreen != null) bootScreen.style.display = DisplayStyle.None;
+        if (cgScreen != null) cgScreen.style.display = DisplayStyle.None;
+        if (episodeClearOverlay != null) episodeClearOverlay.style.display = DisplayStyle.None;
+        if (resumeDialog != null) resumeDialog.style.display = DisplayStyle.None;
+        if (bookmarkToast != null) bookmarkToast.style.display = DisplayStyle.None;
         characterSpriteManager?.ClearAll();
         if (backgroundManager != null) backgroundManager.SetBackgroundImmediate("black");
     }

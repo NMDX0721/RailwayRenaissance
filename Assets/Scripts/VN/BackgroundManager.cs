@@ -88,10 +88,23 @@ public class BackgroundManager : MonoBehaviour
         }
     }
 
-    /// <summary>纯色背景（black 专用），无图片资源依赖。</summary>
+    /// <summary>缓存 1x1 颜色纹理（解决 image=null 时 tint 不生效、透出清屏紫的问题）。</summary>
+    private static Texture2D solidBlackTex;
+
+    private static Texture2D GetSolidBlack()
+    {
+        if (solidBlackTex != null) return solidBlackTex;
+        solidBlackTex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        solidBlackTex.SetPixel(0, 0, Color.black);
+        solidBlackTex.Apply();
+        return solidBlackTex;
+    }
+
+    /// <summary>纯色背景（black 专用），用 1x1 纹理确保渲染。</summary>
     private void ApplySolidColor(Color color)
     {
-        bgOld.style.backgroundImage = null;
+        var tex = GetSolidBlack();
+        bgOld.style.backgroundImage = new StyleBackground(tex);
         bgOld.style.unityBackgroundImageTintColor = color;
         bgNew.style.backgroundImage = null;
         bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
@@ -101,11 +114,13 @@ public class BackgroundManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(bgName)) return;
 
-        // 纯黑背景
+        // 纯黑背景：用 1x1 黑纹理（image=null + tint 不渲染，会透出清屏紫色）
         if (bgName == "black")
         {
-            bgOld.style.backgroundImage = null;
+            var blackTex = GetSolidBlack();
+            bgOld.style.backgroundImage = new StyleBackground(blackTex);
             bgOld.style.unityBackgroundImageTintColor = Color.black;
+            bgNew.style.backgroundImage = null;
             bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
             return;
         }
