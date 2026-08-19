@@ -648,7 +648,8 @@ public class TitleArchiveUI : MonoBehaviour
         var grid = new VisualElement();
         grid.style.flexDirection = FlexDirection.Row;
         grid.style.flexWrap = Wrap.Wrap;
-        grid.style.justifyContent = Justify.Center;
+        // 与上方筛选行（全部/BGM/歌曲）左边缘对齐
+        grid.style.justifyContent = Justify.FlexStart;
         grid.style.marginTop = 12;
         page.Add(grid);
 
@@ -666,6 +667,7 @@ public class TitleArchiveUI : MonoBehaviour
         var card = new VisualElement();
         card.style.width = 360;
         card.style.flexShrink = 0;
+        card.style.height = 158; // 固定高度：所有卡片同高，按钮底部对齐（长标题也不偏上）
         card.style.marginRight = 12;
         card.style.marginBottom = 12;
         card.style.paddingLeft = 12; card.style.paddingRight = 12;
@@ -722,7 +724,7 @@ public class TitleArchiveUI : MonoBehaviour
             // 精简卡片：仅显示播放/停止按钮（进度/时间/音量在底部悬浮栏）
             var btnRow = new VisualElement();
             btnRow.style.flexDirection = FlexDirection.Row;
-            btnRow.style.marginTop = 8;
+            btnRow.style.marginTop = new StyleLength(StyleKeyword.Auto); // 吸底，与所有卡片按钮底部对齐
             card.Add(btnRow);
 
             var playBtn = new Button(() => PlayArchiveMusic(m.id, m.clipName, m.title)) { text = "播放" };
@@ -771,6 +773,12 @@ public class TitleArchiveUI : MonoBehaviour
     private enum PlayMode { SingleRepeat, Sequential, Shuffle }
     private PlayMode playMode = PlayMode.SingleRepeat;
     private bool isUserPlaylistMode; // true=用户选曲轮播, false=默认氛围曲单曲循环
+    private readonly System.Collections.Generic.Dictionary<string, AudioClip> musicClipCache = new System.Collections.Generic.Dictionary<string, AudioClip>();
+    private VisualElement titleOuter; // 长名滚动容器
+    private float marqueeX;           // 当前滚动偏移
+    private bool marqueeActive;       // 当前标题是否超宽需要滚动
+    private float marqueeTextWidth;   // 文本实际渲染宽度
+    private bool progressScrubbing;   // 用户正拖拽进度条（Update 不覆盖）
 
     private void BuildMusicPlayerBar()
     {
@@ -805,7 +813,15 @@ public class TitleArchiveUI : MonoBehaviour
         playerTitle.style.marginRight = 16;
         playerTitle.style.whiteSpace = WhiteSpace.NoWrap;
         playerTitle.style.overflow = Overflow.Hidden;
-        playerBar.Add(playerTitle);
+        // 长名横向滚动：内容套一层，用 translate 平移，超出时滚动
+        titleOuter = new VisualElement();
+        titleOuter.style.width = 200;
+        titleOuter.style.height = 24;
+        titleOuter.style.overflow = Overflow.Hidden;
+        titleOuter.style.marginRight = 16;
+        titleOuter.style.flexShrink = 0;
+        titleOuter.Add(playerTitle);
+        playerBar.Add(titleOuter);
 
         // 进度条 + 时间（紧凑）
         playerCurTime = new Label("0:00");
@@ -820,11 +836,25 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.style.flexGrow = 1;
         playerProgress.style.height = 16;
         playerProgress.style.marginRight = 6;
-        // 点击进度条跳转
+        // 点击/拖动进度条跳转：PointerDown 开始拖拽，Change 实时跟随，PointerUp 定格
         playerProgress.RegisterCallback<PointerDownEvent>(evt =>
         {
             if (playerSource != null && playerClip != null)
+            {
+                progressScrubbing = true;
                 playerSource.time = playerProgress.value * playerClip.length;
+            }
+        });
+        playerProgress.RegisterCallback<PointerUpEvent>(evt =>
+        {
+            if (playerSource != null && playerClip != null)
+                playerSource.time = playerProgress.value * playerClip.length;
+            progressScrubbing = false;
+        });
+        playerProgress.RegisterValueChangedCallback(evt =>
+        {
+            if (progressScrubbing && playerSource != null && playerClip != null)
+                playerSource.time = evt.newValue * playerClip.length;
         });
         playerBar.Add(playerProgress);
 
@@ -994,7 +1024,13 @@ public class TitleArchiveUI : MonoBehaviour
 
     private void PlayArchiveMusic(string id, string clipName, string displayTitle = null)
     {
-        var clip = Resources.Load<AudioClip>("bgm/" + clipName);
+        // AudioClip 缓存：避免每次点击都同步 Resources.Load 卡顿
+        AudioClip clip;
+        if (!musicClipCache.TryGetValue(clipName, out clip))
+        {
+            clip = Resources.Load<AudioClip>("bgm/" + clipName);
+            if (clip != null) musicClipCache[clipName] = clip;
+        }
         if (clip == null) return;
 
         UnlockMusic(id);
@@ -1030,7 +1066,7 @@ public class TitleArchiveUI : MonoBehaviour
         currentTrackTitle = displayTitle ?? clipName;
         playerClip = clip;
 
-        playerTitle.text = currentTrackTitle;
+        SetPlayerTitle(currentTrackTitle);
         playerTotalTime.text = FormatTime(clip.length);
         playerPlayBtn.text = "";
         playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PauseIcon());
@@ -1080,7 +1116,7 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (playerSource != null && playerSource.isPlaying)
             playerSource.Stop();
-        playerTitle.text = "未播放";
+        SetPlayerTitle("未播放");
         playerProgress.value = 0;
         playerCurTime.text = "0:00";
         playerTotalTime.text = "0:00";
@@ -1138,6 +1174,9 @@ public class TitleArchiveUI : MonoBehaviour
 
     private void Update()
     {
+        // 长名横向滚动：每帧推进（仅超宽时）
+        UpdateMarquee();
+
         if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying || playerClip == null) return;
 
         progressTimer += Time.unscaledDeltaTime;
@@ -1146,9 +1185,46 @@ public class TitleArchiveUI : MonoBehaviour
 
         float t = playerSource.time;
         float len = playerClip.length;
-        if (len > 0.01f)
+        if (len > 0.01f && !progressScrubbing)
             playerProgress.value = Mathf.Clamp01(t / len);
         playerCurTime.text = FormatTime(t);
+    }
+
+    /// <summary>长音乐名横向滚动：检测超宽后往复平移（暂停时停下）。</summary>
+    private void UpdateMarquee()
+    {
+        if (playerTitle == null || titleOuter == null || !marqueeActive) return;
+        // 播放时才滚动，暂停时冻结
+        if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying)
+            return;
+        marqueeX -= 40f * Time.unscaledDeltaTime;
+        // 文本滚出左侧后重置（循环）
+        float w = titleOuter.resolvedStyle.width;
+        if (w <= 0) w = 200;
+        if (marqueeX < -marqueeTextWidth - 40)
+            marqueeX = w + 40;
+        playerTitle.style.translate = new Translate(marqueeX, 0);
+    }
+
+    /// <summary>设置曲名并检测是否超宽（超宽启用跑马灯）。</summary>
+    private void SetPlayerTitle(string text)
+    {
+        playerTitle.text = text;
+        marqueeX = 0;
+        marqueeActive = false;
+        playerTitle.style.translate = new Translate(0, 0);
+        // 延迟一帧等布局后测量文本宽度
+        titleOuter.schedule.Execute(() =>
+        {
+            if (playerTitle == null) return;
+            float textW = playerTitle.resolvedStyle.width;
+            float boxW = titleOuter.resolvedStyle.width;
+            if (boxW <= 0) return;
+            marqueeTextWidth = textW;
+            marqueeActive = textW > boxW + 2f;
+            if (marqueeActive)
+                marqueeX = boxW + 40;
+        }).ExecuteLater(50);
     }
 
     // ================= 故事章节页 =================
@@ -1938,12 +2014,9 @@ public class TitleArchiveUI : MonoBehaviour
         uiDoc.rootVisualElement.UnregisterCallback<KeyDownEvent>(OnEscKey);
         // 恢复被隐藏的标题界面根
         RestoreTitleRoot();
-        // 非用户轮播模式：停止氛围曲，恢复全局 BGM
-        if (!isUserPlaylistMode)
-        {
-            playerBar.style.display = DisplayStyle.None;
-            StopArchiveMusic();
-        }
+        // 始终停止播放器音乐（防止音乐被带到标题界面）
+        playerBar.style.display = DisplayStyle.None;
+        StopArchiveMusic();
         UnpauseGlobalBGM();
         OnClosed?.Invoke();
     }
@@ -1979,7 +2052,12 @@ public class TitleArchiveUI : MonoBehaviour
     /// <summary>通过 playerBar 播放氛围曲（单曲循环，进度条更新）。</summary>
     private void PlayArchiveAmbient()
     {
-        var clip = Resources.Load<AudioClip>("bgm/" + ArchiveAmbientClip);
+        AudioClip clip;
+        if (!musicClipCache.TryGetValue(ArchiveAmbientClip, out clip))
+        {
+            clip = Resources.Load<AudioClip>("bgm/" + ArchiveAmbientClip);
+            if (clip != null) musicClipCache[ArchiveAmbientClip] = clip;
+        }
         if (clip == null) return;
 
         if (playerSource == null)
@@ -1998,7 +2076,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerClip = clip;
         currentTrackTitle = "Platform 站台";
         currentTrackId = "platform";
-        playerTitle.text = currentTrackTitle;
+        SetPlayerTitle(currentTrackTitle);
         playerTotalTime.text = FormatTime(clip.length);
         playerPlayBtn.text = "";
         playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PauseIcon());

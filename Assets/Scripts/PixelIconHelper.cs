@@ -13,12 +13,13 @@ public static class PixelIconHelper
         tex.filterMode = FilterMode.Point;
         tex.wrapMode = TextureWrapMode.Clamp;
         var colors = new Color[Size * Size];
+        // 注意：SetPixels 的 row 0 = 纹理底部，而 rows[0] 是图标顶部 → 必须反转 y
         for (int y = 0; y < Size; y++)
         {
             string row = (y < rows.Length) ? rows[y] : "";
             for (int x = 0; x < Size; x++)
             {
-                int idx = y * Size + x;
+                int idx = (Size - 1 - y) * Size + x;
                 if (x < row.Length && row[x] == '#')
                     colors[idx] = IconColor;
                 else
@@ -102,7 +103,7 @@ public static class PixelIconHelper
         "....##.....#....#...##..",
         "....##.....#....#...##..",
         "....##.....#....#...##..",
-        "....##.....#####...##..",
+        "....##.....#####...##...",
         "....##..............##..",
         ".....##............##...",
         "......############......",

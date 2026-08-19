@@ -43,7 +43,6 @@ public class VNManager : MonoBehaviour
     private bool VN_ReplayInjected;
     private Label bookmarkToast;
     private Coroutine bookmarkToastCoroutine;
-    private bool uiButtonPressPending;
     private VisualElement episodeClearOverlay;
 
     // Menu bar
@@ -339,8 +338,11 @@ public class VNManager : MonoBehaviour
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
 
-        // 根元素不捕获点击，只有交互元素（按钮等）才捕获
+        // 根元素不捕获点击，只有交互元素（按钮等）才捕获。
+        // 鼠标推进由 root 的 TrickleDown PointerDownEvent 统一处理：
+        // TrickleDown 先于按钮自己的处理执行，可在此拦截"点按钮误推进"（帧序无关）
         uiDoc.rootVisualElement.pickingMode = PickingMode.Ignore;
+        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown, TrickleDown.TrickleDown);
 
         // 背景必须先初始化（在最底层）
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
@@ -423,7 +425,7 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
-        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
+        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
         autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
         autoBtn.style.width = 80;
         autoBtn.style.height = 40;
@@ -447,7 +449,7 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
-        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
+        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
         menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
         menuBtn.style.width = 80;
         menuBtn.style.height = 40;
@@ -493,7 +495,7 @@ public class VNManager : MonoBehaviour
         foreach (var (itemIcon, itemAction) in menuItemDefs)
         {
             var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = "" };
-            btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
+            btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
             btn.style.width = 44;
             btn.style.height = 40;
             btn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
@@ -943,9 +945,6 @@ public class VNManager : MonoBehaviour
 
     private void Update()
     {
-        // 前一帧消费过的 UI 点击标志清零（避免残留误拦截）
-        if (!Input.GetMouseButtonDown(0)) uiButtonPressPending = false;
-
         // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
         if (Input.GetMouseButtonDown(1))
         {
@@ -1027,12 +1026,10 @@ public class VNManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || KeyBindings.IsDown(KeyBindings.Action.Advance))
+        // 鼠标推进已迁移到 OnRootPointerDown（UI Toolkit 事件驱动，帧序安全）。
+        // 此处仅保留键盘推进 + 按钮点击已经过 root TrickleDown 拦截。
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || KeyBindings.IsDown(KeyBindings.Action.Advance))
         {
-            // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
-            // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
-            if (Input.GetMouseButtonDown(0) && (IsPointerOverInteractiveUI() || uiButtonPressPending))
-                return;
             if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex)
                 return;
             if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex)
@@ -1052,45 +1049,52 @@ public class VNManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 鼠标推进唯一入口（TrickleDown：先于按钮自身 handler 执行，帧序无关）。
+    /// 点击落在交互元素（按钮/菜单/选项/日志/存档）内 → 不推进，事件继续通向按钮；
+    /// 点击空白处 → 推进对话（打字中跳过，否则下一句）。
+    /// </summary>
+    private void OnRootPointerDown(PointerDownEvent evt)
+    {
+        if (evt.button != 0) return; // 仅左键
+        // UI 隐藏状态下（右键隐藏）点击推进
+        if (uiHidden)
+        {
+            AdvanceOnClick();
+            return;
+        }
+        if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return;
+        if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return;
+        if (vnBacklog != null && vnBacklog.IsOpen) return;
+        if (saveLoadUI != null && saveLoadUI.IsOpen) return;
+        if (fullScreenNews != null && fullScreenNews.IsActive) return;
+        if (resumeDialog != null && resumeDialog.style.display == DisplayStyle.Flex) return;
+
+        // 目标在按钮或菜单栏内 → 不推进（按钮自己的 handler 处理）
+        var t = evt.target as VisualElement;
+        while (t != null)
+        {
+            if (t is UnityEngine.UIElements.Button) return;
+            if (t == menuBar || t == menuExpandedContainer) return;
+            t = t.parent;
+        }
+
+        AdvanceOnClick();
+    }
+
+    private void AdvanceOnClick()
+    {
+        StopAutoPlay();
+        if (dialogueBox != null && dialogueBox.IsTyping())
+            dialogueBox.SkipTyping();
+        else
+            NextDialogue();
+    }
+
+    /// <summary>
     /// 判断鼠标指针当前是否落在菜单栏（或其按钮）上方。
     /// 用于拦截"点击菜单按钮时对话被意外推进"：UI Toolkit 的 clicked 在
     /// PointerUp 才触发，而 Update 中 Input.GetMouseButtonDown(0) 在按下帧先执行。
     /// </summary>
-    private bool IsPointerOverMenuBar()
-    {
-        if (uiDoc == null || menuBar == null) return false;
-        if (menuBar.style.display == DisplayStyle.None) return false;
-
-        var panel = uiDoc.rootVisualElement.panel;
-        var screenPos = Input.mousePosition;
-        var localPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
-        var picked = panel.Pick(localPos);
-        var cur = picked;
-        while (cur != null)
-        {
-            if (cur == menuBar) return true;
-            cur = cur.parent;
-        }
-        return false;
-    }
-
-    private bool IsPointerOverInteractiveUI()
-    {
-        if (uiDoc == null) return false;
-        var panel = uiDoc.rootVisualElement.panel;
-        var screenPos = Input.mousePosition;
-        var localPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
-        var picked = panel.Pick(localPos);
-        if (picked == null) return false;
-        var cur = picked;
-        while (cur != null)
-        {
-            if (cur is UnityEngine.UIElements.Button) return true;
-            cur = cur.parent;
-        }
-        return false;
-    }
-
     private void PrevDialogue()
     {
         if (currentDialogueIndex > 0)
