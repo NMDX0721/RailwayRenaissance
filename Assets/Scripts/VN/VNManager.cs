@@ -142,8 +142,104 @@ public class VNManager : MonoBehaviour
             return;
         }
 
+        // 强制退出恢复：存在未完成的自动书签，且非读档/继续运营/回看进入 → 提示继续观看
+        bool isLoadFlow = PlayerPrefs.HasKey("VN_AutoLoad") || PlayerPrefs.HasKey("VN_ShowLoadUI") || PlayerPrefs.HasKey("VN_ReplayScript");
+        var incomplete = BookmarkManager.FindIncompleteAuto();
+        if (incomplete != null && !isLoadFlow)
+        {
+            pendingResumeBookmark = incomplete;
+            ShowResumePrompt(incomplete);
+            return; // 等待玩家选择
+        }
+
         StartScript("prologue_01_news");
     }
+
+    private BookmarkManager.Bookmark pendingResumeBookmark;
+
+    /// <summary>强制退出恢复提示："检测到未完成的剧情，是否继续观看？"</summary>
+    private void ShowResumePrompt(BookmarkManager.Bookmark bm)
+    {
+        if (resumeDialog == null)
+        {
+            var root = uiDoc.rootVisualElement;
+            resumeDialog = new VisualElement { name = "resume-dialog" };
+            resumeDialog.style.position = Position.Absolute;
+            resumeDialog.style.top = 0; resumeDialog.style.left = 0;
+            resumeDialog.style.right = 0; resumeDialog.style.bottom = 0;
+            resumeDialog.style.backgroundColor = new Color(0, 0, 0, 0.7f);
+            resumeDialog.style.alignItems = Align.Center;
+            resumeDialog.style.justifyContent = Justify.Center;
+            root.Add(resumeDialog);
+        }
+        resumeDialog.Clear();
+        resumeDialog.style.display = DisplayStyle.Flex;
+
+        var panel = new VisualElement();
+        panel.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.97f);
+        panel.style.paddingLeft = 32; panel.style.paddingRight = 32;
+        panel.style.paddingTop = 24; panel.style.paddingBottom = 24;
+        panel.style.alignItems = Align.Center;
+        panel.style.borderTopWidth = 2; panel.style.borderBottomWidth = 2;
+        panel.style.borderLeftWidth = 2; panel.style.borderRightWidth = 2;
+        panel.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        panel.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        panel.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        panel.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        resumeDialog.Add(panel);
+
+        var title = new Label("未完成的剧情");
+        title.style.fontSize = 24;
+        title.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        title.style.marginBottom = 10;
+        panel.Add(title);
+
+        var info = new Label(bm.name);
+        info.style.fontSize = 18;
+        info.style.color = new Color(1f, 1f, 1f, 0.9f);
+        info.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        info.style.marginBottom = 6;
+        panel.Add(info);
+
+        var preview = new Label(bm.previewText ?? "");
+        preview.style.fontSize = 14;
+        preview.style.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
+        preview.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        preview.style.marginBottom = 20;
+        panel.Add(preview);
+
+        var btnRow = new VisualElement();
+        btnRow.style.flexDirection = FlexDirection.Row;
+        panel.Add(btnRow);
+
+        var yesBtn = new Button(() => { resumeDialog.style.display = DisplayStyle.None; pendingResumeBookmark = null; BookmarkManager.JumpToBookmark(bm); UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test"); }) { text = "继续观看" };
+        yesBtn.style.width = 140; yesBtn.style.height = 40;
+        yesBtn.style.fontSize = 18; yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        yesBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        yesBtn.style.backgroundColor = new Color(0.2f, 0.3f, 0.5f, 0.8f);
+        yesBtn.style.color = new Color(0.8f, 0.9f, 1f, 1f);
+        btnRow.Add(yesBtn);
+
+        var noBtn = new Button(() =>
+        {
+            resumeDialog.style.display = DisplayStyle.None;
+            // 放弃恢复，从第一章开始
+            pendingResumeBookmark = null;
+            BookmarkManager.ClearAutoBookmark(bm.scriptName);
+            StartScript("prologue_01_news");
+        }) { text = "从头开始" };
+        noBtn.style.width = 140; noBtn.style.height = 40;
+        noBtn.style.fontSize = 18; noBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        noBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        noBtn.style.backgroundColor = new Color(0.3f, 0.18f, 0.12f, 0.8f);
+        noBtn.style.color = new Color(0.9f, 0.8f, 0.7f, 1f);
+        noBtn.style.marginLeft = 12;
+        btnRow.Add(noBtn);
+    }
+
+    private VisualElement resumeDialog;
 
     /// <summary>从书签指定的场景/对话位置开始播放脚本。</summary>
     private void StartBookmarkScript(string scriptName, int sceneIndex, int dialogueIndex)
