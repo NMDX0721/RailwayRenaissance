@@ -146,8 +146,14 @@ public class DebugPanel : MonoBehaviour
         }, new Color(0.2f, 0.4f, 0.2f, 0.6f), new Color(0.6f, 1f, 0.6f, 1f));
 
         AddBtn("一键解锁所有故事章节", () => {
-            for (int i = 1; i <= 10; i++)
-                PlayerPrefs.SetInt("ArchiveStory_prologue_0" + (i < 10 ? "0" + i : i.ToString()) + (i == 10 ? "_transition" : (i == 1 ? "_news" : (i == 2 ? "_day0" : (i == 3 ? "_journey" : (i == 4 ? "_arrival" : (i == 5 ? "_inspection" : (i == 6 ? "_team" : (i == 7 ? "_first_repair" : (i == 8 ? "_first_run" : (i == 9 ? "_funding" : ""))))))))), 1);
+            string[] scripts = {
+                "prologue_01_news", "prologue_02_day0", "prologue_03_journey",
+                "prologue_04_arrival", "prologue_05_inspection", "prologue_06_team",
+                "prologue_07_first_repair", "prologue_08_first_run",
+                "prologue_09_funding", "prologue_10_transition"
+            };
+            for (int i = 0; i < scripts.Length; i++)
+                PlayerPrefs.SetInt("ArchiveStory_" + scripts[i], 1);
             PlayerPrefs.Save();
         }, new Color(0.2f, 0.4f, 0.2f, 0.6f), new Color(0.6f, 1f, 0.6f, 1f));
 
