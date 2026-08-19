@@ -57,7 +57,6 @@ public class TitleScreen : MonoBehaviour
         btnNewGame = root.Q<Button>("btn-new-game");
         btnContinue = root.Q<Button>("btn-continue");
         btnArchive = root.Q<Button>("btn-archive");
-        btnStory = root.Q<Button>("btn-story");
         btnSettings = root.Q<Button>("btn-settings");
         btnExit = root.Q<Button>("btn-exit");
         announcementBtn = root.Q<Button>("announcement-btn");

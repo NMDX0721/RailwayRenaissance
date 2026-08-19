@@ -320,25 +320,25 @@ public class VNManager : MonoBehaviour
         menuBtn.style.borderBottomRightRadius = 6;
         menuBar.Add(menuBtn);
 
-        // 子菜单（垂直排列图标按钮，初始隐藏）
+        // 子菜单（水平排列图标按钮，初始隐藏）
         menuExpandedContainer = new VisualElement { name = "menu-expanded" };
         menuExpandedContainer.style.position = Position.Absolute;
         menuExpandedContainer.style.top = 48;
         menuExpandedContainer.style.right = 10;
-        menuExpandedContainer.style.flexDirection = FlexDirection.Column;
+        menuExpandedContainer.style.flexDirection = FlexDirection.Row;
         menuExpandedContainer.style.alignItems = Align.Center;
         menuExpandedContainer.style.display = DisplayStyle.None;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：图标（非文字）
+        // 子菜单项：简洁符号（非文字/非emoji）
         var menuItems = new (string icon, System.Action action)[]
         {
-            ("\u25BC", () => OpenSaveMenu()),    // 存档
-            ("\u25B2", () => OpenLoadMenu()),    // 取档
-            ("\u2261", () => ToggleBacklog()),    // 三条线（消息回顾）
-            ("\u25B6\u25B6", () => SkipToNext()),  // 跳转
-            ("\u2605", () => OpenArchivePanel()), // 日志
-            ("\u2190", () => ShowConfirmDialog()) // 返回
+            ("\u25A1", () => OpenSaveMenu()),    // □ 存档
+            ("\u25A3", () => OpenLoadMenu()),    // ▣ 取档
+            ("\u2261", () => ToggleBacklog()),    // ≡ 三条线回顾
+            ("\u25B8", () => SkipToNext()),      // ▸ 跳转
+            ("\u2605", () => OpenArchivePanel()), // ★ 日志
+            ("\u2715", () => ShowConfirmDialog()) // ✕ 返回
         };
 
         for (int i = 0; i < menuItems.Length; i++)
@@ -364,7 +364,7 @@ public class VNManager : MonoBehaviour
             btn.style.borderTopRightRadius = 6;
             btn.style.borderBottomLeftRadius = 6;
             btn.style.borderBottomRightRadius = 6;
-            btn.style.marginBottom = 4;
+            btn.style.marginLeft = 4;
             menuExpandedContainer.Add(btn);
         }
 

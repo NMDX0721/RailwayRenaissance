@@ -48,6 +48,10 @@ public class VNAudioManager : MonoBehaviour
     public void PlayBGM(string name, float fadeDuration)
     {
         if (string.IsNullOrEmpty(name)) return;
+
+        // 旧 BGM 名称 → 新文件名映射（兼容旧存档）
+        name = MapBgmName(name);
+
         if (currentBGM == name && bgmSource.isPlaying) return;
 
         var clip = LoadClip("bgm", name);
@@ -66,6 +70,24 @@ public class VNAudioManager : MonoBehaviour
     public void StopBGM()
     {
         StopBGM(DefaultFadeDuration);
+    }
+
+    /// <summary>旧 BGM 名称 → 新文件名映射（兼容旧存档）。</summary>
+    private string MapBgmName(string name)
+    {
+        switch (name)
+        {
+            case "determination": return "embers";
+            case "emotional":     return "night_cargo";
+            case "travel":        return "cloud_rail";
+            case "adventure":     return "cloud_rail";
+            case "suspense":      return "borderline";
+            case "fun":           return "wheels_joke";
+            case "warm":          return "platform";
+            case "morning":       return "first_light";
+            case "peaceful":      return "first_light";
+            default:              return name;
+        }
     }
 
     public void StopBGM(float fadeDuration)
