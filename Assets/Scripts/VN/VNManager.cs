@@ -333,12 +333,11 @@ public class VNManager : MonoBehaviour
         // 子菜单项：简洁符号（非文字/非emoji）
         var menuItems = new (string icon, System.Action action)[]
         {
-            ("\u25A1", () => OpenSaveMenu()),    // □ 存档
-            ("\u25A3", () => OpenLoadMenu()),    // ▣ 取档
-            ("\u2261", () => ToggleBacklog()),    // ≡ 三条线回顾
+            ("\u2193", () => OpenSaveMenu()),    // ↓ 存档
+            ("\u2191", () => OpenLoadMenu()),    // ↑ 取档
+            ("\u2261", () => ToggleBacklog()),    // ≡ 回顾
             ("\u25B8", () => SkipToNext()),      // ▸ 跳转
-            ("\u2605", () => OpenArchivePanel()), // ★ 日志
-            ("\u2715", () => ShowConfirmDialog()) // ✕ 返回
+            ("\u2190", () => ShowConfirmDialog()) // ← 返回
         };
 
         for (int i = 0; i < menuItems.Length; i++)
