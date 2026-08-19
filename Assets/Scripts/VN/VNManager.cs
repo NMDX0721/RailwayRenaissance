@@ -427,7 +427,7 @@ public class VNManager : MonoBehaviour
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
         autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
         autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
-        autoBtn.style.width = 80;
+        autoBtn.style.width = 88;
         autoBtn.style.height = 40;
         autoBtn.style.flexShrink = 0;
         autoBtn.style.fontSize = 20;
@@ -436,6 +436,19 @@ public class VNManager : MonoBehaviour
         autoBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         autoBtn.style.marginRight = 6;
         autoBtn.style.unityFontDefinition = fontDef;
+        // 激活态像素图标（Label 子元素，避免 Unicode ▶ 渲染问题）
+        autoIcon = new Label();
+        autoIcon.style.width = 16;
+        autoIcon.style.height = 16;
+        autoIcon.style.flexShrink = 0;
+        autoIcon.style.marginRight = 6;
+        autoIcon.style.display = DisplayStyle.None;
+        autoIcon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        autoIcon.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+        autoIcon.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        autoIcon.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        autoIcon.pickingMode = PickingMode.Ignore;
+        autoBtn.Add(autoIcon);
         // 像素风格边框（2px 粗框）
         autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
         autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
@@ -451,7 +464,7 @@ public class VNManager : MonoBehaviour
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
         menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
         menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
-        menuBtn.style.width = 80;
+        menuBtn.style.width = 88;
         menuBtn.style.height = 40;
         menuBtn.style.flexShrink = 0;
         menuBtn.style.fontSize = 20;
@@ -459,6 +472,19 @@ public class VNManager : MonoBehaviour
         menuBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
         menuBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         menuBtn.style.unityFontDefinition = fontDef;
+        // 展开态像素图标（网格点）
+        menuIcon = new Label();
+        menuIcon.style.width = 16;
+        menuIcon.style.height = 16;
+        menuIcon.style.flexShrink = 0;
+        menuIcon.style.marginRight = 6;
+        menuIcon.style.display = DisplayStyle.None;
+        menuIcon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        menuIcon.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+        menuIcon.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        menuIcon.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        menuIcon.pickingMode = PickingMode.Ignore;
+        menuBtn.Add(menuIcon);
         menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
         menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
         menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
@@ -526,6 +552,8 @@ public class VNManager : MonoBehaviour
     private bool menuExpanded;
     private VisualElement menuExpandedContainer;
     private UnityEngine.UIElements.Button menuBtn;
+    private Label autoIcon;
+    private Label menuIcon;
 
     private void ToggleMenuExpanded()
     {
@@ -539,28 +567,23 @@ public class VNManager : MonoBehaviour
         if (menuBtn == null) return;
         if (menuExpanded)
         {
+            // 展开：网格像素图标 + 棋盘格暖金底 + 双层金边
             menuBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
             menuBtn.style.unityBackgroundImageTintColor = Color.white;
             menuBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
             menuBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
-            menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
-            menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
-            menuBtn.style.borderTopColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            menuBtn.style.borderBottomColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            menuBtn.style.borderLeftColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            menuBtn.style.borderRightColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            menuIcon.style.display = DisplayStyle.Flex;
+            menuIcon.style.backgroundImage = new StyleBackground(PixelIconHelper.MenuGridIcon());
+            menuIcon.style.unityBackgroundImageTintColor = new Color(1f, 0.85f, 0.5f, 1f);
+            SetGoldBorder(menuBtn, 2, new Color(1f, 0.8f, 0.4f, 0.9f), new Color(1f, 0.9f, 0.6f, 0.45f));
         }
         else
         {
             menuBtn.style.backgroundImage = null;
             menuBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             menuBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-            menuBtn.style.borderTopWidth = 2; menuBtn.style.borderBottomWidth = 2;
-            menuBtn.style.borderLeftWidth = 2; menuBtn.style.borderRightWidth = 2;
-            menuBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            menuBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            menuBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            menuBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            menuIcon.style.display = DisplayStyle.None;
+            SetGoldBorder(menuBtn, 2, new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f), new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.1f));
         }
     }
 
@@ -1890,17 +1913,16 @@ public class VNManager : MonoBehaviour
         if (autoBtn == null) return;
         if (isAutoPlay)
         {
+            // 激活：播放像素图标 + 棋盘格暖金底 + 双层金边
             autoBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
             autoBtn.style.unityBackgroundImageTintColor = Color.white;
             autoBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
             autoBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
-            autoBtn.text = "\u25B6 Auto"; // ▶
-            autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
-            autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
-            autoBtn.style.borderTopColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            autoBtn.style.borderBottomColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            autoBtn.style.borderLeftColor = new Color(1f, 0.8f, 0.4f, 0.7f);
-            autoBtn.style.borderRightColor = new Color(1f, 0.8f, 0.4f, 0.7f);
+            autoBtn.text = "Auto";
+            autoIcon.style.display = DisplayStyle.Flex;
+            autoIcon.style.backgroundImage = new StyleBackground(PixelIconHelper.PlayIcon());
+            autoIcon.style.unityBackgroundImageTintColor = new Color(1f, 0.85f, 0.5f, 1f);
+            SetGoldBorder(autoBtn, 2, new Color(1f, 0.8f, 0.4f, 0.9f), new Color(1f, 0.9f, 0.6f, 0.45f));
         }
         else
         {
@@ -1908,13 +1930,20 @@ public class VNManager : MonoBehaviour
             autoBtn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
             autoBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
             autoBtn.text = "Auto";
-            autoBtn.style.borderTopWidth = 2; autoBtn.style.borderBottomWidth = 2;
-            autoBtn.style.borderLeftWidth = 2; autoBtn.style.borderRightWidth = 2;
-            autoBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            autoBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            autoBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            autoBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            autoIcon.style.display = DisplayStyle.None;
+            SetGoldBorder(autoBtn, 2, new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f), new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.1f));
         }
+    }
+
+    /// <summary>双层金边：外框亮色 + 内衬暗色（像素风格层次感）。</summary>
+    private void SetGoldBorder(VisualElement ve, float w, Color outer, Color inner)
+    {
+        ve.style.borderTopWidth = w; ve.style.borderBottomWidth = w;
+        ve.style.borderLeftWidth = w; ve.style.borderRightWidth = w;
+        ve.style.borderTopColor = outer; ve.style.borderBottomColor = outer;
+        ve.style.borderLeftColor = outer; ve.style.borderRightColor = outer;
+        // 内衬细边：用 box-shadow 近似（Unity UI Toolkit 支持 box-shadow）
+        ve.style.boxShadow = new BoxShadow(new Color(1f, 0.8f, 0.45f, inner.a), 0, 0, 4, 2);
     }
 
     private void OnDialogueTypewriterComplete()
