@@ -1747,7 +1747,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
         playerPlayBtn.text = "||";
-        playerBar.style.display = DisplayStyle.Flex;
+        // 不在此设置 playerBar 可见性——由 ShowTab 根据当前页签控制
     }
 
     // ================= 解锁绑定（供游戏循环调用） =================
