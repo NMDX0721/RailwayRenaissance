@@ -836,32 +836,46 @@ public class TitleArchiveUI : MonoBehaviour
         playerTotalTime.style.marginRight = 16;
         playerBar.Add(playerTotalTime);
 
-        // 控制按钮组
-        playerPrevBtn = new Button(PlayPrevTrack) { text = "<<" };
+        // 控制按钮组（像素图标）
+        playerPrevBtn = new Button(PlayPrevTrack) { text = "" };
+        playerPrevBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PrevIcon());
+        playerPrevBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         StylePlayerBtn(playerPrevBtn);
         playerBar.Add(playerPrevBtn);
 
-        playerPlayBtn = new Button(TogglePlayPause) { text = "\u25B6" };
+        playerPlayBtn = new Button(TogglePlayPause) { text = "" };
+        playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PlayIcon());
+        playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         playerPlayBtn.style.width = 44;
-        playerPlayBtn.style.height = 32;
-        playerPlayBtn.style.fontSize = 20;
+        playerPlayBtn.style.height = 36;
         playerPlayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         playerPlayBtn.style.unityFontDefinition = Fd();
+        playerPlayBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        playerPlayBtn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
+        playerPlayBtn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
+        playerPlayBtn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
         StylizeTab(playerPlayBtn);
         playerBar.Add(playerPlayBtn);
 
-        playerNextBtn = new Button(PlayNextTrack) { text = ">>" };
+        playerNextBtn = new Button(PlayNextTrack) { text = "" };
+        playerNextBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.SkipIcon());
+        playerNextBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         StylePlayerBtn(playerNextBtn);
         playerBar.Add(playerNextBtn);
 
-        // 循环模式切换
-        playerModeBtn = new Button(TogglePlayMode) { text = "\u21BB" };
+        // 循环模式切换（像素图标）
+        playerModeBtn = new Button(TogglePlayMode) { text = "" };
+        playerModeBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.SingleRepeatIcon());
+        playerModeBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         playerModeBtn.style.width = 44;
-        playerModeBtn.style.height = 28;
-        playerModeBtn.style.fontSize = 14;
+        playerModeBtn.style.height = 36;
         playerModeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         playerModeBtn.style.unityFontDefinition = Fd();
         playerModeBtn.style.marginLeft = 8;
+        playerModeBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        playerModeBtn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
+        playerModeBtn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
+        playerModeBtn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
         StylizeTab(playerModeBtn);
         playerBar.Add(playerModeBtn);
     }
@@ -869,11 +883,14 @@ public class TitleArchiveUI : MonoBehaviour
     private void StylePlayerBtn(Button btn)
     {
         btn.style.width = 32;
-        btn.style.height = 28;
-        btn.style.fontSize = 16;
+        btn.style.height = 32;
         btn.style.unityTextAlign = TextAnchor.MiddleCenter;
         btn.style.unityFontDefinition = Fd();
         btn.style.marginLeft = 4;
+        btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        btn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
+        btn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
+        btn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
         StylizeTab(btn);
     }
 
@@ -883,12 +900,16 @@ public class TitleArchiveUI : MonoBehaviour
         if (playerSource.isPlaying)
         {
             playerSource.Pause();
-            playerPlayBtn.text = "\u25B6";
+            playerPlayBtn.text = "";
+            playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PlayIcon());
+            playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         }
         else
         {
             playerSource.UnPause();
-            playerPlayBtn.text = "\u275A\u275A";
+            playerPlayBtn.text = "";
+            playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PauseIcon());
+            playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         }
     }
 
@@ -955,12 +976,20 @@ public class TitleArchiveUI : MonoBehaviour
     private void TogglePlayMode()
     {
         playMode = (PlayMode)(((int)playMode + 1) % 3);
+        playerModeBtn.text = "";
         switch (playMode)
         {
-            case PlayMode.SingleRepeat: playerModeBtn.text = "\u21BB"; break;
-            case PlayMode.Sequential: playerModeBtn.text = "\u2192"; break;
-            case PlayMode.Shuffle: playerModeBtn.text = "\u21C4"; break;
+            case PlayMode.SingleRepeat:
+                playerModeBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.SingleRepeatIcon());
+                break;
+            case PlayMode.Sequential:
+                playerModeBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.SequentialIcon());
+                break;
+            case PlayMode.Shuffle:
+                playerModeBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ShuffleIcon());
+                break;
         }
+        playerModeBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
     }
 
     private void PlayArchiveMusic(string id, string clipName, string displayTitle = null)
@@ -1003,7 +1032,9 @@ public class TitleArchiveUI : MonoBehaviour
 
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
-        playerPlayBtn.text = "❚❚";
+        playerPlayBtn.text = "";
+        playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PauseIcon());
+        playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         playerBar.style.display = DisplayStyle.Flex;
         isPlayerPlaying = true;
     }
@@ -1053,7 +1084,9 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.value = 0;
         playerCurTime.text = "0:00";
         playerTotalTime.text = "0:00";
-        playerPlayBtn.text = "▶";
+        playerPlayBtn.text = "";
+        playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PlayIcon());
+        playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         playerClip = null;
         currentTrackId = null;
         currentTrackTitle = null;
@@ -1967,7 +2000,9 @@ public class TitleArchiveUI : MonoBehaviour
         currentTrackId = "platform";
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
-        playerPlayBtn.text = "❚❚";
+        playerPlayBtn.text = "";
+        playerPlayBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.PauseIcon());
+        playerPlayBtn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
         // 不在此设置 playerBar 可见性——由 ShowTab 根据当前页签控制
     }
 
