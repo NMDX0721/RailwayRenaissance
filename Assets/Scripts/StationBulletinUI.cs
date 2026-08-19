@@ -365,7 +365,33 @@ public class StationBulletinUI : MonoBehaviour
     {
         AddSectionTitle("关于", "游戏版本和项目信息");
         AddInfoRow("游戏名称", "铁路复兴：沙能冲击");
-        AddInfoRow("当前版本", "v1.0.0");
+        // 版本号行：点击 5 次进入调试面板
+        var versionRow = new VisualElement();
+        versionRow.style.flexDirection = FlexDirection.Row;
+        versionRow.style.marginBottom = 6;
+        versionRow.style.paddingLeft = 4;
+        versionRow.pickingMode = PickingMode.Position;
+        contentPanel.Add(versionRow);
+
+        var verLabel = new Label("当前版本");
+        verLabel.style.width = 100; verLabel.style.fontSize = 20;
+        verLabel.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.8f);
+        verLabel.style.unityFontDefinition = GetFontDef();
+        versionRow.Add(verLabel);
+
+        var verValue = new Label(LoginManager.GAME_VERSION);
+        verValue.style.fontSize = 20; verValue.style.color = CText;
+        verValue.style.whiteSpace = WhiteSpace.Normal;
+        verValue.style.unityFontDefinition = GetFontDef();
+        versionRow.Add(verValue);
+
+        int verClick = 0;
+        versionRow.RegisterCallback<ClickEvent>(evt =>
+        {
+            verClick++;
+            if (verClick >= 5) { verClick = 0; DebugPanel.Show(); }
+        });
+
         AddInfoRow("引擎版本", "Unity 6000.5.8f1");
         AddInfoRow("渲染管线", "Universal Render Pipeline");
         AddInfoRow("开发状态", "核心系统已完成，资产生成进行中");

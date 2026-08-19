@@ -381,7 +381,7 @@ public class TitleScreen : MonoBehaviour
         versionRow.style.paddingTop = 12; versionRow.style.paddingBottom = 8;
         panel.Add(versionRow);
 
-        var versionBadge = new UnityEngine.UIElements.Button(() => { }) { text = LoginManager.GAME_VERSION };
+        var versionBadge = new Label(LoginManager.GAME_VERSION);
         versionBadge.style.fontSize = 16;
         versionBadge.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.9f);
         versionBadge.style.backgroundColor = new Color(0.3f, 0.15f, 0.08f, 0.5f);
@@ -390,13 +390,6 @@ public class TitleScreen : MonoBehaviour
         versionBadge.style.paddingLeft = 10; versionBadge.style.paddingRight = 10;
         versionBadge.style.paddingTop = 4; versionBadge.style.paddingBottom = 4;
         versionBadge.style.unityFontDefinition = fontDef;
-        // 版本号点击 5 次进入调试模式（仅站务公告触发）
-        int vc = 0;
-        versionBadge.clicked += () =>
-        {
-            vc++;
-            if (vc >= 5) { vc = 0; DebugPanel.Show(); }
-        };
         versionRow.Add(versionBadge);
 
         var dateLabel = new Label("2026-08-18");
