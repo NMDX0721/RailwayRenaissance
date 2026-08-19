@@ -1018,7 +1018,7 @@ AVOID:
 **文件**：Resources/bg/hangar.png  
 **用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，午后
 
-**剧情对应**：导师带着林彪悍走向0721号，这是他作为荣誉研究生的专属载具——一辆2053年制造的第一代试验车，沉睡23年，搭载了AI原型“岁月”。车门感应到有人靠近自动打开。
+**剧情对应**：林彪悍走向0721号——这是他作为荣誉研究生的专属载具，一辆2053年制造的第一代试验车，沉睡23年，搭载了AI原型“岁月”。车门感应到有人靠近自动打开。楼顶一侧，一名穿着深色制服的车队管理员站在车辆旁，正在做最后的交接检查——他不是导师，而是负责维护和保管这辆封存车辆的大学后勤人员。
 
 **提示词**：
 ```
@@ -1029,7 +1029,7 @@ university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, afternoon,
 NORTH KOREAN OFFICIAL AESTHETIC,
 "Chollima" brand sand-energy flying vehicles parked:
 
-SCENE: rooftop helipad of Kim Il Sung University's main building in the afternoon, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. This is a first-generation prototype from 2053, 23 years old, slightly worn. The cabin door on the RIGHT side of the vehicle is closed but will open when the protagonist approaches. The rooftop is large and spacious. A professor figure stands to the left, gesturing toward the vehicle. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
+SCENE: rooftop helipad of Kim Il Sung University's main building in the afternoon, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. This is a first-generation prototype from 2053, 23 years old, slightly worn. The cabin door on the RIGHT side of the vehicle is closed but will open when the protagonist approaches. The rooftop is large and spacious. A University maintenance officer in a dark uniform (Mao-style tunic, red lapel pin) stands beside the vehicle, clipboard in hand, making final checks — not a professor, but the depot keeper who has maintained this dormant vehicle for years. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
 
 LAYOUT:
 - Large, spacious rooftop landing pad taking the lower third of the frame
