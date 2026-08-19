@@ -818,6 +818,12 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.style.flexGrow = 1;
         playerProgress.style.height = 16;
         playerProgress.style.marginRight = 6;
+        // 点击进度条跳转
+        playerProgress.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            if (playerSource != null && playerClip != null)
+                playerSource.time = playerProgress.value * playerClip.length;
+        });
         playerBar.Add(playerProgress);
 
         playerTotalTime = new Label("0:00");
@@ -833,7 +839,7 @@ public class TitleArchiveUI : MonoBehaviour
         StylePlayerBtn(playerPrevBtn);
         playerBar.Add(playerPrevBtn);
 
-        playerPlayBtn = new Button(TogglePlayPause) { text = ">" };
+        playerPlayBtn = new Button(TogglePlayPause) { text = "\u25B6" };
         playerPlayBtn.style.width = 44;
         playerPlayBtn.style.height = 32;
         playerPlayBtn.style.fontSize = 20;
@@ -847,7 +853,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.Add(playerNextBtn);
 
         // 循环模式切换
-        playerModeBtn = new Button(TogglePlayMode) { text = "单曲" };
+        playerModeBtn = new Button(TogglePlayMode) { text = "\u21BB" };
         playerModeBtn.style.width = 44;
         playerModeBtn.style.height = 28;
         playerModeBtn.style.fontSize = 14;
@@ -875,12 +881,12 @@ public class TitleArchiveUI : MonoBehaviour
         if (playerSource.isPlaying)
         {
             playerSource.Pause();
-            playerPlayBtn.text = ">";
+            playerPlayBtn.text = "\u25B6";
         }
         else
         {
             playerSource.UnPause();
-            playerPlayBtn.text = "||";
+            playerPlayBtn.text = "\u275A\u275A";
         }
     }
 
@@ -949,9 +955,9 @@ public class TitleArchiveUI : MonoBehaviour
         playMode = (PlayMode)(((int)playMode + 1) % 3);
         switch (playMode)
         {
-            case PlayMode.SingleRepeat: playerModeBtn.text = "单曲"; break;
-            case PlayMode.Sequential: playerModeBtn.text = "顺序"; break;
-            case PlayMode.Shuffle: playerModeBtn.text = "随机"; break;
+            case PlayMode.SingleRepeat: playerModeBtn.text = "\u21BB"; break;
+            case PlayMode.Sequential: playerModeBtn.text = "\u2192"; break;
+            case PlayMode.Shuffle: playerModeBtn.text = "\u21C4"; break;
         }
     }
 
@@ -995,7 +1001,7 @@ public class TitleArchiveUI : MonoBehaviour
 
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
-        playerPlayBtn.text = "||";
+        playerPlayBtn.text = "❚❚";
         playerBar.style.display = DisplayStyle.Flex;
         isPlayerPlaying = true;
     }
@@ -1045,7 +1051,7 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.value = 0;
         playerCurTime.text = "0:00";
         playerTotalTime.text = "0:00";
-        playerPlayBtn.text = ">";
+        playerPlayBtn.text = "▶";
         playerClip = null;
         currentTrackId = null;
         currentTrackTitle = null;
@@ -1767,7 +1773,7 @@ public class TitleArchiveUI : MonoBehaviour
         currentTrackId = "platform";
         playerTitle.text = currentTrackTitle;
         playerTotalTime.text = FormatTime(clip.length);
-        playerPlayBtn.text = "||";
+        playerPlayBtn.text = "❚❚";
         // 不在此设置 playerBar 可见性——由 ShowTab 根据当前页签控制
     }
 
