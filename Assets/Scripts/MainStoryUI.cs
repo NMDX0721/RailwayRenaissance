@@ -124,25 +124,42 @@ public class MainStoryUI : MonoBehaviour
         body.Add(leftPanel);
 
         var prologueCard = new VisualElement();
-        prologueCard.style.width = 400;
-        prologueCard.style.backgroundColor = new Color(0.15f, 0.10f, 0.06f, 0.9f);
-        prologueCard.style.borderTopWidth = 1;
-        prologueCard.style.borderBottomWidth = 1;
-        prologueCard.style.borderLeftWidth = 1;
-        prologueCard.style.borderRightWidth = 1;
-        prologueCard.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        prologueCard.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        prologueCard.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        prologueCard.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        prologueCard.style.borderTopLeftRadius = 8;
-        prologueCard.style.borderTopRightRadius = 8;
-        prologueCard.style.borderBottomLeftRadius = 8;
-        prologueCard.style.borderBottomRightRadius = 8;
-        prologueCard.style.paddingLeft = 20;
-        prologueCard.style.paddingRight = 20;
-        prologueCard.style.paddingTop = 16;
-        prologueCard.style.paddingBottom = 16;
+        prologueCard.style.width = 420;
+        prologueCard.style.backgroundColor = new Color(0.15f, 0.10f, 0.06f, 0.95f);
+        prologueCard.style.borderTopWidth = 2;
+        prologueCard.style.borderBottomWidth = 2;
+        prologueCard.style.borderLeftWidth = 2;
+        prologueCard.style.borderRightWidth = 2;
+        prologueCard.style.borderTopColor = new Color(0.82f, 0.66f, 0.4f, 0.9f);
+        prologueCard.style.borderBottomColor = new Color(0.82f, 0.66f, 0.4f, 0.9f);
+        prologueCard.style.borderLeftColor = new Color(0.82f, 0.66f, 0.4f, 0.9f);
+        prologueCard.style.borderRightColor = new Color(0.82f, 0.66f, 0.4f, 0.9f);
+        prologueCard.style.borderTopLeftRadius = 6;
+        prologueCard.style.borderTopRightRadius = 6;
+        prologueCard.style.borderBottomLeftRadius = 6;
+        prologueCard.style.borderBottomRightRadius = 6;
+        // 轻微旋转，仿票据随意搁置感
+        prologueCard.style.rotate = new Rotate(new Angle(-1.2f)); // 反过来是 1.2° 逆时针
+        prologueCard.style.paddingLeft = 24;
+        prologueCard.style.paddingRight = 24;
+        prologueCard.style.paddingTop = 18;
+        prologueCard.style.paddingBottom = 18;
         leftPanel.Add(prologueCard);
+
+        // 左上角"票号"戳记（金色标签条）
+        var ticketStamp = new Label("NO.0721");
+        ticketStamp.style.position = Position.Absolute;
+        ticketStamp.style.top = -11;
+        ticketStamp.style.right = 18;
+        ticketStamp.style.fontSize = 13;
+        ticketStamp.style.color = new Color(0.9f, 0.75f, 0.45f, 0.85f);
+        ticketStamp.style.backgroundColor = new Color(0.18f, 0.12f, 0.06f, 1f);
+        ticketStamp.style.paddingLeft = 8; ticketStamp.style.paddingRight = 8;
+        ticketStamp.style.paddingTop = 2; ticketStamp.style.paddingBottom = 2;
+        ticketStamp.style.borderTopLeftRadius = 3; ticketStamp.style.borderTopRightRadius = 3;
+        ticketStamp.style.borderBottomLeftRadius = 3; ticketStamp.style.borderBottomRightRadius = 3;
+        ticketStamp.style.unityFontDefinition = Fd();
+        prologueCard.Add(ticketStamp);
 
         // 卡片内的图片占位
         var cardImage = new VisualElement();
@@ -188,13 +205,65 @@ public class MainStoryUI : MonoBehaviour
         prologueDesc.style.unityFontDefinition = Fd();
         prologueCard.Add(prologueDesc);
 
-        // 右栏：Act 1 > Prologue 层级 + 话列表
+        // —— 信号灯状态行（三色：绿=完成全部 / 黄=进行中 / 红=锁定） ——
+        var lampRow = new VisualElement();
+        lampRow.style.flexDirection = FlexDirection.Row;
+        lampRow.style.alignItems = Align.Center;
+        lampRow.style.marginTop = 14;
+        prologueCard.Add(lampRow);
+
+        int completed = 0;
+        for (int i = 0; i < Episodes.Length; i++)
+            if (PlayerPrefs.GetInt("ArchiveStory_" + Episodes[i].script, 0) == 1) completed++;
+
+        // 画 10 盏信号灯
+        for (int i = 0; i < Episodes.Length; i++)
+        {
+            bool done = PlayerPrefs.GetInt("ArchiveStory_" + Episodes[i].script, 0) == 1;
+            var lamp = new VisualElement();
+            lamp.style.width = 10; lamp.style.height = 10;
+            lamp.style.borderTopLeftRadius = 5; lamp.style.borderTopRightRadius = 5;
+            lamp.style.borderBottomLeftRadius = 5; lamp.style.borderBottomRightRadius = 5;
+            lamp.style.marginRight = 6;
+            // 绿=已完成 / 黄=当前进行 / 红=未解锁
+            if (done)
+                lamp.style.backgroundColor = new Color(0.3f, 0.85f, 0.4f, 1f);
+            else if (i == completed)
+                lamp.style.backgroundColor = new Color(1f, 0.8f, 0.2f, 1f);
+            else
+                lamp.style.backgroundColor = new Color(0.6f, 0.25f, 0.2f, 0.6f);
+            lampRow.Add(lamp);
+        }
+
+        var lampStatus = new Label(completed + "/" + Episodes.Length);
+        lampStatus.style.fontSize = 14;
+        lampStatus.style.color = new Color(0.8f, 0.75f, 0.6f, 0.8f);
+        lampStatus.style.unityFontDefinition = Fd();
+        lampStatus.style.marginLeft = 4;
+        lampRow.Add(lampStatus);
+
+        // 右栏：Act 1 > Prologue 层级 + 话列表（旧站台玻璃质感）
         var rightPanel = new VisualElement();
-        rightPanel.style.width = 440;
-        rightPanel.style.paddingLeft = 12;
+        rightPanel.style.width = 460;
+        rightPanel.style.paddingLeft = 14;
         rightPanel.style.paddingRight = 24;
         rightPanel.style.paddingTop = 20;
+        // 旧玻璃质感：半透明暖棕 + 内侧细边
+        rightPanel.style.backgroundColor = new Color(0.16f, 0.11f, 0.07f, 0.35f);
+        rightPanel.style.borderTopLeftRadius = 10;
+        rightPanel.style.borderTopRightRadius = 10;
+        rightPanel.style.borderBottomLeftRadius = 10;
+        rightPanel.style.borderBottomRightRadius = 10;
         body.Add(rightPanel);
+
+        // 玻璃反光条（顶部斜向高光）
+        var glassHighlight = new VisualElement();
+        glassHighlight.style.position = Position.Absolute;
+        glassHighlight.style.top = 0; glassHighlight.style.left = 0; glassHighlight.style.right = 0;
+        glassHighlight.style.height = 2;
+        glassHighlight.style.backgroundColor = new Color(0.9f, 0.8f, 0.6f, 0.15f);
+        glassHighlight.pickingMode = PickingMode.Ignore;
+        rightPanel.Add(glassHighlight);
 
         // Act 1 标题
         var actLabel = new Label("Act 1");
@@ -202,8 +271,16 @@ public class MainStoryUI : MonoBehaviour
         actLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
         actLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
         actLabel.style.unityFontDefinition = Fd();
-        actLabel.style.marginBottom = 4;
+        actLabel.style.marginBottom = 2;
         rightPanel.Add(actLabel);
+
+        // Act 1 金色下划线
+        var actUnderline = new VisualElement();
+        actUnderline.style.width = 80;
+        actUnderline.style.height = 2;
+        actUnderline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.5f);
+        actUnderline.style.marginBottom = 4;
+        rightPanel.Add(actUnderline);
 
         // Prologue 副标题
         var prologueLabel = new Label("Prologue");
@@ -214,7 +291,6 @@ public class MainStoryUI : MonoBehaviour
         rightPanel.Add(prologueLabel);
 
         // 话列表
-
         var scroll = new ScrollView(ScrollViewMode.Vertical);
         scroll.style.flexGrow = 1;
         scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
@@ -228,24 +304,52 @@ public class MainStoryUI : MonoBehaviour
             var row = new VisualElement();
             row.style.flexDirection = FlexDirection.Row;
             row.style.alignItems = Align.Center;
-            row.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.7f);
-            row.style.paddingLeft = 12;
+            row.style.backgroundColor = unlocked
+                ? new Color(0.14f, 0.09f, 0.05f, 0.75f)
+                : new Color(0.10f, 0.07f, 0.04f, 0.5f);
+            row.style.paddingLeft = 14;
             row.style.paddingRight = 12;
-            row.style.paddingTop = 8;
-            row.style.paddingBottom = 8;
+            row.style.paddingTop = 9;
+            row.style.paddingBottom = 9;
             row.style.marginBottom = 6;
             row.style.borderTopLeftRadius = 6;
             row.style.borderTopRightRadius = 6;
             row.style.borderBottomLeftRadius = 6;
             row.style.borderBottomRightRadius = 6;
+            row.pickingMode = PickingMode.Position;
             scroll.Add(row);
 
+            // 左侧信号灯（绿=解锁 / 红=锁定）
+            var lamp = new VisualElement();
+            lamp.style.width = 10; lamp.style.height = 10;
+            lamp.style.borderTopLeftRadius = 5; lamp.style.borderTopRightRadius = 5;
+            lamp.style.borderBottomLeftRadius = 5; lamp.style.borderBottomRightRadius = 5;
+            lamp.style.marginRight = 10;
+            lamp.style.flexShrink = 0;
+            if (unlocked)
+            {
+                lamp.style.backgroundColor = new Color(0.3f, 0.85f, 0.4f, 1f);
+                // 绿色外发光（双层圆模拟）
+                lamp.style.borderTopWidth = 2; lamp.style.borderBottomWidth = 2;
+                lamp.style.borderLeftWidth = 2; lamp.style.borderRightWidth = 2;
+                lamp.style.borderTopColor = new Color(0.3f, 0.85f, 0.4f, 0.25f);
+                lamp.style.borderBottomColor = new Color(0.3f, 0.85f, 0.4f, 0.25f);
+                lamp.style.borderLeftColor = new Color(0.3f, 0.85f, 0.4f, 0.25f);
+                lamp.style.borderRightColor = new Color(0.3f, 0.85f, 0.4f, 0.25f);
+            }
+            else
+            {
+                lamp.style.backgroundColor = new Color(0.55f, 0.22f, 0.18f, 0.65f);
+            }
+            row.Add(lamp);
+
             var numLabel = new Label("第" + (i + 1) + "话");
-            numLabel.style.fontSize = 18;
+            numLabel.style.fontSize = 17;
             numLabel.style.color = unlocked ? new Color(1f, 200f / 255f, 100f / 255f, 1f) : new Color(0.6f, 0.6f, 0.6f, 0.8f);
             numLabel.style.unityFontDefinition = Fd();
-            numLabel.style.width = 30;
-            numLabel.style.marginRight = 10;
+            numLabel.style.width = 42;
+            numLabel.style.marginRight = 8;
+            numLabel.style.flexShrink = 0;
             row.Add(numLabel);
 
             var textCol = new VisualElement();
@@ -267,9 +371,9 @@ public class MainStoryUI : MonoBehaviour
             if (unlocked)
             {
                 var enterBtn = new Button(() => StartEpisode(script)) { text = "Enter" };
-                enterBtn.style.width = 80;
-                enterBtn.style.height = 32;
-                enterBtn.style.fontSize = 16;
+                enterBtn.style.width = 74;
+                enterBtn.style.height = 30;
+                enterBtn.style.fontSize = 15;
                 enterBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
                 enterBtn.style.unityFontDefinition = Fd();
                 enterBtn.style.backgroundColor = new Color(0.2f, 0.3f, 0.5f, 0.8f);
