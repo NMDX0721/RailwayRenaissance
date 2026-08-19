@@ -1270,15 +1270,23 @@ public class VNManager : MonoBehaviour
         banner.style.alignItems = Align.Center;
         episodeClearOverlay.Add(banner);
 
-        var nextLabel = new Label("Next Episode");
+        var nextLabel = new Label("下一话");
         nextLabel.style.fontSize = 18;
         nextLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
         nextLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
         nextLabel.style.marginBottom = 8;
         banner.Add(nextLabel);
 
-        // 查找下一节标题
+        // 查找下一节标题和话数
         string nextTitle = GetEpisodeTitle(nextScript);
+        int epNum = GetEpisodeNumber(nextScript);
+        var epLabel = new Label("第" + epNum + "话");
+        epLabel.style.fontSize = 16;
+        epLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.7f);
+        epLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        epLabel.style.marginBottom = 4;
+        banner.Add(epLabel);
+
         var epTitle = new Label(nextTitle);
         epTitle.style.fontSize = 28;
         epTitle.style.color = new Color(1f, 1f, 1f, 0.95f);
@@ -1313,6 +1321,18 @@ public class VNManager : MonoBehaviour
             {"prologue_10_transition", "序章落幕"},
         };
         return titles.TryGetValue(scriptName, out var t) ? t : scriptName;
+    }
+
+    private int GetEpisodeNumber(string scriptName)
+    {
+        var nums = new System.Collections.Generic.Dictionary<string, int>
+        {
+            {"prologue_01_news", 1}, {"prologue_02_day0", 2}, {"prologue_03_journey", 3},
+            {"prologue_04_arrival", 4}, {"prologue_05_inspection", 5}, {"prologue_06_team", 6},
+            {"prologue_07_first_repair", 7}, {"prologue_08_first_run", 8},
+            {"prologue_09_funding", 9}, {"prologue_10_transition", 10},
+        };
+        return nums.TryGetValue(scriptName, out var n) ? n : 0;
     }
 
     // Variable system methods

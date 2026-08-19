@@ -188,7 +188,7 @@ public class MainStoryUI : MonoBehaviour
         prologueDesc.style.unityFontDefinition = Fd();
         prologueCard.Add(prologueDesc);
 
-        // 右栏：剧集列表
+        // 右栏：Act 1 > Prologue 层级 + 话列表
         var rightPanel = new VisualElement();
         rightPanel.style.width = 440;
         rightPanel.style.paddingLeft = 12;
@@ -196,13 +196,24 @@ public class MainStoryUI : MonoBehaviour
         rightPanel.style.paddingTop = 20;
         body.Add(rightPanel);
 
-        var listHeader = new Label("Episodes");
-        listHeader.style.fontSize = 20;
-        listHeader.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-        listHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
-        listHeader.style.unityFontDefinition = Fd();
-        listHeader.style.marginBottom = 12;
-        rightPanel.Add(listHeader);
+        // Act 1 标题
+        var actLabel = new Label("Act 1");
+        actLabel.style.fontSize = 22;
+        actLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+        actLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        actLabel.style.unityFontDefinition = Fd();
+        actLabel.style.marginBottom = 4;
+        rightPanel.Add(actLabel);
+
+        // Prologue 副标题
+        var prologueLabel = new Label("Prologue");
+        prologueLabel.style.fontSize = 18;
+        prologueLabel.style.color = new Color(0.8f, 0.8f, 0.8f, 0.85f);
+        prologueLabel.style.unityFontDefinition = Fd();
+        prologueLabel.style.marginBottom = 12;
+        rightPanel.Add(prologueLabel);
+
+        // 话列表
 
         var scroll = new ScrollView(ScrollViewMode.Vertical);
         scroll.style.flexGrow = 1;
@@ -229,7 +240,7 @@ public class MainStoryUI : MonoBehaviour
             row.style.borderBottomRightRadius = 6;
             scroll.Add(row);
 
-            var numLabel = new Label((i + 1).ToString("D2"));
+            var numLabel = new Label("第" + (i + 1) + "话");
             numLabel.style.fontSize = 18;
             numLabel.style.color = unlocked ? new Color(1f, 200f / 255f, 100f / 255f, 1f) : new Color(0.6f, 0.6f, 0.6f, 0.8f);
             numLabel.style.unityFontDefinition = Fd();
