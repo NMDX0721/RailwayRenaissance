@@ -851,9 +851,9 @@ public class TitleArchiveUI : MonoBehaviour
         playerPlayBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         playerPlayBtn.style.unityFontDefinition = Fd();
         playerPlayBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        playerPlayBtn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
-        playerPlayBtn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
-        playerPlayBtn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
+        playerPlayBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        playerPlayBtn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        playerPlayBtn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(playerPlayBtn);
         playerBar.Add(playerPlayBtn);
 
@@ -873,9 +873,9 @@ public class TitleArchiveUI : MonoBehaviour
         playerModeBtn.style.unityFontDefinition = Fd();
         playerModeBtn.style.marginLeft = 8;
         playerModeBtn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        playerModeBtn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
-        playerModeBtn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
-        playerModeBtn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
+        playerModeBtn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        playerModeBtn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        playerModeBtn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(playerModeBtn);
         playerBar.Add(playerModeBtn);
     }
@@ -888,9 +888,9 @@ public class TitleArchiveUI : MonoBehaviour
         btn.style.unityFontDefinition = Fd();
         btn.style.marginLeft = 4;
         btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        btn.style.backgroundRepeat = BackgroundRepeat.NoRepeat;
-        btn.style.backgroundPositionX = BackgroundPropertyPosition.Center;
-        btn.style.backgroundPositionY = BackgroundPropertyPosition.Center;
+        btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+        btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(btn);
     }
 

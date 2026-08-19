@@ -509,8 +509,11 @@ public class VNManager : MonoBehaviour
             btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
             btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
             btn.style.marginLeft = 4;
-            // 像素图缩放模式
-            btn.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
+            // 像素图缩放模式（新 background API，替代废弃的 unityBackgroundScaleMode）
+            btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat);
+            btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
             menuExpandedContainer.Add(btn);
         }
 
