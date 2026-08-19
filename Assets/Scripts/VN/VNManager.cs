@@ -389,6 +389,7 @@ public class VNManager : MonoBehaviour
             menuExpanded = false;
             menuExpandedContainer.style.display = DisplayStyle.None;
         }
+    }
 
     /// <summary>Skip 跳转：快速推进到下一选项/下一场景。</summary>
     private void SkipToNext()
@@ -532,7 +533,6 @@ public class VNManager : MonoBehaviour
         menuExpanded = false;
         if (menuExpandedContainer != null)
             menuExpandedContainer.style.display = DisplayStyle.None;
-    }
     }
 
     /// <summary>恢复被隐藏的 VN UI。</summary>
