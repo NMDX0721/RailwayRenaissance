@@ -280,6 +280,7 @@ public class TitleArchiveUI : MonoBehaviour
         AddTabButton(tabRow, "stories", "故事");
         AddTabButton(tabRow, "scenes", "场景");
         AddTabButton(tabRow, "collection", "图鉴");
+        AddTabButton(tabRow, "bookmarks", "书签");
         AddTabButton(tabRow, "stats", "统计");
 
         // ———— 内容区 ————
@@ -324,6 +325,7 @@ public class TitleArchiveUI : MonoBehaviour
         BuildScenesPage();
         BuildCollectionPage();
         BuildStatsPage();
+        BuildBookmarksPage();
     }
 
     // ================= 成就页 =================
@@ -1543,6 +1545,162 @@ public class TitleArchiveUI : MonoBehaviour
         row.Add(val);
 
         parent.Add(row);
+    }
+
+    // ================= 书签页 =================
+
+    private void BuildBookmarksPage()
+    {
+        var page = new VisualElement { name = "page-bookmarks" };
+        page.style.display = DisplayStyle.None;
+        contentScroll.Add(page);
+        tabPages["bookmarks"] = page;
+
+        var tip = new Label("自动书签随阅读推进，话完成自动清理；手动书签永久保留，点击跳转回看");
+        tip.style.fontSize = 16;
+        tip.style.color = dimText;
+        tip.style.unityFontDefinition = Fd();
+        tip.style.marginBottom = 12;
+        page.Add(tip);
+
+        // —— 自动书签 ——
+        var autoHeader = new Label("自动书签");
+        autoHeader.style.fontSize = 20;
+        autoHeader.style.color = goldNormal;
+        autoHeader.style.unityFontDefinition = Fd();
+        autoHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+        autoHeader.style.marginTop = 6;
+        autoHeader.style.marginBottom = 8;
+        page.Add(autoHeader);
+
+        var autoList = BookmarkManager.GetAllAuto();
+        if (autoList.Count == 0)
+        {
+            var empty = new Label("暂无自动书签");
+            empty.style.fontSize = 16;
+            empty.style.color = dimText;
+            empty.style.unityFontDefinition = Fd();
+            empty.style.marginBottom = 10;
+            page.Add(empty);
+        }
+        else
+        {
+            for (int i = 0; i < autoList.Count; i++)
+                page.Add(BuildBookmarkCard(autoList[i]));
+        }
+
+        // —— 手动书签 ——
+        var manualHeader = new Label("手动书签");
+        manualHeader.style.fontSize = 20;
+        manualHeader.style.color = goldNormal;
+        manualHeader.style.unityFontDefinition = Fd();
+        manualHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+        manualHeader.style.marginTop = 18;
+        manualHeader.style.marginBottom = 8;
+        page.Add(manualHeader);
+
+        var manualList = BookmarkManager.GetAllManual();
+        if (manualList.Count == 0)
+        {
+            var empty2 = new Label("在剧情中打开 Menu → ◉ 可添加书签");
+            empty2.style.fontSize = 16;
+            empty2.style.color = dimText;
+            empty2.style.unityFontDefinition = Fd();
+            page.Add(empty2);
+        }
+        else
+        {
+            for (int i = 0; i < manualList.Count; i++)
+                page.Add(BuildBookmarkCard(manualList[i]));
+        }
+    }
+
+    private VisualElement BuildBookmarkCard(BookmarkManager.Bookmark bm)
+    {
+        var card = new VisualElement();
+        card.style.flexDirection = FlexDirection.Row;
+        card.style.alignItems = Align.Center;
+        card.style.paddingLeft = 14; card.style.paddingRight = 14;
+        card.style.paddingTop = 10; card.style.paddingBottom = 10;
+        card.style.marginBottom = 8;
+        card.style.backgroundColor = bm.isAuto ? glassBg : new Color(0.16f, 0.11f, 0.07f, 0.8f);
+        card.style.borderTopLeftRadius = 6; card.style.borderTopRightRadius = 6;
+        card.style.borderBottomLeftRadius = 6; card.style.borderBottomRightRadius = 6;
+        card.style.flexShrink = 0;
+
+        // 类型标签
+        var tag = new Label(bm.isAuto ? "自动" : "手动");
+        tag.style.width = 40;
+        tag.style.height = 22;
+        tag.style.fontSize = 13;
+        tag.style.unityTextAlign = TextAnchor.MiddleCenter;
+        tag.style.unityFontDefinition = Fd();
+        tag.style.color = bm.isAuto ? new Color(0.5f, 0.85f, 0.4f, 1f) : new Color(1f, 0.8f, 0.35f, 1f);
+        tag.style.borderTopWidth = 1; tag.style.borderBottomWidth = 1;
+        tag.style.borderLeftWidth = 1; tag.style.borderRightWidth = 1;
+        tag.style.borderTopColor = tag.style.color;
+        tag.style.borderBottomColor = tag.style.color;
+        tag.style.borderLeftColor = tag.style.color;
+        tag.style.borderRightColor = tag.style.color;
+        tag.style.borderTopLeftRadius = 4; tag.style.borderTopRightRadius = 4;
+        tag.style.borderBottomLeftRadius = 4; tag.style.borderBottomRightRadius = 4;
+        tag.style.marginRight = 12;
+        card.Add(tag);
+
+        // 文本
+        var textCol = new VisualElement();
+        textCol.style.flexGrow = 1;
+        card.Add(textCol);
+
+        var name = new Label(bm.name);
+        name.style.fontSize = 18;
+        name.style.color = new Color(1f, 1f, 1f, 0.95f);
+        name.style.unityFontDefinition = Fd();
+        name.style.marginBottom = 3;
+        textCol.Add(name);
+
+        var preview = new Label(bm.previewText ?? "");
+        preview.style.fontSize = 14;
+        preview.style.color = new Color(0.7f, 0.7f, 0.65f, 0.8f);
+        preview.style.unityFontDefinition = Fd();
+        preview.style.whiteSpace = WhiteSpace.Normal;
+        textCol.Add(preview);
+
+        // 操作：跳转 / 删除
+        if (bm.isAuto && bm.isCompleted)
+        {
+            var done = new Label("已完成");
+            done.style.fontSize = 14;
+            done.style.color = new Color(0.5f, 0.8f, 0.45f, 0.9f);
+            done.style.unityFontDefinition = Fd();
+            done.style.marginLeft = 8;
+            card.Add(done);
+        }
+        else
+        {
+            var goBtn = new Button(() => { BookmarkManager.JumpToBookmark(bm); UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test"); }) { text = "跳转" };
+            goBtn.style.width = 64; goBtn.style.height = 30;
+            goBtn.style.fontSize = 15; goBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            goBtn.style.unityFontDefinition = Fd();
+            goBtn.style.backgroundColor = new Color(0.2f, 0.3f, 0.5f, 0.8f);
+            goBtn.style.color = new Color(0.8f, 0.9f, 1f, 1f);
+            goBtn.style.marginLeft = 8;
+            card.Add(goBtn);
+        }
+
+        if (!bm.isAuto)
+        {
+            var delBtn = new Button(() => { BookmarkManager.RemoveManual(bm.id); RebuildPages(); ShowTab("bookmarks"); }) { text = "删" };
+            delBtn.style.width = 44; delBtn.style.height = 30;
+            delBtn.style.fontSize = 15; delBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            delBtn.style.unityFontDefinition = Fd();
+            delBtn.style.backgroundColor = new Color(0.4f, 0.2f, 0.2f, 0.6f);
+            delBtn.style.color = new Color(1f, 0.6f, 0.6f, 1f);
+            delBtn.style.marginLeft = 6;
+            card.Add(delBtn);
+        }
+
+        return card;
     }
 
     // ================= 工具 =================

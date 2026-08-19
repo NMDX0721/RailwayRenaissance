@@ -117,17 +117,67 @@ public class VNManager : MonoBehaviour
             }
         }
 
-        // 站长日志·故事回看：跳播指定章节脚本（从头播，不进读档）
+        // 站长日志·故事回看：跳播指定章节脚本（支持书签跳转——指定场景/对话索引）
         string replay = PlayerPrefs.GetString("VN_ReplayScript", "");
         if (!string.IsNullOrEmpty(replay))
         {
             PlayerPrefs.DeleteKey("VN_ReplayScript");
             PlayerPrefs.Save();
-            StartScript(replay);
+
+            // 书签跳转：若带场景/对话索引，则从该位置开始
+            VN_ReplayInjected = true;
+            if (PlayerPrefs.HasKey("VN_ReplayScene"))
+            {
+                int bookmarkScene = PlayerPrefs.GetInt("VN_ReplayScene");
+                int bookmarkDialogue = PlayerPrefs.GetInt("VN_ReplayDialogue", 0);
+                PlayerPrefs.DeleteKey("VN_ReplayScene");
+                PlayerPrefs.DeleteKey("VN_ReplayDialogue");
+                PlayerPrefs.Save();
+                StartBookmarkScript(replay, bookmarkScene, bookmarkDialogue);
+            }
+            else
+            {
+                StartScript(replay);
+            }
             return;
         }
 
         StartScript("prologue_01_news");
+    }
+
+    /// <summary>从书签指定的场景/对话位置开始播放脚本。</summary>
+    private void StartBookmarkScript(string scriptName, int sceneIndex, int dialogueIndex)
+    {
+        StartScript(scriptName);
+        // StartScript 已设 sceneIndex=0/dialogueIndex=0，重定位到书签
+        if (currentScript == null || currentSceneIndex >= currentScript.scenes.Length) return;
+        int targetScene = Mathf.Clamp(sceneIndex, 0, currentScript.scenes.Length - 1);
+        StartScriptAt(scriptName, targetScene, dialogueIndex);
+    }
+
+    private void StartScriptAt(string scriptName, int sceneIndex, int dialogueIndex)
+    {
+        if (string.IsNullOrEmpty(scriptName)) return;
+        currentScript = jsonParser.LoadScript(scriptName);
+        if (currentScript == null) { Debug.LogError("Failed to load: " + scriptName); return; }
+        currentScriptName = scriptName;
+        currentSceneIndex = sceneIndex;
+        currentDialogueIndex = dialogueIndex;
+        isScriptRunning = true;
+
+        TitleArchiveUI.AutoUnlock(scriptName);
+
+        vnBacklog?.Clear();
+        characterSpriteManager?.ClearAll();
+        variables.Clear();
+
+        var scene = currentScript.scenes[Mathf.Min(sceneIndex, currentScript.scenes.Length - 1)];
+        if (!string.IsNullOrEmpty(scene.bg))
+            backgroundManager?.SetBackgroundImmediate(scene.bg);
+        if (!string.IsNullOrEmpty(scene.bgm))
+            VNAudioManager.Instance?.PlayBGM(scene.bgm);
+        characterSpriteManager?.ClearAll();
+        ShowCurrentDialogue();
     }
 
     private VNSaveData LoadLatestSave()
@@ -456,7 +506,7 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    /// <summary>添加书签：记录当前阅读位置 + 话数 + 话标题 + 台词预览。</summary>
+    /// <summary>添加书签（手动）：Menu → 书签，自动获取话数/话标题/台词预览。</summary>
     private void AddBookmark()
     {
         CloseMenuExpanded();
@@ -464,19 +514,41 @@ public class VNManager : MonoBehaviour
         var scene = currentScript.scenes[currentSceneIndex];
         var entry = currentDialogueIndex < scene.d.Length ? scene.d[currentDialogueIndex] : null;
         string preview = entry != null ? entry.text : "(无文本)";
-        if (preview.Length > 40) preview = preview.Substring(0, 40) + "...";
-        string epTitle = GetEpisodeTitle(currentScriptName);
-        int epNum = GetEpisodeNumber(currentScriptName);
-        string epPrefix = "第" + epNum + "话" + (string.IsNullOrEmpty(epTitle) ? "" : " " + epTitle);
-        string bookmarkName = epPrefix + " · " + preview;
-        string id = "Bookmark_" + System.DateTime.Now.ToString("yyyyMMddHHmmss");
-        PlayerPrefs.SetString(id + "_name", bookmarkName);
-        PlayerPrefs.SetString(id + "_script", currentScriptName);
-        PlayerPrefs.SetInt(id + "_scene", currentSceneIndex);
-        PlayerPrefs.SetInt(id + "_dialogue", currentDialogueIndex);
-        PlayerPrefs.SetString(id + "_epPrefix", epPrefix);
-        PlayerPrefs.Save();
-        Debug.Log("[Bookmark] 已添加: " + bookmarkName);
+        BookmarkManager.AddManual(
+            currentScriptName,
+            GetEpisodeTitle(currentScriptName),
+            GetEpisodeNumber(currentScriptName),
+            currentSceneIndex,
+            currentDialogueIndex,
+            preview);
+        // 顶部浮层提示
+        ShowBookmarkToast();
+    }
+
+    private void ShowBookmarkToast()
+    {
+        if (bookmarkToast == null)
+        {
+            bookmarkToast = new Label("已添加书签");
+            bookmarkToast.style.position = Position.Absolute;
+            bookmarkToast.style.top = 60;
+            bookmarkToast.style.left = 0; bookmarkToast.style.right = 0;
+            bookmarkToast.style.fontSize = 20;
+            bookmarkToast.style.color = new Color(1f, 0.85f, 0.5f, 1f);
+            bookmarkToast.style.unityTextAlign = TextAnchor.MiddleCenter;
+            bookmarkToast.style.unityFontDefinition = new FontDefinition { font = gameFont };
+            bookmarkToast.pickingMode = PickingMode.Ignore;
+            uiDoc.rootVisualElement.Add(bookmarkToast);
+        }
+        bookmarkToast.style.display = DisplayStyle.Flex;
+        if (bookmarkToastCoroutine != null) StopCoroutine(bookmarkToastCoroutine);
+        bookmarkToastCoroutine = StartCoroutine(HideBookmarkToastDelayed());
+    }
+
+    private System.Collections.IEnumerator HideBookmarkToastDelayed()
+    {
+        yield return new UnityEngine.WaitForSeconds(1.5f);
+        if (bookmarkToast != null) bookmarkToast.style.display = DisplayStyle.None;
     }
 
     private void SetupConfirmDialog(UIDocument uiDoc)
@@ -980,7 +1052,30 @@ public class VNManager : MonoBehaviour
 
             characterSpriteManager?.ClearAll();
         }
+
+        // 自动书签推进：记录当前位置（仅正常播放入口，非跳转）
+        if (!string.IsNullOrEmpty(currentScriptName) && VN_ReplayInjected == false)
+            AutoBookmarkTrack();
         ShowCurrentDialogue();
+    }
+
+    /// <summary>更新当前话的自动书签位置。</summary>
+    private void AutoBookmarkTrack()
+    {
+        if (currentScript == null || string.IsNullOrEmpty(currentScriptName)) return;
+        var scene = currentScript.scenes[currentSceneIndex];
+        if (scene == null || currentDialogueIndex >= scene.d.Length) return;
+        var entry = scene.d[currentDialogueIndex];
+        string preview = entry != null ? entry.text : "";
+        if (entry != null && entry.t == "cg" && string.IsNullOrEmpty(entry.text))
+            preview = "(CG)";
+        BookmarkManager.UpdateAutoBookmark(
+            currentScriptName,
+            GetEpisodeTitle(currentScriptName),
+            GetEpisodeNumber(currentScriptName),
+            currentSceneIndex,
+            currentDialogueIndex,
+            preview);
     }
 
     private void ShowCurrentDialogue()
@@ -1254,6 +1349,10 @@ public class VNManager : MonoBehaviour
     {
         StopAutoPlay();
         isScriptRunning = false;
+
+        // 话完成：销毁当前话的自动书签（从头回看不需书签）
+        if (!string.IsNullOrEmpty(currentScriptName))
+            BookmarkManager.ClearAutoBookmark(currentScriptName);
 
         // 检查是否有下一个剧本需要自动加载（序章链）
         if (currentScript != null && !string.IsNullOrEmpty(currentScript.nextScript))
