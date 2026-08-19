@@ -1863,24 +1863,47 @@ public class TitleArchiveUI : MonoBehaviour
         }
     }
 
-    /// <summary>解锁音乐（幂等）。</summary>
+    /// <summary>本次会话新增解锁项（供 VN 话结束时奖励弹窗消费）。由 UnlockXX 方法在首次解锁时填充。</summary>
+    private static readonly List<string> pendingUnlocks = new List<string>();
+
+    /// <summary>取走并清空新增解锁清单（奖励弹窗用）。</summary>
+    public static string[] TakePendingUnlocks()
+    {
+        var result = pendingUnlocks.ToArray();
+        pendingUnlocks.Clear();
+        return result;
+    }
+
+    private static void MarkNewUnlock(string label)
+    {
+        if (!pendingUnlocks.Contains(label))
+            pendingUnlocks.Add(label);
+    }
+
+    /// <summary>解锁音乐（幂等；首次解锁记录供奖励弹窗）。</summary>
     public static void UnlockMusic(string id)
     {
+        if (PlayerPrefs.GetInt("ArchiveMusic_" + id, 0) == 1) return;
         PlayerPrefs.SetInt("ArchiveMusic_" + id, 1);
         PlayerPrefs.Save();
+        MarkNewUnlock("音乐 · " + id);
     }
 
-    /// <summary>解锁场景（幂等）。</summary>
+    /// <summary>解锁场景（幂等；首次解锁记录）。</summary>
     public static void UnlockScene(string id)
     {
+        if (PlayerPrefs.GetInt("ArchiveScene_" + id, 0) == 1) return;
         PlayerPrefs.SetInt("ArchiveScene_" + id, 1);
         PlayerPrefs.Save();
+        MarkNewUnlock("场景 · " + id);
     }
 
-    /// <summary>解锁故事章节（幂等）。</summary>
+    /// <summary>解锁故事章节（幂等；首次解锁记录）。</summary>
     public static void UnlockStory(string id)
     {
+        if (PlayerPrefs.GetInt("ArchiveStory_" + id, 0) == 1) return;
         PlayerPrefs.SetInt("ArchiveStory_" + id, 1);
         PlayerPrefs.Save();
+        MarkNewUnlock("章节 · " + id);
     }
 }
