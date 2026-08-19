@@ -2146,6 +2146,38 @@ EXCLUSIONS:
 - No blood/violence (interceptors are unarmed-looking, blocking not shooting)
 ```
 
+
+### 2.33 统一便当店·平壤后街（shop）
+
+**文件**：Resources/bg/shop.png
+**用途**：序章 Day 0——平壤大学后街的「통일 도시락」（统一便当店），一个灰色地带的杂货铺。韩文招牌与领袖画像共存，货架上摆满南方走私货。
+
+**提示词**：
+`
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+small convenience store interior, Pyongyang, afternoon, slightly cramped:
+
+SCENE: Inside a small corner shop. Narrow aisles lined with metal shelves stocked with a wild mix: Korean instant noodles (Shin Ramyun), banana milk, soju bottles, shrimp crackers, canned coffee, cola. A glass-fronted refrigerator fully stocked with South Korean drinks. The wall behind the counter has a faded Kim Il-sung portrait next to a handwritten price board. A small glass counter displays Hello Kitty keychains and Kuromi figurines — the smuggled goods. The shopkeeper's stool behind the counter. Warm afternoon light through the door.
+
+LAYOUT:
+- Shelves in foreground with colorful product packaging
+- Glass counter mid-left with smuggled toys
+- Back wall: faded leader portrait + price board + 统一便当店 calligraphy
+- Fridge right side covered in stickers
+- Shopkeeper figure behind counter (implied, not detailed)
+
+COLORS:
+- Warm yellow interior light (#E8C87A)
+- Product packaging: bright reds, blues, greens (Korean branding)
+- Wall: aged cream (#D4C5A9)
+- Portrait: faded sepia tones
+
+MOOD: Where the border dissolves between two Koreas. A shop that shouldn't exist, thriving.
+`
+
+---
+
 ---
 
 
