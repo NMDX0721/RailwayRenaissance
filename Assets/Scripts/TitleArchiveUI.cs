@@ -758,6 +758,7 @@ public class TitleArchiveUI : MonoBehaviour
     private Button playerPlayBtn;
     private Button playerNextBtn;
     private Button playerStopBtn;
+    private Button playerModeBtn;
     private AudioSource playerSource;
     private AudioClip playerClip;
     private string currentTrackId;
