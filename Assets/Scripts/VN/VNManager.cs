@@ -480,7 +480,7 @@ public class VNManager : MonoBehaviour
         root.Add(menuExpandedContainer);
 
         // 子菜单项：像素图标
-        var (Texture2D icon, System.Action action)[] menuItemDefs = new (Texture2D, System.Action)[]
+        var menuItemDefs = new (Texture2D, System.Action)[]
         {
             (PixelIconHelper.SaveIcon(), () => OpenSaveMenu()),
             (PixelIconHelper.LoadIcon(), () => OpenLoadMenu()),
