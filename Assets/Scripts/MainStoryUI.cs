@@ -445,9 +445,17 @@ public class MainStoryUI : MonoBehaviour
     {
         PlayerPrefs.SetString("VN_ReplayScript", scriptName);
         PlayerPrefs.SetInt("VN_AutoLoad", 0);
+        // 从经营主界面（GameMainUI → 事务 → 剧情）进入 → 返回时回毛胚主界面
+        PlayerPrefs.SetInt("VN_FromGameMain", 1);
         PlayerPrefs.Save();
         Hide();
         SceneManager.LoadScene("VN_Test");
+    }
+
+    /// <summary>静态隐藏（供 VN 返回时清空）。</summary>
+    public static void HideStatic()
+    {
+        if (Instance != null) Instance.Hide();
     }
 
     public void Hide()

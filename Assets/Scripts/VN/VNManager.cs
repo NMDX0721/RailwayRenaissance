@@ -43,6 +43,7 @@ public class VNManager : MonoBehaviour
     private bool VN_ReplayInjected;
     private Label bookmarkToast;
     private Coroutine bookmarkToastCoroutine;
+    private bool uiButtonPressPending;
     private VisualElement episodeClearOverlay;
 
     // Menu bar
@@ -422,6 +423,8 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
+        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
+        autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
         autoBtn.style.width = 80;
         autoBtn.style.height = 40;
         autoBtn.style.flexShrink = 0;
@@ -447,6 +450,8 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
+        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
+        menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
         menuBtn.style.width = 80;
         menuBtn.style.height = 40;
         menuBtn.style.flexShrink = 0;
@@ -485,18 +490,19 @@ public class VNManager : MonoBehaviour
         // 子菜单项：简洁符号（非文字/非emoji）
         var menuItems = new (string icon, System.Action action)[]
         {
-            ("\u2193", () => OpenSaveMenu()),    // ↓ 存档
-            ("\u2191", () => OpenLoadMenu()),    // ↑ 取档
-            ("\u2261", () => ToggleBacklog()),    // ≡ 回顾
-            ("\u25B8", () => SkipToNext()),      // ▸ 跳转
-            ("\u25C9", () => AddBookmark()),      // ◉ 书签
-            ("\u2190", () => ShowConfirmDialog()) // ← 返回
+            ("存", () => OpenSaveMenu()),      // 存档
+            ("取", () => OpenLoadMenu()),      // 取档
+            ("回", () => ToggleBacklog()),      // 回顾
+            ("跳", () => SkipToNext()),        // 跳转
+            ("签", () => AddBookmark()),       // 书签
+            ("返", () => ShowConfirmDialog())  // 返回
         };
 
         for (int i = 0; i < menuItems.Length; i++)
         {
             var (icon, action) = menuItems[i];
             var btn = new UnityEngine.UIElements.Button(() => action()) { text = icon };
+            btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); uiButtonPressPending = true; });
             btn.style.width = 50;
             btn.style.height = 40;
             btn.style.fontSize = 18;
@@ -829,6 +835,17 @@ public class VNManager : MonoBehaviour
         PlayerPrefs.SetInt("VN_AutoLoad", 0);
         PlayerPrefs.Save();
 
+        // 从经营主界面进入的剧情回看 → 返回 GameMainUI（毛胚主界面）
+        if (PlayerPrefs.GetInt("VN_FromGameMain", 0) == 1)
+        {
+            PlayerPrefs.SetInt("VN_FromGameMain", 0);
+            PlayerPrefs.Save();
+            TitleArchiveUI.EnsureInstance()?.Hide();
+            MainStoryUI.HideStatic();
+            GameMainUI.Show();
+            return;
+        }
+
         try
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
@@ -933,6 +950,9 @@ public class VNManager : MonoBehaviour
 
     private void Update()
     {
+        // 前一帧消费过的 UI 点击标志清零（避免残留误拦截）
+        if (!Input.GetMouseButtonDown(0)) uiButtonPressPending = false;
+
         // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
         if (Input.GetMouseButtonDown(1))
         {
@@ -1018,7 +1038,7 @@ public class VNManager : MonoBehaviour
         {
             // UI Toolkit 按钮的 clicked 在 PointerUp 才触发，而 Input 按下检测先于它：
             // 若不拦截，点任何 UI 按钮的这次点击会把对话推进一句
-            if (Input.GetMouseButtonDown(0) && IsPointerOverInteractiveUI())
+            if (Input.GetMouseButtonDown(0) && (IsPointerOverInteractiveUI() || uiButtonPressPending))
                 return;
             if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex)
                 return;

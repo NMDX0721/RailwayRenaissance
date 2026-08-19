@@ -459,13 +459,20 @@ public class NewGameSetupUI : MonoBehaviour
             if (hint != null) hint.text = editable ? "调整各项参数数值" : "当前难度不支持自定义参数，请选择「指导司机」";
         }
 
-        // Page 3: only visible in custom mode
+        // Page 3: only in custom mode —— 非指导司机完全隐藏种子区，禁止任何种子操作
         if (idx == 2)
         {
             if (seedSection != null)
-                seedSection.style.opacity = isCustom ? 1.0f : 0.4f;
+                seedSection.style.display = isCustom ? DisplayStyle.Flex : DisplayStyle.None;
             if (seedField != null)
                 seedField.SetEnabled(isCustom);
+            for (int i = 0; i < seedButtons.Length; i++)
+            {
+                if (seedButtons[i] != null)
+                    seedButtons[i].SetEnabled(isCustom);
+                if (seedButtons[i] != null)
+                    seedButtons[i].style.opacity = isCustom ? 1.0f : 0.35f;
+            }
         }
     }
 
@@ -481,6 +488,8 @@ public class NewGameSetupUI : MonoBehaviour
 
     private void SelectPresetSeed(int idx)
     {
+        // 非指导司机难度禁止选种子
+        if (difficultyKeys[selectedDifficulty] != "custom") return;
         selectedSeed = idx;
         seedField.value = presetSeedCodes[idx];
         for (int i = 0; i < seedButtons.Length; i++)
@@ -503,9 +512,20 @@ public class NewGameSetupUI : MonoBehaviour
         {
             difficultyButtons[i].style.backgroundColor = (i == idx) ? CBtnActive : CBtn;
             difficultyButtons[i].style.color = (i == idx) ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.8f);
+            // 高亮强化：选中项加金色描边（防止被 hover 效果淹没）
+            bool active = (i == idx);
+            float bw = active ? 2f : 0f;
+            difficultyButtons[i].style.borderTopWidth = bw; difficultyButtons[i].style.borderBottomWidth = bw;
+            difficultyButtons[i].style.borderLeftWidth = bw; difficultyButtons[i].style.borderRightWidth = bw;
+            difficultyButtons[i].style.borderTopColor = new Color(1f, 0.85f, 0.5f, active ? 0.9f : 0f);
+            difficultyButtons[i].style.borderBottomColor = new Color(1f, 0.85f, 0.5f, active ? 0.9f : 0f);
+            difficultyButtons[i].style.borderLeftColor = new Color(1f, 0.85f, 0.5f, active ? 0.9f : 0f);
+            difficultyButtons[i].style.borderRightColor = new Color(1f, 0.85f, 0.5f, active ? 0.9f : 0f);
         }
         var desc = panel.Q<Label>("diff-desc");
         if (desc != null) desc.text = difficultyDescs[idx];
+        // 切换难度后立即刷新后续页的可编辑状态（若当前已在后续页）
+        if (currentPage == 1 || currentPage == 2) ShowPage(currentPage);
     }
 
     private void OnConfirm()

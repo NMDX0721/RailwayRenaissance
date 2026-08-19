@@ -1828,6 +1828,9 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (overlay == null) return;
 
+        // 隐藏标题界面根（共享 PanelSettings 时的混显/残留）
+        HideTitleRoot();
+
         RebuildPages();
         ShowTab(currentTabKey);
 
@@ -1845,6 +1848,37 @@ public class TitleArchiveUI : MonoBehaviour
         PauseGlobalBGM();
         if (!isPlayerPlaying)
             PlayArchiveAmbient();
+    }
+
+    private VisualElement savedTitleRoot;
+    private static bool titleRootHidden;
+
+    /// <summary>隐藏标题界面 UIDocument 根（仅当存在于当前场景时）。</summary>
+    private void HideTitleRoot()
+    {
+        if (titleRootHidden) return;
+        var docs = Resources.FindObjectsOfTypeAll<UIDocument>();
+        foreach (var doc in docs)
+        {
+            if (doc == null || doc.rootVisualElement == null) continue;
+            if (doc.rootVisualElement.Q<Button>("btn-archive") != null)
+            {
+                savedTitleRoot = doc.rootVisualElement;
+                savedTitleRoot.style.display = DisplayStyle.None;
+                titleRootHidden = true;
+                break;
+            }
+        }
+    }
+
+    private void RestoreTitleRoot()
+    {
+        if (titleRootHidden && savedTitleRoot != null)
+        {
+            savedTitleRoot.style.display = DisplayStyle.Flex;
+            savedTitleRoot = null;
+            titleRootHidden = false;
+        }
     }
 
     /// <summary>ESC 键关闭面板。</summary>
@@ -1869,6 +1903,8 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (overlay != null) overlay.style.display = DisplayStyle.None;
         uiDoc.rootVisualElement.UnregisterCallback<KeyDownEvent>(OnEscKey);
+        // 恢复被隐藏的标题界面根
+        RestoreTitleRoot();
         // 非用户轮播模式：停止氛围曲，恢复全局 BGM
         if (!isUserPlaylistMode)
         {
