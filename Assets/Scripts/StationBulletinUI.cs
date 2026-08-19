@@ -83,7 +83,7 @@ public class StationBulletinUI : MonoBehaviour
         header.style.borderBottomColor = CGoldDim;
         panel.Add(header);
 
-        var title = new Label("\u2699 设置");
+        var title = new Label("站务公告");
         title.style.fontSize = 28;
         title.style.color = CGold;
         title.style.unityFontStyleAndWeight = FontStyle.Bold;
