@@ -39,7 +39,8 @@ public class TitleScreen : MonoBehaviour
         TitleArchiveUI.UnlockMusic("platform");
         SetupGameCursor();
         Camera.main.clearFlags = CameraClearFlags.SolidColor;
-        Camera.main.backgroundColor = new Color(0.55f, 0.38f, 0.32f, 1f);
+        // 深檀棕黑（避免浅砖紫 0.55/0.38/0.32 被误认"紫色没内容"）
+        Camera.main.backgroundColor = new Color(0.09f, 0.055f, 0.04f, 1f);
         Camera.main.transform.position = new Vector3(0f, 0f, -10f);
 
         var root = GetComponent<UIDocument>().rootVisualElement;

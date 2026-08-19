@@ -1990,6 +1990,14 @@ public class TitleArchiveUI : MonoBehaviour
         }
     }
 
+    /// <summary>场景切换时清理悬挂的标题 root 引用（防止跨场景恢复已销毁元素/静态状态残留）。</summary>
+    private void OnDestroy()
+    {
+        savedTitleRoot = null;
+        titleRootHidden = false;
+        if (musicClipCache != null) musicClipCache.Clear();
+    }
+
     /// <summary>ESC 键关闭面板。</summary>
     private void RegisterEscHandler()
     {

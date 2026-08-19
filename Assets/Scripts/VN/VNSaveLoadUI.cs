@@ -47,7 +47,7 @@ public class VNSaveLoadUI : MonoBehaviour
     private static readonly Color Gold = new Color(200f / 255f, 150f / 255f, 80f / 255f, 1f);
     private static readonly Color GoldDim = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
     private static readonly Color GoldBright = new Color(230f / 255f, 190f / 255f, 110f / 255f, 1f);
-    private static readonly Color BgDark = new Color(0.08f, 0.05f, 0.03f, 0.92f);
+    private static readonly Color BgDark = new Color(0.07f, 0.045f, 0.025f, 1f); // 全不透明深棕，杜绝下层 VN UI 透出残留
     private static readonly Color SlotBg = new Color(0.12f, 0.07f, 0.04f, 0.85f);
     private static readonly Color SlotBgHover = new Color(0.18f, 0.11f, 0.06f, 0.9f);
     private static readonly Color BtnBg = new Color(0.25f, 0.14f, 0.08f, 0.9f);
