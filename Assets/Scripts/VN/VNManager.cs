@@ -40,6 +40,7 @@ public class VNManager : MonoBehaviour
     private VisualElement confirmDialog;
     private VisualElement bootScreen;
     private VisualElement cgScreen;
+    private VisualElement episodeClearOverlay;
 
     // Menu bar
     private VisualElement menuBar;
@@ -268,6 +269,7 @@ public class VNManager : MonoBehaviour
         menuBar.style.right = 10;
         menuBar.style.flexDirection = FlexDirection.Row;
         menuBar.style.alignItems = Align.Center;
+        menuBar.style.display = DisplayStyle.None; // 初始隐藏，StartScript 时显示
         root.Add(menuBar);
 
         // Auto 按钮
@@ -877,6 +879,9 @@ public class VNManager : MonoBehaviour
         currentDialogueIndex = 0;
         isScriptRunning = true;
 
+        // 脚本开始后显示菜单栏
+        if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
+
         // 站长日志解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
         TitleArchiveUI.AutoUnlock(scriptName);
 
@@ -1201,9 +1206,11 @@ public class VNManager : MonoBehaviour
         if (currentScript != null && !string.IsNullOrEmpty(currentScript.nextScript))
         {
             string next = currentScript.nextScript;
+            string curName = currentScriptName;
             currentScript = null;
             currentScriptName = null;
-            StartScript(next);
+            // 显示节过渡画面，然后加载下一节
+            ShowEpisodeClear(curName, next);
             return;
         }
 
@@ -1216,6 +1223,102 @@ public class VNManager : MonoBehaviour
         dialogueBox?.Hide();
         characterSpriteManager?.ClearAll();
         VNAudioManager.Instance?.StopBGM();
+    }
+
+    /// <summary>节结束过渡：渐暗→To be continued→Next Episode→点击继续。</summary>
+    private void ShowEpisodeClear(string completedScript, string nextScript)
+    {
+        if (episodeClearOverlay == null)
+        {
+            var root = uiDoc.rootVisualElement;
+            episodeClearOverlay = new VisualElement { name = "episode-clear" };
+            episodeClearOverlay.style.position = Position.Absolute;
+            episodeClearOverlay.style.top = 0; episodeClearOverlay.style.left = 0;
+            episodeClearOverlay.style.right = 0; episodeClearOverlay.style.bottom = 0;
+            episodeClearOverlay.style.backgroundColor = new Color(0, 0, 0, 0.6f); // 半透明，场景隐约可见
+            episodeClearOverlay.style.alignItems = Align.Center;
+            episodeClearOverlay.style.justifyContent = Justify.Center;
+            episodeClearOverlay.pickingMode = PickingMode.Position;
+            episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
+            {
+                if (e.target == episodeClearOverlay)
+                {
+                    episodeClearOverlay.style.display = DisplayStyle.None;
+                    StartScript(nextScript);
+                }
+            });
+            root.Add(episodeClearOverlay);
+        }
+        episodeClearOverlay.Clear();
+
+        // "To be continued..." 右下角
+        var tbc = new Label("To be continued...");
+        tbc.style.position = Position.Absolute;
+        tbc.style.bottom = 40;
+        tbc.style.right = 40;
+        tbc.style.fontSize = 22;
+        tbc.style.color = new Color(1f, 200f / 255f, 0f, 0.9f); // 黄色
+        tbc.style.unityFontStyleAndWeight = FontStyle.Bold;
+        tbc.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        episodeClearOverlay.Add(tbc);
+
+        // Next Episode 横幅
+        var banner = new VisualElement();
+        banner.style.backgroundColor = new Color(0.15f, 0.10f, 0.06f, 0.95f);
+        banner.style.paddingLeft = 40;
+        banner.style.paddingRight = 40;
+        banner.style.paddingTop = 20;
+        banner.style.paddingBottom = 20;
+        banner.style.borderTopLeftRadius = 8;
+        banner.style.borderTopRightRadius = 8;
+        banner.style.borderBottomLeftRadius = 8;
+        banner.style.borderBottomRightRadius = 8;
+        banner.style.alignItems = Align.Center;
+        episodeClearOverlay.Add(banner);
+
+        var nextLabel = new Label("Next Episode");
+        nextLabel.style.fontSize = 18;
+        nextLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.8f);
+        nextLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        nextLabel.style.marginBottom = 8;
+        banner.Add(nextLabel);
+
+        // 查找下一节标题
+        string nextTitle = GetEpisodeTitle(nextScript);
+        var epTitle = new Label(nextTitle);
+        epTitle.style.fontSize = 28;
+        epTitle.style.color = new Color(1f, 1f, 1f, 0.95f);
+        epTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
+        epTitle.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        banner.Add(epTitle);
+
+        var hint = new Label("Touch to continue");
+        hint.style.fontSize = 16;
+        hint.style.color = new Color(1f, 1f, 1f, 0.4f);
+        hint.style.marginTop = 16;
+        hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        banner.Add(hint);
+
+        episodeClearOverlay.style.display = DisplayStyle.Flex;
+    }
+
+    private string GetEpisodeTitle(string scriptName)
+    {
+        // 从 MainStoryUI 的章节数据获取标题
+        var titles = new System.Collections.Generic.Dictionary<string, string>
+        {
+            {"prologue_01_news", "广播里的时代"},
+            {"prologue_02_day0", "启程之日"},
+            {"prologue_03_journey", "边境危机"},
+            {"prologue_04_arrival", "抵达雾峰"},
+            {"prologue_05_inspection", "线路巡视"},
+            {"prologue_06_team", "旧人重逢"},
+            {"prologue_07_first_repair", "第一次检修"},
+            {"prologue_08_first_run", "首班车"},
+            {"prologue_09_funding", "三条来路"},
+            {"prologue_10_transition", "序章落幕"},
+        };
+        return titles.TryGetValue(scriptName, out var t) ? t : scriptName;
     }
 
     // Variable system methods

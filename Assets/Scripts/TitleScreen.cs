@@ -13,6 +13,7 @@ public class TitleScreen : MonoBehaviour
     private Button btnArchive;
     private Button btnSettings;
     private Button btnExit;
+    private Button btnStory;
     private Button announcementBtn;
     private VideoPlayer videoPlayer;
     private NewGameSetupUI newGameSetup;
@@ -56,9 +57,11 @@ public class TitleScreen : MonoBehaviour
         btnNewGame = root.Q<Button>("btn-new-game");
         btnContinue = root.Q<Button>("btn-continue");
         btnArchive = root.Q<Button>("btn-archive");
+        btnStory = root.Q<Button>("btn-story");
         btnSettings = root.Q<Button>("btn-settings");
         btnExit = root.Q<Button>("btn-exit");
         announcementBtn = root.Q<Button>("announcement-btn");
+        btnStory?.RegisterCallback<ClickEvent>(e => { MainStoryUI.Show(); });
 
         SetupGlassButton(btnNewGame);
         SetupGlassButton(btnContinue);

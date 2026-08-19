@@ -21,6 +21,8 @@
                   style="position: absolute; left: 0; right: 0; bottom: 45px; flex-direction: row; justify-content: center; align-items: center;">
         <Button name="btn-new-game" text="发车" class="glass-button"
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
+        <Button name="btn-story" text="主线剧情" class="glass-button"
+                style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
         <Button name="btn-continue" text="继续运营" class="glass-button"
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
         <Button name="btn-archive" text="站长日志" class="glass-button"
