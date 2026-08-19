@@ -337,6 +337,7 @@ public class VNManager : MonoBehaviour
             ("\u2191", () => OpenLoadMenu()),    // ↑ 取档
             ("\u2261", () => ToggleBacklog()),    // ≡ 回顾
             ("\u25B8", () => SkipToNext()),      // ▸ 跳转
+            ("\u25C9", () => AddBookmark()),      // ◉ 书签
             ("\u2190", () => ShowConfirmDialog()) // ← 返回
         };
 
@@ -393,6 +394,7 @@ public class VNManager : MonoBehaviour
     private void SkipToNext()
     {
         CloseMenuExpanded();
+        CloseMenuExpanded();
         // 跳过当前打字
         if (dialogueBox != null && dialogueBox.IsTyping())
             dialogueBox.SkipTyping();
@@ -418,6 +420,29 @@ public class VNManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    /// <summary>添加书签：记录当前阅读位置 + 话数 + 话标题 + 台词预览。</summary>
+    private void AddBookmark()
+    {
+        CloseMenuExpanded();
+        if (currentScript == null || string.IsNullOrEmpty(currentScriptName)) return;
+        var scene = currentScript.scenes[currentSceneIndex];
+        var entry = currentDialogueIndex < scene.d.Length ? scene.d[currentDialogueIndex] : null;
+        string preview = entry != null ? entry.text : "(无文本)";
+        if (preview.Length > 40) preview = preview.Substring(0, 40) + "...";
+        string epTitle = GetEpisodeTitle(currentScriptName);
+        int epNum = GetEpisodeNumber(currentScriptName);
+        string epPrefix = "第" + epNum + "话" + (string.IsNullOrEmpty(epTitle) ? "" : " " + epTitle);
+        string bookmarkName = epPrefix + " · " + preview;
+        string id = "Bookmark_" + System.DateTime.Now.ToString("yyyyMMddHHmmss");
+        PlayerPrefs.SetString(id + "_name", bookmarkName);
+        PlayerPrefs.SetString(id + "_script", currentScriptName);
+        PlayerPrefs.SetInt(id + "_scene", currentSceneIndex);
+        PlayerPrefs.SetInt(id + "_dialogue", currentDialogueIndex);
+        PlayerPrefs.SetString(id + "_epPrefix", epPrefix);
+        PlayerPrefs.Save();
+        Debug.Log("[Bookmark] 已添加: " + bookmarkName);
     }
 
     private void SetupConfirmDialog(UIDocument uiDoc)
