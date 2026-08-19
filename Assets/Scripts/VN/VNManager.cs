@@ -269,7 +269,6 @@ public class VNManager : MonoBehaviour
         menuBar.style.right = 10;
         menuBar.style.flexDirection = FlexDirection.Row;
         menuBar.style.alignItems = Align.Center;
-        menuBar.style.display = DisplayStyle.None; // 初始隐藏，StartScript 时显示
         root.Add(menuBar);
 
         // Auto 按钮
@@ -877,9 +876,6 @@ public class VNManager : MonoBehaviour
         currentSceneIndex = 0;
         currentDialogueIndex = 0;
         isScriptRunning = true;
-
-        // 脚本开始后显示菜单栏
-        if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
 
         // 站长日志解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
         TitleArchiveUI.AutoUnlock(scriptName);
