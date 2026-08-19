@@ -40,6 +40,9 @@ public class VNManager : MonoBehaviour
     private VisualElement confirmDialog;
     private VisualElement bootScreen;
     private VisualElement cgScreen;
+    private bool VN_ReplayInjected;
+    private Label bookmarkToast;
+    private Coroutine bookmarkToastCoroutine;
     private VisualElement episodeClearOverlay;
 
     // Menu bar
@@ -214,7 +217,7 @@ public class VNManager : MonoBehaviour
         btnRow.style.flexDirection = FlexDirection.Row;
         panel.Add(btnRow);
 
-        var yesBtn = new Button(() => { resumeDialog.style.display = DisplayStyle.None; pendingResumeBookmark = null; BookmarkManager.JumpToBookmark(bm); UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test"); }) { text = "继续观看" };
+        var yesBtn = new UnityEngine.UIElements.Button(() => { resumeDialog.style.display = DisplayStyle.None; pendingResumeBookmark = null; BookmarkManager.JumpToBookmark(bm); UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test"); }) { text = "继续观看" };
         yesBtn.style.width = 140; yesBtn.style.height = 40;
         yesBtn.style.fontSize = 18; yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         yesBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
@@ -222,7 +225,7 @@ public class VNManager : MonoBehaviour
         yesBtn.style.color = new Color(0.8f, 0.9f, 1f, 1f);
         btnRow.Add(yesBtn);
 
-        var noBtn = new Button(() =>
+        var noBtn = new UnityEngine.UIElements.Button(() =>
         {
             resumeDialog.style.display = DisplayStyle.None;
             // 放弃恢复，从第一章开始

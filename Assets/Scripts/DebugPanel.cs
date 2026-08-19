@@ -194,7 +194,7 @@ public class DebugPanel : MonoBehaviour
         btn.style.width = 300; btn.style.height = 38; btn.style.fontSize = 17;
         btn.style.unityTextAlign = TextAnchor.MiddleCenter; btn.style.unityFontDefinition = Fd();
         btn.style.backgroundColor = bg; btn.style.color = fg; btn.style.marginBottom = 8;
-        btn.style.alignSelf = Align.CenterStart;
+        btn.style.alignSelf = Align.FlexStart;
         scroll.Add(btn);
     }
 
