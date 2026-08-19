@@ -191,10 +191,10 @@ sequenceDiagram
     New->>Crew: Initialise crew (6 members)
     New->>Rival: Initialise USET penetration (0.0 per city)
     
-    critical Prologue phase (Day 0–4)
+    critical Prologue phase (序章–4)
         World->>VN: Inject world state (cities, political leanings)
         VN->>VN: Play preset scripts (prologue_01 ~ prologue_10)
-        VN->>VN: Day 4 critical choice
+        VN->>VN: 序章 critical choice
     end
     
     VN->>Game: Transition to gameplay
@@ -468,7 +468,7 @@ Cross-system learning has a variable threshold. Sub-skills within the same syste
 
 ```mermaid
 graph TD
-    Start[Prologue VN<br>Day 0–4] --> Survival[Survival Phase]
+    Start[Prologue VN<br>序章–4] --> Survival[Survival Phase]
     
     Survival -->|trust < 30| Crisis[Trust Crisis<br>Passenger Collapse]
     Survival -->|break-even| Stability[Stabilisation]
@@ -517,7 +517,7 @@ Open the folder in Unity Hub and run:
 
 | Scene | Purpose |
 |-------|---------|
-| `Scenes/VN_Test.unity` | Prologue visual novel (Day 0–4) |
+| `Scenes/VN_Test.unity` | Prologue visual novel (序章–4) |
 | `Scenes/StationSlice_V1.unity` | Station management gameplay |
 | `Scenes/Login.unity` · `Scenes/TitleScreen.unity` | Entry screens |
 
