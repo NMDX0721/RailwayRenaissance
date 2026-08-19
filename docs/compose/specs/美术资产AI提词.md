@@ -2181,3 +2181,56 @@ MOOD: Where the border dissolves between two Koreas. A shop that shouldn't exist
 ---
 
 
+---
+
+## 六、待生成清单（统一跟踪）
+
+> 更新：2026-08-19
+> 状态标记：❌ 待生成 / ⚠️ 提示词已备 / ✅ 已入库
+
+### 6.1 背景图（已有提示词，待生成）
+
+| 背景 | 对应场景 | 优先级 |
+|------|---------|--------|
+| `railway_track` 线路巡视 | prologue_05 | 🔴 高 |
+| `depot_morning` 车辆段晨 | prologue_07 | 🔴 高 |
+| `station_night` 车站夜景 | prologue_06 | 🔴 高 |
+| `station_office` 站长办公室 | prologue_09 | 🔴 高 |
+| `platform_morning` 站台晨光 | prologue_08/09 | 🔴 高 |
+| `station_sunset` 车站黄昏 | prologue_04/10 | 🔴 高 |
+| `village_sunset` 雾峰村夕阳 | prologue_04 | 🔴 高 |
+| `border_town` 边境小镇 | prologue_03 | 🟡 中 |
+| `supply_station` 补给站 | prologue_03 | 🟡 中 |
+| `mountain_sky` 群山天空 | prologue_04 | 🟡 中 |
+| `aerial_view` 空中俯瞰 | prologue_04 | 🟡 中 |
+| `platform_evening` 傍晚站台 | prologue_04 | 🟡 中 |
+| `songqiao_station` 松桥站 | prologue_05 | 🟡 中 |
+| `china_sky` 中国上空 | prologue_03 | 🟢 低 |
+| `hebei_town` 河北小镇 | prologue_03 | 🟢 低 |
+| `henan_town` 河南小镇 | prologue_03 | 🟢 低 |
+| `train_inside` 车厢内部 | prologue_08 | 🟢 低 |
+
+### 6.2 CG 插画（9 张，待生成）
+
+| CG 名 | 名称 | 剧情位置 |
+|-------|------|---------|
+| `cg_day0_leave` | 启程·0721升空 | prologue_02 出发 |
+| `cg_tea_meet` | 初会·嘉颖徐 | prologue_02 会面 |
+| `cg_first_night` | 客舱·岁月初语 | prologue_02 夜航 |
+| `cg_chase` | 边境·三面合围 | prologue_03 |
+| `cg_arrest` | 边境·引擎盖上 | prologue_03 |
+| `cg_village` | 雾峰·初见黄昏 | prologue_04 |
+| `cg_team_night` | 旧人·灯下重逢 | prologue_06 |
+| `cg_first_run` | 首班车·驶离站台 | prologue_08 |
+| `cg_museum` | 铁路博物馆 | 好感度>90 |
+
+### 6.3 可选新增（UI 纹理底图，非必需）
+
+| 文件 | 用途 |
+|------|------|
+| `bg/texture_sleeper.png` | 枕木纹理底图（平铺，对应 UI设计参考_蔚蓝档案.md §8.5） |
+| `bg/texture_rail.png` | 轨道透视线底图（平铺） |
+
+### 6.4 已入库（背景图）
+
+`cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop`
