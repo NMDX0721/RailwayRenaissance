@@ -75,6 +75,9 @@ public class MainStoryUI : MonoBehaviour
     {
         var root = overlay;
 
+        // —— 枕木纹理层（淡色横线，模拟木质枕木） ——
+        AddSleeperTexture(root);
+
         // 顶部栏
         var topBar = new VisualElement();
         topBar.style.flexDirection = FlexDirection.Row;
@@ -385,6 +388,57 @@ public class MainStoryUI : MonoBehaviour
                 row.Add(enterBtn);
             }
         }
+    }
+
+    /// <summary>枕木纹理层：8 条淡色横木，模拟木质枕木质感（不抢内容）。</summary>
+    private void AddSleeperTexture(VisualElement parent)
+    {
+        var texLayer = new VisualElement { name = "sleeper-texture" };
+        texLayer.style.position = Position.Absolute;
+        texLayer.style.top = 0; texLayer.style.left = 0;
+        texLayer.style.right = 0; texLayer.style.bottom = 0;
+        texLayer.style.flexDirection = FlexDirection.Column;
+        texLayer.style.justifyContent = Justify.SpaceBetween;
+        texLayer.pickingMode = PickingMode.Ignore;
+        parent.Add(texLayer);
+
+        // 8 根枕木横条，模拟道床密度不均
+        float[] alphas = { 0.05f, 0.04f, 0.06f, 0.03f, 0.05f, 0.04f, 0.06f, 0.03f };
+        for (int i = 0; i < 8; i++)
+        {
+            var sleeper = new VisualElement();
+            sleeper.style.height = 12;
+            sleeper.style.marginTop = (i % 2 == 0) ? 30 : 46;
+            sleeper.style.marginBottom = 0;
+            // 枕木偏亮暖棕色，极淡
+            sleeper.style.backgroundColor = new Color(0.45f, 0.35f, 0.2f, alphas[i]);
+            texLayer.Add(sleeper);
+        }
+
+        // —— 轨道透视线（两侧斜向透视引导线） ——
+        AddRailPerspective(texLayer);
+    }
+
+    /// <summary>轨道透视线：两条向中心汇聚的斜线（薄长条近似）。</summary>
+    private void AddRailPerspective(VisualElement parent)
+    {
+        var railLeft = new VisualElement();
+        railLeft.style.position = Position.Absolute;
+        railLeft.style.left = -80; railLeft.style.top = 0; railLeft.style.bottom = 0;
+        railLeft.style.width = 3;
+        railLeft.style.backgroundColor = new Color(0.7f, 0.6f, 0.4f, 0.10f);
+        railLeft.style.rotate = new Rotate(new Angle(12f));
+        railLeft.pickingMode = PickingMode.Ignore;
+        parent.Add(railLeft);
+
+        var railRight = new VisualElement();
+        railRight.style.position = Position.Absolute;
+        railRight.style.right = -80; railRight.style.top = 0; railRight.style.bottom = 0;
+        railRight.style.width = 3;
+        railRight.style.backgroundColor = new Color(0.7f, 0.6f, 0.4f, 0.10f);
+        railRight.style.rotate = new Rotate(new Angle(-12f));
+        railRight.pickingMode = PickingMode.Ignore;
+        parent.Add(railRight);
     }
 
     private void StartEpisode(string scriptName)
