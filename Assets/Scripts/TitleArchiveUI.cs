@@ -844,19 +844,22 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.style.flexGrow = 1;
         playerProgress.style.height = 16;
         playerProgress.style.marginRight = 6;
-        // 点击/拖动进度条跳转：PointerDown 开始拖拽，Change 实时跟随，PointerUp 定格
+        // 点击/拖动进度条跳转：PointerDown 手动换算点击位置 → 立即 seek，Change 实时跟随
         playerProgress.RegisterCallback<PointerDownEvent>(evt =>
         {
-            if (playerSource != null && playerClip != null)
-            {
-                progressScrubbing = true;
-                playerSource.time = playerProgress.value * playerClip.length;
-            }
+            if (playerSource == null || playerClip == null) return;
+            progressScrubbing = true;
+            SeekFromPointer(evt);
+        });
+        playerProgress.RegisterCallback<PointerMoveEvent>(evt =>
+        {
+            if (progressScrubbing && playerSource != null && playerClip != null)
+                SeekFromPointer(evt);
         });
         playerProgress.RegisterCallback<PointerUpEvent>(evt =>
         {
-            if (playerSource != null && playerClip != null)
-                playerSource.time = playerProgress.value * playerClip.length;
+            if (progressScrubbing && playerSource != null && playerClip != null)
+                SeekFromPointer(evt);
             progressScrubbing = false;
         });
         playerProgress.RegisterValueChangedCallback(evt =>
@@ -918,8 +921,19 @@ public class TitleArchiveUI : MonoBehaviour
         playerBar.Add(playerModeBtn);
     }
 
-    private void StylePlayerBtn(Button btn)
+    /// <summary>根据指针在滑块上的位置换算目标播放点并立即跳转（点击/拖动通用）。</summary>
+    private void SeekFromPointer(IPointerEvent evt)
     {
+        if (playerSource == null || playerClip == null) return;
+        float trackW = playerProgress.resolvedStyle.width;
+        if (trackW <= 0) return;
+        float ratio = Mathf.Clamp01(evt.localPosition.x / trackW);
+        playerProgress.value = ratio;
+        playerSource.time = ratio * playerClip.length;
+        playerCurTime.text = FormatTime(playerSource.time);
+    }
+
+    private void StylePlayerBtn(Button btn)
         btn.style.width = 32;
         btn.style.height = 32;
         btn.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -959,7 +973,13 @@ public class TitleArchiveUI : MonoBehaviour
             AutoPlayFirstUnlockedMusic();
             return;
         }
-        // 找下一首已解锁的
+        // 随机模式：随机选一首（非当前曲）
+        if (playMode == PlayMode.Shuffle)
+        {
+            PlayRandomTrack();
+            return;
+        }
+        // 顺序/单曲循环模式：找下一首已解锁的
         int idx = -1;
         for (int i = 0; i < MusicEntries.Length; i++)
             if (MusicEntries[i].id == currentTrackId) { idx = i; break; }
@@ -989,6 +1009,12 @@ public class TitleArchiveUI : MonoBehaviour
             AutoPlayFirstUnlockedMusic();
             return;
         }
+        // 随机模式：随机选一首（非当前曲）
+        if (playMode == PlayMode.Shuffle)
+        {
+            PlayRandomTrack();
+            return;
+        }
         int idx = -1;
         for (int i = 0; i < MusicEntries.Length; i++)
             if (MusicEntries[i].id == currentTrackId) { idx = i; break; }
@@ -1009,6 +1035,25 @@ public class TitleArchiveUI : MonoBehaviour
                 return;
             }
         }
+    }
+
+    /// <summary>随机选一首已解锁的音乐（随机模式下下一首/上一首）。</summary>
+    private void PlayRandomTrack()
+    {
+        var unlocked = new System.Collections.Generic.List<int>();
+        for (int i = 0; i < MusicEntries.Length; i++)
+            if (PlayerPrefs.GetInt("ArchiveMusic_" + MusicEntries[i].id, 0) == 1)
+                unlocked.Add(i);
+        if (unlocked.Count == 0) { AutoPlayFirstUnlockedMusic(); return; }
+        // 至少 2 首时才避免重复当前曲
+        int pick = unlocked[Random.Range(0, unlocked.Count)];
+        if (unlocked.Count > 1 && MusicEntries[pick].id == currentTrackId)
+        {
+            // 重抽一次
+            var other = unlocked.Find(i => MusicEntries[i].id != currentTrackId);
+            if (other != -1) pick = other;
+        }
+        PlayArchiveMusic(MusicEntries[pick].id, MusicEntries[pick].clipName, MusicEntries[pick].title);
     }
 
     private void TogglePlayMode()
@@ -1254,16 +1299,30 @@ public class TitleArchiveUI : MonoBehaviour
         marqueeX = 0;
         marqueeActive = false;
         playerTitle.style.translate = new Translate(0, 0);
-        // 等布局求得文本真实宽度后再决定是否滚动。
-        // 用 GeometryChangedEvent 比固定延迟可靠（播放器栏首次显示时布局尚未完成）。
-        titleOuter.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
-        titleOuter.RegisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+        // 监听 Label 自身的 GeometryChanged：文本内容变化时 Label 宽度重算才触发
+        playerTitle.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+        playerTitle.RegisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+        // 兜底：若 Label 布局已稳定（无变化事件），延迟再测一次
+        playerTitle.schedule.Execute(OnTitleLayoutMeasuredResize).ExecuteLater(120);
+    }
+
+    private void OnTitleLayoutMeasuredResize()
+    {
+        if (playerTitle == null || titleOuter == null) return;
+        MeasureTitleWidth();
     }
 
     private void OnTitleLayoutMeasured(GeometryChangedEvent evt)
     {
+        MeasureTitleWidth();
+    }
+
+    private void MeasureTitleWidth()
+    {
         if (playerTitle == null || titleOuter == null) return;
-        float textW = playerTitle.resolvedStyle.width;
+        // 用 MeasureTextSize 求文本真实宽度（Label width=Auto 时 resolvedStyle 可能是裁剪后值）
+        var size = playerTitle.MeasureTextSize(playerTitle.text, 0, UnityEngine.UIElements.MeasureMode.Undefined, 18, UnityEngine.UIElements.MeasureMode.Undefined);
+        float textW = size.x;
         float boxW = titleOuter.resolvedStyle.width;
         if (boxW <= 0) return;
         marqueeTextWidth = textW;
@@ -1272,7 +1331,7 @@ public class TitleArchiveUI : MonoBehaviour
             marqueeX = boxW + 40;
         else
             playerTitle.style.translate = new Translate(0, 0);
-        titleOuter.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+        playerTitle.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
     }
 
     // ================= 故事章节页 =================
