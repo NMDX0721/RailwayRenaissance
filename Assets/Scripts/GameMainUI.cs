@@ -285,16 +285,19 @@ public class GameMainUI : MonoBehaviour
         string[] iconNames = {
             "铁路运营", "岁月", "RDA 助手", "阿里郎商店", "未来网",
             "白头疫苗", "米家能量", "相册", "音乐", "站务日志",
-            "列车图鉴", "设置", "铁路", "", "",
+            "列车图鉴", "时钟", "日历", "天气", "笔记",
+            "计算器", "文件管理", "地图", "设置", "铁路",
         };
-        for (int r = 0; r < 3; r++)
+        for (int r = 0; r < 4; r++)
         {
             var row = new VisualElement();
             row.style.flexDirection = FlexDirection.Row;
             grid.Add(row);
             for (int c = 0; c < 5; c++)
             {
-                string name = iconNames[r * 5 + c];
+                int idx = r * 5 + c;
+                if (idx >= iconNames.Length) continue;
+                string name = iconNames[idx];
                 if (string.IsNullOrEmpty(name)) continue;
                 var cell = BuildAppIcon(name);
                 row.Add(cell);
@@ -414,6 +417,13 @@ public class GameMainUI : MonoBehaviour
             case "站务日志": return "志";
             case "列车图鉴": return "車";
             case "设置": return "⚙";
+            case "时钟": return "時";
+            case "日历": return "日";
+            case "天气": return "天";
+            case "笔记": return "記";
+            case "计算器": return "計";
+            case "文件管理": return "文";
+            case "地图": return "地";
             case "铁路": return "夾";
             default: return "·";
         }

@@ -883,25 +883,19 @@ public class VNManager : MonoBehaviour
         PlayerPrefs.SetInt("VN_AutoLoad", 0);
         PlayerPrefs.Save();
 
-        // 从经营主界面进入的剧情回看 → 返回 GameMainUI（毛胚主界面）
+        // VN 返回 → 始终回到小米平板桌面（模拟经营主界面），不再回标题场景
+        //（无论从何处进入 VN，返回后显示平板桌面，保持沉浸感）
         if (PlayerPrefs.GetInt("VN_FromGameMain", 0) == 1)
         {
             PlayerPrefs.SetInt("VN_FromGameMain", 0);
             PlayerPrefs.Save();
-            TitleArchiveUI.EnsureInstance()?.Hide();
-            MainStoryUI.HideStatic();
-            GameMainUI.Show();
-            return;
         }
-
-        try
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("[VN] Failed to load TitleScreen: " + e.Message);
-        }
+        TitleArchiveUI.EnsureInstance()?.Hide();
+        MainStoryUI.HideStatic();
+        // 隐藏 VN 场景根（避免残留在平板桌面下层）
+        if (uiDoc != null)
+            uiDoc.rootVisualElement.style.display = DisplayStyle.None;
+        GameMainUI.Show();
     }
 
     private void OpenSaveMenu()
