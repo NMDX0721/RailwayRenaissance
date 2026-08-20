@@ -934,6 +934,7 @@ public class TitleArchiveUI : MonoBehaviour
     }
 
     private void StylePlayerBtn(Button btn)
+    {
         btn.style.width = 32;
         btn.style.height = 32;
         btn.style.unityTextAlign = TextAnchor.MiddleCenter;
