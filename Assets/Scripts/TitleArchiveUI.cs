@@ -1254,19 +1254,25 @@ public class TitleArchiveUI : MonoBehaviour
         marqueeX = 0;
         marqueeActive = false;
         playerTitle.style.translate = new Translate(0, 0);
-        // 等布局求得文本真实宽度后再决定是否滚动
-        titleOuter.schedule.Execute(() =>
-        {
-            if (playerTitle == null || titleOuter == null) return;
-            // Label width=Auto 时 resolvedStyle.width = 文本真实宽度
-            float textW = playerTitle.resolvedStyle.width;
-            float boxW = titleOuter.resolvedStyle.width;
-            if (boxW <= 0) return;
-            marqueeTextWidth = textW;
-            marqueeActive = textW > boxW + 2f;
-            if (marqueeActive)
-                marqueeX = boxW + 40;
-        }).ExecuteLater(30);
+        // 等布局求得文本真实宽度后再决定是否滚动。
+        // 用 GeometryChangedEvent 比固定延迟可靠（播放器栏首次显示时布局尚未完成）。
+        titleOuter.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+        titleOuter.RegisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
+    }
+
+    private void OnTitleLayoutMeasured(GeometryChangedEvent evt)
+    {
+        if (playerTitle == null || titleOuter == null) return;
+        float textW = playerTitle.resolvedStyle.width;
+        float boxW = titleOuter.resolvedStyle.width;
+        if (boxW <= 0) return;
+        marqueeTextWidth = textW;
+        marqueeActive = textW > boxW + 2f;
+        if (marqueeActive)
+            marqueeX = boxW + 40;
+        else
+            playerTitle.style.translate = new Translate(0, 0);
+        titleOuter.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
     }
 
     // ================= 故事章节页 =================
