@@ -928,12 +928,8 @@ public class TitleArchiveUI : MonoBehaviour
         btn.style.width = 32;
         btn.style.height = 32;
         btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        btn.style.unityFontDefinition = Fd();
+        btn.style.fontSize = 22;
         btn.style.marginLeft = 4;
-        btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
-        btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
-        btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         StylizeTab(btn);
     }
 
@@ -954,19 +950,13 @@ public class TitleArchiveUI : MonoBehaviour
 
     private void PlayNextTrack()
     {
-        if (!isUserPlaylistMode || string.IsNullOrEmpty(currentTrackId))
-        {
-            // 氛围模式：从头播
-            AutoPlayFirstUnlockedMusic();
-            return;
-        }
-        // 随机模式：随机选一首（非当前曲）
+        // 随机模式：随机选一首（非当前曲；未进入轮播也适用）
         if (playMode == PlayMode.Shuffle)
         {
             PlayRandomTrack();
             return;
         }
-        // 顺序/单曲循环模式：找下一首已解锁的
+        // 顺序/单曲循环模式：找下一首已解锁的（氛围模式下当前曲为空则从第一首开始）
         int idx = -1;
         for (int i = 0; i < MusicEntries.Length; i++)
             if (MusicEntries[i].id == currentTrackId) { idx = i; break; }
@@ -991,12 +981,7 @@ public class TitleArchiveUI : MonoBehaviour
 
     private void PlayPrevTrack()
     {
-        if (!isUserPlaylistMode || string.IsNullOrEmpty(currentTrackId))
-        {
-            AutoPlayFirstUnlockedMusic();
-            return;
-        }
-        // 随机模式：随机选一首（非当前曲）
+        // 随机模式：随机选一首（非当前曲；未进入轮播也适用）
         if (playMode == PlayMode.Shuffle)
         {
             PlayRandomTrack();
@@ -1233,19 +1218,27 @@ public class TitleArchiveUI : MonoBehaviour
         playerCurTime.text = FormatTime(t);
     }
 
-    /// <summary>长音乐名横向滚动：检测超宽后往复平移（暂停时停下）。</summary>
+    /// <summary>长音乐名横向滚动：从开头开始向左滚动，末尾露出后重置回开头（不跳右侧）。暂停时冻结。</summary>
     private void UpdateMarquee()
     {
         if (playerTitle == null || titleOuter == null || !marqueeActive) return;
-        // 播放时才滚动，暂停时冻结
+        // 播放时才滚动，暂停时冻结（保留当前位置）
         if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying)
             return;
         marqueeX -= 40f * Time.unscaledDeltaTime;
-        // 文本滚出左侧后重置（循环）
-        float w = titleOuter.resolvedStyle.width;
-        if (w <= 0) w = 200;
-        if (marqueeX < -marqueeTextWidth - 40)
-            marqueeX = w + 40;
+        // 文本末尾完全露出（左侧空出）后重置回开头
+        if (marqueeX <= -marqueeTextWidth)
+        {
+            marqueeX = 0;
+            // 回开头瞬间平移，避免跳帧突兀
+            playerTitle.style.translate = new Translate(0, 0);
+            playerTitle.schedule.Execute(() =>
+            {
+                if (playerTitle != null && marqueeActive)
+                    playerTitle.style.translate = new Translate(marqueeX, 0);
+            }).ExecuteLater(16);
+            return;
+        }
         playerTitle.style.translate = new Translate(marqueeX, 0);
     }
 
@@ -1302,15 +1295,15 @@ public class TitleArchiveUI : MonoBehaviour
     private void MeasureTitleWidth()
     {
         if (playerTitle == null || titleOuter == null) return;
-        // 用 MeasureTextSize 求文本真实宽度（Label width=Auto 时 resolvedStyle 可能是裁剪后值）
+        // 用 MeasureTextSize 求文本真实宽度（含末尾字符；Label width=Auto 时 resolvedStyle 可能是裁剪后值）
         var size = playerTitle.MeasureTextSize(playerTitle.text, 0, VisualElement.MeasureMode.Undefined, 18, VisualElement.MeasureMode.Undefined);
-        float textW = size.x;
+        float textW = size.x + 4f; // 尾部字符宽度余量，避免滚动到末尾丢帧
         float boxW = titleOuter.resolvedStyle.width;
         if (boxW <= 0) return;
         marqueeTextWidth = textW;
         marqueeActive = textW > boxW + 2f;
         if (marqueeActive)
-            marqueeX = boxW + 40;
+            marqueeX = 0;  // 从开头开始，向左滚动（不跳右侧）
         else
             playerTitle.style.translate = new Translate(0, 0);
         playerTitle.UnregisterCallback<GeometryChangedEvent>(OnTitleLayoutMeasured);
