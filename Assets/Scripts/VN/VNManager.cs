@@ -1935,15 +1935,28 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    /// <summary>双层金边：外框亮色 + 内衬暗色（像素风格层次感）。</summary>
+    /// <summary>双层金边：外层亮金边框 + 内层淡金虚线（用细内边框模拟层次，UI Toolkit 无 boxShadow）。</summary>
     private void SetGoldBorder(VisualElement ve, float w, Color outer, Color inner)
     {
         ve.style.borderTopWidth = w; ve.style.borderBottomWidth = w;
         ve.style.borderLeftWidth = w; ve.style.borderRightWidth = w;
         ve.style.borderTopColor = outer; ve.style.borderBottomColor = outer;
         ve.style.borderLeftColor = outer; ve.style.borderRightColor = outer;
-        // 内衬细边：用 box-shadow 近似（Unity UI Toolkit 支持 box-shadow）
-        ve.style.boxShadow = new BoxShadow(new Color(1f, 0.8f, 0.45f, inner.a), 0, 0, 4, 2);
+        // 内部层次：子伪元素细金边（boxShadow 在 Unity 6.5 IStyle 不存在，改用独立内衬元素）
+        var innerRing = ve.Q<VisualElement>("gold-inner-ring");
+        if (innerRing == null)
+        {
+            innerRing = new VisualElement { name = "gold-inner-ring" };
+            innerRing.pickingMode = PickingMode.Ignore;
+            innerRing.style.position = Position.Absolute;
+            innerRing.style.top = 2; innerRing.style.left = 2;
+            innerRing.style.right = 2; innerRing.style.bottom = 2;
+            innerRing.style.borderTopWidth = 1; innerRing.style.borderBottomWidth = 1;
+            innerRing.style.borderLeftWidth = 1; innerRing.style.borderRightWidth = 1;
+            ve.Add(innerRing);
+        }
+        innerRing.style.borderTopColor = inner; innerRing.style.borderBottomColor = inner;
+        innerRing.style.borderLeftColor = inner; innerRing.style.borderRightColor = inner;
     }
 
     private void OnDialogueTypewriterComplete()
