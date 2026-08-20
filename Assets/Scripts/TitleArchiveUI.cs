@@ -775,6 +775,7 @@ public class TitleArchiveUI : MonoBehaviour
     private bool isUserPlaylistMode; // true=用户选曲轮播, false=默认氛围曲单曲循环
     private readonly System.Collections.Generic.Dictionary<string, AudioClip> musicClipCache = new System.Collections.Generic.Dictionary<string, AudioClip>();
     private VisualElement titleOuter; // 长名滚动容器
+    private Label playerToast;          // 播放器临时提示
     private float marqueeX;           // 当前滚动偏移
     private bool marqueeActive;       // 当前标题是否超宽需要滚动
     private float marqueeTextWidth;   // 文本实际渲染宽度
@@ -809,17 +810,24 @@ public class TitleArchiveUI : MonoBehaviour
         playerTitle.style.fontSize = 18;
         playerTitle.style.color = goldNormal;
         playerTitle.style.unityFontDefinition = Fd();
-        playerTitle.style.width = 200;
-        playerTitle.style.marginRight = 16;
+        // 宽度 Auto + 不收缩：允许文本真实宽度(超200时滚动的判定依据)
+        playerTitle.style.width = StyleKeyword.Auto;
+        playerTitle.style.flexShrink = 0;
         playerTitle.style.whiteSpace = WhiteSpace.NoWrap;
         playerTitle.style.overflow = Overflow.Hidden;
+        // 居中防裁切：Label 撑满外层（高度对齐），文本垂直居中
+        playerTitle.style.height = new Length(100, LengthUnit.Percent);
+        playerTitle.style.unityTextAlign = TextAnchor.MiddleLeft;
+        playerTitle.style.paddingTop = 0;
+        playerTitle.style.paddingBottom = 0;
         // 长名横向滚动：内容套一层，用 translate 平移，超出时滚动
         titleOuter = new VisualElement();
         titleOuter.style.width = 200;
-        titleOuter.style.height = 24;
+        titleOuter.style.height = 30;
         titleOuter.style.overflow = Overflow.Hidden;
         titleOuter.style.marginRight = 16;
         titleOuter.style.flexShrink = 0;
+        titleOuter.style.alignItems = Align.Center;
         titleOuter.Add(playerTitle);
         playerBar.Add(titleOuter);
 
@@ -1031,7 +1039,15 @@ public class TitleArchiveUI : MonoBehaviour
             clip = Resources.Load<AudioClip>("bgm/" + clipName);
             if (clip != null) musicClipCache[clipName] = clip;
         }
-        if (clip == null) return;
+        if (clip == null)
+        {
+            ShowPlayerToast("音频文件缺失：" + clipName);
+            return;
+        }
+
+        // 首次播放前异步预解码，避免 Play() 卡顿
+        if (!clip.loadInBackground && clip.loadState != AudioDataLoadState.Loaded)
+            clip.LoadAudioData();
 
         UnlockMusic(id);
         StopArchiveMusic();
@@ -1206,6 +1222,31 @@ public class TitleArchiveUI : MonoBehaviour
         playerTitle.style.translate = new Translate(marqueeX, 0);
     }
 
+    /// <summary>播放器临时提示（短 Toast）。</summary>
+    private void ShowPlayerToast(string text)
+    {
+        if (playerToast == null)
+        {
+            playerToast = new Label("");
+            playerToast.style.position = Position.Absolute;
+            playerToast.style.top = 46;
+            playerToast.style.left = 0; playerToast.style.right = 0;
+            playerToast.style.fontSize = 16;
+            playerToast.style.color = new Color(1f, 0.85f, 0.5f, 1f);
+            playerToast.style.unityTextAlign = TextAnchor.MiddleCenter;
+            playerToast.style.unityFontDefinition = Fd();
+            playerToast.pickingMode = PickingMode.Ignore;
+            playerToast.style.display = DisplayStyle.None;
+            uiDoc.rootVisualElement.Add(playerToast);
+        }
+        playerToast.text = text;
+        playerToast.style.display = DisplayStyle.Flex;
+        playerToast.schedule.Execute(() =>
+        {
+            if (playerToast != null) playerToast.style.display = DisplayStyle.None;
+        }).ExecuteLater(2500);
+    }
+
     /// <summary>设置曲名并检测是否超宽（超宽启用跑马灯）。</summary>
     private void SetPlayerTitle(string text)
     {
@@ -1213,10 +1254,11 @@ public class TitleArchiveUI : MonoBehaviour
         marqueeX = 0;
         marqueeActive = false;
         playerTitle.style.translate = new Translate(0, 0);
-        // 延迟一帧等布局后测量文本宽度
+        // 等布局求得文本真实宽度后再决定是否滚动
         titleOuter.schedule.Execute(() =>
         {
-            if (playerTitle == null) return;
+            if (playerTitle == null || titleOuter == null) return;
+            // Label width=Auto 时 resolvedStyle.width = 文本真实宽度
             float textW = playerTitle.resolvedStyle.width;
             float boxW = titleOuter.resolvedStyle.width;
             if (boxW <= 0) return;
@@ -1224,7 +1266,7 @@ public class TitleArchiveUI : MonoBehaviour
             marqueeActive = textW > boxW + 2f;
             if (marqueeActive)
                 marqueeX = boxW + 40;
-        }).ExecuteLater(50);
+        }).ExecuteLater(30);
     }
 
     // ================= 故事章节页 =================

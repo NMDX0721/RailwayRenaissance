@@ -497,17 +497,30 @@ public class VNManager : MonoBehaviour
         menuBar.Add(menuBtn);
         this.menuBtn = menuBtn;
 
-        // 子菜单（水平排列像素图标按钮，初始隐藏）
+        // 子菜单（BA 风格展开底板：深棕半透明面板 + 金边 + 内衬，按钮依附于板）
         menuExpandedContainer = new VisualElement { name = "menu-expanded" };
         menuExpandedContainer.style.position = Position.Absolute;
-        menuExpandedContainer.style.top = 48;
-        menuExpandedContainer.style.right = 10;
+        menuExpandedContainer.style.top = 52;   // 紧贴 Auto/Menu 行下方
+        menuExpandedContainer.style.right = 10; // 右缘与 Menu 按钮对齐
         menuExpandedContainer.style.flexDirection = FlexDirection.Row;
         menuExpandedContainer.style.alignItems = Align.Center;
         menuExpandedContainer.style.display = DisplayStyle.None;
+        // 底板：深棕半透明 + 金色双层描边 + 圆角 + 内边距
+        menuExpandedContainer.style.backgroundColor = new Color(0.08f, 0.05f, 0.03f, 0.96f);
+        menuExpandedContainer.style.borderTopWidth = 2; menuExpandedContainer.style.borderBottomWidth = 2;
+        menuExpandedContainer.style.borderLeftWidth = 2; menuExpandedContainer.style.borderRightWidth = 2;
+        menuExpandedContainer.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        menuExpandedContainer.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        menuExpandedContainer.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        menuExpandedContainer.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        menuExpandedContainer.style.borderTopRightRadius = 6; menuExpandedContainer.style.borderBottomRightRadius = 6;
+        menuExpandedContainer.style.borderTopLeftRadius = 6; menuExpandedContainer.style.borderBottomLeftRadius = 6;
+        menuExpandedContainer.style.paddingLeft = 8; menuExpandedContainer.style.paddingRight = 8;
+        menuExpandedContainer.style.paddingTop = 8; menuExpandedContainer.style.paddingBottom = 8;
+        menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：像素图标
+        // 子菜单项：像素图标（去独立边框，按钮融于底板——hover 才显边框）
         var menuItemDefs = new (Texture2D, System.Action)[]
         {
             (PixelIconHelper.SaveIcon(), () => OpenSaveMenu()),
@@ -522,21 +535,36 @@ public class VNManager : MonoBehaviour
         {
             var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = "" };
             btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
-            btn.style.width = 44;
-            btn.style.height = 40;
-            btn.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.85f);
+            btn.style.width = 48;
+            btn.style.height = 42;
+            btn.style.backgroundColor = Color.clear; // 透明底，融于底板
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
             btn.style.backgroundImage = new StyleBackground(itemIcon);
             btn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
+            // 初始无边框；hover 时金色细边（状态反馈）
             btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
-            btn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            btn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            btn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
-            btn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
+            btn.style.borderTopColor = Color.clear; btn.style.borderBottomColor = Color.clear;
+            btn.style.borderLeftColor = Color.clear; btn.style.borderRightColor = Color.clear;
             btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
             btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
-            btn.style.marginLeft = 4;
+            btn.style.marginLeft = 2; btn.style.marginRight = 2;
+            btn.RegisterCallback<PointerEnterEvent>(evt =>
+            {
+                btn.style.backgroundColor = new Color(0.28f, 0.18f, 0.09f, 0.9f);
+                btn.style.borderTopColor = new Color(1f, 0.85f, 0.5f, 0.7f);
+                btn.style.borderBottomColor = new Color(1f, 0.85f, 0.5f, 0.7f);
+                btn.style.borderLeftColor = new Color(1f, 0.85f, 0.5f, 0.7f);
+                btn.style.borderRightColor = new Color(1f, 0.85f, 0.5f, 0.7f);
+            });
+            btn.RegisterCallback<PointerLeaveEvent>(evt =>
+            {
+                btn.style.backgroundColor = Color.clear;
+                btn.style.borderTopColor = Color.clear;
+                btn.style.borderBottomColor = Color.clear;
+                btn.style.borderLeftColor = Color.clear;
+                btn.style.borderRightColor = Color.clear;
+            });
             // 像素图缩放模式（新 background API，替代废弃的 unityBackgroundScaleMode）
             btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
@@ -1015,8 +1043,8 @@ public class VNManager : MonoBehaviour
         // 全屏新闻显示时忽略其他输入
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
 
-        // 面板关闭时恢复菜单栏显示
-        if (menuBar != null && menuBar.style.display == DisplayStyle.None)
+        // 面板关闭时恢复菜单栏显示（右键隐藏态/读档模式不恢复——避免 VN UI 残留）
+        if (menuBar != null && menuBar.style.display == DisplayStyle.None && !uiHidden && !isFromTitleScreenMode)
         {
             bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
                                 (saveLoadUI != null && saveLoadUI.IsOpen) ||
@@ -1101,6 +1129,10 @@ public class VNManager : MonoBehaviour
             t = t.parent;
         }
 
+        // 允许推进前二次防御：此刻指针若在交互面板内也不推进
+        if (IsPointerOverAnyUI())
+            return;
+
         AdvanceOnClick();
     }
 
@@ -1111,6 +1143,23 @@ public class VNManager : MonoBehaviour
             dialogueBox.SkipTyping();
         else
             NextDialogue();
+    }
+
+    /// <summary>实时 Pick 检测指针是否在任意交互 UI（按钮/菜单/面板）上方。</summary>
+    private bool IsPointerOverAnyUI()
+    {
+        if (uiDoc == null) return false;
+        var panel = uiDoc.rootVisualElement.panel;
+        if (panel == null) return false;
+        var local = RuntimePanelUtils.ScreenToPanel(panel, Input.mousePosition);
+        var picked = panel.Pick(local);
+        while (picked != null)
+        {
+            if (picked is UnityEngine.UIElements.Button) return true;
+            if (picked == menuBar || picked == menuExpandedContainer) return true;
+            picked = picked.parent;
+        }
+        return false;
     }
 
     /// <summary>
@@ -2005,6 +2054,8 @@ public class VNManager : MonoBehaviour
     private void HideVnForLoadUI()
     {
         // 从标题界面继续：立即清空画面等待读档界面（隐藏全部 VN UI，无残留）
+        uiHidden = true; // 复用隐藏态：阻止 Update 的任何恢复逻辑
+        hiddenUiSnapshots.Clear();
         if (menuBar != null) menuBar.style.display = DisplayStyle.None;
         if (menuExpandedContainer != null) menuExpandedContainer.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.Hide();
@@ -2021,7 +2072,7 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator ShowLoadUIDelayed()
     {
-        yield return null;
+        // 无延迟：同步开面板（避免中间帧 Update 恢复 menuBar 造成残留）
         if (saveLoadUI != null)
             saveLoadUI.OpenLoadPanelFromTitle((slotIndex) =>
             {
@@ -2033,6 +2084,7 @@ public class VNManager : MonoBehaviour
                 saveLoadUI.SetIsFromTitleScreenFromTitle(false);
                 UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
             });
+        yield break;
     }
 
     private void StartAutoPlayTimer()
