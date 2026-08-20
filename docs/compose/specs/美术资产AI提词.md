@@ -292,20 +292,20 @@ AVOID:
 
 **提示词**：
 ```
-pixel art, 16-bit retro style, circular avatar icon, transparent background, STARDEW VALLEY STYLE, AI assistant interface.
+pixel art, 16-bit retro style, transparent background, STARDEW VALLEY STYLE, AI assistant avatar.
 
 DESIGN ELEMENTS:
-- Blue-green AI assistant avatar
-- Simple robot/AI style
-- Glowing blue eyes
-- Metallic texture, rounded design
+- 13-year-old anime girl AI assistant (参考图：黑长直发系红色蝴蝶结、琥珀色大眼)
+- Black zip-up jacket + white sailor school uniform + red bow tie
+- Black pleated skirt with red stripe, backpack, holding a tablet
+- Innocent curious student expression, slightly surprised open mouth
+- Golden/warm outline to fit warm pixel palette
 - 256x256 pixels
-- Warm color palette
 
 AVOID:
-- Too complex or detailed (should work as small icon)
+- Robot/mechanical appearance (this is a humanoid hologram girl)
 - Cold or threatening appearance
-- Human-like features
+- Oversized adult proportions (keep 13yo petite body)
 ```
 
 ---

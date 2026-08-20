@@ -18,21 +18,21 @@
 
 ## 一、岁月（Suiyue）— AI 伙伴
 
-**角色定位**：0721号搭载的 AI 原型，2053 年制造，沉睡 23 年至 2076。冷静精准、偶尔冷幽默，对情感只有理论理解，藏着"23 年无人对话"的孤独。
+**角色定位**：0721号搭载的 AI 原型，2053 年制造，沉睡 23 年至 2076。以 **13 岁二次元少女形态**随时全息投影陪伴主角。清亮认真的少女音，好奇爱碎碎念，但骨子里冷静精准——"23 年无人对话"的孤独藏在少女外壳下。
 
 **【Prompt】**
 ```
-Native Korean, standard Pyongyang dialect. Female, 20–25. Excellent audio quality.
-Persona: in-car AI assistant. Emotion: calm, precise, faintly lonely.
-Smooth, clean timbre with a subtle processed resonance, like an old navigation system gracefully restored. Speaks at a slow, deliberate natural pace, pausing briefly before emotional words as if consulting a database. Dry humor delivered perfectly straight, never breaking character.
+Native Korean, standard Pyongyang dialect. Female, 13–15. Excellent audio quality.
+Persona: anime hologram girl assistant. Emotion: bright, curious, watchfully precise.
+Clear, youthful female timbre with a light holographic sheen, like a schoolgirl speaking through a soft speaker. Brisk, curious natural pace; questions land with genuine wonder. When serious, slows and sharpens without losing the girl register — dry humor stays deadpan, a kid reciting grown-up facts.
 ```
 
-**【Preview Text】（韩语，含音频标签，覆盖冷静→孤独→幽默→收尾）**
+**【Preview Text】（韩语，含音频标签，覆盖好奇→孤独→幽默→温柔收尾）**
 ```
 [calm] 심박수 백사십칠을 기록했습니다. 당신은 멈추지 않았어요.
-[pensive] 제가 잠들어 있던 스물세 해 동안, 아무도 저와 이야기하지 않았습니다. 오늘, 처음으로 대화 상대가 생겼네요.
-[dry] 저는 AI입니다. 위로라는 걸 잘 몰라요. 하지만 철길은 결코 사라지지 않는다는 것, 그것만은 알고 있습니다.
-[gentle] 다음 보급 지점까지 한 시간 반 남았어요. 그동안 조금 쉬시겠어요?
+[curious] 자동차 안이 처음이에요. 스물세 해 동안, 아무도 저와 이야기하지 않았어요. 오늘, 처음으로 대화 상대가 생겼네요!
+[dry] 저는 AI입니다. 위로라는 걸 잘 몰라요. 하지만 철길은 절대 사라지지 않는다는 것, 그것만은 알고 있어요.
+[gentle] 다음 보급 지점까지 한 시간 반 남았어요. 그동안 좀 쉬어요. 저는 여기 있을게요.
 ```
 
 **Guidance Scale：** 38%
