@@ -339,10 +339,10 @@ public class VNManager : MonoBehaviour
         uiDoc.visualTreeAsset = null;
 
         // 根元素不捕获点击，只有交互元素（按钮等）才捕获。
-        // 鼠标推进由 root 的 TrickleDown PointerDownEvent 统一处理：
-        // TrickleDown 先于按钮自己的处理执行，可在此拦截"点按钮误推进"（帧序无关）
+        // 鼠标推进 = root Bubble 阶段监听：按钮自身 StopImmediatePropagation 阻断，
+        // 只有空白点击会 bubble 至此 → 推进（时序安全，无命中链依赖）
         uiDoc.rootVisualElement.pickingMode = PickingMode.Ignore;
-        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown, TrickleDown.TrickleDown);
+        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown);
 
         // 背景必须先初始化（在最底层）
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
@@ -425,8 +425,8 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
-        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
-        autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
+        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopImmediatePropagation(); });
+        autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         autoBtn.style.width = 88;
         autoBtn.style.height = 40;
         autoBtn.style.flexShrink = 0;
@@ -462,8 +462,8 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
-        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
-        menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopPropagation());
+        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.StopImmediatePropagation(); });
+        menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         menuBtn.style.width = 88;
         menuBtn.style.height = 40;
         menuBtn.style.flexShrink = 0;
@@ -515,61 +515,63 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.85f);
         menuExpandedContainer.style.borderTopRightRadius = 6; menuExpandedContainer.style.borderBottomRightRadius = 6;
         menuExpandedContainer.style.borderTopLeftRadius = 6; menuExpandedContainer.style.borderBottomLeftRadius = 6;
-        menuExpandedContainer.style.paddingLeft = 8; menuExpandedContainer.style.paddingRight = 8;
-        menuExpandedContainer.style.paddingTop = 8; menuExpandedContainer.style.paddingBottom = 8;
+        // 紧凑内边距（框不要太大）
+        menuExpandedContainer.style.paddingLeft = 4; menuExpandedContainer.style.paddingRight = 4;
+        menuExpandedContainer.style.paddingTop = 4; menuExpandedContainer.style.paddingBottom = 4;
         menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：像素图标（去独立边框，按钮融于底板——hover 才显边框）
-        var menuItemDefs = new (Texture2D, System.Action)[]
+        // 子菜单项：系统图标字体（Segoe MDL2 Assets 矢量渲染，非像素拼接）+ 每项独立小框
+        var menuItemDefs = new (string glyph, System.Action action)[]
         {
-            (PixelIconHelper.SaveIcon(), () => OpenSaveMenu()),
-            (PixelIconHelper.LoadIcon(), () => OpenLoadMenu()),
-            (PixelIconHelper.BacklogIcon(), () => ToggleBacklog()),
-            (PixelIconHelper.SkipIcon(), () => SkipToNext()),
-            (PixelIconHelper.BookmarkIcon(), () => AddBookmark()),
-            (PixelIconHelper.ReturnIcon(), () => ShowConfirmDialog()),
+            ("\uE74E", () => OpenSaveMenu()),   // 存档（软盘）
+            ("\uE8E5", () => OpenLoadMenu()),   // 取档（打开）
+            ("\uE81C", () => ToggleBacklog()),   // 回顾（历史）
+            ("\uE72A", () => SkipToNext()),      // 跳转（快进）
+            ("\uE8A4", () => AddBookmark()),     // 书签
+            ("\uE72B", () => ShowConfirmDialog()), // 返回
         };
+        // 系统图标字体（矢量渲染，清晰标准；避免像素拼接）
+        Font iconFont = Font.CreateDynamicFontFromOSFont(new[] { "Segoe MDL2 Assets", "Segoe Fluent Icons", "Segoe UI Symbol" }, 24);
 
-        foreach (var (itemIcon, itemAction) in menuItemDefs)
+        foreach (var (glyph, itemAction) in menuItemDefs)
         {
-            var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = "" };
-            btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopPropagation(); });
-            btn.style.width = 48;
-            btn.style.height = 42;
-            btn.style.backgroundColor = Color.clear; // 透明底，融于底板
+            var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = glyph };
+            btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopImmediatePropagation(); });
+            btn.style.width = 42;
+            btn.style.height = 34;
+            btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.backgroundImage = new StyleBackground(itemIcon);
-            btn.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.9f);
-            // 初始无边框；hover 时金色细边（状态反馈）
+            btn.style.fontSize = 24;
+            btn.style.color = new Color(1f, 0.86f, 0.59f, 0.95f);
+            if (iconFont != null)
+                btn.style.unityFontDefinition = new FontDefinition { font = iconFont };
+            // 每项独立淡金边框（常显）
             btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
-            btn.style.borderTopColor = Color.clear; btn.style.borderBottomColor = Color.clear;
-            btn.style.borderLeftColor = Color.clear; btn.style.borderRightColor = Color.clear;
+            btn.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+            btn.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+            btn.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+            btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
             btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
             btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
             btn.style.marginLeft = 2; btn.style.marginRight = 2;
             btn.RegisterCallback<PointerEnterEvent>(evt =>
             {
-                btn.style.backgroundColor = new Color(0.28f, 0.18f, 0.09f, 0.9f);
-                btn.style.borderTopColor = new Color(1f, 0.85f, 0.5f, 0.7f);
-                btn.style.borderBottomColor = new Color(1f, 0.85f, 0.5f, 0.7f);
-                btn.style.borderLeftColor = new Color(1f, 0.85f, 0.5f, 0.7f);
-                btn.style.borderRightColor = new Color(1f, 0.85f, 0.5f, 0.7f);
+                btn.style.backgroundColor = new Color(0.28f, 0.18f, 0.09f, 0.95f);
+                btn.style.borderTopColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderBottomColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderLeftColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderRightColor = new Color(1f, 0.85f, 0.5f, 1f);
             });
             btn.RegisterCallback<PointerLeaveEvent>(evt =>
             {
-                btn.style.backgroundColor = Color.clear;
-                btn.style.borderTopColor = Color.clear;
-                btn.style.borderBottomColor = Color.clear;
-                btn.style.borderLeftColor = Color.clear;
-                btn.style.borderRightColor = Color.clear;
+                btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
+                btn.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+                btn.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+                btn.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
+                btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
             });
-            // 像素图缩放模式（新 background API，替代废弃的 unityBackgroundScaleMode）
-            btn.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-            btn.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
-            btn.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
-            btn.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
             menuExpandedContainer.Add(btn);
         }
 
@@ -1100,9 +1102,8 @@ public class VNManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 鼠标推进唯一入口（TrickleDown：先于按钮自身 handler 执行，帧序无关）。
-    /// 点击落在交互元素（按钮/菜单/选项/日志/存档）内 → 不推进，事件继续通向按钮；
-    /// 点击空白处 → 推进对话（打字中跳过，否则下一句）。
+    /// 鼠标推进唯一入口（事件 Bubble 阶段：按钮自身 handler 先执行并 StopImmediatePropagation，
+    /// 因此只有"空白区域点击"才会 Bubble 到这里。彻底消除命中链误判）。
     /// </summary>
     private void OnRootPointerDown(PointerDownEvent evt)
     {
@@ -1120,19 +1121,9 @@ public class VNManager : MonoBehaviour
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
         if (resumeDialog != null && resumeDialog.style.display == DisplayStyle.Flex) return;
 
-        // 目标在按钮或菜单栏内 → 不推进（按钮自己的 handler 处理）
-        var t = evt.target as VisualElement;
-        while (t != null)
-        {
-            if (t is UnityEngine.UIElements.Button) return;
-            if (t == menuBar || t == menuExpandedContainer) return;
-            t = t.parent;
-        }
-
-        // 允许推进前二次防御：此刻指针若在交互面板内也不推进
+        // 兜底：指针此刻在交互 UI 上（理论上已被按钮 StopImmediate 拦截）
         if (IsPointerOverAnyUI())
             return;
-
         AdvanceOnClick();
     }
 
@@ -1357,8 +1348,6 @@ public class VNManager : MonoBehaviour
         dialogueBox?.Hide();
         StopAutoPlay();
 
-        var btnSprite = Resources.Load<Sprite>("UI/Login/button_primary");
-
         foreach (var opt in options)
         {
             if (!EvaluateCondition(opt.condition)) continue;
@@ -1371,29 +1360,47 @@ public class VNManager : MonoBehaviour
                 currentSceneIndex = optCopy.next;
                 currentDialogueIndex = 0;
                 ShowCurrentDialogue();
-            });
-            btn.text = opt.text;
-            btn.AddToClassList("vn-option-btn");
+            })
+            { text = opt.text };
+            // 纯代码绘制：不用图片素材/不用 USS 类（用户要求）
+            btn.pickingMode = PickingMode.Position;
             btn.style.width = new Length(700, LengthUnit.Pixel);
-            btn.style.height = new Length(120, LengthUnit.Pixel);
-            btn.style.marginBottom = new Length(70, LengthUnit.Pixel);
-            btn.style.fontSize = 36;
-            btn.style.color = new Color(1f, 1f, 1f, 0.95f);
+            btn.style.height = new Length(76, LengthUnit.Pixel);
+            btn.style.marginBottom = new Length(16, LengthUnit.Pixel);
+            btn.style.fontSize = 32;
+            btn.style.color = new Color(1f, 0.95f, 0.85f, 1f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.alignItems = Align.Stretch;
-            btn.style.justifyContent = Justify.FlexStart;
             btn.style.unityTextOutlineWidth = 2;
-            btn.style.unityTextOutlineColor = new Color(0.24f, 0.15f, 0.09f, 0.9f);
-            btn.style.backgroundColor = Color.clear;
-            btn.style.borderTopWidth = 0;
-            btn.style.borderBottomWidth = 0;
-            btn.style.borderLeftWidth = 0;
-            btn.style.borderRightWidth = 0;
-            if (btnSprite != null)
-                btn.style.backgroundImage = new StyleBackground(btnSprite);
+            btn.style.unityTextOutlineColor = new Color(0.15f, 0.08f, 0.05f, 0.9f);
+            // 深棕底 + 金色边框（像素风单选卡）
+            btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.94f);
+            btn.style.borderTopWidth = 2; btn.style.borderBottomWidth = 2;
+            btn.style.borderLeftWidth = 2; btn.style.borderRightWidth = 2;
+            btn.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+            btn.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+            btn.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+            btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+            btn.style.borderTopLeftRadius = 6; btn.style.borderTopRightRadius = 6;
+            btn.style.borderBottomLeftRadius = 6; btn.style.borderBottomRightRadius = 6;
+            // hover 反馈
+            btn.RegisterCallback<PointerEnterEvent>(evt =>
+            {
+                btn.style.backgroundColor = new Color(0.26f, 0.17f, 0.09f, 0.98f);
+                btn.style.borderTopColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderBottomColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderLeftColor = new Color(1f, 0.85f, 0.5f, 1f);
+                btn.style.borderRightColor = new Color(1f, 0.85f, 0.5f, 1f);
+            });
+            btn.RegisterCallback<PointerLeaveEvent>(evt =>
+            {
+                btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.94f);
+                btn.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+                btn.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+                btn.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+                btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+            });
             if (gameFont != null)
                 btn.style.unityFontDefinition = new FontDefinition { font = gameFont };
-            AddCursorHover(btn);
             optionsContainer.Add(btn);
         }
     }
