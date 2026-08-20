@@ -521,31 +521,38 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：系统图标字体（Segoe MDL2 Assets 矢量渲染，非像素拼接）+ 每项独立小框
-        var menuItemDefs = new (string glyph, System.Action action)[]
+        // 子菜单项：像素图标（PixelIconHelper 24x24，与 Auto/Menu 风格统一）+ 每项独立小框
+        // 存档/读档已从 VN 移除（改走桌面「设置」App 的备份与恢复，见单档长线重构规划）
+        var menuItemDefs = new (Texture2D icon, System.Action action)[]
         {
-            ("\uE74E", () => OpenSaveMenu()),   // 存档（软盘）
-            ("\uE8EE", () => OpenLoadMenu()),   // 读档（文件夹打开）
-            ("\uE81C", () => ToggleBacklog()),   // 回顾（历史时钟）
-            ("\uE72A", () => SkipToNext()),      // 跳转（快进）
-            ("\uE736", () => AddBookmark()),     // 书签（实心星标）
-            ("\uE72B", () => ShowConfirmDialog()), // 返回（后退箭头）
+            (PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()), // 回顾（三横线）
+            (PixelIconHelper.SkipFastIcon(), () => SkipToNext()),     // 跳转（双箭头快进）
+            (PixelIconHelper.BookmarkTabIcon(), () => AddBookmark()), // 书签（标签形）
+            (PixelIconHelper.ReturnBarIcon(), () => ShowConfirmDialog()), // 返回（箭头+横线）
         };
-        // 系统图标字体（矢量渲染，清晰标准；避免像素拼接）
-        Font iconFont = Font.CreateDynamicFontFromOSFont(new[] { "Segoe MDL2 Assets", "Segoe Fluent Icons", "Segoe UI Symbol" }, 26);
 
-        foreach (var (glyph, itemAction) in menuItemDefs)
+        foreach (var (icon, itemAction) in menuItemDefs)
         {
-            var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = glyph };
+            var btn = new UnityEngine.UIElements.Button(() => itemAction());
+            // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
+            var iconLabel = new Label();
+            iconLabel.style.width = 24;
+            iconLabel.style.height = 24;
+            iconLabel.style.flexShrink = 0;
+            iconLabel.pickingMode = PickingMode.Ignore;
+            iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            iconLabel.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+            iconLabel.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            iconLabel.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            iconLabel.style.backgroundImage = new StyleBackground(icon);
+            iconLabel.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.95f);
+            btn.Add(iconLabel);
             btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopImmediatePropagation(); });
             btn.style.width = 44;
             btn.style.height = 36;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.fontSize = 26;
             btn.style.color = new Color(1f, 0.86f, 0.59f, 0.95f);
-            if (iconFont != null)
-                btn.style.unityFontDefinition = new FontDefinition { font = iconFont };
             // 每项独立淡金边框（常显）
             btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
@@ -587,6 +594,8 @@ public class VNManager : MonoBehaviour
 
     private void ToggleMenuExpanded()
     {
+        // 操作菜单时暂停 Auto，避免计时器在菜单展开期间继续推进（"点按钮跳句"）
+        if (!menuExpanded) StopAutoPlay();
         menuExpanded = !menuExpanded;
         menuExpandedContainer.style.display = menuExpanded ? DisplayStyle.Flex : DisplayStyle.None;
         UpdateMenuButtonVisual();
@@ -898,33 +907,7 @@ public class VNManager : MonoBehaviour
         GameMainUI.Show();
     }
 
-    private void OpenSaveMenu()
-    {
-        if (string.IsNullOrEmpty(currentScriptName) || !isScriptRunning) return;
-        CloseAllPanels();
-        menuBar.style.display = DisplayStyle.None;
-        saveLoadUI.OpenSavePanel(slot =>
-        {
-            var scene = currentScript.scenes[currentSceneIndex];
-            string bgName = scene.bg;
-            string bgmName = scene.bgm;
-            saveSystem.SaveGame(slot, currentScriptName, currentSceneIndex, currentDialogueIndex, bgName, bgmName);
-        });
-    }
-
-    private void OpenLoadMenu()
-    {
-        CloseAllPanels();
-        menuBar.style.display = DisplayStyle.None;
-        saveLoadUI.OpenLoadPanel(slot =>
-        {
-            var saveData = saveSystem.LoadGame(slot);
-            if (saveData != null)
-            {
-                LoadFromSave(saveData);
-            }
-        });
-    }
+    
 
     private void ToggleBacklog()
     {
@@ -1111,6 +1094,13 @@ public class VNManager : MonoBehaviour
             if (t is UnityEngine.UIElements.Button) return;
             if (t == menuBar || t == menuExpandedContainer) return;
             t = t.parent;
+        }
+
+        // 菜单展开时点击空白：仅收起菜单，不推进对话（避免"点完菜单跳句"）
+        if (menuExpanded)
+        {
+            CloseMenuExpanded();
+            return;
         }
 
         // UI 隐藏状态下（右键隐藏）点击推进
@@ -2111,6 +2101,13 @@ public class VNManager : MonoBehaviour
         yield return new WaitForSeconds(autoPlayDelay);
 
         if (!isAutoPlay || !isScriptRunning) yield break;
+
+        // 面板/菜单/对话框打开时暂停自动推进（防止点菜单后面板开着仍跳句）
+        if (menuExpanded) yield break;
+        if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) yield break;
+        if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) yield break;
+        if (vnBacklog != null && vnBacklog.IsOpen) yield break;
+        if (saveLoadUI != null && saveLoadUI.IsOpen) yield break;
 
         if (dialogueBox != null && dialogueBox.IsTyping())
             dialogueBox.SkipTyping();

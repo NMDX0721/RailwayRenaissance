@@ -9,6 +9,7 @@ public class NewGameSetupUI : MonoBehaviour
     private VisualElement panel;
     private TextField aliasField;
     private TextField seedField;
+    private Button seedDiceBtn;
     private System.Action onConfirmed;
     private int currentPage = 0;
     private VisualElement[] pages;
@@ -423,6 +424,22 @@ public class NewGameSetupUI : MonoBehaviour
         UIToolkitUtil.StyleDarkTextField(seedField, gameFont, 18, true);
         seedField.RegisterValueChangedCallback(e => { if (selectedSeed >= 0) ClearSeedSelection(); });
         manualRow.Add(seedField);
+
+        // 色子刷新按钮（所有难度可用：当前随机种子不满意可摇新）
+        seedDiceBtn = new Button(RollRandomSeed) { text = "🎲" };
+        seedDiceBtn.style.width = 44; seedDiceBtn.style.height = 40;
+        seedDiceBtn.style.fontSize = 22; seedDiceBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        seedDiceBtn.style.unityFontDefinition = fd;
+        seedDiceBtn.style.marginLeft = 8;
+        seedDiceBtn.style.backgroundColor = CBtn;
+        seedDiceBtn.style.color = new Color(1f, 0.9f, 0.5f, 1f);
+        seedDiceBtn.style.borderTopWidth = 1; seedDiceBtn.style.borderBottomWidth = 1;
+        seedDiceBtn.style.borderLeftWidth = 1; seedDiceBtn.style.borderRightWidth = 1;
+        seedDiceBtn.style.borderTopColor = CGoldDim; seedDiceBtn.style.borderBottomColor = CGoldDim;
+        seedDiceBtn.style.borderLeftColor = CGoldDim; seedDiceBtn.style.borderRightColor = CGoldDim;
+        seedDiceBtn.style.borderTopLeftRadius = 6; seedDiceBtn.style.borderTopRightRadius = 6;
+        seedDiceBtn.style.borderBottomLeftRadius = 6; seedDiceBtn.style.borderBottomRightRadius = 6;
+        manualRow.Add(seedDiceBtn);
     }
 
     private void ShowPage(int idx)
@@ -459,19 +476,30 @@ public class NewGameSetupUI : MonoBehaviour
             if (hint != null) hint.text = editable ? "调整各项参数数值" : "当前难度不支持自定义参数，请选择「指导司机」";
         }
 
-        // Page 3: only in custom mode —— 非指导司机完全隐藏种子区，禁止任何种子操作
+        // Page 3: 种子区（所有难度都显示；非指导司机展示随机种子+可色子刷新，禁手动/预设）
         if (idx == 2)
         {
             if (seedSection != null)
-                seedSection.style.display = isCustom ? DisplayStyle.Flex : DisplayStyle.None;
-            if (seedField != null)
-                seedField.SetEnabled(isCustom);
-            for (int i = 0; i < seedButtons.Length; i++)
+                seedSection.style.display = DisplayStyle.Flex;
+            if (isCustom)
             {
-                if (seedButtons[i] != null)
-                    seedButtons[i].SetEnabled(isCustom);
-                if (seedButtons[i] != null)
-                    seedButtons[i].style.opacity = isCustom ? 1.0f : 0.35f;
+                // 指导司机：手动输入 + 预设 + 色子全可用
+                if (seedField != null) seedField.SetEnabled(true);
+                for (int i = 0; i < seedButtons.Length; i++)
+                {
+                    if (seedButtons[i] != null) { seedButtons[i].SetEnabled(true); seedButtons[i].style.opacity = 1f; }
+                }
+            }
+            else
+            {
+                // 非指导司机：显示当前随机种子，禁手输/预设，仅色子刷新可用
+                if (seedField != null) seedField.SetEnabled(false);
+                for (int i = 0; i < seedButtons.Length; i++)
+                {
+                    if (seedButtons[i] != null) { seedButtons[i].SetEnabled(false); seedButtons[i].style.opacity = 0.5f; }
+                }
+                if (string.IsNullOrEmpty(seedField.value) || seedField.value.Trim() == "RR-")
+                    RollRandomSeed();
             }
         }
     }
@@ -503,6 +531,21 @@ public class NewGameSetupUI : MonoBehaviour
     {
         selectedSeed = -1;
         foreach (var btn in seedButtons) { btn.style.backgroundColor = CBtn; btn.style.color = new Color(1f, 1f, 1f, 0.8f); }
+    }
+
+    /// <summary>摇一个随机世界种子（色子刷新）。随机选预设种子并高亮；非指导司机仅展示不可改。</summary>
+    private void RollRandomSeed()
+    {
+        int idx = UnityEngine.Random.Range(0, presetSeedCodes.Length);
+        seedField.value = presetSeedCodes[idx];
+        // 高亮对应的预设按钮（若当前难度允许预设则保留高亮，否则仅显示种子码）
+        for (int i = 0; i < seedButtons.Length; i++)
+        {
+            bool sel = (i == idx);
+            seedButtons[i].style.backgroundColor = sel ? CBtnActive : CBtn;
+            seedButtons[i].style.color = sel ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.8f);
+        }
+        selectedSeed = idx;
     }
 
     private void SelectDifficulty(int idx)
@@ -550,12 +593,21 @@ public class NewGameSetupUI : MonoBehaviour
         else
         {
             config.ApplyDifficultyPreset(difficultyKeys[selectedDifficulty]);
-            config.seedCode = "";
+            // 非指导司机：使用当前显示的随机种子（保证同一难度下开局世界也可变）
+            string curSeed = seedField != null ? seedField.value.Trim() : "";
+            config.seedCode = string.IsNullOrEmpty(curSeed) || curSeed == "RR-" ? RollAndGetSeed() : curSeed;
         }
 
         config.Save();
         Hide();
         onConfirmed?.Invoke();
+    }
+
+    private string RollAndGetSeed()
+    {
+        int idx = UnityEngine.Random.Range(0, presetSeedCodes.Length);
+        if (seedField != null) seedField.value = presetSeedCodes[idx];
+        return presetSeedCodes[idx];
     }
 
     private float ParamValue(string key) => paramSliders.TryGetValue(key, out var s) ? s.value : 1f;
