@@ -1047,7 +1047,7 @@ public class TitleArchiveUI : MonoBehaviour
                 unlocked.Add(i);
         if (unlocked.Count == 0) { AutoPlayFirstUnlockedMusic(); return; }
         // 至少 2 首时才避免重复当前曲
-        int pick = unlocked[Random.Range(0, unlocked.Count)];
+        int pick = unlocked[UnityEngine.Random.Range(0, unlocked.Count)];
         if (unlocked.Count > 1 && MusicEntries[pick].id == currentTrackId)
         {
             // 重抽一次
@@ -1322,7 +1322,7 @@ public class TitleArchiveUI : MonoBehaviour
     {
         if (playerTitle == null || titleOuter == null) return;
         // 用 MeasureTextSize 求文本真实宽度（Label width=Auto 时 resolvedStyle 可能是裁剪后值）
-        var size = playerTitle.MeasureTextSize(playerTitle.text, 0, UnityEngine.UIElements.MeasureMode.Undefined, 18, UnityEngine.UIElements.MeasureMode.Undefined);
+        var size = playerTitle.MeasureTextSize(playerTitle.text, 0, VisualElement.MeasureMode.Undefined, 18, VisualElement.MeasureMode.Undefined);
         float textW = size.x;
         float boxW = titleOuter.resolvedStyle.width;
         if (boxW <= 0) return;
