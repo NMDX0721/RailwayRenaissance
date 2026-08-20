@@ -339,10 +339,10 @@ public class VNManager : MonoBehaviour
         uiDoc.visualTreeAsset = null;
 
         // 根元素不捕获点击，只有交互元素（按钮等）才捕获。
-        // 鼠标推进 = root Bubble 阶段监听：按钮自身 StopImmediatePropagation 阻断，
-        // 只有空白点击会 bubble 至此 → 推进（时序安全，无命中链依赖）
+        // 鼠标推进 = root TrickleDown 阶段监听（先于按钮 handler，帧序安全）：
+        // 命中按钮/菜单 → 不推进；空白点击 → 推进。
         uiDoc.rootVisualElement.pickingMode = PickingMode.Ignore;
-        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown);
+        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown, TrickleDown.TrickleDown);
 
         // 背景必须先初始化（在最底层）
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
@@ -525,24 +525,24 @@ public class VNManager : MonoBehaviour
         var menuItemDefs = new (string glyph, System.Action action)[]
         {
             ("\uE74E", () => OpenSaveMenu()),   // 存档（软盘）
-            ("\uE8E5", () => OpenLoadMenu()),   // 取档（打开）
-            ("\uE81C", () => ToggleBacklog()),   // 回顾（历史）
+            ("\uE8EE", () => OpenLoadMenu()),   // 读档（文件夹打开）
+            ("\uE81C", () => ToggleBacklog()),   // 回顾（历史时钟）
             ("\uE72A", () => SkipToNext()),      // 跳转（快进）
-            ("\uE8A4", () => AddBookmark()),     // 书签
-            ("\uE72B", () => ShowConfirmDialog()), // 返回
+            ("\uE736", () => AddBookmark()),     // 书签（实心星标）
+            ("\uE72B", () => ShowConfirmDialog()), // 返回（后退箭头）
         };
         // 系统图标字体（矢量渲染，清晰标准；避免像素拼接）
-        Font iconFont = Font.CreateDynamicFontFromOSFont(new[] { "Segoe MDL2 Assets", "Segoe Fluent Icons", "Segoe UI Symbol" }, 24);
+        Font iconFont = Font.CreateDynamicFontFromOSFont(new[] { "Segoe MDL2 Assets", "Segoe Fluent Icons", "Segoe UI Symbol" }, 26);
 
         foreach (var (glyph, itemAction) in menuItemDefs)
         {
             var btn = new UnityEngine.UIElements.Button(() => itemAction()) { text = glyph };
             btn.RegisterCallback<PointerDownEvent>(evt => { evt.StopImmediatePropagation(); });
-            btn.style.width = 42;
-            btn.style.height = 34;
+            btn.style.width = 44;
+            btn.style.height = 36;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.fontSize = 24;
+            btn.style.fontSize = 26;
             btn.style.color = new Color(1f, 0.86f, 0.59f, 0.95f);
             if (iconFont != null)
                 btn.style.unityFontDefinition = new FontDefinition { font = iconFont };
@@ -1108,6 +1108,17 @@ public class VNManager : MonoBehaviour
     private void OnRootPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return; // 仅左键
+
+        // TrickleDown 阶段：先于按钮 handler 执行，帧序安全。
+        // 命中交互按钮/菜单 → 直接返回（不推进对话）；事件继续下传，按钮照常响应 click。
+        var t = evt.target as VisualElement;
+        while (t != null)
+        {
+            if (t is UnityEngine.UIElements.Button) return;
+            if (t == menuBar || t == menuExpandedContainer) return;
+            t = t.parent;
+        }
+
         // UI 隐藏状态下（右键隐藏）点击推进
         if (uiHidden)
         {
@@ -1121,7 +1132,7 @@ public class VNManager : MonoBehaviour
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
         if (resumeDialog != null && resumeDialog.style.display == DisplayStyle.Flex) return;
 
-        // 兜底：指针此刻在交互 UI 上（理论上已被按钮 StopImmediate 拦截）
+        // 兜底：指针此刻在交互 UI 上
         if (IsPointerOverAnyUI())
             return;
         AdvanceOnClick();
