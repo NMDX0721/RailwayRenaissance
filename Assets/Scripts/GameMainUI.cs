@@ -503,6 +503,10 @@ public class GameMainUI : MonoBehaviour
             StyleMenuBtn(btnAffairs);
             win.Add(btnAffairs);
         }
+        else if (name == "设置")
+        {
+            BuildSettingsPage(win);
+        }
         else
         {
             string msg = name switch
@@ -512,7 +516,6 @@ public class GameMainUI : MonoBehaviour
                 "阿里郎商店" => "该商店仅提供白名单应用。（首页维护中）",
                 "白头疫苗" => "系统体检：各项指标正常。✓",
                 "米家能量" => "沙能设备控制台（此处应显示 0721 的能源状态）。",
-                "设置" => "本设备已锁定出厂配置。（想改？去找工程师吧。）",
                 _ => $"{name}：该应用暂未接入。",
             };
             var body = new Label(msg);
@@ -536,6 +539,188 @@ public class GameMainUI : MonoBehaviour
         btn.style.color = new Color(0.85f, 0.92f, 1f, 1f);
         btn.style.marginTop = 18;
         btn.style.alignSelf = Align.Center;
+    }
+
+    // ============ 设置 App：备份与恢复（参考小米备份系统） ============
+    private const string BackupJsonKey = "SUIYUE_Backup_Json";
+    private const string BackupTimeKey = "SUIYUE_Backup_Time";
+
+    private void BuildSettingsPage(VisualElement win)
+    {
+        var subTitle = new Label("设置");
+        subTitle.style.fontSize = 22;
+        subTitle.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+        subTitle.style.unityFontDefinition = Fd();
+        win.Add(subTitle);
+
+        var row1 = BuildSettingRow("备份与恢复", "本地备份 / 云备份", ShowBackupRestorePage);
+        win.Add(row1);
+
+        var row2 = BuildSettingRow("通用", "本设备已锁定出厂配置", null);
+        win.Add(row2);
+    }
+
+    private VisualElement BuildSettingRow(string title, string desc, System.Action onClick)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.SpaceBetween;
+        row.style.alignItems = Align.Center;
+        row.style.backgroundColor = new Color(0.2f, 0.14f, 0.08f, 0.6f);
+        row.style.borderTopWidth = 1; row.style.borderBottomWidth = 1;
+        row.style.borderLeftWidth = 1; row.style.borderRightWidth = 1;
+        row.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.3f);
+        row.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.3f);
+        row.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.3f);
+        row.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.3f);
+        row.style.borderTopLeftRadius = 6; row.style.borderTopRightRadius = 6;
+        row.style.borderBottomLeftRadius = 6; row.style.borderBottomRightRadius = 6;
+        row.style.paddingLeft = 16; row.style.paddingRight = 16;
+        row.style.paddingTop = 12; row.style.paddingBottom = 12;
+        row.style.marginTop = 10;
+        row.pickingMode = onClick != null ? PickingMode.Position : PickingMode.Ignore;
+        if (onClick != null) row.RegisterCallback<ClickEvent>(_ => onClick());
+
+        var left = new Label(title);
+        left.style.fontSize = 18;
+        left.style.color = new Color(1f, 1f, 1f, 0.9f);
+        left.style.unityFontDefinition = Fd();
+        row.Add(left);
+
+        var right = new Label(desc);
+        right.style.fontSize = 14;
+        right.style.color = new Color(1f, 1f, 1f, 0.5f);
+        right.style.unityFontDefinition = Fd();
+        row.Add(right);
+        return row;
+    }
+
+    private void ShowBackupRestorePage()
+    {
+        var win = BuildInnerPanel("备份与恢复");
+        win.style.height = 480;
+
+        var tip = new Label("参考小米备份系统：将阅读进度与经营数据备份到本机");
+        tip.style.fontSize = 15;
+        tip.style.color = new Color(1f, 1f, 1f, 0.6f);
+        tip.style.unityFontDefinition = Fd();
+        tip.style.marginTop = 10;
+        win.Add(tip);
+
+        // 备份状态行
+        var statusLabel = new Label(GetBackupStatusText());
+        statusLabel.style.fontSize = 16;
+        statusLabel.style.color = new Color(0.8f, 0.9f, 0.7f, 1f);
+        statusLabel.style.unityFontDefinition = Fd();
+        statusLabel.style.marginTop = 16;
+        win.Add(statusLabel);
+
+        var btnBackup = new Button(() =>
+        {
+            SaveBackup();
+            statusLabel.text = GetBackupStatusText();
+            ShowBackupToast("备份完成");
+        }) { text = "立即备份" };
+        StyleRowBtn(btnBackup);
+        win.Add(btnBackup);
+
+        var btnRestore = new Button(() =>
+        {
+            if (string.IsNullOrEmpty(PlayerPrefs.GetString(BackupJsonKey, "")))
+            {
+                ShowBackupToast("暂无备份可恢复");
+                return;
+            }
+            RestoreBackup();
+            ShowBackupToast("恢复完成");
+        }) { text = "恢复上次备份" };
+        StyleRowBtn(btnRestore);
+        win.Add(btnRestore);
+
+        var cloudRow = BuildSettingRow("云备份", "阿里郎内网账户（未开放）", null);
+        win.Add(cloudRow);
+    }
+
+    private void StyleRowBtn(Button btn)
+    {
+        btn.style.width = 220; btn.style.height = 46;
+        btn.style.fontSize = 18; btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = Fd();
+        btn.style.backgroundColor = new Color(0.25f, 0.35f, 0.2f, 0.9f);
+        btn.style.color = new Color(0.9f, 1f, 0.85f, 1f);
+        btn.style.marginTop = 18;
+        btn.style.alignSelf = Align.Center;
+    }
+
+    private Label backupToast;
+    private void ShowBackupToast(string msg)
+    {
+        if (backupToast == null)
+        {
+            backupToast = new Label(msg);
+            backupToast.style.position = Position.Absolute;
+            backupToast.style.bottom = 90;
+            backupToast.style.left = 0; backupToast.style.right = 0;
+            backupToast.style.fontSize = 18;
+            backupToast.style.color = new Color(1f, 0.85f, 0.5f, 1f);
+            backupToast.style.unityTextAlign = TextAnchor.MiddleCenter;
+            backupToast.style.unityFontDefinition = Fd();
+            backupToast.pickingMode = PickingMode.Ignore;
+            root.Add(backupToast);
+        }
+        else
+        {
+            backupToast.text = msg;
+        }
+        backupToast.style.display = DisplayStyle.Flex;
+        backupToast.schedule.Execute(() => { if (backupToast != null) backupToast.style.display = DisplayStyle.None; }).ExecuteLater(1500);
+    }
+
+    private string GetBackupStatusText()
+    {
+        string t = PlayerPrefs.GetString(BackupTimeKey, "");
+        return string.IsNullOrEmpty(t) ? "尚未备份" : "上次备份：" + t;
+    }
+
+    private void SaveBackup()
+    {
+        // 收集所有存档键（VN 存档 + 经营存档 + 书签），快照到单一备份 JSON
+        var snapshot = new System.Text.StringBuilder();
+        var keys = new System.Collections.Generic.List<string>();
+        for (int i = 0; i < 61; i++) keys.Add("VN_Save_" + i);
+        for (int i = 0; i < 6; i++) keys.Add("SaveSlot_" + i);
+        keys.Add("Achievements_Data");
+        keys.Add("Bookmarks_Data");
+        keys.Add("VN_AutoLoad");
+        keys.Add("VNExitData");
+
+        foreach (var k in keys)
+        {
+            if (PlayerPrefs.HasKey(k))
+                snapshot.Append(k).Append("=").Append(PlayerPrefs.GetString(k)).Append("\n");
+        }
+        PlayerPrefs.SetString(BackupJsonKey, snapshot.ToString());
+        PlayerPrefs.SetString(BackupTimeKey, System.DateTime.Now.ToString("yyyy/MM/dd HH:mm"));
+        PlayerPrefs.Save();
+    }
+
+    private void RestoreBackup()
+    {
+        string json = PlayerPrefs.GetString(BackupJsonKey, "");
+        if (string.IsNullOrEmpty(json)) return;
+        foreach (var line in json.Split('\n'))
+        {
+            if (string.IsNullOrEmpty(line)) continue;
+            int eq = line.IndexOf('=');
+            if (eq <= 0) continue;
+            string k = line.Substring(0, eq);
+            string v = line.Substring(eq + 1);
+            if (k.StartsWith("VN_Save_") || k.StartsWith("SaveSlot_"))
+            {
+                PlayerPrefs.SetString(k, v);
+            }
+        }
+        PlayerPrefs.Save();
     }
 
     private void ShowAffairsPage()
