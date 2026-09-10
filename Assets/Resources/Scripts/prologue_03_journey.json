@@ -46,6 +46,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -149,6 +153,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -992,6 +1000,12 @@
           "t": "n",
           "text": "林彪悍靠在座椅上，窗外的光线渐渐暗了下来。"
         }
+      ],
+      "chars": [
+        {
+          "name": "suiyue",
+          "pos": "center"
+        }
       ]
     },
     {
@@ -1337,6 +1351,12 @@
           "t": "n",
           "text": "林彪悍笑出了声。窗外，星星一颗接一颗地亮了起来。"
         }
+      ],
+      "chars": [
+        {
+          "name": "suiyue",
+          "pos": "center"
+        }
       ]
     },
     {
@@ -1406,6 +1426,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1446,6 +1470,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1497,6 +1525,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1560,6 +1592,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1599,6 +1635,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1681,6 +1721,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1739,6 +1783,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1794,6 +1842,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -1856,6 +1908,12 @@
           "text": "那……从爷爷讲起吧。",
           "e": "gentle"
         }
+      ],
+      "chars": [
+        {
+          "name": "suiyue",
+          "pos": "center"
+        }
       ]
     },
     {
@@ -1900,6 +1958,12 @@
           "s": "岁月",
           "text": "我的音乐库把它分在「群众文艺经典」类目下——轻快曲目哦！",
           "condition": "trip_activity_story_first"
+        }
+      ],
+      "chars": [
+        {
+          "name": "suiyue",
+          "pos": "center"
         }
       ]
     },
@@ -1946,6 +2010,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -2009,6 +2077,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -2049,6 +2121,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -2106,6 +2182,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     },
@@ -2210,6 +2290,10 @@
         {
           "name": "lin_biaohan",
           "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
         }
       ]
     }
