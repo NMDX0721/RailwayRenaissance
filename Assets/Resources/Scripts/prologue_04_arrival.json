@@ -238,7 +238,8 @@
       "d": [
         {
           "t": "cg",
-          "text": "cg_village"
+          "text": "cg_village",
+          "size": "full"
         },
         {
           "t": "n",

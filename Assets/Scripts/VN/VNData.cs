@@ -39,6 +39,7 @@ public class DialogueEntry
     public string setValue;  // "varName=value" to set when this entry is processed
     public OptionData[] opts;
     public CharacterEntry[] chars;
+    public string size;  // CG专用: "full"(全屏) / "small"(居中小插画), 默认full
 }
 
 [System.Serializable]

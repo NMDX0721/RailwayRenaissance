@@ -20,7 +20,8 @@
         },
         {
           "t": "cg",
-          "text": "cg_team_night"
+          "text": "cg_team_night",
+          "size": "full"
         },
         {
           "t": "d",

@@ -1296,14 +1296,15 @@ public class VNManager : MonoBehaviour
         }
         else if (entry.t == "cg")
         {
-            // CG 插画——剧情中全屏展示，点击继续；text=Resources/cg/ 下的图片名，展示即解锁鉴赏
+            // CG 插画——size="full"全屏展示 / size="small"居中小插画; text=Resources/cg/ 下的图片名
             dialogueBox?.Hide();
             HideOptions();
             if (menuBar != null) menuBar.style.display = DisplayStyle.None;
-            ShowCgScreen(entry.text);
+            bool isSmall = entry.size == "small";
+            ShowCgScreen(entry.text, isSmall);
             TitleArchiveUI.UnlockCG(entry.text);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
-            return; // 不显示常规对话，由CgScreen处理点击
+            return;
         }
         else if (entry.t == "special")
         {
@@ -1470,8 +1471,8 @@ public class VNManager : MonoBehaviour
             bootScreen.style.display = DisplayStyle.None;
     }
 
-    /// <summary>CG 插画全屏展示（Resources/cg/ 下图片，contain 缩放黑边），点击继续剧情。</summary>
-    private void ShowCgScreen(string cgName)
+    /// <summary>CG 插画展示：isSmall=false 全屏黑底 / isSmall=true 居中小插画半透明底。</summary>
+    private void ShowCgScreen(string cgName, bool isSmall = false)
     {
         var root = uiDoc.rootVisualElement;
 
@@ -1483,7 +1484,6 @@ public class VNManager : MonoBehaviour
             cgScreen.style.right = 0; cgScreen.style.bottom = 0;
             cgScreen.style.alignItems = Align.Center;
             cgScreen.style.justifyContent = Justify.Center;
-            cgScreen.style.backgroundColor = new Color(0, 0, 0, 1f);
             cgScreen.pickingMode = PickingMode.Position;
             cgScreen.RegisterCallback<ClickEvent>(e =>
             {
@@ -1496,6 +1496,11 @@ public class VNManager : MonoBehaviour
         cgScreen.Clear();
         cgScreen.style.display = DisplayStyle.Flex;
 
+        // 全屏 vs 小插画：背景色不同
+        cgScreen.style.backgroundColor = isSmall
+            ? new Color(0, 0, 0, 0.6f)
+            : new Color(0, 0, 0, 1f);
+
         if (!string.IsNullOrEmpty(cgName))
         {
             var tex = Resources.Load<Texture2D>("cg/" + cgName);
@@ -1503,11 +1508,31 @@ public class VNManager : MonoBehaviour
             {
                 var img = new VisualElement();
                 img.name = "cg-image";
-                img.style.flexGrow = 1;
-                img.style.maxWidth = new Length(100, LengthUnit.Percent);
-                img.style.maxHeight = new Length(100, LengthUnit.Percent);
                 img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
-                img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+
+                if (isSmall)
+                {
+                    // 小插画：居中，最大60%宽，保持比例，圆角，阴影
+                    img.style.maxWidth = new Length(60, LengthUnit.Percent);
+                    img.style.maxHeight = new Length(60, LengthUnit.Percent);
+                    img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+                    img.style.borderTopLeftRadius = 12;
+                    img.style.borderTopRightRadius = 12;
+                    img.style.borderBottomLeftRadius = 12;
+                    img.style.borderBottomRightRadius = 12;
+                    img.style.borderTopWidth = 2; img.style.borderTopColor = new Color(1, 1, 1, 0.15f);
+                    img.style.borderBottomWidth = 2; img.style.borderBottomColor = new Color(1, 1, 1, 0.15f);
+                    img.style.borderLeftWidth = 2; img.style.borderLeftColor = new Color(1, 1, 1, 0.15f);
+                    img.style.borderRightWidth = 2; img.style.borderRightColor = new Color(1, 1, 1, 0.15f);
+                }
+                else
+                {
+                    // 全屏：contain缩放
+                    img.style.flexGrow = 1;
+                    img.style.maxWidth = new Length(100, LengthUnit.Percent);
+                    img.style.maxHeight = new Length(100, LengthUnit.Percent);
+                    img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+                }
                 cgScreen.Add(img);
             }
             else

@@ -474,7 +474,8 @@
       "d": [
         {
           "t": "cg",
-          "text": "cg_tea_meet"
+          "text": "cg_tea_meet",
+          "size": "small"
         },
         {
           "t": "n",
@@ -900,7 +901,8 @@
       "d": [
         {
           "t": "cg",
-          "text": "cg_day0_leave"
+          "text": "cg_day0_leave",
+          "size": "full"
         },
         {
           "t": "n",
@@ -1320,7 +1322,8 @@
         },
         {
           "t": "cg",
-          "text": "cg_first_night"
+          "text": "cg_first_night",
+          "size": "small"
         }
       ],
       "chars": [

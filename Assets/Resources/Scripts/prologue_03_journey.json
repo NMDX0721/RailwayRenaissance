@@ -356,7 +356,8 @@
         },
         {
           "t": "cg",
-          "text": "cg_chase"
+          "text": "cg_chase",
+          "size": "full"
         },
         {
           "t": "d",
@@ -405,7 +406,8 @@
         },
         {
           "t": "cg",
-          "text": "cg_arrest"
+          "text": "cg_arrest",
+          "size": "full"
         },
         {
           "t": "n",
