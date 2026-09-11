@@ -2233,19 +2233,296 @@ MOOD: Where the border dissolves between two Koreas. A shop that shouldn't exist
 | `henan_town` 河南小镇 | prologue_03 | 🟢 低 |
 | `train_inside` 车厢内部 | prologue_08 | 🟢 低 |
 
-### 6.2 CG 插画（9 张，待生成）
+### 6.2 CG 插画（9 张，提词已写 ✅）
 
-| CG 名 | 名称 | 剧情位置 |
-|-------|------|---------|
-| `cg_day0_leave` | 启程·0721升空 | prologue_02 出发 |
-| `cg_tea_meet` | 初会·嘉颖徐 | prologue_02 会面 |
-| `cg_first_night` | 客舱·岁月初语 | prologue_02 夜航 |
-| `cg_chase` | 边境·三面合围 | prologue_03 |
-| `cg_arrest` | 边境·引擎盖上 | prologue_03 |
-| `cg_village` | 雾峰·初见黄昏 | prologue_04 |
-| `cg_team_night` | 旧人·灯下重逢 | prologue_06 |
-| `cg_first_run` | 首班车·驶离站台 | prologue_08 |
-| `cg_museum` | 铁路博物馆 | 好感度>90 |
+| CG 名 | 名称 | 剧情位置 | 提词 |
+|-------|------|---------|------|
+| `cg_day0_leave` | 启程·0721升空 | prologue_02 出发 | ✅ 已写 |
+| `cg_tea_meet` | 初会·嘉颖徐 | prologue_02 会面 | ✅ 已写 (small) |
+| `cg_first_night` | 客舱·岁月初语 | prologue_02 夜航 | ✅ 已写 (small) |
+| `cg_chase` | 边境·三面合围 | prologue_03 | ✅ 已写 (§2.32) |
+| `cg_arrest` | 边境·引擎盖上 | prologue_03 | ✅ 已写 |
+| `cg_village` | 雾峰·初见黄昏 | prologue_04 | ✅ 已写 |
+| `cg_team_night` | 旧人·灯下重逢 | prologue_06 | ✅ 已写 |
+| `cg_first_run` | 首班车·驶离站台 | prologue_08 | ✅ 已写 |
+| `cg_museum` | 铁路博物馆 | 好感度>90 | ✅ 已写 |
+
+---
+
+#### cg_day0_leave — 启程·0721升空
+
+**文件**：`Resources/cg/cg_day0_leave.png`
+**场景**：prologue_02 出发。0721号从金日成大学停机坪升空，飞向天空。主角在客舱，岁月在屏幕里。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+departure scene, emotional farewell, golden hour:
+
+SCENE: A deep blue vintage sand-flying vehicle (0721) rises diagonally from a small concrete landing pad at a Pyongyang university campus. The campus buildings — Soviet-style blocks with faded murals — are visible below. The vehicle's landing gear is still extended, sand particles trailing from the exhaust. Inside the rear cabin (visible through the window), a young man sits looking back at the shrinking campus. A holographic blue glow emanates from the dashboard screen.
+
+LAYOUT:
+- 0721 ascending from lower-left to upper-right, occupying 30% of frame
+- Campus buildings in lower-left quadrant, shrinking with distance
+- Cloud gaps revealing Pyongyang skyline far below
+- Sand particle trail streaming from vehicle exhaust
+- Warm golden-hour light from the right side
+
+COLORS:
+- 0721: navy blue (#1A237E) with gold trim
+- Campus: concrete grey, faded red murals
+- Sky: golden-orange gradient transitioning to pale blue
+- Sand trail: warm amber (#FFB74D)
+- Holographic glow: cyan blue (#00BCD4)
+
+MOOD: The beginning of a 2,500 km journey. Hope mixed with uncertainty. A small vehicle against a vast sky.
+
+EXCLUSIONS:
+- No dialogue text
+- No modern UI elements
+```
+
+#### cg_tea_meet — 初会·嘉颖徐
+
+**文件**：`Resources/cg/cg_tea_meet.png`
+**场景**：prologue_02 茶馆会面。主角第一次见嘉颖徐，她递出黑金卡。size=small（居中小插画）。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+tea house meeting, intimate atmosphere, evening:
+
+SCENE: Interior of an upscale Pyongyang tea house. A young woman (嘉颖徐, 24, elegant, black hair in a low ponytail, wearing a modern hanbok-inspired suit) sits behind a dark wooden desk, extending a black credit card toward a young man (protagonist, back to viewer, in university jacket). Between them: a brass tea set on a tray, steam rising. Behind her: floor-to-ceiling windows showing Pyongyang's night skyline — the Taedong River reflecting city lights. A single calligraphy scroll on the wall reads "铁".
+
+LAYOUT:
+- 嘉颖徐 center-right, facing left, elegant posture
+- Protagonist lower-left, back to viewer, reaching for card
+- Tea set in foreground center, detailed brass work
+- Night cityscape through windows, bokeh lights
+- Warm interior lighting, amber tones
+
+COLORS:
+- Interior: warm wood browns, brass gold
+- 嘉颖徐: dark suit with subtle red accents
+- Card: matte black with gold chip
+- City lights: warm yellow/white reflections on dark water
+- Tea steam: soft white wisps
+
+MOOD: A young tycoon's quiet power. She's sizing him up. The card is both a gift and a test.
+
+EXCLUSIONS:
+- No dialogue text
+- No blood/violence
+```
+
+#### cg_first_night — 客舱·岁月初语
+
+**文件**：`Resources/cg/cg_first_night.png`
+**场景**：prologue_02 夜航。主角在客舱里，岁月的投影第一次完整出现。size=small（居中小插画）。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+night flight, first conversation, intimate cabin:
+
+SCENE: Interior of the 0721 rear cabin at night. A young man sits in the left passenger seat, turned slightly toward the dashboard. On the tablet screen mounted on the dashboard, a small holographic girl projection (岁月, 13-year-old anime girl, black long hair with red bow, school uniform) is visible — translucent blue, sitting cross-legged on the screen edge, knees drawn up. Outside the window: starry night sky with scattered sand-vehicle lights like fireflies. The cabin is dimly lit by instrument panels.
+
+LAYOUT:
+- Protagonist in left seat, leaning toward screen
+- 岁月 hologram on tablet, center-right, small but luminous
+- Window showing night sky with pinprick lights
+- Dashboard instruments casting soft green/blue glow
+- Cozy, cramped cabin with warm shadows
+
+COLORS:
+- Cabin interior: dark wood, navy upholstery
+- 岁月 hologram: translucent cyan (#00E5FF) with blue core
+- Window: deep indigo sky, white/yellow vehicle lights
+- Instrument glow: soft green
+- Overall: cool blue palette with warm skin tones on protagonist
+
+MOOD: Two strangers meeting for the first time in a flying box 3,000 meters up. She's been asleep 23 years. He's the first person she's ever talked to.
+
+EXCLUSIONS:
+- No dialogue text
+- Hologram should look ethereal, not solid
+```
+
+#### cg_arrest — 边境·引擎盖上
+
+**文件**：`Resources/cg/cg_arrest.png`
+**场景**：prologue_03 边境被扣。主角趴在0721引擎盖上被搜查。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+border arrest, tense standoff, dusk:
+
+SCENE: The 0721 sand vehicle landed on a military inspection tarmac. A young man lies face-down on the vehicle's hood, hands behind his back, while a uniformed border officer searches his backpack nearby. Two more officers stand guard with stun batons. In the background: green military vehicles with flashing red lights, a checkpoint barrier, and mountains silhouetted against a purple-orange dusk sky. The vehicle's engine compartment is open, revealing sand-fuel components.
+
+LAYOUT:
+- 0721 in center, engine hood open
+- Protagonist face-down on hood, small figure
+- 3 officers: one searching bag, two standing guard
+- Military vehicles flanking left and right
+- Mountains and dusk sky in background
+- Red emergency lights casting color on scene
+
+COLORS:
+- 0721: navy blue, now dusty
+- Officers: dark green uniforms
+- Tarmac: grey concrete
+- Sky: purple-orange gradient (dusk)
+- Emergency lights: flashing red (#F44336)
+- Mountains: dark silhouette
+
+MOOD: 3% chance of escape. Cornered. But somewhere, a phone is ringing.
+
+EXCLUSIONS:
+- No blood
+- No weapons pointed directly at protagonist
+- Officers are professional, not brutal
+```
+
+#### cg_village — 雾峰·初见黄昏
+
+**文件**：`Resources/cg/cg_village.png`
+**场景**：prologue_04 抵达雾峰村。从空中俯瞰村庄和废弃站台。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+village arrival, aerial view, golden hour:
+
+SCENE: Aerial view of a small Chinese mountain village (Wufeng) at golden hour. Mist curls between green tea-covered hills. A rusted railway line winds through the village — the tracks are overgrown with weeds, the station platform paint peeling. A few traditional houses with curved tile roofs cluster near the station. Smoke rises from chimneys. In the far distance, the 0721 vehicle (tiny, blue) descends through clouds toward the village. The last train stopped here 4 years ago.
+
+LAYOUT:
+- Aerial perspective, looking down at 30-degree angle
+- Village center with old station and platform
+- Railway line curving through from upper-left to lower-right
+- Tea plantations on hillsides, green terraces
+- Mist in valleys, golden light from the left
+- Tiny 0721 in upper sky, descending
+
+COLORS:
+- Hills: deep green (#2E7D32) tea terraces
+- Village: warm wood tones, grey tile roofs
+- Railway: rust brown (#8D6E63), weed green
+- Mist: soft white with golden tinge
+- Sky: golden-orange, fading to pale blue
+- 0721: small navy blue dot
+
+MOOD: A place time forgot. Beautiful and sad. Someone is coming home.
+
+EXCLUSIONS:
+- No dialogue text
+- No modern buildings
+```
+
+#### cg_team_night — 旧人·灯下重逢
+
+**文件**：`Resources/cg/cg_team_night.png`
+**场景**：prologue_06 团队集合。夜晚，老陈在车站灯下介绍团队成员。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+night reunion, warm lamplight, station platform:
+
+SCENE: An old railway station platform at night, lit by a single flickering fluorescent lamp hanging from the roof. Six people gather in a loose circle: an elderly man (老陈, 68, weathered face, railway cap) is introducing them to a young man (protagonist, center). The group includes: a stocky mechanic (张工, wrench in hand), a kind-faced woman (李阿姨, apron), a quiet engineer (赵师傅, glasses), a young volunteer girl (小芳, shy smile), and an eager young man (王小弟, standing at attention). The old NF-5 locomotive is dimly visible in the background, dark and dormant.
+
+LAYOUT:
+- Platform roof with single lamp, center-top
+- 老陈 left-center, gesturing toward group
+- Protagonist center, facing group
+- Other 5 arranged in semi-circle right side
+- NF-5 locomotive in deep background, barely visible
+- Platform edge with rusted rail visible at bottom
+
+COLORS:
+- Lamp: warm yellow-white (#FFF9C4) cone of light
+- Shadows: deep blue-black outside light cone
+- Characters: varied clothing, muted earth tones
+- 老陈: faded blue railway uniform
+- Platform: weathered concrete, rust stains
+- Background: near-black with locomotive silhouette
+
+MOOD: A ragtag team under one light. The beginning of something. The old station feels like a stage.
+
+EXCLUSIONS:
+- No dialogue text
+- No modern elements (no phones, no LED)
+```
+
+#### cg_first_run — 首班车·驶离站台
+
+**文件**：`Resources/cg/cg_first_run.png`
+**场景**：prologue_08 首班车。SY-22灰雀缓缓驶离站台，乘客在窗内。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+first train departure, emotional milestone, morning:
+
+SCENE: A small green passenger train (SY-22 灰雀, 3 cars) pulling away from an old mountain station platform. Morning sunlight streams through gaps in the platform roof. Inside the windows: passengers — an old tea farmer with a basket, a child pressing hands against glass, a miner dozing. On the platform: the protagonist waves, 老陈 stands with tears in his eyes, and a few villagers watch from a distance. A handmade "首班车" paper banner hangs from the station eave. Steam/smoke rises from the NF-5 locomotive at the front.
+
+LAYOUT:
+- Train moving left to right, occupying lower 40% of frame
+- Station platform in foreground, figures waving
+- Mountain backdrop with morning mist
+- Paper banner on station eave
+- Steam trail from locomotive rising into sky
+- Sun rays through platform roof gaps
+
+COLORS:
+- Train: forest green (#388E3C) with cream stripe
+- Platform: warm wood and concrete
+- Morning light: golden (#FFD54F) shafts
+- Mountains: blue-green mist
+- Banner: white with red handwritten text
+- Steam: soft white
+
+MOOD: The first train in 4 years. Tears and smiles. A line that was supposed to be dead just came back to life.
+
+EXCLUSIONS:
+- No dialogue text
+- Train is old but functional, not pristine
+```
+
+#### cg_museum — 铁路博物馆
+
+**文件**：`Resources/cg/cg_museum.png`
+**场景**：隐藏CG，好感度>90解锁。松桥站改建的铁路博物馆。
+
+```
+pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+railway museum, nostalgic preservation, afternoon:
+
+SCENE: Interior of a small railway museum converted from an old station building. Glass display cases show railway artifacts: old signal levers, brass conductor's whistle, vintage ticket punches, faded timetables. A model railway diorama sits in the center. On the walls: black-and-white photos of trains from decades past, framed newspaper clippings about the railway's history. Afternoon light filters through dusty windows. An old woman (李阿姨) is explaining something to a group of children. A single preserved signal shows green.
+
+LAYOUT:
+- Museum interior, warm wood paneling
+- Display cases along walls, detailed artifacts
+- Model railway in center, illuminated
+- Photos and clippings on upper walls
+- Children gathered around, listening
+- Green signal light glowing in corner
+
+COLORS:
+- Interior: warm amber wood, soft cream walls
+- Display cases: glass with warm interior lighting
+- Photos: sepia/black-and-white
+- Signal green: vivid (#4CAF50) glow
+- Afternoon light: golden through dusty glass
+- Overall: warm, nostalgic palette
+
+MOOD: What was lost is being remembered. The railway's story isn't over — it's being told.
+
+EXCLUSIONS:
+- No dialogue text
+- Museum is small and humble, not grand
+```
 
 ### 6.3 可选新增（UI 纹理底图，非必需）
 
