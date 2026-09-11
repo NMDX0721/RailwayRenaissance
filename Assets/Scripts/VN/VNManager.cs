@@ -44,6 +44,7 @@ public class VNManager : MonoBehaviour
     private Label bookmarkToast;
     private Coroutine bookmarkToastCoroutine;
     private VisualElement episodeClearOverlay;
+    private Coroutine autoAdvanceCoroutine;
 
     // Menu bar
     private VisualElement menuBar;
@@ -754,8 +755,6 @@ public class VNManager : MonoBehaviour
         dialogBox.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
         dialogBox.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
         dialogBox.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
-        // 阴影
-        dialogBox.style.boxShadow = new Shadow(new Color(0, 0, 0, 0.35f), 0, 4, 24);
         confirmDialog.Add(dialogBox);
 
         // 标题：琥珀金
@@ -1211,7 +1210,76 @@ public class VNManager : MonoBehaviour
                 VNAudioManager.Instance?.PlayBGM(firstScene.bgm);
         }
 
-        ShowCurrentDialogue();
+        // 显示话标题卡（2秒后自动消失，点击可跳过）
+        ShowEpisodeTitleCard(scriptName, () => ShowCurrentDialogue());
+    }
+
+    /// <summary>话标题卡：黑底 + 话数 + 标题，2秒后淡出。</summary>
+    private void ShowEpisodeTitleCard(string scriptName, System.Action onDone)
+    {
+        var root = uiDoc.rootVisualElement;
+        var overlay = new VisualElement { name = "episode-title-card" };
+        overlay.style.position = Position.Absolute;
+        overlay.style.top = 0; overlay.style.left = 0;
+        overlay.style.right = 0; overlay.style.bottom = 0;
+        overlay.style.backgroundColor = new Color(0, 0, 0, 0.92f);
+        overlay.style.alignItems = Align.Center;
+        overlay.style.justifyContent = Justify.Center;
+        overlay.pickingMode = PickingMode.Position;
+        root.Add(overlay);
+
+        // BA风格标题条：半透明浅色带
+        var band = new VisualElement();
+        band.style.width = new Length(80, LengthUnit.Percent);
+        band.style.paddingTop = 30; band.style.paddingBottom = 30;
+        band.style.alignItems = Align.Center;
+        band.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+        overlay.Add(band);
+
+        int epNum = GetEpisodeNumber(scriptName);
+        string epTitle = GetEpisodeTitle(scriptName);
+
+        var numLabel = new Label("第" + epNum + "话");
+        numLabel.style.fontSize = 18;
+        numLabel.style.color = new Color(1f, 0.78f, 0.4f, 0.8f);
+        numLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        numLabel.style.marginBottom = 8;
+        band.Add(numLabel);
+
+        var titleLabel = new Label(epTitle);
+        titleLabel.style.fontSize = 32;
+        titleLabel.style.color = new Color(1f, 0.95f, 0.88f, 1f);
+        titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        titleLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        band.Add(titleLabel);
+
+        // 点击跳过
+        bool clicked = false;
+        overlay.RegisterCallback<ClickEvent>(e =>
+        {
+            if (!clicked) { clicked = true; overlay.RemoveFromHierarchy(); onDone?.Invoke(); }
+        });
+
+        // 2秒后自动消失
+        StartCoroutine(FadeOutTitleCard(overlay, 2f, () =>
+        {
+            if (!clicked) { clicked = true; overlay.RemoveFromHierarchy(); onDone?.Invoke(); }
+        }));
+    }
+
+    private IEnumerator FadeOutTitleCard(VisualElement el, float delay, System.Action onDone)
+    {
+        yield return new WaitForSeconds(delay);
+        // 简单淡出：0.5秒
+        float t = 0;
+        while (t < 0.5f)
+        {
+            t += Time.deltaTime;
+            float a = 1f - (t / 0.5f);
+            el.style.backgroundColor = new Color(0, 0, 0, 0.92f * a);
+            yield return null;
+        }
+        onDone?.Invoke();
     }
 
     public void NextDialogue()
@@ -1715,7 +1783,7 @@ public class VNManager : MonoBehaviour
         parent.Add(line);
     }
 
-    /// <summary>节结束过渡：渐暗→To be continued→下一话横幅→点击继续。</summary>
+    /// <summary>节结束过渡：渐暗→下一话横幅（auto 5s倒计时）→新话标题卡→开始。</summary>
     private void ShowEpisodeClear(string completedScript, string nextScript)
     {
         if (episodeClearOverlay == null)
@@ -1725,90 +1793,114 @@ public class VNManager : MonoBehaviour
             episodeClearOverlay.style.position = Position.Absolute;
             episodeClearOverlay.style.top = 0; episodeClearOverlay.style.left = 0;
             episodeClearOverlay.style.right = 0; episodeClearOverlay.style.bottom = 0;
-            episodeClearOverlay.style.backgroundColor = new Color(0, 0, 0, 0.6f); // 半透明，场景隐约可见
+            episodeClearOverlay.style.backgroundColor = new Color(0, 0, 0, 0.7f);
             episodeClearOverlay.style.alignItems = Align.Center;
             episodeClearOverlay.style.justifyContent = Justify.Center;
             episodeClearOverlay.pickingMode = PickingMode.Position;
-            episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
-            {
-                if (e.target == episodeClearOverlay)
-                {
-                    episodeClearOverlay.style.display = DisplayStyle.None;
-                    StartScript(nextScript);
-                }
-            });
             root.Add(episodeClearOverlay);
         }
         episodeClearOverlay.Clear();
 
-        // —— 横幅深层：枕头纹理底 + 双层边框（旧玻璃质感） ——
-        var banner = new VisualElement();
-        banner.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.96f);
-        banner.style.minWidth = 520;
-        banner.style.paddingLeft = 60;
-        banner.style.paddingRight = 60;
-        banner.style.paddingTop = 32;
-        banner.style.paddingBottom = 32;
-        banner.style.alignItems = Align.Center;
-        // 双层边框：外细金 + 内暗
-        banner.style.borderTopWidth = 2; banner.style.borderBottomWidth = 2;
-        banner.style.borderLeftWidth = 2; banner.style.borderRightWidth = 2;
-        banner.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.9f);
-        banner.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.9f);
-        banner.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.9f);
-        banner.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.9f);
-        episodeClearOverlay.Add(banner);
+        // 点击任意处：取消倒计时，直接进入下一话
+        episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
+        {
+            if (autoAdvanceCoroutine != null)
+            {
+                StopCoroutine(autoAdvanceCoroutine);
+                autoAdvanceCoroutine = null;
+            }
+            episodeClearOverlay.style.display = DisplayStyle.None;
+            StartScript(nextScript);
+        });
 
-        // —— 四角信号角标（铁路信号机符号，细线 2px） ——
-        AddCornerMark(banner, "▲", "top", "left");
-        AddCornerMark(banner, "■", "top", "right");
-        AddCornerMark(banner, "◀", "bottom", "left");
-        AddCornerMark(banner, "●", "bottom", "right");
+        // —— BA风格卡片：暖色底 + 金边 + 圆角 ——
+        var card = new VisualElement();
+        card.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.97f);
+        card.style.minWidth = 460;
+        card.style.paddingLeft = 50; card.style.paddingRight = 50;
+        card.style.paddingTop = 36; card.style.paddingBottom = 30;
+        card.style.alignItems = Align.Center;
+        card.style.borderTopLeftRadius = 14; card.style.borderTopRightRadius = 14;
+        card.style.borderBottomLeftRadius = 14; card.style.borderBottomRightRadius = 14;
+        card.style.borderTopWidth = 2; card.style.borderBottomWidth = 2;
+        card.style.borderLeftWidth = 2; card.style.borderRightWidth = 2;
+        card.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        card.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        card.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        card.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        episodeClearOverlay.Add(card);
 
-        // —— 织光芒晕（横幅后深层光晕） ——
-        var glow = new VisualElement();
-        glow.style.position = Position.Absolute;
-        glow.style.top = 6; glow.style.left = 6; glow.style.right = 6; glow.style.bottom = 6;
-        glow.style.backgroundColor = new Color(1f, 0.85f, 0.5f, 0.05f);
-        glow.pickingMode = PickingMode.Ignore;
-        banner.Add(glow);
-
-        // —— "下一话" 标签 + 金色渐变下划线 ——
+        // "下一话" 标签 + 金色下划线
         var nextLabel = new Label("下一话");
-        nextLabel.style.fontSize = 20;
-        nextLabel.style.color = new Color(0.9f, 0.72f, 0.45f, 0.95f);
+        nextLabel.style.fontSize = 18;
+        nextLabel.style.color = new Color(1f, 0.78f, 0.4f, 0.85f);
         nextLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
         nextLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
         nextLabel.style.marginBottom = 4;
-        banner.Add(nextLabel);
+        card.Add(nextLabel);
 
-        // 金色下划线：渐变淡出（细线 + 两端透明）
         var underline = new VisualElement();
-        underline.style.width = 90;
-        underline.style.height = 2;
-        underline.style.marginBottom = 18;
-        underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.35f); // 实际可做渐变，UI Toolkit 简化
-        banner.Add(underline);
+        underline.style.width = 70; underline.style.height = 2;
+        underline.style.marginBottom = 16;
+        underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.35f);
+        card.Add(underline);
 
-        // —— 话数徽章 ——
+        // 话数 + 标题
         string nextTitle = GetEpisodeTitle(nextScript);
         int epNum = GetEpisodeNumber(nextScript);
         var epBadge = new Label("第" + epNum + "话  " + nextTitle);
-        epBadge.style.fontSize = 30;
+        epBadge.style.fontSize = 28;
         epBadge.style.color = new Color(1f, 0.95f, 0.85f, 1f);
         epBadge.style.unityFontStyleAndWeight = FontStyle.Bold;
         epBadge.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        epBadge.style.marginBottom = 6;
-        banner.Add(epBadge);
+        epBadge.style.marginBottom = 20;
+        card.Add(epBadge);
 
-        // —— 继续提示 ——
-        var hint = new Label("轻触任意处继续");
-        hint.style.fontSize = 15;
+        // Auto 倒计时条
+        var timerBar = new VisualElement();
+        timerBar.style.width = 200; timerBar.style.height = 3;
+        timerBar.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.2f);
+        timerBar.style.borderTopLeftRadius = 2; timerBar.style.borderTopRightRadius = 2;
+        timerBar.style.borderBottomLeftRadius = 2; timerBar.style.borderBottomRightRadius = 2;
+        card.Add(timerBar);
+
+        var timerFill = new VisualElement();
+        timerFill.style.width = 200; timerFill.style.height = 3;
+        timerFill.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.8f);
+        timerFill.style.borderTopLeftRadius = 2; timerFill.style.borderTopRightRadius = 2;
+        timerFill.style.borderBottomLeftRadius = 2; timerFill.style.borderBottomRightRadius = 2;
+        timerBar.Add(timerFill);
+
+        // 轻触继续提示
+        var hint = new Label("轻触继续");
+        hint.style.fontSize = 14;
         hint.style.color = new Color(1f, 1f, 1f, 0.3f);
+        hint.style.marginTop = 14;
         hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        banner.Add(hint);
+        card.Add(hint);
 
         episodeClearOverlay.style.display = DisplayStyle.Flex;
+
+        // 5秒自动倒计时
+        autoAdvanceCoroutine = StartCoroutine(AutoAdvanceCountdown(5f, timerFill, () =>
+        {
+            episodeClearOverlay.style.display = DisplayStyle.None;
+            StartScript(nextScript);
+        }));
+    }
+
+    private IEnumerator AutoAdvanceCountdown(float seconds, VisualElement fill, System.Action onDone)
+    {
+        float elapsed = 0f;
+        while (elapsed < seconds)
+        {
+            elapsed += Time.deltaTime;
+            float pct = Mathf.Clamp01(elapsed / seconds);
+            fill.style.width = new Length(200f * (1f - pct), LengthUnit.Pixel);
+            yield return null;
+        }
+        autoAdvanceCoroutine = null;
+        onDone?.Invoke();
     }
 
     /// <summary>横幅四角信号角标（细线 2px 符号，指向内）。</summary>
