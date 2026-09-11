@@ -118,6 +118,7 @@ public class TitleArchiveUI : MonoBehaviour
         new ArchiveInfo { id = "zhaoshifu",  name = "赵师傅", type = "退休铁路工程师", intro = "55岁 · 管理熟练（初始2级），沉稳可靠。",                                condition = "序章员工集合", prefsKey = "ArchiveChar_zhaoshifu" },
         new ArchiveInfo { id = "xiaofang",   name = "小芳",   type = "志愿者",         intro = "45岁 · 性格热情，服务潜力大（上限4级）。",                              condition = "序章员工集合", prefsKey = "ArchiveChar_xiaofang" },
         new ArchiveInfo { id = "suiyue",     name = "岁月",   type = "AI 原型",        intro = "0721号沙子飞猪号搭载的AI原型，2053年制造，沉睡23年，正经精确、偶尔冷幽默。", condition = "领取0721号载具后解锁", prefsKey = "ArchiveChar_suiyue" },
+        new ArchiveInfo { id = "jiaying",    name = "嘉颖徐", type = "铁路大亨",       intro = "24岁 · 东北亚铁路圈天才少女，手握多条电气化干线，爷爷林悍晚年忘年交。",     condition = "会面嘉颖徐时解锁",   prefsKey = "ArchiveChar_jiaying" },
     };
 
     private static readonly ArchiveInfo[] Trains =
@@ -2203,6 +2204,7 @@ public class TitleArchiveUI : MonoBehaviour
                 break;
             case "prologue_02_day0":
                 UnlockArchive("ArchiveChar_suiyue"); // 领取 0721
+                UnlockArchive("ArchiveChar_jiaying"); // 茶馆会面嘉颖徐
                 UnlockArchive("ArchiveTrain_nf5");
                 UnlockMusic("cloud_rail");
                 UnlockMusic("wheels_joke");
