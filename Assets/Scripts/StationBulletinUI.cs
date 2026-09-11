@@ -208,7 +208,7 @@ public class StationBulletinUI : MonoBehaviour
 
     private void ResetAudioDefaults()
     {
-        GameData.MasterVolume = 1f; GameData.BGMVolume = 0.8f; GameData.SFXVolume = 1f; GameData.TypewriterVolume = 0.5f;
+        GameData.MasterVolume = 1f; GameData.BGMVolume = 0.8f; GameData.SFXVolume = 1f; GameData.TypewriterVolume = 0.3f;
         ShowCategory(0);
     }
 

@@ -1358,7 +1358,7 @@ public static class GameData
     public static float MasterVolume { get => PlayerPrefs.GetFloat("MasterVolume", 1f); set { PlayerPrefs.SetFloat("MasterVolume", value); ApplyVolume(); } }
     public static float BGMVolume { get => PlayerPrefs.GetFloat("BGMVolume", 0.8f); set { PlayerPrefs.SetFloat("BGMVolume", value); ApplyVolume(); } }
     public static float SFXVolume { get => PlayerPrefs.GetFloat("SFXVolume", 1f); set { PlayerPrefs.SetFloat("SFXVolume", value); ApplyVolume(); } }
-    public static float TypewriterVolume { get => PlayerPrefs.GetFloat("TypewriterVolume", 0.5f); set { PlayerPrefs.SetFloat("TypewriterVolume", value); ApplyVolume(); } }
+    public static float TypewriterVolume { get => PlayerPrefs.GetFloat("TypewriterVolume", 0.3f); set { PlayerPrefs.SetFloat("TypewriterVolume", value); ApplyVolume(); } }
 
     public static void ApplyVolume()
     {

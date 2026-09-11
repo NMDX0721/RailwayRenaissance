@@ -2097,6 +2097,18 @@ public class VNManager : MonoBehaviour
 
     private void StopGlobalTitleBGM()
     {
+        // 查找所有名为"BGM"的对象并销毁（包括重复创建的情况）
+        var bgmObjs = GameObject.FindGameObjectsWithTag("Untagged");
+        foreach (var obj in bgmObjs)
+        {
+            if (obj.name == "BGM")
+            {
+                var src = obj.GetComponent<AudioSource>();
+                if (src != null) { src.Stop(); src.clip = null; }
+                GameObject.Destroy(obj);
+            }
+        }
+        // 额外清理：按名字查找（Find 只返回第一个）
         var bgmObj = GameObject.Find("BGM");
         if (bgmObj != null)
         {
