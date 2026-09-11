@@ -661,12 +661,14 @@ public class VNManager : MonoBehaviour
             NextDialogue();
             safety++;
             // 检查是否到达选项
+            if (currentScript == null) break;
             if (currentSceneIndex < currentScript.scenes.Length)
             {
                 var nextScene = currentScript.scenes[currentSceneIndex];
                 if (currentDialogueIndex < nextScene.d.Length && nextScene.d[currentDialogueIndex].t == "c")
                     break;
             }
+            else break;
         }
     }
 
@@ -722,89 +724,99 @@ public class VNManager : MonoBehaviour
 
         confirmDialog = new VisualElement { name = "confirm-dialog" };
         confirmDialog.style.position = Position.Absolute;
-        confirmDialog.style.top = 0;
-        confirmDialog.style.left = 0;
-        confirmDialog.style.right = 0;
-        confirmDialog.style.bottom = 0;
-        confirmDialog.style.backgroundColor = new Color(0, 0, 0, 0.7f);
+        confirmDialog.style.top = 0; confirmDialog.style.left = 0;
+        confirmDialog.style.right = 0; confirmDialog.style.bottom = 0;
+        confirmDialog.style.backgroundColor = new Color(0, 0, 0, 0.65f);
         confirmDialog.style.display = DisplayStyle.None;
         confirmDialog.style.alignItems = Align.Center;
         confirmDialog.style.justifyContent = Justify.Center;
         confirmDialog.pickingMode = PickingMode.Position;
         root.Add(confirmDialog);
 
+        // BA布局 + 铁路复兴配色：暖金底 + 深棕边框
         var dialogBox = new VisualElement();
-        dialogBox.style.width = 500;
-        dialogBox.style.height = 260;
-        dialogBox.style.backgroundColor = new Color(0.15f, 0.1f, 0.06f, 0.95f);
-        dialogBox.style.borderTopWidth = 2;
-        dialogBox.style.borderBottomWidth = 2;
-        dialogBox.style.borderLeftWidth = 2;
-        dialogBox.style.borderRightWidth = 2;
-        dialogBox.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        dialogBox.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        dialogBox.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        dialogBox.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-        dialogBox.style.borderTopLeftRadius = 8;
-        dialogBox.style.borderTopRightRadius = 8;
-        dialogBox.style.borderBottomLeftRadius = 8;
-        dialogBox.style.borderBottomRightRadius = 8;
-        dialogBox.style.flexDirection = FlexDirection.Column;
+        dialogBox.style.width = 480;
         dialogBox.style.alignItems = Align.Center;
         dialogBox.style.justifyContent = Justify.Center;
+        dialogBox.style.paddingTop = 36;
+        dialogBox.style.paddingBottom = 30;
         dialogBox.style.paddingLeft = 40;
         dialogBox.style.paddingRight = 40;
-        dialogBox.style.paddingTop = 30;
-        dialogBox.style.paddingBottom = 30;
+        dialogBox.style.borderTopLeftRadius = 16;
+        dialogBox.style.borderTopRightRadius = 16;
+        dialogBox.style.borderBottomLeftRadius = 16;
+        dialogBox.style.borderBottomRightRadius = 16;
+        // 暖色底：深棕半透明，旧纸质感
+        dialogBox.style.backgroundColor = new Color(0.16f, 0.11f, 0.07f, 0.96f);
+        dialogBox.style.borderTopWidth = 2; dialogBox.style.borderBottomWidth = 2;
+        dialogBox.style.borderLeftWidth = 2; dialogBox.style.borderRightWidth = 2;
+        dialogBox.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        dialogBox.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        dialogBox.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        dialogBox.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        // 阴影
+        dialogBox.style.boxShadow = new Shadow(new Color(0, 0, 0, 0.35f), 0, 4, 24);
         confirmDialog.Add(dialogBox);
 
-        var titleLabel = new Label("返回标题界面？");
-        titleLabel.style.fontSize = 36;
-        titleLabel.style.color = new Color(200f / 255f, 150f / 255f, 80f / 255f, 1f);
+        // 标题：琥珀金
+        var titleLabel = new Label("跳过剧情？");
+        titleLabel.style.fontSize = 28;
+        titleLabel.style.color = new Color(1f, 0.78f, 0.4f, 1f);
         titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
         titleLabel.style.unityFontDefinition = fontDef;
-        titleLabel.style.marginBottom = 15;
+        titleLabel.style.marginBottom = 6;
         dialogBox.Add(titleLabel);
 
-        var descLabel = new Label("当前进度将丢失");
-        descLabel.style.fontSize = 26;
-        descLabel.style.color = new Color(1f, 1f, 1f, 0.6f);
+        var underline = new VisualElement();
+        underline.style.width = 80; underline.style.height = 2;
+        underline.style.marginBottom = 20;
+        underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.4f);
+        dialogBox.Add(underline);
+
+        var descLabel = new Label("确定要跳过当前剧情吗？");
+        descLabel.style.fontSize = 20;
+        descLabel.style.color = new Color(1f, 1f, 1f, 0.55f);
         descLabel.style.unityFontDefinition = fontDef;
-        descLabel.style.marginBottom = 40;
+        descLabel.style.marginBottom = 30;
         dialogBox.Add(descLabel);
 
+        // 按钮行
         var btnRow = new VisualElement();
         btnRow.style.flexDirection = FlexDirection.Row;
+        btnRow.style.justifyContent = Justify.Center;
+        btnRow.style.alignItems = Align.Center;
         dialogBox.Add(btnRow);
 
-        var yesBtn = new UnityEngine.UIElements.Button(() => ReturnToTitle()) { text = "确认" };
-        yesBtn.style.width = 150;
-        yesBtn.style.height = 55;
-        yesBtn.style.marginRight = 30;
-        yesBtn.style.fontSize = 28;
-        yesBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-        yesBtn.style.backgroundColor = new Color(0.3f, 0.18f, 0.1f, 0.9f);
-        yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        yesBtn.style.unityFontDefinition = fontDef;
-        yesBtn.style.borderTopLeftRadius = 6;
-        yesBtn.style.borderTopRightRadius = 6;
-        yesBtn.style.borderBottomLeftRadius = 6;
-        yesBtn.style.borderBottomRightRadius = 6;
-        btnRow.Add(yesBtn);
-
+        // 取消按钮：深棕底 + 金边
         var noBtn = new UnityEngine.UIElements.Button(() => confirmDialog.style.display = DisplayStyle.None) { text = "取消" };
-        noBtn.style.width = 150;
-        noBtn.style.height = 55;
-        noBtn.style.fontSize = 28;
-        noBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-        noBtn.style.backgroundColor = new Color(0.2f, 0.12f, 0.08f, 0.8f);
+        noBtn.style.width = 140; noBtn.style.height = 48;
+        noBtn.style.marginRight = 20;
+        noBtn.style.fontSize = 20;
+        noBtn.style.color = new Color(1f, 0.85f, 0.6f, 0.9f);
+        noBtn.style.backgroundColor = new Color(0.2f, 0.14f, 0.08f, 0.9f);
         noBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         noBtn.style.unityFontDefinition = fontDef;
-        noBtn.style.borderTopLeftRadius = 6;
-        noBtn.style.borderTopRightRadius = 6;
-        noBtn.style.borderBottomLeftRadius = 6;
-        noBtn.style.borderBottomRightRadius = 6;
+        noBtn.style.borderTopLeftRadius = 8; noBtn.style.borderTopRightRadius = 8;
+        noBtn.style.borderBottomLeftRadius = 8; noBtn.style.borderBottomRightRadius = 8;
+        noBtn.style.borderTopWidth = 1; noBtn.style.borderBottomWidth = 1;
+        noBtn.style.borderLeftWidth = 1; noBtn.style.borderRightWidth = 1;
+        noBtn.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
+        noBtn.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
+        noBtn.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
+        noBtn.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
         btnRow.Add(noBtn);
+
+        // 确认按钮：琥珀金底 + 深棕文字
+        var yesBtn = new UnityEngine.UIElements.Button(() => { confirmDialog.style.display = DisplayStyle.None; ReturnToTitle(); }) { text = "确认" };
+        yesBtn.style.width = 140; yesBtn.style.height = 48;
+        yesBtn.style.fontSize = 20;
+        yesBtn.style.color = new Color(0.12f, 0.08f, 0.04f, 1f);
+        yesBtn.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.95f);
+        yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        yesBtn.style.unityFontDefinition = fontDef;
+        yesBtn.style.borderTopLeftRadius = 8; yesBtn.style.borderTopRightRadius = 8;
+        yesBtn.style.borderBottomLeftRadius = 8; yesBtn.style.borderBottomRightRadius = 8;
+        btnRow.Add(yesBtn);
     }
 
     /// <summary>隐藏全部 VN UI（保留背景与立绘），截图式纯净画面。</summary>
@@ -1261,6 +1273,9 @@ public class VNManager : MonoBehaviour
         if (currentDialogueIndex >= scene.d.Length) return;
         var entry = scene.d[currentDialogueIndex];
 
+        // 切换对话时始终隐藏 boot screen，boot 类型会在下面重新显示
+        HideBootScreen();
+
         // Check condition - skip this entry if condition not met
         if (!EvaluateCondition(entry.condition))
         {
@@ -1424,8 +1439,8 @@ public class VNManager : MonoBehaviour
             bootScreen.pickingMode = PickingMode.Position;
             bootScreen.RegisterCallback<ClickEvent>(e =>
             {
-                if (e.target == bootScreen)
-                    NextDialogue();
+                HideBootScreen();
+                NextDialogue();
             });
             root.Add(bootScreen);
         }
@@ -1786,10 +1801,10 @@ public class VNManager : MonoBehaviour
         epBadge.style.marginBottom = 6;
         banner.Add(epBadge);
 
-        // —— 话标题副标签 — —
-        var hint = new Label("[ 点击继续 ]");
-        hint.style.fontSize = 16;
-        hint.style.color = new Color(1f, 1f, 1f, 0.35f);
+        // —— 继续提示 ——
+        var hint = new Label("轻触任意处继续");
+        hint.style.fontSize = 15;
+        hint.style.color = new Color(1f, 1f, 1f, 0.3f);
         hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
         banner.Add(hint);
 

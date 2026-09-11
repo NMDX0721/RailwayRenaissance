@@ -59,8 +59,9 @@ public class CharacterSpriteManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
 
-            // 未指定表情时使用角色名直接加载，否则 {name}_{emotion}
-            string cacheKey = string.IsNullOrEmpty(emotion) ? entry.name : entry.name + "_" + emotion;
+            // 未指定表情时用normal兜底，否则 {name}_{emotion}
+            string emotionKey = string.IsNullOrEmpty(emotion) ? "normal" : emotion;
+            string cacheKey = entry.name + "_" + emotionKey;
 
             if (!spriteCache.TryGetValue(cacheKey, out var tex))
             {
