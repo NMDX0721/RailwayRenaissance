@@ -139,10 +139,10 @@ public class TitleArchiveUI : MonoBehaviour
         new MusicInfo { id = "borderline",      title = "Borderline 国境线",          category = "BGM",  clipName = "borderline",      condition = "边境危机时解锁" },
         new MusicInfo { id = "wheels_joke",     title = "The Wheel's Joke 方向盘在笑", category = "BGM",  clipName = "wheels_joke",     condition = "统一便当店购物" },
         new MusicInfo { id = "train_through_keys", title = "Train Through Keys 旧曲", category = "BGM",  clipName = "train_through_keys", condition = "已废弃，保留试听" },
-        new MusicInfo { id = "south_wind",      title = "남풍（南风）",               category = "歌曲", clipName = "south_wind",      condition = "统一便当店购物后解锁" },
-        new MusicInfo { id = "starlit_rails",   title = "별빛 철길（星光铁轨）",      category = "歌曲", clipName = "starlit_rails",   condition = "边境危机时解锁夜航" },
-        new MusicInfo { id = "chollima_ride",   title = "천리마 신시대에 달리다（千里马驰骋新时代）", category = "歌曲", clipName = "chollima_ride", condition = "边境途中播放新闻时解锁" },
-        new MusicInfo { id = "sleepers",        title = "Sleepers（铁轨沉睡者）",     category = "歌曲", clipName = "sleepers",        condition = "片尾曲（待生成）" },
+        new MusicInfo { id = "south_wind",      title = "남풍 南风",                  category = "歌曲", clipName = "south_wind",      condition = "统一便当店购物后解锁" },
+        new MusicInfo { id = "starlit_rails",   title = "별빛 철길 星光铁轨",         category = "歌曲", clipName = "starlit_rails",   condition = "边境危机时解锁夜航" },
+        new MusicInfo { id = "chollima_ride",   title = "천리마 신시대에 달리다 千里马驰骋新时代", category = "歌曲", clipName = "chollima_ride", condition = "边境途中播放新闻时解锁" },
+        new MusicInfo { id = "sleepers",        title = "Sleepers 铁轨沉睡者",        category = "歌曲", clipName = "sleepers",        condition = "片尾曲（待生成）" },
     };
 
     /// <summary>场景鉴赏：当前已有背景图的场景，随序章进度解锁。</summary>
@@ -715,7 +715,13 @@ public class TitleArchiveUI : MonoBehaviour
 
         var title = new Label(unlocked ? m.title : "???");
         title.style.fontSize = 18;
-        title.style.color = unlocked ? new Color(1f, 1f, 1f, 0.95f) : grayText;
+        // 类别颜色：BGM冷蓝白，歌曲暖金白
+        if (unlocked)
+            title.style.color = m.category == "BGM"
+                ? new Color(0.85f, 0.92f, 1f, 0.95f)   // 冷蓝白
+                : new Color(1f, 0.92f, 0.78f, 0.95f);   // 暖金白
+        else
+            title.style.color = grayText;
         title.style.unityFontDefinition = Fd();
         title.style.whiteSpace = WhiteSpace.Normal;
         card.Add(title);
@@ -1206,6 +1212,20 @@ public class TitleArchiveUI : MonoBehaviour
         if (len > 0.01f && !progressScrubbing)
             playerProgress.value = Mathf.Clamp01(t / len);
         playerCurTime.text = FormatTime(t);
+
+        // 歌曲结束：自动下一曲或循环
+        if (t >= len - 0.1f && len > 0.01f)
+        {
+            if (playMode == PlayMode.SingleRepeat)
+            {
+                playerSource.time = 0;
+                playerSource.Play();
+            }
+            else
+            {
+                PlayNextTrack();
+            }
+        }
     }
 
     /// <summary>长音乐名横向滚动：从开头开始向左滚动，末尾露出后重置回开头（不跳右侧）。暂停时冻结。</summary>
@@ -1261,6 +1281,17 @@ public class TitleArchiveUI : MonoBehaviour
     private void SetPlayerTitle(string text)
     {
         playerTitle.text = text;
+        // 根据曲名查找类别并设置颜色
+        foreach (var m in MusicEntries)
+        {
+            if (m.title == text || m.clipName == text)
+            {
+                playerTitle.style.color = m.category == "BGM"
+                    ? new Color(0.85f, 0.92f, 1f, 0.9f)
+                    : new Color(1f, 0.92f, 0.78f, 0.9f);
+                break;
+            }
+        }
         marqueeX = 0;
         marqueeActive = false;
         playerTitle.style.translate = new Translate(0, 0);
