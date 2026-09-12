@@ -269,12 +269,12 @@ public class VNSaveLoadUI : MonoBehaviour
         fade.pickingMode = PickingMode.Ignore;
         root.Add(fade);
 
-        // 0.3秒淡入黑屏
+        // 0.15秒快速淡入黑屏
         float t = 0;
-        while (t < 0.3f)
+        while (t < 0.15f)
         {
             t += Time.unscaledDeltaTime;
-            fade.style.opacity = t / 0.3f;
+            fade.style.opacity = t / 0.15f;
             yield return null;
         }
         fade.style.opacity = 1;

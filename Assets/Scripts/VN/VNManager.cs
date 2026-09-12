@@ -438,7 +438,7 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
-        autoBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
+        autoBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         autoBtn.style.width = 88;
         autoBtn.style.height = 40;
@@ -475,7 +475,7 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
-        menuBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
+        menuBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         menuBtn.style.width = 88;
         menuBtn.style.height = 40;
@@ -560,7 +560,7 @@ public class VNManager : MonoBehaviour
             iconLabel.style.backgroundImage = new StyleBackground(icon);
             iconLabel.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.95f);
             btn.Add(iconLabel);
-            btn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
+            btn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
             btn.style.width = 44;
             btn.style.height = 36;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
