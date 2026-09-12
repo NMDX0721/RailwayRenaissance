@@ -786,6 +786,8 @@ public class TitleArchiveUI : MonoBehaviour
     private float marqueeX;           // 当前滚动偏移
     private bool marqueeActive;       // 当前标题是否超宽需要滚动
     private float marqueeTextWidth;   // 文本实际渲染宽度
+    private int marqueeState;         // 0=等待 1=滚动 2=末尾停顿
+    private float marqueeTimer;       // 状态计时器
     private bool progressScrubbing;   // 用户正拖拽进度条（Update 不覆盖）
 
     private void BuildMusicPlayerBar()
@@ -1228,29 +1230,50 @@ public class TitleArchiveUI : MonoBehaviour
         }
     }
 
-    /// <summary>长音乐名横向滚动：从开头开始向左滚动，末尾露出后重置回开头（不跳右侧）。暂停时冻结。</summary>
+    /// <summary>长音乐名横向滚动：等待→滚动→末尾停顿→无缝重置→循环。暂停时冻结。</summary>
     private void UpdateMarquee()
     {
         if (playerTitle == null || titleOuter == null || !marqueeActive) return;
-        // 播放时才滚动，暂停时冻结（保留当前位置）
-        if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying)
-            return;
-        marqueeX -= 40f * Time.unscaledDeltaTime;
-        // 文本末尾完全露出（左侧空出）后重置回开头
-        if (marqueeX <= -marqueeTextWidth)
+        if (!isPlayerPlaying || playerSource == null || !playerSource.isPlaying) return;
+
+        marqueeTimer += Time.unscaledDeltaTime;
+
+        switch (marqueeState)
         {
-            marqueeX = 0;
-            // 回开头瞬间平移，避免跳帧突兀
-            playerTitle.style.translate = new Translate(0, 0);
-            playerTitle.schedule.Execute(() =>
-            {
-                if (playerTitle != null && marqueeActive)
-                    playerTitle.style.translate = new Translate(marqueeX, 0);
-            }).ExecuteLater(16);
-            return;
+            case 0: // 等待：歌名出现后停顿1.5秒再开始滚
+                if (marqueeTimer >= 1.5f)
+                {
+                    marqueeState = 1;
+                    marqueeTimer = 0f;
+                }
+                break;
+
+            case 1: // 滚动：匀速向左
+                marqueeX -= MarqueeSpeed * Time.unscaledDeltaTime;
+                if (marqueeX <= -marqueeTextWidth)
+                {
+                    // 到达末尾，停顿1秒后重置
+                    marqueeX = -marqueeTextWidth;
+                    marqueeState = 2;
+                    marqueeTimer = 0f;
+                }
+                playerTitle.style.translate = new Translate(marqueeX, 0);
+                break;
+
+            case 2: // 末尾停顿
+                if (marqueeTimer >= 1f)
+                {
+                    // 无缝重置：瞬间回到开头，不闪烁
+                    marqueeX = 0;
+                    playerTitle.style.translate = new Translate(0, 0);
+                    marqueeState = 0;
+                    marqueeTimer = 0f;
+                }
+                break;
         }
-        playerTitle.style.translate = new Translate(marqueeX, 0);
     }
+
+    private const float MarqueeSpeed = 45f; // 像素/秒
 
     /// <summary>播放器临时提示（短 Toast）。</summary>
     private void ShowPlayerToast(string text)
@@ -1293,6 +1316,8 @@ public class TitleArchiveUI : MonoBehaviour
             }
         }
         marqueeX = 0;
+        marqueeState = 0;
+        marqueeTimer = 0f;
         marqueeActive = false;
         playerTitle.style.translate = new Translate(0, 0);
         // 监听 Label 自身的 GeometryChanged：文本内容变化时 Label 宽度重算才触发
