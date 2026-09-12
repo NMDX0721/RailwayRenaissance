@@ -845,29 +845,18 @@ public class TitleArchiveUI : MonoBehaviour
         playerProgress.style.flexGrow = 1;
         playerProgress.style.height = 16;
         playerProgress.style.marginRight = 6;
-        // 点击/拖动进度条跳转：PointerDown 手动换算点击位置 → 立即 seek，Change 实时跟随
-        playerProgress.RegisterCallback<PointerDownEvent>(evt =>
-        {
-            if (playerSource == null || playerClip == null) return;
-            progressScrubbing = true;
-            SeekFromPointer(evt);
-        });
-        playerProgress.RegisterCallback<PointerMoveEvent>(evt =>
-        {
-            if (progressScrubbing && playerSource != null && playerClip != null)
-                SeekFromPointer(evt);
-        });
-        playerProgress.RegisterCallback<PointerUpEvent>(evt =>
-        {
-            if (progressScrubbing && playerSource != null && playerClip != null)
-                SeekFromPointer(evt);
-            progressScrubbing = false;
-        });
+        // 拖动/点击进度条跳转：Slider的inputField模式 + 鼠标追踪
         playerProgress.RegisterValueChangedCallback(evt =>
         {
             if (progressScrubbing && playerSource != null && playerClip != null)
+            {
                 playerSource.time = evt.newValue * playerClip.length;
+                playerCurTime.text = FormatTime(playerSource.time);
+            }
         });
+        // 全局鼠标追踪：拖动时实时seek
+        playerProgress.RegisterCallback<PointerDownEvent>(evt => { progressScrubbing = true; });
+        playerProgress.RegisterCallback<PointerUpEvent>(evt => { progressScrubbing = false; });
         playerBar.Add(playerProgress);
 
         playerTotalTime = new Label("0:00");

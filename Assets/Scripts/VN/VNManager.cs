@@ -2092,15 +2092,13 @@ public class VNManager : MonoBehaviour
         if (autoBtn == null) return;
         if (isAutoPlay)
         {
-            // 激活：播放像素图标 + 棋盘格暖金底 + 双层金边
+            // 激活：棋盘格暖金底 + 双层金边（不加额外图标）
             autoBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
             autoBtn.style.unityBackgroundImageTintColor = Color.white;
             autoBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
             autoBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
             autoBtn.text = "Auto";
-            autoIcon.style.display = DisplayStyle.Flex;
-            autoIcon.style.backgroundImage = new StyleBackground(PixelIconHelper.PlayIcon());
-            autoIcon.style.unityBackgroundImageTintColor = new Color(1f, 0.85f, 0.5f, 1f);
+            autoIcon.style.display = DisplayStyle.None;
             SetGoldBorder(autoBtn, 2, new Color(1f, 0.8f, 0.4f, 0.9f), new Color(1f, 0.9f, 0.6f, 0.45f));
         }
         else
