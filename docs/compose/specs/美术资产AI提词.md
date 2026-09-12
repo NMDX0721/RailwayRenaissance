@@ -22,60 +22,113 @@
 ### 通用规范
 
 - **工作流**：第1步生成主图（半身到腿，详细全身）→ 第2步用主图生成表情差分（denoising 0.2-0.3，同服装/同姿势/同光照）
-- **尺寸**：1024×2048，PNG透明底，全身包括脚
-- **风格**：STARDEW VALLEY STYLE，16-bit retro pixel art，暖色调
+- **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
+- **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
 - **表情集**：全部角色统一 16 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink`（以主角已完成16表情为基准，以下各节同）
 - **人数约束（强制）**：主图必须是**单个人物**立绘——每条主图提示词首行已含 `SINGLE CHARACTER, ONE PERSON ONLY, no other people, no duplicates, no character sheet`。若生成工具仍输出参考图集/多人场景，在负面提示词外加 `multiple people, character sheet, reference sheet, turnarounds, duplicated character, multi-figure`。
 - **差分工作流**：主图验收通过后，用"16表情差分图谱"提示词（见 1.9）一次产出 4×4 网格，再按需裁剪；勿逐表情单张生成。
 
 ---
 
-### 1.1 林彪悍（主角）— 已有16表情，不需再生成
+### 1.1 林彪悍（主角）
 
 **文件**：`Resources/characters/lin_biaohan/{表情}.png`  
-**状态**：✅ 已完成（16表情）
+**状态**：需重新绘制（当前为262×387像素画，需升级为1024×1536高清二次元）
+
+**主图提示词（高清二次元版）**：
+```
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY, 
+upper body to knees portrait, isolated on transparent background, 
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading,
+
+CHARACTER: Lin Biaohan (林彪悍), 25-year-old male university student.
+
+FACE:
+- Slightly round oval face, soft jawline
+- Large round deep brown eyes, determined but youthful
+- Fluffy black short hair with natural slight curl, slightly messy
+- Warm pale skin tone, light blush on cheeks
+- Expressive eyebrows, thick but not heavy
+
+CLOTHING:
+- Dark navy blue work jacket (inherited from grandfather), slightly oversized
+- White crew-neck T-shirt underneath
+- Copper pocket watch chain visible at collar
+- Dark blue jeans, slightly worn at knees
+- Small leather backpack strap visible on one shoulder
+
+ACCESSORIES:
+- Copper pocket watch chain (distinctive character detail)
+- Old leather backpack (partially visible)
+
+COLOR PALETTE:
+- Primary: navy blue (#1A237E), warm white (#FFF8F0)
+- Secondary: copper (#B87333), denim blue (#3F51B5)
+- Accents: warm skin (#FFD5C0), dark hair (#1A1A2E)
+
+MOOD: Young, determined, slightly nervous but hopeful. A student about to embark on an impossible mission.
+
+AVOID:
+- Anime "bishonen" overly polished look (should look like a real student)
+- Military or uniform appearance
+- Glasses or modern accessories
+- Too muscular or tall build
+```
+
+**表情差分工作流**：
+1. 先生成主图（normal表情）
+2. 用主图作为参考，逐个生成16种表情差分
+3. 保持服装、发型、配饰完全一致，只改变面部表情和肢体语言
 
 ---
 
 ### 1.2 老陈（陈守正）
 
 **文件**：`Resources/characters/laochen/{表情}.png`  
-**表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
+**状态**：需重新绘制（当前为303×313像素画，需升级为1024×1536高清二次元）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, elderly male, 68 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading,
 
-FACE CHARACTERISTICS:
-- Square face, dark wrinkled but strong skin
-- Deep brown eyes, squint into warm slits when smiling
+CHARACTER: Lao Chen (老陈/陈守正), 68-year-old male, last stationmaster.
+
+FACE:
+- Square face, dark weathered skin with deep wrinkles
+- Deep brown eyes that squint into warm slits when smiling
 - Sparse gray-white eyebrows, neatly trimmed
-- Flat nose bridge, round red nose tip (frostbite)
-- Gray-white short hair, neatly combed, one unruly tuft behind left ear
-- Thick lips, slightly downturned corners
+- Flat nose bridge, slightly red nose tip (frostbite from years on railways)
+- Gray-white short hair, neatly combed back, one unruly tuft behind left ear
+- Thick lips with slightly downturned corners, warm smile lines
 
 CLOTHING:
-- White long-sleeve cotton shirt, worn collar and cuffs
-- Second button re-sewn with mismatched red thread
-- Dark gray V-neck wool vest, pilled at chest pocket, darning marks at hem
+- White long-sleeve cotton shirt, collar slightly worn
+- Second button re-sewn with mismatched red thread (character detail)
+- Dark gray V-neck wool vest, slightly pilled at chest, darning marks at hem
 - Reading glasses hanging on old leather cord around neck
-- Dark loose trousers, ironed crease
-- Black cloth shoes, worn soles
+- Dark loose trousers, creased from ironing
+- Black cloth shoes, soles worn thin
 
-HAND DETAILS:
-- Right index finger joint slightly enlarged from years of wrenching bolts
+ACCESSORIES:
+- Old leather cord with reading glasses (distinctive)
+- Worn railway stationmaster cap (optional, for certain expressions)
 
 COLOR PALETTE:
 - Primary: warm gray (#8B8682), off-white (#F5F0E8)
 - Secondary: dark gray (#4A4A4A), worn brown (#6B4226)
-- Accents: faded red thread (#CD5C5C), copper glasses frame (#B87333)
+- Accents: faded red thread (#CD5C5C), copper glasses (#B87333)
 
-ATMOSPHERE: Warm, experienced, slightly weary but kind. A man who has seen the railway through its best and worst days.
+MOOD: Warm, experienced, slightly weary but deeply kind. A man who has guarded the railway for decades. Eyes carry the weight of memories but light up when talking about trains.
 
 AVOID:
-- Too clean or polished appearance (should show years of work)
-- Cold or distant expression
+- Too clean or polished appearance (should show years of outdoor work)
+- Cold or stern expression
 - Modern or fashionable clothing
+- Overly muscular build (should be thin but sturdy)
 ```
 
 ---
