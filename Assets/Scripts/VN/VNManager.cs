@@ -45,6 +45,7 @@ public class VNManager : MonoBehaviour
     private Coroutine bookmarkToastCoroutine;
     private VisualElement episodeClearOverlay;
     private Coroutine autoAdvanceCoroutine;
+    private bool clickedButtonThisFrame; // 按钮点击标记，防止 root BubbleUp 误推进
 
     // Menu bar
     private VisualElement menuBar;
@@ -341,11 +342,8 @@ public class VNManager : MonoBehaviour
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
 
-        // 根元素不捕获点击，只有交互元素（按钮等）才捕获。
-        // 鼠标推进 = root TrickleDown 阶段监听（先于按钮 handler，帧序安全）：
-        // 命中按钮/菜单 → 不推进；空白点击 → 推进。
-        uiDoc.rootVisualElement.pickingMode = PickingMode.Ignore;
-        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown, TrickleDown.TrickleDown);
+        // 鼠标推进 = root BubbleUp 阶段（按钮先处理并设标记，root 后处理检查标记）
+        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown);
 
         // 背景必须先初始化（在最底层）
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
@@ -381,10 +379,12 @@ public class VNManager : MonoBehaviour
         optionsOverlay.style.bottom = 0;
         optionsOverlay.style.backgroundColor = new Color(0, 0, 0, 0.5f);
         optionsOverlay.style.display = DisplayStyle.None;
+        optionsOverlay.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; });
         uiDoc.rootVisualElement.Add(optionsOverlay);
 
         optionsContainer = new VisualElement();
         optionsContainer.name = "options-container";
+        optionsContainer.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; });
         optionsContainer.style.position = Position.Absolute;
         optionsContainer.style.top = 0;
         optionsContainer.style.bottom = 0;
@@ -428,7 +428,7 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
-        autoBtn.RegisterCallback<PointerDownEvent>(evt => { evt.PreventDefault(); evt.StopImmediatePropagation(); });
+        autoBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
         autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         autoBtn.style.width = 88;
         autoBtn.style.height = 40;
@@ -465,7 +465,7 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
-        menuBtn.RegisterCallback<PointerDownEvent>(evt => { evt.PreventDefault(); evt.StopImmediatePropagation(); });
+        menuBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
         menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         menuBtn.style.width = 88;
         menuBtn.style.height = 40;
@@ -550,7 +550,7 @@ public class VNManager : MonoBehaviour
             iconLabel.style.backgroundImage = new StyleBackground(icon);
             iconLabel.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.95f);
             btn.Add(iconLabel);
-            btn.RegisterCallback<PointerDownEvent>(evt => { evt.PreventDefault(); evt.StopImmediatePropagation(); });
+            btn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.PreventDefault(); evt.StopImmediatePropagation(); });
             btn.style.width = 44;
             btn.style.height = 36;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
@@ -988,6 +988,8 @@ public class VNManager : MonoBehaviour
 
     private void Update()
     {
+        clickedButtonThisFrame = false; // 每帧重置按钮标记
+
         // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
         if (Input.GetMouseButtonDown(1))
         {
@@ -1099,11 +1101,14 @@ public class VNManager : MonoBehaviour
     {
         if (evt.button != 0) return; // 仅左键
 
-        // TrickleDown 阶段：用鼠标位置检测交互UI，比遍历target树更可靠
-        if (IsPointerOverAnyUI())
+        // BubbleUp 阶段：按钮已先处理并设了标记 → 检查标记跳过
+        if (clickedButtonThisFrame)
+        {
+            clickedButtonThisFrame = false;
             return;
+        }
 
-        // 菜单展开时点击空白：仅收起菜单，不推进对话（避免"点完菜单跳句"）
+        // 菜单展开时点击空白：仅收起菜单，不推进对话
         if (menuExpanded)
         {
             CloseMenuExpanded();
@@ -1123,9 +1128,6 @@ public class VNManager : MonoBehaviour
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
         if (resumeDialog != null && resumeDialog.style.display == DisplayStyle.Flex) return;
 
-        // 兜底：指针此刻在交互 UI 上
-        if (IsPointerOverAnyUI())
-            return;
         AdvanceOnClick();
     }
 
