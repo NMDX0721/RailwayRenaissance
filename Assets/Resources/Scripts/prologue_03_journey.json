@@ -18,7 +18,7 @@
           "t": "d",
           "s": "岁月",
           "text": "林彪悍——醒醒！快到了！",
-          "e": "gentle"
+          "e": "excited"
         },
         {
           "t": "d",
@@ -1380,7 +1380,7 @@
           "t": "d",
           "s": "林彪悍",
           "text": "天黑了。",
-          "e": "neutral"
+          "e": "serious"
         },
         {
           "t": "d",
@@ -1883,7 +1883,7 @@
     },
     {
       "bg": "china_sky",
-      "bgm": "chollima_ride",
+      "bgm": "cloud_rail",
       "d": [
         {
           "t": "n",
@@ -1950,12 +1950,12 @@
           "opts": [
             {
               "text": "「岁月，放首歌听听吧。」",
-              "next": 15,
+              "next": 17,
               "setValue": "trip_activity=music_first"
             },
             {
               "text": "「跟我说说我爷爷的事吧。」",
-              "next": 15,
+              "next": 18,
               "setValue": "trip_activity=story_first"
             }
           ]
@@ -1964,7 +1964,7 @@
     },
     {
       "bg": "cabin_interior",
-      "bgm": "wheels_joke",
+      "bgm": "chollima_ride",
       "d": [
         {
           "t": "d",

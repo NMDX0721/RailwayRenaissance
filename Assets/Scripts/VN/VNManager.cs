@@ -352,8 +352,8 @@ public class VNManager : MonoBehaviour
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
 
-        // 鼠标推进 = root BubbleUp 阶段（按钮先处理并设标记，root 后处理检查标记）
-        uiDoc.rootVisualElement.RegisterCallback<PointerDownEvent>(OnRootPointerDown);
+        // 鼠标推进 = root ClickEvent（按下+释放后触发，避免 PointerDown 双击竞态）
+        uiDoc.rootVisualElement.RegisterCallback<ClickEvent>(OnRootClick);
 
         // 背景必须先初始化（在最底层）
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
@@ -1160,11 +1160,17 @@ public class VNManager : MonoBehaviour
     /// 鼠标推进唯一入口（事件 Bubble 阶段：按钮自身 handler 先执行并 StopImmediatePropagation，
     /// 因此只有"空白区域点击"才会 Bubble 到这里。彻底消除命中链误判）。
     /// </summary>
-    private void OnRootPointerDown(PointerDownEvent evt)
+    private float lastAdvanceTime;
+    private const float AdvanceCooldown = 0.15f; // 防抖间隔（秒）
+
+    private void OnRootClick(ClickEvent evt)
     {
         if (evt.button != 0) return; // 仅左键
 
-        // BubbleUp 阶段：按钮已先处理并设了标记 → 检查标记跳过
+        // 防抖：避免快速双击导致打字机被跳过
+        if (Time.unscaledTime - lastAdvanceTime < AdvanceCooldown) return;
+
+        // 按钮已先处理并设了标记 → 检查标记跳过
         if (clickedButtonThisFrame)
         {
             clickedButtonThisFrame = false;
@@ -1196,6 +1202,7 @@ public class VNManager : MonoBehaviour
 
     private void AdvanceOnClick()
     {
+        lastAdvanceTime = Time.unscaledTime;
         StopAutoPlay();
         if (dialogueBox != null && dialogueBox.IsTyping())
             dialogueBox.SkipTyping();
@@ -1472,7 +1479,7 @@ public class VNManager : MonoBehaviour
                 var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
                 var entryEmotion = !string.IsNullOrEmpty(entry.e) ? entry.e : scene.e;
                 if (entryChars != null && entryChars.Length > 0)
-                    characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion);
+                    characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion, entry.s);
             }
 
             vnBacklog?.AddEntry(displaySpeaker, entry.text, currentSceneIndex, currentDialogueIndex);

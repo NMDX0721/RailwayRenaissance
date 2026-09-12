@@ -48,16 +48,21 @@ public class CharacterSpriteManager : MonoBehaviour
         return slot;
     }
 
-    public void UpdateDisplay(CharacterEntry[] chars, string emotion)
+    public void UpdateDisplay(CharacterEntry[] chars, string emotion, string speaker = null)
     {
         if (chars == null || chars.Length == 0)
             return;
 
-        ClearAll();
+        // 不调用 ClearAll()，保留旁观者的现有表情
+        // 只更新说话者的表情，其他人保持不变
 
         foreach (var entry in chars)
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
+
+            // 只有说话者才应用指定表情
+            bool isSpeaker = string.IsNullOrEmpty(speaker) || entry.name == speaker;
+            if (!isSpeaker) continue; // 旁观者保持现有表情
 
             string emotionKey = string.IsNullOrEmpty(emotion) ? "normal" : emotion;
             Texture2D tex = null;
