@@ -252,9 +252,35 @@ public class VNSaveLoadUI : MonoBehaviour
         if (isFromTitleScreen)
         {
             isFromTitleScreen = false;
-            if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+            StartCoroutine(FadeAndLoadTitle());
         }
+    }
+
+    private System.Collections.IEnumerator FadeAndLoadTitle()
+    {
+        // 淡出遮罩
+        var root = uiDoc.rootVisualElement;
+        var fade = new VisualElement();
+        fade.style.position = Position.Absolute;
+        fade.style.top = 0; fade.style.left = 0;
+        fade.style.right = 0; fade.style.bottom = 0;
+        fade.style.backgroundColor = Color.black;
+        fade.style.opacity = 0;
+        fade.pickingMode = PickingMode.Ignore;
+        root.Add(fade);
+
+        // 0.3秒淡入黑屏
+        float t = 0;
+        while (t < 0.3f)
+        {
+            t += Time.unscaledDeltaTime;
+            fade.style.opacity = t / 0.3f;
+            yield return null;
+        }
+        fade.style.opacity = 1;
+
+        if (Camera.main != null) Camera.main.backgroundColor = Color.black;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
     }
 
     public void SetIsFromTitleScreenFromTitle(bool value) { isFromTitleScreen = value; }
