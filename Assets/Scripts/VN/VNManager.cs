@@ -1099,15 +1099,9 @@ public class VNManager : MonoBehaviour
     {
         if (evt.button != 0) return; // 仅左键
 
-        // TrickleDown 阶段：先于按钮 handler 执行，帧序安全。
-        // 命中交互按钮/菜单 → 直接返回（不推进对话）；事件继续下传，按钮照常响应 click。
-        var t = evt.target as VisualElement;
-        while (t != null)
-        {
-            if (t is UnityEngine.UIElements.Button) return;
-            if (t == menuBar || t == menuExpandedContainer) return;
-            t = t.parent;
-        }
+        // TrickleDown 阶段：用鼠标位置检测交互UI，比遍历target树更可靠
+        if (IsPointerOverAnyUI())
+            return;
 
         // 菜单展开时点击空白：仅收起菜单，不推进对话（避免"点完菜单跳句"）
         if (menuExpanded)

@@ -59,19 +59,35 @@ public class CharacterSpriteManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
 
-            // 未指定表情时用normal兜底，否则 {name}_{emotion}
             string emotionKey = string.IsNullOrEmpty(emotion) ? "normal" : emotion;
-            string cacheKey = entry.name + "_" + emotionKey;
+            Texture2D tex = null;
 
-            if (!spriteCache.TryGetValue(cacheKey, out var tex))
+            // 尝试加载精灵：flat格式 → 子目录格式 → fallback normal → fallback normal子目录
+            string[] tryPaths = {
+                "characters/" + entry.name + "_" + emotionKey,         // flat: characters/suiyue_normal
+                "characters/" + entry.name + "/" + emotionKey,          // subdir: characters/suiyue/normal
+            };
+            if (emotionKey != "normal")
             {
-                tex = Resources.Load<Texture2D>("characters/" + cacheKey);
-                if (tex != null) spriteCache[cacheKey] = tex;
+                tryPaths = new[] {
+                    "characters/" + entry.name + "_" + emotionKey,
+                    "characters/" + entry.name + "/" + emotionKey,
+                    "characters/" + entry.name + "_normal",
+                    "characters/" + entry.name + "/normal",
+                };
+            }
+
+            foreach (var path in tryPaths)
+            {
+                if (spriteCache.TryGetValue(path, out tex) && tex != null) break;
+                tex = Resources.Load<Texture2D>(path);
+                if (tex != null) { spriteCache[path] = tex; break; }
+                tex = null;
             }
 
             if (tex == null)
             {
-                Debug.LogWarning("[VN Characters] Sprite not found: characters/" + cacheKey);
+                Debug.LogWarning("[VN Characters] Sprite not found: " + entry.name + " / " + emotionKey);
                 continue;
             }
 
@@ -124,13 +140,14 @@ public class CharacterSpriteManager : MonoBehaviour
 
     public void ClearAll()
     {
-        ClearSlot(slotLeft);
-        ClearSlot(slotCenter);
-        ClearSlot(slotRight);
+        if (slotLeft != null) ClearSlot(slotLeft);
+        if (slotCenter != null) ClearSlot(slotCenter);
+        if (slotRight != null) ClearSlot(slotRight);
     }
 
     private void ClearSlot(VisualElement slot)
     {
+        if (slot == null) return;
         slot.style.display = DisplayStyle.None;
         slot.style.backgroundImage = StyleKeyword.Null;
         slot.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
