@@ -46,6 +46,8 @@ public class VNManager : MonoBehaviour
     private VisualElement episodeClearOverlay;
     private Coroutine autoAdvanceCoroutine;
     private bool clickedButtonThisFrame; // 按钮点击标记，防止 root BubbleUp 误推进
+    private Label musicToast;
+    private Coroutine musicToastCoroutine;
 
     // Menu bar
     private VisualElement menuBar;
@@ -74,6 +76,14 @@ public class VNManager : MonoBehaviour
             var audioObj = new GameObject("VN_AudioManager");
             audioObj.AddComponent<VNAudioManager>();
         }
+        // 订阅 BGM 播放事件，显示歌曲名 Toast
+        VNAudioManager.Instance.OnBGMStarted += ShowMusicToast;
+    }
+
+    private void OnDestroy()
+    {
+        if (VNAudioManager.Instance != null)
+            VNAudioManager.Instance.OnBGMStarted -= ShowMusicToast;
     }
 
     private void Start()
@@ -716,6 +726,59 @@ public class VNManager : MonoBehaviour
     {
         yield return new UnityEngine.WaitForSeconds(1.5f);
         if (bookmarkToast != null) bookmarkToast.style.display = DisplayStyle.None;
+    }
+
+    // ———— 音乐 Toast（左上角显示歌曲名，悬停后消失） ————
+    private void ShowMusicToast(string songName)
+    {
+        if (musicToast == null)
+        {
+            musicToast = new Label("");
+            musicToast.style.position = Position.Absolute;
+            musicToast.style.top = 50;
+            musicToast.style.left = 16;
+            musicToast.style.maxWidth = 300;
+            musicToast.style.fontSize = 16;
+            musicToast.style.color = new Color(1f, 0.92f, 0.78f, 0.9f);
+            musicToast.style.unityTextAlign = TextAnchor.MiddleLeft;
+            musicToast.style.unityFontDefinition = new FontDefinition { font = gameFont };
+            musicToast.pickingMode = PickingMode.Ignore;
+            musicToast.style.display = DisplayStyle.None;
+            uiDoc.rootVisualElement.Add(musicToast);
+        }
+        // 显示歌曲名（从 BGM 名映射到可读名称）
+        string displayName = MapBGMDisplayName(songName);
+        musicToast.text = "♪ " + displayName;
+        musicToast.style.display = DisplayStyle.Flex;
+        if (musicToastCoroutine != null) StopCoroutine(musicToastCoroutine);
+        musicToastCoroutine = StartCoroutine(HideMusicToastDelayed());
+    }
+
+    private System.Collections.IEnumerator HideMusicToastDelayed()
+    {
+        yield return new UnityEngine.WaitForSeconds(3f);
+        if (musicToast != null) musicToast.style.display = DisplayStyle.None;
+    }
+
+    private string MapBGMDisplayName(string clipName)
+    {
+        switch (clipName)
+        {
+            case "iron_and_ash": return "铁与灰";
+            case "cloud_rail": return "云轨";
+            case "embers": return "余烬";
+            case "night_cargo": return "夜行货";
+            case "first_light": return "晨光";
+            case "platform": return "站台";
+            case "borderline": return "国境线";
+            case "wheels_joke": return "方向盘在笑";
+            case "train_through_keys": return "旧曲";
+            case "south_wind": return "南风";
+            case "starlit_rails": return "星光铁轨";
+            case "chollima_ride": return "千里马驰骋新时代";
+            case "calm": return "平静";
+            default: return clipName;
+        }
     }
 
     private void SetupConfirmDialog(UIDocument uiDoc)

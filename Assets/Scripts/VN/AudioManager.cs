@@ -6,6 +6,9 @@ public class VNAudioManager : MonoBehaviour
 {
     public static VNAudioManager Instance { get; private set; }
 
+    // 歌曲开始播放时触发（参数：歌曲名）
+    public event System.Action<string> OnBGMStarted;
+
     private AudioSource bgmSource;
     private AudioSource sfxSource;
     private string currentBGM;
@@ -65,6 +68,7 @@ public class VNAudioManager : MonoBehaviour
             StopCoroutine(bgmFadeCoroutine);
 
         bgmFadeCoroutine = StartCoroutine(CrossfadeBGM(clip, name, fadeDuration));
+        OnBGMStarted?.Invoke(name);
     }
 
     public void StopBGM()
