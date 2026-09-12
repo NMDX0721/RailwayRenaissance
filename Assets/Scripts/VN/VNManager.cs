@@ -2083,12 +2083,7 @@ public class VNManager : MonoBehaviour
     /// <summary>主角说话者显示为别名（若设置了表字）。</summary>
     private string ResolveSpeakerName(string speaker)
     {
-        if (string.IsNullOrEmpty(speaker)) return speaker;
-        if (speaker == "林彪悍")
-        {
-            var config = GameConfig.Load();
-            return config.PlayerDisplayName;
-        }
+        // 名字输入已移除，直接使用JSON中的名字
         return speaker;
     }
 
