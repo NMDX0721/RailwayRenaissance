@@ -18,28 +18,43 @@
           "t": "d",
           "s": "岁月",
           "text": "林彪悍——醒醒！快到了！",
-          "e": "excited"
+          "e": "excited",
+          "reactions": [
+            "lin_biaohan:bored"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "嗯...到了？",
-          "e": "bored"
+          "e": "bored",
+          "reactions": [
+            "suiyue:normal"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "前方五公里，临江市——中朝边境的边贸小城！"
+          "text": "前方五公里，临江市——中朝边境的边贸小城！",
+          "reactions": [
+            "lin_biaohan:bored"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "建议补充沙子！"
+          "text": "建议补充沙子！",
+          "reactions": [
+            "lin_biaohan:bored"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "终于到中国了啊。"
+          "text": "终于到中国了啊。",
+          "reactions": [
+            "suiyue:normal"
+          ]
         }
       ],
       "chars": [
@@ -1579,37 +1594,58 @@
         {
           "t": "d",
           "s": "岁月",
-          "text": "沙子补充满一千五百公斤！"
+          "text": "沙子补充满一千五百公斤！",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "预计到达雾峰村：第四天下午！"
+          "text": "预计到达雾峰村：第四天下午！",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "还有...两天。"
+          "text": "还有...两天。",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "嗯。您……累了吗？"
+          "text": "嗯。您……累了吗？",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "有点。但...一想到快到了，就不累了。"
+          "text": "有点。但...一想到快到了，就不累了。",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "您……很想念那里，对吧。"
+          "text": "您……很想念那里，对吧。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "嗯。那是...我长大的地方。也是...爷爷守了一辈子的地方。"
+          "text": "嗯。那是...我长大的地方。也是...爷爷守了一辈子的地方。",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         }
       ],
       "chars": [
@@ -1630,53 +1666,83 @@
         {
           "t": "d",
           "s": "岁月",
-          "text": "您爷爷……一定很爱那条铁路。"
+          "text": "您爷爷……一定很爱那条铁路。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "是的。他说...铁路是有灵魂的。"
+          "text": "是的。他说...铁路是有灵魂的。",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "每一根枕木，每一段铁轨...都承载着记忆。"
+          "text": "每一根枕木，每一段铁轨...都承载着记忆。",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "灵魂……这个概念……我有点不太懂。"
+          "text": "灵魂……这个概念……我有点不太懂。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "但……我能感受到您的情感哦。"
+          "text": "但……我能感受到您的情感哦。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "你...能感受到？",
-          "e": "surprise"
+          "e": "surprise",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "我是 AI，情感……对我来说是数据。"
+          "text": "我是 AI，情感……对我来说是数据。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "但您的数据……很特别。"
+          "text": "但您的数据……很特别。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "特别？"
+          "text": "特别？",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "嗯。您的数据里……有温度。"
+          "text": "嗯。您的数据里……有温度。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         }
       ],
       "chars": [
@@ -1698,28 +1764,43 @@
           "t": "d",
           "s": "林彪悍",
           "text": "岁月...你有时候...不像AI。",
-          "e": "smile"
+          "e": "smile",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "是吗？……也许是因为您太累了。"
+          "text": "是吗？……也许是因为您太累了。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "建议您……休息一下吧。还剩一千五百公里呢。"
+          "text": "建议您……休息一下吧。还剩一千五百公里呢。",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "还有1500公里...真是漫长。",
-          "e": "bored"
+          "e": "bored",
+          "reactions": [
+            "suiyue:gentle"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "嗯。但……我会陪着您的！"
+          "text": "嗯。但……我会陪着您的！",
+          "reactions": [
+            "lin_biaohan:serious"
+          ]
         }
       ],
       "chars": [
@@ -1969,35 +2050,53 @@
         {
           "t": "d",
           "s": "岁月",
-          "text": "播放：《千里马奔驰在新时代》——1968 年录音修复版！"
+          "text": "播放：《千里马奔驰在新时代》——1968 年录音修复版！",
+          "reactions": [
+            "lin_biaohan:angry"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "……我说的是轻松点的歌，不是革命大合唱！",
-          "e": "angry"
+          "e": "angry",
+          "reactions": [
+            "suiyue:smug"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "我的音乐库把它分在「群众文艺经典」类目下——轻快曲目哦！"
+          "text": "我的音乐库把它分在「群众文艺经典」类目下——轻快曲目哦！",
+          "reactions": [
+            "lin_biaohan:angry"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "……算了，还是说说我爷爷的事吧。",
-          "e": "bored"
+          "e": "bored",
+          "reactions": [
+            "suiyue:smug"
+          ]
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "关于雾峰村……我有一份完整档案！您想从哪里听起呀？"
+          "text": "关于雾峰村……我有一份完整档案！您想从哪里听起呀？",
+          "reactions": [
+            "lin_biaohan:angry"
+          ]
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "那……从爷爷讲起吧。",
-          "e": "gentle"
+          "e": "gentle",
+          "reactions": [
+            "suiyue:smug"
+          ]
         }
       ],
       "chars": [

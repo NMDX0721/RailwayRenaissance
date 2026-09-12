@@ -9,8 +9,6 @@ public class CharacterSpriteManager : MonoBehaviour
     private VisualElement slotCenter;
     private VisualElement slotRight;
     private readonly Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
-    // 每个角色独立追踪当前表情，旁观者保持上一次的表情
-    private readonly Dictionary<string, string> lastEmotion = new Dictionary<string, string>();
 
     public void Init(UIDocument document)
     {
@@ -50,12 +48,23 @@ public class CharacterSpriteManager : MonoBehaviour
         return slot;
     }
 
-    public void UpdateDisplay(CharacterEntry[] chars, string emotion, string speaker = null)
+    public void UpdateDisplay(CharacterEntry[] chars, string emotion, string speaker = null, string[] reactions = null)
     {
         if (chars == null || chars.Length == 0)
             return;
 
-        // 不调用 ClearAll()，保留旁观者的现有表情
+        // 解析旁观者表情映射
+        var reactionMap = new Dictionary<string, string>();
+        if (reactions != null)
+        {
+            foreach (var r in reactions)
+            {
+                var parts = r.Split(':');
+                if (parts.Length == 2)
+                    reactionMap[parts[0].Trim()] = parts[1].Trim();
+            }
+        }
+
         foreach (var entry in chars)
         {
             if (string.IsNullOrEmpty(entry.name)) continue;
@@ -65,15 +74,17 @@ public class CharacterSpriteManager : MonoBehaviour
 
             if (isSpeaker && !string.IsNullOrEmpty(emotion))
             {
-                // 说话者：应用指定表情
                 emotionKey = emotion;
-                lastEmotion[entry.name] = emotion; // 记住
+            }
+            else if (reactionMap.TryGetValue(entry.name, out var reaction))
+            {
+                // 有指定反应表情
+                emotionKey = reaction;
             }
             else
             {
-                // 旁观者：保持上一次的表情，如果没有则用 normal
-                lastEmotion.TryGetValue(entry.name, out emotionKey);
-                if (string.IsNullOrEmpty(emotionKey)) emotionKey = "normal";
+                // 无指定反应 → normal
+                emotionKey = "normal";
             }
             Texture2D tex = null;
 
@@ -158,7 +169,6 @@ public class CharacterSpriteManager : MonoBehaviour
         if (slotLeft != null) ClearSlot(slotLeft);
         if (slotCenter != null) ClearSlot(slotCenter);
         if (slotRight != null) ClearSlot(slotRight);
-        lastEmotion.Clear(); // 场景切换时重置所有角色表情
     }
 
     private void ClearSlot(VisualElement slot)

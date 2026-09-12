@@ -267,7 +267,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "谁？",
-          "e": "curious"
+          "e": "curious",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -278,7 +281,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "嘉颖徐？那个……铁路大亨？",
-          "e": "surprise"
+          "e": "surprise",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -299,7 +305,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "见我？为什么？",
-          "e": "curious"
+          "e": "curious",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -324,7 +333,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "……她人在哪？",
-          "e": "serious"
+          "e": "serious",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -367,7 +379,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "新建的？你封存那会儿还没有？",
-          "e": "curious"
+          "e": "curious",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -378,7 +393,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "二十三年，工业区变富人区了。",
-          "e": "smile"
+          "e": "smile",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "n",
@@ -400,7 +418,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "平壤……变了这么多。",
-          "e": "serious"
+          "e": "serious",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -416,7 +437,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "所以说是「有限度的对外开放」——先富带动后富，上面默许的那批人先走一步。",
-          "e": "smile"
+          "e": "smile",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",
@@ -427,7 +451,10 @@
           "t": "d",
           "s": "林彪悍",
           "text": "……你是在夸我吗？",
-          "e": "smile"
+          "e": "smile",
+          "reactions": [
+            "jiaying_xu:serious"
+          ]
         },
         {
           "t": "d",

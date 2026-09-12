@@ -1479,7 +1479,7 @@ public class VNManager : MonoBehaviour
                 var entryChars = entry.chars != null && entry.chars.Length > 0 ? entry.chars : scene.chars;
                 var entryEmotion = !string.IsNullOrEmpty(entry.e) ? entry.e : scene.e;
                 if (entryChars != null && entryChars.Length > 0)
-                    characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion, entry.s);
+                    characterSpriteManager?.UpdateDisplay(entryChars, entryEmotion, entry.s, entry.reactions);
             }
 
             vnBacklog?.AddEntry(displaySpeaker, entry.text, currentSceneIndex, currentDialogueIndex);

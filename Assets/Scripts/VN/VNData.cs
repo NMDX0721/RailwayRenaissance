@@ -40,6 +40,7 @@ public class DialogueEntry
     public OptionData[] opts;
     public CharacterEntry[] chars;
     public string size;  // CG专用: "full"(全屏) / "small"(居中小插画), 默认full
+    public string[] reactions; // 旁观者表情: ["lin_biaohan:serious", "suiyue:curious"] 格式
 }
 
 [System.Serializable]
