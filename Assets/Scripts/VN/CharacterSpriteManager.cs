@@ -10,6 +10,17 @@ public class CharacterSpriteManager : MonoBehaviour
     private VisualElement slotRight;
     private readonly Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
 
+    // 每个角色的默认slot尺寸（像素）——基于实际精灵的有效内容区域
+    private readonly Dictionary<string, (int w, int h)> charSlotSize = new Dictionary<string, (int, int)>
+    {
+        { "lin_biaohan", (360, 540) },   // 2:3 ratio
+        { "suiyue",      (360, 540) },   // 2:3 ratio
+        { "jiaying_xu",  (440, 485) },   // 接近1:1，需要更宽
+        { "laochen",     (360, 360) },   // 1:1 ratio
+    };
+    private const int DefaultSlotW = 360;
+    private const int DefaultSlotH = 540;
+
     public void Init(UIDocument document)
     {
         var root = document.rootVisualElement;
@@ -119,6 +130,18 @@ public class CharacterSpriteManager : MonoBehaviour
 
             var slot = GetSlotForPosition(entry.pos);
             if (slot == null) continue;
+
+            // 根据角色精灵调整slot尺寸
+            if (charSlotSize.TryGetValue(entry.name, out var size))
+            {
+                slot.style.width = size.w;
+                slot.style.height = size.h;
+            }
+            else
+            {
+                slot.style.width = DefaultSlotW;
+                slot.style.height = DefaultSlotH;
+            }
 
             slot.style.backgroundImage = new StyleBackground(tex);
             slot.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
