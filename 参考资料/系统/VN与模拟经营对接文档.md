@@ -1,4 +1,4 @@
-# VN与模拟经营对接文档
+﻿# VN与模拟经营对接文档
 
 > 版本：v2.0  
 > 说明：本文档描述视觉小说系统（VN）与模拟经营系统之间的数据流、场景切换和交互机制  
@@ -594,7 +594,7 @@ public class UnifiedSaveSystem
 
 ---
 
-*本文档与 视觉小说系统设计.md、核心玩法循环.md、序章后续剧情设计.md、GameData.cs、VNManager.cs 联动使用。*
+*本文档与 视觉小说系统设计.md、../引擎/核心玩法循环.md、序章后续剧情设计.md、GameData.cs、VNManager.cs 联动使用。*
 
 ---
 

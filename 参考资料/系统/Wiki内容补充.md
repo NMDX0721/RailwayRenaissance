@@ -1,4 +1,4 @@
-# Wiki 内容补充计划 实施计划
+﻿# Wiki 内容补充计划 实施计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use compose:subagent (recommended) or compose:execute to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -30,12 +30,12 @@
 - Create: `中转站/wiki/王小弟.md`, `中转站/wiki/Wang-Xiaodi.md`, `中转站/wiki/赵铁山.md`, `中转站/wiki/Zhao-Tieshan.md`, `中转站/wiki/陈鹤年.md`, `中转站/wiki/Chen-Henian.md`, `中转站/wiki/林悍.md`, `中转站/wiki/Lin-Han.md`
 
 **Interfaces:**
-- Consumes: `参考资料/角色设定.md`（王小弟 §3.4/§三、林悍 §六）、`参考资料/世界观扩展设定.md`（陈鹤年 §1.5.6、林悍 §4.5、赵铁山 §5.3）
+- Consumes: `参考资料/设定/角色设定.md`（王小弟 §3.4/§三、林悍 §六）、`参考资料/设定/世界观扩展设定.md`（陈鹤年 §1.5.6、林悍 §4.5、赵铁山 §5.3）
 - Produces: 8 个角色页；中文页底部 `*[返回角色图鉴](中文维基)*`，英文页底部 `*[Back to Home](Home)*`
 
 - [ ] **Step 1: 读取资料来源**
 
-Read: `参考资料/角色设定.md`（§三 王小弟/§六 林悍）、`参考资料/世界观扩展设定.md`（§1.5.6 陈鹤年/§4.5 林悍/§5.3 赵铁山）
+Read: `参考资料/设定/角色设定.md`（§三 王小弟/§六 林悍）、`参考资料/设定/世界观扩展设定.md`（§1.5.6 陈鹤年/§4.5 林悍/§5.3 赵铁山）
 Expected: 提取各角色属性表（年龄/身份/性格/技能/剧情）
 
 - [ ] **Step 2: 创建中文角色页（4 页）**
@@ -77,7 +77,7 @@ git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" commit -m "Wiki: add
 - Create（势力）: `白头山动力总会社.md`/`Baekdu-Mountain-Power.md`, `国际铁路遗产保护基金会.md`/`Railway-Heritage-Foundation.md`
 
 **Interfaces:**
-- Consumes: `Assets/Resources/Seeds/seed_*.json`（5 城数据：类型/人口/距离/区域/沙能渗透/政治倾向）、`参考资料/世界观扩展设定.md` §1.2（白头山）/§2（基金会）、已有 `雾峰村.md`/`乌金岭.md` 的城市页格式（双语数据表）
+- Consumes: `Assets/Resources/Seeds/seed_*.json`（5 城数据：类型/人口/距离/区域/沙能渗透/政治倾向）、`参考资料/设定/世界观扩展设定.md` §1.2（白头山）/§2（基金会）、已有 `雾峰村.md`/`乌金岭.md` 的城市页格式（双语数据表）
 - Produces: 14 个页面；城市中文页底部 `*[返回城市图鉴](中文维基)*`，势力中文页 `*[返回势力图鉴](中文维基)*`，英文页 `*[Back to Home](Home)*`
 
 - [ ] **Step 1: 提取 5 城数据**
@@ -120,10 +120,10 @@ git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" commit -m "Wiki: add
 **Covers:** [S3.6, S4]
 
 **Files:**
-- Create: `沙本位经济核.md`/`Sand-Standard-Economy.md`, `千里马创世核.md`/`Chollima-Genesis-Core.md`, `岁月叙事引擎.md`/`Suiyue-Narrative-Engine.md`, `先民人事系统.md`/`Seonmin-Personnel-System.md`, `铁龙竞争系统.md`/`Iron-Dragon-Competition.md`
+- Create: `../设定/沙本位经济核.md`/`Sand-Standard-Economy.md`, `../引擎/千里马创世核.md`/`Chollima-Genesis-Core.md`, `../引擎/岁月叙事引擎.md`/`Suiyue-Narrative-Engine.md`, `../引擎/先民人事系统.md`/`Seonmin-Personnel-System.md`, `../引擎/铁龙竞争系统.md`/`Iron-Dragon-Competition.md`
 
 **Interfaces:**
-- Consumes: `参考资料/沙本位经济核.md`、`docs/compose/specs/千里马创世核.md`、`docs/compose/specs/岁月叙事引擎.md`、`docs/compose/specs/先民人事系统.md`、`docs/compose/specs/铁龙竞争系统.md`
+- Consumes: `参考资料/设定/沙本位经济核.md`、`../引擎/千里马创世核.md`、`../引擎/岁月叙事引擎.md`、`../引擎/先民人事系统.md`、`../引擎/铁龙竞争系统.md`
 - Produces: 10 个速览式系统页（定位/核心机制/主要数值/联动/详见）
 
 - [ ] **Step 1: 为每个系统读取速览素材**
@@ -162,7 +162,7 @@ Expected: 每系统提取 1 段定位 + 机制表 3-6 行 + 3-8 个关键数值 
 Run: 死链扫描确认 10 个新页名消失
 Expected: `沙本位经济核/Chollima-Genesis-Core` 等全部移除
 ```bash
-git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" add 沙本位经济核.md Sand-Standard-Economy.md 千里马创世核.md Chollima-Genesis-Core.md 岁月叙事引擎.md Suiyue-Narrative-Engine.md 先民人事系统.md Seonmin-Personnel-System.md 铁龙竞争系统.md Iron-Dragon-Competition.md
+git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" add ../设定/沙本位经济核.md Sand-Standard-Economy.md ../引擎/千里马创世核.md Chollima-Genesis-Core.md ../引擎/岁月叙事引擎.md Suiyue-Narrative-Engine.md ../引擎/先民人事系统.md Seonmin-Personnel-System.md ../引擎/铁龙竞争系统.md Iron-Dragon-Competition.md
 git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" commit -m "Wiki: add 5 system overview pages (Economy/Genesis/Narrative/Personnel/Iron Dragon) EN+CN"
 ```
 
@@ -177,7 +177,7 @@ git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" commit -m "Wiki: add
 - Create（载具）: `沙子飞猪号.md`/`Sand-Flying-Pig-0721.md`, `NF-5耕牛.md`/`NF-5-Gengniu.md`, `沙驴号.md`/`Sand-Donkey.md`
 
 **Interfaces:**
-- Consumes: `参考资料/世界观扩展设定.md` §3（沙本位制）/§5（委托运营条例）、`参考资料/世界观与车辆设定.md` §一（大废线）/§二/§三/§四（载具）、`docs/compose/specs/核心玩法循环.md`（五条趋势线）、`Assets/Resources/Seeds/seed_*.json`（城市渗透数据，趋势线相关）
+- Consumes: `参考资料/设定/世界观扩展设定.md` §3（沙本位制）/§5（委托运营条例）、`参考资料/世界观与车辆设定.md` §一（大废线）/§二/§三/§四（载具）、`../引擎/核心玩法循环.md`（五条趋势线）、`Assets/Resources/Seeds/seed_*.json`（城市渗透数据，趋势线相关）
 - Produces: 14 页；世界页中文底 `*[返回世界百科](中文维基)*`，载具页 `*[返回载具图鉴](中文维基)*`
 
 - [ ] **Step 1: 读取素材**
@@ -222,7 +222,7 @@ git -C "D:\Unity Project\RailwayRenaissance\中转站\wiki" commit -m "Wiki: add
 - Create: `序章-归乡.md`/`Prologue-Homecoming.md`, `大学篇.md`/`University-Chapters.md`, `旅途篇.md`/`Journey-Chapters.md`, `雾峰篇.md`/`Wufeng-Chapters.md`
 
 **Interfaces:**
-- Consumes: `参考资料/序章剧本_归乡.md`、`docs/compose/specs/序章后续剧情设计.md`、`docs/compose/specs/核心玩法循环.md`
+- Consumes: `参考资料/序章剧本_归乡.md`、`docs/compose/specs/序章后续剧情设计.md`、`../引擎/核心玩法循环.md`
 - Produces: 8 页；中文底 `*[返回剧情档案](中文维基)*`，英文底 `*[Back to Home](Home)*`
 
 - [ ] **Step 1: 读取剧本素材**
