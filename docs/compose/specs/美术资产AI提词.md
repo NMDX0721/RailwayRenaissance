@@ -1,10 +1,10 @@
-# 游戏美术资产 - AI绘图提示词（v2.0 分类清单版）
+# AI生成资产提词总集（v3.0 All-in-One）
 
-> 版本：v2.0  
-> 用途：供AI绘图工具生成像素风游戏素材  
-> 格式标准：多层分类清单 + 色彩方案 + 氛围 + 排除项（基于实验室成功案例）  
-> 统一风格：16-bit retro pixel art，暖色调，类似 Stardew Valley  
-> 识图：mimo 2.5 | 执行任务：ds / ds0718
+> 版本：v3.0（2026-09-18 合并美术+配乐为统一文档）
+> 用途：所有AI生成资产的提词汇总——角色立绘、场景背景、BGM配乐、歌词歌曲
+> 美术工具：mimo 2.5 | 执行任务：ds / ds0718
+> 音乐工具：Suno AI v4.5+（Custom Mode，Style ≤1000 chars / Lyrics ≤3000 chars）
+> 统一风格：16-bit retro pixel art，暖色调，类似 Stardew Valley
 
 ---
 
