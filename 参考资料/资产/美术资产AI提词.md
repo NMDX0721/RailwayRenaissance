@@ -2002,6 +2002,9 @@ Reference: "To the Moon" opening, Stardew Valley winter theme, Joe Hisaishi "One
 Description: A piano plays alone in a room that hasn't been opened in years. The notes are slightly off — not wrong, just aged, like a clock that's lost a few minutes over decades. Underneath, a cello holds a single low note, barely audible, the way you can barely hear wind through broken windows. A music box enters — not the main melody, just 3-4 notes on repeat, as if someone wound it up and walked away. The piece doesn't resolve. It ends the way a memory does: mid-thought, still unfinished. This is the sound of a railway station where the last train left twenty years ago, and the platform is still waiting.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Ambient piano, lo-fi warmth, nostalgic instrumental, bittersweet loss with hope leaking through cracks, solo slightly detuned piano aged strings, soft cello drone barely audible, distant music box 3-4 note repeat, ambient fog pad, slow 56 BPM unhurried, reference To the Moon Stardew Valley winter Joe Hisaishi One Summer's Day, piano alone in abandoned room notes slightly aged like clock lost minutes over decades, cello holds low note like wind through broken windows, music box 3-4 notes repeated as if someone wound it and walked away, ends mid-thought mid-memory unfinished, sound of station where last train left twenty years ago and platform still waits, instrumental, no vocals
+
 ### 3.2 emotional（感人·温暖）
 
 **Suno 提示词**：
@@ -2013,6 +2016,9 @@ Tempo: Moderate, 70 BPM
 Reference: Stardew Valley dance theme, Studio Ghibli soundtracks
 Description: A warm, emotional piano piece with gentle string accompaniment. The melody rises and falls like a heartfelt conversation, perfect for reunion scenes and important dialogues.
 ```
+
+**Suno Style（≤1000字符）：**
+> Style: Emotional piano, cinematic strings, warm instrumental, heartwarming touching hopeful reunion mood, piano with gentle string ensemble and soft horn, moderate 70 BPM, reference Stardew Valley dance theme Studio Ghibli soundtracks, warm emotional piano rising and falling like heartfelt conversation, strings swell gently supporting melody, perfect for reunion scenes and important dialogues, instrumental, no vocals
 
 ### 3.3 determination（坚定·希望）
 
@@ -2028,6 +2034,9 @@ Reference: "Interstellar" docking scene, "Your Name" departure, "The Wind Rises"
 Description: Two piano notes, hesitant, like a question asked into an empty room. A cello answers — not with melody, but with presence, the way an old friend sits down next to you without speaking. French horn enters at the midpoint, playing a theme that sounds like it's been waiting patiently for its turn. The strings arrive last, not as a wall of sound but as an opening — the way dawn doesn't crash through a window but seeps in gradually. The piece peaks not with volume but with width. Then it pulls back to the piano. Same two notes. But now they sound different. Because you've heard what comes after them. This is the sound of a man who just decided to repair a locomotive with no money, no parts, and no guarantee anyone will ride it.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Cinematic orchestral build, bittersweet heroic instrumental, determined not triumphant the moment you decide to fight, solo piano opening hesitant two notes, cello enters reluctant but steady, French horn midpoint quiet confidence, full strings by end wide like opening curtains, gradual build 58 to 85 BPM over 90 seconds, reference Interstellar docking scene Your Name departure The Wind Rises final scene, two piano notes hesitant like question into empty room, cello answers with presence like old friend sitting down without speaking, French horn plays theme waiting patiently, strings arrive as opening like dawn seeping in gradually, peaks with width not volume then pulls back to piano same two notes now different, sound of man deciding to repair locomotive with no money no parts no guarantee, instrumental, no vocals
+
 ### 3.4 morning（清晨·宁静）
 
 **Suno 提示词**：
@@ -2040,6 +2049,9 @@ Reference: Stardew Valley spring theme, Animal Crossing morning theme
 Description: A gentle, fresh morning piece with acoustic guitar and soft flute. The sound of a new day beginning, birds singing, sunlight streaming through windows.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Acoustic folk, calm morning, gentle instrumental, peaceful fresh optimistic new day mood, acoustic guitar soft flute light percussion piano, slow to moderate 65 BPM, reference Stardew Valley spring theme Animal Crossing morning theme, gentle fresh morning piece birds singing sunlight streaming through windows, sound of new day beginning warm and hopeful, instrumental, no vocals
+
 ### 3.5 warm（温暖·安心）
 
 **Suno 提示词**：
@@ -2051,6 +2063,9 @@ Tempo: Moderate, 75 BPM
 Reference: Stardew Valley summer theme, fireplace ambient
 Description: A warm, cozy acoustic piece that feels like sitting by a fireplace with old friends. Perfect for community scenes and team gatherings.
 ```
+
+**Suno Style（≤1000字符）：**
+> Style: Cozy folk, warm acoustic, comforting instrumental, safe warm homely fireplace mood, acoustic guitar soft piano gentle bass, moderate 75 BPM, reference Stardew Valley summer theme fireplace ambient, cozy acoustic piece like sitting by fireplace with old friends, gentle and inviting warmth throughout, perfect for community scenes and team gatherings, instrumental, no vocals
 
 ### 3.6 news（新闻播报）
 
@@ -2066,6 +2081,9 @@ Reference: KCNA broadcast opening, CCTV Xinwen Lianbo, "The Death of Stalin" ope
 Description: Staccato strings in perfect unison, mechanical, like a printing press producing newspapers. Low brass drones underneath — not menacing, just heavy, the weight of institutional authority. A snare pattern that sounds more like a schedule than music. The arrangement never breathes, never pauses, never lets you forget this is an announcement, not a conversation. At the very end, a single piano note hangs in the air — the silence after the broadcast ends, before you're allowed to think for yourself. This is the sound of a news anchor reading lines someone else wrote, in a country where the news is decided before it's reported.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: State broadcast theme, authoritarian formal, mechanical precision instrumental, weight of official story that may not be true, staccato rigid strings clockwork, low brass drone authority, militaristic snare discipline, single piano note at end silence after broadcast, rigid 82 BPM no rubato machine-precise, reference KCNA broadcast opening CCTV Xinwen Lianbo The Death of Stalin opening, staccato strings perfect unison mechanical like printing press producing newspapers, brass drones heavy weight of institutional authority, snare pattern more schedule than music, arrangement never breathes never pauses, single piano note hangs in air silence before you think for yourself, sound of news anchor reading lines someone else wrote, instrumental, no vocals
+
 ### 3.7 calm（平静·日常）
 
 **叙事功能**：游戏使用最多的BGM之一（15+次）。不是"无事发生"，而是**暴风雨之间的平静**。它出现在旅途、维修、团队讨论——那些"还没有被沙能威胁"的短暂安宁里。
@@ -2080,6 +2098,9 @@ Reference: "Minecraft" day music, Stardew Valley farm theme, "Animal Crossing" h
 Description: A guitar fingerpicks a simple melody that loops without variation — the musical equivalent of a daily routine. It doesn't develop, doesn't climax, doesn't go anywhere. That's the point. A piano enters every 8 bars, plays 2-3 notes like someone glancing up from work, then goes back to silence. A wind chime somewhere outside catches a breeze. The whole piece sounds like a Tuesday afternoon in a village where the biggest event is the tea harvest. But underneath the simplicity, there's a low ambient hum — not quite audible, more felt — like the distant thrum of a沙能 engine that never quite goes away. The calm is real, but it's borrowed time.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Ambient folk, fingerpicked warmth, unhurried daily life instrumental, peaceful but not naive calm before trouble, fingerpicked acoustic guitar simple 4-bar loop never develops, soft piano enters every 8 bars plays 2-3 notes then retreats, distant wind chime, subtle room tone, slow 56 BPM tempo of walking without destination, reference Minecraft day music Stardew Valley farm theme Animal Crossing hourly, guitar fingerpicks simple melody looping without variation like daily routine, piano glances up from work every 8 bars then returns to silence, wind chime outside catches breeze, sounds like Tuesday afternoon in village where biggest event is tea harvest, low ambient hum like distant thrum of engine that never goes away, calm is real but borrowed time, instrumental, no vocals
+
 ### 3.8 train_ambient（火车行驶环境）
 
 **Suno 提示词**：
@@ -2091,6 +2112,9 @@ Tempo: Moderate, 90 BPM (matching train rhythm)
 Reference: Train journey ambient, "Snowpiercer" soundtrack (ambient parts)
 Description: The rhythmic sound of a train moving through the countryside. A steady, hypnotic rhythm that suggests movement and journey. Perfect for scenes inside the train carriage.
 ```
+
+**Suno Style（≤1000字符）：**
+> Style: Ambient field recording, train journey, rhythmic instrumental, rhythmic moving contemplative travel mood, rhythmic percussion matching train rhythm, soft drone, ambient pad, moderate 90 BPM matching train cadence, reference train journey ambient Snowpiercer soundtrack ambient sections, steady hypnotic rhythm of train moving through countryside, suggests movement and journey forward, sound of wheels on rails and distant landscape passing, perfect for scenes inside train carriage, instrumental, no vocals
 
 ### 3.9 ambient_nature（自然环境音）
 
@@ -2106,6 +2130,9 @@ Reference: Studio Ghibli valley ambience ("Princess Mononoke" forest), BBC "Plan
 Description: Wind moves through tall grass and leafless branches — not gentle, not harsh, just present. A single bird calls somewhere in the valley, not a melody but an announcement: I'm here. Every 20-30 seconds, another call from a different direction. A water drip echoes from somewhere underground — rhythmic but not musical, like a clock counting geological time. The soundscape has no center, no focal point. It's the audio equivalent of a landscape painting where nothing is happening and everything is alive. The iron rails are rusting. The mountains don't notice. That's the point.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Organic field recording, nature ambient, no-music soundscape, indifferent beauty nature does not care about human stories, wind through grass and leaves constant varying intensity, distant single bird call irregular intervals, occasional water drip, very faint insect hum, no tempo free time organic rhythm, reference Studio Ghibli valley ambience Princess Mononoke forest BBC Planet Earth landscape, wind moves through tall grass and leafless branches just present not gentle not harsh, single bird calls in valley not melody but announcement every 20-30 seconds different direction, water drip echoes underground rhythmic but not musical like geological clock, no center no focal point audio landscape painting where nothing happens and everything is alive, iron rails rusting mountains don't notice that's the point, instrumental, no vocals
+
 ### 3.10 mystery（悬疑·未知）
 
 **叙事功能**：4次使用，都与**岁月启动**和**边境危机**相关。不是"恐怖"，是**面对未知时的屏息**——0721号封存23年后突然启动，会发生什么？
@@ -2119,6 +2146,9 @@ Tempo: Very slow, 50 BPM — each sound separated by deliberate silence
 Reference: "Annihilation" shimmer sequences, "Outer Wilds" dark bramble, " Arrival" alien communication
 Description: A low drone begins — not ominous, just present, like a machine remembering how to vibrate after two decades of silence. Between the drone pulses, silence. Real silence, not music-shaped silence. Then a piano note plays in reverse, as if time is briefly running backward. A high harmonic appears — thin, glass-like, a frequency that feels like it shouldn't exist in this acoustic space. The piece never resolves, never explains itself. It ends mid-drone, as if whatever was waking up decided to wait a little longer. This is the sound of a 23-year-old AI blinking its eyes for the first time, not knowing if the world outside is still the one it remembers.
 ```
+
+**Suno Style（≤1000字符）：**
+> Style: Dark ambient, slow reveal, unsettling curiosity instrumental, unease of opening something sealed for twenty-three years, low sustained drone a machine waking up, reversed piano notes time running backward, single high harmonic frequency that shouldn't exist, deliberate silence between sounds the real instrument, very slow 50 BPM each sound separated by silence, reference Annihilation shimmer sequences Outer Wilds dark bramble Arrival alien communication, low drone not ominous just present like machine remembering how to vibrate after two decades of silence, between drone pulses real silence not music-shaped, piano note plays in reverse as if time briefly runs backward, high harmonic thin glass-like frequency, never resolves never explains ends mid-drone, sound of twenty-three year old AI blinking eyes for first time not knowing if world outside is still one it remembers, instrumental, no vocals
 
 ### 3.11 curiosity（好奇·探索）
 
@@ -2134,6 +2164,9 @@ Reference: "Howl's Moving Castle" curious moments, "Celeste" exploration B-side,
 Description: Pizzicato strings skip along like someone who can't decide which direction to look first. A music box plays 8 notes, pauses, plays them again slightly differently — as if learning the melody in real-time. Individual xylophone notes land like footsteps: this is new, and this, and this. A bassoon drops a single low note at unexpected moments — comedic punctuation, the musical equivalent of "wait, what?" The piece loops imperfectly each time, like an AI that's still figuring out how patterns work. It's the sound of 岁月 seeing a coffee shop for the first time in 23 years and being genuinely, thoroughly delighted by the concept of espresso.
 ```
 
+**Suno Style（≤1000字符）：**
+> Style: Playful ambient, childlike wonder, whimsical discovery instrumental, curious delighted slightly overwhelmed AI seeing world first time, pizzicato strings light skipping, music box 8-note phrase slightly off-rhythm being wound, soft xylophone individual notes like counting objects, bassoon single note comedic punctuation, moderate 72 BPM pace of walking and stopping to look, reference Howl's Moving Castle curious moments Celeste exploration B-side Studio Ghibli comedic interludes, pizzicato strings skip like someone who can't decide which direction to look, music box plays 8 notes pauses plays again slightly differently learning melody real-time, xylophone notes land like footsteps this is new and this and this, bassoon drops single low note unexpected comedic wait what, loops imperfectly each time like AI still figuring out patterns, sound of Suiyue seeing coffee shop first time in twenty-three years genuinely delighted by espresso, instrumental, no vocals
+
 ### 3.12 silence（寂静·留白）
 
 **叙事功能**：仅在prologue_10_transition结尾使用一次——序章结束、进入经营的那一刻。不是"没有音乐"，是**所有声音都停止后，你终于听见了自己的心跳**。
@@ -2147,6 +2180,9 @@ Tempo: No tempo — pure time
 Reference: Brian Eno "Music for Airports", "2001" monolith scenes, Arvo Pärt "Spiegel im Spiegel"
 Description: A single tone, so quiet you're not sure if it's music or your own hearing. It sustains for 30 seconds without change. Then — one chime. Not a melody, just a single note, like a station clock marking an hour that no one is there to hear. After the chime, the tone continues for another 20 seconds, then fades to nothing. Not silence — the absence of sound. The difference matters. Silence is peaceful. Absence is what's left when the last person turns off the lights and walks away. This plays once, at the exact moment the prologue ends and the player realizes: from here, they're on their own.
 ```
+
+**Suno Style（≤1000字符）：**
+> Style: Near-silence, minimal drone, breathing space instrumental, not empty but full silence after everything has been said, single sustained sine tone barely above hearing threshold, one distant chime at thirty second mark like station clock, room tone fades to nothing, no tempo pure time, reference Brian Eno Music for Airports 2001 monolith scenes Arvo Part Spiegel im Spiegel, single tone so quiet not sure if music or own hearing sustains thirty seconds unchanged, one chime not melody just single note like station clock marking hour no one is there to hear, tone continues twenty seconds then fades to absence not silence but what's left when last person turns off lights and walks away, plays once at exact moment prologue ends player realizes from here they are on their own, instrumental, no vocals
 
 ---
 
