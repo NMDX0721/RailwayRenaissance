@@ -12,12 +12,14 @@ description: Project context for RailwayRenaissance (铁路复兴：沙能冲击
 | Unity project root | `D:/Unity Project/RailwayRenaissance` |
 | Scripts | `Assets/Scripts/` |
 | VN scripts (JSON) | `Assets/Resources/Scripts/` |
+| **所有游戏文档** | **`参考资料/`**（统一读取/创建路径） |
 | Worldbuilding | `参考资料/世界观扩展设定.md` |
 | Character settings | `参考资料/角色设定.md` |
-| Plot outline | `docs/compose/plans/plot-outline.md` |
-| Design specs | `docs/compose/specs/` |
-| Design plans | `docs/compose/plans/` |
-| Art prompts | `docs/compose/specs/美术资产AI提词.md` |
+| Plot outline | `参考资料/plot-outline.md` |
+| Design specs | `参考资料/*.md` |
+| Art prompts | `参考资料/美术资产AI提词.md` |
+| AI helper docs | `docs/for-ai/` |
+| Portfolio | `docs/portfolio/` |
 | Tablet desktop UI | `Assets/Scripts/GameMainUI.cs` |
 | Settings panel | `Assets/Scripts/StationBulletinUI.cs` |
 | Game data | `Assets/Scripts/GameData.cs` |
