@@ -32,8 +32,8 @@
 
 ### 1.1 林彪悍（主角）
 
-**文件**：`Resources/characters/lin_biaohan/{表情}.png`  
-**状态**：需重新绘制（当前为262×387像素画，需升级为1024×1536高清二次元）
+**文件**：`Resources/characters/lin_biaohan_*.png`（flat格式，CharacterSpriteManager兼容flat+子目录）  
+**状态**：✅ 部分完成（11/16表情已升级为1024×1536高清二次元，5张仍为旧像素画待补：angry/excited/happy/wink/shocked）
 
 **主图提示词（高清二次元版）**：
 ```
@@ -85,8 +85,8 @@ AVOID:
 
 ### 1.2 老陈（陈守正）
 
-**文件**：`Resources/characters/laochen/{表情}.png`  
-**状态**：需重新绘制（当前为303×313像素画，需升级为1024×1536高清二次元）
+**文件**：`Resources/characters/laochen_*.png`（flat格式）  
+**状态**：待重新绘制（当前303×313像素画，需升级为1024×1536高清二次元）
 
 **主图提示词（高清二次元版）**：
 ```
@@ -1991,11 +1991,11 @@ MOOD: Ordinary people, ordinary journey. The railway alive again.
 **Suno 提示词**：
 ```
 Style: Ambient piano, lo-fi, melancholic, nostalgic instrumental
-Mood: Bittersweet, reflective, gentle sadness
-Instruments: Solo piano, soft strings, ambient pad
-Tempo: Slow, 60 BPM
-Reference: Stardew Valley winter theme, "To the Moon" soundtrack
-Description: A slow, contemplative piano piece with soft string pads. The melody carries a sense of loss but also quiet hope. Perfect for reflective moments and memories of the past.
+Mood: Bittersweet, reflective, gentle sadness, wistful longing
+Instruments: Solo piano (slightly detuned for warmth), soft strings, ambient pad, distant music box
+Tempo: Slow, 58 BPM
+Reference: Stardew Valley winter theme, "To the Moon" soundtrack, "Clannad" after story
+Description: A slow, contemplative piano piece with soft string pads and a distant music box melody. The piano is slightly detuned, giving it an old, worn quality — like a photograph fading at the edges. The melody carries a sense of loss but also quiet hope. A single sustained chord holds underneath everything, like a breath that never fully exhales. Perfect for reflective moments, memories of the past, and scenes where characters confront what they've lost. The kind of music that makes you stare out a window.
 ```
 
 ### 3.2 emotional（感人·温暖）
@@ -2015,11 +2015,11 @@ Description: A warm, emotional piano piece with gentle string accompaniment. The
 **Suno 提示词**：
 ```
 Style: Cinematic orchestral, uplifting, determined instrumental
-Mood: Hopeful, resolute, inspiring
-Instruments: Orchestra, brass, percussion, piano
-Tempo: Moderate, 80 BPM
-Reference: "Interstellar" main theme, "The Last of the Mohicans" theme
-Description: A determined orchestral piece that builds gradually. Starts with a single piano note, then layers in strings, brass, and percussion. The feeling of setting out on an impossible journey.
+Mood: Hopeful, resolute, inspiring, bittersweet courage
+Instruments: Solo piano intro, building strings, warm brass, marching percussion, French horn
+Tempo: Builds from 60 to 90 BPM
+Reference: "Interstellar" main theme, "The Last of the Mohicans" theme, "Your Name" departure scene
+Description: A determined orchestral piece that builds like a sunrise. Opens with a single piano note — fragile, uncertain. Then strings creep in, tentative. At the midpoint, brass enters with quiet confidence. By the end, full orchestra swells with the feeling of standing at the edge of something vast and choosing to step forward anyway. Not triumphant — determined. The difference matters. Perfect for departure scenes, first steps, and moments where a character commits to an impossible task.
 ```
 
 ### 3.4 morning（清晨·宁静）
@@ -2050,24 +2050,24 @@ Description: A warm, cozy acoustic piece that feels like sitting by a fireplace 
 
 **Suno 提示词**：
 ```
-Style: News broadcast, serious, informative instrumental
-Mood: Serious, formal, anticipatory
-Instruments: Electronic pads, low bass, subtle percussion, minimal piano
-Tempo: Moderate, 80 BPM
-Reference: Classic news theme music, "Black Mirror" soundtrack
-Description: A serious, slightly tense news broadcast theme. The music signals that important information is being delivered. Not alarmist, but weighty.
+Style: News broadcast, state media, serious informative instrumental
+Mood: Formal, weighty, propagandistic undertone
+Instruments: Electronic pads, low brass drone, staccato strings, militaristic snare rolls, minimal piano
+Tempo: Moderate, 82 BPM
+Reference: KCNA broadcast music, CCTV news intro, "The Death of Stalin" opening theme
+Description: A formal, slightly oppressive news broadcast theme. Staccato strings announce importance while low brass drones carry an undertone of authority. The snare rolls add military precision. Not neutral — this is state media music, carrying the weight of official narrative. The kind of music that makes you pay attention whether you want to or not. Perfect for in-game news broadcasts, propaganda segments, and moments where the world's official story is being told.
 ```
 
 ### 3.7 calm（平静·日常）
 
 **Suno 提示词**：
 ```
-Style: Ambient, calm, everyday instrumental
-Mood: Peaceful, neutral, unobtrusive
-Instruments: Soft piano, ambient pad, gentle guitar
-Tempo: Slow, 60 BPM
-Reference: "Minecraft" ambient music, Stardew Valley farm theme
-Description: A calm, unobtrusive ambient piece that creates a peaceful atmosphere without demanding attention. Perfect for everyday management scenes and thinking time.
+Style: Ambient folk, calm everyday, gentle instrumental
+Mood: Peaceful, neutral, unhurried, quietly content
+Instruments: Fingerpicked acoustic guitar, soft piano, distant ambient pad, occasional wind chime
+Tempo: Slow, 58 BPM
+Reference: "Minecraft" ambient music, Stardew Valley farm theme, "Animal Crossing" 2am music
+Description: A calm, unhurried ambient piece that feels like a quiet afternoon in a small village. Fingerpicked guitar carries a simple, looping melody that never demands attention — it just exists, like sunlight through a window. A soft piano occasionally joins, playing notes that feel like thoughts drifting by. The distant wind chime is the only thing that breaks the stillness. Perfect for routine management scenes, early morning planning, and moments where nothing urgent is happening — which is exactly when the player needs to think.
 ```
 
 ### 3.8 train_ambient（火车行驶环境）
@@ -2080,6 +2080,54 @@ Instruments: Rhythmic percussion (train rhythm), soft drone, ambient pad
 Tempo: Moderate, 90 BPM (matching train rhythm)
 Reference: Train journey ambient, "Snowpiercer" soundtrack (ambient parts)
 Description: The rhythmic sound of a train moving through the countryside. A steady, hypnotic rhythm that suggests movement and journey. Perfect for scenes inside the train carriage.
+```
+
+### 3.9 ambient_nature（自然环境音）
+
+**Suno 提示词**：
+```
+Style: Ambient nature soundscape, environmental, organic instrumental
+Mood: Serene, natural, grounded
+Instruments: Soft wind chimes, distant bird calls, flowing water, gentle rain on leaves
+Tempo: Free time, no fixed BPM
+Reference: Studio Ghibli nature ambience, "Princess Mononoke" forest scenes, lo-fi nature ASMR
+Description: A peaceful nature soundscape mixing gentle wind, distant birdsong, and soft water sounds. No melody, no rhythm — pure environment. Perfect for outdoor scenes in the mountains, forests, and countryside around Wufeng Village.
+```
+
+### 3.10 mystery（悬疑·未知）
+
+**Suno 提示词**：
+```
+Style: Dark ambient, suspenseful, mysterious instrumental
+Mood: Unsettling, curious, slightly tense
+Instruments: Low drone, reversed piano notes, sparse high strings, subtle electronic glitches
+Tempo: Slow, 55 BPM
+Reference: "Annihilation" soundtrack, "The X-Files" ambient score, "Outer Wilds" dark bramble theme
+Description: An eerie, atmospheric piece that suggests something hidden beneath the surface. Low drones create unease while sparse high notes add curiosity. Perfect for uncovering secrets, exploring abandoned places, or moments of realization that something is wrong.
+```
+
+### 3.11 curiosity（好奇·探索）
+
+**Suno 提示词**：
+```
+Style: Playful ambient, light mystery, whimsical instrumental
+Mood: Curious, light-hearted, exploratory
+Instruments: Pizzicato strings, music box, soft xylophone, light woodwinds
+Tempo: Moderate, 75 BPM
+Reference: "Howl's Moving Castle" curious moments, "Celeste" exploration themes, "Pikmin" soundtrack
+Description: A light, playful piece that captures the feeling of discovering something new. Pizzicato strings and music box create a sense of wonder without danger. Perfect for exploring new locations, checking inventory, or light investigation scenes.
+```
+
+### 3.12 silence（寂静·留白）
+
+**Suno 提示词**：
+```
+Style: Minimal ambient, near-silent, breathing space instrumental
+Mood: Empty, still, contemplative
+Instruments: Single sustained note, barely audible wind, occasional soft chime
+Tempo: Very slow, 40 BPM
+Reference: "2001: A Space Odyssey" silence sequences, Brian Eno ambient works, "Journey" quiet moments
+Description: Almost silence itself. A single sustained tone that barely registers, with the occasional soft chime breaking the stillness. The musical equivalent of holding your breath. Perfect for dramatic pauses, emotional weight, and the moment before something important happens.
 ```
 
 ---
