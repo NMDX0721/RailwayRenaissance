@@ -1,6 +1,6 @@
-# AI生成资产提词总集（v3.0 All-in-One）
+# AI生成资产提词总集（v4.1 All-in-One）
 
-> 版本：v3.0（2026-09-18 合并美术+配乐为统一文档）
+> 版本：v4.1（2026-09-18 合并美术+配乐为统一文档；v4.1 已生成背景归档）
 > 用途：所有AI生成资产的提词汇总——角色立绘、场景背景、BGM配乐、歌词歌曲
 > 美术工具：mimo 2.5 | 执行任务：ds / ds718
 > 音乐工具：Suno AI v4.5+（Custom Mode，Style ≤1000 chars / Lyrics ≤3000 chars）
@@ -24,15 +24,15 @@
 - [1.9 16表情差分图谱模板](#19-16表情差分图谱44网格铺满全画面)
 
 ### 二、场景背景
-- [2.1 实验室](#21-实验室智能调度系统实验室) ✅
-- [2.2 导师办公室](#22-导师办公室) ✅
-- [2.3 驾驶舱·白天](#23-驾驶舱白天0721号前舱) ✅
-- [2.4 驾驶舱·夜晚](#24-驾驶舱夜晚0721号前舱) ✅
-- [2.5 客舱·白天](#25-客舱白天新绘0721号后舱) ✅
-- [2.6 客舱·夜晚](#26-客舱夜晚新绘0721号后舱) ✅
-- [2.7 停机坪](#27-停机坪) ✅
-- [2.12 大同江茶馆](#212-大同江茶馆嘉颖徐会面室内) ✅
-- [2.13 Wiki横幅](#213-wiki-横幅wiki-banner) ✅
+- [2.1 实验室](#21-实验室智能调度系统实验室) 📦 已归档
+- [2.2 导师办公室](#22-导师办公室) 📦 已归档
+- [2.3 驾驶舱·白天](#23-驾驶舱白天0721号前舱) 📦 已归档
+- [2.4 驾驶舱·夜晚](#24-驾驶舱夜晚0721号前舱) 📦 已归档
+- [2.5 客舱·白天](#25-客舱白天新绘0721号后舱) 📦 已归档
+- [2.6 客舱·夜晚](#26-客舱夜晚新绘0721号后舱) 📦 已归档
+- [2.7 停机坪](#27-停机坪) 📦 已归档
+- [2.12 大同江茶馆](#212-大同江茶馆嘉颖徐会面室内) 📦 已归档
+- [2.13 Wiki横幅](#213-wiki-横幅wiki-banner) 📦 已归档
 - [2.14 群山天空](#214-群山天空mountain_sky) ❌ 待生成
 - [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ❌ 待生成
 - [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ❌ 待生成
@@ -50,7 +50,7 @@
 - [2.28 站长办公室](#228-站长办公室station_office) ❌ 待生成
 - [2.29 站台·晨](#229-站台晨platform_morning) ❌ 待生成
 - [2.30 车厢内部](#230-车厢内部train_inside) ❌ 待生成
-- [2.31 纯黑](#231-纯黑black)
+- [2.31 纯黑](#231-纯黑black) 📦 已归档
 - [2.32 边境追击CG](#232-边境追击三面合围chase_sky--cg) ❌ 待生成
 - [2.33 统一便当店](#233-统一便当店平壤后街shop) ❌ 待生成
 - [2.34 现代咖啡厅](#234-现代咖啡厅office_modern) ❌ 待生成
@@ -82,6 +82,9 @@
 - [背景图清单](#61-背景图已有提示词待生成)
 - [CG插画清单](#62-cg-插画9-张提词已写)
 - [已入库清单](#64-已入库背景图)
+
+### 七、已生成资产归档（见文件末尾）
+- [已归档背景图](#七已生成资产归档) 📦 §2.1-2.7, §2.12-2.13, §2.31
 
 ---
 
@@ -625,769 +628,6 @@ AVOID:
 - **格式**：多层分类清单 + 色彩方案 + 氛围 + 排除项
 
 ---
-
-### 2.1 实验室（智能调度系统实验室）
-
-**文件**：`Resources/bg/lab.png`  
-**用途**：序章 Day 0 开场场景——金日成综合大学智能调度系统实验室
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university laboratory room, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, ULTIMATE KOREAN CULTURAL ELEMENTS:
-
-KOREAN ARCHITECTURAL ELEMENTS:
-- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
-- Door frame with traditional Korean decorative patterns (단청 dancheong colorful patterns)
-- Wall panels with subtle Korean traditional motifs
-- Ceiling with traditional Korean wooden beams (modern interpretation)
-- Korean-style floor heating (온돌 ondol) visible under desk
-
-KOREAN TEXT AND SIGNS:
-- Large Korean text on wall: "지능형 지휘 시스템 연구실" (Intelligent Dispatch System Research Lab)
-- University emblem with Korean text: "김일성대학교"
-- Korean flag (North Korean flag) prominently displayed
-- Korean propaganda slogan on wall: "일심단결" (Single-hearted Unity) or "주체사상" (Juche Idea)
-- Korean calendar on wall showing 2076 year with traditional Korean holidays marked
-- Small Korean text labels on all equipment and furniture
-
-WALL DECORATIONS (KOREAN LEADERS AND CULTURE):
-- Large North Korean flag (clean, well-maintained)
-- FRAMED PORTRAITS OF LEADERS on wall (金日成 and 金正日 portraits, side by side, respectful placement, formal frames)
-- Vintage Korean railway poster with Korean text
-- Map of Korean railway network with Korean labels
-- Traditional Korean paper art (minhwa) frame with folk painting
-- Korean traditional fan (bukcheong fansa) on wall
-- Korean calligraphy artwork (한글 Hangeul calligraphy)
-
-KOREAN TRADITIONAL ITEMS:
-- Traditional Korean celadon pottery on shelf (고려청자 Goryeo celadon, green ceramic)
-- Korean embroidered wall hanging with traditional pattern (자수 jasu)
-- Korean traditional paper (한지 hanji) lamp on desk
-- Small Korean flag on desk
-- Korean traditional tea set (전통다구) with teapot and cups
-- Korean traditional fan (부채 bukcheong fansa) on wall
-- Korean traditional knotwork (매듭 maedeup) decoration
-
-KOREAN FOOD AND DRINK ITEMS:
-- Kimchi jar (김치단지) on shelf (traditional fermentation crock)
-- Korean traditional rice bowl (밥그릇) on desk
-- Korean tea canister (차통 chatong) with traditional design
-- Small soju bottle (소주병) on shelf (optional, for atmosphere)
-- Korean traditional snack container (과자그릇)
-
-KOREAN MUSICAL INSTRUMENTS:
-- Small Gayageum (가야금) model on shelf (12-string zither)
-- Korean traditional drum (북 buk) as decoration
-- Korean flute (대금 daegeum) on wall mount
-
-KOREAN FURNITURE:
-- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
-- Korean-style desk with traditional joinery
-- Korean traditional chair with curved backrest
-
-KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
-- "Chollima" brand computer (천리마 컴퓨터) - Korean retro computer design
-- Korean-made monitor with Hangul keyboard
-- Traditional Korean-style power outlet covers
-- Korean-designed desk lamp with traditional patterns
-
-WINDOW VIEW (PYONGYANG SKYLINE):
-- Iconic PYONGYANG LANDMARKS visible: Ryugyong Hotel (려명거리 Hotel, pyramid shape)
-- Juche Tower (주체사상탑) visible in distance
-- Grand People's Study House (인민대학습당) with traditional Korean roof
-- Mix of traditional Korean architecture and modern skyscrapers
-- Korean-style rooflines on some buildings (기와 giwa tiles)
-- Flying vehicles in distance (sand energy cars)
-- Mountains with Korean pine trees (소나무 sonamu) in far distance
-- Taedong River (대동강) visible if applicable
-
-DESK ITEMS WITH KOREAN TOUCH:
-- Korean traditional tea set (전통다구) with celadon teapot
-- Korean calligraphy brush (붓 but) and ink stone (벼루 byeoru)
-- Korean traditional notebook (한지공책) with Korean binding
-- Copper pocket watch (grandfather's inheritance)
-- Open railway engineering manual (Korean text visible)
-- Korean-style pen holder with traditional design
-- Small Korean traditional clock (시계) with hanja numbers
-
-COLOR PALETTE (KOREAN TRADITIONAL):
-- Primary: Korean celadon green (#8FBC8F), warm brown (#8B4513)
-- Secondary: Cream white (#FFFDD0), soft red (#CD5C5C)
-- Accents: Gold (#FFD700), navy blue (#000080)
-- Dancheong colors: Blue (#4169E1), Red (#CD5C5C), Yellow (#FFD700), Green (#228B22)
-- Inspired by Korean traditional color schemes and dancheong patterns
-
-ATMOSPHERE:
-- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
-- Academic yet cultural
-- Blend of tradition and modernity
-- Respectful of heritage and leaders
-- Hopeful for railway revival
-- Strong national identity
-
-STYLE:
-- PIXEL ART with clear pixels
-- KOREAN CULTURAL IDENTITY very prominent
-- Warm, inviting colors
-- Clean, organized space
-- Mix of old and new (retro-futuristic)
-- Traditional Korean patterns and motifs throughout
-
-AVOID:
-- Generic "Asian" style (must be specifically KOREAN)
-- Too modern/sterile (should have traditional touches)
-- Cold or impersonal atmosphere
-- Cluttered or messy composition
-- Disrespectful placement of leader portraits
-- Missing Korean cultural elements
-```
-
----
-
-### 2.2 导师办公室
-
-**文件**：`Resources/bg/professor_office.png`  
-**用途**：序章 Day 0 导师办公室场景——林彪悍向导师申请学业暂停
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university professor's office, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, modest academic setting, ULTIMATE KOREAN CULTURAL ELEMENTS, HEAVY NORTH KOREAN ATMOSPHERE:
-
-KOREAN ARCHITECTURAL ELEMENTS:
-- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
-- Door frame with traditional Korean decorative patterns (단청 dancheong)
-- Ceiling with traditional Korean wooden beams, green dancheong accents
-- Korean-style floor heating (온돌 ondol) visible under desk
-
-KOREAN TEXT AND SIGNS (HEAVY EMPHASIS):
-- Large Korean text on wall: "김일성대학교 교수 연구실" (Professor's Office)
-- University emblem with Korean text: "김일성대학교" prominently displayed
-- North Korean flag prominently on wall, well-lit
-- Framed portrait of Kim Il Sung and Kim Jong Il on wall, side by side
-- Propaganda slogan: "일심단결" (Single-hearted Unity) calligraphy plaque
-- Korean calendar on wall showing 2076
-- Nameplate on desk with professor's name in Korean
-- Small Korean text labels on equipment
-
-WALL DECORATIONS (ACADEMIC + KOREAN LEADERS):
-- Framed university diploma with Korean text, government seal
-- Academic certificates and awards on wall (Korean text, official stamps)
-- Map of Korean peninsula on wall showing "Unified Korea"
-- Korean calligraphy scroll (서예) with inspirational message
-- Vintage Korean railway poster from 1950s Chollima era
-- Group photo of faculty with leader (formal, framed)
-- Traditional Korean paper art (minhwa) frame with folk painting
-
-KOREAN TRADITIONAL ITEMS:
-- Korean celadon pottery (고려청자 Goryeo celadon) on shelf
-- Korean traditional paper (한지 hanji) desk lamp with warm glow
-- Small Korean flag on desk in brass stand
-- Korean traditional tea set (전통다구) with celadon teapot
-- Korean traditional ink stone (벼루) and brush (붓) on desk
-- Korean traditional knotwork (매듭 maedeup) decoration on shelf
-- Korean traditional fan (부채 bukcheong fansa) on wall
-
-KOREAN FURNITURE:
-- Korean traditional wooden desk with traditional joinery, slightly worn
-- Professor's wooden chair with curved backrest and cushion
-- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
-- Bookshelf with traditional Korean design
-
-DESK ITEMS:
-- Stack of student research papers with Korean text
-- Open railway engineering textbook (Korean text, "철도공학")
-- Copper reading glasses on desk
-- Korean traditional clock (시계) with hanja numbers
-- Half-empty cup of Korean barley tea (보리차)
-- Chollima brand calculator (천리마 계산기) on desk
-- Photo frame with university graduation photo
-
-KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
-- Chollima brand computer (천리마 컴퓨터) with transparent OLED display
-- Korean-made holographic projection device on desk
-- Virtual lecture screen with Korean text on wall
-- Korean-designed desk lamp with traditional patterns, wireless charging
-- Smart communication device with Hangul interface
-- AI assistant interface on computer screen (Korean language)
-
-BOOKSHELF CONTENTS:
-- Railway engineering textbooks (Korean titles, "철도수송론")
-- Research papers on intelligent dispatch systems
-- Korean history books (조선력사)
-- Kim Il Sung and Kim Jong Il collected works (red hardcover, prominent)
-- Juche ideology study materials
-- Vintage Korean steam locomotive model
-- Traditional Korean ceramic pieces
-
-WINDOW VIEW (PYONGYANG SKYLINE):
-- Ryugyong Hotel (려명거리 Hotel, pyramid shape, distant)
-- Juche Tower (주체사상탑) visible in distance with iconic flame
-- Grand People's Study House (인민대학습당) with traditional Korean roof
-- Korean pine trees (소나무 sonamu) visible
-- Afternoon daylight, soft shadows through hanji-patterned windows
-- Flying sand energy vehicles in distant sky
-
-COLOR PALETTE (KOREAN TRADITIONAL + NORTH KOREAN OFFICIAL):
-- Primary: warm brown (#8B4513), cream white (#FFFDD0)
-- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
-- Accents: gold frame (#FFD700), revolutionary red (#CC0000)
-- Dancheong: Blue (#4169E1), Red (#CD5C5C)
-- North Korean official red (#C41E3A) for banners and flags
-
-ATMOSPHERE:
-- Warm, academic, modest but respected
-- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
-- Serious yet caring — moment of a life-changing decision
-- OFFICIAL NORTH KOREAN ACADEMIC SETTING
-- State professor's office at the most prestigious university in the DPRK
-```
-
----
-
-### 2.3 驾驶舱·白天（0721号前舱）
-
-**文件**：`Resources/bg/car_interior.png`  
-**用途**：0721号前舱——岁月主控区，主角偶尔进入。朝鲜官方标配 × 岁月全息系统。23年未变，如博物馆般被保存。
-
-**⚠️ 前两版图片问题总结（新版提示词已针对性修复）：**
-1. 最终版选用无方向盘方案 → 操作面板 + 按钮/开关代替
-2. 韩文有乱码 → 新版强调"ALL Korean text must be correct Hangul, no garbled text"
-3. 领袖肖像不够像 → 新版强调"brass frames, symmetrical, immediately recognizable"
-4. 座椅比例失调 → 新版明确座位尺寸和位置
-5. 背景风格不一致 → 新版统一像素风
-6. 驾驶舱是官方空间，不应有韩式消费品 → 移到客舱
-
-**⚠️ 设计说明：0721号无方向盘。驾驶舱使用操作面板 + 全息控制系统。岁月AI全权操控飞行，物理控制面板是23年前的原始设计，积灰未用。**
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flying vehicle COCKPIT interior, daytime, 2076 retro-futuristic,
-NORTH KOREAN OFFICIAL AESTHETIC — max density,
-"Chollima" brand flying car, "Sand Flying Pig" 0721:
-
-SCENE: front cockpit of a DPRK-made sand-energy flying car — two seats, CONTROL PANEL with buttons and toggle switches, holographic dashboard, leader portraits in brass frames. This is the ORIGINAL 2053 interior, preserved like a museum: 23 years untouched, every official detail intact. The cockpit is a time capsule of DPRK industrial design. NO STEERING WHEEL — the vehicle is fully autonomous, controlled by the AI system 岁月.
-
-CULTURAL CONTEXT — SIX LAYERS OF KOREANNESS:
-- LAYER 1: Chollima brand — DPRK's premier vehicle manufacturer, named after the mythical thousand-li horse
-- LAYER 2: Kim Il Sung University affiliation — university emblem, research institute stickers
-- LAYER 3: Juche ideology design language — self-reliance aesthetic, practical and functional
-- LAYER 4: Songun (military-first) influence — sturdy construction, military-grade switches
-- LAYER 5: Korean traditional arts — dancheong color patterns, maedeup knotwork, minhwa folk motifs
-- LAYER 6: 2076 retro-futuristic — not too advanced, recognizable as Korean-made, slight Soviet-tech influence
-
-COCKPIT LAYOUT:
-- Pilot seat (left) and passenger seat (right), dark olive-green upholstery, DPRK red star emblem on headrests
-- NO STEERING WHEEL — replaced by a control panel with physical toggle switches and push buttons (military-grade, Korean-made, 23 years untouched)
-- Holographic display screen in center of dashboard (岁月's navigation interface, blue-tinted, showing map and flight data)
-- Center console with sand-energy controls, navigation system, and propaganda radio
-- Side windows on both sides showing sky and clouds (daytime, bright)
-- Ceiling: padded headliner with small reading light, emergency handle
-- Floor: dark rubber mat with raised ridges, utilitarian
-
-NORTH KOREAN OFFICIAL DETAILS — MAXIMUM DENSITY:
-PATRIOTIC SYMBOLS:
-- Framed portraits of Kim Il-sung and Kim Jong-il (brass frames, mounted on wall above dashboard, prominent) — ESSENTIAL
-- Small Korean flag (태극기) on dashboard, another on rearview mirror
-- "위대한 령도자 김일성동지" (Great Leader Comrade Kim Il-sung) calligraphy plaque
-- "100전 100승" (100 battles 100 victories) slogan sticker
-- Red star emblem on seat headrests
-
-TRADITIONAL KOREAN CRAFTS:
-- Korean traditional knotwork (매듭 maedeup) in gold and red hanging from rearview mirror
-- Dancheong-style color pattern (오방색 obangsaek: blue, red, yellow, white, black) on seat fabric trim
-- Small minhwa folk painting (민화) of a tiger and magpie as decorative panel
-- Celadon green (청자) color accent on dashboard trim
-
-TECHNOLOGY & CONTROLS:
-- ALL labels in Korean (Hangul) — absolutely no English or Chinese
-- Sand energy gauge: "모래 에너지 잔량" with sweeping needle, red zone at low
-- Speedometer: "속도" with km/h markings in Hangul numerals
-- Altitude display: "고도" with Hangul numerals
-- Navigation screen: holographic map of Korean peninsula
-- Radio: frequency dial with Korean station names (조선중앙방송, 평양FM)
-- Warning stickers: "주의" (caution), "비상정지" (emergency stop)
-- Engine temperature: "엔진 온도" with green-yellow-red zones
-- "비행중" (in flight) sign above cockpit door, illuminated
-- Control panel: physical toggle switches, push buttons, analog gauges — all Korean-made, military-grade, slightly dusty
-
-CONTRAST ELEMENTS (HUMOROUS, SECONDARY — SHOWING THE PASSAGE OF TIME):
-- "CASS" beer can wedged in door pocket (empty)
-- Half-empty soju bottle (처음처럼) in side storage
-- Seoul travel guide magazine on passenger seat (slightly dog-eared)
-- University ID card (김일성대학교 학생증) clipped to sun visor
-- A K-pop sticker on the control panel (partially peeling, the only splinter of modern culture in the official space)
-
-WINDOW VIEW (DAYTIME):
-- Bright blue sky with white clouds through windshield
-- Mountainous landscape below — Korean-Chinese border region
-- A few Chollima-brand sand-energy flying vehicles in distant sky
-- Warm sunlight streaming through side windows
-- Rice paddies and small villages visible far below
-
-COLOR PALETTE:
-- Primary: dark olive green (#4A5D23), instrument panel gray (#4a4a5a)
-- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
-- Accents: Korean red (#CD2626), celadon green (#7CB08A), traditional gold (#DAA520)
-- Obangsaek five colors: blue (#2050A0), red (#CD2626), yellow (#FFD700), white (#F5F5F5), black (#1A1A1A)
-- Leather: dark brown (#3B1F0B)
-
-ATMOSPHERE:
-- PRESERVED MUSEUM PIECE — the cockpit as it was in 2053, untouched for 23 years
-- The contrast between official propaganda decor and casual pop-culture leftovers tells a story
-- Warm daylight, quiet and calm
-- Compact but functional, every inch has a purpose
-- Slight Soviet-industrial undertone blended with Korean tradition
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN OFFICIAL AESTHETIC — unmistakably DPRK government design
-- Every label and text in Korean (Hangul) — zero English
-- Propaganda-era design blended with near-future technology
-- Military-grade build quality visible in switches and materials
-
-AVOID:
-- Steering wheel (the vehicle has NO steering wheel — use control panel with buttons/switches instead)
-- Generic sci-fi interior (must be unmistakably NORTH KOREAN)
-- Japanese or Chinese cultural elements
-- English text anywhere
-- Modern minimalist aesthetic
-- Missing the leader portraits (ESSENTIAL)
-- Garbled or nonsensical Korean text (all Hangul must be correct)
-- Art style inconsistency between interior and exterior
-- Seat proportions that are too small or cut off awkwardly
-- Clean/sterile interior (must feel preserved but slightly aged with 23 years of dust)
-- K-pop or South Korean cultural items in the cockpit (they belong in the CABIN, not the cockpit — the cockpit is the OFFICIAL space)
-```
-
----
-
-### 2.4 驾驶舱·夜晚（0721号前舱）
-
-**文件**：`Resources/bg/car_interior_night.png`  
-**用途**：0721号前舱——夜晚飞行。使用图片 `ChatGPT Image 2026年8月17日 13_26_49.jpg`。无方向盘，完全靠全息控制系统飞行。
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flying vehicle interior at night, 2076 retro-futuristic,
-KOREAN STYLE INTERIOR, NORTH KOREAN industrial design,
-sand-energy vehicle cockpit nighttime, "Chollima" brand flying car:
-
-SCENE: same DPRK-made sand-energy flying vehicle interior as daytime version, but at night — dark ambient lighting, instrument panel glow in amber and blue, stars visible through windows, intimate nighttime atmosphere
-
-NIGHTTIME DIFFERENCES — SAME KOREAN INTERIOR, NOW AT NIGHT:
-- Dark ambient lighting throughout cabin — only instrument panel and holographic display provide illumination
-- Windows show dark night sky with stars, crescent moon, and distant clouds
-- City lights of Pyongyang (or similar Korean city) visible far below — distinctive grid pattern
-- Dashboard instruments glow softly in warm amber (analog gauges) and cool blue (digital displays)
-- Holographic display (岁月's interface) casts cool blue light on cabin interior surfaces
-- Small reading light above passenger seat — warm yellow incandescent glow
-- Stars, moon visible through windshield — clear night sky
-- Red-tinted "비행중" (in flight) sign above cockpit door
-
-KOREAN CULTURAL ELEMENTS AT NIGHT — ALL PRESERVED:
-- Korean flag (태극기) still visible in dim light on dashboard
-- Leader portrait (Kim Il-sung, Kim Jong-il) subtly illuminated by gauge light
-- Maedeup knotwork silhouette visible against window
-- Dancheong pattern on seat fabric catching holographic blue light
-- ALL labels in Korean (Hangul) — illuminated by instrument glow
-- Sand energy gauge (모래 에너지 잔량) needle glowing amber
-- Navigation map (조선반도) casting soft blue light
-- Roadong newspaper visible in door pocket, dimly lit
-
-COLOR PALETTE (NIGHT — KOREAN TRADITIONAL + DARK):
-- Primary: deep dark blue (#0a0a1e), instrument glow amber (#FF8C00)
-- Secondary: starry sky (#1a1a3e), holographic cyan (#00BFFF), city lights warm (#FFD700)
-- Accents: Korean red (#CD2626) on emergency labels, celadon green (#7CB08A) on dashboard trim
-- Obangsaek five colors muted in darkness: blue (#2050A0), red (#8B0000), yellow (#B8860B)
-
-ATMOSPHERE:
-- Quiet, intimate nighttime atmosphere — unmistakably Korean
-- Sense of traveling through the dark over Korean landscape
-- Peaceful and contemplative mood
-- Stars and distant city lights create a sense of vast journey
-- Safe and warm inside despite the dark outside
-- Instrument glow creates a cozy cockpit environment
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN TECH AESTHETIC at night
-- Dark ambient lighting with warm instrument glow
-- Nighttime atmosphere throughout
-- Every label and text in Korean (Hangul)
-
-AVOID:
-- Too bright (must be clearly nighttime)
-- Generic sci-fi night interior
-- Missing Korean text on instruments (all Hangul must be correct, no garbled text)
-- Japanese or Chinese cultural elements
-- English text anywhere
-- Missing leader portraits
-- Art style inconsistency between interior and exterior
-- K-pop or South Korean items in the cockpit (they belong in the cabin)
-```
-
----
-
-### 2.5 客舱·白天（新绘—0721号后舱）
-
-**文件**：Resources/bg/cabin_interior.png  
-**用途**：0721号后舱——主角旅途主要活动空间，从客舱门上车，第一眼看到的就是这里
-
-**设计说明**：0721号只有一个侧门，打开就是客舱。驾驶舱在前面（通过隔断门进入），但主角几乎不去。后舱布局像小型火车包厢（不是汽车后座），沿墙长椅可放平成床，中央矮桌，大窗，地板下储物。无独立厕所，中途在补给站解决。
-
-**提示词**：
-`
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flying vehicle PASSENGER CABIN interior, daytime, 2076 retro-futuristic,
-NORTH KOREAN VEHICLE INTERIOR — like a small train compartment,
-"Sand Flying Pig" 0721 rear cabin:
-
-SCENE: rear passenger cabin of a small DPRK-made sand-energy flying vehicle — NOT a car back seat. Layout like a KOREAN TRAIN COMPARTMENT: bench seat along one wall, low table, panoramic window, underfloor storage. This is where the protagonist lives during the 4.5-day journey. The main vehicle door opens into this space — the cockpit is through a separate door forward.
-
-CABIN LAYOUT:
-- Bench seat along left wall (cushioned, beige/cream, dark green piping) — like a Korean train compartment seat, can fold flat to form a sleeping platform
-- Small low table in center (like a Korean 밥상, 40cm high) — for eating / laptop / writing
-- Floor is raised platform with underfloor storage compartments (like Korean heated floor ondol style)
-- Large panoramic window on right wall — SKY ONLY, NO GROUND
-- Small fold-down jump seat on opposite wall (for when bench is in bed mode)
-- Overhead shelf running full length for luggage
-- Reading light on wall above bench (warm yellow, adjustable)
-- Sliding door at front leading to cockpit (simple, utilitarian, DPRK industrial style)
-- Main vehicle door visible on right side of cabin (the way you enter)
-- No toilet — vehicle too small, pit stops at supply stations
-
-NORTH KOREAN BASE AESTHETIC:
-- Dark green/olive walls and ceiling (standard DPRK color — like Pyongyang metro trains)
-- Dancheong-patterned stripe along wall-ceiling joint (subtle, traditional)
-- "금연" (No Smoking) sign in Korean on wall
-- KIM IL SUNG UNIVERSITY emblem on cabin wall
-- Chollima (천리마) brand emblem above cockpit door
-- Official vehicle ID plaque on wall
-- Functional, utilitarian — DPRK industrial standard, Soviet-railway influence
-
-PERSONAL ITEMS (ACCUMULATED DURING JOURNEY):
-- Open laptop on low table, dispatch algorithm code on screen
-- Notebook and pen next to laptop
-- KOREAN FRIED CHICKEN box (BBQ 치킨) on table, some crumbs
-- Half-empty soju bottle (처음처럼) and one small cup
-- Shrimp chips (새우깡) bag, banana milk (바나나우유) bottle
-- Seoul travel guide propped against wall
-- Duty-free shopping bag in corner
-- K-pop photocards tucked into wall shelf
-- Folded blanket and small pillow on bench
-- Phone charger draped across table
-- Water bottle on floor near table
-
-WINDOW VIEW (DAYTIME — SKY ONLY):
-- Bright blue sky with white clouds
-- Occasional distant flying vehicle
-- Warm sunlight streaming through window
-- NO GROUND, NO MOUNTAINS, NO CITIES
-
-COLOR PALETTE:
-- Primary: warm beige (#D4C5A9), olive green (#4A5D23), dark window frame (#3A3A3A)
-- Secondary: sky blue (#87CEEB), laptop screen glow (#E0F0FF)
-- Accents: food orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
-
-ATMOSPHERE:
-- Cozy like a small train compartment on a long journey
-- North Korean rail/vehicle design made personal by the occupant
-- Warm daylight, comfortable for 4.5 days
-- NOT a car back seat — this is a small living space
-- The clutter tells a story: a student traveling home
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- DPRK VEHICLE INTERIOR — inspired by Pyongyang metro and Korean train compartments
-- Every label in Korean (Hangul)
-- Lived-in, not sterile
-
-AVOID:
-- Car back seat layout (this is a FLYING VEHICLE, not a car)
-- Forward-facing seats like a car
-- Car door handles or car door panels
-- Ground or landscape visible through window
-- Luxury or premium interior
-- English text
-- Japanese or Chinese elements
-"
-### 2.6 客舱·夜晚（新绘—0721号后舱）
-
-**文件**：Resources/bg/cabin_interior_night.png  
-**用途**：0721号后舱——夜晚飞行，主角休息
-
-**提示词**：
-`
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flying vehicle PASSENGER CABIN at night, 2076 retro-futuristic,
-NORTH KOREAN VEHICLE INTERIOR at night, cozy train-compartment style:
-
-SCENE: same rear cabin as daytime — but at night. Reading light on, bench folded into bed mode with blanket and pillow. Table cleared except for a half-empty soju bottle. Window shows starry sky. Warm yellow reading light creates a cozy, intimate atmosphere. The protagonist is asleep or resting.
-
-NIGHTTIME DIFFERENCES:
-- Cabin dark except for reading light (warm yellow, wall-mounted above bench)
-- Bench folded flat into bed mode with blanket and pillow
-- Table cleared of food — only soju bottle and one cup remain
-- Window shows dark night sky with stars and crescent moon — NO GROUND
-- Laptop closed, charging light faintly glowing
-- Snack bags dimly visible in overhead shelf
-- Duty-free bag silhouette in corner
-- Phone charger plugged in, faint blue charging light
-- Cockpit door slightly ajar, faint blue glow from holographic display beyond
-
-COLOR PALETTE (NIGHT):
-- Primary: warm amber (#8B6914), dark blue (#0A0A1E)
-- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
-- Accents: laptop sleep light (#00BFFF), charging LED (#32CD32)
-
-ATMOSPHERE:
-- Quiet, intimate, restful — like a sleeper train cabin at night
-- End of a long travel day
-- Safe and warm inside despite the dark outside
-- Contemplative — protagonist rests while 岁月 flies on through the night
-
-AVOID:
-- Too bright (must be clearly nighttime)
-- Car back seat layout
-- Ground or city lights visible through window
-- English text
-```
-
----
-
-### 2.7 停机坪
-
-**文件**：Resources/bg/hangar.png  
-**用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，午后
-
-**剧情对应**：林彪悍走向0721号——这是他作为荣誉研究生的专属载具，一辆2053年制造的第一代试验车，沉睡23年，搭载了AI原型“岁月”。车门感应到有人靠近自动打开。楼顶一侧，一名穿着深色制服的车队管理员站在车辆旁，正在做最后的交接检查——他不是导师，而是负责维护和保管这辆封存车辆的大学后勤人员。
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-flat forward-facing perspective, eye-level view,
-university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, afternoon,
-NORTH KOREAN OFFICIAL AESTHETIC,
-"Chollima" brand sand-energy flying vehicles parked:
-
-SCENE: rooftop helipad of Kim Il Sung University's main building in the afternoon, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. This is a first-generation prototype from 2053, 23 years old, slightly worn. The cabin door on the RIGHT side of the vehicle is closed but will open when the protagonist approaches. The rooftop is large and spacious. A University maintenance officer in a dark uniform (Mao-style tunic, red lapel pin) stands beside the vehicle, clipboard in hand, making final checks — not a professor, but the depot keeper who has maintained this dormant vehicle for years. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
-
-LAYOUT:
-- Large, spacious rooftop landing pad taking the lower third of the frame
-- 0721 Sand Flying Pig parked in foreground, facing RIGHT, deep blue, university emblem on side
-- Vehicle seen from the RIGHT side — the cabin door is visible on this side, open, with a boarding ramp/gangway extended
-- The vehicle's surface reflects the warm afternoon sunlight
-- 2-3 other Chollima sand-energy vehicles parked nearby in background (dark green, grey)
-- University building facade visible on the left edge — Korean-style railings, dancheong roof eaves
-- Kim Il-sung University emblem on the building wall
-- Control booth / small structure on the rooftop with communication equipment
-- Korean flag (태극기) on a pole on the rooftop, slightly waving
-- The rooftop edge is at the bottom of the frame — the protagonist cannot see the ground below
-
-NORTH KOREAN CULTURAL ELEMENTS:
-- "김일성종합대학" (Kim Il Sung University) emblem on building wall
-- "위대한 수령 김일성동지 만세" calligraphy on building facade
-- Red star emblem on control booth
-- Korean traditional dancheong pattern on roof eaves
-- Korean flag (태극기) on a pole on the rooftop
-- Juche-era architectural style (Soviet-Korean brutalist mixed with traditional elements)
-- "천리마" (Chollima) branding on the vehicles
-
-VIEW (SKY — NO GROUND VISIBLE):
-- Wide afternoon sky taking up the upper two-thirds of the frame
-- Bright blue sky with white clouds, warm afternoon light
-- A few flying vehicles silhouetted against the sky
-- No buildings below — the protagonist standing on the rooftop sees only sky and distant flying vehicles
-- The rooftop is high enough that the city is hidden below the frame edge
-
-DETAILS ON THE 0721 SAND FLYING PIG (RIGHT SIDE VIEW):
-- Deep blue paint with gold university emblem
-- Chollima winged horse badge on the side
-- Vehicle ID "0721" in Korean numerals
-- Slightly aged — 23 years old, some wear on the paint
-- Cabin door on the right side, closed with a visible seam — a boarding ramp/gangway extends down to the rooftop
-- The door is closed, but the vehicle feels alive — 23 years of waiting
-- The vehicle is CLOSED (not open-top) — the roof is solid, no open hatch
-- The cockpit is dark inside through the windshield
-- Sand energy intake vents on the sides
-- Running lights currently off (vehicle dormant)
-- Vehicle faces RIGHT, door on RIGHT side
-
-COLOR PALETTE:
-- Primary: bright blue sky (#87CEEB), deep blue vehicle (#000080, #1A237E)
-- Secondary: university emblem gold (#DAA520), concrete grey (#808080)
-- Accents: Korean red (#CD2626), building white (#F5F5F5), roof tiles dark brown (#3E2723)
-- Landing pad: concrete grey (#808080, #696969)
-- Building: traditional roof tiles dark brown (#3E2723)
-
-ATMOSPHERE:
-- Afternoon on a university rooftop - the last moment of campus life
-- Sense of anticipation: a journey is about to begin
-- Quiet and calm on the rooftop
-- The warm light from the open cabin door contrasts with the cooling evening sky
-- The vehicle is waiting, ready, door open — inviting the protagonist in
-- Slight wind suggested by Korean flag movement
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- FLAT FORWARD-FACING PERSPECTIVE — eye level, not looking down
-- NORTH KOREAN ARCHITECTURAL AESTHETIC — unmistakably DPRK university
-- Every label in Korean (Hangul)
-- Warm afternoon light, gentle shadows
-
-AVOID:
-- Looking down at the ground below (the protagonist is on the rooftop, not above it)
-- Open-top or convertible vehicle (the 0721 is CLOSED)
-- Vehicle door on the left side (the door is on the RIGHT side)
-- Vehicle facing left (it faces RIGHT)
-- Generic sci-fi cityscape
-- English text
-- Missing the Korean flag or university emblem
-- Too dark or sunset-heavy (it is afternoon, not evening)
-- Too small rooftop (must feel spacious)
-```
-
----
-
-### 2.12 大同江茶馆（嘉颖徐会面室内）
-
-**文件**：`Resources/bg/tea_house.png`  
-**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆/私人办公室
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-executive office interior, Pyongyang, 2076, afternoon,
-NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — luxury inside a socialist city:
-
-SCENE: A grand executive office in Pyongyang's Gangnam District. A massive dark mahogany desk dominates the center, with a high-backed burgundy leather chair behind it. Floor-to-ceiling glass-fronted bookshelves line the back and right walls. A golden Chollima winged horse statue stands on a pillar at right foreground. Through large windows on the left, the Pyongyang night skyline is visible with the Juche Tower lit up. This is the office of a railway tycoon — a space that blends traditional Korean elegance with corporate power.
-
-LAYOUT:
-- Large executive desk (dark mahogany, carved arched panels, gold trim) — center
-- High-backed burgundy leather chair behind the desk
-- Korean celadon tea set (청자 teapot + cups) on the desk — center
-- Green banker's desk lamp on the desk — left side
-- Nameplate with Korean text ("기업의 주체는 나!") — front of desk
-- Floor-to-ceiling glass-fronted bookshelves covering back and right walls
-- Densely packed with books, celadon vases, framed photos
-- Large windows on left wall showing Pyongyang night skyline
-- Juche Tower visible through the window with red star illuminated
-- Ornate metal balcony railing visible outside the window
-- 천리마 (Chollima) pedestal column at right foreground
-- Golden winged horse statue on top of the pedestal
-- Side table at left foreground with purple orchid in celadon vase
-- Stacked 로동신문 (Rodong Sinmun) newspapers on side table
-- Elaborate coffered ceiling with crystal chandelier
-- Wall sconces providing ambient side-lighting
-
-KOREAN CULTURAL ELEMENTS:
-- "100전 100승" (100 battles, 100 victories) calligraphy scroll on wall
-- "기업의 주체는 나!" (The master of the enterprise is me!) desk nameplate
-- "천리마" (Chollima) on the pedestal column
-- Celadon (청자) tea set — distinctly Korean ceramic style
-- 로동신문 (Rodong Sinmun) — North Korea's state newspaper
-- Purple orchid in celadon vase — traditional Korean elegance
-- Golden winged horse (Cheollima) — mythical Korean symbol
-
-COLOR PALETTE:
-- Primary: deep mahogany brown (#3E2723), dark wood (#5D4037), gold trim (#DAA520)
-- Secondary: window night sky (#1A237E), warm amber light (#FFD700)
-- Accents: celadon green (#8BC34A), burgundy leather (#800020), orchid purple (#9C27B0), Korean red (#CD2626)
-
-ATMOSPHERE:
-- Warm, authoritative, a seat of power
-- Intimate evening lighting from chandelier and desk lamp
-- Dramatic contrast between golden interior and cool blue night cityscape
-- Private, opulent, slightly imposing
-- A space for high-stakes business conversations
-
-STYLE:
-- PIXEL ART with clear pixels, STARDEW VALLEY style
-- NORTH KOREAN PRIVATE SECTOR — luxury within a socialist system
-- Every label in Korean (Hangul)
-- Warm evening lighting, rich textures
-
-AVOID:
-- Generic Chinese or Japanese office
-- Official government building feel
-- Western-style corporate office
-- Too bright or sterile
-- Modern minimalist aesthetic
-- Missing the Chollima statue or Korean text elements
-
-### 2.13 Wiki 横幅（Wiki Banner）
-
-**文件**：`images/wiki_banner.png`  
-**用途**：Wiki 中文/英文主页顶部横幅，替代实验室背景图
-
-**提示词**：
-```
-pixel art, wide banner, 1920x400 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, panoramic landscape, 2076 retro-futuristic setting, KOREAN STYLE, Pyongyang, North Korea, ULTIMATE KOREAN CULTURAL ELEMENTS, banner with game title text:
-
-GAME TITLE INTEGRATION (BILINGUAL):
-- Large Korean/Hangeul text in banner: "철도 르네상스: 모래 에너지 충격" (Railway Renaissance: Sand Energy Impact)
-- Smaller English subtitle: "Railway Renaissance: Sand Energy Impact"
-- Korean text: "김일성종합대학" (Kim Il Sung University) as location label
-- Game title positioned in upper or center area, styled like a retro game title banner
-
-SCENE COMPOSITION (panoramic, wide):
-- Misty mountain valley with a railway line cutting through
-- Traditional Korean-style train station (hanok roof, giwa tiles) on the left
-- Small steam locomotive (NF-5 style) pulling carriages across the scene
-- Pyongyang skyline silhouettes in distant background: Ryugyong Hotel, Juche Tower
-- Korean pine trees (소나무 sonamu) in foreground framing the scene
-- Flying sand energy vehicles (Chollima brand) in distant sky, small scale
-- Morning mist between mountains, soft golden sunlight
-
-KOREAN ARCHITECTURAL ELEMENTS:
-- Traditional Korean hanok roof lines on station building
-- Dancheong colorful patterns (단청) on station eaves
-- Korean stone pagoda (석탑) as landscape accent
-- Traditional Korean fence (울타리) along the railway
-
-KOREAN TEXT AND SIGNS:
-- Station sign with Korean text: "철도 르네상스" (Railway Renaissance)
-- Korean direction signpost: "평양 ← 2500km / 중국 →"
-- Small Korean flag on station building
-- Korean propaganda slogan: "일심단결" (Single-hearted Unity)
-
-KOREAN TRADITIONAL ELEMENTS:
-- Traditional Korean celadon piece (고려청자) in station window
-- Korean paper lantern (한지 등) hanging from station eaves
-- Korean traditional knotwork (매듭 maedeup) decoration on station
-
-KOREAN NATURE:
-- Wild chrysanthemums (들국화) along the tracks
-- Korean pine trees (소나무) with characteristic shape
-- Bamboo grove in background
-- Misty mountain peaks with traditional Korean painting style
-
-COLOR PALETTE (WARM KOREAN RETRO):
-- Primary: warm gold (#D4A017), brick red (#8B2500), pine green (#2F4F2F)
-- Secondary: cream white (#FFFDD0), navy blue (#1B2A4A)
-- Sky: soft dawn orange to pale blue gradient
-- Train: dark green with gold trim (classic Korean railway colors)
-
-ATMOSPHERE:
-- Nostalgic, hopeful, epic
-- The dawn of a new era — railway meets sand energy
-- Blend of Korean tradition and 2076 retro-futurism
-- A journey about to begin
-
-EXCLUSIONS:
-- No character close-ups
-- No modern glass skyscrapers
-- No bright neon
-- No heavy industrial pollution
-```
 
 ### 2.14 群山天空（mountain_sky）
 
@@ -2213,15 +1453,6 @@ COLORS:
 
 MOOD: 四年后第一趟车——座椅上的灰尘刚被擦掉，窗户上的水汽还没散。12个人坐在里面，有人看着窗外的田野，有人在低声说话，有个孩子趴在窗边。这是铁路复活的第一个早晨。每一件旧物都在说：我们还在。
 ```
-
----
-
-### 2.31 纯黑（black）
-
-**文件**：无（引擎特殊色值，不留图片文件）
-**用途**：序章开场黑屏/滚动新闻/章节转场。纯黑背景 + 字幕。
-
-**说明**：`black` 不生成图片——引擎 `BackgroundManager` 对 `"black"` 应直接渲染纯黑（修复 `Resources.Load("bg/black")` 失败的警告路径）。若未来需要极简渐变可追加。
 
 ---
 
@@ -3183,3 +2414,811 @@ AVOID:
 ### 6.4 已入库（背景图）
 
 `cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop`
+
+
+---
+
+## 七、已生成资产归档
+
+> 以下prompt已用于生成图片，保留供参考和维护。
+
+### 2.1 实验室（智能调度系统实验室）
+
+**文件**：`Resources/bg/lab.png`  
+**用途**：序章 Day 0 开场场景——金日成综合大学智能调度系统实验室
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university laboratory room, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, ULTIMATE KOREAN CULTURAL ELEMENTS:
+
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
+- Door frame with traditional Korean decorative patterns (단청 dancheong colorful patterns)
+- Wall panels with subtle Korean traditional motifs
+- Ceiling with traditional Korean wooden beams (modern interpretation)
+- Korean-style floor heating (온돌 ondol) visible under desk
+
+KOREAN TEXT AND SIGNS:
+- Large Korean text on wall: "지능형 지휘 시스템 연구실" (Intelligent Dispatch System Research Lab)
+- University emblem with Korean text: "김일성대학교"
+- Korean flag (North Korean flag) prominently displayed
+- Korean propaganda slogan on wall: "일심단결" (Single-hearted Unity) or "주체사상" (Juche Idea)
+- Korean calendar on wall showing 2076 year with traditional Korean holidays marked
+- Small Korean text labels on all equipment and furniture
+
+WALL DECORATIONS (KOREAN LEADERS AND CULTURE):
+- Large North Korean flag (clean, well-maintained)
+- FRAMED PORTRAITS OF LEADERS on wall (金日成 and 金正日 portraits, side by side, respectful placement, formal frames)
+- Vintage Korean railway poster with Korean text
+- Map of Korean railway network with Korean labels
+- Traditional Korean paper art (minhwa) frame with folk painting
+- Korean traditional fan (bukcheong fansa) on wall
+- Korean calligraphy artwork (한글 Hangeul calligraphy)
+
+KOREAN TRADITIONAL ITEMS:
+- Traditional Korean celadon pottery on shelf (고려청자 Goryeo celadon, green ceramic)
+- Korean embroidered wall hanging with traditional pattern (자수 jasu)
+- Korean traditional paper (한지 hanji) lamp on desk
+- Small Korean flag on desk
+- Korean traditional tea set (전통다구) with teapot and cups
+- Korean traditional fan (부채 bukcheong fansa) on wall
+- Korean traditional knotwork (매듭 maedeup) decoration
+
+KOREAN FOOD AND DRINK ITEMS:
+- Kimchi jar (김치단지) on shelf (traditional fermentation crock)
+- Korean traditional rice bowl (밥그릇) on desk
+- Korean tea canister (차통 chatong) with traditional design
+- Small soju bottle (소주병) on shelf (optional, for atmosphere)
+- Korean traditional snack container (과자그릇)
+
+KOREAN MUSICAL INSTRUMENTS:
+- Small Gayageum (가야금) model on shelf (12-string zither)
+- Korean traditional drum (북 buk) as decoration
+- Korean flute (대금 daegeum) on wall mount
+
+KOREAN FURNITURE:
+- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
+- Korean-style desk with traditional joinery
+- Korean traditional chair with curved backrest
+
+KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
+- "Chollima" brand computer (천리마 컴퓨터) - Korean retro computer design
+- Korean-made monitor with Hangul keyboard
+- Traditional Korean-style power outlet covers
+- Korean-designed desk lamp with traditional patterns
+
+WINDOW VIEW (PYONGYANG SKYLINE):
+- Iconic PYONGYANG LANDMARKS visible: Ryugyong Hotel (려명거리 Hotel, pyramid shape)
+- Juche Tower (주체사상탑) visible in distance
+- Grand People's Study House (인민대학습당) with traditional Korean roof
+- Mix of traditional Korean architecture and modern skyscrapers
+- Korean-style rooflines on some buildings (기와 giwa tiles)
+- Flying vehicles in distance (sand energy cars)
+- Mountains with Korean pine trees (소나무 sonamu) in far distance
+- Taedong River (대동강) visible if applicable
+
+DESK ITEMS WITH KOREAN TOUCH:
+- Korean traditional tea set (전통다구) with celadon teapot
+- Korean calligraphy brush (붓 but) and ink stone (벼루 byeoru)
+- Korean traditional notebook (한지공책) with Korean binding
+- Copper pocket watch (grandfather's inheritance)
+- Open railway engineering manual (Korean text visible)
+- Korean-style pen holder with traditional design
+- Small Korean traditional clock (시계) with hanja numbers
+
+COLOR PALETTE (KOREAN TRADITIONAL):
+- Primary: Korean celadon green (#8FBC8F), warm brown (#8B4513)
+- Secondary: Cream white (#FFFDD0), soft red (#CD5C5C)
+- Accents: Gold (#FFD700), navy blue (#000080)
+- Dancheong colors: Blue (#4169E1), Red (#CD5C5C), Yellow (#FFD700), Green (#228B22)
+- Inspired by Korean traditional color schemes and dancheong patterns
+
+ATMOSPHERE:
+- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
+- Academic yet cultural
+- Blend of tradition and modernity
+- Respectful of heritage and leaders
+- Hopeful for railway revival
+- Strong national identity
+
+STYLE:
+- PIXEL ART with clear pixels
+- KOREAN CULTURAL IDENTITY very prominent
+- Warm, inviting colors
+- Clean, organized space
+- Mix of old and new (retro-futuristic)
+- Traditional Korean patterns and motifs throughout
+
+AVOID:
+- Generic "Asian" style (must be specifically KOREAN)
+- Too modern/sterile (should have traditional touches)
+- Cold or impersonal atmosphere
+- Cluttered or messy composition
+- Disrespectful placement of leader portraits
+- Missing Korean cultural elements
+```
+
+---
+
+
+---
+
+### 2.2 导师办公室
+
+**文件**：`Resources/bg/professor_office.png`  
+**用途**：序章 Day 0 导师办公室场景——林彪悍向导师申请学业暂停
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, university professor's office, 2076 retro-futuristic design, KOREAN STYLE INTERIOR, Kim Il Sung University, Pyongyang, North Korea, modest academic setting, ULTIMATE KOREAN CULTURAL ELEMENTS, HEAVY NORTH KOREAN ATMOSPHERE:
+
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
+- Door frame with traditional Korean decorative patterns (단청 dancheong)
+- Ceiling with traditional Korean wooden beams, green dancheong accents
+- Korean-style floor heating (온돌 ondol) visible under desk
+
+KOREAN TEXT AND SIGNS (HEAVY EMPHASIS):
+- Large Korean text on wall: "김일성대학교 교수 연구실" (Professor's Office)
+- University emblem with Korean text: "김일성대학교" prominently displayed
+- North Korean flag prominently on wall, well-lit
+- Framed portrait of Kim Il Sung and Kim Jong Il on wall, side by side
+- Propaganda slogan: "일심단결" (Single-hearted Unity) calligraphy plaque
+- Korean calendar on wall showing 2076
+- Nameplate on desk with professor's name in Korean
+- Small Korean text labels on equipment
+
+WALL DECORATIONS (ACADEMIC + KOREAN LEADERS):
+- Framed university diploma with Korean text, government seal
+- Academic certificates and awards on wall (Korean text, official stamps)
+- Map of Korean peninsula on wall showing "Unified Korea"
+- Korean calligraphy scroll (서예) with inspirational message
+- Vintage Korean railway poster from 1950s Chollima era
+- Group photo of faculty with leader (formal, framed)
+- Traditional Korean paper art (minhwa) frame with folk painting
+
+KOREAN TRADITIONAL ITEMS:
+- Korean celadon pottery (고려청자 Goryeo celadon) on shelf
+- Korean traditional paper (한지 hanji) desk lamp with warm glow
+- Small Korean flag on desk in brass stand
+- Korean traditional tea set (전통다구) with celadon teapot
+- Korean traditional ink stone (벼루) and brush (붓) on desk
+- Korean traditional knotwork (매듭 maedeup) decoration on shelf
+- Korean traditional fan (부채 bukcheong fansa) on wall
+
+KOREAN FURNITURE:
+- Korean traditional wooden desk with traditional joinery, slightly worn
+- Professor's wooden chair with curved backrest and cushion
+- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
+- Bookshelf with traditional Korean design
+
+DESK ITEMS:
+- Stack of student research papers with Korean text
+- Open railway engineering textbook (Korean text, "철도공학")
+- Copper reading glasses on desk
+- Korean traditional clock (시계) with hanja numbers
+- Half-empty cup of Korean barley tea (보리차)
+- Chollima brand calculator (천리마 계산기) on desk
+- Photo frame with university graduation photo
+
+KOREAN TECHNOLOGY (2076 RETRO-FUTURISTIC):
+- Chollima brand computer (천리마 컴퓨터) with transparent OLED display
+- Korean-made holographic projection device on desk
+- Virtual lecture screen with Korean text on wall
+- Korean-designed desk lamp with traditional patterns, wireless charging
+- Smart communication device with Hangul interface
+- AI assistant interface on computer screen (Korean language)
+
+BOOKSHELF CONTENTS:
+- Railway engineering textbooks (Korean titles, "철도수송론")
+- Research papers on intelligent dispatch systems
+- Korean history books (조선력사)
+- Kim Il Sung and Kim Jong Il collected works (red hardcover, prominent)
+- Juche ideology study materials
+- Vintage Korean steam locomotive model
+- Traditional Korean ceramic pieces
+
+WINDOW VIEW (PYONGYANG SKYLINE):
+- Ryugyong Hotel (려명거리 Hotel, pyramid shape, distant)
+- Juche Tower (주체사상탑) visible in distance with iconic flame
+- Grand People's Study House (인민대학습당) with traditional Korean roof
+- Korean pine trees (소나무 sonamu) visible
+- Afternoon daylight, soft shadows through hanji-patterned windows
+- Flying sand energy vehicles in distant sky
+
+COLOR PALETTE (KOREAN TRADITIONAL + NORTH KOREAN OFFICIAL):
+- Primary: warm brown (#8B4513), cream white (#FFFDD0)
+- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
+- Accents: gold frame (#FFD700), revolutionary red (#CC0000)
+- Dancheong: Blue (#4169E1), Red (#CD5C5C)
+- North Korean official red (#C41E3A) for banners and flags
+
+ATMOSPHERE:
+- Warm, academic, modest but respected
+- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
+- Serious yet caring — moment of a life-changing decision
+- OFFICIAL NORTH KOREAN ACADEMIC SETTING
+- State professor's office at the most prestigious university in the DPRK
+```
+
+---
+
+
+---
+
+### 2.3 驾驶舱·白天（0721号前舱）
+
+**文件**：`Resources/bg/car_interior.png`  
+**用途**：0721号前舱——岁月主控区，主角偶尔进入。朝鲜官方标配 × 岁月全息系统。23年未变，如博物馆般被保存。
+
+**⚠️ 前两版图片问题总结（新版提示词已针对性修复）：**
+1. 最终版选用无方向盘方案 → 操作面板 + 按钮/开关代替
+2. 韩文有乱码 → 新版强调"ALL Korean text must be correct Hangul, no garbled text"
+3. 领袖肖像不够像 → 新版强调"brass frames, symmetrical, immediately recognizable"
+4. 座椅比例失调 → 新版明确座位尺寸和位置
+5. 背景风格不一致 → 新版统一像素风
+6. 驾驶舱是官方空间，不应有韩式消费品 → 移到客舱
+
+**⚠️ 设计说明：0721号无方向盘。驾驶舱使用操作面板 + 全息控制系统。岁月AI全权操控飞行，物理控制面板是23年前的原始设计，积灰未用。**
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle COCKPIT interior, daytime, 2076 retro-futuristic,
+NORTH KOREAN OFFICIAL AESTHETIC — max density,
+"Chollima" brand flying car, "Sand Flying Pig" 0721:
+
+SCENE: front cockpit of a DPRK-made sand-energy flying car — two seats, CONTROL PANEL with buttons and toggle switches, holographic dashboard, leader portraits in brass frames. This is the ORIGINAL 2053 interior, preserved like a museum: 23 years untouched, every official detail intact. The cockpit is a time capsule of DPRK industrial design. NO STEERING WHEEL — the vehicle is fully autonomous, controlled by the AI system 岁月.
+
+CULTURAL CONTEXT — SIX LAYERS OF KOREANNESS:
+- LAYER 1: Chollima brand — DPRK's premier vehicle manufacturer, named after the mythical thousand-li horse
+- LAYER 2: Kim Il Sung University affiliation — university emblem, research institute stickers
+- LAYER 3: Juche ideology design language — self-reliance aesthetic, practical and functional
+- LAYER 4: Songun (military-first) influence — sturdy construction, military-grade switches
+- LAYER 5: Korean traditional arts — dancheong color patterns, maedeup knotwork, minhwa folk motifs
+- LAYER 6: 2076 retro-futuristic — not too advanced, recognizable as Korean-made, slight Soviet-tech influence
+
+COCKPIT LAYOUT:
+- Pilot seat (left) and passenger seat (right), dark olive-green upholstery, DPRK red star emblem on headrests
+- NO STEERING WHEEL — replaced by a control panel with physical toggle switches and push buttons (military-grade, Korean-made, 23 years untouched)
+- Holographic display screen in center of dashboard (岁月's navigation interface, blue-tinted, showing map and flight data)
+- Center console with sand-energy controls, navigation system, and propaganda radio
+- Side windows on both sides showing sky and clouds (daytime, bright)
+- Ceiling: padded headliner with small reading light, emergency handle
+- Floor: dark rubber mat with raised ridges, utilitarian
+
+NORTH KOREAN OFFICIAL DETAILS — MAXIMUM DENSITY:
+PATRIOTIC SYMBOLS:
+- Framed portraits of Kim Il-sung and Kim Jong-il (brass frames, mounted on wall above dashboard, prominent) — ESSENTIAL
+- Small Korean flag (태극기) on dashboard, another on rearview mirror
+- "위대한 령도자 김일성동지" (Great Leader Comrade Kim Il-sung) calligraphy plaque
+- "100전 100승" (100 battles 100 victories) slogan sticker
+- Red star emblem on seat headrests
+
+TRADITIONAL KOREAN CRAFTS:
+- Korean traditional knotwork (매듭 maedeup) in gold and red hanging from rearview mirror
+- Dancheong-style color pattern (오방색 obangsaek: blue, red, yellow, white, black) on seat fabric trim
+- Small minhwa folk painting (민화) of a tiger and magpie as decorative panel
+- Celadon green (청자) color accent on dashboard trim
+
+TECHNOLOGY & CONTROLS:
+- ALL labels in Korean (Hangul) — absolutely no English or Chinese
+- Sand energy gauge: "모래 에너지 잔량" with sweeping needle, red zone at low
+- Speedometer: "속도" with km/h markings in Hangul numerals
+- Altitude display: "고도" with Hangul numerals
+- Navigation screen: holographic map of Korean peninsula
+- Radio: frequency dial with Korean station names (조선중앙방송, 평양FM)
+- Warning stickers: "주의" (caution), "비상정지" (emergency stop)
+- Engine temperature: "엔진 온도" with green-yellow-red zones
+- "비행중" (in flight) sign above cockpit door, illuminated
+- Control panel: physical toggle switches, push buttons, analog gauges — all Korean-made, military-grade, slightly dusty
+
+CONTRAST ELEMENTS (HUMOROUS, SECONDARY — SHOWING THE PASSAGE OF TIME):
+- "CASS" beer can wedged in door pocket (empty)
+- Half-empty soju bottle (처음처럼) in side storage
+- Seoul travel guide magazine on passenger seat (slightly dog-eared)
+- University ID card (김일성대학교 학생증) clipped to sun visor
+- A K-pop sticker on the control panel (partially peeling, the only splinter of modern culture in the official space)
+
+WINDOW VIEW (DAYTIME):
+- Bright blue sky with white clouds through windshield
+- Mountainous landscape below — Korean-Chinese border region
+- A few Chollima-brand sand-energy flying vehicles in distant sky
+- Warm sunlight streaming through side windows
+- Rice paddies and small villages visible far below
+
+COLOR PALETTE:
+- Primary: dark olive green (#4A5D23), instrument panel gray (#4a4a5a)
+- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
+- Accents: Korean red (#CD2626), celadon green (#7CB08A), traditional gold (#DAA520)
+- Obangsaek five colors: blue (#2050A0), red (#CD2626), yellow (#FFD700), white (#F5F5F5), black (#1A1A1A)
+- Leather: dark brown (#3B1F0B)
+
+ATMOSPHERE:
+- PRESERVED MUSEUM PIECE — the cockpit as it was in 2053, untouched for 23 years
+- The contrast between official propaganda decor and casual pop-culture leftovers tells a story
+- Warm daylight, quiet and calm
+- Compact but functional, every inch has a purpose
+- Slight Soviet-industrial undertone blended with Korean tradition
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN OFFICIAL AESTHETIC — unmistakably DPRK government design
+- Every label and text in Korean (Hangul) — zero English
+- Propaganda-era design blended with near-future technology
+- Military-grade build quality visible in switches and materials
+
+AVOID:
+- Steering wheel (the vehicle has NO steering wheel — use control panel with buttons/switches instead)
+- Generic sci-fi interior (must be unmistakably NORTH KOREAN)
+- Japanese or Chinese cultural elements
+- English text anywhere
+- Modern minimalist aesthetic
+- Missing the leader portraits (ESSENTIAL)
+- Garbled or nonsensical Korean text (all Hangul must be correct)
+- Art style inconsistency between interior and exterior
+- Seat proportions that are too small or cut off awkwardly
+- Clean/sterile interior (must feel preserved but slightly aged with 23 years of dust)
+- K-pop or South Korean cultural items in the cockpit (they belong in the CABIN, not the cockpit — the cockpit is the OFFICIAL space)
+```
+
+---
+
+
+---
+
+### 2.4 驾驶舱·夜晚（0721号前舱）
+
+**文件**：`Resources/bg/car_interior_night.png`  
+**用途**：0721号前舱——夜晚飞行。使用图片 `ChatGPT Image 2026年8月17日 13_26_49.jpg`。无方向盘，完全靠全息控制系统飞行。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle interior at night, 2076 retro-futuristic,
+KOREAN STYLE INTERIOR, NORTH KOREAN industrial design,
+sand-energy vehicle cockpit nighttime, "Chollima" brand flying car:
+
+SCENE: same DPRK-made sand-energy flying vehicle interior as daytime version, but at night — dark ambient lighting, instrument panel glow in amber and blue, stars visible through windows, intimate nighttime atmosphere
+
+NIGHTTIME DIFFERENCES — SAME KOREAN INTERIOR, NOW AT NIGHT:
+- Dark ambient lighting throughout cabin — only instrument panel and holographic display provide illumination
+- Windows show dark night sky with stars, crescent moon, and distant clouds
+- City lights of Pyongyang (or similar Korean city) visible far below — distinctive grid pattern
+- Dashboard instruments glow softly in warm amber (analog gauges) and cool blue (digital displays)
+- Holographic display (岁月's interface) casts cool blue light on cabin interior surfaces
+- Small reading light above passenger seat — warm yellow incandescent glow
+- Stars, moon visible through windshield — clear night sky
+- Red-tinted "비행중" (in flight) sign above cockpit door
+
+KOREAN CULTURAL ELEMENTS AT NIGHT — ALL PRESERVED:
+- Korean flag (태극기) still visible in dim light on dashboard
+- Leader portrait (Kim Il-sung, Kim Jong-il) subtly illuminated by gauge light
+- Maedeup knotwork silhouette visible against window
+- Dancheong pattern on seat fabric catching holographic blue light
+- ALL labels in Korean (Hangul) — illuminated by instrument glow
+- Sand energy gauge (모래 에너지 잔량) needle glowing amber
+- Navigation map (조선반도) casting soft blue light
+- Roadong newspaper visible in door pocket, dimly lit
+
+COLOR PALETTE (NIGHT — KOREAN TRADITIONAL + DARK):
+- Primary: deep dark blue (#0a0a1e), instrument glow amber (#FF8C00)
+- Secondary: starry sky (#1a1a3e), holographic cyan (#00BFFF), city lights warm (#FFD700)
+- Accents: Korean red (#CD2626) on emergency labels, celadon green (#7CB08A) on dashboard trim
+- Obangsaek five colors muted in darkness: blue (#2050A0), red (#8B0000), yellow (#B8860B)
+
+ATMOSPHERE:
+- Quiet, intimate nighttime atmosphere — unmistakably Korean
+- Sense of traveling through the dark over Korean landscape
+- Peaceful and contemplative mood
+- Stars and distant city lights create a sense of vast journey
+- Safe and warm inside despite the dark outside
+- Instrument glow creates a cozy cockpit environment
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN TECH AESTHETIC at night
+- Dark ambient lighting with warm instrument glow
+- Nighttime atmosphere throughout
+- Every label and text in Korean (Hangul)
+
+AVOID:
+- Too bright (must be clearly nighttime)
+- Generic sci-fi night interior
+- Missing Korean text on instruments (all Hangul must be correct, no garbled text)
+- Japanese or Chinese cultural elements
+- English text anywhere
+- Missing leader portraits
+- Art style inconsistency between interior and exterior
+- K-pop or South Korean items in the cockpit (they belong in the cabin)
+```
+
+---
+
+
+---
+
+### 2.5 客舱·白天（新绘—0721号后舱）
+
+**文件**：Resources/bg/cabin_interior.png  
+**用途**：0721号后舱——主角旅途主要活动空间，从客舱门上车，第一眼看到的就是这里
+
+**设计说明**：0721号只有一个侧门，打开就是客舱。驾驶舱在前面（通过隔断门进入），但主角几乎不去。后舱布局像小型火车包厢（不是汽车后座），沿墙长椅可放平成床，中央矮桌，大窗，地板下储物。无独立厕所，中途在补给站解决。
+
+**提示词**：
+`
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle PASSENGER CABIN interior, daytime, 2076 retro-futuristic,
+NORTH KOREAN VEHICLE INTERIOR — like a small train compartment,
+"Sand Flying Pig" 0721 rear cabin:
+
+SCENE: rear passenger cabin of a small DPRK-made sand-energy flying vehicle — NOT a car back seat. Layout like a KOREAN TRAIN COMPARTMENT: bench seat along one wall, low table, panoramic window, underfloor storage. This is where the protagonist lives during the 4.5-day journey. The main vehicle door opens into this space — the cockpit is through a separate door forward.
+
+CABIN LAYOUT:
+- Bench seat along left wall (cushioned, beige/cream, dark green piping) — like a Korean train compartment seat, can fold flat to form a sleeping platform
+- Small low table in center (like a Korean 밥상, 40cm high) — for eating / laptop / writing
+- Floor is raised platform with underfloor storage compartments (like Korean heated floor ondol style)
+- Large panoramic window on right wall — SKY ONLY, NO GROUND
+- Small fold-down jump seat on opposite wall (for when bench is in bed mode)
+- Overhead shelf running full length for luggage
+- Reading light on wall above bench (warm yellow, adjustable)
+- Sliding door at front leading to cockpit (simple, utilitarian, DPRK industrial style)
+- Main vehicle door visible on right side of cabin (the way you enter)
+- No toilet — vehicle too small, pit stops at supply stations
+
+NORTH KOREAN BASE AESTHETIC:
+- Dark green/olive walls and ceiling (standard DPRK color — like Pyongyang metro trains)
+- Dancheong-patterned stripe along wall-ceiling joint (subtle, traditional)
+- "금연" (No Smoking) sign in Korean on wall
+- KIM IL SUNG UNIVERSITY emblem on cabin wall
+- Chollima (천리마) brand emblem above cockpit door
+- Official vehicle ID plaque on wall
+- Functional, utilitarian — DPRK industrial standard, Soviet-railway influence
+
+PERSONAL ITEMS (ACCUMULATED DURING JOURNEY):
+- Open laptop on low table, dispatch algorithm code on screen
+- Notebook and pen next to laptop
+- KOREAN FRIED CHICKEN box (BBQ 치킨) on table, some crumbs
+- Half-empty soju bottle (처음처럼) and one small cup
+- Shrimp chips (새우깡) bag, banana milk (바나나우유) bottle
+- Seoul travel guide propped against wall
+- Duty-free shopping bag in corner
+- K-pop photocards tucked into wall shelf
+- Folded blanket and small pillow on bench
+- Phone charger draped across table
+- Water bottle on floor near table
+
+WINDOW VIEW (DAYTIME — SKY ONLY):
+- Bright blue sky with white clouds
+- Occasional distant flying vehicle
+- Warm sunlight streaming through window
+- NO GROUND, NO MOUNTAINS, NO CITIES
+
+COLOR PALETTE:
+- Primary: warm beige (#D4C5A9), olive green (#4A5D23), dark window frame (#3A3A3A)
+- Secondary: sky blue (#87CEEB), laptop screen glow (#E0F0FF)
+- Accents: food orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
+
+ATMOSPHERE:
+- Cozy like a small train compartment on a long journey
+- North Korean rail/vehicle design made personal by the occupant
+- Warm daylight, comfortable for 4.5 days
+- NOT a car back seat — this is a small living space
+- The clutter tells a story: a student traveling home
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- DPRK VEHICLE INTERIOR — inspired by Pyongyang metro and Korean train compartments
+- Every label in Korean (Hangul)
+- Lived-in, not sterile
+
+AVOID:
+- Car back seat layout (this is a FLYING VEHICLE, not a car)
+- Forward-facing seats like a car
+- Car door handles or car door panels
+- Ground or landscape visible through window
+- Luxury or premium interior
+- English text
+- Japanese or Chinese elements
+"
+
+
+---
+
+### 2.6 客舱·夜晚（新绘—0721号后舱）
+
+**文件**：Resources/bg/cabin_interior_night.png  
+**用途**：0721号后舱——夜晚飞行，主角休息
+
+**提示词**：
+`
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flying vehicle PASSENGER CABIN at night, 2076 retro-futuristic,
+NORTH KOREAN VEHICLE INTERIOR at night, cozy train-compartment style:
+
+SCENE: same rear cabin as daytime — but at night. Reading light on, bench folded into bed mode with blanket and pillow. Table cleared except for a half-empty soju bottle. Window shows starry sky. Warm yellow reading light creates a cozy, intimate atmosphere. The protagonist is asleep or resting.
+
+NIGHTTIME DIFFERENCES:
+- Cabin dark except for reading light (warm yellow, wall-mounted above bench)
+- Bench folded flat into bed mode with blanket and pillow
+- Table cleared of food — only soju bottle and one cup remain
+- Window shows dark night sky with stars and crescent moon — NO GROUND
+- Laptop closed, charging light faintly glowing
+- Snack bags dimly visible in overhead shelf
+- Duty-free bag silhouette in corner
+- Phone charger plugged in, faint blue charging light
+- Cockpit door slightly ajar, faint blue glow from holographic display beyond
+
+COLOR PALETTE (NIGHT):
+- Primary: warm amber (#8B6914), dark blue (#0A0A1E)
+- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
+- Accents: laptop sleep light (#00BFFF), charging LED (#32CD32)
+
+ATMOSPHERE:
+- Quiet, intimate, restful — like a sleeper train cabin at night
+- End of a long travel day
+- Safe and warm inside despite the dark outside
+- Contemplative — protagonist rests while 岁月 flies on through the night
+
+AVOID:
+- Too bright (must be clearly nighttime)
+- Car back seat layout
+- Ground or city lights visible through window
+- English text
+```
+
+---
+
+
+---
+
+### 2.7 停机坪
+
+**文件**：Resources/bg/hangar.png  
+**用途**：序章 Day 0 领取载具——金日成综合大学楼顶停机坪，午后
+
+**剧情对应**：林彪悍走向0721号——这是他作为荣誉研究生的专属载具，一辆2053年制造的第一代试验车，沉睡23年，搭载了AI原型“岁月”。车门感应到有人靠近自动打开。楼顶一侧，一名穿着深色制服的车队管理员站在车辆旁，正在做最后的交接检查——他不是导师，而是负责维护和保管这辆封存车辆的大学后勤人员。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+flat forward-facing perspective, eye-level view,
+university rooftop helipad, Kim Il Sung University, Pyongyang, 2076, afternoon,
+NORTH KOREAN OFFICIAL AESTHETIC,
+"Chollima" brand sand-energy flying vehicles parked:
+
+SCENE: rooftop helipad of Kim Il Sung University's main building in the afternoon, seen from the protagonist's eye level — standing on the rooftop looking forward. The deep blue 0721 Sand Flying Pig is parked prominently in the foreground facing RIGHT. This is a first-generation prototype from 2053, 23 years old, slightly worn. The cabin door on the RIGHT side of the vehicle is closed but will open when the protagonist approaches. The rooftop is large and spacious. A University maintenance officer in a dark uniform (Mao-style tunic, red lapel pin) stands beside the vehicle, clipboard in hand, making final checks — not a professor, but the depot keeper who has maintained this dormant vehicle for years. The rooftop is large and spacious. No city skyline visible below — the rooftop edge is at the bottom of the frame. The sky fills the upper two-thirds of the image.
+
+LAYOUT:
+- Large, spacious rooftop landing pad taking the lower third of the frame
+- 0721 Sand Flying Pig parked in foreground, facing RIGHT, deep blue, university emblem on side
+- Vehicle seen from the RIGHT side — the cabin door is visible on this side, open, with a boarding ramp/gangway extended
+- The vehicle's surface reflects the warm afternoon sunlight
+- 2-3 other Chollima sand-energy vehicles parked nearby in background (dark green, grey)
+- University building facade visible on the left edge — Korean-style railings, dancheong roof eaves
+- Kim Il-sung University emblem on the building wall
+- Control booth / small structure on the rooftop with communication equipment
+- Korean flag (태극기) on a pole on the rooftop, slightly waving
+- The rooftop edge is at the bottom of the frame — the protagonist cannot see the ground below
+
+NORTH KOREAN CULTURAL ELEMENTS:
+- "김일성종합대학" (Kim Il Sung University) emblem on building wall
+- "위대한 수령 김일성동지 만세" calligraphy on building facade
+- Red star emblem on control booth
+- Korean traditional dancheong pattern on roof eaves
+- Korean flag (태극기) on a pole on the rooftop
+- Juche-era architectural style (Soviet-Korean brutalist mixed with traditional elements)
+- "천리마" (Chollima) branding on the vehicles
+
+VIEW (SKY — NO GROUND VISIBLE):
+- Wide afternoon sky taking up the upper two-thirds of the frame
+- Bright blue sky with white clouds, warm afternoon light
+- A few flying vehicles silhouetted against the sky
+- No buildings below — the protagonist standing on the rooftop sees only sky and distant flying vehicles
+- The rooftop is high enough that the city is hidden below the frame edge
+
+DETAILS ON THE 0721 SAND FLYING PIG (RIGHT SIDE VIEW):
+- Deep blue paint with gold university emblem
+- Chollima winged horse badge on the side
+- Vehicle ID "0721" in Korean numerals
+- Slightly aged — 23 years old, some wear on the paint
+- Cabin door on the right side, closed with a visible seam — a boarding ramp/gangway extends down to the rooftop
+- The door is closed, but the vehicle feels alive — 23 years of waiting
+- The vehicle is CLOSED (not open-top) — the roof is solid, no open hatch
+- The cockpit is dark inside through the windshield
+- Sand energy intake vents on the sides
+- Running lights currently off (vehicle dormant)
+- Vehicle faces RIGHT, door on RIGHT side
+
+COLOR PALETTE:
+- Primary: bright blue sky (#87CEEB), deep blue vehicle (#000080, #1A237E)
+- Secondary: university emblem gold (#DAA520), concrete grey (#808080)
+- Accents: Korean red (#CD2626), building white (#F5F5F5), roof tiles dark brown (#3E2723)
+- Landing pad: concrete grey (#808080, #696969)
+- Building: traditional roof tiles dark brown (#3E2723)
+
+ATMOSPHERE:
+- Afternoon on a university rooftop - the last moment of campus life
+- Sense of anticipation: a journey is about to begin
+- Quiet and calm on the rooftop
+- The warm light from the open cabin door contrasts with the cooling evening sky
+- The vehicle is waiting, ready, door open — inviting the protagonist in
+- Slight wind suggested by Korean flag movement
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- FLAT FORWARD-FACING PERSPECTIVE — eye level, not looking down
+- NORTH KOREAN ARCHITECTURAL AESTHETIC — unmistakably DPRK university
+- Every label in Korean (Hangul)
+- Warm afternoon light, gentle shadows
+
+AVOID:
+- Looking down at the ground below (the protagonist is on the rooftop, not above it)
+- Open-top or convertible vehicle (the 0721 is CLOSED)
+- Vehicle door on the left side (the door is on the RIGHT side)
+- Vehicle facing left (it faces RIGHT)
+- Generic sci-fi cityscape
+- English text
+- Missing the Korean flag or university emblem
+- Too dark or sunset-heavy (it is afternoon, not evening)
+- Too small rooftop (must feel spacious)
+```
+
+---
+
+
+---
+
+### 2.12 大同江茶馆（嘉颖徐会面室内）
+
+**文件**：`Resources/bg/tea_house.png`  
+**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆/私人办公室
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+executive office interior, Pyongyang, 2076, afternoon,
+NORTH KOREAN PRIVATE ENTERPRISE AESTHETIC — luxury inside a socialist city:
+
+SCENE: A grand executive office in Pyongyang's Gangnam District. A massive dark mahogany desk dominates the center, with a high-backed burgundy leather chair behind it. Floor-to-ceiling glass-fronted bookshelves line the back and right walls. A golden Chollima winged horse statue stands on a pillar at right foreground. Through large windows on the left, the Pyongyang night skyline is visible with the Juche Tower lit up. This is the office of a railway tycoon — a space that blends traditional Korean elegance with corporate power.
+
+LAYOUT:
+- Large executive desk (dark mahogany, carved arched panels, gold trim) — center
+- High-backed burgundy leather chair behind the desk
+- Korean celadon tea set (청자 teapot + cups) on the desk — center
+- Green banker's desk lamp on the desk — left side
+- Nameplate with Korean text ("기업의 주체는 나!") — front of desk
+- Floor-to-ceiling glass-fronted bookshelves covering back and right walls
+- Densely packed with books, celadon vases, framed photos
+- Large windows on left wall showing Pyongyang night skyline
+- Juche Tower visible through the window with red star illuminated
+- Ornate metal balcony railing visible outside the window
+- 천리마 (Chollima) pedestal column at right foreground
+- Golden winged horse statue on top of the pedestal
+- Side table at left foreground with purple orchid in celadon vase
+- Stacked 로동신문 (Rodong Sinmun) newspapers on side table
+- Elaborate coffered ceiling with crystal chandelier
+- Wall sconces providing ambient side-lighting
+
+KOREAN CULTURAL ELEMENTS:
+- "100전 100승" (100 battles, 100 victories) calligraphy scroll on wall
+- "기업의 주체는 나!" (The master of the enterprise is me!) desk nameplate
+- "천리마" (Chollima) on the pedestal column
+- Celadon (청자) tea set — distinctly Korean ceramic style
+- 로동신문 (Rodong Sinmun) — North Korea's state newspaper
+- Purple orchid in celadon vase — traditional Korean elegance
+- Golden winged horse (Cheollima) — mythical Korean symbol
+
+COLOR PALETTE:
+- Primary: deep mahogany brown (#3E2723), dark wood (#5D4037), gold trim (#DAA520)
+- Secondary: window night sky (#1A237E), warm amber light (#FFD700)
+- Accents: celadon green (#8BC34A), burgundy leather (#800020), orchid purple (#9C27B0), Korean red (#CD2626)
+
+ATMOSPHERE:
+- Warm, authoritative, a seat of power
+- Intimate evening lighting from chandelier and desk lamp
+- Dramatic contrast between golden interior and cool blue night cityscape
+- Private, opulent, slightly imposing
+- A space for high-stakes business conversations
+
+STYLE:
+- PIXEL ART with clear pixels, STARDEW VALLEY style
+- NORTH KOREAN PRIVATE SECTOR — luxury within a socialist system
+- Every label in Korean (Hangul)
+- Warm evening lighting, rich textures
+
+AVOID:
+- Generic Chinese or Japanese office
+- Official government building feel
+- Western-style corporate office
+- Too bright or sterile
+- Modern minimalist aesthetic
+- Missing the Chollima statue or Korean text elements
+
+
+---
+
+### 2.13 Wiki 横幅（Wiki Banner）
+
+**文件**：`images/wiki_banner.png`  
+**用途**：Wiki 中文/英文主页顶部横幅，替代实验室背景图
+
+**提示词**：
+```
+pixel art, wide banner, 1920x400 resolution, 16:9 aspect ratio, STARDOLL VALLEY STYLE PIXEL ART, panoramic landscape, 2076 retro-futuristic setting, KOREAN STYLE, Pyongyang, North Korea, ULTIMATE KOREAN CULTURAL ELEMENTS, banner with game title text:
+
+GAME TITLE INTEGRATION (BILINGUAL):
+- Large Korean/Hangeul text in banner: "철도 르네상스: 모래 에너지 충격" (Railway Renaissance: Sand Energy Impact)
+- Smaller English subtitle: "Railway Renaissance: Sand Energy Impact"
+- Korean text: "김일성종합대학" (Kim Il Sung University) as location label
+- Game title positioned in upper or center area, styled like a retro game title banner
+
+SCENE COMPOSITION (panoramic, wide):
+- Misty mountain valley with a railway line cutting through
+- Traditional Korean-style train station (hanok roof, giwa tiles) on the left
+- Small steam locomotive (NF-5 style) pulling carriages across the scene
+- Pyongyang skyline silhouettes in distant background: Ryugyong Hotel, Juche Tower
+- Korean pine trees (소나무 sonamu) in foreground framing the scene
+- Flying sand energy vehicles (Chollima brand) in distant sky, small scale
+- Morning mist between mountains, soft golden sunlight
+
+KOREAN ARCHITECTURAL ELEMENTS:
+- Traditional Korean hanok roof lines on station building
+- Dancheong colorful patterns (단청) on station eaves
+- Korean stone pagoda (석탑) as landscape accent
+- Traditional Korean fence (울타리) along the railway
+
+KOREAN TEXT AND SIGNS:
+- Station sign with Korean text: "철도 르네상스" (Railway Renaissance)
+- Korean direction signpost: "평양 ← 2500km / 중국 →"
+- Small Korean flag on station building
+- Korean propaganda slogan: "일심단결" (Single-hearted Unity)
+
+KOREAN TRADITIONAL ELEMENTS:
+- Traditional Korean celadon piece (고려청자) in station window
+- Korean paper lantern (한지 등) hanging from station eaves
+- Korean traditional knotwork (매듭 maedeup) decoration on station
+
+KOREAN NATURE:
+- Wild chrysanthemums (들국화) along the tracks
+- Korean pine trees (소나무) with characteristic shape
+- Bamboo grove in background
+- Misty mountain peaks with traditional Korean painting style
+
+COLOR PALETTE (WARM KOREAN RETRO):
+- Primary: warm gold (#D4A017), brick red (#8B2500), pine green (#2F4F2F)
+- Secondary: cream white (#FFFDD0), navy blue (#1B2A4A)
+- Sky: soft dawn orange to pale blue gradient
+- Train: dark green with gold trim (classic Korean railway colors)
+
+ATMOSPHERE:
+- Nostalgic, hopeful, epic
+- The dawn of a new era — railway meets sand energy
+- Blend of Korean tradition and 2076 retro-futurism
+- A journey about to begin
+
+EXCLUSIONS:
+- No character close-ups
+- No modern glass skyscrapers
+- No bright neon
+- No heavy industrial pollution
+```
+
+
+---
+
+### 2.31 纯黑（black）
+
+**文件**：无（引擎特殊色值，不留图片文件）
+**用途**：序章开场黑屏/滚动新闻/章节转场。纯黑背景 + 字幕。
+
+**说明**：`black` 不生成图片——引擎 `BackgroundManager` 对 `"black"` 应直接渲染纯黑（修复 `Resources.Load("bg/black")` 失败的警告路径）。若未来需要极简渐变可追加。
+
+---
+
