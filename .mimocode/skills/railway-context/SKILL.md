@@ -13,11 +13,13 @@ description: Project context for RailwayRenaissance (铁路复兴：沙能冲击
 | Scripts | `Assets/Scripts/` |
 | VN scripts (JSON) | `Assets/Resources/Scripts/` |
 | **所有游戏文档** | **`参考资料/`**（统一读取/创建路径） |
-| Worldbuilding | `参考资料/世界观扩展设定.md` |
-| Character settings | `参考资料/角色设定.md` |
-| Plot outline | `参考资料/plot-outline.md` |
-| Design specs | `参考资料/*.md` |
-| Art prompts | `参考资料/美术资产AI提词.md` |
+| 文档导航 | `参考资料/INDEX.md` |
+| **设定** | `参考资料/设定/`（世界观/角色/经济/时间线） |
+| **引擎** | `参考资料/引擎/`（五大核心系统） |
+| **剧情** | `参考资料/剧情/`（plot-outline/序章/小说） |
+| **系统** | `参考资料/系统/`（平板/VN/科技树/区域等） |
+| **资产** | `参考资料/资产/`（AI提词/音色/UI参考） |
+| **管理** | `参考资料/管理/`（分工/进度/审计/报告） |
 | AI helper docs | `docs/for-ai/` |
 | Portfolio | `docs/portfolio/` |
 | Tablet desktop UI | `Assets/Scripts/GameMainUI.cs` |
