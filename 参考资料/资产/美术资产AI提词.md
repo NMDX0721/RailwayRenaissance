@@ -1553,24 +1553,35 @@ EXCLUSIONS:
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-aerial view high above mountain ranges, afternoon,
-NO MAN-MADE OBJECTS visible except a distant railway line carved into the valley:
+群山天空 / 산하늘, afternoon aerial, warm-to-cool gradient light:
 
-SCENE: Seen from 0721's window high above — Lin Biaohan presses his face to the glass. These are the mountains his grandfather spoke of. Endless green mountain ranges stretch to the horizon, layered ridges fading into atmospheric haze like pages of a book growing older toward the horizon. A thin railway line snakes along one valley floor far below — 23 kilometers of iron that one old man walked every day for four years alone, checking each sleeper, each joint, each bolt. The railway is the only human mark on this ancient landscape, and it looks impossibly small. Afternoon light, bright and clear — the kind of light that makes you believe everything might be fine.
+**叙事锚点**：Day4——林彪悍飞越中朝边境，第一次亲眼看到爷爷描述了无数次的那片群山。"铁轨从山缝里穿过去，像缝衣服的针"——现在他看到了那根针，细得几乎看不见，却缝合了两代人的记忆。
+
+SCENE: 林彪悍从0721的舷窗俯瞰。连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。一架小型民用沙能飞行器（非0721）的剪影在远处天际线附近——极其微小，仅作为空间比例尺。
 
 LAYOUT:
-- Lower two-thirds: layered mountain ridges (foreground ridges darker green, distant ones fading to blue-grey)
-- A snaking railway line with small tunnels visible in the nearest valley — the line should look fragile against the mountains
-- Upper third: clear afternoon sky with scattered cumulus clouds
-- A few distant flying vehicles as tiny silhouettes (optional, for scale)
+- 下三分之二：层叠山脊（前景深绿 #2E5D3A，中景黄绿 #5A7A3E，远景蓝灰 #7A8B99，最远淡紫 #B8A9C9）
+- 山谷底部：蜿蜒铁路线（锈棕色 #6B5B4F，偶尔有桥墩阴影）
+- 一个小隧道口（黑色半圆，上方水泥刻字「临江工务段」模糊可辨）
+- 上三分之一：晴朗午后天空（#5FA8E0），散落积云（#FFFFFF，底部浅蓝灰 #B8C6DB）
+- 最远天际线：一架微型飞行器剪影（#2A2A3A，高度约2像素）
 
 COLORS:
-- Ridges: deep forest green (#2E5D3A) → misty blue-grey (#7A8B99)
-- Railway: dark grey line with occasional rust-brown bridge sections — rust as evidence of time
-- Sky: clear blue (#5FA8E0), white clouds
-- Atmosphere haze: pale blue-white (#DCE8F0) — the haze of memory, things seen through tears or distance
+- 山脊色阶：深森林绿(#2E5D3A) → 黄绿(#5A7A3E) → 蓝灰(#7A8B99) → 淡紫(#B8A9C9) → 天际淡蓝白(#DCE8F0)
+- 铁轨：锈棕灰(#6B5B4F)，桥墩段偏锈红(#8B5E3C)
+- 隧道口：深灰黑(#1A1A1A)，上方水泥灰(#9A9A8A)
+- 天空：晴朗蓝(#5FA8E0)，积云白(#FFFFFF)，云底蓝灰(#B8C6DB)
+- 废弃站房：灰瓦(#6A6A6A)，塌陷处暗影(#3A3A3A)
+- 梯田荒地：枯黄(#A89060)与灌木绿(#4A6B3E)交织
 
-MOOD: The journey home. Vast, quiet, hopeful. A 25-year-old student sees mountains his grandfather walked through and feels something he can't name — pride, grief, and the weight of a promise he hasn't yet made but already carries. The mountains don't know anyone is watching. They've been here long before the railway, and they'll be here long after. But today, from a tiny blue vehicle high above, a young man sees that thin line of iron and thinks: "爷爷，我看到了。"
+MOOD: 归途。辽阔、安静、带着希望的忧伤。一个25岁的学生第一次亲眼看到爷爷走过的那些山——它们在午后阳光下安静地排列着，像等待阅兵的士兵。铁路线在山谷中细得像一根线，但那根线就是整个故事的起点。林彪悍把脸贴在玻璃上，心里默念："爷爷，我看到了。"山脉不知道有人在看。它们在铁路之前就在这里，铁路消失之后它们还会在这里。但今天，从一架蓝色小飞行器的窗口望下去，一个年轻人看到了那根细铁线，感到某种无法命名的东西——骄傲、悲伤、以及一个尚未许下但已经背负的承诺。
+
+AVOID:
+- 出现现代建筑或城市（这是原始山林）
+- 铁路过于清晰或壮观（应该是"几乎看不见"的细线）
+- 过于明亮的光线（午后应有温暖但不刺眼的质感）
+- 缺少大气透视效果（远山必须渐淡）
+- 冷色调为主（这是"进入中国"的第一幕，应偏暖）
 ```
 
 ---
@@ -1619,24 +1630,31 @@ MOOD: Seeing it for the first time with your own eyes. A line that should be dea
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-mountain village panorama at sunset, seen from a low hill above:
+雾峰村夕阳 / 무봉촌 석양, mountain village panorama at sunset, golden hour warmth:
 
-SCENE: A small mountain village cradled in a valley — Wufeng Village, the place Lin Biaohan left as a child and hasn't seen in four years. Everything is exactly as he remembers: the old scholar tree at the village entrance (Grandfather Lin used to sit under it reading railway timetables), grey-tiled house roofs with whitewashed walls slowly aging to warm cream, evening cooking smoke rising from several chimneys (the same direction, the same villages, the same supper hour). A flagged dirt road winds into the village. Behind it, terraced fields climb the foothills — tea bushes, dark and patient. Warm sunset light paints everything gold-orange, the same light that fell on his grandfather's face the last time they stood on this hill together. The village hasn't changed. Lin Biaohan has.
+**叙事锚点**：Day4——四年后的第一眼。从低丘上俯瞰，雾峰村和记忆中一模一样——老槐树还在，土墙还是那个颜色，炊烟还是那个方向。只有他自己变了。爷爷不在了，但他带着爷爷的铜怀表回来了。
+
+SCENE: 林彪悍站在村口的低丘上，第一次看到四年未见的雾峰村。山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（기와 기와，东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树（수양버들/槐树），树冠覆盖了小半个晒场，树下有一条褪色的红砖凳——爷爷以前在这里看铁路时刻表。村庄入口处一块斑驳的水泥牌坊，上书「雾峰村 무봉촌」，旁边贴着褪色的春联残片。土墙围成的院落里，有人在晾晒衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条铁路线在山谷中隐约可见——那是雾峰线，爷爷守了四年的铁路。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
 
 LAYOUT:
-- Mid-distance village spread across the frame (15-20 houses clustered) — small, tight-knit, everyone knows everyone
-- Old entrance tree (scholar tree/槐树) at frame left, villagers' washing lines — the tree is a landmark, a meeting point, a clock
-- Terraced fields behind, dark green — tea, the village's other livelihood
-- Mountain walls closing in both sides — protective, like arms around a child
-- Evening sky with warm clouds — the same sunset grandpa watched every evening
+- 中景：村庄横跨画面（15-20栋房屋聚集），老槐树在画面左前方（树冠占画面左侧1/4高度）
+- 村口牌坊「雾峰村 무봉촌」位于中景偏左，旁边有褪色春联
+- 远景山坡：梯田茶园（深绿弧形条带层叠上升）
+- 最远背景：山谷中的铁路线（锈棕色细线）和一个微型站房（灰瓦顶）
+- 天空：夕阳从左侧斜射，橙粉色云彩（#E8974A → #C4603A），远处山脊剪影
 
 COLORS:
-- Roofs: warm grey (#8A7F7A), walls: white-washed with patina (#D9CBB8) — aged but cared for
-- Fields: dark moss green (#4C6B3E)
-- Sunset: orange (#E8974A) → deep blue shadow (#3D5175) — the warmth of memory meeting the cool of absence
-- Smoke: pale lavender-grey — cooking fires, the village's heartbeat
+- 屋顶：暖灰(#8A7F7A)，瓦片纹理在夕阳下偏金棕(#B89060)
+- 土墙：白灰泛黄(#D9CBB8)，斑驳处露出红砖底(#B4684D)
+- 槐树：深棕树干(#5C3317)，树冠深绿偏金(#6B8E3A，在夕阳下带金色高光)
+- 梯田茶园：深苔绿(#4C6B3E)，逆光处偏暗(#2A3D22)
+- 炊烟：淡蓝灰(#B8C0C8)，被夕阳染成粉橙(#E8A080)
+- 夕阳天空：橙(#E8974A) → 深蓝影(#3D5175)
+- 铁路线：锈棕(#6B5B4F)，在远处山谷中几乎看不清
+- 牌坊：水泥灰(#9A9A8A)，红字褪色(#CD5C5C → #A07070)
+- 春联残片：红纸褪色(#B06060)，金字模糊(#C8A050)
 
-MOOD: Home, unchanged. The village time forgot. But Lin Biaohan is not the child who left — he carries a grandfather's pocket watch, a dead man's mission, and four years of absence that no sunset can erase. The village looks the same. He doesn't. That's the ache of this image: the place waited perfectly for him, while he grew up without it.
+MOOD: 回家了。村庄还在等他。但林彪悍不再是四年前离开的孩子——他带着爷爷的铜怀表、一个死去之人的使命、以及四年缺席中无法弥补的距离。村庄看起来一模一样。他不是了。这就是这幅画面的痛处：地方完美地等了他，而他在没有它的地方长大了。夕阳把一切都染成金色，就像爷爷最后一次站在这里时的颜色。远处的铁轨还在——锈了，但还在。就像这个村庄，就像这个家。
 ```
 
 ---
@@ -1712,29 +1730,43 @@ MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every 
 **文件**：`Resources/bg/border_town.png`
 **用途**：序章 Day 1 上午——临江市（中朝边境边贸城）上空视野。0721 补沙前短暂停留。被四家单位追捕的紧张感。
 
-**叙事锚点**：Day1——被四家单位追捕的紧张感。0721在这里短暂停留补沙，林彪悍的心跳还没平复——三分钟前他刚从边境检查站逃出来。这座边贸城看起来平静而普通，但他知道头顶上至少有两架巡逻机在搜索他。
+**叙事锚点**：Day1——0721降落在临江市附近，林彪悍第一次踏上中国土地。三分钟前他刚从边境检查站逃出来，心跳还没平复。这座边贸城看起来平静而普通，但他知道头顶上至少有两架巡逻机在搜索他。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-border trade town seen from a low flying vehicle, morning — tension beneath calm:
+边境小镇 / 변경소계정, border town morning, tension beneath calm:
 
-SCENE: A small border-commerce town straddling both sides of a river (the Yalu-style river in the far background, grey and indifferent to human borders). North side: formal, grey, sparse — government buildings with flags. South side: messy, alive, chaotic — the market street with Russian-Korean-Chinese trilingual shop signs, bales of goods, hand carts, a barbershop pole spinning. A grey river with ferry boats that haven't moved in days. Morning light that should be peaceful but isn't — because somewhere above, two patrol aircraft are searching for a blue vehicle that shouldn't be here. The town looks calm. It isn't. Every rooftop is a potential observation post. The supply station in the corner is the only reason they landed — sand, the new oil, sold by weight at a place that doesn't ask questions.
+**叙事锚点**：Day1——0721降落在临江市附近，林彪悍第一次踏上中国土地。心脏还在狂跳——三分钟前他刚从边境检查站的栏杆下钻过去。这座中朝边境小镇看起来平静而普通，但他知道头顶上至少有两架巡逻机在搜索这架不应该出现在这里的蓝色飞行器。
+
+SCENE: 林彪悍从低空俯瞰临江市边境小镇的全貌。这是一座典型的中朝边境小城——鸭绿江支流在画面上方横贯而过，江水灰绿色（#86A88A），水面上停着几艘锈迹斑斑的渡船。江北侧（朝鲜方向）稀疏灰暗，几栋政府灰色建筑上飘着旗帜；江南侧（中国方向）热闹拥挤，街道上人来人往。建筑风格是东北农村砖房与朝鲜风格的混搭——红砖墙（#8B4513）配灰瓦顶（기와 giwa），部分建筑有朝鲜风格的白色灰泥外墙和木格窗棂。路牌和招牌全部使用中韩双语：最大的路牌写着「临江市 림강시」（蓝底白字），旁边的商店招牌写着「商店 가게」（红底黄字），一家饭馆的霓虹灯管拼出「饭店 식당」，还有一家「超市 슈퍼마켓」。街道中央有一个显眼的标志——沙能补给站的千里马牌logo（천리마 Chollima品牌，一匹奔跑的千里马剪影，下面写着「千里马沙能补给 천리마 모래에너지 보충소」）。画面右侧可以看到已关闭的边境检查站——一根生锈的红白相间栏杆横在路中间（已抬起），旁边一块褪色的绿色标志牌写着「边境检查 국경검문소」，标志牌下面的小字是「中华人民共和国 국경관리」。检查站旁边停着一辆沙能飞行器——民用版（不是0721），灰白色涂装，机身上有「中国民用航空 Civil Aviation」字样和注册号。建筑屋顶是东北风格的烟囱（红砖砌成，顶部有防雨帽）和灰瓦片屋顶。远处的一面墙上，有一条褪色的红色标语横幅：「欢迎来到中国 환영합니다」，旁边另一条更旧的写着「中朝友谊万岁 조중우의 만세」。晨光从画面右侧斜射，给小镇笼罩上一层清冷的蓝灰色调——看似平静，实则暗流涌动。
 
 LAYOUT:
-- Town market street across mid-frame — life continuing despite the drama above
-- River and far bank in upper background — the border, just meters away
-- Sand-energy supply station (fuel-pump-like sand dispensers) bottom-left corner — the objective
-- Vehicles parked, porters with bundles — normalcy as camouflage
+- 上方远景：鸭绿江支流（灰绿色水面，渡船剪影），对岸朝鲜方向灰色建筑
+- 中景：中国侧街道横跨画面，中韩双语路牌「临江市 림강시」在画面中心偏左
+- 街道两侧：东北砖房+朝鲜风格混搭建筑（红砖+灰瓦+白灰泥）
+- 左下角：沙能补给站（千里马牌logo显著，加油岛+沙罐）
+- 右侧中景：已关闭的边境检查站（栏杆抬起，褪色标志）
+- 检查站旁：停放的民用沙能飞行器（灰白色，非0721）
+- 远处墙面：褪色红色标语横幅「欢迎来到中国 환영합니다」
+- 天空：清晨冷蓝色调（#6B8EAF），薄云
 
 COLORS:
-- Buildings: mixed grey/brick/white — a town that belongs to no single identity
-- Signs: faded red/blue letters — languages overlapping, identities blurred
-- River: pale grey-green (#86A88A) — the river that divides and connects
-- Morning sky: cool blue — deceptively calm, hiding search patterns
+- 建筑红砖：东北红砖(#8B4513)，部分风化为暗棕(#6B3A2A)
+- 灰瓦屋顶：东北传统灰瓦(#6A6A6A)，朝鲜风格灰瓦略深(#5A5A5A)
+- 白灰泥墙：朝鲜风格白墙(#E8E0D0)，斑驳处露出红砖
+- 鸭绿江水：灰绿(#86A88A)，水面反射冷蓝(#9AB0B0)
+- 千里马logo：金黄(#D4A017)马剪影，红色底(#CC0000)圆形标志
+- 双语路牌：蓝底白字(#1A4A8A / #FFFFFF)
+- 商店招牌：红底黄字(#CC0000 / #FFD700)
+- 检查站栏杆：红白条纹褪色(#B06060 / #E8E0D0)
+- 边境标志：绿底白字(#2E5D3A / #FFFFFF)，已褪色
+- 褪色标语横幅：红底(#B04040)金字模糊(#C8A050)
+- 民用飞行器：灰白涂装(#D0D0D0)，蓝色机身线条(#4A7A9B)
+- 天空：清晨冷蓝(#6B8EAF)，地平线偏灰白(#C0C8D0)
 
-MOOD: The border between two worlds. A place where everything is for sale — including silence. Lin Biaohan's heart pounds as 0721 descends toward the supply station. Below, vendors arrange their stalls. Above, the hunt continues. This town doesn't know it's a stage for an escape. It just thinks it's Tuesday.
+MOOD: 两个世界的边境。一个什么都能买到的地方——包括沉默。林彪悍的心跳在0721降落时加速。下方，商贩在摆摊；上方，追捕在继续。这座小镇不知道自己是一场逃亡的舞台。它只觉得今天是星期二。空气中弥漫着沙子的气味——这种新型燃料像石油一样统治了2076年的交通，而这座边贸城就是它的交易节点。千里马的logo到处都是，像一种无声的权力宣告。
 ```
 
 ---
@@ -1744,27 +1776,39 @@ MOOD: The border between two worlds. A place where everything is for sale — in
 **文件**：`Resources/bg/supply_station.png`
 **用途**：序章 Day 1——临江补给站近景。0721 补充 1500kg 沙子的地方，员工那句"沙子便宜"的背景。
 
+**叙事锚点**：Day1——0721在这里补充了1500公斤沙子。工作人员说"沙子便宜"，但林彪悍知道每一粒沙子都是2076年的血液——而他正在偷走别人的血液来完成爷爷的遗愿。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small sand-energy refuel station, day:
+补给站 / 보급소, sand-energy supply station close-up, daytime:
 
-SCENE: A modest refueling station in a border town. Several sand-dispenser machines (like oversized fuel pumps but dispensing grey sand from hoppers) under a simple corrugated-iron canopy. A young worker in a worn uniform. A handwritten price board: 「沙 150沙币/1500kg」. Dusty ground, parked hand trolleys.
+**叙事锚点**：Day1——0721在这里补充了1500公斤沙子。工作人员随口说"沙子便宜"，但林彪悍知道这些灰白色的粉末就是2076年的石油——整个国家的飞行器、汽车、工厂都靠它运转。他在用别人的生命线来完成爷爷的遗愿。
+
+SCENE: 临江市沙能补给站的近景。标准化的加油岛（与中国2020年代加油站布局相似，但设备全部替换为沙能相关）——两个圆柱形沙子储存罐（高约3米，银灰色金属材质，外壁有白色刻度线标注容量：500kg/1000kg/1500kg/2000kg，顶部有压力阀和安全帽）。储存罐之间是加沙设备——一根粗大的软管连接着类似加油枪的装置（加沙枪，金属质感，前端有沙漏形漏斗），软管盘绕在地上。加油岛上方是波纹铁皮顶棚（生锈的橙棕色），顶棚正面挂着千里马牌的标准化标志：圆形红底（#CC0000），中间金色千里马剪影（#D4A017），下方白色文字「千里马沙能补给 천리마 모래에너지 보충소」。顶棚侧面有另一块标志牌：「USET保障总局 USET 보장총국」（蓝底白字，#1A4A8A / #FFFFFF），表明这是国有保障系统下属的标准化设施。收费亭在加油岛右侧——小型玻璃窗亭子（约2x2米），里面坐着一个穿灰蓝色制服的收费员，桌上有一台老式计算器和一本手写账簿。收费亭玻璃窗上贴着价目表：「沙子 모래 0.85元/公斤」（白纸黑字手写），旁边有「千里马会员 천리마 회원 优惠5%」的红色贴纸。地面上散落着灰白色沙粒，几辆手推车停在旁边（金属框架，橡胶轮），车上还残留着沙子。远处可以看到一块沙能载具广告牌——画着一架流线型飞行器，广告语是「千里马·驰骋万里 천리마·만리를 달리다」。一个穿灰蓝色工作服的年轻工人正在操作加沙枪，沙子从漏斗中流出时有轻微的灰尘飞扬。
 
 LAYOUT:
-- 2-3 sand dispensers with hoppers in foreground
-- Price board with Chinese handwriting
-- Worker figure + owner standing by
-- Background: town wall, distant buildings
+- 前景中心：两个圆柱形沙子储存罐（银灰色，白色刻度线）
+- 储存罐之间：加沙设备（软管+加沙枪），工人正在操作
+- 中景上方：波纹铁皮顶棚（生锈橙棕），正面千里马标志，侧面USET标志
+- 右侧：小型收费亭（玻璃窗，收费员可见），价目表贴在窗上
+- 左侧地面：手推车（金属框架），散落沙粒
+- 远处背景：沙能载具广告牌（千里马·驰骋万里），小镇建筑轮廓
 
 COLORS:
-- Dispensers: faded military green / rust orange
-- Sand: pale grey-tan (#C9BFAC)
-- Canopy: rusty corrugated (orange-brown)
-- Chinese text only
+- 储存罐：银灰金属(#A8A8A8)，刻度线白(#FFFFFF)，容量数字黑(#1A1A1A)
+- 沙子：灰白偏黄(#C9BFAC)，散落地面的沙粒(#D4C8B0)
+- 顶棚：生锈波纹铁皮(#B86830)，锈蚀处深棕(#6B3A1A)
+- 千里马标志：红底(#CC0000)，金马(#D4A017)，白字(#FFFFFF)
+- USET标志：蓝底(#1A4A8A)，白字(#FFFFFF)
+- 收费亭：金属框架灰(#808080)，玻璃浅蓝反光(#B8D8E8)
+- 价目表：白纸(#F5F0E8)，黑字(#1A1A1A)
+- 工作服：灰蓝(#6A7A8A)
+- 手推车：金属银灰(#9A9A9A)，橡胶轮黑(#2A2A2A)
+- 广告牌：蓝白配色(#2A5A8A / #FFFFFF)，飞行器图案流线型
 
-MOOD: Mundane commerce. Sand, the new oil, sold by weight.
+MOOD: 平凡的商业行为，但意义深远。沙子——2076年的石油——在这里按公斤出售，像买菜一样随意。价格牌上的手写字迹透露出一种日常感，但0721停在旁边的身影提醒我们：这不是普通的补给。千里马的标志无处不在，像一种无声的权力网络——从朝鲜的实验室到中国的补给站，整个沙能经济都在这个金色马蹄之下运转。工人对这架不寻常的飞行器没有多问——边境小镇，什么都能买到，什么都能卖出去。
 ```
 
 ---
@@ -1774,26 +1818,35 @@ MOOD: Mundane commerce. Sand, the new oil, sold by weight.
 **文件**：`Resources/bg/china_sky.png`
 **用途**：序章 Day 1-3 多次使用——飞越中国领空的云海/天空镜头，新闻阅读与闲聊的背景。
 
+**叙事锚点**：Day2——0721飞越中国领空，从朝鲜的冷色调过渡到中国的暖色调。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。远处隐约可见一条废弃铁路在地面蜿蜒——那是爷爷守护的那条线的延伸。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-view from a flying vehicle above a sea of clouds, daytime:
+中国上空 / 중국 상공, flying over China, warm transitional light:
 
-SCENE: Abundant white cloud sea stretching to the horizon under clear blue sky. Rolling cumulus clouds below, sunlight sparkling. A tiny bit of terrain (rivers/plains) barely visible through gaps. No vehicles visible (or one tiny silhouette optionally).
+**叙事锚点**：Day2——0721飞越中国领空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从朝鲜的冷色调逐渐过渡到中国的暖色调——像翻开一本书的新篇章，纸张从冷灰变成了暖黄。
+
+SCENE: 从0721舷窗向外望去的中国上空全景。画面下方是无边无际的云海——白色积云层叠翻涌，像棉絮铺成的平原，云层顶部被午后阳光染成金白色，底部是柔和的蓝灰色阴影。云海缝隙中隐约可见地面——华北平原的农田拼图（金色麦田与绿色玉米地交错）、一条蜿蜒的河流（灰蓝色，可能是辽河支流）、以及远处的村庄灰点。最关键的细节：云层缝隙中隐约可见一条废弃铁路线在地面蜿蜒——锈棕色的细线穿过田野，在一个小镇处断开（道岔已拆），然后又在远处接上。这就是爷爷守护的雾峰线的延长线，从空中看细得像一根头发。光线有明显的色调过渡：画面左侧（朝鲜方向）偏冷蓝灰调（#7A8B99），右侧（中国内陆方向）偏暖金橙调（#E8C88A），中间渐变融合——象征从冷到暖的旅程。一架小型民用沙能飞行器的剪影在远处天际线（可选，用于空间比例感）。
 
 LAYOUT:
-- 80% cloud sea below horizon line
-- Clear blue sky above
-- Sun flare option, light haze
-- Subtle motion feel
+- 下方80%：云海（翻涌积云，顶部金白，底部蓝灰阴影）
+- 云海缝隙（画面中下方偏右）：隐约可见华北平原地面（农田拼图+河流+废弃铁路线）
+- 废弃铁路线：锈棕色细线（#6B5B4F），从左下延伸至右上，在一个小镇处断开
+- 上方20%：晴朗天空，色调从左冷蓝（#7A8B99）过渡到右暖金（#E8C88A）
+- 远处天际线：微型飞行器剪影（可选）
 
 COLORS:
-- Clouds: bright white (#FFFFFF) shadows soft blue-grey (#B8C6DB)
-- Sky: deep blue (#4A90D9)
-- Terrain glimpses: hazy green-grey
+- 云层顶部：金白(#F5E8D0)，阳光直射处纯白(#FFFFFF)
+- 云层底部阴影：蓝灰(#B8C6DB)，深层(#8A9AB0)
+- 天空色调过渡：左侧冷蓝灰(#7A8B99) → 中间中性(#A0B0C0) → 右侧暖金橙(#E8C88A)
+- 地面农田：金色麦田(#C8A850)与绿色玉米地(#5A8A3E)交错
+- 河流：灰蓝(#7A9AB0)，在云隙中若隐若现
+- 废弃铁路：锈棕(#6B5B4F)，桥墩段偏锈红(#8B5E3C)
+- 铁路断开处：道岔拆除后的泥土色(#A09080)
 
-MOOD: Open sky, long journey ahead. Neutral, contemplative.
+MOOD: 漫长的旅程，辽阔的天空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从冷到暖的过渡暗示着心境的变化——从朝鲜的紧张逃亡到中国上空的片刻宁静。但宁静是脆弱的：云层缝隙中那条若隐若现的废弃铁路线提醒着一切的起点。林彪悍看着那条线，心里想的是爷爷的话："这条线过了山就是中国了。"现在他在山的这边了。铁路还在脚下，只是锈了。
 ```
 
 ---
@@ -2217,28 +2270,42 @@ MOOD: The nerve center of the line. Old paperwork, new hope.
 **文件**：`Resources/bg/platform_morning.png`
 **用途**：序章 Day 5 下午/首班车——雾峰站月台晨光，乘客等车的场景。
 
+**叙事锚点**：Day5——首班车出发前的站台。这是四年来的第一趟车。老陈在凌晨四点就起来打扫了站台，李阿姨在准备早餐，小芳在核对调度表。十几个村民自发来等车——不是因为需要坐车，是因为他们想亲眼看到这趟车开出去。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-station platform in morning light, first train day:
+雾峰村站台·晨 / 무봉촌 역 승강장·아침, station platform at dawn, first train day:
 
-SCENE: The雾峰 platform under clear morning light. A few early passengers (villagers with baskets, a child on father's shoulders) gathered near the platform edge. Mist still lifting off the rails. NF-5 idling with soft diesel chug, steam wisps. The platform brushed clean, flower pots newly watered. Fresh, hopeful mood.
+**叙事锚点**：Day5——首班车出发前的雾峰站台。四年来的第一趟车。十几个村民自发来等车——不是因为需要坐车，是因为他们想亲眼看到这趟车重新开出去。晨光中的站台像一个被遗忘很久终于重新亮起灯的舞台。
+
+SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——「雾峰村站 무봉촌역」（蓝底白字，中韩双语，站牌样式类似中国普通火车站但更简朴）。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水（老陈凌晨四点的成果）。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套——老陈的，他刚巡完线回来。NF-5机车停在轨道上——深绿色车身，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光——刚被赵师傅检查过，每个螺栓都拧紧了。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光——李阿姨在里面准备茶水。
 
 LAYOUT:
-- Platform across mid-frame
-- Passengers as small distant figures (no close-ups)
-- NF-5 nose right, steam wisps
-- Mist over rails
-- Clean platform, flower pots, new「首班车」paper banner
+- 画面下方：铁轨（两根平行钢轨+枕木+碎石道床），晨雾从铁轨间升起
+- 中景：站台横跨画面（木质站台板，边缘有黄色安全线「安全线 안전선」）
+- 站台左侧：站牌「雾峰村站 무봉촌역」（蓝底白字，铁杆支撑）
+- 站台中央：十几个乘客（各种姿态，远小近大）
+- 站台右侧：小摊贩（木箱+米线+茶壶+「早点 아침밥 3元」木牌）
+- 站台尽头：长椅+保温壶+皮手套（老陈的物品）
+- 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡）
+- 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光）
+- 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
 
 COLORS:
-- Morning gold light
-- Rails gleaming, mist white-grey
-- Passengers: colored cloth (red scarf, blue jacket)
-- Sky: fresh blue
+- 晨光：金色阳光(#F5D060)，穿过薄雾形成光带(#FFF8E0)
+- 铁轨：钢轨银灰(#A0A0A0)，枕木深棕(#5C4033)，碎石灰(#8A8A7A)
+- 站台木板：暖灰(#A8998B)，安全线黄(#FFD700)
+- 站牌：蓝底(#1A4A8A)，白字(#FFFFFF)
+- NF-5机车：深绿(#2F4A38)，前灯暖黄(#F5D060)，蒸汽白(#E8E8E8)
+- 乘客衣着：多样暖色（红围巾#CC3333，蓝外套#4A6A8A，灰布衣#8A8A8A）
+- 摊贩：木箱棕(#8B6540)，米线碗白(#F0F0E8)，茶壶深棕(#5C3317)
+- 薄雾：淡金(#FFF8E0)到白(#F0F0F0)
+- 天空：深蓝(#3A5A8A) → 粉橙(#E8A080) → 金色地平线(#F5D060)
+- 站房灯光：暖黄(#F2C86B)，窗框灰(#8A8A8A)
 
-MOOD: The first run in years. Nervous, bright, alive.
+MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。每个人都在等待，但没有人在焦急——他们等了四年，不差这一个早晨。晨光把一切染成金色，铁轨上的露珠闪闪发光，NF-5的引擎声像一首老歌的前奏。那个蹲在铁轨旁拨弄碎石的孩子不知道这条铁路曾经停运四年——对他来说，火车就是火车，每天都会来。这种天真就是希望的形状。老陈的保温壶和手套说明他已经在站台上了，只是现在在里面帮李阿姨搬东西。一切都在准备中，一切都在等待那个发车的瞬间。
 ```
 
 ---
