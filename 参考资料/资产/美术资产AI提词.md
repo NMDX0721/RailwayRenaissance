@@ -2,9 +2,10 @@
 
 > 版本：v3.0（2026-09-18 合并美术+配乐为统一文档）
 > 用途：所有AI生成资产的提词汇总——角色立绘、场景背景、BGM配乐、歌词歌曲
-> 美术工具：mimo 2.5 | 执行任务：ds / ds0718
+> 美术工具：mimo 2.5 | 执行任务：ds / ds718
 > 音乐工具：Suno AI v4.5+（Custom Mode，Style ≤1000 chars / Lyrics ≤3000 chars）
-> 统一风格：16-bit retro pixel art，暖色调，类似 Stardew Valley
+> 角色立绘风格：1024×1536 高清二次元动漫风格（已从16-bit像素画升级）
+> 场景背景风格：16-bit retro pixel art，暖色调，类似 Stardew Valley
 
 ---
 
@@ -87,51 +88,77 @@ AVOID:
 
 ### 1.2 老陈（陈守正）
 
-**文件**：`Resources/characters/laochen_*.png`（flat格式）  
-**状态**：待重新绘制（当前303×313像素画，需升级为1024×1536高清二次元）
+**文件**：`Resources/characters/laochen_*.png`（flat格式）
+**状态**：❌ 全部16张需重新绘制（当前303×313像素画，升级为1024×1536高清二次元）
+**叙事定位**：68岁的末代站长，独自守护雾峰村铁路线四年。他的存在就是铁路精神的化身——不是英雄式的壮举，而是日复一日的坚守。每个表情都应该让玩家感受到：这个人把一辈子都给了这条线。
 
 **主图提示词（高清二次元版）**：
 ```
 1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
 upper body to knees portrait, isolated on transparent background,
 no other people, no duplicates, no character sheet,
-warm color palette, detailed shading,
+warm color palette with earthy tones, detailed shading, soft lighting from the side,
 
-CHARACTER: Lao Chen (老陈/陈守正), 68-year-old male, last stationmaster.
+CHARACTER: Lao Chen (老陈/陈守正), 68-year-old man, the last stationmaster who guarded a railway line alone for four years. His body carries decades of outdoor work — thin but sturdy, not frail. Weather-beaten but dignified.
 
-FACE:
-- Square face, dark weathered skin with deep wrinkles
-- Deep brown eyes that squint into warm slits when smiling
-- Sparse gray-white eyebrows, neatly trimmed
-- Flat nose bridge, slightly red nose tip (frostbite from years on railways)
-- Gray-white short hair, neatly combed back, one unruly tuft behind left ear
-- Thick lips with slightly downturned corners, warm smile lines
+FACE (CRITICAL — this face tells a story):
+- Square face structure, not round — strong jawline softened by age
+- Dark tanned skin weathered by decades of sun and wind, deep wrinkles especially around eyes and forehead
+- Deep brown eyes that squint into warm slits when smiling — but in neutral state they carry a quiet sadness, like looking at something that used to be there
+- Sparse gray-white eyebrows, neatly trimmed with an old comb
+- Flat nose bridge with slightly red nose tip — frostbite from years standing on cold railway platforms at dawn
+- Gray-white short hair, neatly combed back with pomade, but one unruly tuft behind left ear that never stays put — a small rebellion against order
+- Thick lips with slightly downturned corners, but when they smile, warm laugh lines appear that reach his eyes
+- A small scar on his left cheek — from a railway accident years ago, he never mentions it
 
-CLOTHING:
-- White long-sleeve cotton shirt, collar slightly worn
-- Second button re-sewn with mismatched red thread (character detail)
-- Dark gray V-neck wool vest, slightly pilled at chest, darning marks at hem
-- Reading glasses hanging on old leather cord around neck
-- Dark loose trousers, creased from ironing
-- Black cloth shoes, soles worn thin
+CLOTHING (every detail tells a story):
+- White long-sleeve cotton shirt, collar slightly frayed from washing
+- Second button re-sewn with mismatched red thread — his wife sewed it before she passed, he never replaced it
+- Dark gray V-neck wool vest, slightly pilled at chest where he leans against things, darning marks at hem
+- Reading glasses hanging on old leather cord around neck — always there, sometimes pushed up on forehead
+- Dark loose trousers, ironed with sharp creases even though they're old — he respects the uniform of a stationmaster
+- Black cloth shoes, soles worn thin from walking the 23km line
 
 ACCESSORIES:
-- Old leather cord with reading glasses (distinctive)
-- Worn railway stationmaster cap (optional, for certain expressions)
+- Old leather cord with round reading glasses (signature element, always visible)
+- A faded railway stationmaster badge pinned inside his vest (hidden, only visible when vest is open)
 
 COLOR PALETTE:
-- Primary: warm gray (#8B8682), off-white (#F5F0E8)
-- Secondary: dark gray (#4A4A4A), worn brown (#6B4226)
-- Accents: faded red thread (#CD5C5C), copper glasses (#B87333)
+- Primary: warm gray (#8B8682) for skin, off-white (#F5F0E8) for shirt
+- Secondary: dark gray (#4A4A4A) for vest, worn brown (#6B4226) for leather
+- Accents: faded red thread (#CD5C5C) for the button, copper (#B87333) for glasses
+- Background influence: warm earth tones suggesting sunset light on old wood
 
-MOOD: Warm, experienced, slightly weary but deeply kind. A man who has guarded the railway for decades. Eyes carry the weight of memories but light up when talking about trains.
+MOOD: Warm, experienced, slightly weary but deeply kind. A man who has guarded the railway for four years alone, waiting for someone to come. His eyes carry the weight of memories — of trains that used to run, of a stationmaster (林悍) who was his best friend, of a line that refuses to die. When he smiles, it's because he's talking about trains or remembering the old days. The sadness never fully leaves his eyes, but neither does the hope.
 
 AVOID:
-- Too clean or polished appearance (should show years of outdoor work)
-- Cold or stern expression
-- Modern or fashionable clothing
-- Overly muscular build (should be thin but sturdy)
+- Too clean or polished — this man has been outdoors for four years, his clothes show it
+- Cold or stern expression — he is the warmest character in the game
+- Modern or fashionable clothing — everything is from the 2060s or older
+- Overly muscular — thin but wiry, the build of someone who walks 23km regularly
+- Generic "old man" face — his wrinkles are specific: railway platform cold, sun exposure, laughing lines from years of greeting passengers who no longer come
 ```
+
+**16表情叙事驱动提示词**（每个表情绑定剧情瞬间）：
+
+| 表情 | 剧情瞬间 | 差分提示词追加描述 |
+|------|---------|-------------------|
+| normal | 日常站务，巡视线路 | 默认站姿，目光平和望向远方铁轨，嘴角微平，像在听远处的汽笛 |
+| smile | 首班车发车，看着林彪悍 | 眉毛舒展，眼睛弯成缝，嘴角上扬露出被烟熏黄的牙齿，整张脸亮了——像看到了等了四年的人终于来了 |
+| sad | 回忆林悍站长 | 眼眶微红，嘴角下垂更深，一只手无意识地摸着胸口的旧 badge，目光失焦看向地面 |
+| surprise | 林彪悍说出"我回来了" | 眼睛睁大，嘴巴微张，身体微微后倾——震惊中带着不敢相信，像做梦一样 |
+| serious | 讨论铁龙计划威胁 | 眉头紧锁，目光锐利，嘴唇抿紧，整个人从温和变得坚硬——这是守了四年的老兵 |
+| curious | 听林彪悍讲解新计划 | 头微微歪向一侧，眼睛眯起打量，手托下巴，像在评估一个老朋友的孙子是否靠谱 |
+| excited | 机车重新启动 | 双眼放光，身体前倾，双手不自觉握拳——68岁的老人像个孩子一样激动 |
+| worried | 线路安全问题 | 眉头皱起，嘴角向下，双手交叉在胸前，目光扫向铁轨的某个方向——他知道哪里有问题 |
+| angry | 铁龙基金会再次上门 | 眉头深锁，嘴唇紧抿成一条线，眼神冰冷——这是他唯一一次展现攻击性 |
+| bored | 等待发车的空闲时间 | 坐在长椅上，眼镜推到额头，打了个哈欠，一只手撑着脸——日常的无聊但不焦躁 |
+| gentle | 对村民说话 | 声音柔软（通过面部表现），眼睛温柔地眯起，嘴角带笑，整个人像一团温暖的旧棉絮 |
+| happy | 看着王小弟成长 | 眉毛挑起，笑容比smile更深更放松，眼角的皱纹都带着满足——像看到了传承的希望 |
+| shocked | 听到沙鲸计划消息 | 瞪大眼睛，身体僵住，手指不自觉抓住椅扶手——不是害怕，是意识到对手比想象中更强 |
+| shout | 在发布会上为铁路辩护 | 嘴巴大张，眉头紧锁，身体前倾——这是他第一次在公众面前大声说话，声音沙哑但有力 |
+| smug | 想起年轻时的得意 | 嘴角一边翘起，眉毛挑高，眼神带着"我跟你说"的得意——像个想讲老故事的爷爷 |
+| wink | 和林彪悍的秘密约定 | 眨一只眼，嘴角歪笑，像在说"这事只有我们知道"——老顽童的一面 |
 
 ---
 
@@ -140,43 +167,56 @@ AVOID:
 **文件**：`Resources/characters/zhanggong/{表情}.png`  
 **表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, elderly male, 62 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft side lighting,
 
-FACE CHARACTERISTICS:
-- Round, full face, rosy cheeks
-- Small bright eyes, squint into happy slits when smiling
-- Sparse irregular gray-white eyebrows, a few extra long
-- Round red nose tip (rosacea)
-- Gray-white sparse hair, slightly bald on top, fluffy on sides, never combed
-- Yellowish skin tone, 5mm black oil stain on right cheek
-- Missing left front tooth (knocked out fixing a machine 20 years ago)
+CHARACTER: Zhang Degou (张工/张德厚), 62-year-old retired mechanical engineer, called back by Lao Chen to help save the railway. He repaired locomotives for 28 years — his optimism comes from the belief that the railway can still live. His hands carry old calluses, and there is always oil under his fingernails.
 
-CLOTHING:
-- Brown plaid long-sleeve shirt, sleeves rolled to elbows
-- Three pens (red, blue, black) and small screwdriver in left chest pocket
-- Dark brown corduroy vest, zipper broken, held with safety pin
-- Pockets bulging with small parts, screws, electrical tape
-- Reading glasses perched on top of head, temple wrapped in tape
-- Dark loose trousers with tool marks
-- Black cloth shoes
+FACE (CRITICAL — 28年机车维修师的手和脸):
+- Round, full face with rosy cheeks weathered by engine room heat
+- Small bright eyes that squint into happy slits when smiling — genuine joy, not forced
+- Sparse irregular gray-white eyebrows, a few extra long ones sticking out wildly
+- Round red nose tip (rosacea from decades of hot/cold engine rooms)
+- Gray-white sparse hair, slightly bald on top, fluffy on sides, never combed — always has a tuft sticking up
+- Yellowish skin tone with a 5mm black oil stain on right cheek (he never notices it)
+- Missing left front tooth (knocked out fixing a machine 20 years ago) — shows when he grins wide
+- Deep laugh lines — this man laughs more than he frowns
+
+CLOTHING (every detail tells the story of 28 years at the workshop):
+- Brown plaid long-sleeve shirt, sleeves rolled to elbows — muscle memory from rolling them every morning for 28 years
+- Three pens (red, blue, black) and a small screwdriver in left chest pocket — always ready to sketch a fix or tighten a bolt
+- Dark brown corduroy vest, zipper broken, held with a safety pin — he'll fix the vest "tomorrow" but never does
+- Pockets bulging with small parts, screws, electrical tape — a walking toolbox
+- Reading glasses perched on top of head, temple wrapped in tape — lost the real case years ago
+- Dark loose trousers with tool marks and faint grease stains
+- Black cloth shoes, soles slightly worn from standing on concrete workshop floors
 
 HAND DETAILS:
-- 1cm old burn scar on left thumb web
+- 1cm old burn scar on left thumb web — from a welding accident, he wears it like a badge
+- Hands with visible calluses, fingernails permanently stained with oil
+- Fingers slightly thickened from decades of wrench work
 
 COLOR PALETTE:
 - Primary: warm brown (#8B4513), plaid red-brown (#A0522D)
 - Secondary: corduroy brown (#6B3A2A), faded denim blue (#4A7C9B)
 - Accents: bright red pen (#FF0000), blue pen (#0000FF), silver screwdriver (#C0C0C0)
 
-ATMOSPHERE: Optimistic, slightly messy but brilliant. The kind of mechanic who can fix anything but can't find his own glasses.
+MOOD: Optimistic, slightly messy but brilliant. A man who spent 28 years keeping locomotives alive with duct tape and genius. His laughter fills the workshop. He's back because Lao Chen called, and he believes — truly believes — the railway can still run. The kind of mechanic who can fix anything but can't find his own glasses.
 
 AVOID:
-- Clean or professional mechanic appearance
-- Serious or gloomy expression
-- Impossibly neat workshop look
+- Clean or professional mechanic appearance — his hands are always dirty, his clothes always have a grease spot
+- Serious or gloomy expression — this is the most optimistic character in the game
+- Impossibly neat workshop look — he thrives in organized chaos
+- Modern or fashionable clothing — everything is work-worn and functional
+- Generic "old man" look — his energy and grin make him feel younger than 62
+- Missing the oil stain on his cheek — it's his signature
 ```
+
+**叙事定位**：修了28年机车的老师傅，退休后被老陈叫回来帮忙。乐观是因为他相信铁路还能活。手上有老茧，指甲缝里永远有油渍。他的笑声是整个团队的精神支柱。
 
 ---
 
@@ -185,40 +225,53 @@ AVOID:
 **文件**：`Resources/characters/liayi/{表情}.png`  
 **表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 55 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft lighting,
 
-FACE CHARACTERISTICS:
-- Round face, slight double chin
-- Small but lively eyes, crescent-shaped when smiling
-- Thin arched eyebrows (tattooed, now faded to gray-blue)
-- Small round nose tip
-- Thin lips, perpetually upturned corners, speaks like a machine gun
-- Ear-length permed hair, dyed brown with 2cm white roots showing
-- Yellowish-white skin tone, wrinkles on neck from years of cooking
+CHARACTER: Li Guifang (李阿姨/李桂芳), 55-year-old community heart and soul of Wufeng Village Station. She handles money, manages affairs, and takes care of people. Her laughter is the warmest sound at the station. There are always snacks in her apron pocket.
 
-CLOTHING:
-- Pink floral long-sleeve shirt, freshly ironed
-- Deep blue cotton apron, old phone in front pocket
-- Butterfly bow tied at lower back (decorative)
-- Dark long pants, slightly worn at knees
-- Black cloth shoes
-- Dark brown Buddhist bead bracelet on left wrist, 12mm beads
-- Gold ring on right hand
+FACE (CRITICAL — 这张脸要让人想叫一声"李阿姨"):
+- Round face with a slight double chin — the face of someone who feeds everyone before herself
+- Small but lively eyes that crescent into warm moons when smiling — eyes that have seen every villager's joy and sorrow
+- Thin arched eyebrows (tattooed decades ago, now faded to a ghostly gray-blue)
+- Small round nose tip, slightly pink from years over a hot stove
+- Thin lips perpetually upturned at the corners — she's always about to say something
+- Ear-length permed hair, dyed brown with 2cm white roots showing — she'll get to the salon "next week"
+- Yellowish-white skin tone with warm undertones, fine wrinkles on neck from years of cooking over open flames
+
+CLOTHING (every layer says "I take care of this place"):
+- Pink floral long-sleeve shirt, freshly ironed — she irons everything, even work clothes
+- Deep blue cotton apron, old phone in the front pocket — the apron is her command center
+- Butterfly bow tied at the lower back (decorative) — a small vanity, she still wants to look nice
+- Dark long pants, slightly worn at knees from kneeling to pick vegetables and scrub floors
+- Black cloth shoes, comfortable for standing all day
+- Dark brown Buddhist bead bracelet on left wrist, 12mm beads — she prays for the village
+- Gold ring on right hand — a gift from her late husband, never takes it off
+
+APRON POCKET DETAIL (signature character element):
+- The apron pocket always contains snacks — hard candies, dried fruit, small cookies — for anyone who looks hungry
 
 COLOR PALETTE:
 - Primary: pink (#FFB6C1), floral print (#FF69B4)
 - Secondary: deep blue apron (#000080), dark pants (#2F4F4F)
 - Accents: gold ring (#FFD700), brown beads (#8B4513)
 
-ATMOSPHERE: Warm, talkative, the village's information hub. She knows everyone's business and means well.
+MOOD: Warm, talkative, the village's information hub and emotional anchor. She knows everyone's business and means well. Her laughter echoes through the station like a bell. She feeds people before they can say they're hungry, and she'll tell you exactly what she thinks whether you asked or not. The station would fall apart without her — not the rails, but the people.
 
 AVOID:
-- Too young or fashionable appearance
-- Quiet or reserved expression
-- Missing the apron (essential character marker)
+- Too young or fashionable appearance — she's 55 and comfortable with it
+- Quiet or reserved expression — this woman has never been quiet in her life
+- Missing the apron (essential character marker — it's her uniform)
+- Missing the apron pocket snacks (signature detail)
+- Cold or distant expression — she radiates warmth like a kitchen stove
+- Missing the gold ring or Buddhist beads (personal story elements)
 ```
+
+**叙事定位**：社区里的热心肠，管钱管事管人。她的笑声是雾峰村车站最温暖的声音。围裙口袋里永远有零食。她是团队的粘合剂——当大家吵架时，她一碗热汤就能把所有人拉回桌前。
 
 ---
 
@@ -227,40 +280,50 @@ AVOID:
 **文件**：`Resources/characters/wangxiaodi/{表情}.png`  
 **表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, young male, 22 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft lighting,
 
-FACE CHARACTERISTICS:
-- Oval face, still has baby fat
-- Large bright eyes, clear black and white
-- Thick natural eyebrows, slightly messy but handsome
-- Small upturned nose, youthful
-- Thick lips, easy smile showing straight white teeth
-- Black short hair, 4cm fluffy, morning hand-styled look
-- Fringe parted to reveal full forehead
-- Pale clean skin, 3mm silver earring in left ear
-- Two or three light acne scars on chin
+CHARACTER: Wang Chenyang (王小弟/王晨阳), 22-year-old fresh university graduate. He follows Lao Chen to learn the railway, like接过了一根接力棒. His eyes carry light — the kind that hasn't been beaten out of him yet.
 
-CLOTHING:
-- Light gray hoodie (discount brand), uneven drawstrings
-- White t-shirt underneath, collar reads "Transportation Engineering 2026"
-- Black over-ear headphones around neck (installment payment "professional equipment")
-- Light blue jeans, 2cm white wear marks at both knees
-- White sneakers, slightly dirty toe
+FACE (CRITICAL — 这张脸要让人想起自己刚毕业时的样子):
+- Oval face still carrying baby fat — he looks younger than 22
+- Large bright eyes, clear black and white — eyes with light in them, the kind that believe the world can be changed
+- Thick natural eyebrows, slightly messy but handsome — expressive, they jump when he's excited
+- Small upturned nose, youthful and slightly sunburned from outdoor work
+- Thick lips with an easy, unguarded smile showing straight white teeth — he smiles before he thinks
+- Black short hair, 4cm fluffy, morning hand-styled look — he spends 30 seconds on hair and calls it done
+- Fringe parted to reveal full forehead — open and honest
+- Pale clean skin with a 3mm silver earring in left ear — a small rebellion against "be proper"
+- Two or three light acne scars on chin — he's 22, it shows
+
+CLOTHING (every item says "broke college grad with dreams"):
+- Light gray hoodie (discount brand), uneven drawstrings — the kind you buy at a street market
+- White t-shirt underneath, collar reads "Transportation Engineering 2026" — he's proud of his degree
+- Black over-ear headphones around neck (installment payment "professional equipment") — his most prized possession
+- Light blue jeans, 2cm white wear marks at both knees — he kneels a lot to inspect tracks
+- White sneakers, slightly dirty toe — from walking the railway line with Lao Chen
 
 COLOR PALETTE:
 - Primary: light gray (#D3D3D3), light blue (#87CEEB)
 - Secondary: white (#FFFFFF), denim blue (#4682B4)
 - Accents: silver earring (#C0C0C0), black headphones (#1A1A1A)
 
-ATMOSPHERE: Energetic, eager to prove himself, slightly clumsy but sincere. The fresh graduate who still believes he can change the world.
+MOOD: Energetic, eager to prove himself, slightly clumsy but sincere. The fresh graduate who still believes he can change the world. When he looks at the old railway, he doesn't see ruins — he sees possibility. He's in over his head but he won't quit. There is light in his eyes that the older characters have lost and are glad to see again.
 
 AVOID:
-- Too mature or serious appearance
-- Expensive or fashionable clothing
-- Clean, unworn sneakers (should show use)
+- Too mature or serious appearance — he's 22 and acts like it
+- Expensive or fashionable clothing — he's a broke grad, everything is budget
+- Clean, unworn sneakers — they should show use from walking tracks
+- Confident or experienced posture — he's still figuring things out
+- Generic "anime protagonist" look — he should feel like a real engineering student
+- Missing the headphones or silver earring (signature details)
 ```
+
+**叙事定位**：刚毕业的大学生，热血但没经验。他跟着老陈学铁路，像是接过了一根接力棒。眼睛里有光。他是整个团队的未来——也是玩家在游戏中的情感投射。他的成长弧线就是铁路复兴的缩影。
 
 ---
 
@@ -269,41 +332,51 @@ AVOID:
 **文件**：`Resources/characters/zhaoshifu/{表情}.png`  
 **表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged male, 55 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette with earthy tones, detailed shading, soft side lighting,
 
-FACE CHARACTERISTICS:
-- Slightly long, angular face, sharp features
-- Deep brown eyes, serious but not sharp, gentle when relaxed
-- Average thickness eyebrows, natural shape
-- Average nose bridge
-- Thin lips, straight corners, looks serious when not smiling
-- Black short hair, 1.5cm, neat and tidy, clean sideburns
-- Dark outdoor work complexion
-- 2cm old scar on left cheek (from military training)
+CHARACTER: Zhao Deshan (赵师傅/赵德山), 55-year-old retired railway track maintenance engineer. A man of few words whose every word counts. He has walked 20 years of railway tracks — every sleeper plank knows him. Silent, steady, immovable like the rails themselves.
 
-CLOTHING:
-- Olive green utility jacket, zipped to chest
-- Zipper pull wrapped in black electrical tape (original broken)
-- 1cm hole on left sleeve, unpatched
-- Dark gray high-neck knit sweater, form-fitting
-- Left wrist vintage military mechanical watch, old strap, 3mm scratch on face
-- Dark utility pants, canvas belt with brass buckle
-- Black combat boots, scuffed toe
+FACE (CRITICAL — 这张脸像铁路一样沉默但可靠):
+- Slightly long, angular face with sharp features — a face carved by wind and distance
+- Deep brown eyes, serious but not sharp — when relaxed, there is a quiet gentleness, like a still pond
+- Average thickness eyebrows, natural shape, slightly furrowed from years of squinting into sunlight on tracks
+- Average nose bridge, straight and unremarkable — like the man himself, functional
+- Thin lips with straight corners — looks serious when not smiling, but when he does smile, it means everything
+- Black short hair, 1.5cm, neat and tidy with clean sideburns — military precision, even in retirement
+- Dark outdoor work complexion — sun-darkened, wind-worn, the face of a man who has spent decades outdoors
+- 2cm old scar on left cheek (from military training) — he never talks about it
+
+CLOTHING (every item is functional, nothing is decorative):
+- Olive green utility jacket, zipped to chest — military surplus, still the best jacket he owns
+- Zipper pull wrapped in black electrical tape (original broken) — he fixes what breaks, doesn't replace
+- 1cm hole on left sleeve, unpatched — he noticed it, decided it doesn't affect function
+- Dark gray high-neck knit sweater, form-fitting — warm and practical
+- Left wrist vintage military mechanical watch, old leather strap, 3mm scratch on face — timekeeping is sacred to a track maintenance man
+- Dark utility pants, canvas belt with brass buckle — sturdy, no-nonsense
+- Black combat boots, scuffed toe — from walking every kilometer of the line
 
 COLOR PALETTE:
 - Primary: olive green (#4B5320), dark gray (#36454F)
 - Secondary: black (#1A1A1A), brass buckle (#D4A017)
 - Accents: silver watch face (#C0C0C0), black electrical tape (#1A1A1A)
 
-ATMOSPHERE: Stern on the outside, warm on the inside. A man of few words whose actions speak louder.
+MOOD: Stern on the outside, warm on the inside. A man of few words whose actions speak louder. He has walked every kilometer of the 23km line, knows where the rails groan in winter, where the ballast shifts after rain. When he speaks, the others listen — not because he's loud, but because he's always right. His silence isn't coldness; it's the confidence of someone who has done the work.
 
 AVOID:
-- Soft or friendly first impression
-- Missing the scar (essential character detail)
-- Clean, unworn combat boots
+- Soft or friendly first impression — he should look stern and reserved at first glance
+- Missing the scar on left cheek (essential character detail)
+- Clean, unworn combat boots — these boots have walked 20 years of track
+- Talkative or expressive posture — he is reserved and still
+- Modern or fashionable clothing — everything is military surplus or functional workwear
+- Generic "tough guy" look — he's not aggressive, he's quietly dependable
 ```
+
+**叙事定位**：沉默寡言的线路维护员。走了20年铁轨，每根枕木都认识他。说话少但每句都算数。他是团队的定海神针——当所有人都慌了，赵师傅还在检查铁轨。他的沉默不是冷漠，是20年巡线养成的习惯。
 
 ---
 
@@ -312,31 +385,48 @@ AVOID:
 **文件**：`Resources/characters/xiaofang/{表情}.png`  
 **表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（16种）
 
-**主图提示词**：
+**主图提示词（高清二次元版）**：
 ```
-pixel art, 16-bit retro style, SINGLE CHARACTER, ONE PERSON ONLY, full body character portrait, isolated on transparent background, no other people, no duplicates, no character sheet, STARDEW VALLEY STYLE PIXEL ART, middle-aged female, 45 years old.
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft lighting,
 
-FACE CHARACTERISTICS:
-- Round face, gentle eyes
-- Short neat hair
-- Warm, approachable expression
+CHARACTER: Xiao Fang (小芳), 45-year-old volunteer dispatcher at Wufeng Village Station. The second youngest energy source on the team (after Wang Xiaodi). Enthusiastic, always ready, the person who keeps the whole operation running on time.
 
-CLOTHING:
-- Simple work uniform
-- Volunteer vest
-- Dark long pants
-- Flat cloth shoes
+FACE (CRITICAL — 这张脸要让人觉得"有她在就放心了"):
+- Round face with a natural warmth — the face of someone who genuinely enjoys helping
+- Bright, alert eyes that are always scanning, always aware — a dispatcher's eyes
+- Short neat hair, practical and easy to maintain — she doesn't waste time on vanity
+- Warm, approachable expression with a hint of determination — she's not just nice, she's capable
+- Subtle laugh lines around eyes — she smiles often and means it
+- Light makeup, barely noticeable — she cares about presentation but not extravagance
+
+CLOTHING (functional volunteer uniform with personal touches):
+- Simple light-colored work shirt, collar neat — she takes pride in looking presentable
+- Bright orange/yellow volunteer vest with reflective strips — she wears it like a badge of honor
+- Dark long pants, practical and well-maintained
+- Flat cloth shoes, comfortable for being on her feet all day
+- Small radio/walkie-talkie clipped to vest shoulder — a dispatcher is always connected
+- Pen tucked behind ear — she's always taking notes or filling forms
 
 COLOR PALETTE:
-- Primary: warm tones, volunteer vest color
-- Secondary: practical dark colors
+- Primary: warm orange/yellow vest (#FF8C00), warm skin tones
+- Secondary: light shirt (#F5F5DC), dark practical pants (#2F4F4F)
+- Accents: reflective silver strips (#C0C0C0), pen cap blue (#4169E1)
 
-ATMOSPHERE: Enthusiastic, willing to learn, the volunteer who shows up every day.
+MOOD: Enthusiastic, competent, always showing up. She's the volunteer who arrived first and leaves last. Her energy is infectious — when she's excited about a project, everyone catches the bug. She runs the dispatch schedule with a clipboard and sheer willpower. Not the most experienced, but the most committed.
 
 AVOID:
-- Too polished or professional appearance
-- Cold or distant expression
+- Too polished or professional appearance — she's a volunteer, not a corporate executive
+- Cold or distant expression — warmth is her defining trait
+- Missing the volunteer vest (essential character marker)
+- Missing the walkie-talkie or pen (dispatcher tools)
+- Lazy or passive posture — she's always moving, always doing
+- Generic "nice lady" look — she should feel capable and energetic, not just pleasant
 ```
+
+**叙事定位**：志愿者，负责调度。热情洋溢，是团队里最年轻（除王小弟外）的活力来源。她用一个 clipboard 和满腔热情撑起了整个车站的调度系统。有她在，火车就不会误点——至少在她的管辖范围内。
 
 ---
 
@@ -2005,6 +2095,8 @@ Description: A piano plays alone in a room that hasn't been opened in years. The
 **Suno Style（≤1000字符）：**
 > Style: Ambient piano lo-fi warmth nostalgic instrumental, bittersweet loss with hope leaking through cracks, solo slightly detuned upright piano with felt dampers soft muffled tone, gentle cello drone barely audible underneath, distant music box playing 3-4 fragile notes on repeat, ambient pad like morning fog through broken windows, slow 56 BPM unhurried walking pace, reference To the Moon opening Stardew Valley winter Joe Hisaishi, piano alone in abandoned room notes aged like clock lost minutes, soft string pad enters as warm shadow, cello holds low note like wind through empty station, music box repeats as if wound up and walked away decades ago, ends mid-thought mid-memory unfinished like fading photograph, sound of railway station where last train left twenty years ago, reverb like empty hall, gentle fade to silence, instrumental no vocals
 
+**时长**：3:30（循环用，尾部渐弱可无缝loop） | **生成策略**：1次30s片段 → Extend 5-6次至全长
+
 ### 3.2 emotional（感人·温暖）
 
 **Suno 提示词**：
@@ -2019,6 +2111,8 @@ Description: A warm, emotional piano piece with gentle string accompaniment. The
 
 **Suno Style（≤1000字符）：**
 > Style: Emotional piano cinematic strings warm instrumental, heartwarming touching hopeful reunion mood, piano with gentle repeating left-hand arpeggios right-hand melody rising and falling like heartfelt conversation, string ensemble enters at 20s as warm shadow underneath, soft French horn adds depth at 45s playing counter-melody, moderate 70 BPM with slight rubato breathing room, reference Stardew Valley dance theme Studio Ghibli Hisaishi warm scores, arrangement builds from solo piano to small chamber ensemble, strings swell gently supporting melody never overpowering, light brushed percussion at midpoint adds gentle pulse, emotional arc from quiet recognition to full warmth then settles back to intimate piano ending, reverb like small room with wooden walls, nostalgic but forward-looking, ends on resolved major chord with lingering warmth, instrumental no vocals
+
+**时长**：3:30（循环用） | **生成策略**：1次30s片段 → Extend 5-6次至全长
 
 ### 3.3 determination（坚定·希望）
 
