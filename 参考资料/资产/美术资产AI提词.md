@@ -1,4 +1,4 @@
-# AI生成资产提词总集（v4.1 All-in-One）
+﻿# AI生成资产提词总集（v4.1 All-in-One）
 
 > 版本：v4.1（2026-09-18 合并美术+配乐为统一文档；v4.1 已生成背景归档）
 > 用途：所有AI生成资产的提词汇总——角色立绘、场景背景、BGM配乐、歌词歌曲
@@ -135,9 +135,9 @@ ACCESSORIES:
 - Old leather backpack (partially visible)
 
 COLOR PALETTE:
-- Primary: navy blue (#1A237E), warm white (#FFF8F0)
-- Secondary: copper (#B87333), denim blue (#3F51B5)
-- Accents: warm skin (#FFD5C0), dark hair (#1A1A2E)
+- Primary: navy blue （海军蓝）, warm white （暖白色）
+- Secondary: copper （铜色）, denim blue （牛仔蓝）
+- Accents: warm skin （暖肤色）, dark hair （深蓝黑色）
 
 MOOD: Young, determined, slightly nervous but hopeful. A student about to embark on an impossible mission.
 
@@ -193,9 +193,9 @@ ACCESSORIES:
 - A faded railway stationmaster badge pinned inside his vest (hidden, only visible when vest is open)
 
 COLOR PALETTE:
-- Primary: warm gray (#8B8682) for skin, off-white (#F5F0E8) for shirt
-- Secondary: dark gray (#4A4A4A) for vest, worn brown (#6B4226) for leather
-- Accents: faded red thread (#CD5C5C) for the button, copper (#B87333) for glasses
+- Primary: warm gray （暖灰） for skin, off-white （米白） for shirt
+- Secondary: dark gray （深灰） for vest, worn brown （旧棕） for leather
+- Accents: faded red thread （柔红） for the button, copper （铜色） for glasses
 - Background influence: warm earth tones suggesting sunset light on old wood
 
 MOOD: Warm, experienced, slightly weary but deeply kind. A man who has guarded the railway for four years alone, waiting for someone to come. His eyes carry the weight of memories — of trains that used to run, of a stationmaster (林悍) who was his best friend, of a line that refuses to die. When he smiles, it's because he's talking about trains or remembering the old days. The sadness never fully leaves his eyes, but neither does the hope.
@@ -270,9 +270,9 @@ HAND DETAILS:
 - Fingers slightly thickened from decades of wrench work
 
 COLOR PALETTE:
-- Primary: warm brown (#8B4513), plaid red-brown (#A0522D)
-- Secondary: corduroy brown (#6B3A2A), faded denim blue (#4A7C9B)
-- Accents: bright red pen (#FF0000), blue pen (#0000FF), silver screwdriver (#C0C0C0)
+- Primary: warm brown （马鞍棕）, plaid red-brown （锈橙）
+- Secondary: corduroy brown （灯芯绒棕）, faded denim blue
+- Accents: bright red pen （红色）, blue pen, silver screwdriver （银色）
 
 MOOD: Optimistic, slightly messy but brilliant. A man who spent 28 years keeping locomotives alive with duct tape and genius. His laughter fills the workshop. He's back because Lao Chen called, and he believes — truly believes — the railway can still run. The kind of mechanic who can fix anything but can't find his own glasses.
 
@@ -325,9 +325,9 @@ APRON POCKET DETAIL (signature character element):
 - The apron pocket always contains snacks — hard candies, dried fruit, small cookies — for anyone who looks hungry
 
 COLOR PALETTE:
-- Primary: pink (#FFB6C1), floral print (#FF69B4)
-- Secondary: deep blue apron (#000080), dark pants (#2F4F4F)
-- Accents: gold ring (#FFD700), brown beads (#8B4513)
+- Primary: pink （粉色）, floral print
+- Secondary: deep blue apron （藏蓝）, dark pants （暗灰绿）
+- Accents: gold ring （丹青金）, brown beads （马鞍棕）
 
 MOOD: Warm, talkative, the village's information hub and emotional anchor. She knows everyone's business and means well. Her laughter echoes through the station like a bell. She feeds people before they can say they're hungry, and she'll tell you exactly what she thinks whether you asked or not. The station would fall apart without her — not the rails, but the people.
 
@@ -377,9 +377,9 @@ CLOTHING (every item says "broke college grad with dreams"):
 - White sneakers, slightly dirty toe — from walking the railway line with Lao Chen
 
 COLOR PALETTE:
-- Primary: light gray (#D3D3D3), light blue (#87CEEB)
-- Secondary: white (#FFFFFF), denim blue (#4682B4)
-- Accents: silver earring (#C0C0C0), black headphones (#1A1A1A)
+- Primary: light gray （晨雾灰）, light blue （天蓝色）
+- Secondary: white （纯白色）, denim blue （钢蓝色）
+- Accents: silver earring （银色）, black headphones （深灰黑）
 
 MOOD: Energetic, eager to prove himself, slightly clumsy but sincere. The fresh graduate who still believes he can change the world. When he looks at the old railway, he doesn't see ruins — he sees possibility. He's in over his head but he won't quit. There is light in his eyes that the older characters have lost and are glad to see again.
 
@@ -430,9 +430,9 @@ CLOTHING (every item is functional, nothing is decorative):
 - Black combat boots, scuffed toe — from walking every kilometer of the line
 
 COLOR PALETTE:
-- Primary: olive green (#4B5320), dark gray (#36454F)
-- Secondary: black (#1A1A1A), brass buckle (#D4A017)
-- Accents: silver watch face (#C0C0C0), black electrical tape (#1A1A1A)
+- Primary: olive green （橄榄绿）, dark gray
+- Secondary: black （深灰黑）, brass buckle （黄铜色）
+- Accents: silver watch face （银色）, black electrical tape （深灰黑）
 
 MOOD: Stern on the outside, warm on the inside. A man of few words whose actions speak louder. He has walked every kilometer of the 23km line, knows where the rails groan in winter, where the ballast shifts after rain. When he speaks, the others listen — not because he's loud, but because he's always right. His silence isn't coldness; it's the confidence of someone who has done the work.
 
@@ -480,9 +480,9 @@ CLOTHING (functional volunteer uniform with personal touches):
 - Pen tucked behind ear — she's always taking notes or filling forms
 
 COLOR PALETTE:
-- Primary: warm orange/yellow vest (#FF8C00), warm skin tones
-- Secondary: light shirt (#F5F5DC), dark practical pants (#2F4F4F)
-- Accents: reflective silver strips (#C0C0C0), pen cap blue (#4169E1)
+- Primary: warm orange/yellow vest （深橙色）, warm skin tones
+- Secondary: light shirt （浅米色）, dark practical pants （暗灰绿）
+- Accents: reflective silver strips （银色）, pen cap blue
 
 MOOD: Enthusiastic, competent, always showing up. She's the volunteer who arrived first and leaves last. Her energy is infectious — when she's excited about a project, everyone catches the bug. She runs the dispatch schedule with a clipboard and sheer willpower. Not the most experienced, but the most committed.
 
@@ -647,18 +647,18 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。纯风景，无人无车，只有山和铁轨。
 
 LAYOUT:
-- 下三分之二：层叠山脊（前景深绿 #2E5D3A，中景黄绿 #5A7A3E，远景蓝灰 #7A8B99，最远淡紫 #B8A9C9）
-- 山谷底部：蜿蜒铁路线（锈棕色 #6B5B4F，偶尔有桥墩阴影）
+- 下三分之二：层叠山脊（前景深绿 深森林绿，中景黄绿 黄绿色，远景蓝灰 蓝灰色，最远淡紫 淡紫色）
+- 山谷底部：蜿蜒铁路线（锈棕色 锈棕色，偶尔有桥墩阴影）
 - 一个小隧道口（黑色半圆，上方水泥刻字「临江工务段」模糊可辨）
-- 上三分之一：晴朗午后天空（#5FA8E0），散落积云（#FFFFFF，底部浅蓝灰 #B8C6DB）
+- 上三分之一：晴朗午后天空（晴朗天蓝），散落积云（白色，底部浅蓝灰 浅蓝灰）
 
 COLORS:
-- 山脊色阶：深森林绿(#2E5D3A) → 黄绿(#5A7A3E) → 蓝灰(#7A8B99) → 淡紫(#B8A9C9) → 天际淡蓝白(#DCE8F0)
-- 铁轨：锈棕灰(#6B5B4F)，桥墩段偏锈红(#8B5E3C)
-- 隧道口：深灰黑(#1A1A1A)，上方水泥灰(#9A9A8A)
-- 天空：晴朗蓝(#5FA8E0)，积云白(#FFFFFF)，云底蓝灰(#B8C6DB)
-- 废弃站房：灰瓦(#6A6A6A)，塌陷处暗影(#3A3A3A)
-- 梯田荒地：枯黄(#A89060)与灌木绿(#4A6B3E)交织
+- 山脊色阶：深森林绿（深森林绿） → 黄绿（黄绿色） → 蓝灰（蓝灰色） → 淡紫（淡紫色） → 天际淡蓝白（天际淡蓝白）
+- 铁轨：锈棕灰（锈棕色），桥墩段偏锈红（锈红）
+- 隧道口：深灰黑（深灰黑），上方水泥灰（水泥灰）
+- 天空：晴朗蓝（天蓝色），积云白（纯白色），云底蓝灰（浅蓝灰）
+- 废弃站房：灰瓦（灰瓦色），塌陷处暗影（暗影色）
+- 梯田荒地：枯黄（枯黄色）与灌木绿（灌木绿）交织
 
 MOOD: 归途。辽阔、安静、带着希望的忧伤。一个25岁的学生第一次亲眼看到爷爷走过的那些山——它们在午后阳光下安静地排列着，像等待阅兵的士兵。铁路线在山谷中细得像一根线，但那根线就是整个故事的起点。林彪悍把脸贴在玻璃上，心里默念："爷爷，我看到了。"山脉不知道有人在看。它们在铁路之前就在这里，铁路消失之后它们还会在这里。但今天，从一架蓝色小飞行器的窗口望下去，一个年轻人看到了那根细铁线，感到某种无法命名的东西——骄傲、悲伤、以及一个尚未许下但已经背负的承诺。
 
@@ -699,9 +699,9 @@ LAYOUT:
 - Surrounding: forested hills, terraced fields, a winding dirt road
 
 COLORS:
-- Rails: rust brown-grey (#6B5B4F) with warm highlights — rust as love, not neglect
-- Station roofs: grey-blue tiles (#4F6F7A)
-- Fields: gold-green (#8FA94E)
+- Rails: rust brown-grey （锈棕色） with warm highlights — rust as love, not neglect
+- Station roofs: grey-blue tiles
+- Fields: gold-green
 - Late afternoon warm wash over everything — golden hour, the hour grandfather always checked the line
 
 MOOD: Seeing it for the first time with your own eyes. A line that should be dead, still alive — because one person refused to let it die. Lin Biaohan's voice catches: "那是……铁路！" Not a grand railway. Not an important railway. Just 23 kilometers of iron that mean everything to one village and one old man. The railway is the shape of a promise kept.
@@ -729,18 +729,18 @@ LAYOUT:
 - 村口牌坊「雾峰村 무봉촌」位于中景偏左，旁边有褪色春联
 - 远景山坡：梯田茶园（深绿弧形条带层叠上升）
 - 最远背景：山谷中的铁路线（锈棕色细线）和一个微型站房（灰瓦顶）
-- 天空：夕阳从左侧斜射，橙粉色云彩（#E8974A → #C4603A），远处山脊剪影
+- 天空：夕阳从左侧斜射，橙粉色云彩（橙粉色 → 深橙色），远处山脊剪影
 
 COLORS:
-- 屋顶：暖灰(#8A7F7A)，瓦片纹理在夕阳下偏金棕(#B89060)
-- 土墙：白灰泛黄(#D9CBB8)，斑驳处露出红砖底(#B4684D)
-- 槐树：深棕树干(#5C3317)，树冠深绿偏金(#6B8E3A，在夕阳下带金色高光)
-- 梯田茶园：深苔绿(#4C6B3E)，逆光处偏暗(#2A3D22)
-- 炊烟：淡蓝灰(#B8C0C8)，被夕阳染成粉橙(#E8A080)
-- 夕阳天空：橙(#E8974A) → 深蓝影(#3D5175)
-- 铁路线：锈棕(#6B5B4F)，在远处山谷中几乎看不清
-- 牌坊：水泥灰(#9A9A8A)，红字褪色(#CD5C5C → #A07070)
-- 春联残片：红纸褪色(#B06060)，金字模糊(#C8A050)
+- 屋顶：暖灰，瓦片纹理在夕阳下偏金棕
+- 土墙：白灰泛黄，斑驳处露出红砖底
+- 槐树：深棕树干，树冠深绿偏金(金绿色，在夕阳下带金色高光)
+- 梯田茶园：深苔绿，逆光处偏暗
+- 炊烟：淡蓝灰，被夕阳染成粉橙
+- 夕阳天空：橙 → 深蓝影
+- 铁路线：锈棕（锈棕色），在远处山谷中几乎看不清
+- 牌坊：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
+- 春联残片：红纸褪色，金字模糊
 
 MOOD: 回家了。村庄还在等他。但林彪悍不再是四年前离开的孩子——他带着爷爷的铜怀表、一个死去之人的使命、以及四年缺席中无法弥补的距离。村庄看起来一模一样。他不是了。这就是这幅画面的痛处：地方完美地等了他，而他在没有它的地方长大了。夕阳把一切都染成金色，就像爷爷最后一次站在这里时的颜色。远处的铁轨还在——锈了，但还在。就像这个村庄，就像这个家。
 
@@ -773,9 +773,9 @@ LAYOUT:
 - Chinese-language signs only
 
 COLORS:
-- Building: grey brick (#9A8F84), roof: faded red (#B4684D) — colors that have earned their fading
-- Platform: worn concrete warm grey (#A8998B)
-- Locomotive: dark green (#2F4A38) with rust accents — rust that Lao Chen polishes off every week
+- Building: grey brick, roof: faded red — colors that have earned their fading
+- Platform: worn concrete warm grey
+- Locomotive: dark green （深绿棕） with rust accents — rust that Lao Chen polishes off every week
 - Sky: orange-pink sunset — the same sunset Lao Chen has watched alone for 1,460 evenings
 
 MOOD: The last station on a dying line — but tonight, someone came back. For four years, this platform held one man's shadow at dusk. The lamp inside the station is always on, the thermos is always warm, because Lao Chen never stopped believing that the next person through that door would be someone who came to stay. The sunset is the same color it was the day the last passenger left. But today, for the first time in four years, it's lighting someone's arrival.
@@ -808,8 +808,8 @@ LAYOUT:
 - Background: fading sky — the last light of the day, the first light of a new chapter
 
 COLORS:
-- Planks: worn brown (#7A6248), weeds: grey-green (#68754B)
-- Building: whitewash patched grey (#C0B5A5), lamplight warm yellow (#F2C86B) — warm as a kitchen, warm as a welcome
+- Planks: worn brown, weeds: grey-green
+- Building: whitewash patched grey, lamplight warm yellow — warm as a kitchen, warm as a welcome
 - Gloves: worn leather brown — the color of four years of work
 
 MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every detail here is a love letter from an old man to a railway line: the swept planks, the oiled signal, the patched gloves, the warm thermos. Lin Biaohan's feet touch the wood and the boards creak — the same sound his grandfather's boots made every morning at 6am. "到家了," he whispers, and the station, for the first time in four years, believes it.
@@ -832,7 +832,7 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 
 **叙事锚点**：Day1——0721降落在临江市附近，林彪悍第一次踏上中国土地。心脏还在狂跳——三分钟前他刚从边境检查站的栏杆下钻过去。这座中朝边境小镇看起来平静而普通，但他知道头顶上至少有两架巡逻机在搜索这架不应该出现在这里的蓝色飞行器。
 
-SCENE: 林彪悍从低空俯瞰临江市边境小镇的全貌。这是一座典型的中朝边境小城——鸭绿江支流在画面上方横贯而过，江水灰绿色（#86A88A），水面上停着几艘锈迹斑斑的渡船。江北侧（朝鲜方向）稀疏灰暗，几栋政府灰色建筑上飘着旗帜；江南侧（中国方向）热闹拥挤，街道上人来人往。建筑风格是东北农村砖房与朝鲜风格的混搭——红砖墙（#8B4513）配灰瓦顶（기와 giwa），部分建筑有朝鲜风格的白色灰泥外墙和木格窗棂。路牌和招牌全部使用中韩双语：最大的路牌写着「临江市 림강시」（蓝底白字），旁边的商店招牌写着「商店 가게」（红底黄字），一家饭馆的霓虹灯管拼出「饭店 식당」，还有一家「超市 슈퍼마켓」。街道中央有一个显眼的标志——沙能补给站的千里马牌logo（천리마 Chollima品牌，一匹奔跑的千里马剪影，下面写着「千里马沙能补给 천리마 모래에너지 보충소」）。画面右侧可以看到已关闭的边境检查站——一根生锈的红白相间栏杆横在路中间（已抬起），旁边一块褪色的绿色标志牌写着「边境检查 국경검문소」，标志牌下面的小字是「中华人民共和国 국경관리」。检查站旁边停着一辆沙能飞行器——民用版（不是0721），灰白色涂装，机身上有「中国民用航空 Civil Aviation」字样和注册号。建筑屋顶是东北风格的烟囱（红砖砌成，顶部有防雨帽）和灰瓦片屋顶。远处的一面墙上，有一条褪色的红色标语横幅：「欢迎来到中国 환영합니다」，旁边另一条更旧的写着「中朝友谊万岁 조중우의 만세」。晨光从画面右侧斜射，给小镇笼罩上一层清冷的蓝灰色调——看似平静，实则暗流涌动。
+SCENE: 林彪悍从低空俯瞰临江市边境小镇的全貌。这是一座典型的中朝边境小城——鸭绿江支流在画面上方横贯而过，江水灰绿色（灰绿色），水面上停着几艘锈迹斑斑的渡船。江北侧（朝鲜方向）稀疏灰暗，几栋政府灰色建筑上飘着旗帜；江南侧（中国方向）热闹拥挤，街道上人来人往。建筑风格是东北农村砖房与朝鲜风格的混搭——红砖墙（红砖色）配灰瓦顶（기와 giwa），部分建筑有朝鲜风格的白色灰泥外墙和木格窗棂。路牌和招牌全部使用中韩双语：最大的路牌写着「临江市 림강시」（蓝底白字），旁边的商店招牌写着「商店 가게」（红底黄字），一家饭馆的霓虹灯管拼出「饭店 식당」，还有一家「超市 슈퍼마켓」。街道中央有一个显眼的标志——沙能补给站的千里马牌logo（천리마 Chollima品牌，一匹奔跑的千里马剪影，下面写着「千里马沙能补给 천리마 모래에너지 보충소」）。画面右侧可以看到已关闭的边境检查站——一根生锈的红白相间栏杆横在路中间（已抬起），旁边一块褪色的绿色标志牌写着「边境检查 국경검문소」，标志牌下面的小字是「中华人民共和国 국경관리」。检查站旁边停着一辆沙能飞行器——民用版（不是0721），灰白色涂装，机身上有「中国民用航空 Civil Aviation」字样和注册号。建筑屋顶是东北风格的烟囱（红砖砌成，顶部有防雨帽）和灰瓦片屋顶。远处的一面墙上，有一条褪色的红色标语横幅：「欢迎来到中国 환영합니다」，旁边另一条更旧的写着「中朝友谊万岁 조중우의 만세」。晨光从画面右侧斜射，给小镇笼罩上一层清冷的蓝灰色调——看似平静，实则暗流涌动。
 
 LAYOUT:
 - 上方远景：鸭绿江支流（灰绿色水面，渡船剪影），对岸朝鲜方向灰色建筑
@@ -842,21 +842,21 @@ LAYOUT:
 - 右侧中景：已关闭的边境检查站（栏杆抬起，褪色标志）
 - 检查站旁：停放的民用沙能飞行器（灰白色，非0721）
 - 远处墙面：褪色红色标语横幅「欢迎来到中国 환영합니다」
-- 天空：清晨冷蓝色调（#6B8EAF），薄云
+- 天空：清晨冷蓝色调（冷蓝色），薄云
 
 COLORS:
-- 建筑红砖：东北红砖(#8B4513)，部分风化为暗棕(#6B3A2A)
-- 灰瓦屋顶：东北传统灰瓦(#6A6A6A)，朝鲜风格灰瓦略深(#5A5A5A)
-- 白灰泥墙：朝鲜风格白墙(#E8E0D0)，斑驳处露出红砖
-- 鸭绿江水：灰绿(#86A88A)，水面反射冷蓝(#9AB0B0)
-- 千里马logo：金黄(#D4A017)马剪影，红色底(#CC0000)圆形标志
-- 双语路牌：蓝底白字(#1A4A8A / #FFFFFF)
-- 商店招牌：红底黄字(#CC0000 / #FFD700)
-- 检查站栏杆：红白条纹褪色(#B06060 / #E8E0D0)
-- 边境标志：绿底白字(#2E5D3A / #FFFFFF)，已褪色
-- 褪色标语横幅：红底(#B04040)金字模糊(#C8A050)
-- 民用飞行器：灰白涂装(#D0D0D0)，蓝色机身线条(#4A7A9B)
-- 天空：清晨冷蓝(#6B8EAF)，地平线偏灰白(#C0C8D0)
+- 建筑红砖：东北红砖（马鞍棕），部分风化为暗棕（灯芯绒棕）
+- 灰瓦屋顶：东北传统灰瓦（灰瓦色），朝鲜风格灰瓦略深
+- 白灰泥墙：朝鲜风格白墙，斑驳处露出红砖
+- 鸭绿江水：灰绿，水面反射冷蓝
+- 千里马logo：金黄（黄铜色）马剪影，红色底圆形标志
+- 双语路牌：蓝底白字(深蓝色 / 纯白色)
+- 商店招牌：红底黄字(红色 / 金色)
+- 检查站栏杆：红白条纹褪色(浅褪色红 / 米黄色)
+- 边境标志：绿底白字(深森林绿 / 纯白色)，已褪色
+- 褪色标语横幅：红底金字模糊
+- 民用飞行器：灰白涂装，蓝色机身线条
+- 天空：清晨冷蓝，地平线偏灰白
 
 MOOD: 两个世界的边境。一个什么都能买到的地方——包括沉默。林彪悍的心跳在0721降落时加速。下方，商贩在摆摊；上方，追捕在继续。这座小镇不知道自己是一场逃亡的舞台。它只觉得今天是星期二。空气中弥漫着沙子的气味——这种新型燃料像石油一样统治了2076年的交通，而这座边贸城就是它的交易节点。千里马的logo到处都是，像一种无声的权力宣告。
 
@@ -878,7 +878,7 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 
 **叙事锚点**：Day1——0721在这里补充了1500公斤沙子。工作人员随口说"沙子便宜"，但林彪悍知道这些灰白色的粉末就是2076年的石油——整个国家的飞行器、汽车、工厂都靠它运转。他在用别人的生命线来完成爷爷的遗愿。
 
-SCENE: 临江市沙能补给站的近景。标准化的加油岛（与中国2020年代加油站布局相似，但设备全部替换为沙能相关）——两个圆柱形沙子储存罐（高约3米，银灰色金属材质，外壁有白色刻度线标注容量：500kg/1000kg/1500kg/2000kg，顶部有压力阀和安全帽）。储存罐之间是加沙设备——一根粗大的软管连接着类似加油枪的装置（加沙枪，金属质感，前端有沙漏形漏斗），软管盘绕在地上。加油岛上方是波纹铁皮顶棚（生锈的橙棕色），顶棚正面挂着千里马牌的标准化标志：圆形红底（#CC0000），中间金色千里马剪影（#D4A017），下方白色文字「千里马沙能补给 천리마 모래에너지 보충소」。顶棚侧面有另一块标志牌：「USET保障总局 USET 보장총국」（蓝底白字，#1A4A8A / #FFFFFF），表明这是国有保障系统下属的标准化设施。收费亭在加油岛右侧——小型玻璃窗亭子（约2x2米），里面坐着一个穿灰蓝色制服的收费员，桌上有一台老式计算器和一本手写账簿。收费亭玻璃窗上贴着价目表：「沙子 모래 0.85元/公斤」（白纸黑字手写），旁边有「千里马会员 천리마 회원 优惠5%」的红色贴纸。地面上散落着灰白色沙粒，几辆手推车停在旁边（金属框架，橡胶轮），车上还残留着沙子。远处可以看到一块沙能载具广告牌——画着一架流线型飞行器，广告语是「千里马·驰骋万里 천리마·만리를 달리다」。一个穿灰蓝色工作服的年轻工人正在操作加沙枪，沙子从漏斗中流出时有轻微的灰尘飞扬。
+SCENE: 临江市沙能补给站的近景。标准化的加油岛（与中国2020年代加油站布局相似，但设备全部替换为沙能相关）——两个圆柱形沙子储存罐（高约3米，银灰色金属材质，外壁有白色刻度线标注容量：500kg/1000kg/1500kg/2000kg，顶部有压力阀和安全帽）。储存罐之间是加沙设备——一根粗大的软管连接着类似加油枪的装置（加沙枪，金属质感，前端有沙漏形漏斗），软管盘绕在地上。加油岛上方是波纹铁皮顶棚（生锈的橙棕色），顶棚正面挂着千里马牌的标准化标志：圆形红底（红色），中间金色千里马剪影（金色），下方白色文字「千里马沙能补给 천리마 모래에너지 보충소」。顶棚侧面有另一块标志牌：「USET保障总局 USET 보장총국」（蓝底白字，深蓝色 / 白色），表明这是国有保障系统下属的标准化设施。收费亭在加油岛右侧——小型玻璃窗亭子（约2x2米），里面坐着一个穿灰蓝色制服的收费员，桌上有一台老式计算器和一本手写账簿。收费亭玻璃窗上贴着价目表：「沙子 모래 0.85元/公斤」（白纸黑字手写），旁边有「千里马会员 천리마 회원 优惠5%」的红色贴纸。地面上散落着灰白色沙粒，几辆手推车停在旁边（金属框架，橡胶轮），车上还残留着沙子。远处可以看到一块沙能载具广告牌——画着一架流线型飞行器，广告语是「千里马·驰骋万里 천리마·만리를 달리다」。一个穿灰蓝色工作服的年轻工人正在操作加沙枪，沙子从漏斗中流出时有轻微的灰尘飞扬。
 
 LAYOUT:
 - 前景中心：两个圆柱形沙子储存罐（银灰色，白色刻度线）
@@ -889,16 +889,16 @@ LAYOUT:
 - 远处背景：沙能载具广告牌（千里马·驰骋万里），小镇建筑轮廓
 
 COLORS:
-- 储存罐：银灰金属(#A8A8A8)，刻度线白(#FFFFFF)，容量数字黑(#1A1A1A)
-- 沙子：灰白偏黄(#C9BFAC)，散落地面的沙粒(#D4C8B0)
-- 顶棚：生锈波纹铁皮(#B86830)，锈蚀处深棕(#6B3A1A)
-- 千里马标志：红底(#CC0000)，金马(#D4A017)，白字(#FFFFFF)
-- USET标志：蓝底(#1A4A8A)，白字(#FFFFFF)
-- 收费亭：金属框架灰(#808080)，玻璃浅蓝反光(#B8D8E8)
-- 价目表：白纸(#F5F0E8)，黑字(#1A1A1A)
-- 工作服：灰蓝(#6A7A8A)
-- 手推车：金属银灰(#9A9A9A)，橡胶轮黑(#2A2A2A)
-- 广告牌：蓝白配色(#2A5A8A / #FFFFFF)，飞行器图案流线型
+- 储存罐：银灰金属，刻度线白（纯白色），容量数字黑（深灰黑）
+- 沙子：灰白偏黄，散落地面的沙粒
+- 顶棚：生锈波纹铁皮，锈蚀处深棕
+- 千里马标志：红底，金马（黄铜色），白字（纯白色）
+- USET标志：蓝底（深蓝色），白字（纯白色）
+- 收费亭：金属框架灰（银灰），玻璃浅蓝反光
+- 价目表：白纸（米白），黑字（深灰黑）
+- 工作服：灰蓝
+- 手推车：金属银灰，橡胶轮黑
+- 广告牌：蓝白配色(中蓝色 / 纯白色)，飞行器图案流线型
 
 MOOD: 平凡的商业行为，但意义深远。沙子——2076年的石油——在这里按公斤出售，像买菜一样随意。价格牌上的手写字迹透露出一种日常感，但0721停在旁边的身影提醒我们：这不是普通的补给。千里马的标志无处不在，像一种无声的权力网络——从朝鲜的实验室到中国的补给站，整个沙能经济都在这个金色马蹄之下运转。工人对这架不寻常的飞行器没有多问——边境小镇，什么都能买到，什么都能卖出去。
 
@@ -920,23 +920,23 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 
 **叙事锚点**：Day2——0721飞越中国领空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从朝鲜的冷色调逐渐过渡到中国的暖色调——像翻开一本书的新篇章，纸张从冷灰变成了暖黄。
 
-SCENE: 从0721舷窗向外望去的中国上空全景。画面下方是无边无际的云海——白色积云层叠翻涌，像棉絮铺成的平原，云层顶部被午后阳光染成金白色，底部是柔和的蓝灰色阴影。云海缝隙中隐约可见地面——华北平原的农田拼图（金色麦田与绿色玉米地交错）、一条蜿蜒的河流（灰蓝色，可能是辽河支流）、以及远处的村庄灰点。最关键的细节：云层缝隙中隐约可见一条废弃铁路线在地面蜿蜒——锈棕色的细线穿过田野，在一个小镇处断开（道岔已拆），然后又在远处接上。这就是爷爷守护的雾峰线的延长线，从空中看细得像一根头发。光线有明显的色调过渡：画面左侧（朝鲜方向）偏冷蓝灰调（#7A8B99），右侧（中国内陆方向）偏暖金橙调（#E8C88A），中间渐变融合——象征从冷到暖的旅程。一架小型民用沙能飞行器的剪影在远处天际线（可选，用于空间比例感）。
+SCENE: 从0721舷窗向外望去的中国上空全景。画面下方是无边无际的云海——白色积云层叠翻涌，像棉絮铺成的平原，云层顶部被午后阳光染成金白色，底部是柔和的蓝灰色阴影。云海缝隙中隐约可见地面——华北平原的农田拼图（金色麦田与绿色玉米地交错）、一条蜿蜒的河流（灰蓝色，可能是辽河支流）、以及远处的村庄灰点。最关键的细节：云层缝隙中隐约可见一条废弃铁路线在地面蜿蜒——锈棕色的细线穿过田野，在一个小镇处断开（道岔已拆），然后又在远处接上。这就是爷爷守护的雾峰线的延长线，从空中看细得像一根头发。光线有明显的色调过渡：画面左侧（朝鲜方向）偏冷蓝灰调（蓝灰色），右侧（中国内陆方向）偏暖金橙调（暖金橙），中间渐变融合——象征从冷到暖的旅程。一架小型民用沙能飞行器的剪影在远处天际线（可选，用于空间比例感）。
 
 LAYOUT:
 - 下方80%：云海（翻涌积云，顶部金白，底部蓝灰阴影）
 - 云海缝隙（画面中下方偏右）：隐约可见华北平原地面（农田拼图+河流+废弃铁路线）
-- 废弃铁路线：锈棕色细线（#6B5B4F），从左下延伸至右上，在一个小镇处断开
-- 上方20%：晴朗天空，色调从左冷蓝（#7A8B99）过渡到右暖金（#E8C88A）
+- 废弃铁路线：锈棕色细线（锈棕色），从左下延伸至右上，在一个小镇处断开
+- 上方20%：晴朗天空，色调从左冷蓝（蓝灰色）过渡到右暖金（暖金橙）
 - 远处天际线：微型飞行器剪影（可选）
 
 COLORS:
-- 云层顶部：金白(#F5E8D0)，阳光直射处纯白(#FFFFFF)
-- 云层底部阴影：蓝灰(#B8C6DB)，深层(#8A9AB0)
-- 天空色调过渡：左侧冷蓝灰(#7A8B99) → 中间中性(#A0B0C0) → 右侧暖金橙(#E8C88A)
-- 地面农田：金色麦田(#C8A850)与绿色玉米地(#5A8A3E)交错
-- 河流：灰蓝(#7A9AB0)，在云隙中若隐若现
-- 废弃铁路：锈棕(#6B5B4F)，桥墩段偏锈红(#8B5E3C)
-- 铁路断开处：道岔拆除后的泥土色(#A09080)
+- 云层顶部：金白（金白云），阳光直射处纯白（纯白色）
+- 云层底部阴影：蓝灰（浅蓝灰），深层
+- 天空色调过渡：左侧冷蓝灰（蓝灰色） → 中间中性 → 右侧暖金橙（暖金橙）
+- 地面农田：金色麦田（金麦田）与绿色玉米地（玉米绿）交错
+- 河流：灰蓝（灰蓝河），在云隙中若隐若现
+- 废弃铁路：锈棕（锈棕色），桥墩段偏锈红（锈红）
+- 铁路断开处：道岔拆除后的泥土色
 
 MOOD: 漫长的旅程，辽阔的天空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从冷到暖的过渡暗示着心境的变化——从朝鲜的紧张逃亡到中国上空的片刻宁静。但宁静是脆弱的：云层缝隙中那条若隐若现的废弃铁路线提醒着一切的起点。林彪悍看着那条线，心里想的是爷爷的话："这条线过了山就是中国了。"现在他在山的这边了。铁路还在脚下，只是锈了。
 ```
@@ -998,9 +998,9 @@ LAYOUT:
 - Heat haze on horizon
 
 COLORS:
-- Fields: dry gold (#C8A24B)
-- Roofs: grey (#8B8B8B) with patina
-- Water: orange reflect (#E0804A)
+- Fields: dry gold （干金色）
+- Roofs: grey （灰瓦） with patina
+- Water: orange reflect （夕阳橙）
 - Sky: warm amber
 
 MOOD: Endless flat land, the long road south.
@@ -1030,7 +1030,7 @@ CHINESE RAILWAY ELEMENTS:
 - Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
 
 NF-5 LOCOMOTIVE (dominant left side):
-- NF-5 农牛 diesel locomotive, deep forest green (#2D4A2D) body with rust patches
+- NF-5 农牛 diesel locomotive, deep forest green （森林绿） body with rust patches
 - Front: 「NF-5」stamped in white on green plate, 「农牛」nameplate in weathered brass
 - Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
 - Oil stains running down the green paint like dark veins
@@ -1066,12 +1066,12 @@ MORNING ATMOSPHERE:
 - The sound of a wrench clicking (implied through visual rhythm)
 
 COLORS:
-- Shed frame: rusted orange-brown (#8B4513) with grey steel
-- NF-5 body: forest green (#2D4A2D) with rust orange (#A0522D) patches
-- Oil stains: dark brown-black (#1A0F00)
-- Morning light: warm gold (#F5D060) beams through dust
-- Floor: dark oil-stained concrete (#3A3028)
-- Slogans: faded red (#8B3A3A) on yellowed white
+- Shed frame: rusted orange-brown （马鞍棕） with grey steel
+- NF-5 body: forest green （森林绿） with rust orange （锈橙） patches
+- Oil stains: dark brown-black （深棕黑色）
+- Morning light: warm gold （晨光金） beams through dust
+- Floor: dark oil-stained concrete （油渍水泥）
+- Slogans: faded red （褪色红） on yellowed white
 - Tool handles: worn red and blue plastic
 
 MOOD: 从废铁中唤醒希望的早晨。老手、老工具、老机器——四年来第一次有人在这个棚子里动手。
@@ -1095,7 +1095,7 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 ground-level view along single-track railway, late afternoon golden hour, Chinese countryside:
 
 RAILWAY TRACK DETAIL (foreground, dominant):
-- Two rusted steel rails running into distance, rust orange-brown (#8A5A3B) with polished silver top where wheels once ran
+- Two rusted steel rails running into distance, rust orange-brown with polished silver top where wheels once ran
 - Dark wooden sleepers (ties), some cracked and rotting, some replaced with lighter new wood (patches by 老陈)
 - Grey ballast stones (碎石道砟) between sleepers, moss growing in gaps
 - Wildflowers: yellow rapeseed (油菜花) and purple clover between tracks
@@ -1189,11 +1189,11 @@ LIGHTING:
 - The elderly figures backlit, creating halo effect
 
 COLORS:
-- Walls: peeling white (#E8E0D0) revealing red brick (#8B4513)
-- Platform: grey concrete (#808080) with green moss
-- Name board: faded blue (#4A6FA5) on white
-- Wood: weathered grey-brown (#8B7355)
-- Stream: dark jade green (#2E8B57)
+- Walls: peeling white revealing red brick （马鞍棕）
+- Platform: grey concrete （银灰） with green moss
+- Name board: faded blue on white
+- Wood: weathered grey-brown （土棕）
+- Stream: dark jade green （海洋绿）
 - Elderly: dark silhouettes with warm rim light
 
 MOOD: 有些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。这是"等待的重量"。
@@ -1229,7 +1229,7 @@ STATION BUILDING (center):
 - Small wooden station building, traditional Chinese mountain architecture
 - Grey tile roof with slight curve at eaves
 - Wooden walls painted dark brown, paint peeling in places
-- 3 windows lit from inside with warm yellow-gold light (#F5C36B)
+- 3 windows lit from inside with warm yellow-gold light （暖金）
 - Front door open, warm light spilling onto platform
 - Smoke rising from chimney (kettle boiling inside)
 - 「雾峰村站」sign above door, white characters on dark wood, barely visible in darkness
@@ -1248,7 +1248,7 @@ PEOPLE (silhouettes only, 5 figures gathered near door):
 - A small table with a kettle visible through the doorway
 
 NIGHT SKY:
-- Deep indigo blue (#1A1A3E) upper sky
+- Deep indigo blue （靛蓝） upper sky
 - Stars beginning to show (scattered, not dense)
 - Mountain silhouettes on horizon, darker than sky
 - Slight atmospheric haze in valley (soft blue-grey)
@@ -1265,12 +1265,12 @@ LIGHTING CONTRAST:
 - The contrast tells the story: cold world outside, warm community inside
 
 COLORS:
-- Night sky: deep indigo (#1A1A3E)
-- Mountain silhouettes: near-black (#0A0A1A)
-- Window light: warm gold (#F5C36B) to amber (#E8A030)
-- Platform lamp: sodium orange (#FFB347)
-- Rail glint: cool silver-blue (#B0C4DE)
-- Building: dark brown wood (#3E2723)
+- Night sky: deep indigo （靛蓝）
+- Mountain silhouettes: near-black （近黑色）
+- Window light: warm gold （暖金） to amber （琥珀暖光）
+- Platform lamp: sodium orange （钠光橙）
+- Rail glint: cool silver-blue （银蓝）
+- Building: dark brown wood （深棕）
 
 MOOD: 一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗外是零下十度的山风，窗内是滚烫的茶。
 
@@ -1342,11 +1342,11 @@ KOREAN CHINESE DETAILS:
 - Stamp: 「雾峰村站」in red ink
 
 COLORS:
-- Walls: cream-white (#F5F0E8) with age yellowing
-- Desk: dark wood brown (#5C4033)
-- Lamp: green glass (#2E8B57) with brass (#B8860B)
-- Window light: warm morning gold (#F5D060)
-- Old leather: worn brown (#8B4513)
+- Walls: cream-white （米白） with age yellowing
+- Desk: dark wood brown
+- Lamp: green glass （海洋绿） with brass （古铜色）
+- Window light: warm morning gold （晨光金）
+- Old leather: worn brown （马鞍棕）
 - Map: white paper with colored pencil marks
 - Calendar: red header, white body, 「2072年9月」
 
@@ -1363,7 +1363,7 @@ LAYOUT:
 - Window to platform, morning light
 
 COLORS:
-- Wood: dark aged (#6B4A2F)
+- Wood: dark aged
 - Lamp light: warm green-glass glow
 - Map: aged paper yellow
 - Fabric: worn green leather
@@ -1400,16 +1400,16 @@ LAYOUT:
 - 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
 
 COLORS:
-- 晨光：金色阳光(#F5D060)，穿过薄雾形成光带(#FFF8E0)
-- 铁轨：钢轨银灰(#A0A0A0)，枕木深棕(#5C4033)，碎石灰(#8A8A7A)
-- 站台木板：暖灰(#A8998B)，安全线黄(#FFD700)
-- 站牌：蓝底(#1A4A8A)，白字(#FFFFFF)
-- NF-5机车：深绿(#2F4A38)，前灯暖黄(#F5D060)，蒸汽白(#E8E8E8)
-- 乘客衣着：多样暖色（红围巾#CC3333，蓝外套#4A6A8A，灰布衣#8A8A8A）
-- 摊贩：木箱棕(#8B6540)，米线碗白(#F0F0E8)，茶壶深棕(#5C3317)
-- 薄雾：淡金(#FFF8E0)到白(#F0F0F0)
-- 天空：深蓝(#3A5A8A) → 粉橙(#E8A080) → 金色地平线(#F5D060)
-- 站房灯光：暖黄(#F2C86B)，窗框灰(#8A8A8A)
+- 晨光：金色阳光（晨光金），穿过薄雾形成光带
+- 铁轨：钢轨银灰，枕木深棕，碎石灰
+- 站台木板：暖灰，安全线黄（丹青金）
+- 站牌：蓝底（深蓝色），白字（纯白色）
+- NF-5机车：深绿（深绿棕），前灯暖黄（晨光金），蒸汽白
+- 乘客衣着：多样暖色（红围巾红色，蓝外套蓝灰色，灰布衣灰色）
+- 摊贩：木箱棕，米线碗白，茶壶深棕
+- 薄雾：淡金到白
+- 天空：深蓝（灰蓝色） → 粉橙 → 金色地平线（晨光金）
+- 站房灯光：暖黄，窗框灰
 
 MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。每个人都在等待，但没有人在焦急——他们等了四年，不差这一个早晨。晨光把一切染成金色，铁轨上的露珠闪闪发光，NF-5的引擎声像一首老歌的前奏。那个蹲在铁轨旁拨弄碎石的孩子不知道这条铁路曾经停运四年——对他来说，火车就是火车，每天都会来。这种天真就是希望的形状。老陈的保温壶和手套说明他已经在站台上了，只是现在在里面帮李阿姨搬东西。一切都在准备中，一切都在等待那个发车的瞬间。
 
@@ -1432,12 +1432,12 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 old Chinese branch-line passenger coach interior, daytime, first run in four years:
 
 CARRIAGE INTERIOR (30-seat branch line car):
-- Bench seats along both sides facing inward, dark green vinyl/wool upholstery (#2E4A2E), worn thin at edges where thousands of passengers once sat
-- Wooden armrests between seats, dark brown (#5C4033), varnish worn away in patches
+- Bench seats along both sides facing inward, dark green vinyl/wool upholstery （暗森林绿）, worn thin at edges where thousands of passengers once sat
+- Wooden armrests between seats, dark brown, varnish worn away in patches
 - Narrow aisle with dark linoleum floor, worn smooth in the center from decades of foot traffic
 - Windows: wooden frames, glass slightly fogged with condensation from morning warmth mixing with cold glass
 - Luggage rack above: iron pipe construction (铁管焊接), slightly bent, carrying woven竹篮 and cloth bundles
-- Ceiling: cream panels (#F5F0E8), small round lights (4 of 6 working, 2 dark), one ceiling fan (not spinning, dusty blades)
+- Ceiling: cream panels （米白）, small round lights (4 of 6 working, 2 dark), one ceiling fan (not spinning, dusty blades)
 - Door at far end to next carriage (半开), showing connecting corridor with accordion joint
 
 PASSENGERS (8-12 figures, impressionistic but human):
@@ -1471,14 +1471,14 @@ FIRST-RUN ATMOSPHERE:
 - Clean seats (recently wiped down) contrasting with aged walls
 
 COLORS:
-- Seats: dark green vinyl (#2E4A2E) with lighter worn patches
-- Wood: warm brown (#6B4226)
-- Floor: dark grey-brown linoleum (#3A3028)
-- Walls: aged cream (#F5F0E8) with yellowing
-- Window light: warm morning gold (#F5D060)
-- Metal fixtures: grey-silver (#808080)
+- Seats: dark green vinyl （暗森林绿） with lighter worn patches
+- Wood: warm brown （旧棕）
+- Floor: dark grey-brown linoleum （油渍水泥）
+- Walls: aged cream （米白） with yellowing
+- Window light: warm morning gold （晨光金）
+- Metal fixtures: grey-silver （银灰）
 - Passengers: varied warm clothing (reds, browns, blues)
-- Outside: bright green countryside (#4A7A3D)
+- Outside: bright green countryside
 
 MOOD: 四年后第一趟车——座椅上的灰尘刚被擦掉，窗户上的水汽还没散。12个人坐在里面，有人看着窗外的田野，有人在低声说话，有个孩子趴在窗边。这是铁路复活的第一个早晨。每一件旧物都在说：我们还在。
 
@@ -1769,8 +1769,8 @@ STYLE:
 - Pixel-perfect, no anti-aliasing
 
 COLOR PALETTE:
-- Primary: warm gold (#DAA520) or warm brown (#8B6914)
-- Outline: dark brown (#3E2723)
+- Primary: warm gold or warm brown
+- Outline: dark brown （深棕）
 
 ATMOSPHERE: Clean, readable at small size, fits railway station aesthetic.
 
@@ -1839,9 +1839,9 @@ LAYOUT:
 - Cloud sea lower half, valley/river seam far below
 
 COLORS:
-- 0721: navy blue (#1A237E) gold accents
-- Enemy: military green (#3F4D2E), grey, charcoal black
-- Interference: electric blue (#4FC3F7)
+- 0721: navy blue （海军蓝） gold accents
+- Enemy: military green （军绿）, grey, charcoal black
+- Interference: electric blue （电蓝）
 - Clouds: white with cool shadows
 - Sky: pale blue stress-light
 
@@ -1887,12 +1887,12 @@ LAYOUT:
 - 空间狭窄（约6-8平米），但商品密度极高
 
 COLORS:
-- 室内光线：暖黄色（#E8C87A）下午阳光
+- 室内光线：暖黄色（暖黄色光）下午阳光
 - 货架：银灰色金属
 - 商品包装：鲜艳的红（辛拉面/可乐）、粉（香蕉牛奶）、绿（烧酒）、橘（虾条）
-- 后墙：米黄色（#D4C5A9）老墙
+- 后墙：米黄色（米黄色）老墙
 - 领袖画像：深棕色木框+褪色照片色
-- 标语：红色字（#C62828）白底发黄
+- 标语：红色字（红色）白底发黄
 - 美少女海报：亮粉色+天蓝色（与周围环境形成强烈反差）
 - 冰柜内灯光：冷白色荧光
 
@@ -2007,8 +2007,8 @@ ROOM DETAILS:
 - A kettle on a side table (someone offered tea to reporters)
 
 COLORS:
-- Walls: aged cream (#F5F0E8)
-- Podium cloth: white (#FFFFFF) slightly wrinkled
+- Walls: aged cream （米白）
+- Podium cloth: white （纯白色） slightly wrinkled
 - Reporter notebooks: varied colors (blue, green, red)
 - Camera equipment: black and silver
 - Window light: warm morning gold
@@ -2041,7 +2041,7 @@ SCREEN LAYOUT:
 - Bottom 20%: scrolling ticker bar (dark blue background, white text)
 
 TOP BANNER:
-- 「조선중앙통신」in bold white Hangul on dark navy blue (#1A237E)
+- 「조선중앙통신」in bold white Hangul on dark navy blue （海军蓝）
 - Small red star emblem (★) next to the text
 - Date stamp: 「주체115년（2026년）」in smaller white text
 
@@ -2066,12 +2066,12 @@ KOREAN TEXT (full, no abbreviation):
 - 「천리마 브랜드」= 千里马品牌
 
 COLORS:
-- Banner: dark navy blue (#1A237E) with white text
-- Red star: bright red (#C62828)
-- Text area: cream/off-white (#F5F0E8)
-- Headline: bold black (#1A1A1A)
-- Ticker: dark blue (#0D1B2A) with white text
-- Red indicator: bright red (#FF0000)
+- Banner: dark navy blue （海军蓝） with white text
+- Red star: bright red （标语红）
+- Text area: cream/off-white （米白）
+- Headline: bold black （深灰黑）
+- Ticker: dark blue （暗蓝黑色） with white text
+- Red indicator: bright red （红色）
 
 STYLE NOTES:
 - Deliberately stiff, formal, state-media aesthetic
@@ -2159,11 +2159,11 @@ LAYOUT:
 - Golden-hour light from right, long shadows on campus
 
 COLORS:
-- 0721: navy blue (#1A237E) gold trim
+- 0721: navy blue （海军蓝） gold trim
 - Campus: concrete grey, faded red murals
 - Sky: golden-orange → pale blue gradient
-- Sand trail: warm amber (#FFB74D)
-- Holographic glow: cyan (#00BCD4)
+- Sand trail: warm amber
+- Holographic glow: cyan （青色）
 
 MOOD: 2,500 km journey begins. A small vehicle against a vast sky. Hope and uncertainty in equal measure.
 
@@ -2197,7 +2197,7 @@ LAYOUT:
 - Warm amber interior lighting, desk lamp casting cone
 
 COLORS:
-- Interior: warm wood browns (#8B4513), brass gold (#B8860B)
+- Interior: warm wood browns （马鞍棕）, brass gold （古铜色）
 - Card: matte black with gold chip detail
 - City lights: warm yellow/white on dark water
 - Tea steam: soft white wisps
@@ -2236,8 +2236,8 @@ LAYOUT:
 
 COLORS:
 - Cabin: dark wood, navy upholstery, warm shadows
-- Hologram: translucent cyan (#00E5FF), blue core, ethereal
-- Window: deep indigo sky (#1A237E), white/yellow vehicle lights
+- Hologram: translucent cyan （荧光蓝）, blue core, ethereal
+- Window: deep indigo sky （海军蓝）, white/yellow vehicle lights
 - Instruments: soft green glow
 - Overall: cool blue palette, warm skin accent
 
@@ -2284,11 +2284,11 @@ LAYOUT:
 
 COLORS:
 - 0721: navy blue, dusty from flight
-- Officers: dark green (#3F4D2E) uniforms
-- Tarmac: grey concrete (#808080)
-- Sky: purple-orange gradient (#7B1FA2 → #FF6F00)
-- Emergency lights: flashing red (#F44336)
-- Mountains: dark silhouette (#1A1A2E)
+- Officers: dark green （军绿） uniforms
+- Tarmac: grey concrete （银灰）
+- Sky: purple-orange gradient (紫色 → 橙色)
+- Emergency lights: flashing red
+- Mountains: dark silhouette （深蓝黑色）
 
 MOOD: 3% chance of escape. Cornered. But somewhere, a phone is ringing — and someone is about to answer.
 
@@ -2322,11 +2322,11 @@ LAYOUT:
 - Railway line: upper-left to lower-right curve
 
 COLORS:
-- Hills: deep green (#2E7D32) tea terraces
-- Village: warm wood tones, grey tile roofs (#696969)
-- Railway: rust brown (#8D6E63), weed green (#558B2F)
+- Hills: deep green （翠绿色） tea terraces
+- Village: warm wood tones, grey tile roofs （建筑灰）
+- Railway: rust brown, weed green
 - Mist: soft white with golden tinge
-- Sky: golden-orange (#FFB74D) → pale blue
+- Sky: golden-orange → pale blue
 - 0721: small navy blue accent
 
 MOOD: A place time forgot. Beautiful and sad. Someone is coming home to a railway that stopped running 4 years ago.
@@ -2361,11 +2361,11 @@ LAYOUT:
 - Platform edge with rusted rail at bottom frame
 
 COLORS:
-- Lamp: warm yellow-white (#FFF9C4), cone of light
+- Lamp: warm yellow-white, cone of light
 - Outside light cone: deep blue-black shadows
 - Characters: muted earth tones, varied clothing
 - Elderly figure: faded blue railway uniform
-- Platform: weathered concrete, rust stains (#8D6E63)
+- Platform: weathered concrete, rust stains
 - Background: near-black with locomotive silhouette
 
 MOOD: A ragtag team under one light. The old station feels like a stage. Something is about to begin.
@@ -2400,10 +2400,10 @@ LAYOUT:
 - Sun rays through platform roof gaps, volumetric
 
 COLORS:
-- Train: forest green (#388E3C) with cream stripe
+- Train: forest green （鲜绿色） with cream stripe
 - Platform: warm wood and concrete
-- Morning light: golden shafts (#FFD54F)
-- Mountains: blue-green mist (#4FC3F7)
+- Morning light: golden shafts
+- Mountains: blue-green mist （电蓝）
 - Banner: white paper, red handwritten text
 - Steam: soft white wisps
 
@@ -2439,10 +2439,10 @@ LAYOUT:
 - Green signal light glowing in corner, vivid accent
 
 COLORS:
-- Interior: warm amber wood (#D2691E), soft cream walls (#FFFDD0)
+- Interior: warm amber wood, soft cream walls （奶油白）
 - Display cases: glass with warm interior lighting
 - Photos: sepia/black-and-white
-- Signal green: vivid (#4CAF50) glow — the accent color
+- Signal green: vivid glow — the accent color
 - Afternoon light: golden through dusty glass
 - Overall: warm, nostalgic, museum-quiet palette
 
@@ -2557,10 +2557,10 @@ DESK ITEMS WITH KOREAN TOUCH:
 - Small Korean traditional clock (시계) with hanja numbers
 
 COLOR PALETTE (KOREAN TRADITIONAL):
-- Primary: Korean celadon green (#8FBC8F), warm brown (#8B4513)
-- Secondary: Cream white (#FFFDD0), soft red (#CD5C5C)
-- Accents: Gold (#FFD700), navy blue (#000080)
-- Dancheong colors: Blue (#4169E1), Red (#CD5C5C), Yellow (#FFD700), Green (#228B22)
+- Primary: Korean celadon green （青瓷绿）, warm brown （马鞍棕）
+- Secondary: Cream white （奶油白）, soft red （柔红）
+- Accents: Gold （丹青金）, navy blue （藏蓝）
+- Dancheong colors: Blue, Red （柔红）, Yellow （丹青金）, Green （丹青绿）
 - Inspired by Korean traditional color schemes and dancheong patterns
 
 ATMOSPHERE:
@@ -2677,11 +2677,11 @@ WINDOW VIEW (PYONGYANG SKYLINE):
 - Flying sand energy vehicles in distant sky
 
 COLOR PALETTE (KOREAN TRADITIONAL + NORTH KOREAN OFFICIAL):
-- Primary: warm brown (#8B4513), cream white (#FFFDD0)
-- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
-- Accents: gold frame (#FFD700), revolutionary red (#CC0000)
-- Dancheong: Blue (#4169E1), Red (#CD5C5C)
-- North Korean official red (#C41E3A) for banners and flags
+- Primary: warm brown （马鞍棕）, cream white （奶油白）
+- Secondary: dark wood, soft beige
+- Accents: gold frame （丹青金）, revolutionary red
+- Dancheong: Blue, Red （柔红）
+- North Korean official red for banners and flags
 
 ATMOSPHERE:
 - Warm, academic, modest but respected
@@ -2779,11 +2779,11 @@ WINDOW VIEW (DAYTIME):
 - Rice paddies and small villages visible far below
 
 COLOR PALETTE:
-- Primary: dark olive green (#4A5D23), instrument panel gray (#4a4a5a)
-- Secondary: sky blue (#87CEEB), holographic cyan (#00BFFF)
-- Accents: Korean red (#CD2626), celadon green (#7CB08A), traditional gold (#DAA520)
-- Obangsaek five colors: blue (#2050A0), red (#CD2626), yellow (#FFD700), white (#F5F5F5), black (#1A1A1A)
-- Leather: dark brown (#3B1F0B)
+- Primary: dark olive green, instrument panel gray
+- Secondary: sky blue （天蓝色）, holographic cyan （亮天蓝）
+- Accents: Korean red, celadon green, traditional gold
+- Obangsaek five colors: blue （宝蓝色）, red, yellow （丹青金）, white, black （深灰黑）
+- Leather: dark brown
 
 ATMOSPHERE:
 - PRESERVED MUSEUM PIECE — the cockpit as it was in 2053, untouched for 23 years
@@ -2854,10 +2854,10 @@ KOREAN CULTURAL ELEMENTS AT NIGHT — ALL PRESERVED:
 - Roadong newspaper visible in door pocket, dimly lit
 
 COLOR PALETTE (NIGHT — KOREAN TRADITIONAL + DARK):
-- Primary: deep dark blue (#0a0a1e), instrument glow amber (#FF8C00)
-- Secondary: starry sky (#1a1a3e), holographic cyan (#00BFFF), city lights warm (#FFD700)
-- Accents: Korean red (#CD2626) on emergency labels, celadon green (#7CB08A) on dashboard trim
-- Obangsaek five colors muted in darkness: blue (#2050A0), red (#8B0000), yellow (#B8860B)
+- Primary: deep dark blue （深蓝黑）, instrument glow amber （深橙色）
+- Secondary: starry sky （靛蓝夜空）, holographic cyan （亮天蓝）, city lights warm （丹青金）
+- Accents: Korean red on emergency labels, celadon green on dashboard trim
+- Obangsaek five colors muted in darkness: blue （宝蓝色）, red, yellow （古铜色）
 
 ATMOSPHERE:
 - Quiet, intimate nighttime atmosphere — unmistakably Korean
@@ -2948,9 +2948,9 @@ WINDOW VIEW (DAYTIME — SKY ONLY):
 - NO GROUND, NO MOUNTAINS, NO CITIES
 
 COLOR PALETTE:
-- Primary: warm beige (#D4C5A9), olive green (#4A5D23), dark window frame (#3A3A3A)
-- Secondary: sky blue (#87CEEB), laptop screen glow (#E0F0FF)
-- Accents: food orange (#FF8C00), soju green (#4CAF50), banana milk yellow (#FFFDD0), Korean red (#CD2626)
+- Primary: warm beige, olive green, dark window frame （暗影色）
+- Secondary: sky blue （天蓝色）, laptop screen glow
+- Accents: food orange （深橙色）, soju green, banana milk yellow （奶油白）, Korean red
 
 ATMOSPHERE:
 - Cozy like a small train compartment on a long journey
@@ -3004,9 +3004,9 @@ NIGHTTIME DIFFERENCES:
 - Cockpit door slightly ajar, faint blue glow from holographic display beyond
 
 COLOR PALETTE (NIGHT):
-- Primary: warm amber (#8B6914), dark blue (#0A0A1E)
-- Secondary: starry sky (#1A1A3E), reading light warm (#FFD700)
-- Accents: laptop sleep light (#00BFFF), charging LED (#32CD32)
+- Primary: warm amber, dark blue
+- Secondary: starry sky （靛蓝）, reading light warm （丹青金）
+- Accents: laptop sleep light （亮天蓝）, charging LED
 
 ATMOSPHERE:
 - Quiet, intimate, restful — like a sleeper train cabin at night
@@ -3086,11 +3086,11 @@ DETAILS ON THE 0721 SAND FLYING PIG (RIGHT SIDE VIEW):
 - Vehicle faces RIGHT, door on RIGHT side
 
 COLOR PALETTE:
-- Primary: bright blue sky (#87CEEB), deep blue vehicle (#000080, #1A237E)
-- Secondary: university emblem gold (#DAA520), concrete grey (#808080)
-- Accents: Korean red (#CD2626), building white (#F5F5F5), roof tiles dark brown (#3E2723)
-- Landing pad: concrete grey (#808080, #696969)
-- Building: traditional roof tiles dark brown (#3E2723)
+- Primary: bright blue sky （天蓝色）, deep blue vehicle (藏蓝色, 海军蓝)
+- Secondary: university emblem gold, concrete grey （银灰）
+- Accents: Korean red, building white, roof tiles dark brown （深棕）
+- Landing pad: concrete grey (银灰色, 建筑灰色)
+- Building: traditional roof tiles dark brown （深棕）
 
 ATMOSPHERE:
 - Afternoon on a university rooftop - the last moment of campus life
@@ -3166,9 +3166,9 @@ KOREAN CULTURAL ELEMENTS:
 - Golden winged horse (Cheollima) — mythical Korean symbol
 
 COLOR PALETTE:
-- Primary: deep mahogany brown (#3E2723), dark wood (#5D4037), gold trim (#DAA520)
-- Secondary: window night sky (#1A237E), warm amber light (#FFD700)
-- Accents: celadon green (#8BC34A), burgundy leather (#800020), orchid purple (#9C27B0), Korean red (#CD2626)
+- Primary: deep mahogany brown （深棕）, dark wood, gold trim
+- Secondary: window night sky （海军蓝）, warm amber light （丹青金）
+- Accents: celadon green, burgundy leather, orchid purple, Korean red
 
 ATMOSPHERE:
 - Warm, authoritative, a seat of power
@@ -3242,8 +3242,8 @@ KOREAN NATURE:
 - Misty mountain peaks with traditional Korean painting style
 
 COLOR PALETTE (WARM KOREAN RETRO):
-- Primary: warm gold (#D4A017), brick red (#8B2500), pine green (#2F4F2F)
-- Secondary: cream white (#FFFDD0), navy blue (#1B2A4A)
+- Primary: warm gold （黄铜色）, brick red, pine green
+- Secondary: cream white （奶油白）, navy blue （暗蓝色）
 - Sky: soft dawn orange to pale blue gradient
 - Train: dark green with gold trim (classic Korean railway colors)
 
