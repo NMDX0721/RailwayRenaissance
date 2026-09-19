@@ -627,6 +627,7 @@ AVOID:
 - **尺寸**：1920×1080，JPG/PNG
 - **风格**：STARDEW VALLEY STYLE pixel art，16-bit retro
 - **格式**：多层分类清单 + 色彩方案 + 氛围 + 排除项
+- **⚠️ 人物排除（强制）**：场景背景图**严禁出现任何人物**。即使SCENE描述中提到"乘客""老人""摊贩"等，也仅作为环境氛围的文字说明，实际生成时**绝对不画人**。每个背景prompt末尾必须包含：`NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence.`
 
 ---
 
@@ -643,7 +644,7 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 
 **叙事锚点**：Day4——林彪悍飞越中朝边境，第一次亲眼看到爷爷描述了无数次的那片群山。"铁轨从山缝里穿过去，像缝衣服的针"——现在他看到了那根针，细得几乎看不见，却缝合了两代人的记忆。
 
-SCENE: 林彪悍从0721的舷窗俯瞰。连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。一架小型民用沙能飞行器（非0721）的剪影在远处天际线附近——极其微小，仅作为空间比例尺。
+SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。远处天际线附近有一架极其微小的飞行器剪影（仅作为空间比例尺）。
 
 LAYOUT:
 - 下三分之二：层叠山脊（前景深绿 #2E5D3A，中景黄绿 #5A7A3E，远景蓝灰 #7A8B99，最远淡紫 #B8A9C9）
@@ -663,11 +664,14 @@ COLORS:
 MOOD: 归途。辽阔、安静、带着希望的忧伤。一个25岁的学生第一次亲眼看到爷爷走过的那些山——它们在午后阳光下安静地排列着，像等待阅兵的士兵。铁路线在山谷中细得像一根线，但那根线就是整个故事的起点。林彪悍把脸贴在玻璃上，心里默念："爷爷，我看到了。"山脉不知道有人在看。它们在铁路之前就在这里，铁路消失之后它们还会在这里。但今天，从一架蓝色小飞行器的窗口望下去，一个年轻人看到了那根细铁线，感到某种无法命名的东西——骄傲、悲伤、以及一个尚未许下但已经背负的承诺。
 
 AVOID:
+- 出现任何人物、角色、人类身影（NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure landscape background）
 - 出现现代建筑或城市（这是原始山林）
 - 铁路过于清晰或壮观（应该是"几乎看不见"的细线）
 - 过于明亮的光线（午后应有温暖但不刺眼的质感）
 - 缺少大气透视效果（远山必须渐淡）
 - 冷色调为主（这是"进入中国"的第一幕，应偏暖）
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -739,6 +743,8 @@ COLORS:
 - 春联残片：红纸褪色(#B06060)，金字模糊(#C8A050)
 
 MOOD: 回家了。村庄还在等他。但林彪悍不再是四年前离开的孩子——他带着爷爷的铜怀表、一个死去之人的使命、以及四年缺席中无法弥补的距离。村庄看起来一模一样。他不是了。这就是这幅画面的痛处：地方完美地等了他，而他在没有它的地方长大了。夕阳把一切都染成金色，就像爷爷最后一次站在这里时的颜色。远处的铁轨还在——锈了，但还在。就像这个村庄，就像这个家。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -773,6 +779,8 @@ COLORS:
 - Sky: orange-pink sunset — the same sunset Lao Chen has watched alone for 1,460 evenings
 
 MOOD: The last station on a dying line — but tonight, someone came back. For four years, this platform held one man's shadow at dusk. The lamp inside the station is always on, the thermos is always warm, because Lao Chen never stopped believing that the next person through that door would be someone who came to stay. The sunset is the same color it was the day the last passenger left. But today, for the first time in four years, it's lighting someone's arrival.
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -805,6 +813,8 @@ COLORS:
 - Gloves: worn leather brown — the color of four years of work
 
 MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every detail here is a love letter from an old man to a railway line: the swept planks, the oiled signal, the patched gloves, the warm thermos. Lin Biaohan's feet touch the wood and the boards creak — the same sound his grandfather's boots made every morning at 6am. "到家了," he whispers, and the station, for the first time in four years, believes it.
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -849,6 +859,8 @@ COLORS:
 - 天空：清晨冷蓝(#6B8EAF)，地平线偏灰白(#C0C8D0)
 
 MOOD: 两个世界的边境。一个什么都能买到的地方——包括沉默。林彪悍的心跳在0721降落时加速。下方，商贩在摆摊；上方，追捕在继续。这座小镇不知道自己是一场逃亡的舞台。它只觉得今天是星期二。空气中弥漫着沙子的气味——这种新型燃料像石油一样统治了2076年的交通，而这座边贸城就是它的交易节点。千里马的logo到处都是，像一种无声的权力宣告。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -889,6 +901,8 @@ COLORS:
 - 广告牌：蓝白配色(#2A5A8A / #FFFFFF)，飞行器图案流线型
 
 MOOD: 平凡的商业行为，但意义深远。沙子——2076年的石油——在这里按公斤出售，像买菜一样随意。价格牌上的手写字迹透露出一种日常感，但0721停在旁边的身影提醒我们：这不是普通的补给。千里马的标志无处不在，像一种无声的权力网络——从朝鲜的实验室到中国的补给站，整个沙能经济都在这个金色马蹄之下运转。工人对这架不寻常的飞行器没有多问——边境小镇，什么都能买到，什么都能卖出去。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -956,6 +970,8 @@ COLORS:
 - Railway: rusty brown
 
 MOOD: North China flatlands. Orderly, productive, the railway forgotten.
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -988,6 +1004,8 @@ COLORS:
 - Sky: warm amber
 
 MOOD: Endless flat land, the long road south.
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1057,6 +1075,8 @@ COLORS:
 - Tool handles: worn red and blue plastic
 
 MOOD: 从废铁中唤醒希望的早晨。老手、老工具、老机器——四年来第一次有人在这个棚子里动手。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1177,6 +1197,8 @@ COLORS:
 - Elderly: dark silhouettes with warm rim light
 
 MOOD: 有些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。这是"等待的重量"。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 COLORS:
@@ -1251,6 +1273,8 @@ COLORS:
 - Building: dark brown wood (#3E2723)
 
 MOOD: 一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗外是零下十度的山风，窗内是滚烫的茶。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1327,6 +1351,8 @@ COLORS:
 - Calendar: red header, white body, 「2072年9月」
 
 MOOD: 一个人守了四年的房间。账本记录着铁路最后的日子，旧照片里的人已经不在了，但椅子上的凹痕还在。这不是办公室——这是一个人的全部。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 LAYOUT:
@@ -1386,6 +1412,8 @@ COLORS:
 - 站房灯光：暖黄(#F2C86B)，窗框灰(#8A8A8A)
 
 MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。每个人都在等待，但没有人在焦急——他们等了四年，不差这一个早晨。晨光把一切染成金色，铁轨上的露珠闪闪发光，NF-5的引擎声像一首老歌的前奏。那个蹲在铁轨旁拨弄碎石的孩子不知道这条铁路曾经停运四年——对他来说，火车就是火车，每天都会来。这种天真就是希望的形状。老陈的保温壶和手套说明他已经在站台上了，只是现在在里面帮李阿姨搬东西。一切都在准备中，一切都在等待那个发车的瞬间。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1453,6 +1481,8 @@ COLORS:
 - Outside: bright green countryside (#4A7A3D)
 
 MOOD: 四年后第一趟车——座椅上的灰尘刚被擦掉，窗户上的水汽还没散。12个人坐在里面，有人看着窗外的田野，有人在低声说话，有个孩子趴在窗边。这是铁路复活的第一个早晨。每一件旧物都在说：我们还在。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1867,6 +1897,8 @@ COLORS:
 - 冰柜内灯光：冷白色荧光
 
 MOOD: 两个世界的碰撞。领袖画像与美少女海报共存，主体思想标语下卖着南方走私货。这间店本身就是一个时代的缩影——官方叙事与真实生活在同一面墙上交战。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
@@ -1983,6 +2015,8 @@ COLORS:
 - The railway map: white paper with colored pencil marks
 
 MOOD: 一个25岁的年轻人，在一间破旧的车站办公室里，向十几家媒体宣告一个跨国公司的谎言。他没有律师，没有公关团队，只有一面铁路地图和一堆证据。台下记者的闪光灯像星星，但窗外的铁轨才是真正的主角。
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
 
 ---
