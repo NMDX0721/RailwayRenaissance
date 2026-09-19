@@ -777,94 +777,6 @@ ATMOSPHERE:
 - State professor's office at the most prestigious university in the DPRK
 ```
 
-KOREAN ARCHITECTURAL ELEMENTS:
-- Traditional KOREAN HANOK STYLE window frames with wooden lattice patterns
-- Door frame with traditional Korean decorative patterns (단청 dancheong colorful patterns)
-- Wall panels with subtle Korean traditional motifs
-- Ceiling with traditional Korean wooden beams (modern interpretation)
-- Korean-style floor heating (온돌 ondol) visible under desk
-
-KOREAN TEXT AND SIGNS:
-- Korean text on wall: "김일성대학교 교수 연구실" (Professor's Office)
-- University emblem with Korean text: "김일성대학교"
-- Korean flag (North Korean flag) on wall
-- Small nameplate on desk with Korean text
-- Korean calendar on wall showing 2076
-
-WALL DECORATIONS (ACADEMIC):
-- Framed university diploma with Korean text
-- Several academic certificates and awards on wall (Korean text)
-- Map of Korean peninsula on wall
-- Bookshelf filled with Korean technical books and railway engineering texts
-- Traditional Korean paper art (minhwa) frame with folk painting
-- Korean calligraphy scroll (서예) on wall with inspirational message
-
-KOREAN TRADITIONAL ITEMS:
-- Korean celadon pottery (고려청자 Goryeo celadon) on shelf
-- Korean traditional paper (한지 hanji) desk lamp with warm glow
-- Small Korean flag on desk
-- Korean traditional tea set (전통다구) with celadon teapot and cups
-- Korean traditional ink stone (벼루 byeoru) and brush (붓 but) on desk
-
-KOREAN FURNITURE:
-- Korean traditional wooden desk with traditional joinery, slightly worn
-- Professor's wooden chair with curved backrest and cushion
-- Korean traditional wooden cabinet (장롱 jangnok) with brass fittings
-- Bookshelf with traditional Korean design
-
-DESK ITEMS:
-- Stack of student research papers with Korean text
-- Open railway engineering textbook (Korean text, worn pages)
-- Copper reading glasses on desk
-- Korean traditional clock (시계) with hanja numbers
-- Half-empty cup of Korean barley tea (보리차)
-- Korean-style pen holder with traditional design
-- Small photo frame with university graduation photo
-
-BOOKSHELF CONTENTS:
-- Railway engineering textbooks (Korean titles)
-- Research papers on intelligent dispatch systems
-- Korean history books
-- Vintage train model
-- Traditional Korean ceramic pieces
-
-WINDOW VIEW (PYONGYANG SKYLINE):
-- Ryugyong Hotel (려명거리 Hotel, pyramid shape, distant)
-- Juche Tower (주체사상탑) visible in distance
-- Grand People's Study House (인민대학습당) with traditional Korean roof
-- Mix of traditional Korean architecture and modern buildings
-- Korean pine trees (소나무 sonamu) visible
-- Afternoon daylight, soft shadows through hanji-patterned windows
-
-COLOR PALETTE (KOREAN TRADITIONAL):
-- Primary: warm brown (#8B4513), cream white (#FFFDD0)
-- Secondary: dark wood (#5C3317), soft beige (#F5DEB3)
-- Accents: gold frame (#FFD700), navy blue (#000080)
-- Dancheong accent colors: Blue (#4169E1), Red (#CD5C5C)
-
-ATMOSPHERE:
-- Warm, academic, modest but respected
-- KOREAN WARMTH AND HOSPITALITY (정 warm heart)
-- Serious yet caring — the moment of a life-changing decision
-- Blend of tradition and academic modernity
-- Respectful atmosphere with a sense of gravity
-
-STYLE:
-- PIXEL ART with clear pixels
-- KOREAN CULTURAL IDENTITY very prominent
-- Warm, inviting academic colors
-- Clean, organized space
-- Mix of traditional Korean aesthetics and university setting
-
-AVOID:
-- Generic "Asian" style (must be specifically KOREAN)
-- Too modern or luxurious
-- Cold or impersonal atmosphere
-- Cluttered or messy composition
-- Missing Korean cultural elements
-- Too bright or cheerful (should be warm but serious)
-```
-
 ---
 
 ### 2.3 驾驶舱·白天（0721号前舱）
@@ -1180,7 +1092,10 @@ AVOID:
 - Car back seat layout
 - Ground or city lights visible through window
 - English text
-"
+```
+
+---
+
 ### 2.7 停机坪
 
 **文件**：Resources/bg/hangar.png  
@@ -1272,139 +1187,6 @@ AVOID:
 - Missing the Korean flag or university emblem
 - Too dark or sunset-heavy (it is afternoon, not evening)
 - Too small rooftop (must feel spacious)
-```
-
----
-
-### 2.8 边境小镇
-
-**文件**：`Resources/bg/border_town.png`  
-**用途**：序章 Day 1 第一次补给
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, Chinese border town morning, 2076, small supply station.
-
-ARCHITECTURAL ELEMENTS:
-- Small border town in morning fog
-- Supply station with fuel-pump-like equipment
-- Simple buildings, provincial Chinese style
-- Mountains in background
-- Morning mist
-
-COLOR PALETTE:
-- Primary: morning mist gray (#D3D3D3), warm dawn (#FFDAB9)
-- Secondary: earthy brown (#8B7355), building gray (#696969)
-- Accents: supply station sign colors
-
-ATMOSPHERE: Quiet border town morning, the first stop on a long journey. Simple, functional, slightly sleepy.
-
-AVOID:
-- Too modern or developed
-- Busy or crowded scene
-- Nighttime or dark setting
-```
-
----
-
-### 2.9 雾峰村夕阳
-
-**文件**：`Resources/bg/village_sunset.png`  
-**用途**：序章 Day 4 到达雾峰村
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, mountain village at sunset, Wufeng village, central China, 2076, misty tea village.
-
-ARCHITECTURAL ELEMENTS:
-- Mountain valley village
-- Small houses with traditional Chinese roofs
-- Terraced tea gardens on hillsides
-- Railway line running through village
-- Smoke rising from chimneys
-- Distant mountains with mist
-
-VIEW:
-- Entire village visible from above
-- Railway line as central feature
-- Tea terraces on surrounding hills
-- Small station building visible
-- Winding road connecting to outside
-
-COLOR PALETTE:
-- Primary: golden sunset (#FFD700), warm orange (#FF8C00)
-- Secondary: mountain mist blue (#87CEEB), tea green (#556B2F)
-- Accents: house roof gray (#808080), chimney smoke (#D3D3D3)
-
-ATMOSPHERE: Warm, nostalgic, the home that has been waiting. A village that time forgot, beautiful in its isolation.
-
-AVOID:
-- Too bright or modern
-- Missing the tea terraces (essential character)
-- Cold or unwelcoming atmosphere
-```
-
----
-
-### 2.10 车站夕阳
-
-**文件**：`Resources/bg/station_sunset.png`  
-**用途**：序章 Day 4 到达车站
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, old railway station at sunset, Wufeng village, 2076.
-
-ARCHITECTURAL ELEMENTS:
-- Small old railway station
-- Platform with benches
-- Tracks extending into distance
-- Weeds growing between tracks
-- Station building with Chinese rural style
-- Signal post
-
-COLOR PALETTE:
-- Primary: golden sunset (#FFD700), warm orange (#FF8C00)
-- Secondary: station building gray (#696969), rusted tracks (#8B4513)
-- Accents: weeds green (#556B2F), sky pink (#FFB6C1)
-
-ATMOSPHERE: Nostalgic, slightly melancholic but hopeful. The railway station that has seen better days, waiting for someone to bring it back to life.
-
-AVOID:
-- Too clean or well-maintained
-- Busy or crowded station
-- Modern or renovated appearance
-```
-
----
-
-### 2.11 傍晚站台
-
-**文件**：`Resources/bg/platform_evening.png`  
-**用途**：序章 Day 4 老陈等候
-
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, station platform at evening, Wufeng village, 2076.
-
-ARCHITECTURAL ELEMENTS:
-- Railway platform at evening
-- Warm platform lighting
-- Old man waiting on platform
-- Train approaching in distance
-- Evening sky
-
-COLOR PALETTE:
-- Primary: evening blue (#191970), warm light (#FFD700)
-- Secondary: platform gray (#808080), train dark (#1A1A1A)
-- Accents: station lamp glow (#FFA500)
-
-ATMOSPHERE: Quiet, expectant, the moment of reunion after years apart.
-
-AVOID:
-- Too bright or cheerful
-- Empty or abandoned feeling
-- Missing the warm lighting
 ```
 
 ---
@@ -2779,6 +2561,180 @@ MOOD: 两个世界的碰撞。领袖画像与美少女海报共存，主体思�
 
 ---
 
+
+---
+
+### 2.34 现代咖啡厅（office_modern）
+
+**文件**：`Resources/bg/office_modern.png`
+**用途**：post_006——运营第180天，白鹭洲，周鼎铭与林彪悍私下会面的高档咖啡厅。
+
+**叙事锚点**：周鼎铭选择这个地方不是偶然——白鹭洲是权力中心，这间咖啡厅是他"自己的地方"。他说"你想证明的东西，我曾经也信"，这句话在这里说出来，比在任何其他地方都更有分量。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+modern upscale coffee shop interior, white egret city, evening:
+
+INTERIOR:
+- High-ceilinged room (4m+), exposed concrete ceiling with industrial pendant lights
+- Floor-to-ceiling windows on the left wall, showing a modern city skyline at dusk
+- Dark hardwood floor, polished, reflecting pendant light glow
+- Round marble-topped tables (2-person), dark leather chairs
+- A long wooden bar counter in the back with espresso machine, glass jars of beans
+- Bookshelves on the right wall: railway history books, architecture monographs
+- A single calligraphy scroll on the wall: 「静」(Jing, "Stillness") in black ink on rice paper, framed in dark wood
+- Potted monstera plants near the windows, casting leaf shadows on the floor
+
+CITY SKYLINE (through windows):
+- Modern apartment buildings with warm evening lights
+- A沙能补给站 logo visible on a distant building (subtle USET presence)
+- Mountains silhouetted against purple-orange sunset sky
+- Streetlights turning on below
+
+TABLE ITEMS:
+- Two cups of black coffee (steaming slightly)
+- A small plate with two financiers (French almond cakes)
+- An old railway engineering manual (周鼎铭 brought it as a conversation piece)
+- A folded newspaper with headline about沙能 transport expansion
+
+LIGHTING:
+- Warm pendant lights creating pools of golden light on tables
+- Dusk light through large windows, purple-orange gradient
+- The city lights outside creating a blue-purple backdrop
+- Contrast: warm intimate interior vs cold modern city outside
+
+KOREAN CHINESE DETAILS:
+- Menu board behind bar: 「今日特调 · 铁观音拿铁」(Iron Guan Yin Latte) + 「大同江气泡水」
+- Small framed photo on bookshelf: old railway workers (周鼎铭 keeps this hidden in his private space)
+- Coffee cup brand stamp: 「白鹭洲咖啡 · Baekro洲 Coffee」
+- Book spine: 「中国铁路调度系统演进史」(Chinese Railway Dispatch System Evolution)
+
+MOOD: 两个调度员的对话。一个用同一套知识建了沙能帝国，一个在同一套知识上复兴铁路。这间咖啡厅是他们唯一能平等对话的地方——不在公司，不在铁轨上，在一杯咖啡的时间里。
+```
+
+---
+
+### 2.35 新闻发布会（press_conference）
+
+**文件**：`Resources/bg/press_conference.png`
+**用途**：post_007——运营第240天，林彪悍在雾峰村车站召开新闻发布会，揭露铁龙计划真相。
+
+**叙事锚点**：这是全剧最高调的时刻——一个25岁的年轻人，在一间破旧的车站办公室里，向十几家媒体宣告一个跨国公司的谎言。台下记者的闪光灯像星星，但窗外的铁轨才是真正的主角。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+press conference inside old railway station, morning light:
+
+CONFERENCE SETUP (inside station building):
+- The station office repurposed as a press room
+- A makeshift podium: old wooden desk pushed forward, draped with a white cloth
+- Behind the podium: the 23km railway line map (老陈的运行图) pinned to the wall — deliberately chosen as backdrop
+- A microphone on the podium (old but functional, wired to portable speaker)
+- 2-3 tripods with cameras (small news cameras, not professional broadcast)
+- Reporters sitting on wooden chairs and benches brought in from the platform (10-12 people)
+- A few reporters standing along the walls
+
+WALL DECORATIONS (deliberately visible behind speaker):
+- The railway map with red marks (停运标记) — the visual evidence
+- A framed black-and-white photo of old railway workers (including 林悍)
+- 「安全第一」faded slogan (visible but not the focus)
+- A small 「雾峰村站」station sign propped against the wall
+
+REPORTERS:
+- Mix of small-town journalists and one or two bigger city reporters
+- Notebooks, pens, small cameras (not phone cameras — 2076 era)
+- One reporter in the front row taking notes intently
+- Others looking between the speaker and the railway map
+
+LIGHTING:
+- Morning light streaming through the station window (right side)
+- Natural light supplementing the indoor pendant lights
+- Camera flash spots (small bright points suggesting flash photography)
+- The speaker (林彪悍) would be backlit by the window, creating a silhouette effect
+
+ROOM DETAILS:
+- Old wooden floor (same station office as station_office)
+- The coal stove still in the corner (now cold, used as a plant stand)
+- Railway technical manuals stacked on a shelf (background detail)
+- A kettle on a side table (someone offered tea to reporters)
+
+COLORS:
+- Walls: aged cream (#F5F0E8)
+- Podium cloth: white (#FFFFFF) slightly wrinkled
+- Reporter notebooks: varied colors (blue, green, red)
+- Camera equipment: black and silver
+- Window light: warm morning gold
+- The railway map: white paper with colored pencil marks
+
+MOOD: 一个25岁的年轻人，在一间破旧的车站办公室里，向十几家媒体宣告一个跨国公司的谎言。他没有律师，没有公关团队，只有一面铁路地图和一堆证据。台下记者的闪光灯像星星，但窗外的铁轨才是真正的主角。
+```
+
+---
+
+### 2.36 全屏新闻画面（news_broadcast）
+
+**文件**：`Resources/bg/news_broadcast.png`
+**用途**：post_004/009——全屏滚动新闻格式，朝中社报道。不是真实场景，是游戏内的新闻播报画面。
+
+**叙事锚点**：这不是一个"地方"，而是一个"声音"——朝中社的官方叙事。在游戏里，新闻从不中立。每一条新闻都是铁龙计划的舆论武器。
+
+**提示词**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, clear pixels,
+Korean state television news broadcast screen, formal propaganda aesthetic:
+
+SCREEN LAYOUT:
+- Top 20%: dark blue banner with「조선중앙통신」(KCNA / 朝中社) logo in white
+- Below banner: red line separator
+- Main area (60%): cream/off-white background for text content
+- Bottom 20%: scrolling ticker bar (dark blue background, white text)
+
+TOP BANNER:
+- 「조선중앙통신」in bold white Hangul on dark navy blue (#1A237E)
+- Small red star emblem (★) next to the text
+- Date stamp: 「주체115년（2026년）」in smaller white text
+
+TEXT AREA:
+- Large headline in bold black Hangul: 「세계 철도 운송량 30% 회복」
+- Sub-headline: 「오봉촌선, 림표한站长의 손자에 의해 부활」
+- Body text in smaller black Hangul, formal newspaper style
+- A small inset photo: railway tracks in a mountain valley (pixel art within pixel art)
+- Photo caption: 「오봉촌-광구선 복구 현장」
+
+BOTTOM TICKER:
+- Scrolling white text on dark blue: 「련합사능과학기술회사·천리마 브랜드·세계 뉴스...」
+- Small red indicator light blinking
+
+KOREAN TEXT (full, no abbreviation):
+- 「조선중앙통신」= 朝中社
+- 「주체115년」= 主体115年
+- 「세계 철도 운송량 30% 회복」= 全球铁路运输量恢复30%
+- 「오봉촌선」= 雾峰村线
+- 「림표한站长의 손자에 의해 부활」= 在林彪悍站长之孙手中复活
+- 「련합사능과학기술회사」= 联合沙能科学技术公司
+- 「천리마 브랜드」= 千里马品牌
+
+COLORS:
+- Banner: dark navy blue (#1A237E) with white text
+- Red star: bright red (#C62828)
+- Text area: cream/off-white (#F5F0E8)
+- Headline: bold black (#1A1A1A)
+- Ticker: dark blue (#0D1B2A) with white text
+- Red indicator: bright red (#FF0000)
+
+STYLE NOTES:
+- Deliberately stiff, formal, state-media aesthetic
+- No human figures visible (text-only broadcast)
+- The layout is rigid and hierarchical (top-down authority)
+- Contrast with the warm, organic village scenes — this is the "official voice"
+
+MOOD: 这不是新闻——这是官方叙事。在游戏里，朝中社的每一条报道都是铁龙计划的舆论武器。但这条新闻是真的：铁路确实在复兴。有时候，连官方叙事也不得不承认事实。
+```
 
 ---
 
