@@ -1862,28 +1862,66 @@ MOOD: Endless flat land, the long road south.
 **文件**：`Resources/bg/depot_morning.png`
 **用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5 喷油嘴的检修棚。
 
+**叙事锚点**：四年来第一次有人在这个检修棚里动手修车。晨光穿过棚顶的裂缝照进来，灰尘在光柱中飘浮——像时间本身在呼吸。墙上「安全第一」的标语已经褪色，但今天它又有了意义。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small railway depot maintenance shed, early morning:
+small railway depot maintenance shed, early morning, Chinese railway culture:
 
-SCENE: An open-sided maintenance shed in the depot yard. One inspection pit, workbench with tools (wrenches, oily rags, a flashlight, parts trays), a hoist chain, oil-stained concrete floor. NF-5's front end pokes into the shed. Morning sun slants through the shed opening, dust motes in light beams. A faded slogan on the wall: 「安全第一」.
+CHINESE RAILWAY ELEMENTS:
+- Wall slogan: 「安全第一 预防为主」faded red characters on white board, paint cracking, corners curled
+- Railway safety poster: 「铁路技术规程」yellowed, tacked to wooden pillar
+- Old timetable poster: 「雾峰村—矿区 运行时刻表」with handwritten corrections, some times crossed out
+- Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
 
-LAYOUT:
-- Shed structure framing the scene
-- Inspection pit + workbench right
-- NF-5 locomotive nose left, hood open
-- Morning light beams
-- Tool cart, oil drums
+NF-5 LOCOMOTIVE (dominant left side):
+- NF-5 农牛 diesel locomotive, deep forest green (#2D4A2D) body with rust patches
+- Front: 「NF-5」stamped in white on green plate, 「农牛」nameplate in weathered brass
+- Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
+- Oil stains running down the green paint like dark veins
+- One headlight cracked, the other working (dim)
+- Buffer beam with coupling hook, rust-orange
+
+WORKBENCH AND TOOLS (right side):
+- Heavy wooden workbench with metal vise, oil-stained surface
+- Disassembled fuel injector parts laid out on clean rag: nozzle body, needle valve, spring, copper washer
+- Wrenches: combination wrench set (8mm-24mm) hanging on pegboard, some missing
+- Oil cans: red 「长城润滑油」can and blue「昆仑」can side by side
+- Parts tray with bolts and small components organized by size
+- Flashlight (old, taped handle) and magnifying glass
+- Greasy rags piled in metal bin
+- Technical manual open on bench: 「NF-5型内燃机车维修手册」with hand-drawn annotations
+
+INSPECTION PIT:
+- Concrete pit 2m deep, oil-darkened floor with puddles
+- Wooden ladder leading down
+- Oil drip pan catching leaks from locomotive above
+
+STRUCTURE:
+- Open-sided corrugated metal shed, rusted steel frame
+- Patched corrugated roof with translucent panels letting in light
+- Concrete floor stained decades of oil, cracks patched with cement
+- One wall: pegboard with tools, safety slogans above
+- Morning sun slants through shed opening from left, dust motes floating in golden light beams
+
+MORNING ATMOSPHERE:
+- Light beams cutting through dusty air from shed opening
+- Dew on metal surfaces catching light
+- A thermos of hot tea on the workbench edge (张工's)
+- The sound of a wrench clicking (implied through visual rhythm)
 
 COLORS:
-- Shed: rusted steel frame, patched roof
-- Bench tools: worn metal blue/red handles
-- Light beams: warm white with dust
-- Floor: oil-darkened concrete
+- Shed frame: rusted orange-brown (#8B4513) with grey steel
+- NF-5 body: forest green (#2D4A2D) with rust orange (#A0522D) patches
+- Oil stains: dark brown-black (#1A0F00)
+- Morning light: warm gold (#F5D060) beams through dust
+- Floor: dark oil-stained concrete (#3A3028)
+- Slogans: faded red (#8B3A3A) on yellowed white
+- Tool handles: worn red and blue plastic
 
-MOOD: Old hands, old tools, old machine. The first repair in years.
+MOOD: 从废铁中唤醒希望的早晨。老手、老工具、老机器——四年来第一次有人在这个棚子里动手。
 ```
 
 ---
@@ -1893,28 +1931,45 @@ MOOD: Old hands, old tools, old machine. The first repair in years.
 **文件**：`Resources/bg/railway_track.png`
 **用途**：序章 Day 4 傍晚——林彪悍沿雾峰线徒步巡视。铁轨近景，锈迹与杂草，道砟与枕木。
 
+**叙事锚点**：23公里的铁轨，每一寸都是老陈用脚丈量过的。铁轨生锈了但没有断——就像这条线本身，被世界遗忘但拒绝死亡。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-ground-level view along an abandoned single-track railway, late evening:
+ground-level view along single-track railway, late afternoon golden hour, Chinese countryside:
 
-SCENE: Standing ON the railway line looking along it (low angle, rail perspective line vanishing to distance). Rusted rails on dark wooden sleepers, ballast stones overgrown with weeds and wildflowers, a sagging signal post ahead, distant station silhouette. Long evening shadows across the track.
+RAILWAY TRACK DETAIL (foreground, dominant):
+- Two rusted steel rails running into distance, rust orange-brown (#8A5A3B) with polished silver top where wheels once ran
+- Dark wooden sleepers (ties), some cracked and rotting, some replaced with lighter new wood (patches by 老陈)
+- Grey ballast stones (碎石道砟) between sleepers, moss growing in gaps
+- Wildflowers: yellow rapeseed (油菜花) and purple clover between tracks
+- Tall grass growing through ballast, some knee-high along the rail edges
 
-LAYOUT:
-- Rails converging to vanishing point (visual focus)
-- Sleepers slightly rotten, some replaced with patched wood
-- Weeds: tall grass, yellow wildflowers between tracks
-- Signal post leaning, arm down
-- Distant village roofs / station building
+SIGNAL AND SIGNAGE:
+- One old signal post ahead, leaning slightly, arm in "stop" position, paint faded to grey
+- Kilometer post: 「K15」cast iron, rusted, partially hidden by grass
+- Small concrete milepost: 「松桥 8km」hand-painted blue on white, chipped
 
-COLORS:
-- Rails: rust orange-brown (#8A5A3B), patched sleepers dark brown
-- Ballast: grey with moss
-- Sky: orange-pink dusk
-- Wildflowers: gold & lavender
+LANDSCAPE (middle and background):
+- Left side: terraced tea plantations climbing the hillside (梯田茶园), neat rows of tea bushes in spring green
+- Right side: steep hillside with mixed forest (bamboo, pine, deciduous)
+- Far distance: valley narrowing, mist hanging between ridges
+- A small stream visible crossing under a stone culvert bridge 200m ahead
+- One or two farm buildings with grey tile roofs (灰瓦) in the middle distance
 
-MOOD: Walking through memory. The line is dead — but the iron remembers.
+LIGHTING:
+- Late afternoon golden hour, sun low from left
+- Long shadows stretching across the track from right
+- Warm orange-gold light on the rusted rails, making them glow
+- Haze in the valley creating atmospheric depth (远山如黛)
+
+KOREAN CHINESE CULTURAL TOUCHES:
+- A faded railway notice board at the track edge: 「铁路沿线禁止放牧」(partially hidden by weeds)
+- Small stone marker: 「雾峰村铁路 1956」engraved date
+- Power lines following the track, one pole leaning
+
+MOOD: Walking through memory. 老陈走了这条路20年，每一根枕木都认识他。铁轨在生锈，但山谷里的野花还在开。
 ```
 
 ---
@@ -1922,21 +1977,72 @@ MOOD: Walking through memory. The line is dead — but the iron remembers.
 ### 2.26 松桥站（songqiao_station）
 
 **文件**：`Resources/bg/songqiao_station.png`
-**用途**：序章 Day 4 巡视途中——支线小站"松桥"（铁路博物馆候选站），破旧但仍立着。
+**用途**：序章 Day 4 巡视途中——支线小站"松桥"，破旧但仍立着。几个老人坐在站台上等一辆永远不会来的车。
+
+**叙事锚点**：这些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。松桥站是"等待的重量"的视觉化。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-tiny abandoned station on a branch line, late evening:
+tiny abandoned railway station, late afternoon, Chinese countryside:
 
-SCENE: A one-room station building, paint flaking, the name board「松桥」faded. A single short platform with grass growing through cracks. A dead flower bed, a broken water pump, an old bench. Beyond the platform, a stone-arched bridge over a stream carrying the railway. Everything old, quiet, dignified.
+STATION BUILDING:
+- Small one-room station building (约15平米), brick construction with whitewash walls peeling to reveal red brick underneath
+- Blue painted wooden door, paint cracked and faded
+- Name board above door: 「松桥」three characters, blue paint on white metal, heavily weathered, some paint flaking off revealing rust underneath
+- One window (wooden frame), glass dusty, curtains half-drawn (yellowed cotton)
+- Tiled roof with a few missing tiles, moss growing in gaps
+- Small concrete steps leading to platform, cracked
 
-LAYOUT:
-- Station building mid-frame (small, one window ajar)
-- Platform edge with weeds
-- Stone arch bridge behind carrying the line over water
-- Overgrown ticket office window, mossy sign
+PLATFORM:
+- Short concrete platform (about 8m long), edge cracked and uneven
+- Grass and weeds growing through every crack in the concrete
+- Old wooden bench: one seat plank broken, the other sagging, paint completely gone
+- A dead flower bed with dried stalks (was once cared for, abandoned when trains stopped)
+- A broken hand water pump (铸铁, rusted orange) near the bench
+- Platform edge: faded yellow safety line almost invisible
+- Old timetable poster in a glass case on the wall: 「松桥站 列车时刻表」with faded times, some crossed out in red pen, glass cracked
+
+TICKET OFFICE WINDOW (part of building):
+- Small service window with metal bars (for ticket sales)
+- 「售票处」sign above window, green paint on wood, faded
+- Inside: dusty counter, an old abacus, stacked ticket rolls (unused for years)
+- A calendar on the wall showing 2072 — stopped when trains stopped
+
+Elderly figures (blurry, impressionistic):
+- 2-3 old people sitting on the bench or standing at platform edge
+- Not detailed — just silhouettes with posture suggesting waiting
+- One person looking down the track as if expecting something
+
+BEYOND PLATFORM:
+- Stone-arched bridge (石拱桥) carrying railway over a small stream, 50m behind station
+- Stream flowing under bridge, dark water with green reflection
+- Railway line continuing into the valley beyond bridge
+- Terraced hillsides in background
+
+KOREAN CHINESE DETAILS:
+- Wall poster (inside ticket window, visible): 「铁路旅客须知」with old regulations
+- Platform edge marker: 「松桥 15km」concrete post
+- Small notice board: 「本站已停运」hand-written on cardboard, taped to wall
+- Old red fire extinguisher box (empty) on station wall
+
+LIGHTING:
+- Late afternoon, sun from right side
+- Long shadows from station building across platform
+- Warm golden light on the aged surfaces
+- The elderly figures backlit, creating halo effect
+
+COLORS:
+- Walls: peeling white (#E8E0D0) revealing red brick (#8B4513)
+- Platform: grey concrete (#808080) with green moss
+- Name board: faded blue (#4A6FA5) on white
+- Wood: weathered grey-brown (#8B7355)
+- Stream: dark jade green (#2E8B57)
+- Elderly: dark silhouettes with warm rim light
+
+MOOD: 有些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。这是"等待的重量"。
+```
 
 COLORS:
 - Building: peeling whitewash over brick
@@ -1954,27 +2060,62 @@ MOOD: A station that remembers being loved. (Museum candidate — keep intact.)
 **文件**：`Resources/bg/station_night.png`
 **用途**：序章 Day 4 夜晚——雾峰站旧人重逢（张工/李阿姨/王小弟等聚首）的夜景。
 
+**叙事锚点**：一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗内的暖光与窗外的冷蓝形成对比——这是铁路精神的最后一批守护者。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-mountain station at night, lit windows, gathering atmosphere:
+mountain railway station at night, warm gathering, cold mountain night:
 
-SCENE: Same station building as station_sunset but at night. Warm lamplight from the station master's office window, a light hanging over the platform, people silhouettes gathered by the door (no close-ups). Cool blue night outside, warm gold inside. A kettle steam plume from the chimney.
+STATION BUILDING (center):
+- Small wooden station building, traditional Chinese mountain architecture
+- Grey tile roof with slight curve at eaves
+- Wooden walls painted dark brown, paint peeling in places
+- 3 windows lit from inside with warm yellow-gold light (#F5C36B)
+- Front door open, warm light spilling onto platform
+- Smoke rising from chimney (kettle boiling inside)
+- 「雾峰村站」sign above door, white characters on dark wood, barely visible in darkness
 
-LAYOUT:
-- Station building with 2-3 warm lit windows
-- Platform lamp casting a pool of light
-- 4-5 dim human silhouettes (heads/backs only) by the entrance
-- Tea table visible through window (kettle, cups)
-- Night sky with stars beginning to show
+PLATFORM:
+- Concrete platform with one overhead lamp (old sodium vapor, warm orange glow casting a pool of light)
+- Wooden bench (one person could sit)
+- Edge painted yellow safety line, faded
+- Railway track in foreground, rails catching moonlight (silver-blue glint)
+
+PEOPLE (silhouettes only, 5 figures gathered near door):
+- Group of 4-5 dim human silhouettes near the lit doorway
+- Heads and upper bodies only, no facial detail
+- Warm rim light from the doorway creating golden outlines
+- Postures suggesting conversation: one leaning against doorframe, others standing in loose circle
+- A small table with a kettle visible through the doorway
+
+NIGHT SKY:
+- Deep indigo blue (#1A1A3E) upper sky
+- Stars beginning to show (scattered, not dense)
+- Mountain silhouettes on horizon, darker than sky
+- Slight atmospheric haze in valley (soft blue-grey)
+
+KOREAN CHINESE DETAILS:
+- Faded 「安全第一」slogan barely visible on station wall
+- Old railway lantern (unlit) hanging from a nail
+- A wooden sign: 「值班室」next to the door
+
+LIGHTING CONTRAST:
+- Exterior: cold blue moonlight and dark shadows
+- Interior through windows: warm gold light, inviting
+- Platform lamp: single warm orange pool of light
+- The contrast tells the story: cold world outside, warm community inside
 
 COLORS:
-- Night: deep blue (#22314F), stars faint
-- Window light: warm gold (#F5C36B)
-- Silhouettes: dark with warm rim light
+- Night sky: deep indigo (#1A1A3E)
+- Mountain silhouettes: near-black (#0A0A1A)
+- Window light: warm gold (#F5C36B) to amber (#E8A030)
+- Platform lamp: sodium orange (#FFB347)
+- Rail glint: cool silver-blue (#B0C4DE)
+- Building: dark brown wood (#3E2723)
 
-MOOD: The old team, home again. Warmth against the cold line.
+MOOD: 一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗外是零下十度的山风，窗内是滚烫的茶。
 ```
 
 ---
@@ -1982,15 +2123,76 @@ MOOD: The old team, home again. Warmth against the cold line.
 ### 2.28 站长办公室（station_office）
 
 **文件**：`Resources/bg/station_office.png`
-**用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈（市里扶持基金/乡亲集资）的室内。
+**用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈的室内。老陈守护四年的房间，每件物品都是时间的证据。
+
+**叙事锚点**：这个房间的每一件物品都在讲述一个人的故事——账本记录着铁路最后的日子，旧照片里的人已经不在了，但椅子上的凹痕还在。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-station master's office, morning:
+cramped station master's office, morning light through window:
 
-SCENE: A cramped but homey office inside the station building. A heavy wooden desk with a green banker's lamp, an old rotary phone, a wall map of the line (23km, stations marked), framed group photo, a kettle on a coal stove, shelves with ledgers. A window overlooking the platform. Paperwork, a worn leather chair.「站长办公室」wooden sign by the door.
+ROOM OVERVIEW:
+- Cramped room (约10平米), wooden floorboards worn smooth
+- Single window facing the platform and railway track (window right side)
+- Door on left wall with wooden「站长办公室」sign (hand-carved, dark wood)
+- Low ceiling with exposed wooden beams
+
+DESK (center-left, heavy old wooden desk):
+- Old rotary telephone (黑色拨盘电话) with coiled cord
+- Ledger books (账本) stacked — leather-bound, pages yellowed, hand-written entries
+- An abacus (算盘) for calculations
+- A green banker's lamp (台灯) with brass base, turned on
+- Pen holder with fountain pens and pencils
+- A half-empty cup of cold tea (茶杯), ring stain on desk
+- A pack of 红梅 brand cigarettes (拆开的), one cigarette resting on ashtray
+- Old railway stationmaster badge (站长徽章) pinned to a small cloth on desk corner
+- Stamp pad and wooden stamp: 「雾峰村站」
+
+WALL MAP (behind desk, dominant):
+- Large hand-drawn railway line map: 「雾峰村—矿区线 运行图」
+- 23km line with 4 stations marked: 雾峰村(0km), 茶山(8km), 松桥(15km), 矿区(23km)
+- Red pen marks crossing out some sections (停运标记)
+- Colored pencil marks showing old schedules
+- A few notes in handwriting: 「信号故障-已修」「道岔需调整」
+
+WALL ITEMS:
+- Framed group photo: old railway workers (including 林悍), black and white, slightly faded
+- Calendar: stopped at 「2072年9月」— when trains stopped
+- Yellowed railway safety poster: 「铁路安全 人人有责」with 1990s style illustration
+- Small shelf: railway technical manuals, 「铁路工程技术手册」(爷爷的遗书), a few old railway magazines
+- A clock on wall: stopped at 3:47 (when the last train departed)
+
+FURNITURE:
+- Old leather swivel chair (转椅), seat cushion worn through to stuffing
+- Small filing cabinet (铁皮文件柜) in corner, top drawer slightly open
+- A coal stove (煤炉) with kettle on top, smoke pipe going to ceiling
+- Coat hook with an old railway worker's cap hanging
+
+WINDOW VIEW:
+- Looking out to the platform and railway track
+- Morning light streaming in, casting long shadow of window frame across desk
+- Dust particles floating in the light beam
+
+KOREAN CHINESE DETAILS:
+- Desk nameplate: 「站长 林悍」(grandfather's name, retired but never removed)
+- Calendar: 「1993年9月」(stopped when trains stopped)
+- Bookshelf label: 「铁路技术资料」hand-written
+- Old photo caption on back: 「1998年 雾峰村站全体职工」
+- Stamp: 「雾峰村站」in red ink
+
+COLORS:
+- Walls: cream-white (#F5F0E8) with age yellowing
+- Desk: dark wood brown (#5C4033)
+- Lamp: green glass (#2E8B57) with brass (#B8860B)
+- Window light: warm morning gold (#F5D060)
+- Old leather: worn brown (#8B4513)
+- Map: white paper with colored pencil marks
+- Calendar: red header, white body, 「2072年9月」
+
+MOOD: 一个人守了四年的房间。账本记录着铁路最后的日子，旧照片里的人已经不在了，但椅子上的凹痕还在。这不是办公室——这是一个人的全部。
+```
 
 LAYOUT:
 - Desk center (viewer side: papers, ink, stamp)
@@ -2046,27 +2248,64 @@ MOOD: The first run in years. Nervous, bright, alive.
 **文件**：`Resources/bg/train_inside.png`
 **用途**：序章 Day 5 首班车——SY-22 灰雀客车车厢内部，乘客乘坐的镜头。
 
+**叙事锚点**：这节车厢四年没有载过一个乘客。座椅上的灰尘刚被擦掉，窗户上的水汽还没散。12个人坐在里面——这是铁路复活的第一个人。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-interior of an old branch-line passenger coach, daytime:
+old Chinese branch-line passenger coach interior, daytime, first run in four years:
 
-SCENE: Interior of a small old railway coach (30-seat branch line car). Green padded bench seats along both sides facing inward, a narrow aisle, luggage racks with woven baskets and cloth bundles, ceiling fans, windows showing passing village scenery. Carriage walls aged cream with painted slogans「爱护公共设施」. Light sway implied.
+CARRIAGE INTERIOR (30-seat branch line car):
+- Bench seats along both sides facing inward, dark green vinyl/wool upholstery (#2E4A2E), worn thin at edges where thousands of passengers once sat
+- Wooden armrests between seats, dark brown (#5C4033), varnish worn away in patches
+- Narrow aisle with dark linoleum floor, worn smooth in the center from decades of foot traffic
+- Windows: wooden frames, glass slightly fogged with condensation from morning warmth mixing with cold glass
+- Luggage rack above: iron pipe construction (铁管焊接), slightly bent, carrying woven竹篮 and cloth bundles
+- Ceiling: cream panels (#F5F0E8), small round lights (4 of 6 working, 2 dark), one ceiling fan (not spinning, dusty blades)
+- Door at far end to next carriage (半开), showing connecting corridor with accordion joint
 
-LAYOUT:
-- Aisle perspective, benches both sides
-- Passengers' belongings in racks (baskets, umbrellas, bundles)
-- Open windows, scenery blur outside
-- Conductor strap hanging, bell pull
+PASSENGERS (8-12 figures, impressionistic but human):
+- An old woman with a竹篮 (basket) full of tea leaves, looking out window
+- A man in dark work clothes (coal dust on hands), leaning back with arms crossed
+- A young couple sitting together, the girl resting her head on the boy's shoulder
+- A child standing at window pointing at something outside
+- One person near the door looking back at the departing platform
+- Figures are warm-toned, showing life and humanity despite old surroundings
+
+WINDOW VIEW (right side, motion blur):
+- Green rice paddies and tea plantations rushing past
+- Distant mountain ridges with morning haze
+- A small village with grey-tiled roofs visible for a moment
+- Power lines along the track, poles rhythmically passing
+
+KOREAN CHINESE DETAILS:
+- Wall poster: 「爱护公共设施 请勿卧铺躺卧」faded, 1990s railway poster style
+- 「禁止吸烟」red circle sign between windows
+- Small metal plaque: 「紧急制动阀」next to a red handle
+- Luggage rack numbers: 「1」「2」「3」painted in white on metal
+- Seat fabric: traditional railway green with subtle horizontal stripe pattern
+- Small 「茶山站 8km」distance marker visible through window
+
+FIRST-RUN ATMOSPHERE:
+- Morning sunlight streaming through windows, creating warm golden patches on green seats
+- Condensation on glass (train just started, interior warming up)
+- Slight visual tilt suggesting gentle sway
+- A thermos of hot water on the floor near the old woman
+- Paper bags and lunch boxes visible (passengers brought food)
+- Clean seats (recently wiped down) contrasting with aged walls
 
 COLORS:
-- Benches: worn green vinyl (#3E6B4A)
-- Walls: cream patched (#E3D5B8)
-- Racks: grey with colorful baskets
-- Outside windows: bright green fields
+- Seats: dark green vinyl (#2E4A2E) with lighter worn patches
+- Wood: warm brown (#6B4226)
+- Floor: dark grey-brown linoleum (#3A3028)
+- Walls: aged cream (#F5F0E8) with yellowing
+- Window light: warm morning gold (#F5D060)
+- Metal fixtures: grey-silver (#808080)
+- Passengers: varied warm clothing (reds, browns, blues)
+- Outside: bright green countryside (#4A7A3D)
 
-MOOD: Ordinary people, ordinary journey. The railway alive again.
+MOOD: 四年后第一趟车——座椅上的灰尘刚被擦掉，窗户上的水汽还没散。12个人坐在里面，有人看着窗外的田野，有人在低声说话，有个孩子趴在窗边。这是铁路复活的第一个早晨。每一件旧物都在说：我们还在。
 ```
 
 ---
