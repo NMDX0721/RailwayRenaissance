@@ -627,7 +627,7 @@ AVOID:
 - **尺寸**：1920×1080，JPG/PNG
 - **风格**：STARDEW VALLEY STYLE pixel art，16-bit retro
 - **格式**：多层分类清单 + 色彩方案 + 氛围 + 排除项
-- **⚠️ 人物排除（强制）**：场景背景图**严禁出现任何人物**。即使SCENE描述中提到"乘客""老人""摊贩"等，也仅作为环境氛围的文字说明，实际生成时**绝对不画人**。每个背景prompt末尾必须包含：`NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence.`
+- **⚠️ 人物排除（强制）**：场景背景图**严禁出现任何人物或载具**。即使SCENE描述中提到"乘客""老人""摊贩""飞行器"等，也仅作为环境氛围的文字说明，实际生成时**绝对不画人、不画车**。每个背景prompt末尾必须包含：`NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environment/scene background, empty of all human presence and man-made vehicles. The only man-made elements are the railway line, buildings, and infrastructure.`
 
 ---
 
@@ -644,14 +644,13 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 
 **叙事锚点**：Day4——林彪悍飞越中朝边境，第一次亲眼看到爷爷描述了无数次的那片群山。"铁轨从山缝里穿过去，像缝衣服的针"——现在他看到了那根针，细得几乎看不见，却缝合了两代人的记忆。
 
-SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。远处天际线附近有一架极其微小的飞行器剪影（仅作为空间比例尺）。
+SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。纯风景，无人无车，只有山和铁轨。
 
 LAYOUT:
 - 下三分之二：层叠山脊（前景深绿 #2E5D3A，中景黄绿 #5A7A3E，远景蓝灰 #7A8B99，最远淡紫 #B8A9C9）
 - 山谷底部：蜿蜒铁路线（锈棕色 #6B5B4F，偶尔有桥墩阴影）
 - 一个小隧道口（黑色半圆，上方水泥刻字「临江工务段」模糊可辨）
 - 上三分之一：晴朗午后天空（#5FA8E0），散落积云（#FFFFFF，底部浅蓝灰 #B8C6DB）
-- 最远天际线：一架微型飞行器剪影（#2A2A3A，高度约2像素）
 
 COLORS:
 - 山脊色阶：深森林绿(#2E5D3A) → 黄绿(#5A7A3E) → 蓝灰(#7A8B99) → 淡紫(#B8A9C9) → 天际淡蓝白(#DCE8F0)
@@ -664,14 +663,15 @@ COLORS:
 MOOD: 归途。辽阔、安静、带着希望的忧伤。一个25岁的学生第一次亲眼看到爷爷走过的那些山——它们在午后阳光下安静地排列着，像等待阅兵的士兵。铁路线在山谷中细得像一根线，但那根线就是整个故事的起点。林彪悍把脸贴在玻璃上，心里默念："爷爷，我看到了。"山脉不知道有人在看。它们在铁路之前就在这里，铁路消失之后它们还会在这里。但今天，从一架蓝色小飞行器的窗口望下去，一个年轻人看到了那根细铁线，感到某种无法命名的东西——骄傲、悲伤、以及一个尚未许下但已经背负的承诺。
 
 AVOID:
-- 出现任何人物、角色、人类身影（NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure landscape background）
+- 出现任何人物、角色、人类身影（NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES）
+- 出现任何车辆、飞行器、载具（NO VEHICLES, NO AIRCRAFT, NO FLYING CARS — this is a pure landscape）
 - 出现现代建筑或城市（这是原始山林）
 - 铁路过于清晰或壮观（应该是"几乎看不见"的细线）
 - 过于明亮的光线（午后应有温暖但不刺眼的质感）
 - 缺少大气透视效果（远山必须渐淡）
 - 冷色调为主（这是"进入中国"的第一幕，应偏暖）
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environment/scene background, empty of all human presence and man-made vehicles. The only man-made element is the abandoned railway line and tunnel.
 ```
 
 ---
