@@ -1547,6 +1547,8 @@ EXCLUSIONS:
 **文件**：`Resources/bg/mountain_sky.png`
 **用途**：序章 Day 4 下午——0721飞越边境后，进入中国境内群山之上。林彪悍第一次从高空俯瞰"小时候听爷爷讲的那片山"。
 
+**叙事锚点**：Day4——林彪悍离开朝鲜领空，第一次看到爷爷说的"那片山"。23年前爷爷指着地图说"这条线过了山就是中国了，铁轨从山缝里穿过去，像缝衣服的针。"现在他亲眼看到了——山还是那片山，铁轨还是那条铁轨，只是缝衣服的人已经不在了。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
@@ -1554,21 +1556,21 @@ STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 aerial view high above mountain ranges, afternoon,
 NO MAN-MADE OBJECTS visible except a distant railway line carved into the valley:
 
-SCENE: Seen from a flying vehicle high above. Endless green mountain ranges stretch to the horizon, layered ridges fading into atmospheric haze. A thin railway line snakes along one valley floor far below — the only sign of human presence. Afternoon light, bright and clear.
+SCENE: Seen from 0721's window high above — Lin Biaohan presses his face to the glass. These are the mountains his grandfather spoke of. Endless green mountain ranges stretch to the horizon, layered ridges fading into atmospheric haze like pages of a book growing older toward the horizon. A thin railway line snakes along one valley floor far below — 23 kilometers of iron that one old man walked every day for four years alone, checking each sleeper, each joint, each bolt. The railway is the only human mark on this ancient landscape, and it looks impossibly small. Afternoon light, bright and clear — the kind of light that makes you believe everything might be fine.
 
 LAYOUT:
 - Lower two-thirds: layered mountain ridges (foreground ridges darker green, distant ones fading to blue-grey)
-- A snaking railway line with small tunnels visible in the nearest valley
+- A snaking railway line with small tunnels visible in the nearest valley — the line should look fragile against the mountains
 - Upper third: clear afternoon sky with scattered cumulus clouds
 - A few distant flying vehicles as tiny silhouettes (optional, for scale)
 
 COLORS:
 - Ridges: deep forest green (#2E5D3A) → misty blue-grey (#7A8B99)
-- Railway: dark grey line with occasional rust-brown bridge sections
+- Railway: dark grey line with occasional rust-brown bridge sections — rust as evidence of time
 - Sky: clear blue (#5FA8E0), white clouds
-- Atmosphere haze: pale blue-white (#DCE8F0)
+- Atmosphere haze: pale blue-white (#DCE8F0) — the haze of memory, things seen through tears or distance
 
-MOOD: The journey home. Vast, quiet, hopeful.
+MOOD: The journey home. Vast, quiet, hopeful. A 25-year-old student sees mountains his grandfather walked through and feels something he can't name — pride, grief, and the weight of a promise he hasn't yet made but already carries. The mountains don't know anyone is watching. They've been here long before the railway, and they'll be here long after. But today, from a tiny blue vehicle high above, a young man sees that thin line of iron and thinks: "爷爷，我看到了。"
 ```
 
 ---
@@ -1578,28 +1580,30 @@ MOOD: The journey home. Vast, quiet, hopeful.
 **文件**：`Resources/bg/aerial_view.png`
 **用途**：序章 Day 4——"那是……铁路！"林彪悍在航线上第一次看见雾峰线的身影。这条线是爷爷守了一辈子的东西，是"归乡"的视觉锚点。
 
+**叙事锚点**：Day4——林彪悍在空中第一次看见雾峰线的全貌。"那是……铁路！"他脱口而出，声音在驾驶舱里回响。这条23公里的支线铁路，从空中看像一道细弱的伤疤——但它是一道被一个人用四年时间守护的伤疤。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 aerial view looking down at a narrow mountain valley railway, late afternoon:
 
-SCENE: Aerial view of a 23km mountain branch line cutting through forested foothills. Two or three tiny stations along the line (tiles roofs, small platforms). A stream crosses under a stone arch bridge. The line is old, single-track with rusted rails still gleaming in low sun. A tiny haze of cooking smoke rises from a village at the valley mouth — WuFeng village in the distance.
+SCENE: Aerial view of a 23km mountain branch line cutting through forested foothills — the line that Lin Biaohan's grandfather guarded alone for four years. Two or three tiny stations along the line (tile roofs, small platforms), each one a place where an old man checked the signal, swept the platform, and waited for passengers who never came. A stone arch bridge crosses a stream — Grandfather Lin built his afternoon tea station beside it. The line is old, single-track, rusted rails still gleaming in the low sun like a thread of copper sewn into the green hills. At the valley mouth, a tiny haze of cooking smoke rises from Wufeng village — the village that has been waiting. The railway is a scar on the landscape, but it's a scar that someone loved back to life.
 
 LAYOUT:
-- Railway line as the visual spine: enters bottom frame, curves left, exits top
-- 2-3 small stations along the line, each with a short platform and one building
-- Stone arch bridge carrying track over a stream
-- Village cluster at valley mouth (grey-roof houses, one tall chimney)
+- Railway line as the visual spine: enters bottom frame, curves left, exits top — it should feel like a lifeline, fragile but persistent
+- 2-3 small stations along the line, each with a short platform and one building — every station is a chapter of grandfather's story
+- Stone arch bridge carrying track over a stream — the bridge grandfather crossed every morning at 6am
+- Village cluster at valley mouth (grey-roof houses, one tall chimney) — the village the railway serves
 - Surrounding: forested hills, terraced fields, a winding dirt road
 
 COLORS:
-- Rails: rust brown-grey (#6B5B4F) with warm highlights
+- Rails: rust brown-grey (#6B5B4F) with warm highlights — rust as love, not neglect
 - Station roofs: grey-blue tiles (#4F6F7A)
 - Fields: gold-green (#8FA94E)
-- Late afternoon warm wash over everything
+- Late afternoon warm wash over everything — golden hour, the hour grandfather always checked the line
 
-MOOD: Seeing it again after years. A line that should be dead, still alive.
+MOOD: Seeing it for the first time with your own eyes. A line that should be dead, still alive — because one person refused to let it die. Lin Biaohan's voice catches: "那是……铁路！" Not a grand railway. Not an important railway. Just 23 kilometers of iron that mean everything to one village and one old man. The railway is the shape of a promise kept.
 ```
 
 ---
@@ -1609,28 +1613,30 @@ MOOD: Seeing it again after years. A line that should be dead, still alive.
 **文件**：`Resources/bg/village_sunset.png`
 **用途**：序章 Day 4 抵达前——雾峰村全景，林彪悍的"老家"。村口的老槐树、土墙、炊烟，2076 年仍保持着铁路时代前的样子。
 
+**叙事锚点**：Day4——四年后的第一眼。从低丘上俯瞰，村庄和记忆中一模一样——老槐树还在，土墙还是那个颜色，炊烟还是那个方向。只有他自己变了。爷爷不在了，但他回来了。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 mountain village panorama at sunset, seen from a low hill above:
 
-SCENE: A small mountain village cradled in a valley. Grey-tiled house roofs with whitewashed walls, an old tree at the village entrance, evening cooking smoke rising from several chimneys. A flagged dirt road winds into the village. Behind it, terraced fields climb the foothills. Warm sunset light paints everything gold-orange.
+SCENE: A small mountain village cradled in a valley — Wufeng Village, the place Lin Biaohan left as a child and hasn't seen in four years. Everything is exactly as he remembers: the old scholar tree at the village entrance (Grandfather Lin used to sit under it reading railway timetables), grey-tiled house roofs with whitewashed walls slowly aging to warm cream, evening cooking smoke rising from several chimneys (the same direction, the same villages, the same supper hour). A flagged dirt road winds into the village. Behind it, terraced fields climb the foothills — tea bushes, dark and patient. Warm sunset light paints everything gold-orange, the same light that fell on his grandfather's face the last time they stood on this hill together. The village hasn't changed. Lin Biaohan has.
 
 LAYOUT:
-- Mid-distance village spread across the frame (15-20 houses clustered)
-- Old entrance tree (willow/elm) at frame left, villagers' washing lines
-- Terraced fields behind, dark green
-- Mountain walls closing in both sides
-- Evening sky with warm clouds
+- Mid-distance village spread across the frame (15-20 houses clustered) — small, tight-knit, everyone knows everyone
+- Old entrance tree (scholar tree/槐树) at frame left, villagers' washing lines — the tree is a landmark, a meeting point, a clock
+- Terraced fields behind, dark green — tea, the village's other livelihood
+- Mountain walls closing in both sides — protective, like arms around a child
+- Evening sky with warm clouds — the same sunset grandpa watched every evening
 
 COLORS:
-- Roofs: warm grey (#8A7F7A), walls: white-washed with patina (#D9CBB8)
+- Roofs: warm grey (#8A7F7A), walls: white-washed with patina (#D9CBB8) — aged but cared for
 - Fields: dark moss green (#4C6B3E)
-- Sunset: orange (#E8974A) → deep blue shadow (#3D5175)
-- Smoke: pale lavender-grey
+- Sunset: orange (#E8974A) → deep blue shadow (#3D5175) — the warmth of memory meeting the cool of absence
+- Smoke: pale lavender-grey — cooking fires, the village's heartbeat
 
-MOOD: Home, unchanged. The village time forgot.
+MOOD: Home, unchanged. The village time forgot. But Lin Biaohan is not the child who left — he carries a grandfather's pocket watch, a dead man's mission, and four years of absence that no sunset can erase. The village looks the same. He doesn't. That's the ache of this image: the place waited perfectly for him, while he grew up without it.
 ```
 
 ---
@@ -1638,7 +1644,9 @@ MOOD: Home, unchanged. The village time forgot.
 ### 2.17 车站夕阳（station_sunset）
 
 **文件**：`Resources/bg/station_sunset.png`
-**用途**：序章 Day 4 降落与 Day 7 收尾共用——雾峰站全景。老站房、站牌、月台、停着的 NF-5 耕牛。这条线"最后的车站"。
+**用途**：序章 Day 4 降落与 Day 7 收尾共用——雾峰站全景。老陈独自守护的车站，老站房、站牌、月台、停着的 NF-5 耕牛。这条线"最后的车站"。
+
+**叙事锚点**：Day4——老陈独自守护的车站。夕阳把站台染成金色，就像四年前最后一个旅客离开时的颜色。站房的灯亮着——老陈每天傍晚都会开灯，给可能迷路的过路人一个方向。今天，灯光终于等到了它的理由。
 
 **提示词**：
 ```
@@ -1646,23 +1654,23 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 small mountain railway station at sunset, wide establishing shot:
 
-SCENE: A humble single-platform railway station at dusk. A low station building with a faded "雾峰" sign (Chinese characters), a wooden platform bench, signal post with rusty arm, and the NF-5 diesel locomotive waiting on the single track (dark green, weathered). Platform overgrown at edges with wild grass. Warm low sun from the left.
+SCENE: A humble single-platform railway station at dusk — Wufeng Station, the last station on a line that was supposed to be dead. A low station building with a faded "雾峰" sign (Chinese characters, paint cracking in the way old paint does when no one repaints it — not from neglect, but because the man who maintains everything else hasn't gotten around to the sign yet). A wooden platform bench, polished smooth by four years of one man sitting alone waiting. Signal post with rusty arm locked in the "stop" position — no trains have passed this signal in four years. The NF-5 diesel locomotive waits on the single track (dark green, weathered, but oiled — Lao Chen starts it every Sunday to keep the engine from seizing). Platform overgrown at edges with wild grass, but the center is swept clean. A single thermos and patched work gloves rest on the bench — Lao Chen just stepped inside for tea. Warm low sun from the left, casting the kind of long shadows that make old things look dignified.
 
 LAYOUT:
-- Station building left-center (grey brick, red-tile roof, faded painted characters)
-- Wooden platform edge running across mid-frame
-- NF-5 locomotive on track right, nose toward viewer-left
-- Freight cars (2) behind it, weathered
-- Old luggage cart, stacked sacks by platform
+- Station building left-center (grey brick, red-tile roof, faded painted characters) — small but solid, built to last
+- Wooden platform edge running across mid-frame — the platform is the stage where the story begins
+- NF-5 locomotive on track right, nose toward viewer-left — the "plow ox," dormant but not dead
+- Freight cars (2) behind it, weathered — they haven't carried cargo in years
+- Old luggage cart, stacked sacks by platform — Lao Chen still organizes them, habit or hope
 - Chinese-language signs only
 
 COLORS:
-- Building: grey brick (#9A8F84), roof: faded red (#B4684D)
+- Building: grey brick (#9A8F84), roof: faded red (#B4684D) — colors that have earned their fading
 - Platform: worn concrete warm grey (#A8998B)
-- Locomotive: dark green (#2F4A38) with rust accents
-- Sky: orange-pink sunset
+- Locomotive: dark green (#2F4A38) with rust accents — rust that Lao Chen polishes off every week
+- Sky: orange-pink sunset — the same sunset Lao Chen has watched alone for 1,460 evenings
 
-MOOD: The last station on a dying line — but tonight, someone came back.
+MOOD: The last station on a dying line — but tonight, someone came back. For four years, this platform held one man's shadow at dusk. The lamp inside the station is always on, the thermos is always warm, because Lao Chen never stopped believing that the next person through that door would be someone who came to stay. The sunset is the same color it was the day the last passenger left. But today, for the first time in four years, it's lighting someone's arrival.
 ```
 
 ---
@@ -1672,27 +1680,29 @@ MOOD: The last station on a dying line — but tonight, someone came back.
 **文件**：`Resources/bg/platform_evening.png`
 **用途**：序章 Day 4 林彪悍下车踏上月台的近景——"到家了"的瞬间。与 station_sunset 的区别：本图为站台近景特写。
 
+**叙事锚点**：Day4——林彪悍踏上站台的瞬间。木板上还有爷爷当年钉的钉子头，锈成和木头一样的颜色。手套和水壶是老陈的——他刚巡完23公里线回来，还不知道今天会有人来。站台灯亮着，像一直在等。
+
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 close view standing ON the platform at dusk, facing the station building:
 
-SCENE: Ground-level platform view. Weathered wooden platform surface in foreground, station building facing the viewer (faded 雾峰 characters, two windows with warm lamplight inside), a green signal lamp glowing. Evening shadows long. A pair of patched leather work gloves and a thermos left on the platform bench — someone was here recently.
+SCENE: Ground-level platform view — the perspective of someone who just stepped off a vehicle and is standing on the platform for the first time in four years. Weathered wooden platform surface in foreground, each plank a different shade of old brown, iron nail heads rusted flush with the wood (Grandfather Lin nailed these boards down himself, thirty years ago). Station building facing the viewer (faded 雾峰 characters, two windows with warm lamplight inside — the light of a man who never turns off the light). A green signal lamp glowing — Lao Chen maintains it out of habit, even though no train needs the signal anymore. Evening shadows long, reaching toward the viewer like open arms. A pair of patched leather work gloves and a dented thermos left on the platform bench — Lao Chen's gloves, Lao Chen's thermos. He was here thirty seconds ago, heading inside to pour tea. He doesn't know yet that someone has come home.
 
 LAYOUT:
-- Foreground: platform planks, growing weeds between boards
-- Mid: station building facade (4-5m wide), warm window light
-- Left: signal post with lit green lamp
-- Bench with forgotten gloves & thermos
-- Background: fading sky
+- Foreground: platform planks, growing weeds between boards — weeds that Lao Chen pulls every Monday but that return every Wednesday
+- Mid: station building facade (4-5m wide), warm window light — the station's heartbeat
+- Left: signal post with lit green lamp — green means "go," and tonight, for the first time, it's right
+- Bench with forgotten gloves & thermos — evidence of the man who waited
+- Background: fading sky — the last light of the day, the first light of a new chapter
 
 COLORS:
 - Planks: worn brown (#7A6248), weeds: grey-green (#68754B)
-- Building: whitewash patched grey (#C0B5A5), lamplight warm yellow (#F2C86B)
-- Gloves: worn leather brown
+- Building: whitewash patched grey (#C0B5A5), lamplight warm yellow (#F2C86B) — warm as a kitchen, warm as a welcome
+- Gloves: worn leather brown — the color of four years of work
 
-MOOD: Stepping onto home ground. The station is old, poor, and still lit.
+MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every detail here is a love letter from an old man to a railway line: the swept planks, the oiled signal, the patched gloves, the warm thermos. Lin Biaohan's feet touch the wood and the boards creak — the same sound his grandfather's boots made every morning at 6am. "到家了," he whispers, and the station, for the first time in four years, believes it.
 ```
 
 ---
@@ -1700,29 +1710,31 @@ MOOD: Stepping onto home ground. The station is old, poor, and still lit.
 ### 2.19 边境小镇（border_town）
 
 **文件**：`Resources/bg/border_town.png`
-**用途**：序章 Day 1 上午——临江市（中朝边境边贸城）上空视野。0721 补沙前短暂停留。
+**用途**：序章 Day 1 上午——临江市（中朝边境边贸城）上空视野。0721 补沙前短暂停留。被四家单位追捕的紧张感。
+
+**叙事锚点**：Day1——被四家单位追捕的紧张感。0721在这里短暂停留补沙，林彪悍的心跳还没平复——三分钟前他刚从边境检查站逃出来。这座边贸城看起来平静而普通，但他知道头顶上至少有两架巡逻机在搜索他。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-border trade town seen from a low flying vehicle, morning:
+border trade town seen from a low flying vehicle, morning — tension beneath calm:
 
-SCENE: A small border-commerce town straddling both sides of a river (the Yalu-style river in the far background). North side: formal, grey, sparse. A market street with Russian-Korean-Chinese trilingual shop signs, bales of goods, hand carts. Grey river with ferry boats. Morning light.
+SCENE: A small border-commerce town straddling both sides of a river (the Yalu-style river in the far background, grey and indifferent to human borders). North side: formal, grey, sparse — government buildings with flags. South side: messy, alive, chaotic — the market street with Russian-Korean-Chinese trilingual shop signs, bales of goods, hand carts, a barbershop pole spinning. A grey river with ferry boats that haven't moved in days. Morning light that should be peaceful but isn't — because somewhere above, two patrol aircraft are searching for a blue vehicle that shouldn't be here. The town looks calm. It isn't. Every rooftop is a potential observation post. The supply station in the corner is the only reason they landed — sand, the new oil, sold by weight at a place that doesn't ask questions.
 
 LAYOUT:
-- Town market street across mid-frame
-- River and far bank in upper background
-- Sand-energy supply station (fuel-pump-like sand dispensers) bottom-left corner
-- Vehicles parked, porters with bundles
+- Town market street across mid-frame — life continuing despite the drama above
+- River and far bank in upper background — the border, just meters away
+- Sand-energy supply station (fuel-pump-like sand dispensers) bottom-left corner — the objective
+- Vehicles parked, porters with bundles — normalcy as camouflage
 
 COLORS:
-- Buildings: mixed grey/brick/white
-- Signs: faded red/blue letters
-- River: pale grey-green (#86A88A)
-- Morning sky: cool blue
+- Buildings: mixed grey/brick/white — a town that belongs to no single identity
+- Signs: faded red/blue letters — languages overlapping, identities blurred
+- River: pale grey-green (#86A88A) — the river that divides and connects
+- Morning sky: cool blue — deceptively calm, hiding search patterns
 
-MOOD: The border between two worlds. A place where everything is for sale.
+MOOD: The border between two worlds. A place where everything is for sale — including silence. Lin Biaohan's heart pounds as 0721 descends toward the supply station. Below, vendors arrange their stalls. Above, the hunt continues. This town doesn't know it's a stage for an escape. It just thinks it's Tuesday.
 ```
 
 ---
@@ -2425,28 +2437,45 @@ EXCLUSIONS:
 **用途**：序章 Day 0——平壤大学后街的「통일 도시락」（统一便当店），一个灰色地带的杂货铺。韩文招牌与领袖画像共存，货架上摆满南方走私货。
 
 **提示词**：
-`
+```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small convenience store interior, Pyongyang, afternoon, slightly cramped:
+small convenience store interior, Pyongyang backstreet, warm afternoon light:
 
-SCENE: Inside a small corner shop. Narrow aisles lined with metal shelves stocked with a wild mix: Korean instant noodles (Shin Ramyun), banana milk, soju bottles, shrimp crackers, canned coffee, cola. A glass-fronted refrigerator fully stocked with South Korean drinks. The wall behind the counter has a faded Kim Il-sung portrait next to a handwritten price board. A small glass counter displays Hello Kitty keychains and Kuromi figurines — the smuggled goods. The shopkeeper's stool behind the counter. Warm afternoon light through the door.
+**叙事锚点**：这是两个世界碰撞的缝隙——墙上挂着领袖画像和「主体思想指引我们前进」的标语，标语下方就是装满南方走私饮料的冰柜。旁边贴着韩日二次元美少女海报。在这间店里，政治宣传、二次元文化和违禁商品共处一室，荒诞却真实。
+
+SCENE: 狭小的「统一便当店」（통일 도시락）内部。金属货架从地板堆到天花板，塞满了南方走私商品。柜台后方的墙上：左侧是金日成半身官方肖像画（深棕色木框，略微褪色），右侧是「主体思想指引我们前进」红色标语（白底发黄），标语下方紧挨着一张日本动漫美少女海报（初音未来风格，与领袖画像形成荒诞对比）。柜台玻璃展示柜里摆着Hello Kitty钥匙扣、库洛米手办、动漫贴纸——走私品。柜台上方贴着手写价签（韩文+中文混合）。柜台后是店员的高脚凳。
+
+货架商品（按位置描述）：
+- 左侧货架上层：辛拉面（红色包装，6包堆叠）、韩国零食（彩色袋装）
+- 左侧货架中层：香蕉牛奶（粉色利乐包，4排）、罐装咖啡（深棕色/金色，3种品牌混放）
+- 左侧货架下层：虾条（橘色袋装，3包）、其他膨化食品
+- 右侧货架：烧酒（绿色玻璃瓶，多品牌混放，约8瓶）、可乐（红色标签玻璃瓶）
+- 冰柜（玻璃门，中右侧）：装满各种南方饮料——韩国汽水、果汁、牛奶，五颜六色
+- 冰柜旁地面：两箱可乐（纸箱，红色）
+- 柜台上方：主角购买的商品——三盒BBQ炸鸡（堆叠）、两瓶烧酒、一箱辛拉面（放在地上）、散装的虾条/香蕉牛奶/可乐/罐装咖啡
 
 LAYOUT:
-- Shelves in foreground with colorful product packaging
-- Glass counter mid-left with smuggled toys
-- Back wall: faded leader portrait + price board + 统一便当店 calligraphy
-- Fridge right side covered in stickers
-- Shopkeeper figure behind counter (implied, not detailed)
+- 入口在画面左侧，下午暖光从门外照入
+- 左侧：两层金属货架（商品密集）
+- 中央：玻璃柜台+收银台+店员凳子
+- 右侧：玻璃冰柜+更多货架
+- 后墙：领袖画像+标语+美少女海报（三种文化共存）
+- 地板上散放着几箱货物
+- 空间狭窄（约6-8平米），但商品密度极高
 
 COLORS:
-- Warm yellow interior light (#E8C87A)
-- Product packaging: bright reds, blues, greens (Korean branding)
-- Wall: aged cream (#D4C5A9)
-- Portrait: faded sepia tones
+- 室内光线：暖黄色（#E8C87A）下午阳光
+- 货架：银灰色金属
+- 商品包装：鲜艳的红（辛拉面/可乐）、粉（香蕉牛奶）、绿（烧酒）、橘（虾条）
+- 后墙：米黄色（#D4C5A9）老墙
+- 领袖画像：深棕色木框+褪色照片色
+- 标语：红色字（#C62828）白底发黄
+- 美少女海报：亮粉色+天蓝色（与周围环境形成强烈反差）
+- 冰柜内灯光：冷白色荧光
 
-MOOD: Where the border dissolves between two Koreas. A shop that shouldn't exist, thriving.
-`
+MOOD: 两个世界的碰撞。领袖画像与美少女海报共存，主体思想标语下卖着南方走私货。这间店本身就是一个时代的缩影——官方叙事与真实生活在同一面墙上交战。
+```
 
 ---
 
