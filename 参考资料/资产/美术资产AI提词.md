@@ -64,6 +64,7 @@
 - [3.4 morning](#34-morning清晨宁静) — 时间过渡 3:00
 - [3.5 warm](#35-warm温暖安心) — 团队日常 3:30
 - [3.6 news](#36-news新闻播报) — 新闻/背景 3:00
+- [3.6.1 news_explosive](#361-news_explosive爆炸性新闻对主角极度不利) — 爆炸性反击新闻 3:00
 - [3.7 calm](#37-calm平静日常) — 日常运营 3:30
 - [3.8 train_ambient](#38-train_ambient火车行驶环境) — 车厢内 3:00
 - [3.9 ambient_nature](#39-ambient_nature自然环境音) — 户外/山林 2:30
@@ -1565,6 +1566,21 @@ Description: Staccato strings in perfect unison, mechanical, like a printing pre
 
 **Suno Style（≤1000字符）：**
 > Style: State broadcast theme authoritarian formal mechanical precision instrumental, weight of official story may not be true, staccato rigid strings perfect unison like printing press, low brass drone heavy institutional authority, militaristic snare more schedule than music, single piano note at end silence before you think, rigid 82 BPM no rubato machine-precise, reference KCNA broadcast CCTV Xinwen Lianbo Death of Stalin opening, arrangement never breathes never pauses never lets you forget this is announcement, strings play identical rhythm like propaganda loop, brass drones add weight without menace, snare marks time like factory whistle, final piano note lonely exposed like silence after broadcast, reverb large empty government hall, ends abruptly cutting off mid-sentence, instrumental no vocals
+
+### 3.6.1 news_explosive（爆炸性新闻·对主角极度不利）
+
+**叙事功能**：当铁龙计划的舆论反击开始，或者主角的行动被官方媒体定性为"破坏"时使用。比普通news更具攻击性和压迫感。
+
+**脚本ID**：`news_explosive`
+**文件**：`Assets/Resources/bgm/news_explosive.mp3`
+**来源**：Suno生成 "Official Announcement (激情版)"
+
+**适用场景**：
+- post_007揭露铁龙后，USET官方反击声明
+- 铁龙计划加速行动，对主角施压
+- 任何"对主角极度不利的爆炸性新闻"（如被指控破坏铁路安全、涉嫌非法运营等）
+
+---
 
 ### 3.7 calm（平静·日常）
 
