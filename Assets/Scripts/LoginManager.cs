@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System.IO;
 
+// [DEPRECATED] 平板桌面重构：新玩家直接进入VN序章，不再经过登录场景。
+// 平板桌面(GameMainUI)替代TitleScreen，用户名迁移到PlayerPrefs("XiaomiAccount")。
+// 代码保留供参考（GAME_VERSION/cursorTexture/AUTH等仍被其他脚本引用）。
 public class LoginManager : MonoBehaviour
 {
     private InputField usernameInput;

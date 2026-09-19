@@ -8,6 +8,9 @@ public static class RailRevivalRuntimeBootstrap
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void BootstrapActiveScene()
     {
+        // 平台适配：禁用Android系统返回键退出游戏
+        Input.backButtonLeavesApp = false;
+
         Scene scene = SceneManager.GetActiveScene();
         if (scene.name != "StationSlice_V1")
         {

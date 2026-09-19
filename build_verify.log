@@ -1,11 +1,14 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Channel LicenseClient-SYSTEM doesn't exist
 OS: 'Windows 11  (10.0.26300) Professional' Language: 'zh' Physical Memory: 31934 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-09-12T06:20:48Z
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-09-12T06:20:48.3321021Z"
+Date: 2026-09-19T10:47:18Z
+[Licensing::Module] Successfully launched the LicensingClient (PId: 32152)
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-SYSTEM, press Ctrl-C to exit.
 
 COMMAND LINE ARGUMENTS:
 D:\Unity Hub\Unity 6.5\Editor\Unity.exe
@@ -53,42 +56,31 @@ D:/Unity Project/RailwayRenaissance
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Logging is directed to a specific file, skipping project log.Player connection [16796]  Target information:
+Logging is directed to a specific file, skipping project log.Player connection [680]  Target information:
 
-Player connection [16796]  * "[IP] 192.168.71.4 [Port] 55504 [Flags] 2 [Guid] 3116874897 [EditorId] 3116874897 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [680]  * "[IP] 192.168.71.4 [Port] 55504 [Flags] 2 [Guid] 3218823247 [EditorId] 3218823247 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [16796]  * "[IP] 172.30.80.1 [Port] 55504 [Flags] 2 [Guid] 3116874897 [EditorId] 3116874897 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [680]  * "[IP] 172.30.80.1 [Port] 55504 [Flags] 2 [Guid] 3218823247 [EditorId] 3218823247 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [16796]  * "[IP] 192.168.31.127 [Port] 55504 [Flags] 2 [Guid] 3116874897 [EditorId] 3116874897 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [680]  * "[IP] 172.31.240.1 [Port] 55504 [Flags] 2 [Guid] 3218823247 [EditorId] 3218823247 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [16796] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [16796] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [680] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [680] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-20424" after 0.2 seconds.
-[Licensing::Module] Licensing is not yet initialized.
-[Licensing::Client] Error: HandshakeResponse reported an error:
-	ResponseCode: 505
-	ResponseStatus: Unsupported protocol version '1.18.1'.
-[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-Oe_Lee"
-[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
-[Licensing::IpcConnector] Channel LicenseClient-Oe_Lee-6000.5.8 doesn't exist
-[Licensing::Module] Successfully launched the LicensingClient (PId: 45952)
-Starting IPC server.
-Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-Oe_Lee-6000.5.8, press Ctrl-C to exit.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8" at "2026-09-12T06:20:49.8437852Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 45952, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-SYSTEM" at "2026-09-19T10:47:18.9074086Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 32152, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              9fcb967ae6d549d08f728c5f150ee293
-  Correlation Id:          46b4976c34de0af5f186b4646132626e
-  External correlation Id: 8838776339876771740
+  Session Id:              19fdee1b282e483bb48b24e00b5a0677
+  Correlation Id:          aaf336c769f7318d2fc72388587572f3
+  External correlation Id: 2180792788383737842
   Machine Id:              ZO+yfxaVFmW/OFopdVuYEhjz7wI=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee-6000.5.8" (connect: 0.24s, validation: 0.16s, handshake: 0.01s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8-notifications" at "2026-09-12T06:20:50.0083694Z"
-[Licensing::Module] Connected to LicensingClient (PId: 45952, launch time: 0.00, total connection time: 0.41s)
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-SYSTEM" (connect: 0.37s, validation: 0.05s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-SYSTEM-notifications" at "2026-09-19T10:47:19.008715Z"
+[Licensing::Module] Connected to LicensingClient (PId: 32152, launch time: 0.00, total connection time: 0.47s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
@@ -98,8 +90,8 @@ Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-Oe_Lee-6000.5.8, 
   Expiration: Unlimited
 [Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
 [Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 1.71s
-[Licensing::Module] Licensing is initialized (took 1.28s).
+[Licensing::Module] Licensing Background thread has ended after 0.50s
+[Package Manager] Connected to IPC stream "Upm-21940" after 0.2 seconds.
 [Licensing::Client] Successfully resolved entitlement details
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
@@ -123,35 +115,35 @@ Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
 Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
 Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56424
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56940
 CodeReloadManager initialized
 ImportWorker Server TCP listen port: 0
 AcceleratorClientConnectionCallback - disconnected - :0
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.000737 seconds.
+Registered in 0.000962 seconds.
 Native extension for WindowsStandalone target not found
 Package Manager log level set to [2]
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.341 seconds
-Domain Reload Profiling: 649ms
-	BeginReloadAssembly (80ms)
-		CreateAndSetChildDomain (4ms)
-	RebuildCommonClasses (4ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (35ms)
-	LoadAllAssembliesAndSetupDomain (177ms)
-		LoadAssemblies (75ms)
-		AnalyzeDomain (132ms)
-			TypeCache.Refresh (130ms)
-				TypeCache.ScanAssembly (121ms)
-	FinalizeReload (342ms)
+- Finished resetting the current domain, in  0.408 seconds
+Domain Reload Profiling: 816ms
+	BeginReloadAssembly (114ms)
+		CreateAndSetChildDomain (17ms)
+	RebuildCommonClasses (5ms)
+	RebuildNativeTypeToScriptingClass (14ms)
+	initialDomainReloadingComplete (47ms)
+	LoadAllAssembliesAndSetupDomain (228ms)
+		LoadAssemblies (97ms)
+		AnalyzeDomain (170ms)
+			TypeCache.Refresh (169ms)
+				TypeCache.ScanAssembly (157ms)
+	FinalizeReload (409ms)
 		SetupLoadedEditorAssemblies (0ms)
-			BeforeProcessingInitializeOnLoad (60ms)
-			ProcessInitializeOnLoadAttributes (65ms)
-			ProcessInitializeOnLoadMethodAttributes (170ms)
+			BeforeProcessingInitializeOnLoad (77ms)
+			ProcessInitializeOnLoadAttributes (77ms)
+			ProcessInitializeOnLoadMethodAttributes (193ms)
 [Licensing::Client] Successfully resolved entitlement details
 Application.AssetDatabase Initial Refresh Start
 [Package Manager] Restoring resolved packages state from cache
@@ -224,7 +216,7 @@ Application.AssetDatabase Initial Refresh Start
   Git packages:
     com.coplaydev.unity-mcp@https://github.com/CoplayDev/unity-mcp.git?path=MCPForUnity#v10.1.2 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.coplaydev.unity-mcp@8bd91ce7bd3a)
 [Subsystems] No new subsystems found in resolved package list.
-[Package Manager] Done registering packages in 0.01 seconds
+[Package Manager] Done registering packages in 0.02 seconds
 [ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
 info: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:80
@@ -241,7 +233,7 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 19.2649ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 23.5634ms
 Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: D:/Unity Project/RailwayRenaissance
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
@@ -260,7 +252,7 @@ info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - 200 - application/grpc 36.8478ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - 200 - application/grpc 62.6674ms
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -273,6 +265,20 @@ info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       running Unity.Jobs.CodeGen.JobsILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library\Bee\artifacts\1900b0aE.dag\Unity.Collections.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\Unity.Scripting.dll
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@2f3d916873ea\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 1312.3670ms
 info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - application/grpc -
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -283,44 +289,16 @@ info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       running Unity.Jobs.CodeGen.JobsILPostProcessor
-info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll
-info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll
-info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\Unity.Scripting.dll
 info: Unity.ILPP.Runner.PostProcessingPipeline[0]
       running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-info: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@2f3d916873ea\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
 info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 205.3463ms
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
-info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 301.7223ms
-ExitCode: 0 Duration: 1s986ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 8.5511ms
+ExitCode: 0 Duration: 3s425ms
 [735/936    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[928/936    1s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
-Assets\Scripts\VN\VNManager.cs(431,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-
-Assets\Scripts\VN\VNManager.cs(468,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-
-Assets\Scripts\VN\VNManager.cs(553,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-[929/936    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
-[930/936    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
-Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 140 defines and 365 references
-
-processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
-
-running Unity.Jobs.CodeGen.JobsILPostProcessor
-
-running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[931/936    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+[928/936    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+[929/936    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
 Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 142 defines and 343 references
 
 processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
@@ -328,144 +306,199 @@ processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.Burst
 running Unity.Jobs.CodeGen.JobsILPostProcessor
 
 running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[932/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
-[933/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
-[934/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
-[935/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
-*** Tundra build success (1.95 seconds), 9 items updated, 936 evaluated
-Assets\Scripts\VN\VNManager.cs(431,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-Assets\Scripts\VN\VNManager.cs(468,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-Assets\Scripts\VN\VNManager.cs(553,61): warning CS0618: 'EventBase.PreventDefault()' is obsolete: 'Use StopPropagation and/or FocusController.IgnoreEvent. Before proceeding, make sure you understand the latest changes to UIToolkit event propagation rules by visiting Unity's manual page https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html'
-Total cache size 153562388
-Total cache size after purge 153562388, took 00:00:00.0861266
-AssetDatabase: script compilation time: 2.477946s
+[930/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[931/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[932/936    2s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[933/936    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 140 defines and 365 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[934/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[935/936    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (3.38 seconds), 9 items updated, 936 evaluated
+AssetDatabase: script compilation time: 3.984031s
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory is not a mono symbol file
+Importing 'GUID: 0000000000000000b000000000000000 - Path: ProjectSettings/EditorBuildSettings.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: '39a4d078a64912448e2ad0680781ce7a') in 0.025 seconds [static dependencies only]. Details - ImportResultOutputID=4647dd083cfc32cebcd7526e8846440c DependenciesID=1ec4693b39ec84b160ad94557f8ef183 StaticDependenciesID=d834b0fe13e7d87f2954e950daa99bf6 
+Refreshing native plugins compatible for Editor in 59.14 ms, found 4 plugins.
 Native extension for WindowsStandalone target not found
 ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  3.047 seconds
-Domain Reload Profiling: 3730ms
-	BeginReloadAssembly (179ms)
+- Finished resetting the current domain, in  4.741 seconds
+Domain Reload Profiling: 7042ms
+	BeginReloadAssembly (287ms)
 		DisableScriptedObjects (19ms)
-		CreateAndSetChildDomain (57ms)
-	RebuildCommonClasses (7ms)
-	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (35ms)
-	LoadAllAssembliesAndSetupDomain (450ms)
-		LoadAssemblies (231ms)
-		AnalyzeDomain (213ms)
-			TypeCache.Refresh (152ms)
-				TypeCache.ScanAssembly (141ms)
+		CreateAndSetChildDomain (153ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (42ms)
+	LoadAllAssembliesAndSetupDomain (1950ms)
+		LoadAssemblies (1665ms)
+		AnalyzeDomain (283ms)
+			TypeCache.Refresh (221ms)
+				TypeCache.ScanAssembly (209ms)
 			BuildScriptInfoCaches (53ms)
 			ResolveRequiredComponents (6ms)
-	FinalizeReload (3047ms)
+	FinalizeReload (4742ms)
 		SetupLoadedEditorAssemblies (0ms)
-			BeforeProcessingInitializeOnLoad (64ms)
-			ProcessInitializeOnLoadAttributes (2467ms)
-			ProcessInitializeOnLoadMethodAttributes (342ms)
-		AwakeInstancesAfterBackupRestoration (22ms)
+			BeforeProcessingInitializeOnLoad (68ms)
+			ProcessInitializeOnLoadAttributes (3571ms)
+			ProcessInitializeOnLoadMethodAttributes (822ms)
+		AwakeInstancesAfterBackupRestoration (44ms)
+Importing 'GUID: e2410d0c25528bc4db4e6c230db9ecc4 - Path: Assets/Resources/Scripts/post_008_sandwhale_leak.json' with importer (TextScriptImporter)
+Imported 'GUID: e2410d0c25528bc4db4e6c230db9ecc4' -> (Import Result ID: '382e2d941917c9b7f8f4fc9709ed74eb') in 0.025 seconds [static dependencies only]. Details - ImportResultOutputID=6ef4fc4c365ebd0aec2f97a56cf463f8 DependenciesID=5a7b15c2fd85d0a098aa1a51df7f5d83 StaticDependenciesID=6bb398d0465bc1ff6a694fb083916d7f 
+Importing 'GUID: b3bf16a8fc1e54c498669ec1c1e566bd - Path: Assets/Resources/Scripts/prologue_01_news.json' with importer (TextScriptImporter)
+Imported 'GUID: b3bf16a8fc1e54c498669ec1c1e566bd' -> (Import Result ID: 'c91c0b32db711817db1af608a6dbf51a') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=472195a389ade2e592d93c8eacf023c8 DependenciesID=3dfed0ddeca86fa9b6cfdee7da23e24b StaticDependenciesID=dfbebd23983851b20881b856b48edac4 
+Importing 'GUID: b52af41c4cf5a5a41a16ebdca8a48dbc - Path: Assets/Resources/Scripts/post_004_chen_mayor.json' with importer (TextScriptImporter)
+Imported 'GUID: b52af41c4cf5a5a41a16ebdca8a48dbc' -> (Import Result ID: 'd36bf34e64a2db1fa68fc587013c14e7') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=cd810d70ccd420e4f97b659e466c256e DependenciesID=a9690a98dee91500939dbd766bffe337 StaticDependenciesID=03b5b04be7f1b153fca5a39011126720 
+Importing 'GUID: 394c04d8539a7f84a8e5500b876e1d40 - Path: Assets/Resources/Scripts/post_007_expose.json' with importer (TextScriptImporter)
+Imported 'GUID: 394c04d8539a7f84a8e5500b876e1d40' -> (Import Result ID: '217c1351e23ab0e00841227fdd756c6a') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=82c6991cb721a5235035a64f918a02a5 DependenciesID=36520c081f5f0b5e796211ac27e26dfe StaticDependenciesID=a51153df89624f780ff862c172e0eba8 
+Importing 'GUID: cbac1ca4d1e0143469f134f8a086d958 - Path: Assets/Resources/Scripts/post_003_qingxi_freight.json' with importer (TextScriptImporter)
+Imported 'GUID: cbac1ca4d1e0143469f134f8a086d958' -> (Import Result ID: '477ddf9e5658616cb71b82073358c171') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=12b312fa0e754b6bf91a636ce7f96c34 DependenciesID=07d1a449b1b7e3fbb5acacf4b2a78852 StaticDependenciesID=19bd9f9979cc3d2a8c7c6c1abf998e08 
+Importing 'GUID: 0d84d9b4fc108f341a18e491a4c7ab94 - Path: Assets/Resources/Scripts/prologue_03_journey.json' with importer (TextScriptImporter)
+Imported 'GUID: 0d84d9b4fc108f341a18e491a4c7ab94' -> (Import Result ID: '04b23cef79bbadb929e3eeedb71ff576') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=d9f83d6fc564de4a00affb06d50e5f10 DependenciesID=1c7a1243dd3f7c2b61e70c8d10a127d9 StaticDependenciesID=15bee180bdbbf6e24874f2a4ca9692ad 
+Importing 'GUID: 6e3815d39dc71434ea282e47f8199ef9 - Path: Assets/Resources/Scripts/post_006_zhou_meeting.json' with importer (TextScriptImporter)
+Imported 'GUID: 6e3815d39dc71434ea282e47f8199ef9' -> (Import Result ID: '54e9e290fe5c6269e354a058011c850e') in 0.007 seconds [static dependencies only]. Details - ImportResultOutputID=bc0fe2fcd0d320de6763a1e849e48191 DependenciesID=2923516a4b745202960f7484d6015226 StaticDependenciesID=d32575aefb55836b096290c5ed9691cd 
+Importing 'GUID: 002d389a3e9350e43b5d0abe6451b806 - Path: Assets/Resources/bgm/news.mp3' with importer (AudioImporter)
+Imported 'GUID: 002d389a3e9350e43b5d0abe6451b806' -> (Import Result ID: '4ffd7cfd89614138039410232a6e6884') in 1.885 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=1af1c03a2596ced6a8b3503492c169b8 DependenciesID=c29929c3072d6ec4a7f234a0e1402951 StaticDependenciesID=18f26f1121b495bd21223e2796334b7b 
+Importing 'GUID: 613be912dec1dff45af8260601d01a1b - Path: Assets/Resources/bgm/curious.mp3' with importer (AudioImporter)
+Imported 'GUID: 613be912dec1dff45af8260601d01a1b' -> (Import Result ID: '2d6524c7d5641a47024bdb31e5544f25') in 1.498 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2b54ea4d66ba0aa8a688f705cbe70e31 DependenciesID=ea9031b488db161837e7d97e1ad1b6f1 StaticDependenciesID=137b41cb9164855c9de7de9b4f4c42d6 
+Importing 'GUID: 02bc2536d5649d048a2785eabfb282d9 - Path: Assets/Resources/bgm/mystery.mp3' with importer (AudioImporter)
+Imported 'GUID: 02bc2536d5649d048a2785eabfb282d9' -> (Import Result ID: '3df0075e235f3988418cfffb6a6d6529') in 1.580 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=870b18e78dd98ebc547411b916486c57 DependenciesID=43b4ebd24a4ca52b390e3c67665b40e7 StaticDependenciesID=d791c89469ba5b274feb59f8e8dd2e50 
+Importing 'GUID: 5274edb8cc528b945956c4f2a46ea59c - Path: Assets/Resources/bgm/calm.mp3' with importer (AudioImporter)
+Imported 'GUID: 5274edb8cc528b945956c4f2a46ea59c' -> (Import Result ID: '1c5c6304de6400c3b52b49ad1e599c1f') in 1.653 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=dddd6c4552d531b1e6f707c7fb4c0e00 DependenciesID=af88bfa04b93079ea2118aac156ecda1 StaticDependenciesID=1b9eb6f2a57af5722e3cc2a049e3d122 
+Importing 'GUID: 53a60b0bcca3812459634e5a4760a61b - Path: Assets/Resources/bgm/warm.mp3' with importer (AudioImporter)
+Imported 'GUID: 53a60b0bcca3812459634e5a4760a61b' -> (Import Result ID: '2b0cf477a456bcab3b4b6b2d68ee43e6') in 1.730 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=e848b1336aaed78bf98f20ea5a0e3f66 DependenciesID=ce235cc4144e568f49c0196d56452998 StaticDependenciesID=ce26e8347d1470d9f22dbcaf047b6dfb 
+Importing 'GUID: 455e5584e4a1e0145b10450353ae14ad - Path: Assets/Resources/bgm/melancholy.mp3' with importer (AudioImporter)
+Imported 'GUID: 455e5584e4a1e0145b10450353ae14ad' -> (Import Result ID: 'd9713e5e0a43f39297ffbbef6ea103ce') in 2.147 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2867113af3d87901289bfe4690c5eb23 DependenciesID=ec2d73c90a3c1dfc31afcb199c00dd2e StaticDependenciesID=0679a95c0462ba774ff5f31e0c1779c2 
+Importing 'GUID: a7840ca702af55f47b948d9f07262899 - Path: Assets/Resources/bgm/silence.mp3' with importer (AudioImporter)
+Imported 'GUID: a7840ca702af55f47b948d9f07262899' -> (Import Result ID: '5319ddda8c1f64d922969a54e53d10e9') in 3.485 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=805bd879fd1b3460ef841b03dc4fecc2 DependenciesID=fa4556163a03c8f29b7c9e24efb3144e StaticDependenciesID=ba8cbc963531caef0ecd3dbfa04bff74 
+Importing 'GUID: 99df0104f5e009d478bdffca9c1ee54d - Path: Assets/Resources/bgm/determination.mp3' with importer (AudioImporter)
+Imported 'GUID: 99df0104f5e009d478bdffca9c1ee54d' -> (Import Result ID: '4f7bc110d08d98106a2f580954fc22d7') in 1.527 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=30ce9df9d1062aee8329199c27be3f68 DependenciesID=74d4a476408c7cd69a1a66fc60b3c8ce StaticDependenciesID=39a94ebfe836a41e0f4f64953db928e4 
+Importing 'GUID: fa71f16b707a6324090ce955be56b5b0 - Path: Assets/Resources/bgm/news_explosive.mp3' with importer (AudioImporter)
+Imported 'GUID: fa71f16b707a6324090ce955be56b5b0' -> (Import Result ID: '726262c4d45e072c39727f6ca46d4edf') in 1.121 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=3de00696c896a5920fb6da0b40f64db6 DependenciesID=ca0e01b7df4e838667967e8ec5f3965a StaticDependenciesID=4cda032fe2b332e4c1030b232820cf29 
+Importing 'GUID: 4d811ce3aaeeccd41b6f0f50062a0d06 - Path: Assets/Resources/bgm/emotional.mp3' with importer (AudioImporter)
+Imported 'GUID: 4d811ce3aaeeccd41b6f0f50062a0d06' -> (Import Result ID: '0aee72d14e76bef0929f598816c1ca3c') in 1.656 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=3a2ad83ad1efaa9936d5275e1ed2700f DependenciesID=0902f9962d65b1e2598efd753d04e017 StaticDependenciesID=4c105da135eb0d495403b052257cb518 
+Importing 'GUID: 1e5d8361a6fa4c346a66c6a0f856ea1f - Path: Assets/Resources/bgm/morning.mp3' with importer (AudioImporter)
+Imported 'GUID: 1e5d8361a6fa4c346a66c6a0f856ea1f' -> (Import Result ID: 'fbb6e94c09b72db55f8dbf66fc43c804') in 1.807 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0aa98076899742146bf902976caa02d0 DependenciesID=145df1d7236391add303064092a065a7 StaticDependenciesID=03e7ad59491ee30afb6d87a316ebcabb 
+Importing 'GUID: 0f847aba6e6270e47958867f6dc50905 - Path: Assets/Resources/bgm/train_ambient.mp3' with importer (AudioImporter)
+Imported 'GUID: 0f847aba6e6270e47958867f6dc50905' -> (Import Result ID: 'c6bc83aa44a0997916fd27a5e471ae45') in 2.068 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=5e32fbfeedaeb3369ffae52097c81dad DependenciesID=29cd3ed7c332442dc543decfc167dee7 StaticDependenciesID=970a1af451b28d1dd22fd5e90d402212 
+Importing 'GUID: af367ff2dca09f94590efc48b9e301c5 - Path: Assets/Resources/bgm/ambient_nature.mp3' with importer (AudioImporter)
+Imported 'GUID: af367ff2dca09f94590efc48b9e301c5' -> (Import Result ID: 'c533b4e1449992b9dd999154eec73e7c') in 2.195 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=f72c7f78b69953b21541ad45ef5c4244 DependenciesID=0ea9f35a4e373b9f4ed2b4764f81519c StaticDependenciesID=30cfd361af3ab9181a2678717a13dbc9 
 Starting new worker id: 0 with log in D:/Unity Project/RailwayRenaissance/Logs/AssetImportWorkerHW0.log
 
-Asset Pipeline Refresh (id=97efce5c200b8c846a4cc2370731a6e1): Total: 6.771 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+Asset Pipeline Refresh (id=a1295ed6daee28546a67c2546392b97c): Total: 36.564 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	(Values over 0.05ms)
 	Summary:
-		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=3408 ms
-		Asset DB Callback time: managed=118 ms, native=18 ms
-		Scripting: domain reloads=1, domain reload time=713 ms, compile time=2479 ms, other=31 ms
-		Project Asset Count: scripts=1442, non-scripts=2431
+		Imports: total=2447 (actual=21, local cache=2426, cache server=0)
+		Asset DB Process Time: managed=6 ms, native=29747 ms
+		Asset DB Callback time: managed=423 ms, native=33 ms
+		Scripting: domain reloads=1, domain reload time=2327 ms, compile time=3986 ms, other=39 ms
+		Project Asset Count: scripts=1442, non-scripts=2450
 		Asset File Changes: new=0, changed=1, moved=0, deleted=0
 		Scan Filter Count: 0
-	InvokePackagesCallback: 15.873ms
-	ApplyChangesToAssetFolders: 0.497ms
-	Scan: 76.153ms
-	Collect global state as custom dependencies: 14.714ms
-	OnSourceAssetsModified: 0.512ms
-	CategorizeScriptCompilationAssets: 32.478ms
-	ProcessAssetsWithTransientArtifactChanges: 63.927ms
-	CategorizeAssets: 41.252ms
-	CompileScripts: 2479.436ms
-	ImportOutOfDateAssets: 3104.876ms (3059.258ms without children)
-		UnloadImportedAssets: 0.843ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.481ms
-		ImportSchedulerStart: 44.262ms
-	PostProcessAllAssets: 119.821ms
-		VCAutoAddAssetPostprocess 0.970ms
-		XRBuildSystem.XRAssetImported 0.201ms
-		MonoPostProcessAllAssets: 118.321ms
-			AssetPostprocessor.OnPostprocessAllAssets 72.951ms
-			StyleCatalogPostProcessor.OnPostprocessAllAssets 11.038ms
-			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 8.528ms
-			BuilderAssetPostprocessor.OnPostprocessAllAssets 4.410ms
-			SpriteSlicePostprocessor.OnPostprocessAllAssets 1.655ms
-			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.321ms
-			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.247ms
-			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.082ms
-			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 1.007ms
-			AssetChangedListener.OnPostprocessAllAssets 0.919ms
-			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 0.886ms
-			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.713ms
-			EditModeScopePostprocessor.OnPostprocessAllAssets 0.654ms
-			MaterialPostprocessor.OnPostprocessAllAssets 0.495ms
-			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.382ms
-			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.358ms
-			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.251ms
-			TextAssetPostProcessor.OnPostprocessAllAssets 0.244ms
-			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.239ms
-			AudioMixerPostprocessor.OnPostprocessAllAssets 0.206ms
-			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.189ms
-			AssetEvents.OnPostprocessAllAssets 0.180ms
-			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.180ms
-			PostProcessor.OnPostprocessAllAssets 0.147ms
-			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.141ms
-			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.109ms
-			SpeedTreePostProcessor.OnPostprocessAllAssets 0.102ms
-			ConfigAssetsTracker.OnPostprocessAllAssets 0.086ms
-			SamplePostprocessor.OnPostprocessAllAssets 0.084ms
-			SyncVS.PostprocessSyncProject 0.083ms
-			AssetReloadNotifier.OnPostprocessAllAssets 0.078ms
-			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.070ms
-			AudioContainerPostProcessor.OnPostprocessAllAssets 0.052ms
-	PostAssetChangesProfiler: 1.981ms
-	UnloadStreamsBegin: 2.565ms
-	PersistCurrentRevisions: 0.090ms
-	GenerateScriptTypeHashes: 1.079ms
-	GenerateScriptTypeSerializationHashes: 1.955ms
-	Untracked: 812.543ms
+	InvokePackagesCallback: 18.899ms
+	ApplyChangesToAssetFolders: 0.636ms
+	Scan: 115.162ms
+	Collect global state as custom dependencies: 17.897ms
+	OnSourceAssetsModified: 0.598ms
+	CategorizeScriptCompilationAssets: 38.883ms
+	ProcessAssetsWithTransientArtifactChanges: 73.245ms
+	CategorizeAssets: 50.108ms
+	CompileScripts: 3986.220ms
+	ImportOutOfDateAssets: 29365.825ms (4818.500ms without children)
+		ImportManagerImport: 24459.015ms (4.455ms without children)
+			UpdateCategorizedAssets: 0.222ms
+		UnloadImportedAssets: 4.414ms
+		ReloadImportedAssets: 45.702ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.843ms
+		ImportSchedulerStart: 37.276ms
+	PostProcessAllAssets: 424.037ms
+		XRBuildSystem.XRAssetImported 0.221ms
+		PostProcessCallbackCreateDeferredMaterials 0.215ms
+		WindowTitlePostprocess 0.143ms
+		ShaderAssetModifiedCallback 0.065ms
+		MonoPostProcessAllAssets: 422.179ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 301.699ms
+			AssetPostprocessor.OnPostprocessAllAssets 72.901ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 18.189ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 4.392ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.837ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.833ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 1.680ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.416ms
+			AssetChangedListener.OnPostprocessAllAssets 1.298ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.021ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.928ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.899ms
+			MaterialPostprocessor.OnPostprocessAllAssets 0.633ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.405ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.391ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.366ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.353ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.298ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.247ms
+			AssetEvents.OnPostprocessAllAssets 0.235ms
+			PostProcessor.OnPostprocessAllAssets 0.229ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.227ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.222ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.215ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.152ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.141ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.137ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.133ms
+			SyncVS.PostprocessSyncProject 0.115ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.111ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.108ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.092ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.051ms
+	PostAssetChangesProfiler: 14.953ms
+	UnloadStreamsBegin: 2.489ms
+	PersistCurrentRevisions: 1.270ms
+	GenerateScriptTypeHashes: 1.728ms
+	GenerateScriptTypeSerializationHashes: 3.123ms
+	Untracked: 2449.688ms
 
 Application.AssetDatabase Initial Refresh End
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
-Scanning for USB devices : 1.015ms
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Scanning for USB devices : 1.538ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
-Unloading 51 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6754 unused Assets / (10.5 MB). Loaded Objects now: 7717.
-Memory consumption went from 441.4 MB to 430.9 MB.
-Total: 16.171400 ms (FindLiveObjects: 1.061200 ms CreateObjectMapping: 1.511100 ms MarkObjects: 5.824900 ms  DeleteObjects: 7.770700 ms)
+Unloading 117 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6755 unused Assets / (10.4 MB). Loaded Objects now: 7653.
+Memory consumption went from 450.9 MB to 440.5 MB.
+Total: 13.398100 ms (FindLiveObjects: 0.863900 ms CreateObjectMapping: 1.384600 ms MarkObjects: 6.365100 ms  DeleteObjects: 4.576100 ms)
 
 Batchmode quit successfully invoked - shutting down!
+Curl error 42: Callback aborted
+Worker ready: AssetImportWorkerHW0 0
 [Physics::Module] Cleanup current backend.
 [Physics::Module] Id: 0xf2b8ea05
 Input System module state changed to: ShutdownInProgress.
 Input Polling Thread exited.
 Input System module state changed to: Shutdown.
-[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8-notifications channel disconnected successfully.
-[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8 channel disconnected successfully.
-AcceleratorClientConnectionCallback - disconnected - :0
+[Licensing::IpcConnector] LicenseClient-SYSTEM-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-SYSTEM channel disconnected successfully.
 Shut down.
+Lingering sessions upon destruction of worker manager
+AcceleratorClientConnectionCallback - disconnected - :0
 Cleanup mono
 CodeReloadManager destroyed
-abort_threads: Failed aborting id: 00000000000090F8, mono_thread_manage will ignore it
+abort_threads: Failed aborting id: 000000000000D324, mono_thread_manage will ignore it
 
-abort_threads: Failed aborting id: 000000000000D494, mono_thread_manage will ignore it
+abort_threads: Failed aborting id: 0000000000010A0C, mono_thread_manage will ignore it
 
-abort_threads: Failed aborting id: 00000000000090F8, mono_thread_manage will ignore it
+abort_threads: Failed aborting id: 000000000000D324, mono_thread_manage will ignore it
 
-abort_threads: Failed aborting id: 000000000000D494, mono_thread_manage will ignore it
+abort_threads: Failed aborting id: 0000000000010A0C, mono_thread_manage will ignore it
 
-debugger-agent: Unable to listen on 4692
+debugger-agent: Unable to listen on 4668
 Exiting batchmode successfully now!
 Exiting without the bug reporter. Application will terminate with return code 0

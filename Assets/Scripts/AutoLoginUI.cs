@@ -6,6 +6,10 @@ using System.Collections;
 using System.IO;
 using System;
 
+// [DEPRECATED] 平板桌面重构：自动登录流程已废弃。
+// 新玩家直接进入VN序章，老玩家直接进入平板桌面。
+// 代码保留供参考。
+
 public class AutoLoginUI : MonoBehaviour
 {
     [Header("面板")]

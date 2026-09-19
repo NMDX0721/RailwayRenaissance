@@ -59,12 +59,28 @@ public class GameMainUI : MonoBehaviour
 
     private void Init()
     {
+        MigrateUsername();
         gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildDocument();
         BuildLockScreen();
         BuildDesktop();
         BuildAppLayer();
         ShowLockScreen();
+    }
+
+    private void MigrateUsername()
+    {
+        // 迁移旧登录系统的用户名到小米账号体系
+        if (!PlayerPrefs.HasKey("XiaomiAccount") && PlayerPrefs.HasKey("Username"))
+        {
+            PlayerPrefs.SetString("XiaomiAccount", PlayerPrefs.GetString("Username"));
+            PlayerPrefs.Save();
+        }
+        if (!PlayerPrefs.HasKey("XiaomiAccount"))
+        {
+            PlayerPrefs.SetString("XiaomiAccount", "旅人");
+            PlayerPrefs.Save();
+        }
     }
 
     private void BuildDocument()
@@ -179,12 +195,17 @@ public class GameMainUI : MonoBehaviour
 
         // 点击扫脸解锁
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
-        // 空格也可解锁
+        // 空格解锁 / ESC关闭App窗口
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
             if (evt.keyCode == KeyCode.Space && !unlocked && lockScreen.style.display == DisplayStyle.Flex)
             {
                 Unlock();
+                evt.StopPropagation();
+            }
+            else if (evt.keyCode == KeyCode.Escape && appLayer != null && appLayer.style.display == DisplayStyle.Flex)
+            {
+                appLayer.style.display = DisplayStyle.None;
                 evt.StopPropagation();
             }
         });
@@ -1450,7 +1471,7 @@ public class GameMainUI : MonoBehaviour
     {
         var display = new Label("0");
         display.style.fontSize = 32; display.style.color = GlassText; display.style.unityFontDefinition = Fd();
-        display.style.marginTop = 10; display.style.alignSelf = Align.End; display.style.marginRight = 10;
+        display.style.marginTop = 10; display.style.alignSelf = Align.FlexEnd; display.style.marginRight = 10;
         display.style.height = 50; display.style.alignItems = Align.FlexEnd; win.Add(display);
 
         string[][] rows = {

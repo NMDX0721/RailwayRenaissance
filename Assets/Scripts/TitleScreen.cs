@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using System.IO;
 
+// [DEPRECATED] 平板桌面重构：TitleScreen被GameMainUI(平板桌面)替代。
+// 新玩家直接进入VN序章，老玩家通过平板桌面的RDA App进入游戏。
+// 代码保留供参考（面板样式/按钮逻辑等仍有参考价值）。
+
 [RequireComponent(typeof(UIDocument))]
 public class TitleScreen : MonoBehaviour
 {
