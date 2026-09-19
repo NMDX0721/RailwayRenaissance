@@ -2,7 +2,7 @@
   "id": "prologue_01_news",
   "scenes": [
     {
-      "bg": "black",
+      "bg": "title_card",
       "bgm": "",
       "transition": "fade",
       "d": [
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "bg": "lab",
+      "bg": "news_2050",
       "bgm": "",
       "transition": "fade",
       "d": [
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "bg": "black",
+      "bg": "news_2072",
       "bgm": "melancholy",
       "transition": "fade",
       "d": [
