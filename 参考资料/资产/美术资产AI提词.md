@@ -688,28 +688,60 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environmen
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-aerial view looking down at a narrow mountain valley railway, late afternoon golden hour:
+aerial top-down view of a single-track mountain branch railway, late afternoon golden hour:
 
-SCENE: Aerial top-down view of a single-track branch railway cutting through forested mountain foothills. The railway enters from bottom frame, curves left, exits top-left. 3 small stations along the line, each with one grey-tiled building and a short concrete platform (about 10m long). A stone arch bridge carries the track over a small stream at the mid-point. The rails are rust-brown with occasional polished silver highlights on the top surface. Between the tracks: grey gravel ballast with patches of green weeds. At the valley mouth: a cluster of 8-12 small houses with grey tile roofs, one tall chimney with light smoke. Terraced fields on the hillsides in gold-green. A winding dirt road parallels the railway on the right side. Dense forest covers the higher slopes, fading to blue-grey in the distance.
+RAILWAY TRACK (visual spine):
+- Single track, rust-brown rails with occasional silver polish marks on top surface
+- Dark wooden sleepers (枕木), some cracked, some replaced with lighter new wood
+- Grey gravel ballast (道砟) between tracks, patches of green weeds and yellow wildflowers growing through
+- Track enters bottom frame at bottom-right, curves gently left, exits at top-left
+- Track width from above: narrow, one track only
+- Occasional short tangent sections where track runs straight, mostly gentle curves
 
-LAYOUT:
-- Railway line as diagonal visual spine from bottom-right to top-left
-- 3 stations at roughly equal intervals along the line
-- Stone arch bridge at center, stream visible below
-- Village cluster at valley mouth (bottom-left area)
-- Forested hills occupying upper-right, atmospheric haze on far peaks
-- Terraced fields between railway and hills
+STATIONS (3 along the line, roughly equal intervals):
+- Each station: one grey-tiled building (about 20m×8m footprint), short concrete platform (10m long, 2m wide)
+- Building walls: white-grey concrete, some with faded paint
+- Platform edge: faded yellow safety line
+- Station 1 (nearest, bottom third): platform on left side of track, building behind it
+- Station 2 (middle third): platform on right side, small stone-arched culvert nearby
+- Station 3 (top third): smallest of the three, building partially overgrown with vines
+
+BRIDGE:
+- Stone arch bridge (石拱桥) at center of frame, carrying track over a small stream
+- Bridge width fits single track, grey stone construction
+- Stream below: narrow, dark water, visible as a blue-grey ribbon under the arch
+- Bridge abutments: moss-covered stone
+
+VILLAGE (at valley mouth, bottom-left of frame):
+- 8-12 small houses with grey tile roofs clustered together
+- One taller chimney with light smoke rising straight up
+- Dirt paths between houses, small vegetable plots
+- Houses arranged loosely along a widening of the valley
+
+SURROUNDING LANDSCAPE:
+- Right side of track: winding dirt road running parallel, brown-red earth
+- Both sides beyond road/stream: terraced fields (梯田) in gold-green, following hill contours
+- Higher slopes: dense forest, deep green, fading to blue-grey with distance (atmospheric perspective)
+- Far peaks: pale blue-purple silhouette layer, almost merging with sky
+- Scattered individual trees in the fields, dark green canopies
+
+LIGHTING:
+- Late afternoon sun from upper-left, warm golden wash over everything
+- Long shadows cast by buildings, trees, and bridge to the right
+- Rails catch the light, creating thin silver-gold lines along the track
+- Atmospheric haze in the valley, softening distant hills
 
 COLORS:
-- Rails: rust brown-grey, silver highlights on top surface
-- Station roofs: grey-blue tiles
-- Ballast: grey gravel with green weed patches
+- Rails: rust brown-grey with silver-gold highlights
+- Sleepers: dark brown
+- Ballast: grey with green weed patches
+- Station buildings: grey-white walls, grey-blue tile roofs
+- Bridge stone: grey with green moss
+- Stream: dark blue-grey
 - Fields: gold-green
-- Forest: deep green fading to blue-grey in distance
+- Forest: deep green fading to blue-grey
 - Village roofs: grey
-- Late afternoon warm golden wash from upper-left, long shadows from buildings and trees
-
-MOOD: Quiet mountain valley, late afternoon. A small railway line still standing in a landscape that has moved on.
+- Sky: pale warm blue with white clouds, golden haze near horizon
 
 NO CHARACTERS, NO PEOPLE, NO VEHICLES — pure aerial landscape background.
 ```
