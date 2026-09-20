@@ -682,32 +682,36 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environmen
 ### 2.15 空中俯瞰·铁轨（aerial_view）
 
 **文件**：`Resources/bg/aerial_view.png`
-**用途**：序章 Day 4——"那是……铁路！"林彪悍在航线上第一次看见雾峰线的身影。这条线是爷爷守了一辈子的东西，是"归乡"的视觉锚点。
-
-**叙事锚点**：Day4——林彪悍在空中第一次看见雾峰线的全貌。"那是……铁路！"他脱口而出，声音在驾驶舱里回响。这条23公里的支线铁路，从空中看像一道细弱的伤疤——但它是一道被一个人用四年时间守护的伤疤。
+**用途**：序章 Day 4——空中俯瞰雾峰村铁路线全貌。
 
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-aerial view looking down at a narrow mountain valley railway, late afternoon:
+aerial view looking down at a narrow mountain valley railway, late afternoon golden hour:
 
-SCENE: Aerial view of a 23km mountain branch line cutting through forested foothills — the line that Lin Biaohan's grandfather guarded alone for four years. Two or three tiny stations along the line (tile roofs, small platforms), each one a place where an old man checked the signal, swept the platform, and waited for passengers who never came. A stone arch bridge crosses a stream — Grandfather Lin built his afternoon tea station beside it. The line is old, single-track, rusted rails still gleaming in the low sun like a thread of copper sewn into the green hills. At the valley mouth, a tiny haze of cooking smoke rises from Wufeng village — the village that has been waiting. The railway is a scar on the landscape, but it's a scar that someone loved back to life.
+SCENE: Aerial top-down view of a single-track branch railway cutting through forested mountain foothills. The railway enters from bottom frame, curves left, exits top-left. 3 small stations along the line, each with one grey-tiled building and a short concrete platform (about 10m long). A stone arch bridge carries the track over a small stream at the mid-point. The rails are rust-brown with occasional polished silver highlights on the top surface. Between the tracks: grey gravel ballast with patches of green weeds. At the valley mouth: a cluster of 8-12 small houses with grey tile roofs, one tall chimney with light smoke. Terraced fields on the hillsides in gold-green. A winding dirt road parallels the railway on the right side. Dense forest covers the higher slopes, fading to blue-grey in the distance.
 
 LAYOUT:
-- Railway line as the visual spine: enters bottom frame, curves left, exits top — it should feel like a lifeline, fragile but persistent
-- 2-3 small stations along the line, each with a short platform and one building — every station is a chapter of grandfather's story
-- Stone arch bridge carrying track over a stream — the bridge grandfather crossed every morning at 6am
-- Village cluster at valley mouth (grey-roof houses, one tall chimney) — the village the railway serves
-- Surrounding: forested hills, terraced fields, a winding dirt road
+- Railway line as diagonal visual spine from bottom-right to top-left
+- 3 stations at roughly equal intervals along the line
+- Stone arch bridge at center, stream visible below
+- Village cluster at valley mouth (bottom-left area)
+- Forested hills occupying upper-right, atmospheric haze on far peaks
+- Terraced fields between railway and hills
 
 COLORS:
-- Rails: rust brown-grey （锈棕色） with warm highlights — rust as love, not neglect
+- Rails: rust brown-grey, silver highlights on top surface
 - Station roofs: grey-blue tiles
+- Ballast: grey gravel with green weed patches
 - Fields: gold-green
-- Late afternoon warm wash over everything — golden hour, the hour grandfather always checked the line
+- Forest: deep green fading to blue-grey in distance
+- Village roofs: grey
+- Late afternoon warm golden wash from upper-left, long shadows from buildings and trees
 
-MOOD: Seeing it for the first time with your own eyes. A line that should be dead, still alive — because one person refused to let it die. Lin Biaohan's voice catches: "那是……铁路！" Not a grand railway. Not an important railway. Just 23 kilometers of iron that mean everything to one village and one old man. The railway is the shape of a promise kept.
+MOOD: Quiet mountain valley, late afternoon. A small railway line still standing in a landscape that has moved on.
+
+NO CHARACTERS, NO PEOPLE, NO VEHICLES — pure aerial landscape background.
 ```
 
 ---
