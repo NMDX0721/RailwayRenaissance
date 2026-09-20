@@ -645,9 +645,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 群山天空 / 산하늘, afternoon aerial, warm-to-cool gradient light:
 
-**叙事锚点**：Day4——林彪悍飞越中朝边境，第一次亲眼看到爷爷描述了无数次的那片群山。"铁轨从山缝里穿过去，像缝衣服的针"——现在他看到了那根针，细得几乎看不见，却缝合了两代人的记忆。
-
-SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽，像一根被遗忘的缝衣针。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。纯风景，无人无车，只有山和铁轨。
+SCENE: 连绵不绝的长白山余脉从脚下延伸到天际线，层层叠叠的山脊像翻开的书页越远越淡。远处一条铁路线在山谷底部蜿蜒——锈迹斑斑的铁轨在午后阳光下偶尔闪过一丝铜色光泽。铁轨两侧是被森林吞噬的废弃站房，屋顶的瓦片已经塌了一半，墙角长满了白桦树苗。一个小型隧道口在最近的山谷中露出黑洞洞的入口，隧道上方依稀可辨水泥刻字：「临江工务段」（임강공무단）。山坡上有零星的梯田痕迹，早已荒废，灌木丛生。午后阳光从右侧斜射，把山脊的阴影投向左侧，形成明暗交替的层叠效果。远处天际线处，山色逐渐从深绿过渡到蓝灰再到淡紫，大气透视效果明显。纯风景，无人无车，只有山和铁轨。
 
 LAYOUT:
 - 下三分之二：层叠山脊（前景深绿 深森林绿，中景黄绿 黄绿色，远景蓝灰 蓝灰色，最远淡紫 淡紫色）
@@ -663,7 +661,7 @@ COLORS:
 - 废弃站房：灰瓦（灰瓦色），塌陷处暗影（暗影色）
 - 梯田荒地：枯黄（枯黄色）与灌木绿（灌木绿）交织
 
-MOOD: 归途。辽阔、安静、带着希望的忧伤。一个25岁的学生第一次亲眼看到爷爷走过的那些山——它们在午后阳光下安静地排列着，像等待阅兵的士兵。铁路线在山谷中细得像一根线，但那根线就是整个故事的起点。林彪悍把脸贴在玻璃上，心里默念："爷爷，我看到了。"山脉不知道有人在看。它们在铁路之前就在这里，铁路消失之后它们还会在这里。但今天，从一架蓝色小飞行器的窗口望下去，一个年轻人看到了那根细铁线，感到某种无法命名的东西——骄傲、悲伤、以及一个尚未许下但已经背负的承诺。
+MOOD: 归途。辽阔、安静、带着希望的忧伤。层叠的山脊在午后阳光下安静排列，铁路线在山谷中细得像一根线，锈棕色在深绿山体中格外醒目。远处山色渐淡至淡紫，整体氛围安静而辽阔。
 
 AVOID:
 - 出现任何人物、角色、人类身影（NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES）
@@ -759,9 +757,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 雾峰村夕阳 / 무봉촌 석양, mountain village panorama at sunset, golden hour warmth:
 
-**叙事锚点**：Day4——四年后的第一眼。从低丘上俯瞰，雾峰村和记忆中一模一样——老槐树还在，土墙还是那个颜色，炊烟还是那个方向。只有他自己变了。爷爷不在了，但他带着爷爷的铜怀表回来了。
-
-SCENE: 林彪悍站在村口的低丘上，第一次看到四年未见的雾峰村。山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（기와 기와，东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树（수양버들/槐树），树冠覆盖了小半个晒场，树下有一条褪色的红砖凳——爷爷以前在这里看铁路时刻表。村庄入口处一块斑驳的水泥牌坊，上书「雾峰村 무봉촌」，旁边贴着褪色的春联残片。土墙围成的院落里，有人在晾晒衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条铁路线在山谷中隐约可见——那是雾峰线，爷爷守了四年的铁路。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
+SCENE: 山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（기와 기와，东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树（수양버들/槐树），树冠覆盖了小半个晒场，树下有一条褪色的红砖凳。村庄入口处一块斑驳的水泥牌坊，上书「雾峰村 무봉촌」，旁边贴着褪色的春联残片。土墙围成的院落里晾晒着衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条锈蚀的铁路线在山谷中隐约可见。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
 
 LAYOUT:
 - 中景：村庄横跨画面（15-20栋房屋聚集），老槐树在画面左前方（树冠占画面左侧1/4高度）
@@ -781,9 +777,9 @@ COLORS:
 - 牌坊：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
 - 春联残片：红纸褪色，金字模糊
 
-MOOD: 回家了。村庄还在等他。但林彪悍不再是四年前离开的孩子——他带着爷爷的铜怀表、一个死去之人的使命、以及四年缺席中无法弥补的距离。村庄看起来一模一样。他不是了。这就是这幅画面的痛处：地方完美地等了他，而他在没有它的地方长大了。夕阳把一切都染成金色，就像爷爷最后一次站在这里时的颜色。远处的铁轨还在——锈了，但还在。就像这个村庄，就像这个家。
+MOOD: Mountain village at golden hour. Warm orange-pink sunset light, smoke rising from chimneys, quiet atmosphere. The railway line barely visible in the far valley, rust-brown contrasting with the village's warm gold.
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
 ```
 
 ---
@@ -915,8 +911,6 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 补给站 / 보급소, sand-energy supply station close-up, daytime:
 
-**叙事锚点**：Day1——0721在这里补充了1500公斤沙子。工作人员随口说"沙子便宜"，但林彪悍知道这些灰白色的粉末就是2076年的石油——整个国家的飞行器、汽车、工厂都靠它运转。他在用别人的生命线来完成爷爷的遗愿。
-
 SCENE: 临江市沙能补给站的近景。标准化的加油岛（与中国2020年代加油站布局相似，但设备全部替换为沙能相关）——两个圆柱形沙子储存罐（高约3米，银灰色金属材质，外壁有白色刻度线标注容量：500kg/1000kg/1500kg/2000kg，顶部有压力阀和安全帽）。储存罐之间是加沙设备——一根粗大的软管连接着类似加油枪的装置（加沙枪，金属质感，前端有沙漏形漏斗），软管盘绕在地上。加油岛上方是波纹铁皮顶棚（生锈的橙棕色），顶棚正面挂着千里马牌的标准化标志：圆形红底（红色），中间金色千里马剪影（金色），下方白色文字「千里马沙能补给 천리마 모래에너지 보충소」。顶棚侧面有另一块标志牌：「USET保障总局 USET 보장총국」（蓝底白字，深蓝色 / 白色），表明这是国有保障系统下属的标准化设施。收费亭在加油岛右侧——小型玻璃窗亭子（约2x2米），里面坐着一个穿灰蓝色制服的收费员，桌上有一台老式计算器和一本手写账簿。收费亭玻璃窗上贴着价目表：「沙子 모래 0.85元/公斤」（白纸黑字手写），旁边有「千里马会员 천리마 회원 优惠5%」的红色贴纸。地面上散落着灰白色沙粒，几辆手推车停在旁边（金属框架，橡胶轮），车上还残留着沙子。远处可以看到一块沙能载具广告牌——画着一架流线型飞行器，广告语是「千里马·驰骋万里 천리마·만리를 달리다」。一个穿灰蓝色工作服的年轻工人正在操作加沙枪，沙子从漏斗中流出时有轻微的灰尘飞扬。
 
 LAYOUT:
@@ -939,7 +933,7 @@ COLORS:
 - 手推车：金属银灰，橡胶轮黑
 - 广告牌：蓝白配色(中蓝色 / 纯白色)，飞行器图案流线型
 
-MOOD: 平凡的商业行为，但意义深远。沙子——2076年的石油——在这里按公斤出售，像买菜一样随意。价格牌上的手写字迹透露出一种日常感，但0721停在旁边的身影提醒我们：这不是普通的补给。千里马的标志无处不在，像一种无声的权力网络——从朝鲜的实验室到中国的补给站，整个沙能经济都在这个金色马蹄之下运转。工人对这架不寻常的飞行器没有多问——边境小镇，什么都能买到，什么都能卖出去。
+MOOD: 平凡的商业行为。沙子——2076年的石油——在这里按公斤出售，像买菜一样随意。价格牌上的手写字迹透露出一种日常感，千里马标志挂在顶棚上，标准化设施整洁而普通。地面散落着灰白色沙粒。
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
@@ -957,9 +951,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 中国上空 / 중국 상공, flying over China, warm transitional light:
 
-**叙事锚点**：Day2——0721飞越中国领空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从朝鲜的冷色调逐渐过渡到中国的暖色调——像翻开一本书的新篇章，纸张从冷灰变成了暖黄。
-
-SCENE: 从0721舷窗向外望去的中国上空全景。画面下方是无边无际的云海——白色积云层叠翻涌，像棉絮铺成的平原，云层顶部被午后阳光染成金白色，底部是柔和的蓝灰色阴影。云海缝隙中隐约可见地面——华北平原的农田拼图（金色麦田与绿色玉米地交错）、一条蜿蜒的河流（灰蓝色，可能是辽河支流）、以及远处的村庄灰点。最关键的细节：云层缝隙中隐约可见一条废弃铁路线在地面蜿蜒——锈棕色的细线穿过田野，在一个小镇处断开（道岔已拆），然后又在远处接上。这就是爷爷守护的雾峰线的延长线，从空中看细得像一根头发。光线有明显的色调过渡：画面左侧（朝鲜方向）偏冷蓝灰调（蓝灰色），右侧（中国内陆方向）偏暖金橙调（暖金橙），中间渐变融合——象征从冷到暖的旅程。一架小型民用沙能飞行器的剪影在远处天际线（可选，用于空间比例感）。
+SCENE: 从0721舷窗向外望去的中国上空全景。画面下方是无边无际的云海——白色积云层叠翻涌，像棉絮铺成的平原，云层顶部被午后阳光染成金白色，底部是柔和的蓝灰色阴影。云海缝隙中隐约可见地面——华北平原的农田拼图（金色麦田与绿色玉米地交错）、一条蜿蜒的河流（灰蓝色，可能是辽河支流）、以及远处的村庄灰点。最关键的细节：云层缝隙中隐约可见一条废弃铁路线在地面蜿蜒——锈棕色的细线穿过田野，在一个小镇处断开（道岔已拆），然后又在远处接上，从空中看细得像一根头发。光线有明显的色调过渡：画面左侧（朝鲜方向）偏冷蓝灰调（蓝灰色），右侧（中国内陆方向）偏暖金橙调（暖金橙），中间渐变融合。一架小型民用沙能飞行器的剪影在远处天际线（可选，用于空间比例感）。
 
 LAYOUT:
 - 下方80%：云海（翻涌积云，顶部金白，底部蓝灰阴影）
@@ -977,7 +969,7 @@ COLORS:
 - 废弃铁路：锈棕（锈棕色），桥墩段偏锈红（锈红）
 - 铁路断开处：道岔拆除后的泥土色
 
-MOOD: 漫长的旅程，辽阔的天空。云海之下是一片他从未踏足却因爷爷的讲述而熟悉得像故乡的土地。光线从冷到暖的过渡暗示着心境的变化——从朝鲜的紧张逃亡到中国上空的片刻宁静。但宁静是脆弱的：云层缝隙中那条若隐若现的废弃铁路线提醒着一切的起点。林彪悍看着那条线，心里想的是爷爷的话："这条线过了山就是中国了。"现在他在山的这边了。铁路还在脚下，只是锈了。
+MOOD: 漫长的旅程，辽阔的天空。翻涌的云海顶部金白、底部蓝灰，光线从左侧冷蓝灰过渡到右侧暖金橙。云层缝隙中若隐若现的废弃铁路线穿过田野，安静而辽阔。
 ```
 
 ---
@@ -1323,8 +1315,6 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 **文件**：`Resources/bg/station_office.png`
 **用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈的室内。老陈守护四年的房间，每件物品都是时间的证据。
 
-**叙事锚点**：这个房间的每一件物品都在讲述一个人的故事——账本记录着铁路最后的日子，旧照片里的人已经不在了，但椅子上的凹痕还在。
-
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
@@ -1356,10 +1346,10 @@ WALL MAP (behind desk, dominant):
 - A few notes in handwriting: 「信号故障-已修」「道岔需调整」
 
 WALL ITEMS:
-- Framed group photo: old railway workers (including 林悍), black and white, slightly faded
+- Framed group photo: old railway workers, black and white, slightly faded
 - Calendar: stopped at 「2072年9月」— when trains stopped
 - Yellowed railway safety poster: 「铁路安全 人人有责」with 1990s style illustration
-- Small shelf: railway technical manuals, 「铁路工程技术手册」(爷爷的遗书), a few old railway magazines
+- Small shelf: railway technical manuals, 「铁路工程技术手册」, a few old railway magazines
 - A clock on wall: stopped at 3:47 (when the last train departed)
 
 FURNITURE:
@@ -1374,7 +1364,7 @@ WINDOW VIEW:
 - Dust particles floating in the light beam
 
 KOREAN CHINESE DETAILS:
-- Desk nameplate: 「站长 林悍」(grandfather's name, retired but never removed)
+- Desk nameplate: 「站长」
 - Calendar: 「1993年9月」(stopped when trains stopped)
 - Bookshelf label: 「铁路技术资料」hand-written
 - Old photo caption on back: 「1998年 雾峰村站全体职工」
@@ -1389,7 +1379,7 @@ COLORS:
 - Map: white paper with colored pencil marks
 - Calendar: red header, white body, 「2072年9月」
 
-MOOD: 一个人守了四年的房间。账本记录着铁路最后的日子，旧照片里的人已经不在了，但椅子上的凹痕还在。这不是办公室——这是一个人的全部。
+MOOD: 晨光中的旧站长办公室。账本、算盘、老电话泛着旧时光光泽，墙上的运行图留着红色停运标记。安静、凝固、充满时间的痕迹。
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
@@ -1423,9 +1413,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 雾峰村站台·晨 / 무봉촌 역 승강장·아침, station platform at dawn, first train day:
 
-**叙事锚点**：Day5——首班车出发前的雾峰站台。四年来的第一趟车。十几个村民自发来等车——不是因为需要坐车，是因为他们想亲眼看到这趟车重新开出去。晨光中的站台像一个被遗忘很久终于重新亮起灯的舞台。
-
-SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——「雾峰村站 무봉촌역」（蓝底白字，中韩双语，站牌样式类似中国普通火车站但更简朴）。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水（老陈凌晨四点的成果）。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套——老陈的，他刚巡完线回来。NF-5机车停在轨道上——深绿色车身，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光——刚被赵师傅检查过，每个螺栓都拧紧了。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光——李阿姨在里面准备茶水。
+SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——「雾峰村站 무봉촌역」（蓝底白字，中韩双语，站牌样式类似中国普通火车站但更简朴）。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套。NF-5机车停在轨道上——深绿色车身，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光。
 
 LAYOUT:
 - 画面下方：铁轨（两根平行钢轨+枕木+碎石道床），晨雾从铁轨间升起
@@ -1433,7 +1421,7 @@ LAYOUT:
 - 站台左侧：站牌「雾峰村站 무봉촌역」（蓝底白字，铁杆支撑）
 - 站台中央：十几个乘客（各种姿态，远小近大）
 - 站台右侧：小摊贩（木箱+米线+茶壶+「早点 아침밥 3元」木牌）
-- 站台尽头：长椅+保温壶+皮手套（老陈的物品）
+- 站台尽头：长椅+保温壶+皮手套
 - 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡）
 - 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光）
 - 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
@@ -1450,7 +1438,7 @@ COLORS:
 - 天空：深蓝（灰蓝色） → 粉橙 → 金色地平线（晨光金）
 - 站房灯光：暖黄，窗框灰
 
-MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。每个人都在等待，但没有人在焦急——他们等了四年，不差这一个早晨。晨光把一切染成金色，铁轨上的露珠闪闪发光，NF-5的引擎声像一首老歌的前奏。那个蹲在铁轨旁拨弄碎石的孩子不知道这条铁路曾经停运四年——对他来说，火车就是火车，每天都会来。这种天真就是希望的形状。老陈的保温壶和手套说明他已经在站台上了，只是现在在里面帮李阿姨搬东西。一切都在准备中，一切都在等待那个发车的瞬间。
+MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。晨光把一切染成金色，薄雾从铁轨间升起被染成淡金，NF-5的前灯亮着暖黄色的光。一切都在准备中，等待发车的瞬间。
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
@@ -2004,8 +1992,6 @@ MOOD: 两个调度员的对话。一个用同一套知识建了沙能帝国，�
 **文件**：`Resources/bg/press_conference.png`
 **用途**：post_007——运营第240天，林彪悍在雾峰村车站召开新闻发布会，揭露铁龙计划真相。
 
-**叙事锚点**：这是全剧最高调的时刻——一个25岁的年轻人，在一间破旧的车站办公室里，向十几家媒体宣告一个跨国公司的谎言。台下记者的闪光灯像星星，但窗外的铁轨才是真正的主角。
-
 **提示词**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
@@ -2015,7 +2001,7 @@ press conference inside old railway station, morning light:
 CONFERENCE SETUP (inside station building):
 - The station office repurposed as a press room
 - A makeshift podium: old wooden desk pushed forward, draped with a white cloth
-- Behind the podium: the 23km railway line map (老陈的运行图) pinned to the wall — deliberately chosen as backdrop
+- Behind the podium: the 23km railway line map pinned to the wall — deliberately chosen as backdrop
 - A microphone on the podium (old but functional, wired to portable speaker)
 - 2-3 tripods with cameras (small news cameras, not professional broadcast)
 - Reporters sitting on wooden chairs and benches brought in from the platform (10-12 people)
@@ -2023,7 +2009,7 @@ CONFERENCE SETUP (inside station building):
 
 WALL DECORATIONS (deliberately visible behind speaker):
 - The railway map with red marks (停运标记) — the visual evidence
-- A framed black-and-white photo of old railway workers (including 林悍)
+- A framed black-and-white photo of old railway workers
 - 「安全第一」faded slogan (visible but not the focus)
 - A small 「雾峰村站」station sign propped against the wall
 
@@ -2037,7 +2023,7 @@ LIGHTING:
 - Morning light streaming through the station window (right side)
 - Natural light supplementing the indoor pendant lights
 - Camera flash spots (small bright points suggesting flash photography)
-- The speaker (林彪悍) would be backlit by the window, creating a silhouette effect
+- The speaker would be backlit by the window, creating a silhouette effect
 
 ROOM DETAILS:
 - Old wooden floor (same station office as station_office)
@@ -2053,7 +2039,7 @@ COLORS:
 - Window light: warm morning gold
 - The railway map: white paper with colored pencil marks
 
-MOOD: 一个25岁的年轻人，在一间破旧的车站办公室里，向十几家媒体宣告一个跨国公司的谎言。他没有律师，没有公关团队，只有一面铁路地图和一堆证据。台下记者的闪光灯像星星，但窗外的铁轨才是真正的主角。
+MOOD: 旧车站办公室改造的新闻发布间。晨光从窗户射入，讲台后是23公里铁路线运行图，记者席间有细小的闪光灯亮点。简朴、严肃、以证据为核心。
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
@@ -2064,8 +2050,6 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 **文件**：`Resources/bg/news_broadcast.png`
 **用途**：post_004/009——全屏滚动新闻格式，朝中社报道。不是真实场景，是游戏内的新闻播报画面。
-
-**叙事锚点**：这不是一个"地方"，而是一个"声音"——朝中社的官方叙事。在游戏里，新闻从不中立。每一条新闻都是铁龙计划的舆论武器。
 
 **提示词**：
 ```
@@ -2118,7 +2102,7 @@ STYLE NOTES:
 - The layout is rigid and hierarchical (top-down authority)
 - Contrast with the warm, organic village scenes — this is the "official voice"
 
-MOOD: 这不是新闻——这是官方叙事。在游戏里，朝中社的每一条报道都是铁龙计划的舆论武器。但这条新闻是真的：铁路确实在复兴。有时候，连官方叙事也不得不承认事实。
+MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格强烈，红蓝配色对比鲜明。
 ```
 
 ---
