@@ -787,9 +787,7 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background
 ### 2.17 车站夕阳（station_sunset）
 
 **文件**：`Resources/bg/station_sunset.png`
-**用途**：序章 Day 4 降落与 Day 7 收尾共用——雾峰站全景。老陈独自守护的车站，老站房、站牌、月台、停着的 NF-5 耕牛。这条线"最后的车站"。
-
-**叙事锚点**：Day4——老陈独自守护的车站。夕阳把站台染成金色，就像四年前最后一个旅客离开时的颜色。站房的灯亮着——老陈每天傍晚都会开灯，给可能迷路的过路人一个方向。今天，灯光终于等到了它的理由。
+**用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5。
 
 **提示词**：
 ```
@@ -797,25 +795,36 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 small mountain railway station at sunset, wide establishing shot:
 
-SCENE: A humble single-platform railway station at dusk — Wufeng Station, the last station on a line that was supposed to be dead. A low station building with a faded "雾峰" sign (Chinese characters, paint cracking in the way old paint does when no one repaints it — not from neglect, but because the man who maintains everything else hasn't gotten around to the sign yet). A wooden platform bench, polished smooth by four years of one man sitting alone waiting. Signal post with rusty arm locked in the "stop" position — no trains have passed this signal in four years. The NF-5 diesel locomotive waits on the single track (dark green, weathered, but oiled — Lao Chen starts it every Sunday to keep the engine from seizing). Platform overgrown at edges with wild grass, but the center is swept clean. A single thermos and patched work gloves rest on the bench — Lao Chen just stepped inside for tea. Warm low sun from the left, casting the kind of long shadows that make old things look dignified.
+SCENE: A single-platform railway station at dusk. Low station building (grey brick, red-tile roof) on left-center with a large faded painted sign reading "雾峰" (무봉) — Chinese characters with Korean translation below, paint cracked. A white station nameplate sign in foreground left: "雾峰 무봉 — 終点站 종착역" (Chinese + Hangul). Wooden platform edge across mid-frame. NF-5 diesel locomotive (dark green body, red buffer beam, "NF-5" label on nose) on single track at right, two weathered freight cars behind it. A rusty signal post with arm locked in "stop" position. Platform edges overgrown with wild grass, center swept clean. Old wooden bench with a thermos and work gloves on it. A luggage cart with stacked sacks near the building. Platform lamp post with single lamp (unlit). Distant mountains behind station. Warm low sun from left casting long shadows.
 
 LAYOUT:
-- Station building left-center (grey brick, red-tile roof, faded painted characters) — small but solid, built to last
-- Wooden platform edge running across mid-frame — the platform is the stage where the story begins
-- NF-5 locomotive on track right, nose toward viewer-left — the "plow ox," dormant but not dead
-- Freight cars (2) behind it, weathered — they haven't carried cargo in years
-- Old luggage cart, stacked sacks by platform — Lao Chen still organizes them, habit or hope
-- Chinese-language signs only
+- Station building left-center (grey brick, red-tile roof, faded painted "雾峰/무봉" characters on facade)
+- White station nameplate sign foreground-left: "雾峰 무봉 終点站 종착역"
+- Wooden platform edge across mid-frame
+- NF-5 locomotive on track right, nose toward left (dark green, weathered)
+- Two freight cars behind locomotive
+- Signal post with rusty arm (stop position) right side
+- Bench with thermos and gloves, center platform
+- Luggage cart with sacks near building entrance
+- Mountain silhouette in far background
+- Platform lamp post (unlit) on platform
 
 COLORS:
-- Building: grey brick, roof: faded red — colors that have earned their fading
+- Building: grey brick, red-tile roof, faded painted characters
 - Platform: worn concrete warm grey
-- Locomotive: dark green （深绿棕） with rust accents — rust that Lao Chen polishes off every week
-- Sky: orange-pink sunset — the same sunset Lao Chen has watched alone for 1,460 evenings
+- Locomotive: dark green body with rust accents, red buffer beam, white "NF-5" text
+- Sign plate: white background with blue Chinese + black Hangul text
+- Sky: orange-pink sunset gradient, warm golden light from left
+- Mountains: blue-purple silhouette layers
 
-MOOD: The last station on a dying line — but tonight, someone came back. For four years, this platform held one man's shadow at dusk. The lamp inside the station is always on, the thermos is always warm, because Lao Chen never stopped believing that the next person through that door would be someone who came to stay. The sunset is the same color it was the day the last passenger left. But today, for the first time in four years, it's lighting someone's arrival.
+TEXT ON SIGNS (Korean + Chinese dual):
+- Building facade: "雾峰" large painted, "무봉" smaller below
+- Station nameplate: "雾峰 무봉" top line, "終點站 종착역" bottom line
+- Signal: "停車 정지" (stop) small label on post
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+MOOD: Quiet mountain station at golden hour. Warm light, long shadows, empty platform.
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
 ```
 
 ---
