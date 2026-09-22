@@ -795,34 +795,34 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 small mountain railway station at sunset, wide establishing shot:
 
-SCENE: A single-platform railway station at dusk. Low station building (grey brick, red-tile roof) on left-center with a large faded painted sign reading "雾峰" (무봉) — Chinese characters with Korean translation below, paint cracked. A white station nameplate sign in foreground left: "雾峰 무봉 — 終点站 종착역" (Chinese + Hangul). Wooden platform edge across mid-frame. NF-5 diesel locomotive (dark green body, red buffer beam, "NF-5" label on nose) on single track at right, two weathered freight cars behind it. A rusty signal post with arm locked in "stop" position. Platform edges overgrown with wild grass, center swept clean. Old wooden bench with a thermos and work gloves on it. A luggage cart with stacked sacks near the building. Platform lamp post with single lamp (unlit). Distant mountains behind station. Warm low sun from left casting long shadows.
+SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof, large faded painted 雾峰 characters on the facade wall (white paint on grey, heavily weathered), smaller 무봉 Hangul below. Vertical sign by entrance door: 候车室 대기실. Several small notice boards and posters tacked to the building wall. Foreground left: white rectangular station nameplate sign on two posts reading 雾峰 — 終點站 in blue Chinese with 무봉 — 종착역 Hangul below. Center platform: wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: dark green NF-5 diesel locomotive on single track facing viewer-left, red buffer beam and cowcatcher, white NF-5 text on nose, circular headlight, weathered green paint with rust streaks. Two brown-red freight cars coupled behind. Far right: tall rusty signal post with arm locked in stop position, small sign 停車 정지. Left foreground: old wooden telegraph pole with single unlit lamp. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
 
 LAYOUT:
-- Station building left-center (grey brick, red-tile roof, faded painted "雾峰/무봉" characters on facade)
-- White station nameplate sign foreground-left: "雾峰 무봉 終点站 종착역"
-- Wooden platform edge across mid-frame
-- NF-5 locomotive on track right, nose toward left (dark green, weathered)
-- Two freight cars behind locomotive
-- Signal post with rusty arm (stop position) right side
-- Bench with thermos and gloves, center platform
-- Luggage cart with sacks near building entrance
-- Mountain silhouette in far background
-- Platform lamp post (unlit) on platform
+- Left-center: brick station building with red tile roof, porch over entrance
+- Foreground left: white nameplate sign 雾峰 — 終點站 on two posts
+- Center: wooden platform edge with bench, luggage cart
+- Right: NF-5 locomotive on track, freight cars behind
+- Far right: rusty signal post with stop sign
+- Left edge: telegraph pole with lamp
+- Background: layered mountains + sunset sky
 
 COLORS:
-- Building: grey brick, red-tile roof, faded painted characters
-- Platform: worn concrete warm grey
-- Locomotive: dark green body with rust accents, red buffer beam, white "NF-5" text
-- Sign plate: white background with blue Chinese + black Hangul text
-- Sky: orange-pink sunset gradient, warm golden light from left
-- Mountains: blue-purple silhouette layers
+- Building: grey-red brick, red terracotta roof tiles
+- Locomotive: dark green with rust, red buffer beam
+- Sign: white plate with blue Chinese text
+- Sky: vivid orange-pink sunset with purple cloud accents
+- Mountains: layered blue-purple to deep indigo
+- Platform: worn grey concrete
+- Vegetation: yellow wildflowers, green weeds
+- Bench: weathered brown wood, green thermos
 
-TEXT ON SIGNS (Korean + Chinese dual):
-- Building facade: "雾峰" large painted, "무봉" smaller below
-- Station nameplate: "雾峰 무봉" top line, "終點站 종착역" bottom line
-- Signal: "停車 정지" (stop) small label on post
+TEXT ON SIGNS:
+- Building wall: 雾峰 large white painted, 무봉 smaller below
+- Nameplate sign: 雾峰 — 終點站 (blue on white)
+- Near door: 候车室 대기실 vertical
+- Signal post: 停車 정지
 
-MOOD: Quiet mountain station at golden hour. Warm light, long shadows, empty platform.
+MOOD: Quiet mountain station at golden hour. Empty platform, warm light, long shadows.
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
 ```
