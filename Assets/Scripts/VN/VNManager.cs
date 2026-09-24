@@ -35,6 +35,12 @@ public class VNManager : MonoBehaviour
     private float autoPlayDelay = 2.0f;
     private Coroutine autoPlayCoroutine;
     private UnityEngine.UIElements.Button autoBtn;
+    // 长按空格加速（0.35s 后进入；Shift 仍是跳过式快进）
+    private bool spaceHeld;
+    private float spaceHoldStart;
+    private bool spaceSpeedActive;
+    private const float SpaceSpeedThreshold = 0.35f;
+    private float spaceSpeedNextAt;
 
     // Confirm dialog
     private VisualElement confirmDialog;
@@ -48,6 +54,7 @@ public class VNManager : MonoBehaviour
     private bool clickedButtonThisFrame; // 按钮点击标记，防止 root BubbleUp 误推进
     private Label musicToast;
     private Coroutine musicToastCoroutine;
+    private VNPrologueQuiz prologueQuiz; // 序章跳过答题（Day0 前）
 
     // Menu bar
     private VisualElement menuBar;
@@ -370,6 +377,9 @@ public class VNManager : MonoBehaviour
         vnBacklog.Init(uiDoc);
         vnBacklog.OnEntryClicked += OnBacklogEntryClicked;
 
+        prologueQuiz = gameObject.AddComponent<VNPrologueQuiz>();
+        prologueQuiz.Init(uiDoc);
+
         saveSystem = new VNSaveSystem();
         saveLoadUI = gameObject.AddComponent<VNSaveLoadUI>();
         saveLoadUI.Init(uiDoc, saveSystem);
@@ -438,7 +448,9 @@ public class VNManager : MonoBehaviour
 
         // Auto 按钮
         autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
+        autoBtn.focusable = false; // 防止 Space 激活聚焦按钮导致误开 Auto
         autoBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
+        autoBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         autoBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         autoBtn.style.width = 88;
         autoBtn.style.height = 40;
@@ -475,7 +487,9 @@ public class VNManager : MonoBehaviour
 
         // Menu 按钮（点击展开/收起子菜单）
         var menuBtn = new UnityEngine.UIElements.Button(() => ToggleMenuExpanded()) { text = "Menu" };
+        menuBtn.focusable = false;
         menuBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
+        menuBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         menuBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         menuBtn.style.width = 88;
         menuBtn.style.height = 40;
@@ -539,9 +553,9 @@ public class VNManager : MonoBehaviour
         var menuItemDefs = new (Texture2D icon, System.Action action)[]
         {
             (PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()), // 回顾（三横线）
-            (PixelIconHelper.SkipFastIcon(), () => SkipToNext()),     // 跳转（双箭头快进）
+            (PixelIconHelper.SkipFastIcon(), () => SkipToNext()),     // 跳转（双箭头快进到下一选项）
             (PixelIconHelper.BookmarkTabIcon(), () => AddBookmark()), // 书签（标签形）
-            (PixelIconHelper.ReturnBarIcon(), () => ShowConfirmDialog()), // 返回（箭头+横线）
+            (PixelIconHelper.ReturnBarIcon(), () => RequestSkip()), // 跳过剧情（闸门：Day0 前答题 / 注册后确认）
         };
 
         foreach (var (icon, itemAction) in menuItemDefs)
@@ -607,11 +621,22 @@ public class VNManager : MonoBehaviour
 
     private void ToggleMenuExpanded()
     {
-        // 操作菜单时暂停 Auto，避免计时器在菜单展开期间继续推进（"点按钮跳句"）
-        if (!menuExpanded) StopAutoPlay();
-        menuExpanded = !menuExpanded;
-        menuExpandedContainer.style.display = menuExpanded ? DisplayStyle.Flex : DisplayStyle.None;
-        UpdateMenuButtonVisual();
+        // 打开菜单：暂停自动协程但不关掉 Auto 模式；关闭时若仍开着则重启
+        if (!menuExpanded)
+        {
+            StopAutoPlay(false);
+            menuExpanded = true;
+            menuExpandedContainer.style.display = DisplayStyle.Flex;
+            UpdateMenuButtonVisual();
+        }
+        else
+        {
+            menuExpanded = false;
+            menuExpandedContainer.style.display = DisplayStyle.None;
+            UpdateMenuButtonVisual();
+            if (isAutoPlay && isScriptRunning)
+                StartAutoPlayTimer();
+        }
     }
 
     private void UpdateMenuButtonVisual()
@@ -649,10 +674,68 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    /// <summary>Skip 跳转：快速推进到下一选项/下一场景。</summary>
-    private void SkipToNext()
+    /// <summary>Backlog/面板关闭同帧点击：吞掉下一次 root 推进。</summary>
+    public void SuppressNextAdvance()
+    {
+        clickedButtonThisFrame = true;
+        lastAdvanceTime = Time.unscaledTime;
+    }
+
+    /// <summary>
+    /// 跳过入口（菜单双箭头）：
+    /// Day0 前（未注册/未拿 0721）→ 10 题答题（≥7 才可跳到 prologue_02）；
+    /// 注册后 → 暖金确认弹窗（确认=跳过退出）。
+    /// </summary>
+    private void RequestSkip()
     {
         CloseMenuExpanded();
+        if (dialogueBox != null && dialogueBox.IsTyping())
+            dialogueBox.SkipTyping();
+
+        if (!HasPassedDay0Gate())
+        {
+            // 未注册/未拿 0721 → 答题
+            if (prologueQuiz != null && !prologueQuiz.IsOpen)
+            {
+                prologueQuiz.Show(passed =>
+                {
+                    if (passed)
+                    {
+                        PlayerPrefs.SetInt("VN_Got0721", 1);
+                        PlayerPrefs.Save();
+                        JumpToDay0();
+                    }
+                });
+            }
+            return;
+        }
+
+        // Day0 后标准跳过确认
+        ShowConfirmDialog();
+    }
+
+    /// <summary>是否已过 Day0 闸门（已获得 0721，或已正式注册用户名）。</summary>
+    private static bool HasPassedDay0Gate()
+    {
+        if (PlayerPrefs.GetInt("VN_Got0721", 0) == 1) return true;
+        // Username 仅在正式注册/命名时写入；XiaomiAccount 会被 GameMainUI 兜底成「旅人」，不能单独作凭证
+        return !string.IsNullOrEmpty(PlayerPrefs.GetString("Username", ""));
+    }
+
+    /// <summary>答题通过：停当前脚本，跳到 Day0（prologue_02）起点。</summary>
+    private void JumpToDay0()
+    {
+        StopAutoPlay();
+        HideOptions();
+        if (confirmDialog != null)
+            confirmDialog.style.display = DisplayStyle.None;
+        vnBacklog?.Clear();
+        StartScript("prologue_02_day0");
+    }
+
+    /// <summary>跳过快进到下一选项/场景（菜单「跳转」双箭头；故事跳过走 RequestSkip）。</summary>
+    private void SkipToNext()
+    {
         CloseMenuExpanded();
         // 跳过当前打字
         if (dialogueBox != null && dialogueBox.IsTyping())
@@ -835,10 +918,12 @@ public class VNManager : MonoBehaviour
         underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.4f);
         dialogBox.Add(underline);
 
-        var descLabel = new Label("确定要跳过当前剧情吗？");
-        descLabel.style.fontSize = 20;
+        var descLabel = new Label("将退出当前剧情并返回桌面。\n确认跳过？");
+        descLabel.style.fontSize = 18;
         descLabel.style.color = new Color(1f, 1f, 1f, 0.55f);
         descLabel.style.unityFontDefinition = fontDef;
+        descLabel.style.whiteSpace = WhiteSpace.Normal;
+        descLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
         descLabel.style.marginBottom = 30;
         dialogBox.Add(descLabel);
 
@@ -850,7 +935,12 @@ public class VNManager : MonoBehaviour
         dialogBox.Add(btnRow);
 
         // 取消按钮：深棕底 + 金边
-        var noBtn = new UnityEngine.UIElements.Button(() => confirmDialog.style.display = DisplayStyle.None) { text = "取消" };
+        var noBtn = new UnityEngine.UIElements.Button(() =>
+        {
+            clickedButtonThisFrame = true;
+            confirmDialog.style.display = DisplayStyle.None;
+        }) { text = "取消" };
+        noBtn.focusable = false;
         noBtn.style.width = 140; noBtn.style.height = 48;
         noBtn.style.marginRight = 20;
         noBtn.style.fontSize = 20;
@@ -866,10 +956,18 @@ public class VNManager : MonoBehaviour
         noBtn.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
         noBtn.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
         noBtn.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
+        noBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
+        noBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         btnRow.Add(noBtn);
 
-        // 确认按钮：琥珀金底 + 深棕文字
-        var yesBtn = new UnityEngine.UIElements.Button(() => { confirmDialog.style.display = DisplayStyle.None; ReturnToTitle(); }) { text = "确认" };
+        // 确认按钮：琥珀金底 + 深棕文字 —— Day0 后标准跳过（回桌面/标题链路，与 ReturnToTitle 一致）
+        var yesBtn = new UnityEngine.UIElements.Button(() =>
+        {
+            clickedButtonThisFrame = true;
+            confirmDialog.style.display = DisplayStyle.None;
+            ReturnToTitle();
+        }) { text = "确认跳过" };
+        yesBtn.focusable = false;
         yesBtn.style.width = 140; yesBtn.style.height = 48;
         yesBtn.style.fontSize = 20;
         yesBtn.style.color = new Color(0.12f, 0.08f, 0.04f, 1f);
@@ -878,6 +976,8 @@ public class VNManager : MonoBehaviour
         yesBtn.style.unityFontDefinition = fontDef;
         yesBtn.style.borderTopLeftRadius = 8; yesBtn.style.borderTopRightRadius = 8;
         yesBtn.style.borderBottomLeftRadius = 8; yesBtn.style.borderBottomRightRadius = 8;
+        yesBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
+        yesBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         btnRow.Add(yesBtn);
     }
 
@@ -945,6 +1045,13 @@ public class VNManager : MonoBehaviour
     private void ShowConfirmDialog()
     {
         CloseMenuExpanded();
+        // Day0 前不弹标准确认——先答题（RequestSkip 在未过闸时只会开 Quiz，不会回环）
+        if (!HasPassedDay0Gate())
+        {
+            if (prologueQuiz == null || !prologueQuiz.IsOpen)
+                RequestSkip();
+            return;
+        }
         if (confirmDialog != null)
             confirmDialog.style.display = DisplayStyle.Flex;
     }
@@ -1076,9 +1183,16 @@ public class VNManager : MonoBehaviour
                 confirmDialog.style.display = DisplayStyle.None;
                 return;
             }
+            if (prologueQuiz != null && prologueQuiz.IsOpen)
+            {
+                // 答题中 ESC = 放弃跳过（不通过）
+                prologueQuiz.CancelFromOutside();
+                return;
+            }
             if (vnBacklog != null && vnBacklog.IsOpen)
             {
                 vnBacklog.ToggleBacklog();
+                SuppressNextAdvance();
                 return;
             }
             if (saveLoadUI != null && saveLoadUI.IsOpen)
@@ -1105,6 +1219,7 @@ public class VNManager : MonoBehaviour
         {
             bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
                                 (saveLoadUI != null && saveLoadUI.IsOpen) ||
+                                (prologueQuiz != null && prologueQuiz.IsOpen) ||
                                 (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex);
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
@@ -1135,25 +1250,56 @@ public class VNManager : MonoBehaviour
         }
 
         // 鼠标推进已迁移到 OnRootPointerDown（UI Toolkit 事件驱动，帧序安全）。
-        // 此处仅保留键盘推进 + 按钮点击已经过 root TrickleDown 拦截。
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || KeyBindings.IsDown(KeyBindings.Action.Advance))
+        // 键盘：空格短按推进 / 长按加速；Shift+方向 = 快进/回退（上方已处理）
+        bool spaceDown = Input.GetKey(KeyCode.Space);
+        if (spaceDown && !spaceHeld)
         {
-            if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex)
-                return;
-            if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex)
-                return;
-            if (vnBacklog != null && vnBacklog.IsOpen)
-                return;
-            if (saveLoadUI != null && saveLoadUI.IsOpen)
-                return;
-
-            StopAutoPlay();
-
-            if (dialogueBox != null && dialogueBox.IsTyping())
-                dialogueBox.SkipTyping();
-            else
-                NextDialogue();
+            spaceHeld = true;
+            spaceHoldStart = Time.unscaledTime;
+            spaceSpeedActive = false;
+            spaceSpeedNextAt = 0f;
+            if (!AdvanceBlockedByPanels())
+            {
+                StopAutoPlay();
+                if (dialogueBox != null && dialogueBox.IsTyping())
+                    dialogueBox.SkipTyping();
+                else
+                    NextDialogue();
+            }
         }
+        else if (spaceDown && spaceHeld && !spaceSpeedActive &&
+                 Time.unscaledTime - spaceHoldStart >= SpaceSpeedThreshold)
+        {
+            spaceSpeedActive = true;
+            spaceSpeedNextAt = Time.unscaledTime + 0.25f;
+        }
+        if (!spaceDown && spaceHeld)
+        {
+            spaceHeld = false;
+            spaceSpeedActive = false;
+        }
+        if (spaceSpeedActive && isScriptRunning && Time.unscaledTime >= spaceSpeedNextAt)
+        {
+            if (!AdvanceBlockedByPanels())
+            {
+                if (dialogueBox != null && dialogueBox.IsTyping())
+                    dialogueBox.SkipTyping();
+                else
+                    NextDialogue();
+                spaceSpeedNextAt = Time.unscaledTime + 0.25f;
+            }
+        }
+    }
+
+    private bool AdvanceBlockedByPanels()
+    {
+        if (openingLogoActive) return true; // 开场分镜：空格/长按不可穿透
+        if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
+        if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return true;
+        if (vnBacklog != null && vnBacklog.IsOpen) return true;
+        if (saveLoadUI != null && saveLoadUI.IsOpen) return true;
+        if (prologueQuiz != null && prologueQuiz.IsOpen) return true;
+        return false;
     }
 
     /// <summary>
@@ -1194,6 +1340,7 @@ public class VNManager : MonoBehaviour
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return;
         if (vnBacklog != null && vnBacklog.IsOpen) return;
         if (saveLoadUI != null && saveLoadUI.IsOpen) return;
+        if (prologueQuiz != null && prologueQuiz.IsOpen) return;
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
         if (resumeDialog != null && resumeDialog.style.display == DisplayStyle.Flex) return;
 
@@ -1253,6 +1400,11 @@ public class VNManager : MonoBehaviour
     public void StartScript(string scriptName)
     {
         if (string.IsNullOrEmpty(scriptName)) return;
+        if (jsonParser == null)
+        {
+            Debug.LogError("[VN] jsonParser is null — cannot start " + scriptName);
+            return;
+        }
         currentScript = jsonParser.LoadScript(scriptName);
         if (currentScript == null) { Debug.LogError("Failed to load: " + scriptName); return; }
         currentScriptName = scriptName;
@@ -1276,13 +1428,187 @@ public class VNManager : MonoBehaviour
                 VNAudioManager.Instance?.PlayBGM(firstScene.bgm);
         }
 
-        // 显示话标题卡（2秒后自动消失，点击可跳过）
-        ShowEpisodeTitleCard(scriptName, () => ShowCurrentDialogue());
+        // 序章首次：先全屏 Logo+制作信息（非 VN 对话），再进话标题卡
+        if (scriptName == "prologue_01_news" && !openingLogoShown)
+        {
+            openingLogoShown = true;
+            ShowOpeningLogo(() => ShowEpisodeTitleCard(scriptName, () => ShowCurrentDialogue()));
+        }
+        else
+        {
+            ShowEpisodeTitleCard(scriptName, () => ShowCurrentDialogue());
+        }
+
+        // 自然到达 Day0（获得0721 起点）后，后续跳过走标准确认而非答题
+        if (scriptName == "prologue_02_day0" || scriptName.StartsWith("prologue_03") ||
+            scriptName.StartsWith("prologue_04") || scriptName.StartsWith("prologue_05") ||
+            scriptName.StartsWith("prologue_06") || scriptName.StartsWith("prologue_07") ||
+            scriptName.StartsWith("prologue_08") || scriptName.StartsWith("prologue_09") ||
+            scriptName.StartsWith("prologue_10") || scriptName.StartsWith("post_"))
+        {
+            if (PlayerPrefs.GetInt("VN_Got0721", 0) != 1)
+            {
+                PlayerPrefs.SetInt("VN_Got0721", 1);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    private bool openingLogoShown;
+    private bool openingLogoActive; // 分镜进行中：挡住空格/长按推进
+
+    /// <summary>
+    /// 正式进入序章前：全屏分镜（Logo 图 → 金标题+金线 → 制作信息），逐条淡入淡出。
+    /// 暖深棕底，非 BA 冷蓝；任意点击跳过整段。
+    /// </summary>
+    private void ShowOpeningLogo(System.Action onDone)
+    {
+        if (uiDoc == null) { onDone?.Invoke(); return; }
+        openingLogoActive = true;
+        var root = uiDoc.rootVisualElement;
+        var overlay = new VisualElement { name = "opening-logo" };
+        overlay.style.position = Position.Absolute;
+        overlay.style.top = 0; overlay.style.left = 0;
+        overlay.style.right = 0; overlay.style.bottom = 0;
+        // 暖深棕近黑（本作）
+        overlay.style.backgroundColor = new Color(0.039f, 0.027f, 0.02f, 1f);
+        overlay.style.alignItems = Align.Center;
+        overlay.style.justifyContent = Justify.Center;
+        overlay.pickingMode = PickingMode.Position;
+        root.Add(overlay);
+
+        var fontDef = new FontDefinition { font = gameFont };
+        bool finished = false;
+        Coroutine running = null;
+
+        void FinishAll()
+        {
+            if (finished) return;
+            finished = true;
+            openingLogoActive = false;
+            if (running != null) StopCoroutine(running);
+            overlay.RemoveFromHierarchy();
+            onDone?.Invoke();
+        }
+        overlay.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); FinishAll(); });
+
+        // 分镜舞台：始终居中同一槽位，内容逐条换
+        var stage = new VisualElement();
+        stage.style.alignItems = Align.Center;
+        stage.style.justifyContent = Justify.Center;
+        stage.style.opacity = 0f;
+        stage.pickingMode = PickingMode.Ignore;
+        overlay.Add(stage);
+
+        // 末段才出现的提示（不抢分镜）
+        var hint = new Label("点击继续");
+        hint.style.fontSize = 15;
+        hint.style.color = new Color(1f, 1f, 1f, 0.28f);
+        hint.style.position = Position.Absolute;
+        hint.style.bottom = 48;
+        hint.style.unityFontDefinition = fontDef;
+        hint.style.opacity = 0f;
+        hint.pickingMode = PickingMode.Ignore;
+        overlay.Add(hint);
+
+        running = StartCoroutine(OpeningLogoSequence(stage, hint, fontDef, FinishAll));
+    }
+
+    private IEnumerator OpeningLogoSequence(VisualElement stage, Label hint, FontDefinition fontDef, System.Action done)
+    {
+        // —— 分镜 1：Logo 图 ——
+        stage.Clear();
+        var logoTex = Resources.Load<Texture2D>("UI/Login/title_logo");
+        if (logoTex != null)
+        {
+            var logo = new VisualElement();
+            logo.style.backgroundImage = new StyleBackground(Background.FromTexture2D(logoTex));
+            logo.style.width = 520;
+            logo.style.height = 150;
+            logo.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            logo.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+            logo.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            logo.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            logo.pickingMode = PickingMode.Ignore;
+            stage.Add(logo);
+        }
+        else
+        {
+            // 无图：空拍一瞬再进标题
+            var spacer = new VisualElement();
+            spacer.style.width = 1;
+            spacer.style.height = 1;
+            stage.Add(spacer);
+        }
+        yield return FadeStage(stage, 0f, 1f, 0.7f);
+        yield return new WaitForSecondsRealtime(1.1f);
+        yield return FadeStage(stage, 1f, 0f, 0.55f);
+
+        // —— 分镜 2：金标题 + 金线 ——
+        stage.Clear();
+        var title = new Label("铁路复兴：沙能冲击");
+        title.style.fontSize = 46;
+        title.style.color = new Color(1f, 0.88f, 0.62f, 1f);
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.unityFontDefinition = fontDef;
+        title.style.unityTextAlign = TextAnchor.MiddleCenter;
+        title.pickingMode = PickingMode.Ignore;
+        stage.Add(title);
+
+        var gold = new VisualElement();
+        gold.style.width = 200;
+        gold.style.height = 3;
+        gold.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.95f);
+        gold.style.marginTop = 16;
+        gold.pickingMode = PickingMode.Ignore;
+        stage.Add(gold);
+
+        yield return FadeStage(stage, 0f, 1f, 0.65f);
+        yield return new WaitForSecondsRealtime(1.3f);
+        yield return FadeStage(stage, 1f, 0f, 0.55f);
+
+        // —— 分镜 3：制作信息 + 点击继续 ——
+        stage.Clear();
+        var credit = new Label("由 NMDX0721 开发\nRailway Renaissance: Sand Energy Impact");
+        credit.style.fontSize = 20;
+        credit.style.color = new Color(1f, 1f, 1f, 0.55f);
+        credit.style.unityFontDefinition = fontDef;
+        credit.style.unityTextAlign = TextAnchor.MiddleCenter;
+        credit.style.whiteSpace = WhiteSpace.Normal;
+        credit.pickingMode = PickingMode.Ignore;
+        stage.Add(credit);
+
+        yield return FadeStage(stage, 0f, 1f, 0.65f);
+        // 提示在 credits 站稳后再淡入，不抢开场
+        yield return FadeElement(hint, 0f, 0.35f, 0.5f);
+        yield return new WaitForSecondsRealtime(1.6f);
+
+        done?.Invoke();
+    }
+
+    private IEnumerator FadeStage(VisualElement stage, float from, float to, float dur)
+    {
+        yield return FadeElement(stage, from, to, dur);
+    }
+
+    private IEnumerator FadeElement(VisualElement el, float from, float to, float dur)
+    {
+        if (el == null) yield break;
+        float t = 0f;
+        while (t < dur)
+        {
+            t += Time.unscaledDeltaTime;
+            float a = Mathf.Lerp(from, to, Mathf.Clamp01(t / dur));
+            el.style.opacity = a;
+            yield return null;
+        }
+        el.style.opacity = to;
     }
 
     /// <summary>话标题卡：黑底 + 话数 + 标题，2秒后淡出。</summary>
     private void ShowEpisodeTitleCard(string scriptName, System.Action onDone)
     {
+        if (uiDoc == null) { onDone?.Invoke(); return; }
         var root = uiDoc.rootVisualElement;
         var overlay = new VisualElement { name = "episode-title-card" };
         overlay.style.position = Position.Absolute;
@@ -1404,6 +1730,14 @@ public class VNManager : MonoBehaviour
     {
         if (currentScript == null || currentSceneIndex >= currentScript.scenes.Length) return;
         var scene = currentScript.scenes[currentSceneIndex];
+        // 通话条：按场景 phone 字段开关
+        if (dialogueBox != null)
+        {
+            if (string.IsNullOrEmpty(scene.phone))
+                dialogueBox.SetPhoneCall("__off__");
+            else
+                dialogueBox.SetPhoneCall(scene.phone == "1" || scene.phone == "true" ? "" : scene.phone);
+        }
         if (currentDialogueIndex >= scene.d.Length) return;
         var entry = scene.d[currentDialogueIndex];
 
@@ -1419,6 +1753,13 @@ public class VNManager : MonoBehaviour
 
         // Apply setValue when entering this dialogue
         ApplySetValue(entry.setValue);
+
+        // 空旁白（标题卡占位行）：不弹对话框，直接下一条
+        if ((entry.t == "n" || string.IsNullOrEmpty(entry.s)) && string.IsNullOrWhiteSpace(entry.text))
+        {
+            NextDialogue();
+            return;
+        }
 
         if (entry.t == "c")
         {
@@ -1636,8 +1977,9 @@ public class VNManager : MonoBehaviour
             cgScreen.pickingMode = PickingMode.Position;
             cgScreen.RegisterCallback<ClickEvent>(e =>
             {
-                if (e.target == cgScreen)
-                    NextDialogue();
+                // 任意子元素（含「CG 待生成」Label）点击都关闭
+                e.StopImmediatePropagation();
+                NextDialogue();
             });
             root.Add(cgScreen);
         }
@@ -1715,6 +2057,7 @@ public class VNManager : MonoBehaviour
     {
         StopAutoPlay();
         isScriptRunning = false;
+        dialogueBox?.SetPhoneCall("__off__");
 
         // 话完成：销毁当前话的自动书签（从头回看不需书签）
         if (!string.IsNullOrEmpty(currentScriptName))
@@ -1727,16 +2070,10 @@ public class VNManager : MonoBehaviour
             string curName = currentScriptName;
             currentScript = null;
             currentScriptName = null;
-            // 话完成：若有新增解锁 → 先展示奖励弹窗，再显示节过渡
+            // 话完成：剧情中不弹重奖励窗，直接节过渡（解锁静默入档）
             var newUnlocks = TitleArchiveUI.TakePendingUnlocks();
-            if (newUnlocks != null && newUnlocks.Length > 0)
-            {
-                ShowRewardPopup(newUnlocks, () => ShowEpisodeClear(curName, next));
-            }
-            else
-            {
-                ShowEpisodeClear(curName, next);
-            }
+            _ = newUnlocks; // 已入库，不在剧情中打断
+            ShowEpisodeClear(curName, next);
             return;
         }
 
@@ -1849,7 +2186,10 @@ public class VNManager : MonoBehaviour
         parent.Add(line);
     }
 
-    /// <summary>节结束过渡：渐暗→下一话横幅（auto 5s倒计时）→新话标题卡→开始。</summary>
+    /// <summary>
+    /// 话末：BA 风两段——①压暗背景 + 右下 To Be Continued… → ②浅色横条 Next Episode + 话标题。
+    /// 点击任意处跳过到下一话；否则约 4.5s 自动进入。
+    /// </summary>
     private void ShowEpisodeClear(string completedScript, string nextScript)
     {
         if (episodeClearOverlay == null)
@@ -1859,15 +2199,38 @@ public class VNManager : MonoBehaviour
             episodeClearOverlay.style.position = Position.Absolute;
             episodeClearOverlay.style.top = 0; episodeClearOverlay.style.left = 0;
             episodeClearOverlay.style.right = 0; episodeClearOverlay.style.bottom = 0;
-            episodeClearOverlay.style.backgroundColor = new Color(0, 0, 0, 0.7f);
-            episodeClearOverlay.style.alignItems = Align.Center;
-            episodeClearOverlay.style.justifyContent = Justify.Center;
+            // 近黑暖棕半透明，保留底层场景轮廓
+            episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.88f);
             episodeClearOverlay.pickingMode = PickingMode.Position;
             root.Add(episodeClearOverlay);
         }
         episodeClearOverlay.Clear();
+        episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.88f);
 
-        // 点击任意处：取消倒计时，直接进入下一话
+        if (autoAdvanceCoroutine != null)
+        {
+            StopCoroutine(autoAdvanceCoroutine);
+            autoAdvanceCoroutine = null;
+        }
+
+        var fontDef = new FontDefinition { font = gameFont };
+        string nextTitle = GetEpisodeTitle(nextScript);
+        int epNum = GetEpisodeNumber(nextScript);
+
+        // —— 阶段1：To Be Continued…（右下，白字，无衬线感）——
+        var tbc = new Label("To Be Continued...");
+        tbc.style.position = Position.Absolute;
+        tbc.style.right = 48;
+        tbc.style.bottom = 56;
+        tbc.style.fontSize = 34;
+        tbc.style.color = new Color(1f, 1f, 1f, 0.92f);
+        tbc.style.unityFontStyleAndWeight = FontStyle.Bold;
+        tbc.style.unityFontDefinition = fontDef;
+        tbc.style.unityTextAlign = TextAnchor.MiddleRight;
+        tbc.pickingMode = PickingMode.Ignore;
+        episodeClearOverlay.Add(tbc);
+
+        // 点击：取消倒计时，直接进下一话
         episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
         {
             if (autoAdvanceCoroutine != null)
@@ -1879,80 +2242,109 @@ public class VNManager : MonoBehaviour
             StartScript(nextScript);
         });
 
-        // —— BA风格卡片：暖色底 + 金边 + 圆角 ——
-        var card = new VisualElement();
-        card.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.97f);
-        card.style.minWidth = 460;
-        card.style.paddingLeft = 50; card.style.paddingRight = 50;
-        card.style.paddingTop = 36; card.style.paddingBottom = 30;
-        card.style.alignItems = Align.Center;
-        card.style.borderTopLeftRadius = 14; card.style.borderTopRightRadius = 14;
-        card.style.borderBottomLeftRadius = 14; card.style.borderBottomRightRadius = 14;
-        card.style.borderTopWidth = 2; card.style.borderBottomWidth = 2;
-        card.style.borderLeftWidth = 2; card.style.borderRightWidth = 2;
-        card.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        card.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        card.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        card.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        episodeClearOverlay.Add(card);
-
-        // "下一话" 标签 + 金色下划线
-        var nextLabel = new Label("下一话");
-        nextLabel.style.fontSize = 18;
-        nextLabel.style.color = new Color(1f, 0.78f, 0.4f, 0.85f);
-        nextLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        nextLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        nextLabel.style.marginBottom = 4;
-        card.Add(nextLabel);
-
-        var underline = new VisualElement();
-        underline.style.width = 70; underline.style.height = 2;
-        underline.style.marginBottom = 16;
-        underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.35f);
-        card.Add(underline);
-
-        // 话数 + 标题
-        string nextTitle = GetEpisodeTitle(nextScript);
-        int epNum = GetEpisodeNumber(nextScript);
-        var epBadge = new Label("第" + epNum + "话  " + nextTitle);
-        epBadge.style.fontSize = 28;
-        epBadge.style.color = new Color(1f, 0.95f, 0.85f, 1f);
-        epBadge.style.unityFontStyleAndWeight = FontStyle.Bold;
-        epBadge.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        epBadge.style.marginBottom = 20;
-        card.Add(epBadge);
-
-        // Auto 倒计时条
-        var timerBar = new VisualElement();
-        timerBar.style.width = 200; timerBar.style.height = 3;
-        timerBar.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.2f);
-        timerBar.style.borderTopLeftRadius = 2; timerBar.style.borderTopRightRadius = 2;
-        timerBar.style.borderBottomLeftRadius = 2; timerBar.style.borderBottomRightRadius = 2;
-        card.Add(timerBar);
-
-        var timerFill = new VisualElement();
-        timerFill.style.width = 200; timerFill.style.height = 3;
-        timerFill.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.8f);
-        timerFill.style.borderTopLeftRadius = 2; timerFill.style.borderTopRightRadius = 2;
-        timerFill.style.borderBottomLeftRadius = 2; timerFill.style.borderBottomRightRadius = 2;
-        timerBar.Add(timerFill);
-
-        // 轻触继续提示
-        var hint = new Label("轻触继续");
-        hint.style.fontSize = 14;
-        hint.style.color = new Color(1f, 1f, 1f, 0.3f);
-        hint.style.marginTop = 14;
-        hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        card.Add(hint);
-
         episodeClearOverlay.style.display = DisplayStyle.Flex;
+        // 阶段1停留 → 阶段2横条 → 自动进
+        autoAdvanceCoroutine = StartCoroutine(EpisodeClearSequence(nextScript, epNum, nextTitle, fontDef));
+    }
 
-        // 5秒自动倒计时
-        autoAdvanceCoroutine = StartCoroutine(AutoAdvanceCountdown(5f, timerFill, () =>
+    private IEnumerator EpisodeClearSequence(string nextScript, int epNum, string nextTitle, FontDefinition fontDef)
+    {
+        // 阶段1：To Be Continued 约 1.8s
+        yield return new WaitForSeconds(1.8f);
+        if (episodeClearOverlay == null || episodeClearOverlay.style.display != DisplayStyle.Flex)
+            yield break;
+
+        // 阶段2：清空 → 暖金横条 Next Episode（BA 结构 + 本作配色）
+        episodeClearOverlay.Clear();
+        episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.94f);
+        // 重绑点击（Clear 会丢）
+        episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
+        {
+            if (autoAdvanceCoroutine != null)
+            {
+                StopCoroutine(autoAdvanceCoroutine);
+                autoAdvanceCoroutine = null;
+            }
+            episodeClearOverlay.style.display = DisplayStyle.None;
+            StartScript(nextScript);
+        });
+
+        var bandRow = new VisualElement();
+        bandRow.style.position = Position.Absolute;
+        bandRow.style.top = 0; bandRow.style.left = 0;
+        bandRow.style.right = 0; bandRow.style.bottom = 0;
+        bandRow.style.alignItems = Align.Center;
+        bandRow.style.justifyContent = Justify.Center;
+        bandRow.pickingMode = PickingMode.Ignore;
+        episodeClearOverlay.Add(bandRow);
+
+        // 横贯全宽横条：深棕底 + 金边（不是 BA 冷蓝白）
+        var band = new VisualElement();
+        band.style.width = Length.Percent(100);
+        band.style.minHeight = 160;
+        band.style.alignItems = Align.Center;
+        band.style.justifyContent = Justify.Center;
+        band.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.97f);
+        band.style.borderTopWidth = 2;
+        band.style.borderBottomWidth = 2;
+        band.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.75f);
+        band.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.75f);
+        bandRow.Add(band);
+
+        var stack = new VisualElement();
+        stack.style.alignItems = Align.Center;
+        stack.style.paddingTop = 28;
+        stack.style.paddingBottom = 28;
+        band.Add(stack);
+
+        var nextEp = new Label("Next Episode");
+        nextEp.style.fontSize = 26;
+        nextEp.style.color = new Color(1f, 0.78f, 0.4f, 1f);
+        nextEp.style.unityFontStyleAndWeight = FontStyle.Bold;
+        nextEp.style.unityFontDefinition = fontDef;
+        nextEp.style.marginBottom = 6;
+        stack.Add(nextEp);
+
+        // 暖金短下划线（BA 结构，本作金）
+        var goldLine = new VisualElement();
+        goldLine.style.width = 120;
+        goldLine.style.height = 4;
+        goldLine.style.backgroundColor = new Color(1f, 0.8f, 0.45f, 1f);
+        goldLine.style.borderTopLeftRadius = 2;
+        goldLine.style.borderTopRightRadius = 2;
+        goldLine.style.borderBottomLeftRadius = 2;
+        goldLine.style.borderBottomRightRadius = 2;
+        goldLine.style.marginBottom = 18;
+        stack.Add(goldLine);
+
+        var title = new Label("第" + epNum + "话　" + nextTitle);
+        title.style.fontSize = 40;
+        title.style.color = new Color(1f, 0.95f, 0.85f, 1f);
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.unityFontDefinition = fontDef;
+        stack.Add(title);
+
+        var hint = new Label("点击继续");
+        hint.style.fontSize = 15;
+        hint.style.color = new Color(1f, 1f, 1f, 0.45f);
+        hint.style.marginTop = 16;
+        hint.style.unityFontDefinition = fontDef;
+        stack.Add(hint);
+
+        // 阶段2 约 2.7s 后自动进
+        float elapsed = 0f;
+        const float seconds = 2.7f;
+        while (elapsed < seconds)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        if (episodeClearOverlay != null && episodeClearOverlay.style.display == DisplayStyle.Flex)
         {
             episodeClearOverlay.style.display = DisplayStyle.None;
             StartScript(nextScript);
-        }));
+        }
+        autoAdvanceCoroutine = null;
     }
 
     private IEnumerator AutoAdvanceCountdown(float seconds, VisualElement fill, System.Action onDone)
@@ -2307,7 +2699,12 @@ public class VNManager : MonoBehaviour
 
     private void StartAutoPlayTimer()
     {
-        StopAutoPlay();
+        // 只清协程，不关 isAutoPlay（否则刚开启的 Auto 会被自己关掉）
+        if (autoPlayCoroutine != null)
+        {
+            StopCoroutine(autoPlayCoroutine);
+            autoPlayCoroutine = null;
+        }
         if (isAutoPlay && isScriptRunning)
             autoPlayCoroutine = StartCoroutine(AutoPlayTimer());
     }
@@ -2331,12 +2728,18 @@ public class VNManager : MonoBehaviour
             NextDialogue();
     }
 
-    private void StopAutoPlay()
+    /// <summary>停止自动协程；默认同时关闭 Auto 模式与高亮（手动推进用）。</summary>
+    private void StopAutoPlay(bool disableMode = true)
     {
         if (autoPlayCoroutine != null)
         {
             StopCoroutine(autoPlayCoroutine);
             autoPlayCoroutine = null;
+        }
+        if (disableMode && isAutoPlay)
+        {
+            isAutoPlay = false;
+            UpdateAutoPlayButtonVisual();
         }
     }
 }

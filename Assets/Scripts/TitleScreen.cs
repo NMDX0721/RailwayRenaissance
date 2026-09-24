@@ -108,6 +108,8 @@ public class TitleScreen : MonoBehaviour
         newGameSetup.Init(GetComponent<UIDocument>(), () =>
         {
             PlayerPrefs.SetInt("VN_AutoLoad", 0);
+            // 新周目：清除本局 0721 进度；Username 保留（已注册账号仍走确认弹窗而非答题）
+            PlayerPrefs.SetInt("VN_Got0721", 0);
             PlayerPrefs.Save();
             SceneManager.LoadScene("VN_Test");
         });

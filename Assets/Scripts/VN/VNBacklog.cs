@@ -55,6 +55,17 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.95f);
         backlogPanel.style.display = DisplayStyle.None;
         backlogPanel.pickingMode = PickingMode.Position;
+        // 面板内任意点击都不冒泡到 VN root（避免关历史/点条目时推进对话）
+        backlogPanel.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            evt.StopImmediatePropagation();
+            VNManager.Instance?.SuppressNextAdvance();
+        });
+        backlogPanel.RegisterCallback<ClickEvent>(evt =>
+        {
+            evt.StopImmediatePropagation();
+            VNManager.Instance?.SuppressNextAdvance();
+        });
         root.Add(backlogPanel);
 
         backlogHeader = new VisualElement { name = "backlog-header" };
@@ -77,6 +88,20 @@ public class VNBacklog : MonoBehaviour
         backlogHeader.Add(titleLabel);
 
         var closeBtn = new UnityEngine.UIElements.Button(() => ToggleBacklog()) { text = "X" };
+        closeBtn.focusable = false;
+        // 阻止冒泡到 VN root：否则关闭瞬间会被当成「推进下一句」
+        // 并通知 VNManager 吞掉同一次点击（IsOpen 已 false 后仍可能 Bubble 到 OnRootClick）
+        closeBtn.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            evt.StopImmediatePropagation();
+            VNManager.Instance?.SuppressNextAdvance();
+        });
+        closeBtn.RegisterCallback<ClickEvent>(evt =>
+        {
+            evt.StopImmediatePropagation();
+            VNManager.Instance?.SuppressNextAdvance();
+        });
+        closeBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
         closeBtn.style.width = 60;
         closeBtn.style.height = 40;
         closeBtn.style.fontSize = 24;
@@ -114,6 +139,7 @@ public class VNBacklog : MonoBehaviour
 
     private void UpdateBacklogDisplay()
     {
+        if (backlogScroll == null) return;
         backlogScroll.Clear();
         var fontDef = GetFontDef();
 
