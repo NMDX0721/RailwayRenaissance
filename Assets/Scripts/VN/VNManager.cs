@@ -1627,62 +1627,62 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator OpeningLogoSequence(VisualElement stage, Label hint, FontDefinition fontDef, System.Action done)
     {
-        // —— 分镜 1：Logo 图 ——
+        // —— 分镜 1：Logo 图（有图则跳过文字标题镜）——
         stage.Clear();
         var logoTex = Resources.Load<Texture2D>("UI/Login/title_logo");
         if (logoTex != null)
         {
             var logo = new VisualElement();
             logo.style.backgroundImage = new StyleBackground(Background.FromTexture2D(logoTex));
-            logo.style.width = 520;
-            logo.style.height = 150;
+            // 源图 1280x720，按大尺寸 contain 显示
+            logo.style.width = 880;
+            logo.style.height = 495;
             logo.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             logo.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
             logo.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
             logo.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
             logo.pickingMode = PickingMode.Ignore;
             stage.Add(logo);
+
+            yield return FadeStage(stage, 0f, 1f, 0.7f);
+            yield return new WaitForSecondsRealtime(1.4f);
+            yield return FadeStage(stage, 1f, 0f, 0.55f);
+            // 有 logo：不再播「金标题」文字镜
         }
         else
         {
-            // 无图：空拍一瞬再进标题
-            var spacer = new VisualElement();
-            spacer.style.width = 1;
-            spacer.style.height = 1;
-            stage.Add(spacer);
+            // 无图：直接进金标题 + 金线
+            yield return FadeStage(stage, 0f, 1f, 0.4f);
+            yield return FadeStage(stage, 1f, 0f, 0.3f);
+
+            stage.Clear();
+            var title = new Label("铁路复兴：沙能冲击");
+            title.style.fontSize = 52;
+            title.style.color = new Color(1f, 0.88f, 0.62f, 1f);
+            title.style.unityFontStyleAndWeight = FontStyle.Bold;
+            title.style.unityFontDefinition = fontDef;
+            title.style.unityTextAlign = TextAnchor.MiddleCenter;
+            title.pickingMode = PickingMode.Ignore;
+            stage.Add(title);
+
+            var gold = new VisualElement();
+            gold.style.width = 220;
+            gold.style.height = 3;
+            gold.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.95f);
+            gold.style.marginTop = 16;
+            gold.pickingMode = PickingMode.Ignore;
+            stage.Add(gold);
+
+            yield return FadeStage(stage, 0f, 1f, 0.65f);
+            yield return new WaitForSecondsRealtime(1.3f);
+            yield return FadeStage(stage, 1f, 0f, 0.55f);
         }
-        yield return FadeStage(stage, 0f, 1f, 0.7f);
-        yield return new WaitForSecondsRealtime(1.1f);
-        yield return FadeStage(stage, 1f, 0f, 0.55f);
 
-        // —— 分镜 2：金标题 + 金线 ——
-        stage.Clear();
-        var title = new Label("铁路复兴：沙能冲击");
-        title.style.fontSize = 46;
-        title.style.color = new Color(1f, 0.88f, 0.62f, 1f);
-        title.style.unityFontStyleAndWeight = FontStyle.Bold;
-        title.style.unityFontDefinition = fontDef;
-        title.style.unityTextAlign = TextAnchor.MiddleCenter;
-        title.pickingMode = PickingMode.Ignore;
-        stage.Add(title);
-
-        var gold = new VisualElement();
-        gold.style.width = 200;
-        gold.style.height = 3;
-        gold.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.95f);
-        gold.style.marginTop = 16;
-        gold.pickingMode = PickingMode.Ignore;
-        stage.Add(gold);
-
-        yield return FadeStage(stage, 0f, 1f, 0.65f);
-        yield return new WaitForSecondsRealtime(1.3f);
-        yield return FadeStage(stage, 1f, 0f, 0.55f);
-
-        // —— 分镜 3：制作信息 + 点击继续 ——
+        // —— 制作信息 + 点击继续 ——
         stage.Clear();
         var credit = new Label("由 NMDX0721 开发\nRailway Renaissance: Sand Energy Impact");
-        credit.style.fontSize = 20;
-        credit.style.color = new Color(1f, 1f, 1f, 0.55f);
+        credit.style.fontSize = 30;
+        credit.style.color = new Color(1f, 1f, 1f, 0.6f);
         credit.style.unityFontDefinition = fontDef;
         credit.style.unityTextAlign = TextAnchor.MiddleCenter;
         credit.style.whiteSpace = WhiteSpace.Normal;
