@@ -912,23 +912,34 @@ public class VNManager : MonoBehaviour
         ask.style.marginBottom = 24;
         box.Add(ask);
 
-        // 取消 / 退出剧情（与跳过同尺寸同色）
-        DialogStyle.AddButtonRow(box, fontDef, "取消", "退出剧情",
-            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; },
-            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); });
+        // 三键一行，同高同边框（取消 / 退出剧情 / 退出游戏）
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.Center;
+        row.style.alignItems = Align.Center;
+        box.Add(row);
 
-        // 第三选项：退出游戏（次级文字钮，尺寸与主按钮对齐节奏）
-        var quitGame = DialogStyle.MakeButton("退出游戏",
-            new Color(0.35f, 0.16f, 0.12f, 0.95f),
-            new Color(1f, 0.75f, 0.6f, 0.95f),
-            fontDef, () => { clickedButtonThisFrame = true; ExitGame(); });
-        quitGame.style.width = 140;
-        quitGame.style.height = 36;
-        quitGame.style.fontSize = 14;
-        quitGame.style.marginTop = 14;
-        quitGame.style.backgroundColor = new Color(0, 0, 0, 0);
-        quitGame.style.color = new Color(1f, 0.7f, 0.6f, 0.85f);
-        box.Add(quitGame);
+        void ExitBtn(string text, Color bg, Color fg, System.Action act, float mr)
+        {
+            var b = DialogStyle.MakeButton(text, bg, fg, fontDef, act);
+            b.style.width = 120;
+            b.style.height = 44;
+            b.style.fontSize = 15;
+            // 强制金边，避免 Unity 默认白边
+            b.style.borderTopColor = DialogStyle.GoldBorder;
+            b.style.borderBottomColor = DialogStyle.GoldBorder;
+            b.style.borderLeftColor = DialogStyle.GoldBorder;
+            b.style.borderRightColor = DialogStyle.GoldBorder;
+            if (mr > 0) b.style.marginRight = mr;
+            row.Add(b);
+        }
+
+        ExitBtn("取消", DialogStyle.CancelBg, DialogStyle.CancelFg,
+            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; }, 12);
+        ExitBtn("退出剧情", DialogStyle.PrimaryBg, DialogStyle.PrimaryFg,
+            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, 12);
+        ExitBtn("退出游戏", new Color(0.35f, 0.16f, 0.12f, 0.95f), new Color(1f, 0.75f, 0.6f, 0.95f),
+            () => { clickedButtonThisFrame = true; ExitGame(); }, 0);
     }
 
     private void ShowExitDialog()
