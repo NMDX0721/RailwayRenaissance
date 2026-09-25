@@ -1757,7 +1757,8 @@ public class VNManager : MonoBehaviour
     /// <summary>开场 overlay 整体淡出后移除（分镜/credit 退场统一走这里）。</summary>
     private IEnumerator FadeOutAndFinish(VisualElement overlay, System.Action onDone)
     {
-        yield return FadeElement(overlay, overlay.style.opacity.value, 0f, 0.45f);
+        // 注意：overlay 从未显式设过 opacity，读 .value 会得到 0（未设置样式的默认值），必须写死 from=1
+        yield return FadeElement(overlay, 1f, 0f, 0.45f);
         overlay.RemoveFromHierarchy();
         onDone?.Invoke();
     }

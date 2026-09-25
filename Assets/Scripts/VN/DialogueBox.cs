@@ -92,7 +92,7 @@ public class DialogueBox : MonoBehaviour
         textArea.style.paddingRight = 30;
         textArea.style.paddingTop = 8;
         textArea.style.paddingBottom = 8;
-        textArea.style.justifyContent = Justify.Center;
+        // 默认顶部对齐（不竖向居中）：文字从上往下长，多出的空间留在底部
         textArea.style.overflow = Overflow.Hidden;
         dialogueBox.Add(textArea);
 
@@ -275,8 +275,7 @@ public class DialogueBox : MonoBehaviour
     }
 
     private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
-    private const float BoxContentZone = 84f; // 折行设计容量（2×36+行距12 或 3×20+2×12），小于实际内容区100，居中留白
-    private const float WidthSafety = 42f;    // 字号估算的安全边距
+    private const float BoxContentZone = 100f; // 内容区（120 - 边框4 - padding16）：字号降档的容量门槛
 
     private float AvailableTextWidth()
     {
@@ -294,33 +293,16 @@ public class DialogueBox : MonoBehaviour
         return 0.33f;
     }
 
-    /// <summary>跳过富文本标签后的等效 em 宽。</summary>
-    private static float WidthEm(string s)
-    {
-        float w = 0f;
-        for (int i = 0; i < s.Length; i++)
-        {
-            if (s[i] == '<')
-            {
-                int close = s.IndexOf('>', i);
-                if (close != -1) { i = close; continue; }
-            }
-            w += CharWidthEm(s[i]);
-        }
-        return w;
-    }
-
-    /// <summary>动态字号（4步进 36→20）+ 手动折行；装不进内容区就降档重折。</summary>
+    /// <summary>字号策略：两行装得下=36不变；装不下才降档，直到三行装进内容区（下限20）。</summary>
     private string FitAndWrap(string text, float avail, out int fs)
     {
-        float units = WidthEm(text);
-        int est = units > 0.01f ? (int)(2f * (avail - WidthSafety) / units / 4f) * 4 : 36;
-        fs = Mathf.Clamp(est, 20, 36);
+        fs = 36;
         while (true)
         {
             string wrapped = WrapText(text, fs, avail);
             int rows = wrapped.Split('\n').Length;
-            if (rows * fs + (rows - 1) * LineGap <= BoxContentZone || fs <= 20)
+            float blockH = rows * fs + (rows - 1) * LineGap;
+            if (blockH <= BoxContentZone || fs <= 20)
                 return wrapped;
             fs -= 4;
         }
