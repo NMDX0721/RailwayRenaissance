@@ -517,8 +517,8 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.style.borderTopRightRadius = 6; menuExpandedContainer.style.borderBottomRightRadius = 6;
         menuExpandedContainer.style.borderTopLeftRadius = 6; menuExpandedContainer.style.borderBottomLeftRadius = 6;
         // 紧凑内边距（框不要太大）
-        menuExpandedContainer.style.paddingLeft = 4; menuExpandedContainer.style.paddingRight = 4;
-        menuExpandedContainer.style.paddingTop = 4; menuExpandedContainer.style.paddingBottom = 4;
+        menuExpandedContainer.style.paddingLeft = 6; menuExpandedContainer.style.paddingRight = 6;
+        menuExpandedContainer.style.paddingTop = 6; menuExpandedContainer.style.paddingBottom = 6;
         menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
@@ -536,8 +536,8 @@ public class VNManager : MonoBehaviour
             var btn = new UnityEngine.UIElements.Button(() => itemAction());
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 24;
-            iconLabel.style.height = 24;
+            iconLabel.style.width = 22;
+            iconLabel.style.height = 22;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -560,8 +560,13 @@ public class VNManager : MonoBehaviour
                 SuppressNextAdvance();
                 evt.StopImmediatePropagation();
             });
-            btn.style.width = 44;
-            btn.style.height = 36;
+            // 居中图标：去掉 Button 默认 padding，显式 flex 居中
+            btn.style.width = 48;
+            btn.style.height = 40;
+            btn.style.paddingLeft = 0; btn.style.paddingRight = 0;
+            btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
+            btn.style.justifyContent = Justify.Center;
+            btn.style.alignItems = Align.Center;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
             btn.style.color = new Color(1f, 0.86f, 0.59f, 0.95f);
@@ -572,9 +577,9 @@ public class VNManager : MonoBehaviour
             btn.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
             btn.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
             btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
-            btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
-            btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
-            btn.style.marginLeft = 2; btn.style.marginRight = 2;
+            btn.style.borderTopLeftRadius = 6; btn.style.borderTopRightRadius = 6;
+            btn.style.borderBottomLeftRadius = 6; btn.style.borderBottomRightRadius = 6;
+            btn.style.marginLeft = 3; btn.style.marginRight = 3;
             btn.RegisterCallback<PointerEnterEvent>(evt =>
             {
                 btn.style.backgroundColor = new Color(0.28f, 0.18f, 0.09f, 0.95f);
