@@ -188,80 +188,53 @@ public class VNManager : MonoBehaviour
         if (resumeDialog == null)
         {
             var root = uiDoc.rootVisualElement;
-            resumeDialog = new VisualElement { name = "resume-dialog" };
-            resumeDialog.style.position = Position.Absolute;
-            resumeDialog.style.top = 0; resumeDialog.style.left = 0;
-            resumeDialog.style.right = 0; resumeDialog.style.bottom = 0;
+            resumeDialog = DialogStyle.CreateOverlay(new FontDefinition { font = gameFont });
+            resumeDialog.name = "resume-dialog";
             resumeDialog.style.backgroundColor = new Color(0, 0, 0, 0.7f);
-            resumeDialog.style.alignItems = Align.Center;
-            resumeDialog.style.justifyContent = Justify.Center;
             root.Add(resumeDialog);
         }
         resumeDialog.Clear();
         resumeDialog.style.display = DisplayStyle.Flex;
 
-        var panel = new VisualElement();
-        panel.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.97f);
-        panel.style.paddingLeft = 32; panel.style.paddingRight = 32;
-        panel.style.paddingTop = 24; panel.style.paddingBottom = 24;
-        panel.style.alignItems = Align.Center;
-        panel.style.borderTopWidth = 2; panel.style.borderBottomWidth = 2;
-        panel.style.borderLeftWidth = 2; panel.style.borderRightWidth = 2;
-        panel.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        panel.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        panel.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
-        panel.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.8f);
+        var fontDef = new FontDefinition { font = gameFont };
+        var panel = DialogStyle.CreateBox(480);
         resumeDialog.Add(panel);
 
-        var title = new Label("未完成的剧情");
-        title.style.fontSize = 24;
-        title.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-        title.style.unityFontStyleAndWeight = FontStyle.Bold;
-        title.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        title.style.marginBottom = 10;
-        panel.Add(title);
+        panel.Add(DialogStyle.CreateTitle("未完成的剧情", fontDef));
+        panel.Add(DialogStyle.CreateUnderline());
 
         var info = new Label(bm.name);
         info.style.fontSize = 18;
         info.style.color = new Color(1f, 1f, 1f, 0.9f);
-        info.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        info.style.unityFontDefinition = fontDef;
+        info.style.unityTextAlign = TextAnchor.MiddleCenter;
         info.style.marginBottom = 6;
         panel.Add(info);
 
         var preview = new Label(bm.previewText ?? "");
         preview.style.fontSize = 14;
         preview.style.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
-        preview.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        preview.style.unityFontDefinition = fontDef;
+        preview.style.whiteSpace = WhiteSpace.Normal;
+        preview.style.unityTextAlign = TextAnchor.MiddleCenter;
         preview.style.marginBottom = 20;
         panel.Add(preview);
 
-        var btnRow = new VisualElement();
-        btnRow.style.flexDirection = FlexDirection.Row;
-        panel.Add(btnRow);
-
-        var yesBtn = new UnityEngine.UIElements.Button(() => { resumeDialog.style.display = DisplayStyle.None; pendingResumeBookmark = null; BookmarkManager.JumpToBookmark(bm); UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test"); }) { text = "继续观看" };
-        yesBtn.style.width = 140; yesBtn.style.height = 40;
-        yesBtn.style.fontSize = 18; yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        yesBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        yesBtn.style.backgroundColor = new Color(0.2f, 0.3f, 0.5f, 0.8f);
-        yesBtn.style.color = new Color(0.8f, 0.9f, 1f, 1f);
-        btnRow.Add(yesBtn);
-
-        var noBtn = new UnityEngine.UIElements.Button(() =>
-        {
-            resumeDialog.style.display = DisplayStyle.None;
-            // 放弃恢复，从第一章开始
-            pendingResumeBookmark = null;
-            BookmarkManager.ClearAutoBookmark(bm.scriptName);
-            StartScript("prologue_01_news");
-        }) { text = "从头开始" };
-        noBtn.style.width = 140; noBtn.style.height = 40;
-        noBtn.style.fontSize = 18; noBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        noBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        noBtn.style.backgroundColor = new Color(0.3f, 0.18f, 0.12f, 0.8f);
-        noBtn.style.color = new Color(0.9f, 0.8f, 0.7f, 1f);
-        noBtn.style.marginLeft = 12;
-        btnRow.Add(noBtn);
+        DialogStyle.AddButtonRow(panel, fontDef, "从头开始", "继续观看",
+            () =>
+            {
+                resumeDialog.style.display = DisplayStyle.None;
+                pendingResumeBookmark = null;
+                BookmarkManager.ClearAutoBookmark(bm.scriptName);
+                StartScript("prologue_01_news");
+            },
+            () =>
+            {
+                resumeDialog.style.display = DisplayStyle.None;
+                pendingResumeBookmark = null;
+                BookmarkManager.JumpToBookmark(bm);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
+            });
     }
 
     private VisualElement resumeDialog;
@@ -696,8 +669,8 @@ public class VNManager : MonoBehaviour
 
     /// <summary>
     /// 跳过入口（菜单双箭头）：
-    /// Day0 前（未注册/未拿 0721）→ 10 题答题（≥7 才可跳到 prologue_02）；
-    /// 注册后 → 暖金确认弹窗（确认=跳过退出）。
+    /// Day0 前（序章01 或未拿 0721）→ 10 题答题（≥7 才可跳到 prologue_02）；
+    /// 之后 → Summary 确认弹窗（与退出同壳）。
     /// </summary>
     private void RequestSkip()
     {
@@ -705,10 +678,14 @@ public class VNManager : MonoBehaviour
         if (dialogueBox != null && dialogueBox.IsTyping())
             dialogueBox.SkipTyping();
 
-        if (!HasPassedDay0Gate())
+        if (NeedsQuizForSkip())
         {
-            // 未注册/未拿 0721 → 答题
-            if (prologueQuiz != null && !prologueQuiz.IsOpen)
+            if (prologueQuiz == null)
+            {
+                Debug.LogError("[VN] prologueQuiz is null — cannot open quiz");
+                return;
+            }
+            if (!prologueQuiz.IsOpen)
             {
                 prologueQuiz.Show(passed =>
                 {
@@ -723,14 +700,27 @@ public class VNManager : MonoBehaviour
             return;
         }
 
-        // Day0 后标准跳过确认
+        // Day0 后：Summary 跳过确认
         ShowConfirmDialog();
     }
 
-    /// <summary>是否已过 Day0 闸门：只认 0721 进度（注册发生在 Day0 平板剧情里，旧 Username 不算）。</summary>
+    /// <summary>序章01 永远算 Day0 前（必答题）；其余看 VN_Got0721。</summary>
+    private bool NeedsQuizForSkip()
+    {
+        if (!string.IsNullOrEmpty(currentScriptName) && currentScriptName.StartsWith("prologue_01"))
+            return true;
+        return PlayerPrefs.GetInt("VN_Got0721", 0) != 1;
+    }
+
     private static bool HasPassedDay0Gate()
     {
-        return PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        return !NeedsQuizForSkipStatic();
+    }
+
+    private static bool NeedsQuizForSkipStatic()
+    {
+        // static 路径仅用于无 script 上下文；ShowConfirmDialog 走实例方法
+        return PlayerPrefs.GetInt("VN_Got0721", 0) != 1;
     }
 
     /// <summary>答题通过：停当前脚本，跳到 Day0（prologue_02）起点。</summary>
@@ -847,182 +837,28 @@ public class VNManager : MonoBehaviour
         var root = uiDoc.rootVisualElement;
         var fontDef = new FontDefinition { font = gameFont };
 
-        confirmDialog = new VisualElement { name = "confirm-dialog" };
-        confirmDialog.style.position = Position.Absolute;
-        confirmDialog.style.top = 0; confirmDialog.style.left = 0;
-        confirmDialog.style.right = 0; confirmDialog.style.bottom = 0;
-        confirmDialog.style.backgroundColor = new Color(0, 0, 0, 0.65f);
-        confirmDialog.style.display = DisplayStyle.None;
-        confirmDialog.style.alignItems = Align.Center;
-        confirmDialog.style.justifyContent = Justify.Center;
-        confirmDialog.pickingMode = PickingMode.Position;
+        confirmDialog = DialogStyle.CreateOverlay(fontDef);
+        confirmDialog.name = "confirm-dialog";
         root.Add(confirmDialog);
 
-        // BA布局 + 铁路复兴配色：暖金底 + 深棕边框
-        var dialogBox = new VisualElement();
-        dialogBox.style.width = 480;
-        dialogBox.style.alignItems = Align.Center;
-        dialogBox.style.justifyContent = Justify.Center;
-        dialogBox.style.paddingTop = 36;
-        dialogBox.style.paddingBottom = 30;
-        dialogBox.style.paddingLeft = 40;
-        dialogBox.style.paddingRight = 40;
-        dialogBox.style.borderTopLeftRadius = 16;
-        dialogBox.style.borderTopRightRadius = 16;
-        dialogBox.style.borderBottomLeftRadius = 16;
-        dialogBox.style.borderBottomRightRadius = 16;
-        // 暖色底：深棕半透明，旧纸质感
-        dialogBox.style.backgroundColor = new Color(0.16f, 0.11f, 0.07f, 0.96f);
-        dialogBox.style.borderTopWidth = 2; dialogBox.style.borderBottomWidth = 2;
-        dialogBox.style.borderLeftWidth = 2; dialogBox.style.borderRightWidth = 2;
-        dialogBox.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
-        dialogBox.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
-        dialogBox.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
-        dialogBox.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        var dialogBox = DialogStyle.CreateBox(480);
         confirmDialog.Add(dialogBox);
 
-        // 标题：琥珀金
-        var titleLabel = new Label("跳过剧情？");
-        titleLabel.style.fontSize = 28;
-        titleLabel.style.color = new Color(1f, 0.78f, 0.4f, 1f);
-        titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        titleLabel.style.unityFontDefinition = fontDef;
-        titleLabel.style.marginBottom = 6;
-        dialogBox.Add(titleLabel);
+        dialogBox.Add(DialogStyle.CreateTitle("跳过剧情？", fontDef));
+        dialogBox.Add(DialogStyle.CreateUnderline());
 
-        var underline = new VisualElement();
-        underline.style.width = 80; underline.style.height = 2;
-        underline.style.marginBottom = 20;
-        underline.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.4f);
-        dialogBox.Add(underline);
+        // 进度总结（跳过专用；退出无此框）
+        var epHead = new Label("当前进度");
+        epHead.style.fontSize = 18;
+        epHead.style.color = new Color(1f, 1f, 1f, 0.85f);
+        epHead.style.unityFontStyleAndWeight = FontStyle.Bold;
+        epHead.style.unityFontDefinition = fontDef;
+        epHead.style.unityTextAlign = TextAnchor.MiddleCenter;
+        epHead.style.marginBottom = 10;
+        dialogBox.Add(epHead);
 
-        var descLabel = new Label("将退出当前剧情并返回桌面。\n确认跳过？");
-        descLabel.style.fontSize = 18;
-        descLabel.style.color = new Color(1f, 1f, 1f, 0.55f);
-        descLabel.style.unityFontDefinition = fontDef;
-        descLabel.style.whiteSpace = WhiteSpace.Normal;
-        descLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
-        descLabel.style.marginBottom = 30;
-        dialogBox.Add(descLabel);
-
-        // 按钮行
-        var btnRow = new VisualElement();
-        btnRow.style.flexDirection = FlexDirection.Row;
-        btnRow.style.justifyContent = Justify.Center;
-        btnRow.style.alignItems = Align.Center;
-        dialogBox.Add(btnRow);
-
-        // 取消按钮：深棕底 + 金边
-        var noBtn = new UnityEngine.UIElements.Button(() =>
-        {
-            clickedButtonThisFrame = true;
-            confirmDialog.style.display = DisplayStyle.None;
-        }) { text = "取消" };
-        noBtn.focusable = false;
-        noBtn.style.width = 140; noBtn.style.height = 48;
-        noBtn.style.marginRight = 20;
-        noBtn.style.fontSize = 20;
-        noBtn.style.color = new Color(1f, 0.85f, 0.6f, 0.9f);
-        noBtn.style.backgroundColor = new Color(0.2f, 0.14f, 0.08f, 0.9f);
-        noBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        noBtn.style.unityFontDefinition = fontDef;
-        noBtn.style.borderTopLeftRadius = 8; noBtn.style.borderTopRightRadius = 8;
-        noBtn.style.borderBottomLeftRadius = 8; noBtn.style.borderBottomRightRadius = 8;
-        noBtn.style.borderTopWidth = 1; noBtn.style.borderBottomWidth = 1;
-        noBtn.style.borderLeftWidth = 1; noBtn.style.borderRightWidth = 1;
-        noBtn.style.borderTopColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
-        noBtn.style.borderBottomColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
-        noBtn.style.borderLeftColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
-        noBtn.style.borderRightColor = new Color(0.8f, 0.62f, 0.35f, 0.5f);
-        noBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
-        noBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
-        btnRow.Add(noBtn);
-
-        // 确认按钮：琥珀金底 + 深棕文字 —— Day0 后标准跳过（回桌面/标题链路，与 ReturnToTitle 一致）
-        var yesBtn = new UnityEngine.UIElements.Button(() =>
-        {
-            clickedButtonThisFrame = true;
-            confirmDialog.style.display = DisplayStyle.None;
-            ReturnToTitle();
-        }) { text = "确认跳过" };
-        yesBtn.focusable = false;
-        yesBtn.style.width = 140; yesBtn.style.height = 48;
-        yesBtn.style.fontSize = 20;
-        yesBtn.style.color = new Color(0.12f, 0.08f, 0.04f, 1f);
-        yesBtn.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.95f);
-        yesBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        yesBtn.style.unityFontDefinition = fontDef;
-        yesBtn.style.borderTopLeftRadius = 8; yesBtn.style.borderTopRightRadius = 8;
-        yesBtn.style.borderBottomLeftRadius = 8; yesBtn.style.borderBottomRightRadius = 8;
-        yesBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
-        yesBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
-        btnRow.Add(yesBtn);
-    }
-
-    /// <summary>
-    /// 退出确认：取消 / 退出剧情（自动存书签回桌面）/ 退出游戏。
-    /// 有跳过闸门时退出仍保留——跳过=推进故事，退出=离开游戏，语义不同。
-    /// </summary>
-    private void SetupExitDialog(UIDocument uiDoc)
-    {
-        var root = uiDoc.rootVisualElement;
-        var fontDef = new FontDefinition { font = gameFont };
-
-        exitDialog = new VisualElement { name = "exit-dialog" };
-        exitDialog.style.position = Position.Absolute;
-        exitDialog.style.top = 0; exitDialog.style.left = 0;
-        exitDialog.style.right = 0; exitDialog.style.bottom = 0;
-        exitDialog.style.backgroundColor = new Color(0, 0, 0, 0.65f);
-        exitDialog.style.display = DisplayStyle.None;
-        exitDialog.style.alignItems = Align.Center;
-        exitDialog.style.justifyContent = Justify.Center;
-        exitDialog.pickingMode = PickingMode.Position;
-        exitDialog.RegisterCallback<PointerDownEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
-        exitDialog.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
-        root.Add(exitDialog);
-
-        var box = new VisualElement();
-        box.style.width = 480;
-        box.style.alignItems = Align.Center;
-        box.style.paddingTop = 36; box.style.paddingBottom = 28;
-        box.style.paddingLeft = 40; box.style.paddingRight = 40;
-        box.style.borderTopLeftRadius = 16; box.style.borderTopRightRadius = 16;
-        box.style.borderBottomLeftRadius = 16; box.style.borderBottomRightRadius = 16;
-        box.style.backgroundColor = new Color(0.16f, 0.11f, 0.07f, 0.96f);
-        box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
-        box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
-        var goldBorder = new Color(0.8f, 0.62f, 0.35f, 0.7f);
-        box.style.borderTopColor = goldBorder; box.style.borderBottomColor = goldBorder;
-        box.style.borderLeftColor = goldBorder; box.style.borderRightColor = goldBorder;
-        exitDialog.Add(box);
-
-        var title = new Label("退出");
-        title.style.fontSize = 28;
-        title.style.color = new Color(1f, 0.78f, 0.4f, 1f);
-        title.style.unityFontStyleAndWeight = FontStyle.Bold;
-        title.style.unityFontDefinition = fontDef;
-        title.style.marginBottom = 6;
-        box.Add(title);
-
-        var line = new VisualElement();
-        line.style.width = 80; line.style.height = 2;
-        line.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.4f);
-        line.style.marginBottom = 18;
-        box.Add(line);
-
-        // 当前进度标题
-        var epTitle = new Label("当前进度");
-        epTitle.style.fontSize = 18;
-        epTitle.style.color = new Color(1f, 1f, 1f, 0.85f);
-        epTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
-        epTitle.style.unityFontDefinition = fontDef;
-        epTitle.style.unityTextAlign = TextAnchor.MiddleCenter;
-        epTitle.style.marginBottom = 10;
-        box.Add(epTitle);
-
-        // 总结框（仿 BA Summary 描边文本区）
         var summary = new Label();
-        summary.name = "exit-summary";
+        summary.name = "confirm-summary";
         summary.style.fontSize = 15;
         summary.style.color = new Color(1f, 1f, 1f, 0.6f);
         summary.style.unityFontDefinition = fontDef;
@@ -1040,97 +876,66 @@ public class VNManager : MonoBehaviour
         summary.style.borderBottomLeftRadius = 8; summary.style.borderBottomRightRadius = 8;
         summary.style.minHeight = 72;
         summary.style.marginBottom = 14;
-        box.Add(summary);
+        dialogBox.Add(summary);
 
-        var ask = new Label("退出剧情将自动保存书签。");
-        ask.style.fontSize = 16;
-        ask.style.color = new Color(1f, 1f, 1f, 0.55f);
-        ask.style.unityFontDefinition = fontDef;
-        ask.style.unityTextAlign = TextAnchor.MiddleCenter;
-        ask.style.marginBottom = 20;
+        var desc = DialogStyle.CreateBody("跳过后将返回桌面，可从书签继续。\n确认跳过？", fontDef);
+        desc.style.marginBottom = 24;
+        dialogBox.Add(desc);
+
+        DialogStyle.AddButtonRow(dialogBox, fontDef, "取消", "确认跳过",
+            () => { clickedButtonThisFrame = true; confirmDialog.style.display = DisplayStyle.None; },
+            () => { clickedButtonThisFrame = true; confirmDialog.style.display = DisplayStyle.None; ReturnToTitle(); });
+    }
+
+    /// <summary>
+    /// 退出确认：取消 / 退出剧情（自动存书签回桌面）/ 退出游戏。
+    /// 与跳过确认共用 DialogStyle 壳；退出无总结框。
+    /// </summary>
+    private void SetupExitDialog(UIDocument uiDoc)
+    {
+        var root = uiDoc.rootVisualElement;
+        var fontDef = new FontDefinition { font = gameFont };
+
+        exitDialog = DialogStyle.CreateOverlay(fontDef);
+        exitDialog.name = "exit-dialog";
+        exitDialog.RegisterCallback<PointerDownEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
+        exitDialog.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
+        root.Add(exitDialog);
+
+        var box = DialogStyle.CreateBox(480);
+        exitDialog.Add(box);
+
+        box.Add(DialogStyle.CreateTitle("退出", fontDef));
+        box.Add(DialogStyle.CreateUnderline());
+
+        var ask = DialogStyle.CreateBody("退出剧情将自动保存当前进度书签。", fontDef);
+        ask.style.marginBottom = 24;
         box.Add(ask);
 
-        // 横排按钮（仿 BA Cancel / Confirm）
-        var row = new VisualElement();
-        row.style.flexDirection = FlexDirection.Row;
-        row.style.justifyContent = Justify.Center;
-        row.style.alignItems = Align.Center;
-        box.Add(row);
+        // 取消 / 退出剧情（与跳过同尺寸同色）
+        DialogStyle.AddButtonRow(box, fontDef, "取消", "退出剧情",
+            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; },
+            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); });
 
-        void MakeExitBtn(VisualElement parent, string text, Color bg, Color fg, System.Action onClick, float marginRight)
-        {
-            var b = new UnityEngine.UIElements.Button(() => { clickedButtonThisFrame = true; onClick(); }) { text = text };
-            b.focusable = false;
-            b.style.width = 120; b.style.height = 44;
-            b.style.fontSize = 16;
-            b.style.color = fg;
-            b.style.backgroundColor = bg;
-            b.style.unityTextAlign = TextAnchor.MiddleCenter;
-            b.style.unityFontDefinition = fontDef;
-            b.style.borderTopLeftRadius = 8; b.style.borderTopRightRadius = 8;
-            b.style.borderBottomLeftRadius = 8; b.style.borderBottomRightRadius = 8;
-            b.style.borderTopWidth = 1; b.style.borderBottomWidth = 1;
-            b.style.borderLeftWidth = 1; b.style.borderRightWidth = 1;
-            b.style.borderTopColor = goldBorder; b.style.borderBottomColor = goldBorder;
-            b.style.borderLeftColor = goldBorder; b.style.borderRightColor = goldBorder;
-            if (marginRight > 0) b.style.marginRight = marginRight;
-            b.RegisterCallback<PointerDownEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
-            b.RegisterCallback<ClickEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
-            parent.Add(b);
-        }
-
-        // 取消 / 退出剧情（主操作）
-        MakeExitBtn(row, "取消", new Color(0.2f, 0.14f, 0.08f, 0.9f),
-            new Color(1f, 0.85f, 0.6f, 0.9f),
-            () => exitDialog.style.display = DisplayStyle.None, 14);
-        MakeExitBtn(row, "退出剧情", new Color(1f, 0.78f, 0.4f, 0.95f),
-            new Color(0.12f, 0.08f, 0.04f, 1f),
-            () => { exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, 0);
-
-        // 第三选项：退出游戏（次级文字钮）
-        var quitGame = new UnityEngine.UIElements.Button(() => { clickedButtonThisFrame = true; ExitGame(); }) { text = "退出游戏" };
-        quitGame.focusable = false;
-        quitGame.style.width = 120; quitGame.style.height = 36;
+        // 第三选项：退出游戏（次级文字钮，尺寸与主按钮对齐节奏）
+        var quitGame = DialogStyle.MakeButton("退出游戏",
+            new Color(0.35f, 0.16f, 0.12f, 0.95f),
+            new Color(1f, 0.75f, 0.6f, 0.95f),
+            fontDef, () => { clickedButtonThisFrame = true; ExitGame(); });
+        quitGame.style.width = 140;
+        quitGame.style.height = 36;
         quitGame.style.fontSize = 14;
         quitGame.style.marginTop = 14;
-        quitGame.style.color = new Color(1f, 0.7f, 0.6f, 0.85f);
         quitGame.style.backgroundColor = new Color(0, 0, 0, 0);
-        quitGame.style.unityTextAlign = TextAnchor.MiddleCenter;
-        quitGame.style.unityFontDefinition = fontDef;
-        quitGame.RegisterCallback<PointerDownEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
-        quitGame.RegisterCallback<ClickEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
+        quitGame.style.color = new Color(1f, 0.7f, 0.6f, 0.85f);
         box.Add(quitGame);
     }
 
     private void ShowExitDialog()
     {
         CloseMenuExpanded();
-        if (exitDialog == null) return;
-        // 总结：话数 + 标题 + 当前台词预览
-        var sum = exitDialog.Q<Label>("exit-summary");
-        if (sum != null)
-        {
-            if (currentScript != null && !string.IsNullOrEmpty(currentScriptName))
-            {
-                int ep = GetEpisodeNumber(currentScriptName);
-                string epTitle = GetEpisodeTitle(currentScriptName);
-                string preview = "";
-                if (currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
-                {
-                    var scene = currentScript.scenes[currentSceneIndex];
-                    if (currentDialogueIndex >= 0 && currentDialogueIndex < scene.d.Length)
-                        preview = scene.d[currentDialogueIndex].text ?? "";
-                }
-                if (string.IsNullOrEmpty(preview)) preview = "（本幕暂无台词）";
-                if (preview.Length > 80) preview = preview.Substring(0, 80) + "…";
-                sum.text = "第" + ep + "话 · " + epTitle + "\n\n" + preview;
-            }
-            else
-            {
-                sum.text = "未在剧情中。";
-            }
-        }
-        exitDialog.style.display = DisplayStyle.Flex;
+        if (exitDialog != null)
+            exitDialog.style.display = DisplayStyle.Flex;
     }
 
     /// <summary>退出剧情：先写自动书签，再走 ReturnToTitle（回平板桌面）。</summary>
@@ -1214,15 +1019,43 @@ public class VNManager : MonoBehaviour
     private void ShowConfirmDialog()
     {
         CloseMenuExpanded();
-        // Day0 前不弹标准确认——先答题（RequestSkip 在未过闸时只会开 Quiz，不会回环）
-        if (!HasPassedDay0Gate())
+        // Day0 前不弹标准确认——先答题
+        if (NeedsQuizForSkip())
         {
             if (prologueQuiz == null || !prologueQuiz.IsOpen)
                 RequestSkip();
             return;
         }
+        FillDialogSummary(confirmDialog, "confirm-summary");
         if (confirmDialog != null)
             confirmDialog.style.display = DisplayStyle.Flex;
+    }
+
+    /// <summary>写入 Summary 框：第N话 · 标题 + 当前台词预览（跳过/退出共用）。</summary>
+    private void FillDialogSummary(VisualElement dialog, string summaryName)
+    {
+        if (dialog == null) return;
+        var sum = dialog.Q<Label>(summaryName);
+        if (sum == null) return;
+        if (currentScript != null && !string.IsNullOrEmpty(currentScriptName))
+        {
+            int ep = GetEpisodeNumber(currentScriptName);
+            string title = GetEpisodeTitle(currentScriptName);
+            string preview = "";
+            if (currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
+            {
+                var scene = currentScript.scenes[currentSceneIndex];
+                if (currentDialogueIndex >= 0 && currentDialogueIndex < scene.d.Length)
+                    preview = scene.d[currentDialogueIndex].text ?? "";
+            }
+            if (string.IsNullOrEmpty(preview)) preview = "（本幕暂无台词）";
+            if (preview.Length > 80) preview = preview.Substring(0, 80) + "…";
+            sum.text = "第" + ep + "话 · " + title + "\n\n" + preview;
+        }
+        else
+        {
+            sum.text = "未在剧情中。";
+        }
     }
 
     private void ReturnToTitle()

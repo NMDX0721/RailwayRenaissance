@@ -691,65 +691,21 @@ public class StationBulletinUI : MonoBehaviour
 
     private void ShowResetConfirm(System.Action onConfirm)
     {
-        var confirmPanel = new VisualElement();
-        confirmPanel.style.position = Position.Absolute;
-        confirmPanel.style.top = 0; confirmPanel.style.left = 0; confirmPanel.style.right = 0; confirmPanel.style.bottom = 0;
+        var confirmPanel = DialogStyle.CreateOverlay(GetFontDef());
         confirmPanel.style.backgroundColor = new Color(0, 0, 0, 0.6f);
-        confirmPanel.style.alignItems = Align.Center;
-        confirmPanel.style.justifyContent = Justify.Center;
         overlay.Add(confirmPanel);
 
-        var box = new VisualElement();
-        box.style.backgroundColor = CBg;
-        box.style.borderTopWidth = 1; box.style.borderBottomWidth = 1;
-        box.style.borderLeftWidth = 1; box.style.borderRightWidth = 1;
-        box.style.borderTopColor = CGoldDim; box.style.borderBottomColor = CGoldDim;
-        box.style.borderLeftColor = CGoldDim; box.style.borderRightColor = CGoldDim;
-        box.style.borderTopLeftRadius = 12; box.style.borderTopRightRadius = 12;
-        box.style.borderBottomLeftRadius = 12; box.style.borderBottomRightRadius = 12;
-        box.style.width = 440; box.style.height = 220;
-        box.style.flexDirection = FlexDirection.Column;
-        box.style.alignItems = Align.Center;
-        box.style.justifyContent = Justify.Center;
+        var box = DialogStyle.CreateBox(480);
         confirmPanel.Add(box);
-
-        var msg = new Label("确定恢复默认设置\uFF1F");
-        msg.style.fontSize = 24; msg.style.color = CText;
-        msg.style.unityFontDefinition = GetFontDef();
-        msg.style.marginBottom = 32;
+        var fd = GetFontDef();
+        box.Add(DialogStyle.CreateTitle("恢复默认设置", fd));
+        box.Add(DialogStyle.CreateUnderline());
+        var msg = DialogStyle.CreateBody("确定恢复默认设置？", fd);
+        msg.style.marginBottom = 24;
         box.Add(msg);
-
-        var btnRow = new VisualElement();
-        btnRow.style.flexDirection = FlexDirection.Row;
-        btnRow.style.alignItems = Align.Center;
-        btnRow.style.justifyContent = Justify.Center;
-        box.Add(btnRow);
-
-        // 左侧：确认；右侧：取消
-        var confirmBtn = new UnityEngine.UIElements.Button(() => { overlay.Remove(confirmPanel); onConfirm(); }) { text = "确定" };
-        confirmBtn.style.width = 120; confirmBtn.style.height = 44; confirmBtn.style.fontSize = 20;
-        confirmBtn.style.color = new Color(1f, 0.8f, 0.5f, 1f);
-        confirmBtn.style.backgroundColor = new Color(0.4f, 0.2f, 0.08f, 0.6f);
-        confirmBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        confirmBtn.style.unityFontDefinition = GetFontDef();
-        confirmBtn.style.borderTopLeftRadius = 8; confirmBtn.style.borderTopRightRadius = 8;
-        confirmBtn.style.borderBottomLeftRadius = 8; confirmBtn.style.borderBottomRightRadius = 8;
-        confirmBtn.style.marginRight = 24;
-        confirmBtn.RegisterCallback<PointerEnterEvent>(e => confirmBtn.style.backgroundColor = new Color(0.5f, 0.25f, 0.1f, 0.8f));
-        confirmBtn.RegisterCallback<PointerLeaveEvent>(e => confirmBtn.style.backgroundColor = new Color(0.4f, 0.2f, 0.08f, 0.6f));
-        btnRow.Add(confirmBtn);
-
-        var cancelBtn = new UnityEngine.UIElements.Button(() => overlay.Remove(confirmPanel)) { text = "取消" };
-        cancelBtn.style.width = 120; cancelBtn.style.height = 44; cancelBtn.style.fontSize = 20;
-        cancelBtn.style.color = new Color(1f, 1f, 1f, 0.7f);
-        cancelBtn.style.backgroundColor = new Color(0.3f, 0.15f, 0.1f, 0.5f);
-        cancelBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        cancelBtn.style.unityFontDefinition = GetFontDef();
-        cancelBtn.style.borderTopLeftRadius = 8; cancelBtn.style.borderTopRightRadius = 8;
-        cancelBtn.style.borderBottomLeftRadius = 8; cancelBtn.style.borderBottomRightRadius = 8;
-        cancelBtn.RegisterCallback<PointerEnterEvent>(e => cancelBtn.style.backgroundColor = new Color(0.4f, 0.2f, 0.1f, 0.7f));
-        cancelBtn.RegisterCallback<PointerLeaveEvent>(e => cancelBtn.style.backgroundColor = new Color(0.3f, 0.15f, 0.1f, 0.5f));
-        btnRow.Add(cancelBtn);
+        DialogStyle.AddButtonRow(box, fd, "取消", "确定",
+            () => overlay.Remove(confirmPanel),
+            () => { overlay.Remove(confirmPanel); onConfirm(); });
     }
 
     private void AddInfoRow(string label, string value)

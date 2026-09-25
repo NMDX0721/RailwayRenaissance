@@ -95,8 +95,8 @@ public class VNPrologueQuiz : MonoBehaviour
         box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
         box.style.borderTopColor = GoldDim; box.style.borderBottomColor = GoldDim;
         box.style.borderLeftColor = GoldDim; box.style.borderRightColor = GoldDim;
-        box.style.borderTopLeftRadius = 12; box.style.borderTopRightRadius = 12;
-        box.style.borderBottomLeftRadius = 12; box.style.borderBottomRightRadius = 12;
+        box.style.borderTopLeftRadius = 16; box.style.borderTopRightRadius = 16;
+        box.style.borderBottomLeftRadius = 16; box.style.borderBottomRightRadius = 16;
         panel.Add(box);
 
         var title = new Label("序章跳过 · 知识确认");
