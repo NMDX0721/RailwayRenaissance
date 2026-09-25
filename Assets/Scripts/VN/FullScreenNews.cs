@@ -84,7 +84,7 @@ public class FullScreenNews : MonoBehaviour
         if (newsScroll == null || newsScroll.contentContainer == null || newsScroll.worldBound.height == 0) return;
 
         // Shift加速
-        scrollSpeed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)
+        scrollSpeed = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift)
             ? fastSpeed : normalSpeed;
 
         // 自动滚动

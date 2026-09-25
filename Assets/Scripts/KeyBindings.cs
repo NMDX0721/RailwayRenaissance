@@ -66,14 +66,14 @@ public static class KeyBindings
     public static bool IsDown(Action action)
     {
         KeyCode k = GetKey(action);
-        if (k == KeyCode.Mouse0) return Input.GetMouseButtonDown(0);
-        return Input.GetKeyDown(k);
+        if (k == KeyCode.Mouse0) return LegacyInputAdapter.GetMouseButtonDown(0);
+        return LegacyInputAdapter.GetKeyDown(k);
     }
 
     public static bool IsHeld(Action action)
     {
         KeyCode k = GetKey(action);
-        if (k == KeyCode.Mouse0) return Input.GetMouseButton(0);
-        return Input.GetKey(k);
+        if (k == KeyCode.Mouse0) return LegacyInputAdapter.GetMouseButton(0);
+        return LegacyInputAdapter.GetKey(k);
     }
 }

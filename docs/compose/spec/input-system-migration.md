@@ -1,7 +1,7 @@
 ---
 feature: input-system-migration
-status: designed
-updated: 2026-09-25
+status: in-progress
+updated: 2026-09-26
 branch: main
 commits:
 ---

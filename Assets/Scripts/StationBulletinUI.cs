@@ -350,7 +350,7 @@ public class StationBulletinUI : MonoBehaviour
         {
             foreach (KeyCode code in AllKeyCodes)
             {
-                if (Input.GetKeyDown(code))
+                if (LegacyInputAdapter.GetKeyDown(code))
                 {
                     var cb = _rebindAction;
                     _rebindAction = null;

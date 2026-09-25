@@ -89,7 +89,7 @@ public class TypewriterEffect : MonoBehaviour
             textBuilder.Append(text[i]);
             dialogueText.text = textBuilder.ToString();
 
-            float delay = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? FastSpeed : NormalSpeed;
+            float delay = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift) ? FastSpeed : NormalSpeed;
 
             if (useTypingSFX && text[i] != ' ' && GameData.TypewriterVolume > 0.01f)
             {

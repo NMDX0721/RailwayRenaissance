@@ -1180,7 +1180,7 @@ public class VNManager : MonoBehaviour
         clickedButtonThisFrame = false; // 每帧重置按钮标记
 
         // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
-        if (Input.GetMouseButtonDown(1))
+        if (LegacyInputAdapter.GetMouseButtonDown(1))
         {
             if (uiHidden)
                 RestoreVNUI();
@@ -1190,7 +1190,7 @@ public class VNManager : MonoBehaviour
         }
 
         // ESC：全屏新闻时关闭新闻，其余按面板优先级处理
-        if (Input.GetKeyDown(KeyCode.Escape) || KeyBindings.IsDown(KeyBindings.Action.OpenMenu))
+        if (LegacyInputAdapter.GetKeyDown(KeyCode.Escape) || KeyBindings.IsDown(KeyBindings.Action.OpenMenu))
         {
             if (fullScreenNews != null && fullScreenNews.IsActive)
             {
@@ -1254,21 +1254,21 @@ public class VNManager : MonoBehaviour
         if (!isScriptRunning) return;
 
         // F5：切换Auto模式
-        if (Input.GetKeyDown(KeyCode.F5) || KeyBindings.IsDown(KeyBindings.Action.ToggleAuto))
+        if (LegacyInputAdapter.GetKeyDown(KeyCode.F5) || KeyBindings.IsDown(KeyBindings.Action.ToggleAuto))
         {
             ToggleAutoPlay();
             return;
         }
 
         // Shift：快进（打字时加速，已完成时自动推进到下一句）
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        if (LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift))
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
+            if (LegacyInputAdapter.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
                 NextDialogue();
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipBack))
+            if (LegacyInputAdapter.GetKeyDown(KeyCode.LeftArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipBack))
             {
                 PrevDialogue();
                 return;
@@ -1277,7 +1277,7 @@ public class VNManager : MonoBehaviour
 
         // 鼠标推进已迁移到 OnRootPointerDown（UI Toolkit 事件驱动，帧序安全）。
         // 键盘：空格短按推进 / 长按加速；Shift+方向 = 快进/回退（上方已处理）
-        bool spaceDown = Input.GetKey(KeyCode.Space);
+        bool spaceDown = LegacyInputAdapter.GetKey(KeyCode.Space);
         if (spaceDown && !spaceHeld)
         {
             spaceHeld = true;
@@ -1391,7 +1391,7 @@ public class VNManager : MonoBehaviour
         if (uiDoc == null) return false;
         var panel = uiDoc.rootVisualElement.panel;
         if (panel == null) return false;
-        var local = RuntimePanelUtils.ScreenToPanel(panel, Input.mousePosition);
+        var local = RuntimePanelUtils.ScreenToPanel(panel, LegacyInputAdapter.MousePosition);
         var picked = panel.Pick(local);
         while (picked != null)
         {
