@@ -43,7 +43,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.position = Position.Absolute;
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
-        dialogueBox.style.bottom = 56; // 与屏幕底部留空，不贴边
+        dialogueBox.style.bottom = 36; // 与屏幕底部留一点空，不贴边也不悬空
         dialogueBox.style.height = 150;
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
@@ -55,8 +55,11 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
         dialogueBox.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
         dialogueBox.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
+        // 四角统一圆弧
         dialogueBox.style.borderTopLeftRadius = 8;
         dialogueBox.style.borderTopRightRadius = 8;
+        dialogueBox.style.borderBottomLeftRadius = 8;
+        dialogueBox.style.borderBottomRightRadius = 8;
         dialogueBox.style.paddingLeft = 100;
         dialogueBox.style.display = DisplayStyle.None;
         root.Add(dialogueBox);
