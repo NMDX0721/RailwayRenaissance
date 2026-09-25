@@ -44,7 +44,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
         dialogueBox.style.bottom = 16; // 贴近屏幕底，只留一点呼吸空间
-        dialogueBox.style.height = 150;
+        dialogueBox.style.minHeight = 126; // 默认刚好两行（36号字）；字多时由内容撑开
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
         dialogueBox.style.borderTopWidth = 2;
@@ -178,6 +178,11 @@ public class DialogueBox : MonoBehaviour
         continueIndicator.style.display = DisplayStyle.None;
         if (typewriterEffect != null)
         {
+            // 动态字号：默认两行装得下，超长逐级缩小（参照主流视觉小说）
+            int len = PlainLength(displayText);
+            int fs = len <= 70 ? 36 : len <= 80 ? 32 : len <= 90 ? 28 : len <= 106 ? 24 : 20;
+            dialogueText.style.fontSize = fs;
+
             typewriterEffect.StartTypewriter(displayText, () =>
             {
                 StartContinueAnimation();
@@ -196,6 +201,22 @@ public class DialogueBox : MonoBehaviour
         if (!string.IsNullOrEmpty(text) && text.StartsWith("[") && text.EndsWith("]") && text.Length > 2)
             return "<color=#7EC8E3><i>" + text.Substring(1, text.Length - 2) + "</i></color>";
         return text;
+    }
+
+    /// <summary>去掉富文本标签后的可见字符数（动态字号用）。</summary>
+    private static int PlainLength(string s)
+    {
+        int len = 0;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '<')
+            {
+                int close = s.IndexOf('>', i);
+                if (close != -1) { i = close; continue; }
+            }
+            len++;
+        }
+        return len;
     }
 
     public void Hide() => dialogueBox.style.display = DisplayStyle.None;

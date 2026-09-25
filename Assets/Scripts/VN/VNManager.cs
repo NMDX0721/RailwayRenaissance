@@ -534,8 +534,8 @@ public class VNManager : MonoBehaviour
             var btn = new UnityEngine.UIElements.Button(() => itemAction());
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 28;
-            iconLabel.style.height = 28;
+            iconLabel.style.width = 30;
+            iconLabel.style.height = 30;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -558,9 +558,9 @@ public class VNManager : MonoBehaviour
                 SuppressNextAdvance();
                 evt.StopImmediatePropagation();
             });
-            // 居中图标：去掉 Button 默认 padding，显式 flex 居中
-            btn.style.width = 56;
-            btn.style.height = 44;
+            // 居中图标：去掉 Button 默认 padding，显式 flex 居中（框小、图标大）
+            btn.style.width = 48;
+            btn.style.height = 40;
             btn.style.paddingLeft = 0; btn.style.paddingRight = 0;
             btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
             btn.style.justifyContent = Justify.Center;
@@ -1300,6 +1300,15 @@ public class VNManager : MonoBehaviour
     private void Update()
     {
         clickedButtonThisFrame = false; // 每帧重置按钮标记
+
+        // 应用失焦（如 Win+S 截图、切窗口）时不处理键鼠，避免 Shift 被系统快捷键误触发倍速
+        if (!Application.isFocused)
+        {
+            spaceHeld = false;
+            spaceSpeedActive = false;
+            if (fastFwdBadge != null) fastFwdBadge.style.display = DisplayStyle.None;
+            return;
+        }
 
         // 右键：隐藏/恢复全部 VN UI（背景保留），隐藏状态下点击仍可推进
         if (LegacyInputAdapter.GetMouseButtonDown(1))

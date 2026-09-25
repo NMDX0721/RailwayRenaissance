@@ -49,8 +49,8 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.style.left = 0;
         backlogPanel.style.right = 0;
         backlogPanel.style.bottom = 0;
-        backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.55f);
-        // 磨砂：半透明底 + USS backdrop-filter（引擎不支持该属性时静默忽略，只剩半透明）
+        backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.85f);
+        // 磨砂：半透明底 + USS backdrop-filter（引擎不支持该属性时静默忽略）
         var frosted = Resources.Load<StyleSheet>("UI/frosted");
         if (frosted != null)
         {
@@ -132,6 +132,36 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.style.paddingTop = 20;
         backlogScroll.style.paddingBottom = 20;
         backlogPanel.Add(backlogScroll);
+        StyleBacklogScrollbar(backlogScroll);
+    }
+
+    /// <summary>把 UI Toolkit 原生滚动条刷成主题色：细轨、金 thumb、深色箭头钮。</summary>
+    private static void StyleBacklogScrollbar(ScrollView scroll)
+    {
+        var gold = new Color(0.8f, 0.62f, 0.35f, 0.9f);
+        var track = new Color(0.12f, 0.08f, 0.05f, 0.9f);
+
+        var slider = scroll.Q<Slider>("unity-scrollview-vertical-slider")
+                  ?? scroll.Q<Slider>("unity-scroll-view-vertical-slider");
+        if (slider != null)
+        {
+            slider.style.width = 10;
+            slider.style.backgroundColor = track;
+        }
+        var dragger = scroll.Q("unity-dragger") ?? scroll.Q("unity-thumb");
+        if (dragger != null)
+            dragger.style.backgroundColor = gold;
+        var scroller = scroll.Q<Scroller>("unity-scrollview-vertical-scroller")
+                    ?? scroll.Q<Scroller>("unity-scroll-view-vertical-scroller");
+        foreach (var btnName in new[] { "unity-up-button", "unity-down-button" })
+        {
+            var b = scroller?.Q(btnName) ?? scroll.Q(btnName);
+            if (b != null)
+            {
+                b.style.backgroundColor = track;
+                b.style.width = 10;
+            }
+        }
     }
 
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
