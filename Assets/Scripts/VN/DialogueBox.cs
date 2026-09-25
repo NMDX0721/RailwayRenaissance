@@ -11,6 +11,8 @@ public class DialogueBox : MonoBehaviour
     private Label speakerName;
     private Label dialogueText;
     private Label continueIndicator;
+    private VisualElement phoneBar;
+    private Label phoneLabel;
     private TypewriterEffect typewriterEffect;
     private Font gameFont;
     private Coroutine continueAnimCoroutine;
@@ -41,7 +43,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.position = Position.Absolute;
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
-        dialogueBox.style.bottom = 30;
+        dialogueBox.style.bottom = 56; // 与屏幕底部留空，不贴边
         dialogueBox.style.height = 150;
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
@@ -102,6 +104,51 @@ public class DialogueBox : MonoBehaviour
         continueIndicator.style.display = DisplayStyle.None;
         continueIndicator.style.unityFontDefinition = fontDef;
         dialogueBox.Add(continueIndicator);
+
+        // 顶部通话条：表明当前是电话场景
+        phoneBar = new VisualElement { name = "phone-bar" };
+        phoneBar.style.position = Position.Absolute;
+        phoneBar.style.top = 18;
+        phoneBar.style.left = 0;
+        phoneBar.style.right = 0;
+        phoneBar.style.height = 40;
+        phoneBar.style.alignItems = Align.Center;
+        phoneBar.style.justifyContent = Justify.Center;
+        phoneBar.style.backgroundColor = new Color(0.05f, 0.08f, 0.12f, 0.78f);
+        phoneBar.style.borderTopWidth = 1;
+        phoneBar.style.borderBottomWidth = 1;
+        phoneBar.style.borderTopColor = new Color(0.4f, 0.85f, 1f, 0.55f);
+        phoneBar.style.borderBottomColor = new Color(0.4f, 0.85f, 1f, 0.55f);
+        phoneBar.style.display = DisplayStyle.None;
+        phoneBar.pickingMode = PickingMode.Ignore;
+        root.Add(phoneBar);
+
+        phoneLabel = new Label { name = "phone-label" };
+        phoneLabel.style.fontSize = 22;
+        phoneLabel.style.color = new Color(0.55f, 0.9f, 1f, 1f);
+        phoneLabel.style.unityFontDefinition = fontDef;
+        phoneLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        phoneBar.Add(phoneLabel);
+    }
+
+    /// <summary>通话条：对方名为空则显示通用「通话中」。</summary>
+    public void SetPhoneCall(string peer)
+    {
+        if (phoneBar == null || phoneLabel == null) return;
+        if (string.IsNullOrEmpty(peer))
+        {
+            phoneLabel.text = "☎  通话中…";
+            phoneBar.style.display = DisplayStyle.Flex;
+        }
+        else if (peer == "__off__")
+        {
+            phoneBar.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            phoneLabel.text = "☎  通话中 · " + peer;
+            phoneBar.style.display = DisplayStyle.Flex;
+        }
     }
 
     public VisualElement RootElement => dialogueBox;

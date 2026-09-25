@@ -44,6 +44,7 @@ public class VNManager : MonoBehaviour
 
     // Confirm dialog
     private VisualElement confirmDialog;
+    private VisualElement exitDialog;
     private VisualElement bootScreen;
     private VisualElement cgScreen;
     private bool VN_ReplayInjected;
@@ -527,7 +528,7 @@ public class VNManager : MonoBehaviour
         // 子菜单（BA 风格展开底板：深棕半透明面板 + 金边 + 内衬，按钮依附于板）
         menuExpandedContainer = new VisualElement { name = "menu-expanded" };
         menuExpandedContainer.style.position = Position.Absolute;
-        menuExpandedContainer.style.top = 52;   // 紧贴 Auto/Menu 行下方
+        menuExpandedContainer.style.top = 64;   // Auto/Menu 行下方留一档间距
         menuExpandedContainer.style.right = 10; // 右缘与 Menu 按钮对齐
         menuExpandedContainer.style.flexDirection = FlexDirection.Row;
         menuExpandedContainer.style.alignItems = Align.Center;
@@ -548,14 +549,13 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：像素图标（PixelIconHelper 24x24，与 Auto/Menu 风格统一）+ 每项独立小框
-        // 存档/读档已从 VN 移除（改走桌面「设置」App 的备份与恢复，见单档长线重构规划）
+        // 子菜单项：回顾 / 跳过 / 书签 / 退出（Shift+→ 仍可场景内快进，不再占菜单位）
         var menuItemDefs = new (Texture2D icon, System.Action action)[]
         {
-            (PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()), // 回顾（三横线）
-            (PixelIconHelper.SkipFastIcon(), () => SkipToNext()),     // 跳转（双箭头快进到下一选项）
-            (PixelIconHelper.BookmarkTabIcon(), () => AddBookmark()), // 书签（标签形）
-            (PixelIconHelper.ReturnBarIcon(), () => RequestSkip()), // 跳过剧情（闸门：Day0 前答题 / 注册后确认）
+            (PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()), // 回顾
+            (PixelIconHelper.SkipFastIcon(), () => RequestSkip()),     // 跳过（Day0 前答题 / 注册后确认）
+            (PixelIconHelper.BookmarkTabIcon(), () => AddBookmark()), // 书签
+            (PixelIconHelper.ExitDoorIcon(), () => ShowExitDialog()), // 退出
         };
 
         foreach (var (icon, itemAction) in menuItemDefs)
@@ -574,7 +574,19 @@ public class VNManager : MonoBehaviour
             iconLabel.style.backgroundImage = new StyleBackground(icon);
             iconLabel.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.95f);
             btn.Add(iconLabel);
-            btn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
+            // Click 必须停冒泡：否则松开时 Bubble 到 root 会推进下一句（书签/跳过误推进的根因）
+            btn.RegisterCallback<PointerDownEvent>(evt =>
+            {
+                clickedButtonThisFrame = true;
+                SuppressNextAdvance();
+                evt.StopImmediatePropagation();
+            });
+            btn.RegisterCallback<ClickEvent>(evt =>
+            {
+                clickedButtonThisFrame = true;
+                SuppressNextAdvance();
+                evt.StopImmediatePropagation();
+            });
             btn.style.width = 44;
             btn.style.height = 36;
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.8f);
@@ -611,6 +623,7 @@ public class VNManager : MonoBehaviour
 
         UpdateAutoPlayButtonVisual();
         SetupConfirmDialog(uiDoc);
+        SetupExitDialog(uiDoc);
     }
 
     private bool menuExpanded;
@@ -714,12 +727,10 @@ public class VNManager : MonoBehaviour
         ShowConfirmDialog();
     }
 
-    /// <summary>是否已过 Day0 闸门（已获得 0721，或已正式注册用户名）。</summary>
+    /// <summary>是否已过 Day0 闸门：只认 0721 进度（注册发生在 Day0 平板剧情里，旧 Username 不算）。</summary>
     private static bool HasPassedDay0Gate()
     {
-        if (PlayerPrefs.GetInt("VN_Got0721", 0) == 1) return true;
-        // Username 仅在正式注册/命名时写入；XiaomiAccount 会被 GameMainUI 兜底成「旅人」，不能单独作凭证
-        return !string.IsNullOrEmpty(PlayerPrefs.GetString("Username", ""));
+        return PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
     }
 
     /// <summary>答题通过：停当前脚本，跳到 Day0（prologue_02）起点。</summary>
@@ -731,39 +742,6 @@ public class VNManager : MonoBehaviour
             confirmDialog.style.display = DisplayStyle.None;
         vnBacklog?.Clear();
         StartScript("prologue_02_day0");
-    }
-
-    /// <summary>跳过快进到下一选项/场景（菜单「跳转」双箭头；故事跳过走 RequestSkip）。</summary>
-    private void SkipToNext()
-    {
-        CloseMenuExpanded();
-        // 跳过当前打字
-        if (dialogueBox != null && dialogueBox.IsTyping())
-            dialogueBox.SkipTyping();
-        // 快速推进到下一选项
-        int maxSkip = 200;
-        int safety = 0;
-        while (safety < maxSkip && isScriptRunning && currentScript != null)
-        {
-            var scene = currentScript.scenes[currentSceneIndex];
-            if (currentDialogueIndex < scene.d.Length)
-            {
-                var entry = scene.d[currentDialogueIndex];
-                if (entry.t == "c" || entry.t == "special")
-                    break;
-            }
-            NextDialogue();
-            safety++;
-            // 检查是否到达选项
-            if (currentScript == null) break;
-            if (currentSceneIndex < currentScript.scenes.Length)
-            {
-                var nextScene = currentScript.scenes[currentSceneIndex];
-                if (currentDialogueIndex < nextScene.d.Length && nextScene.d[currentDialogueIndex].t == "c")
-                    break;
-            }
-            else break;
-        }
     }
 
     /// <summary>添加书签（手动）：Menu → 书签，自动获取话数/话标题/台词预览。</summary>
@@ -981,6 +959,129 @@ public class VNManager : MonoBehaviour
         btnRow.Add(yesBtn);
     }
 
+    /// <summary>
+    /// 退出确认：取消 / 退出剧情（自动存书签回桌面）/ 退出游戏。
+    /// 有跳过闸门时退出仍保留——跳过=推进故事，退出=离开游戏，语义不同。
+    /// </summary>
+    private void SetupExitDialog(UIDocument uiDoc)
+    {
+        var root = uiDoc.rootVisualElement;
+        var fontDef = new FontDefinition { font = gameFont };
+
+        exitDialog = new VisualElement { name = "exit-dialog" };
+        exitDialog.style.position = Position.Absolute;
+        exitDialog.style.top = 0; exitDialog.style.left = 0;
+        exitDialog.style.right = 0; exitDialog.style.bottom = 0;
+        exitDialog.style.backgroundColor = new Color(0, 0, 0, 0.65f);
+        exitDialog.style.display = DisplayStyle.None;
+        exitDialog.style.alignItems = Align.Center;
+        exitDialog.style.justifyContent = Justify.Center;
+        exitDialog.pickingMode = PickingMode.Position;
+        exitDialog.RegisterCallback<PointerDownEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
+        exitDialog.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); SuppressNextAdvance(); });
+        root.Add(exitDialog);
+
+        var box = new VisualElement();
+        box.style.width = 480;
+        box.style.alignItems = Align.Center;
+        box.style.paddingTop = 36; box.style.paddingBottom = 28;
+        box.style.paddingLeft = 40; box.style.paddingRight = 40;
+        box.style.borderTopLeftRadius = 16; box.style.borderTopRightRadius = 16;
+        box.style.borderBottomLeftRadius = 16; box.style.borderBottomRightRadius = 16;
+        box.style.backgroundColor = new Color(0.16f, 0.11f, 0.07f, 0.96f);
+        box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
+        box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
+        var goldBorder = new Color(0.8f, 0.62f, 0.35f, 0.7f);
+        box.style.borderTopColor = goldBorder; box.style.borderBottomColor = goldBorder;
+        box.style.borderLeftColor = goldBorder; box.style.borderRightColor = goldBorder;
+        exitDialog.Add(box);
+
+        var title = new Label("退出");
+        title.style.fontSize = 28;
+        title.style.color = new Color(1f, 0.78f, 0.4f, 1f);
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.unityFontDefinition = fontDef;
+        title.style.marginBottom = 6;
+        box.Add(title);
+
+        var line = new VisualElement();
+        line.style.width = 80; line.style.height = 2;
+        line.style.backgroundColor = new Color(1f, 0.78f, 0.4f, 0.4f);
+        line.style.marginBottom = 18;
+        box.Add(line);
+
+        var desc = new Label("退出剧情会自动保存当前书签。");
+        desc.style.fontSize = 17;
+        desc.style.color = new Color(1f, 1f, 1f, 0.55f);
+        desc.style.unityFontDefinition = fontDef;
+        desc.style.unityTextAlign = TextAnchor.MiddleCenter;
+        desc.style.marginBottom = 24;
+        box.Add(desc);
+
+        var col = new VisualElement();
+        col.style.alignItems = Align.Center;
+        box.Add(col);
+
+        void MakeExitBtn(string text, Color bg, Color fg, System.Action onClick, bool margin)
+        {
+            var b = new UnityEngine.UIElements.Button(() => { clickedButtonThisFrame = true; onClick(); }) { text = text };
+            b.focusable = false;
+            b.style.width = 260; b.style.height = 46;
+            b.style.fontSize = 18;
+            b.style.color = fg;
+            b.style.backgroundColor = bg;
+            b.style.unityTextAlign = TextAnchor.MiddleCenter;
+            b.style.unityFontDefinition = fontDef;
+            b.style.borderTopLeftRadius = 8; b.style.borderTopRightRadius = 8;
+            b.style.borderBottomLeftRadius = 8; b.style.borderBottomRightRadius = 8;
+            b.style.borderTopWidth = 1; b.style.borderBottomWidth = 1;
+            b.style.borderLeftWidth = 1; b.style.borderRightWidth = 1;
+            b.style.borderTopColor = goldBorder; b.style.borderBottomColor = goldBorder;
+            b.style.borderLeftColor = goldBorder; b.style.borderRightColor = goldBorder;
+            if (margin) b.style.marginBottom = 10;
+            b.RegisterCallback<PointerDownEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
+            b.RegisterCallback<ClickEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
+            col.Add(b);
+        }
+
+        // 1 取消
+        MakeExitBtn("取消", new Color(0.2f, 0.14f, 0.08f, 0.9f),
+            new Color(1f, 0.85f, 0.6f, 0.9f),
+            () => exitDialog.style.display = DisplayStyle.None, true);
+        // 2 退出剧情（自动书签 → 回桌面）
+        MakeExitBtn("退出剧情", new Color(1f, 0.78f, 0.4f, 0.95f),
+            new Color(0.12f, 0.08f, 0.04f, 1f),
+            () => { exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, true);
+        // 3 退出游戏
+        MakeExitBtn("退出游戏", new Color(0.35f, 0.16f, 0.12f, 0.95f),
+            new Color(1f, 0.75f, 0.6f, 0.95f),
+            () => ExitGame(), false);
+    }
+
+    private void ShowExitDialog()
+    {
+        CloseMenuExpanded();
+        if (exitDialog != null)
+            exitDialog.style.display = DisplayStyle.Flex;
+    }
+
+    /// <summary>退出剧情：先写自动书签，再走 ReturnToTitle（回平板桌面）。</summary>
+    private void ExitStoryWithBookmark()
+    {
+        AutoBookmarkTrack(); // 覆盖当前进度书签
+        ReturnToTitle();
+    }
+
+    private void ExitGame()
+    {
+        StopAutoPlay();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     /// <summary>隐藏全部 VN UI（保留背景与立绘），截图式纯净画面。</summary>
     private void HideVNUI()
     {
@@ -1071,7 +1172,8 @@ public class VNManager : MonoBehaviour
         HideBootScreen();
         characterSpriteManager?.ClearAll();
         VNAudioManager.Instance?.StopBGM();
-        confirmDialog.style.display = DisplayStyle.None;
+        if (confirmDialog != null) confirmDialog.style.display = DisplayStyle.None;
+        if (exitDialog != null) exitDialog.style.display = DisplayStyle.None;
         PlayerPrefs.SetInt("VN_AutoLoad", 0);
         PlayerPrefs.Save();
 
@@ -1183,6 +1285,11 @@ public class VNManager : MonoBehaviour
                 confirmDialog.style.display = DisplayStyle.None;
                 return;
             }
+            if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex)
+            {
+                exitDialog.style.display = DisplayStyle.None;
+                return;
+            }
             if (prologueQuiz != null && prologueQuiz.IsOpen)
             {
                 // 答题中 ESC = 放弃跳过（不通过）
@@ -1207,7 +1314,8 @@ public class VNManager : MonoBehaviour
                 }
                 return;
             }
-            ShowConfirmDialog();
+            // ESC 默认 = 退出确认（跳过走菜单「跳过」按钮）
+            ShowExitDialog();
             return;
         }
 
@@ -1220,7 +1328,8 @@ public class VNManager : MonoBehaviour
             bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
                                 (saveLoadUI != null && saveLoadUI.IsOpen) ||
                                 (prologueQuiz != null && prologueQuiz.IsOpen) ||
-                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex);
+                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) ||
+                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex);
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
         }
@@ -1295,6 +1404,7 @@ public class VNManager : MonoBehaviour
     {
         if (openingLogoActive) return true; // 开场分镜：空格/长按不可穿透
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
+        if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) return true;
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return true;
         if (vnBacklog != null && vnBacklog.IsOpen) return true;
         if (saveLoadUI != null && saveLoadUI.IsOpen) return true;
@@ -1337,6 +1447,7 @@ public class VNManager : MonoBehaviour
             return;
         }
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return;
+        if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) return;
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return;
         if (vnBacklog != null && vnBacklog.IsOpen) return;
         if (saveLoadUI != null && saveLoadUI.IsOpen) return;
