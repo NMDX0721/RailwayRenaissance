@@ -124,6 +124,7 @@ public class VNSaveLoadUI : MonoBehaviour
         header.Add(titleGroup);
 
         closeBtn = new UnityEngine.UIElements.Button(() => ClosePanel()) { text = "\u2715" };
+        UiCursor.Bind(closeBtn);
         closeBtn.style.width = 44;
         closeBtn.style.height = 44;
         closeBtn.style.fontSize = 20;
@@ -178,6 +179,7 @@ public class VNSaveLoadUI : MonoBehaviour
         panel.Add(pageNav);
 
         prevBtn = new UnityEngine.UIElements.Button(() => { currentPage--; RefreshSlots(); }) { text = "\u25C0 上一页" };
+        UiCursor.Bind(prevBtn);
         StylePageBtn(prevBtn);
         pageNav.Add(prevBtn);
 
@@ -190,6 +192,7 @@ public class VNSaveLoadUI : MonoBehaviour
         pageNav.Add(pageLabel);
 
         nextBtn = new UnityEngine.UIElements.Button(() => { currentPage++; RefreshSlots(); }) { text = "下一页 \u25B6" };
+        UiCursor.Bind(nextBtn);
         StylePageBtn(nextBtn);
         pageNav.Add(nextBtn);
     }
@@ -454,6 +457,7 @@ public class VNSaveLoadUI : MonoBehaviour
                 if (isSaveMode) { RefreshSlots(); ShowSaveFeedback(); }
                 else { isFromTitleScreen = false; ClosePanel(); }
             }) { text = btnText };
+            UiCursor.Bind(actionBtn);
 
             actionBtn.style.width = 90; actionBtn.style.height = 40; actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
@@ -487,6 +491,7 @@ public class VNSaveLoadUI : MonoBehaviour
         if (saveData != null)
         {
             var delBtn = new UnityEngine.UIElements.Button(() => ShowDeleteConfirm(slotIndex)) { text = "\u2715" };
+            UiCursor.Bind(delBtn);
             delBtn.style.width = 28; delBtn.style.height = 28; delBtn.style.fontSize = 14;
             delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
             delBtn.style.backgroundColor = Color.clear;

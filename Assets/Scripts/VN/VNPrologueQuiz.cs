@@ -39,7 +39,7 @@ public class VNPrologueQuiz : MonoBehaviour
         new QuizItem { q = "铁路运输的核心优势是？", opts = new[] { "运量大", "速度最快", "造价最低", "完全不受天气影响" }, correct = 0 },
         new QuizItem { q = "沙能载具的最大弱点是？", opts = new[] { "噪音太大", "夜间效率低", "无法载人", "只能在水上行驶" }, correct = 1 },
         new QuizItem { q = "雾峰村线全长多少？", opts = new[] { "12公里", "23公里", "50公里", "100公里" }, correct = 1 },
-        new QuizItem { q = "「铁龙计划」的本质是？", opts = new[] { "修建新高铁", "收购铁路", "出口沙能车", "裁撤客运线" }, correct = 1 },
+        new QuizItem { q = "『铁龙计划』的本质是？", opts = new[] { "修建新高铁", "收购铁路", "出口沙能车", "裁撤客运线" }, correct = 1 },
         new QuizItem { q = "岁月是什么？", opts = new[] { "一款平板App", "0721搭载的AI", "铁路调度局代号", "嘉颖徐的化名" }, correct = 1 },
         new QuizItem { q = "0721号是什么？", opts = new[] { "沙能飞行器", "内燃机车头", "货运港口", "检查站编号" }, correct = 0 },
         new QuizItem { q = "沙能的能源来源是？", opts = new[] { "煤炭", "核燃料", "沙子", "氢能" }, correct = 2 },
@@ -176,6 +176,7 @@ public class VNPrologueQuiz : MonoBehaviour
         b.style.borderBottomLeftRadius = 8; b.style.borderBottomRightRadius = 8;
         b.RegisterCallback<PointerDownEvent>(e => { VNManager.Instance?.SuppressNextAdvance(); e.StopImmediatePropagation(); });
         b.RegisterCallback<ClickEvent>(e => { VNManager.Instance?.SuppressNextAdvance(); e.StopImmediatePropagation(); });
+        UiCursor.Bind(b);
         return b;
     }
 
@@ -214,6 +215,7 @@ public class VNPrologueQuiz : MonoBehaviour
             var opt = item.opts[i];
             var btn = new UnityEngine.UIElements.Button(() => Pick(capture)) { text = opt };
             btn.focusable = false;
+            UiCursor.Bind(btn);
             btn.style.width = new Length(100, LengthUnit.Percent);
             btn.style.height = 42;
             btn.style.marginBottom = 8;

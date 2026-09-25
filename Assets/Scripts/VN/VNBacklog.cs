@@ -25,14 +25,11 @@ public class VNBacklog : MonoBehaviour
     }
 
     public Action<int, int> OnEntryClicked;
-    private static Texture2D handCursorTex;
 
     public void Init(UIDocument document)
     {
         uiDoc = document;
         gameFont = Resources.Load<Font>("Fonts/zpix");
-        if (handCursorTex == null)
-            handCursorTex = Resources.Load<Texture2D>("Cursors/cursor_hand");
         BuildUI();
     }
 
@@ -89,6 +86,7 @@ public class VNBacklog : MonoBehaviour
 
         var closeBtn = new UnityEngine.UIElements.Button(() => ToggleBacklog()) { text = "X" };
         closeBtn.focusable = false;
+        UiCursor.Bind(closeBtn);
         // 阻止冒泡到 VN root：否则关闭瞬间会被当成「推进下一句」
         // 并通知 VNManager 吞掉同一次点击（IsOpen 已 false 后仍可能 Bubble 到 OnRootClick）
         closeBtn.RegisterCallback<PointerDownEvent>(evt =>
@@ -231,15 +229,13 @@ public class VNBacklog : MonoBehaviour
             {
                 jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
                 jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-                if (handCursorTex != null)
-                    UnityEngine.Cursor.SetCursor(handCursorTex, Vector2.zero, UnityEngine.CursorMode.Auto);
+                UiCursor.ShowHand();
             });
             jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
             {
                 jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
                 jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-                if (LoginManager.cursorTexture != null)
-                    UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+                UiCursor.ShowArrow();
             });
             entryRow.Add(jumpBtn);
 
@@ -269,6 +265,11 @@ public class VNBacklog : MonoBehaviour
             {
                 backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.layout.height);
             }).StartingIn(50);
+        }
+        else
+        {
+            // 关闭即恢复箭头：跳转/关闭瞬间鼠标可能仍停在按钮上，Leave 不会触发
+            UiCursor.ShowArrow();
         }
     }
 

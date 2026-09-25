@@ -262,7 +262,7 @@ public class NewGameSetupUI : MonoBehaviour
         t.style.unityFontDefinition = fd; t.style.marginBottom = 4;
         page.Add(t);
 
-        var st = new Label("仅「指导司机」难度可调整，其他难度使用默认参数");
+        var st = new Label("仅『指导司机』难度可调整，其他难度使用默认参数");
         st.name = "custom-hint";
         st.style.fontSize = 16; st.style.color = new Color(1f, 1f, 1f, 0.4f);
         st.style.unityFontDefinition = fd; st.style.marginBottom = 24;
@@ -337,7 +337,7 @@ public class NewGameSetupUI : MonoBehaviour
             bool editable = isCustom;
             customParamsBox.SetEnabled(editable);
             var hint = panel.Q<Label>("custom-hint");
-            if (hint != null) hint.text = editable ? "调整各项参数数值" : "当前难度不支持自定义参数，请选择「指导司机」";
+            if (hint != null) hint.text = editable ? "调整各项参数数值" : "当前难度不支持自定义参数，请选择『指导司机』";
         }
 
     }

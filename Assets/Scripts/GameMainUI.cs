@@ -1165,7 +1165,7 @@ public class GameMainUI : MonoBehaviour
         // 第三阶段：弹窗
         if (app.JumpTarget != null)
         {
-            ShowAppToast($"⚠ {app.PopupMessage}\n→ 跳转至「{app.JumpTarget}」");
+            ShowAppToast($"⚠ {app.PopupMessage}\n→ 跳转至『{app.JumpTarget}』");
         }
         else
         {
@@ -1312,7 +1312,7 @@ public class GameMainUI : MonoBehaviour
             }
         }
 
-        var tip = new Label("嘉颖徐命名：「铁路最动人的不是出发，是回来。每一趟归途，都是一次胜利。」");
+        var tip = new Label("嘉颖徐命名：『铁路最动人的不是出发，是回来。每一趟归途，都是一次胜利。』");
         tip.style.fontSize = 12; tip.style.color = GlassTextMuted; tip.style.unityFontDefinition = Fd();
         tip.style.marginTop = 12; tip.style.whiteSpace = WhiteSpace.Normal; win.Add(tip);
     }
@@ -1588,7 +1588,7 @@ public class GameMainUI : MonoBehaviour
         title.style.fontSize = 18; title.style.color = GlassAccent; title.style.unityFontDefinition = Fd();
         title.style.marginTop = 12; win.Add(title);
 
-        var desc = new Label("嘉颖徐铁路基金致力于保护和复兴全球铁路文化遗产。\n\n「铁路最动人的不是出发，是回来。」");
+        var desc = new Label("嘉颖徐铁路基金致力于保护和复兴全球铁路文化遗产。\n\n『铁路最动人的不是出发，是回来。』");
         desc.style.fontSize = 14; desc.style.color = GlassText; desc.style.unityFontDefinition = Fd();
         desc.style.marginTop = 8; desc.style.whiteSpace = WhiteSpace.Normal; win.Add(desc);
 

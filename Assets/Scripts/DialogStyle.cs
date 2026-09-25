@@ -131,6 +131,7 @@ public static class DialogStyle
         b.style.borderLeftColor = GoldBorder; b.style.borderRightColor = GoldBorder;
         b.RegisterCallback<PointerDownEvent>(e => e.StopImmediatePropagation());
         b.RegisterCallback<ClickEvent>(e => e.StopImmediatePropagation());
+        UiCursor.Bind(b);
         return b;
     }
 }

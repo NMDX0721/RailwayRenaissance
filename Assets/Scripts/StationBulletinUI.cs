@@ -91,6 +91,7 @@ public class StationBulletinUI : MonoBehaviour
         header.Add(title);
 
         var closeBtn = new UnityEngine.UIElements.Button(() => Hide()) { text = "\u2715" };
+        UiCursor.Bind(closeBtn);
         closeBtn.style.width = 38; closeBtn.style.height = 30;
         closeBtn.style.fontSize = 18;
         closeBtn.style.color = new Color(1f, 1f, 1f, 0.6f);
@@ -121,6 +122,7 @@ public class StationBulletinUI : MonoBehaviour
         {
             int idx = i;
             var btn = new UnityEngine.UIElements.Button(() => SelectCategory(idx)) { text = menuIcons[i] + " " + menuItems[i] };
+            UiCursor.Bind(btn);
             btn.name = "settings-menu-" + i;
             btn.style.width = 140;
             btn.style.height = 44;
@@ -295,6 +297,7 @@ public class StationBulletinUI : MonoBehaviour
 
             UnityEngine.UIElements.Button keyBtn = null;
             keyBtn = new UnityEngine.UIElements.Button(() => StartRebind(action, keyBtn)) { text = KeyBindings.GetKeyName(action) };
+            UiCursor.Bind(keyBtn);
             keyBtn.style.width = 120; keyBtn.style.height = 36; keyBtn.style.fontSize = 18;
             keyBtn.style.color = new Color(1f, 0.8f, 0.5f, 0.9f);
             keyBtn.style.backgroundColor = new Color(0.2f, 0.12f, 0.08f, 0.7f);
@@ -672,6 +675,7 @@ public class StationBulletinUI : MonoBehaviour
         row.style.paddingTop = 12;
 
         var btn = new UnityEngine.UIElements.Button(() => ShowResetConfirm(onReset)) { text = "恢复默认" };
+        UiCursor.Bind(btn);
         btn.style.width = 130; btn.style.height = 36; btn.style.fontSize = 18;
         btn.style.color = new Color(1f, 0.8f, 0.5f, 0.8f);
         btn.style.backgroundColor = new Color(0.3f, 0.15f, 0.08f, 0.5f);

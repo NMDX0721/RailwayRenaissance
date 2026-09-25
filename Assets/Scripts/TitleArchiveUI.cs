@@ -527,7 +527,7 @@ public class TitleArchiveUI : MonoBehaviour
             }
             else
             {
-                var placeholder = new Label("「" + cg.title + "」CG 图待补充");
+                var placeholder = new Label("『" + cg.title + "』CG 图待补充");
                 placeholder.style.width = new Length(100, LengthUnit.Percent);
                 placeholder.style.height = new Length(100, LengthUnit.Percent);
                 placeholder.style.fontSize = 22;
@@ -1176,7 +1176,7 @@ public class TitleArchiveUI : MonoBehaviour
         img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
         fs.Add(img);
 
-        var cap = new Label("「" + title + "」 — 点击关闭");
+        var cap = new Label("『" + title + "』 — 点击关闭");
         cap.style.position = Position.Absolute;
         cap.style.bottom = 24;
         cap.style.left = 0;
@@ -1524,7 +1524,7 @@ public class TitleArchiveUI : MonoBehaviour
             }
             else
             {
-                var placeholder = new Label("「" + sc.title + "」场景图待补充");
+                var placeholder = new Label("『" + sc.title + "』场景图待补充");
                 placeholder.style.width = new Length(100, LengthUnit.Percent);
                 placeholder.style.height = new Length(100, LengthUnit.Percent);
                 placeholder.style.fontSize = 20;

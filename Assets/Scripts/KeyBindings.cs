@@ -6,7 +6,6 @@ public static class KeyBindings
     public enum Action
     {
         Advance,
-        SkipBack,
         SkipForward,
         ToggleAuto,
         OpenMenu
@@ -15,7 +14,6 @@ public static class KeyBindings
     private static readonly Dictionary<Action, KeyCode> defaults = new Dictionary<Action, KeyCode>
     {
         { Action.Advance, KeyCode.Space },
-        { Action.SkipBack, KeyCode.LeftArrow },
         { Action.SkipForward, KeyCode.RightArrow },
         { Action.ToggleAuto, KeyCode.F5 },
         { Action.OpenMenu, KeyCode.Escape }
@@ -55,7 +53,6 @@ public static class KeyBindings
         switch (action)
         {
             case Action.Advance: return "推进对话";
-            case Action.SkipBack: return "后退";
             case Action.SkipForward: return "快进";
             case Action.ToggleAuto: return "自动模式";
             case Action.OpenMenu: return "菜单";

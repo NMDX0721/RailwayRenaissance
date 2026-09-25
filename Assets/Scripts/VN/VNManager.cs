@@ -25,7 +25,6 @@ public class VNManager : MonoBehaviour
     private VisualElement optionsContainer;
     private VisualElement optionsOverlay;
     private Font gameFont;
-    private static Texture2D handCursorTex;
 
     // Variable system
     private Dictionary<string, bool> variables = new Dictionary<string, bool>();
@@ -40,6 +39,7 @@ public class VNManager : MonoBehaviour
     private float spaceHoldStart;
     private bool spaceSpeedActive;
     private const float SpaceSpeedThreshold = 0.35f;
+    private const float SpaceSpeedInterval = 0.4f;
     private float spaceSpeedNextAt;
 
     // Confirm dialog
@@ -290,8 +290,6 @@ public class VNManager : MonoBehaviour
     {
         if (LoginManager.cursorTexture == null)
             LoginManager.cursorTexture = LoginManager.LoadCursorTexture("Cursors/cursor_arrow", 3);
-        if (handCursorTex == null)
-            handCursorTex = LoginManager.LoadCursorTexture("Cursors/cursor_hand", 3);
         UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
     }
 
@@ -303,16 +301,7 @@ public class VNManager : MonoBehaviour
 
     private void AddCursorHover(VisualElement element)
     {
-        element.RegisterCallback<PointerEnterEvent>(e =>
-        {
-            if (handCursorTex != null)
-                UnityEngine.Cursor.SetCursor(handCursorTex, new Vector2(0, 0), UnityEngine.CursorMode.ForceSoftware);
-        });
-        element.RegisterCallback<PointerLeaveEvent>(e =>
-        {
-            if (LoginManager.cursorTexture != null)
-                UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
-        });
+        UiCursor.Bind(element);
     }
 
     private void SetupCanvas()
@@ -457,6 +446,7 @@ public class VNManager : MonoBehaviour
         autoBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.25f);
         autoBtn.style.borderTopLeftRadius = 4; autoBtn.style.borderTopRightRadius = 4;
         autoBtn.style.borderBottomLeftRadius = 4; autoBtn.style.borderBottomRightRadius = 4;
+        AddCursorHover(autoBtn);
         menuBar.Add(autoBtn);
 
         // Menu 按钮（点击展开/收起子菜单）
@@ -495,6 +485,7 @@ public class VNManager : MonoBehaviour
         menuBtn.style.borderTopLeftRadius = 4; menuBtn.style.borderTopRightRadius = 4;
         menuBtn.style.borderBottomLeftRadius = 4; menuBtn.style.borderBottomRightRadius = 4;
         menuBtn.name = "vn-menu-btn";
+        AddCursorHover(menuBtn);
         menuBar.Add(menuBtn);
         this.menuBtn = menuBtn;
 
@@ -597,6 +588,7 @@ public class VNManager : MonoBehaviour
                 btn.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.5f);
             });
             menuExpandedContainer.Add(btn);
+            AddCursorHover(btn);
         }
 
         UpdateAutoPlayButtonVisual();
@@ -846,50 +838,84 @@ public class VNManager : MonoBehaviour
         confirmDialog.name = "confirm-dialog";
         root.Add(confirmDialog);
 
-        var dialogBox = DialogStyle.CreateBox(480);
+        // 版式对齐参考图（BA Summary 弹窗）：大盒 + 大标题金线 + 右上✕ + 话名副标题 + 浅色内容框 + 问题行 + 两大按钮
+        var dialogBox = DialogStyle.CreateBox(640);
+        dialogBox.style.paddingTop = 40;
+        dialogBox.style.paddingBottom = 36;
+        dialogBox.style.position = Position.Relative;
         confirmDialog.Add(dialogBox);
 
-        dialogBox.Add(DialogStyle.CreateTitle("跳过剧情？", fontDef));
+        var title = DialogStyle.CreateTitle("跳过剧情？", fontDef);
+        title.style.fontSize = 34;
+        title.style.marginBottom = 2;
+        dialogBox.Add(title);
         dialogBox.Add(DialogStyle.CreateUnderline());
 
-        // 进度总结（跳过专用；退出无此框）
-        var epHead = new Label("当前进度");
-        epHead.style.fontSize = 18;
-        epHead.style.color = new Color(1f, 1f, 1f, 0.85f);
+        // 右上角 ✕（=取消）
+        var closeX = new Label("✕");
+        closeX.pickingMode = PickingMode.Position;
+        closeX.style.position = Position.Absolute;
+        closeX.style.top = 14; closeX.style.right = 18;
+        closeX.style.fontSize = 24;
+        closeX.style.color = new Color(1f, 1f, 1f, 0.7f);
+        closeX.style.unityFontDefinition = fontDef;
+        closeX.RegisterCallback<PointerDownEvent>(e =>
+        {
+            clickedButtonThisFrame = true;
+            SuppressNextAdvance();
+            e.StopImmediatePropagation();
+            confirmDialog.style.display = DisplayStyle.None;
+        });
+        dialogBox.Add(closeX);
+
+        // 话名副标题（动态填充）
+        var epHead = new Label();
+        epHead.name = "confirm-eptitle";
+        epHead.style.fontSize = 22;
+        epHead.style.color = new Color(1f, 1f, 1f, 0.95f);
         epHead.style.unityFontStyleAndWeight = FontStyle.Bold;
         epHead.style.unityFontDefinition = fontDef;
         epHead.style.unityTextAlign = TextAnchor.MiddleCenter;
-        epHead.style.marginBottom = 10;
+        epHead.style.marginBottom = 14;
         dialogBox.Add(epHead);
 
+        // 进度总结内容框（跳过专用；退出无此框）
         var summary = new Label();
         summary.name = "confirm-summary";
-        summary.style.fontSize = 15;
-        summary.style.color = new Color(1f, 1f, 1f, 0.6f);
+        summary.style.fontSize = 17;
+        summary.style.color = new Color(1f, 1f, 1f, 0.7f);
         summary.style.unityFontDefinition = fontDef;
         summary.style.whiteSpace = WhiteSpace.Normal;
         summary.style.unityTextAlign = TextAnchor.UpperLeft;
-        summary.style.paddingLeft = 14; summary.style.paddingRight = 14;
-        summary.style.paddingTop = 12; summary.style.paddingBottom = 12;
-        summary.style.backgroundColor = new Color(1f, 1f, 1f, 0.06f);
+        summary.style.paddingLeft = 20; summary.style.paddingRight = 20;
+        summary.style.paddingTop = 16; summary.style.paddingBottom = 16;
+        summary.style.backgroundColor = new Color(1f, 1f, 1f, 0.07f);
         summary.style.borderTopWidth = 1; summary.style.borderBottomWidth = 1;
         summary.style.borderLeftWidth = 1; summary.style.borderRightWidth = 1;
         var sumB = new Color(0.8f, 0.62f, 0.35f, 0.35f);
         summary.style.borderTopColor = sumB; summary.style.borderBottomColor = sumB;
         summary.style.borderLeftColor = sumB; summary.style.borderRightColor = sumB;
-        summary.style.borderTopLeftRadius = 8; summary.style.borderTopRightRadius = 8;
-        summary.style.borderBottomLeftRadius = 8; summary.style.borderBottomRightRadius = 8;
-        summary.style.minHeight = 72;
-        summary.style.marginBottom = 14;
+        summary.style.borderTopLeftRadius = 10; summary.style.borderTopRightRadius = 10;
+        summary.style.borderBottomLeftRadius = 10; summary.style.borderBottomRightRadius = 10;
+        summary.style.minHeight = 110;
+        summary.style.alignSelf = Align.Stretch;
+        summary.style.marginBottom = 20;
         dialogBox.Add(summary);
 
         var desc = DialogStyle.CreateBody("跳过后将返回桌面，可从书签继续。\n确认跳过？", fontDef);
-        desc.style.marginBottom = 24;
+        desc.style.fontSize = 18;
+        desc.style.marginBottom = 28;
         dialogBox.Add(desc);
 
-        DialogStyle.AddButtonRow(dialogBox, fontDef, "取消", "确认跳过",
+        var (cancelBtn, primaryBtn) = DialogStyle.AddButtonRow(dialogBox, fontDef, "取消", "确认跳过",
             () => { clickedButtonThisFrame = true; confirmDialog.style.display = DisplayStyle.None; },
             () => { clickedButtonThisFrame = true; confirmDialog.style.display = DisplayStyle.None; ReturnToTitle(); });
+        foreach (var b in new[] { cancelBtn, primaryBtn })
+        {
+            b.style.width = 190;
+            b.style.height = 58;
+            b.style.fontSize = 20;
+        }
     }
 
     /// <summary>
@@ -1047,16 +1073,18 @@ public class VNManager : MonoBehaviour
             confirmDialog.style.display = DisplayStyle.Flex;
     }
 
-    /// <summary>写入 Summary 框：第N话 · 标题 + 当前台词预览（跳过/退出共用）。</summary>
+    /// <summary>写入副标题（第N话 · 标题）与内容框（当前台词预览），跳过确认专用。</summary>
     private void FillDialogSummary(VisualElement dialog, string summaryName)
     {
         if (dialog == null) return;
+        var epHead = dialog.Q<Label>("confirm-eptitle");
         var sum = dialog.Q<Label>(summaryName);
         if (sum == null) return;
         if (currentScript != null && !string.IsNullOrEmpty(currentScriptName))
         {
             int ep = GetEpisodeNumber(currentScriptName);
             string title = GetEpisodeTitle(currentScriptName);
+            if (epHead != null) epHead.text = "第" + ep + "话 · " + title;
             string preview = "";
             if (currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
             {
@@ -1066,10 +1094,11 @@ public class VNManager : MonoBehaviour
             }
             if (string.IsNullOrEmpty(preview)) preview = "（本幕暂无台词）";
             if (preview.Length > 80) preview = preview.Substring(0, 80) + "…";
-            sum.text = "第" + ep + "话 · " + title + "\n\n" + preview;
+            sum.text = preview;
         }
         else
         {
+            if (epHead != null) epHead.text = "";
             sum.text = "未在剧情中。";
         }
     }
@@ -1260,17 +1289,12 @@ public class VNManager : MonoBehaviour
             return;
         }
 
-        // Shift：快进（打字时加速，已完成时自动推进到下一句）
+        // Shift+→：快进下一句（快退已按需求移除）
         if (LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift))
         {
             if (LegacyInputAdapter.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
                 NextDialogue();
-                return;
-            }
-            if (LegacyInputAdapter.GetKeyDown(KeyCode.LeftArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipBack))
-            {
-                PrevDialogue();
                 return;
             }
         }
@@ -1297,7 +1321,7 @@ public class VNManager : MonoBehaviour
                  Time.unscaledTime - spaceHoldStart >= SpaceSpeedThreshold)
         {
             spaceSpeedActive = true;
-            spaceSpeedNextAt = Time.unscaledTime + 0.25f;
+            spaceSpeedNextAt = Time.unscaledTime; // 到点立即推进，不留空窗
         }
         if (!spaceDown && spaceHeld)
         {
@@ -1312,7 +1336,9 @@ public class VNManager : MonoBehaviour
                     dialogueBox.SkipTyping();
                 else
                     NextDialogue();
-                spaceSpeedNextAt = Time.unscaledTime + 0.25f;
+                spaceSpeedNextAt += SpaceSpeedInterval;
+                if (spaceSpeedNextAt < Time.unscaledTime)
+                    spaceSpeedNextAt = Time.unscaledTime;
             }
         }
     }
@@ -1400,29 +1426,6 @@ public class VNManager : MonoBehaviour
             picked = picked.parent;
         }
         return false;
-    }
-
-    /// <summary>
-    /// 判断鼠标指针当前是否落在菜单栏（或其按钮）上方。
-    /// 用于拦截"点击菜单按钮时对话被意外推进"：UI Toolkit 的 clicked 在
-    /// PointerUp 才触发，而 Update 中 Input.GetMouseButtonDown(0) 在按下帧先执行。
-    /// </summary>
-    private void PrevDialogue()
-    {
-        if (currentDialogueIndex > 0)
-        {
-            currentDialogueIndex--;
-            ShowCurrentDialogue();
-        }
-        else if (currentSceneIndex > 0)
-        {
-            currentSceneIndex--;
-            // Skip to last dialogue of previous scene
-            var prevScene = currentScript.scenes[currentSceneIndex];
-            if (prevScene.d.Length > 0)
-                currentDialogueIndex = prevScene.d.Length - 1;
-            ShowCurrentDialogue();
-        }
     }
 
     public void StartScript(string scriptName)
@@ -1882,6 +1885,7 @@ public class VNManager : MonoBehaviour
             { text = opt.text };
             // 纯代码绘制：不用图片素材/不用 USS 类（用户要求）
             btn.pickingMode = PickingMode.Position;
+            AddCursorHover(btn);
             btn.style.width = new Length(700, LengthUnit.Pixel);
             btn.style.height = new Length(76, LengthUnit.Pixel);
             btn.style.marginBottom = new Length(16, LengthUnit.Pixel);
@@ -2059,7 +2063,7 @@ public class VNManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("[VN] CG image not found: cg/" + cgName);
-                var placeholder = new Label("CG 待生成：「" + cgName + "」");
+                var placeholder = new Label("CG 待生成：『" + cgName + "』");
                 placeholder.style.fontSize = 28;
                 placeholder.style.color = new Color(1f, 0.8f, 0.4f, 0.9f);
                 placeholder.style.unityFontDefinition = new FontDefinition { font = gameFont };
@@ -2571,7 +2575,14 @@ public class VNManager : MonoBehaviour
         UpdateAutoPlayButtonVisual();
 
         if (isAutoPlay)
+        {
+            // 当前句已播完且无选项/面板挡着 → 立刻跳下一句，不等 autoPlayDelay
+            bool typing = dialogueBox != null && dialogueBox.IsTyping();
+            bool optionsShowing = optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex;
+            if (!typing && !optionsShowing && !AdvanceBlockedByPanels())
+                NextDialogue();
             StartAutoPlayTimer();
+        }
         else
             StopAutoPlay();
     }
