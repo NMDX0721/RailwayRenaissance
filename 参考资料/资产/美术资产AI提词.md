@@ -20,6 +20,7 @@
 - [1.5 王小弟（王晨阳）](#15-王小弟王晨阳) ❌ 待升级
 - [1.6 赵师傅（赵德山）](#16-赵师傅赵德山) ❌ 待升级
 - [1.7 小芳](#17-小芳) ❌ 待升级
+- [1.7.1 导师 daoshi](#171-导师daoshi--待绘制占位) ❌ 待生成
 - [1.8 岁月（AI助手）](#18-岁月ai-助手界面头像) ✅ 17张
 - [1.9 16表情差分图谱模板](#19-16表情差分图谱44网格铺满全画面)
 
@@ -33,10 +34,10 @@
 - [2.7 停机坪](#27-停机坪) 📦 已归档
 - [2.12 大同江茶馆](#212-大同江茶馆嘉颖徐会面室内) 📦 已归档
 - [2.13 Wiki横幅](#213-wiki-横幅wiki-banner) 📦 已归档
-- [2.14 群山天空](#214-群山天空mountain_sky) ❌ 待生成
-- [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ❌ 待生成
+- [2.14 群山天空](#214-群山天空mountain_sky) ✅ 已入库
+- [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ✅ 已入库
 - [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ❌ 待生成
-- [2.17 车站夕阳](#217-车站夕阳station_sunset) ❌ 待生成
+- [2.17 车站夕阳](#217-车站夕阳station_sunset) ⚠️ 待重绘（站牌/墙字）
 - [2.18 傍晚站台](#218-傍晚站台platform_evening) ❌ 待生成
 - [2.19 边境小镇](#219-边境小镇border_town) ❌ 待生成
 - [2.20 补给站](#220-补给站supply_station) ❌ 待生成
@@ -96,19 +97,24 @@
 
 ### 通用规范
 
-- **工作流**：第1步生成主图（半身到腿，详细全身）→ 第2步用主图生成表情差分（denoising 0.2-0.3，同服装/同姿势/同光照）
+- **工作流**：第1步生成主图（1024×1536，锁定面部/服装/光照）→ 第2步用主图作 image reference，只发一句增量表情提示，denoising 0.2-0.3（同服装/同姿势/同光照）
+- **设计文档引用原则**：设计文档不做去叙事化；本提词只给AI绘图用序号参考（§1.x / §2.x），不反向改写设定正文
+- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：NF-5 外构（station_sunset 旧图可裁切参考，站牌文字作废待重绘）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（重绘后锁定）。角色已有立绘的，CG 一律挂立绘不从零描述外貌
+- **站牌文字规范**：只写站名，禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
 - **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
 - **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
-- **表情集**：全部角色统一 16 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink`（以主角已完成16表情为基准，以下各节同）
+- **表情集**：全部角色统一 19 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink` + 扩展 `cry, calm, shy`（以主角已完成16表情为基准，扩展3种见下；以下各节同）
+- **扩展表情（2026-09-25 注册）**：`cry`（落泪/含泪——现有剧情已合理调用：prologue_06「爷爷...您看到了吗？」、prologue_04「陈爷爷，我回来了。我答应过您的。」）· `calm`（平静抿嘴——日常平静台词可用，现有剧情暂未指派）· `shy`（托腮脸红——害羞/难为情台词可用，现有剧情暂未指派）。**未来剧情占位**：哭戏/含泪句用 `e:"cry"`，平静日常句用 `e:"calm"`，脸红害羞句用 `e:"shy"`
 - **人数约束（强制）**：主图必须是**单个人物**立绘——每条主图提示词首行已含 `SINGLE CHARACTER, ONE PERSON ONLY, no other people, no duplicates, no character sheet`。若生成工具仍输出参考图集/多人场景，在负面提示词外加 `multiple people, character sheet, reference sheet, turnarounds, duplicated character, multi-figure`。
 - **差分工作流**：主图验收通过后，用"16表情差分图谱"提示词（见 1.9）一次产出 4×4 网格，再按需裁剪；勿逐表情单张生成。
+- **表情入库进度（2026-09-25）**：林彪悍 16/16（像素仅剩 happy/wink 待补；angry/excited/shocked 已于 09-25 换新）+ 扩展 cry/calm/shy 已注册 · 老陈 16/16 · 嘉颖徐 **13/16**（缺 worried/shocked/shout/wink，剧本已引用的 smug/excited 已齐）· 岁月 16/16（`characters/suiyue/` 子目录 19 文件含 v2/no_pad 变体）
 
 ---
 
 ### 1.1 林彪悍（主角）
 
 **文件**：`Resources/characters/lin_biaohan_*.png`（flat格式，CharacterSpriteManager兼容flat+子目录）  
-**状态**：✅ 部分完成（11/16表情已升级为1024×1536高清二次元，5张仍为旧像素画待补：angry/excited/happy/wink/shocked）
+**状态**：✅ 基本完成（14/16 高清 1024×1536，仅 happy/wink 仍为旧像素画待补；angry/excited/shocked 已换新 2026-09-25；另注册扩展 cry/calm/shy 三张）
 
 **主图提示词（高清二次元版）**：
 ```
@@ -502,6 +508,44 @@ AVOID:
 
 ---
 
+### 1.7.1 导师（daoshi）— 待绘制占位
+
+**文件**：`Resources/characters/daoshi_{表情}.png`（flat，与林彪悍同格式）  
+**状态**：❌ 待生成（游戏内现为占位色块「立绘待绘制」）  
+**角色定位**：金日成综合大学智能调度方向教授，林彪悍学业导师。中年学者，温和但有分寸；知晓老陈与雾峰村线，批准休学并安排0721交接。停机坪背景里的中年男人是**车队管理员**（非导师），剧情旁白已区分。
+
+**主图提示词（高清二次元版）**：
+```
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft lighting,
+
+CHARACTER: University professor / mentor of Lin Biaohan, mid-40s male academic.
+
+FACE:
+- Rectangular glasses, thoughtful eyes behind slightly reflective lenses
+- Neat side-parted dark hair with early greying at temples
+- Calm, measured expression — the face of someone who grades papers at midnight
+- Light stubble shadow optional, clean-shaven preferred
+
+CLOTHING:
+- Charcoal grey suit jacket over soft blue dress shirt, no tie (academic casual)
+- University faculty pin on lapel
+- Leather-strap watch, reading glasses in breast pocket
+- Dark trousers, polished but worn shoes
+
+POSE: standing, one hand in pocket, other holding a thin folder or tablet — mid-conversation posture
+
+MOOD: Warm but professional. He believes in the student's talent and is about to let him walk away from it.
+
+NEGATIVE: no military uniform, no North Korean party pin on suit (civilian academic), no other people
+```
+
+**16表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（先出 normal 再差分）
+
+---
+
 ### 1.8 岁月（AI 助手界面头像）
 
 **文件**：`Resources/characters/suiyue/interface.png`  
@@ -541,7 +585,7 @@ AVOID:
 | sad 悲伤 | 提到 23 年孤独 | "……二十三年了。终于有人和我说话了。" |
 | angry 生气 | 被说是普通 AI 时 | "我才不是普通导航！" |
 | bored 无聊 | 等主角磨蹭时 | "还没好吗——" |
-| surprised/shocked 惊讶 | 发现秘密数据 | "咦？！" |
+| surprise 惊讶 | 发现秘密数据 | "咦？！" |
 
 **经典口癖**（写入剧情与 TTS）：
 - 「我可是高性能 AI！」——自夸口头禅，频繁重复，语气自豪骄傲
@@ -638,6 +682,7 @@ AVOID:
 
 **文件**：`Resources/bg/mountain_sky.png`
 **用途**：序章 Day 4 下午——0721飞越边境后，进入中国境内群山之上。林彪悍第一次从高空俯瞰"小时候听爷爷讲的那片山"。
+**状态**：✅ 已入库（2026-09-22 验收）——隧道「临江工무단」、层叠山脊、废弃站房均达标；源图已归档 `中转站/归档/`
 
 **提示词**：
 ```
@@ -681,6 +726,7 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environmen
 
 **文件**：`Resources/bg/aerial_view.png`
 **用途**：序章 Day 4——空中俯瞰雾峰村铁路线全貌。
+**状态**：✅ 已入库（2026-09-22 验收）——石拱桥/谷口村落炊烟/沿线小站/梯田均达标；轨道走向与提词镜像，剧情可用；源图已归档 `中转站/归档/`
 
 **提示词**：
 ```
@@ -750,21 +796,27 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES — pure aerial landscape background.
 
 **文件**：`Resources/bg/village_sunset.png`
 **用途**：序章 Day 4 抵达前——雾峰村全景，林彪悍的"老家"。村口的老槐树、土墙、炊烟，2076 年仍保持着铁路时代前的样子。
+**状态**：❌ 待生成
+**文字规范（与站牌规范同源）**：村口标识只写村名「雾峰村」，**禁止巨型墙面大字**；可有小水泥门牌/褪色春联，规模贴合自然村落
 
-**提示词**：
+**提示词（v2）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 雾峰村夕阳 / 무봉촌 석양, mountain village panorama at sunset, golden hour warmth:
 
-SCENE: 山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（기와 기와，东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树（수양버들/槐树），树冠覆盖了小半个晒场，树下有一条褪色的红砖凳。村庄入口处一块斑驳的水泥牌坊，上书「雾峰村 무봉촌」，旁边贴着褪色的春联残片。土墙围成的院落里晾晒着衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条锈蚀的铁路线在山谷中隐约可见。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
+SCENE: 山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树，树冠覆盖了小半个晒场，树下有一条褪色的红砖凳。村庄入口处一块斑驳的小型水泥门柱/矮牌坊，仅嵌一块普通村名牌，上书「雾峰村」三个字（正常门牌尺寸，非巨型标语墙；可有更小的무봉下方或旁侧无字），旁边贴着褪色的春联残片——NO giant painted wall characters, NO oversized slogans. 土墙围成的院落里晾晒着衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条锈蚀的铁路线在山谷中隐约可见。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
 
 LAYOUT:
 - 中景：村庄横跨画面（15-20栋房屋聚集），老槐树在画面左前方（树冠占画面左侧1/4高度）
-- 村口牌坊「雾峰村 무봉촌」位于中景偏左，旁边有褪色春联
+- 村口：小型水泥门柱+普通尺寸村名牌「雾峰村」（中景偏左，非巨型字），旁有褪色春联
 - 远景山坡：梯田茶园（深绿弧形条带层叠上升）
 - 最远背景：山谷中的铁路线（锈棕色细线）和一个微型站房（灰瓦顶）
 - 天空：夕阳从左侧斜射，橙粉色云彩（橙粉色 → 深橙色），远处山脊剪影
+
+TEXT ON SIGNS (exact only):
+- Village entrance nameplate: 雾峰村 (modest size, normal village sign)
+- FORBIDDEN: giant hand-painted wall characters, oversized slogans, station-style 終點站 text
 
 COLORS:
 - 屋顶：暖灰，瓦片纹理在夕阳下偏金棕
@@ -774,12 +826,12 @@ COLORS:
 - 炊烟：淡蓝灰，被夕阳染成粉橙
 - 夕阳天空：橙 → 深蓝影
 - 铁路线：锈棕（锈棕色），在远处山谷中几乎看不清
-- 牌坊：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
+- 门柱/名牌：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
 - 春联残片：红纸褪色，金字模糊
 
 MOOD: Mountain village at golden hour. Warm orange-pink sunset light, smoke rising from chimneys, quiet atmosphere. The railway line barely visible in the far valley, rust-brown contrasting with the village's warm gold.
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure environment/scene background.
 ```
 
 ---
@@ -788,43 +840,62 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background
 
 **文件**：`Resources/bg/station_sunset.png`
 **用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5。
+**状态**：⚠️ 已生成但需重绘（2026-09-22）——成图 NF-5 外构可用，**站牌/墙面文字作废**；重绘后兼任 NF-5 前斜视 + 雾峰站前置参考。
+**前置**：NF-5 外构（可暂用旧图裁切）、雾峰站站牌样式（重绘锁定）
 
-**提示词**：
+**站名/文字规范（2026-09-22）**：
+- 站牌只写站名「雾峰 / 무봉」，**禁止写「終點站」「종착역」「始发站」**——列车对开往返，终到只是车次方向，不写死在站牌上
+- 墙面**禁止巨型手写站名**；站房外墙用小型站名牌 + 宣传栏 + 玻璃橱窗时刻表
+- 站名统一「雾峰」（站牌/墙面），口语/剧本可写雾峰村站；勿混用「雾峰 — 終點站」
+
+**提示词（v3）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 small mountain railway station at sunset, wide establishing shot:
 
-SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof, large faded painted 雾峰 characters on the facade wall (white paint on grey, heavily weathered), smaller 무봉 Hangul below. Vertical sign by entrance door: 候车室 대기실. Several small notice boards and posters tacked to the building wall. Foreground left: white rectangular station nameplate sign on two posts reading 雾峰 — 終點站 in blue Chinese with 무봉 — 종착역 Hangul below. Center platform: wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: dark green NF-5 diesel locomotive on single track facing viewer-left, red buffer beam and cowcatcher, white NF-5 text on nose, circular headlight, weathered green paint with rust streaks. Two brown-red freight cars coupled behind. Far right: tall rusty signal post with arm locked in stop position, small sign 停車 정지. Left foreground: old wooden telegraph pole with single unlit lamp. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
+SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof. On the facade: NO huge painted station name — instead a modest white enamel nameplate above the door reading 雾峰 in blue (small, normal station sign size), a glass-cased timetable board 「列车时刻表 列차시각표」 with yellowed paper and handwritten corrections, and a cork/felt propaganda notice board 「宣传栏 선전란」 with faded safety posters and a peeling notice about 雾峰村—矿区 route. Vertical sign by entrance door: 候车室 대기실. Foreground left: standard Chinese railway station nameplate on two posts — white rectangular plate, blue text, only the station name 雾峰 (large) and 무봉 (smaller below); NO words like 終點站, 始發站, or 종착역. Center platform: grey stone-slab platform (worn concrete slabs, NOT wooden planks), wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: NF-5 diesel locomotive "农牛" on single track facing viewer-front-left — deep forest green body, weathered with rust streaks, NO white chevron or V-stripe on the nose; plain green nose with white NF-5 text stamped on a green plate, brass 农牛 nameplate below the number, single large circular headlight centered, red buffer beam and slatted cowcatcher, two marker lights, short hood road-switcher profile (1965 Chinese diesel design, not a modern high-speed train). Exactly TWO brown-red freight cars coupled behind. Far right: tall rusty semaphore signal post with the arm locked horizontal in stop position, small white sign 停車 정지. Left foreground: old wooden telegraph pole with single lamp that is dark and unlit. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
 
 LAYOUT:
 - Left-center: brick station building with red tile roof, porch over entrance
-- Foreground left: white nameplate sign 雾峰 — 終點站 on two posts
-- Center: wooden platform edge with bench, luggage cart
-- Right: NF-5 locomotive on track, freight cars behind
-- Far right: rusty signal post with stop sign
-- Left edge: telegraph pole with lamp
+- Building facade: small enamel nameplate 雾峰 above door + glass timetable case + 宣传栏 notice board (NO giant wall characters)
+- Foreground left: standard nameplate 雾峰 / 무봉 on two posts (name only, no 終點站)
+- Center: stone-slab platform edge with bench, luggage cart
+- Right: NF-5 locomotive on track, exactly two freight cars behind
+- Far right: rusty semaphore signal post with stop sign
+- Left edge: telegraph pole with dark unlit lamp
 - Background: layered mountains + sunset sky
+
+NF-5 LOCKED DESIGN (must match reference image):
+- Deep forest green, rust patches, NO white V-chevron on nose
+- Nose: white "NF-5" on green plate + brass 农牛 nameplate
+- One large round headlight, red buffer beam, slatted cowcatcher
+- Short hood + cab road-switcher, walkway handrails
+- Weathered, 1965-era Chinese diesel locomotive
 
 COLORS:
 - Building: grey-red brick, red terracotta roof tiles
-- Locomotive: dark green with rust, red buffer beam
-- Sign: white plate with blue Chinese text
+- Locomotive: deep forest green with rust, red buffer beam, brass nameplate
+- Nameplate: white plate with blue Chinese text (name only)
+- Timetable case: glass reflection, yellowed paper inside
 - Sky: vivid orange-pink sunset with purple cloud accents
 - Mountains: layered blue-purple to deep indigo
-- Platform: worn grey concrete
+- Platform: worn grey stone/concrete slabs
 - Vegetation: yellow wildflowers, green weeds
 - Bench: weathered brown wood, green thermos
 
-TEXT ON SIGNS:
-- Building wall: 雾峰 large white painted, 무봉 smaller below
-- Nameplate sign: 雾峰 — 終點站 (blue on white)
+TEXT ON SIGNS (exact only, no extra glyphs):
+- Above door enamel plate: 雾峰 (blue on white, modest size)
+- Platform nameplate: 雾峰 (large blue) / 무봉 (smaller blue) — station name ONLY
+- Glass case: 列车时刻表 列차시각표
+- Notice board: 宣传栏 선전란 + small faded notices
 - Near door: 候车室 대기실 vertical
 - Signal post: 停車 정지
+- FORBIDDEN text: 終點站 / 종착역 / 始發 / giant hand-painted wall name
 
 MOOD: Quiet mountain station at golden hour. Empty platform, warm light, long shadows.
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO AIRCRAFT — pure environment background; the NF-5 locomotive and freight cars are intentional.
 ```
 
 ---
@@ -842,7 +913,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 close view standing ON the platform at dusk, facing the station building:
 
-SCENE: Ground-level platform view — the perspective of someone who just stepped off a vehicle and is standing on the platform for the first time in four years. Weathered wooden platform surface in foreground, each plank a different shade of old brown, iron nail heads rusted flush with the wood (Grandfather Lin nailed these boards down himself, thirty years ago). Station building facing the viewer (faded 雾峰 characters, two windows with warm lamplight inside — the light of a man who never turns off the light). A green signal lamp glowing — Lao Chen maintains it out of habit, even though no train needs the signal anymore. Evening shadows long, reaching toward the viewer like open arms. A pair of patched leather work gloves and a dented thermos left on the platform bench — Lao Chen's gloves, Lao Chen's thermos. He was here thirty seconds ago, heading inside to pour tea. He doesn't know yet that someone has come home.
+SCENE: Ground-level platform view — the perspective of someone who just stepped off a vehicle and is standing on the platform for the first time in four years. Weathered wooden platform surface in foreground, each plank a different shade of old brown, iron nail heads rusted flush with the wood (Grandfather Lin nailed these boards down himself, thirty years ago). Station building facing the viewer — small enamel nameplate 雾峰 above the door (modest size, blue on white; NO giant painted wall characters), glass-cased timetable and a cork 宣传栏 beside it, two windows with warm lamplight inside — the light of a man who never turns off the light. A green signal lamp glowing — Lao Chen maintains it out of habit, even though no train needs the signal anymore. Evening shadows long, reaching toward the viewer like open arms. A pair of patched leather work gloves and a dented thermos left on the platform bench — Lao Chen's gloves, Lao Chen's thermos. He was here thirty seconds ago, heading inside to pour tea. He doesn't know yet that someone has come home.
 
 LAYOUT:
 - Foreground: platform planks, growing weeds between boards — weeds that Lao Chen pulls every Monday but that return every Wednesday
@@ -1069,9 +1140,10 @@ CHINESE RAILWAY ELEMENTS:
 - Old timetable poster: 「雾峰村—矿区 运行时刻表」with handwritten corrections, some times crossed out
 - Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
 
-NF-5 LOCOMOTIVE (dominant left side):
+NF-5 LOCOMOTIVE (dominant left side) — 挂 `bg/station_sunset.png` 为 image reference，锁同一外构:
 - NF-5 农牛 diesel locomotive, deep forest green （森林绿） body with rust patches
 - Front: 「NF-5」stamped in white on green plate, 「农牛」nameplate in weathered brass
+- NO white chevron / V-stripe on nose (与 station_sunset 锁定设计一致)
 - Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
 - Oil stains running down the green paint like dark veins
 - One headlight cracked, the other working (dim)
@@ -1431,8 +1503,8 @@ LAYOUT:
 - 站台中央：十几个乘客（各种姿态，远小近大）
 - 站台右侧：小摊贩（木箱+米线+茶壶+「早点 아침밥 3元」木牌）
 - 站台尽头：长椅+保温壶+皮手套
-- 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡）
-- 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光）
+- 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡；外构挂 `bg/station_sunset.png` 参考，无白色V纹）
+- 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光；站房/站牌样式对齐 station_sunset）
 - 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
 
 COLORS:
@@ -1524,6 +1596,8 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 ---
 
 ## 三、BGM（Suno AI 音乐提示词）
+
+> **状态（2026-09-22）**：26个mp3已全部就位于 `Assets/Resources/bgm/`，文件名与脚本ID一一对应，**不再优化/不再新增**。原始生成文件归档在 `资产/bgm-归档/`（*.mp3 不进git）。下表提词仅供重生成或补档时参考。
 
 ### 通用规范
 
@@ -2125,23 +2199,23 @@ MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格�
 
 | 背景 | 对应场景 | 优先级 |
 |------|---------|--------|
+| `station_sunset` 车站夕阳 | prologue_04/10 | ⚠️ 待重绘（站牌/墙字） |
 | `railway_track` 线路巡视 | prologue_05 | 🔴 高 |
 | `depot_morning` 车辆段晨 | prologue_07 | 🔴 高 |
 | `station_night` 车站夜景 | prologue_06 | 🔴 高 |
 | `station_office` 站长办公室 | prologue_09 | 🔴 高 |
 | `platform_morning` 站台晨光 | prologue_08/09 | 🔴 高 |
-| `station_sunset` 车站黄昏 | prologue_04/10 | 🔴 高 |
 | `village_sunset` 雾峰村夕阳 | prologue_04 | 🔴 高 |
 | `border_town` 边境小镇 | prologue_03 | 🟡 中 |
 | `supply_station` 补给站 | prologue_03 | 🟡 中 |
-| `mountain_sky` 群山天空 | prologue_04 | 🟡 中 |
-| `aerial_view` 空中俯瞰 | prologue_04 | 🟡 中 |
 | `platform_evening` 傍晚站台 | prologue_04 | 🟡 中 |
 | `songqiao_station` 松桥站 | prologue_05 | 🟡 中 |
 | `china_sky` 中国上空 | prologue_03 | 🟢 低 |
 | `hebei_town` 河北小镇 | prologue_03 | 🟢 低 |
 | `henan_town` 河南小镇 | prologue_03 | 🟢 低 |
 | `train_inside` 车厢内部 | prologue_08 | 🟢 低 |
+| ~~`mountain_sky`~~ 群山天空 | prologue_04 | ✅ 已入库 |
+| ~~`aerial_view`~~ 空中俯瞰 | prologue_04 | ✅ 已入库 |
 
 ### 6.2 CG 插画（9 张，提词已写 ✅）
 
@@ -2150,10 +2224,10 @@ MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格�
 **角色参考图清单**（生成CG时附带）：
 | 角色 | 参考图路径 | 备注 |
 |------|-----------|------|
-| 林彪悍 | `characters/lin_biaohan/normal.png` | 主角，25岁研究生 |
-| 老陈 | `characters/laochen/normal.png` | 68岁末代站长 |
-| 嘉颖徐 | 待绘制 | 24岁铁路大亨，低马尾，深色套装 |
-| 岁月 | `characters/suiyue/normal.png` | 13岁AI少女，黑长发红蝴蝶结 |
+| 林彪悍 | `characters/lin_biaohan/normal.png` | 主角，25岁研究生，16/16 |
+| 老陈 | `characters/laochen/normal.png` | 68岁末代站长，16/16 |
+| 嘉颖徐 | `characters/jiaying_xu/normal.png`（flat: `jiaying_xu_normal.png`） | 24岁铁路大亨；**13/16**，缺 worried/shocked/shout/wink |
+| 岁月 | `characters/suiyue/normal.png` | 13岁AI少女；约13/16，缺 happy/shocked/shout（surprise 已改名对齐） |
 | 张工/李阿姨/赵师傅/小芳/王小弟 | 待绘制 | 序章员工团队 |
 
 | CG 名 | 名称 | 剧情位置 | 角色参考 | 尺寸 |
@@ -2495,7 +2569,7 @@ AVOID:
 
 ### 6.4 已入库（背景图）
 
-`cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop`
+`cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop` / `mountain_sky` / `aerial_view`
 
 
 ---
