@@ -44,7 +44,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
         dialogueBox.style.bottom = 16; // 贴近屏幕底，只留一点呼吸空间
-        dialogueBox.style.minHeight = 88; // 贴合两行：上下各8 + 2×36（zpix行高=1.0×字号）；字多时由内容撑开
+        dialogueBox.style.height = 104; // 固定高度：边框4 + 上下padding16 + 内容区84（2×36+行距12 或 3×20+2×12）
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
         dialogueBox.style.borderTopWidth = 2;
@@ -89,6 +89,8 @@ public class DialogueBox : MonoBehaviour
         textArea.style.paddingRight = 30;
         textArea.style.paddingTop = 8;
         textArea.style.paddingBottom = 8;
+        textArea.style.justifyContent = Justify.Center;
+        textArea.style.overflow = Overflow.Hidden;
         dialogueBox.Add(textArea);
 
         dialogueText = new Label { name = "dialogue-text" };
@@ -179,12 +181,15 @@ public class DialogueBox : MonoBehaviour
         continueIndicator.style.display = DisplayStyle.None;
         if (typewriterEffect != null)
         {
-            // 动态字号：默认两行装得下，超长逐级缩小（参照主流视觉小说）
-            int len = PlainLength(displayText);
-            int fs = len <= 70 ? 36 : len <= 80 ? 32 : len <= 90 ? 28 : len <= 106 ? 24 : 20;
+            // 固定高度框：动态字号（4步进）+ 手动折行；折行后 blockH 超内容区就降档重折
+            float avail = AvailableTextWidth();
+            string wrapped = FitAndWrap(displayText, avail, out int fs);
+            int rows = wrapped.Split('\n').Length;
             dialogueText.style.fontSize = fs;
+            dialogueText.style.unityParagraphSpacing = LineGap;
+            dialogueText.style.minHeight = rows * fs + (rows - 1) * LineGap;
 
-            typewriterEffect.StartTypewriter(displayText, () =>
+            typewriterEffect.StartTypewriter(wrapped, () =>
             {
                 StartContinueAnimation();
                 OnTypewriterComplete?.Invoke();
@@ -204,10 +209,30 @@ public class DialogueBox : MonoBehaviour
         return text;
     }
 
-    /// <summary>去掉富文本标签后的可见字符数（动态字号用）。</summary>
-    private static int PlainLength(string s)
+    private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
+    private const float BoxContentZone = 84f; // 104 高度 - 边框4 - 上下padding16
+    private const float WidthSafety = 42f;    // 字号估算的安全边距
+
+    private float AvailableTextWidth()
     {
-        int len = 0;
+        float rootW = uiDoc?.rootVisualElement?.contentRect.width ?? 0f;
+        if (rootW <= 0f) rootW = 1280f; // 布局未就绪时兜底
+        return rootW - 234f;            // paddingLeft100 + nameArea100 + paddingRight30 + border4
+    }
+
+    /// <summary>zpix 实测字宽（em）：CJK 1.08、字母数字 0.58、空格 0.42、其余ASCII 0.33。</summary>
+    private static float CharWidthEm(char c)
+    {
+        if (c > 0x2000) return 1.08f;
+        if (char.IsLetterOrDigit(c)) return 0.58f;
+        if (c == ' ') return 0.42f;
+        return 0.33f;
+    }
+
+    /// <summary>跳过富文本标签后的等效 em 宽。</summary>
+    private static float WidthEm(string s)
+    {
+        float w = 0f;
         for (int i = 0; i < s.Length; i++)
         {
             if (s[i] == '<')
@@ -215,9 +240,79 @@ public class DialogueBox : MonoBehaviour
                 int close = s.IndexOf('>', i);
                 if (close != -1) { i = close; continue; }
             }
-            len++;
+            w += CharWidthEm(s[i]);
         }
-        return len;
+        return w;
+    }
+
+    /// <summary>动态字号（4步进 36→20）+ 手动折行；装不进内容区就降档重折。</summary>
+    private string FitAndWrap(string text, float avail, out int fs)
+    {
+        float units = WidthEm(text);
+        int est = units > 0.01f ? (int)(2f * (avail - WidthSafety) / units / 4f) * 4 : 36;
+        fs = Mathf.Clamp(est, 20, 36);
+        while (true)
+        {
+            string wrapped = WrapText(text, fs, avail);
+            int rows = wrapped.Split('\n').Length;
+            if (rows * fs + (rows - 1) * LineGap <= BoxContentZone || fs <= 20)
+                return wrapped;
+            fs -= 4;
+        }
+    }
+
+    private static bool IsNoStart(char c) => "，。、；：？！）」』】》〉…—～·‰℃”’.,!?;:)]".IndexOf(c) >= 0;
+    private static bool IsNoEnd(char c) => "「『（【《〈“‘([".IndexOf(c) >= 0;
+
+    /// <summary>按可用宽度贪心折行（标签原子不可拆），含简易避头尾。</summary>
+    private static string WrapText(string text, int fs, float avail)
+    {
+        float limit = avail - fs; // 留一行安全边距
+        var sb = new StringBuilder(text.Length + 16);
+        string[] paras = text.Split('\n');
+        for (int p = 0; p < paras.Length; p++)
+        {
+            if (p > 0) sb.Append('\n');
+            string para = paras[p];
+            if (para.Length == 0) continue; // 空段落保留为一行
+            var line = new StringBuilder();
+            float lw = 0f;
+            for (int i = 0; i < para.Length; i++)
+            {
+                char c = para[i];
+                if (c == '<')
+                {
+                    int close = para.IndexOf('>', i);
+                    if (close != -1) { line.Append(para, i, close - i + 1); i = close; continue; }
+                }
+                float cw = CharWidthEm(c) * fs;
+                if (lw + cw > limit && line.Length > 0)
+                {
+                    char last = line[line.Length - 1];
+                    if (IsNoEnd(last))
+                    {
+                        // 行尾禁则：把该字符挪到下一行
+                        sb.Append(line.ToString(), 0, line.Length - 1);
+                        sb.Append('\n');
+                        line.Length = 0;
+                        line.Append(last);
+                        lw = CharWidthEm(last) * fs;
+                    }
+                    else
+                    {
+                        sb.Append(line);
+                        sb.Append('\n');
+                        line.Length = 0;
+                        lw = 0f;
+                    }
+                    if (IsNoStart(c)) { line.Append(c); lw += cw; continue; }
+                }
+                line.Append(c);
+                lw += cw;
+            }
+            sb.Append(line);
+        }
+        return sb.ToString();
     }
 
     public void Hide() => dialogueBox.style.display = DisplayStyle.None;

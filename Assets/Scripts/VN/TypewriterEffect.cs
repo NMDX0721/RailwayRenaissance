@@ -101,7 +101,7 @@ public class TypewriterEffect : MonoBehaviour
                 if (acc < interval) break;
                 acc -= interval;
 
-                if (useTypingSFX && text[i] != ' ' && GameData.TypewriterVolume > 0.01f)
+                if (useTypingSFX && text[i] != ' ' && text[i] != '\n' && GameData.TypewriterVolume > 0.01f)
                 {
                     sfxTimer += interval;
                     if (sfxTimer >= sfxInterval)
