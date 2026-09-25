@@ -41,6 +41,12 @@ public class VNManager : MonoBehaviour
     private const float SpaceSpeedThreshold = 0.35f;
     private const float SpaceSpeedInterval = 0.4f;
     private float spaceSpeedNextAt;
+    // Shift 倍速模式
+    private VisualElement fastFwdBadge;
+    private float ffNextAt;
+    // 地点/时间标注居中卡片
+    private VisualElement locCard;
+    private Label locCardText;
 
     // Confirm dialog
     private VisualElement confirmDialog;
@@ -592,8 +598,94 @@ public class VNManager : MonoBehaviour
         }
 
         UpdateAutoPlayButtonVisual();
+        CreateFastForwardBadge(root);
         SetupConfirmDialog(uiDoc);
         SetupExitDialog(uiDoc);
+    }
+
+    /// <summary>Shift 倍速指示：右上角小徽标，按住 Shift 时显示。</summary>
+    private void CreateFastForwardBadge(VisualElement root)
+    {
+        fastFwdBadge = new VisualElement { name = "fastfwd-badge" };
+        fastFwdBadge.style.position = Position.Absolute;
+        fastFwdBadge.style.top = 112;
+        fastFwdBadge.style.right = 10;
+        fastFwdBadge.style.flexDirection = FlexDirection.Row;
+        fastFwdBadge.style.alignItems = Align.Center;
+        fastFwdBadge.style.paddingLeft = 8; fastFwdBadge.style.paddingRight = 10;
+        fastFwdBadge.style.paddingTop = 4; fastFwdBadge.style.paddingBottom = 4;
+        fastFwdBadge.style.backgroundColor = new Color(0.08f, 0.05f, 0.03f, 0.9f);
+        fastFwdBadge.style.borderTopWidth = 1; fastFwdBadge.style.borderBottomWidth = 1;
+        fastFwdBadge.style.borderLeftWidth = 1; fastFwdBadge.style.borderRightWidth = 1;
+        var gold = new Color(1f, 0.78f, 0.4f, 0.9f);
+        fastFwdBadge.style.borderTopColor = gold; fastFwdBadge.style.borderBottomColor = gold;
+        fastFwdBadge.style.borderLeftColor = gold; fastFwdBadge.style.borderRightColor = gold;
+        fastFwdBadge.style.borderTopLeftRadius = 6; fastFwdBadge.style.borderTopRightRadius = 6;
+        fastFwdBadge.style.borderBottomLeftRadius = 6; fastFwdBadge.style.borderBottomRightRadius = 6;
+        fastFwdBadge.pickingMode = PickingMode.Ignore;
+        fastFwdBadge.style.display = DisplayStyle.None;
+
+        var icon = new Label();
+        icon.style.width = 18; icon.style.height = 18;
+        icon.style.backgroundImage = new StyleBackground(PixelIconHelper.SkipFastIcon());
+        icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        icon.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 1f);
+        icon.pickingMode = PickingMode.Ignore;
+        fastFwdBadge.Add(icon);
+
+        var txt = new Label(" ×2");
+        txt.style.fontSize = 16;
+        txt.style.color = new Color(1f, 0.86f, 0.59f, 1f);
+        txt.style.unityFontDefinition = new FontDefinition { font = gameFont };
+        txt.pickingMode = PickingMode.Ignore;
+        fastFwdBadge.Add(txt);
+
+        root.Add(fastFwdBadge);
+    }
+
+    /// <summary>时间/地点标注的居中卡片。</summary>
+    private void ShowLocationCard(string text)
+    {
+        if (locCard == null)
+        {
+            locCard = new VisualElement { name = "location-card" };
+            locCard.style.position = Position.Absolute;
+            locCard.style.top = 0; locCard.style.left = 0; locCard.style.right = 0; locCard.style.bottom = 0;
+            locCard.style.alignItems = Align.Center;
+            locCard.style.justifyContent = Justify.Center;
+            locCard.pickingMode = PickingMode.Ignore;
+
+            var box = new VisualElement();
+            box.style.backgroundColor = new Color(0.06f, 0.04f, 0.02f, 0.88f);
+            box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
+            box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
+            var gold = new Color(0.8f, 0.62f, 0.35f, 0.85f);
+            box.style.borderTopColor = gold; box.style.borderBottomColor = gold;
+            box.style.borderLeftColor = gold; box.style.borderRightColor = gold;
+            box.style.borderTopLeftRadius = 12; box.style.borderTopRightRadius = 12;
+            box.style.borderBottomLeftRadius = 12; box.style.borderBottomRightRadius = 12;
+            box.style.paddingLeft = 44; box.style.paddingRight = 44;
+            box.style.paddingTop = 22; box.style.paddingBottom = 22;
+
+            locCardText = new Label();
+            locCardText.style.fontSize = 30;
+            locCardText.style.color = new Color(1f, 0.9f, 0.7f, 1f);
+            locCardText.style.unityFontDefinition = new FontDefinition { font = gameFont };
+            locCardText.style.unityTextAlign = TextAnchor.MiddleCenter;
+            locCardText.style.whiteSpace = WhiteSpace.Normal;
+            box.Add(locCardText);
+
+            locCard.Add(box);
+            uiDoc.rootVisualElement.Add(locCard);
+        }
+        locCardText.text = text;
+        locCard.style.display = DisplayStyle.Flex;
+    }
+
+    private void HideLocationCard()
+    {
+        if (locCard != null)
+            locCard.style.display = DisplayStyle.None;
     }
 
     private bool menuExpanded;
@@ -1290,13 +1382,33 @@ public class VNManager : MonoBehaviour
         }
 
         // Shift+→：快进下一句（快退已按需求移除）
-        if (LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift))
+        bool shiftHeld = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift);
+        if (shiftHeld)
         {
             if (LegacyInputAdapter.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
                 NextDialogue();
                 return;
             }
+        }
+
+        // Shift 倍速模式：打字加速由 TypewriterEffect 负责，这里做句间自动快进 + 角落倍速标
+        bool ffActive = shiftHeld && !AdvanceBlockedByPanels() &&
+                        !(fullScreenNews != null && fullScreenNews.IsActive);
+        if (fastFwdBadge != null)
+            fastFwdBadge.style.display = ffActive ? DisplayStyle.Flex : DisplayStyle.None;
+        if (ffActive)
+        {
+            bool typing = dialogueBox != null && dialogueBox.IsTyping();
+            if (!typing && Time.unscaledTime >= ffNextAt)
+            {
+                NextDialogue();
+                ffNextAt = Time.unscaledTime + 0.15f;
+            }
+        }
+        else
+        {
+            ffNextAt = 0f;
         }
 
         // 鼠标推进已迁移到 OnRootPointerDown（UI Toolkit 事件驱动，帧序安全）。
@@ -1333,12 +1445,16 @@ public class VNManager : MonoBehaviour
             if (!AdvanceBlockedByPanels())
             {
                 if (dialogueBox != null && dialogueBox.IsTyping())
+                {
                     dialogueBox.SkipTyping();
+                    // skip 后短停顿就推进——消掉「句子显示完干等一拍」的顿挫
+                    spaceSpeedNextAt = Time.unscaledTime + 0.12f;
+                }
                 else
+                {
                     NextDialogue();
-                spaceSpeedNextAt += SpaceSpeedInterval;
-                if (spaceSpeedNextAt < Time.unscaledTime)
-                    spaceSpeedNextAt = Time.unscaledTime;
+                    spaceSpeedNextAt = Time.unscaledTime + SpaceSpeedInterval;
+                }
             }
         }
     }
@@ -1776,6 +1892,7 @@ public class VNManager : MonoBehaviour
 
         // 切换对话时始终隐藏 boot screen，boot 类型会在下面重新显示
         HideBootScreen();
+        HideLocationCard();
 
         // Check condition - skip this entry if condition not met
         if (!EvaluateCondition(entry.condition))
@@ -1833,6 +1950,14 @@ public class VNManager : MonoBehaviour
         {
             // 特殊游戏操作指令
             HandleSpecialCommand(entry.text);
+        }
+        else if (entry.t == "loc")
+        {
+            // 时间/地点标注：居中卡片显示，不用对话框；点击/空格照常推进
+            dialogueBox?.Hide();
+            HideOptions();
+            ShowLocationCard(entry.text);
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
         else
         {

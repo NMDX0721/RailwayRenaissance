@@ -16,6 +16,41 @@ public class GameMainUI : MonoBehaviour
 
     private float clockTimer;
 
+    /// <summary>设备真实电量（0-100）；读不到返回 -1（如台式机无电池）。</summary>
+    public static int GetDeviceBatteryPercent()
+    {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        var sps = new SYSTEM_POWER_STATUS();
+        if (GetSystemPowerStatus(ref sps) && sps.BatteryLifePercent != 255)
+            return sps.BatteryLifePercent;
+#else
+        float lvl = SystemInfo.batteryLevel;
+        if (lvl >= 0f) return Mathf.RoundToInt(lvl * 100f);
+#endif
+        return -1;
+    }
+
+    private static string FormatBatt(int pct)
+    {
+        if (pct < 0) return "⚡ 电源";
+        int filled = Mathf.Clamp(Mathf.RoundToInt(pct / 20f), 0, 5);
+        return new string('▮', filled) + new string('▯', 5 - filled) + $" {pct}%";
+    }
+
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    private struct SYSTEM_POWER_STATUS
+    {
+        public byte ACLineStatus;
+        public byte BatteryFlag;
+        public byte BatteryLifePercent;
+        public byte SystemStatusFlag;
+        public uint BatteryLifeTime;
+    }
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern bool GetSystemPowerStatus(ref SYSTEM_POWER_STATUS sps);
+#endif
+
     public static void Show()
     {
         if (Instance == null)
@@ -272,6 +307,8 @@ public class GameMainUI : MonoBehaviour
     // ============ 桌面 ============
     private VisualElement statusBar;
     private Label statusClock;
+    private Label statusBatt;
+    private int battTick;
     private readonly System.Collections.Generic.List<VisualElement> appIcons = new System.Collections.Generic.List<VisualElement>();
 
     // ============ 岁月AI投影 ============
@@ -342,8 +379,9 @@ public class GameMainUI : MonoBehaviour
         sig.style.marginRight = 12;
         rightInfo.Add(sig);
 
-        var batt = new Label("▮▮▮▮▯ 78%");
+        var batt = new Label(FormatBatt(GetDeviceBatteryPercent()));
         batt.style.fontSize = 14; batt.style.color = GlassText; batt.style.unityFontDefinition = Fd();
+        statusBatt = batt;
         rightInfo.Add(batt);
 
         // ---- 负一屏小部件（今日线路·液态玻璃） ----
@@ -1769,6 +1807,13 @@ public class GameMainUI : MonoBehaviour
             if (statusClock != null) statusClock.text = hhmm;
             var lc = lockScreen?.Q<Label>("lock-clock");
             if (lc != null) lc.text = hhmm;
+            // 电量每 30 秒同步一次设备真实电量
+            battTick++;
+            if (battTick >= 30 && statusBatt != null)
+            {
+                battTick = 0;
+                statusBatt.text = FormatBatt(GetDeviceBatteryPercent());
+            }
         }
 
         // 岁月Idle气泡（每30-60秒随机显示一句话）

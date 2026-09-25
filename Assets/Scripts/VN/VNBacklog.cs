@@ -49,7 +49,10 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.style.left = 0;
         backlogPanel.style.right = 0;
         backlogPanel.style.bottom = 0;
-        backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.95f);
+        backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.55f);
+        // 磨砂：半透明底 + 背景模糊
+        try { backlogPanel.style.backdropFilter = "blur(24px)"; }
+        catch (System.ArgumentException) { /* 引擎不支持时保持半透明 */ }
         backlogPanel.style.display = DisplayStyle.None;
         backlogPanel.pickingMode = PickingMode.Position;
         // 面板内任意点击都不冒泡到 VN root（避免关历史/点条目时推进对话）

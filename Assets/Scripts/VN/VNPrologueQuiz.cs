@@ -246,6 +246,7 @@ public class VNPrologueQuiz : MonoBehaviour
     {
         if (finished || picked >= 0) return;
         picked = i;
+        bool isRight = i == Items[index].correct;
         // 选中即标色，锁定本题
         for (int c = 0; c < optionsBox.childCount; c++)
         {
@@ -262,6 +263,25 @@ public class VNPrologueQuiz : MonoBehaviour
                 child.style.color = Color.white;
             }
         }
+
+        // 选中特效：金框 + 对错符号 + 金闪一下再落对错色
+        var pickedBtn = optionsBox[i] as UnityEngine.UIElements.Button;
+        if (pickedBtn != null)
+        {
+            pickedBtn.style.borderTopColor = Gold; pickedBtn.style.borderBottomColor = Gold;
+            pickedBtn.style.borderLeftColor = Gold; pickedBtn.style.borderRightColor = Gold;
+            pickedBtn.text = (isRight ? "✓ " : "✗ ") + Items[index].opts[i];
+            pickedBtn.style.backgroundColor = Gold;
+            pickedBtn.style.color = new Color(0.12f, 0.08f, 0.04f, 1f);
+            pickedBtn.schedule.Execute(() =>
+            {
+                pickedBtn.style.backgroundColor = isRight
+                    ? new Color(0.35f, 0.55f, 0.28f, 0.95f)
+                    : new Color(0.55f, 0.22f, 0.15f, 0.95f);
+                pickedBtn.style.color = Color.white;
+            }).StartingIn(160);
+        }
+
         if (picked == Items[index].correct) correctCount++;
         nextBtn.style.display = DisplayStyle.Flex;
         nextBtn.text = index == Items.Length - 1 ? "查看结果" : "下一题";
