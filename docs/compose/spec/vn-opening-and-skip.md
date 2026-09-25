@@ -1,23 +1,25 @@
 ---
 feature: vn-opening-and-skip
 status: delivered
-updated: 2026-09-24
+updated: 2026-09-25
 branch: main
-commits: de9ae4e..de9ae4e
+commits: de9ae4e..450c1e3
 ---
 
 # 开场Logo / 关闭叉 / 跳过闸门
 
 ## Report
 
-**What was built** — 序章开场改为暖深棕底三镜分镜（Logo 图 → 金标题+金线 → 制作信息），逐条淡入淡出，点击任意处跳过；「点击继续」仅在 credits 站稳后淡入。历史对话 ✕/面板点击经 `StopImmediatePropagation` + `VNManager.SuppressNextAdvance()` 吞掉同帧 root 推进。故事跳过入口（菜单 ReturnBar / ESC → `RequestSkip`）按闸门分流：Day0 前（无 `VN_Got0721` 且无 `Username`）弹 10 题答题（≥7 通过 → `prologue_02_day0` 并写标记）；已注册/已过 Day0 → 暖金确认弹窗，确认=`ReturnToTitle`。新周目清除 `VN_Got0721`；开场分镜期间 `AdvanceBlockedByPanels` 挡空格穿透。
+**What was built** — 序章开场：暖深棕分镜，有 Sprite logo 则只播 Logo→制作信息（无文字标题镜）；点击跳过；空格被 `openingLogoActive` 挡住。历史 ✕/面板点击 `StopImmediatePropagation` + `SuppressNextAdvance()`。跳过入口 `RequestSkip`（菜单双箭头）：`NeedsQuizForSkip` = 脚本名 `prologue_01*` 或 `VN_Got0721!=1` → 10 题 `VNPrologueQuiz`（≥7 → `prologue_02_day0`）；否则 **Summary 跳过确认**（总结框：第N话+台词预览）。**退出**（菜单门图标/ESC）独立弹窗：无总结，三键一行（取消/退出剧情/退出游戏），退出剧情先写自动书签再 `ReturnToTitle`。两弹窗及恢复/删档/恢复默认共用 `DialogStyle` 壳。新周目清 `VN_Got0721`。
 
-**Verification** — Unity 6000.5.8f1 batchmode：`error CS` = 0，`Mono: successfully reloaded assembly` PASS。`Failed to resolve packages` 为 PRE-EXISTING（Package Manager path undefined，与本改动无关）。独立审查 T1–T4 全 PASS，无 CRITICAL。
+**Verification** — 编辑器 `Logs/Editor.log` `error CS`=0 多次热重载 PASS。独立审查 T1–T4 曾全 PASS（早期实现）；后续跳过总结/退出三键/闸门改 `prologue_01` 为提交后迭代，待 Play 人工回归。
 
 **Journey log**:
-- 曾误用 Unity 6000.4.6f1 编译导致包解析失败；项目实际为 6000.5.8f1（`D:\Unity Hub\Unity 6.5`）。
-- `HasPassedDay0Gate` 不用 `XiaomiAccount`（GameMainUI 会兜底成「旅人」）；以 `VN_Got0721` 或非空 `Username` 判定。
-- 菜单双箭头保持场景内快进 `SkipToNext`；故事跳过走 `ReturnBar → RequestSkip`。
+- 项目 Unity **6000.5.8f1**（`D:\Unity Hub\Unity 6.5`）；误用 6000.4.6 会包解析失败。
+- 闸门不用 `XiaomiAccount`（会被兜底「旅人」）；初版曾用 `Username`，后改为 **序章01 必答题 + VN_Got0721**。
+- 菜单：回顾/跳过(>>)/书签/退出；场景内快进改走 Shift+→（`SkipToNext` 已从菜单移除）。
+- **总结框只属于跳过确认**；用户多次纠正：退出无总结、图片可能指 Menu 四键而非退出弹窗。
+- Logo 必须 `Load<Sprite>`（textureType=8），`Load<Texture2D>` 会 null 走无图分支。
 - `RequestSkip` ↔ `ShowConfirmDialog` 双向调用均受闸门与 quiz-open 守卫，无递归。
 - 开场分镜需 `openingLogoActive` 挡键盘推进（审查发现的边角，已修）。
 
