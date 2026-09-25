@@ -1648,8 +1648,8 @@ public class VNManager : MonoBehaviour
             finished = true;
             openingLogoActive = false;
             if (running != null) StopCoroutine(running);
-            overlay.RemoveFromHierarchy();
-            onDone?.Invoke();
+            // 统一淡出退场（含 credit 自动结束与点击提前跳过），不再硬切
+            running = StartCoroutine(FadeOutAndFinish(overlay, onDone));
         }
         overlay.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); FinishAll(); });
 
@@ -1754,6 +1754,14 @@ public class VNManager : MonoBehaviour
         yield return FadeElement(stage, from, to, dur);
     }
 
+    /// <summary>开场 overlay 整体淡出后移除（分镜/credit 退场统一走这里）。</summary>
+    private IEnumerator FadeOutAndFinish(VisualElement overlay, System.Action onDone)
+    {
+        yield return FadeElement(overlay, overlay.style.opacity.value, 0f, 0.45f);
+        overlay.RemoveFromHierarchy();
+        onDone?.Invoke();
+    }
+
     private IEnumerator FadeElement(VisualElement el, float from, float to, float dur)
     {
         if (el == null) yield break;
@@ -1766,6 +1774,20 @@ public class VNManager : MonoBehaviour
             yield return null;
         }
         el.style.opacity = to;
+    }
+
+    /// <summary>底部进度条：当前句在全本中的位置（0~1）。</summary>
+    private void UpdateProgress()
+    {
+        if (dialogueBox == null || currentScript?.scenes == null) return;
+        int total = 0;
+        foreach (var s in currentScript.scenes) total += s.d?.Length ?? 0;
+        if (total <= 0) { dialogueBox.SetProgress(0f); return; }
+        int cur = 0;
+        for (int i = 0; i < currentSceneIndex && i < currentScript.scenes.Length; i++)
+            cur += currentScript.scenes[i].d?.Length ?? 0;
+        cur += currentDialogueIndex;
+        dialogueBox.SetProgress((float)cur / total);
     }
 
     /// <summary>话标题卡：黑底 + 话数 + 标题，2秒后淡出。</summary>
@@ -1903,6 +1925,9 @@ public class VNManager : MonoBehaviour
         }
         if (currentDialogueIndex >= scene.d.Length) return;
         var entry = scene.d[currentDialogueIndex];
+
+        // 底部剧情进度条：当前句/全本句数（所有推进路径都汇聚到这里，单点刷新）
+        UpdateProgress();
 
         // 切换对话时始终隐藏 boot screen，boot 类型会在下面重新显示
         HideBootScreen();

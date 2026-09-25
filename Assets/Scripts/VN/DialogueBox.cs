@@ -14,6 +14,8 @@ public class DialogueBox : MonoBehaviour
     private Label continueIndicator;
     private VisualElement phoneBar;
     private Label phoneLabel;
+    private VisualElement progressBar;
+    private VisualElement progressThumb;
     private TypewriterEffect typewriterEffect;
     private Font gameFont;
     private Coroutine continueAnimCoroutine;
@@ -45,7 +47,7 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
         dialogueBox.style.bottom = 16; // 贴近屏幕底，只留一点呼吸空间
-        dialogueBox.style.height = 104; // 固定高度：边框4 + 上下padding16 + 内容区84（2×36+行距12 或 3×20+2×12）
+        dialogueBox.style.height = 120; // 固定高度：边框4 + 上下padding16 + 内容区100（折行容量84居中，留白加厚）
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
         dialogueBox.style.borderTopWidth = 2;
@@ -136,6 +138,67 @@ public class DialogueBox : MonoBehaviour
         phoneLabel.style.unityFontDefinition = fontDef;
         phoneLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
         phoneBar.Add(phoneLabel);
+
+        // 底部剧情进度条：细线轨道 + 米色滑块 + 两端箭头（贴屏幕最底，随对话框显隐）
+        progressBar = new VisualElement { name = "progress-bar" };
+        progressBar.style.position = Position.Absolute;
+        progressBar.style.left = 16;
+        progressBar.style.right = 16;
+        progressBar.style.bottom = 0;
+        progressBar.style.height = 10;
+        progressBar.style.flexDirection = FlexDirection.Row;
+        progressBar.style.alignItems = Align.Center;
+        progressBar.pickingMode = PickingMode.Ignore;
+        progressBar.style.display = DisplayStyle.None;
+        root.Add(progressBar);
+
+        var pPrev = new Label { text = "◀" };
+        pPrev.style.fontSize = 8;
+        pPrev.style.color = new Color(1f, 1f, 1f, 0.35f);
+        pPrev.style.unityFontDefinition = fontDef;
+        pPrev.style.marginLeft = 4;
+        progressBar.Add(pPrev);
+
+        var track = new VisualElement { name = "progress-track" };
+        track.style.flexGrow = 1;
+        track.style.height = 3;
+        track.style.marginLeft = 6;
+        track.style.marginRight = 6;
+        track.style.backgroundColor = new Color(0.38f, 0.2f, 0.17f, 0.9f);
+        track.style.borderTopLeftRadius = 2;
+        track.style.borderTopRightRadius = 2;
+        track.style.borderBottomLeftRadius = 2;
+        track.style.borderBottomRightRadius = 2;
+        track.style.position = Position.Relative;
+        progressBar.Add(track);
+
+        progressThumb = new VisualElement { name = "progress-thumb" };
+        progressThumb.style.position = Position.Absolute;
+        progressThumb.style.width = 16;
+        progressThumb.style.height = 7;
+        progressThumb.style.top = -2;
+        progressThumb.style.left = new Length(0f, LengthUnit.Percent);
+        progressThumb.style.translate = new Translate(new Length(-50f, LengthUnit.Percent), 0);
+        progressThumb.style.backgroundColor = new Color(0.93f, 0.87f, 0.72f, 0.95f);
+        progressThumb.style.borderTopLeftRadius = 4;
+        progressThumb.style.borderTopRightRadius = 4;
+        progressThumb.style.borderBottomLeftRadius = 4;
+        progressThumb.style.borderBottomRightRadius = 4;
+        track.Add(progressThumb);
+
+        var pNext = new Label { text = "▶" };
+        pNext.style.fontSize = 8;
+        pNext.style.color = new Color(1f, 1f, 1f, 0.35f);
+        pNext.style.unityFontDefinition = fontDef;
+        pNext.style.marginRight = 4;
+        progressBar.Add(pNext);
+    }
+
+    /// <summary>剧情进度（0~1），滑块按百分比定位。</summary>
+    public void SetProgress(float p)
+    {
+        if (progressThumb == null) return;
+        progressThumb.style.left = new Length(Mathf.Clamp01(p) * 100f, LengthUnit.Percent);
     }
 
     /// <summary>通话条：对方名为空则显示通用「通话中」。</summary>
@@ -164,6 +227,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (dialogueBox == null) return;
         dialogueBox.style.display = DisplayStyle.Flex;
+        if (progressBar != null) progressBar.style.display = DisplayStyle.Flex;
 
         StopContinueAnimation();
 
@@ -211,7 +275,7 @@ public class DialogueBox : MonoBehaviour
     }
 
     private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
-    private const float BoxContentZone = 84f; // 104 高度 - 边框4 - 上下padding16
+    private const float BoxContentZone = 84f; // 折行设计容量（2×36+行距12 或 3×20+2×12），小于实际内容区100，居中留白
     private const float WidthSafety = 42f;    // 字号估算的安全边距
 
     private float AvailableTextWidth()
@@ -316,8 +380,17 @@ public class DialogueBox : MonoBehaviour
         return sb.ToString();
     }
 
-    public void Hide() => dialogueBox.style.display = DisplayStyle.None;
-    public void Show() => dialogueBox.style.display = DisplayStyle.Flex;
+    public void Hide()
+    {
+        dialogueBox.style.display = DisplayStyle.None;
+        if (progressBar != null) progressBar.style.display = DisplayStyle.None;
+    }
+
+    public void Show()
+    {
+        dialogueBox.style.display = DisplayStyle.Flex;
+        if (progressBar != null) progressBar.style.display = DisplayStyle.Flex;
+    }
 
     public void HideContinueIndicator()
     {
