@@ -1010,24 +1010,59 @@ public class VNManager : MonoBehaviour
         line.style.marginBottom = 18;
         box.Add(line);
 
-        var desc = new Label("退出剧情会自动保存当前书签。");
-        desc.style.fontSize = 17;
-        desc.style.color = new Color(1f, 1f, 1f, 0.55f);
-        desc.style.unityFontDefinition = fontDef;
-        desc.style.unityTextAlign = TextAnchor.MiddleCenter;
-        desc.style.marginBottom = 24;
-        box.Add(desc);
+        // 当前进度标题
+        var epTitle = new Label("当前进度");
+        epTitle.style.fontSize = 18;
+        epTitle.style.color = new Color(1f, 1f, 1f, 0.85f);
+        epTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
+        epTitle.style.unityFontDefinition = fontDef;
+        epTitle.style.unityTextAlign = TextAnchor.MiddleCenter;
+        epTitle.style.marginBottom = 10;
+        box.Add(epTitle);
 
-        var col = new VisualElement();
-        col.style.alignItems = Align.Center;
-        box.Add(col);
+        // 总结框（仿 BA Summary 描边文本区）
+        var summary = new Label();
+        summary.name = "exit-summary";
+        summary.style.fontSize = 15;
+        summary.style.color = new Color(1f, 1f, 1f, 0.6f);
+        summary.style.unityFontDefinition = fontDef;
+        summary.style.whiteSpace = WhiteSpace.Normal;
+        summary.style.unityTextAlign = TextAnchor.UpperLeft;
+        summary.style.paddingLeft = 14; summary.style.paddingRight = 14;
+        summary.style.paddingTop = 12; summary.style.paddingBottom = 12;
+        summary.style.backgroundColor = new Color(1f, 1f, 1f, 0.06f);
+        summary.style.borderTopWidth = 1; summary.style.borderBottomWidth = 1;
+        summary.style.borderLeftWidth = 1; summary.style.borderRightWidth = 1;
+        var sumB = new Color(0.8f, 0.62f, 0.35f, 0.35f);
+        summary.style.borderTopColor = sumB; summary.style.borderBottomColor = sumB;
+        summary.style.borderLeftColor = sumB; summary.style.borderRightColor = sumB;
+        summary.style.borderTopLeftRadius = 8; summary.style.borderTopRightRadius = 8;
+        summary.style.borderBottomLeftRadius = 8; summary.style.borderBottomRightRadius = 8;
+        summary.style.minHeight = 72;
+        summary.style.marginBottom = 14;
+        box.Add(summary);
 
-        void MakeExitBtn(string text, Color bg, Color fg, System.Action onClick, bool margin)
+        var ask = new Label("退出剧情将自动保存书签。");
+        ask.style.fontSize = 16;
+        ask.style.color = new Color(1f, 1f, 1f, 0.55f);
+        ask.style.unityFontDefinition = fontDef;
+        ask.style.unityTextAlign = TextAnchor.MiddleCenter;
+        ask.style.marginBottom = 20;
+        box.Add(ask);
+
+        // 横排按钮（仿 BA Cancel / Confirm）
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.Center;
+        row.style.alignItems = Align.Center;
+        box.Add(row);
+
+        void MakeExitBtn(VisualElement parent, string text, Color bg, Color fg, System.Action onClick, float marginRight)
         {
             var b = new UnityEngine.UIElements.Button(() => { clickedButtonThisFrame = true; onClick(); }) { text = text };
             b.focusable = false;
-            b.style.width = 260; b.style.height = 46;
-            b.style.fontSize = 18;
+            b.style.width = 120; b.style.height = 44;
+            b.style.fontSize = 16;
             b.style.color = fg;
             b.style.backgroundColor = bg;
             b.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -1038,31 +1073,64 @@ public class VNManager : MonoBehaviour
             b.style.borderLeftWidth = 1; b.style.borderRightWidth = 1;
             b.style.borderTopColor = goldBorder; b.style.borderBottomColor = goldBorder;
             b.style.borderLeftColor = goldBorder; b.style.borderRightColor = goldBorder;
-            if (margin) b.style.marginBottom = 10;
+            if (marginRight > 0) b.style.marginRight = marginRight;
             b.RegisterCallback<PointerDownEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
             b.RegisterCallback<ClickEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
-            col.Add(b);
+            parent.Add(b);
         }
 
-        // 1 取消
-        MakeExitBtn("取消", new Color(0.2f, 0.14f, 0.08f, 0.9f),
+        // 取消 / 退出剧情（主操作）
+        MakeExitBtn(row, "取消", new Color(0.2f, 0.14f, 0.08f, 0.9f),
             new Color(1f, 0.85f, 0.6f, 0.9f),
-            () => exitDialog.style.display = DisplayStyle.None, true);
-        // 2 退出剧情（自动书签 → 回桌面）
-        MakeExitBtn("退出剧情", new Color(1f, 0.78f, 0.4f, 0.95f),
+            () => exitDialog.style.display = DisplayStyle.None, 14);
+        MakeExitBtn(row, "退出剧情", new Color(1f, 0.78f, 0.4f, 0.95f),
             new Color(0.12f, 0.08f, 0.04f, 1f),
-            () => { exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, true);
-        // 3 退出游戏
-        MakeExitBtn("退出游戏", new Color(0.35f, 0.16f, 0.12f, 0.95f),
-            new Color(1f, 0.75f, 0.6f, 0.95f),
-            () => ExitGame(), false);
+            () => { exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, 0);
+
+        // 第三选项：退出游戏（次级文字钮）
+        var quitGame = new UnityEngine.UIElements.Button(() => { clickedButtonThisFrame = true; ExitGame(); }) { text = "退出游戏" };
+        quitGame.focusable = false;
+        quitGame.style.width = 120; quitGame.style.height = 36;
+        quitGame.style.fontSize = 14;
+        quitGame.style.marginTop = 14;
+        quitGame.style.color = new Color(1f, 0.7f, 0.6f, 0.85f);
+        quitGame.style.backgroundColor = new Color(0, 0, 0, 0);
+        quitGame.style.unityTextAlign = TextAnchor.MiddleCenter;
+        quitGame.style.unityFontDefinition = fontDef;
+        quitGame.RegisterCallback<PointerDownEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
+        quitGame.RegisterCallback<ClickEvent>(e => { clickedButtonThisFrame = true; SuppressNextAdvance(); e.StopImmediatePropagation(); });
+        box.Add(quitGame);
     }
 
     private void ShowExitDialog()
     {
         CloseMenuExpanded();
-        if (exitDialog != null)
-            exitDialog.style.display = DisplayStyle.Flex;
+        if (exitDialog == null) return;
+        // 总结：话数 + 标题 + 当前台词预览
+        var sum = exitDialog.Q<Label>("exit-summary");
+        if (sum != null)
+        {
+            if (currentScript != null && !string.IsNullOrEmpty(currentScriptName))
+            {
+                int ep = GetEpisodeNumber(currentScriptName);
+                string epTitle = GetEpisodeTitle(currentScriptName);
+                string preview = "";
+                if (currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
+                {
+                    var scene = currentScript.scenes[currentSceneIndex];
+                    if (currentDialogueIndex >= 0 && currentDialogueIndex < scene.d.Length)
+                        preview = scene.d[currentDialogueIndex].text ?? "";
+                }
+                if (string.IsNullOrEmpty(preview)) preview = "（本幕暂无台词）";
+                if (preview.Length > 80) preview = preview.Substring(0, 80) + "…";
+                sum.text = "第" + ep + "话 · " + epTitle + "\n\n" + preview;
+            }
+            else
+            {
+                sum.text = "未在剧情中。";
+            }
+        }
+        exitDialog.style.display = DisplayStyle.Flex;
     }
 
     /// <summary>退出剧情：先写自动书签，再走 ReturnToTitle（回平板桌面）。</summary>
