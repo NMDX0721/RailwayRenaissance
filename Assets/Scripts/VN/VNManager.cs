@@ -1637,6 +1637,7 @@ public class VNManager : MonoBehaviour
         overlay.style.justifyContent = Justify.Center;
         overlay.pickingMode = PickingMode.Position;
         root.Add(overlay);
+        overlay.style.opacity = 0f; // 显式初始化：开场黑幕从无到有淡入（也保证 opacity.value 恒可读）
 
         var fontDef = new FontDefinition { font = gameFont };
         bool finished = false;
@@ -1672,11 +1673,14 @@ public class VNManager : MonoBehaviour
         hint.pickingMode = PickingMode.Ignore;
         overlay.Add(hint);
 
-        running = StartCoroutine(OpeningLogoSequence(stage, hint, fontDef, FinishAll));
+        running = StartCoroutine(OpeningLogoSequence(overlay, stage, hint, fontDef, FinishAll));
     }
 
-    private IEnumerator OpeningLogoSequence(VisualElement stage, Label hint, FontDefinition fontDef, System.Action done)
+    private IEnumerator OpeningLogoSequence(VisualElement overlay, VisualElement stage, Label hint, FontDefinition fontDef, System.Action done)
     {
+        // —— 分镜 0：黑幕整体淡入（从上一画面平滑切入，不再硬切）——
+        yield return FadeElement(overlay, 0f, 1f, 0.45f);
+
         // —— 分镜 1：Logo 图（有图则跳过文字标题镜）——
         stage.Clear();
         // 资源按 Sprite 导入（textureType=8），与 LoginManager 一致先 Load<Sprite>
@@ -1757,8 +1761,8 @@ public class VNManager : MonoBehaviour
     /// <summary>开场 overlay 整体淡出后移除（分镜/credit 退场统一走这里）。</summary>
     private IEnumerator FadeOutAndFinish(VisualElement overlay, System.Action onDone)
     {
-        // 注意：overlay 从未显式设过 opacity，读 .value 会得到 0（未设置样式的默认值），必须写死 from=1
-        yield return FadeElement(overlay, 1f, 0f, 0.45f);
+        // overlay 已在创建时显式初始化 opacity（=0），此后一直由 FadeElement 维护，.value 恒为当前值
+        yield return FadeElement(overlay, overlay.style.opacity.value, 0f, 0.45f);
         overlay.RemoveFromHierarchy();
         onDone?.Invoke();
     }
