@@ -91,7 +91,7 @@ public class VNBacklog : MonoBehaviour
         titleLabel.style.unityFontDefinition = fontDef;
         backlogHeader.Add(titleLabel);
 
-        var closeBtn = new UnityEngine.UIElements.Button(() => ToggleBacklog()) { text = "X" };
+        var closeBtn = new UnityEngine.UIElements.Button(() => ToggleBacklog()) { text = "✕" };
         closeBtn.focusable = false;
         UiCursor.Bind(closeBtn);
         // 阻止冒泡到 VN root：否则关闭瞬间会被当成「推进下一句」
@@ -107,21 +107,46 @@ public class VNBacklog : MonoBehaviour
             VNManager.Instance?.SuppressNextAdvance();
         });
         closeBtn.RegisterCallback<PointerUpEvent>(evt => evt.StopImmediatePropagation());
-        closeBtn.style.width = 60;
+        // 40×40 金边圆角关闭按钮（深色底 + 金色 ✕）
+        var closeBg = new Color(0.14f, 0.09f, 0.05f, 0.9f);
+        var closeBorder = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+        closeBtn.style.width = 40;
         closeBtn.style.height = 40;
-        closeBtn.style.fontSize = 24;
-        closeBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-        closeBtn.style.backgroundColor = new Color(0.3f, 0.15f, 0.1f, 0.6f);
-        closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        closeBtn.style.unityFontDefinition = fontDef;
+        closeBtn.style.borderTopLeftRadius = 8;
+        closeBtn.style.borderTopRightRadius = 8;
+        closeBtn.style.borderBottomLeftRadius = 8;
+        closeBtn.style.borderBottomRightRadius = 8;
+        closeBtn.style.backgroundColor = closeBg;
         closeBtn.style.borderTopWidth = 1;
         closeBtn.style.borderBottomWidth = 1;
         closeBtn.style.borderLeftWidth = 1;
         closeBtn.style.borderRightWidth = 1;
-        closeBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        closeBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        closeBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        closeBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        closeBtn.style.borderTopColor = closeBorder;
+        closeBtn.style.borderBottomColor = closeBorder;
+        closeBtn.style.borderLeftColor = closeBorder;
+        closeBtn.style.borderRightColor = closeBorder;
+        closeBtn.style.fontSize = 20;
+        closeBtn.style.color = new Color(1f, 0.86f, 0.59f, 1f);
+        closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        closeBtn.style.unityFontDefinition = fontDef;
+        // hover：提亮背景与金边，移出恢复
+        closeBtn.RegisterCallback<PointerEnterEvent>(evt =>
+        {
+            closeBtn.style.backgroundColor = new Color(0.3f, 0.18f, 0.09f, 0.95f);
+            var bright = new Color(1f, 0.85f, 0.5f, 1f);
+            closeBtn.style.borderTopColor = bright;
+            closeBtn.style.borderBottomColor = bright;
+            closeBtn.style.borderLeftColor = bright;
+            closeBtn.style.borderRightColor = bright;
+        });
+        closeBtn.RegisterCallback<PointerLeaveEvent>(evt =>
+        {
+            closeBtn.style.backgroundColor = closeBg;
+            closeBtn.style.borderTopColor = closeBorder;
+            closeBtn.style.borderBottomColor = closeBorder;
+            closeBtn.style.borderLeftColor = closeBorder;
+            closeBtn.style.borderRightColor = closeBorder;
+        });
         backlogHeader.Add(closeBtn);
 
         backlogScroll = new ScrollView(ScrollViewMode.Vertical);
@@ -135,33 +160,100 @@ public class VNBacklog : MonoBehaviour
         StyleBacklogScrollbar(backlogScroll);
     }
 
-    /// <summary>把 UI Toolkit 原生滚动条刷成主题色：细轨、金 thumb、深色箭头钮。</summary>
+    /// <summary>把 UI Toolkit 原生滚动条刷成金色主题：快路径按名直查 + 遍历兜底，不依赖 USS 内部名。</summary>
     private static void StyleBacklogScrollbar(ScrollView scroll)
     {
-        var gold = new Color(0.8f, 0.62f, 0.35f, 0.9f);
-        var track = new Color(0.12f, 0.08f, 0.05f, 0.9f);
+        var track = new Color(0.12f, 0.08f, 0.05f, 0.9f);          // 轨道底
+        var trackEdge = new Color(0.8f, 0.62f, 0.35f, 0.6f);       // 轨道金边
+        var thumb = new Color(0.85f, 0.66f, 0.38f, 0.95f);         // 滑块
+        var arrowBg = new Color(0.18f, 0.12f, 0.07f, 0.95f);       // 箭头钮底
+        var glyphGold = new Color(1f, 0.86f, 0.59f, 1f);           // 三角 glyph
 
+        // 轨道：10px 宽、深色底、1px 金边、全圆角
+        void StyleTrack(VisualElement e)
+        {
+            e.style.width = 10;
+            e.style.backgroundColor = track;
+            e.style.borderTopWidth = 1;
+            e.style.borderBottomWidth = 1;
+            e.style.borderLeftWidth = 1;
+            e.style.borderRightWidth = 1;
+            e.style.borderTopColor = trackEdge;
+            e.style.borderBottomColor = trackEdge;
+            e.style.borderLeftColor = trackEdge;
+            e.style.borderRightColor = trackEdge;
+            e.style.borderTopLeftRadius = 5;
+            e.style.borderTopRightRadius = 5;
+            e.style.borderBottomLeftRadius = 5;
+            e.style.borderBottomRightRadius = 5;
+        }
+
+        // 滑块：金色、圆角 4、左右 margin 2 让它比轨道细
+        void StyleThumb(VisualElement e)
+        {
+            e.style.backgroundColor = thumb;
+            e.style.borderTopLeftRadius = 4;
+            e.style.borderTopRightRadius = 4;
+            e.style.borderBottomLeftRadius = 4;
+            e.style.borderBottomRightRadius = 4;
+            e.style.marginLeft = 2;
+            e.style.marginRight = 2;
+        }
+
+        // 上下箭头钮：10×16、深底金边；三角 glyph Label 刷金
+        void StyleArrowButton(VisualElement e)
+        {
+            e.style.width = 10;
+            e.style.height = 16;
+            e.style.backgroundColor = arrowBg;
+            e.style.borderTopWidth = 1;
+            e.style.borderBottomWidth = 1;
+            e.style.borderLeftWidth = 1;
+            e.style.borderRightWidth = 1;
+            e.style.borderTopColor = trackEdge;
+            e.style.borderBottomColor = trackEdge;
+            e.style.borderLeftColor = trackEdge;
+            e.style.borderRightColor = trackEdge;
+            foreach (var label in e.Query<Label>().ToList())
+            {
+                // 名字或文字带三角 glyph（▲▼△▽）的 Label 子元素
+                bool isGlyph = (label.name != null && label.name.IndexOfAny(new[] { '▲', '▼', '△', '▽' }) >= 0)
+                            || (label.text != null && label.text.IndexOfAny(new[] { '▲', '▼', '△', '▽' }) >= 0);
+                if (isGlyph)
+                    label.style.color = glyphGold;
+            }
+        }
+
+        // 按 name 分类（arrow 优先，避免被 slider/scroller 误吞）
+        bool Classify(VisualElement e)
+        {
+            var n = e.name;
+            if (string.IsNullOrEmpty(n)) return false;
+            var lower = n.ToLowerInvariant();
+            if (lower.Contains("up-button") || lower.Contains("down-button")) { StyleArrowButton(e); return true; }
+            if (lower.Contains("dragger") || lower.Contains("thumb")) { StyleThumb(e); return true; }
+            if (lower.Contains("slider") || lower.Contains("scroller")) { StyleTrack(e); return true; }
+            return false;
+        }
+
+        // 快路径：按常见 USS 内部名直查
         var slider = scroll.Q<Slider>("unity-scrollview-vertical-slider")
                   ?? scroll.Q<Slider>("unity-scroll-view-vertical-slider");
-        if (slider != null)
-        {
-            slider.style.width = 10;
-            slider.style.backgroundColor = track;
-        }
+        if (slider != null) StyleTrack(slider);
         var dragger = scroll.Q("unity-dragger") ?? scroll.Q("unity-thumb");
-        if (dragger != null)
-            dragger.style.backgroundColor = gold;
+        if (dragger != null) StyleThumb(dragger);
         var scroller = scroll.Q<Scroller>("unity-scrollview-vertical-scroller")
                     ?? scroll.Q<Scroller>("unity-scroll-view-vertical-scroller");
+        if (scroller != null) StyleTrack(scroller);
         foreach (var btnName in new[] { "unity-up-button", "unity-down-button" })
         {
             var b = scroller?.Q(btnName) ?? scroll.Q(btnName);
-            if (b != null)
-            {
-                b.style.backgroundColor = track;
-                b.style.width = 10;
-            }
+            if (b != null) StyleArrowButton(b);
         }
+
+        // 兜底：遍历全部子元素按名分类（与快路径重复也无妨，着色幂等）
+        foreach (var e in scroll.Query().ToList())
+            Classify(e);
     }
 
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
