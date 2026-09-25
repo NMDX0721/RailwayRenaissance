@@ -398,7 +398,11 @@ public class VNManager : MonoBehaviour
         var esObj = new GameObject("EventSystem");
         esObj.transform.SetParent(transform);
         esObj.AddComponent<EventSystem>();
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+        esObj.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+#else
         esObj.AddComponent<StandaloneInputModule>();
+#endif
     }
 
     private void SetupMenuButtons(UIDocument uiDoc)

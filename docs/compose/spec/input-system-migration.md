@@ -63,4 +63,4 @@ Unity 已标记 Input Manager（`UnityEngine.Input`）为弃用。项目约 15 �
 - [ ] T1: 加包 + ActiveInputHandler=Both — acceptance: 编译 0 error，游戏输入无回归 (covers: S2.2 P1)
 - [ ] T2: LegacyInputAdapter + KeyBindings 收口 — acceptance: 改键设置仍生效 (covers: S2.3; depends: T1)
 - [ ] T3: 替换 VN/打字机/新闻/设置 散点 Input 调用 + 回归手感修正 — acceptance: ESC/F5/右键行为正常；Shift 打字加速明显、Shift+→ 快进可用（快退已删）；空格长按匀速 0.4s/跳；F5 在句播完时立即跳下一句 (covers: S2.2 P4, S2.5; depends: T2)
-- [ ] T4: 切 Only + 全局搜旧 API 清零 — acceptance: `Input.GetKey` 等旧调用为 0 (covers: S2.2 P6; depends: T3)
+- [x] T4: 切 Only + 全局搜旧 API 清零 — acceptance: `Input.GetKey` 等旧调用为 0（适配层 `#else` 分支随宏剔除）；场景/运行时三处 `StandaloneInputModule` → `InputSystemUIInputModule`；适配层补齐 Digit 顺序/Return/Keypad/鼠标键映射 (covers: S2.2 P6; depends: T3)

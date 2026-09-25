@@ -74,7 +74,11 @@ public class LoginManager : MonoBehaviour
         {
             var esObj = new GameObject("EventSystem");
             esObj.AddComponent<UnityEngine.EventSystems.EventSystem>();
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            esObj.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+#else
             esObj.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+#endif
         }
 
         LoadSprites();

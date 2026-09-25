@@ -124,7 +124,11 @@ public static class RailRevivalRuntimeBootstrap
             return;
         }
 
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+        GameObject eventSystemGo = new GameObject("EventSystem", typeof(EventSystem), typeof(UnityEngine.InputSystem.UI.InputSystemUIInputModule));
+#else
         GameObject eventSystemGo = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+#endif
         SceneManager.MoveGameObjectToScene(eventSystemGo, scene);
     }
 
