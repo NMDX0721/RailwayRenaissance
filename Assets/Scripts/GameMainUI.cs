@@ -101,101 +101,108 @@ public class GameMainUI : MonoBehaviour
         root.style.display = DisplayStyle.None;
     }
 
-    // ============ 锁屏 ============
+    // ============ 锁屏（澎湃OS/HyperOS 风格） ============
     private void BuildLockScreen()
     {
         lockScreen = new VisualElement { name = "tablet-lock" };
         lockScreen.style.position = Position.Absolute;
         lockScreen.style.top = 0; lockScreen.style.left = 0;
         lockScreen.style.right = 0; lockScreen.style.bottom = 0;
-        lockScreen.style.alignItems = Align.Center;
-        lockScreen.style.justifyContent = Justify.Center;
         lockScreen.pickingMode = PickingMode.Position;
         lockScreen.style.flexDirection = FlexDirection.Column;
         root.Add(lockScreen);
 
-        // 半透明深蓝罩（云层感）
-        var veil = new VisualElement();
-        veil.style.position = Position.Absolute;
-        veil.style.top = 0; veil.style.left = 0; veil.style.right = 0; veil.style.bottom = 0;
-        veil.style.backgroundColor = new Color(0.1f, 0.12f, 0.2f, 0.62f);
-        lockScreen.Add(veil);
+        // 壁纸感：深蓝黑纵向渐变
+        var wallpaper = new VisualElement();
+        wallpaper.style.position = Position.Absolute;
+        wallpaper.style.top = 0; wallpaper.style.left = 0;
+        wallpaper.style.right = 0; wallpaper.style.bottom = 0;
+        wallpaper.style.backgroundImage = new StyleBackground(GradientBackground());
+        lockScreen.Add(wallpaper);
 
-        // 居中大时钟（液态玻璃风格）
+        // 上 1/3 留白 → HyperOS 大时钟
+        var spacerTop = new VisualElement();
+        spacerTop.style.height = new Length(16, LengthUnit.Percent);
+        lockScreen.Add(spacerTop);
+
         var clock = new Label("12:00");
         clock.name = "lock-clock";
-        clock.style.fontSize = 96;
+        clock.style.fontSize = 112;
+        clock.style.unityFontStyleAndWeight = FontStyle.Bold;
         clock.style.color = Color.white;
         clock.style.unityFontDefinition = Fd();
-        clock.style.unityTextOutlineWidth = 3;
-        clock.style.unityTextOutlineColor = new Color(0, 0, 0, 0.3f);
+        clock.style.unityTextAlign = TextAnchor.MiddleCenter;
         lockScreen.Add(clock);
 
-        // 日期卡片（半透明玻璃）
-        var dateCard = new VisualElement();
-        dateCard.style.backgroundColor = GlassBorder;
-        dateCard.style.borderTopLeftRadius = 20;
-        dateCard.style.borderTopRightRadius = 20;
-        dateCard.style.borderBottomLeftRadius = 20;
-        dateCard.style.borderBottomRightRadius = 20;
-        dateCard.style.paddingLeft = 20; dateCard.style.paddingRight = 20;
-        dateCard.style.paddingTop = 8; dateCard.style.paddingBottom = 8;
-        dateCard.style.marginBottom = 28;
-        lockScreen.Add(dateCard);
-
-        var dateLine = new Label("主体历 105 年 1 月 1 日 · 星期四");
+        // 日期裸文本（无胶囊卡片）
+        var dateLine = new Label("1月1日 周四 · 主体历105年");
+        dateLine.name = "lock-date";
         dateLine.style.fontSize = 18;
-        dateLine.style.color = GlassText;
+        dateLine.style.color = new Color(1f, 1f, 1f, 0.7f);
         dateLine.style.unityFontDefinition = Fd();
-        dateCard.Add(dateLine);
+        dateLine.style.unityTextAlign = TextAnchor.MiddleCenter;
+        dateLine.style.marginTop = 4;
+        lockScreen.Add(dateLine);
 
-        // 扫脸取景框（圆形，液态玻璃风格）
-        var frame = new VisualElement { name = "face-frame" };
-        frame.style.width = 180; frame.style.height = 180;
-        frame.style.borderTopWidth = 2; frame.style.borderBottomWidth = 2;
-        frame.style.borderLeftWidth = 2; frame.style.borderRightWidth = 2;
-        frame.style.borderTopColor = new Color(0.6f, 0.85f, 1f, 0.5f);
-        frame.style.borderBottomColor = new Color(0.6f, 0.85f, 1f, 0.5f);
-        frame.style.borderLeftColor = new Color(0.6f, 0.85f, 1f, 0.5f);
-        frame.style.borderRightColor = new Color(0.6f, 0.85f, 1f, 0.5f);
-        frame.style.borderTopLeftRadius = 90; frame.style.borderTopRightRadius = 90;
-        frame.style.borderBottomLeftRadius = 90; frame.style.borderBottomRightRadius = 90;
-        frame.style.backgroundColor = new Color(0, 0.15f, 0.3f, 0.12f);
-        frame.style.alignItems = Align.Center;
-        frame.style.justifyContent = Justify.Center;
-        lockScreen.Add(frame);
+        var weather = new Label("平壤 · 晴  23°");
+        weather.style.fontSize = 14;
+        weather.style.color = new Color(1f, 1f, 1f, 0.42f);
+        weather.style.unityFontDefinition = Fd();
+        weather.style.unityTextAlign = TextAnchor.MiddleCenter;
+        weather.style.marginTop = 8;
+        lockScreen.Add(weather);
 
-        // 像素光带（扫脸动画）
-        var beam = new Label("▂▃▄▅▆▇");
+        var spacerMid = new VisualElement();
+        spacerMid.style.flexGrow = 1;
+        lockScreen.Add(spacerMid);
+
+        // 扫脸：小圆钮（非 180 大框）
+        var face = new VisualElement { name = "face-frame" };
+        face.style.width = 56; face.style.height = 56;
+        face.style.borderTopWidth = 1.5f; face.style.borderBottomWidth = 1.5f;
+        face.style.borderLeftWidth = 1.5f; face.style.borderRightWidth = 1.5f;
+        var faceC = new Color(1f, 1f, 1f, 0.35f);
+        face.style.borderTopColor = faceC; face.style.borderBottomColor = faceC;
+        face.style.borderLeftColor = faceC; face.style.borderRightColor = faceC;
+        face.style.borderTopLeftRadius = 28; face.style.borderTopRightRadius = 28;
+        face.style.borderBottomLeftRadius = 28; face.style.borderBottomRightRadius = 28;
+        face.style.backgroundColor = new Color(1f, 1f, 1f, 0.06f);
+        face.style.alignItems = Align.Center;
+        face.style.justifyContent = Justify.Center;
+        face.style.alignSelf = Align.Center;
+        lockScreen.Add(face);
+
+        var beam = new Label("—");
         beam.name = "face-beam";
-        beam.style.fontSize = 22;
-        beam.style.color = new Color(0.55f, 0.9f, 1f, 0.7f);
+        beam.style.fontSize = 26;
+        beam.style.color = new Color(1f, 1f, 1f, 0.75f);
         beam.style.unityFontDefinition = Fd();
-        beam.style.position = Position.Absolute;
-        beam.style.top = new Length(46, LengthUnit.Percent);
-        beam.style.opacity = 0.5f;
-        frame.Add(beam);
+        beam.style.opacity = 0.6f;
+        face.Add(beam);
 
-        var hint = new Label("[ 扫脸解锁 · 点击任意处 ]");
-        hint.style.fontSize = 14;
-        hint.style.color = GlassTextDim;
+        var hint = new Label("轻触解锁");
+        hint.style.fontSize = 13;
+        hint.style.color = new Color(1f, 1f, 1f, 0.4f);
         hint.style.unityFontDefinition = Fd();
-        hint.style.marginTop = 24;
+        hint.style.marginTop = 12;
+        hint.style.alignSelf = Align.Center;
         lockScreen.Add(hint);
+
+        var spacerBot = new VisualElement();
+        spacerBot.style.height = 52;
+        lockScreen.Add(spacerBot);
 
         var ver = new Label("澎湃OS 32 · DPRK Edition");
         ver.style.position = Position.Absolute;
-        ver.style.bottom = 26;
+        ver.style.bottom = 16;
         ver.style.left = 0; ver.style.right = 0;
-        ver.style.fontSize = 15;
-        ver.style.color = GlassTextMuted;
+        ver.style.fontSize = 12;
+        ver.style.color = new Color(1f, 1f, 1f, 0.28f);
         ver.style.unityTextAlign = TextAnchor.MiddleCenter;
         ver.style.unityFontDefinition = Fd();
         lockScreen.Add(ver);
 
-        // 点击扫脸解锁
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
-        // 空格解锁 / ESC关闭App窗口
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
             if (evt.keyCode == KeyCode.Space && !unlocked && lockScreen.style.display == DisplayStyle.Flex)
@@ -209,6 +216,27 @@ public class GameMainUI : MonoBehaviour
                 evt.StopPropagation();
             }
         });
+    }
+
+    /// <summary>锁屏壁纸：深蓝黑纵向渐变（近似 HyperOS 冷调）。</summary>
+    private static Texture2D GradientBackground()
+    {
+        const int w = 8, h = 64;
+        var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear;
+        var top = new Color(0.10f, 0.14f, 0.28f, 1f);
+        var mid = new Color(0.06f, 0.08f, 0.16f, 1f);
+        var bot = new Color(0.03f, 0.04f, 0.08f, 1f);
+        var px = new Color[w * h];
+        for (int y = 0; y < h; y++)
+        {
+            float u = y / (float)(h - 1);
+            Color c = u < 0.5f ? Color.Lerp(top, mid, u * 2f) : Color.Lerp(mid, bot, (u - 0.5f) * 2f);
+            for (int x = 0; x < w; x++) px[y * w + x] = c;
+        }
+        tex.SetPixels(px);
+        tex.Apply();
+        return tex;
     }
 
     private void ShowLockScreen()
