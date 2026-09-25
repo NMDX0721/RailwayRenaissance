@@ -335,12 +335,13 @@ public class VNManager : MonoBehaviour
         backgroundManager = gameObject.AddComponent<BackgroundManager>();
         backgroundManager.Init(uiDoc);
 
+        // 立绘先于对话框初始化：人物 bottom=0 贴屏底，必须处于对话框下层避免遮字
+        characterSpriteManager = gameObject.AddComponent<CharacterSpriteManager>();
+        characterSpriteManager.Init(uiDoc);
+
         dialogueBox = gameObject.AddComponent<DialogueBox>();
         dialogueBox.Init(uiDoc);
         dialogueBox.OnTypewriterComplete += OnDialogueTypewriterComplete;
-
-        characterSpriteManager = gameObject.AddComponent<CharacterSpriteManager>();
-        characterSpriteManager.Init(uiDoc);
 
         vnBacklog = gameObject.AddComponent<VNBacklog>();
         vnBacklog.Init(uiDoc);
@@ -533,8 +534,8 @@ public class VNManager : MonoBehaviour
             var btn = new UnityEngine.UIElements.Button(() => itemAction());
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 22;
-            iconLabel.style.height = 22;
+            iconLabel.style.width = 28;
+            iconLabel.style.height = 28;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -558,8 +559,8 @@ public class VNManager : MonoBehaviour
                 evt.StopImmediatePropagation();
             });
             // 居中图标：去掉 Button 默认 padding，显式 flex 居中
-            btn.style.width = 48;
-            btn.style.height = 40;
+            btn.style.width = 56;
+            btn.style.height = 44;
             btn.style.paddingLeft = 0; btn.style.paddingRight = 0;
             btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
             btn.style.justifyContent = Justify.Center;
