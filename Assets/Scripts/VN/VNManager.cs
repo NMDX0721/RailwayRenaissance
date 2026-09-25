@@ -1636,9 +1636,9 @@ public class VNManager : MonoBehaviour
         {
             var logo = new VisualElement();
             logo.style.backgroundImage = new StyleBackground(Background.FromTexture2D(logoTex));
-            // 源图 1280x720，按大尺寸 contain 显示
-            logo.style.width = 880;
-            logo.style.height = 495;
+            // 源图 1280x720，居中偏上、留呼吸空间
+            logo.style.width = 640;
+            logo.style.height = 360;
             logo.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             logo.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
             logo.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
