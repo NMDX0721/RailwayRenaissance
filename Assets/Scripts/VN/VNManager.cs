@@ -1629,7 +1629,9 @@ public class VNManager : MonoBehaviour
     {
         // —— 分镜 1：Logo 图（有图则跳过文字标题镜）——
         stage.Clear();
-        var logoTex = Resources.Load<Texture2D>("UI/Login/title_logo");
+        // 资源按 Sprite 导入（textureType=8），与 LoginManager 一致先 Load<Sprite>
+        var logoSprite = Resources.Load<Sprite>("UI/Login/title_logo");
+        Texture2D logoTex = logoSprite != null ? logoSprite.texture : Resources.Load<Texture2D>("UI/Login/title_logo");
         if (logoTex != null)
         {
             var logo = new VisualElement();
