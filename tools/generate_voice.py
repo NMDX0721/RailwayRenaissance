@@ -169,6 +169,9 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0, help="最多生成 N 条（0=不限）")
     ap.add_argument("--sleep", type=float, default=1.5, help="每条之间的节流秒数")
     ap.add_argument("--only", default="", help="只处理指定 script_id（如 prologue_01_news）")
+    ap.add_argument("--speaker", default="", help="只处理指定说话人，逗号分隔（如 林彪悍,岁月）")
+    ap.add_argument("--test", action="store_true",
+                    help="小范围测试：旁白/林彪悍/岁月/老陈/嘉颖徐 各生成剧本里第一条")
     ap.add_argument("--force", action="store_true", help="已存在也重新生成")
     ap.add_argument("--api-key", default="", help="覆盖 GEMINI_API_KEY 环境变量")
     args = ap.parse_args()
@@ -187,17 +190,33 @@ def main() -> int:
     written = 0
     skipped = 0
     failed = []
+    test_wanted = {"", "林彪悍", "岁月", "老陈", "嘉颖徐"}
+    test_done = set()
 
     for script_id, si, di, speaker, raw in iter_entries():
         if args.only and script_id != args.only:
             continue
+        if args.speaker:
+            wanted = {s.strip() for s in args.speaker.split(",") if s.strip()}
+            wanted = {"" if w == "旁白" else w for w in wanted}
+            if speaker not in wanted:
+                continue
+        if args.test:
+            if speaker not in test_wanted or speaker in test_done:
+                continue
         out = VOICE_DIR / script_id / f"s{si:02d}_d{di:03d}.wav"
         if out.exists() and not args.force:
             skipped += 1
+            if args.test:
+                test_done.add(speaker)
             continue
         if args.limit and planned >= args.limit:
             break
+        if args.test and len(test_done) >= len(test_wanted):
+            break
         planned += 1
+        if args.test:
+            test_done.add(speaker)
 
         cfg = speakers.get(speaker) or fallback
         if speaker not in speakers:
