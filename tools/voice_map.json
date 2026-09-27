@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "tool": "Gemini Speech Generation",
+    "model": "gemini-3.1-flash-tts-preview",
+    "doc": "参考资料/资产/角色音色设计.md",
+    "note": "style 为批量生成用的精简版（英文，含强制年龄锚定）；完整导演式提示词见文档，AI Studio 试听用"
+  },
+  "fallback": {
+    "voice": "Charon",
+    "style": "Native Japanese, standard Tokyo accent. Neutral adult, even pace, clear delivery."
+  },
+  "speakers": {
+    "": {
+      "voice": "Iapetus",
+      "style": "Native Japanese, standard Tokyo accent. Neutral documentary narrator, calm even pace, clear precise delivery, no strong emotion."
+    },
+    "林彪悍": {
+      "voice": "Alnilam",
+      "style": "Native Japanese, standard Tokyo accent. Male, exactly 25 years old, serious young researcher not a teenager. Low settled timbre, calm measured pace, restrained intensity; clipped when frustrated, near-whisper when gentle."
+    },
+    "林彪悍（幼年）": {
+      "voice": "Achird",
+      "style": "Native Japanese, standard Tokyo accent. Male child, exactly 10 years old, bright and earnest boyish voice, natural child pace."
+    },
+    "岁月": {
+      "voice": "Leda",
+      "style": "Native Japanese, standard Tokyo accent. Female, exactly 13 years old, young anime hologram girl not an adult. Bright curious youthful timbre with a faintly synthetic sheen, brisk pace, deadpan dry humor on facts."
+    },
+    "老陈": {
+      "voice": "Algenib",
+      "style": "Native Japanese with warm rural undertone. Male, exactly 68 years old, village stationmaster elder. Rough gentle gravel timbre softened by age, slow drawn-out pace with sighs, wistful and stubbornly hopeful."
+    },
+    "爷爷·林悍": {
+      "voice": "Gacrux",
+      "style": "Native Japanese. Male, late 60s, warm grandfatherly elder. Mature resonant timbre, slow gentle nostalgic pace."
+    },
+    "老人": {
+      "voice": "Gacrux",
+      "style": "Native Japanese. Male, elderly, weathered old man. Mature raspy timbre, slow unhurried pace."
+    },
+    "茶农": {
+      "voice": "Gacrux",
+      "style": "Native Japanese, rural countryside register. Male, elderly villager. Mature unhurried friendly pace."
+    },
+    "嘉颖徐": {
+      "voice": "Zephyr",
+      "style": "Native Japanese, standard Tokyo business register. Female, exactly 24 years old, youthful adult not middle-aged. Bright clear timbre with quiet authority, brisk decisive pace, easy laugh then business precision."
+    },
+    "导师": {
+      "voice": "Sadaltager",
+      "style": "Native Japanese, academic register. Male, around 50, university professor. Knowledgeable composed timbre, measured analytical pace, patient and precise."
+    },
+    "检查员": {
+      "voice": "Charon",
+      "style": "Native Japanese, official bureaucratic register. Male, 35, border inspector. Clipped command-form delivery, short sentences, no personal emotion."
+    },
+    "周鼎铭": {
+      "voice": "Orus",
+      "style": "Native Japanese, official register. Male, around 45, firm government official. Composed authoritative timbre, deliberate pace, controlled."
+    },
+    "陈鹤年": {
+      "voice": "Umbriel",
+      "style": "Native Japanese, standard Tokyo accent. Male, around 40, easy-going adult. Relaxed smooth timbre, casual natural pace."
+    },
+    "猴局长": {
+      "voice": "Pulcherrima",
+      "style": "Native Japanese. Male, around 55, forward bureaucrat boss. Blunt authoritative timbre, brisk impatient pace, self-assured."
+    },
+    "张工": {
+      "voice": "Sadachbia",
+      "style": "Native Japanese with a hearty Northeast-China warmth. Male, exactly 62 years old, jovial old mechanic. Loud boisterous timbre often laughing, energetic jovial pace."
+    },
+    "李阿姨": {
+      "voice": "Sulafat",
+      "style": "Native Japanese. Female, exactly 55 years old, warm station auntie. Warm fussy kindly timbre, slightly rising sentence endings, caring motherly-not-matronly pace."
+    },
+    "赵师傅": {
+      "voice": "Schedar",
+      "style": "Native Japanese. Male, exactly 55 years old, taciturn veteran track worker. Even steady timbre, sparse words with weight, unhurried reliable pace."
+    },
+    "赵铁山": {
+      "voice": "Algieba",
+      "style": "Native Japanese. Male, around 55, steady old railway hand. Smooth settled timbre, calm even pace."
+    },
+    "王小弟": {
+      "voice": "Fenrir",
+      "style": "Native Japanese. Male, exactly 22 years old, eager young recruit. Excitable bright timbre, fast energetic pace, slightly rough-edged enthusiasm."
+    },
+    "小芳": {
+      "voice": "Vindemiatrix",
+      "style": "Native Japanese. Female, exactly 45 years old, gentle volunteer. Soft patient timbre, gentle unhurried pace, sentences placed down lightly like comforting someone."
+    },
+    "男大学生": {
+      "voice": "Puck",
+      "style": "Native Japanese. Male, around 20, upbeat university student. Bright energetic youthful timbre, lively pace."
+    },
+    "年轻队员": {
+      "voice": "Laomedeia",
+      "style": "Native Japanese. Male, around 25, eager young team member. Upbeat bright timbre, quick earnest pace."
+    },
+    "记者": {
+      "voice": "Aoede",
+      "style": "Native Japanese, news reporter register. Female or young reporter around 30. Breezy clear timbre, brisk articulate broadcast pace."
+    },
+    "店员": {
+      "voice": "Callirrhoe",
+      "style": "Native Japanese, shop clerk register. Around 25, polite friendly service voice. Easy-going warm timbre, courteous natural pace."
+    },
+    "员工": {
+      "voice": "Despina",
+      "style": "Native Japanese, office staff register. Around 30, polite colleague. Smooth even timbre, calm courteous pace."
+    },
+    "访客": {
+      "voice": "Achernar",
+      "style": "Native Japanese. Adult visitor around 35. Soft polite timbre, moderate respectful pace."
+    },
+    "陌生人": {
+      "voice": "Erinome",
+      "style": "Native Japanese. Adult around 35, unknown stranger. Clear neutral timbre, even pace."
+    },
+    "矿工": {
+      "voice": "Algenib",
+      "style": "Native Japanese. Male, around 50, veteran miner. Gravelly weathered timbre, slow heavy pace."
+    },
+    "孩子": {
+      "voice": "Achird",
+      "style": "Native Japanese. Child around 10 years old. Bright friendly child timbre, natural child pace."
+    }
+  }
+}
