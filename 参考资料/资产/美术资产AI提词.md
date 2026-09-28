@@ -694,36 +694,36 @@ AVOID:
    `Use the photo ONLY as structural proportion reference (short hood, cab position, bogie spacing, headlight layout). Do NOT copy its livery, colors, or markings — livery is deep forest green as specified.`
 3. **只在本前置阶段挂现实照片**；下游场景一律改挂本参考图，不再挂照片（避免写实摄影风格串入像素画风）。
 
-**提示词（v1）**：
+**提示词（v1 · 中文版）**：
 ```
-pixel art, vehicle reference sheet, STARDEW VALLEY STYLE PIXEL ART, clear pixels, 16-bit retro,
+像素风，载具参考图，星露谷风格像素画，清晰像素，16-bit复古，
 
-NF-5 "Gengniu" diesel locomotive — exterior design reference:
+NF-5「耕牛」内燃机车 —— 外构设计参考：
 
-SCENE: A single diesel locomotive presented as a clean exterior reference sheet. Front three-quarter view (3/4) from the viewer's front-left, showing the nose, one full side, the roof and the underframe. Isolated on a flat solid dark neutral backdrop (dark slate grey), soft neutral floor shadow only. No environment, no railway scenery, no sky, no station, no foreground props.
+场景：单台内燃机车的干净外构参考图。观众左前 3/4 前斜视角，展示鼻端、一侧完整车身、车顶与车底走行部。孤立于纯深灰中性背景，仅底部一层柔和地面投影。无环境、无铁路风景、无天空、无车站、无前景道具。
 
-LOCOMOTIVE (LOCKED DESIGN — all future scenes must match this):
-- Short-hood road-switcher diesel locomotive, 1965-era Chinese design with DF4-era proportions — NOT a modern high-speed train, NOT a steam locomotive
-- Deep forest green body, weathered, with rust-orange patches and grime streaks
-- NO white chevron and NO V-stripe on the nose — plain green nose
-- Nose front: white "NF-5" text stamped on a small green plate, brass nameplate 农牛 mounted below the number
-- One large centered round headlight, plus two small marker lights
-- Red buffer beam with slatted cowcatcher below it; slightly upward-curving bull-horn coupler (牛角形车钩)
-- Cab located behind the short hood; walkway handrails along both sides; roof exhaust stack and radiator fans visible
-- Two three-axle bogies (Co-Co arrangement), weathered steel wheels
+机车（锁定设计 —— 所有后续场景必须与此一致）：
+- 短罩走廊式内燃机车（road-switcher），1965 年代中国设计、东风4型比例 —— 不是现代高铁，不是蒸汽机车
+- 深森林绿车体，风化锈橙色补丁与污渍流挂
+- 鼻端纯绿：无人字纹、无 V 形条纹、无任何白色斜纹
+- 鼻端：绿底白字「NF-5」小牌，其下方黄铜铭牌「耕牛 / 경우」（中文在上、韩文在下，样式同站牌雾峰/무봉 的双语规则）
+- 一盏居中大圆灯 + 两盏小标志灯
+- 红色缓冲梁，下方板条式排障器（牛栏）；微微上翘的牛角形车钩
+- 驾驶室位于短罩之后；两侧走台板与扶手；车顶可见排气筒与散热风扇
+- 两台三轴转向架（Co-Co 轴式），风化钢轮
 
-TEXT ON LOCOMOTIVE (exact only, no extra glyphs):
-- Nose plate: NF-5 (white on green)
-- Brass nameplate: 农牛
+车体文字（仅此两处，不得出现其他字形）：
+- 鼻端牌：NF-5（绿底白字）
+- 黄铜铭牌：耕牛 / 경우（中文+韩文双语）
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO STATION, NO SCENIC BACKGROUND — the locomotive only, isolated reference view.
+无人物、无人影、无角色、无车站、无风景背景 —— 仅机车，孤立参考视角。
 ```
 
 **生成后锁定动作**：
 1. 选型（比例正确、涂装贴 LOCKED DESIGN、文字可读）→ 存 `ExternalAssets/nf5_exterior_ref.png`
 2. 更新本节状态为 ✅ 已锁定，并把「一、通用规范 · 绘图前置」的 NF-5 锁定源从"旧图裁切"改为本图
 3. 下游提词（2.17 / 2.24 / 2.29）的挂图路径统一改为本图
-4. 若 `NF-5`/`农牛` 文字渲染不准：优先保证比例与涂装，字体问题后期修图或重 roll，不因文字放弃比例正确的候选
+4. 若 `NF-5`/`耕牛` 文字渲染不准：优先保证比例与涂装，字体问题后期修图或重 roll，不因文字放弃比例正确的候选
 
 ---
 
@@ -903,7 +903,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 small mountain railway station at sunset, wide establishing shot:
 
-SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof. On the facade: NO huge painted station name — instead a modest white enamel nameplate above the door reading 雾峰 in blue (small, normal station sign size), a glass-cased timetable board 「列车时刻表 列차시각표」 with yellowed paper and handwritten corrections, and a cork/felt propaganda notice board 「宣传栏 선전란」 with faded safety posters and a peeling notice about 雾峰村—矿区 route. Vertical sign by entrance door: 候车室 대기실. Foreground left: standard Chinese railway station nameplate on two posts — white rectangular plate, blue text, only the station name 雾峰 (large) and 무봉 (smaller below); NO words like 終點站, 始發站, or 종착역. Center platform: grey stone-slab platform (worn concrete slabs, NOT wooden planks), wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: NF-5 diesel locomotive "农牛" on single track facing viewer-front-left — deep forest green body, weathered with rust streaks, NO white chevron or V-stripe on the nose; plain green nose with white NF-5 text stamped on a green plate, brass 农牛 nameplate below the number, single large circular headlight centered, red buffer beam and slatted cowcatcher, two marker lights, short hood road-switcher profile (1965 Chinese diesel design, not a modern high-speed train). Exactly TWO brown-red freight cars coupled behind. Far right: tall rusty semaphore signal post with the arm locked horizontal in stop position, small white sign 停車 정지. Left foreground: old wooden telegraph pole with single lamp that is dark and unlit. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
+SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof. On the facade: NO huge painted station name — instead a modest white enamel nameplate above the door reading 雾峰 in blue (small, normal station sign size), a glass-cased timetable board 「列车时刻表 列차시각표」 with yellowed paper and handwritten corrections, and a cork/felt propaganda notice board 「宣传栏 선전란」 with faded safety posters and a peeling notice about 雾峰村—矿区 route. Vertical sign by entrance door: 候车室 대기실. Foreground left: standard Chinese railway station nameplate on two posts — white rectangular plate, blue text, only the station name 雾峰 (large) and 무봉 (smaller below); NO words like 終點站, 始發站, or 종착역. Center platform: grey stone-slab platform (worn concrete slabs, NOT wooden planks), wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: NF-5 diesel locomotive "耕牛" on single track facing viewer-front-left — deep forest green body, weathered with rust streaks, NO white chevron or V-stripe on the nose; plain green nose with white NF-5 text stamped on a green plate, brass nameplate reading 耕牛 / 경우 below the number, single large circular headlight centered, red buffer beam and slatted cowcatcher, two marker lights, short hood road-switcher profile (1965 Chinese diesel design, not a modern high-speed train). Exactly TWO brown-red freight cars coupled behind. Far right: tall rusty semaphore signal post with the arm locked horizontal in stop position, small white sign 停車 정지. Left foreground: old wooden telegraph pole with single lamp that is dark and unlit. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
 
 LAYOUT:
 - Left-center: brick station building with red tile roof, porch over entrance
@@ -917,7 +917,7 @@ LAYOUT:
 
 NF-5 LOCKED DESIGN (must match reference image):
 - Deep forest green, rust patches, NO white V-chevron on nose
-- Nose: white "NF-5" on green plate + brass 农牛 nameplate
+- Nose: white "NF-5" on green plate + brass nameplate 耕牛 / 경우
 - One large round headlight, red buffer beam, slatted cowcatcher
 - Short hood + cab road-switcher, walkway handrails
 - Weathered, 1965-era Chinese diesel locomotive
@@ -1190,8 +1190,8 @@ CHINESE RAILWAY ELEMENTS:
 - Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
 
 NF-5 LOCOMOTIVE (dominant left side) — 挂 `bg/station_sunset.png` 为 image reference，锁同一外构:
-- NF-5 农牛 diesel locomotive, deep forest green （森林绿） body with rust patches
-- Front: 「NF-5」stamped in white on green plate, 「农牛」nameplate in weathered brass
+- NF-5 耕牛 diesel locomotive, deep forest green （森林绿） body with rust patches
+- Front: 「NF-5」stamped in white on green plate, 「耕牛 / 경우」nameplate in weathered brass (Chinese + Korean bilingual)
 - NO white chevron / V-stripe on nose (与 station_sunset 锁定设计一致)
 - Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
 - Oil stains running down the green paint like dark veins
