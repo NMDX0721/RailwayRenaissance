@@ -25,6 +25,7 @@
 - [1.9 16表情差分图谱模板](#19-16表情差分图谱44网格铺满全画面)
 
 ### 二、场景背景
+- [2.0 前置 · NF-5 外构参考图](#20-前置--nf-5-外构参考图nf5_exterior_ref) 🟡 待生成
 - [2.1 实验室](#21-实验室智能调度系统实验室) 📦 已归档
 - [2.2 导师办公室](#22-导师办公室) 📦 已归档
 - [2.3 驾驶舱·白天](#23-驾驶舱白天0721号前舱) 📦 已归档
@@ -99,7 +100,7 @@
 
 - **工作流**：第1步生成主图（1024×1536，锁定面部/服装/光照）→ 第2步用主图作 image reference，只发一句增量表情提示，denoising 0.2-0.3（同服装/同姿势/同光照）
 - **设计文档引用原则**：设计文档不做去叙事化；本提词只给AI绘图用序号参考（§1.x / §2.x），不反向改写设定正文
-- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：NF-5 外构（station_sunset 旧图可裁切参考，站牌文字作废待重绘）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（重绘后锁定）。角色已有立绘的，CG 一律挂立绘不从零描述外貌
+- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：NF-5 外构（station_sunset 旧图可裁切参考，站牌文字作废待重绘；**独立前置提词已写 → §2.0**，生成后锁定源改为 `ExternalAssets/nf5_exterior_ref.png`）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（重绘后锁定）。角色已有立绘的，CG 一律挂立绘不从零描述外貌
 - **站牌文字规范**：只写站名，禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
 - **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
 - **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
@@ -678,6 +679,54 @@ AVOID:
 
 ---
 
+### 2.0 前置 · NF-5 外构参考图（nf5_exterior_ref）
+
+**文件**：`ExternalAssets/nf5_exterior_ref.png`（参考用图，不进 Resources，游戏不加载）
+**用途**：全部含 NF-5 场景/CG 的**外构锁定源**——先生成本图，后续 `station_sunset`、`depot_morning`、`platform_morning` 等一律挂它作 image reference，提词只写构图/光影/氛围。
+**状态**：🟡 提词已写，待生成（2026-09-25）；过渡期可暂用 `station_sunset` 旧图裁切。
+**前置**：现实**东风4型（DF4）货运内燃机车**照片 1–2 张（正前 3/4 角 + 侧视各一张），生成时作为附图挂入。
+
+**尺寸**：1536×1024（3:2，容纳 3/4 视角全车）
+
+**附图（现实参考图）用法**：
+1. 挂 1–2 张 DF4 照片作为 image reference / 参考图（Midjourney `--cref`/`--sref`、即梦/豆包参考图、Gemini 附图均可）
+2. 必须附加指令（防止抄现实涂装）：
+   `Use the photo ONLY as structural proportion reference (short hood, cab position, bogie spacing, headlight layout). Do NOT copy its livery, colors, or markings — livery is deep forest green as specified.`
+3. **只在本前置阶段挂现实照片**；下游场景一律改挂本参考图，不再挂照片（避免写实摄影风格串入像素画风）。
+
+**提示词（v1）**：
+```
+pixel art, vehicle reference sheet, STARDEW VALLEY STYLE PIXEL ART, clear pixels, 16-bit retro,
+
+NF-5 "Gengniu" diesel locomotive — exterior design reference:
+
+SCENE: A single diesel locomotive presented as a clean exterior reference sheet. Front three-quarter view (3/4) from the viewer's front-left, showing the nose, one full side, the roof and the underframe. Isolated on a flat solid dark neutral backdrop (dark slate grey), soft neutral floor shadow only. No environment, no railway scenery, no sky, no station, no foreground props.
+
+LOCOMOTIVE (LOCKED DESIGN — all future scenes must match this):
+- Short-hood road-switcher diesel locomotive, 1965-era Chinese design with DF4-era proportions — NOT a modern high-speed train, NOT a steam locomotive
+- Deep forest green body, weathered, with rust-orange patches and grime streaks
+- NO white chevron and NO V-stripe on the nose — plain green nose
+- Nose front: white "NF-5" text stamped on a small green plate, brass nameplate 农牛 mounted below the number
+- One large centered round headlight, plus two small marker lights
+- Red buffer beam with slatted cowcatcher below it; slightly upward-curving bull-horn coupler (牛角形车钩)
+- Cab located behind the short hood; walkway handrails along both sides; roof exhaust stack and radiator fans visible
+- Two three-axle bogies (Co-Co arrangement), weathered steel wheels
+
+TEXT ON LOCOMOTIVE (exact only, no extra glyphs):
+- Nose plate: NF-5 (white on green)
+- Brass nameplate: 农牛
+
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO STATION, NO SCENIC BACKGROUND — the locomotive only, isolated reference view.
+```
+
+**生成后锁定动作**：
+1. 选型（比例正确、涂装贴 LOCKED DESIGN、文字可读）→ 存 `ExternalAssets/nf5_exterior_ref.png`
+2. 更新本节状态为 ✅ 已锁定，并把「一、通用规范 · 绘图前置」的 NF-5 锁定源从"旧图裁切"改为本图
+3. 下游提词（2.17 / 2.24 / 2.29）的挂图路径统一改为本图
+4. 若 `NF-5`/`农牛` 文字渲染不准：优先保证比例与涂装，字体问题后期修图或重 roll，不因文字放弃比例正确的候选
+
+---
+
 ### 2.14 群山天空（mountain_sky）
 
 **文件**：`Resources/bg/mountain_sky.png`
@@ -841,7 +890,7 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure en
 **文件**：`Resources/bg/station_sunset.png`
 **用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5。
 **状态**：⚠️ 已生成但需重绘（2026-09-22）——成图 NF-5 外构可用，**站牌/墙面文字作废**；重绘后兼任 NF-5 前斜视 + 雾峰站前置参考。
-**前置**：NF-5 外构（可暂用旧图裁切）、雾峰站站牌样式（重绘锁定）
+**前置**：NF-5 外构（提词见 §2.0，生成后挂 `ExternalAssets/nf5_exterior_ref.png`；过渡期可暂用旧图裁切）、雾峰站站牌样式（重绘锁定）
 
 **站名/文字规范（2026-09-22）**：
 - 站牌只写站名「雾峰 / 무봉」，**禁止写「終點站」「종착역」「始发站」**——列车对开往返，终到只是车次方向，不写死在站牌上
