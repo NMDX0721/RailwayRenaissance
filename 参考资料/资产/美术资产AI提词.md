@@ -100,7 +100,7 @@
 
 - **工作流**：第1步生成主图（1024×1536，锁定面部/服装/光照）→ 第2步用主图作 image reference，只发一句增量表情提示，denoising 0.2-0.3（同服装/同姿势/同光照）
 - **设计文档引用原则**：设计文档不做去叙事化；本提词只给AI绘图用序号参考（§1.x / §2.x），不反向改写设定正文
-- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：**NF-5K 外构**（`ExternalAssets/nf5k_reference.png`，2026-09-28 定稿，朝鲜升级版）。NF-5 外构：已收并定性（`ExternalAssets/nf5_exterior_ref.png`＝朝控局涂装，世界观 §十三；提词 §2.0）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（重绘后锁定）。角色已有立绘的，CG 一律挂立绘不从零描述外貌
+- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：**NF-5K 外构**（`ExternalAssets/nf5k_reference.png`，2026-09-28 定稿，朝鲜升级版）。NF-5 外构：已收并定性（`ExternalAssets/nf5_exterior_ref.png`＝朝控局涂装，世界观 §十三；提词 §2.0）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（重绘后锁定）、**电力机车外构（新一代现役，提词待写）**。角色已有立绘的，CG 一律挂立绘不从零描述外貌
 - **站牌文字规范**：只写站名，禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
 - **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
 - **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
@@ -683,7 +683,7 @@ AVOID:
 
 **文件**：`ExternalAssets/nf5_exterior_ref.png`（参考用图，不进 Resources，游戏不加载）
 **用途**：全部含 NF-5 场景/CG 的**外构锁定源**——先生成本图，后续 `station_sunset`、`depot_morning`、`platform_morning` 等一律挂它作 image reference，提词只写构图/光影/氛围。
-**状态**：✅ 已收并定性（2026-09-28）→ `ExternalAssets/nf5_exterior_ref.png`（绿色版，1536×1024）——挂旗+标语**非画错**，＝「被朝鲜实控的中国铁路局」涂装（世界观 §十三）。**用法**：本图锁 **NF-5 原版外构**（耕牛/支线遗存/朝控存量挂旗车）；**现役 NF-5K 场景一律用 `ExternalAssets/nf5k_reference.png`（已锁）**。涂装按场景走——朝控场景直用，原局场景挂图时附加 `ignore the flag and propaganda, plain Chinese green livery` 指令，或按需另出纯净版；过渡期亦可用 `station_sunset` 旧图裁切。
+**状态**：✅ 已收并定性（2026-09-28）→ `ExternalAssets/nf5_exterior_ref.png`（绿色版，1536×1024）——挂旗+标语**非画错**，＝「被朝鲜实控的中国铁路局」涂装（世界观 §十三）。**用法**：本图锁 **NF-5 原版外构**（耕牛/支线遗存/朝控存量挂旗车）；**NF-5K（上代主力）场景用 `ExternalAssets/nf5k_reference.png`（已锁）**；**新一代电力机车场景另需前置（提词待写 → 待锁清单）**。涂装按场景走——朝控场景直用，原局场景挂图时附加 `ignore the flag and propaganda, plain Chinese green livery` 指令，或按需另出纯净版；过渡期亦可用 `station_sunset` 旧图裁切。
 **前置**：现实**东风4型（DF4）货运内燃机车**照片 1–2 张（正前 3/4 角 + 侧视各一张），生成时作为附图挂入。
 
 **尺寸**：1536×1024（3:2，容纳 3/4 视角全车）
