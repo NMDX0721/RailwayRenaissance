@@ -897,54 +897,56 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure en
 - 墙面**禁止巨型手写站名**；站房外墙用小型站名牌 + 宣传栏 + 玻璃橱窗时刻表
 - 站名统一「雾峰」（站牌/墙面），口语/剧本可写雾峰村站；勿混用「雾峰 — 終點站」
 
-**提示词（v3）**：
+**挂图**：生成时挂 `ExternalAssets/nf5_exterior_ref.png` 为 image reference，附加指令 `ignore the flag and propaganda, plain Chinese green livery`（雾峰站＝原局纯绿涂装，无旗）。
+
+**提示词（v4 · 中文版）**：
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small mountain railway station at sunset, wide establishing shot:
+像素风，2D 背景，1920x1080，16:9 画幅，
+星露谷风格像素画，清晰像素，
+黄昏山村小站，大全景构图：
 
-SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof. On the facade: NO huge painted station name — instead a modest white enamel nameplate above the door reading 雾峰 in blue (small, normal station sign size), a glass-cased timetable board 「列车时刻表 列차시각표」 with yellowed paper and handwritten corrections, and a cork/felt propaganda notice board 「宣传栏 선전란」 with faded safety posters and a peeling notice about 雾峰村—矿区 route. Vertical sign by entrance door: 候车室 대기실. Foreground left: standard Chinese railway station nameplate on two posts — white rectangular plate, blue text, only the station name 雾峰 (large) and 무봉 (smaller below); NO words like 終點站, 始發站, or 종착역. Center platform: grey stone-slab platform (worn concrete slabs, NOT wooden planks), wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: NF-5 diesel locomotive "耕牛" on single track facing viewer-front-left — deep forest green body, weathered with rust streaks, NO white chevron or V-stripe on the nose; plain green nose with white NF-5 text stamped on a green plate, brass nameplate reading 耕牛 / 경우 below the number, single large circular headlight centered, red buffer beam and slatted cowcatcher, two marker lights, short hood road-switcher profile (1965 Chinese diesel design, not a modern high-speed train). Exactly TWO brown-red freight cars coupled behind. Far right: tall rusty semaphore signal post with the arm locked horizontal in stop position, small white sign 停車 정지. Left foreground: old wooden telegraph pole with single lamp that is dark and unlit. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
+场景：黄昏时分的单站台山村小站。左侧：灰砖站房，红陶瓦屋顶。立面禁止巨型手写站名——只有门楣上方一块低调的白色搪瓷站名牌，蓝字「雾峰」（普通站牌尺寸）；一个玻璃橱窗时刻表「列车时刻表 列차시각표」（纸页泛黄，有手写改点）；一块软木/毛毡宣传栏「宣传栏 선전란」（贴着褪色安全标语和一张雾峰村—矿区线路的剥落告示）。入口门旁立式牌：候车室 대기실。前景左侧：双柱式标准中国铁路站牌——白色长方形牌面、蓝字，只写站名「雾峰」（大字）与下方「무봉」（小字）；不得出现「終點站」「始發站」「종착역」。中央站台：灰色石板站台（磨损混凝土板，非木板），木长椅上放着绿色保温壶和劳保手套；旁边一辆木行李推车，堆着麻袋。右侧：NF-5 柴油机车「耕牛」停在单线上，朝观众左前方——深森林绿车身，风化锈流痕；鼻端无白色人字纹、无 V 形条纹——纯绿鼻端，绿牌白字「NF-5」，其下方黄铜铭牌「耕牛 / 경우」；单盏居中大圆灯，红色缓冲梁，板条排障器，两盏标志灯；短罩走廊式布局——1965 年中国柴油机车设计，不是现代高铁。车后恰好挂两节棕红色货车。最右：高耸锈蚀的臂板信号机，臂板锁在水平停车位，白色小牌「停車 정지」。左前景：老式木电线杆，单盏灯，灯是灭的。站台边缘长满黄色野花与绿草，站台中央打扫干净。背景：层叠蓝紫色山影压在橙粉色晚霞下，散着紫色碎云；暖金色光从左侧射入，拉出长影。
 
-LAYOUT:
-- Left-center: brick station building with red tile roof, porch over entrance
-- Building facade: small enamel nameplate 雾峰 above door + glass timetable case + 宣传栏 notice board (NO giant wall characters)
-- Foreground left: standard nameplate 雾峰 / 무봉 on two posts (name only, no 終點站)
-- Center: stone-slab platform edge with bench, luggage cart
-- Right: NF-5 locomotive on track, exactly two freight cars behind
-- Far right: rusty semaphore signal post with stop sign
-- Left edge: telegraph pole with dark unlit lamp
-- Background: layered mountains + sunset sky
+布局：
+- 中左：红瓦灰砖站房，门廊罩着入口
+- 站房立面：门上方小搪瓷站牌「雾峰」+ 玻璃时刻表橱窗 + 宣传栏（无巨型墙字）
+- 前景左：双柱标准站牌「雾峰 / 무봉」（只写站名，无終點站）
+- 中央：石板站台边缘，长椅、行李推车
+- 右：轨道上的 NF-5 机车，车后恰好两节货车
+- 最右：锈蚀臂板信号机 + 停车牌
+- 左缘：电线杆，灯不亮
+- 背景：层叠山影 + 晚霞
 
-NF-5 LOCKED DESIGN (must match reference image):
-- Deep forest green, rust patches, NO white V-chevron on nose
-- Nose: white "NF-5" on green plate + brass nameplate 耕牛 / 경우
-- One large round headlight, red buffer beam, slatted cowcatcher
-- Short hood + cab road-switcher, walkway handrails
-- Weathered, 1965-era Chinese diesel locomotive
+NF-5 锁定设计（必须与参考图一致）：
+- 深森林绿，锈补丁，鼻端无白色 V 形纹
+- 鼻端：绿牌白字「NF-5」+ 黄铜铭牌「耕牛 / 경우」
+- 单盏大圆灯，红色缓冲梁，板条排障器
+- 短罩+驾驶室走廊式，走台扶手
+- 风化，1965 年代中国柴油机车
 
-COLORS:
-- Building: grey-red brick, red terracotta roof tiles
-- Locomotive: deep forest green with rust, red buffer beam, brass nameplate
-- Nameplate: white plate with blue Chinese text (name only)
-- Timetable case: glass reflection, yellowed paper inside
-- Sky: vivid orange-pink sunset with purple cloud accents
-- Mountains: layered blue-purple to deep indigo
-- Platform: worn grey stone/concrete slabs
-- Vegetation: yellow wildflowers, green weeds
-- Bench: weathered brown wood, green thermos
+色彩：
+- 站房：灰红砖，红陶瓦屋顶
+- 机车：深森林绿带锈，红色缓冲梁，黄铜铭牌
+- 站牌：白底蓝字（只写站名）
+- 时刻表橱窗：玻璃反光，内页泛黄
+- 天空：橙粉晚霞，紫色云彩点缀
+- 山：蓝紫层叠至深靛
+- 站台：磨损灰石板/混凝土
+- 植被：黄色野花，绿草
+- 长椅：风化棕木，绿色保温壶
 
-TEXT ON SIGNS (exact only, no extra glyphs):
-- Above door enamel plate: 雾峰 (blue on white, modest size)
-- Platform nameplate: 雾峰 (large blue) / 무봉 (smaller blue) — station name ONLY
-- Glass case: 列车时刻表 列차시각표
-- Notice board: 宣传栏 선전란 + small faded notices
-- Near door: 候车室 대기실 vertical
-- Signal post: 停車 정지
-- FORBIDDEN text: 終點站 / 종착역 / 始發 / giant hand-painted wall name
+文字（仅限以下，不得有多余字形）：
+- 门楣搪瓷牌：雾峰（白底蓝字，低调尺寸）
+- 站台站牌：雾峰（大蓝字）/ 무봉（小蓝字）——只写站名
+- 玻璃橱窗：列车时刻表 列차시각표
+- 宣传栏：宣传栏 선전란 + 少量褪色小告示
+- 门旁：候车室 대기실（立式）
+- 信号机：停車 정지
+- 禁止文字：終點站 / 종착역 / 始發 / 巨型手写墙面站名
 
-MOOD: Quiet mountain station at golden hour. Empty platform, warm light, long shadows.
+氛围：黄金时刻的寂静山村小站。空站台，暖光，长影。
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO AIRCRAFT — pure environment background; the NF-5 locomotive and freight cars are intentional.
+无人物、无人、无角色、无飞行器——纯环境背景；NF-5 机车与两节货车为有意保留。
 ```
 
 ---
@@ -1671,7 +1673,7 @@ Description: A piano plays alone in a room that hasn't been opened in years. The
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Ambient piano lo-fi warmth nostalgic instrumental, bittersweet loss with hope leaking through cracks, solo slightly detuned upright piano with felt dampers soft muffled tone, gentle cello drone barely audible underneath, distant music box playing 3-4 fragile notes on repeat, ambient pad like morning fog through broken windows, slow 56 BPM unhurried walking pace, reference To the Moon opening Stardew Valley winter Joe Hisaishi, piano alone in abandoned room notes aged like clock lost minutes, soft string pad enters as warm shadow, cello holds low note like wind through empty station, music box repeats as if wound up and walked away decades ago, ends mid-thought mid-memory unfinished like fading photograph, sound of railway station where last train left twenty years ago, reverb like empty hall, gentle fade to silence, instrumental no vocals
+> Style: Ambient piano lo-fi warmth nostalgic instrumental in D minor, bittersweet loss with hope leaking through cracks, solo slightly detuned upright piano felt dampers soft muffled tone half-pedal sustain notes bleeding together, gentle cello drone barely audible underneath, distant music box playing 3-4 fragile notes on repeat, ambient pad like morning mist through broken windows, slow 56 BPM unhurried walking pace gentle rubato never metronomic, reference To the Moon Stardew Valley winter Joe Hisaishi One Summer's Day, piano alone in abandoned room notes aged like clock lost minutes, cello holds long low note like wind through empty station, music box repeats as if wound up and walked away decades ago, sparse verse structure breathing spaces between phrases, emotional arc quiet acceptance to fragile hope then back to stillness, ends mid-thought mid-memory unfinished fading photograph, reverb like empty hall, gentle fade to silence, instrumental no vocals
 
 **时长**：3:30（循环用，尾部渐弱可无缝loop） | **生成策略**：1次30s片段 → Extend 5-6次至全长
 
@@ -1688,7 +1690,7 @@ Description: A warm, emotional piano piece with gentle string accompaniment. The
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Emotional piano cinematic strings warm instrumental, heartwarming touching hopeful reunion mood, piano with gentle repeating left-hand arpeggios right-hand melody rising and falling like heartfelt conversation, string ensemble enters at 20s as warm shadow underneath, soft French horn adds depth at 45s playing counter-melody, moderate 70 BPM with slight rubato breathing room, reference Stardew Valley dance theme Studio Ghibli Hisaishi warm scores, arrangement builds from solo piano to small chamber ensemble, strings swell gently supporting melody never overpowering, light brushed percussion at midpoint adds gentle pulse, emotional arc from quiet recognition to full warmth then settles back to intimate piano ending, reverb like small room with wooden walls, nostalgic but forward-looking, ends on resolved major chord with lingering warmth, instrumental no vocals
+> Style: Emotional piano cinematic strings warm instrumental in G major, heartwarming touching hopeful reunion mood, solo piano melody rising gently over two octaves like arms opening wide, legato phrasing with soft pedal warmth in upper register, gentle repeating left-hand arpeggios right-hand melody like heartfelt conversation, string ensemble enters at 20s sustained warm shadow underneath, viola and cello weave countermelody beneath piano, soft French horn adds golden warmth at 45s counter-melody, moderate 70 BPM with slight rubato breathing room at emotional peaks, brief ritardando at climax returning to original tempo, reference Stardew Valley dance theme Studio Ghibli Hisaishi warm scores, arrangement builds from solo piano to chamber ensemble, outro thinning back to solo piano final notes hanging like unshed tears, reverb like small room with wooden walls, nostalgic forward-looking, ends resolved major chord lingering warmth, instrumental no vocals
 
 **时长**：3:30（循环用） | **生成策略**：1次30s片段 → Extend 5-6次至全长
 
@@ -1707,7 +1709,7 @@ Description: Two piano notes, hesitant, like a question asked into an empty room
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Cinematic orchestral build bittersweet heroic instrumental, determined not triumphant moment you decide to fight, solo piano two hesitant notes like question into empty room, sustained cello enters reluctant but steady, French horn midpoint quiet confidence not power, full strings end wide like opening curtains, gradual build 58 to 85 BPM across 90 seconds, reference Interstellar docking Your Name departure Wind Rises finale, cello answers like old friend sitting without speaking, French horn plays melody waiting patiently, strings arrive like dawn seeping through window, peaks with width not volume then pulls back to piano same two notes different now, sound of man deciding repair locomotive with no money parts guarantee, reverb mountain valley, ends unresolved hanging in air, instrumental no vocals
+> Style: Cinematic orchestral build bittersweet heroic instrumental in E minor, determined not triumphant moment you decide to fight, solo piano two hesitant notes like question into empty room, sustained cello enters reluctant but steady with slow bowed sustain, French horn midpoint quiet confidence muted then opening warm brass, full strings end wide like opening curtains, gradual build 58 to 85 BPM across 90 seconds, reference Interstellar docking Your Name departure Wind Rises finale, cello answers like old friend sitting without speaking, French horn plays melody waiting patiently, strings arrive like dawn seeping through window gradually, minor to major harmonic shift at emotional turning point, peaks with width not volume then pulls back to piano same two notes now different, sound of man deciding repair locomotive with no money parts guarantee, outro resolves sustained chord fading like breath released, reverb mountain valley, ends unresolved hanging in air, instrumental no vocals
 
 ### 3.4 morning（清晨·宁静）
 
@@ -1722,7 +1724,7 @@ Description: A gentle, fresh morning piece with acoustic guitar and soft flute. 
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Acoustic folk calm morning gentle instrumental, peaceful fresh optimistic new day mood, fingerpicked acoustic guitar carrying simple repeating melody like birdsong, soft flute enters at 20s with gentle counter-melody floating above, light brush percussion adding subtle pulse at 30s, piano joins at midpoint with warm chord pad, slow to moderate 65 BPM unhurried sunrise pace, reference Stardew Valley spring theme Animal Crossing morning music Hisaishi My Neighbor Totoro morning, arrangement builds from solo guitar to gentle quartet then settles back, reverb like open valley with morning mist, each instrument enters like different bird species waking up, sound of new day beginning in small mountain village, warm and hopeful never urgent, ends on sustained major chord fading into nature silence, instrumental no vocals
+> Style: Acoustic folk calm morning gentle instrumental in C major, peaceful fresh optimistic new day mood, fingerpicked acoustic guitar simple repeating melody like birdsong alternating bass thumb pattern, soft flute enters 20s gentle counter-melody floating above like wind through pine trees, light brush percussion adding subtle pulse 30s soft shaker texture, piano joins midpoint warm chord voicings sustain pedal creating harmonic bed, slow to moderate 65 BPM unhurried sunrise pace, reference Stardew Valley spring theme Animal Crossing morning music Hisaishi My Neighbor Totoro morning, arrangement builds solo guitar to gentle quartet then settles back, brief pause at bridge like taking deep breath before day, each instrument enters like different bird species waking up one by one, reverb open valley morning mist, sound of new day beginning small mountain village, warm hopeful never urgent, ends sustained major chord fading nature silence, instrumental no vocals
 
 ### 3.5 warm（温暖·安心）
 
@@ -1737,7 +1739,7 @@ Description: A warm, cozy acoustic piece that feels like sitting by a fireplace 
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Cozy folk warm acoustic comforting instrumental, safe warm homely fireplace mood, fingerpicked acoustic guitar playing simple 4-bar loop that never develops like daily routine, soft piano enters every 8 bars playing 2-3 notes then retreating, gentle upright bass provides warm foundation underneath, moderate 75 BPM like someone walking without destination, reference Stardew Valley summer theme fireplace ambient Hisaishi Kiki delivery service warmth, arrangement like small room with wooden walls and crackling fire, no dramatic changes just steady comfort, reverb like station waiting room with old wooden benches, wind chime occasionally catches breeze outside window, guitar tone warm and slightly worn like instrument played for years, ends on same comfortable loop fading gently, sound of community gathering where everyone knows each other names, instrumental no vocals
+> Style: Cozy folk warm acoustic comforting instrumental in A major, safe warm homely fireplace mood, fingerpicked acoustic guitar simple 4-bar loop never develops like daily routine, soft piano enters every 8 bars playing 2-3 notes then retreating, gentle upright bass warm foundation underneath, occasional soft violin harmony color like embers glowing in fireplace, moderate 75 BPM heartbeat tempo steady and unhurried, reference Stardew Valley summer theme fireplace ambient Hisaishi Kiki delivery service warmth, arrangement like small room wooden walls crackling fire, no dramatic changes just steady comfort throughout, reverb station waiting room old wooden benches, wind chime occasionally catches breeze outside window, guitar tone warm slightly worn like played for years by old friend, breathes naturally comfortable silence between phrases, ends same comfortable loop fading gently, sound of community gathering everyone knows each other names, instrumental no vocals
 
 ### 3.6 news（新闻播报）
 
