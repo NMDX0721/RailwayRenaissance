@@ -67,6 +67,14 @@ public class GameMainUI : MonoBehaviour
                 return;
             }
         }
+        if (Instance != null)
+        {
+            // 显示即同步时钟（此路径不经过 ShowLockScreen）
+            var now = System.DateTime.Now.ToString("HH:mm");
+            var lc = Instance.lockScreen?.Q<Label>("lock-clock");
+            if (lc != null) lc.text = now;
+            if (Instance.statusClock != null) Instance.statusClock.text = now;
+        }
         // 每次进入从锁屏开始（首次进入体验扫脸）
         if (Instance.lockScreen != null && !Instance.unlocked)
             Instance.lockScreen.style.display = DisplayStyle.Flex;
@@ -947,6 +955,9 @@ public class GameMainUI : MonoBehaviour
         subTitle.style.unityFontDefinition = Fd();
         win.Add(subTitle);
 
+        // 复古画风开关（低分辨率背景 bg_low/，PlayerPrefs 驱动 BackgroundManager 选目录）
+        win.Add(BuildRetroStyleRow());
+
         var row1 = BuildSettingRow("备份与恢复", "本地备份 / 云备份", ShowBackupRestorePage);
         win.Add(row1);
 
@@ -956,6 +967,48 @@ public class GameMainUI : MonoBehaviour
         // 系统管控彩蛋入口：隐藏条目，只有知道的人才会点
         var row3 = BuildSettingRow("应用管理", "已禁用的系统应用（4个）", ShowAppManagementPage);
         win.Add(row3);
+    }
+
+    /// <summary>复古画风（低颗粒）开关行：点击切换 PlayerPrefs("RetroLowResBG")，就地更新状态文字。</summary>
+    private VisualElement BuildRetroStyleRow()
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.SpaceBetween;
+        row.style.alignItems = Align.Center;
+        row.style.backgroundColor = GlassBgSoft;
+        row.style.borderTopLeftRadius = 8; row.style.borderTopRightRadius = 8;
+        row.style.borderBottomLeftRadius = 8; row.style.borderBottomRightRadius = 8;
+        row.style.paddingLeft = 16; row.style.paddingRight = 16;
+        row.style.paddingTop = 12; row.style.paddingBottom = 12;
+        row.style.marginTop = 8;
+        row.pickingMode = PickingMode.Position;
+
+        var left = new Label("复古画风");
+        left.style.fontSize = 17;
+        left.style.color = GlassText;
+        left.style.unityFontDefinition = Fd();
+        row.Add(left);
+
+        bool on = PlayerPrefs.GetInt("RetroLowResBG", 0) == 1;
+        var right = new Label(on ? "已开启 · 低分辨率背景" : "已关闭 · 原始高清背景");
+        right.style.fontSize = 13;
+        right.style.color = on ? new Color(1f, 0.86f, 0.59f, 0.95f) : GlassTextDim;
+        right.style.unityFontDefinition = Fd();
+        row.Add(right);
+
+        row.RegisterCallback<ClickEvent>(_ =>
+        {
+            bool nowOn = PlayerPrefs.GetInt("RetroLowResBG", 0) != 1;
+            PlayerPrefs.SetInt("RetroLowResBG", nowOn ? 1 : 0);
+            PlayerPrefs.Save();
+            right.text = nowOn ? "已开启 · 低分辨率背景" : "已关闭 · 原始高清背景";
+            right.style.color = nowOn ? new Color(1f, 0.86f, 0.59f, 0.95f) : GlassTextDim;
+            ShowBackupToast(nowOn ? "复古画风已开启，下次进入剧情生效" : "已恢复原始高清背景");
+        });
+        row.RegisterCallback<PointerEnterEvent>(_ => row.style.backgroundColor = GlassBgHover);
+        row.RegisterCallback<PointerLeaveEvent>(_ => row.style.backgroundColor = GlassBgSoft);
+        return row;
     }
 
     private VisualElement BuildSettingRow(string title, string desc, System.Action onClick)

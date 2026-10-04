@@ -548,8 +548,8 @@ public class VNManager : MonoBehaviour
             var btn = new UnityEngine.UIElements.Button(() => itemAction());
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 24;
-            iconLabel.style.height = 24;
+            iconLabel.style.width = 30;
+            iconLabel.style.height = 30;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -2127,8 +2127,9 @@ public class VNManager : MonoBehaviour
         // 底部剧情进度条：当前句/全本句数（所有推进路径都汇聚到这里，单点刷新）
         UpdateProgress();
 
-        // 切换对话时始终隐藏 boot screen，boot 类型会在下面重新显示
+        // 切换对话时始终隐藏 boot screen，boot 类型会在下面重新显示；CG 同理（cg 句会重新显示）
         HideBootScreen();
+        HideCgScreen();
         HideLocationCard();
 
         // Check condition - skip this entry if condition not met
