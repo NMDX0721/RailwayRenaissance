@@ -15,6 +15,10 @@ public class DialogueBox : MonoBehaviour
     private VisualElement phoneBar;
     private Label phoneLabel;
     private VisualElement progressBar;
+    /// <summary>进度条 seek 回调：参数为轨道比例 0~1（点击/拖动均触发）。</summary>
+    public System.Action<float> OnProgressSeek;
+    /// <summary>进度条拖动状态（true=按下拖动中）——用于抑制期间的日期地点卡。</summary>
+    public System.Action<bool> OnProgressDragChanged;
     private VisualElement progressThumb;
     private TypewriterEffect typewriterEffect;
     private Font gameFont;
@@ -140,6 +144,7 @@ public class DialogueBox : MonoBehaviour
         phoneBar.Add(phoneLabel);
 
         // 底部剧情进度条：细线轨道 + 米色滑块 + 两端箭头（贴屏幕最底，随对话框显隐）
+        // 支持：在已解锁进度内拖动/点击轨道跳转（回调 VNManager 反查句索引）
         progressBar = new VisualElement { name = "progress-bar" };
         progressBar.style.position = Position.Absolute;
         progressBar.style.left = 16;
@@ -148,7 +153,7 @@ public class DialogueBox : MonoBehaviour
         progressBar.style.height = 10;
         progressBar.style.flexDirection = FlexDirection.Row;
         progressBar.style.alignItems = Align.Center;
-        progressBar.pickingMode = PickingMode.Ignore;
+        progressBar.pickingMode = PickingMode.Position;
         progressBar.style.display = DisplayStyle.None;
         root.Add(progressBar);
 
@@ -170,7 +175,42 @@ public class DialogueBox : MonoBehaviour
         track.style.borderBottomLeftRadius = 2;
         track.style.borderBottomRightRadius = 2;
         track.style.position = Position.Relative;
+        track.pickingMode = PickingMode.Position;
         progressBar.Add(track);
+
+        // 点击/拖动 → 回调（挂在整个进度条上：track 仅 3px 高难点中；已解锁判定在 VNManager 侧）
+        // OnProgressDragChanged(true/false) 抑制拖动期间的日期地点卡反复弹出
+        progressBar.RegisterCallback<PointerDownEvent>(e =>
+        {
+            OnProgressDragChanged?.Invoke(true);
+            SeekAtPointer(e.localPosition.x);
+            progressBar.CapturePointer(e.pointerId);
+            e.StopImmediatePropagation();
+        });
+        progressBar.RegisterCallback<PointerMoveEvent>(e =>
+        {
+            if (progressBar.HasPointerCapture(e.pointerId)) SeekAtPointer(e.localPosition.x);
+        });
+        progressBar.RegisterCallback<PointerUpEvent>(e =>
+        {
+            if (progressBar.HasPointerCapture(e.pointerId)) progressBar.ReleasePointer(e.pointerId);
+            OnProgressDragChanged?.Invoke(false);
+            e.StopImmediatePropagation();
+        });
+        progressBar.RegisterCallback<PointerCaptureOutEvent>(e => OnProgressDragChanged?.Invoke(false));
+        progressBar.RegisterCallback<ClickEvent>(e => e.StopImmediatePropagation());
+        // 可交互：悬停切换手型
+        progressBar.RegisterCallback<PointerEnterEvent>(e => UiCursor.ShowHand());
+        progressBar.RegisterCallback<PointerLeaveEvent>(e => UiCursor.ShowArrow());
+
+        void SeekAtPointer(float xInBar)
+        {
+            // 换算到轨道区域（扣掉两端箭头占位）
+            float xInTrack = xInBar - track.layout.x;
+            float w = track.contentRect.width;
+            if (w <= 0f) return;
+            OnProgressSeek?.Invoke(Mathf.Clamp01(xInTrack / w));
+        }
 
         progressThumb = new VisualElement { name = "progress-thumb" };
         progressThumb.style.position = Position.Absolute;
@@ -335,6 +375,13 @@ public class DialogueBox : MonoBehaviour
                 float cw = CharWidthEm(c) * fs;
                 if (lw + cw > limit && line.Length > 0)
                 {
+                    if (IsNoStart(c))
+                    {
+                        // 行首禁则：标点硬挤进当前行尾（宁可超宽一点点），绝不允许换到新行行首
+                        line.Append(c);
+                        lw += cw;
+                        continue;
+                    }
                     char last = line[line.Length - 1];
                     if (IsNoEnd(last))
                     {
@@ -352,7 +399,6 @@ public class DialogueBox : MonoBehaviour
                         line.Length = 0;
                         lw = 0f;
                     }
-                    if (IsNoStart(c)) { line.Append(c); lw += cw; continue; }
                 }
                 line.Append(c);
                 lw += cw;

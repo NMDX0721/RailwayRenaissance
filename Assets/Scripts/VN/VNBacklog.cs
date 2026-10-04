@@ -157,10 +157,262 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.style.paddingTop = 20;
         backlogScroll.style.paddingBottom = 20;
         backlogPanel.Add(backlogScroll);
-        StyleBacklogScrollbar(backlogScroll);
+        BuildCustomScrollbar(); // 自绘滚动条（隐藏原生）
     }
 
-    /// <summary>把 UI Toolkit 原生滚动条刷成金色主题：快路径按名直查 + 遍历兜底，不依赖 USS 内部名。</summary>
+    // ================= 自绘滚动条（Unity 6 原生滚动条无法主题化：隐藏原生，自画轨道/滑块/箭头） =================
+    private VisualElement sbTrack, sbThumb, sbUp, sbDown;
+    private IVisualElementScheduledItem sbSync;
+    private bool sbDragging;
+    private float sbGrabDelta;
+
+    private void BuildCustomScrollbar()
+    {
+        // 隐藏原生滚动条（Unity 6 公开 API + 打开时再强杀一次，双保险）
+        backlogScroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+        backlogScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+
+        sbUp = MakeSbArrow(true);
+        sbDown = MakeSbArrow(false);
+
+        // —— 主题化轨道＝铁轨：16px 宽、2px 亮金边框、内部程序纹理（两条钢轨+枕木横纹 Repeat）——
+        sbTrack = new VisualElement { name = "sb-track" };
+        sbTrack.style.position = Position.Absolute;
+        sbTrack.style.width = 16;
+        sbTrack.style.backgroundColor = new Color(0.28f, 0.18f, 0.11f, 1f); // 木棕底（纹理兜底）
+        sbTrack.style.backgroundImage = new StyleBackground(MakeRailTexture());
+        sbTrack.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
+        sbTrack.style.backgroundSize = new BackgroundSize(16, 16);
+        sbTrack.style.borderTopWidth = 2; sbTrack.style.borderBottomWidth = 2;
+        sbTrack.style.borderLeftWidth = 2; sbTrack.style.borderRightWidth = 2;
+        var edge = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        sbTrack.style.borderTopColor = edge; sbTrack.style.borderBottomColor = edge;
+        sbTrack.style.borderLeftColor = edge; sbTrack.style.borderRightColor = edge;
+        sbTrack.style.borderTopLeftRadius = 8; sbTrack.style.borderTopRightRadius = 8;
+        sbTrack.style.borderBottomLeftRadius = 8; sbTrack.style.borderBottomRightRadius = 8;
+        sbTrack.style.paddingLeft = 2; sbTrack.style.paddingRight = 2;
+        sbTrack.style.paddingTop = 2; sbTrack.style.paddingBottom = 2;
+        sbTrack.style.overflow = Overflow.Hidden;
+
+        // —— 主题化滑块：比轨道内缩、亮金实心、1px 暗金内边、三条防滑纹 ——
+        sbThumb = new VisualElement { name = "sb-thumb" };
+        sbThumb.style.position = Position.Absolute;
+        sbThumb.style.left = 2; sbThumb.style.right = 2;
+        sbThumb.style.backgroundColor = new Color(0.95f, 0.8f, 0.5f, 1f);
+        sbThumb.style.borderTopWidth = 1; sbThumb.style.borderBottomWidth = 1;
+        sbThumb.style.borderLeftWidth = 1; sbThumb.style.borderRightWidth = 1;
+        sbThumb.style.borderTopColor = new Color(1f, 0.96f, 0.85f, 1f);   // 顶部高光＝车厢金属顶
+        sbThumb.style.borderBottomColor = new Color(0.55f, 0.38f, 0.18f, 1f);
+        sbThumb.style.borderLeftColor = new Color(0.55f, 0.38f, 0.18f, 1f);
+        sbThumb.style.borderRightColor = new Color(0.55f, 0.38f, 0.18f, 1f);
+        sbThumb.style.borderTopLeftRadius = 6; sbThumb.style.borderTopRightRadius = 6;
+        sbThumb.style.borderBottomLeftRadius = 6; sbThumb.style.borderBottomRightRadius = 6;
+        // 防滑纹：三条暗金横线（滑块中部）
+        for (int i = -1; i <= 1; i++)
+        {
+            var groove = new VisualElement();
+            groove.style.position = Position.Absolute;
+            groove.style.height = 1;
+            groove.style.left = 4; groove.style.right = 4;
+            groove.style.top = new Length(50, LengthUnit.Percent);
+            groove.style.translate = new Translate(0, i * 4);
+            groove.style.backgroundColor = new Color(0.6f, 0.42f, 0.2f, 0.7f);
+            groove.pickingMode = PickingMode.Ignore;
+            sbThumb.Add(groove);
+        }
+        sbTrack.Add(sbThumb);
+
+        backlogPanel.Add(sbUp);
+        backlogPanel.Add(sbTrack);
+        backlogPanel.Add(sbDown);
+
+        // 可交互：悬停切换手型（轨道/箭头/滑块统一）
+        foreach (var h in new[] { sbTrack, sbUp, sbDown })
+        {
+            h.RegisterCallback<PointerEnterEvent>(e => UiCursor.ShowHand());
+            h.RegisterCallback<PointerLeaveEvent>(e => UiCursor.ShowArrow());
+        }
+
+        // 拖拽/点击统一在 track 上处理（thumb 冒泡上来，localPosition 相对 track）
+        sbTrack.RegisterCallback<PointerDownEvent>(e =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            e.StopImmediatePropagation();
+            float y = e.localPosition.y;
+            float thumbTop = sbThumb.layout.y, thumbH = sbThumb.layout.height;
+            if (y >= thumbTop && y <= thumbTop + thumbH)
+            {
+                sbDragging = true;
+                sbGrabDelta = y - thumbTop;
+            }
+            else
+            {
+                SbJumpTo(y); // 点轨道空白：跳转
+            }
+            sbTrack.CapturePointer(e.pointerId);
+        });
+        sbTrack.RegisterCallback<PointerMoveEvent>(e =>
+        {
+            if (!sbDragging) return;
+            SbSetThumbTop(e.localPosition.y - sbGrabDelta);
+        });
+        sbTrack.RegisterCallback<PointerUpEvent>(e =>
+        {
+            sbDragging = false;
+            if (sbTrack.HasPointerCapture(e.pointerId)) sbTrack.ReleasePointer(e.pointerId);
+        });
+        sbTrack.RegisterCallback<PointerCaptureOutEvent>(e => { sbDragging = false; });
+    }
+
+    private VisualElement MakeSbArrow(bool up)
+    {
+        var b = new VisualElement { name = up ? "sb-up" : "sb-down" };
+        b.style.position = Position.Absolute;
+        // 主题尺寸：与轨道同宽 16、高 20，2px 金边圆角钮（菜单条按钮同语法）
+        b.style.width = 16; b.style.height = 20;
+        b.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.98f);
+        b.style.borderTopWidth = 2; b.style.borderBottomWidth = 2;
+        b.style.borderLeftWidth = 2; b.style.borderRightWidth = 2;
+        var edge = new Color(0.82f, 0.62f, 0.35f, 0.85f);
+        b.style.borderTopColor = edge; b.style.borderBottomColor = edge;
+        b.style.borderLeftColor = edge; b.style.borderRightColor = edge;
+        b.style.borderTopLeftRadius = 6; b.style.borderTopRightRadius = 6;
+        b.style.borderBottomLeftRadius = 6; b.style.borderBottomRightRadius = 6;
+        b.style.backgroundImage = new StyleBackground(MakeArrowTex(up));
+        b.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+        b.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+        b.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        b.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        b.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 1f);
+        b.RegisterCallback<PointerDownEvent>(e =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            e.StopImmediatePropagation();
+            SbScrollBy(up);
+        });
+        b.RegisterCallback<ClickEvent>(e =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            e.StopImmediatePropagation();
+        });
+        return b;
+    }
+
+    private void SbScrollBy(bool up)
+    {
+        float viewH = backlogScroll.contentRect.height;
+        float y = Mathf.Clamp(backlogScroll.scrollOffset.y + (up ? -0.5f : 0.5f) * viewH, 0f, SbMaxScroll());
+        backlogScroll.scrollOffset = new Vector2(0, y);
+        UpdateCustomScrollbar();
+    }
+
+    private float SbMaxScroll()
+    {
+        float viewH = backlogScroll.contentRect.height;
+        float contentH = ContentHeight();
+        return Mathf.Max(0f, contentH - viewH);
+    }
+
+    /// <summary>内容真实高度：取条目实际 layout 底边（contentContainer.layout 在 Unity 6 可能只返回可视高，估算会偏小）。</summary>
+    private float ContentHeight()
+    {
+        float maxBottom = 0f;
+        foreach (var c in backlogScroll.contentContainer.Children())
+        {
+            float b = c.layout.y + c.layout.height;
+            if (b > maxBottom) maxBottom = b;
+        }
+        return Mathf.Max(maxBottom, backlogScroll.contentContainer.layout.height);
+    }
+
+    /// <summary>打开面板时强杀原生滚动条：隐藏 ScrollView 下所有「不含内容容器」的直接分支（滚动条控件层）。</summary>
+    private void HideNativeScrollbars()
+    {
+        var cc = backlogScroll.contentContainer;
+        var snapshot = new List<VisualElement>();
+        foreach (var c in backlogScroll.Children()) snapshot.Add(c); // 手写快照：Children() 无 ToList（未引 Linq）
+        foreach (var c in snapshot)
+        {
+            if (ReferenceEquals(c, cc)) continue;
+            if (SubtreeContains(c, cc)) continue; // 包装了内容容器的层要保留
+            c.style.display = DisplayStyle.None;
+        }
+    }
+
+    private static bool SubtreeContains(VisualElement root, VisualElement target)
+    {
+        if (ReferenceEquals(root, target)) return true;
+        foreach (var c in root.Children())
+            if (SubtreeContains(c, target)) return true;
+        return false;
+    }
+
+    private void SbJumpTo(float trackY)
+    {
+        float trackH = sbTrack.contentRect.height;
+        float thumbH = Mathf.Max(28f, SbThumbHeight());
+        float usable = Mathf.Max(1f, trackH - thumbH);
+        float ratio = Mathf.Clamp01((trackY - thumbH * 0.5f) / usable);
+        backlogScroll.scrollOffset = new Vector2(0, ratio * SbMaxScroll());
+        UpdateCustomScrollbar();
+    }
+
+    private void SbSetThumbTop(float top)
+    {
+        float trackH = sbTrack.contentRect.height;
+        float thumbH = Mathf.Max(28f, SbThumbHeight());
+        float usable = Mathf.Max(1f, trackH - thumbH);
+        float ratio = Mathf.Clamp01(top / usable);
+        sbThumb.style.top = ratio * usable;
+        backlogScroll.scrollOffset = new Vector2(0, ratio * SbMaxScroll());
+    }
+
+    private float SbThumbHeight()
+    {
+        float viewH = backlogScroll.contentRect.height;
+        float contentH = backlogScroll.contentContainer.layout.height;
+        if (contentH <= 0f) return 9999f;
+        return sbTrack.contentRect.height * (viewH / contentH);
+    }
+
+    /// <summary>每帧同步：对齐 scroll 区域、按比例缩放/定位 thumb（打开期间 schedule 驱动）。</summary>
+    private void UpdateCustomScrollbar()
+    {
+        if (sbTrack == null || backlogScroll == null) return;
+        float sy = backlogScroll.layout.y;
+        float sh = backlogScroll.layout.height;
+        if (sh <= 0f) return;
+        // 钮 20 高 + 2 间隙：up(sy..sy+20) track(sy+22 .. sh-22) down(sy+sh-20..)
+        sbUp.style.top = sy;
+        sbTrack.style.top = sy + 22;
+        sbTrack.style.height = Mathf.Max(40f, sh - 44);
+        sbDown.style.top = sy + sh - 20;
+        sbUp.style.right = 4; sbTrack.style.right = 4; sbDown.style.right = 4;
+
+        if (sbDragging) return; // 拖拽中由指针驱动
+        float trackH = sbTrack.contentRect.height;
+        float maxScroll = SbMaxScroll();
+        bool overflowing = maxScroll > 1f;
+        // 内容没溢出就不显示滚动条（与原生行为一致；全金柱观感的根因）
+        var vis = overflowing ? DisplayStyle.Flex : DisplayStyle.None;
+        sbTrack.style.display = vis;
+        sbUp.style.display = vis;
+        sbDown.style.display = vis;
+        if (!overflowing) return;
+        float thumbH = Mathf.Min(Mathf.Max(SbThumbHeight(), 28f), trackH * 0.95f); // 封顶 95%，强制露出轨道层次
+        float ratio = Mathf.Clamp01(backlogScroll.scrollOffset.y / maxScroll);
+        if (!sbLogged)
+        {
+            sbLogged = true;
+            Debug.Log($"[SB sync] view={backlogScroll.contentRect.height:F0} content={backlogScroll.contentContainer.layout.height:F0} max={maxScroll:F0} thumb={thumbH:F0}/{trackH:F0}");
+        }
+        sbThumb.style.height = thumbH;
+        sbThumb.style.top = ratio * Mathf.Max(0f, trackH - thumbH);
+    }
+
+    private bool sbLogged; // 每次打开面板只记一次数值
+
+
     private static void StyleBacklogScrollbar(ScrollView scroll)
     {
         var track = new Color(0.12f, 0.08f, 0.05f, 0.9f);          // 轨道底
@@ -200,8 +452,8 @@ public class VNBacklog : MonoBehaviour
             e.style.marginRight = 2;
         }
 
-        // 上下箭头钮：10×16、深底金边；三角 glyph Label 刷金
-        void StyleArrowButton(VisualElement e)
+        // 上下箭头钮：深棕金边 + 自绘金三角贴图（覆盖 Unity 默认白三角 background）
+        void StyleArrowButton(VisualElement e, bool isUp)
         {
             e.style.width = 10;
             e.style.height = 16;
@@ -214,46 +466,150 @@ public class VNBacklog : MonoBehaviour
             e.style.borderBottomColor = trackEdge;
             e.style.borderLeftColor = trackEdge;
             e.style.borderRightColor = trackEdge;
-            foreach (var label in e.Query<Label>().ToList())
+            // 覆盖默认白三角贴图 → 自绘金色像素三角
+            e.style.backgroundImage = new StyleBackground(MakeArrowTex(isUp));
+            e.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            e.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+            e.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            e.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            e.style.unityBackgroundImageTintColor = glyphGold;
+        }
+
+        // 手写递归遍历整个 hierarchy（绕开 UQuery 的 contentContainer 语义——
+        // 滚动条挂在 ScrollView 本体层，Query()/Q() 可能整棵够不着，这就是样式一直没命中的根因）
+        var all = new System.Collections.Generic.List<VisualElement>();
+        var parents = new System.Collections.Generic.Dictionary<VisualElement, VisualElement>();
+        void Walk(VisualElement e, VisualElement p)
+        {
+            all.Add(e);
+            parents[e] = p;
+            foreach (var c in e.Children()) Walk(c, e);
+        }
+        Walk(scroll, null);
+
+        int hitSlider = 0, hitScroller = 0, hitBtn = 0, hitThumb = 0, hitArrow = 0;
+
+        // 1) 名字/class 子串分类（BEM 新旧命名都能被子串抓到）
+        foreach (var e in all)
+        {
+            var hay = (e.name ?? "") + "|" + string.Join("|", e.GetClasses());
+            var lower = hay.ToLowerInvariant();
+            if (lower.Contains("up-button")) { StyleArrowButton(e, true); hitArrow++; continue; }
+            if (lower.Contains("down-button")) { StyleArrowButton(e, false); hitArrow++; continue; }
+            if (lower.Contains("dragger") || lower.Contains("thumb")) { StyleThumb(e); hitThumb++; continue; }
+            if (lower.Contains("slider")) { StyleTrack(e); hitSlider++; continue; }
+            if (lower.Contains("scroller")) { hitScroller++; continue; } // 容器只计数，不着色（防重叠）
+        }
+
+        // 2) 类型兜底（完全不依赖命名）：Slider=轨道；Scroller 下的 Button=箭头（遍历序 up→down）
+        foreach (var e in all)
+        {
+            if (e is Slider && !e.ClassListContains("__sb_styled"))
             {
-                // 名字或文字带三角 glyph（▲▼△▽）的 Label 子元素
-                bool isGlyph = (label.name != null && label.name.IndexOfAny(new[] { '▲', '▼', '△', '▽' }) >= 0)
-                            || (label.text != null && label.text.IndexOfAny(new[] { '▲', '▼', '△', '▽' }) >= 0);
-                if (isGlyph)
-                    label.style.color = glyphGold;
+                StyleTrack(e);
+                e.AddToClassList("__sb_styled");
+                hitSlider++;
+            }
+        }
+        var scrollers = new System.Collections.Generic.List<Scroller>();
+        foreach (var e in all) if (e is Scroller sc && !sc.ClassListContains("__sb_sc")) { scrollers.Add(sc); sc.AddToClassList("__sb_sc"); hitScroller++; }
+        foreach (var sc in scrollers)
+        {
+            int idx = 0;
+            foreach (var e in all)
+            {
+                if (e is Button && IsUnder(e, sc, parents))
+                {
+                    StyleArrowButton(e, idx == 0); // Unity uxml 顺序：up 在前 down 在后
+                    idx++;
+                    hitBtn++;
+                }
             }
         }
 
-        // 按 name 分类（arrow 优先，避免被 slider/scroller 误吞）
-        bool Classify(VisualElement e)
+        // 诊断日志：每次调用都打一行（共三次：Init 构造 / 打开面板 / 50ms 布局后），详表只打一次
+        Debug.Log($"[Backlog SB] pass all={all.Count} sliderHit={hitSlider} scrollerHit={hitScroller} btnHit={hitBtn} thumbHit={hitThumb} arrowHit={hitArrow}");
+        if (all.Count > 1 && !_sbLogDone)
         {
-            var n = e.name;
-            if (string.IsNullOrEmpty(n)) return false;
-            var lower = n.ToLowerInvariant();
-            if (lower.Contains("up-button") || lower.Contains("down-button")) { StyleArrowButton(e); return true; }
-            if (lower.Contains("dragger") || lower.Contains("thumb")) { StyleThumb(e); return true; }
-            if (lower.Contains("slider") || lower.Contains("scroller")) { StyleTrack(e); return true; }
-            return false;
+            _sbLogDone = true;
+            foreach (var e in all)
+            {
+                var hay = (e.name ?? "") + "|" + string.Join("|", e.GetClasses());
+                var lower = hay.ToLowerInvariant();
+                if (lower.Contains("scroll") || lower.Contains("slider") || lower.Contains("dragger") ||
+                    lower.Contains("button") || lower.Contains("thumb") || e is Scroller || e is Slider)
+                {
+                    Debug.Log($"[Backlog SB] {e.GetType().Name} name='{e.name}' classes='{string.Join(" ", e.GetClasses())}'");
+                }
+            }
         }
+    }
 
-        // 快路径：按常见 USS 内部名直查
-        var slider = scroll.Q<Slider>("unity-scrollview-vertical-slider")
-                  ?? scroll.Q<Slider>("unity-scroll-view-vertical-slider");
-        if (slider != null) StyleTrack(slider);
-        var dragger = scroll.Q("unity-dragger") ?? scroll.Q("unity-thumb");
-        if (dragger != null) StyleThumb(dragger);
-        var scroller = scroll.Q<Scroller>("unity-scrollview-vertical-scroller")
-                    ?? scroll.Q<Scroller>("unity-scroll-view-vertical-scroller");
-        if (scroller != null) StyleTrack(scroller);
-        foreach (var btnName in new[] { "unity-up-button", "unity-down-button" })
+    private static bool _sbLogDone;
+
+    /// <summary>铁轨纹理 16×16 平铺：木棕底 + 一条枕木横带 + 两条纵向钢轨（Repeat 铺成连续铁轨）。</summary>
+    private static Texture2D MakeRailTexture()
+    {
+        const int s = 16;
+        var tex = new Texture2D(s, s, TextureFormat.RGBA32, false)
         {
-            var b = scroller?.Q(btnName) ?? scroll.Q(btnName);
-            if (b != null) StyleArrowButton(b);
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Repeat,
+        };
+        var tie = new Color32(46, 28, 16, 255);      // 枕木深棕
+        var wood = new Color32(72, 46, 28, 255);      // 木底
+        var rail = new Color32(225, 214, 188, 255);   // 磨亮钢轨面（暖银）
+        for (int y = 0; y < s; y++)
+        {
+            for (int x = 0; x < s; x++)
+            {
+                Color32 c = wood;
+                if (y < 5) c = tie;                    // 枕木横带（顶部 5px，repeat 后每 16px 一条）
+                if (x >= 3 && x <= 4) c = rail;        // 左钢轨
+                if (x >= 11 && x <= 12) c = rail;      // 右钢轨
+                tex.SetPixel(x, y, c);
+            }
         }
+        tex.Apply();
+        return tex;
+    }
 
-        // 兜底：遍历全部子元素按名分类（与快路径重复也无妨，着色幂等）
-        foreach (var e in scroll.Query().ToList())
-            Classify(e);
+    /// <summary>e 是否位于 anc 之下（沿 parents 链上溯）。</summary>
+    private static bool IsUnder(VisualElement e, VisualElement anc,
+        System.Collections.Generic.Dictionary<VisualElement, VisualElement> parents)
+    {
+        VisualElement cur = e;
+        int guard = 0;
+        while (cur != null && guard++ < 64)
+        {
+            if (ReferenceEquals(cur, anc)) return true;
+            if (!parents.TryGetValue(cur, out cur)) break;
+        }
+        return false;
+    }
+
+    /// <summary>自绘 7×4 像素金三角（覆盖 Unity 默认白三角贴图）。</summary>
+    private static Texture2D MakeArrowTex(bool up)
+    {
+        const int w = 7, h = 4;
+        var tex = new Texture2D(w, h, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp,
+        };
+        var gold = new Color32(255, 219, 150, 255);
+        var clear = new Color32(0, 0, 0, 0);
+        for (int y = 0; y < h; y++)
+        {
+            int rowFromTop = up ? y : h - 1 - y;   // up：顶窄底宽；down：镜像
+            int half = rowFromTop + 1;              // 行半宽 1,2,3,4
+            int span = Mathf.Min(half * 2 - 1, w);
+            int x0 = (w - span) / 2;
+            for (int x = 0; x < w; x++)
+                tex.SetPixel(x, y, (x >= x0 && x < x0 + span) ? gold : clear);
+        }
+        tex.Apply();
+        return tex;
     }
 
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
@@ -262,6 +618,33 @@ public class VNBacklog : MonoBehaviour
         if (entries.Count > MaxEntries)
             entries.RemoveAt(0);
         UpdateBacklogDisplay();
+    }
+
+    /// <summary>标点钉住：在行首危险标点前插 WORD JOINER（U+2060），禁止其被换到行首（CJK 避头尾）。</summary>
+    private static string PinPunctuation(string s)
+    {
+        if (string.IsNullOrEmpty(s)) return s;
+        var sb = new System.Text.StringBuilder(s.Length + 16);
+        foreach (char c in s)
+        {
+            switch (c)
+            {
+                // 行首禁则：这些标点不能出现在行首 → 钉在前字符后
+                case '。': case '，': case '、': case '；': case '：':
+                case '！': case '？': case '…': case '～': case '·':
+                case '」': case '』': case '）': case '】': case '》':
+                case '”': case '’':
+                    sb.Append('⁠'); // U+2060 WORD JOINER
+                    break;
+                // 行尾禁则：这些开符号不能留在行尾 → 钉在后字符前
+                case '「': case '『': case '（': case '【': case '《': case '“': case '‘':
+                    sb.Append(c);
+                    sb.Append('⁠');
+                    continue;
+            }
+            sb.Append(c);
+        }
+        return sb.ToString();
     }
 
     private void UpdateBacklogDisplay()
@@ -304,6 +687,8 @@ public class VNBacklog : MonoBehaviour
                 speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
                 speakerLabel.style.marginBottom = 10;
                 speakerLabel.style.unityFontDefinition = fontDef;
+                // 底色只包人名：Label 默认 stretch 会把棕条拉满整行——收缩到文字宽
+                speakerLabel.style.alignSelf = Align.FlexStart;
                 speakerLabel.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.6f);
                 speakerLabel.style.paddingLeft = 8;
                 speakerLabel.style.paddingRight = 8;
@@ -318,7 +703,7 @@ public class VNBacklog : MonoBehaviour
                 contentBox.Add(speakerLabel);
             }
 
-            var textLabel = new Label(entry.text);
+            var textLabel = new Label(PinPunctuation(entry.text));
             textLabel.style.fontSize = 26;
             textLabel.style.letterSpacing = 2;
             textLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
@@ -389,14 +774,26 @@ public class VNBacklog : MonoBehaviour
 
         if (isOpen)
         {
-            // 延迟一帧后滚动到最底部（最新对话）
+            // 强杀原生滚动条（子元素在面板显示后才生成，必须打开时执行——重叠根因）
+            backlogScroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+            backlogScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            HideNativeScrollbars();
+            // 自绘滚动条：布局后刷一次 + 打开期间持续同步（拖拽/滚动/内容变化）
+            sbLogged = false;
+            UpdateCustomScrollbar();
+            if (sbSync != null) sbSync.Pause();
+            sbSync = backlogPanel.schedule.Execute(UpdateCustomScrollbar).StartingIn(60).Every(80);
+            // 延迟一帧滚到最底部（最新对话），布局完成后同步 thumb；再杀一次原生条（溢出后动态生成的）
             backlogScroll.schedule.Execute(() =>
             {
+                HideNativeScrollbars();
                 backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.layout.height);
+                UpdateCustomScrollbar();
             }).StartingIn(50);
         }
         else
         {
+            sbSync?.Pause();
             // 关闭即恢复箭头：跳转/关闭瞬间鼠标可能仍停在按钮上，Leave 不会触发
             UiCursor.ShowArrow();
         }
