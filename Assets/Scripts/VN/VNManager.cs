@@ -3041,10 +3041,37 @@ public class VNManager : MonoBehaviour
             VNAudioManager.Instance?.PlayBGM(scene.bgm);
 
         characterSpriteManager?.ClearAll();
+
+        // 回顾以跳转点重建：丢弃目标之后的未来条目，(0,0)→目标前一句重放历史；
+        // 目标句随后由 ShowCurrentDialogue 追加为末条（否则旧列表里目标条会重复出现在底部）
+        RebuildBacklogUpTo(sceneIndex, dialogueIndex);
+
         ShowCurrentDialogue();
 
         // 恢复菜单栏
         if (menuBar != null) menuBar.style.display = DisplayStyle.Flex;
+    }
+
+    /// <summary>回顾列表重建：清空后按脚本顺序重放 (0,0) 到目标句（不含目标句）的历史，
+    /// 条件不满足/空文本的条目跳过，与 ShowCurrentDialogue 的入列口径一致。</summary>
+    private void RebuildBacklogUpTo(int sceneIndex, int dialogueIndex)
+    {
+        vnBacklog?.Clear();
+        if (vnBacklog == null || currentScript?.scenes == null) return;
+        for (int si = 0; si <= sceneIndex && si < currentScript.scenes.Length; si++)
+        {
+            var scene = currentScript.scenes[si];
+            if (scene.d == null) continue;
+            int dMax = si < sceneIndex ? scene.d.Length : dialogueIndex;
+            for (int di = 0; di < dMax; di++)
+            {
+                var e = scene.d[di];
+                if (e == null || string.IsNullOrWhiteSpace(e.text)) continue;
+                if (e.t == "c" || e.t == "special") continue; // 选项/特殊指令不入回顾，口径与 ShowCurrentDialogue 一致
+                if (!EvaluateCondition(e.condition)) continue;
+                vnBacklog.AddEntry(ResolveSpeakerName(e.s), e.text, si, di);
+            }
+        }
     }
 
     private bool isFromTitleScreenMode;
