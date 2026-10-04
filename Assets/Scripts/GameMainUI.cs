@@ -192,16 +192,16 @@ public class GameMainUI : MonoBehaviour
         canvas.sortingOrder = 200;
         canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
         canvasObj.AddComponent<UnityEngine.UI.GraphicRaycaster>();
-        Debug.Log("[GameMainUI] BuildDocument: canvas ok");
+        if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: canvas ok");
 
         var panelSettings = Resources.Load<PanelSettings>("UI/TitleScreenPanelSettings");
-        Debug.Log("[GameMainUI] BuildDocument: panelSettings=" + (panelSettings != null));
+        if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: panelSettings=" + (panelSettings != null));
         uiDoc = canvasObj.AddComponent<UIDocument>();
-        Debug.Log("[GameMainUI] BuildDocument: uidoc added");
+        if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: uidoc added");
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
         root = uiDoc.rootVisualElement;
-        Debug.Log("[GameMainUI] BuildDocument: root=" + (root != null));
+        if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: root=" + (root != null));
         root.style.display = DisplayStyle.None;
     }
 

@@ -104,6 +104,9 @@ public class BackgroundManager : MonoBehaviour
         }
     }
 
+    /// <summary>设计即黑屏字卡的背景名（缺图队列标注"非缺图"）：缺图属正常，不打警告。</summary>
+    private static bool IsDesignBlackBg(string name) => name == "news_2050" || name == "news_2072";
+
     public void SetBackground(string bgName, TransitionType transition)
     {
         if (string.IsNullOrEmpty(bgName)) return;
@@ -123,7 +126,9 @@ public class BackgroundManager : MonoBehaviour
         var tex = LoadBgTex(bgName);
         if (tex == null)
         {
-            Debug.LogWarning("[VN BG] Background not found: " + bgName + " — solid black fallback");
+            // news_2050/news_2072 设计即黑屏字卡（缺图队列标注"非缺图"）：静默纯色兜底，不刷警告
+            if (!IsDesignBlackBg(bgName))
+                Debug.LogWarning("[VN BG] Background not found: " + bgName + " — solid black fallback");
             ApplySolidColor(new Color(0.04f, 0.03f, 0.05f, 1f));
             return;
         }
@@ -195,7 +200,8 @@ public class BackgroundManager : MonoBehaviour
             bgOld.style.unityBackgroundImageTintColor = new Color(0.04f, 0.03f, 0.05f, 1f);
             bgNew.style.backgroundImage = null;
             bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
-            Debug.LogWarning("[VN BG] missing " + bgName + ", solid fallback");
+            if (!IsDesignBlackBg(bgName))
+                Debug.LogWarning("[VN BG] missing " + bgName + ", solid fallback");
             return;
         }
 
