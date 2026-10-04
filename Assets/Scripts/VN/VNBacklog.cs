@@ -540,9 +540,9 @@ public class VNBacklog : MonoBehaviour
         sbTrack.style.top = sy + 22;
         sbTrack.style.height = Mathf.Max(40f, sh - 44);
         sbDown.style.top = sy + sh - 20;
-        // right=8（原4）：道砟比轨道每侧宽6，right=4 时道砟右缘超出面板 2px 被裁，
-        // 左侧却有空间全露 → 左宽右窄的不居中观感；收到 8 让两侧肩宽对称
-        sbUp.style.right = 8; sbTrack.style.right = 8; sbDown.style.right = 8;
+        // 整列往左移：right=4 时道砟右缘超出面板 2px 被裁（左肩全露→左宽右窄）。
+        // right=10 + 道砟半宽8 → 道砟右缘距面板边 2px 余量，两侧肩宽对称
+        sbUp.style.right = 10; sbTrack.style.right = 10; sbDown.style.right = 10;
 
         if (sbDragging) return; // 拖拽中由指针驱动
         float trackH = sbTrack.contentRect.height;
