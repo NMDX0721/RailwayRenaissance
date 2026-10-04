@@ -2079,7 +2079,7 @@ public class VNManager : MonoBehaviour
                 backgroundManager?.SetBackground(newScene.bg, transType);
             }
             if (!string.IsNullOrEmpty(newScene.bgm))
-                VNAudioManager.Instance?.PlayBGM(newScene.bgm);
+                VNAudioManager.Instance?.PlayBGM(newScene.bgm, 1.0f, false); // 顺序推进：受 1800 字最短驻留闸门约束
 
             characterSpriteManager?.ClearAll();
         }
@@ -2148,6 +2148,10 @@ public class VNManager : MonoBehaviour
             NextDialogue();
             return;
         }
+
+        // BGM 最短驻留闸门：每显示一句上报字数（VNAudioManager 累计，1800 字后补播挂起的换曲）
+        if (!string.IsNullOrEmpty(entry.text))
+            VNAudioManager.Instance?.ReportChars(entry.text.Length);
 
         if (entry.t == "c")
         {

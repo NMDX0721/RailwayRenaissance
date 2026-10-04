@@ -45,17 +45,49 @@ public class VNAudioManager : MonoBehaviour
 
     public void PlayBGM(string name)
     {
-        PlayBGM(name, DefaultFadeDuration);
+        PlayBGM(name, DefaultFadeDuration, true);
     }
 
     public void PlayBGM(string name, float fadeDuration)
+    {
+        PlayBGM(name, fadeDuration, true);
+    }
+
+    /// <summary>最短驻留字数（≈1800字≈4分钟）：当前曲播满之前，顺序推进的换曲请求挂起而不打断。</summary>
+    private const int BgmMinResidencyChars = 1800;
+    private int charsSinceBgmStart;
+    private string pendingBgm;
+
+    /// <summary>人声曲（歌曲类）：只给高潮与章末（剧本侧约束）；代码侧与所有曲共用最短驻留闸门，保证不被提前切断。</summary>
+    private static readonly HashSet<string> VocalBgms = new HashSet<string>
+    {
+        "south_wind", "starlit_rails", "chollima_ride", "train_through_keys",
+    };
+
+    /// <summary>每显示一句台词上报字数，驱动最短驻留闸门；闸门放开后补播被挂起的换曲请求。</summary>
+    public void ReportChars(int chars)
+    {
+        if (chars <= 0) return;
+        charsSinceBgmStart += chars;
+        if (pendingBgm != null && charsSinceBgmStart >= BgmMinResidencyChars)
+        {
+            var p = pendingBgm;
+            pendingBgm = null;
+            if (p != currentBGM) PlayBGM(p, DefaultFadeDuration, true);
+        }
+    }
+
+    /// <summary>force=true：读档/书签跳转/剧本开场等越场上下文，无视驻留闸门直接换曲；
+    /// force=false：顺序推进的场景换曲，受 1800 字最短驻留约束。</summary>
+    public void PlayBGM(string name, float fadeDuration, bool force)
     {
         if (string.IsNullOrEmpty(name)) return;
 
         // 旧 BGM 名称 → 新文件名映射（兼容旧存档）
         name = MapBgmName(name);
 
-        if (currentBGM == name && bgmSource.isPlaying) return;
+        // 规则2 同曲继承：相邻场景同曲不重播，进度延续
+        if (currentBGM == name && bgmSource.isPlaying) { pendingBgm = null; return; }
 
         var clip = LoadClip("bgm", name);
         if (clip == null)
@@ -64,12 +96,27 @@ public class VNAudioManager : MonoBehaviour
             return;
         }
 
+        // 规则1 最短驻留：当前曲未播满 1800 字 → 请求挂起，到点由 ReportChars 补播
+        if (!force && bgmSource.isPlaying && !string.IsNullOrEmpty(currentBGM)
+            && charsSinceBgmStart < BgmMinResidencyChars)
+        {
+            pendingBgm = name;
+            Debug.Log($"[VN Audio] BGM deferred ({charsSinceBgmStart}/{BgmMinResidencyChars} chars): {currentBGM} -> {name}");
+            return;
+        }
+
+        pendingBgm = null;
+        charsSinceBgmStart = 0;
+
         if (bgmFadeCoroutine != null)
             StopCoroutine(bgmFadeCoroutine);
 
         bgmFadeCoroutine = StartCoroutine(CrossfadeBGM(clip, name, fadeDuration));
         OnBGMStarted?.Invoke(name);
     }
+
+    /// <summary>当前是否人声曲（歌曲类）。</summary>
+    public bool IsCurrentVocalBgm => currentBGM != null && VocalBgms.Contains(currentBGM);
 
     public void StopBGM()
     {
@@ -96,6 +143,8 @@ public class VNAudioManager : MonoBehaviour
 
     public void StopBGM(float fadeDuration)
     {
+        pendingBgm = null;
+        charsSinceBgmStart = 0;
         if (bgmFadeCoroutine != null)
             StopCoroutine(bgmFadeCoroutine);
 
