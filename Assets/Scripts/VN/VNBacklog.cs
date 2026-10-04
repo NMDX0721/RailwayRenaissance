@@ -207,67 +207,114 @@ public class VNBacklog : MonoBehaviour
         railR.pickingMode = PickingMode.Ignore;
         sbTrack.Add(railR);
 
-        // —— 主题化滑块＝キハ07 俯视胶囊列车：奶油车身 + 深灰圆顶 + 朱色前后带 + 前灯 ——
+        // 道砟道床：轨道最底层一层灰褐碎石（比枕木略宽），压开纯黑背景、抬起整体对比度
+        var ballast = new VisualElement { name = "sb-ballast" };
+        ballast.style.position = Position.Absolute;
+        ballast.style.left = -6; ballast.style.right = -6;
+        ballast.style.top = 0; ballast.style.bottom = 0;
+        ballast.style.backgroundImage = new StyleBackground(MakeBallastTex());
+        ballast.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
+        ballast.pickingMode = PickingMode.Ignore;
+        sbTrack.Insert(0, ballast);   // 最底层（钢轨/枕木/滑块之上依次叠加）
+
+        // —— 主题化滑块＝キハ07 俯视列车：奶油车身 + 朱色圆弧前脸 + 前窗带 + 浅灰圆顶 + 侧窗列 + 通风口 ——
         sbThumb = new VisualElement { name = "sb-thumb" };
         sbThumb.style.position = Position.Absolute;
-        sbThumb.style.left = -2; sbThumb.style.right = -2;   // 比轨道略宽：压住两侧钢轨
-        sbThumb.style.backgroundColor = new Color(0.85f, 0.74f, 0.52f, 1f); // 黄かっ色2号 奶油车身
+        sbThumb.style.left = -3; sbThumb.style.right = -3;   // 宽于轨道：压住钢轨与枕木
+        sbThumb.style.backgroundColor = new Color(0.88f, 0.78f, 0.58f, 1f); // 黄かっ色2号 奶油车身
         sbThumb.style.borderTopWidth = 1; sbThumb.style.borderBottomWidth = 1;
         sbThumb.style.borderLeftWidth = 1; sbThumb.style.borderRightWidth = 1;
         var bodyEdge = new Color(0.55f, 0.44f, 0.26f, 1f);
         sbThumb.style.borderTopColor = bodyEdge; sbThumb.style.borderBottomColor = bodyEdge;
         sbThumb.style.borderLeftColor = bodyEdge; sbThumb.style.borderRightColor = bodyEdge;
-        sbThumb.style.borderTopLeftRadius = 10; sbThumb.style.borderTopRightRadius = 10;   // 圆弧前脸
-        sbThumb.style.borderBottomLeftRadius = 8; sbThumb.style.borderBottomRightRadius = 8;
-        sbThumb.style.overflow = Overflow.Hidden; // 子元素裁进胶囊轮廓
+        sbThumb.style.borderTopLeftRadius = 11; sbThumb.style.borderTopRightRadius = 11;  // 半圆前脸（キハ07 流线形）
+        sbThumb.style.borderBottomLeftRadius = 9; sbThumb.style.borderBottomRightRadius = 9;
+        sbThumb.style.overflow = Overflow.Hidden; // 子元素裁进轮廓
 
-        // 朱色前带（车头）/ 尾带
-        var bandRed = new Color(0.80f, 0.26f, 0.16f, 1f);
-        var bandFront = new VisualElement();
-        bandFront.style.position = Position.Absolute;
-        bandFront.style.top = 0; bandFront.style.left = 0; bandFront.style.right = 0; bandFront.style.height = 6;
-        bandFront.style.backgroundColor = bandRed;
-        bandFront.pickingMode = PickingMode.Ignore;
-        sbThumb.Add(bandFront);
-        var bandTail = new VisualElement();
-        bandTail.style.position = Position.Absolute;
-        bandTail.style.bottom = 0; bandTail.style.left = 0; bandTail.style.right = 0; bandTail.style.height = 5;
-        bandTail.style.backgroundColor = bandRed;
-        bandTail.pickingMode = PickingMode.Ignore;
-        sbThumb.Add(bandTail);
+        var bandRed = new Color(0.78f, 0.24f, 0.15f, 1f);   // 朱色下裙/前后脸
+        var glass = new Color(0.15f, 0.19f, 0.24f, 1f);     // 车窗玻璃
+        void ThumbPart(float top, float h, Color c, float left, float right)
+        {
+            var e = new VisualElement();
+            e.style.position = Position.Absolute;
+            e.style.top = top; e.style.height = h;
+            e.style.left = left; e.style.right = right;
+            e.style.backgroundColor = c;
+            e.pickingMode = PickingMode.Ignore;
+            sbThumb.Add(e);
+        }
 
-        // 深灰圆顶屋面（前后带之间）
+        // 车头：朱色圆弧前脸(6) + 前挡风窗带(4)
+        ThumbPart(0, 6, bandRed, 0, 0);
+        ThumbPart(6, 4, glass, 0, 0);
+        // 尾部：后窗带 + 朱色带
+        var tailGlass = new VisualElement();
+        tailGlass.style.position = Position.Absolute;
+        tailGlass.style.bottom = 5; tailGlass.style.height = 4;
+        tailGlass.style.left = 0; tailGlass.style.right = 0;
+        tailGlass.style.backgroundColor = glass;
+        tailGlass.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(tailGlass);
+        var tailRed = new VisualElement();
+        tailRed.style.position = Position.Absolute;
+        tailRed.style.bottom = 0; tailRed.style.height = 5;
+        tailRed.style.left = 0; tailRed.style.right = 0;
+        tailRed.style.backgroundColor = bandRed;
+        tailRed.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(tailRed);
+
+        // 浅灰圆顶屋面（前窗带之后到尾窗带之前），前鼻圆弧收头
         var roof = new VisualElement();
         roof.style.position = Position.Absolute;
-        roof.style.top = 6; roof.style.bottom = 5; roof.style.left = 4; roof.style.right = 4;
-        roof.style.backgroundColor = new Color(0.24f, 0.24f, 0.25f, 1f);
-        roof.style.borderTopLeftRadius = 6; roof.style.borderTopRightRadius = 6;
-        roof.style.borderBottomLeftRadius = 5; roof.style.borderBottomRightRadius = 5;
+        roof.style.top = 10; roof.style.bottom = 9; roof.style.left = 4; roof.style.right = 4;
+        roof.style.backgroundColor = new Color(0.62f, 0.62f, 0.60f, 1f);   // 模型银灰屋面
+        roof.style.borderTopWidth = 1; roof.style.borderBottomWidth = 1;
+        roof.style.borderLeftWidth = 1; roof.style.borderRightWidth = 1;
+        var roofEdge = new Color(0.42f, 0.42f, 0.41f, 1f);
+        roof.style.borderTopColor = roofEdge; roof.style.borderBottomColor = roofEdge;
+        roof.style.borderLeftColor = roofEdge; roof.style.borderRightColor = roofEdge;
+        roof.style.borderTopLeftRadius = 7; roof.style.borderTopRightRadius = 7;   // 屋顶前鼻圆弧
+        roof.style.borderBottomLeftRadius = 6; roof.style.borderBottomRightRadius = 6;
         roof.pickingMode = PickingMode.Ignore;
         sbThumb.Add(roof);
 
-        // 屋面两道通风口浅纹
-        for (int i = 0; i < 2; i++)
-        {
-            var vent = new VisualElement();
-            vent.style.position = Position.Absolute;
-            vent.style.left = 7; vent.style.right = 7;
-            vent.style.top = new Length(i == 0 ? 35 : 65, LengthUnit.Percent);
-            vent.style.height = 1;
-            vent.style.backgroundColor = new Color(0.42f, 0.42f, 0.44f, 0.9f);
-            vent.pickingMode = PickingMode.Ignore;
-            sbThumb.Add(vent);
-        }
-
-        // 前灯：朱色前带中央一点暖光
+        // 顶置前灯：屋面鼻端一点暖光（キハ07 大圆灯位）
         var lamp = new VisualElement();
         lamp.style.position = Position.Absolute;
-        lamp.style.top = 1; lamp.style.left = 8; lamp.style.width = 4; lamp.style.height = 4;
-        lamp.style.backgroundColor = new Color(1f, 0.92f, 0.65f, 1f);
+        lamp.style.top = 11; lamp.style.left = 8; lamp.style.width = 4; lamp.style.height = 4;
+        lamp.style.backgroundColor = new Color(1f, 0.93f, 0.68f, 1f);
         lamp.style.borderTopLeftRadius = 2; lamp.style.borderTopRightRadius = 2;
         lamp.style.borderBottomLeftRadius = 2; lamp.style.borderBottomRightRadius = 2;
         lamp.pickingMode = PickingMode.Ignore;
         sbThumb.Add(lamp);
+
+        // 屋面通风口：三只小灰盒（模型车顶特征）
+        foreach (var pct in new[] { 32, 48, 64 })
+        {
+            var vent = new VisualElement();
+            vent.style.position = Position.Absolute;
+            vent.style.left = 7; vent.style.width = 6; vent.style.height = 3;
+            vent.style.top = new Length(pct, LengthUnit.Percent);
+            vent.style.backgroundColor = new Color(0.44f, 0.44f, 0.43f, 1f);
+            vent.pickingMode = PickingMode.Ignore;
+            sbThumb.Add(vent);
+        }
+
+        // 侧窗列：奶油带上的深色窗格（俯视时车厢两侧的窗线）
+        foreach (var pct in new[] { 26, 38, 50, 62, 74 })
+        {
+            foreach (var side in new[] { 0, 1 })   // 0=左 1=右
+            {
+                var win = new VisualElement();
+                win.style.position = Position.Absolute;
+                win.style.top = new Length(pct, LengthUnit.Percent);
+                win.style.height = 4; win.style.width = 2;
+                if (side == 0) win.style.left = 1; else win.style.right = 1;
+                win.style.backgroundColor = glass;
+                win.pickingMode = PickingMode.Ignore;
+                sbThumb.Add(win);
+            }
+        }
         sbTrack.Add(sbThumb);
 
         backlogPanel.Add(sbUp);
@@ -384,7 +431,7 @@ public class VNBacklog : MonoBehaviour
             tie.style.borderTopLeftRadius = 1; tie.style.borderTopRightRadius = 1;
             tie.style.borderBottomLeftRadius = 1; tie.style.borderBottomRightRadius = 1;
             tie.pickingMode = PickingMode.Ignore; // 不挡滑块拖拽
-            sbTrack.Insert(0, tie);               // 枕木在钢轨/滑块之下
+            sbTrack.Insert(1, tie);               // index0 是道砟：枕木压在道砟上、钢轨之下
             _sleepers.Add(tie);
         }
         _sleepersBuiltFor = trackH;
@@ -671,6 +718,33 @@ public class VNBacklog : MonoBehaviour
                 if (y < 5) c = tie;                    // 枕木横带（顶部 5px，repeat 后每 16px 一条）
                 if (x >= 3 && x <= 4) c = rail;        // 左钢轨
                 if (x >= 11 && x <= 12) c = rail;      // 右钢轨
+                tex.SetPixel(x, y, c);
+            }
+        }
+        tex.Apply();
+        return tex;
+    }
+
+    /// <summary>道砟纹理 16×16 平铺：灰褐砾石底 + 确定性明暗碎石颗粒（Point + Repeat，无随机免重建差异）。</summary>
+    private static Texture2D MakeBallastTex()
+    {
+        const int s = 16;
+        var tex = new Texture2D(s, s, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Repeat,
+        };
+        for (int y = 0; y < s; y++)
+        {
+            for (int x = 0; x < s; x++)
+            {
+                int h = (x * 73856093) ^ (y * 19349663);
+                int m = ((h >> 5) ^ h) % 7;
+                Color32 c;
+                if (m == 0) c = new Color32(96, 88, 76, 255);       // 亮石面
+                else if (m == 1) c = new Color32(40, 36, 32, 255);  // 石缝暗部
+                else if (m == 2) c = new Color32(74, 68, 58, 255);  // 中灰石
+                else c = new Color32(60, 55, 47, 255);              // 砾石底
                 tex.SetPixel(x, y, c);
             }
         }
