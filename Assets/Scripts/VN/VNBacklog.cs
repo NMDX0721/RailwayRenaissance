@@ -160,7 +160,7 @@ public class VNBacklog : MonoBehaviour
         BuildCustomScrollbar(); // 自绘滚动条（隐藏原生）
     }
 
-    // ================= 自绘滚动条（Unity 6 原生滚动条无法主题化：隐藏原生，自画轨道/滑块/箭头） =================
+    // ================= 自绘滚动条（Unity 6 原生滚动条无法主题化：隐藏原生，自画轨道/滑块/车挡桩） =================
     private VisualElement sbTrack, sbThumb, sbUp, sbDown;
     private IVisualElementScheduledItem sbSync;
     private bool sbDragging;
@@ -174,8 +174,8 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
         backlogScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
 
-        sbUp = MakeSbArrow(true);
-        sbDown = MakeSbArrow(false);
+        sbUp = MakeSbBufferStop(true);
+        sbDown = MakeSbBufferStop(false);
 
         // —— 无壳铁轨（去胶囊外壳）：独立凸出枕木 + 左右钢轨条 + 金色车厢滑块 ——
         sbTrack = new VisualElement { name = "sb-track" };
@@ -207,32 +207,67 @@ public class VNBacklog : MonoBehaviour
         railR.pickingMode = PickingMode.Ignore;
         sbTrack.Add(railR);
 
-        // —— 主题化滑块＝车厢：比轨道内缩、亮金实心、1px 暗金内边、三条防滑纹 ——
+        // —— 主题化滑块＝キハ07 俯视胶囊列车：奶油车身 + 深灰圆顶 + 朱色前后带 + 前灯 ——
         sbThumb = new VisualElement { name = "sb-thumb" };
         sbThumb.style.position = Position.Absolute;
-        sbThumb.style.left = 3; sbThumb.style.right = 3;
-        sbThumb.style.backgroundColor = new Color(0.95f, 0.8f, 0.5f, 1f);
+        sbThumb.style.left = -2; sbThumb.style.right = -2;   // 比轨道略宽：压住两侧钢轨
+        sbThumb.style.backgroundColor = new Color(0.85f, 0.74f, 0.52f, 1f); // 黄かっ色2号 奶油车身
         sbThumb.style.borderTopWidth = 1; sbThumb.style.borderBottomWidth = 1;
         sbThumb.style.borderLeftWidth = 1; sbThumb.style.borderRightWidth = 1;
-        sbThumb.style.borderTopColor = new Color(1f, 0.96f, 0.85f, 1f);   // 顶部高光＝车厢金属顶
-        sbThumb.style.borderBottomColor = new Color(0.55f, 0.38f, 0.18f, 1f);
-        sbThumb.style.borderLeftColor = new Color(0.55f, 0.38f, 0.18f, 1f);
-        sbThumb.style.borderRightColor = new Color(0.55f, 0.38f, 0.18f, 1f);
-        sbThumb.style.borderTopLeftRadius = 4; sbThumb.style.borderTopRightRadius = 4;
-        sbThumb.style.borderBottomLeftRadius = 4; sbThumb.style.borderBottomRightRadius = 4;
-        // 防滑纹：三条暗金横线（滑块中部）
-        for (int i = -1; i <= 1; i++)
+        var bodyEdge = new Color(0.55f, 0.44f, 0.26f, 1f);
+        sbThumb.style.borderTopColor = bodyEdge; sbThumb.style.borderBottomColor = bodyEdge;
+        sbThumb.style.borderLeftColor = bodyEdge; sbThumb.style.borderRightColor = bodyEdge;
+        sbThumb.style.borderTopLeftRadius = 10; sbThumb.style.borderTopRightRadius = 10;   // 圆弧前脸
+        sbThumb.style.borderBottomLeftRadius = 8; sbThumb.style.borderBottomRightRadius = 8;
+        sbThumb.style.overflow = Overflow.Hidden; // 子元素裁进胶囊轮廓
+
+        // 朱色前带（车头）/ 尾带
+        var bandRed = new Color(0.80f, 0.26f, 0.16f, 1f);
+        var bandFront = new VisualElement();
+        bandFront.style.position = Position.Absolute;
+        bandFront.style.top = 0; bandFront.style.left = 0; bandFront.style.right = 0; bandFront.style.height = 6;
+        bandFront.style.backgroundColor = bandRed;
+        bandFront.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(bandFront);
+        var bandTail = new VisualElement();
+        bandTail.style.position = Position.Absolute;
+        bandTail.style.bottom = 0; bandTail.style.left = 0; bandTail.style.right = 0; bandTail.style.height = 5;
+        bandTail.style.backgroundColor = bandRed;
+        bandTail.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(bandTail);
+
+        // 深灰圆顶屋面（前后带之间）
+        var roof = new VisualElement();
+        roof.style.position = Position.Absolute;
+        roof.style.top = 6; roof.style.bottom = 5; roof.style.left = 4; roof.style.right = 4;
+        roof.style.backgroundColor = new Color(0.24f, 0.24f, 0.25f, 1f);
+        roof.style.borderTopLeftRadius = 6; roof.style.borderTopRightRadius = 6;
+        roof.style.borderBottomLeftRadius = 5; roof.style.borderBottomRightRadius = 5;
+        roof.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(roof);
+
+        // 屋面两道通风口浅纹
+        for (int i = 0; i < 2; i++)
         {
-            var groove = new VisualElement();
-            groove.style.position = Position.Absolute;
-            groove.style.height = 1;
-            groove.style.left = 3; groove.style.right = 3;
-            groove.style.top = new Length(50, LengthUnit.Percent);
-            groove.style.translate = new Translate(0, i * 4);
-            groove.style.backgroundColor = new Color(0.6f, 0.42f, 0.2f, 0.7f);
-            groove.pickingMode = PickingMode.Ignore;
-            sbThumb.Add(groove);
+            var vent = new VisualElement();
+            vent.style.position = Position.Absolute;
+            vent.style.left = 7; vent.style.right = 7;
+            vent.style.top = new Length(i == 0 ? 35 : 65, LengthUnit.Percent);
+            vent.style.height = 1;
+            vent.style.backgroundColor = new Color(0.42f, 0.42f, 0.44f, 0.9f);
+            vent.pickingMode = PickingMode.Ignore;
+            sbThumb.Add(vent);
         }
+
+        // 前灯：朱色前带中央一点暖光
+        var lamp = new VisualElement();
+        lamp.style.position = Position.Absolute;
+        lamp.style.top = 1; lamp.style.left = 8; lamp.style.width = 4; lamp.style.height = 4;
+        lamp.style.backgroundColor = new Color(1f, 0.92f, 0.65f, 1f);
+        lamp.style.borderTopLeftRadius = 2; lamp.style.borderTopRightRadius = 2;
+        lamp.style.borderBottomLeftRadius = 2; lamp.style.borderBottomRightRadius = 2;
+        lamp.pickingMode = PickingMode.Ignore;
+        sbThumb.Add(lamp);
         sbTrack.Add(sbThumb);
 
         backlogPanel.Add(sbUp);
@@ -277,26 +312,40 @@ public class VNBacklog : MonoBehaviour
         sbTrack.RegisterCallback<PointerCaptureOutEvent>(e => { sbDragging = false; });
     }
 
-    private VisualElement MakeSbArrow(bool up)
+    /// <summary>轨道端点「車止め」车挡桩：红白横梁 + 双柱 + 轨上底座（替代上下箭头，点击翻页功能不变）。
+    /// up=true 桩在轨道上方（梁朝下对轨道），几何按 up 定义后对 down 做垂直镜像。</summary>
+    private VisualElement MakeSbBufferStop(bool up)
     {
         var b = new VisualElement { name = up ? "sb-up" : "sb-down" };
         b.style.position = Position.Absolute;
-        // 主题尺寸：与轨道同宽 16、高 20，2px 金边圆角钮（菜单条按钮同语法）
         b.style.width = 16; b.style.height = 20;
-        b.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.98f);
-        b.style.borderTopWidth = 2; b.style.borderBottomWidth = 2;
-        b.style.borderLeftWidth = 2; b.style.borderRightWidth = 2;
-        var edge = new Color(0.82f, 0.62f, 0.35f, 0.85f);
-        b.style.borderTopColor = edge; b.style.borderBottomColor = edge;
-        b.style.borderLeftColor = edge; b.style.borderRightColor = edge;
-        b.style.borderTopLeftRadius = 6; b.style.borderTopRightRadius = 6;
-        b.style.borderBottomLeftRadius = 6; b.style.borderBottomRightRadius = 6;
-        b.style.backgroundImage = new StyleBackground(MakeArrowTex(up));
-        b.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        b.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
-        b.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
-        b.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
-        b.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 1f);
+        b.style.backgroundColor = StyleKeyword.None; // 透明底，只画桩
+
+        // up=true：梁(顶)→双柱→底座(贴轨道)；up=false 垂直镜像
+        float Y(float top, float h) => up ? top : 20f - top - h;
+
+        var steelRed = new Color(0.78f, 0.25f, 0.17f, 1f);
+        var steelWhite = new Color(0.95f, 0.93f, 0.88f, 1f);
+        var steelGray = new Color(0.5f, 0.5f, 0.52f, 1f);
+        var steelDark = new Color(0.28f, 0.28f, 0.3f, 1f);
+
+        void Part(float top, float h, Color c, float left, float right)
+        {
+            var e = new VisualElement();
+            e.style.position = Position.Absolute;
+            e.style.top = Y(top, h); e.style.height = h;
+            e.style.left = left; e.style.right = right;
+            e.style.backgroundColor = c;
+            e.pickingMode = PickingMode.Ignore;
+            b.Add(e);
+        }
+
+        Part(1, 4, steelRed, 0, 0);                 // 缓冲梁（红）
+        Part(1, 4, steelWhite, 6, 6);               // 梁中央白条
+        Part(5, 10, steelGray, 1, 13);              // 左柱（对齐左钢轨）
+        Part(5, 10, steelGray, 13, 1);              // 右柱（对齐右钢轨）
+        Part(15, 4, steelDark, 0, 0);               // 轨上底座
+
         b.RegisterCallback<PointerDownEvent>(e =>
         {
             VNManager.Instance?.SuppressNextAdvance();
