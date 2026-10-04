@@ -743,17 +743,20 @@ public class VNBacklog : MonoBehaviour
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Repeat,
         };
-        var gap = new Color32(54, 49, 42, 255);      // 石缝深底
+        var gap = new Color32(52, 51, 50, 255);      // 石缝深底（中性深灰）
         for (int y = 0; y < H; y++)
             for (int x = 0; x < s; x++)
                 tex.SetPixel(x, y, gap);
 
+        // 灰色为主（实拍参考：碎石灰阶），少量褐石/紫灰变化，整体不发棕
         var stones = new[]
         {
-            new Color32(146, 138, 122, 255),   // 亮石（不再近白）
-            new Color32(124, 116, 101, 255),
-            new Color32(102, 95, 82, 255),
-            new Color32(80, 74, 63, 255),      // 暗石
+            new Color32(152, 150, 147, 255),   // 亮灰石
+            new Color32(124, 123, 121, 255),   // 中灰石
+            new Color32(98, 97, 96, 255),      // 暗灰石
+            new Color32(124, 123, 121, 255),   // 中灰（加权）
+            new Color32(98, 97, 96, 255),      // 暗灰（加权）
+            new Color32(112, 100, 92, 255),    // 褐石点缀（约1/6）
         };
         uint seed = 20261004u;
         uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
