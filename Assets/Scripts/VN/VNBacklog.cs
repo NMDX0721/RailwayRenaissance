@@ -165,6 +165,8 @@ public class VNBacklog : MonoBehaviour
     private IVisualElementScheduledItem sbSync;
     private bool sbDragging;
     private float sbGrabDelta;
+    private readonly System.Collections.Generic.List<VisualElement> _sleepers = new();
+    private float _sleepersBuiltFor = -1f;
 
     private void BuildCustomScrollbar()
     {
@@ -175,29 +177,40 @@ public class VNBacklog : MonoBehaviour
         sbUp = MakeSbArrow(true);
         sbDown = MakeSbArrow(false);
 
-        // —— 主题化轨道＝铁轨：16px 宽、2px 亮金边框、内部程序纹理（两条钢轨+枕木横纹 Repeat）——
+        // —— 无壳铁轨（去胶囊外壳）：独立凸出枕木 + 左右钢轨条 + 金色车厢滑块 ——
         sbTrack = new VisualElement { name = "sb-track" };
         sbTrack.style.position = Position.Absolute;
         sbTrack.style.width = 16;
-        sbTrack.style.backgroundColor = new Color(0.28f, 0.18f, 0.11f, 1f); // 木棕底（纹理兜底）
-        sbTrack.style.backgroundImage = new StyleBackground(MakeRailTexture());
-        sbTrack.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
-        sbTrack.style.backgroundSize = new BackgroundSize(16, 16);
-        sbTrack.style.borderTopWidth = 2; sbTrack.style.borderBottomWidth = 2;
-        sbTrack.style.borderLeftWidth = 2; sbTrack.style.borderRightWidth = 2;
-        var edge = new Color(0.82f, 0.62f, 0.35f, 0.85f);
-        sbTrack.style.borderTopColor = edge; sbTrack.style.borderBottomColor = edge;
-        sbTrack.style.borderLeftColor = edge; sbTrack.style.borderRightColor = edge;
-        sbTrack.style.borderTopLeftRadius = 8; sbTrack.style.borderTopRightRadius = 8;
-        sbTrack.style.borderBottomLeftRadius = 8; sbTrack.style.borderBottomRightRadius = 8;
-        sbTrack.style.paddingLeft = 2; sbTrack.style.paddingRight = 2;
-        sbTrack.style.paddingTop = 2; sbTrack.style.paddingBottom = 2;
-        sbTrack.style.overflow = Overflow.Hidden;
+        sbTrack.style.overflow = Overflow.Visible; // 枕木向两侧凸出
+        sbTrack.style.backgroundColor = StyleKeyword.None;
+        sbTrack.style.borderTopWidth = 0; sbTrack.style.borderBottomWidth = 0;
+        sbTrack.style.borderLeftWidth = 0; sbTrack.style.borderRightWidth = 0;
+        sbTrack.style.borderTopLeftRadius = 0; sbTrack.style.borderTopRightRadius = 0;
+        sbTrack.style.borderBottomLeftRadius = 0; sbTrack.style.borderBottomRightRadius = 0;
+        sbTrack.style.paddingLeft = 0; sbTrack.style.paddingRight = 0;
+        sbTrack.style.paddingTop = 0; sbTrack.style.paddingBottom = 0;
 
-        // —— 主题化滑块：比轨道内缩、亮金实心、1px 暗金内边、三条防滑纹 ——
+        // 钢轨：左右各 2px 亮金属条，贯穿全高（画在枕木之上）
+        var railColor = new Color(0.92f, 0.86f, 0.7f, 1f);
+        var railL = new VisualElement();
+        railL.style.position = Position.Absolute;
+        railL.style.left = 1; railL.style.width = 2;
+        railL.style.top = 0; railL.style.bottom = 0;
+        railL.style.backgroundColor = railColor;
+        railL.pickingMode = PickingMode.Ignore;
+        sbTrack.Add(railL);
+        var railR = new VisualElement();
+        railR.style.position = Position.Absolute;
+        railR.style.right = 1; railR.style.width = 2;
+        railR.style.top = 0; railR.style.bottom = 0;
+        railR.style.backgroundColor = railColor;
+        railR.pickingMode = PickingMode.Ignore;
+        sbTrack.Add(railR);
+
+        // —— 主题化滑块＝车厢：比轨道内缩、亮金实心、1px 暗金内边、三条防滑纹 ——
         sbThumb = new VisualElement { name = "sb-thumb" };
         sbThumb.style.position = Position.Absolute;
-        sbThumb.style.left = 2; sbThumb.style.right = 2;
+        sbThumb.style.left = 3; sbThumb.style.right = 3;
         sbThumb.style.backgroundColor = new Color(0.95f, 0.8f, 0.5f, 1f);
         sbThumb.style.borderTopWidth = 1; sbThumb.style.borderBottomWidth = 1;
         sbThumb.style.borderLeftWidth = 1; sbThumb.style.borderRightWidth = 1;
@@ -205,15 +218,15 @@ public class VNBacklog : MonoBehaviour
         sbThumb.style.borderBottomColor = new Color(0.55f, 0.38f, 0.18f, 1f);
         sbThumb.style.borderLeftColor = new Color(0.55f, 0.38f, 0.18f, 1f);
         sbThumb.style.borderRightColor = new Color(0.55f, 0.38f, 0.18f, 1f);
-        sbThumb.style.borderTopLeftRadius = 6; sbThumb.style.borderTopRightRadius = 6;
-        sbThumb.style.borderBottomLeftRadius = 6; sbThumb.style.borderBottomRightRadius = 6;
+        sbThumb.style.borderTopLeftRadius = 4; sbThumb.style.borderTopRightRadius = 4;
+        sbThumb.style.borderBottomLeftRadius = 4; sbThumb.style.borderBottomRightRadius = 4;
         // 防滑纹：三条暗金横线（滑块中部）
         for (int i = -1; i <= 1; i++)
         {
             var groove = new VisualElement();
             groove.style.position = Position.Absolute;
             groove.style.height = 1;
-            groove.style.left = 4; groove.style.right = 4;
+            groove.style.left = 3; groove.style.right = 3;
             groove.style.top = new Length(50, LengthUnit.Percent);
             groove.style.translate = new Translate(0, i * 4);
             groove.style.backgroundColor = new Color(0.6f, 0.42f, 0.2f, 0.7f);
@@ -298,6 +311,36 @@ public class VNBacklog : MonoBehaviour
         return b;
     }
 
+    /// <summary>铺设独立凸出枕木（无壳铁轨）：每 16px 一根，比轨道左右各宽 4px 形成凸出；高度变化时重建。</summary>
+    private void EnsureSleepers(float trackH)
+    {
+        if (trackH <= 0f || Mathf.Approximately(_sleepersBuiltFor, trackH)) return;
+        foreach (var s in _sleepers) s.RemoveFromHierarchy();
+        _sleepers.Clear();
+        const float gap = 16f, tieH = 6f;
+        int n = Mathf.CeilToInt((trackH + gap) / gap);
+        var tieColor = new Color(0.42f, 0.28f, 0.16f, 1f);
+        var tieEdge = new Color(0.55f, 0.38f, 0.22f, 1f);
+        for (int i = 0; i < n; i++)
+        {
+            var tie = new VisualElement();
+            tie.style.position = Position.Absolute;
+            tie.style.left = -4;      // 向两侧凸出（轨道宽16，枕木宽24）
+            tie.style.right = -4;
+            tie.style.top = i * gap;
+            tie.style.height = tieH;
+            tie.style.backgroundColor = tieColor;
+            tie.style.borderTopWidth = 1; tie.style.borderTopColor = tieEdge;
+            tie.style.borderBottomWidth = 1; tie.style.borderBottomColor = new Color(0.3f, 0.2f, 0.12f, 1f);
+            tie.style.borderTopLeftRadius = 1; tie.style.borderTopRightRadius = 1;
+            tie.style.borderBottomLeftRadius = 1; tie.style.borderBottomRightRadius = 1;
+            tie.pickingMode = PickingMode.Ignore; // 不挡滑块拖拽
+            sbTrack.Insert(0, tie);               // 枕木在钢轨/滑块之下
+            _sleepers.Add(tie);
+        }
+        _sleepersBuiltFor = trackH;
+    }
+
     private void SbScrollBy(bool up)
     {
         float viewH = backlogScroll.contentRect.height;
@@ -325,18 +368,29 @@ public class VNBacklog : MonoBehaviour
         return Mathf.Max(maxBottom, backlogScroll.contentContainer.layout.height);
     }
 
-    /// <summary>打开面板时强杀原生滚动条：隐藏 ScrollView 下所有「不含内容容器」的直接分支（滚动条控件层）。</summary>
+    /// <summary>打开面板时强杀原生滚动条：隐藏 ScrollView 下「不含内容容器且不含文字」的直接分支（滚动条控件层）。
+    /// 含 TextElement 的分支一律保留——曾因 contentContainer 判定失灵把整个内容层误杀导致回顾空白。</summary>
     private void HideNativeScrollbars()
     {
         var cc = backlogScroll.contentContainer;
         var snapshot = new List<VisualElement>();
-        foreach (var c in backlogScroll.Children()) snapshot.Add(c); // 手写快照：Children() 无 ToList（未引 Linq）
+        foreach (var c in backlogScroll.Children()) snapshot.Add(c);
         foreach (var c in snapshot)
         {
             if (ReferenceEquals(c, cc)) continue;
-            if (SubtreeContains(c, cc)) continue; // 包装了内容容器的层要保留
+            if (SubtreeContains(c, cc)) continue;   // 包装了内容容器的层
+            if (SubtreeHasText(c)) continue;        // 含文字=条目内容层，必须保留
             c.style.display = DisplayStyle.None;
         }
+    }
+
+    private static bool SubtreeHasText(VisualElement e)
+    {
+        if (e is Label) return true; // 条目内容
+        if (e is TextElement te && !string.IsNullOrEmpty(te.text)) return true; // 有文字的按钮（如「跳转」）
+        foreach (var c in e.Children())
+            if (SubtreeHasText(c)) return true;
+        return false;
     }
 
     private static bool SubtreeContains(VisualElement root, VisualElement target)
@@ -391,6 +445,7 @@ public class VNBacklog : MonoBehaviour
 
         if (sbDragging) return; // 拖拽中由指针驱动
         float trackH = sbTrack.contentRect.height;
+        EnsureSleepers(trackH); // 高度就绪后铺枕木（无壳铁轨）
         float maxScroll = SbMaxScroll();
         bool overflowing = maxScroll > 1f;
         // 内容没溢出就不显示滚动条（与原生行为一致；全金柱观感的根因）
@@ -624,6 +679,8 @@ public class VNBacklog : MonoBehaviour
     private static string PinPunctuation(string s)
     {
         if (string.IsNullOrEmpty(s)) return s;
+        // zpix 的 ——（U+2014）字形是两段短横 → 换 U+2500 框线横双连（2em 整段长横）
+        s = s.Replace("——", "──");
         var sb = new System.Text.StringBuilder(s.Length + 16);
         foreach (char c in s)
         {

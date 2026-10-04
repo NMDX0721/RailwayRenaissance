@@ -276,6 +276,8 @@ public class DialogueBox : MonoBehaviour
 
         // 内心活动：整句 [xxx] → 蓝色斜体富文本
         string displayText = ConvertInnerThought(text);
+        // zpix 的 ——（U+2014）字形是两段短横；换 U+2500 框线横双连＝2em 整段长横、无缝
+        displayText = displayText.Replace("——", "──");
 
         if (!isNarration)
         {
