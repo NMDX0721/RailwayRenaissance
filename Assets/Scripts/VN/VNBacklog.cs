@@ -207,12 +207,14 @@ public class VNBacklog : MonoBehaviour
         railR.pickingMode = PickingMode.Ignore;
         sbTrack.Add(railR);
 
-        // 道砟道床：轨道最底层一层灰褐碎石（比枕木略宽），压开纯黑背景、抬起整体对比度
+        // 道砟道床：轨道最底层灰褐碎石，比枕木略宽；上下各延伸 22px 顶到滚动条两端（车挡桩下也铺满，不留黑口）
         var ballast = new VisualElement { name = "sb-ballast" };
         ballast.style.position = Position.Absolute;
         ballast.style.left = -6; ballast.style.right = -6;
-        ballast.style.top = 0; ballast.style.bottom = 0;
+        ballast.style.top = -22; ballast.style.bottom = -22;
         ballast.style.backgroundImage = new StyleBackground(MakeBallastTex());
+        // 显式 32×32 平铺：不指定会被拉伸成糊，颗粒感全无
+        ballast.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(32));
         ballast.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
         ballast.pickingMode = PickingMode.Ignore;
         sbTrack.Insert(0, ballast);   // 最底层（钢轨/枕木/滑块之上依次叠加）
@@ -317,8 +319,9 @@ public class VNBacklog : MonoBehaviour
         }
         sbTrack.Add(sbThumb);
 
-        backlogPanel.Add(sbUp);
+        // 轨道先加、车挡桩后加：道砟上下各延伸 22px，桩必须盖在道砟之上（否则桩被埋掉）
         backlogPanel.Add(sbTrack);
+        backlogPanel.Add(sbUp);
         backlogPanel.Add(sbDown);
 
         // 可交互：悬停切换手型（轨道/箭头/滑块统一）
@@ -555,7 +558,8 @@ public class VNBacklog : MonoBehaviour
         if (!sbLogged)
         {
             sbLogged = true;
-            Debug.Log($"[SB sync] view={backlogScroll.contentRect.height:F0} content={backlogScroll.contentContainer.layout.height:F0} max={maxScroll:F0} thumb={thumbH:F0}/{trackH:F0}");
+            if (TraceLog.ConsoleVerbose)
+                Debug.Log($"[SB sync] view={backlogScroll.contentRect.height:F0} content={backlogScroll.contentContainer.layout.height:F0} max={maxScroll:F0} thumb={thumbH:F0}/{trackH:F0}");
         }
         sbThumb.style.height = thumbH;
         sbThumb.style.top = ratio * Mathf.Max(0f, trackH - thumbH);
@@ -679,8 +683,9 @@ public class VNBacklog : MonoBehaviour
         }
 
         // 诊断日志：每次调用都打一行（共三次：Init 构造 / 打开面板 / 50ms 布局后），详表只打一次
-        Debug.Log($"[Backlog SB] pass all={all.Count} sliderHit={hitSlider} scrollerHit={hitScroller} btnHit={hitBtn} thumbHit={hitThumb} arrowHit={hitArrow}");
-        if (all.Count > 1 && !_sbLogDone)
+        if (TraceLog.ConsoleVerbose)
+            Debug.Log($"[Backlog SB] pass all={all.Count} sliderHit={hitSlider} scrollerHit={hitScroller} btnHit={hitBtn} thumbHit={hitThumb} arrowHit={hitArrow}");
+        if (TraceLog.ConsoleVerbose && all.Count > 1 && !_sbLogDone)
         {
             _sbLogDone = true;
             foreach (var e in all)
@@ -725,28 +730,51 @@ public class VNBacklog : MonoBehaviour
         return tex;
     }
 
-    /// <summary>道砟纹理 16×16 平铺：灰褐砾石底 + 确定性明暗碎石颗粒（Point + Repeat，无随机免重建差异）。</summary>
+    /// <summary>道砟纹理 32×32 平铺：深色石缝底 + 密集小石子（强对比）+ 微颗粒点缀，Point + Repeat。
+    /// 第一版散点像脏污、第二版石子太大太糊——本版走「深底 + 密小石」拉开奖惩对比才有颗粒感。</summary>
     private static Texture2D MakeBallastTex()
     {
-        const int s = 16;
+        const int s = 32;
         var tex = new Texture2D(s, s, TextureFormat.RGBA32, false)
         {
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Repeat,
         };
+        var gap = new Color32(58, 53, 45, 255);      // 石缝深底（明显暗于石子）
         for (int y = 0; y < s; y++)
-        {
             for (int x = 0; x < s; x++)
-            {
-                int h = (x * 73856093) ^ (y * 19349663);
-                int m = ((h >> 5) ^ h) % 7;
-                Color32 c;
-                if (m == 0) c = new Color32(96, 88, 76, 255);       // 亮石面
-                else if (m == 1) c = new Color32(40, 36, 32, 255);  // 石缝暗部
-                else if (m == 2) c = new Color32(74, 68, 58, 255);  // 中灰石
-                else c = new Color32(60, 55, 47, 255);              // 砾石底
-                tex.SetPixel(x, y, c);
-            }
+                tex.SetPixel(x, y, gap);
+
+        var stones = new[]
+        {
+            new Color32(168, 160, 144, 255),   // 高光石
+            new Color32(142, 134, 118, 255),   // 亮石
+            new Color32(112, 104, 90, 255),    // 中石
+            new Color32(88, 81, 69, 255),      // 暗石
+        };
+        uint seed = 20261004u;
+        uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
+
+        // 密集小石子：半径 2..3，46 颗，铺满出碎石粗颗粒
+        for (int i = 0; i < 46; i++)
+        {
+            int cx = (int)(Next() % s);
+            int cy = (int)(Next() % s);
+            int r = 2 + (int)(Next() % 2);
+            var c = stones[(int)(Next() % stones.Length)];
+            for (int dy = -r; dy <= r; dy++)
+                for (int dx = -r; dx <= r; dx++)
+                {
+                    if (dx * dx + dy * dy > r * r) continue;
+                    tex.SetPixel((cx + dx + s) % s, (cy + dy + s) % s, c);
+                }
+        }
+        // 微颗粒：90 个单像素亮点/暗点填缝，增强颗粒噪声
+        for (int i = 0; i < 90; i++)
+        {
+            int x = (int)(Next() % s);
+            int y = (int)(Next() % s);
+            tex.SetPixel(x, y, stones[(int)(Next() % stones.Length)]);
         }
         tex.Apply();
         return tex;
@@ -792,10 +820,18 @@ public class VNBacklog : MonoBehaviour
 
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
     {
-        entries.Add(new BacklogEntry { speaker = speaker, text = text, sceneIndex = sceneIndex, dialogueIndex = dialogueIndex });
+        var entry = new BacklogEntry { speaker = speaker, text = text, sceneIndex = sceneIndex, dialogueIndex = dialogueIndex };
+        entries.Add(entry);
         if (entries.Count > MaxEntries)
+        {
             entries.RemoveAt(0);
-        UpdateBacklogDisplay();
+            // 新来旧去：数据与行同步丢最旧一条（有限窗口）
+            if (backlogScroll != null && backlogScroll.contentContainer.childCount > 0)
+                backlogScroll.RemoveAt(0);
+        }
+        // 增量追加单行：不再全量 Clear+重建，滚动位置/视口稳定
+        if (backlogScroll == null) return;
+        backlogScroll.Add(BuildEntryRow(entry));
     }
 
     /// <summary>标点钉住：在行首危险标点前插 WORD JOINER（U+2060），禁止其被换到行首（CJK 避头尾）。</summary>
@@ -827,123 +863,111 @@ public class VNBacklog : MonoBehaviour
         return sb.ToString();
     }
 
-    private void UpdateBacklogDisplay()
+    /// <summary>构建单条回顾行：AddEntry 增量追加用——不再每条全量重建整表，滚动位置与视口稳定。</summary>
+    private VisualElement BuildEntryRow(BacklogEntry entry)
     {
-        if (backlogScroll == null) return;
-        backlogScroll.Clear();
         var fontDef = GetFontDef();
+        var entryRow = new VisualElement();
+        entryRow.style.flexDirection = FlexDirection.Row;
+        entryRow.style.alignItems = Align.Stretch;
+        entryRow.style.marginBottom = 26;
+        entryRow.style.paddingBottom = 18;
+        entryRow.style.borderBottomWidth = 1;
+        entryRow.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
+        entryRow.style.paddingTop = 12;
+        entryRow.style.paddingLeft = 8;
+        entryRow.style.paddingRight = 8;
+        entryRow.style.borderTopLeftRadius = 4;
+        entryRow.style.borderTopRightRadius = 4;
+        entryRow.style.borderBottomLeftRadius = 4;
+        entryRow.style.borderBottomRightRadius = 4;
 
-        for (int i = 0; i < entries.Count; i++)
+        // 文本内容容器（占满剩余宽度）
+        var contentBox = new VisualElement();
+        contentBox.style.flexGrow = 1;
+        contentBox.style.paddingRight = 12;
+
+        bool isNarration = string.IsNullOrEmpty(entry.speaker) || entry.speaker == "n";
+
+        if (!isNarration)
         {
-            var entry = entries[i];
-            var entryRow = new VisualElement();
-            entryRow.style.flexDirection = FlexDirection.Row;
-            entryRow.style.alignItems = Align.Stretch;
-            entryRow.style.marginBottom = 26;
-            entryRow.style.paddingBottom = 18;
-            entryRow.style.borderBottomWidth = 1;
-            entryRow.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
-            entryRow.style.paddingTop = 12;
-            entryRow.style.paddingLeft = 8;
-            entryRow.style.paddingRight = 8;
-            entryRow.style.borderTopLeftRadius = 4;
-            entryRow.style.borderTopRightRadius = 4;
-            entryRow.style.borderBottomLeftRadius = 4;
-            entryRow.style.borderBottomRightRadius = 4;
-
-            // 文本内容容器（占满剩余宽度）
-            var contentBox = new VisualElement();
-            contentBox.style.flexGrow = 1;
-            contentBox.style.paddingRight = 12;
-
-            bool isNarration = string.IsNullOrEmpty(entry.speaker) || entry.speaker == "n";
-
-            if (!isNarration)
-            {
-                var speakerLabel = new Label(entry.speaker);
-                speakerLabel.style.fontSize = 24;
-                speakerLabel.style.letterSpacing = 2;
-                speakerLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.9f);
-                speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-                speakerLabel.style.marginBottom = 10;
-                speakerLabel.style.unityFontDefinition = fontDef;
-                // 底色只包人名：Label 默认 stretch 会把棕条拉满整行——收缩到文字宽
-                speakerLabel.style.alignSelf = Align.FlexStart;
-                speakerLabel.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.6f);
-                speakerLabel.style.paddingLeft = 8;
-                speakerLabel.style.paddingRight = 8;
-                speakerLabel.style.paddingTop = 4;
-                speakerLabel.style.paddingBottom = 4;
-                speakerLabel.style.borderTopLeftRadius = 4;
-                speakerLabel.style.borderTopRightRadius = 4;
-                speakerLabel.style.borderBottomLeftRadius = 4;
-                speakerLabel.style.borderBottomRightRadius = 4;
-                speakerLabel.style.borderLeftWidth = 3;
-                speakerLabel.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
-                contentBox.Add(speakerLabel);
-            }
-
-            var textLabel = new Label(PinPunctuation(entry.text));
-            textLabel.style.fontSize = 26;
-            textLabel.style.letterSpacing = 2;
-            textLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
-            textLabel.style.whiteSpace = WhiteSpace.Normal;
-            textLabel.style.marginBottom = 8;
-            textLabel.style.unityFontDefinition = fontDef;
-            contentBox.Add(textLabel);
-            entryRow.Add(contentBox);
-
-            // 右侧"跳转"按钮：专门跳转到该对话
-            int capturedIdx = i;
-            var jumpBtn = new UnityEngine.UIElements.Button(() => JumpToEntry(capturedIdx)) { text = "跳转" };
-            jumpBtn.style.width = 90;
-            jumpBtn.style.height = 40;
-            jumpBtn.style.alignSelf = Align.FlexEnd;
-            jumpBtn.style.flexShrink = 0;
-            jumpBtn.style.marginLeft = 8;
-            jumpBtn.style.marginBottom = 8;
-            jumpBtn.style.fontSize = 22;
-            jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-            jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
-            jumpBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            jumpBtn.style.unityFontDefinition = fontDef;
-            jumpBtn.style.borderTopWidth = 1;
-            jumpBtn.style.borderBottomWidth = 1;
-            jumpBtn.style.borderLeftWidth = 1;
-            jumpBtn.style.borderRightWidth = 1;
-            jumpBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-            jumpBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-            jumpBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-            jumpBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-            jumpBtn.style.borderTopLeftRadius = 5;
-            jumpBtn.style.borderTopRightRadius = 5;
-            jumpBtn.style.borderBottomLeftRadius = 5;
-            jumpBtn.style.borderBottomRightRadius = 5;
-            jumpBtn.RegisterCallback<PointerEnterEvent>(e =>
-            {
-                jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
-                jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-                UiCursor.ShowHand();
-            });
-            jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
-            {
-                jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
-                jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-                UiCursor.ShowArrow();
-            });
-            entryRow.Add(jumpBtn);
-
-            backlogScroll.Add(entryRow);
+            var speakerLabel = new Label(entry.speaker);
+            speakerLabel.style.fontSize = 24;
+            speakerLabel.style.letterSpacing = 2;
+            speakerLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.9f);
+            speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+            speakerLabel.style.marginBottom = 10;
+            speakerLabel.style.unityFontDefinition = fontDef;
+            // 底色只包人名：Label 默认 stretch 会把棕条拉满整行——收缩到文字宽
+            speakerLabel.style.alignSelf = Align.FlexStart;
+            speakerLabel.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.6f);
+            speakerLabel.style.paddingLeft = 8;
+            speakerLabel.style.paddingRight = 8;
+            speakerLabel.style.paddingTop = 4;
+            speakerLabel.style.paddingBottom = 4;
+            speakerLabel.style.borderTopLeftRadius = 4;
+            speakerLabel.style.borderTopRightRadius = 4;
+            speakerLabel.style.borderBottomLeftRadius = 4;
+            speakerLabel.style.borderBottomRightRadius = 4;
+            speakerLabel.style.borderLeftWidth = 3;
+            speakerLabel.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
+            contentBox.Add(speakerLabel);
         }
+
+        var textLabel = new Label(PinPunctuation(entry.text));
+        textLabel.style.fontSize = 26;
+        textLabel.style.letterSpacing = 2;
+        textLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        textLabel.style.whiteSpace = WhiteSpace.Normal;
+        textLabel.style.marginBottom = 8;
+        textLabel.style.unityFontDefinition = fontDef;
+        contentBox.Add(textLabel);
+        entryRow.Add(contentBox);
+
+        // 右侧"跳转"按钮：跳转到该条目（闭包抓 scene/dialogue 索引，不依赖窗口内序号，淘汰不失效）
+        var jumpBtn = new UnityEngine.UIElements.Button(() => JumpToEntry(entry.sceneIndex, entry.dialogueIndex)) { text = "跳转" };
+        jumpBtn.style.width = 90;
+        jumpBtn.style.height = 40;
+        jumpBtn.style.alignSelf = Align.FlexEnd;
+        jumpBtn.style.flexShrink = 0;
+        jumpBtn.style.marginLeft = 8;
+        jumpBtn.style.marginBottom = 8;
+        jumpBtn.style.fontSize = 22;
+        jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
+        jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
+        jumpBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        jumpBtn.style.unityFontDefinition = fontDef;
+        jumpBtn.style.borderTopWidth = 1;
+        jumpBtn.style.borderBottomWidth = 1;
+        jumpBtn.style.borderLeftWidth = 1;
+        jumpBtn.style.borderRightWidth = 1;
+        jumpBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        jumpBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        jumpBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        jumpBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        jumpBtn.style.borderTopLeftRadius = 5;
+        jumpBtn.style.borderTopRightRadius = 5;
+        jumpBtn.style.borderBottomLeftRadius = 5;
+        jumpBtn.style.borderBottomRightRadius = 5;
+        jumpBtn.RegisterCallback<PointerEnterEvent>(e =>
+        {
+            jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
+            jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
+            UiCursor.ShowHand();
+        });
+        jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
+        {
+            jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
+            jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
+            UiCursor.ShowArrow();
+        });
+        entryRow.Add(jumpBtn);
+        return entryRow;
     }
 
-    private void JumpToEntry(int index)
+    private void JumpToEntry(int sceneIndex, int dialogueIndex)
     {
-        if (index < 0 || index >= entries.Count) return;
-        var entry = entries[index];
-        // 跳转到该条目的位置（sceneIndex, dialogueIndex）
-        // 这样点击后显示的是该条目之后的下一句
-        OnEntryClicked?.Invoke(entry.sceneIndex, entry.dialogueIndex);
+        OnEntryClicked?.Invoke(sceneIndex, dialogueIndex);
         ToggleBacklog();
     }
 
