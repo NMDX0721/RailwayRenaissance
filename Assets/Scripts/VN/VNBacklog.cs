@@ -210,11 +210,11 @@ public class VNBacklog : MonoBehaviour
         // 道砟道床：轨道最底层灰褐碎石，比枕木略宽；上下各延伸 22px 顶到滚动条两端（车挡桩下也铺满，不留黑口）
         var ballast = new VisualElement { name = "sb-ballast" };
         ballast.style.position = Position.Absolute;
-        ballast.style.left = -6; ballast.style.right = -6;
+        ballast.style.left = -8; ballast.style.right = -8;   // 宽32=纹理一整格，整块图案可见
         ballast.style.top = -22; ballast.style.bottom = -22;
         ballast.style.backgroundImage = new StyleBackground(MakeBallastTex());
-        // 显式 32×32 平铺：不指定会被拉伸成糊，颗粒感全无
-        ballast.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(32));
+        // 显式 32×64 平铺（与 MakeBallastTex 同尺寸）：不指定会被拉伸成糊，颗粒感全无
+        ballast.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(64));
         ballast.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
         ballast.pickingMode = PickingMode.Ignore;
         sbTrack.Insert(0, ballast);   // 最底层（钢轨/枕木/滑块之上依次叠加）
@@ -540,7 +540,9 @@ public class VNBacklog : MonoBehaviour
         sbTrack.style.top = sy + 22;
         sbTrack.style.height = Mathf.Max(40f, sh - 44);
         sbDown.style.top = sy + sh - 20;
-        sbUp.style.right = 4; sbTrack.style.right = 4; sbDown.style.right = 4;
+        // right=8（原4）：道砟比轨道每侧宽6，right=4 时道砟右缘超出面板 2px 被裁，
+        // 左侧却有空间全露 → 左宽右窄的不居中观感；收到 8 让两侧肩宽对称
+        sbUp.style.right = 8; sbTrack.style.right = 8; sbDown.style.right = 8;
 
         if (sbDragging) return; // 拖拽中由指针驱动
         float trackH = sbTrack.contentRect.height;
@@ -730,54 +732,73 @@ public class VNBacklog : MonoBehaviour
         return tex;
     }
 
-    /// <summary>道砟纹理 32×32 平铺：深色石缝底 + 密集小石子（强对比）+ 微颗粒点缀，Point + Repeat。
-    /// 第一版散点像脏污、第二版石子太大太糊——本版走「深底 + 密小石」拉开奖惩对比才有颗粒感。</summary>
+    /// <summary>道砟纹理 32×64 平铺：深色石缝底 + 细密小石（半径1-2）+ 单像素微粒；
+    /// 左右各 3 列做透明缺口（70% 概率挖空）→ 铺出来是碎石豁口边，不是刀切直线。
+    /// 高 64 减少竖向平铺重复感。</summary>
     private static Texture2D MakeBallastTex()
     {
-        const int s = 32;
-        var tex = new Texture2D(s, s, TextureFormat.RGBA32, false)
+        const int s = 32, H = 64;
+        var tex = new Texture2D(s, H, TextureFormat.RGBA32, false)
         {
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Repeat,
         };
-        var gap = new Color32(58, 53, 45, 255);      // 石缝深底（明显暗于石子）
-        for (int y = 0; y < s; y++)
+        var gap = new Color32(54, 49, 42, 255);      // 石缝深底
+        for (int y = 0; y < H; y++)
             for (int x = 0; x < s; x++)
                 tex.SetPixel(x, y, gap);
 
         var stones = new[]
         {
-            new Color32(168, 160, 144, 255),   // 高光石
-            new Color32(142, 134, 118, 255),   // 亮石
-            new Color32(112, 104, 90, 255),    // 中石
-            new Color32(88, 81, 69, 255),      // 暗石
+            new Color32(146, 138, 122, 255),   // 亮石（不再近白）
+            new Color32(124, 116, 101, 255),
+            new Color32(102, 95, 82, 255),
+            new Color32(80, 74, 63, 255),      // 暗石
         };
         uint seed = 20261004u;
         uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
 
-        // 密集小石子：半径 2..3，46 颗，铺满出碎石粗颗粒
-        for (int i = 0; i < 46; i++)
+        // 细石：半径 1..2，160 颗——小而密才是道砟粗颗粒，大颗像撒盐
+        for (int i = 0; i < 160; i++)
         {
             int cx = (int)(Next() % s);
-            int cy = (int)(Next() % s);
-            int r = 2 + (int)(Next() % 2);
+            int cy = (int)(Next() % H);
+            int r = 1 + (int)(Next() % 2);
             var c = stones[(int)(Next() % stones.Length)];
             for (int dy = -r; dy <= r; dy++)
                 for (int dx = -r; dx <= r; dx++)
                 {
                     if (dx * dx + dy * dy > r * r) continue;
-                    tex.SetPixel((cx + dx + s) % s, (cy + dy + s) % s, c);
+                    tex.SetPixel((cx + dx + s) % s, (cy + dy + H) % H, c);
                 }
         }
-        // 微颗粒：90 个单像素亮点/暗点填缝，增强颗粒噪声
-        for (int i = 0; i < 90; i++)
+        // 微粒：220 个单像素填缝
+        for (int i = 0; i < 220; i++)
         {
             int x = (int)(Next() % s);
-            int y = (int)(Next() % s);
+            int y = (int)(Next() % H);
             tex.SetPixel(x, y, stones[(int)(Next() % stones.Length)]);
+        }
+        // 边缘豁口：左右各 3 列按行概率挖透明，破掉刀切直线
+        for (int y = 0; y < H; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                if (Next() % 10 < 7) SetAlpha(tex, x, y, 0);
+                else if (Next() % 2 == 0) SetAlpha(tex, x, y, 140);
+                if (Next() % 10 < 7) SetAlpha(tex, s - 1 - x, y, 0);
+                else if (Next() % 2 == 0) SetAlpha(tex, s - 1 - x, y, 140);
+            }
         }
         tex.Apply();
         return tex;
+    }
+
+    private static void SetAlpha(Texture2D tex, int x, int y, byte a)
+    {
+        var c = tex.GetPixel(x, y);
+        c.a = a / 255f;
+        tex.SetPixel(x, y, c);
     }
 
     /// <summary>e 是否位于 anc 之下（沿 parents 链上溯）。</summary>
