@@ -25,6 +25,8 @@
 - [1.9 16表情差分图谱模板](#19-16表情差分图谱44网格铺满全画面)
 
 ### 二、场景背景
+
+> **归档原则（2026-10-01）**：标 ✅ / 📦 的场景提词**已出图，冻结归档**——世界观/设定变更一律不回改其提词正文（需变更时重绘另起新版本）；❌ 待生成 / ⚠️ 待重绘的场景才按 `参考资料/设定/` 文档更新后出图。
 - [2.0 前置 · NF-5 外构参考图](#20-前置--nf-5-外构参考图nf5_exterior_ref) ✅ 已收并定性（朝控局涂装）
 - [2.0.1 C-55000 敞车外构](#201-c-55000-敞车外构c55000_exterior_ref--前置) ✅ 已收锁定
 - [2.1 实验室](#21-实验室智能调度系统实验室) 📦 已归档
@@ -39,8 +41,8 @@
 - [2.14 群山天空](#214-群山天空mountain_sky) ✅ 已入库
 - [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ✅ 已入库
 - [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ✅ 已生成
-- [2.16.1 雾峰站站牌样式](#2161-雾峰站站牌样式wufeng_signage_ref--前置) 🟡 待生成
-- [2.17 车站夕阳](#217-车站夕阳station_sunset) ⚠️ 待重绘（站牌/墙字）
+- [2.16.1 雾峰站站牌样式](#2161-雾峰站站牌样式wufeng_signage_ref--前置) ✅ 已锁定（2026-10-01）
+- [2.17 车站夕阳](#217-车站夕阳station_sunset) ✅ 已入库（2026-10-01 重绘定稿）
 - [2.18 傍晚站台](#218-傍晚站台platform_evening) ❌ 待生成
 - [2.19 边境小镇](#219-边境小镇border_town) ❌ 待生成
 - [2.20 补给站](#220-补给站supply_station) ❌ 待生成
@@ -91,6 +93,23 @@
 - [CG插画清单](#62-cg-插画9-张提词已写)
 - [已入库清单](#64-已入库背景图)
 
+**序章裸跑缺图队列（2026-10-01 audit 全 10 幕；提词均已写好，出图即消除黑屏兜底）——按幕推进优先级排序：**
+
+| 优先 | bg 名 | 引用幕（次数） | 提词节 |
+|------|-------|---------------|--------|
+| 1 | `platform_evening` | 04（2） | §2.18 |
+| 2 | `railway_track` | 05（3） | §2.25 |
+| 3 | `songqiao_station` | 05（2） | §2.26 |
+| 4 | `depot_morning` | 07（5） | §2.24 |
+| 5 | `station_night` | 06（4） | §2.27 |
+| 6 | `platform_morning` | 08（2）+09（1） | §2.29 |
+| 7 | `train_inside` | 08（2） | §2.30 |
+| 8 | `station_office` | 09（3） | §2.28 |
+| 9 | `china_sky` | 03（6） | §2.21 |
+| 10 | `border_town` / `supply_station` / `hebei_town` / `henan_town` | 03 各1 | §2.19-2.23 |
+| 11 | `shop`（平壤后街） | 02（1） | §2.33 |
+| — | `black` / `news_2050` / `news_2072` | 01/10 | **非缺图**：设计即黑屏字卡，引擎 solid black 兜底为正解 |
+
 ### 七、已生成资产归档（见文件末尾）
 - [已归档背景图](#七已生成资产归档) 📦 §2.1-2.7, §2.12-2.13, §2.31
 
@@ -102,8 +121,15 @@
 
 - **工作流**：第1步生成主图（1024×1536，锁定面部/服装/光照）→ 第2步用主图作 image reference，只发一句增量表情提示，denoising 0.2-0.3（同服装/同姿势/同光照）
 - **设计文档引用原则**：设计文档不做去叙事化；本提词只给AI绘图用序号参考（§1.x / §2.x），不反向改写设定正文
-- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：**NF-5K 外构**（`ExternalAssets/nf5k_reference.png`，2026-09-28 定稿，朝鲜升级版）。NF-5 外构：已收并定性（`ExternalAssets/nf5_exterior_ref.png`＝朝控局涂装，世界观 §十三；提词 §2.0）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、雾峰站站牌（提词 §2.16.1，待生成，出图后锁定）、**架空车辆族谱其余车型外构（NF-7/金策型/乌金型/SY-30 雨燕/金达莱卧铺/黎明客车组/G-17 罐车，提词均待写 → 车辆设定 §四族谱；C-55000 已锁定 → §2.0.1）**。角色已有立绘的，CG 一律挂立绘不从零描述外貌
-- **站牌文字规范**：只写站名，禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
+- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：**NF-5K 外构**（`ExternalAssets/nf5k_reference.png`，2026-09-28 定稿，朝鲜升级版）、**雾峰站站牌**（`ExternalAssets/wufeng_signage_ref.png`，2026-10-01 锁定 → §2.16.1）、**C-55000 敞车**（§2.0.1）。NF-5 外构：已收并定性（`ExternalAssets/nf5_exterior_ref.png`＝朝控局涂装，世界观 §十三；提词 §2.0）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、**架空车辆族谱其余车型外构（NF-7/金策型/乌金型/SY-30 雨燕/金达莱卧铺/黎明客车组/G-17 罐车，提词均待写 → 车辆设定 §四族谱）**。角色已有立绘的，CG 一律挂立绘不从零描述外貌
+- **站牌文字规范**：按 §2.16.1 锁定制式（主名雾峰/무봉/Wufeng＋邻站蓝带），禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
+- **出图迭代工作流（2026-10-01 学自用户实操流程，ChatGPT 出图通用）**：
+  1. **首版四段式**：参考图分工（图一/二/三限定要素形制、图四只借布局氛围）＋ 3-4 句硬约束（朝向/件数/无人）＋ 素材库（明示"自行取舍添加"）＋ 收尾约束；**不要**五段长束缚提词（实测出图更差）
+  2. **修正轮只发增量短句**：针对成图具体问题一两句（"光线不要太暗""机车太窄了，应该宽一点""站牌自然点"），不重发全提词——会话有上下文
+  3. **中途插新参考图要加锁定声明**："站台布局进一步参考这张图（机车、敞车、站牌的要素不变）"——防改 A 坏 B
+  4. **参考图分域授权**："站牌左上角的图标不要按我的参考图，保留你现在的"——一张图只借指定部分
+  5. **文字/一致性要求挂限定行**："确保文字清晰""两个敞车涂装一模一样""铭牌与图二完全一致"——写进素材库会被忽略
+  6. **正向表述优先**（"站牌自然点"＞"不要僵硬"）；物理细节点名到部位（"车顶喇叭在偏左侧""站牌靠近建筑、不在站台中间"）
 - **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
 - **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
 - **表情集**：全部角色统一 19 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink` + 扩展 `cry, calm, shy`（以主角已完成16表情为基准，扩展3种见下；以下各节同）
@@ -940,97 +966,103 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure en
 
 **文件**：`ExternalAssets/wufeng_signage_ref.png`（参考用图，不进 Resources）
 **用途**：所有含雾峰站标识系统的场景锁定源——`station_sunset`、`platform_morning`、`platform_evening` 等；生成后挂 image reference，保证跨场景站牌制式一致。
-**状态**：🟡 提词已写，待生成（2026-09-30 迭代三次：v1 六件套陈列作废 → v2 双柱中国式作废 → **v3 以用户提供的 JR 后免站（ごめん駅）实拍为形制基准**；透明背景+单件要求保留）
-**规范依据**：§2.17 站名/文字规范（2026-09-22）+ 世界观 §十一 今文/古文并存——**站牌属官方标识一律简体**，中韩双语；禁終點站/始發/巨型墙字。其余标识件（搪瓷门牌/时刻表/宣传栏/候车室/停車）由 station_sunset 主提词文本直接描述，不另出参考图。
+**状态**：✅ 已生成并锁定（2026-10-01；v1 六件套陈列作废 → v2 双柱中国式作废 → v3 定形制 → v4 母图到位（`ExternalAssets/signage_gomen_source.png`）→ v5 线位关系定稿（两线交汇站）→ **v6 实操出图锁定**（用户精简提词；成图＝`ExternalAssets/wufeng_signage_ref.png`，透明底 1536×1024，含母图式两侧立柱已接受保留））
+**规范依据**：§2.17 站名/文字规范（2026-09-22）+ 世界观 §十一 今文/古文并存——**站牌属官方标识一律简体**，中韩双语；禁終點站/始發/巨型墙字。左上角徽＝**岚川铁路局局徽**（定义见 `世界观扩展设定.md` §十三）。其余标识件（搪瓷门牌/时刻表/宣传栏/候车室/停車）由 station_sunset 主提词文本直接描述，不另出参考图。
 
-**尺寸**：1536×1024（透明底，横牌单件居中，四周留边）
+**尺寸**：1536×1024（透明底，横牌居中，四周留边）
+**挂图**：复现/改版时附母图 `ExternalAssets/signage_gomen_source.png`（JR 后免站实拍）作 image reference，只取形制，站名/文字全部替换为本提词内容。**下游站景（station_sunset 等）一律改挂成图 `ExternalAssets/wufeng_signage_ref.png` 锁制式。**
 
-**提示词（v3 · 基于 JR 后免站駅名標改造，2026-09-30）**：
+**提示词（v6 · 实操定稿＝用户精简版 ＋ 局徽定义，2026-10-01 出图）**：
 ```
-透明背景，单个物件，像素风，星露谷风格像素画，清晰像素，16-bit复古，
-雾峰站 站名牌 —— 参照日本 JR 站名牌（駅名標）形制，改造为中韩双语：
+参考图一，透明背景，单个物件，像素风，星露谷风格像素画，清晰像素，16-bit复古，
+雾峰站 站名牌 —— 参照所附日本 JR 站名牌（駅名標）实拍母图的形制，改造为中韩双语：
 
-物件：一块横长方形车站站名牌（仅此一件），结构自上而下——
-① 左上角：中国铁路路徽（抽象圆形徽记，齿轮与轨道意象，不写文字）
-② 主站名大字：「雾峰」（黑色粗体，占牌面最大面积）
-③ 第二行中字：「무봉」（谚文，黑色）
-④ 第三行小字：罗马字「Wufeng」
-⑤ 右侧上下两枚圆形线路徽：上「雾 1」（紫红色圆环），下「矿 1」（青绿色圆环）
-⑥ 中部蓝色横带贯通牌面：左端圆徽「雾 1」+「茶山」「Chashan」，右端圆徽「雾 2」+「松桥」「Songqiao」
-⑦ 底部括注：（雾峰村）
+① 左上角：岚川铁路局局徽——受朝鲜文化影响的翼星纹样（蓝色双翼+红星+轨道意象的抽象徽记，不写文字）
+② 右上角：两枚白底圆形线路徽上下排列（样式同母图右上角）——
+   上枚：紫红色圆环，圆内上行「雾」下行「1」，黑色字
+   下枚：青绿色圆环，圆内上行「青」下行「1」，黑色字
+③ 牌面上部居中：主站名「雾峰」（黑色粗体圆润黑体，占牌面最大面积）
+④ 其下居中第二行：「무봉」（谚文，黑色，中号粗体）
+⑤ 其下居中第三行：罗马字「Wufeng」（黑色，小号）
+⑥ 中部蓝色横带（亮青蓝色，同母图）贯通牌面左右，带内文字全部白色：
+   左端：白底圆徽（青绿色圆环，「青」上「2」下）+ 右侧站名「分水岭」（白色大字）其下「Fenshuiling」（白色小字）
+   右端：对称布局，站名「茶山」（白色大字）其下「Chashan」（白色小字）+ 白底圆徽（紫红色圆环，「雾」上「2」下）
+⑦ 底部窄白条居中：小号黑色括注「（雾峰村）」
 
-透明背景，无环境、无天空、无围栏、无树木、无人、无其他物件。
-文字仅限：雾峰 / 무봉 / Wufeng / 茶山 / Chashan / 松桥 / Songqiao / 雾 / 矿 / 1 / 2 /（雾峰村）；禁止：終點站、始發、종착역、ごめん、後免、其他任何字形。
+透明背景。文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾 / 青 / 1 / 2 /（雾峰村）；
+禁止：終點站、始發、종착역、ごめん、後免、JR、高知県、松桥、Songqiao、矿、其他任何字形。
 1536×1024，物件居中，四周留边，横牌完整入画。
+（实操结果：成图含母图同款两侧深色立柱，已接受为制式一部分）
 ```
 
-**生成后锁定动作**：状态 ✅ → 更新 §2.17 与待锁清单指向 `wufeng_signage_ref.png` → 各站景提词挂此图锁站牌制式。
+**线路与站番号（2026-09-30 定稿，照母图站番号递增规则）**：雾峰村站为**两线交汇站**，两线均以本站为 0km 起点（母图本站 D40／左 D39／右 D41 的递增逻辑同款）：
+- **雾峰村线**（＝雾峰村-乌金岭线，23km，sign 徽字「雾」）：雾1 雾峰村 → 雾2 茶山 → 雾3 松桥 → 雾4 矿区
+- **青溪线**（＝雾峰村-青溪镇线，45km，sign 徽字「青」）：青1 雾峰村 → **青2 分水岭（外侧首站，约10km）** → … → 青溪镇
+
+故站牌：右上双徽＝本站两线番号 **雾1／青1**；蓝带两头＝两线各自下一站 **青2 分水岭（左）／雾2 茶山（右）**，圆环颜色跟所属线（青绿＝青线、紫红＝雾线）。关联权威：车辆设定 §五、区域解锁 §1.1。若线位再调，三处同步改。
+
+**锁定记录（2026-10-01）**：成图验收通过（透明底四角 alpha=0 无烧底 ✓、1536×1024 ✓、白名单文字全对 ✓、禁词零出现 ✓）→ 入库 `ExternalAssets/wufeng_signage_ref.png` → 待锁清单、§2.17 已同步指向本图。后续站景（station_sunset / platform_morning / platform_evening）生成时挂本图锁站牌制式。
 
 ---
 
 ### 2.17 车站夕阳（station_sunset）
 
 **文件**：`Resources/bg/station_sunset.png`
-**用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5。
-**状态**：⚠️ 已生成但需重绘（2026-09-22）——成图 NF-5 外构可用，**站牌/墙面文字作废**；重绘后兼任 NF-5 前斜视 + 雾峰站前置参考。
-**前置**：NF-5 外构（挂 `ExternalAssets/nf5_exterior_ref.png`）、**雾峰站站牌样式（提词 §2.16.1，待生成）**、C-55000 敞车（§2.0.1 已锁定 `c55000_exterior_ref.png`）——NF-5/C-55000 已齐，**站牌样式出图后三前置全齐**
+**用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5K。
+**状态**：✅ 已重绘入库（2026-10-01）——成图《雾峰车站：樱花夕照下的列车.png》→ `Assets/Resources/bg/station_sunset.png`（补上 prologue_04/10 所引用的缺失文件；旧 `bg/station.png` 为图鉴用，保留）。子代理验收：站牌全制式且无禁字、铭牌「耕牛 / 경우」双语、站房小牌「雾峰」、无人物、布局合理。**已知偏差（用户拍板接受）**：车厢约 4 节（非"恰好两节"）、车头略偏右、画风为精细插画带像素颗粒而非纯像素。兼任 NF-5K 前斜视 + 雾峰站前置参考。
+**前置**：NF-5K 外构（挂 `ExternalAssets/nf5k_reference.png`，已锁）、雾峰站站牌样式（挂 `ExternalAssets/wufeng_signage_ref.png`，✅ 2026-10-01 锁定 → §2.16.1）、C-55000 敞车（§2.0.1 已锁定 `c55000_exterior_ref.png`）——**三前置全齐，可重绘**
 
 **站名/文字规范（2026-09-22）**：
-- 站牌只写站名「雾峰 / 무봉」，**禁止写「終點站」「종착역」「始发站」**——列车对开往返，终到只是车次方向，不写死在站牌上
+- 站牌按 §2.16.1 锁定制式（雾峰/무봉/Wufeng 主名＋青2 分水岭/雾2 茶山 邻站蓝带），**禁止写「終點站」「종착역」「始发站」**——列车对开往返，终到只是车次方向，不写死在站牌上
 - 墙面**禁止巨型手写站名**；站房外墙用小型站名牌 + 宣传栏 + 玻璃橱窗时刻表
 - 站名统一「雾峰」（站牌/墙面），口语/剧本可写雾峰村站；勿混用「雾峰 — 終點站」
 
-**挂图**：生成时挂 `ExternalAssets/nf5_exterior_ref.png` 为 image reference，附加指令 `ignore the flag and propaganda, plain Chinese green livery`（雾峰站＝原局纯绿涂装，无旗）。
+**挂图（2026-10-01 更新，三张全挂）**：
+- 站牌：挂 `ExternalAssets/wufeng_signage_ref.png`（站牌制式锁定源，含两侧立柱）
+- 机车：挂 `ExternalAssets/nf5k_reference.png`（现役涂装直接使用，不加任何 ignore 指令）
+- 敞车：挂 `ExternalAssets/c55000_exterior_ref.png`（车后恰好两节）
 
-**提示词（v4 · 中文版）**：
+**提示词（v6 · 用户风格版，2026-10-01：一行定调＋附图引用＋编号条目）**：
 ```
-像素风，2D 背景，1920x1080，16:9 画幅，
-星露谷风格像素画，清晰像素，
-黄昏山村小站，大全景构图：
+参考图三张，1920×1080，16:9，清晰像素风，星露谷风格像素画，16-bit复古，
 
-场景：黄昏时分的单站台山村小站。左侧：灰砖站房，红陶瓦屋顶。立面禁止巨型手写站名——只有门楣上方一块低调的白色搪瓷站名牌，蓝字「雾峰」（普通站牌尺寸）；一个玻璃橱窗时刻表「列车时刻表 列차시각표」（纸页泛黄，有手写改点）；一块软木/毛毡宣传栏「宣传栏 선전란」（贴着褪色安全标语和一张雾峰村—矿区线路的剥落告示）。入口门旁立式牌：候车室 대기실。前景左侧：双柱式标准中国铁路站牌——白色长方形牌面、蓝字，只写站名「雾峰」（大字）与下方「무봉」（小字）；不得出现「終點站」「始發站」「종착역」。中央站台：灰色石板站台（磨损混凝土板，非木板），木长椅上放着绿色保温壶和劳保手套；旁边一辆木行李推车，堆着麻袋。右侧：NF-5 柴油机车「耕牛」停在单线上，朝观众左前方——深森林绿车身，风化锈流痕；鼻端无白色人字纹、无 V 形条纹——纯绿鼻端，绿牌白字「NF-5」，其下方黄铜铭牌「耕牛 / 경우」；单盏居中大圆灯，红色缓冲梁，板条排障器，两盏标志灯；短罩走廊式布局——1965 年中国柴油机车设计，不是现代高铁。车后恰好挂两节 C-55000 型运煤敞车（风化棕红色）。最右：高耸锈蚀的臂板信号机，臂板锁在水平停车位，白色小牌「停車 정지」。左前景：老式木电线杆，单盏灯，灯是灭的。站台边缘长满黄色野花与绿草，站台中央打扫干净。背景：层叠蓝紫色山影压在橙粉色晚霞下，散着紫色碎云；暖金色光从左侧射入，拉出长影。
+雾峰站 夕阳全景 —— 站牌/机车/敞车的形制照三张附图（站牌 / NF-5K机车 / C-55000敞车），构图自左至右：
 
-布局：
-- 中左：红瓦灰砖站房，门廊罩着入口
-- 站房立面：门上方小搪瓷站牌「雾峰」+ 玻璃时刻表橱窗 + 宣传栏（无巨型墙字）
-- 前景左：双柱标准站牌「雾峰 / 무봉」（只写站名，无終點站）
-- 中央：石板站台边缘，长椅、行李推车
-- 右：轨道上的 NF-5 机车，车后恰好两节 C-55000 敞车
-- 最右：锈蚀臂板信号机 + 停车牌
-- 左缘：电线杆，灯不亮
-- 背景：层叠山影 + 晚霞
+① 左缘：老式木电线杆，单盏灯，灯是灭的
+② 中左站房：灰砖墙红陶瓦屋顶，门廊罩着入口；立面禁止巨型手写站名——门楣上方小搪瓷牌白底蓝字「雾峰」（普通尺寸，低调）；玻璃橱窗「列车时刻表 列차시각표」（纸页泛黄，有手写改点）；软木宣传栏「宣传栏 선전란」（褪色安全标语＋一张雾峰村—矿区线路的剥落告示）；门旁立式牌「候车室 대기실」
+③ 前景左站牌（形制照附图站牌）：白底横牌＋两侧深色立柱；主名「雾峰」大字，其下「무봉」「Wufeng」；右上双徽＝紫红「雾1」＋青绿「青1」；中部亮青蓝带＝左端青绿徽「青2」＋「分水岭 Fenshuiling」白色字、右端「茶山 Chashan」白色字＋紫红徽「雾2」；底部窄白条「（雾峰村）」
+④ 中央站台：磨损灰石板/混凝土（非木板）；木长椅上绿色保温壶＋劳保手套；木行李推车堆麻袋；站台边缘黄野花绿草、中央扫净
+⑤ 右侧机车（形制照附图 NF-5K）：「耕牛·改」停在单线，朝观众左前方——深蓝车身，红白波浪条纹环绕，樱花图案，风化流痕，鼻端无白色V纹；红星翼徽＋蓝牌白字「NF-5K」＋黄铜铭牌「耕牛 / 경우」；车身朝鲜国旗＋红底放射光芒宣传画「더 밝은 미래를 위하여」；单盏居中大圆灯，红色缓冲梁，板条排障器，两盏标志灯；短罩走廊式，柴油机车，不是高铁
+⑥ 车后恰好两节 C-55000 型运煤敞车（风化棕红色，形制照附图）
+⑦ 最右：高耸锈蚀臂板信号机，臂板锁在水平停车位，白色小牌「停車 정지」
+⑧ 背景：橙粉色晚霞压着层叠蓝紫色山影，散着紫色碎云；暖金色光自左侧射入，拉出长影
 
-NF-5 锁定设计（必须与参考图一致）：
-- 深森林绿，锈补丁，鼻端无白色 V 形纹
-- 鼻端：绿牌白字「NF-5」+ 黄铜铭牌「耕牛 / 경우」
-- 单盏大圆灯，红色缓冲梁，板条排障器
-- 短罩+驾驶室走廊式，走台扶手
-- 风化，1965 年代中国柴油机车
-
-色彩：
-- 站房：灰红砖，红陶瓦屋顶
-- 机车：深森林绿带锈，红色缓冲梁，黄铜铭牌
-- 站牌：白底蓝字（只写站名）
-- 时刻表橱窗：玻璃反光，内页泛黄
-- 天空：橙粉晚霞，紫色云彩点缀
-- 山：蓝紫层叠至深靛
-- 站台：磨损灰石板/混凝土
-- 植被：黄色野花，绿草
-- 长椅：风化棕木，绿色保温壶
-
-文字（仅限以下，不得有多余字形）：
-- 门楣搪瓷牌：雾峰（白底蓝字，低调尺寸）
-- 站台站牌：雾峰（大蓝字）/ 무봉（小蓝字）——只写站名
-- 玻璃橱窗：列车时刻表 列차시각표
-- 宣传栏：宣传栏 선전란 + 少量褪色小告示
-- 门旁：候车室 대기실（立式）
-- 信号机：停車 정지
-- 禁止文字：終點站 / 종착역 / 始發 / 巨型手写墙面站名
-
-氛围：黄金时刻的寂静山村小站。空站台，暖光，长影。
-
-无人物、无人、无角色、无飞行器——纯环境背景；NF-5 机车与两节货车为有意保留。
+文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾1 / 青1 / 青2 / 雾2 /（雾峰村）/ 列车时刻表 / 列차시각표 / 宣传栏 / 선전란 / 候车室 / 대기실 / 停車 / 정지 / NF-5K / 耕牛 / 경우 / 더 밝은 미래를 위하여 / 告示小字「雾峰村—矿区线路」
+禁止：終點站 / 종착역 / 始發 / 松桥 / Songqiao / ごめん / 後免 / 巨型手写墙字
+无人物、无人、无角色、无飞行器——纯环境背景；机车与两节货车为有意保留。
+氛围：黄金时刻的寂静山村小站，空站台，暖光，长影。
 ```
+
+**实操定稿提词（2026-10-01 用户版 · 四图开放风格，出图即上文成图）**：
+```
+参考图四张，1920×1080，清晰像素风，星露谷风格像素画，
+雾峰站 夕阳全景 —— 站牌/机车/敞车分别照图一/图二/图三；图四是乡间小站的场景样例，参考它的站景布置：站房、站牌、列车的空间关系，画面的干净精致和生活感细节；画风仍是像素风，光线是夕阳黄金时刻。其他元素适当发挥，布局参考现实中的乡村小站：
+
+站牌（图一，立在站台边缘、平行于站台走向）
+
+机车（按照图二）：「NF-5K」停在单线，车头朝向观众、略偏向画面左侧，车头黄铜铭牌与图二完全一致（耕牛 / 경우）；车后恰好两节 C-55000 型运煤敞车（参考图三），没有第三节
+
+以下元素供参考，自行取舍添加，让画面像一座真实存在过的乡间小站：
+- 站台：混凝土站台与黄色盲道、木长椅（放着保温壶和旧手套）、角落里行李推车
+- 站房：灰砖红瓦小屋，门旁小搪瓷站名牌「雾峰」，玻璃橱窗里泛黄的时刻表，墙上宣传栏贴着旧告示
+- 站台旁：木栅栏、高杆路灯、老式电线杆、锈蚀的臂板信号机
+- 环境：路侧樱花树、稻田野花、错落的红顶民居、层叠远山、低垂落日与橙粉晚霞、电线横过天空
+- 氛围：黄金时刻的暖光拉出长影，整个车站安静空旷
+
+画面里不要有人，空站台
+```
+
+> 实操经验（2026-10-01）：参考图四＝《爱上火车》站景样例，只借站景布置与精致感，不搬画风光线；长束缚提词（v6 五段式）出图反而差，开放版＋少量硬约束＋素材库效果最好；铭牌/站名类小文字要挂在限定行里才不被忽略。
 
 ---
 
@@ -1041,29 +1073,29 @@ NF-5 锁定设计（必须与参考图一致）：
 
 **叙事锚点**：Day4——林彪悍踏上站台的瞬间。木板上还有爷爷当年钉的钉子头，锈成和木头一样的颜色。手套和水壶是老陈的——他刚巡完23公里线回来，还不知道今天会有人来。站台灯亮着，像一直在等。
 
-**提示词**：
+**挂图（生成时附四张）**：
+- 图一 `ExternalAssets/wufeng_signage_ref.png`——站台站牌制式锁定源
+- 图二 `ExternalAssets/nf5k_reference.png` ＋ 图三 `ExternalAssets/c55000_exterior_ref.png`——若机车/车厢入画边缘则照此涂装
+- 图四 `Assets/Resources/bg/station_sunset.png`——**同日同站全景定稿**：本图是它同一时刻的站台近景，光线、色调、氛围、物件制式全部向它对齐
+
+**提示词（2026-10-01 · 最新标准版，四段式）**：
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-close view standing ON the platform at dusk, facing the station building:
+参考图四张，1920×1080，清晰像素风，星露谷风格像素画，
+雾峰站 站台近景·傍晚 —— 图四是同一时刻的车站全景定稿，本图是站台上的近景：色调、光线、物件制式全部与图四一致；站牌照图一制式；其他元素适当发挥，布局参考现实中的乡村小站：
 
-SCENE: Ground-level platform view — the perspective of someone who just stepped off a vehicle and is standing on the platform for the first time in four years. Weathered wooden platform surface in foreground, each plank a different shade of old brown, iron nail heads rusted flush with the wood (Grandfather Lin nailed these boards down himself, thirty years ago). Station building facing the viewer — small enamel nameplate 雾峰 above the door (modest size, blue on white; NO giant painted wall characters), glass-cased timetable and a cork 宣传栏 beside it, two windows with warm lamplight inside — the light of a man who never turns off the light. A green signal lamp glowing — Lao Chen maintains it out of habit, even though no train needs the signal anymore. Evening shadows long, reaching toward the viewer like open arms. A pair of patched leather work gloves and a dented thermos left on the platform bench — Lao Chen's gloves, Lao Chen's thermos. He was here thirty seconds ago, heading inside to pour tea. He doesn't know yet that someone has come home.
+视角：站在站台上、面向站房的地面近景——刚下车的人的视线高度
 
-LAYOUT:
-- Foreground: platform planks, growing weeds between boards — weeds that Lao Chen pulls every Monday but that return every Wednesday
-- Mid: station building facade (4-5m wide), warm window light — the station's heartbeat
-- Left: signal post with lit green lamp — green means "go," and tonight, for the first time, it's right
-- Bench with forgotten gloves & thermos — evidence of the man who waited
-- Background: fading sky — the last light of the day, the first light of a new chapter
+以下元素供参考，自行取舍添加，让画面像一座有人默默守了四年的站台：
+- 前景：磨损的站台铺面，板缝里长着杂草；木板上爷爷当年钉下的钉子头，锈成和木头一样的颜色
+- 中景站房：灰砖红瓦小屋立面，门旁小搪瓷站名牌「雾峰」（白底蓝字，低调尺寸），玻璃橱窗里泛黄的时刻表，墙上宣传栏；两扇窗亮着暖黄的灯光——有人从不关灯
+- 站台站牌（照图一制式）：白底横牌＋两侧立柱，主名「雾峰」大字，其下「무봉」「Wufeng」，右上双徽＝紫红「雾1」＋青绿「青1」，蓝带左端青绿徽「青2」＋「分水岭 Fenshuiling」、右端「茶山 Chashan」＋紫红徽「雾2」，底部（雾峰村）
+- 站台长椅上：一双补过的皮手套＋一个凹瘪的军绿色保温壶——老陈刚巡完线放下的，人进屋倒茶去了
+- 一盏亮着的站台灯，灯罩落灰；远处臂板信号机的绿色信号灯亮着
+- 天空：暮色渐沉的橙紫晚霞，长影子拉过站台
 
-COLORS:
-- Planks: worn brown, weeds: grey-green
-- Building: whitewash patched grey, lamplight warm yellow — warm as a kitchen, warm as a welcome
-- Gloves: worn leather brown — the color of four years of work
-
-MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every detail here is a love letter from an old man to a railway line: the swept planks, the oiled signal, the patched gloves, the warm thermos. Lin Biaohan's feet touch the wood and the boards creak — the same sound his grandfather's boots made every morning at 6am. "到家了," he whispers, and the station, for the first time in four years, believes it.
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾1 / 青1 / 青2 / 雾2 /（雾峰村）；站房小牌只写「雾峰」两个字
+禁止：終點站 / 종착역 / 始發 / 松桥 / 矿 / 雾峰站 / 巨型手写墙字
+近景站台留空（角色立绘要叠在上面，前景不要站人）；远景允许少量模糊的旅客剪影，不抢焦点；机车不做画面主体（至多轨道远处一点暗示），主体是站台、站房与那盏一直亮着的灯
 ```
 
 ---
@@ -1258,7 +1290,7 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 ### 2.24 车辆段·晨（depot_morning）
 
 **文件**：`Resources/bg/depot_morning.png`
-**用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5 喷油嘴的检修棚。
+**用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5K 喷油嘴的检修棚。
 
 **叙事锚点**：四年来第一次有人在这个检修棚里动手修车。晨光穿过棚顶的裂缝照进来，灰尘在光柱中飘浮——像时间本身在呼吸。墙上「安全第一」的标语已经褪色，但今天它又有了意义。
 
@@ -1274,12 +1306,12 @@ CHINESE RAILWAY ELEMENTS:
 - Old timetable poster: 「雾峰村—矿区 运行时刻表」with handwritten corrections, some times crossed out
 - Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
 
-NF-5 LOCOMOTIVE (dominant left side) — 挂 `bg/station_sunset.png` 为 image reference，锁同一外构:
-- NF-5 耕牛 diesel locomotive, deep forest green （森林绿） body with rust patches
-- Front: 「NF-5」stamped in white on green plate, 「耕牛 / 경우」nameplate in weathered brass (Chinese + Korean bilingual)
+NF-5K LOCOMOTIVE (dominant left side) — 挂 `ExternalAssets/nf5k_reference.png` 为 image reference，锁同一外构:
+- NF-5K 耕牛·改 diesel locomotive, deep blue body with red-white wave stripes and sakura motifs, weathered
+- Front: red star wing emblem, 「NF-5K」stamped in white on blue plate, 「耕牛 / 경우」nameplate in weathered brass (Chinese + Korean bilingual)
 - NO white chevron / V-stripe on nose (与 station_sunset 锁定设计一致)
 - Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
-- Oil stains running down the green paint like dark veins
+- Oil stains running down the blue paint like dark veins
 - One headlight cracked, the other working (dim)
 - Buffer beam with coupling hook, rust-orange
 
@@ -1291,7 +1323,7 @@ WORKBENCH AND TOOLS (right side):
 - Parts tray with bolts and small components organized by size
 - Flashlight (old, taped handle) and magnifying glass
 - Greasy rags piled in metal bin
-- Technical manual open on bench: 「NF-5型内燃机车维修手册」with hand-drawn annotations
+- Technical manual open on bench: 「NF-5K型内燃机车维修手册」with hand-drawn annotations
 
 INSPECTION PIT:
 - Concrete pit 2m deep, oil-darkened floor with puddles
@@ -1313,7 +1345,7 @@ MORNING ATMOSPHERE:
 
 COLORS:
 - Shed frame: rusted orange-brown （马鞍棕） with grey steel
-- NF-5 body: forest green （森林绿） with rust orange （锈橙） patches
+- NF-5K body: deep blue with red-white wave stripes, sakura motifs, rust orange （锈橙） patches
 - Oil stains: dark brown-black （深棕黑色）
 - Morning light: warm gold （晨光金） beams through dust
 - Floor: dark oil-stained concrete （油渍水泥）
@@ -1628,7 +1660,7 @@ pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 雾峰村站台·晨 / 무봉촌 역 승강장·아침, station platform at dawn, first train day:
 
-SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——「雾峰村站 무봉촌역」（蓝底白字，中韩双语，站牌样式类似中国普通火车站但更简朴）。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套。NF-5机车停在轨道上——深绿色车身，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光。
+SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——制式同挂图 `wufeng_signage_ref.png`：白底横牌＋两侧深色立柱，主名「雾峰」大字（其下「무봉」「Wufeng」），中部亮青蓝带（左端青绿徽「青2 分水岭 Fenshuiling」、右端紫红徽「雾2 茶山 Chashan」），右上双徽（紫红「雾1」/青绿「青1」），底部（雾峰村）；无終點站字样。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套。NF-5K机车停在轨道上——深蓝车身、红白波浪条纹、樱花图案，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5K 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光。
 
 LAYOUT:
 - 画面下方：铁轨（两根平行钢轨+枕木+碎石道床），晨雾从铁轨间升起
@@ -1637,7 +1669,7 @@ LAYOUT:
 - 站台中央：十几个乘客（各种姿态，远小近大）
 - 站台右侧：小摊贩（木箱+米线+茶壶+「早点 아침밥 3元」木牌）
 - 站台尽头：长椅+保温壶+皮手套
-- 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡；外构挂 `bg/station_sunset.png` 参考，无白色V纹）
+- 中景右侧：NF-5K机车（深蓝＋红白波浪＋樱花，前灯亮，蒸汽淡淡；外构挂 `ExternalAssets/nf5k_reference.png` 参考，无白色V纹）
 - 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光；站房/站牌样式对齐 station_sunset）
 - 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
 
@@ -1646,14 +1678,14 @@ COLORS:
 - 铁轨：钢轨银灰，枕木深棕，碎石灰
 - 站台木板：暖灰，安全线黄（丹青金）
 - 站牌：蓝底（深蓝色），白字（纯白色）
-- NF-5机车：深绿（深绿棕），前灯暖黄（晨光金），蒸汽白
+- NF-5K机车：深蓝＋红白波浪条纹，前灯暖黄（晨光金），蒸汽白
 - 乘客衣着：多样暖色（红围巾红色，蓝外套蓝灰色，灰布衣灰色）
 - 摊贩：木箱棕，米线碗白，茶壶深棕
 - 薄雾：淡金到白
 - 天空：深蓝（灰蓝色） → 粉橙 → 金色地平线（晨光金）
 - 站房灯光：暖黄，窗框灰
 
-MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。晨光把一切染成金色，薄雾从铁轨间升起被染成淡金，NF-5的前灯亮着暖黄色的光。一切都在准备中，等待发车的瞬间。
+MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。晨光把一切染成金色，薄雾从铁轨间升起被染成淡金，NF-5K的前灯亮着暖黄色的光。一切都在准备中，等待发车的瞬间。
 
 NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
 ```
@@ -2590,14 +2622,14 @@ pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 night reunion, single lamplight, station platform:
 
-SCENE: Old railway station platform at night. A single flickering fluorescent lamp hangs from the roof, casting a warm cone of light. Seven figures gather in a loose circle under the lamp. One elderly figure (left-center) gestures toward the group, introducing them. The old NF-5 locomotive is dimly visible in the deep background — dark, dormant, massive. Platform edge with rusted rail visible at bottom.
+SCENE: Old railway station platform at night. A single flickering fluorescent lamp hangs from the roof, casting a warm cone of light. Seven figures gather in a loose circle under the lamp. One elderly figure (left-center) gestures toward the group, introducing them. The old NF-5K locomotive is dimly visible in the deep background — dark, dormant, massive. Platform edge with rusted rail visible at bottom.
 
 LAYOUT:
 - Platform roof with single lamp, center-top, light cone downward
 - Elderly figure left-center, gesturing
 - Young figure center, facing group
 - 5 others arranged in semi-circle right side
-- NF-5 locomotive in deep background, silhouette only
+- NF-5K locomotive in deep background, silhouette only
 - Platform edge with rusted rail at bottom frame
 
 COLORS:
