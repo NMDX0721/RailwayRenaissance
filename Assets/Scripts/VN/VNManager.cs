@@ -47,6 +47,7 @@ public class VNManager : MonoBehaviour
     // 地点/时间标注居中卡片
     private VisualElement locCard;
     private Label locCardText;
+    private Coroutine locCardHideCo;
 
     // Confirm dialog
     private VisualElement confirmDialog;
@@ -106,6 +107,8 @@ public class VNManager : MonoBehaviour
         SetupCanvas();
         GameData.ApplyVolume();
         SetupEventSystem();
+        // 预热阶段一（文档+锁屏，日志验证安全段）；桌面由 Show 时后台错帧加载
+        StartCoroutine(PreloadTabletSoon());
 
         // 标题界面"继续运营" → 直接显示读档界面，不播序章
         if (PlayerPrefs.GetInt("VN_ShowLoadUI", 0) == 1)
@@ -263,6 +266,7 @@ public class VNManager : MonoBehaviour
         currentScriptName = scriptName;
         currentSceneIndex = sceneIndex;
         currentDialogueIndex = dialogueIndex;
+        ResetProgressShown();
         isScriptRunning = true;
 
         TitleArchiveUI.AutoUnlock(scriptName);
@@ -346,6 +350,12 @@ public class VNManager : MonoBehaviour
         vnBacklog = gameObject.AddComponent<VNBacklog>();
         vnBacklog.Init(uiDoc);
         vnBacklog.OnEntryClicked += OnBacklogEntryClicked;
+        dialogueBox.OnProgressSeek = HandleProgressSeek; // 底部进度条点击/拖动跳转
+        dialogueBox.OnProgressDragChanged = dragging =>
+        {
+            progressSeeking = dragging;
+            if (!dragging) RefreshAfterSeek(); // 松手：若停在日期地点句，补显示日历卡
+        };
 
         prologueQuiz = gameObject.AddComponent<VNPrologueQuiz>();
         prologueQuiz.Init(uiDoc);
@@ -538,8 +548,8 @@ public class VNManager : MonoBehaviour
             var btn = new UnityEngine.UIElements.Button(() => itemAction());
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 30;
-            iconLabel.style.height = 30;
+            iconLabel.style.width = 24;
+            iconLabel.style.height = 24;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -648,6 +658,32 @@ public class VNManager : MonoBehaviour
         root.Add(fastFwdBadge);
     }
 
+    /// <summary>除 Shift 外是否还有其他按键按住——纯 Shift 倍速时徽标置顶用。</summary>
+    private static readonly KeyCode[] _otherKeyScan =
+    {
+        KeyCode.Space, KeyCode.Return, KeyCode.KeypadEnter, KeyCode.Escape, KeyCode.Tab,
+        KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.DownArrow,
+        KeyCode.LeftControl, KeyCode.RightControl, KeyCode.LeftAlt, KeyCode.RightAlt,
+        KeyCode.LeftWindows, KeyCode.RightWindows,
+        KeyCode.Backspace, KeyCode.Delete,
+    };
+
+    /// <summary>Win 键按住（Win+S 等系统组合）——禁用 Shift 倍速用。</summary>
+    private static bool WinHeld() =>
+        LegacyInputAdapter.GetKey(KeyCode.LeftWindows) || LegacyInputAdapter.GetKey(KeyCode.RightWindows);
+
+    private static bool AnyOtherHeldKey()
+    {
+        for (int i = 0; i < _otherKeyScan.Length; i++)
+            if (LegacyInputAdapter.GetKey(_otherKeyScan[i])) return true;
+        // 字母/数字：防 Shift+字母类快捷键被误判为纯 Shift
+        for (int k = (int)KeyCode.A; k <= (int)KeyCode.Z; k++)
+            if (LegacyInputAdapter.GetKey((KeyCode)k)) return true;
+        for (int k = (int)KeyCode.Alpha0; k <= (int)KeyCode.Alpha9; k++)
+            if (LegacyInputAdapter.GetKey((KeyCode)k)) return true;
+        return false;
+    }
+
     /// <summary>时间/地点标注的居中卡片。</summary>
     private void ShowLocationCard(string text)
     {
@@ -685,12 +721,37 @@ public class VNManager : MonoBehaviour
         }
         locCardText.text = text;
         locCard.style.display = DisplayStyle.Flex;
+        // 自动隐退：2.2s 后淡出隐藏，并自动推进到下一句（loc 句不占对话框，藏了必须接上）
+        locCardAutoAdvance = true;
+        if (locCardHideCo != null) StopCoroutine(locCardHideCo);
+        locCardHideCo = StartCoroutine(HideLocationCardAfter(2.2f));
     }
 
     private void HideLocationCard()
     {
         if (locCard != null)
             locCard.style.display = DisplayStyle.None;
+    }
+
+    /// <summary>日期地点卡自动隐退 + 自动推进（无需点击）。</summary>
+    private IEnumerator HideLocationCardAfter(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        HideLocationCard();
+        locCardHideCo = null;
+        // 若玩家已手动推进则不动；仍停在 loc 句则自动接下一句
+        if (locCardAutoAdvance && isScriptRunning && currentScript?.scenes != null &&
+            currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
+        {
+            var scene = currentScript.scenes[currentSceneIndex];
+            if (scene.d != null && currentDialogueIndex >= 0 &&
+                currentDialogueIndex < scene.d.Length && scene.d[currentDialogueIndex].t == "loc")
+            {
+                locCardAutoAdvance = false;
+                NextDialogue();
+            }
+        }
+        locCardAutoAdvance = false;
     }
 
     private bool menuExpanded;
@@ -724,14 +785,12 @@ public class VNManager : MonoBehaviour
         if (menuBtn == null) return;
         if (menuExpanded)
         {
-            // 展开：网格像素图标 + 棋盘格暖金底 + 双层金边
+            // 展开：棋盘格暖金底 + 双层金边（不再显示小图标——曾在 M 字处投出杂影）
             menuBtn.style.backgroundImage = new StyleBackground(PixelIconHelper.ActivePattern());
             menuBtn.style.unityBackgroundImageTintColor = Color.white;
             menuBtn.style.backgroundColor = new Color(0.45f, 0.28f, 0.12f, 0.95f);
             menuBtn.style.color = new Color(1f, 0.9f, 0.55f, 1f);
-            menuIcon.style.display = DisplayStyle.Flex;
-            menuIcon.style.backgroundImage = new StyleBackground(PixelIconHelper.MenuGridIcon());
-            menuIcon.style.unityBackgroundImageTintColor = new Color(1f, 0.85f, 0.5f, 1f);
+            menuIcon.style.display = DisplayStyle.None;
             SetGoldBorder(menuBtn, 2, new Color(1f, 0.8f, 0.4f, 0.9f), new Color(1f, 0.9f, 0.6f, 0.45f));
         }
         else
@@ -1065,7 +1124,7 @@ public class VNManager : MonoBehaviour
         ExitBtn("取消", DialogStyle.CancelBg, DialogStyle.CancelFg,
             () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; }, 12);
         ExitBtn("退出剧情", DialogStyle.PrimaryBg, DialogStyle.PrimaryFg,
-            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; ExitStoryWithBookmark(); }, 12);
+            () => { clickedButtonThisFrame = true; exitDialog.style.display = DisplayStyle.None; StartCoroutine(ExitStoryNextFrame()); }, 12);
         ExitBtn("退出游戏", new Color(0.35f, 0.16f, 0.12f, 0.95f), new Color(1f, 0.75f, 0.6f, 0.95f),
             () => { clickedButtonThisFrame = true; ExitGame(); }, 0);
     }
@@ -1082,6 +1141,82 @@ public class VNManager : MonoBehaviour
     {
         AutoBookmarkTrack(); // 覆盖当前进度书签
         ReturnToTitle();
+    }
+
+    /// <summary>退出剧情挪出点击事件栈再执行——清理与建平板拆到不同帧，避开同帧 panel 竞态（native 崩根因）。</summary>
+    private IEnumerator ExitStoryNextFrame()
+    {
+        try { AutoBookmarkTrack(); }
+        catch (System.Exception ex) { TraceLog.L("[VN] ExitStory bookmark failed: " + ex); }
+        yield return null;
+        yield return null;
+        TraceLog.L("[VN] ExitStory: cleanup phase");
+        try { CleanupForTablet(); }
+        catch (System.Exception ex) { TraceLog.L("[VN] CleanupForTablet failed: " + ex); }
+        yield return null;
+        yield return null; // 关键：让 VN 的 UIDocument 隐藏完全 settle，再创建平板 panel
+        TraceLog.L("[VN] ExitStory: show-tablet phase");
+        try { ShowTablet(); }
+        catch (System.Exception ex) { TraceLog.L("[VN] ShowTablet failed: " + ex); }
+        TraceLog.L("[VN] ExitStory: all done");
+    }
+
+    /// <summary>回平板第一步：清 VN 运行态并隐藏 VN UI（不动 GameMainUI）。</summary>
+    private void CleanupForTablet()
+    {
+        Debug.Log("[VN] ReturnToTitle step: cleanup-start");
+        StopAutoPlay();
+        isScriptRunning = false;
+        currentScript = null;
+        currentScriptName = null;
+        variables.Clear();
+        HideOptions();
+        vnBacklog?.Clear();
+        saveLoadUI?.ClosePanel();
+        dialogueBox?.Hide();
+        HideCgScreen();
+        HideBootScreen();
+        characterSpriteManager?.ClearAll();
+        VNAudioManager.Instance?.StopBGM();
+        if (confirmDialog != null) confirmDialog.style.display = DisplayStyle.None;
+        if (exitDialog != null) exitDialog.style.display = DisplayStyle.None;
+        PlayerPrefs.SetInt("VN_AutoLoad", 0);
+        PlayerPrefs.Save();
+
+        if (PlayerPrefs.GetInt("VN_FromGameMain", 0) == 1)
+        {
+            PlayerPrefs.SetInt("VN_FromGameMain", 0);
+            PlayerPrefs.Save();
+        }
+        Debug.Log("[VN] ReturnToTitle step: hide-vn-ui");
+        // 只隐藏已存在的图鉴——绝不 EnsureInstance（退出路径凭空创建 2000+ 行 UITK 构建是 native 崩点）
+        try { TitleArchiveUI.Instance?.Hide(); }
+        catch (System.Exception ex) { Debug.LogError("[VN] archive hide failed: " + ex); }
+        Debug.Log("[VN] ReturnToTitle step: archive-ok");
+        try { MainStoryUI.HideStatic(); }
+        catch (System.Exception ex) { Debug.LogError("[VN] mainstory hide failed: " + ex); }
+        Debug.Log("[VN] ReturnToTitle step: mainstory-ok");
+        try
+        {
+            if (uiDoc != null)
+                uiDoc.rootVisualElement.style.display = DisplayStyle.None;
+        }
+        catch (System.Exception ex) { Debug.LogError("[VN] vn root hide failed: " + ex); }
+        Debug.Log("[VN] ReturnToTitle step: cleanup-done");
+    }
+
+    /// <summary>回平板第二步：显示平板桌面（GameMainUI 首次会同步 Init，native 崩点已布日志）。</summary>
+    private void ShowTablet()
+    {
+        TraceLog.L("[VN] ReturnToTitle step: show-game-main");
+        GameMainUI.Show();
+        TraceLog.L("[VN] ReturnToTitle step: done");
+    }
+
+    private void ReturnToTitle()
+    {
+        CleanupForTablet();
+        ShowTablet();
     }
 
     private void ExitGame()
@@ -1105,6 +1240,8 @@ public class VNManager : MonoBehaviour
         {
             // 背景容器保留（纯背景版立绘仍显示）
             if (child.name == "vn-background-container") continue;
+            // 人物立绘容器保留（右键只藏 UI，不动立绘）
+            if (child.name == "character-container") continue;
             // 菜单展开容器也隐藏
             hiddenUiSnapshots[child] = child.style.display;
             child.style.display = DisplayStyle.None;
@@ -1200,43 +1337,6 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    private void ReturnToTitle()
-    {
-        StopAutoPlay();
-        isScriptRunning = false;
-        currentScript = null;
-        currentScriptName = null;
-        variables.Clear();
-        HideOptions();
-        vnBacklog?.Clear();
-        saveLoadUI?.ClosePanel();
-        dialogueBox?.Hide();
-        HideCgScreen();
-        HideBootScreen();
-        characterSpriteManager?.ClearAll();
-        VNAudioManager.Instance?.StopBGM();
-        if (confirmDialog != null) confirmDialog.style.display = DisplayStyle.None;
-        if (exitDialog != null) exitDialog.style.display = DisplayStyle.None;
-        PlayerPrefs.SetInt("VN_AutoLoad", 0);
-        PlayerPrefs.Save();
-
-        // VN 返回 → 始终回到小米平板桌面（模拟经营主界面），不再回标题场景
-        //（无论从何处进入 VN，返回后显示平板桌面，保持沉浸感）
-        if (PlayerPrefs.GetInt("VN_FromGameMain", 0) == 1)
-        {
-            PlayerPrefs.SetInt("VN_FromGameMain", 0);
-            PlayerPrefs.Save();
-        }
-        TitleArchiveUI.EnsureInstance()?.Hide();
-        MainStoryUI.HideStatic();
-        // 隐藏 VN 场景根（避免残留在平板桌面下层）
-        if (uiDoc != null)
-            uiDoc.rootVisualElement.style.display = DisplayStyle.None;
-        GameMainUI.Show();
-    }
-
-    
-
     private void ToggleBacklog()
     {
         if (vnBacklog.IsOpen)
@@ -1276,6 +1376,7 @@ public class VNManager : MonoBehaviour
 
         currentSceneIndex = saveData.sceneIndex;
         currentDialogueIndex = saveData.dialogueIndex;
+        ResetProgressShown();
         isScriptRunning = true;
 
         vnBacklog?.Clear();
@@ -1301,6 +1402,16 @@ public class VNManager : MonoBehaviour
     private bool uiHidden;
     private readonly Dictionary<VisualElement, StyleEnum<DisplayStyle>> hiddenUiSnapshots = new Dictionary<VisualElement, StyleEnum<DisplayStyle>>();
 
+    /// <summary>进 VN 1 秒后预热平板（隐藏态）：把 GameMainUI 重型构建挪出退出关键路径（退出卡死根治）。</summary>
+    private System.Collections.IEnumerator PreloadTabletSoon()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        GameMainUI.Preload();
+    }
+
+    /// <summary>分镜强制播放中（开场/话标题卡）：输入一律屏蔽——所有拦截点统一走此判断。</summary>
+    private bool IsCinematicBlocking() => openingLogoActive || episodeCardActive;
+
     private void Update()
     {
         clickedButtonThisFrame = false; // 每帧重置按钮标记
@@ -1311,6 +1422,32 @@ public class VNManager : MonoBehaviour
             spaceHeld = false;
             spaceSpeedActive = false;
             if (fastFwdBadge != null) fastFwdBadge.style.display = DisplayStyle.None;
+            return;
+        }
+
+        // 面板关闭时恢复菜单栏（放在各 return 之前：开场/Win/新闻等提前返回后也保证自愈）
+        if (menuBar != null && menuBar.style.display == DisplayStyle.None && !uiHidden && !isFromTitleScreenMode)
+        {
+            bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
+                                (saveLoadUI != null && saveLoadUI.IsOpen) ||
+                                (prologueQuiz != null && prologueQuiz.IsOpen) ||
+                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) ||
+                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex);
+            if (!anyPanelOpen)
+                menuBar.style.display = DisplayStyle.Flex;
+        }
+
+        // 开场/话标题卡分镜强制播放：期间屏蔽一切输入（点击/按键均不跳过，播完自动进入）
+        if (IsCinematicBlocking())
+        {
+            return;
+        }
+
+        // Win 键（Win+S 截图等系统组合）按住期间：禁用 Shift 倍速，防止系统快捷键误触
+        if (WinHeld())
+        {
+            if (fastFwdBadge != null) fastFwdBadge.style.display = DisplayStyle.None;
+            ffNextAt = 0f;
             return;
         }
 
@@ -1374,18 +1511,6 @@ public class VNManager : MonoBehaviour
         // 全屏新闻显示时忽略其他输入
         if (fullScreenNews != null && fullScreenNews.IsActive) return;
 
-        // 面板关闭时恢复菜单栏显示（右键隐藏态/读档模式不恢复——避免 VN UI 残留）
-        if (menuBar != null && menuBar.style.display == DisplayStyle.None && !uiHidden && !isFromTitleScreenMode)
-        {
-            bool anyPanelOpen = (vnBacklog != null && vnBacklog.IsOpen) ||
-                                (saveLoadUI != null && saveLoadUI.IsOpen) ||
-                                (prologueQuiz != null && prologueQuiz.IsOpen) ||
-                                (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) ||
-                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex);
-            if (!anyPanelOpen)
-                menuBar.style.display = DisplayStyle.Flex;
-        }
-
         if (!isScriptRunning) return;
 
         // F5：切换Auto模式
@@ -1406,11 +1531,32 @@ public class VNManager : MonoBehaviour
             }
         }
 
-        // Shift 倍速模式：打字加速由 TypewriterEffect 负责，这里做句间自动快进 + 角落倍速标
+        // Shift 倍速模式：打字加速由 TypewriterEffect 负责，这里做句间自动快进 + 倍速标
         bool ffActive = shiftHeld && !AdvanceBlockedByPanels() &&
                         !(fullScreenNews != null && fullScreenNews.IsActive);
         if (fastFwdBadge != null)
+        {
             fastFwdBadge.style.display = ffActive ? DisplayStyle.Flex : DisplayStyle.None;
+            if (ffActive)
+            {
+                // 纯 Shift（只按住 Shift、无其他键同时按下）：徽标移到屏幕顶部中央；
+                // Shift+其他键（如 Shift+→ 快进）保持右上原位
+                if (!AnyOtherHeldKey())
+                {
+                    fastFwdBadge.style.top = 10;
+                    fastFwdBadge.style.right = StyleKeyword.Auto;
+                    fastFwdBadge.style.left = new Length(50f, LengthUnit.Percent);
+                    fastFwdBadge.style.translate = new Translate(new Length(-50f, LengthUnit.Percent), 0f);
+                }
+                else
+                {
+                    fastFwdBadge.style.top = 112;
+                    fastFwdBadge.style.left = StyleKeyword.Auto;
+                    fastFwdBadge.style.right = 10;
+                    fastFwdBadge.style.translate = new Translate(0f, 0f);
+                }
+            }
+        }
         if (ffActive)
         {
             bool typing = dialogueBox != null && dialogueBox.IsTyping();
@@ -1475,7 +1621,7 @@ public class VNManager : MonoBehaviour
 
     private bool AdvanceBlockedByPanels()
     {
-        if (openingLogoActive) return true; // 开场分镜：空格/长按不可穿透
+        if (IsCinematicBlocking()) return true; // 分镜强制播放：空格/长按/点击不可穿透
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
         if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) return true;
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return true;
@@ -1495,6 +1641,9 @@ public class VNManager : MonoBehaviour
     private void OnRootClick(ClickEvent evt)
     {
         if (evt.button != 0) return; // 仅左键
+
+        // 开场/话标题卡分镜强制播放：左键点击冒泡到这里也不推进
+        if (IsCinematicBlocking()) return;
 
         // 防抖：避免快速双击导致打字机被跳过
         if (Time.unscaledTime - lastAdvanceTime < AdvanceCooldown) return;
@@ -1571,6 +1720,7 @@ public class VNManager : MonoBehaviour
         currentScriptName = scriptName;
         currentSceneIndex = 0;
         currentDialogueIndex = 0;
+        ResetProgressShown();
         isScriptRunning = true;
 
         // 站长日志解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
@@ -1616,7 +1766,7 @@ public class VNManager : MonoBehaviour
     }
 
     private bool openingLogoShown;
-    private bool openingLogoActive; // 分镜进行中：挡住空格/长按推进
+    private bool openingLogoActive; // 分镜进行中：强制播放，挡住一切输入
 
     /// <summary>
     /// 正式进入序章前：全屏分镜（Logo 图 → 金标题+金线 → 制作信息），逐条淡入淡出。
@@ -1647,12 +1797,11 @@ public class VNManager : MonoBehaviour
         {
             if (finished) return;
             finished = true;
-            openingLogoActive = false;
+            // openingLogoActive 保持 true 直到淡出结束——淡出期间同样屏蔽一切输入
             if (running != null) StopCoroutine(running);
-            // 统一淡出退场（含 credit 自动结束与点击提前跳过），不再硬切
             running = StartCoroutine(FadeOutAndFinish(overlay, onDone));
         }
-        overlay.RegisterCallback<ClickEvent>(e => { e.StopImmediatePropagation(); FinishAll(); });
+        // 强制播放：不注册点击/按键跳过，全程播完自动进入
 
         // 分镜舞台：始终居中同一槽位，内容逐条换
         var stage = new VisualElement();
@@ -1662,21 +1811,10 @@ public class VNManager : MonoBehaviour
         stage.pickingMode = PickingMode.Ignore;
         overlay.Add(stage);
 
-        // 末段才出现的提示（不抢分镜）
-        var hint = new Label("点击继续");
-        hint.style.fontSize = 15;
-        hint.style.color = new Color(1f, 1f, 1f, 0.28f);
-        hint.style.position = Position.Absolute;
-        hint.style.bottom = 48;
-        hint.style.unityFontDefinition = fontDef;
-        hint.style.opacity = 0f;
-        hint.pickingMode = PickingMode.Ignore;
-        overlay.Add(hint);
-
-        running = StartCoroutine(OpeningLogoSequence(overlay, stage, hint, fontDef, FinishAll));
+        running = StartCoroutine(OpeningLogoSequence(overlay, stage, fontDef, FinishAll));
     }
 
-    private IEnumerator OpeningLogoSequence(VisualElement overlay, VisualElement stage, Label hint, FontDefinition fontDef, System.Action done)
+    private IEnumerator OpeningLogoSequence(VisualElement overlay, VisualElement stage, FontDefinition fontDef, System.Action done)
     {
         // —— 分镜 0：黑幕整体淡入（从上一画面平滑切入，不再硬切）——
         yield return FadeElement(overlay, 0f, 1f, 0.45f);
@@ -1734,7 +1872,7 @@ public class VNManager : MonoBehaviour
             yield return FadeStage(stage, 1f, 0f, 0.55f);
         }
 
-        // —— 制作信息 + 点击继续 ——
+        // —— 制作信息（强制播完，自动进入剧情）——
         stage.Clear();
         var credit = new Label("由 NMDX0721 开发\nRailway Renaissance: Sand Energy Impact");
         credit.style.fontSize = 30;
@@ -1746,8 +1884,6 @@ public class VNManager : MonoBehaviour
         stage.Add(credit);
 
         yield return FadeStage(stage, 0f, 1f, 0.65f);
-        // 提示在 credits 站稳后再淡入，不抢开场
-        yield return FadeElement(hint, 0f, 0.35f, 0.5f);
         yield return new WaitForSecondsRealtime(1.6f);
 
         done?.Invoke();
@@ -1764,6 +1900,10 @@ public class VNManager : MonoBehaviour
         // overlay 已在创建时显式初始化 opacity（=0），此后一直由 FadeElement 维护，.value 恒为当前值
         yield return FadeElement(overlay, overlay.style.opacity.value, 0f, 0.45f);
         overlay.RemoveFromHierarchy();
+        openingLogoActive = false;
+        // 吞掉跨越开场按住的空格等：置为「已按住」，用户松开后重新按下才推进对话
+        spaceHeld = true;
+        spaceSpeedActive = false;
         onDone?.Invoke();
     }
 
@@ -1782,6 +1922,13 @@ public class VNManager : MonoBehaviour
     }
 
     /// <summary>底部进度条：当前句在全本中的位置（0~1）。</summary>
+    private float progressShown = 0f;
+    private bool progressSeeking; // 进度条拖动中：抑制日期地点卡
+    private bool episodeCardActive; // 话标题卡强制播放中：屏蔽一切输入
+    private bool locCardAutoAdvance; // 日期地点卡：隐退后自动推进
+
+    private void ResetProgressShown() { progressShown = 0f; }
+
     private void UpdateProgress()
     {
         if (dialogueBox == null || currentScript?.scenes == null) return;
@@ -1791,8 +1938,53 @@ public class VNManager : MonoBehaviour
         int cur = 0;
         for (int i = 0; i < currentSceneIndex && i < currentScript.scenes.Length; i++)
             cur += currentScript.scenes[i].d?.Length ?? 0;
-        cur += currentDialogueIndex;
-        dialogueBox.SetProgress((float)cur / total);
+        cur += currentDialogueIndex + 1; // 计入当前正在显示的句（否则末句停在 99%）
+        if (cur > total) cur = total;
+        float p = (float)cur / total;
+        if (p < progressShown) p = progressShown; // 正常推进单调不减（读档/跳转/重播处已 ResetProgressShown）
+        progressShown = p;
+        dialogueBox.SetProgress(p);
+    }
+
+    /// <summary>进度条 seek：只允许跳到已解锁部分（progressShown=历史到达上限），反查句索引后复用回顾跳转。</summary>
+    private void HandleProgressSeek(float ratio)
+    {
+        if (!isScriptRunning || currentScript?.scenes == null) return;
+        int total = 0;
+        foreach (var s in currentScript.scenes) total += s.d?.Length ?? 0;
+        if (total <= 0) return;
+        ratio = Mathf.Clamp01(ratio);
+        if (ratio > progressShown + 0.005f) return; // 未解锁区域不响应
+        int target = Mathf.Clamp(Mathf.RoundToInt(ratio * total) - 1, 0, total - 1);
+        int acc = 0;
+        for (int si = 0; si < currentScript.scenes.Length; si++)
+        {
+            int len = currentScript.scenes[si].d?.Length ?? 0;
+            if (target < acc + len)
+            {
+                OnBacklogEntryClicked(si, target - acc);
+                return;
+            }
+            acc += len;
+        }
+        int last = currentScript.scenes.Length - 1;
+        var d = currentScript.scenes[last].d;
+        OnBacklogEntryClicked(last, Mathf.Max(0, (d?.Length ?? 1) - 1));
+    }
+
+    /// <summary>进度条松手后补显示：当前句若是日期地点卡则补弹（拖动期间被抑制）。</summary>
+    private void RefreshAfterSeek()
+    {
+        if (!isScriptRunning || currentScript?.scenes == null) return;
+        if (currentSceneIndex < 0 || currentSceneIndex >= currentScript.scenes.Length) return;
+        var scene = currentScript.scenes[currentSceneIndex];
+        if (scene.d == null || currentDialogueIndex < 0 || currentDialogueIndex >= scene.d.Length) return;
+        var entry = scene.d[currentDialogueIndex];
+        if (entry.t == "loc")
+        {
+            dialogueBox?.Hide();
+            ShowLocationCard(entry.text);
+        }
     }
 
     /// <summary>话标题卡：黑底 + 话数 + 标题，2秒后淡出。</summary>
@@ -1835,17 +2027,18 @@ public class VNManager : MonoBehaviour
         titleLabel.style.unityFontDefinition = new FontDefinition { font = gameFont };
         band.Add(titleLabel);
 
-        // 点击跳过
-        bool clicked = false;
-        overlay.RegisterCallback<ClickEvent>(e =>
-        {
-            if (!clicked) { clicked = true; overlay.RemoveFromHierarchy(); onDone?.Invoke(); }
-        });
+        // 强制播放：不注册点击跳过（同开场策略），期间 episodeCardActive 屏蔽一切输入
+        episodeCardActive = true;
 
         // 2秒后自动消失
         StartCoroutine(FadeOutTitleCard(overlay, 2f, () =>
         {
-            if (!clicked) { clicked = true; overlay.RemoveFromHierarchy(); onDone?.Invoke(); }
+            overlay.RemoveFromHierarchy();
+            episodeCardActive = false;
+            // 吞掉跨卡按住的空格：置为已按住，松开重按才推进
+            spaceHeld = true;
+            spaceSpeedActive = false;
+            onDone?.Invoke();
         }));
     }
 
@@ -1998,10 +2191,11 @@ public class VNManager : MonoBehaviour
         else if (entry.t == "loc")
         {
             // 时间/地点标注：居中卡片显示，不用对话框；点击/空格照常推进
+            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
+            if (progressSeeking) return; // 拖动扫过：不弹卡不切界面（松手后由 RefreshAfterSeek 补显示）
             dialogueBox?.Hide();
             HideOptions();
             ShowLocationCard(entry.text);
-            vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
         else
         {
@@ -2049,6 +2243,7 @@ public class VNManager : MonoBehaviour
                 HideOptions();
                 currentSceneIndex = optCopy.next;
                 currentDialogueIndex = 0;
+                ResetProgressShown();
                 ShowCurrentDialogue();
             })
             { text = opt.text };
@@ -2831,6 +3026,7 @@ public class VNManager : MonoBehaviour
         StopAutoPlay();
         currentSceneIndex = sceneIndex;
         currentDialogueIndex = dialogueIndex;
+        ResetProgressShown();
 
         // 恢复场景背景和BGM
         var scene = currentScript.scenes[sceneIndex];

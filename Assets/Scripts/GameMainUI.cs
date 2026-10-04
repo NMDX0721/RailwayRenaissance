@@ -16,17 +16,13 @@ public class GameMainUI : MonoBehaviour
 
     private float clockTimer;
 
-    /// <summary>设备真实电量（0-100）；读不到返回 -1（如台式机无电池）。</summary>
+    /// <summary>设备真实电量（0-100）；读不到返回 -1（台式机/Editor 无电池）。</summary>
     public static int GetDeviceBatteryPercent()
     {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-        var sps = new SYSTEM_POWER_STATUS();
-        if (GetSystemPowerStatus(ref sps) && sps.BatteryLifePercent != 255)
-            return sps.BatteryLifePercent;
-#else
+        // 本机环境下 kernel32 GetSystemPowerStatus 的 P/Invoke 触发 native 崩（exit_trace 已定位 wallpaper→battery 区间），
+        // 统一改走 Unity API——台式机 batteryLevel=-1，显示「⚡ 电源」
         float lvl = SystemInfo.batteryLevel;
         if (lvl >= 0f) return Mathf.RoundToInt(lvl * 100f);
-#endif
         return -1;
     }
 
@@ -58,12 +54,25 @@ public class GameMainUI : MonoBehaviour
             var go = new GameObject("GameMainUI");
             DontDestroyOnLoad(go);
             Instance = go.AddComponent<GameMainUI>();
-            Instance.Init();
+            // 首次构建很重且与 VN 退出路径相关：托管异常兜住并留日志，避免整局卡退无痕迹
+            try
+            {
+                Instance.Init();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[GameMainUI] Init failed: " + ex);
+                Instance = null;
+                Object.Destroy(go);
+                return;
+            }
         }
         // 每次进入从锁屏开始（首次进入体验扫脸）
         if (Instance.lockScreen != null && !Instance.unlocked)
             Instance.lockScreen.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
+        // 锁屏已显示 → 后台错帧加载桌面（中间页先行，性能与体验）
+        Instance.EnsureDesktopBuilt();
     }
 
     public void Hide()
@@ -92,15 +101,63 @@ public class GameMainUI : MonoBehaviour
     private static readonly Color GlassTextMuted = new Color(1f, 1f, 1f, 0.35f);          // 弱文字
     private static readonly Color GlassMask = new Color(0f, 0f, 0f, 0.55f);               // 遮罩层
 
+    /// <summary>阶段一（轻量，退出关键路径）：文档+锁屏——document/lock 段经日志验证从未崩；桌面/应用层错帧后台加载。</summary>
     private void Init()
     {
         MigrateUsername();
+        TraceLog.L("[GameMainUI] Init: migrate ok");
         gameFont = Resources.Load<Font>("Fonts/zpix");
+        TraceLog.L("[GameMainUI] Init: font loaded=" + (gameFont != null));
         BuildDocument();
+        TraceLog.L("[GameMainUI] Init: document ok");
         BuildLockScreen();
-        BuildDesktop();
-        BuildAppLayer();
+        TraceLog.L("[GameMainUI] Init: lock ok");
         ShowLockScreen();
+        TraceLog.L("[GameMainUI] Init: phase1 done (desktop pending)");
+    }
+
+    private bool desktopBuilt;
+    private bool desktopBuilding;
+
+    /// <summary>确保桌面/应用层已构建：锁屏先显示一帧，再于后台构建（用户方案：中间页先行，桌面后台加载）。</summary>
+    public void EnsureDesktopBuilt()
+    {
+        if (desktopBuilt || desktopBuilding) return;
+        desktopBuilding = true;
+        StartCoroutine(BuildDesktopAsync());
+    }
+
+    private System.Collections.IEnumerator BuildDesktopAsync()
+    {
+        yield return null; // 先让锁屏渲染出来（用户立刻看到中间页，而非黑屏）
+        TraceLog.L("[GameMainUI] DesktopAsync: start (background)");
+        BuildDesktop();
+        TraceLog.L("[GameMainUI] DesktopAsync: desktop ok");
+        yield return null;
+        BuildAppLayer();
+        TraceLog.L("[GameMainUI] DesktopAsync: apps ok");
+        desktopBuilt = true;
+        desktopBuilding = false;
+    }
+
+    /// <summary>预热：进 VN 时提前构建平板（隐藏态），退出剧情时只 Show 不再 Init——把重型构建挪出退出关键路径。</summary>
+    public static void Preload()
+    {
+        if (Instance != null) return;
+        var go = new GameObject("GameMainUI");
+        DontDestroyOnLoad(go);
+        Instance = go.AddComponent<GameMainUI>();
+        try
+        {
+            Instance.Init();
+            TraceLog.L("[GameMainUI] Preload ok (root hidden)");
+        }
+        catch (System.Exception ex)
+        {
+            TraceLog.L("[GameMainUI] Preload FAILED: " + ex);
+            Instance = null;
+            UnityEngine.Object.Destroy(go);
+        }
     }
 
     private void MigrateUsername()
@@ -127,12 +184,16 @@ public class GameMainUI : MonoBehaviour
         canvas.sortingOrder = 200;
         canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
         canvasObj.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+        Debug.Log("[GameMainUI] BuildDocument: canvas ok");
 
         var panelSettings = Resources.Load<PanelSettings>("UI/TitleScreenPanelSettings");
+        Debug.Log("[GameMainUI] BuildDocument: panelSettings=" + (panelSettings != null));
         uiDoc = canvasObj.AddComponent<UIDocument>();
+        Debug.Log("[GameMainUI] BuildDocument: uidoc added");
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
         root = uiDoc.rootVisualElement;
+        Debug.Log("[GameMainUI] BuildDocument: root=" + (root != null));
         root.style.display = DisplayStyle.None;
     }
 
@@ -160,7 +221,7 @@ public class GameMainUI : MonoBehaviour
         spacerTop.style.height = new Length(16, LengthUnit.Percent);
         lockScreen.Add(spacerTop);
 
-        var clock = new Label("12:00");
+        var clock = new Label(System.DateTime.Now.ToString("HH:mm")); // 构建即真实时间（tick 可能晚于首次显示）
         clock.name = "lock-clock";
         clock.style.fontSize = 112;
         clock.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -277,8 +338,14 @@ public class GameMainUI : MonoBehaviour
     private void ShowLockScreen()
     {
         unlocked = false;
+        // 显示即同步时钟（首次加载时 tick 尚未启动的窗口期）
+        var now = System.DateTime.Now.ToString("HH:mm");
+        var lc = lockScreen?.Q<Label>("lock-clock");
+        if (lc != null) lc.text = now;
+        if (statusClock != null) statusClock.text = now;
         lockScreen.style.display = DisplayStyle.Flex;
-        desktop.style.display = DisplayStyle.None;
+        // Phase1（预热/退出关键路径）时 desktop 尚未构建——它创建时本就默认 None，跳过即可
+        if (desktop != null) desktop.style.display = DisplayStyle.None;
     }
 
     private void Unlock()
@@ -329,6 +396,7 @@ public class GameMainUI : MonoBehaviour
 
     private void BuildDesktop()
     {
+        TraceLog.L("[GameMainUI] Desktop: begin");
         desktop = new VisualElement { name = "tablet-desktop" };
         desktop.style.position = Position.Absolute;
         desktop.style.top = 0; desktop.style.left = 0;
@@ -345,6 +413,7 @@ public class GameMainUI : MonoBehaviour
         desktop.Add(wallpaper);
         // 远山像素条（壁纸点缀）
         AddWallpaperRidge(wallpaper);
+        TraceLog.L("[GameMainUI] Desktop: wallpaper ok");
 
         // ---- 顶部状态栏（液态玻璃） ----
         statusBar = new VisualElement();
@@ -356,7 +425,7 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.45f);
         desktop.Add(statusBar);
 
-        statusClock = new Label("12:00");
+        statusClock = new Label(System.DateTime.Now.ToString("HH:mm"));
         statusClock.style.fontSize = 17;
         statusClock.style.color = GlassText;
         statusClock.style.unityFontDefinition = Fd();
@@ -379,12 +448,17 @@ public class GameMainUI : MonoBehaviour
         sig.style.marginRight = 12;
         rightInfo.Add(sig);
 
-        var batt = new Label(FormatBatt(GetDeviceBatteryPercent()));
+        int battPct = -1;
+        try { battPct = GetDeviceBatteryPercent(); }
+        catch (System.Exception ex) { TraceLog.L("[GameMainUI] Desktop: battery EX " + ex.Message); }
+        TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
+        var batt = new Label(FormatBatt(battPct));
         batt.style.fontSize = 14; batt.style.color = GlassText; batt.style.unityFontDefinition = Fd();
         statusBatt = batt;
         rightInfo.Add(batt);
 
         // ---- 负一屏小部件（今日线路·液态玻璃） ----
+        TraceLog.L("[GameMainUI] Desktop: statusbar ok");
         var widget = new VisualElement();
         widget.style.width = 320;
         widget.style.height = 80;
@@ -411,6 +485,7 @@ public class GameMainUI : MonoBehaviour
         widget.Add(wData);
 
         // ---- App 网格（3 行 × 5 列，不足补空位） ----
+        TraceLog.L("[GameMainUI] Desktop: widget ok");
         var grid = new VisualElement();
         grid.style.flexGrow = 1;
         grid.style.flexDirection = FlexDirection.Column;
