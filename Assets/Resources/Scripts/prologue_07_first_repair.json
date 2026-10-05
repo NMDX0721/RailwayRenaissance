@@ -51,12 +51,12 @@
             },
             {
               "text": "自己动手（省钱，但风险高）",
-              "next": 3,
+              "next": 2,
               "setValue": "repair_choice=self"
             },
             {
               "text": "先检查再决定（谨慎）",
-              "next": 4,
+              "next": 2,
               "setValue": "repair_choice=check"
             }
           ]
@@ -69,172 +69,193 @@
       "d": [
         {
           "t": "n",
-          "text": "张工熟练地拆下喷油嘴，仔细检查。"
+          "text": "张工熟练地拆下喷油嘴，仔细检查。",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "张工",
-          "text": "喷嘴积碳严重，需要换新的。我去镇上找找配件。"
+          "text": "喷嘴积碳严重，需要换新的。我去镇上找找配件。",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "老陈",
-          "text": "好，这是500沙币。买配件剩下的买点润滑油。"
+          "text": "好，这是500沙币。买配件剩下的买点润滑油。",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "辛苦了，张工。",
-          "e": "smile"
+          "e": "smile",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "n",
-          "text": "张工出去了，剩下的人开始清理机库。"
+          "text": "张工出去了，剩下的人开始清理机库。",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "n",
-          "text": "资金 -500沙币 → 剧情推进"
+          "text": "资金 -500沙币 → 剧情推进",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "NF-5 型柴油机车！1965 年定型生产，峰值功率两千千瓦，最大牵引力三百千牛——厉害吧！"
+          "text": "NF-5 型柴油机车！1965 年定型生产，峰值功率两千千瓦，最大牵引力三百千牛——厉害吧！",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "你连这个都知道？",
-          "e": "curious"
+          "e": "curious",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "岁月",
           "text": "我翻了全球铁路数据库——这辆车出厂编号 NF-5027，最早配属中国铁路西安局，1985 年调到雾峰村线，一直跑到 2072 年！",
-          "e": "excited"
+          "e": "excited",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "……从1965到2072，一百多年了。",
-          "e": "normal"
+          "e": "normal",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "嗯！这台机车从 1965 年跑到 2072 年，比您爷爷年纪还大呢！"
+          "text": "嗯！这台机车从 1965 年跑到 2072 年，比您爷爷年纪还大呢！",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "……这种话不用你说。",
-          "e": "bored"
+          "e": "bored",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "抱歉抱歉……我只是在陈述事实！"
+          "text": "抱歉抱歉……我只是在陈述事实！",
+          "condition": "repair_choice_zhang"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "维修任务已记录！预计今天下午就能完成！"
+          "text": "维修任务已记录！预计今天下午就能完成！",
+          "condition": "repair_choice_zhang"
         },
         {
-          "text": "维修任务完成，机车状态恢复至75/100"
-        }
-      ]
-    },
-    {
-      "bg": "depot_morning",
-      "bgm": "embers",
-      "d": [
+          "text": "维修任务完成，机车状态恢复至75/100",
+          "condition": "repair_choice_zhang",
+          "t": "n"
+        },
         {
           "t": "n",
-          "text": "你挽起袖子，准备自己动手。"
+          "text": "你挽起袖子，准备自己动手。",
+          "condition": "repair_choice_self"
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "我在学校学过柴油机原理。燃油喷射系统是核心课程之一。"
+          "text": "我在学校学过柴油机原理。燃油喷射系统是核心课程之一。",
+          "condition": "repair_choice_self"
         },
         {
           "t": "d",
           "s": "老陈",
-          "text": "你确定？这可不是实验室。"
+          "text": "你确定？这可不是实验室。",
+          "condition": "repair_choice_self"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "我确定。",
-          "e": "serious"
+          "e": "serious",
+          "condition": "repair_choice_self"
         },
         {
           "t": "n",
-          "text": "两个小时后..."
+          "text": "两个小时后...",
+          "condition": "repair_choice_self"
         },
         {
           "t": "d",
           "s": "张工",
           "text": "好小子！还真让你修好了！",
-          "e": "smile"
+          "e": "smile",
+          "condition": "repair_choice_self"
         },
         {
           "t": "n",
-          "text": "机车状态恢复至70/100，但花费了3小时"
+          "text": "机车状态恢复至70/100，但花费了3小时",
+          "condition": "repair_choice_self"
         },
         {
           "t": "n",
-          "text": "省钱但费时，下午的首班车将推迟到傍晚"
-        }
-      ]
-    },
-    {
-      "bg": "depot_morning",
-      "bgm": "calm",
-      "d": [
+          "text": "省钱但费时，下午的首班车将推迟到傍晚",
+          "condition": "repair_choice_self"
+        },
         {
           "t": "n",
-          "text": "你仔细检查了喷油嘴的各项参数。"
+          "text": "你仔细检查了喷油嘴的各项参数。",
+          "condition": "repair_choice_check"
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "积碳不严重，先清洗试试。实在不行再换。"
+          "text": "积碳不严重，先清洗试试。实在不行再换。",
+          "condition": "repair_choice_check"
         },
         {
           "t": "d",
           "s": "张工",
-          "text": "好主意，省点是点。"
+          "text": "好主意，省点是点。",
+          "condition": "repair_choice_check"
         },
         {
           "t": "n",
-          "text": "清洗后测试，喷油嘴工作正常。"
+          "text": "清洗后测试，喷油嘴工作正常。",
+          "condition": "repair_choice_check"
         },
         {
           "t": "d",
           "s": "老陈",
           "text": "好！看来今天就能试车了！",
-          "e": "smile"
+          "e": "smile",
+          "condition": "repair_choice_check"
         },
         {
           "t": "n",
-          "text": "机车状态恢复至72/100，省钱省时"
+          "text": "机车状态恢复至72/100，省钱省时",
+          "condition": "repair_choice_check"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "陈爷爷，准备发车吧。",
-          "e": "smile"
+          "e": "smile",
+          "condition": "repair_choice_check"
         },
         {
           "t": "n",
-          "text": "夕阳从车库门缝挤进来，落在刚擦净的喷油嘴上。"
+          "text": "夕阳从车库门缝挤进来，落在刚擦净的喷油嘴上。",
+          "condition": "repair_choice_check"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "[四年停运……就从这一声启动开始。]",
-          "e": "excited"
+          "e": "excited",
+          "condition": "repair_choice_check"
         }
       ]
     }

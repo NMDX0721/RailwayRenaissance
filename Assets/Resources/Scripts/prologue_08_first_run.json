@@ -8,8 +8,7 @@
       "d": [
         {
           "t": "n",
-          "text": "Day 5 下午",
-          "condition": "repair_choice_zhang"
+          "text": "Day 5 下午"
         },
         {
           "t": "n",
@@ -18,7 +17,8 @@
         {
           "t": "d",
           "s": "老陈",
-          "text": "听这声音...耕牛在咆哮。它等了四年，终于又能跑了。"
+          "text": "听这声音...耕牛在咆哮。它等了四年，终于又能跑了。",
+          "e": "excited"
         },
         {
           "t": "d",
@@ -78,7 +78,7 @@
             },
             {
               "text": "直接跑两趟（争取收入）",
-              "next": 3,
+              "next": 2,
               "setValue": "first_run=aggressive"
             }
           ]
@@ -96,114 +96,143 @@
         },
         {
           "t": "n",
-          "text": "列车缓缓驶出站台。"
+          "text": "列车缓缓驶出站台。",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "动了...真的动了。",
-          "e": "smile"
+          "e": "smile",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "祝贺您——第一条线路恢复运营了！这是第一步！"
+          "text": "祝贺您——第一条线路恢复运营了！这是第一步！",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "老陈",
           "text": "四年了...终于又听到车轮的声音了。",
-          "e": "smile"
+          "e": "smile",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "窗外，村庄和田野缓缓后退。"
+          "text": "窗外，村庄和田野缓缓后退。",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "12名乘客坐在车厢里，表情各异——期待、好奇、怀念。"
+          "text": "12名乘客坐在车厢里，表情各异——期待、好奇、怀念。",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "列车顺利到达矿区站。"
+          "text": "列车顺利到达矿区站。",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "林彪悍",
-          "text": "23公里，42分钟。准点到达。"
+          "text": "23公里，42分钟。准点到达。",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "老陈",
-          "text": "好！首班车成功！"
+          "text": "好！首班车成功！",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "收入：12人 × 35沙币 = 420沙币"
+          "text": "收入：12人 × 35沙币 = 420沙币",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "首班车奖励：村民自发集资 +8,000沙币"
+          "text": "首班车奖励：村民自发集资 +8,000沙币",
+          "condition": "first_run_conservative"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "首班车任务完成！经营系统已经解锁啦！"
+          "text": "首班车任务完成！经营系统已经解锁啦！",
+          "condition": "first_run_conservative"
         },
         {
           "t": "n",
-          "text": "画面渐暗，准备进入经营模式"
-        }
-      ]
-    },
-    {
-      "bg": "train_inside",
-      "bgm": "train_ambient",
-      "d": [
+          "text": "画面渐暗，准备进入经营模式",
+          "condition": "first_run_conservative"
+        },
         {
           "t": "n",
-          "text": "列车驶出站台，开始今天的第一次运行。"
+          "text": "列车驶出站台，开始今天的第一次运行。",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "text": "第一趟很顺利。继续第二趟！",
-          "e": "smile"
+          "e": "smile",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "第二趟列车满载出发。"
+          "text": "第二趟列车满载出发。",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "两趟车全部顺利完成。"
+          "text": "两趟车全部顺利完成。",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "d",
           "s": "老陈",
           "text": "好！一天两趟，找回以前的感觉了！",
-          "e": "smile"
+          "e": "smile",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "收入：24人 × 35沙币 = 840沙币"
+          "text": "收入：24人 × 35沙币 = 840沙币",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "首班车奖励：村民自发集资 +8,000沙币"
+          "text": "首班车奖励：村民自发集资 +8,000沙币",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "机车状态 -3（连续运行损耗）"
+          "text": "机车状态 -3（连续运行损耗）",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "d",
           "s": "岁月",
-          "text": "首班车任务完成！经营系统已经解锁啦！"
+          "text": "首班车任务完成！经营系统已经解锁啦！",
+          "condition": "first_run_aggressive"
         },
         {
           "t": "n",
-          "text": "画面渐暗，准备进入经营模式"
+          "text": "站台上有人朝车挥手。十二个人，换来了这条线重新有票根的日子。",
+          "condition": "first_run_aggressive"
+        },
+        {
+          "t": "d",
+          "s": "林彪悍",
+          "text": "[收入还不够发工资……但路，已经活了。]",
+          "e": "serious",
+          "condition": "first_run_aggressive"
+        },
+        {
+          "t": "n",
+          "text": "画面渐暗。",
+          "condition": "first_run_aggressive"
         }
       ]
     }

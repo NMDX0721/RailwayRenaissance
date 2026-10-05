@@ -1237,12 +1237,12 @@
           "opts": [
             {
               "text": "『岁月，这一路……拜托你了。』",
-              "next": 11,
+              "next": 12,
               "setValue": "trip_mood=gentle"
             },
             {
               "text": "『喂，这车……就不能飞快点吗？』",
-              "next": 11,
+              "next": 12,
               "setValue": "trip_mood=playful"
             }
           ]
