@@ -163,6 +163,13 @@ public class VNBacklog : MonoBehaviour
     // ================= 自绘滚动条（Unity 6 原生滚动条无法主题化：隐藏原生，自画轨道/滑块/车挡桩） =================
     private VisualElement sbTrack, sbThumb, sbUp, sbDepot;   // sbDepot=底端石造机库（替下端车挡）
     private VisualElement sbClip;                            // thumb 裁剪容器（出库动画防溢出）
+    private VisualElement sbRailL, sbRailR, sbLamp;          // 二期分镜要单独控制的部件
+    private bool sbIdleAnimDone;                             // 分镜一场会话只播一次
+    private bool sbIdlePlaying;                              // 分镜播放中
+    private bool sbIdleApplied;                              // 驻留景视觉已套用（切回溢出态要还原）
+    private IVisualElementScheduledItem sbIdleSched;
+    private const float IdleTrackH = 100f;                   // 驻留景短轨长
+    private const float IdleThumbH = 46f;                    // 驻留景短列车长
     private IVisualElementScheduledItem sbSync;
     private bool sbDragging;
     private float sbGrabDelta;
@@ -203,6 +210,7 @@ public class VNBacklog : MonoBehaviour
         railL.style.backgroundColor = railColor;
         railL.pickingMode = PickingMode.Ignore;
         sbTrack.Add(railL);
+        sbRailL = railL;
         var railR = new VisualElement();
         railR.style.position = Position.Absolute;
         railR.style.right = 1; railR.style.width = 2;
@@ -210,6 +218,7 @@ public class VNBacklog : MonoBehaviour
         railR.style.backgroundColor = railColor;
         railR.pickingMode = PickingMode.Ignore;
         sbTrack.Add(railR);
+        sbRailR = railR;
 
         // 道砟道床：轨道最底层灰褐碎石，比枕木略宽；上下各延伸 22px 顶到滚动条两端（车挡桩下也铺满，不留黑口）
         var ballast = new VisualElement { name = "sb-ballast" };
@@ -301,6 +310,7 @@ public class VNBacklog : MonoBehaviour
 
         // 顶置前灯：屋面鼻端一点暖光（キハ07 大圆灯位）
         var lamp = new VisualElement();
+        sbLamp = lamp;
         lamp.style.position = Position.Absolute;
         lamp.style.top = 11; lamp.style.left = 8; lamp.style.width = 4; lamp.style.height = 4;
         lamp.style.backgroundColor = new Color(1f, 0.93f, 0.68f, 1f);
@@ -590,30 +600,56 @@ public class VNBacklog : MonoBehaviour
         float sy = backlogScroll.layout.y;
         float sh = backlogScroll.layout.height;
         if (sh <= 0f) return;
-        // 顶端车挡 20 高+2 间隙；底端机库 42 高+4 间隙：
-        // up(sy..sy+20) track(sy+22 .. sy+sh-46) depot(sy+sh-42 .. sy+sh)
-        sbUp.style.top = sy;
-        sbTrack.style.top = sy + 22;
-        float trkH = Mathf.Max(40f, sh - 68);
-        sbTrack.style.height = trkH;
-        if (sbClip != null) sbClip.style.height = trkH + 46f;   // 轨道+间隙4+机库42：出库起点在此底缘
-        sbDepot.style.top = sy + sh - 42;
-        // 整列往左移防裁切：right=10 + 道砟半宽8 → 道砟右缘距面板边 2px 余量；
-        // 机库宽32 居中于轨道(宽16) → right = 10 - 8 = 2
-        sbUp.style.right = 10; sbTrack.style.right = 10; sbDepot.style.right = 2;
+
+        float maxScroll = SbMaxScroll();
+        bool overflowing = maxScroll > 1f;
+
+        if (overflowing)
+        {
+            // 正常滚动条几何：车挡(sy..sy+20) 轨道(sy+22..sh-46) 机库(sh-42..sh)
+            sbUp.style.top = sy;
+            sbTrack.style.top = sy + 22;
+            float trkH = Mathf.Max(40f, sh - 68);
+            sbTrack.style.height = trkH;
+            if (sbClip != null) sbClip.style.height = trkH + 46f;   // 轨道+间隙4+机库42：出库起点在此底缘
+            sbDepot.style.top = sy + sh - 42;
+            sbUp.style.right = 10; sbTrack.style.right = 10; sbDepot.style.right = 2;
+        }
+        else
+        {
+            // 二期驻留景几何：短轨(100) 叠在机库上方，车挡不显示
+            sbDepot.style.top = sy + sh - 42;
+            sbTrack.style.top = sy + sh - 46 - IdleTrackH;
+            sbTrack.style.height = IdleTrackH;
+            if (sbClip != null) sbClip.style.height = IdleTrackH + 46f;
+            sbTrack.style.right = 10; sbDepot.style.right = 2;
+        }
 
         if (sbDragging) return; // 拖拽中由指针驱动
         if (sbDeparting) return; // 出库动画中由动画驱动 thumb
         float trackH = sbTrack.contentRect.height;
+
+        if (!overflowing)
+        {
+            // 无溢出 = 驻留景：机库+短轨+短列车（非交互），分镜一场会话只播一次
+            sbTrack.style.display = DisplayStyle.Flex;
+            sbDepot.style.display = DisplayStyle.Flex;
+            sbUp.style.display = DisplayStyle.None;
+            if (sbIdlePlaying) return;                 // 分镜逐帧驱动中
+            EnsureSleepers(trackH);
+            if (sbIdleAnimDone) ApplyIdleFinalState(trackH);
+            else StartIdleSequence(trackH);
+            return;
+        }
+
+        // 溢出态：若之前是驻留景，先还原交互与视觉
+        if (sbIdleApplied) ExitIdleVisuals();
+
         EnsureSleepers(trackH); // 高度就绪后铺枕木（无壳铁轨）
-        float maxScroll = SbMaxScroll();
-        bool overflowing = maxScroll > 1f;
-        // 内容没溢出就不显示滚动条（与原生行为一致；全金柱观感的根因）
-        var vis = overflowing ? DisplayStyle.Flex : DisplayStyle.None;
+        var vis = DisplayStyle.Flex;
         sbTrack.style.display = vis;
         sbUp.style.display = vis;
         sbDepot.style.display = vis;
-        if (!overflowing) return;
         // 柴油机车怠速清烟：schedule 每 80ms 一拍，约每 3s 飘一缕
         _smokeAcc += 0.08f;
         if (_smokeAcc >= 3f) { _smokeAcc = 0f; SpawnExhaustPuff(); }
@@ -627,6 +663,119 @@ public class VNBacklog : MonoBehaviour
         }
         sbThumb.style.height = thumbH;
         sbThumb.style.top = ratio * Mathf.Max(0f, trackH - thumbH);
+    }
+
+    /// <summary>二期四步分镜（无溢出专属，一场会话只播一次）：
+    /// ①机库落位 0–0.25s ②逐根铺轨 0.2–0.7s（钢轨收尾亮）③出库上轨 0.7–1.25s（回弹停稳）
+    /// ④前灯一亮 1.25–1.55s（脉冲两下+排气）。整景 picking 忽略，不制造可拖假象。</summary>
+    private void StartIdleSequence(float trackH)
+    {
+        if (sbIdlePlaying || sbIdleAnimDone) return;
+        if (Mathf.Abs(trackH - IdleTrackH) > 12f) return;   // contentRect 未跟上布局，下拍再试
+
+        sbIdlePlaying = true;
+        sbIdleApplied = true;
+        sbTrack.pickingMode = PickingMode.Ignore;
+        sbDepot.pickingMode = PickingMode.Ignore;
+        sbThumb.pickingMode = PickingMode.Ignore;
+
+        // 预备态：枕木/钢轨隐形，thumb 藏在机库身后（clip 裁住），机库透明
+        EnsureSleepers(trackH);
+        foreach (var t in _sleepers) t.style.opacity = 0;
+        sbRailL.style.opacity = 0;
+        sbRailR.style.opacity = 0;
+        sbDepot.style.opacity = 0;
+        sbThumb.style.height = IdleThumbH;
+        sbThumb.style.top = trackH;
+        _smokeAcc = 0f;
+
+        float t0 = Time.unscaledTime;
+        var lampBase = new Color(1f, 0.93f, 0.68f, 1f);
+        int puffed = 0;
+        sbIdleSched?.Pause();
+        sbIdleSched = backlogPanel.schedule.Execute(() =>
+        {
+            float e = Time.unscaledTime - t0;
+
+            // ① 机库落位：淡入 + 上浮 4px 落定
+            float p1 = Mathf.Clamp01(e / 0.25f);
+            float p1e = 1f - Mathf.Pow(1f - p1, 3f);
+            sbDepot.style.opacity = p1e;
+            sbDepot.style.translate = new Translate(0, 4f * (1f - p1e));
+
+            // ② 逐根铺轨：枕木按序弹出，钢轨 0.62s 起亮起（完成后保持 1，防中途重建回落）
+            float stagger = _sleepers.Count > 1 ? 0.5f / _sleepers.Count : 0.5f;
+            for (int i = 0; i < _sleepers.Count; i++)
+            {
+                float st = 0.2f + i * stagger;
+                _sleepers[i].style.opacity = Mathf.Clamp01((e - st) / 0.15f);
+            }
+            float rp = Mathf.Clamp01((e - 0.62f) / 0.08f);
+            sbRailL.style.opacity = rp;
+            sbRailR.style.opacity = rp;
+
+            // ③ 出库上轨：back-out 缓动（到位前轻微过冲 = -3px 回弹感）
+            if (e > 0.7f)
+            {
+                float p = Mathf.Clamp01((e - 0.7f) / 0.55f);
+                float c1 = 1.2f;
+                float pm = p - 1f;
+                float be = 1f + (c1 + 1f) * pm * pm * pm + c1 * pm * pm;
+                sbThumb.style.top = Mathf.LerpUnclamped(trackH, trackH - IdleThumbH, be); // Unclamped：过冲段要 >1
+                if (p >= 1f && puffed == 0) { puffed = 1; SpawnExhaustPuff(); }
+            }
+
+            // ④ 前灯一亮：0.3s 内两轮明暗脉冲
+            if (e > 1.25f && e < 1.55f && sbLamp != null)
+            {
+                float lp = ((e - 1.25f) % 0.15f) / 0.15f;
+                sbLamp.style.backgroundColor = lp < 0.5f ? new Color(1f, 0.98f, 0.8f, 1f) : lampBase;
+            }
+
+            // 终态
+            if (e >= 1.55f)
+            {
+                if (sbLamp != null) sbLamp.style.backgroundColor = lampBase;
+                sbIdleAnimDone = true;
+                sbIdlePlaying = false;
+                sbIdleSched?.Pause();
+                ApplyIdleFinalState(trackH);
+            }
+        }).Every(16);
+    }
+
+    /// <summary>驻留景终态（分镜播放完 / 再次打开时直接呈现）。</summary>
+    private void ApplyIdleFinalState(float trackH)
+    {
+        if (Mathf.Abs(trackH - IdleTrackH) > 12f) return;
+        sbIdleApplied = true;
+        sbTrack.pickingMode = PickingMode.Ignore;
+        sbDepot.pickingMode = PickingMode.Ignore;
+        sbThumb.pickingMode = PickingMode.Ignore;
+        sbDepot.style.opacity = 1f;
+        sbDepot.style.translate = new Translate(0, 0);
+        foreach (var t in _sleepers) t.style.opacity = 1f;
+        sbRailL.style.opacity = 1f;
+        sbRailR.style.opacity = 1f;
+        sbThumb.style.height = IdleThumbH;
+        sbThumb.style.top = trackH - IdleThumbH;
+    }
+
+    /// <summary>驻留景 → 正常滚动条：还原交互、透明度与灯色。</summary>
+    private void ExitIdleVisuals()
+    {
+        sbIdleApplied = false;
+        sbIdlePlaying = false;
+        sbIdleSched?.Pause();
+        sbTrack.pickingMode = PickingMode.Position;
+        sbDepot.pickingMode = PickingMode.Position;
+        sbThumb.pickingMode = PickingMode.Position;
+        sbDepot.style.opacity = 1f;
+        sbDepot.style.translate = new Translate(0, 0);
+        foreach (var t in _sleepers) t.style.opacity = 1f;
+        sbRailL.style.opacity = 1f;
+        sbRailR.style.opacity = 1f;
+        if (sbLamp != null) sbLamp.style.backgroundColor = new Color(1f, 0.93f, 0.68f, 1f);
     }
 
     private bool sbLogged; // 每次打开面板只记一次数值
@@ -693,167 +842,6 @@ public class VNBacklog : MonoBehaviour
     }
 
 
-    private static void StyleBacklogScrollbar(ScrollView scroll)
-    {
-        var track = new Color(0.12f, 0.08f, 0.05f, 0.9f);          // 轨道底
-        var trackEdge = new Color(0.8f, 0.62f, 0.35f, 0.6f);       // 轨道金边
-        var thumb = new Color(0.85f, 0.66f, 0.38f, 0.95f);         // 滑块
-        var arrowBg = new Color(0.18f, 0.12f, 0.07f, 0.95f);       // 箭头钮底
-        var glyphGold = new Color(1f, 0.86f, 0.59f, 1f);           // 三角 glyph
-
-        // 轨道：10px 宽、深色底、1px 金边、全圆角
-        void StyleTrack(VisualElement e)
-        {
-            e.style.width = 10;
-            e.style.backgroundColor = track;
-            e.style.borderTopWidth = 1;
-            e.style.borderBottomWidth = 1;
-            e.style.borderLeftWidth = 1;
-            e.style.borderRightWidth = 1;
-            e.style.borderTopColor = trackEdge;
-            e.style.borderBottomColor = trackEdge;
-            e.style.borderLeftColor = trackEdge;
-            e.style.borderRightColor = trackEdge;
-            e.style.borderTopLeftRadius = 5;
-            e.style.borderTopRightRadius = 5;
-            e.style.borderBottomLeftRadius = 5;
-            e.style.borderBottomRightRadius = 5;
-        }
-
-        // 滑块：金色、圆角 4、左右 margin 2 让它比轨道细
-        void StyleThumb(VisualElement e)
-        {
-            e.style.backgroundColor = thumb;
-            e.style.borderTopLeftRadius = 4;
-            e.style.borderTopRightRadius = 4;
-            e.style.borderBottomLeftRadius = 4;
-            e.style.borderBottomRightRadius = 4;
-            e.style.marginLeft = 2;
-            e.style.marginRight = 2;
-        }
-
-        // 上下箭头钮：深棕金边 + 自绘金三角贴图（覆盖 Unity 默认白三角 background）
-        void StyleArrowButton(VisualElement e, bool isUp)
-        {
-            e.style.width = 10;
-            e.style.height = 16;
-            e.style.backgroundColor = arrowBg;
-            e.style.borderTopWidth = 1;
-            e.style.borderBottomWidth = 1;
-            e.style.borderLeftWidth = 1;
-            e.style.borderRightWidth = 1;
-            e.style.borderTopColor = trackEdge;
-            e.style.borderBottomColor = trackEdge;
-            e.style.borderLeftColor = trackEdge;
-            e.style.borderRightColor = trackEdge;
-            // 覆盖默认白三角贴图 → 自绘金色像素三角
-            e.style.backgroundImage = new StyleBackground(MakeArrowTex(isUp));
-            e.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-            e.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
-            e.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
-            e.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
-            e.style.unityBackgroundImageTintColor = glyphGold;
-        }
-
-        // 手写递归遍历整个 hierarchy（绕开 UQuery 的 contentContainer 语义——
-        // 滚动条挂在 ScrollView 本体层，Query()/Q() 可能整棵够不着，这就是样式一直没命中的根因）
-        var all = new System.Collections.Generic.List<VisualElement>();
-        var parents = new System.Collections.Generic.Dictionary<VisualElement, VisualElement>();
-        void Walk(VisualElement e, VisualElement p)
-        {
-            all.Add(e);
-            parents[e] = p;
-            foreach (var c in e.Children()) Walk(c, e);
-        }
-        Walk(scroll, null);
-
-        int hitSlider = 0, hitScroller = 0, hitBtn = 0, hitThumb = 0, hitArrow = 0;
-
-        // 1) 名字/class 子串分类（BEM 新旧命名都能被子串抓到）
-        foreach (var e in all)
-        {
-            var hay = (e.name ?? "") + "|" + string.Join("|", e.GetClasses());
-            var lower = hay.ToLowerInvariant();
-            if (lower.Contains("up-button")) { StyleArrowButton(e, true); hitArrow++; continue; }
-            if (lower.Contains("down-button")) { StyleArrowButton(e, false); hitArrow++; continue; }
-            if (lower.Contains("dragger") || lower.Contains("thumb")) { StyleThumb(e); hitThumb++; continue; }
-            if (lower.Contains("slider")) { StyleTrack(e); hitSlider++; continue; }
-            if (lower.Contains("scroller")) { hitScroller++; continue; } // 容器只计数，不着色（防重叠）
-        }
-
-        // 2) 类型兜底（完全不依赖命名）：Slider=轨道；Scroller 下的 Button=箭头（遍历序 up→down）
-        foreach (var e in all)
-        {
-            if (e is Slider && !e.ClassListContains("__sb_styled"))
-            {
-                StyleTrack(e);
-                e.AddToClassList("__sb_styled");
-                hitSlider++;
-            }
-        }
-        var scrollers = new System.Collections.Generic.List<Scroller>();
-        foreach (var e in all) if (e is Scroller sc && !sc.ClassListContains("__sb_sc")) { scrollers.Add(sc); sc.AddToClassList("__sb_sc"); hitScroller++; }
-        foreach (var sc in scrollers)
-        {
-            int idx = 0;
-            foreach (var e in all)
-            {
-                if (e is Button && IsUnder(e, sc, parents))
-                {
-                    StyleArrowButton(e, idx == 0); // Unity uxml 顺序：up 在前 down 在后
-                    idx++;
-                    hitBtn++;
-                }
-            }
-        }
-
-        // 诊断日志：每次调用都打一行（共三次：Init 构造 / 打开面板 / 50ms 布局后），详表只打一次
-        if (TraceLog.ConsoleVerbose)
-            Debug.Log($"[Backlog SB] pass all={all.Count} sliderHit={hitSlider} scrollerHit={hitScroller} btnHit={hitBtn} thumbHit={hitThumb} arrowHit={hitArrow}");
-        if (TraceLog.ConsoleVerbose && all.Count > 1 && !_sbLogDone)
-        {
-            _sbLogDone = true;
-            foreach (var e in all)
-            {
-                var hay = (e.name ?? "") + "|" + string.Join("|", e.GetClasses());
-                var lower = hay.ToLowerInvariant();
-                if (lower.Contains("scroll") || lower.Contains("slider") || lower.Contains("dragger") ||
-                    lower.Contains("button") || lower.Contains("thumb") || e is Scroller || e is Slider)
-                {
-                    Debug.Log($"[Backlog SB] {e.GetType().Name} name='{e.name}' classes='{string.Join(" ", e.GetClasses())}'");
-                }
-            }
-        }
-    }
-
-    private static bool _sbLogDone;
-
-    /// <summary>铁轨纹理 16×16 平铺：木棕底 + 一条枕木横带 + 两条纵向钢轨（Repeat 铺成连续铁轨）。</summary>
-    private static Texture2D MakeRailTexture()
-    {
-        const int s = 16;
-        var tex = new Texture2D(s, s, TextureFormat.RGBA32, false)
-        {
-            filterMode = FilterMode.Point,
-            wrapMode = TextureWrapMode.Repeat,
-        };
-        var tie = new Color32(46, 28, 16, 255);      // 枕木深棕
-        var wood = new Color32(72, 46, 28, 255);      // 木底
-        var rail = new Color32(225, 214, 188, 255);   // 磨亮钢轨面（暖银）
-        for (int y = 0; y < s; y++)
-        {
-            for (int x = 0; x < s; x++)
-            {
-                Color32 c = wood;
-                if (y < 5) c = tie;                    // 枕木横带（顶部 5px，repeat 后每 16px 一条）
-                if (x >= 3 && x <= 4) c = rail;        // 左钢轨
-                if (x >= 11 && x <= 12) c = rail;      // 右钢轨
-                tex.SetPixel(x, y, c);
-            }
-        }
-        tex.Apply();
-        return tex;
-    }
 
     /// <summary>道砟纹理 32×64 平铺：深色石缝底 + 细密小石（半径1-2）+ 单像素微粒；
     /// 左右各 3 列做透明缺口（70% 概率挖空）→ 铺出来是碎石豁口边，不是刀切直线。
@@ -1003,43 +991,6 @@ public class VNBacklog : MonoBehaviour
         return tex;
     }
 
-    /// <summary>e 是否位于 anc 之下（沿 parents 链上溯）。</summary>
-    private static bool IsUnder(VisualElement e, VisualElement anc,
-        System.Collections.Generic.Dictionary<VisualElement, VisualElement> parents)
-    {
-        VisualElement cur = e;
-        int guard = 0;
-        while (cur != null && guard++ < 64)
-        {
-            if (ReferenceEquals(cur, anc)) return true;
-            if (!parents.TryGetValue(cur, out cur)) break;
-        }
-        return false;
-    }
-
-    /// <summary>自绘 7×4 像素金三角（覆盖 Unity 默认白三角贴图）。</summary>
-    private static Texture2D MakeArrowTex(bool up)
-    {
-        const int w = 7, h = 4;
-        var tex = new Texture2D(w, h, TextureFormat.RGBA32, false)
-        {
-            filterMode = FilterMode.Point,
-            wrapMode = TextureWrapMode.Clamp,
-        };
-        var gold = new Color32(255, 219, 150, 255);
-        var clear = new Color32(0, 0, 0, 0);
-        for (int y = 0; y < h; y++)
-        {
-            int rowFromTop = up ? y : h - 1 - y;   // up：顶窄底宽；down：镜像
-            int half = rowFromTop + 1;              // 行半宽 1,2,3,4
-            int span = Mathf.Min(half * 2 - 1, w);
-            int x0 = (w - span) / 2;
-            for (int x = 0; x < w; x++)
-                tex.SetPixel(x, y, (x >= x0 && x < x0 + span) ? gold : clear);
-        }
-        tex.Apply();
-        return tex;
-    }
 
     public void AddEntry(string speaker, string text, int sceneIndex, int dialogueIndex)
     {
