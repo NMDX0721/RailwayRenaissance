@@ -682,12 +682,13 @@ public class VNBacklog : MonoBehaviour
         puff.pickingMode = PickingMode.Ignore;
         sbTrack.Add(puff);   // 后加=在 thumb 之上
         float t0 = Time.unscaledTime;
-        var sched = sbTrack.schedule.Execute(() =>
+        IVisualElementScheduledItem sched = null;   // 先声明：lambda 内不能引用自身初始化中的局部变量(CS0841)
+        sched = sbTrack.schedule.Execute(() =>
         {
             float t = Mathf.Clamp01((Time.unscaledTime - t0) / 0.7f);
             puff.style.translate = new Translate(0, -10f * t);
             puff.style.opacity = 0.55f * (1f - t);
-            if (t >= 1f) { sched.Pause(); puff.RemoveFromHierarchy(); }
+            if (t >= 1f) { sched?.Pause(); puff.RemoveFromHierarchy(); }
         }).Every(30);
     }
 
