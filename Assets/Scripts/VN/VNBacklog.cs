@@ -161,10 +161,14 @@ public class VNBacklog : MonoBehaviour
     }
 
     // ================= 自绘滚动条（Unity 6 原生滚动条无法主题化：隐藏原生，自画轨道/滑块/车挡桩） =================
-    private VisualElement sbTrack, sbThumb, sbUp, sbDown;
+    private VisualElement sbTrack, sbThumb, sbUp, sbDepot;   // sbDepot=底端石造机库（替下端车挡）
+    private VisualElement sbClip;                            // thumb 裁剪容器（出库动画防溢出）
     private IVisualElementScheduledItem sbSync;
     private bool sbDragging;
     private float sbGrabDelta;
+    private bool sbDeparting;                       // 出库动画进行中（thumb 由动画驱动）
+    private IVisualElementScheduledItem sbDepartSched;
+    private float _smokeAcc;                        // 柴油怠速清烟计时
     private readonly System.Collections.Generic.List<VisualElement> _sleepers = new();
     private float _sleepersBuiltFor = -1f;
 
@@ -175,7 +179,7 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
 
         sbUp = MakeSbBufferStop(true);
-        sbDown = MakeSbBufferStop(false);
+        sbDepot = MakeSbDepot();          // 下端＝机库出发点（车挡只留顶端线路尽头）
 
         // —— 无壳铁轨（去胶囊外壳）：独立凸出枕木 + 左右钢轨条 + 金色车厢滑块 ——
         sbTrack = new VisualElement { name = "sb-track" };
@@ -222,7 +226,7 @@ public class VNBacklog : MonoBehaviour
         // —— 主题化滑块＝キハ07 俯视列车：奶油车身 + 朱色圆弧前脸 + 前窗带 + 浅灰圆顶 + 侧窗列 + 通风口 ——
         sbThumb = new VisualElement { name = "sb-thumb" };
         sbThumb.style.position = Position.Absolute;
-        sbThumb.style.left = -3; sbThumb.style.right = -3;   // 宽于轨道：压住钢轨与枕木
+        sbThumb.style.left = 7; sbThumb.style.right = 7;   // clip 内坐标（clip 左右各外扩10 → 绝对位±3，压住钢轨）
         sbThumb.style.backgroundColor = new Color(0.88f, 0.78f, 0.58f, 1f); // 黄かっ色2号 奶油车身
         sbThumb.style.borderTopWidth = 1; sbThumb.style.borderBottomWidth = 1;
         sbThumb.style.borderLeftWidth = 1; sbThumb.style.borderRightWidth = 1;
@@ -269,15 +273,30 @@ public class VNBacklog : MonoBehaviour
         var roof = new VisualElement();
         roof.style.position = Position.Absolute;
         roof.style.top = 10; roof.style.bottom = 9; roof.style.left = 4; roof.style.right = 4;
-        roof.style.backgroundColor = new Color(0.62f, 0.62f, 0.60f, 1f);   // 模型银灰屋面
+        roof.style.backgroundColor = new Color(0.58f, 0.58f, 0.56f, 1f);   // 屋面中灰（做底）
         roof.style.borderTopWidth = 1; roof.style.borderBottomWidth = 1;
         roof.style.borderLeftWidth = 1; roof.style.borderRightWidth = 1;
-        var roofEdge = new Color(0.42f, 0.42f, 0.41f, 1f);
+        var roofEdge = new Color(0.40f, 0.40f, 0.39f, 1f);
         roof.style.borderTopColor = roofEdge; roof.style.borderBottomColor = roofEdge;
         roof.style.borderLeftColor = roofEdge; roof.style.borderRightColor = roofEdge;
         roof.style.borderTopLeftRadius = 7; roof.style.borderTopRightRadius = 7;   // 屋顶前鼻圆弧
         roof.style.borderBottomLeftRadius = 6; roof.style.borderBottomRightRadius = 6;
+        roof.style.overflow = Overflow.Hidden;
         roof.pickingMode = PickingMode.Ignore;
+        // 纵向三段明暗：两侧檐口暗、中间弧顶亮——打破"平灰长方形"的板状观感
+        void RoofStrip(Length left, Length right, Color c)
+        {
+            var e = new VisualElement();
+            e.style.position = Position.Absolute;
+            e.style.top = 0; e.style.bottom = 0;
+            e.style.left = left; e.style.right = right;
+            e.style.backgroundColor = c;
+            e.pickingMode = PickingMode.Ignore;
+            roof.Add(e);
+        }
+        RoofStrip(0, new Length(65, LengthUnit.Percent), new Color(0.45f, 0.45f, 0.44f, 1f));          // 左檐口暗
+        RoofStrip(new Length(35, LengthUnit.Percent), new Length(35, LengthUnit.Percent), new Color(0.74f, 0.74f, 0.72f, 1f)); // 弧顶高光
+        RoofStrip(new Length(65, LengthUnit.Percent), 0, new Color(0.45f, 0.45f, 0.44f, 1f));          // 右檐口暗
         sbThumb.Add(roof);
 
         // 顶置前灯：屋面鼻端一点暖光（キハ07 大圆灯位）
@@ -317,15 +336,25 @@ public class VNBacklog : MonoBehaviour
                 sbThumb.Add(win);
             }
         }
-        sbTrack.Add(sbThumb);
+        // thumb 裁剪容器：出库动画时列车在轨道底端之外，须被裁住（配合机库遮挡）；
+        // 左右各外扩 10 容纳宽于轨道的车身，picking 忽略（事件穿到轨道）
+        sbClip = new VisualElement { name = "sb-thumb-clip" };
+        sbClip.style.position = Position.Absolute;
+        sbClip.style.left = -10; sbClip.style.right = -10;
+        sbClip.style.top = 0; sbClip.style.height = 100;
+        sbClip.style.overflow = Overflow.Hidden;
+        sbClip.pickingMode = PickingMode.Ignore;
+        sbTrack.Add(sbClip);
+        sbClip.Add(sbThumb);
 
-        // 轨道先加、车挡桩后加：道砟上下各延伸 22px，桩必须盖在道砟之上（否则桩被埋掉）
+        // 轨道先加、端点后加：道砟上下各延伸 22px，车挡/机库须盖在道砟之上；
+        // 机库在轨道之上 → 出库动画时列车从机库身后驶出（遮挡关系）
         backlogPanel.Add(sbTrack);
         backlogPanel.Add(sbUp);
-        backlogPanel.Add(sbDown);
+        backlogPanel.Add(sbDepot);
 
-        // 可交互：悬停切换手型（轨道/箭头/滑块统一）
-        foreach (var h in new[] { sbTrack, sbUp, sbDown })
+        // 可交互：悬停切换手型（轨道/车挡/机库统一）
+        foreach (var h in new[] { sbTrack, sbUp, sbDepot })
         {
             h.RegisterCallback<PointerEnterEvent>(e => UiCursor.ShowHand());
             h.RegisterCallback<PointerLeaveEvent>(e => UiCursor.ShowArrow());
@@ -401,6 +430,32 @@ public class VNBacklog : MonoBehaviour
             VNManager.Instance?.SuppressNextAdvance();
             e.StopImmediatePropagation();
             SbScrollBy(up);
+        });
+        b.RegisterCallback<ClickEvent>(e =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            e.StopImmediatePropagation();
+        });
+        return b;
+    }
+
+    /// <summary>底端石造机库（人吉石造车库形制 32×42，拱门面朝轨道）：
+    /// 保留原下端按钮的点击向下翻页；z 在轨道之上，出库时列车从其身后驶出。</summary>
+    private VisualElement MakeSbDepot()
+    {
+        var b = new VisualElement { name = "sb-depot" };
+        b.style.position = Position.Absolute;
+        b.style.width = 32; b.style.height = 42;
+        b.style.backgroundColor = StyleKeyword.None;
+        b.style.backgroundImage = new StyleBackground(MakeDepotTex());
+        b.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(42));
+        b.style.backgroundRepeat = new BackgroundRepeat(Repeat.NoRepeat, Repeat.NoRepeat);
+        b.pickingMode = PickingMode.Position;
+        b.RegisterCallback<PointerDownEvent>(e =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            e.StopImmediatePropagation();
+            SbScrollBy(false);
         });
         b.RegisterCallback<ClickEvent>(e =>
         {
@@ -535,16 +590,20 @@ public class VNBacklog : MonoBehaviour
         float sy = backlogScroll.layout.y;
         float sh = backlogScroll.layout.height;
         if (sh <= 0f) return;
-        // 钮 20 高 + 2 间隙：up(sy..sy+20) track(sy+22 .. sh-22) down(sy+sh-20..)
+        // 顶端车挡 20 高+2 间隙；底端机库 42 高+4 间隙：
+        // up(sy..sy+20) track(sy+22 .. sy+sh-46) depot(sy+sh-42 .. sy+sh)
         sbUp.style.top = sy;
         sbTrack.style.top = sy + 22;
-        sbTrack.style.height = Mathf.Max(40f, sh - 44);
-        sbDown.style.top = sy + sh - 20;
-        // 整列往左移：right=4 时道砟右缘超出面板 2px 被裁（左肩全露→左宽右窄）。
-        // right=10 + 道砟半宽8 → 道砟右缘距面板边 2px 余量，两侧肩宽对称
-        sbUp.style.right = 10; sbTrack.style.right = 10; sbDown.style.right = 10;
+        float trkH = Mathf.Max(40f, sh - 68);
+        sbTrack.style.height = trkH;
+        if (sbClip != null) sbClip.style.height = trkH + 46f;   // 轨道+间隙4+机库42：出库起点在此底缘
+        sbDepot.style.top = sy + sh - 42;
+        // 整列往左移防裁切：right=10 + 道砟半宽8 → 道砟右缘距面板边 2px 余量；
+        // 机库宽32 居中于轨道(宽16) → right = 10 - 8 = 2
+        sbUp.style.right = 10; sbTrack.style.right = 10; sbDepot.style.right = 2;
 
         if (sbDragging) return; // 拖拽中由指针驱动
+        if (sbDeparting) return; // 出库动画中由动画驱动 thumb
         float trackH = sbTrack.contentRect.height;
         EnsureSleepers(trackH); // 高度就绪后铺枕木（无壳铁轨）
         float maxScroll = SbMaxScroll();
@@ -553,8 +612,11 @@ public class VNBacklog : MonoBehaviour
         var vis = overflowing ? DisplayStyle.Flex : DisplayStyle.None;
         sbTrack.style.display = vis;
         sbUp.style.display = vis;
-        sbDown.style.display = vis;
+        sbDepot.style.display = vis;
         if (!overflowing) return;
+        // 柴油机车怠速清烟：schedule 每 80ms 一拍，约每 3s 飘一缕
+        _smokeAcc += 0.08f;
+        if (_smokeAcc >= 3f) { _smokeAcc = 0f; SpawnExhaustPuff(); }
         float thumbH = Mathf.Min(Mathf.Max(SbThumbHeight(), 28f), trackH * 0.95f); // 封顶 95%，强制露出轨道层次
         float ratio = Mathf.Clamp01(backlogScroll.scrollOffset.y / maxScroll);
         if (!sbLogged)
@@ -568,6 +630,66 @@ public class VNBacklog : MonoBehaviour
     }
 
     private bool sbLogged; // 每次打开面板只记一次数值
+
+    /// <summary>出库动画：打开回顾时列车从机库身后（轨道底端之外）驶出到当前滚动位，0.7s 三次缓出。</summary>
+    private void StartDepart()
+    {
+        if (sbDeparting || sbTrack == null || sbThumb == null) return;
+        float trackH = sbTrack.contentRect.height;
+        float maxScroll = SbMaxScroll();
+        if (trackH <= 0f || maxScroll <= 1f) return;   // 无溢出：留给二期专属分镜
+        float thumbH = Mathf.Min(Mathf.Max(SbThumbHeight(), 28f), trackH * 0.95f);
+        sbThumb.style.height = thumbH;
+        float usable = Mathf.Max(0f, trackH - thumbH);
+        float ratio = Mathf.Clamp01(backlogScroll.scrollOffset.y / maxScroll);
+        float from = trackH;          // 轨道底之下＝机库身后，被机库遮住
+        float to = ratio * usable;    // 当前滚动位（通常=底部＝库门口）
+        sbDeparting = true;
+        sbThumb.style.top = from;
+        float t0 = Time.unscaledTime;
+        sbDepartSched?.Pause();
+        sbDepartSched = backlogPanel.schedule.Execute(() =>
+        {
+            if (sbDragging) { sbDeparting = false; sbDepartSched?.Pause(); return; }
+            float t = Mathf.Clamp01((Time.unscaledTime - t0) / 0.7f);
+            float e = 1f - Mathf.Pow(1f - t, 3f);              // cubic ease-out
+            sbThumb.style.top = Mathf.Lerp(from, to, e);
+            if (t >= 1f)
+            {
+                sbDeparting = false;
+                sbDepartSched?.Pause();
+                SpawnExhaustPuff();                             // 停稳排气两缕
+                backlogPanel.schedule.Execute(() => SpawnExhaustPuff()).StartingIn(180);
+            }
+        }).Every(16);
+    }
+
+    /// <summary>柴油清烟：3×3 淡灰小方块自车顶排气口上升 10px 淡出（0.7s）。</summary>
+    private void SpawnExhaustPuff()
+    {
+        if (sbTrack == null || sbThumb == null) return;
+        if (sbTrack.style.display != DisplayStyle.Flex) return;
+        float thumbH = sbThumb.layout.height > 0f ? sbThumb.layout.height : sbThumb.style.height.value.value;
+        if (thumbH < 8f) return;   // thumb 尚未布局好
+        var puff = new VisualElement();
+        puff.style.position = Position.Absolute;
+        puff.style.width = 3; puff.style.height = 3;
+        puff.style.left = UnityEngine.Random.Range(5, 11);
+        puff.style.top = sbThumb.layout.y + 14f;
+        puff.style.backgroundColor = new Color(0.72f, 0.73f, 0.75f, 1f);
+        puff.style.opacity = 0.55f;
+        puff.style.borderTopLeftRadius = 1; puff.style.borderTopRightRadius = 1;
+        puff.pickingMode = PickingMode.Ignore;
+        sbTrack.Add(puff);   // 后加=在 thumb 之上
+        float t0 = Time.unscaledTime;
+        var sched = sbTrack.schedule.Execute(() =>
+        {
+            float t = Mathf.Clamp01((Time.unscaledTime - t0) / 0.7f);
+            puff.style.translate = new Translate(0, -10f * t);
+            puff.style.opacity = 0.55f * (1f - t);
+            if (t >= 1f) { sched.Pause(); puff.RemoveFromHierarchy(); }
+        }).Every(30);
+    }
 
 
     private static void StyleBacklogScrollbar(ScrollView scroll)
@@ -743,7 +865,7 @@ public class VNBacklog : MonoBehaviour
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Repeat,
         };
-        var gap = new Color32(52, 51, 50, 255);      // 石缝深底（中性深灰）
+        var gap = new Color32(78, 77, 75, 255);      // 石缝底（中深灰，实拍里石子几乎铺满，底只透缝）
         for (int y = 0; y < H; y++)
             for (int x = 0; x < s; x++)
                 tex.SetPixel(x, y, gap);
@@ -761,22 +883,29 @@ public class VNBacklog : MonoBehaviour
         uint seed = 20261004u;
         uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
 
-        // 细石：半径 1..2，160 颗——小而密才是道砟粗颗粒，大颗像撒盐
-        for (int i = 0; i < 160; i++)
+        // 细颗粒：单像素为主（85%），少量 2px 小石增加起伏——颗粒上限就是 1px，再细只能靠密度
+        for (int i = 0; i < 700; i++)
         {
             int cx = (int)(Next() % s);
             int cy = (int)(Next() % H);
-            int r = 1 + (int)(Next() % 2);
             var c = stones[(int)(Next() % stones.Length)];
-            for (int dy = -r; dy <= r; dy++)
-                for (int dx = -r; dx <= r; dx++)
-                {
-                    if (dx * dx + dy * dy > r * r) continue;
-                    tex.SetPixel((cx + dx + s) % s, (cy + dy + H) % H, c);
-                }
+            if (Next() % 100 < 15)
+            {
+                // 15% 小石（半径2圆斑）
+                for (int dy = -1; dy <= 1; dy++)
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        if (dx * dx + dy * dy > 1) continue;
+                        tex.SetPixel((cx + dx + s) % s, (cy + dy + H) % H, c);
+                    }
+            }
+            else
+            {
+                tex.SetPixel(cx, cy, c);   // 单像素石
+            }
         }
-        // 微粒：220 个单像素填缝
-        for (int i = 0; i < 220; i++)
+        // 微粒补缝：260 个单像素
+        for (int i = 0; i < 260; i++)
         {
             int x = (int)(Next() % s);
             int y = (int)(Next() % H);
@@ -802,6 +931,75 @@ public class VNBacklog : MonoBehaviour
         var c = tex.GetPixel(x, y);
         c.a = a / 255f;
         tex.SetPixel(x, y, c);
+    }
+
+    /// <summary>机库像素画 32×42：拱门面朝轨道（图上缘），石墙三拱门 + 檐口 + 坡屋面——
+    /// 人吉石造车库形制微缩。不透明（列车须被它遮住，出库才有"从库里出来"的观感）。</summary>
+    private static Texture2D MakeDepotTex()
+    {
+        const int W = 32, H = 42;
+        var tex = new Texture2D(W, H, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp,
+        };
+        for (int y = 0; y < H; y++)
+            for (int x = 0; x < W; x++)
+                tex.SetPixel(x, y, new Color32(0, 0, 0, 0));
+
+        var stone = new[]
+        {
+            new Color32(128, 126, 122, 255),
+            new Color32(116, 114, 110, 255),
+            new Color32(136, 134, 130, 255),
+        };
+        var mortar = new Color32(94, 92, 88, 255);
+        var eave = new Color32(70, 66, 62, 255);
+        var door = new Color32(26, 24, 22, 255);
+        var roof = new Color32(74, 74, 78, 255);
+        var roofLine = new Color32(62, 62, 66, 255);
+        var roofHi = new Color32(94, 94, 98, 255);
+        uint seed = 77003u;
+        uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
+
+        // 檐口（上缘，贴轨道侧）
+        for (int x = 0; x < W; x++) { tex.SetPixel(x, 0, eave); tex.SetPixel(x, 1, eave); }
+
+        // 石墙 + 三拱门（拱顶朝上=门面朝轨道）
+        int[] centers = { 7, 16, 25 };
+        for (int y = 2; y <= 17; y++)
+        {
+            for (int x = 0; x < W; x++)
+            {
+                bool inArch = false;
+                foreach (int c in centers)
+                {
+                    int dy = y - 2;
+                    int half = dy < 2 ? 2 + dy * 2 : 4;   // 前两行收肩成拱顶圆弧
+                    if (Mathf.Abs(x - c) <= half) { inArch = true; break; }
+                }
+                if (inArch) { tex.SetPixel(x, y, door); continue; }
+                Color32 s = stone[(int)(Next() % (uint)stone.Length)];
+                if (y % 4 == 3) s = mortar;               // 横灰缝
+                tex.SetPixel(x, y, s);
+            }
+        }
+
+        // 屋面（门面之后往下＝屋顶）
+        for (int y = 18; y < H; y++)
+        {
+            for (int x = 0; x < W; x++)
+            {
+                Color32 c = roof;
+                if (y == 18) c = eave;                                  // 檐线
+                else if (y % 5 == 0) c = roofLine;                      // 瓦楞
+                if (y > 18 && (x < 2 || x > W - 3)) c = roofLine;       // 两侧压暗
+                if (y > 18 && x >= 15 && x <= 16) c = roofHi;           // 屋脊高光
+                tex.SetPixel(x, y, c);
+            }
+        }
+        tex.Apply();
+        return tex;
     }
 
     /// <summary>e 是否位于 anc 之下（沿 parents 链上溯）。</summary>
@@ -1017,11 +1215,14 @@ public class VNBacklog : MonoBehaviour
                 HideNativeScrollbars();
                 backlogScroll.scrollOffset = new Vector2(0, backlogScroll.contentContainer.layout.height);
                 UpdateCustomScrollbar();
+                StartDepart();   // 滚到底就位后：列车自机库身后驶出
             }).StartingIn(50);
         }
         else
         {
             sbSync?.Pause();
+            sbDeparting = false;          // 关闭即中断出库动画
+            sbDepartSched?.Pause();
             // 关闭即恢复箭头：跳转/关闭瞬间鼠标可能仍停在按钮上，Leave 不会触发
             UiCursor.ShowArrow();
         }
