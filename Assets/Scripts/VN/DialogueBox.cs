@@ -274,8 +274,12 @@ public class DialogueBox : MonoBehaviour
         bool isNarration = string.IsNullOrEmpty(speaker) || speaker == "n";
         nameArea.style.visibility = isNarration ? Visibility.Hidden : Visibility.Visible;
 
-        // 内心活动：整句 [xxx] → 蓝色斜体富文本
+        // 内心活动：整句 [xxx] → 蓝色斜体富文本（独白不叠术语高亮：嵌套 color 会截断外层色）
+        bool isThought = !string.IsNullOrEmpty(text) && text.Length > 2 &&
+                         text.StartsWith("[") && text.EndsWith("]");
         string displayText = ConvertInnerThought(text);
+        if (!isThought)
+            displayText = TermHighlightSystem.HighlightTerms(displayText);
         // zpix 的 ——（U+2014）字形是两段短横；换 U+2500 框线横双连＝2em 整段长横、无缝
         displayText = displayText.Replace("——", "──");
 
