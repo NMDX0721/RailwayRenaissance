@@ -354,8 +354,6 @@ public class DialogueBox : MonoBehaviour
     {
         ClearTermHits();
         if (textAreaField == null || string.IsNullOrEmpty(_lastWrapped)) return;
-        var terms = TermHighlightSystem.GetTerms();
-        if (terms.Count == 0) return;
         float fs = _lastFs;
 
         // 逐字符行走（跳过富文本标签）：记录每个 raw 下标的行号与行内 x
@@ -384,41 +382,32 @@ public class DialogueBox : MonoBehaviour
             x += CharWidthEm(c) * fs;
         }
 
-        foreach (var (id, name) in terms)
+        // 共享匹配器（与黄字高亮完全同判）：含 skipWhen 抑制，防「铁路基本」误中「路基」
+        foreach (var (s, len, id) in TermHighlightSystem.FindOccurrences(_lastWrapped))
         {
-            if (string.IsNullOrEmpty(name)) continue;
-            int from = 0;
-            while (from <= n - name.Length)
+            int e = s + len;
+            // 术语可能跨行：按行切成若干段，逐段落框
+            int curLine = -1;
+            float min = float.MaxValue, max = float.MinValue;
+            for (int r = s; r < e && r < n; r++)
             {
-                int s = _lastWrapped.IndexOf(name, from, StringComparison.Ordinal);
-                if (s < 0) break;
-                from = s + name.Length;
-                if (s < n && inTag[s]) continue;
-                int e = s + name.Length;
-
-                // 术语可能跨行：按行切成若干段，逐段落框
-                int curLine = -1;
-                float min = float.MaxValue, max = float.MinValue;
-                for (int r = s; r < e && r < n; r++)
+                if (inTag[r]) continue;
+                char c = _lastWrapped[r];
+                if (c == '\n') continue;
+                int ln = lineOf[r];
+                float x0 = xOf[r], x1 = x0 + CharWidthEm(c) * fs;
+                if (ln != curLine)
                 {
-                    if (inTag[r]) continue;
-                    char c = _lastWrapped[r];
-                    if (c == '\n') continue;
-                    int ln = lineOf[r];
-                    float x0 = xOf[r], x1 = x0 + CharWidthEm(c) * fs;
-                    if (ln != curLine)
-                    {
-                        FlushTermSegment(id, curLine, min, max, fs);
-                        curLine = ln; min = x0; max = x1;
-                    }
-                    else
-                    {
-                        if (x0 < min) min = x0;
-                        if (x1 > max) max = x1;
-                    }
+                    FlushTermSegment(id, curLine, min, max, fs);
+                    curLine = ln; min = x0; max = x1;
                 }
-                FlushTermSegment(id, curLine, min, max, fs);
+                else
+                {
+                    if (x0 < min) min = x0;
+                    if (x1 > max) max = x1;
+                }
             }
+            FlushTermSegment(id, curLine, min, max, fs);
         }
 
         void FlushTermSegment(string termId, int ln, float min, float max, float fontSize)
