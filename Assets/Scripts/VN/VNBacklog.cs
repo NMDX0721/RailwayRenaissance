@@ -157,6 +157,32 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.style.paddingTop = 20;
         backlogScroll.style.paddingBottom = 20;
         backlogPanel.Add(backlogScroll);
+
+        // 滚轮实时连续滚动：拦截原生 ScrollView 的刻度滚动（TrickleDown 先于其 bubble 回调），
+        // 直接累加 scrollOffset 并立即同步 thumb（原生按格跳 + thumb 80ms 轮询 = 刻度跳变观感）。
+        // delta 量级归一：输入源可能给 ±1/±3（行）或 ±120（原始 notch），>10 视为原始值除以 120
+        backlogScroll.RegisterCallback<WheelEvent>(e =>
+        {
+            e.StopImmediatePropagation();
+            float dy = e.delta.y;
+            if (Mathf.Abs(dy) > 10f) dy /= 120f;
+            float y = Mathf.Clamp(backlogScroll.scrollOffset.y + dy * 40f, 0f, SbMaxScroll());
+            backlogScroll.scrollOffset = new Vector2(0, y);
+            UpdateCustomScrollbar();
+        }, TrickleDown.TrickleDown);
+
+        // 顶部截断高斯模糊条：盖滚动区顶部（top 在布局后同步为 header 下缘，不碰 ✕）；
+        // 后加于滚动区之上、自绘滚动条之下（BuildCustomScrollbar 再 Add → sb 元素在条之上）
+        sbBlurStrip = new VisualElement { name = "sb-blur-strip" };
+        sbBlurStrip.style.position = Position.Absolute;
+        sbBlurStrip.style.left = 0;
+        sbBlurStrip.style.right = 0;
+        sbBlurStrip.style.top = 0;
+        sbBlurStrip.style.height = 70;
+        sbBlurStrip.pickingMode = PickingMode.Ignore;   // 点击穿透：不挡跳转按钮
+        sbBlurStrip.AddToClassList("sb-blur-strip");
+        backlogPanel.Add(sbBlurStrip);
+
         BuildCustomScrollbar(); // 自绘滚动条（隐藏原生）
     }
 
@@ -164,7 +190,9 @@ public class VNBacklog : MonoBehaviour
     private VisualElement sbTrack, sbThumb, sbUp, sbDepot;   // sbDepot=底端石造机库（替下端车挡）
     private VisualElement sbClip;                            // thumb 裁剪容器（出库动画防溢出）
     private VisualElement sbRailL, sbRailR, sbLamp;          // 分镜要单独控制的部件
-    private VisualElement sbBallast, sbRoadbed, sbBeam, sbRaw; // 道砟 / 路基(含原始地面前沿帽) / 光束
+    private VisualElement sbBallast, sbRoadbed, sbBeam;       // 道砟 / 路基(粗土平整层) / 光束
+    private VisualElement sbWork;                              // 夯实加工带（sbRoadbed 子层，铺到帽线）
+    private VisualElement sbBlurStrip;                         // 顶部截断高斯模糊条
     private readonly System.Collections.Generic.List<VisualElement> _roadPiles = new(); // 路基底缘卸料堆
     private readonly System.Collections.Generic.List<VisualElement> _matTies = new();   // 散放在路基上的枕木捆
     private readonly System.Collections.Generic.List<VisualElement> _matRails = new();  // 散放在路基上的钢轨捆
@@ -175,6 +203,7 @@ public class VNBacklog : MonoBehaviour
     private float sbIdleGrab;
     private float sbIdleThumbTarget;                         // 驻留景列车停位（微拖回弹目标）
     private float sbRoadbedFinalH;                           // 路基终态高（几何分支算，分镜读，不依赖布局）
+    private float sbRawCap;                                  // 顶部粗土帽高（几何分支算 = Min(RawCapMax, 地面带*0.5)）
     private IVisualElementScheduledItem sbIdleSched;
     private IVisualElementScheduledItem sbIdleSnapSched;
     private const float IdleTrackH = 260f;                  // 驻留景轨道总长（占比均衡：完工段不再全挤在底部）
@@ -377,58 +406,62 @@ public class VNBacklog : MonoBehaviour
         sbTrack.Add(sbClip);
         sbClip.Add(sbThumb);
 
-        // 前灯光束：向上渐淡三段（clip 坐标系，位置随 thumb 顶由分镜/终态驱动）
+        // 前灯光束：四段锥 20×40（clip 坐标系，位置随 thumb 顶由分镜/终态驱动，top=thumbTop−29 底段贴灯）
         sbBeam = new VisualElement { name = "sb-beam" };
         sbBeam.style.position = Position.Absolute;
-        sbBeam.style.left = 10; sbBeam.style.width = 16;   // clip 中心=18，锥形光柱容器
-        sbBeam.style.top = -21; sbBeam.style.height = 21;
+        sbBeam.style.left = 8; sbBeam.style.width = 20;    // clip 中心=18：(36−20)/2=8
+        sbBeam.style.top = -29; sbBeam.style.height = 40;
         sbBeam.style.opacity = 0;
         sbBeam.pickingMode = PickingMode.Ignore;
-        // 光锥：近灯窄而亮、远端宽而淡（桶口朝上）
-        foreach (var band in new[] { (8f, 15f, 6f, 0.9f), (11f, 9f, 6f, 0.6f), (14f, 3f, 6f, 0.4f), (16f, 0f, 3f, 0.2f) })
+        // 四段锥 (宽,top,高,alpha)：近灯窄而亮、远端宽而淡（桶口朝上）
+        foreach (var band in new (float w, float top, float h, float a)[]
+                 { (w: 8f, top: 34f, h: 6f, a: 0.9f), (12f, 25f, 9f, 0.6f), (16f, 15f, 10f, 0.35f), (20f, 4f, 11f, 0.18f) })
         {
             var b = new VisualElement();
             b.style.position = Position.Absolute;
-            b.style.width = band.Item1; b.style.height = band.Item2;
-            b.style.left = (16f - band.Item1) / 2f;
-            b.style.top = band.Item3;
-            b.style.backgroundColor = new Color(1f, 0.95f, 0.72f, band.Item4);
+            b.style.width = band.w; b.style.height = band.h;
+            b.style.left = (20f - band.w) / 2f;
+            b.style.top = band.top;
+            b.style.backgroundColor = new Color(1f, 0.95f, 0.72f, band.a);
             b.pickingMode = PickingMode.Ignore;
             sbBeam.Add(b);
         }
         sbClip.Add(sbBeam);
 
-        // 路基＝一个连续整体：从机库口一路铺到列顶；顶部「原始地面前沿帽」是它的子层，
-        // 随生长一起上移（不再单独淡入——上一版两层各自为政导致中段割裂）
+        // 路基＝两遍工序：①sbRoadbed 粗土平整（MakeLeveledTex，从机库口长到顶）；
+        // ②sbWork 夯实加工带（MakeRoadbedTex，sbRoadbed 子层，从机库口长到帽线）。
+        // 终态=顶粗土帽 + 下夯实带（与五段梯度语义一致）
         sbRoadbed = new VisualElement { name = "sb-roadbed" };
         sbRoadbed.style.position = Position.Absolute;
         sbRoadbed.style.width = 32;
-        sbRoadbed.style.right = 2;
+        sbRoadbed.style.right = 6;                            // 与轨道右缘14对中（中心22=14+8）
         sbRoadbed.style.top = 0; sbRoadbed.style.height = 0;   // 几何/分镜驱动（终态只在播放完后由几何设）
-        sbRoadbed.style.backgroundImage = new StyleBackground(MakeRoadbedTex());
+        sbRoadbed.style.backgroundImage = new StyleBackground(MakeLeveledTex());
         sbRoadbed.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(32));
         sbRoadbed.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
         sbRoadbed.style.overflow = Overflow.Hidden;
         sbRoadbed.pickingMode = PickingMode.Ignore;
         sbRoadbed.style.display = DisplayStyle.None;           // 仅驻留景显示
 
-        sbRaw = new VisualElement { name = "sb-raw" };         // 前沿帽：路基顶上的未动土
-        sbRaw.style.position = Position.Absolute;
-        sbRaw.style.top = 0; sbRaw.style.left = 0; sbRaw.style.right = 0;
-        sbRaw.style.height = 120;                              // 由几何按实际地面带再校
-        sbRaw.style.backgroundImage = new StyleBackground(MakeRawGroundTex());
-        sbRaw.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(32));
-        sbRaw.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
-        sbRaw.pickingMode = PickingMode.Ignore;
-        sbRoadbed.Add(sbRaw);
+        // 夯实加工带：底缘锚定 sbRoadbed 底（=机库口），height 由分镜/终态驱动到帽线
+        sbWork = new VisualElement { name = "sb-work" };
+        sbWork.style.position = Position.Absolute;
+        sbWork.style.left = 0; sbWork.style.right = 0;
+        sbWork.style.bottom = 0; sbWork.style.height = 0;
+        sbWork.style.backgroundImage = new StyleBackground(MakeRoadbedTex());
+        sbWork.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(32));
+        sbWork.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
+        sbWork.style.overflow = Overflow.Hidden;
+        sbWork.pickingMode = PickingMode.Ignore;
+        sbRoadbed.Add(sbWork);
 
-        // 施工标杆：底缘锚定（贴施工前沿，=轨道顶之上），固定像素
+        // 施工标杆：移植到 sbWork，底缘锚定（贴施工前沿，=轨道顶之上），固定像素
         foreach (var stake in new[] { (7f, 6f), (21f, 34f) })
         {
             var box = new VisualElement();
             box.style.position = Position.Absolute;
             box.style.left = stake.Item1;
-            box.style.bottom = (IdleTrackH + 4f) + stake.Item2;
+            box.style.bottom = IdleTrackH + stake.Item2;       // gap 4→0：去 +4f，轨顶直贴门面
             box.style.width = 8; box.style.height = 17;
             box.pickingMode = PickingMode.Ignore;
             var pole = new VisualElement();
@@ -443,7 +476,7 @@ public class VNBacklog : MonoBehaviour
             flag.pickingMode = PickingMode.Ignore;
             box.Add(pole);
             box.Add(flag);
-            sbRoadbed.Add(box);
+            sbWork.Add(box);
         }
 
         backlogPanel.Add(sbRoadbed);
@@ -481,17 +514,31 @@ public class VNBacklog : MonoBehaviour
             sbTrack.Add(m);
             _matTies.Add(m);
         }
-        // 钢轨捆：两根细长亮色轨条，躺在更远的路基上
+        // 钢轨捆：两根细长轨条（亮/暗两色可辨），躺在更远的路基上；
+        // 每 10px 一根 3px 鱼尾板暗横纹（轨缝接头），读作「成捆钢轨」而非光条
         for (int i = 0; i < 2; i++)
         {
             var m = new VisualElement();
             m.style.position = Position.Absolute;
-            m.style.left = -7; m.style.right = -7;
+            m.style.left = -12; m.style.right = -12;           // 拉到 -12：捆更长更像料
             m.style.height = 2;
             m.style.top = -60 + i * 4;
-            m.style.backgroundColor = new Color(0.82f, 0.80f, 0.74f, 1f);
+            m.style.backgroundColor = i == 0
+                ? new Color(0.88f, 0.86f, 0.80f, 1f)           // 亮轨条
+                : new Color(0.58f, 0.56f, 0.52f, 1f);          // 暗轨条
             m.pickingMode = PickingMode.Ignore;
             m.style.opacity = 0;
+            // 鱼尾板暗横纹：3px 宽、每 10px 一道（捆宽40，纹限制在捆内）
+            for (int x = 3; x < 37; x += 10)
+            {
+                var j = new VisualElement();
+                j.style.position = Position.Absolute;
+                j.style.left = x; j.style.width = 3;
+                j.style.top = 0; j.style.height = 2;
+                j.style.backgroundColor = new Color(0.30f, 0.28f, 0.26f, 1f);
+                j.pickingMode = PickingMode.Ignore;
+                m.Add(j);
+            }
             sbTrack.Add(m);
             _matRails.Add(m);
         }
@@ -517,6 +564,7 @@ public class VNBacklog : MonoBehaviour
                 float y0 = e.localPosition.y;
                 if (y0 >= ty - 6f && y0 <= ty + IdleThumbH + 6f)
                 {
+                    sbIdleSnapSched?.Pause();   // 防双弹簧：先杀回弹再开新拖（否则两个 schedule 抢 thumb）
                     sbIdleDragging = true;
                     sbIdleGrab = y0 - ty;
                     sbTrack.CapturePointer(e.pointerId);
@@ -540,10 +588,14 @@ public class VNBacklog : MonoBehaviour
         {
             if (sbIdleDragging)
             {
-                // 微拖：上 −12 / 下 +52（可明显退进车库），松手回弹
-                float top = Mathf.Clamp(e.localPosition.y - sbIdleGrab, sbIdleThumbTarget - 12f, sbIdleThumbTarget + 52f);
+                // 微拖：上 −20 / 下 +64（可完全没入车库）；超界不硬截——橡皮筋 0.35 系数缓冲
+                float raw = e.localPosition.y - sbIdleGrab;
+                float lo = sbIdleThumbTarget - 20f, hi = sbIdleThumbTarget + 64f;
+                float top = raw < lo ? lo + (raw - lo) * 0.35f
+                          : raw > hi ? hi + (raw - hi) * 0.35f
+                          : raw;
                 sbThumb.style.top = top;
-                if (sbBeam != null) sbBeam.style.top = top - 7f;
+                if (sbBeam != null) sbBeam.style.top = top - 29f;
                 return;
             }
             if (!sbDragging) return;
@@ -553,17 +605,17 @@ public class VNBacklog : MonoBehaviour
         {
             if (sbIdleDragging)
             {
-                // 回弹到停位（0.25s），期间保持 sbIdleDragging 挡住终态覆写
+                // 回弹到停位（0.35s ease），期间保持 sbIdleDragging 挡住终态覆写
                 float from = sbThumb.style.top.value.value;
                 float to = sbIdleThumbTarget;
                 float t0s = Time.unscaledTime;
                 sbIdleSnapSched?.Pause();
                 sbIdleSnapSched = backlogPanel.schedule.Execute(() =>
                 {
-                    float t = Mathf.Clamp01((Time.unscaledTime - t0s) / 0.25f);
+                    float t = Mathf.Clamp01((Time.unscaledTime - t0s) / 0.35f);
                     float top = Mathf.Lerp(from, to, 1f - Mathf.Pow(1f - t, 3f));
                     sbThumb.style.top = top;
-                    if (sbBeam != null) sbBeam.style.top = top - 7f;
+                    if (sbBeam != null) sbBeam.style.top = top - 29f;
                     if (t >= 1f)
                     {
                         sbIdleDragging = false;
@@ -593,9 +645,8 @@ public class VNBacklog : MonoBehaviour
 
         var steelRed = new Color(0.78f, 0.25f, 0.17f, 1f);
         var steelWhite = new Color(0.95f, 0.93f, 0.88f, 1f);
-        var steelPost = new Color(0.30f, 0.30f, 0.33f, 1f);   // 深色立柱：在道砟上也读得出
-        var steelEdge = new Color(0.50f, 0.48f, 0.45f, 1f);    // 座顶亮边
-        var steelDark = new Color(0.20f, 0.19f, 0.18f, 1f);    // 底座
+        var steelPost = new Color(0.55f, 0.55f, 0.57f, 1f);   // 亮灰立柱：梁与座之间立得住
+        var steelBase = new Color(0.36f, 0.34f, 0.32f, 1f);   // 暖灰整体底座（与梁直接相接）
 
         void Part(float top, float h, Color c, float left, float right)
         {
@@ -610,10 +661,9 @@ public class VNBacklog : MonoBehaviour
 
         Part(1, 4, steelRed, 0, 0);                 // 缓冲梁（红）
         Part(1, 4, steelWhite, 6, 6);               // 梁中央白条
-        Part(5, 8, steelPost, 1, 12);               // 左柱（3px，压住左轨）
-        Part(5, 8, steelPost, 12, 1);               // 右柱（3px，压住右轨）
-        Part(13, 1, steelEdge, 0, 0);               // 座顶亮边（结构分层）
-        Part(14, 5, steelDark, 0, 0);               // 轨上底座（加高，不被道砟吃掉）
+        Part(5, 7, steelPost, 1, 12);               // 左柱（亮灰 3px，立在梁与座之间）
+        Part(5, 7, steelPost, 12, 1);               // 右柱（亮灰 3px）
+        Part(12, 7, steelBase, 0, 0);               // 整体底座（暖灰，直接接梁柱，无悬空亮线）
 
         b.RegisterCallback<PointerDownEvent>(e =>
         {
@@ -782,44 +832,54 @@ public class VNBacklog : MonoBehaviour
         float sy = backlogScroll.layout.y;
         float sh = backlogScroll.layout.height;
         if (sh <= 0f) return;
+        // 模糊条贴滚动区顶缘（header 下缘）：只盖滚动区顶部，不碰 ✕/标题
+        if (sbBlurStrip != null && sbBlurStrip.style.top.value.value != sy)
+            sbBlurStrip.style.top = sy;
+        // 内容布局未测前不判态（根治「短列车动画中途变长列车」：首拍 view=0 被误判 overflow→
+        // StartDepart 比例长度→下一拍跳 idle）。有条目但高度还没测出来 → 本拍直接不下结论。
+        if (entries.Count > 0 && ContentHeight() <= 1f) return;
 
         float maxScroll = SbMaxScroll();
         bool overflowing = maxScroll > 1f;
 
         if (overflowing)
         {
-            // 正常滚动条几何：车挡(sy..sy+20) 轨道(sy+22..sh-60) 机库(sh-DepotH..sh)
+            // 正常滚动条几何：车挡(sy..sy+20) 轨道(sy+22..) 机库(sh-DepotH..sh)；gap 4→0 轨底贴门面
             sbUp.style.top = sy;
             sbTrack.style.top = sy + 22;
-            float trkH = Mathf.Max(40f, sh - 22f - (4f + DepotH));
+            float trkH = Mathf.Max(40f, sh - 22f - DepotH);
             sbTrack.style.height = trkH;
-            if (sbClip != null) sbClip.style.height = trkH + 4f + DepotH;   // 轨道+间隙4+机库高：出库起点在此底缘
+            if (sbClip != null) sbClip.style.height = trkH + DepotH;   // 轨道+机库高：出库起点在此底缘
             sbDepot.style.top = sy + sh - DepotH;
-            // 整列往左移防裁切（道砟右缘留2px余量）；机库宽36 居中于轨道(16) → right = 10-10 = 0
-            sbUp.style.right = 10; sbTrack.style.right = 10; sbDepot.style.right = 0;
+            // 靠右防裁切（right 10→14）；机库宽36 居中于轨道(16) → right = 14-(36-16)/2 = 4
+            sbUp.style.right = 14; sbTrack.style.right = 14; sbDepot.style.right = 4;
+            // 溢出态道砟收到 -6：不爬上顶端车挡区（idle 态保持 -22）
+            if (sbBallast != null) sbBallast.style.top = -6f;
             if (sbRoadbed != null) sbRoadbed.style.display = DisplayStyle.None;
         }
         else
         {
-            // 驻留景几何：地面带(原始帽+夯实施工) → 轨道260(道砟段/枕木带/完备段) → 间隙4 → 机库56
+            // 驻留景几何：地面带(粗土帽+夯实带) → 轨道260 → 机库56（gap 4→0 直贴门面）
             sbDepot.style.top = sy + sh - DepotH;
-            float trackTop = sy + sh - 4f - DepotH - IdleTrackH;
+            float trackTop = sy + sh - DepotH - IdleTrackH;
             sbTrack.style.top = trackTop;
             sbTrack.style.height = IdleTrackH;
-            if (sbClip != null) sbClip.style.height = IdleTrackH + 4f + DepotH;
-            sbTrack.style.right = 10; sbDepot.style.right = 0;
-            // 路基终态高（分镜读这个，不依赖布局）；前沿帽高度=地面带的一半、封顶140
+            if (sbClip != null) sbClip.style.height = IdleTrackH + DepotH;
+            sbTrack.style.right = 14; sbDepot.style.right = 4;
+            // 路基终态高（分镜读这个，不依赖布局）；粗土帽=地面带的一半、封顶140
             sbRoadbedFinalH = Mathf.Max(0f, sh - DepotH);
             if (sbRoadbed != null)
             {
-                float groundVis = Mathf.Max(0f, sbRoadbedFinalH - (IdleTrackH + 4f));
-                if (sbRaw != null) sbRaw.style.height = Mathf.Min(RawCapMax, groundVis * 0.5f);
+                float groundVis = Mathf.Max(0f, sbRoadbedFinalH - IdleTrackH);   // gap 去 4 → 公式同步
+                sbRawCap = Mathf.Min(RawCapMax, groundVis * 0.5f);
                 // 终态才显示完整路基；预备/动画态由分镜姿态驱动（根除“开场就铺好”的闪帧）
                 if (sbIdleAnimDone && !sbIdlePlaying)
                 {
                     sbRoadbed.style.display = DisplayStyle.Flex;
                     sbRoadbed.style.top = sy;
                     sbRoadbed.style.height = sbRoadbedFinalH;
+                    // 夯实带终态：从机库口长到帽线
+                    if (sbWork != null) sbWork.style.height = Mathf.Max(0f, sbRoadbedFinalH - sbRawCap);
                 }
             }
         }
@@ -866,12 +926,13 @@ public class VNBacklog : MonoBehaviour
         sbThumb.style.top = ratio * Mathf.Max(0f, trackH - thumbH);
     }
 
-    /// <summary>驻留景分镜（每次打开完整重播）——按真实有砟轨道工序，放慢加细节（总长约8.4s）：
-    /// ①机库落位0–0.7 ②路基自机库口贯穿到顶0.6–2.4（前沿帽随行，一体不割裂）
-    /// ③卸料2.3–3.4（砟堆/枕木捆/钢轨捆沿线散布出现）④铺道砟3.3–4.6
-    /// ⑤铺枕木4.5–5.9（自车库口逐根，枕木捆随用随减）⑥上钢轨5.8–6.5（钢轨捆随用消失）
-    /// ⑦起道捣固6.4–7.0（枕木逐根微沉波）⑧出库6.9–7.7 ⑨前灯脉冲+光束7.7–8.4。
-    /// 终态=施工梯度：原始帽→夯实施工带→无枕道砟→枕木带→完备段+列车（越上越原始）。</summary>
+    /// <summary>驻留景分镜（每次打开完整重播）——按真实有砟轨道工序，两遍路基+分拍卸料（总长约9.5s）：
+    /// ①机库落位0–0.7 ②a粗土平整自机库口贯穿到顶0.6–1.7 ②b夯实加工推进到帽线1.6–2.6
+    /// ③分拍卸料：砟堆2.8/枕木捆3.4/钢轨捆4.0（各0.4s独立弹出）④铺道砟4.2–5.5
+    /// ⑤铺枕木5.4–8.0（stagger 2.2s 逐根，单根fade 0.2，捆随用随减）⑥上钢轨7.5–8.2（钢轨捆消失）
+    /// ⑦起道捣固7.9–8.3（枕木±4px微沉波+钢轨±1px同步震，窗口0.4s）⑧出库8.1–8.9（thumb 此刻才现身）
+    /// ⑨前灯脉冲+光束8.9–9.5。
+    /// 终态=施工梯度：粗土帽→夯实施工带→无枕道砟→枕木带→完备段+列车（越上越原始）。</summary>
     private void StartIdleSequence(float trackH)
     {
         if (sbIdlePlaying) return;
@@ -879,7 +940,7 @@ public class VNBacklog : MonoBehaviour
         sbIdlePlaying = true;
         sbIdleApplied = true;
 
-        // 路基：收拢到机库口（动画自机库口向上贯穿到顶）；终态高来自几何分支字段
+        // 路基：收拢到机库口（平整层自机库口向上贯穿；夯实带为其子层随后推进）；终态高来自几何分支字段
         float roadFinalH = sbRoadbedFinalH;
         float roadBottom = sbDepot.style.top.value.value;
         if (sbRoadbed != null)
@@ -888,8 +949,9 @@ public class VNBacklog : MonoBehaviour
             sbRoadbed.style.top = roadBottom;
             sbRoadbed.style.height = 0f;
         }
+        if (sbWork != null) sbWork.style.height = 0f;
 
-        // 预备态：道砟零高贴轨底、枕木/钢轨/卸料/材料全隐、thumb 藏库后、机库透明、光束灭
+        // 预备态：道砟零高贴轨底、枕木/钢轨/卸料/材料全隐、thumb 藏库后(不透明度0)、机库透明、光束灭
         EnsureSleepers(trackH, SleeperBandY);
         foreach (var t in _sleepers) { t.style.opacity = 0; t.style.translate = new Translate(0, 0); }
         if (sbBallast != null)
@@ -902,6 +964,7 @@ public class VNBacklog : MonoBehaviour
             rail.style.opacity = 0;
             rail.style.top = trackH;
             rail.style.height = 0f;
+            rail.style.translate = new Translate(0, 0);
         }
         foreach (var p in _roadPiles) p.style.opacity = 0;
         foreach (var m in _matTies) m.style.opacity = 0;
@@ -909,10 +972,11 @@ public class VNBacklog : MonoBehaviour
         sbDepot.style.opacity = 0;
         sbThumb.style.height = IdleThumbH;
         sbThumb.style.top = trackH;
+        sbThumb.style.opacity = 0;                   // A5：预备/姿态中列车不现身，出库瞬间=1
         if (sbBeam != null)
         {
             sbBeam.style.opacity = 0;
-            sbBeam.style.top = trackH - 7f;
+            sbBeam.style.top = trackH - 29f;         // A11：底段贴灯（thumbTop−29）
         }
         _smokeAcc = 0f;
 
@@ -924,78 +988,86 @@ public class VNBacklog : MonoBehaviour
         {
             float e = Time.unscaledTime - t0;
             float EaseOut3(float x) => 1f - Mathf.Pow(1f - x, 3f);
-            float Pop(float start, float dur = 0.3f) => Mathf.Clamp01((e - start) / dur);
+            float Pop(float start, float dur = 0.4f) => Mathf.Clamp01((e - start) / dur);
 
             // ① 机库落位 0–0.7s
             float p1 = EaseOut3(Mathf.Clamp01(e / 0.7f));
             sbDepot.style.opacity = p1;
             sbDepot.style.translate = new Translate(0, 4f * (1f - p1));
 
-            // ② 路基自机库口贯穿到顶 0.6–2.4s（一个整体，前沿帽随行）
-            float grow = roadFinalH * EaseOut3(Mathf.Clamp01((e - 0.6f) / 1.8f));
+            // ②a 粗土平整自机库口贯穿到顶 0.6–1.7s（sbRoadbed=MakeLeveledTex 粗土）
+            float grow = roadFinalH * EaseOut3(Mathf.Clamp01((e - 0.6f) / 1.1f));
             if (sbRoadbed != null)
             {
                 sbRoadbed.style.top = roadBottom - grow;
                 sbRoadbed.style.height = grow;
             }
+            // ②b 夯实加工推进到帽线 1.6–2.6s（sbWork=MakeRoadbedTex 夯实带，底锚机库口，终点帽线）
+            if (sbWork != null)
+            {
+                float workFinal = Mathf.Max(0f, roadFinalH - sbRawCap);
+                sbWork.style.height = workFinal * EaseOut3(Mathf.Clamp01((e - 1.6f) / 1.0f));
+            }
 
-            // ③ 卸料 2.3–3.4s：枕木捆/钢轨捆沿线散布出现（工序：材料先到路基两侧）
+            // ③ 分拍卸料（A3 独立节拍 0.4s Pop）：砟堆2.8 / 枕木捆3.4 / 钢轨捆4.0
+            foreach (var p in _roadPiles) p.style.opacity = Pop(2.8f);
             for (int i = 0; i < _matTies.Count; i++)
-                _matTies[i].style.opacity = Mathf.Clamp01((e - (2.3f + i * 0.15f)) / 0.3f);
+                _matTies[i].style.opacity = Pop(3.4f);
             for (int i = 0; i < _matRails.Count; i++)
-                _matRails[i].style.opacity = Mathf.Clamp01((e - (2.8f + i * 0.2f)) / 0.3f);
+                _matRails[i].style.opacity = Pop(4.0f);
 
-            // ④ 铺道砟 3.3–4.6s：top 从轨道底升到-22（bottom=-22 固定）＝自下向上展开
+            // ④ 铺道砟 4.2–5.5s：top 从轨道底升到-22（bottom=-22 固定）＝自下向上展开
             if (sbBallast != null)
-                sbBallast.style.top = Mathf.Lerp(IdleTrackH + 22f, -22f, EaseOut3(Mathf.Clamp01((e - 3.3f) / 1.3f)));
-            foreach (var p in _roadPiles) p.style.opacity = Pop(3.4f);
+                sbBallast.style.top = Mathf.Lerp(IdleTrackH + 22f, -22f, EaseOut3(Mathf.Clamp01((e - 4.2f) / 1.3f)));
 
-            // ⑤ 铺枕木 4.5–5.9s：自车库口逐根向上；枕木捆随用随减
+            // ⑤ 铺枕木 5.4–8.0s：stagger 2.2s 逐根（单根 fade 0.2s）；枕木捆随用随减
             int n = _sleepers.Count;
-            float stag = n > 1 ? 1.4f / n : 1.4f;
+            float stag = n > 1 ? 2.2f / n : 2.2f;
             for (int i = 0; i < n; i++)
             {
-                float st = 4.5f + (n - 1 - i) * stag;
-                _sleepers[i].style.opacity = Mathf.Clamp01((e - st) / 0.14f);
+                float st = 5.4f + (n - 1 - i) * stag;
+                _sleepers[i].style.opacity = Mathf.Clamp01((e - st) / 0.2f);
             }
-            float tieFade = 1f - Mathf.Clamp01((e - 4.5f) / 1.0f);
+            float tieFade = 1f - Mathf.Clamp01((e - 5.4f) / 2.4f);
             for (int i = 0; i < _matTies.Count; i++)
-            {
-                float pop = Mathf.Clamp01((e - (2.3f + i * 0.15f)) / 0.3f);
-                _matTies[i].style.opacity = Mathf.Min(pop, tieFade);   // 出现后随铺设消耗
-            }
+                _matTies[i].style.opacity = Mathf.Min(Pop(3.4f), tieFade);   // 出现后随铺设消耗
 
-            // ⑥ 上钢轨 5.8–6.5s：只长完备段，自下向上；钢轨捆消失
-            float rp = Mathf.Clamp01((e - 5.8f) / 0.08f);
-            float growRail = EaseOut3(Mathf.Clamp01((e - 5.8f) / 0.7f)) * FinishedH;
+            // ⑥ 上钢轨 7.5–8.2s：只长完备段，自下向上；钢轨捆消失
+            float rp = Mathf.Clamp01((e - 7.5f) / 0.08f);
+            float growRail = EaseOut3(Mathf.Clamp01((e - 7.5f) / 0.7f)) * FinishedH;
             foreach (var rail in new[] { sbRailL, sbRailR })
             {
                 rail.style.opacity = rp;
                 rail.style.top = trackH - growRail;
                 rail.style.height = growRail;
             }
-            float railFade = 1f - Mathf.Clamp01((e - 5.8f) / 0.6f);
+            float railFade = 1f - Mathf.Clamp01((e - 7.5f) / 0.6f);
             for (int i = 0; i < _matRails.Count; i++)
-            {
-                float pop = Mathf.Clamp01((e - (2.8f + i * 0.2f)) / 0.3f);
-                _matRails[i].style.opacity = Mathf.Min(pop, railFade);
-            }
+                _matRails[i].style.opacity = Mathf.Min(Pop(4.0f), railFade);
 
-            // ⑦ 起道捣固 6.4–7.0s：枕木逐根微沉波（工序：捣固机沿线路走）
-            if (e > 6.4f)
+            // ⑦ 起道捣固 7.9–8.3s（窗口0.4s）：枕木±4px微沉波 + 钢轨±1px同步震（捣固机沿线路走）
+            if (e > 7.9f)
             {
                 for (int i = 0; i < n; i++)
                 {
-                    float p = Mathf.Clamp01((e - (6.4f + (n - 1 - i) * 0.035f)) / 0.28f);
-                    float ty = p >= 1f ? 0f : (1f - p) * 2f * Mathf.Sin(p * 10f * Mathf.PI);
+                    float p = Mathf.Clamp01((e - (7.9f + (n - 1 - i) * 0.02f)) / 0.2f);
+                    float ty = p >= 1f ? 0f : (1f - p) * 4f * Mathf.Sin(p * 10f * Mathf.PI);
                     _sleepers[i].style.translate = new Translate(0, ty);
                 }
+                if (e < 8.3f)
+                {
+                    float rs = Mathf.Sin((e - 7.9f) * 40f) * (1f - (e - 7.9f) / 0.4f);
+                    foreach (var rail in new[] { sbRailL, sbRailR })
+                        rail.style.translate = new Translate(rs, 0);   // 钢轨同步微震 ±1px
+                }
+                else foreach (var rail in new[] { sbRailL, sbRailR }) rail.style.translate = new Translate(0, 0);
             }
 
-            // ⑧ 出库上轨 6.9–7.7s：back-out 回弹
-            if (e > 6.9f)
+            // ⑧ 出库上轨 8.1–8.9s：back-out 回弹；开始瞬间 thumb 现身（A5）
+            if (e > 8.1f)
             {
-                float p = Mathf.Clamp01((e - 6.9f) / 0.8f);
+                sbThumb.style.opacity = 1;
+                float p = Mathf.Clamp01((e - 8.1f) / 0.8f);
                 float c1 = 1.2f;
                 float pm = p - 1f;
                 float be = 1f + (c1 + 1f) * pm * pm * pm + c1 * pm * pm;
@@ -1003,21 +1075,21 @@ public class VNBacklog : MonoBehaviour
                 if (p >= 1f && puffed == 0) { puffed = 1; SpawnExhaustPuff(); }
             }
 
-            // ⑨ 前灯脉冲 + 光束 7.7–8.4s（灯亮=光束出）
-            if (e > 7.7f && e < 8.4f && sbLamp != null)
+            // ⑨ 前灯脉冲 + 光束 8.9–9.5s（灯亮=光束出，脉冲到 1）
+            if (e > 8.9f && e < 9.5f && sbLamp != null)
             {
-                float lp = ((e - 7.7f) % 0.22f) / 0.22f;
+                float lp = ((e - 8.9f) % 0.22f) / 0.22f;
                 bool on = lp < 0.5f;
                 sbLamp.style.backgroundColor = on ? new Color(1f, 0.98f, 0.8f, 1f) : lampBase;
                 if (sbBeam != null)
                 {
-                    sbBeam.style.top = (trackH - IdleThumbH) - 7f;
+                    sbBeam.style.top = (trackH - IdleThumbH) - 29f;
                     sbBeam.style.opacity = on ? 1f : 0.2f;
                 }
             }
 
             // 终态
-            if (e >= 8.4f)
+            if (e >= 9.5f)
             {
                 if (sbLamp != null) sbLamp.style.backgroundColor = lampBase;
                 sbIdleAnimDone = true;
@@ -1047,18 +1119,22 @@ public class VNBacklog : MonoBehaviour
             rail.style.opacity = 1f;
             rail.style.top = trackH - FinishedH;    // 只覆盖完备段
             rail.style.height = StyleKeyword.Auto;  // top..bottom0 拉伸
+            rail.style.translate = new Translate(0, 0);   // 清捣固微震残留
         }
         foreach (var p in _roadPiles) p.style.opacity = 1f;
         foreach (var t in _sleepers) t.style.translate = new Translate(0, 0);
         foreach (var m in _matTies) m.style.opacity = 0;      // 材料已用尽
         foreach (var m in _matRails) m.style.opacity = 0;
         sbThumb.style.height = IdleThumbH;
+        sbThumb.style.opacity = 1f;                    // 终态列车可见
         if (!sbIdleDragging) sbThumb.style.top = sbIdleThumbTarget;
         if (sbBeam != null)
         {
-            sbBeam.style.top = sbIdleThumbTarget - 7f;
-            sbBeam.style.opacity = 0.85f;           // 常亮光柱：明显可辨
+            sbBeam.style.top = sbIdleThumbTarget - 29f;   // A11：底段贴灯
+            sbBeam.style.opacity = 0.9f;                  // 常亮光柱：明显可辨
         }
+        // 夯实带终态：从机库口长到帽线
+        if (sbWork != null) sbWork.style.height = Mathf.Max(0f, sbRoadbedFinalH - sbRawCap);
     }
 
     /// <summary>驻留景 → 正常滚动条：还原交互、透明度、灯色、钢轨拉伸、道砟位置与路基/原始地面隐藏。</summary>
@@ -1075,18 +1151,20 @@ public class VNBacklog : MonoBehaviour
         if (sbBallast != null)
         {
             sbBallast.style.opacity = 1f;
-            sbBallast.style.top = -22f;             // 恢复全高（含上下延伸）
+            sbBallast.style.top = -6f;              // 溢出态收距：道砟不爬上顶端车挡区（idle 态 -22）
         }
         foreach (var rail in new[] { sbRailL, sbRailR })
         {
             rail.style.opacity = 1f;
             rail.style.top = 0;
             rail.style.height = StyleKeyword.Auto;   // 恢复 top0/bottom0 拉伸
+            rail.style.translate = new Translate(0, 0);   // 清捣固微震残留
         }
         foreach (var p in _roadPiles) p.style.opacity = 0;   // 卸料堆只属于施工场景
         foreach (var m in _matTies) m.style.opacity = 0;
         foreach (var m in _matRails) m.style.opacity = 0;
-        if (sbRoadbed != null) sbRoadbed.style.display = DisplayStyle.None;   // 原始帽是其子层，随隐藏
+        sbThumb.style.opacity = 1f;                    // 溢出态列车恢复可见
+        if (sbRoadbed != null) sbRoadbed.style.display = DisplayStyle.None;   // 夯实带/标杆是其子层，随隐藏
         if (sbBeam != null) sbBeam.style.opacity = 0f;
         if (sbLamp != null) sbLamp.style.backgroundColor = new Color(1f, 0.93f, 0.68f, 1f);
     }
@@ -1156,9 +1234,9 @@ public class VNBacklog : MonoBehaviour
 
 
 
-    /// <summary>道砟纹理 64×128（以 32×64 游戏像素显示 = 2×线密度）：逐纹素多色细噪——
-    /// 每个纹素直接是石色（8 色加权），约 1/9 加深为石缝点，2×2 局部 70% 同色成微团；
-    /// 显示粒径 ≈0.5–0.7 游戏像素（约为上一版 1/5）。边缘阶梯挖空破直线。</summary>
+    /// <summary>道砟纹理 64×128（以 32×64 游戏像素显示 = 2×线密度，1纹素=0.5游戏像素）：
+    /// 2×2 微团全部实心同色（粒径 1 游戏像素，较上一版粗一倍）；相邻 2×2 以约 25% 概率
+    /// 并成 4×4 同色（2 游戏像素大石点缀）。边缘左右各 3 纹素 70% 挖空，豁口利落少半透明。</summary>
     private static Texture2D MakeBallastTex()
     {
         const int s = 64, H = 128;
@@ -1187,36 +1265,35 @@ public class VNBacklog : MonoBehaviour
         uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
         Color32 Pick() => palette[weight[Next() % (uint)weight.Length]];
 
-        // 2×2 微团（70%）：团内同色、团间各异 → 粒径贴在纹素级
-        for (int cy = 0; cy < H; cy += 2)
+        // 4×4 超块扫描：25% 整块并成同色大石；否则 4 个 2×2 各自实心同色微团
+        for (int by = 0; by < H; by += 4)
         {
-            for (int cx = 0; cx < s; cx += 2)
+            for (int bx = 0; bx < s; bx += 4)
             {
-                Color32 cell = Pick();
-                bool solid = Next() % 10 < 7;
-                for (int dy = 0; dy < 2; dy++)
+                bool merged = Next() % 100 < 25;
+                Color32 big = Pick();
+                for (int cy = 0; cy < 4; cy += 2)
                 {
-                    for (int dx = 0; dx < 2; dx++)
+                    for (int cx = 0; cx < 4; cx += 2)
                     {
-                        Color32 c = solid ? cell : Pick();
-                        if (Next() % 9 == 0)   // 石缝点
-                            c = new Color32((byte)(c.r * 3 / 5), (byte)(c.g * 3 / 5), (byte)(c.b * 3 / 5), 255);
-                        tex.SetPixel((cx + dx) % s, (cy + dy) % H, c);
+                        Color32 cell = merged ? big : Pick();
+                        for (int dy = 0; dy < 2; dy++)
+                            for (int dx = 0; dx < 2; dx++)
+                                tex.SetPixel((bx + cx + dx) % s, (by + cy + dy) % H, cell);
                     }
                 }
             }
         }
 
-        // 边缘豁口：左右各 6 纹素（≈1 游戏像素）阶梯挖空，破刀切直线
+        // 边缘豁口：左右各 3 纹素 70% 挖空（利落），少数半透明收边
         for (int y = 0; y < H; y++)
         {
-            for (int x = 0; x < 6; x++)
+            for (int x = 0; x < 3; x++)
             {
-                int p = x < 3 ? 60 : 30;
-                if (Next() % 100 < p) SetAlpha(tex, x, y, 0);
-                else if (Next() % 3 == 0) SetAlpha(tex, x, y, 130);
-                if (Next() % 100 < p) SetAlpha(tex, s - 1 - x, y, 0);
-                else if (Next() % 3 == 0) SetAlpha(tex, s - 1 - x, y, 130);
+                if (Next() % 100 < 70) SetAlpha(tex, x, y, 0);
+                else if (Next() % 10 == 0) SetAlpha(tex, x, y, 140);
+                if (Next() % 100 < 70) SetAlpha(tex, s - 1 - x, y, 0);
+                else if (Next() % 10 == 0) SetAlpha(tex, s - 1 - x, y, 140);
             }
         }
         tex.Apply();
@@ -1280,8 +1357,9 @@ public class VNBacklog : MonoBehaviour
         return tex;
     }
 
-    /// <summary>原始地面纹理 32×32：未动土（深浅土块 + 稀疏草茎）——施工梯度最顶层的「原始」。</summary>
-    private static Texture2D MakeRawGroundTex()
+    /// <summary>粗土平整纹理 32×32（第一遍工序）：暖棕土 + 细粒——无灰线、无压实纹、无草，
+    /// 读作「推土机刚平整过的松土面」，与下方夯实带（MakeRoadbedTex 有纹有线）形成工序对比。</summary>
+    private static Texture2D MakeLeveledTex()
     {
         const int s = 32, H = 32;
         var tex = new Texture2D(s, H, TextureFormat.RGBA32, false)
@@ -1289,28 +1367,21 @@ public class VNBacklog : MonoBehaviour
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Repeat,
         };
-        uint seed = 31337u;
+        uint seed = 5150u;
         uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
         for (int y = 0; y < H; y++)
         {
             for (int x = 0; x < s; x++)
             {
                 int m = (int)(Next() % 10);
-                Color32 c = m == 0 ? new Color32(58, 50, 38, 255)
-                         : m == 1 ? new Color32(84, 74, 56, 255)
-                                  : new Color32(72, 64, 48, 255);   // 未动土底
+                // 暖棕底 + 细粒明暗（比夯实带更亮更松、色相偏暖）
+                Color32 c = m == 0 ? new Color32(146, 114, 78, 255)    // 亮松土粒
+                         : m == 1 ? new Color32(104, 78, 52, 255)      // 暗土粒
+                                  : new Color32(126, 96, 64, 255);     // 粗土底
                 tex.SetPixel(x, y, c);
             }
         }
-        // 稀疏草茎（顶部起 3–5px 的橄榄绿竖点）
-        for (int i = 0; i < 10; i++)
-        {
-            int gx = (int)(Next() % s);
-            int gh = 3 + (int)(Next() % 3);
-            for (int y = 0; y < gh; y++)
-                tex.SetPixel(gx, (y + (int)(Next() % 4)) % H, new Color32(84, 96, 54, 255));
-        }
-        // 边缘豁口
+        // 边缘豁口（破直线索引，与其余路基纹理一致）
         for (int y = 0; y < H; y++)
         {
             for (int x = 0; x < 2; x++)
@@ -1572,6 +1643,49 @@ public class VNBacklog : MonoBehaviour
         ToggleBacklog();
     }
 
+    /// <summary>打开瞬间的分镜预备姿态（A1 零闪帧）：全部用常量、不依赖布局——
+    /// 打开当帧同步执行，杜绝「先闪完整终态再播动画」。sbIdleApplied=true 使溢出态下
+    /// UpdateCustomScrollbar 的 if(sbIdleApplied) ExitIdleVisuals() 自动还原为正常滚动条。</summary>
+    private void ApplyIdleStartPose()
+    {
+        sbIdleSched?.Pause();
+        sbIdleSnapSched?.Pause();
+        sbIdleAnimDone = false;
+        sbIdlePlaying = false;
+        sbIdleDragging = false;
+        sbIdleApplied = true;               // 溢出态时由 ExitIdleVisuals 还原；驻留景时分镜从此姿态开演
+
+        if (sbThumb != null)
+        {
+            sbThumb.style.height = IdleThumbH;
+            sbThumb.style.top = IdleTrackH;
+            sbThumb.style.opacity = 0;       // A5：预备/姿态中列车不现身
+        }
+        if (sbDepot != null) sbDepot.style.opacity = 0;
+        if (sbBallast != null)
+        {
+            sbBallast.style.top = IdleTrackH + 22f;
+            sbBallast.style.opacity = 1;
+        }
+        foreach (var t in _sleepers) { t.style.opacity = 0; t.style.translate = new Translate(0, 0); }
+        foreach (var rail in new[] { sbRailL, sbRailR })
+        {
+            rail.style.opacity = 0;
+            rail.style.top = IdleTrackH;
+            rail.style.height = 0f;
+            rail.style.translate = new Translate(0, 0);
+        }
+        foreach (var p in _roadPiles) p.style.opacity = 0;
+        foreach (var m in _matTies) m.style.opacity = 0;
+        foreach (var m in _matRails) m.style.opacity = 0;
+        if (sbBeam != null)
+        {
+            sbBeam.style.opacity = 0;
+            sbBeam.style.top = IdleTrackH - 29f;
+        }
+        if (sbRoadbed != null) sbRoadbed.style.display = DisplayStyle.None;   // 其子 sbWork/标杆一起藏
+    }
+
     public void ToggleBacklog()
     {
         isOpen = !isOpen;
@@ -1586,11 +1700,8 @@ public class VNBacklog : MonoBehaviour
             // 自绘滚动条：布局后刷一次 + 打开期间持续同步（拖拽/滚动/内容变化）
             sbLogged = false;
             // 驻留景分镜：每次打开完整重播（用户要求；溢出态下这些标记不参与）
-            sbIdleSched?.Pause();
-            sbIdleSnapSched?.Pause();
-            sbIdlePlaying = false;
-            sbIdleAnimDone = false;
-            sbIdleDragging = false;
+            // A1：同步套预备姿态（全部常量、不依赖布局）→ 根治「先闪终态再播动画」
+            ApplyIdleStartPose();
             UpdateCustomScrollbar();
             if (sbSync != null) sbSync.Pause();
             sbSync = backlogPanel.schedule.Execute(UpdateCustomScrollbar).StartingIn(60).Every(80);
