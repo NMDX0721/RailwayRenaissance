@@ -8,7 +8,7 @@
 
 | 字段 | 值 |
 |------|-----|
-| 引擎 | Unity 6000.4.6f1 |
+| 引擎 | Unity 6000.5.8f1（Unity 6.5） |
 | 语言 | C# |
 | 美术 | 16-bit 像素画，暖色调，类似 Stardew Valley |
 | UI 方案 | 混合：UGUI (Login/经营) + UI Toolkit (VN/标题) |
@@ -97,7 +97,7 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
    Get-Content "C:\Users\Oe_Lee\AppData\Local\Unity\Editor\Editor.log" -Tail 200 | Select-String "error CS"
    ```
 2. **批处理编译验证**:
-   `"D:\Unity Hub\Unity 6000.4.6f1\Editor\Unity.exe" -quit -batchmode -projectPath "D:\Unity Project\RailwayRenaissance" -logFile compile_check.log`
+   `"D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -quit -batchmode -projectPath "D:\Unity Project\RailwayRenaissance" -logFile compile_check.log`
 
 ---
 
@@ -192,6 +192,26 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ### 任务绑定
 - spawn 时若任务已被 task 工具追踪，传递 `task_id` 参数
+
+---
+
+## 双 Agent 协作与剧本写作规范（2026-10 最新基准）
+
+### 1. 协同分工
+- **Google Antigravity (AGY)**：负责代码实现、Roslyn csc 快速编译验证、UI Toolkit / C# 调试与剧本作者级精修。
+- **Xiaomi MiMo Desktop**：负责经营数值推演、全局记忆管理与设定协调。
+- 双方通过 MCP / Bridge 实时同步上下文。
+
+### 2. 序章剧本写作六规则与 05 样板基准
+- **样板基准**：以 `prologue_05_inspection` 最新作者手改版（~7551字）为全篇改写标杆。
+- **去水与密度**：彻底去除重复说教与空泛比喻，段均 ~1500-1800 字，节奏明快，动作紧凑。
+- **首钩强化**：开篇第一句必须以受挫或核心危机入题（如“我输给了爷爷留下的那台机器”），拒绝拖沓起手。
+- **动作做实**：专业操作必须有具象动作链（如读道尺歪尺->摔尺->正尺、递扳手柄予长辈、撕纸钉板接续字迹）。
+- **JSON 技术标签规范**：
+  - 心理活动统一使用 `{"t": "thought", "s": "说话人", "e": "表情", "text": "[...]"}`（必须带说话人 `s` 与表情 `e`，text 保留方括号，DialogueBox 遵守独白不叠色规则，清空或缺失 `s` 会导致姓名牌丢失及立绘被清空）；
+  - 地点卡统一使用 `{"t": "loc", "text": "..."}`；
+  - 核心铁路专有名词必须完整保留，以保证 `Terms.json` 的 30 条术语能被 `TermHighlightSystem` 稳定高亮并支持弹窗；
+  - BGM 切换遵守驻留规则（`ambient_nature` -> `melancholy` -> `calm` -> `embers`）。
 
 ---
 
