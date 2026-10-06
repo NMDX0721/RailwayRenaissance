@@ -105,7 +105,7 @@ public static class TermHighlightSystem
             }
             if (matched != null)
             {
-                sb.Append("<color=#FFD700><b>").Append(matched).Append("</b></color>");
+                sb.Append("<color=#FFD700>").Append(matched).Append("</color>");   // 黄字，下划线由对话框命中层画
                 i += matched.Length;
             }
             else
@@ -147,6 +147,24 @@ public static class TermHighlightSystem
             }
         }
         return false;
+    }
+
+    /// <summary>给 UI 用的 (termId, 术语名) 全表（命中层扫描用）。</summary>
+    public static System.Collections.Generic.List<(string id, string name)> GetTerms()
+    {
+        if (!initialized) Initialize();
+        var list = new System.Collections.Generic.List<(string, string)>();
+        foreach (var kv in termDictionary)
+            if (!string.IsNullOrEmpty(kv.Value.name))
+                list.Add((kv.Key, kv.Value.name));
+        return list;
+    }
+
+    /// <summary>按 id 取词条（小卡渲染用）；不存在返回 null。</summary>
+    public static TermEntry GetEntry(string id)
+    {
+        if (!initialized) Initialize();
+        return !string.IsNullOrEmpty(id) && termDictionary.TryGetValue(id, out var e) ? e : null;
     }
 }
 

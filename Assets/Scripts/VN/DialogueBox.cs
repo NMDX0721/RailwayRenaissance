@@ -26,6 +26,17 @@ public class DialogueBox : MonoBehaviour
 
     public Action OnTypewriterComplete;
 
+    // —— 术语高亮交互（Phase1：黄下划线 + 单击小卡 + 进度条随卡透明）——
+    private VisualElement rootVisual;                       // 根（卡片/拦截层挂点）
+    private VisualElement textAreaField;                    // 文本区（下划线命中框挂点）
+    private readonly System.Collections.Generic.List<VisualElement> _termHits = new();
+    private VisualElement termCard;
+    private VisualElement cardCatcher;
+    private string _lastWrapped = "";
+    private int _lastFs = 36;
+    /// <summary>小卡「术语图鉴」跳转（参数 termId）；由 VNManager 接到平板 TIPS 页后才显示按钮。</summary>
+    public Action<string> OnOpenTips;
+
     public void Init(UIDocument document)
     {
         uiDoc = document;
@@ -43,6 +54,7 @@ public class DialogueBox : MonoBehaviour
     private void BuildUI()
     {
         var root = uiDoc.rootVisualElement;
+        rootVisual = root;
         var fontDef = GetFontDef();
 
         dialogueBox = new VisualElement { name = "dialogue-box" };
@@ -92,6 +104,7 @@ public class DialogueBox : MonoBehaviour
         nameArea.Add(speakerName);
 
         var textArea = new VisualElement { name = "text-area" };
+        textAreaField = textArea;
         textArea.style.flexGrow = 1;
         textArea.style.paddingRight = 30;
         textArea.style.paddingTop = 8;
@@ -270,6 +283,8 @@ public class DialogueBox : MonoBehaviour
         if (progressBar != null) progressBar.style.display = DisplayStyle.Flex;
 
         StopContinueAnimation();
+        CloseTermCard();      // 换行即收卡
+        ClearTermHits();
 
         bool isNarration = string.IsNullOrEmpty(speaker) || speaker == "n";
         nameArea.style.visibility = isNarration ? Visibility.Hidden : Visibility.Visible;
@@ -295,6 +310,8 @@ public class DialogueBox : MonoBehaviour
             // 固定高度框：动态字号（4步进）+ 手动折行；折行后 blockH 超内容区就降档重折
             float avail = AvailableTextWidth();
             string wrapped = FitAndWrap(displayText, avail, out int fs);
+            _lastWrapped = wrapped;
+            _lastFs = fs;
             int rows = wrapped.Split('\n').Length;
             dialogueText.style.fontSize = fs;
             dialogueText.style.unityParagraphSpacing = LineGap;
@@ -302,6 +319,7 @@ public class DialogueBox : MonoBehaviour
 
             typewriterEffect.StartTypewriter(wrapped, () =>
             {
+                BuildTermHits();   // 打字完成 → 铺术语下划线/命中框
                 StartContinueAnimation();
                 OnTypewriterComplete?.Invoke();
             });
@@ -309,6 +327,9 @@ public class DialogueBox : MonoBehaviour
         else
         {
             dialogueText.text = displayText;
+            _lastWrapped = displayText;
+            _lastFs = (int)dialogueText.style.fontSize.value.value;
+            BuildTermHits();
         }
     }
 
@@ -318,6 +339,275 @@ public class DialogueBox : MonoBehaviour
         if (!string.IsNullOrEmpty(text) && text.StartsWith("[") && text.EndsWith("]") && text.Length > 2)
             return "<color=#7EC8E3><i>" + text.Substring(1, text.Length - 2) + "</i></color>";
         return text;
+    }
+
+    // ================= 术语交互 Phase1：黄下划线 + 单击小卡 + 进度条随卡透明 =================
+
+    private void ClearTermHits()
+    {
+        foreach (var h in _termHits) h.RemoveFromHierarchy();
+        _termHits.Clear();
+    }
+
+    /// <summary>按已折行文本铺术语命中框：框底 2px 黄线＝选中态，点击弹小卡（打字完成后调用）。</summary>
+    private void BuildTermHits()
+    {
+        ClearTermHits();
+        if (textAreaField == null || string.IsNullOrEmpty(_lastWrapped)) return;
+        var terms = TermHighlightSystem.GetTerms();
+        if (terms.Count == 0) return;
+        float fs = _lastFs;
+
+        // 逐字符行走（跳过富文本标签）：记录每个 raw 下标的行号与行内 x
+        int n = _lastWrapped.Length;
+        var inTag = new bool[n];
+        var lineOf = new int[n];
+        var xOf = new float[n];
+        int line = 0;
+        float x = 0f;
+        for (int i = 0; i < n; i++)
+        {
+            char c = _lastWrapped[i];
+            if (c == '<')
+            {
+                int close = _lastWrapped.IndexOf('>', i);
+                if (close != -1)
+                {
+                    for (int k = i; k <= close; k++) inTag[k] = true;
+                    i = close;
+                    continue;
+                }
+            }
+            if (c == '\n') { lineOf[i] = line; xOf[i] = 0f; line++; x = 0f; continue; }
+            lineOf[i] = line;
+            xOf[i] = x;
+            x += CharWidthEm(c) * fs;
+        }
+
+        foreach (var (id, name) in terms)
+        {
+            if (string.IsNullOrEmpty(name)) continue;
+            int from = 0;
+            while (from <= n - name.Length)
+            {
+                int s = _lastWrapped.IndexOf(name, from, StringComparison.Ordinal);
+                if (s < 0) break;
+                from = s + name.Length;
+                if (s < n && inTag[s]) continue;
+                int e = s + name.Length;
+
+                // 术语可能跨行：按行切成若干段，逐段落框
+                int curLine = -1;
+                float min = float.MaxValue, max = float.MinValue;
+                for (int r = s; r < e && r < n; r++)
+                {
+                    if (inTag[r]) continue;
+                    char c = _lastWrapped[r];
+                    if (c == '\n') continue;
+                    int ln = lineOf[r];
+                    float x0 = xOf[r], x1 = x0 + CharWidthEm(c) * fs;
+                    if (ln != curLine)
+                    {
+                        FlushTermSegment(id, curLine, min, max, fs);
+                        curLine = ln; min = x0; max = x1;
+                    }
+                    else
+                    {
+                        if (x0 < min) min = x0;
+                        if (x1 > max) max = x1;
+                    }
+                }
+                FlushTermSegment(id, curLine, min, max, fs);
+            }
+        }
+
+        void FlushTermSegment(string termId, int ln, float min, float max, float fontSize)
+        {
+            if (ln < 0 || max <= min) return;
+            var hit = new VisualElement();
+            hit.style.position = Position.Absolute;
+            hit.style.left = dialogueText.layout.x + min;
+            hit.style.top = dialogueText.layout.y + ln * (fontSize + LineGap);
+            hit.style.width = max - min;
+            hit.style.height = fontSize;
+            hit.style.borderBottomWidth = 2;                       // 黄下划线＝选中态
+            hit.style.borderBottomColor = new Color(1f, 0.85f, 0.15f, 1f);
+            hit.pickingMode = PickingMode.Position;
+            hit.RegisterCallback<PointerDownEvent>(ev =>
+            {
+                VNManager.Instance?.SuppressNextAdvance();
+                ev.StopImmediatePropagation();
+                OpenTermCard(termId, hit);
+            });
+            hit.RegisterCallback<PointerEnterEvent>(_ => UiCursor.ShowHand());
+            hit.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
+            textAreaField.Add(hit);
+            _termHits.Add(hit);
+        }
+    }
+
+    /// <summary>术语小卡（样式自设计，参考 Maitetsu 功能：标题+角色口吻解释+MORE；点外关闭）。</summary>
+    private void OpenTermCard(string termId, VisualElement hit)
+    {
+        CloseTermCard();
+        var entry = TermHighlightSystem.GetEntry(termId);
+        if (entry == null || rootVisual == null) return;
+        float rootW = rootVisual.layout.width > 0f ? rootVisual.layout.width : 1280f;
+        var fontDef = GetFontDef();
+        var gold = new Color(1f, 0.85f, 0.25f, 1f);
+        var goldEdge = new Color(0.82f, 0.62f, 0.35f, 0.9f);
+
+        // 拦截层：点卡片以外任意处收卡（并吞掉这一下，不推进对话）
+        cardCatcher = new VisualElement { name = "term-card-catcher" };
+        cardCatcher.style.position = Position.Absolute;
+        cardCatcher.style.left = 0; cardCatcher.style.right = 0;
+        cardCatcher.style.top = 0; cardCatcher.style.bottom = 0;
+        cardCatcher.pickingMode = PickingMode.Position;
+        cardCatcher.RegisterCallback<PointerDownEvent>(ev =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            ev.StopImmediatePropagation();
+            CloseTermCard();
+        });
+        rootVisual.Add(cardCatcher);   // 先拦（下层）
+        // 进度条随卡透明（Maitetsu 行为）
+        if (progressBar != null) progressBar.style.opacity = 0f;
+
+        termCard = new VisualElement { name = "term-card" };
+        termCard.style.position = Position.Absolute;
+        termCard.style.width = Mathf.Min(640f, rootW - 40f);
+        termCard.style.backgroundColor = new Color(0.09f, 0.06f, 0.04f, 0.97f);
+        termCard.style.borderTopWidth = 2;
+        termCard.style.borderBottomWidth = 2;
+        termCard.style.borderLeftWidth = 2;
+        termCard.style.borderRightWidth = 2;
+        termCard.style.borderTopColor = goldEdge;
+        termCard.style.borderBottomColor = goldEdge;
+        termCard.style.borderLeftColor = goldEdge;
+        termCard.style.borderRightColor = goldEdge;
+        termCard.style.borderTopLeftRadius = 8;
+        termCard.style.borderTopRightRadius = 8;
+        termCard.style.borderBottomLeftRadius = 8;
+        termCard.style.borderBottomRightRadius = 8;
+        termCard.style.paddingLeft = 18;
+        termCard.style.paddingRight = 18;
+        termCard.style.paddingTop = 12;
+        termCard.style.paddingBottom = 14;
+        termCard.pickingMode = PickingMode.Position;
+        termCard.RegisterCallback<PointerDownEvent>(ev =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            ev.StopImmediatePropagation();
+        });
+
+        // 标题行：词条名 + 关闭
+        var titleRow = new VisualElement();
+        titleRow.style.flexDirection = FlexDirection.Row;
+        titleRow.style.justifyContent = Justify.SpaceBetween;
+        titleRow.style.alignItems = Align.Center;
+        titleRow.style.marginBottom = 8;
+        var title = new Label(entry.name);
+        title.style.fontSize = 28;
+        title.style.color = gold;
+        title.style.unityFontDefinition = fontDef;
+        titleRow.Add(title);
+        var close = new Label("✕");
+        close.style.fontSize = 22;
+        close.style.color = new Color(1f, 1f, 1f, 0.7f);
+        close.style.unityFontDefinition = fontDef;
+        close.pickingMode = PickingMode.Position;
+        close.RegisterCallback<PointerDownEvent>(ev =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            ev.StopImmediatePropagation();
+            CloseTermCard();
+        });
+        close.RegisterCallback<PointerEnterEvent>(_ => UiCursor.ShowHand());
+        close.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
+        titleRow.Add(close);
+        termCard.Add(titleRow);
+
+        // 解释块：角色 chip + 口吻正文（文中其它术语金色引用）
+        if (entry.explanations != null)
+        {
+            foreach (var ex in entry.explanations)
+            {
+                if (ex == null || string.IsNullOrEmpty(ex.text)) continue;
+                if (!string.IsNullOrEmpty(ex.speaker))
+                {
+                    var chip = new Label(ex.speaker);
+                    chip.style.alignSelf = Align.FlexStart;
+                    chip.style.fontSize = 20;
+                    chip.style.color = new Color(1f, 0.86f, 0.59f, 1f);
+                    chip.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
+                    chip.style.paddingLeft = 8; chip.style.paddingRight = 8;
+                    chip.style.paddingTop = 3; chip.style.paddingBottom = 3;
+                    chip.style.borderTopLeftRadius = 4; chip.style.borderTopRightRadius = 4;
+                    chip.style.borderBottomLeftRadius = 4; chip.style.borderBottomRightRadius = 4;
+                    chip.style.marginBottom = 5;
+                    chip.style.unityFontDefinition = fontDef;
+                    termCard.Add(chip);
+                }
+                var body = new Label(TermHighlightSystem.HighlightTerms(ex.text));
+                body.style.fontSize = 24;
+                body.style.color = new Color(1f, 1f, 1f, 0.92f);
+                body.style.whiteSpace = WhiteSpace.Normal;
+                body.style.marginBottom = 10;
+                body.style.unityFontDefinition = fontDef;
+                termCard.Add(body);
+            }
+        }
+
+        // MORE → 术语图鉴（Phase2 接线后才显示）
+        var more = new Button(() =>
+        {
+            VNManager.Instance?.SuppressNextAdvance();
+            if (OnOpenTips == null) return;
+            OnOpenTips.Invoke(termId);
+            CloseTermCard();
+        }) { text = "术语图鉴 →" };
+        more.style.alignSelf = Align.FlexEnd;
+        more.style.width = 170;
+        more.style.height = 44;
+        more.style.marginTop = 4;
+        more.style.backgroundColor = new Color(0.20f, 0.14f, 0.08f, 1f);
+        more.style.borderTopWidth = 1; more.style.borderBottomWidth = 1;
+        more.style.borderLeftWidth = 1; more.style.borderRightWidth = 1;
+        var moreEdge = new Color(0.82f, 0.62f, 0.35f, 0.7f);
+        more.style.borderTopColor = moreEdge; more.style.borderBottomColor = moreEdge;
+        more.style.borderLeftColor = moreEdge; more.style.borderRightColor = moreEdge;
+        more.style.borderTopLeftRadius = 6; more.style.borderTopRightRadius = 6;
+        more.style.borderBottomLeftRadius = 6; more.style.borderBottomRightRadius = 6;
+        more.style.color = gold;
+        more.style.fontSize = 22;
+        more.style.unityTextAlign = TextAnchor.MiddleCenter;
+        more.style.unityFontDefinition = fontDef;
+        more.style.display = OnOpenTips != null ? DisplayStyle.Flex : DisplayStyle.None;
+        termCard.Add(more);
+
+        rootVisual.Add(termCard);   // 卡在拦截层之上
+
+        // 布局后定位：卡贴在命中词上方、水平跟随（夹在屏内），先藏后放
+        termCard.style.visibility = Visibility.Hidden;
+        termCard.schedule.Execute(() =>
+        {
+            if (termCard == null || hit == null) return;
+            var rb = rootVisual.worldBound;
+            var hb = hit.worldBound;
+            float left = (hb.x - rb.x) - 30f;
+            float maxLeft = Mathf.Max(12f, rootW - termCard.layout.width - 12f);
+            termCard.style.left = Mathf.Clamp(left, 12f, maxLeft);
+            float top = (dialogueBox.worldBound.y - rb.y) - termCard.layout.height - 14f;
+            termCard.style.top = Mathf.Max(12f, top);
+            termCard.style.visibility = Visibility.Visible;
+        }).StartingIn(0);
+    }
+
+    private void CloseTermCard()
+    {
+        if (termCard != null) { termCard.RemoveFromHierarchy(); termCard = null; }
+        if (cardCatcher != null) { cardCatcher.RemoveFromHierarchy(); cardCatcher = null; }
+        if (progressBar != null) progressBar.style.opacity = 1f;   // 进度条恢复
     }
 
     private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
