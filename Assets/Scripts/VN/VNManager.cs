@@ -346,6 +346,7 @@ public class VNManager : MonoBehaviour
         dialogueBox = gameObject.AddComponent<DialogueBox>();
         dialogueBox.Init(uiDoc);
         dialogueBox.OnTypewriterComplete += OnDialogueTypewriterComplete;
+        dialogueBox.OnOpenTips = GameMainUI.OpenTipsPage;
 
         vnBacklog = gameObject.AddComponent<VNBacklog>();
         vnBacklog.Init(uiDoc);

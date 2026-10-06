@@ -138,10 +138,12 @@ public class GameMainUI : MonoBehaviour
     private System.Collections.IEnumerator BuildDesktopAsync()
     {
         yield return null; // 先让锁屏渲染出来（用户立刻看到中间页，而非黑屏）
+        if (desktopBuilt) { desktopBuilding = false; yield break; } // 图鉴页可能已同步构建完
         TraceLog.L("[GameMainUI] DesktopAsync: start (background)");
         BuildDesktop();
         TraceLog.L("[GameMainUI] DesktopAsync: desktop ok");
         yield return null;
+        if (desktopBuilt) { desktopBuilding = false; yield break; } // 同上，App层已由同步路径补齐
         BuildAppLayer();
         TraceLog.L("[GameMainUI] DesktopAsync: apps ok");
         desktopBuilt = true;
@@ -964,6 +966,9 @@ public class GameMainUI : MonoBehaviour
         var row2 = BuildSettingRow("通用", "本设备已锁定出厂配置", null);
         win.Add(row2);
 
+        var rowTips = BuildSettingRow("术语图鉴", "30 条 · 铁路术语与设定专名", () => OpenTipsPage(null));
+        win.Add(rowTips);
+
         // 系统管控彩蛋入口：隐藏条目，只有知道的人才会点
         var row3 = BuildSettingRow("应用管理", "已禁用的系统应用（4个）", ShowAppManagementPage);
         win.Add(row3);
@@ -1097,6 +1102,269 @@ public class GameMainUI : MonoBehaviour
         verLabel.style.unityFontDefinition = Fd();
         verLabel.style.marginTop = 20;
         win.Add(verLabel);
+    }
+
+    // ============ 术语图鉴（TIPS）============
+    [System.Serializable] private class TipsJsonData { public TipsTerm[] terms; }
+    [System.Serializable] private class TipsTerm { public string id; public string name; public string py; public TipsExplanation[] explanations; }
+    [System.Serializable] private class TipsExplanation { public string speaker; public string text; }
+
+    // 说话者 → Resources/characters 立绘前缀（与 CharacterSpriteManager.SpeakerAlias 同源；无贴图的角色仅显示名字 chip）
+    private static readonly System.Collections.Generic.Dictionary<string, string> TipsPortraitPrefix =
+        new System.Collections.Generic.Dictionary<string, string>
+        {
+            { "男大学生", "lin_biaohan" },
+            { "林彪悍", "lin_biaohan" },
+            { "老陈", "laochen" },
+            { "岁月", "suiyue" },
+            { "嘉颖徐", "jiaying_xu" },
+            { "张工", "zhanggong" },
+        };
+
+    /// <summary>术语图鉴入口（静态）：确保桌面/App层就绪、跳过锁屏直达图鉴。
+    /// termId 非空 → 右侧详情定位该词条；null → 浏览模式（提示从左侧选择）。</summary>
+    public static void OpenTipsPage(string termId)
+    {
+        if (Instance == null)
+        {
+            var go = new GameObject("GameMainUI");
+            DontDestroyOnLoad(go);
+            Instance = go.AddComponent<GameMainUI>();
+            try
+            {
+                Instance.Init();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[GameMainUI] OpenTipsPage Init failed: " + ex);
+                Instance = null;
+                Object.Destroy(go);
+                return;
+            }
+        }
+        Instance.EnsureDesktopBuiltSync();
+        // 图鉴直达：不走锁屏，直接进桌面态
+        Instance.unlocked = true;
+        if (Instance.lockScreen != null) Instance.lockScreen.style.display = DisplayStyle.None;
+        if (Instance.desktop != null) Instance.desktop.style.display = DisplayStyle.Flex;
+        Instance.root.style.display = DisplayStyle.Flex;
+        Instance.ShowTipsPage(termId);
+    }
+
+    /// <summary>同步补建桌面/App层（后台错帧协程可能还没跑）；只补缺的部分，避免与协程重复构建。</summary>
+    private void EnsureDesktopBuiltSync()
+    {
+        if (desktopBuilt) return;
+        if (desktop == null) BuildDesktop();
+        if (appLayer == null) BuildAppLayer();
+        desktopBuilt = true;
+        desktopBuilding = false;
+    }
+
+    private static Texture2D LoadTipsPortrait(string speaker)
+    {
+        if (string.IsNullOrEmpty(speaker)) return null;
+        if (!TipsPortraitPrefix.TryGetValue(speaker, out var prefix)) return null;
+        return Resources.Load<Texture2D>("characters/" + prefix);
+    }
+
+    /// <summary>Terms.json 全量词条（带 py），按拼音首字母、再按名称排序。</summary>
+    private static System.Collections.Generic.List<TipsTerm> LoadTipsTerms()
+    {
+        var list = new System.Collections.Generic.List<TipsTerm>();
+        var asset = Resources.Load<TextAsset>("Terms");
+        if (asset == null) return list;
+        try
+        {
+            var data = JsonUtility.FromJson<TipsJsonData>(asset.text);
+            if (data != null && data.terms != null) list.AddRange(data.terms);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[Tips] Terms.json parse failed: " + ex.Message);
+        }
+        list.Sort((a, b) =>
+        {
+            string pa = string.IsNullOrEmpty(a.py) ? "~" : a.py;
+            string pb = string.IsNullOrEmpty(b.py) ? "~" : b.py;
+            int c = string.CompareOrdinal(pa, pb);
+            return c != 0 ? c : string.CompareOrdinal(a.name, b.name);
+        });
+        return list;
+    }
+
+    /// <summary>左索引右详情（Maitetsu TIPS 式，平板玻璃风）。</summary>
+    private void ShowTipsPage(string termId)
+    {
+        var win = BuildInnerPanel("术语图鉴");
+        win.style.width = 900;
+        win.style.height = 560;
+
+        var terms = LoadTipsTerms();
+
+        var body = new VisualElement();
+        body.style.flexDirection = FlexDirection.Row;
+        body.style.flexGrow = 1;
+        body.style.marginTop = 12;
+        win.Add(body);
+
+        // 左：按拼音首字母分组的可滚动索引
+        var indexScroll = new ScrollView();
+        indexScroll.style.width = 230;
+        indexScroll.style.flexShrink = 0;
+        indexScroll.style.marginRight = 16;
+        indexScroll.style.backgroundColor = GlassBgSoft;
+        indexScroll.style.borderTopLeftRadius = 10; indexScroll.style.borderTopRightRadius = 10;
+        indexScroll.style.borderBottomLeftRadius = 10; indexScroll.style.borderBottomRightRadius = 10;
+        indexScroll.style.paddingLeft = 8; indexScroll.style.paddingRight = 8;
+        indexScroll.style.paddingTop = 8; indexScroll.style.paddingBottom = 8;
+        body.Add(indexScroll);
+
+        // 右：详情（可滚动）
+        var detail = new ScrollView();
+        detail.style.flexGrow = 1;
+        detail.style.paddingLeft = 14; detail.style.paddingRight = 10;
+        body.Add(detail);
+
+        var placeholder = new Label("← 点击左侧词条，查看角色口吻详解");
+        placeholder.style.fontSize = 14;
+        placeholder.style.color = GlassTextMuted;
+        placeholder.style.unityFontDefinition = Fd();
+        placeholder.style.marginTop = 24;
+        detail.Add(placeholder);
+
+        Label selectedRow = null;
+        TipsTerm initial = null;
+        string curPy = null;
+        foreach (var t in terms)
+        {
+            string py = string.IsNullOrEmpty(t.py) ? "#" : t.py;
+            if (py != curPy)
+            {
+                curPy = py;
+                var head = new Label(py);
+                head.style.fontSize = 13;
+                head.style.color = GlassAccent;
+                head.style.unityFontDefinition = Fd();
+                head.style.marginTop = 10;
+                head.style.marginBottom = 2;
+                indexScroll.Add(head);
+            }
+
+            var row = new Label(t.name);
+            row.style.fontSize = 15;
+            row.style.color = GlassText;
+            row.style.unityFontDefinition = Fd();
+            row.style.paddingLeft = 10; row.style.paddingRight = 10;
+            row.style.paddingTop = 6; row.style.paddingBottom = 6;
+            row.style.borderTopLeftRadius = 6; row.style.borderTopRightRadius = 6;
+            row.style.borderBottomLeftRadius = 6; row.style.borderBottomRightRadius = 6;
+            var captured = t;
+            row.RegisterCallback<ClickEvent>(_ =>
+            {
+                if (selectedRow != null) selectedRow.style.backgroundColor = StyleKeyword.Null;
+                selectedRow = row;
+                row.style.backgroundColor = GlassBgHover;
+                detail.Clear();
+                RenderTipsDetail(detail, captured);
+            });
+            indexScroll.Add(row);
+            if (termId != null && t.id == termId)
+            {
+                initial = t;
+                selectedRow = row;
+                row.style.backgroundColor = GlassBgHover;
+            }
+        }
+
+        if (initial != null)
+        {
+            RenderTipsDetail(detail, initial);
+            var scrollTo = selectedRow;
+            indexScroll.schedule.Execute(() => indexScroll.ScrollTo(scrollTo));
+        }
+    }
+
+    /// <summary>右侧详情：词条名标题条 + 每段（立绘小图+角色 chip + 释义全文，文中其它术语包金）。</summary>
+    private void RenderTipsDetail(ScrollView detail, TipsTerm t)
+    {
+        var titleBar = new VisualElement();
+        titleBar.style.flexDirection = FlexDirection.Row;
+        titleBar.style.alignItems = Align.Center;
+        titleBar.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
+        titleBar.style.borderTopLeftRadius = 6; titleBar.style.borderTopRightRadius = 6;
+        titleBar.style.borderBottomLeftRadius = 6; titleBar.style.borderBottomRightRadius = 6;
+        titleBar.style.paddingLeft = 12; titleBar.style.paddingRight = 12;
+        titleBar.style.paddingTop = 6; titleBar.style.paddingBottom = 6;
+        var title = new Label(t.name);
+        title.style.fontSize = 20;
+        title.style.color = new Color(1f, 0.86f, 0.59f, 1f);
+        title.style.unityFontDefinition = Fd();
+        titleBar.Add(title);
+        if (!string.IsNullOrEmpty(t.py))
+        {
+            var pyTag = new Label(t.py);
+            pyTag.style.fontSize = 12;
+            pyTag.style.color = new Color(1f, 0.86f, 0.59f, 0.7f);
+            pyTag.style.unityFontDefinition = Fd();
+            pyTag.style.marginLeft = 10;
+            titleBar.Add(pyTag);
+        }
+        detail.Add(titleBar);
+
+        if (t.explanations == null) return;
+        foreach (var ex in t.explanations)
+        {
+            if (ex == null || string.IsNullOrEmpty(ex.text)) continue;
+            if (!string.IsNullOrEmpty(ex.speaker))
+            {
+                var chipRow = new VisualElement();
+                chipRow.style.flexDirection = FlexDirection.Row;
+                chipRow.style.alignItems = Align.Center;
+                chipRow.style.marginTop = 12;
+
+                var tex = LoadTipsPortrait(ex.speaker);
+                if (tex != null)
+                {
+                    // 立绘小图：按原始宽高比给宽，避免拉伸变形
+                    var img = new VisualElement();
+                    int h = 44;
+                    int w = Mathf.Clamp(Mathf.RoundToInt(h * tex.width / (float)tex.height), 24, 72);
+                    img.style.width = w; img.style.height = h;
+                    img.style.backgroundImage = new StyleBackground(tex);
+                    img.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
+                    img.style.borderTopLeftRadius = 6; img.style.borderTopRightRadius = 6;
+                    img.style.borderBottomLeftRadius = 6; img.style.borderBottomRightRadius = 6;
+                    img.style.borderTopWidth = 1; img.style.borderBottomWidth = 1;
+                    img.style.borderLeftWidth = 1; img.style.borderRightWidth = 1;
+                    img.style.borderTopColor = GlassBorderSoft; img.style.borderBottomColor = GlassBorderSoft;
+                    img.style.borderLeftColor = GlassBorderSoft; img.style.borderRightColor = GlassBorderSoft;
+                    img.style.marginRight = 8;
+                    chipRow.Add(img);
+                }
+
+                var chip = new Label(ex.speaker);
+                chip.style.fontSize = 13;
+                chip.style.color = new Color(1f, 0.86f, 0.59f, 1f);
+                chip.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
+                chip.style.paddingLeft = 8; chip.style.paddingRight = 8;
+                chip.style.paddingTop = 3; chip.style.paddingBottom = 3;
+                chip.style.borderTopLeftRadius = 4; chip.style.borderTopRightRadius = 4;
+                chip.style.borderBottomLeftRadius = 4; chip.style.borderBottomRightRadius = 4;
+                chip.style.unityFontDefinition = Fd();
+                chipRow.Add(chip);
+                detail.Add(chipRow);
+            }
+
+            var bodyText = new Label(TermHighlightSystem.HighlightTerms(ex.text));
+            bodyText.style.fontSize = 14;
+            bodyText.style.color = new Color(1f, 1f, 1f, 0.92f);
+            bodyText.style.unityFontDefinition = Fd();
+            bodyText.style.whiteSpace = WhiteSpace.Normal;
+            bodyText.style.marginTop = 5;
+            bodyText.style.marginBottom = 4;
+            detail.Add(bodyText);
+        }
     }
 
     private void StyleRowBtn(Button btn)

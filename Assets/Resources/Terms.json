@@ -3,6 +3,7 @@
     {
       "id": "rail_ballast",
       "name": "道砟",
+      "py": "D",
       "explanations": [
         {
           "speaker": "老陈",
@@ -17,6 +18,7 @@
     {
       "id": "steel_rail",
       "name": "钢轨",
+      "py": "G",
       "explanations": [
         {
           "speaker": "老陈",
@@ -31,6 +33,7 @@
     {
       "id": "rail_joint",
       "name": "钢轨接头",
+      "py": "G",
       "explanations": [
         {
           "speaker": "老陈",
@@ -45,6 +48,7 @@
     {
       "id": "track_patrol",
       "name": "巡线",
+      "py": "X",
       "explanations": [
         {
           "speaker": "老陈",
@@ -59,6 +63,7 @@
     {
       "id": "sleeper",
       "name": "枕木",
+      "py": "Z",
       "explanations": [
         {
           "speaker": "老陈",
@@ -73,6 +78,7 @@
     {
       "id": "track_rule",
       "name": "道尺",
+      "py": "D",
       "explanations": [
         {
           "speaker": "老陈",
@@ -87,6 +93,7 @@
     {
       "id": "subgrade",
       "name": "路基",
+      "py": "L",
       "explanations": [
         {
           "speaker": "老陈",
@@ -104,6 +111,7 @@
     {
       "id": "curve",
       "name": "曲线",
+      "py": "Q",
       "explanations": [
         {
           "speaker": "老陈",
@@ -118,6 +126,7 @@
     {
       "id": "tunnel",
       "name": "隧道",
+      "py": "S",
       "explanations": [
         {
           "speaker": "老陈",
@@ -132,6 +141,7 @@
     {
       "id": "semaphore",
       "name": "扬旗",
+      "py": "Y",
       "explanations": [
         {
           "speaker": "老陈",
@@ -146,6 +156,7 @@
     {
       "id": "track_gauge",
       "name": "轨距",
+      "py": "G",
       "explanations": [
         {
           "speaker": "老陈",
@@ -160,6 +171,7 @@
     {
       "id": "train_meeting",
       "name": "会让",
+      "py": "H",
       "explanations": [
         {
           "speaker": "老陈",
@@ -174,6 +186,7 @@
     {
       "id": "superelevation",
       "name": "超高",
+      "py": "C",
       "explanations": [
         {
           "speaker": "老陈",
@@ -188,6 +201,7 @@
     {
       "id": "siding",
       "name": "股道",
+      "py": "G",
       "explanations": [
         {
           "speaker": "老陈",
@@ -202,6 +216,7 @@
     {
       "id": "rail_spike",
       "name": "道钉",
+      "py": "D",
       "explanations": [
         {
           "speaker": "老陈",
@@ -216,6 +231,7 @@
     {
       "id": "wheelset",
       "name": "轮对",
+      "py": "L",
       "explanations": [
         {
           "speaker": "老陈",
@@ -230,6 +246,7 @@
     {
       "id": "mud_pumping",
       "name": "翻浆",
+      "py": "F",
       "explanations": [
         {
           "speaker": "老陈",
@@ -244,6 +261,7 @@
     {
       "id": "milepost",
       "name": "里程标",
+      "py": "L",
       "explanations": [
         {
           "speaker": "老陈",
@@ -258,6 +276,7 @@
     {
       "id": "signal",
       "name": "信号机",
+      "py": "X",
       "explanations": [
         {
           "speaker": "老陈",
@@ -272,6 +291,7 @@
     {
       "id": "turnout",
       "name": "道岔",
+      "py": "D",
       "explanations": [
         {
           "speaker": "老陈",
@@ -286,6 +306,7 @@
     {
       "id": "gradient",
       "name": "坡度",
+      "py": "P",
       "explanations": [
         {
           "speaker": "岁月",
@@ -300,6 +321,7 @@
     {
       "id": "curve_radius",
       "name": "曲线半径",
+      "py": "Q",
       "explanations": [
         {
           "speaker": "林彪悍",
@@ -314,6 +336,7 @@
     {
       "id": "transition_curve",
       "name": "缓和曲线",
+      "py": "H",
       "explanations": [
         {
           "speaker": "林彪悍",
@@ -328,6 +351,7 @@
     {
       "id": "clearance",
       "name": "限界",
+      "py": "X",
       "explanations": [
         {
           "speaker": "林彪悍",
@@ -342,6 +366,7 @@
     {
       "id": "block",
       "name": "闭塞",
+      "py": "B",
       "explanations": [
         {
           "speaker": "林彪悍",
@@ -356,6 +381,7 @@
     {
       "id": "railway_section",
       "name": "区间",
+      "py": "Q",
       "explanations": [
         {
           "speaker": "老陈",
@@ -370,6 +396,7 @@
     {
       "id": "marshalling",
       "name": "编组",
+      "py": "B",
       "explanations": [
         {
           "speaker": "老陈",
@@ -384,6 +411,7 @@
     {
       "id": "shunting",
       "name": "调车",
+      "py": "D",
       "explanations": [
         {
           "speaker": "老陈",
@@ -398,6 +426,7 @@
     {
       "id": "anti_creep",
       "name": "防爬器",
+      "py": "F",
       "explanations": [
         {
           "speaker": "老陈",
@@ -412,6 +441,7 @@
     {
       "id": "rail_flaw_detection",
       "name": "钢轨探伤",
+      "py": "S",
       "explanations": [
         {
           "speaker": "林彪悍",
