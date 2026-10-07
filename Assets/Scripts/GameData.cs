@@ -432,6 +432,44 @@ public static class GameData
         RefreshBoards("新的一天开始了，先看一眼站内情况，再决定今天怎么经营。");
     }
 
+    /// <summary>
+    /// 从序章过渡数据 (VNExitData) 注入经营状态，实现无缝承接。
+    /// </summary>
+    public static void ApplyVNExitData(VNExitData data)
+    {
+        Day = 1;
+        Money = Mathf.RoundToInt(data.startMoney > 0 ? data.startMoney : 40000f);
+        Trust = data.startTrust > 0 ? data.startTrust : 60;
+        TrainCondition = data.startTrainCondition > 0 ? data.startTrainCondition : 70;
+        ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
+        CarCount = 2;
+
+        DailyMoneyChange = 0;
+        DailyTrustChange = 0;
+        DailyTrainConditionChange = 0;
+        DailyPassengerChange = 0;
+
+        SelectedDispatchPlanIndex = 1;
+        CurrentStaffAllocation = StaffAllocationType.Balanced;
+        CurrentMaintenanceStrategy = MaintenanceStrategy.Standard;
+        CurrentStationServiceStrategy = StationServiceStrategy.Standard;
+        CurrentExternalAffairsStrategy = ExternalAffairsStrategy.Standard;
+        CurrentStance = ManagementStance.Conservative;
+        currentDailyEvent = null;
+        completedStoryGrants.Clear();
+
+        foreach (ShortTermGoal goal in ShortTermGoals)
+        {
+            goal.IsCompleted = false;
+        }
+
+        AutoSelectGoal();
+        RefreshBoards("欢迎接手雾峰站。序章已结，老陈和大家都在等你做今天的排班决策。");
+
+        // 初始化先民人事系统
+        CrewManager.Initialize();
+    }
+
     // ===== 策略循环 =====
 
     public static DispatchPlan GetCurrentDispatchPlan()

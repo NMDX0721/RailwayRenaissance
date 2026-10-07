@@ -2913,14 +2913,14 @@ public class VNManager : MonoBehaviour
         exitData.difficulty = GameConfig.Load().difficulty;
         exitData.playerAlias = GameConfig.Load().PlayerDisplayName;
 
-        // 员工数据（5名初始员工）
+        // 员工数据（5名初始员工，对齐《先民人事系统》v3.0 八级工体系）
         exitData.crew = new CrewData[]
         {
-            new CrewData { id = "laochen",     name = "老陈",   role = "driver",     skillLevel = 5, fatigue = 0f,   specialty = "safety" },
-            new CrewData { id = "zhanggong",   name = "张工",   role = "mechanic",   skillLevel = 5, fatigue = 0.2f, specialty = "repair" },
-            new CrewData { id = "liayi",       name = "李阿姨", role = "conductor",  skillLevel = 2, fatigue = 0f,   specialty = "service" },
-            new CrewData { id = "zhaoshifu",   name = "赵师傅", role = "dispatcher", skillLevel = 4, fatigue = 0.1f, specialty = "management" },
-            new CrewData { id = "xiaofang",    name = "小芳",   role = "attendant",  skillLevel = 1, fatigue = 0f,   specialty = "learning" }
+            new CrewData { id = "laochen",     name = "老陈",   role = "driver",     skillLevel = 70, fatigue = 0f,   specialty = "safety" },     // 特级司机 (7级)
+            new CrewData { id = "zhanggong",   name = "张工",   role = "mechanic",   skillLevel = 70, fatigue = 0.2f, specialty = "repair" },     // 特级技师 (7级)
+            new CrewData { id = "liayi",       name = "李阿姨", role = "conductor",  skillLevel = 25, fatigue = 0f,   specialty = "service" },    // 站务主管 (2级)
+            new CrewData { id = "zhaoshifu",   name = "赵师傅", role = "dispatcher", skillLevel = 60, fatigue = 0.1f, specialty = "management" }, // 高级工务/调度 (6级)
+            new CrewData { id = "xiaofang",    name = "小芳",   role = "attendant",  skillLevel = 15, fatigue = 0f,   specialty = "learning" }    // 见习调度/乘务 (1级)
         };
 
         // 完成标记与解锁区域
