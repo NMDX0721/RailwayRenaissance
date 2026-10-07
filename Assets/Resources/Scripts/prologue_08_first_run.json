@@ -80,12 +80,12 @@
         },
         {
           "t": "n",
-          "text": "Day 5 下午",
+          "text": "Day 6 下午",
           "condition": "repair_choice_zhang"
         },
         {
           "t": "n",
-          "text": "Day 5 上午",
+          "text": "Day 6 上午",
           "condition": "!repair_choice_zhang"
         },
         {
