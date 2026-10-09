@@ -1495,12 +1495,11 @@ public class VNManager : MonoBehaviour
             if (saveLoadUI != null && saveLoadUI.IsOpen)
             {
                 saveLoadUI.ClosePanel();
-                // 从标题界面进入的读档模式：按下ESC直接返回标题
+                // 读档界面按下ESC：直接返回平板桌面
                 if (isFromTitleScreenMode)
                 {
                     isFromTitleScreenMode = false;
-                    if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+                    ReturnToTitle();
                 }
                 return;
             }

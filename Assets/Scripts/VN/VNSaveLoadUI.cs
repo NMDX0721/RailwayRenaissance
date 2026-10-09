@@ -283,7 +283,7 @@ public class VNSaveLoadUI : MonoBehaviour
         fade.style.opacity = 1;
 
         if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+        GameMainUI.Show();
     }
 
     public void SetIsFromTitleScreenFromTitle(bool value) { isFromTitleScreen = value; }

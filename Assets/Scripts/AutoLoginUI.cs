@@ -185,7 +185,7 @@ public class AutoLoginUI : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
         if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-        SceneManager.LoadScene("TitleScreen");
+        SceneManager.LoadScene("VN_Test");
     }
 
     IEnumerator LoadResource(string name, float from, float to, float duration, System.Func<bool> loader)
@@ -222,7 +222,7 @@ public class AutoLoginUI : MonoBehaviour
 
     void OnReturnLogin()
     {
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadScene("VN_Test");
     }
 
     void OnResetAccount()
@@ -234,7 +234,7 @@ public class AutoLoginUI : MonoBehaviour
 
         LoginManager.showAutoLoginOnStart = false;
         LoginManager.showRegisterOnStart = true;
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadScene("VN_Test");
     }
 
     public void StartAfterRegister()

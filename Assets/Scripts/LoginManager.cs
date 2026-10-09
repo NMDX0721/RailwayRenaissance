@@ -961,7 +961,7 @@ public class LoginManager : MonoBehaviour
 
     void EnterGame()
     {
-        SceneManager.LoadScene("TitleScreen");
+        SceneManager.LoadScene("VN_Test");
     }
 
     void ShowHint(string message, bool success)
