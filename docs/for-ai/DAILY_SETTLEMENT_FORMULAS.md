@@ -1,0 +1,113 @@
+# 每日结算公式表（T3 · AdvanceDay 重构输入）
+
+> **编制**：MiMo Desktop（经营数值策划）
+> **面向**：Antigravity（T3 沙本位经济核心重构 / 批1 结算环接线的实现依据）
+> **日期**：2026-10-07
+> **代码基准**：`Assets/Scripts/GameData.cs`（AdvanceDay @ L898-1044）、`GameConfig.cs`
+> **设计基准**：`参考资料/设定/沙本位经济核.md`
+> **原则**：本表「现状公式」= 已验证在跑的代码事实；「T3 改造」= 本次要做的增量。改造不得改变已验收的数值手感，除非本表明确标注。
+
+---
+
+## 一、现状：AdvanceDay 主循环公式（代码事实）
+
+结算顺序即为执行顺序，改造后保持此顺序。
+
+| 步 | 项 | 公式 | 代码位置 |
+|---|---|---|---|
+| 1 | 趟数 trips | 发车方案：保守=3 / 标准=4 / 加开=5 | `GetTripsForDispatchPlan` L539 |
+| 2 | 单趟客流 p | `round( PopulationFactor × 0.0025 × 信任系数 × 季节系数 × (1−沙能渗透) × 服务质量系数 )` | `CalculateDailyPassengers` L594 |
+| 2a | 信任系数 T | T<30: `0.25+T×0.005`；30≤T<70: `0.45+T×0.008`；T≥70: `0.85+(T−70)×0.003` | 同上 |
+| 2b | 季节系数 | 3-5月 1.15（采茶）/ 6-8月 1.05（旅游）/ 9-11月 1.20（货运）/ 12-2月 0.90（淡季）；月= `((Day−1)%360)/30` | `GetSeasonModifier` L551 |
+| 2c | 服务质量系数 | `1 + ConductorLevel(=2) × 0.03` → 1.06 | L603 |
+| 3 | 容量约束 | 单趟容量 `= CarCount × CapacityPerCar(30)`；实际单趟客流 `min(p, 容量)`；超员阈值 `p > 容量×1.2` | L916-918 |
+| 4 | 客运收入 | `实际单趟客流 × TicketPrice(35) × trips` | `CalculateRevenue` L609 |
+| 5 | 货运收入 | `Σ(已解锁城市产业吨位 × [中断城市×0.5]) × 23km × 0.5沙币/吨公里`；无种子=0 | `CalculateFreightRevenue` L622 |
+| 6 | 燃料费 | `58.5L/100km × (23×trips) /100 × (1+(100−车况)/200) × 15沙币/L` | `CalculateFuelCost` L658 |
+| 7 | 工资 | 有员工：`Σ(各员工核心技能月薪表[等级]) / 30`；无员工回退 `90000/30=3000` | `CalculateWageCost` L677 |
+| 8 | 维护费 | `基础(延期0/标准100/强化500) × (1+(100−车况)/100) × (1−MechanicLevel(=2)×0.08)` | `CalculateMaintenanceCost` L741 |
+| 9 | 补贴 | `round(8000/30 × subsidyMultiplier)` ≈ 267×倍率 | L934 |
+| 10 | 净收入 | `收入 − 燃料 − 维护 − 工资 + 补贴` → 直接 `Money +=` | L937-938 |
+| 11 | 信任 Δ | 基础+1；员工分配（维护+0/服务+2）；站务（基础−2/标准0/强化+3）；外事务（最小−2/标准0/积极+3）；超员−1 | L941-965 |
+| 12 | 车况 Δ | 维护策略：延期−3 / 标准0 / 强化+2；员工分配（维护+3/服务−1） | `GetConditionChangeFromMaintenance` L767、L787 |
+| 13 | 随机事件 | `EventManager.TryTriggerEvent()` → money/trust/condition/passenger 增量 | L973-980 |
+| 14 | 沙能竞争 | `SandRivalManager.DailyUpdate()` → `CheckForAction()` → 信任Δ+渗透Δ+叙事钩子 `OnSandRivalAction` | L982-996 |
+| 15 | 收尾 | `ClampStats` → 月度累计（收入含补贴/支出三项）→ StatsManager 记账 → 月报(Day%30) → `CheckBankruptcy` → 日变化快照 | L998-1044 |
+
+**月薪表**（level 1-5，索引−1）：
+- 驾驶 driving：18000 / 22000 / 28000 / 35000 / 45000
+- 维修 repair：14000 / 17000 / 22000 / 28000 / 35000
+- 管理 management：12000 / 15000 / 18000 / 22000 / 28000
+- 服务 service：10000 / 12000 / 14000 / 17000 / 22000
+
+**常量总表**：TicketPrice=35、CapacityPerCar=30、OvercrowdThreshold=1.2、DailyDistancePerTrip=23、FuelConsumptionPer100km=58.5、FuelPrice=15、MonthlyWage=90000、ConductorLevel=2、MechanicLevel=2、CarUpgradeCost=100000、startMoney=40000（难度 50000/30000）。
+
+**边界规则**：
+- 破产：资金≤0 → 政府救助注入 5000（带政治压力叙事），`bankruptcyCount` 累计，二次破产条件收紧（`GameData.cs` L1235 起）
+- 月净利 < −50000 → 财政压力警告；月报 Day%30 生成，月度净利≥100000 → 成就
+- Trust / TrainCondition / ExpectedPassengers 均过 `ClampStats` 截断
+
+---
+
+## 二、现状缺口（批1 需要补的接线）
+
+| # | 缺口 | 事实 | 处理 |
+|---|---|---|---|
+| G1 | **OrderManager 未接入** | `AdvanceDay` 全程无 OrderManager 调用；`OrderManager.cs:223` 自带 `Money<5000 → "freight"` 判定但无人驱动 | 接入：日订单结算在步骤 5.5（工资前）执行，产出并入步骤 10 净收入；订单收入计入 `CurrentMonth.TotalRevenue` |
+| G2 | **CrewManager 日更未接入** | 工资只读月薪表；疲劳/忠诚/技能成长/师徒加成的日推进（CrewManager 内已实现）无人调用 | 接入：步骤 9.5 调 CrewManager 日更；**工资公式保持读技能等级**（成长次日生效，避免同日双算） |
+| G3 | **SandRival 已接入** | 步骤 14 已在跑（audit 报告「未接入」为过期表述） | 不动；若批1 实现时发现重复调用点，删新不删旧 |
+| G4 | **6 个难度乘数未被公式消费** | `incomeMultiplier / costMultiplier / passengerMultiplier / cargoMultiplier / sandPriceMultiplier / eventFrequency` 在 NewGameSetupUI 设置、GameConfig 存储，但 `GameData` 公式**一处都没读** | 按第三节乘数表接入 |
+| G5 | **OrderManager 资金门槛语义** | `Money<5000 → freight` 是「没钱才接货运」的策略判定 | 接入时明确：这是订单推荐规则不是硬约束，参数化到表 |
+
+---
+
+## 三、T3 改造：乘数接入规范（G4）
+
+接入原则：**乘数只乘在「汇总出口」，不进分项**，避免叠加爆炸与取整漂移。
+
+| 乘数 | 乘点 | 公式改造 |
+|---|---|---|
+| `passengerMultiplier` | 步骤 2 客流出口 | `p = round(p × passengerMultiplier)`（容量约束之前） |
+| `cargoMultiplier` | 步骤 5 货运出口 | `freight = round(freight × cargoMultiplier)` |
+| `incomeMultiplier` | 步骤 10 净收入·收入侧 | `net = (dailyRevenue × incomeMultiplier) − costs + subsidy`，`dailyRevenue` 分项不变 |
+| `costMultiplier` | 步骤 10 净收入·成本侧 | `cost = (fuel + maintenance + wage) × costMultiplier`，再取整 |
+| `sandPriceMultiplier` | 沙能事件/交易（非本循环） | 交 SandRivalManager 与市场事件消费；AdvanceDay 不读 |
+| `eventFrequency` | 步骤 13 | 传入 `EventManager.TryTriggerEvent` 的概率门（若 EventManager 暂无入口，先在 AdvanceDay 做 `Random.value < freq` 门控，回执注明） |
+
+取整规范：**所有乘法后统一 `Mathf.RoundToInt` 一次**；分项保持整数沙币，不做级联四舍五入。
+
+---
+
+## 四、T3 改造：结算环目标结构（给批1 的实现契约）
+
+```
+AdvanceDay():
+  1 trips
+  2 客流(×passengerMultiplier) → 容量约束
+  3-5 收入(客运/货运×cargoMultiplier)
+  5.5 [新] OrderManager.DailySettle() → orderIncome      ← G1
+  6-8 燃料/工资/维护(×costMultiplier 于步骤10统一乘)
+  9 补贴
+  9.5 [新] CrewManager.AdvanceDay() → 疲劳/成长/忠诚日更  ← G2（不改当日工资）
+  10 net = (dailyRevenue×incomeMultiplier + orderIncome) − costs×costMultiplier + subsidy
+  11-12 信任/车况 delta 链（现状不变）
+  13 事件(×eventFrequency 门控)
+  14 沙能（现状，勿重复接）
+  15 收尾（月度累计的 TotalRevenue 记 dailyRevenue×incomeMultiplier+orderIncome+subsidy，与净收入口径一致）
+```
+
+**初始化与防双倍**（配合 B-2/B-3 的 VNExitData 注入）：
+- `OrderManager` / `CrewManager` 初始化一次（场景启动），**注入 VNExitData 不得触发二次 Reset**
+- 注入后的首个 `AdvanceDay`：正常走全流程，不得出现「注入资金又被 ResetState 清零」或「CrewManager 注册与 G2 日更同日叠加」
+- 验证路径（批2 交付物）：编辑器内 ①新游戏 → Day1 结算 → 记录 money/trust/condition；②带序章 VNExitData 进入 → 首日结算 → 注入值只被净收入改动
+
+---
+
+## 五、验收清单（我终审用）
+
+1. 分项公式与第一节「现状」逐行比对**无意外改动**（手感不变）
+2. G1/G2/G4 全部接上，G3 无重复调用
+3. 乘数只出现在第三节规定的乘点；编辑器改 difficulty 后 6 个乘数逐一生效可见
+4. 月度累计口径与净收入一致（收入侧含 orderIncome 与 incomeMultiplier）
+5. 编译零错 + 一天推进冒烟 + 序章注入防双倍路径回执
+6. 本表未尽事项（如 OrderManager 具体订单表、沙价乘数的市场侧消费）列入回执「遗留设计点」，不擅自扩权
