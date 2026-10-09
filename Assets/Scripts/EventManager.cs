@@ -43,7 +43,7 @@ public static class EventManager
         resourcePattern = seed.resourceDistribution.pattern;
     }
 
-    public static GameEvent TryTriggerEvent()
+    public static GameEvent TryTriggerEvent(float frequencyMultiplier)
     {
         if (eventTemplates == null || eventTemplates.Count == 0)
             return null;
@@ -56,8 +56,8 @@ public static class EventManager
 
         foreach (GameEvent evt in eventTemplates)
         {
-            // G9: 根据资源分布 pattern 修正事件触发概率
-            float adjustedProb = evt.probability * GetPatternMultiplier(evt.type);
+            // G9: 根据资源分布 pattern 与难度频率乘数修正事件触发概率（G4）
+            float adjustedProb = evt.probability * GetPatternMultiplier(evt.type) * frequencyMultiplier;
             if (Random.Range(0f, 1f) < adjustedProb)
             {
                 currentEvent = evt;
@@ -66,6 +66,11 @@ public static class EventManager
             }
         }
         return null;
+    }
+
+    public static GameEvent TryTriggerEvent()
+    {
+        return TryTriggerEvent(1.0f);
     }
 
     /// <summary>G9: 根据资源分布 pattern 和事件类型，返回概率修正系数。</summary>

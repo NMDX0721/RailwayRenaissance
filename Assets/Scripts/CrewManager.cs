@@ -710,6 +710,15 @@ public static class CrewManager
     }
 
     /// <summary>
+    /// 每日推进接口（G2），供 AdvanceDay 步骤 9.5 调用。
+    /// 推进员工疲劳、技能经验成长、忠诚度与冷却；不改动当日工资（成长次日生效）。
+    /// </summary>
+    public static List<CrewMember> AdvanceDay(bool wagePaidToday = true)
+    {
+        return DailyUpdate(wagePaidToday);
+    }
+
+    /// <summary>
     /// 每日更新：疲劳/技能经验 + 忠诚度变化 + 离职触发。
     /// </summary>
     /// <param name="wagePaidToday">工资是否按时发放（默认 true）</param>

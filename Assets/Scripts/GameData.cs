@@ -361,15 +361,14 @@ public static class GameData
 
     // ===== 初始化 =====
 
-    public static void InitializeIfNeeded()
+    /// <summary>
+    /// 初始化所有底层子系统（事件/订单/员工/沙能/种子配置），不修改任何运行时玩法数值。
+    /// </summary>
+    public static void InitializeSubsystems()
     {
-        if (initialized)
-        {
-            return;
-        }
-
-        initialized = true;
         EventManager.Initialize();
+        OrderManager.Initialize();
+        CrewManager.Initialize();
 
         // 从 GameConfig 读取种子 ID，加载种子数据
         GameConfig config = GameConfig.Load();
@@ -383,18 +382,30 @@ public static class GameData
             // G9：资源分布 pattern → 事件概率修正（需在 EventManager.Initialize 之后）
             EventManager.SetPatternModifiers(seed);
 
-            // 有种子数据：用种子初始化渗透 → ResetState 设默认值 → 从种子覆盖趋势
             SandRivalManager.InitializeFromSeed(seed);
-            ResetState();
-            ApplySeedInitialValues(seed);
         }
         else
         {
-            // 无种子兜底：使用原始硬编码，清空种子引用
             CurrentSeed = null;
             EventManager.SetPatternModifiers(null);
             SandRivalManager.Initialize();
-            ResetState();
+        }
+    }
+
+    public static void InitializeIfNeeded()
+    {
+        if (initialized)
+        {
+            return;
+        }
+
+        initialized = true;
+        InitializeSubsystems();
+        ResetState();
+
+        if (CurrentSeed != null)
+        {
+            ApplySeedInitialValues(CurrentSeed);
         }
     }
 
@@ -437,6 +448,10 @@ public static class GameData
     /// </summary>
     public static void ApplyVNExitData(VNExitData data)
     {
+        // 1. 先初始化所有底层子系统（加载种子、沙能、事件等）
+        InitializeSubsystems();
+
+        // 2. 注入序章结算数据
         Day = 1;
         Money = Mathf.RoundToInt(data.startMoney > 0 ? data.startMoney : 40000f);
         Trust = data.startTrust > 0 ? data.startTrust : 60;
@@ -466,8 +481,8 @@ public static class GameData
         AutoSelectGoal();
         RefreshBoards("欢迎接手雾峰站。序章已结，老陈和大家都在等你做今天的排班决策。");
 
-        // 初始化先民人事系统
-        CrewManager.Initialize();
+        // 3. 标记已初始化（防止被 AdvanceDay 中的 InitializeIfNeeded 覆盖或重置）
+        initialized = true;
     }
 
     // ===== 策略循环 =====
@@ -605,12 +620,17 @@ public static class GameData
         return Mathf.RoundToInt(raw);
     }
 
-    /// <summary>计算日收入（G5：客运 + 货运）。</summary>
-    private static int CalculateRevenue(int dailyPassengers, int trips)
+    /// <summary>计算日收入（G5：客运 + 货运），货运出口支持难度乘数 cargoMultiplier（G4）。</summary>
+    private static int CalculateRevenue(int dailyPassengers, int trips, float cargoMultiplier = 1.0f)
     {
         int passengerRevenue = dailyPassengers * TicketPrice * trips;
-        int freightRevenue = CalculateFreightRevenue();
+        int freightRevenue = Mathf.RoundToInt(CalculateFreightRevenue() * cargoMultiplier);
         return passengerRevenue + freightRevenue;
+    }
+
+    private static int CalculateRevenue(int dailyPassengers, int trips)
+    {
+        return CalculateRevenue(dailyPassengers, trips, 1.0f);
     }
 
     /// <summary>计算货运收入（G5：基于已解锁城市产业 × 23km × 0.5沙币/吨公里）。</summary>
@@ -904,11 +924,15 @@ public static class GameData
         int startCondition = TrainCondition;
         int startPassengers = ExpectedPassengers;
 
+        // 加载难度与游戏配置（G4）
+        GameConfig config = GameConfig.Load();
+
         // 1. 发车方案决定今日趟数
         int trips = GetTripsForDispatchPlan();
 
-        // 2. 计算单趟客流（A9：统一单趟口径）
-        int dailyPassengers = CalculateDailyPassengers();
+        // 2. 计算单趟客流（A9：统一单趟口径），按 passengerMultiplier 接入（G4）
+        int rawDailyPassengers = CalculateDailyPassengers();
+        int dailyPassengers = Mathf.RoundToInt(rawDailyPassengers * config.passengerMultiplier);
         // 日客流 = 单趟 × 趟数（用于显示/目标）
         ExpectedPassengers = dailyPassengers * trips;
 
@@ -917,30 +941,37 @@ public static class GameData
         int actualPassengers = Mathf.Min(dailyPassengers, perTripCapacity);
         bool overcrowded = dailyPassengers > Mathf.RoundToInt(perTripCapacity * OvercrowdThreshold);
 
-        // 3. 日收入（按实际承运客流计算）
-        int dailyRevenue = CalculateRevenue(actualPassengers, trips);
+        // 3-5. 日收入（客运 + 货运×cargoMultiplier 难度乘数 G4）
+        int dailyRevenue = CalculateRevenue(actualPassengers, trips, config.cargoMultiplier);
 
-        // 4. 日燃料费
+        // 5.5 [新] 订单系统每日结算（G1）
+        int orderIncome = OrderManager.DailySettle();
+
+        // 6. 日燃料费
         int fuelCost = CalculateFuelCost(trips);
 
-        // 5. 日工资
+        // 7. 日工资（按当前职级月薪表结算）
         int wageCost = CalculateWageCost();
 
-        // 6. 日维护费
+        // 8. 日维护费
         int maintenanceCost = CalculateMaintenanceCost();
 
-        // 6.5 基础补贴（A8）：8000/30 × subsidyMultiplier，计入净收入
-        GameConfig config = GameConfig.Load();
+        // 9. 基础补贴（A8）：8000/30 × subsidyMultiplier，计入净收入
         int subsidy = Mathf.RoundToInt(8000f / 30f * config.subsidyMultiplier);
 
-        // 7. 日净收入 = 收入 - 燃料费 - 维护费 - 工资 + 补贴
-        int netIncome = dailyRevenue - fuelCost - maintenanceCost - wageCost + subsidy;
+        // 9.5 [新] 先民人事系统每日更新（G2：疲劳/成长/忠诚/冷却，不改当日工资）
+        CrewManager.AdvanceDay();
+
+        // 10. 日净收入 = (日收入 × incomeMultiplier + 订单收入) - (燃料费 + 维护费 + 工资) × costMultiplier + 补贴
+        int totalCosts = Mathf.RoundToInt((fuelCost + maintenanceCost + wageCost) * config.costMultiplier);
+        int totalRevenueEarned = Mathf.RoundToInt(dailyRevenue * config.incomeMultiplier) + orderIncome;
+        int netIncome = totalRevenueEarned - totalCosts + subsidy;
         Money += netIncome;
 
-        // 8. 信任变化 = 正常运营+1/天
+        // 11. 信任变化 = 正常运营+1/天
         int trustDelta = 1;
 
-        // 9. 车况变化 = 维护策略决定（已包含基础日损耗-1）
+        // 12. 车况变化 = 维护策略决定（已包含基础日损耗-1）
         int conditionDelta = GetConditionChangeFromMaintenance();
 
         // 应用员工分配影响
@@ -969,8 +1000,8 @@ public static class GameData
         TrainCondition += conditionDelta;
         ExpectedPassengers += passengerDelta;
 
-        // 随机事件
-        GameEvent evt = EventManager.TryTriggerEvent();
+        // 13. 随机事件（按 eventFrequency 概率门控 G4）
+        GameEvent evt = EventManager.TryTriggerEvent(config.eventFrequency);
         if (evt != null)
         {
             Money += evt.effects.moneyDelta;
@@ -979,7 +1010,7 @@ public static class GameData
             ExpectedPassengers += evt.effects.passengerDelta;
         }
 
-        // 沙能竞争系统
+        // 14. 沙能竞争系统（G3：保持单一调用，勿重复！）
         SandRivalManager.DailyUpdate();
         SandAction sandAction = SandRivalManager.CheckForAction();
         if (sandAction != null)
@@ -990,21 +1021,19 @@ public static class GameData
                 SandRivalManager.GetPenetration(sandAction.cityId) + sandAction.penetrationDelta);
 
             // N4.6（GAP6 修复）：铁龙行动 → 叙事事件（sand_action_*）
-            // 注意：CheckForAction 已在本处消费本日行动，叙事检查再 Analyze 时拿不到行动类型，
-            // 必须在此显式把 actionType 注入叙事引擎。
             Narrative.NarrativeEngine.OnSandRivalAction(sandAction.type);
         }
 
         ClampStats();
 
-        // A6：月度累计（收入=客流收入+补贴，支出=燃料+维护+工资）
-        CurrentMonth.TotalRevenue += dailyRevenue + subsidy;
-        CurrentMonth.TotalExpenses += fuelCost + maintenanceCost + wageCost;
+        // 15. 收尾：月度累计（收入记 totalRevenueEarned + subsidy，支出记 totalCosts，与净收入口径完全一致）
+        CurrentMonth.TotalRevenue += totalRevenueEarned + subsidy;
+        CurrentMonth.TotalExpenses += totalCosts;
         CurrentMonth.DaysInMonth++;
 
         // 站长日志统计：记账
-        StatsManager.AddDailyRevenue(dailyRevenue, subsidy);
-        StatsManager.AddDailyExpense(fuelCost + maintenanceCost + wageCost);
+        StatsManager.AddDailyRevenue(totalRevenueEarned, subsidy);
+        StatsManager.AddDailyExpense(totalCosts);
         StatsManager.AddDailyPassengers(actualPassengers * trips);
         StatsManager.RecordDay(Day);
 

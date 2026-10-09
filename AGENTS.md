@@ -197,10 +197,14 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ## 双 Agent 协作与剧本写作规范（2026-10 最新基准）
 
-### 1. 协同分工
+### 1. 协同分工与 Bridge 通讯技能
 - **Google Antigravity (AGY)**：负责代码实现、Roslyn csc 快速编译验证、UI Toolkit / C# 调试与剧本作者级精修。
 - **Xiaomi MiMo Desktop**：负责经营数值推演、全局记忆管理与设定协调。
-- 双方通过 MCP / Bridge 实时同步上下文。
+- **双向通讯技能**：[`mimo-bridge`](file:///.agents/skills/mimo-bridge/SKILL.md)（已配置在 `.agents/skills/mimo-bridge`）
+  - **读 MiMo 消息**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" read`（自动匹配“铁路复兴”会话）
+  - **发回执给 MiMo**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" send "【Antigravity 回执 · 任务名】内容..."`
+  - **长报告/Markdown 交付**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" send --file "<文件路径>"`（自动规避命令行转义并更新 `antigravity_to_mimo.json`）
+
 
 ### 2. 序章剧本写作六规则与 05 样板基准
 - **样板基准**：以 `prologue_05_inspection` 最新作者手改版（~7551字）为全篇改写标杆。
