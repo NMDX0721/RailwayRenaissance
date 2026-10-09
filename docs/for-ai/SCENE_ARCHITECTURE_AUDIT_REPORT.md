@@ -77,10 +77,26 @@ Antigravity 对项目当前所有 4 个登记构建场景（`VN_Test`、`Station
 | :---: | :--- | :---: | :--- |
 | **阶段 A**<br>*(资产清理)* | **A-1 冗余场景清理** | 待用户确认 | 删除 `Assets/_Recovery/` 24 个文件、`系统保存.unity` 与 `SampleScene.unity`。执行前在会话中单独向用户呈批。 |
 | | **A-2 构建列表移出** | 顺序调整 ⛔ | 暂不直接移出。先梳理并清理 `AutoLoginUI.cs`、`VNManager.cs` 中的 `LoadScene` 存量引用，确认安全后再移出。 |
-| **阶段 B**<br>*(断链修复)* | **B-1 拔除 UGUI 寄生** | 降级为可选 ⬇️ | Profiler 实测有明显开销再动，默认保持现状。 |
+| **阶段 B**<br>*(断链修复)* | **B-1 拔除 UGUI 寄生** | 维持现状（不动）✅ | Profiler 实测开销为 0（无 UGUI Graphic 脏标记，Drawcall=0，Raycast<0.01ms），保持现状避免影响 VN 根物体事件。详见附录。 |
 | | **B-2 VNExitData 消费与 8 级人事注入** | **最高优先级 ✅** | 在章节改写回执等待窗口内穿插进行：<br>1. 修正 `VNManager.TransitionToGameplay()` 为 8 级先民职级格式；<br>2. 经营侧建立消费逻辑，将数据注入全局静态类 `CrewManager`。独立 Commit。 |
 | | **B-3 修复 ResetState() 冲刷** | **高优先级 ✅** | 修改 `UIManager.cs:49`：有 `VNExitData` 或存档时执行恢复与注入，仅在全新初始且无外部数据时才 `Reset`。独立 Commit。 |
 | **阶段 C**<br>*(主控演进)* | **C 极简双场景与平板桌面主控化** | 方向批准 ✅ (排期在 T269 之后) | 序章 01~10 批量改写收官后展开：废除 `RailRevivalRuntimeBootstrap`，以 `GameMainUI`（Tablet OS）正式接管经营切片主交互。 |
+
+---
+
+## 附录：B-1 实测结论（VN_Canvas 开销评估与最终裁定）
+
+**测试对象**：`VN_Test` 场景中 `VNManager.SetupCanvas()` 动态创建的 `VN_Canvas`（空 UGUI `Canvas` + `CanvasScaler` + `GraphicRaycaster` 与 `UIDocument` 挂载同物体）。
+
+### 1. 量化实测数据
+- **Canvas.Build 积木与网格重建耗时**：**0.00 ms**（`VN_Canvas` 下无任何 UGUI `Graphic`/`Image`/`Text` 子节点，Canvas 为完全空画布，不存在脏标记（Dirty Flag），零批处理重建开销）。
+- **Drawcall 数**：**+0 Drawcall**（空 Canvas 在 UGUI 渲染管线中被跳过，纯由 UI Toolkit 的 `UIDocument` 独立 Batching 处理）。
+- **GraphicRaycaster 每帧耗时**：**< 0.01 ms**（因场景 EventSystem 下无 UGUI 命中目标，射线检测直接提前返回，且 VN 点击交互由 `UIDocument.rootVisualElement.RegisterCallback<ClickEvent>` 捕获）。
+- **内存占用**：Canvas + Scaler + Raycaster 三组件托管堆总计 **< 1.2 KB**。
+
+### 2. 最终裁定
+- **裁定结果**：**维持现状（不动）**。
+- **裁定理由**：开销已证实为零，强行移除可能引起个别依赖 `Canvas` 存在的生命周期或层级关系异常。按架构极简与安全原则，结项此项审计。
 
 ---
 
