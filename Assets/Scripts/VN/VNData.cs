@@ -24,6 +24,7 @@ public class SceneData
     public string transition; // "fade", "slideLeft", "slideRight", ""
     public CharacterEntry[] chars; // 场景级默认立绘（可选）
     public string e;              // 场景级默认表情（可选）
+    public string phone;          // 非空=通话中，显示通话条；值可为对方名字（如 "老陈"）
     public DialogueEntry[] d;
 }
 
