@@ -2,9 +2,19 @@
   "id": "prologue_03_journey",
   "scenes": [
     {
-      "bg": "border_town",
-      "bgm": "first_light",
+      "bg": "china_sky",
+      "bgm": "cloud_rail",
       "transition": "fade",
+      "chars": [
+        {
+          "name": "lin_biaohan",
+          "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
+        }
+      ],
       "d": [
         {
           "t": "n",
@@ -56,23 +66,7 @@
             "suiyue:normal"
           ],
           "e": "excited"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "supply_station",
-      "bgm": "calm",
-      "d": [
         {
           "t": "n",
           "text": "车辆缓缓降落，停在补给站。"
@@ -122,20 +116,7 @@
           "s": "林彪悍",
           "text": "谢谢。",
           "e": "gentle"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
-        }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
-      "transition": "slideLeft",
-      "d": [
+        },
         {
           "t": "n",
           "text": "补给完成，车辆继续起飞。"
@@ -165,7 +146,12 @@
           "text": "飞了这么久...看看新闻吧。",
           "e": "curious"
         }
-      ],
+      ]
+    },
+    {
+      "bg": "cabin_interior",
+      "bgm": "mystery",
+      "transition": "fade",
       "chars": [
         {
           "name": "lin_biaohan",
@@ -175,11 +161,7 @@
           "name": "suiyue",
           "pos": "right"
         }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "starlit_rails",
+      ],
       "d": [
         {
           "t": "n",
@@ -427,7 +409,20 @@
           "t": "cg",
           "text": "cg_arrest",
           "size": "full"
-        },
+        }
+      ]
+    },
+    {
+      "bg": "border_town",
+      "bgm": "determination",
+      "transition": "fade",
+      "chars": [
+        {
+          "name": "lin_biaohan",
+          "pos": "left"
+        }
+      ],
+      "d": [
         {
           "t": "n",
           "text": "林彪悍被从车里拽了出来，按在引擎盖上。钢制的引擎盖被太阳晒得发烫，贴上皮肤的一瞬间，他忍不住倒吸一口冷气。有人在他身上快速拍了一遍，翻出了他那张金日成综合大学的学生证。"
@@ -1026,22 +1021,16 @@
           "t": "n",
           "text": "林彪悍靠在座椅上，窗外的光线渐渐暗了下来。"
         }
-      ],
-      "chars": [
-        {
-          "name": "suiyue",
-          "pos": "center"
-        }
       ]
     },
     {
       "bg": "tea_house",
       "bgm": "calm",
-      "phone": "1",
+      "transition": "fade",
       "chars": [
         {
           "name": "jiaying_xu",
-          "pos": "center"
+          "pos": "right"
         }
       ],
       "d": [
@@ -1314,24 +1303,7 @@
         {
           "t": "n",
           "text": "窗外，平壤的夜正慢慢亮起来。她桌面一角，那张待签的合约背面，用钢笔写了四个小字：『保本。复利。』——那是她自己的规矩。"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "cloud_rail",
-      "phone": "嘉颖徐",
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ],
-      "d": [
         {
           "t": "n",
           "text": "飞行途中，平板突然响起。来电显示：嘉颖徐。"
@@ -1413,7 +1385,18 @@
     },
     {
       "bg": "cabin_interior_night",
-      "bgm": "melancholy",
+      "bgm": "starlit_rails",
+      "transition": "fade",
+      "chars": [
+        {
+          "name": "lin_biaohan",
+          "pos": "left"
+        },
+        {
+          "name": "suiyue",
+          "pos": "right"
+        }
+      ],
       "d": [
         {
           "t": "n",
@@ -1488,19 +1471,7 @@
         {
           "t": "n",
           "text": "林彪悍笑出了声。窗外，星星一颗接一颗地亮了起来。"
-        }
-      ],
-      "chars": [
-        {
-          "name": "suiyue",
-          "pos": "center"
-        }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
-      "d": [
+        },
         {
           "t": "n",
           "text": "林彪悍刷着平板，一条旧新闻跳了出来。"
@@ -1518,19 +1489,7 @@
           "s": "林彪悍",
           "text": "岁月，以前这条航线，有这么多车吗？",
           "e": "curious"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
-        }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
-      "d": [
+        },
         {
           "t": "n",
           "text": "又刷到一篇。"
@@ -1559,24 +1518,7 @@
           "s": "岁月",
           "text": "我的数据库里存着全球铁路的完整历史哦！包括您爷爷守护的那条线！",
           "e": "excited"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "hebei_town",
-      "bgm": "calm",
-      "transition": "fade",
-      "d": [
         {
           "t": "n",
           "text": "Day 2 下午"
@@ -1604,23 +1546,7 @@
           "s": "林彪悍",
           "text": "好。",
           "e": "smile"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "night_cargo",
-      "d": [
         {
           "t": "n",
           "text": "补给完成，车辆继续起飞。"
@@ -1680,23 +1606,7 @@
           "reactions": [
             "suiyue:gentle"
           ]
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "night_cargo",
-      "d": [
         {
           "t": "d",
           "s": "岁月",
@@ -1778,23 +1688,7 @@
           "reactions": [
             "lin_biaohan:serious"
           ]
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "night_cargo",
-      "d": [
         {
           "t": "d",
           "s": "林彪悍",
@@ -1836,23 +1730,7 @@
           "reactions": [
             "lin_biaohan:serious"
           ]
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior_night",
-      "bgm": "mystery",
-      "d": [
         {
           "t": "n",
           "text": "Day 2 夜晚"
@@ -1923,23 +1801,7 @@
           "t": "d",
           "s": "岁月",
           "text": "承载量！一列火车能运一千人，或者几千吨货——沙能飞行器做不到！所以铁路不会彻底消失，它只会回到自己最擅长的领域！"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior_night",
-      "bgm": "mystery",
-      "d": [
         {
           "t": "d",
           "s": "林彪悍",
@@ -1988,7 +1850,12 @@
           "s": "岁月",
           "text": "比如……您爷爷守了一辈子的那条线。"
         }
-      ],
+      ]
+    },
+    {
+      "bg": "cabin_interior",
+      "bgm": "melancholy",
+      "transition": "fade",
       "chars": [
         {
           "name": "lin_biaohan",
@@ -1998,11 +1865,7 @@
           "name": "suiyue",
           "pos": "right"
         }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
+      ],
       "d": [
         {
           "t": "n",
@@ -2046,23 +1909,7 @@
           "t": "d",
           "s": "岁月",
           "text": "比如……铁轨还在那里，等着您回去呢。"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "wheels_joke",
-      "d": [
         {
           "t": "c",
           "text": "还有一天半的路程。林彪悍对岁月说——",
@@ -2078,13 +1925,7 @@
               "setValue": "trip_activity=story_first"
             }
           ]
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "chollima_ride",
-      "d": [
+        },
         {
           "t": "d",
           "s": "岁月",
@@ -2145,19 +1986,7 @@
               "next": 19
             }
           ]
-        }
-      ],
-      "chars": [
-        {
-          "name": "suiyue",
-          "pos": "center"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "night_cargo",
-      "d": [
+        },
         {
           "t": "d",
           "s": "岁月",
@@ -2190,19 +2019,7 @@
           "t": "d",
           "s": "岁月",
           "text": "我的音乐库把它分在『群众文艺经典』类目下——轻快曲目哦！"
-        }
-      ],
-      "chars": [
-        {
-          "name": "suiyue",
-          "pos": "center"
-        }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
-      "d": [
+        },
         {
           "t": "n",
           "text": "继续飞行，林彪悍又刷到一篇新闻。"
@@ -2237,23 +2054,7 @@
           "t": "d",
           "s": "岁月",
           "text": "不会的！它会变成另一种形态——就像您接下来要做的事一样！"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "china_sky",
-      "bgm": "cloud_rail",
-      "d": [
         {
           "t": "n",
           "text": "林彪悍放下平板，看着窗外的云海。"
@@ -2305,24 +2106,7 @@
         {
           "t": "n",
           "text": "林彪悍沉默了很久。"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "henan_town",
-      "bgm": "calm",
-      "transition": "fade",
-      "d": [
         {
           "t": "n",
           "text": "Day 3 傍晚"
@@ -2350,23 +2134,7 @@
           "s": "林彪悍",
           "text": "好。",
           "e": "smile"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "night_cargo",
-      "d": [
         {
           "t": "n",
           "text": "补给完成，车辆继续起飞。"
@@ -2413,23 +2181,7 @@
           "s": "林彪悍",
           "text": "岁月...谢谢你。",
           "e": "gentle"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
         },
-        {
-          "name": "suiyue",
-          "pos": "right"
-        }
-      ]
-    },
-    {
-      "bg": "cabin_interior",
-      "bgm": "melancholy",
-      "d": [
         {
           "t": "n",
           "text": "Day 4 上午"
@@ -2524,16 +2276,6 @@
           "t": "d",
           "s": "岁月",
           "text": "嗯！您……也不会放弃的！"
-        }
-      ],
-      "chars": [
-        {
-          "name": "lin_biaohan",
-          "pos": "left"
-        },
-        {
-          "name": "suiyue",
-          "pos": "right"
         }
       ]
     }
