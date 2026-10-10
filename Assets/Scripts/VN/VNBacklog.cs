@@ -50,6 +50,7 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.style.right = 0;
         backlogPanel.style.bottom = 0;
         backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.85f);
+        backlogPanel.style.overflow = Overflow.Hidden;
         // 磨砂：半透明底 + USS backdrop-filter（引擎不支持该属性时静默忽略）
         var frosted = Resources.Load<StyleSheet>("UI/frosted");
         if (frosted != null)
@@ -177,7 +178,7 @@ public class VNBacklog : MonoBehaviour
         sbBlurStrip.style.position = Position.Absolute;
         sbBlurStrip.style.left = 0;
         sbBlurStrip.style.right = 0;
-        sbBlurStrip.style.top = 0;
+        sbBlurStrip.style.top = 82;                          // 首帧兜底≈header 高（20+40+20+2）；布局后同步为 scroll 顶
         sbBlurStrip.style.height = 70;
         sbBlurStrip.pickingMode = PickingMode.Ignore;   // 点击穿透：不挡跳转按钮
         sbBlurStrip.AddToClassList("sb-blur-strip");
@@ -820,7 +821,7 @@ public class VNBacklog : MonoBehaviour
     private float SbThumbHeight()
     {
         float viewH = backlogScroll.contentRect.height;
-        float contentH = backlogScroll.contentContainer.layout.height;
+        float contentH = Mathf.Max(viewH, ContentHeight());
         if (contentH <= 0f) return 9999f;
         return sbTrack.contentRect.height * (viewH / contentH);
     }
@@ -850,7 +851,9 @@ public class VNBacklog : MonoBehaviour
             float trkH = Mathf.Max(40f, sh - 22f - DepotH);
             sbTrack.style.height = trkH;
             if (sbClip != null) sbClip.style.height = trkH + DepotH;   // 轨道+机库高：出库起点在此底缘
-            sbDepot.style.top = sy + sh - DepotH;
+            float panelH = backlogPanel.resolvedStyle.height;
+            float safeTop = panelH > 0f ? Mathf.Min(sy + sh - DepotH, panelH - DepotH - 16f) : (sy + sh - DepotH);
+            sbDepot.style.top = safeTop;
             // 靠右防裁切（right 10→14）；机库宽36 居中于轨道(16) → right = 14-(36-16)/2 = 4
             sbUp.style.right = 14; sbTrack.style.right = 14; sbDepot.style.right = 4;
             // 溢出态道砟收到 -6：不爬上顶端车挡区（idle 态保持 -22）
@@ -860,7 +863,9 @@ public class VNBacklog : MonoBehaviour
         else
         {
             // 驻留景几何：地面带(粗土帽+夯实带) → 轨道260 → 机库56（gap 4→0 直贴门面）
-            sbDepot.style.top = sy + sh - DepotH;
+            float panelH = backlogPanel.resolvedStyle.height;
+            float safeTop = panelH > 0f ? Mathf.Min(sy + sh - DepotH, panelH - DepotH - 16f) : (sy + sh - DepotH);
+            sbDepot.style.top = safeTop;
             float trackTop = sy + sh - DepotH - IdleTrackH;
             sbTrack.style.top = trackTop;
             sbTrack.style.height = IdleTrackH;
