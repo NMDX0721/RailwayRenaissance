@@ -39,6 +39,18 @@ public class MainStoryUI : MonoBehaviour
         Instance.overlay.style.display = DisplayStyle.Flex;
     }
 
+    public static void StartEpisodeStatic(string scriptName)
+    {
+        if (Instance == null)
+        {
+            var go = new GameObject("MainStoryUI");
+            DontDestroyOnLoad(go);
+            Instance = go.AddComponent<MainStoryUI>();
+            Instance.Init();
+        }
+        Instance.StartEpisode(scriptName);
+    }
+
     private void Init()
     {
         gameFont = Resources.Load<Font>("Fonts/zpix");
@@ -443,6 +455,20 @@ public class MainStoryUI : MonoBehaviour
 
     private void StartEpisode(string scriptName)
     {
+        // 闸门补漏：未过 Day0 答题闸门者，禁止直跳进入后续剧幕（F3）
+        if (scriptName != "prologue_01_news" && VNManager.NeedsQuizForSkipStatic())
+        {
+            Debug.LogWarning("[MainStoryUI] StartEpisode blocked: Day 0 quiz gate not passed for " + scriptName);
+            // 自动重定向至序章首幕或提示
+            PlayerPrefs.SetString("VN_ReplayScript", "prologue_01_news");
+            PlayerPrefs.SetInt("VN_AutoLoad", 0);
+            PlayerPrefs.SetInt("VN_FromGameMain", 1);
+            PlayerPrefs.Save();
+            Hide();
+            SceneManager.LoadScene("VN_Test");
+            return;
+        }
+
         PlayerPrefs.SetString("VN_ReplayScript", scriptName);
         PlayerPrefs.SetInt("VN_AutoLoad", 0);
         // 从经营主界面（GameMainUI → 事务 → 剧情）进入 → 返回时回毛胚主界面

@@ -866,14 +866,14 @@ public class VNManager : MonoBehaviour
         return PlayerPrefs.GetInt("VN_Got0721", 0) != 1;
     }
 
-    private static bool HasPassedDay0Gate()
+    public static bool HasPassedDay0Gate()
     {
         return !NeedsQuizForSkipStatic();
     }
 
-    private static bool NeedsQuizForSkipStatic()
+    public static bool NeedsQuizForSkipStatic()
     {
-        // static 路径仅用于无 script 上下文；ShowConfirmDialog 走实例方法
+        // static 路径用于跨 UI 检查答题闸门状态
         return PlayerPrefs.GetInt("VN_Got0721", 0) != 1;
     }
 
@@ -1750,12 +1750,8 @@ public class VNManager : MonoBehaviour
             ShowEpisodeTitleCard(scriptName, () => ShowCurrentDialogue());
         }
 
-        // 自然到达 Day0（获得0721 起点）后，后续跳过走标准确认而非答题
-        if (scriptName == "prologue_02_day0" || scriptName.StartsWith("prologue_03") ||
-            scriptName.StartsWith("prologue_04") || scriptName.StartsWith("prologue_05") ||
-            scriptName.StartsWith("prologue_06") || scriptName.StartsWith("prologue_07") ||
-            scriptName.StartsWith("prologue_08") || scriptName.StartsWith("prologue_09") ||
-            scriptName.StartsWith("prologue_10") || scriptName.StartsWith("post_"))
+        // 仅当自然流程已完成 prologue_01 或已通过答题时才确认 Day0 闸门
+        if (scriptName == "prologue_02_day0" && PlayerPrefs.GetInt("ArchiveScene_prologue_01_news", 0) == 1)
         {
             if (PlayerPrefs.GetInt("VN_Got0721", 0) != 1)
             {
