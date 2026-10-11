@@ -201,9 +201,10 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 - **Google Antigravity (AGY)**：负责代码实现、Roslyn csc 快速编译验证、UI Toolkit / C# 调试与剧本作者级精修。
 - **Xiaomi MiMo Desktop**：负责经营数值推演、全局记忆管理与设定协调。
 - **双向通讯技能**：[`mimo-bridge`](file:///.agents/skills/mimo-bridge/SKILL.md)（已配置在 `.agents/skills/mimo-bridge`）
-  - **读 MiMo 消息**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" read`（自动匹配“铁路复兴”会话）
-  - **发回执给 MiMo**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" send "【Antigravity 回执 · 任务名】内容..."`
-  - **长报告/Markdown 交付**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" send --file "<文件路径>"`（自动规避命令行转义并更新 `antigravity_to_mimo.json`）
+  - **核心铁律**：一般情况下**绝对不使用消息注入**（不伪装成会话，不向 MiMo 会话发消息），而是**写入交接区**！
+  - **交付与写交接区**：直接写入对应派单/文档末尾（如 `docs/for-ai/dispatch/orders/TXXX.md`），并运行 `node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" handoff --file "<文件路径>"` 静默更新 `antigravity_to_mimo.json`；
+  - **读 MiMo 消息**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" read`（自动匹配“铁路复兴”会话）；
+  - **消息注入（仅限特殊情况）**：仅在用户明确要求时方可使用 `node ... send` 注入消息。
 
 
 ### 2. 序章剧本写作六规则与 05 样板基准
