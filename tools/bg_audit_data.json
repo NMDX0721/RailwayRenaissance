@@ -1,0 +1,733 @@
+[
+  {
+    "file": "aerial_view.png",
+    "base": "aerial_view",
+    "size": "1672x940",
+    "ratio": "1.779",
+    "bytes": 2868562,
+    "md5": "e8731d91799f7e9f44812cabdcd508b5",
+    "corners": {
+      "TL": [
+        103,
+        158,
+        222
+      ],
+      "TR": [
+        171,
+        196,
+        228
+      ],
+      "BL": [
+        45,
+        64,
+        32
+      ],
+      "BR": [
+        11,
+        15,
+        16
+      ],
+      "C": [
+        173,
+        137,
+        68
+      ]
+    },
+    "avg_lum": "100.9",
+    "rgb_avg": "(97,104,97)",
+    "refs": [
+      "prologue_04_arrival.json"
+    ]
+  },
+  {
+    "file": "cabin_interior.png",
+    "base": "cabin_interior",
+    "size": "6688x3764",
+    "ratio": "1.777",
+    "bytes": 3356502,
+    "md5": "dec0e3e3ae7542bd47b4f4f180999e9b",
+    "corners": {
+      "TL": [
+        11,
+        11,
+        3
+      ],
+      "TR": [
+        23,
+        10,
+        2
+      ],
+      "BL": [
+        29,
+        24,
+        18
+      ],
+      "BR": [
+        20,
+        16,
+        13
+      ],
+      "C": [
+        255,
+        185,
+        187
+      ]
+    },
+    "avg_lum": "35.5",
+    "rgb_avg": "(48,31,23)",
+    "refs": [
+      "prologue_02_day0.json",
+      "prologue_03_journey.json"
+    ]
+  },
+  {
+    "file": "cabin_interior_night.png",
+    "base": "cabin_interior_night",
+    "size": "6688x3764",
+    "ratio": "1.777",
+    "bytes": 4984778,
+    "md5": "cd662f81af6bec1b187035c0faf06ef8",
+    "corners": {
+      "TL": [
+        31,
+        30,
+        12
+      ],
+      "TR": [
+        61,
+        26,
+        4
+      ],
+      "BL": [
+        24,
+        24,
+        14
+      ],
+      "BR": [
+        60,
+        49,
+        31
+      ],
+      "C": [
+        1,
+        1,
+        1
+      ]
+    },
+    "avg_lum": "88.7",
+    "rgb_avg": "(108,83,68)",
+    "refs": [
+      "prologue_02_day0.json",
+      "prologue_03_journey.json"
+    ]
+  },
+  {
+    "file": "car_interior.png",
+    "base": "car_interior",
+    "size": "6688x3764",
+    "ratio": "1.777",
+    "bytes": 6188103,
+    "md5": "4bce043c50e3585f7065ead16e22d58d",
+    "corners": {
+      "TL": [
+        171,
+        139,
+        90
+      ],
+      "TR": [
+        175,
+        141,
+        93
+      ],
+      "BL": [
+        35,
+        54,
+        52
+      ],
+      "BR": [
+        42,
+        54,
+        50
+      ],
+      "C": [
+        34,
+        184,
+        175
+      ]
+    },
+    "avg_lum": "113.7",
+    "rgb_avg": "(118,114,100)",
+    "refs": []
+  },
+  {
+    "file": "car_interior_night.png",
+    "base": "car_interior_night",
+    "size": "6688x3764",
+    "ratio": "1.777",
+    "bytes": 5086667,
+    "md5": "0f85ea827af5e3386510a452771ed99f",
+    "corners": {
+      "TL": [
+        6,
+        6,
+        6
+      ],
+      "TR": [
+        9,
+        9,
+        9
+      ],
+      "BL": [
+        2,
+        7,
+        13
+      ],
+      "BR": [
+        4,
+        9,
+        12
+      ],
+      "C": [
+        1,
+        127,
+        139
+      ]
+    },
+    "avg_lum": "35.6",
+    "rgb_avg": "(41,34,31)",
+    "refs": []
+  },
+  {
+    "file": "depot_morning.png",
+    "base": "depot_morning",
+    "size": "1376x768",
+    "ratio": "1.792",
+    "bytes": 1522435,
+    "md5": "bfcb30a7e784c46be878accb3a323bba",
+    "corners": {
+      "TL": [
+        36,
+        35,
+        40
+      ],
+      "TR": [
+        50,
+        36,
+        35
+      ],
+      "BL": [
+        17,
+        14,
+        21
+      ],
+      "BR": [
+        26,
+        31,
+        34
+      ],
+      "C": [
+        102,
+        123,
+        124
+      ]
+    },
+    "avg_lum": "79.0",
+    "rgb_avg": "(90,76,64)",
+    "refs": [
+      "prologue_07_first_repair.json"
+    ]
+  },
+  {
+    "file": "hangar.png",
+    "base": "hangar",
+    "size": "6688x3764",
+    "ratio": "1.777",
+    "bytes": 3407425,
+    "md5": "cca6a4fc41ca41230fdd45ba07e37459",
+    "corners": {
+      "TL": [
+        105,
+        75,
+        64
+      ],
+      "TR": [
+        70,
+        161,
+        232
+      ],
+      "BL": [
+        108,
+        98,
+        99
+      ],
+      "BR": [
+        102,
+        96,
+        96
+      ],
+      "C": [
+        20,
+        39,
+        98
+      ]
+    },
+    "avg_lum": "121.0",
+    "rgb_avg": "(118,122,127)",
+    "refs": [
+      "prologue_02_day0.json"
+    ]
+  },
+  {
+    "file": "mountain_sky.png",
+    "base": "mountain_sky",
+    "size": "1672x940",
+    "ratio": "1.779",
+    "bytes": 3260762,
+    "md5": "dcd75a8de306a5a3ec8b0032f5b3c94d",
+    "corners": {
+      "TL": [
+        252,
+        206,
+        117
+      ],
+      "TR": [
+        97,
+        120,
+        146
+      ],
+      "BL": [
+        43,
+        57,
+        38
+      ],
+      "BR": [
+        26,
+        40,
+        32
+      ],
+      "C": [
+        96,
+        91,
+        95
+      ]
+    },
+    "avg_lum": "104.3",
+    "rgb_avg": "(111,106,78)",
+    "refs": [
+      "prologue_04_arrival.json"
+    ]
+  },
+  {
+    "file": "platform_evening.png",
+    "base": "platform_evening",
+    "size": "1024x571",
+    "ratio": "1.793",
+    "bytes": 775298,
+    "md5": "8fe9f1f0657395e6c5d78fdb5ab30d9b",
+    "corners": {
+      "TL": [
+        18,
+        36,
+        72
+      ],
+      "TR": [
+        21,
+        37,
+        73
+      ],
+      "BL": [
+        19,
+        31,
+        31
+      ],
+      "BR": [
+        10,
+        16,
+        38
+      ],
+      "C": [
+        25,
+        28,
+        33
+      ]
+    },
+    "avg_lum": "50.2",
+    "rgb_avg": "(47,49,64)",
+    "refs": [
+      "prologue_04_arrival.json",
+      "prologue_05_inspection.json"
+    ]
+  },
+  {
+    "file": "platform_morning.png",
+    "base": "platform_morning",
+    "size": "1024x571",
+    "ratio": "1.793",
+    "bytes": 241436,
+    "md5": "be37b1c42a0f4451f146ef6370d0b8b9",
+    "corners": {
+      "TL": [
+        151,
+        97,
+        129
+      ],
+      "TR": [
+        139,
+        180,
+        212
+      ],
+      "BL": [
+        49,
+        70,
+        51
+      ],
+      "BR": [
+        56,
+        53,
+        74
+      ],
+      "C": [
+        107,
+        122,
+        119
+      ]
+    },
+    "avg_lum": "114.0",
+    "rgb_avg": "(119,111,116)",
+    "refs": [
+      "prologue_08_first_run.json",
+      "prologue_09_funding.json"
+    ]
+  },
+  {
+    "file": "railway_map_aerial.png",
+    "base": "railway_map_aerial",
+    "size": "1376x768",
+    "ratio": "1.792",
+    "bytes": 1062708,
+    "md5": "6938aa081cea14dede91bccf09aa9f17",
+    "corners": {
+      "TL": [
+        248,
+        218,
+        156
+      ],
+      "TR": [
+        244,
+        220,
+        156
+      ],
+      "BL": [
+        135,
+        109,
+        86
+      ],
+      "BR": [
+        76,
+        90,
+        39
+      ],
+      "C": [
+        57,
+        58,
+        44
+      ]
+    },
+    "avg_lum": "106.7",
+    "rgb_avg": "(113,109,78)",
+    "refs": []
+  },
+  {
+    "file": "railway_track.png",
+    "base": "railway_track",
+    "size": "1672x941",
+    "ratio": "1.777",
+    "bytes": 3373863,
+    "md5": "358ec2ccbee4b517278a1f59b2745185",
+    "corners": {
+      "TL": [
+        247,
+        195,
+        134
+      ],
+      "TR": [
+        69,
+        86,
+        46
+      ],
+      "BL": [
+        51,
+        71,
+        55
+      ],
+      "BR": [
+        61,
+        75,
+        39
+      ],
+      "C": [
+        102,
+        71,
+        67
+      ]
+    },
+    "avg_lum": "103.5",
+    "rgb_avg": "(121,102,67)",
+    "refs": [
+      "post_003_qingxi_freight.json",
+      "prologue_05_inspection.json"
+    ]
+  },
+  {
+    "file": "songqiao_station.png",
+    "base": "songqiao_station",
+    "size": "1024x571",
+    "ratio": "1.793",
+    "bytes": 1207916,
+    "md5": "a72469a721a7c3490cef2ea9cc321c54",
+    "corners": {
+      "TL": [
+        96,
+        75,
+        10
+      ],
+      "TR": [
+        191,
+        120,
+        128
+      ],
+      "BL": [
+        72,
+        60,
+        20
+      ],
+      "BR": [
+        55,
+        42,
+        7
+      ],
+      "C": [
+        180,
+        115,
+        15
+      ]
+    },
+    "avg_lum": "84.7",
+    "rgb_avg": "(115,76,49)",
+    "refs": [
+      "prologue_05_inspection.json"
+    ]
+  },
+  {
+    "file": "station.png",
+    "base": "station",
+    "size": "3424x2416",
+    "ratio": "1.417",
+    "bytes": 7357441,
+    "md5": "00b479ea6e9cf25f15738c4bb8cd50fb",
+    "corners": {
+      "TL": [
+        254,
+        254,
+        254
+      ],
+      "TR": [
+        254,
+        253,
+        254
+      ],
+      "BL": [
+        254,
+        254,
+        254
+      ],
+      "BR": [
+        254,
+        254,
+        254
+      ],
+      "C": [
+        142,
+        100,
+        60
+      ]
+    },
+    "avg_lum": "120.4",
+    "rgb_avg": "(142,116,89)",
+    "refs": [
+      "test.json"
+    ]
+  },
+  {
+    "file": "station_office.png",
+    "base": "station_office",
+    "size": "1376x768",
+    "ratio": "1.792",
+    "bytes": 1372146,
+    "md5": "a3a6e75f0e8621002138fc688b0f347d",
+    "corners": {
+      "TL": [
+        82,
+        61,
+        42
+      ],
+      "TR": [
+        59,
+        30,
+        14
+      ],
+      "BL": [
+        49,
+        27,
+        14
+      ],
+      "BR": [
+        52,
+        35,
+        27
+      ],
+      "C": [
+        83,
+        68,
+        49
+      ]
+    },
+    "avg_lum": "72.6",
+    "rgb_avg": "(92,68,46)",
+    "refs": [
+      "post_001_first_sand.json",
+      "post_002_zhao_visit.json",
+      "post_003_qingxi_freight.json",
+      "post_004_chen_mayor.json",
+      "post_005_irondragon.json",
+      "post_007_expose.json",
+      "post_008_sandwhale_leak.json",
+      "post_009_ending.json",
+      "prologue_09_funding.json"
+    ]
+  },
+  {
+    "file": "station_sunset.png",
+    "base": "station_sunset",
+    "size": "1672x941",
+    "ratio": "1.777",
+    "bytes": 3075826,
+    "md5": "28ef669fd49f4c3de47e468c191d209e",
+    "corners": {
+      "TL": [
+        217,
+        126,
+        162
+      ],
+      "TR": [
+        194,
+        134,
+        158
+      ],
+      "BL": [
+        137,
+        126,
+        48
+      ],
+      "BR": [
+        187,
+        116,
+        82
+      ],
+      "C": [
+        81,
+        70,
+        72
+      ]
+    },
+    "avg_lum": "117.7",
+    "rgb_avg": "(143,108,100)",
+    "refs": [
+      "prologue_04_arrival.json",
+      "prologue_08_first_run.json",
+      "prologue_10_transition.json"
+    ]
+  },
+  {
+    "file": "tea_house.png",
+    "base": "tea_house",
+    "size": "1536x1024",
+    "ratio": "1.500",
+    "bytes": 2422613,
+    "md5": "f4c77c4bbfe69dda4152809123895f93",
+    "corners": {
+      "TL": [
+        92,
+        72,
+        59
+      ],
+      "TR": [
+        73,
+        55,
+        39
+      ],
+      "BL": [
+        95,
+        61,
+        34
+      ],
+      "BR": [
+        126,
+        91,
+        54
+      ],
+      "C": [
+        133,
+        64,
+        24
+      ]
+    },
+    "avg_lum": "73.1",
+    "rgb_avg": "(98,67,39)",
+    "refs": [
+      "prologue_02_day0.json",
+      "prologue_03_journey.json"
+    ]
+  },
+  {
+    "file": "village_sunset.png",
+    "base": "village_sunset",
+    "size": "1672x941",
+    "ratio": "1.777",
+    "bytes": 2994469,
+    "md5": "1fa121da90c6383ac76242219a398705",
+    "corners": {
+      "TL": [
+        87,
+        55,
+        3
+      ],
+      "TR": [
+        128,
+        103,
+        151
+      ],
+      "BL": [
+        74,
+        65,
+        33
+      ],
+      "BR": [
+        36,
+        53,
+        32
+      ],
+      "C": [
+        197,
+        143,
+        19
+      ]
+    },
+    "avg_lum": "84.8",
+    "rgb_avg": "(113,77,48)",
+    "refs": [
+      "post_009_ending.json",
+      "prologue_04_arrival.json"
+    ]
+  }
+]
