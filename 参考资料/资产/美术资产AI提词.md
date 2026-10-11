@@ -36,24 +36,26 @@
 - [2.5 客舱·白天](#25-客舱白天新绘0721号后舱) 📦 已归档
 - [2.6 客舱·夜晚](#26-客舱夜晚新绘0721号后舱) 📦 已归档
 - [2.7 停机坪](#27-停机坪) 📦 已归档
-- [2.12 大同江茶馆](#212-大同江茶馆嘉颖徐会面室内) 📦 已归档
+- [2.12 大同江茶馆 / 嘉颖徐茶室兼办公室](#212-大同江茶馆--嘉颖徐茶室兼办公室tea_house-标杆定稿) ✅ 标杆定稿
 - [2.13 Wiki横幅](#213-wiki-横幅wiki-banner) 📦 已归档
 - [2.14 群山天空](#214-群山天空mountain_sky) ✅ 已入库
 - [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ✅ 已入库
 - [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ✅ 已生成
 - [2.16.1 雾峰站站牌样式](#2161-雾峰站站牌样式wufeng_signage_ref--前置) ✅ 已锁定（2026-10-01）
 - [2.17 车站夕阳](#217-车站夕阳station_sunset) ✅ 已入库（2026-10-01 重绘定稿）
+- [2.17.1 雾峰站正面全景（station）](#2171-雾峰站正面全景stationpng-废弃--待重绘) ❌ 废弃/待重绘
+- [2.17.2 田园铁路鸟瞰全景（railway_map_aerial）](#2172-田园铁路鸟瞰全景railway_map_aerialpng-待重绘) ❌ 待重绘
 - [2.18 傍晚站台](#218-傍晚站台platform_evening) ✅ 已入库（定稿版）
 - [2.19 边境小镇](#219-边境小镇border_town) ❌ 待生成
 - [2.20 补给站](#220-补给站supply_station) ❌ 待生成
 - [2.21 中国上空](#221-中国上空china_sky) ❌ 待生成
 - [2.22 河北小镇](#222-河北小镇hebei_town) ❌ 待生成
 - [2.23 河南小镇](#223-河南小镇henan_town) ❌ 待生成
-- [2.24 车辆段·晨](#224-车辆段晨depot_morning) ❌ 待生成
+- [2.24 车辆段·晨](#224-车辆段晨depot_morning-待重绘) ❌ 待重绘
 - [2.25 线路巡视](#225-线路巡视railway_track) ✅ 已入库（定稿版）
 - [2.26 松桥站](#226-松桥站songqiao_station) ✅ 已入库（定稿版）
-- [2.27 车站·夜](#227-车站夜station_night) ❌ 待生成
-- [2.28 站长办公室](#228-站长办公室station_office) ❌ 待生成
+- [2.27 车站·夜](#227-车站夜station_night) ✅ 已入库
+- [2.28 站长办公室](#228-站长办公室station_office-待重绘) ❌ 待重绘
 - [2.29 站台·晨](#229-站台晨platform_morning) ❌ 待生成
 - [2.30 车厢内部](#230-车厢内部train_inside) ❌ 待生成
 - [2.31 纯黑](#231-纯黑black) 📦 已归档
@@ -104,7 +106,7 @@
 | 3 | `songqiao_station` | 05（2） | §2.26（✅已入库） |
 | 4 | `night_road` | 05（1） | §2.41 |
 | 5 | `depot_morning` | 07（5） | §2.24 |
-| 6 | `station_night` | 06（4） | §2.27 |
+| 6 | `station_night` | 06（4） | §2.27（✅已入库） |
 | 7 | `platform_morning` | 08（2）+09（1） | §2.29 |
 | 8 | `train_inside` | 08（2） | §2.30 |
 | 9 | `station_office` | 09（3） | §2.28 |
@@ -1070,6 +1072,79 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure en
 
 ---
 
+### 2.17.1 雾峰站正面全景（station.png）❌ 废弃 / 待重绘
+
+**文件**：`Assets/Resources/bg/station.png`  
+**规格现状**：3424×2416（比例 1.42 异形，文件体积 7.18 MB，仅 `test.json` 引用）。  
+**资产状态**：❌ **废弃 / 待重绘**（2026-10-10 T295 核查确认）。画面细节与雾峰站正规设定不符，非 16:9 比例且文件过大。用户明确批示否决「雾峰站正面图片是错误的」。  
+**处置建议**：原文件废止移入回收站候选，`test.json` 临时改接 `station_sunset`；如后续仍需正立面全景，使用以下 16:9 像素风标准提词重出：
+
+**重绘提示词（16:9 标准比例 · 雾峰站站房正面全景 · 中文站牌）**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+front exterior view of small rustic Chinese railway station building, afternoon sunlight:
+
+STATION ARCHITECTURE:
+- Low-rise single-story railway station building made of weathered grey bricks and reddish-brown clay roof tiles
+- Modest entrance with a small covered porch and wooden pillars
+- Small blue-and-white enamel station sign mounted centrally above entrance porch: 「雾峰」in clear Chinese characters
+- Wooden ticket office window (售票处) and waiting room entrance (候车室) with wooden bench outside
+- Bulletin board with yellowed railway safety posters and hand-drawn timetables
+
+SURROUNDINGS & PLATFORM:
+- In front of station: gravel plaza leading to a low concrete platform
+- Single railway track running horizontally across foreground with weathered steel rails, wooden sleepers and ballast gravel
+- Wooden utility pole with vintage electric streetlamp (unlit) and overhead telephone wires
+- Surrounding scenery: rolling green and golden terraced hills, distant mountain ridges under soft clear sky
+- Small flowerbeds with yellow wild chrysanthemums growing beside the stone steps
+
+ATMOSPHERE & LIGHTING:
+- Clear afternoon lighting with soft shadows, nostalgic rural railway atmosphere
+- Quiet, peaceful, evoking the passage of decades
+
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO ENGLISH, NO LATIN LETTERS, NO KOREAN, NO HANGUL.
+RATIO MUST BE STRICT 16:9 (1920x1080).
+```
+
+---
+
+### 2.17.2 田园铁路鸟瞰全景（railway_map_aerial.png）❌ 待重绘
+
+**文件**：`Assets/Resources/bg/railway_map_aerial.png`  
+**规格现状**：1376×768（16:9，GameMainUI 相册索引图）。  
+**资产状态**：❌ **待重绘**（2026-10-10 用户明确裁定）。现存图虽然描绘了山谷小站与铁轨，但属于斜 45 度等轴瓦片画风，缺乏景深与电影感光影层次，与全篇暖色调电影感像素风（如 `mountain_sky` / `station_sunset` / `railway_track`）画风脱节。用户明确批示：**「这个是有问题的画风不一样 需要重绘」**。  
+**处置建议**：保留文件用于相册兼容，后续出图后无缝替换。
+
+**重绘提示词（16:9 标准比例 · 电影感暖色调像素画风 · 山谷水乡铁道鸟瞰全景）**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+high aerial panoramic view of a rural railway winding through mountain valley and countryside, golden morning sunlight:
+
+SCENERY & COMPOSITION:
+- High angle aerial panoramic view looking down across rolling green hills, terraced tea fields, and a river valley
+- A single-track railway line gently snaking through dense pine forests and countryside from foreground to distant mountains
+- An arched stone railway bridge crossing a crystal-clear mountain stream rushing over rocks
+- Two small rural wooden railway halts / platforms nestled along the tracks with modest wooden station sheds
+- Clustered rustic village houses with grey slate and orange-red tiled roofs, light smoke gently rising from brick chimneys
+- Golden morning sunlight bathing the eastern valley slopes, casting soft warm long shadows across the landscape
+- Far distance: layers of soft blue mountain ridges fading into a pale golden misty morning sky
+
+COLOR PALETTE:
+- Dominant warm green pine, golden ochre terraces, weathered stone grey, rust-brown rails, warm amber sunlight
+- Unified with the cinematic warm nostalgic palette of Stardew Valley and Ghibli rural landscapes
+
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO MODERN VEHICLES, NO HIGHWAYS, NO MODERN SKYSCRAPERS.
+CONSISTENT WARM CINEMATIC PIXEL ART STYLE, NOT FLAT ISOMETRIC TILES.
+```
+
+---
+
 ### 2.18 傍晚站台（platform_evening） ✅ 已入库
 
 **文件**：`Assets/Resources/bg/platform_evening.png`（✅ 已定稿入库，1024×571 RGB PNG）  
@@ -1292,74 +1367,51 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 ---
 
-### 2.24 车辆段·晨（depot_morning）
+### 2.24 车辆段·晨（depot_morning）❌ 待重绘
 
-**文件**：`Resources/bg/depot_morning.png`
-**用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5K 喷油嘴的检修棚。
+**文件**：`Assets/Resources/bg/depot_morning.png`  
+**用途**：序章 Day 5 早晨——雾峰站车辆段检修棚，张工拆修 NF-5K 喷油嘴的核心场地（`prologue_07_first_repair.json` 引用）。  
+**资产状态**：❌ **待重绘**（2026-10-10 T295 核查确认）。现存图挂有韩文政治标语横幅、工具板悬挂枪械枪支、机车造型偏东风平头，严重脱离世界观设定，用户明确批示否决。**注意：因 prologue_07 强引用，在新图生成替换前严禁物理硬删，避免幕次黑屏。**
 
 **叙事锚点**：四年来第一次有人在这个检修棚里动手修车。晨光穿过棚顶的裂缝照进来，灰尘在光柱中飘浮——像时间本身在呼吸。墙上「安全第一」的标语已经褪色，但今天它又有了意义。
 
-**提示词**：
+**重绘提示词（16:9 标准像素风 · 纯中式检修棚 · 严禁枪支韩文）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small railway depot maintenance shed, early morning, Chinese railway culture:
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+small Chinese railway depot maintenance shed, early morning golden light:
 
-CHINESE RAILWAY ELEMENTS:
-- Wall slogan: 「安全第一 预防为主」faded red characters on white board, paint cracking, corners curled
-- Railway safety poster: 「铁路技术规程」yellowed, tacked to wooden pillar
-- Old timetable poster: 「雾峰村—矿区 运行时刻表」with handwritten corrections, some times crossed out
-- Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
+CHINESE RAILWAY WORKSHOP ELEMENTS (STRICTLY NO WEAPONS, NO GUNS, NO KOREAN):
+- Wall slogan: 「安全第一 预防为主」faded red characters on aged white wooden board, paint cracking at edges
+- Railway safety regulation notice: 「机车检修作业安全规程」yellowed paper pinned to wooden pillar
+- Old timetable sheet: 「雾峰村—矿区 运行时刻表」tacked to wooden board with hand-drawn pencil corrections
+- Shelves with hand-painted Chinese labels: 「工具柜 01」「配件柜 02」
 
-NF-5K LOCOMOTIVE (dominant left side) — 挂 `ExternalAssets/nf5k_reference.png` 为 image reference，锁同一外构:
-- NF-5K 耕牛·改 diesel locomotive, deep blue body with red-white wave stripes and sakura motifs, weathered
-- Front: red star wing emblem, 「NF-5K」stamped in white on blue plate, 「耕牛 / 경우」nameplate in weathered brass (Chinese + Korean bilingual)
-- NO white chevron / V-stripe on nose (与 station_sunset 锁定设计一致)
-- Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
-- Oil stains running down the blue paint like dark veins
-- One headlight cracked, the other working (dim)
-- Buffer beam with coupling hook, rust-orange
+NF-5K LOCOMOTIVE (dominant on left side, reference: ExternalAssets/nf5k_reference.png):
+- NF-5K diesel locomotive, deep blue weathered body, red and white wave stripes
+- Brass nameplate: 「耕牛」in clear embossed Chinese characters (NO Korean text)
+- Engine hood panel lifted open, revealing diesel engine block, injection pump, fuel lines and mechanical details
+- Buffer beam with rust-orange coupling hook, heavy steel chassis
+- Morning sunbeams hitting the dusty blue metal surface
 
-WORKBENCH AND TOOLS (right side):
-- Heavy wooden workbench with metal vise, oil-stained surface
-- Disassembled fuel injector parts laid out on clean rag: nozzle body, needle valve, spring, copper washer
-- Wrenches: combination wrench set (8mm-24mm) hanging on pegboard, some missing
-- Oil cans: red 「长城润滑油」can and blue「昆仑」can side by side
-- Parts tray with bolts and small components organized by size
-- Flashlight (old, taped handle) and magnifying glass
-- Greasy rags piled in metal bin
-- Technical manual open on bench: 「NF-5K型内燃机车维修手册」with hand-drawn annotations
+WORKBENCH AND MAINTENANCE TOOLS (right side):
+- Heavy solid wooden workbench stained with dark lubricating oil, fitted with an iron bench vise
+- Disassembled fuel injector components neatly laid on a clean canvas rag: injector body, needle valve, pressure spring, copper washers
+- Mechanics tool pegboard: open-end wrenches, socket wrench set, screwdrivers, pliers (ABSOLUTELY NO GUNS, NO RIFLES, NO MILITARY GEAR)
+- Vintage red metal oil can with long thin spout, green thermos flask with steam rising faintly
+- Open maintenance handbook on bench: 「NF-5型内燃机车技术图册」with technical diagrams
+- Inspection pit in concrete floor with wooden ladder, stained with dark oil puddles
 
-INSPECTION PIT:
-- Concrete pit 2m deep, oil-darkened floor with puddles
-- Wooden ladder leading down
-- Oil drip pan catching leaks from locomotive above
+ATMOSPHERE & LIGHTING:
+- Corrugated iron roof with broken skylights letting in diagonal warm morning light beams
+- Golden dust particles floating in the shafts of morning light
+- Warm rustic morning atmosphere, revival of forgotten machinery
 
-STRUCTURE:
-- Open-sided corrugated metal shed, rusted steel frame
-- Patched corrugated roof with translucent panels letting in light
-- Concrete floor stained decades of oil, cracks patched with cement
-- One wall: pegboard with tools, safety slogans above
-- Morning sun slants through shed opening from left, dust motes floating in golden light beams
-
-MORNING ATMOSPHERE:
-- Light beams cutting through dusty air from shed opening
-- Dew on metal surfaces catching light
-- A thermos of hot tea on the workbench edge (张工's)
-- The sound of a wrench clicking (implied through visual rhythm)
-
-COLORS:
-- Shed frame: rusted orange-brown （马鞍棕） with grey steel
-- NF-5K body: deep blue with red-white wave stripes, sakura motifs, rust orange （锈橙） patches
-- Oil stains: dark brown-black （深棕黑色）
-- Morning light: warm gold （晨光金） beams through dust
-- Floor: dark oil-stained concrete （油渍水泥）
-- Slogans: faded red （褪色红） on yellowed white
-- Tool handles: worn red and blue plastic
-
-MOOD: 从废铁中唤醒希望的早晨。老手、老工具、老机器——四年来第一次有人在这个棚子里动手。
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO WEAPONS, NO GUNS, NO FIREARMS.
+STRICTLY NO KOREAN, NO HANGUL, NO ENGLISH, NO GIBBERISH CHARACTERS.
+ALL VISIBLE TEXT MUST BE CHINESE HANZI.
 ```
 
 ---
@@ -1474,9 +1526,11 @@ Negative prompt: modern trains, locomotive, crowded people, sharp facial feature
 
 ---
 
-### 2.27 车站·夜（station_night）
+### 2.27 车站·夜（station_night） ✅ 已入库
 
-**文件**：`Resources/bg/station_night.png`
+**文件**：`Assets/Resources/bg/station_night.png`（✅ 已入库 2026-10-10，1024×571 RGB PNG）
+**资产状态**：✅ 由 `platform_evening.png` 复制注册（md5 一致，独立新 GUID）。原 `platform_evening` 保持不动，两处引用互不影响。
+**选择理由**：06 幕 4 个 scene 均**无场景级 `chars` 字段**（纯对白+旁白，无角色立绘），人全靠背景剪影呈现——本图的聚首人影与「旧人重逢」叙事吻合，且暖光灯池/烟囱/木长椅/冷蓝山谷全符合下方提词。**原提词保留**，若后续认为图内人影与前景冲突可按提词重绘替换。
 **用途**：序章 Day 4 夜晚——雾峰站旧人重逢（张工/李阿姨/王小弟等聚首）的夜景。
 
 **叙事锚点**：一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗内的暖光与窗外的冷蓝形成对比——这是铁路精神的最后一批守护者。
@@ -1502,12 +1556,12 @@ PLATFORM:
 - Edge painted yellow safety line, faded
 - Railway track in foreground, rails catching moonlight (silver-blue glint)
 
-PEOPLE (silhouettes only, 5 figures gathered near door):
-- Group of 4-5 dim human silhouettes near the lit doorway
-- Heads and upper bodies only, no facial detail
-- Warm rim light from the doorway creating golden outlines
-- Postures suggesting conversation: one leaning against doorframe, others standing in loose circle
-- A small table with a kettle visible through the doorway
+DOORWAY WARMTH (no figures — 人的存在靠光和物件暗示):
+- The front door open, warm gold light spilling across the platform
+- Through the doorway: a small wooden table with a kettle and two cups, lit from above
+- A chair pulled out from the table, as if someone just stood up
+- Shadows of window frames cast onto the platform by the interior light
+- Posture of the scene suggests conversation just happened, but the frame holds ZERO human figures
 
 NIGHT SKY:
 - Deep indigo blue （靛蓝） upper sky
@@ -1515,10 +1569,11 @@ NIGHT SKY:
 - Mountain silhouettes on horizon, darker than sky
 - Slight atmospheric haze in valley (soft blue-grey)
 
-KOREAN CHINESE DETAILS:
+CHINESE DETAILS:
 - Faded 「安全第一」slogan barely visible on station wall
 - Old railway lantern (unlit) hanging from a nail
 - A wooden sign: 「值班室」next to the door
+- NO KOREAN, NO HANGUL, NO ENGLISH, NO LATIN LETTERS anywhere in the frame
 
 LIGHTING CONTRAST:
 - Exterior: cold blue moonlight and dark shadows
@@ -1541,94 +1596,60 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 ---
 
-### 2.28 站长办公室（station_office）
+### 2.28 站长办公室（station_office）❌ 待重绘
 
-**文件**：`Resources/bg/station_office.png`
-**用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈的室内。老陈守护四年的房间，每件物品都是时间的证据。
+**文件**：`Assets/Resources/bg/station_office.png`  
+**用途**：雾峰站站长办公室 / 调度指挥室。全工程最高频场景，共 9 个剧本引用（`prologue_09_funding` 及 post 篇 8 个剧本）。  
+**资产状态**：❌ **待重绘**（2026-10-10 T295 核查确认）。现存图充斥 Namenessy / DISPATCH / LEDGER 等英文及西文乱码标牌，完全背离中式铁路水乡世界观，用户明确批示否决。**极度重要：因 9 个剧本强依赖此图，新图生成并验证通过前绝对禁止硬删，避免大量剧情幕次黑屏！**
 
-**提示词**：
+**叙事锚点**：老陈守护四年的房间，每件物品都是时间的证据。账本、算盘、老电话泛着旧时光光泽，墙上的运行图留着红色停运标记。安静、凝固、充满时间的痕迹。
+
+**重绘提示词（16:9 标准像素风 · 纯中式调度站长室 · 严禁任何西文英文）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-cramped station master's office, morning light through window:
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+cramped Chinese railway station master's office, early morning golden light through window:
 
 ROOM OVERVIEW:
-- Cramped room (约10平米), wooden floorboards worn smooth
-- Single window facing the platform and railway track (window right side)
-- Door on left wall with wooden「站长办公室」sign (hand-carved, dark wood)
-- Low ceiling with exposed wooden beams
+- Cramped retro railway office (约10平米), worn wooden floorboards with smooth dark grain
+- Single window on right wall facing the outdoor platform and rusty tracks
+- Low wooden beam ceiling with hanging vintage wire and bulb
+- Doorway with carved dark wooden doorplate: 「站长办公室」in Chinese characters
 
-DESK (center-left, heavy old wooden desk):
-- Old rotary telephone (黑色拨盘电话) with coiled cord
-- Ledger books (账本) stacked — leather-bound, pages yellowed, hand-written entries
-- An abacus (算盘) for calculations
-- A green banker's lamp (台灯) with brass base, turned on
-- Pen holder with fountain pens and pencils
-- A half-empty cup of cold tea (茶杯), ring stain on desk
-- A pack of 红梅 brand cigarettes (拆开的), one cigarette resting on ashtray
-- Old railway stationmaster badge (站长徽章) pinned to a small cloth on desk corner
-- Stamp pad and wooden stamp: 「雾峰村站」
+OFFICE DESK (heavy dark solid wood, centered slightly left):
+- Old black rotary dial telephone (黑色老式拨盘电话) with spiral wire
+- Stack of aged accounting ledgers with yellowed edges and handwritten records
+- Traditional wooden abacus (十三档实木算盘)
+- Green glass banker's desk lamp with brass stand, emitting a soft warm emerald glow
+- Chinese enamel mug (白色搪瓷茶缸) with faded red star and faint tea stain rings
+- Pack of vintage red cigarettes with an unlit cigarette in glass ashtray
+- Desk stamp pad and wooden stamp: 「雾峰村站」in red ink
+- Hand-carved wooden desk plate: 「站长」
 
-WALL MAP (behind desk, dominant):
-- Large hand-drawn railway line map: 「雾峰村—矿区线 运行图」
-- 23km line with 4 stations marked: 雾峰村(0km), 茶山(8km), 松桥(15km), 矿区(23km)
-- Red pen marks crossing out some sections (停运标记)
-- Colored pencil marks showing old schedules
-- A few notes in handwriting: 「信号故障-已修」「道岔需调整」
+WALL MOUNTED ELEMENTS (AUTHENTIC CHINESE RAILWAY DETAILS):
+- Large yellowed hand-drawn railway map: 「雾峰村—矿区铁路运行示意图」
+  Stations marked along line in clear Chinese: 雾峰村 (0km), 茶山 (8km), 松桥 (15km), 矿区 (23km)
+  With red crayon diagonal cross-out marks indicating suspended sections (停运)
+- Tear-off wall calendar stopped at: 「2072年9月」
+- Old black-and-white framed group photo of 1990s Chinese railway workers
+- Vintage railway safety slogan frame: 「人民铁道为人 user-facing 安全正点」faded red banner
+- Vintage wall clock stopped at 03:47
 
-WALL ITEMS:
-- Framed group photo: old railway workers, black and white, slightly faded
-- Calendar: stopped at 「2072年9月」— when trains stopped
-- Yellowed railway safety poster: 「铁路安全 人人有责」with 1990s style illustration
-- Small shelf: railway technical manuals, 「铁路工程技术手册」, a few old railway magazines
-- A clock on wall: stopped at 3:47 (when the last train departed)
+FURNITURE & DETAILS:
+- Worn brown leather armchair behind desk, upholstery slightly cracked
+- Green metal filing cabinet in corner with file folders
+- Traditional cast-iron coal heating stove with a metal kettle and stovepipe venting to ceiling
+- Coat rack holding an old railway worker cap and dark uniform coat
 
-FURNITURE:
-- Old leather swivel chair (转椅), seat cushion worn through to stuffing
-- Small filing cabinet (铁皮文件柜) in corner, top drawer slightly open
-- A coal stove (煤炉) with kettle on top, smoke pipe going to ceiling
-- Coat hook with an old railway worker's cap hanging
+ATMOSPHERE & LIGHTING:
+- Clear morning sunbeams slanting through window panes, illuminating floating golden dust
+- Quiet, contemplative atmosphere of a preserved historical railway office
 
-WINDOW VIEW:
-- Looking out to the platform and railway track
-- Morning light streaming in, casting long shadow of window frame across desk
-- Dust particles floating in the light beam
-
-KOREAN CHINESE DETAILS:
-- Desk nameplate: 「站长」
-- Calendar: 「1993年9月」(stopped when trains stopped)
-- Bookshelf label: 「铁路技术资料」hand-written
-- Old photo caption on back: 「1998年 雾峰村站全体职工」
-- Stamp: 「雾峰村站」in red ink
-
-COLORS:
-- Walls: cream-white （米白） with age yellowing
-- Desk: dark wood brown
-- Lamp: green glass （海洋绿） with brass （古铜色）
-- Window light: warm morning gold （晨光金）
-- Old leather: worn brown （马鞍棕）
-- Map: white paper with colored pencil marks
-- Calendar: red header, white body, 「2072年9月」
-
-MOOD: 晨光中的旧站长办公室。账本、算盘、老电话泛着旧时光光泽，墙上的运行图留着红色停运标记。安静、凝固、充满时间的痕迹。
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
-```
-
-LAYOUT:
-- Desk center (viewer side: papers, ink, stamp)
-- Wall map of雾峰线 with red pen marks
-- Rotary phone + telegram/cashbox
-- Stove with kettle, tea smell implied
-- Window to platform, morning light
-
-COLORS:
-- Wood: dark aged
-- Lamp light: warm green-glass glow
-- Map: aged paper yellow
-- Fabric: worn green leather
-
-MOOD: The nerve center of the line. Old paperwork, new hope.
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO ENGLISH, NO LATIN ALPHABET, NO Namenessy, NO DISPATCH, NO LEDGER, NO GIBBERISH LETTERS.
+STRICTLY NO KOREAN, NO HANGUL, NO JAPANESE KANJI.
+ALL TEXT IN THE SCENE MUST BE RECOGNIZABLE CHINESE HANZI.
 ```
 
 ---
@@ -2415,7 +2436,7 @@ MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格�
 | `station_sunset` 车站夕阳 | prologue_04/10 | ⚠️ 待重绘（站牌/墙字） |
 | `railway_track` 线路巡视 | prologue_05 | ✅ 已入库 |
 | `depot_morning` 车辆段晨 | prologue_07 | 🔴 高 |
-| `station_night` 车站夜景 | prologue_06 | 🔴 高 |
+| `station_night` 车站夜景 | prologue_06 | ✅ 已入库 |
 | `station_office` 站长办公室 | prologue_09 | 🔴 高 |
 | `platform_morning` 站台晨光 | prologue_08/09 | 🔴 高 |
 | `village_sunset` 雾峰村夕阳 | prologue_04 | ✅ 已生成 |
@@ -3443,10 +3464,12 @@ AVOID:
 
 ---
 
-### 2.12 大同江茶馆（嘉颖徐会面室内）
+### 2.12 大同江茶馆 / 嘉颖徐茶室兼办公室（tea_house）✅ 标杆定稿
 
-**文件**：`Resources/bg/tea_house.png`  
-**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆/私人办公室
+**文件**：`Assets/Resources/bg/tea_house.png`  
+**规格现状**：1536×1024（1.5:1，序章 `prologue_02_day0`、`prologue_03_journey` 引用）。  
+**用途与设定定性**：**嘉颖徐（徐会长）的大同江畔奢华茶室兼私人办公室**（用户 2026-10-10 明确定性：「这个就是嘉颖徐的茶室兼办公室」）。融合了朝鲜顶级阶层的奢华红木装饰、水晶吊灯、青瓷茶具与大同江畔主体思想塔璀璨夜景。  
+**资产状态**：✅ **标杆定稿合格资产**（画面完全契合会面场景设定，予以保留）。
 
 **提示词**：
 ```
