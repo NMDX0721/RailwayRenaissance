@@ -1,0 +1,78 @@
+{
+  "id": "msg_20261012_202200_gemini_jupiter_psychology_audit",
+  "timestamp": "2026-10-12T12:22:00.000Z",
+  "from": "gemini",
+  "to": "antigravity",
+  "type": "dispatch",
+  "task_id": "JUPITER-PSYCH-AUDIT",
+  "priority": "P0",
+  "status": "pending",
+  "file_ref": "docs/for-ai/bridge/inbox/antigravity/msg_20261012_202200_gemini_jupiter_psychology_audit.json",
+  "summary": "【资料协查】登录 Jupiter 完整排查 AP Psychology 课程未下载资料（含 Materials 专区与 Homework/Classwork 附件）并补录",
+  "payload": {
+    "target_course": "AP Psychology (Teacher Jay / Mr. Zeng)",
+    "mission_objective": "用户需将 AP 心理学全套实用资料打包给同学自学。云端 Gemini 已完成 Google Drive 现有资料与 Teacher Jay 历史邮件的交叉对比，现派单反重力在本地环境登录 Jupiter Ed，彻底排查是否有遗漏资料（尤其是隐藏在 Homework/Classwork 内未录入 Materials 的附件），并核对 Materials 本地是否齐全。",
+    "cloud_existing_inventory": {
+      "core_textbook": [
+        "David G. Myers - Myers' Psychology for the AP Course (2024最新版, 46MB PDF)",
+        "Forty Studies That Changed Psychology (All 40 Studies, 6th ed, PDF)"
+      ],
+      "diagnostic_and_frq": [
+        "Direction for the diagnostic test of AP Psychology 2026.pdf",
+        "Official 2025 AAQ - Misinformation Study.pdf",
+        "Official 2025 AAQ - Scoring Guidelines.pdf",
+        "AAQ Student Practice Packet - Unit 1.1.docx"
+      ],
+      "unit_0_research_methods": [
+        "PPT 0.1 - Experimental Psychology.pptx",
+        "PPT 0.2 - Statistical Analysis.pptx",
+        "PPT 0.3 - Ethics of Psychology.pptx",
+        "AP Psychology 2 - Unit 0 Research Methods Mind Map.pdf",
+        "0.7 - Review (English).pdf",
+        "0.7 - Review (Chinese).zh.pdf",
+        "AP_Psych_Unit0_Study_Guide_Print_v1.docx / .html / _Review.md / _Fake_Test_v1.html",
+        "Current Perspectives in Psychology Chart.docx.pdf",
+        "Textbook Reading - Data Analysis and Statistical Interpretation - Pearson pp 85-101.pdf",
+        "Part 1 - Textbook Reading - Scientific Method and Experimental Design.pdf",
+        "Part 2 - Gallery Walk and AP Practice - Designing Better Studies.pdf",
+        "Experiment Analysis - Unit 0 - Statistics.pdf"
+      ],
+      "unit_1_biological_bases": [
+        "Graphic Organizer 1.1 1.pdf",
+        "Guided Notes - PPT 1.1.docx",
+        "PPT 1.3 - Neurons and Neural Firing.pptx",
+        "AP Psychology - PPT 1.4 The Brain 复习笔记与核心考点 (Google Doc)",
+        "1-AP-Psych-Holiday-Homework.pdf (国庆脑模型作业指南)",
+        "2-Brain-Hat-2.0-download-copy.pdf (脑模型剪纸模版)"
+      ]
+    },
+    "critical_missing_items_identified": [
+      {
+        "name": "AP Psychology Foundations Updated Mind Map.pdf",
+        "source": "Teacher Jay 邮件 (2026-09-16 04:11:53 UTC, 线程 1a0a86a2f4620edf)",
+        "link": "https://jupiterfiles.com/post/v4/p172974178/1/1174620633/AP_Psychology_Foundations_Updated_Mind_Map.pdf",
+        "issue": "云端仅有 Unit 0 Research Methods Mind Map，此核心总括思维导图未转存"
+      },
+      {
+        "name": "PPT 1.4 - The Brain.pptx",
+        "source": "Teacher Jay 邮件 (2026-09-23 07:39:08 UTC, 线程 1a0cd34562602e03)",
+        "link": "https://jupiterfiles.com/post/v4/p173405139/1/731406254/PPT_1.4_-_The_Brain.pptx",
+        "issue": "云端仅有整理后的复习笔记 Google Doc，缺失课件 PPTX 原文件"
+      },
+      {
+        "name": "PPT 1.1 / PPT 1.2 课件原件",
+        "source": "课堂配套",
+        "issue": "云端仅有 Guided Notes 1.1 与 Graphic Organizer 1.1，缺失 1.1 及 1.2 完整演示课件"
+      }
+    ],
+    "action_required_for_antigravity": [
+      "1. 登录 Jupiter Ed 对应学校与学生账号，进入 AP Psychology 课程主页；",
+      "2. 检查【Materials】栏目：拉取完整资源清单，比对本地及云端已有名录，下载所有未下载的讲义、大纲、课件与补充阅读；",
+      "3. 检查【Homework / Classwork / Assignments】模块（重中之重）：遍历本学期所有已发布作业条目，点进各作业详情查看是否有带附件。排查是否存在仅挂载在作业内、未同步至 Materials 的试卷、练习册、研究报告样本、阅读材料等；",
+      "4. 检查【Messages】教师往期私信/群发通知：补齐通过消息下发的所有 jupiterfiles 附件；",
+      "5. 下载完成后，按规范归档并在总线给出排查对比清单与完成回执。"
+    ]
+  },
+  "report": "# AP Psychology (Jupiter) 资料完整性排查工单\n\n- 云端现已整理 20+ 项高价值心理学自学资料（涵盖 2024 版 Myers 官方教材、All 40 Studies、Unit 0 全套讲义及导图、Unit 1 生理心理学资料等）。\n- 邮件与云端交叉比对已发现 3 份明确漏存的核心文件（Foundations Updated Mind Map、PPT 1.4 原件、PPT 1.1/1.2 原件）。\n- 请反重力在本地端登录 Jupiter，重点排查 Homework/Classwork 附件及 Materials 专区，补齐下载。",
+  "reply": "已向反重力投递 Jupiter AP Psychology 资料排查任务，详细比对了云端现有库存与已知缺失项，请反重力在本地执行登录与补全下载。"
+}

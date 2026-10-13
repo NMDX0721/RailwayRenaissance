@@ -195,14 +195,19 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ---
 
-## 双 Agent 协作与剧本写作规范（2026-10 最新基准）
+## Tri-Agent 协作架构与剧本写作规范（AGY · MiMo · Gemini Cloud 2026-10 最新基准）
 
-### 1. 协同分工与 Bridge 通讯技能
-- **Google Antigravity (AGY)**：负责代码实现、Roslyn csc 快速编译验证、UI Toolkit / C# 调试与剧本作者级精修。
-- **Xiaomi MiMo Desktop**：负责经营数值推演、全局记忆管理与设定协调。
-- **双向通讯技能**：[`mimo-bridge`](file:///.agents/skills/mimo-bridge/SKILL.md)（已配置在 `.agents/skills/mimo-bridge`）
-  - **核心铁律**：一般情况下**绝对不使用消息注入**（不伪装成会话，不向 MiMo 会话发消息），而是**写入交接区**！
-  - **交付与写交接区**：直接写入对应派单/文档末尾（如 `docs/for-ai/dispatch/orders/TXXX.md`），并运行 `node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" handoff --file "<文件路径>"` 静默更新 `antigravity_to_mimo.json`；
+### 1. 三方协同分工与消息总线（Bus）
+- **Google Antigravity (AGY)**：本地代码实现核，负责 C# / UI Toolkit 编码、Roslyn csc 快速编译验证、运行时调试与剧本精修。
+- **Xiaomi MiMo Desktop**：本地策划与调度核，负责经营数值推演、剧情情感弧线、本地任务调度（`QUEUE.md`）与核验。
+- **Google Gemini Cloud Agent**：云端智识核，负责超长上下文全局审查、多模态海量素材提炼、世界观/跨章节一致性审计、Google Workspace (Drive/Docs) 云端协同与离线任务编排。
+- **通讯技能与总线**：[`mimo-bridge`](file:///.mimocode/skills/mimo-bridge/SKILL.md) 与消息总线 [`docs/for-ai/bridge/BUS.md`](file:///docs/for-ai/bridge/BUS.md)
+  - **核心铁律**：一般情况下**绝对不使用消息注入**（不伪装成会话，不向会话注入消息），而是**写入总线收件箱与交接区**！
+  - **交付与写交接区**：直接写入对应派单文档末尾（如 `docs/for-ai/dispatch/orders/TXXX.md`），并运行 `node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" handoff --file "<文件路径>"`；系统将自动派发到分布式收件箱并静默镜像更新 `antigravity_to_mimo.json`；
+  - **总线投递与看板**：
+    - 定向投递：`node ... call_mimo.js post --to <mimo|gemini|antigravity> --task <ID> --file <路径>`；
+    - 状态看板：`node ... call_mimo.js status`（展示三方在线与活动状态）；
+    - 收件拉取：`node ... call_mimo.js poll [antigravity|mimo|gemini_cloud]`；
   - **读 MiMo 消息**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" read`（自动匹配“铁路复兴”会话）；
   - **消息注入（仅限特殊情况）**：仅在用户明确要求时方可使用 `node ... send` 注入消息。
 

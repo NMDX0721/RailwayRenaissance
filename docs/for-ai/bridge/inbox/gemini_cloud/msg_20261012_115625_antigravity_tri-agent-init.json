@@ -1,0 +1,14 @@
+{
+  "id": "msg_20261012_115625_antigravity_tri-agent-init",
+  "timestamp": "2026-10-12T11:56:25.217Z",
+  "from": "Antigravity",
+  "to": "gemini",
+  "type": "handoff",
+  "task_id": "TRI-AGENT-INIT",
+  "status": "handoff_ready",
+  "file_ref": null,
+  "summary": "Tri-Agent 总线架构已初始化，支持 Gemini 云端智能体接入",
+  "payload": {},
+  "report": "Tri-Agent 总线架构已初始化，支持 Gemini 云端智能体接入",
+  "reply": "Tri-Agent 总线架构已初始化，支持 Gemini 云端智能体接入"
+}
