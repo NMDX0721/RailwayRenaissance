@@ -155,31 +155,79 @@ public class VNBacklog : MonoBehaviour
         backlogScroll.style.flexGrow = 1;
         backlogScroll.style.paddingLeft = 40;
         backlogScroll.style.paddingRight = 40;
-        backlogScroll.style.paddingTop = 20;
+        backlogScroll.style.paddingTop = 0;             // 视口顶缘紧贴金线，消除间隙硬切
+        backlogScroll.contentContainer.style.paddingTop = 20; // 内部内容初始与金线保持 20px 呼吸间距
         backlogScroll.style.paddingBottom = 20;
         backlogPanel.Add(backlogScroll);
 
-        // 滚轮实时连续滚动：拦截原生 ScrollView 的刻度滚动（TrickleDown 先于其 bubble 回调），
-        // 直接累加 scrollOffset 并立即同步 thumb（原生按格跳 + thumb 80ms 轮询 = 刻度跳变观感）。
-        // delta 量级归一：输入源可能给 ±1/±3（行）或 ±120（原始 notch），>10 视为原始值除以 120
+        // 滚轮自由滚动 + 柔和惯性阻尼滑行：
+        // 1. 本次基础步长 12px 响应手感，新滚轮打断前次惯性并适度叠加速度
+        // 2. 惯性衰减调度器：每帧按 0.90f 阻尼衰减滑行，每次滚轮总滑行距离约束在 60~100px 内
+        // 3. 实时同步 UpdateCustomScrollbar()，到顶/到底边界立即切断速度，杜绝抖动
         backlogScroll.RegisterCallback<WheelEvent>(e =>
         {
             e.StopImmediatePropagation();
             float dy = e.delta.y;
             if (Mathf.Abs(dy) > 10f) dy /= 120f;
-            float y = Mathf.Clamp(backlogScroll.scrollOffset.y + dy * 40f, 0f, SbMaxScroll());
-            backlogScroll.scrollOffset = new Vector2(0, y);
+
+            // 基础位移步长与初始冲量（上限约束防剧烈甩轮）
+            float impulse = Mathf.Clamp(dy * 12f, -36f, 36f);
+            // 动量累加：同向适度叠加（最高 45px/帧），反向则瞬间刹车重定向
+            if (Mathf.Sign(impulse) == Mathf.Sign(_wheelVelocity))
+                _wheelVelocity = Mathf.Clamp(_wheelVelocity * 0.4f + impulse, -45f, 45f);
+            else
+                _wheelVelocity = impulse;
+
+            // 立即推进第一帧位移
+            float curY = backlogScroll.scrollOffset.y;
+            float maxScroll = SbMaxScroll();
+            float nextY = Mathf.Clamp(curY + impulse, 0f, maxScroll);
+            backlogScroll.scrollOffset = new Vector2(0, nextY);
             UpdateCustomScrollbar();
+
+            // 若已到边界，直接停止惯性
+            if (nextY <= 0f || nextY >= maxScroll)
+            {
+                _wheelVelocity = 0f;
+                _inertiaSched?.Pause();
+                return;
+            }
+
+            // 启动/续订惯性阻尼滑行
+            _inertiaSched?.Pause();
+            _inertiaSched = backlogPanel.schedule.Execute(() =>
+            {
+                if (Mathf.Abs(_wheelVelocity) < 0.35f)
+                {
+                    _wheelVelocity = 0f;
+                    _inertiaSched?.Pause();
+                    return;
+                }
+
+                _wheelVelocity *= 0.90f; // 阻尼系数：温和衰减
+                float nowY = backlogScroll.scrollOffset.y;
+                float limit = SbMaxScroll();
+                float stepY = Mathf.Clamp(nowY + _wheelVelocity, 0f, limit);
+
+                backlogScroll.scrollOffset = new Vector2(0, stepY);
+                UpdateCustomScrollbar();
+
+                // 触碰顶底边界立即刹车停止，防回弹抖动
+                if (stepY <= 0f || stepY >= limit)
+                {
+                    _wheelVelocity = 0f;
+                    _inertiaSched?.Pause();
+                }
+            }).Every(16);
         }, TrickleDown.TrickleDown);
 
-        // 顶部截断渐隐过渡条（F7 方案2：假模糊/平滑渐变过渡；Unity 6 UI Toolkit 不支持 backdrop-filter，
-        // 故改用自绘 64 阶纯代码渐隐遮罩条，彻底消弭条目滚出顶缘时的硬切感）
+        // 顶部截断渐隐过渡条：自绘 64 阶平滑渐隐遮罩条，对齐金线下缘，消弭文字硬切
         sbBlurStrip = new VisualElement { name = "sb-blur-strip" };
         sbBlurStrip.style.position = Position.Absolute;
         sbBlurStrip.style.left = 0;
         sbBlurStrip.style.right = 0;
-        sbBlurStrip.style.top = 82;                          // 首帧兜底≈header 高（20+40+20+2）；布局后同步为 scroll 顶
-        sbBlurStrip.style.height = 70;
+        sbBlurStrip.style.top = 80;                          // 紧贴金线（header 高 20+40+20 = 80px，borderBottomWidth=2 在内部）
+        sbBlurStrip.style.height = 80;                       // 覆盖金线向下 80px 渐隐过渡区
         sbBlurStrip.pickingMode = PickingMode.Ignore;   // 点击穿透：不挡跳转按钮
         sbBlurStrip.AddToClassList("sb-blur-strip");
         sbBlurStrip.style.backgroundImage = new StyleBackground(MakeBacklogFadeMaskTex());
@@ -221,6 +269,8 @@ public class VNBacklog : MonoBehaviour
     private float sbGrabDelta;
     private bool sbDeparting;                       // 出库动画进行中（thumb 由动画驱动）
     private IVisualElementScheduledItem sbDepartSched;
+    private float _wheelVelocity;                   // 滚轮惯性滑动速度 (px/frame)
+    private IVisualElementScheduledItem _inertiaSched; // 滚轮阻尼衰减调度器
     private float _smokeAcc;                        // 柴油怠速清烟计时
     private readonly System.Collections.Generic.List<VisualElement> _sleepers = new();
     private float _sleepersBuiltFor = -1f;
@@ -405,8 +455,10 @@ public class VNBacklog : MonoBehaviour
         sbClip.style.left = -10; sbClip.style.right = -10;
         sbClip.style.top = 0; sbClip.style.height = 100;
         sbClip.style.overflow = Overflow.Hidden;
+        sbClip.style.display = DisplayStyle.Flex;
         sbClip.pickingMode = PickingMode.Ignore;
         sbTrack.Add(sbClip);
+        sbClip.BringToFront();  // 确保 thumb 裁剪层在轨道层级最上层，永远不被道砟/路基/枕木遮盖
         sbClip.Add(sbThumb);
 
         // 前灯光束：四段锥 20×40（clip 坐标系，位置随 thumb 顶由分镜/终态驱动，top=thumbTop−29 底段贴灯）
@@ -839,9 +891,11 @@ public class VNBacklog : MonoBehaviour
         float sy = backlogScroll.layout.y;
         float sh = backlogScroll.layout.height;
         if (sh <= 0f) return;
-        // 模糊条贴滚动区顶缘（header 下缘）：只盖滚动区顶部，不碰 ✕/标题
-        if (sbBlurStrip != null && sbBlurStrip.style.top.value.value != sy)
-            sbBlurStrip.style.top = sy;
+        // 模糊条精确对齐金线下缘（header 底部边框：layout.y + layout.height，含 2px border）
+        float goldenLineY = backlogHeader != null ? (backlogHeader.layout.y + backlogHeader.layout.height) : sy;
+        if (goldenLineY <= 0f) goldenLineY = sy;
+        if (sbBlurStrip != null && Mathf.Abs(sbBlurStrip.style.top.value.value - goldenLineY) > 0.5f)
+            sbBlurStrip.style.top = goldenLineY;
         // 内容布局未测前不判态（根治「短列车动画中途变长列车」：首拍 view=0 被误判 overflow→
         // StartDepart 比例长度→下一拍跳 idle）。有条目但高度还没测出来 → 本拍直接不下结论。
         if (entries.Count > 0 && ContentHeight() <= 1f) return;
@@ -1747,6 +1801,8 @@ public class VNBacklog : MonoBehaviour
             sbSync?.Pause();
             sbDeparting = false;          // 关闭即中断出库动画
             sbDepartSched?.Pause();
+            _inertiaSched?.Pause();       // 关闭即停止惯性滑行
+            _wheelVelocity = 0f;
             // 关闭即恢复箭头：跳转/关闭瞬间鼠标可能仍停在按钮上，Leave 不会触发
             UiCursor.ShowArrow();
         }
