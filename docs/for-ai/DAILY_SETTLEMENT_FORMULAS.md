@@ -78,22 +78,24 @@
 
 ---
 
-## 四、T3 改造：结算环目标结构（给批1 的实现契约）
+## 四、T3/T304 改造：结算环目标结构（实现契约）
 
 ```
 AdvanceDay():
-  1 trips
-  2 客流(×passengerMultiplier) → 容量约束
+  1 trips（受政治压力红牌整顿制约）
+  2 客流(×passengerMultiplier × 老化准点率折减) → 容量约束
   3-5 收入(客运/货运×cargoMultiplier)
-  5.5 [新] OrderManager.DailySettle() → orderIncome      ← G1
-  6-8 燃料/工资/维护(×costMultiplier 于步骤10统一乘)
-  9 补贴
-  9.5 [新] CrewManager.AdvanceDay() → 疲劳/成长/忠诚日更  ← G2（不改当日工资）
+  5.5 OrderManager.DailySettle() → orderIncome      ← G1
+  6-8 燃料(含老化阻力加成)/工资/维护(×costMultiplier 于步骤10统一乘)
+  9 补贴（受政治压力黄牌/红牌削减）
+  9.5 CrewManager.AdvanceDay() → 疲劳/成长/忠诚日更  ← G2
   10 net = (dailyRevenue×incomeMultiplier + orderIncome) − costs×costMultiplier + subsidy
-  11-12 信任/车况 delta 链（现状不变）
-  13 事件(×eventFrequency 门控)
-  14 沙能（现状，勿重复接）
-  15 收尾（月度累计的 TotalRevenue 记 dailyRevenue×incomeMultiplier+orderIncome+subsidy，与净收入口径一致）
+  11-12 信任/车况 delta 链
+  12.5 [T304 新增] 全线路网老化演化（Weibull危险率磨耗 - 工务团队主动维护抑制）
+  12.6 [T304 新增] 政治商业周期演化（Nordhaus 180天宏观波形 + 负面损失厌恶非对称冲击）
+  13 事件(×eventFrequency 门控，含路网老化事故概率放大)
+  14 沙能（现状，高渗透率反哺政治游说）
+  15 收尾（月度累计、赤字反哺政治压力[最多连续10日后半衰、单次周期累计上限+0.08防死亡螺旋]、TrendSnapshot 写入 360 天环形缓冲供看板读取）
 ```
 
 **初始化与防双倍**（配合 B-2/B-3 的 VNExitData 注入）：

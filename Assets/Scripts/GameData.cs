@@ -219,6 +219,37 @@ public static class GameData
     public static int ExpectedPassengers { get; private set; } = 22;
     public static int CarCount { get; private set; } = 2;
 
+    // ===== T304 P0 核心数值：政治压力 + 全线路网老化 =====
+    public static float PoliticalPressure { get; private set; } = 0.20f;
+    public static float InfrastructureDecay { get; private set; } = 0.30f;
+    public static float DecayRoadbed { get; private set; } = 0.30f;
+    public static float DecayBridge { get; private set; } = 0.25f;
+    public static float DecaySignal { get; private set; } = 0.20f;
+
+    public static float DailyPoliticalPressureChange { get; private set; }
+    public static float DailyInfrastructureDecayChange { get; private set; }
+
+    // 连续赤字与反哺保护状态（MiMo 审批放行规范）
+    private static int consecutiveDeficitDays = 0;
+    private static float cumulativeDeficitPressure = 0f;
+
+    // 环形历史快照缓冲（360 天日记录，供五线趋势看板消费）
+    [System.Serializable]
+    public struct TrendSnapshot
+    {
+        public int day;
+        public float trust;
+        public int money;
+        public float sandPenetration;
+        public float politicalPressure;
+        public float infrastructureDecay;
+    }
+
+    public const int TrendHistoryCapacity = 360;
+    private static TrendSnapshot[] trendHistory = new TrendSnapshot[TrendHistoryCapacity];
+    private static int trendHistoryCount = 0;
+    private static int trendHistoryHead = 0;
+
     public static int DailyMoneyChange { get; private set; }
     public static int DailyTrustChange { get; private set; }
     public static int DailyTrainConditionChange { get; private set; }
@@ -333,6 +364,48 @@ public static class GameData
     public static int GetTrainCondition() { return TrainCondition; }
     public static int GetExpectedPassengers() { return ExpectedPassengers; }
     public static int GetDay() { return Day; }
+    public static float GetPoliticalPressure() { return PoliticalPressure; }
+    public static float GetInfrastructureDecay() { return InfrastructureDecay; }
+
+    /// <summary>获取当前监管制裁评级（四档状态规范）。</summary>
+    public static string GetSanctionTierName()
+    {
+        if (PoliticalPressure < 0.45f) return "Ⅰ 信任蜜月期";
+        if (PoliticalPressure < 0.70f) return "Ⅱ 审慎监管区";
+        if (PoliticalPressure < 0.85f) return "Ⅲ 黄牌通报";
+        if (PoliticalPressure < 0.95f) return "Ⅳ 红牌整顿";
+        return "听证接管危机";
+    }
+
+    /// <summary>记录每日五线趋势快照（360 天环形存储）。</summary>
+    public static void RecordTrendSnapshot(int day, float trust, int money, float sand, float politics, float decay)
+    {
+        trendHistory[trendHistoryHead] = new TrendSnapshot
+        {
+            day = day,
+            trust = trust,
+            money = money,
+            sandPenetration = sand,
+            politicalPressure = politics,
+            infrastructureDecay = decay
+        };
+        trendHistoryHead = (trendHistoryHead + 1) % TrendHistoryCapacity;
+        if (trendHistoryCount < TrendHistoryCapacity)
+            trendHistoryCount++;
+    }
+
+    /// <summary>获取全部有效趋势快照列表（时间正序）。</summary>
+    public static List<TrendSnapshot> GetTrendHistory()
+    {
+        List<TrendSnapshot> list = new List<TrendSnapshot>(trendHistoryCount);
+        int startIndex = (trendHistoryHead - trendHistoryCount + TrendHistoryCapacity) % TrendHistoryCapacity;
+        for (int i = 0; i < trendHistoryCount; i++)
+        {
+            int idx = (startIndex + i) % TrendHistoryCapacity;
+            list.Add(trendHistory[idx]);
+        }
+        return list;
+    }
 
     public static void RestoreFromSave(GameDataSaveData data)
     {
@@ -342,6 +415,13 @@ public static class GameData
         ExpectedPassengers = data.expectedPassengers;
         Day = data.day;
         CarCount = data.carCount > 0 ? data.carCount : 2;
+
+        // T304: 从本地持久化还原或安全默认值（老档向下兼容）
+        PoliticalPressure = PlayerPrefs.GetFloat("GameData_PoliticalPressure", 0.20f);
+        InfrastructureDecay = PlayerPrefs.GetFloat("GameData_InfrastructureDecay", 0.30f);
+        DecayRoadbed = PlayerPrefs.GetFloat("GameData_DecayRoadbed", InfrastructureDecay);
+        DecayBridge = PlayerPrefs.GetFloat("GameData_DecayBridge", Mathf.Max(0f, InfrastructureDecay - 0.05f));
+        DecaySignal = PlayerPrefs.GetFloat("GameData_DecaySignal", Mathf.Max(0f, InfrastructureDecay - 0.10f));
     }
 
     // ===== 种子数据注入 =====
@@ -354,6 +434,13 @@ public static class GameData
         Trust = Mathf.RoundToInt(seed.initialTrends.trust * 100f);
         TrainCondition = 70 - Mathf.RoundToInt(seed.initialTrends.infrastructureDecay * 50f);
         TrainCondition = Mathf.Clamp(TrainCondition, 0, 100);
+
+        // T304: 对齐创世核世界种子初值
+        PoliticalPressure = Mathf.Clamp01(seed.initialTrends.politicalPressure);
+        InfrastructureDecay = Mathf.Clamp01(seed.initialTrends.infrastructureDecay);
+        DecayRoadbed = InfrastructureDecay;
+        DecayBridge = Mathf.Clamp01(InfrastructureDecay * 0.9f);
+        DecaySignal = Mathf.Clamp01(InfrastructureDecay * 0.8f);
 
         // ExpectedPassengers 保持由 A9 公式计算，但 Trust 已变，需重新计算
         ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
@@ -419,6 +506,21 @@ public static class GameData
         TrainCondition = 70;
         ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
         CarCount = 2;
+
+        PoliticalPressure = 0.20f;
+        InfrastructureDecay = 0.30f;
+        DecayRoadbed = 0.30f;
+        DecayBridge = 0.25f;
+        DecaySignal = 0.20f;
+        DailyPoliticalPressureChange = 0f;
+        DailyInfrastructureDecayChange = 0f;
+        consecutiveDeficitDays = 0;
+        cumulativeDeficitPressure = 0f;
+        trendHistoryCount = 0;
+        trendHistoryHead = 0;
+
+        // 记录 Day 1 初始快照
+        RecordTrendSnapshot(1, Trust, Money, 0.15f, PoliticalPressure, InfrastructureDecay);
 
         DailyMoneyChange = 0;
         DailyTrustChange = 0;
@@ -586,6 +688,29 @@ public static class GameData
         }
     }
 
+    /// <summary>根据天数计算季节应力系数（T304：雨季与冻融加剧路基桥梁损耗）。</summary>
+    private static float GetSeasonStressModifier()
+    {
+        int month = ((Day - 1) % 360) / 30;
+        switch (month)
+        {
+            case 2:
+            case 3:
+            case 4:  // 春雨翻浆
+                return 1.15f;
+            case 5:
+            case 6:
+            case 7:  // 夏季高温
+                return 1.05f;
+            case 8:
+            case 9:
+            case 10: // 秋收干爽
+                return 0.95f;
+            default: // 冬季冻融
+                return 1.25f;
+        }
+    }
+
     /// <summary>获取主线城市沙能渗透率（A2：从铁龙竞争系统读取，替代写死值）。</summary>
     private static float GetSandPenetration()
     {
@@ -633,6 +758,37 @@ public static class GameData
         return CalculateRevenue(dailyPassengers, trips, 1.0f);
     }
 
+    /// <summary>获取当前线网货运日总重载吨位（供线路老化动力学计算）。</summary>
+    public static float GetDailyFreightTonnage()
+    {
+        if (CurrentSeed == null) return 5f;
+
+        float totalFreightTonnage = 0f;
+        var unlockedCityIds = WorldGen.RegionUnlockManager.GetUnlockedCityIds();
+
+        foreach (string cityId in unlockedCityIds)
+        {
+            if (!CurrentSeed.cities.TryGetValue(cityId, out var city))
+                continue;
+
+            float cityOutput = 0f;
+            foreach (string industry in city.industries)
+            {
+                float tonnage = IndustryTonnage.TryGetValue(industry, out int t) ? t : 1f;
+                cityOutput += tonnage;
+            }
+
+            if (DisruptedCityIds.Contains(cityId))
+            {
+                cityOutput *= 0.5f;
+            }
+
+            totalFreightTonnage += cityOutput;
+        }
+
+        return totalFreightTonnage > 0f ? totalFreightTonnage : 5f;
+    }
+
     /// <summary>计算货运收入（G5：基于已解锁城市产业 × 23km × 0.5沙币/吨公里）。</summary>
     /// <remarks>
     /// 遍历已解锁城市，对其 industries 求和吨位，再乘以统一定价。
@@ -642,36 +798,7 @@ public static class GameData
     private static int CalculateFreightRevenue()
     {
         if (CurrentSeed == null) return 0;
-
-        float totalFreightTonnage = 0f;
-
-        // 获取已解锁城市ID列表
-        var unlockedCityIds = WorldGen.RegionUnlockManager.GetUnlockedCityIds();
-
-        foreach (string cityId in unlockedCityIds)
-        {
-            if (!CurrentSeed.cities.TryGetValue(cityId, out var city))
-                continue;
-
-            // 计算该城市产业总吨位
-            float cityOutput = 0f;
-            foreach (string industry in city.industries)
-            {
-                float tonnage = IndustryTonnage.TryGetValue(industry, out int t) ? t : 1f;
-                cityOutput += tonnage;
-            }
-
-            // G6：依赖图中断惩罚 → 产业产出-50%
-            if (DisruptedCityIds.Contains(cityId))
-            {
-                cityOutput *= 0.5f;
-            }
-
-            totalFreightTonnage += cityOutput;
-        }
-
-        // 货运收入 = 总吨位 × 23km × 0.5沙币/吨公里
-        return Mathf.RoundToInt(totalFreightTonnage * 23f * 0.5f);
+        return Mathf.RoundToInt(GetDailyFreightTonnage() * 23f * 0.5f);
     }
 
     /// <summary>计算日燃料费。</summary>
@@ -927,11 +1054,18 @@ public static class GameData
         // 加载难度与游戏配置（G4）
         GameConfig config = GameConfig.Load();
 
-        // 1. 发车方案决定今日趟数
+        // 1. 发车方案决定今日趟数（受政治压力红牌整顿制约）
         int trips = GetTripsForDispatchPlan();
+        if (PoliticalPressure >= 0.85f)
+        {
+            trips = Mathf.Max(1, trips - 1);
+            Notices.Add("⚠ 监管红牌整顿中：市政安全督查要求强制限速，今日最高发车趟数上限 -1。");
+        }
 
         // 2. 计算单趟客流（A9：统一单趟口径），按 passengerMultiplier 接入（G4）
-        int rawDailyPassengers = CalculateDailyPassengers();
+        // T304：路网老化导致颠簸与小幅晚点，折减客流吸引力（对齐《跨系统联动公式》§12）
+        float punctualityFactor = Mathf.Clamp01(1.0f - InfrastructureDecay * 0.18f);
+        int rawDailyPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * punctualityFactor);
         int dailyPassengers = Mathf.RoundToInt(rawDailyPassengers * config.passengerMultiplier);
         // 日客流 = 单趟 × 趟数（用于显示/目标）
         ExpectedPassengers = dailyPassengers * trips;
@@ -947,8 +1081,9 @@ public static class GameData
         // 5.5 [新] 订单系统每日结算（G1）
         int orderIncome = OrderManager.DailySettle();
 
-        // 6. 日燃料费
-        int fuelCost = CalculateFuelCost(trips);
+        // 6. 日燃料费（T304：线路轨道老化导致轮轨动阻力增加，百公里油耗额外增加，对齐《跨系统联动公式》§12）
+        float decayDragMultiplier = 1.0f + InfrastructureDecay * 0.25f;
+        int fuelCost = Mathf.RoundToInt(CalculateFuelCost(trips) * decayDragMultiplier);
 
         // 7. 日工资（按当前职级月薪表结算）
         int wageCost = CalculateWageCost();
@@ -957,7 +1092,23 @@ public static class GameData
         int maintenanceCost = CalculateMaintenanceCost();
 
         // 9. 基础补贴（A8）：8000/30 × subsidyMultiplier，计入净收入
-        int subsidy = Mathf.RoundToInt(8000f / 30f * config.subsidyMultiplier);
+        // T304：受政治压力分档监管奖惩机制影响（对齐《跨系统联动公式》§11.3）
+        int rawSubsidy = Mathf.RoundToInt(8000f / 30f * config.subsidyMultiplier);
+        int subsidy = rawSubsidy;
+        if (PoliticalPressure < 0.45f)
+        {
+            subsidy = Mathf.RoundToInt(rawSubsidy * 1.10f); // Ⅰ 信任蜜月期：奖励 +10%
+        }
+        else if (PoliticalPressure >= 0.70f && PoliticalPressure < 0.85f)
+        {
+            subsidy = Mathf.RoundToInt(rawSubsidy * 0.75f); // Ⅲ 黄牌通报：扣减 25%
+            Notices.Add("⚠ 黄牌警告通报：地方财政补贴扣减 25%。");
+        }
+        else if (PoliticalPressure >= 0.85f)
+        {
+            subsidy = Mathf.RoundToInt(rawSubsidy * 0.50f); // Ⅳ 红牌整顿：扣减 50%
+            Notices.Add("⚠ 监管红牌整顿：地方财政补贴扣减 50%。");
+        }
 
         // 9.5 [新] 先民人事系统每日更新（G2：疲劳/成长/忠诚/冷却，不改当日工资）
         CrewManager.AdvanceDay();
@@ -1000,6 +1151,63 @@ public static class GameData
         TrainCondition += conditionDelta;
         ExpectedPassengers += passengerDelta;
 
+        // ===== 12.5 全线路网老化物理演化（v3.0 威布尔危险率物理损伤模型） =====
+        float startDecay = InfrastructureDecay;
+        float D_base = 0.0018f;
+        float beta = 1.85f;
+        float kappa = 1.25f;
+        float D_0 = 0.30f;
+        float tripsRatio = (float)trips / (float)BaseTrips;
+        float cargoTonnage = GetDailyFreightTonnage();
+        float loadFactor = 1.0f + (cargoTonnage / 50.0f) * 0.25f;
+        float seasonStress = GetSeasonStressModifier();
+        float noiseEnv = Random.Range(-0.0001f, 0.0001f);
+
+        // 威布尔疲劳磨耗增量
+        float wear = D_base * (1.0f + kappa * Mathf.Pow(Mathf.Clamp01(InfrastructureDecay) / D_0, beta - 1.0f)) * tripsRatio * loadFactor * seasonStress + noiseEnv;
+        // 工务队伍日常巡线与主动维护
+        float maintenancePower = CrewManager.GetMaintenancePower();
+        float stanceEffort = CurrentMaintenanceStrategy == MaintenanceStrategy.Enhanced ? 1.8f : (CurrentMaintenanceStrategy == MaintenanceStrategy.Standard ? 1.0f : 0f);
+        float repair = maintenancePower * stanceEffort;
+        float netDecayDelta = wear - repair;
+
+        DecayRoadbed = Mathf.Clamp01(DecayRoadbed + netDecayDelta * 1.1f);
+        DecayBridge = Mathf.Clamp01(DecayBridge + netDecayDelta * 0.9f);
+        DecaySignal = Mathf.Clamp01(DecaySignal + netDecayDelta * 1.0f);
+        InfrastructureDecay = Mathf.Clamp01(0.40f * DecayRoadbed + 0.35f * DecayBridge + 0.25f * DecaySignal);
+        DailyInfrastructureDecayChange = InfrastructureDecay - startDecay;
+
+        // ===== 12.6 政治商业周期演化（v3.0 Nordhaus 180天宏观波形 + 前景理论非对称损失） =====
+        float startPressure = PoliticalPressure;
+        int cycleLen = CurrentSeed != null ? CurrentSeed.politicalCycleLength : 180;
+        float stability = CurrentSeed != null ? CurrentSeed.stability : 0.6f;
+        // 宏观大选/审核大势微分增量
+        float macroCycleDelta = (0.12f * (1f - stability)) * (2f * Mathf.PI / cycleLen) * Mathf.Cos(2f * Mathf.PI * Day / cycleLen);
+
+        float externalImpact = 0f;
+        if (CurrentExternalAffairsStrategy == ExternalAffairsStrategy.Minimal) externalImpact += 0.003f;
+        else if (CurrentExternalAffairsStrategy == ExternalAffairsStrategy.Active) externalImpact -= 0.004f;
+
+        // 沙能资本游说侵蚀：沙能渗透率 > 50% 时，放大负面外力 30%
+        float currentSandPen = SandRivalManager.GetPenetration("wufeng");
+        if (currentSandPen > 0.50f && externalImpact > 0f) externalImpact *= 1.30f;
+
+        float microDelta = 0f;
+        if (externalImpact > 0f)
+        {
+            // 负面危机：损失厌恶 lambda_L = 2.25 放大
+            microDelta = externalImpact * 2.25f * (1f - stability * 0.4f);
+        }
+        else if (externalImpact < 0f)
+        {
+            // 正面公关：缓慢修复
+            microDelta = externalImpact * (1f / 2.25f) * (1f + stability * 0.4f);
+        }
+
+        float microNoise = Random.Range(-0.0005f, 0.0005f);
+        PoliticalPressure = Mathf.Clamp01(PoliticalPressure + macroCycleDelta + microDelta + microNoise);
+        DailyPoliticalPressureChange = PoliticalPressure - startPressure;
+
         // 13. 随机事件（按 eventFrequency 概率门控 G4）
         GameEvent evt = EventManager.TryTriggerEvent(config.eventFrequency);
         if (evt != null)
@@ -1036,6 +1244,41 @@ public static class GameData
         StatsManager.AddDailyExpense(totalCosts);
         StatsManager.AddDailyPassengers(actualPassengers * trips);
         StatsManager.RecordDay(Day);
+
+        // 赤字反哺政治压力（带双重防死亡螺旋约束：最多连续10天后半衰，单周期累计封顶+0.08）
+        if (Money < 5000 && netIncome < 0)
+        {
+            consecutiveDeficitDays++;
+            if (consecutiveDeficitDays <= 10 && cumulativeDeficitPressure < 0.08f)
+            {
+                float addPressure = Mathf.Min(0.004f * 2.25f, 0.08f - cumulativeDeficitPressure);
+                cumulativeDeficitPressure += addPressure;
+                PoliticalPressure = Mathf.Clamp01(PoliticalPressure + addPressure);
+                Notices.Add("⚠ 市议会质询：财政赤字持续扩大，政治压力加剧 (+" + (addPressure * 100f).ToString("F1") + "%)");
+            }
+            else if (consecutiveDeficitDays > 10 && cumulativeDeficitPressure < 0.08f)
+            {
+                float damping = Mathf.Pow(0.5f, consecutiveDeficitDays - 10);
+                float addPressure = Mathf.Min(0.004f * 2.25f * damping, 0.08f - cumulativeDeficitPressure);
+                cumulativeDeficitPressure += addPressure;
+                PoliticalPressure = Mathf.Clamp01(PoliticalPressure + addPressure);
+            }
+        }
+        else if (netIncome >= 0)
+        {
+            consecutiveDeficitDays = 0;
+            cumulativeDeficitPressure = Mathf.Max(0f, cumulativeDeficitPressure - 0.005f);
+        }
+
+        // 记录 360 天环形趋势快照
+        RecordTrendSnapshot(Day, Trust, Money, SandRivalManager.GetPenetration("wufeng"), PoliticalPressure, InfrastructureDecay);
+
+        // 本地落盘向下兼容持久化
+        PlayerPrefs.SetFloat("GameData_PoliticalPressure", PoliticalPressure);
+        PlayerPrefs.SetFloat("GameData_InfrastructureDecay", InfrastructureDecay);
+        PlayerPrefs.SetFloat("GameData_DecayRoadbed", DecayRoadbed);
+        PlayerPrefs.SetFloat("GameData_DecayBridge", DecayBridge);
+        PlayerPrefs.SetFloat("GameData_DecaySignal", DecaySignal);
 
         // 成就：完成第一个月运营
         if (CurrentMonth.DaysInMonth >= 30)

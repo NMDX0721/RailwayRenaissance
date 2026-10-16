@@ -1742,6 +1742,7 @@ public class GameMainUI : MonoBehaviour
 
     private string AppSubtitle(string name) => name switch
     {
+        "五线态势" => "宏观经营五线趋势看板",
         "RDA" => "铁路行车调度助手",
         "驾驶台" => "0721型机车仿真视界",
         "归途" => "剧情回顾 · Return Journey",
@@ -1778,6 +1779,7 @@ public class GameMainUI : MonoBehaviour
 
         switch (name)
         {
+            case "五线态势": RailwayRenaissance.UI.TabletTrendDashboardUI.Build(win); break;
             case "RDA": BuildRDAApp(win); break;
             case "归途": BuildReturnJourneyApp(win); break;
             case "媒姬百科": BuildWikiApp(win); break;
@@ -3520,9 +3522,29 @@ public class GameMainUI : MonoBehaviour
         lineCard.style.marginBottom = 14;
         leftCol.Add(lineCard);
 
+        var lineTitleRow = new VisualElement();
+        lineTitleRow.style.flexDirection = FlexDirection.Row;
+        lineTitleRow.style.justifyContent = Justify.SpaceBetween;
+        lineTitleRow.style.alignItems = Align.Center;
+        lineCard.Add(lineTitleRow);
+
         var lineTitle = new Label("当前支线 · 雾峰村 - 矿区线");
         lineTitle.style.fontSize = 17; lineTitle.style.color = GlassAccent; lineTitle.style.unityFontDefinition = Fd();
-        lineCard.Add(lineTitle);
+        lineTitleRow.Add(lineTitle);
+
+        var trendBtn = new Button(() => LaunchApp("五线态势"));
+        trendBtn.text = "📊 五线态势";
+        trendBtn.style.fontSize = 11;
+        trendBtn.style.unityFontDefinition = Fd();
+        trendBtn.style.backgroundColor = new Color(0.2f, 0.35f, 0.5f, 0.5f);
+        trendBtn.style.color = Color.white;
+        trendBtn.style.borderTopWidth = 0; trendBtn.style.borderBottomWidth = 0;
+        trendBtn.style.borderLeftWidth = 0; trendBtn.style.borderRightWidth = 0;
+        trendBtn.style.borderTopLeftRadius = 4; trendBtn.style.borderTopRightRadius = 4;
+        trendBtn.style.borderBottomLeftRadius = 4; trendBtn.style.borderBottomRightRadius = 4;
+        trendBtn.style.paddingLeft = 8; trendBtn.style.paddingRight = 8;
+        trendBtn.style.paddingTop = 2; trendBtn.style.paddingBottom = 2;
+        lineTitleRow.Add(trendBtn);
 
         var lineDesc = new Label("全长 23.0 km · 4站设防 · 主要运能：茶叶 / 原煤 / 村民通勤");
         lineDesc.style.fontSize = 12; lineDesc.style.color = GlassTextDim; lineDesc.style.unityFontDefinition = Fd();
