@@ -16,7 +16,7 @@
     "worldbuilding_anchor": "2076年大废线后，雾峰线（23km支线）铁路工业设施（道砟、侧线、车辆配给所/铁道商店窗口）向雾峰村自然村落（梯田茶园、石拱桥、道口、山谷薄雾）过渡的枢纽场景。",
     "academic_context": "用户高中 AP 2-D Art & Design 持续探究（Sustained Investigation）第6号作品（SI Piece #6）。",
     "art_style_spec": {
-      "target_style": "高精度手绘电影级二次元插画（吉卜力 / 新海诚电影美学风格），彻底替代旧像素画",
+      "target_style": "清晰像素风格（1920×1080），与全项目背景像素体系统一；像素边缘锐利干净，不采用手绘/电影插画风格",
       "reference_benchmarks": [
         "Assets/Resources/bg/songqiao_station.png (松桥站)",
         "Assets/Resources/bg/platform_evening.png (傍晚站台)"
@@ -24,7 +24,8 @@
       "prohibited_elements": [
         "普通生活日用小卖部/买菜零食陈列（严禁脱离铁路工业与大废线背景）",
         "背景中绘制角色立绘（必须为纯环境空景 Pure Environment BG，立绘由 Unity VN 动态层级渲染）",
-        "低分辨率像素网格、像素阶梯抖动",
+        "模糊放大的糊边像素、非整数缩放脏边",
+        "吉卜力/新海诚式手绘笔触与电影插画质感（破坏像素体系统一）",
         "3D写实感/粗糙色块"
       ]
     },
@@ -45,6 +46,6 @@
       "target_path": "Assets/Resources/bg/railway_shop_village.png"
     }
   },
-  "report": "# 《铁道商店与雾峰村落交界》场景概念规范\n\n## 1. 核心定位\n- 本图为用户速写本手绘草图《铁道商店》向数字化场景资产的转译，同时作为 AP 2-D Art SI #6 作品与《铁路复兴》核心场景背景。\n- 彻底摒弃普通便利店/小卖部设定，定性为站区铁道公销所/车辆配给处与自然村落的交界枢纽。\n\n## 2. 视觉规范\n- 纯环境空景（Pure Environment BG），严禁背景图内含角色立绘。\n- 严格两点透视，冷暖色温对比（山谷晨雾 vs 室内暖光）。\n- 统一对齐 songqiao_station 与 platform_evening 吉卜力/新海诚电影手绘风格。\n\n## 3. 工程对接\n- 后续出图入库后建议注册为 Assets/Resources/bg/railway_shop_village.png (1920×1080)。",
+  "report": "# 《铁道商店与雾峰村落交界》场景概念规范\n\n## 1. 核心定位\n- 本图为用户速写本手绘草图《铁道商店》向数字化场景资产的转译，同时作为 AP 2-D Art SI #6 作品与《铁路复兴》核心场景背景。\n- 彻底摒弃普通便利店/小卖部设定，定性为站区铁道公销所/车辆配给处与自然村落的交界枢纽。\n\n## 2. 视觉规范\n- 纯环境空景（Pure Environment BG），严禁背景图内含角色立绘。\n- 严格两点透视，冷暖色温对比（山谷晨雾 vs 室内暖光）。\n- 统一对齐 songqiao_station 与 platform_evening 的清晰像素画风（全项目背景锁定像素体系，不走手绘/电影插画路线）。\n\n## 3. 工程对接\n- 后续出图入库后建议注册为 Assets/Resources/bg/railway_shop_village.png (1920×1080)。",
   "reply": "已同步《铁道商店与雾峰村落交界》的场景概念定位与空景规范，请反重力在后续背景资产管线与剧本引用中保持对齐。"
 }
