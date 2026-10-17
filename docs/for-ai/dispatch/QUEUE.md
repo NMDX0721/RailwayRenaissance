@@ -29,6 +29,7 @@
 | **T304** | **P0 数值三件套：政治压力 + 线路老化 + 五线趋势看板** | ✅ **已交付已核验 · 已提交**（2026-10-17，待用户 Play） | GameData / CrewManager / 新看板文件 / GameMainUI 仅接线 | 编译 Tundra L266 rc0、DLL 0:53:43 晚于源码；参数/耦合/回执两处全核过；RDA 快捷按钮 20 行按入口性质放行 |
 | **T305** | **P1 重构方案文档（只出方案不动代码）** | ✅ **已交付已核验 · 已提交**（2026-10-17） | 仅 `docs/for-ai/refactor/P1_refactor_plan.md` | 217 调用点/21 文件、93,890 字节精确核实；Phase 3 建议缓行获认可 |
 | **T306** | **Phase 1 实施：GameMainUI 业务 App 剥离（4 批）** | ✅ **已交付已核验 · 已提交** `4c19f32`（2026-10-17） | GameMainUI + 新增 `UI/Tablet/` | 7,091→2,019 行；T304 三处入口全保；**终审用 DLL 取证**（batch 日志被覆盖+锁冲突，见当前备注） |
+| **T307** | **视觉小说体验与专有工业术语系统综合精修** | ✅ **已交付已核验 · 已提交**（2026-10-17，待用户 Play） | `DialogueBox.cs` / `Terms.json` / `VNBacklog.cs` / `frosted.uss` | 术语 hover 下划线+单人头像卡；30→65 条（实测65✓）；道砟 top=0、列车104px、就地停驻、0.88 滚轮阻尼、65% 透光和纸底；csc EXIT=0（唯一 CS0618=PreventDefault 过时警告，Play 盯滚轮刻度）；`frosted.uss` 未列入其自述白名单（2 行改动，放行） |
 
 ### 10-13 优化回执其余两项的处置（MiMo 裁定）
 
@@ -39,6 +40,7 @@
 
 - **T306 已交付已核验并提交**（`4c19f32`）：GameMainUI 7,091→2,019 行，7 个 App 类 + Helper 入驻 `UI/Tablet/`；终审取证=DLL（12:25:05）含全部新类型而 ResolveBgAlias 缺席。**遗留**：①四批历史编译行号不可复核（单文件 log 被覆盖，1-C/1-D 同为 L254，12:24:58 一次锁冲突失败）→ **后续单要求每批另存 `compile_batch_*.log`** ②`BackgroundManager.cs` 别名修复被还原丢失（2307 回执声称已交付）→ 待重派恢复 ③`DialogueBox.cs` 12:24 有越白名单改动（术语卡 hover 下划线+头像，参考图驱动），归属待用户确认，未提交
 - **T305 已交付已核验**（`e3ef75e`）：P1 方案三章通过，Phase 3 GameData Facade 建议按需缓行获认可
+- **T307 已交付已核验并提交**（2026-10-17）：术语卡/词库/回顾面板三块；**T301 的 Play 待验项已被 T307 接管合并**（道砟遮挡二次修=top 归 0、滚轮惯性重做=0.88 阻尼+PreventDefault），Play 一次验 T301+T307：hover 下划线、卡片下方弹出、道砟不遮红旗、104px 列车自由停驻、滚轮无刻度跳、65% 透光底
 - **Phase 2（LoginManager 解耦）待派**：方案已批，等 Unity Editor 关闭（batch 编译门冲突）后再发
 - T301 / T304 仍待用户 Play 实测；待出图队列：`station_office` ✅ → `depot_morning` ✅ → **`railway_map_aerial`** → `station`（改接）
 - 画风方向已纠偏：**清晰像素体系**（10-13 回执 P2 + railway_shop 规格两处），后续任何出图/规格以像素风为准

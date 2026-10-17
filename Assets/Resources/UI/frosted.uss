@@ -5,5 +5,5 @@
 /* VN 回顾顶部截断模糊条：滚动内容在顶缘被高斯柔化（项目 backdrop-filter 走 USS 的先例同 .frosted） */
 .sb-blur-strip {
     backdrop-filter: blur(6px);
-    background: linear-gradient(180deg, rgba(13, 8, 5, 0.85) 0%, rgba(13, 8, 5, 0) 100%);
+    background: linear-gradient(180deg, rgba(28, 18, 10, 0.70) 0%, rgba(28, 18, 10, 0) 100%);
 }

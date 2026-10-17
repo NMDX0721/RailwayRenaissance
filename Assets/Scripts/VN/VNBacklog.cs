@@ -49,7 +49,11 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.style.left = 0;
         backlogPanel.style.right = 0;
         backlogPanel.style.bottom = 0;
-        backlogPanel.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.85f);
+        // 有色的较透明层：暖沙琥珀半透明基底（0.65透光），配合细腻和纸/金箔暗纹，完美透出底层场景与立绘，契合《铁路复兴》沙金工业美学
+        backlogPanel.style.backgroundColor = new Color(0.12f, 0.08f, 0.05f, 0.65f);
+        backlogPanel.style.backgroundImage = new StyleBackground(MakeBacklogWashiTex());
+        backlogPanel.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
+        backlogPanel.style.backgroundSize = new BackgroundSize(Length.Pixels(128), Length.Pixels(128));
         backlogPanel.style.overflow = Overflow.Hidden;
         // 磨砂：半透明底 + USS backdrop-filter（引擎不支持该属性时静默忽略）
         var frosted = Resources.Load<StyleSheet>("UI/frosted");
@@ -81,8 +85,9 @@ public class VNBacklog : MonoBehaviour
         backlogHeader.style.paddingRight = 40;
         backlogHeader.style.paddingTop = 20;
         backlogHeader.style.paddingBottom = 20;
+        backlogHeader.style.backgroundColor = new Color(0.10f, 0.06f, 0.03f, 0.55f);
         backlogHeader.style.borderBottomWidth = 2;
-        backlogHeader.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
+        backlogHeader.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.45f);
         backlogPanel.Add(backlogHeader);
 
         var titleLabel = new Label("对话回顾");
@@ -162,49 +167,35 @@ public class VNBacklog : MonoBehaviour
 
         // 滚轮自由滚动 + 柔和惯性阻尼滑行：
         // 1. 本次基础步长 12px 响应手感，新滚轮打断前次惯性并适度叠加速度
-        // 2. 惯性衰减调度器：每帧按 0.90f 阻尼衰减滑行，每次滚轮总滑行距离约束在 60~100px 内
-        // 3. 实时同步 UpdateCustomScrollbar()，到顶/到底边界立即切断速度，杜绝抖动
+        // 鼠标滚轮自由滚动 + 平滑惯性滑行：
+        // 1. PreventDefault 强阻断 UI Toolkit 原生大步长刻度跳跃
+        // 2. 动量注入：微步连续推力，按 0.88f 阻尼指数平滑衰减
         backlogScroll.RegisterCallback<WheelEvent>(e =>
         {
+            e.PreventDefault();
             e.StopImmediatePropagation();
             float dy = e.delta.y;
             if (Mathf.Abs(dy) > 10f) dy /= 120f;
 
-            // 基础位移步长与初始冲量（上限约束防剧烈甩轮）
-            float impulse = Mathf.Clamp(dy * 12f, -36f, 36f);
-            // 动量累加：同向适度叠加（最高 45px/帧），反向则瞬间刹车重定向
-            if (Mathf.Sign(impulse) == Mathf.Sign(_wheelVelocity))
-                _wheelVelocity = Mathf.Clamp(_wheelVelocity * 0.4f + impulse, -45f, 45f);
+            // 动量注入：连续微步，彻底消除生硬刻度跳跃感
+            float deltaV = Mathf.Clamp(dy * 4.5f, -18f, 18f);
+            if (Mathf.Sign(deltaV) == Mathf.Sign(_wheelVelocity))
+                _wheelVelocity = Mathf.Clamp(_wheelVelocity + deltaV, -30f, 30f);
             else
-                _wheelVelocity = impulse;
-
-            // 立即推进第一帧位移
-            float curY = backlogScroll.scrollOffset.y;
-            float maxScroll = SbMaxScroll();
-            float nextY = Mathf.Clamp(curY + impulse, 0f, maxScroll);
-            backlogScroll.scrollOffset = new Vector2(0, nextY);
-            UpdateCustomScrollbar();
-
-            // 若已到边界，直接停止惯性
-            if (nextY <= 0f || nextY >= maxScroll)
-            {
-                _wheelVelocity = 0f;
-                _inertiaSched?.Pause();
-                return;
-            }
+                _wheelVelocity = deltaV;
 
             // 启动/续订惯性阻尼滑行
             _inertiaSched?.Pause();
             _inertiaSched = backlogPanel.schedule.Execute(() =>
             {
-                if (Mathf.Abs(_wheelVelocity) < 0.35f)
+                if (Mathf.Abs(_wheelVelocity) < 0.2f)
                 {
                     _wheelVelocity = 0f;
                     _inertiaSched?.Pause();
                     return;
                 }
 
-                _wheelVelocity *= 0.90f; // 阻尼系数：温和衰减
+                _wheelVelocity *= 0.88f; // 平滑阻尼指数衰减
                 float nowY = backlogScroll.scrollOffset.y;
                 float limit = SbMaxScroll();
                 float stepY = Mathf.Clamp(nowY + _wheelVelocity, 0f, limit);
@@ -212,7 +203,7 @@ public class VNBacklog : MonoBehaviour
                 backlogScroll.scrollOffset = new Vector2(0, stepY);
                 UpdateCustomScrollbar();
 
-                // 触碰顶底边界立即刹车停止，防回弹抖动
+                // 触碰顶底边界切断动量
                 if (stepY <= 0f || stepY >= limit)
                 {
                     _wheelVelocity = 0f;
@@ -258,9 +249,9 @@ public class VNBacklog : MonoBehaviour
     private IVisualElementScheduledItem sbIdleSched;
     private IVisualElementScheduledItem sbIdleSnapSched;
     private const float IdleTrackH = 330f;                  // 驻留景轨道总长（提升为330，舒展呈现）
-    private const float IdleThumbH = 64f;                   // 驻留景短列车长
+    private const float IdleThumbH = 104f;                  // 驻留景列车长（显著加长至104px）
     private const float SleeperBandY = 70f;                  // 枕木带起点：其上=无枕道砟段
-    private const float FinishedH = 180f;                   // 完备段高（钢轨+列车，提升为180）
+    private const float FinishedH = 200f;                   // 完备段高（钢轨+列车，扩展至200px）
     private const float RawCapMax = 96f;                     // 原始地面前沿帽上限（压降至96）
     private const float DepotH = 56f;                        // 机库高
     private const float DepotW = 36f;                        // 机库宽（与道砟列居中）
@@ -317,14 +308,13 @@ public class VNBacklog : MonoBehaviour
         sbTrack.Add(railR);
         sbRailR = railR;
 
-        // 道砟道床：轨道最底层灰褐碎石，比枕木略宽；上下各延伸 22px 顶到滚动条两端（车挡桩下也铺满，不留黑口）
+        // 道砟道床：上下与轨道严格平齐（top=0, bottom=0），绝不上溢遮挡上方路基与测量标杆红旗
         var ballast = new VisualElement { name = "sb-ballast" };
         sbBallast = ballast;
         ballast.style.position = Position.Absolute;
-        ballast.style.left = -8; ballast.style.right = -8;   // 宽32=纹理一整格，整块图案可见
-        ballast.style.top = -22; ballast.style.bottom = -22;
+        ballast.style.left = -8; ballast.style.right = -8;   // 宽32=纹理一整格
+        ballast.style.top = 0; ballast.style.bottom = 0;
         ballast.style.backgroundImage = new StyleBackground(MakeBallastTex());
-        // 显示 32×64 游戏像素；纹理本体 64×128（2×密度 → 细颗粒），Point 采样
         ballast.style.backgroundSize = new BackgroundSize(Length.Pixels(32), Length.Pixels(64));
         ballast.style.backgroundRepeat = new BackgroundRepeat(Repeat.Repeat, Repeat.Repeat);
         ballast.pickingMode = PickingMode.Ignore;
@@ -419,8 +409,8 @@ public class VNBacklog : MonoBehaviour
         lamp.pickingMode = PickingMode.Ignore;
         sbThumb.Add(lamp);
 
-        // 屋面通风口：三只小灰盒（模型车顶特征）
-        foreach (var pct in new[] { 32, 48, 64 })
+        // 屋面通风口：四只小灰盒（模型车顶特征，自适应加长车体）
+        foreach (var pct in new[] { 28, 42, 56, 70 })
         {
             var vent = new VisualElement();
             vent.style.position = Position.Absolute;
@@ -433,8 +423,8 @@ public class VNBacklog : MonoBehaviour
             sbThumb.Add(vent);
         }
 
-        // 侧窗列：奶油带上的深色窗格（俯视时车厢两侧的窗线）
-        foreach (var pct in new[] { 26, 38, 50, 62, 74 })
+        // 侧窗列：奶油带上的深色窗格（俯视时车厢两侧的窗线，加长车身6组窗）
+        foreach (var pct in new[] { 22, 34, 46, 58, 70, 82 })
         {
             foreach (var side in new[] { 0, 1 })   // 0=左 1=右
             {
@@ -510,7 +500,7 @@ public class VNBacklog : MonoBehaviour
         sbWork.pickingMode = PickingMode.Ignore;
         sbRoadbed.Add(sbWork);
 
-        // 施工标杆：移植到 sbWork，底缘锚定（贴施工前沿，=轨道顶之上），固定像素
+        // 施工标杆：移植到 sbWork，底缘锚定（贴施工前沿，=轨道顶之上），高对比度标杆与红旗
         foreach (var stake in new[] { (7f, 6f), (21f, 34f) })
         {
             var box = new VisualElement();
@@ -522,12 +512,12 @@ public class VNBacklog : MonoBehaviour
             var pole = new VisualElement();
             pole.style.position = Position.Absolute;
             pole.style.left = 3; pole.style.bottom = 0; pole.style.width = 2; pole.style.height = 14;
-            pole.style.backgroundColor = new Color(0.45f, 0.38f, 0.28f, 1f);
+            pole.style.backgroundColor = new Color(0.95f, 0.95f, 0.98f, 1f);   // 醒目银白测量花杆，高对比度防暗泥吞没
             pole.pickingMode = PickingMode.Ignore;
             var flag = new VisualElement();
             flag.style.position = Position.Absolute;
             flag.style.left = 1; flag.style.bottom = 14; flag.style.width = 6; flag.style.height = 3;
-            flag.style.backgroundColor = new Color(0.82f, 0.3f, 0.22f, 1f);   // 测量红标
+            flag.style.backgroundColor = new Color(0.96f, 0.20f, 0.15f, 1f);   // 鲜亮铁路信号红旗
             flag.pickingMode = PickingMode.Ignore;
             box.Add(pole);
             box.Add(flag);
@@ -540,14 +530,14 @@ public class VNBacklog : MonoBehaviour
         backlogPanel.Add(sbDepot);
         sbUp.BringToFront();   // 车挡永不被道砟/路基盖住
 
-        // 卸料道砟堆：骑在轨道顶缘外（衔接路基前沿），铺砟工序时亮出
-        foreach (var pile in new[] { (2f, 10f, 0.62f), (13f, 9f, 0.68f), (23f, 10f, 0.56f) })
+        // 卸料道砟堆：严格收在道砟床范围（left=-8..24）内，提高明度防杂灰感，top=0 平齐轨顶
+        foreach (var pile in new[] { (-4f, 8f, 0.76f), (4f, 8f, 0.82f), (12f, 8f, 0.74f) })
         {
             var st = new VisualElement();
             st.style.position = Position.Absolute;
             st.style.left = pile.Item1; st.style.width = pile.Item2; st.style.height = 5;
-            st.style.top = -6;
-            st.style.backgroundColor = new Color(pile.Item3, pile.Item3 - 0.04f, pile.Item3 - 0.08f, 1f);
+            st.style.top = 0;
+            st.style.backgroundColor = new Color(pile.Item3, pile.Item3 - 0.03f, pile.Item3 - 0.06f, 1f);
             st.pickingMode = PickingMode.Ignore;
             st.style.opacity = 0;
             sbTrack.Add(st);
@@ -563,34 +553,33 @@ public class VNBacklog : MonoBehaviour
             m.style.left = -5; m.style.right = -5;
             m.style.height = 3;
             m.style.top = -44 + i * 5;
-            m.style.backgroundColor = new Color(0.34f, 0.23f, 0.13f, 1f);
+            m.style.backgroundColor = new Color(0.42f, 0.28f, 0.16f, 1f);
             m.pickingMode = PickingMode.Ignore;
             m.style.opacity = 0;
             sbTrack.Add(m);
             _matTies.Add(m);
         }
-        // 钢轨捆：两根细长轨条（亮/暗两色可辨），躺在更远的路基上；
-        // 每 10px 一根 3px 鱼尾板暗横纹（轨缝接头），读作「成捆钢轨」而非光条
+        // 钢轨捆：收敛在道床轮廓内（left/right=-6），金属光泽明度提升
         for (int i = 0; i < 2; i++)
         {
             var m = new VisualElement();
             m.style.position = Position.Absolute;
-            m.style.left = -12; m.style.right = -12;           // 拉到 -12：捆更长更像料
+            m.style.left = -6; m.style.right = -6;
             m.style.height = 2;
             m.style.top = -60 + i * 4;
             m.style.backgroundColor = i == 0
-                ? new Color(0.88f, 0.86f, 0.80f, 1f)           // 亮轨条
-                : new Color(0.58f, 0.56f, 0.52f, 1f);          // 暗轨条
+                ? new Color(0.92f, 0.90f, 0.84f, 1f)           // 亮轨条
+                : new Color(0.78f, 0.76f, 0.72f, 1f);          // 暗轨条
             m.pickingMode = PickingMode.Ignore;
             m.style.opacity = 0;
-            // 鱼尾板暗横纹：3px 宽、每 10px 一道（捆宽40，纹限制在捆内）
-            for (int x = 3; x < 37; x += 10)
+            // 鱼尾板暗横纹：3px 宽、每 7px 一道
+            for (int x = 2; x < 26; x += 7)
             {
                 var j = new VisualElement();
                 j.style.position = Position.Absolute;
-                j.style.left = x; j.style.width = 3;
+                j.style.left = x; j.style.width = 2;
                 j.style.top = 0; j.style.height = 2;
-                j.style.backgroundColor = new Color(0.30f, 0.28f, 0.26f, 1f);
+                j.style.backgroundColor = new Color(0.35f, 0.33f, 0.30f, 1f);
                 j.pickingMode = PickingMode.Ignore;
                 m.Add(j);
             }
@@ -612,14 +601,14 @@ public class VNBacklog : MonoBehaviour
             e.StopImmediatePropagation();
             // 分镜播放中：吞掉点击（场景在演，不响应）
             if (sbIdleApplied && !sbIdleAnimDone) return;
-            // 驻留景（终态）：可交互手型 + 列车微拖（上下一小段，松手回弹），其余区域不响应
+            // 驻留景（终态）：列车可在已铺轨段自由滑动并就地停驻（Park），超界微复位
             if (sbIdleApplied && sbIdleAnimDone)
             {
                 float ty = sbThumb.style.top.value.value;
                 float y0 = e.localPosition.y;
-                if (y0 >= ty - 6f && y0 <= ty + IdleThumbH + 6f)
+                if (y0 >= ty - 8f && y0 <= ty + IdleThumbH + 8f)
                 {
-                    sbIdleSnapSched?.Pause();   // 防双弹簧：先杀回弹再开新拖（否则两个 schedule 抢 thumb）
+                    sbIdleSnapSched?.Pause();   // 防双弹簧：先杀复位调度
                     sbIdleDragging = true;
                     sbIdleGrab = y0 - ty;
                     sbTrack.CapturePointer(e.pointerId);
@@ -643,11 +632,13 @@ public class VNBacklog : MonoBehaviour
         {
             if (sbIdleDragging)
             {
-                // 微拖：上 −20 / 下 +64（可完全没入车库）；超界不硬截——橡皮筋 0.35 系数缓冲
+                // 已铺设轨道范围：[laidMin, laidMax]
+                float laidMin = IdleTrackH - FinishedH;
+                float laidMax = IdleTrackH - IdleThumbH;
                 float raw = e.localPosition.y - sbIdleGrab;
-                float lo = sbIdleThumbTarget - 20f, hi = sbIdleThumbTarget + 64f;
-                float top = raw < lo ? lo + (raw - lo) * 0.35f
-                          : raw > hi ? hi + (raw - hi) * 0.35f
+                // 轨段内自由滑动，两端超界（向上冲出道砟或向下撞入车库）施加弹性缓冲阻尼
+                float top = raw < laidMin ? laidMin + (raw - laidMin) * 0.25f
+                          : raw > laidMax ? laidMax + (raw - laidMax) * 0.25f
                           : raw;
                 sbThumb.style.top = top;
                 if (sbBeam != null) sbBeam.style.top = top - 29f;
@@ -660,30 +651,57 @@ public class VNBacklog : MonoBehaviour
         {
             if (sbIdleDragging)
             {
-                // 回弹到停位（0.35s ease），期间保持 sbIdleDragging 挡住终态覆写
-                float from = sbThumb.style.top.value.value;
-                float to = sbIdleThumbTarget;
-                float t0s = Time.unscaledTime;
-                sbIdleSnapSched?.Pause();
-                sbIdleSnapSched = backlogPanel.schedule.Execute(() =>
+                float laidMin = IdleTrackH - FinishedH;
+                float laidMax = IdleTrackH - IdleThumbH;
+                float currentTop = sbThumb.style.top.value.value;
+                if (currentTop >= laidMin && currentTop <= laidMax)
                 {
-                    float t = Mathf.Clamp01((Time.unscaledTime - t0s) / 0.35f);
-                    float top = Mathf.Lerp(from, to, 1f - Mathf.Pow(1f - t, 3f));
-                    sbThumb.style.top = top;
-                    if (sbBeam != null) sbBeam.style.top = top - 29f;
-                    if (t >= 1f)
+                    // 在已铺设轨道范围内：就地停驻（Park），不反弹，杜绝残影
+                    sbIdleThumbTarget = currentTop;
+                    sbIdleDragging = false;
+                }
+                else
+                {
+                    // 仅在超出已铺设轨道范围时，平滑微复位到轨端界限内
+                    float from = currentTop;
+                    float to = Mathf.Clamp(currentTop, laidMin, laidMax);
+                    sbIdleThumbTarget = to;
+                    float t0s = Time.unscaledTime;
+                    sbIdleSnapSched?.Pause();
+                    sbIdleSnapSched = backlogPanel.schedule.Execute(() =>
                     {
-                        sbIdleDragging = false;
-                        sbIdleSnapSched?.Pause();
-                    }
-                }).Every(16);
+                        float t = Mathf.Clamp01((Time.unscaledTime - t0s) / 0.25f);
+                        float eased = Mathf.Lerp(from, to, 1f - Mathf.Pow(1f - t, 3f));
+                        sbThumb.style.top = eased;
+                        if (sbBeam != null) sbBeam.style.top = eased - 29f;
+                        if (t >= 1f)
+                        {
+                            sbThumb.style.top = to;
+                            if (sbBeam != null) sbBeam.style.top = to - 29f;
+                            sbIdleDragging = false;
+                            sbIdleSnapSched?.Pause();
+                        }
+                    }).Every(16);
+                }
                 if (sbTrack.HasPointerCapture(e.pointerId)) sbTrack.ReleasePointer(e.pointerId);
                 return;
             }
             sbDragging = false;
             if (sbTrack.HasPointerCapture(e.pointerId)) sbTrack.ReleasePointer(e.pointerId);
         });
-        sbTrack.RegisterCallback<PointerCaptureOutEvent>(e => { sbDragging = false; });
+        sbTrack.RegisterCallback<PointerCaptureOutEvent>(e =>
+        {
+            sbDragging = false;
+            if (sbIdleDragging)
+            {
+                float laidMin = IdleTrackH - FinishedH;
+                float laidMax = IdleTrackH - IdleThumbH;
+                sbIdleThumbTarget = Mathf.Clamp(sbThumb.style.top.value.value, laidMin, laidMax);
+                sbThumb.style.top = sbIdleThumbTarget;
+                if (sbBeam != null) sbBeam.style.top = sbIdleThumbTarget - 29f;
+                sbIdleDragging = false;
+            }
+        });
     }
 
     /// <summary>轨道端点「車止め」车挡桩：红白横梁 + 双柱 + 轨上底座（替代上下箭头，点击翻页功能不变）。
@@ -698,10 +716,10 @@ public class VNBacklog : MonoBehaviour
         // up=true：梁(顶)→双柱→底座(贴轨道)；up=false 垂直镜像
         float Y(float top, float h) => up ? top : 20f - top - h;
 
-        var steelRed = new Color(0.78f, 0.25f, 0.17f, 1f);
-        var steelWhite = new Color(0.95f, 0.93f, 0.88f, 1f);
-        var steelPost = new Color(0.55f, 0.55f, 0.57f, 1f);   // 亮灰立柱：梁与座之间立得住
-        var steelBase = new Color(0.36f, 0.34f, 0.32f, 1f);   // 暖灰整体底座（与梁直接相接）
+        var steelRed = new Color(0.96f, 0.22f, 0.16f, 1f);   // 鲜明高反差信号红
+        var steelWhite = new Color(1f, 1f, 1f, 1f);          // 纯白高光反射条
+        var steelPost = new Color(0.88f, 0.88f, 0.90f, 1f);   // 亮钢立柱，告别灰暗看不清
+        var steelBase = new Color(0.60f, 0.58f, 0.54f, 1f);   // 清晰石质/铸铁底座，对比度充足
 
         void Part(float top, float h, Color c, float left, float right)
         {
@@ -718,7 +736,7 @@ public class VNBacklog : MonoBehaviour
         Part(1, 4, steelWhite, 6, 6);               // 梁中央白条
         Part(5, 7, steelPost, 1, 12);               // 左柱（亮灰 3px，立在梁与座之间）
         Part(5, 7, steelPost, 12, 1);               // 右柱（亮灰 3px）
-        Part(12, 7, steelBase, 0, 0);               // 整体底座（暖灰，直接接梁柱，无悬空亮线）
+        Part(12, 7, steelBase, 0, 0);               // 整体底座（明度适中，高对比度）
 
         b.RegisterCallback<PointerDownEvent>(e =>
         {
@@ -880,8 +898,10 @@ public class VNBacklog : MonoBehaviour
         float trackH = sbTrack != null && sbTrack.contentRect.height > 0f ? sbTrack.contentRect.height : 300f;
         float rawRatio = viewH / contentH;
         float scaled = trackH * rawRatio;
-        // 比例修正：最小 56px（确保车头前脸、侧窗列、通风口与车尾红裙舒展不挤压），最大 110px（占轨≤40%，留足滑行空间）
-        return Mathf.Clamp(scaled, 56f, Mathf.Min(110f, trackH * 0.40f));
+        // 真实自适应上下文比例：条目少时滑块随视野比例自然舒展变长（最多可达轨长的 70%），条目极多时保持最小 64px 保证机车细节
+        float minH = 64f;
+        float maxH = Mathf.Max(minH, trackH * 0.70f);
+        return Mathf.Clamp(scaled, minH, maxH);
     }
 
     /// <summary>每帧同步：对齐 scroll 区域、按比例缩放/定位 thumb（打开期间 schedule 驱动）。</summary>
@@ -892,8 +912,10 @@ public class VNBacklog : MonoBehaviour
         float sh = backlogScroll.layout.height;
         if (sh <= 0f) return;
         // 模糊条精确对齐金线下缘（header 底部边框：layout.y + layout.height，含 2px border）
-        float goldenLineY = backlogHeader != null ? (backlogHeader.layout.y + backlogHeader.layout.height) : sy;
-        if (goldenLineY <= 0f) goldenLineY = sy;
+        float goldenLineY = backlogHeader != null && backlogHeader.layout.height > 0f
+            ? (backlogHeader.layout.y + backlogHeader.layout.height)
+            : (sy > 0f ? sy : 80f);
+        if (goldenLineY <= 0f) goldenLineY = 80f;
         if (sbBlurStrip != null && Mathf.Abs(sbBlurStrip.style.top.value.value - goldenLineY) > 0.5f)
             sbBlurStrip.style.top = goldenLineY;
         // 内容布局未测前不判态（根治「短列车动画中途变长列车」：首拍 view=0 被误判 overflow→
@@ -917,8 +939,8 @@ public class VNBacklog : MonoBehaviour
             sbDepot.style.top = safeDepotTop;
             // 靠右防裁切（right 10→14）；机库宽36 居中于轨道(16) → right = 14-(36-16)/2 = 4
             sbUp.style.right = 14; sbTrack.style.right = 14; sbDepot.style.right = 4;
-            // 溢出态道砟收到 -6：不爬上顶端车挡区（idle 态保持 -22）
-            if (sbBallast != null) sbBallast.style.top = -6f;
+            // 溢出态道砟平齐轨顶 0：不爬上顶端车挡区
+            if (sbBallast != null) sbBallast.style.top = 0f;
             if (sbRoadbed != null) sbRoadbed.style.display = DisplayStyle.None;
         }
         else
@@ -932,8 +954,8 @@ public class VNBacklog : MonoBehaviour
             sbTrack.style.height = IdleTrackH;
             if (sbClip != null) sbClip.style.height = IdleTrackH + DepotH;
             sbTrack.style.right = 14; sbDepot.style.right = 4;
-            // 路基终态高（分镜读这个，不依赖布局）；粗土帽=地面带的30%、封顶96（防画面杂乱）
-            sbRoadbedFinalH = Mathf.Max(0f, sh - DepotH);
+            // 路基终态高：严格从 safeDepotTop 到 goldenLineY，绝不上越金线
+            sbRoadbedFinalH = Mathf.Max(0f, safeDepotTop - goldenLineY);
             if (sbRoadbed != null)
             {
                 float groundVis = Mathf.Max(0f, sbRoadbedFinalH - IdleTrackH);
@@ -942,7 +964,7 @@ public class VNBacklog : MonoBehaviour
                 if (sbIdleAnimDone && !sbIdlePlaying)
                 {
                     sbRoadbed.style.display = DisplayStyle.Flex;
-                    sbRoadbed.style.top = sy;
+                    sbRoadbed.style.top = goldenLineY;
                     sbRoadbed.style.height = sbRoadbedFinalH;
                     // 夯实带终态：从机库口长到帽线
                     if (sbWork != null) sbWork.style.height = Mathf.Max(0f, sbRoadbedFinalH - sbRawCap);
@@ -1009,6 +1031,7 @@ public class VNBacklog : MonoBehaviour
         // 路基：收拢到机库口（平整层自机库口向上贯穿；夯实带为其子层随后推进）；终态高来自几何分支字段
         float roadFinalH = sbRoadbedFinalH;
         float roadBottom = sbDepot.style.top.value.value;
+        float roadTargetTop = Mathf.Max(0f, roadBottom - roadFinalH);
         if (sbRoadbed != null)
         {
             sbRoadbed.style.display = DisplayStyle.Flex;
@@ -1023,7 +1046,8 @@ public class VNBacklog : MonoBehaviour
         if (sbBallast != null)
         {
             sbBallast.style.opacity = 1;
-            sbBallast.style.top = IdleTrackH + 22f;   // bottom=-22 固定 → 零高贴底
+            sbBallast.style.top = IdleTrackH;   // 零高贴底
+            sbBallast.style.bottom = 0f;
         }
         foreach (var rail in new[] { sbRailL, sbRailR })
         {
@@ -1061,12 +1085,13 @@ public class VNBacklog : MonoBehaviour
             sbDepot.style.opacity = p1;
             sbDepot.style.translate = new Translate(0, 4f * (1f - p1));
 
-            // ②a 粗土平整自机库口贯穿到顶 0.6–1.7s（sbRoadbed=MakeLeveledTex 粗土）
+            // ②a 粗土平整自机库口贯穿到顶 0.6–1.7s（sbRoadbed=MakeLeveledTex 粗土，克制生长，严禁穿透金线）
             float grow = roadFinalH * EaseOut3(Mathf.Clamp01((e - 0.6f) / 1.1f));
             if (sbRoadbed != null)
             {
-                sbRoadbed.style.top = roadBottom - grow;
-                sbRoadbed.style.height = grow;
+                float curTop = Mathf.Max(roadTargetTop, roadBottom - grow);
+                sbRoadbed.style.top = curTop;
+                sbRoadbed.style.height = roadBottom - curTop;
             }
             // ②b 夯实加工推进到帽线 1.6–2.6s（sbWork=MakeRoadbedTex 夯实带，底锚机库口，终点帽线）
             if (sbWork != null)
@@ -1075,16 +1100,17 @@ public class VNBacklog : MonoBehaviour
                 sbWork.style.height = workFinal * EaseOut3(Mathf.Clamp01((e - 1.6f) / 1.0f));
             }
 
-            // ③ 分拍卸料（A3 独立节拍 0.4s Pop）：砟堆2.8 / 枕木捆3.4 / 钢轨捆4.0
-            foreach (var p in _roadPiles) p.style.opacity = Pop(2.8f);
+            // ③ 分拍卸料（A3 独立节拍 0.4s Pop）：砟堆随道砟铺开消耗渐隐，枕木捆/钢轨捆依次就位
+            float pileFade = 1f - Mathf.Clamp01((e - 4.2f) / 1.3f);
+            foreach (var p in _roadPiles) p.style.opacity = Mathf.Min(Pop(2.8f), pileFade);
             for (int i = 0; i < _matTies.Count; i++)
                 _matTies[i].style.opacity = Pop(3.4f);
             for (int i = 0; i < _matRails.Count; i++)
                 _matRails[i].style.opacity = Pop(4.0f);
 
-            // ④ 铺道砟 4.2–5.5s：top 从轨道底升到-22（bottom=-22 固定）＝自下向上展开
+            // ④ 铺道砟 4.2–5.5s：top 从轨道底升到 0（严格平齐轨顶，绝不上溢遮挡上方路基与测量标杆红旗）
             if (sbBallast != null)
-                sbBallast.style.top = Mathf.Lerp(IdleTrackH + 22f, -22f, EaseOut3(Mathf.Clamp01((e - 4.2f) / 1.3f)));
+                sbBallast.style.top = Mathf.Lerp(IdleTrackH, 0f, EaseOut3(Mathf.Clamp01((e - 4.2f) / 1.3f)));
 
             // ⑤ 铺枕木 5.4–8.0s：stagger 2.2s 逐根（单根 fade 0.2s）；枕木捆随用随减
             int n = _sleepers.Count;
@@ -1171,14 +1197,18 @@ public class VNBacklog : MonoBehaviour
     {
         if (Mathf.Abs(trackH - IdleTrackH) > 12f) return;
         sbIdleApplied = true;
-        sbIdleThumbTarget = trackH - IdleThumbH;
+        float laidMin = trackH - FinishedH;
+        float laidMax = trackH - IdleThumbH;
+        if (sbIdleThumbTarget < laidMin || sbIdleThumbTarget > laidMax)
+            sbIdleThumbTarget = laidMax;
         sbDepot.style.opacity = 1f;
         sbDepot.style.translate = new Translate(0, 0);
         foreach (var t in _sleepers) t.style.opacity = 1f;
         if (sbBallast != null)
         {
             sbBallast.style.opacity = 1f;
-            sbBallast.style.top = -22f;
+            sbBallast.style.top = 0f;
+            sbBallast.style.bottom = 0f;
         }
         foreach (var rail in new[] { sbRailL, sbRailR })
         {
@@ -1187,7 +1217,7 @@ public class VNBacklog : MonoBehaviour
             rail.style.height = StyleKeyword.Auto;  // top..bottom0 拉伸
             rail.style.translate = new Translate(0, 0);   // 清捣固微震残留
         }
-        foreach (var p in _roadPiles) p.style.opacity = 1f;
+        foreach (var p in _roadPiles) p.style.opacity = 0f;
         foreach (var t in _sleepers) t.style.translate = new Translate(0, 0);
         foreach (var m in _matTies) m.style.opacity = 0;      // 材料已用尽
         foreach (var m in _matRails) m.style.opacity = 0;
@@ -1201,6 +1231,14 @@ public class VNBacklog : MonoBehaviour
         }
         // 夯实带终态：从机库口长到帽线
         if (sbWork != null) sbWork.style.height = Mathf.Max(0f, sbRoadbedFinalH - sbRawCap);
+        if (sbRoadbed != null)
+        {
+            float goldenLineY = backlogHeader != null && backlogHeader.layout.height > 0f
+                ? (backlogHeader.layout.y + backlogHeader.layout.height)
+                : 80f;
+            sbRoadbed.style.top = goldenLineY;
+            sbRoadbed.style.height = sbRoadbedFinalH;
+        }
     }
 
     /// <summary>驻留景 → 正常滚动条：还原交互、透明度、灯色、钢轨拉伸、道砟位置与路基/原始地面隐藏。</summary>
@@ -1217,7 +1255,8 @@ public class VNBacklog : MonoBehaviour
         if (sbBallast != null)
         {
             sbBallast.style.opacity = 1f;
-            sbBallast.style.top = -6f;              // 溢出态收距：道砟不爬上顶端车挡区（idle 态 -22）
+            sbBallast.style.top = 0f;
+            sbBallast.style.bottom = 0f;
         }
         foreach (var rail in new[] { sbRailL, sbRailR })
         {
@@ -1624,11 +1663,11 @@ public class VNBacklog : MonoBehaviour
         var entryRow = new VisualElement();
         entryRow.style.flexDirection = FlexDirection.Row;
         entryRow.style.alignItems = Align.Stretch;
-        entryRow.style.marginBottom = 26;
-        entryRow.style.paddingBottom = 18;
+        entryRow.style.marginBottom = 20;
+        entryRow.style.paddingBottom = 16;
         entryRow.style.borderBottomWidth = 1;
-        entryRow.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.15f);
-        entryRow.style.paddingTop = 12;
+        entryRow.style.borderBottomColor = new Color(200f / 255f, 160f / 255f, 100f / 255f, 0.22f); // 优雅纤细的暖金分割线
+        entryRow.style.paddingTop = 10;
         entryRow.style.paddingLeft = 8;
         entryRow.style.paddingRight = 8;
         entryRow.style.borderTopLeftRadius = 4;
@@ -1648,71 +1687,74 @@ public class VNBacklog : MonoBehaviour
             var speakerLabel = new Label(entry.speaker);
             speakerLabel.style.fontSize = 24;
             speakerLabel.style.letterSpacing = 2;
-            speakerLabel.style.color = new Color(1f, 200f / 255f, 100f / 255f, 0.9f);
+            speakerLabel.style.color = new Color(1f, 0.94f, 0.82f, 1f); // 暖象牙金
             speakerLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-            speakerLabel.style.marginBottom = 10;
+            speakerLabel.style.marginBottom = 8;
             speakerLabel.style.unityFontDefinition = fontDef;
-            // 底色只包人名：Label 默认 stretch 会把棕条拉满整行——收缩到文字宽
+            // 暖木纹/琥珀沙金姓名横向缎带（参考图）
             speakerLabel.style.alignSelf = Align.FlexStart;
-            speakerLabel.style.backgroundColor = new Color(0.15f, 0.08f, 0.04f, 0.6f);
-            speakerLabel.style.paddingLeft = 8;
-            speakerLabel.style.paddingRight = 8;
+            speakerLabel.style.backgroundColor = new Color(0.40f, 0.24f, 0.12f, 0.72f);
+            speakerLabel.style.paddingLeft = 10;
+            speakerLabel.style.paddingRight = 14;
             speakerLabel.style.paddingTop = 4;
             speakerLabel.style.paddingBottom = 4;
-            speakerLabel.style.borderTopLeftRadius = 4;
-            speakerLabel.style.borderTopRightRadius = 4;
-            speakerLabel.style.borderBottomLeftRadius = 4;
-            speakerLabel.style.borderBottomRightRadius = 4;
+            speakerLabel.style.borderTopLeftRadius = 2;
+            speakerLabel.style.borderTopRightRadius = 5;
+            speakerLabel.style.borderBottomLeftRadius = 2;
+            speakerLabel.style.borderBottomRightRadius = 5;
             speakerLabel.style.borderLeftWidth = 3;
-            speakerLabel.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.6f);
+            speakerLabel.style.borderLeftColor = new Color(1f, 0.82f, 0.45f, 0.90f); // 亮金前缀线
             contentBox.Add(speakerLabel);
         }
 
         var textLabel = new Label(PinPunctuation(entry.text));
         textLabel.style.fontSize = 26;
         textLabel.style.letterSpacing = 2;
-        textLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        textLabel.style.color = isNarration
+            ? new Color(0.92f, 0.90f, 0.85f, 0.90f)   // 旁白柔和色
+            : new Color(1f, 0.98f, 0.95f, 0.95f);      // 台词高对比亮白色
+        if (isNarration) textLabel.style.paddingLeft = 12;
         textLabel.style.whiteSpace = WhiteSpace.Normal;
         textLabel.style.marginBottom = 8;
         textLabel.style.unityFontDefinition = fontDef;
         contentBox.Add(textLabel);
         entryRow.Add(contentBox);
 
-        // 右侧"跳转"按钮：跳转到该条目（闭包抓 scene/dialogue 索引，不依赖窗口内序号，淘汰不失效）
+        // 右侧"跳转"按钮（黑底金边圆角药丸按钮）
         var jumpBtn = new UnityEngine.UIElements.Button(() => JumpToEntry(entry.sceneIndex, entry.dialogueIndex)) { text = "跳转" };
-        jumpBtn.style.width = 90;
-        jumpBtn.style.height = 40;
-        jumpBtn.style.alignSelf = Align.FlexEnd;
+        jumpBtn.style.width = 78;
+        jumpBtn.style.height = 36;
+        jumpBtn.style.alignSelf = Align.Center;
         jumpBtn.style.flexShrink = 0;
         jumpBtn.style.marginLeft = 8;
-        jumpBtn.style.marginBottom = 8;
-        jumpBtn.style.fontSize = 22;
-        jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
-        jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
+        jumpBtn.style.fontSize = 20;
+        jumpBtn.style.color = new Color(1f, 0.92f, 0.80f, 0.95f);
+        jumpBtn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.85f);
         jumpBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         jumpBtn.style.unityFontDefinition = fontDef;
         jumpBtn.style.borderTopWidth = 1;
         jumpBtn.style.borderBottomWidth = 1;
         jumpBtn.style.borderLeftWidth = 1;
         jumpBtn.style.borderRightWidth = 1;
-        jumpBtn.style.borderTopColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        jumpBtn.style.borderBottomColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        jumpBtn.style.borderLeftColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        jumpBtn.style.borderRightColor = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.4f);
-        jumpBtn.style.borderTopLeftRadius = 5;
-        jumpBtn.style.borderTopRightRadius = 5;
-        jumpBtn.style.borderBottomLeftRadius = 5;
-        jumpBtn.style.borderBottomRightRadius = 5;
+        var btnBorder = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.5f);
+        jumpBtn.style.borderTopColor = btnBorder;
+        jumpBtn.style.borderBottomColor = btnBorder;
+        jumpBtn.style.borderLeftColor = btnBorder;
+        jumpBtn.style.borderRightColor = btnBorder;
+        jumpBtn.style.borderTopLeftRadius = 6;
+        jumpBtn.style.borderTopRightRadius = 6;
+        jumpBtn.style.borderBottomLeftRadius = 6;
+        jumpBtn.style.borderBottomRightRadius = 6;
         jumpBtn.RegisterCallback<PointerEnterEvent>(e =>
         {
-            jumpBtn.style.backgroundColor = new Color(0.35f, 0.2f, 0.1f, 0.95f);
+            jumpBtn.style.backgroundColor = new Color(0.32f, 0.18f, 0.10f, 0.95f);
             jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
             UiCursor.ShowHand();
         });
         jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
         {
-            jumpBtn.style.backgroundColor = new Color(0.25f, 0.14f, 0.08f, 0.9f);
-            jumpBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
+            jumpBtn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.85f);
+            jumpBtn.style.color = new Color(1f, 0.92f, 0.80f, 0.95f);
             UiCursor.ShowArrow();
         });
         entryRow.Add(jumpBtn);
@@ -1737,6 +1779,7 @@ public class VNBacklog : MonoBehaviour
         sbIdleDragging = false;
         sbIdleApplied = true;               // 溢出态时由 ExitIdleVisuals 还原；驻留景时分镜从此姿态开演
 
+        sbIdleThumbTarget = IdleTrackH - IdleThumbH;
         if (sbThumb != null)
         {
             sbThumb.style.height = IdleThumbH;
@@ -1746,7 +1789,8 @@ public class VNBacklog : MonoBehaviour
         if (sbDepot != null) sbDepot.style.opacity = 0;
         if (sbBallast != null)
         {
-            sbBallast.style.top = IdleTrackH + 22f;
+            sbBallast.style.top = IdleTrackH;
+            sbBallast.style.bottom = 0f;
             sbBallast.style.opacity = 1;
         }
         foreach (var t in _sleepers) { t.style.opacity = 0; t.style.translate = new Translate(0, 0); }
@@ -1808,8 +1852,83 @@ public class VNBacklog : MonoBehaviour
         }
     }
 
-    /// <summary>生成顶部 1×64 渐隐过渡纹理：深黑褐 #0D0805（rgba 13,8,5）由 alpha 0.95 平滑过渡到 0.0，
-    /// 代替 Unity 6 缺失的 backdrop-filter blur，消弭文字硬切。</summary>
+    /// <summary>回顾界面和纸/沙质暗纹理 128×128：暖沙琥珀基底 + 细腻纤维横纹 + 经典菱形方格暗纹 + 悬浮金箔/沙能微粒。
+    /// 仿照 Maitetsu/爱上火车等经典铁路 VN 的有色半透明和纸透景质感，透出底层 CG 与立绘，契合《铁路复兴：沙能冲击》主题。</summary>
+    private static Texture2D MakeBacklogWashiTex()
+    {
+        const int S = 128;
+        var tex = new Texture2D(S, S, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Repeat,
+        };
+
+        uint seed = 20261017u;
+        uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
+
+        for (int y = 0; y < S; y++)
+        {
+            for (int x = 0; x < S; x++)
+            {
+                // 1. 细腻造纸纤维横纹（和纸特有的细致横向经纬丝）
+                float fiber = (y % 4 == 0 ? 0.035f : 0f) + (y % 11 == 0 ? 0.025f : 0f);
+
+                // 2. 菱形方格几何暗纹（经典铁路和纸印花 / 32px 菱形网格）
+                int d1 = (x + y) % 32;
+                int d2 = (x - y + 3200) % 32;
+                bool isLattice = (d1 == 0 || d1 == 1 || d2 == 0 || d2 == 1);
+                bool isNode = (d1 <= 2 && d2 <= 2) || (d1 >= 30 && d2 >= 30);
+
+                // 3. 基础微噪点（沙质颗粒感）
+                float noise = (float)(Next() % 100) / 1000f;
+
+                float r = 210f / 255f;
+                float g = 160f / 255f;
+                float b = 100f / 255f;
+                float a = 0.02f + fiber + noise * 0.03f;
+
+                if (isLattice)
+                {
+                    a += 0.045f;
+                    r = 230f / 255f; g = 185f / 255f; b = 125f / 255f;
+                }
+                if (isNode)
+                {
+                    a += 0.055f;
+                    r = 245f / 255f; g = 205f / 255f; b = 140f / 255f;
+                }
+
+                tex.SetPixel(x, y, new Color(r, g, b, Mathf.Clamp01(a)));
+            }
+        }
+
+        // 4. 散落金箔 / 沙能微晶方斑（参考图上漂浮的方块金斑微粒）
+        for (int i = 0; i < 28; i++)
+        {
+            int gx = (int)(Next() % (uint)S);
+            int gy = (int)(Next() % (uint)S);
+            int sz = 2 + (int)(Next() % 3);
+            float goldAlpha = 0.08f + ((Next() % 100) / 100f) * 0.12f;
+            Color goldCol = new Color(255f / 255f, 225f / 255f, 150f / 255f, goldAlpha);
+
+            for (int dy = 0; dy < sz; dy++)
+            {
+                for (int dx = 0; dx < sz; dx++)
+                {
+                    int px = (gx + dx) % S;
+                    int py = (gy + dy) % S;
+                    Color old = tex.GetPixel(px, py);
+                    tex.SetPixel(px, py, Color.Lerp(old, goldCol, goldAlpha * 2f));
+                }
+            }
+        }
+
+        tex.Apply();
+        return tex;
+    }
+
+    /// <summary>生成顶部 1×64 渐隐过渡纹理：暖沙褐（rgba 28,18,10）由 alpha 0.70 平滑过渡到 0.0，
+    /// 与有色半透明和纸底色严丝合缝衔接，消弭文字硬切。</summary>
     private static Texture2D MakeBacklogFadeMaskTex()
     {
         const int H = 64;
@@ -1823,8 +1942,8 @@ public class VNBacklog : MonoBehaviour
             // y=0 对应贴近条目滚动深处（底），y=H-1 对应贴近顶端 header
             float t = y / (float)(H - 1); // 0 (底/透明) -> 1 (顶/实色)
             // 采用二次方缓动平滑过渡
-            float alpha = Mathf.Pow(t, 1.4f) * 0.95f;
-            tex.SetPixel(0, y, new Color(13f / 255f, 8f / 255f, 5f / 255f, alpha));
+            float alpha = Mathf.Pow(t, 1.4f) * 0.70f;
+            tex.SetPixel(0, y, new Color(28f / 255f, 18f / 255f, 10f / 255f, alpha));
         }
         tex.Apply();
         return tex;

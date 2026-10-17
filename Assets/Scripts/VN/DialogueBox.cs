@@ -416,11 +416,11 @@ public class DialogueBox : MonoBehaviour
             var hit = new VisualElement();
             hit.style.position = Position.Absolute;
             hit.style.left = dialogueText.layout.x + min;
-            hit.style.top = dialogueText.layout.y + ln * (fontSize + LineGap);
+            hit.style.top = dialogueText.layout.y + ln * (fontSize + LineGap) + 4f;
             hit.style.width = max - min;
-            hit.style.height = fontSize;
-            hit.style.borderBottomWidth = 2;                       // 黄下划线＝选中态
-            hit.style.borderBottomColor = new Color(1f, 0.85f, 0.15f, 1f);
+            hit.style.height = fontSize + 6f; // 延伸到中文字形基线下方，确保下划线贴在字底而非切入字身
+            hit.style.borderBottomWidth = 0;   // 默认不交互无下划线（参考图三）
+            hit.style.borderBottomColor = Color.clear;
             hit.pickingMode = PickingMode.Position;
             hit.RegisterCallback<PointerDownEvent>(ev =>
             {
@@ -428,20 +428,44 @@ public class DialogueBox : MonoBehaviour
                 ev.StopImmediatePropagation();
                 OpenTermCard(termId, hit);
             });
-            hit.RegisterCallback<PointerEnterEvent>(_ => UiCursor.ShowHand());
-            hit.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
+            hit.RegisterCallback<PointerEnterEvent>(_ =>
+            {
+                UiCursor.ShowHand();
+                hit.style.borderBottomWidth = 2; // 鼠标放上去才显示下划线
+                hit.style.borderBottomColor = new Color(1f, 0.85f, 0.15f, 1f);
+            });
+            hit.RegisterCallback<PointerLeaveEvent>(_ =>
+            {
+                UiCursor.ShowArrow();
+                hit.style.borderBottomWidth = 0; // 鼠标移开下划线消失
+                hit.style.borderBottomColor = Color.clear;
+            });
             textAreaField.Add(hit);
             _termHits.Add(hit);
         }
     }
 
-    /// <summary>术语小卡（样式自设计，参考 Maitetsu 功能：标题+角色口吻解释+MORE；点外关闭）。</summary>
+    private static Texture2D GetTermAvatar(string speaker)
+    {
+        string path = "characters/laochen";
+        if (speaker == "老陈") path = "characters/laochen";
+        else if (speaker == "张工") path = "characters/laochen_serious";
+        else if (speaker == "林彪悍" || speaker == "林大学士") path = "characters/lin_biaohan";
+        else if (speaker == "岁月") path = "characters/suiyue/normal";
+        else if (speaker == "嘉颖") path = "characters/jiaying_xu";
+        
+        var tex = Resources.Load<Texture2D>(path);
+        if (tex == null) tex = Resources.Load<Texture2D>("characters/laochen");
+        return tex;
+    }
+
+    /// <summary>术语小卡（参考图四：居于下方、单人解释、无说话人名称、左侧头像、右侧图鉴按钮）。</summary>
     private void OpenTermCard(string termId, VisualElement hit)
     {
         CloseTermCard();
         var entry = TermHighlightSystem.GetEntry(termId);
         if (entry == null || rootVisual == null) return;
-        float rootW = rootVisual.layout.width > 0f ? rootVisual.layout.width : 1280f;
+        float rootW = rootVisual.layout.width > 0f ? rootVisual.layout.width : 1920f;
         var fontDef = GetFontDef();
         var gold = new Color(1f, 0.85f, 0.25f, 1f);
         var goldEdge = new Color(0.82f, 0.62f, 0.35f, 0.9f);
@@ -458,14 +482,16 @@ public class DialogueBox : MonoBehaviour
             ev.StopImmediatePropagation();
             CloseTermCard();
         });
-        rootVisual.Add(cardCatcher);   // 先拦（下层）
-        // 进度条随卡透明（Maitetsu 行为）
+        rootVisual.Add(cardCatcher);
+
+        // 进度条随卡透明
         if (progressBar != null) progressBar.style.opacity = 0f;
 
+        float cardW = Mathf.Min(680f, rootW - 40f);
         termCard = new VisualElement { name = "term-card" };
         termCard.style.position = Position.Absolute;
-        termCard.style.width = Mathf.Min(640f, rootW - 40f);
-        termCard.style.backgroundColor = new Color(0.09f, 0.06f, 0.04f, 0.97f);
+        termCard.style.width = cardW;
+        termCard.style.backgroundColor = new Color(0.08f, 0.05f, 0.04f, 0.96f);
         termCard.style.borderTopWidth = 2;
         termCard.style.borderBottomWidth = 2;
         termCard.style.borderLeftWidth = 2;
@@ -474,14 +500,15 @@ public class DialogueBox : MonoBehaviour
         termCard.style.borderBottomColor = goldEdge;
         termCard.style.borderLeftColor = goldEdge;
         termCard.style.borderRightColor = goldEdge;
-        termCard.style.borderTopLeftRadius = 8;
-        termCard.style.borderTopRightRadius = 8;
-        termCard.style.borderBottomLeftRadius = 8;
-        termCard.style.borderBottomRightRadius = 8;
-        termCard.style.paddingLeft = 18;
-        termCard.style.paddingRight = 18;
+        termCard.style.borderTopLeftRadius = 10;
+        termCard.style.borderTopRightRadius = 10;
+        termCard.style.borderBottomLeftRadius = 10;
+        termCard.style.borderBottomRightRadius = 10;
+        termCard.style.paddingLeft = 16;
+        termCard.style.paddingRight = 16;
         termCard.style.paddingTop = 12;
         termCard.style.paddingBottom = 14;
+        termCard.style.bottom = 146f; // 固定在下方（对话框正上方），杜绝跳到屏幕顶部
         termCard.pickingMode = PickingMode.Position;
         termCard.RegisterCallback<PointerDownEvent>(ev =>
         {
@@ -489,19 +516,22 @@ public class DialogueBox : MonoBehaviour
             ev.StopImmediatePropagation();
         });
 
-        // 标题行：词条名 + 关闭
+        // 顶栏：术语标题 + ✕ 关闭按钮
         var titleRow = new VisualElement();
         titleRow.style.flexDirection = FlexDirection.Row;
         titleRow.style.justifyContent = Justify.SpaceBetween;
         titleRow.style.alignItems = Align.Center;
-        titleRow.style.marginBottom = 8;
+        titleRow.style.marginBottom = 10;
+
         var title = new Label(entry.name);
-        title.style.fontSize = 28;
+        title.style.fontSize = 26;
         title.style.color = gold;
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
         title.style.unityFontDefinition = fontDef;
         titleRow.Add(title);
+
         var close = new Label("✕");
-        close.style.fontSize = 22;
+        close.style.fontSize = 20;
         close.style.color = new Color(1f, 1f, 1f, 0.7f);
         close.style.unityFontDefinition = fontDef;
         close.pickingMode = PickingMode.Position;
@@ -516,80 +546,120 @@ public class DialogueBox : MonoBehaviour
         titleRow.Add(close);
         termCard.Add(titleRow);
 
-        // 解释块：角色 chip + 口吻正文（文中其它术语金色引用）
-        if (entry.explanations != null)
+        // 主体横排：左头像 + 中解释 + 右 MORE 图鉴按钮
+        var mainRow = new VisualElement();
+        mainRow.style.flexDirection = FlexDirection.Row;
+        mainRow.style.alignItems = Align.Center;
+        mainRow.style.width = Length.Percent(100);
+        termCard.Add(mainRow);
+
+        // 取单人解释（参考图四：非多人罗列、无说话人名称，但有头像）
+        string speaker = "";
+        string explainText = "";
+        if (entry.explanations != null && entry.explanations.Count > 0)
         {
-            foreach (var ex in entry.explanations)
-            {
-                if (ex == null || string.IsNullOrEmpty(ex.text)) continue;
-                if (!string.IsNullOrEmpty(ex.speaker))
-                {
-                    var chip = new Label(ex.speaker);
-                    chip.style.alignSelf = Align.FlexStart;
-                    chip.style.fontSize = 20;
-                    chip.style.color = new Color(1f, 0.86f, 0.59f, 1f);
-                    chip.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
-                    chip.style.paddingLeft = 8; chip.style.paddingRight = 8;
-                    chip.style.paddingTop = 3; chip.style.paddingBottom = 3;
-                    chip.style.borderTopLeftRadius = 4; chip.style.borderTopRightRadius = 4;
-                    chip.style.borderBottomLeftRadius = 4; chip.style.borderBottomRightRadius = 4;
-                    chip.style.marginBottom = 5;
-                    chip.style.unityFontDefinition = fontDef;
-                    termCard.Add(chip);
-                }
-                var body = new Label(TermHighlightSystem.HighlightTerms(ex.text));
-                body.style.fontSize = 24;
-                body.style.color = new Color(1f, 1f, 1f, 0.92f);
-                body.style.whiteSpace = WhiteSpace.Normal;
-                body.style.marginBottom = 10;
-                body.style.unityFontDefinition = fontDef;
-                termCard.Add(body);
-            }
+            var ex = entry.explanations[0];
+            speaker = ex.speaker;
+            explainText = ex.text;
         }
 
-        // MORE → 术语图鉴（Phase2 接线后才显示）
-        var more = new Button(() =>
+        // 左侧头像框
+        var avatarBox = new VisualElement();
+        avatarBox.style.width = 90;
+        avatarBox.style.height = 90;
+        avatarBox.style.flexShrink = 0;
+        avatarBox.style.borderTopWidth = 2;
+        avatarBox.style.borderBottomWidth = 2;
+        avatarBox.style.borderLeftWidth = 2;
+        avatarBox.style.borderRightWidth = 2;
+        avatarBox.style.borderTopColor = new Color(0.82f, 0.62f, 0.35f, 0.8f);
+        avatarBox.style.borderBottomColor = new Color(0.82f, 0.62f, 0.35f, 0.8f);
+        avatarBox.style.borderLeftColor = new Color(0.82f, 0.62f, 0.35f, 0.8f);
+        avatarBox.style.borderRightColor = new Color(0.82f, 0.62f, 0.35f, 0.8f);
+        avatarBox.style.borderTopLeftRadius = 6;
+        avatarBox.style.borderTopRightRadius = 6;
+        avatarBox.style.borderBottomLeftRadius = 6;
+        avatarBox.style.borderBottomRightRadius = 6;
+        avatarBox.style.backgroundColor = new Color(0.14f, 0.10f, 0.08f, 1f);
+        avatarBox.style.overflow = Overflow.Hidden;
+        mainRow.Add(avatarBox);
+
+        var avatarTex = GetTermAvatar(speaker);
+        if (avatarTex != null)
+        {
+            var avatarImg = new Image { image = avatarTex };
+            avatarImg.style.width = Length.Percent(100);
+            avatarImg.style.height = Length.Percent(100);
+            avatarImg.scaleMode = ScaleMode.ScaleAndCrop;
+            avatarBox.Add(avatarImg);
+        }
+
+        // 中间解释文本（允许缩小和弹性换行，绝对不向右挤出界）
+        var body = new Label(TermHighlightSystem.HighlightTerms(explainText));
+        body.style.flexGrow = 1;
+        body.style.flexShrink = 1;
+        body.style.minWidth = 0;
+        body.style.fontSize = 20;
+        body.style.color = new Color(0.96f, 0.94f, 0.90f, 0.95f);
+        body.style.whiteSpace = WhiteSpace.Normal;
+        body.style.marginLeft = 14;
+        body.style.marginRight = 14;
+        body.style.unityFontDefinition = fontDef;
+        mainRow.Add(body);
+
+        // 右侧 MORE 按钮
+        var moreBtn = new Button(() =>
         {
             VNManager.Instance?.SuppressNextAdvance();
-            if (OnOpenTips == null) return;
-            OnOpenTips.Invoke(termId);
+            if (OnOpenTips != null) OnOpenTips.Invoke(termId);
             CloseTermCard();
-        }) { text = "术语图鉴 →" };
-        more.style.alignSelf = Align.FlexEnd;
-        more.style.width = 170;
-        more.style.height = 44;
-        more.style.marginTop = 4;
-        more.style.backgroundColor = new Color(0.20f, 0.14f, 0.08f, 1f);
-        more.style.borderTopWidth = 1; more.style.borderBottomWidth = 1;
-        more.style.borderLeftWidth = 1; more.style.borderRightWidth = 1;
-        var moreEdge = new Color(0.82f, 0.62f, 0.35f, 0.7f);
-        more.style.borderTopColor = moreEdge; more.style.borderBottomColor = moreEdge;
-        more.style.borderLeftColor = moreEdge; more.style.borderRightColor = moreEdge;
-        more.style.borderTopLeftRadius = 6; more.style.borderTopRightRadius = 6;
-        more.style.borderBottomLeftRadius = 6; more.style.borderBottomRightRadius = 6;
-        more.style.color = gold;
-        more.style.fontSize = 22;
-        more.style.unityTextAlign = TextAnchor.MiddleCenter;
-        more.style.unityFontDefinition = fontDef;
-        more.style.display = OnOpenTips != null ? DisplayStyle.Flex : DisplayStyle.None;
-        termCard.Add(more);
+        });
+        moreBtn.style.width = 68;
+        moreBtn.style.height = 76;
+        moreBtn.style.flexShrink = 0;
+        moreBtn.style.flexDirection = FlexDirection.Column;
+        moreBtn.style.alignItems = Align.Center;
+        moreBtn.style.justifyContent = Justify.Center;
+        moreBtn.style.backgroundColor = new Color(0.20f, 0.14f, 0.09f, 0.95f);
+        moreBtn.style.borderTopWidth = 1; moreBtn.style.borderBottomWidth = 1;
+        moreBtn.style.borderLeftWidth = 1; moreBtn.style.borderRightWidth = 1;
+        moreBtn.style.borderTopColor = goldEdge; moreBtn.style.borderBottomColor = goldEdge;
+        moreBtn.style.borderLeftColor = goldEdge; moreBtn.style.borderRightColor = goldEdge;
+        moreBtn.style.borderTopLeftRadius = 6; moreBtn.style.borderTopRightRadius = 6;
+        moreBtn.style.borderBottomLeftRadius = 6; moreBtn.style.borderBottomRightRadius = 6;
+        moreBtn.RegisterCallback<PointerEnterEvent>(_ => UiCursor.ShowHand());
+        moreBtn.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
 
-        rootVisual.Add(termCard);   // 卡在拦截层之上
+        var moreIcon = new Label("📖");
+        moreIcon.style.fontSize = 20;
+        moreIcon.style.unityFontDefinition = fontDef;
+        moreBtn.Add(moreIcon);
 
-        // 布局后定位：卡贴在命中词上方、水平跟随（夹在屏内），先藏后放
-        termCard.style.visibility = Visibility.Hidden;
-        termCard.schedule.Execute(() =>
+        var moreText = new Label("图鉴");
+        moreText.style.fontSize = 13;
+        moreText.style.color = gold;
+        moreText.style.unityFontDefinition = fontDef;
+        moreText.style.marginTop = 2;
+        moreBtn.Add(moreText);
+
+        moreBtn.style.display = DisplayStyle.Flex;
+        mainRow.Add(moreBtn);
+
+        rootVisual.Add(termCard);
+
+        // 水平位置：随 hit 对齐并夹在屏幕左右范围内
+        if (hit != null)
         {
-            if (termCard == null || hit == null) return;
             var rb = rootVisual.worldBound;
             var hb = hit.worldBound;
-            float left = (hb.x - rb.x) - 30f;
-            float maxLeft = Mathf.Max(12f, rootW - termCard.layout.width - 12f);
-            termCard.style.left = Mathf.Clamp(left, 12f, maxLeft);
-            float top = (dialogueBox.worldBound.y - rb.y) - termCard.layout.height - 14f;
-            termCard.style.top = Mathf.Max(12f, top);
-            termCard.style.visibility = Visibility.Visible;
-        }).StartingIn(0);
+            float left = (hb.x - rb.x) - 40f;
+            float maxLeft = Mathf.Max(120f, rootW - cardW - 30f);
+            termCard.style.left = Mathf.Clamp(left, 120f, maxLeft);
+        }
+        else
+        {
+            termCard.style.left = 130f;
+        }
     }
 
     private void CloseTermCard()
@@ -598,6 +668,7 @@ public class DialogueBox : MonoBehaviour
         if (cardCatcher != null) { cardCatcher.RemoveFromHierarchy(); cardCatcher = null; }
         if (progressBar != null) progressBar.style.opacity = 1f;   // 进度条恢复
     }
+
 
     private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
     private const float BoxContentZone = 100f; // 内容区（120 - 边框4 - padding16）：字号降档的容量门槛
