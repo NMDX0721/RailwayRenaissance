@@ -223,6 +223,7 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
   - 心理活动统一使用 `{"t": "thought", "s": "说话人", "e": "表情", "text": "[...]"}`（必须带说话人 `s` 与表情 `e`，text 保留方括号，DialogueBox 遵守独白不叠色规则，清空或缺失 `s` 会导致姓名牌丢失及立绘被清空）；
   - 地点卡统一使用 `{"t": "loc", "text": "..."}`；
   - 核心铁路专有名词必须完整保留，以保证 `Terms.json` 的 65 条术语（涵盖工务保线、机车动力机械、车辆制动、电气信号闭塞）能被 `TermHighlightSystem` 稳定高亮并支持弹窗；
+  - 对话回顾面板视觉规范：采用有色半透明和纸沙质图层（`MakeBacklogWashiTex` 128×128 双线性平铺，约 65% 透光度，底层 CG/立绘清晰可见），暖木纹姓名缎带，黑底金边「跳转」药丸按键；第一阶段完备轨段支持自由拖动就地停驻（Park），第二阶段滑块自适应上下文弹性缩放（最高70%轨长）；
   - BGM 切换遵守驻留规则（`ambient_nature` -> `melancholy` -> `calm` -> `embers`）。
 
 ---

@@ -1,9 +1,9 @@
+/* UI/frosted.uss - 磨砂与回顾遮罩样式
+   注：Unity UI Toolkit 暂不支持 Web CSS backdrop-filter 与 linear-gradient 语法，
+   磨砂与渐隐质感已由 C# MakeBacklogWashiTex 与 MakeBacklogFadeMaskTex 程序化纹理驱动 */
+
 .frosted {
-    backdrop-filter: blur(24px);
 }
 
-/* VN 回顾顶部截断模糊条：滚动内容在顶缘被高斯柔化（项目 backdrop-filter 走 USS 的先例同 .frosted） */
 .sb-blur-strip {
-    backdrop-filter: blur(6px);
-    background: linear-gradient(180deg, rgba(28, 18, 10, 0.70) 0%, rgba(28, 18, 10, 0) 100%);
 }

@@ -138,8 +138,8 @@ StationSlice_V1.unity
 │  VNManager (单例) → JSONParser → ScriptData → SceneData[]      │
 │    ├─ BackgroundManager (背景切换：淡入/滑入)                    │
 │    ├─ CharacterSpriteManager (左/中/右三槽位立绘)               │
-│    ├─ DialogueBox (UI Toolkit 对话框 + 打字机效果)              │
-│    ├─ VNBacklog (对话回顾，500条上限，支持跳转)                  │
+│    ├─ DialogueBox (UI Toolkit 对话框 + 打字机效果 + 术语悬浮/下方卡片/65条专有词库) │
+│    ├─ VNBacklog (有色半透明和纸透景回顾 + 铁道物理双态滚动条 + 动量平滑阻尼)    │
 │    ├─ FullScreenNews (全屏滚动新闻)                              │
 │    ├─ VNSaveSystem/VNSaveLoadUI (3槽位存档)                     │
 │    └─ VNAudioManager (BGM淡入淡出 + SFX)                       │
@@ -272,9 +272,9 @@ JSON 结构：
 | **VN 核心** | `VN/VNData.cs` | 57 | 剧本数据结构 |
 | **VN 核心** | `VN/JSONParser.cs` | 46 | JSON 加载 |
 | **VN 核心** | `VN/VNExitData.cs` | 26 | VN→经营过渡数据 |
-| **VN 对话** | `VN/DialogueBox.cs` | 200 | 对话框（UI Toolkit） |
+| **VN 对话** | `VN/DialogueBox.cs` | 1061 | 对话框 + 术语悬浮下划线 + 下方卡片弹窗 + 角色头像框 + 排版防御 |
 | **VN 对话** | `VN/TypewriterEffect.cs` | 104 | 打字机效果 |
-| **VN 对话** | `VN/VNBacklog.cs` | 245 | 对话回顾 |
+| **VN 对话** | `VN/VNBacklog.cs` | 1959 | 对话回顾（有色半透明和纸沙质图层背景 + 铁道物理双态滚动条 + 滚轮惯性阻尼 + 暖木纹缎带排版） |
 | **VN 视觉** | `VN/BackgroundManager.cs` | 176 | 背景切换（淡入/滑入） |
 | **VN 视觉** | `VN/CharacterSpriteManager.cs` | 138 | 角色立绘（左/中/右） |
 | **VN 视觉** | `VN/FullScreenNews.cs` | 121 | 全屏滚动新闻 |
@@ -293,7 +293,7 @@ JSON 结构：
 | **订单** | `OrderManager.cs` | 216 | 订单系统（orders.json） |
 | **引导** | `TutorialManager.cs` | 145 | 新手引导（按天解锁） |
 | **成就** | `AchievementManager.cs` | 169 | 成就系统 |
-| **其他** | `TermHighlightSystem.cs` | 77 | 术语高亮 |
+| **其他** | `TermHighlightSystem.cs` | 77 | 术语高亮匹配器（驱动 Terms.json 65条工业术语） |
 | **其他** | `SceneSetup.cs` | 40 | 场景设置 |
 | **其他** | `TrainPlaceholderLoader.cs` | 26 | 火车占位符 |
 | **其他** | `CloudSeaTrainBackground.cs` | 65 | 云海背景 |

@@ -125,13 +125,26 @@ StationSlice_V1 → RailRevivalRuntimeBootstrap.cs (560行)
   → 所有 UI 用代码创建（没有预制体）
 ```
 
-### 3.6 要改 VN 对话框样式
+### 3.6 要改 VN 对话框与术语系统 (DialogueBox.cs & Terms.json)
 ```
-VN/DialogueBox.cs — BuildUI() 方法
-VN 背景通过 Resources/UI/VN/DialogueBox.uss 样式表
+VN/DialogueBox.cs (1,061行) — BuildUI()、ShowDialogue()、TermClickSystem
+  → 术语悬浮交互：默认不交互时不显示下划线，鼠标悬停时基线动态高亮下划线，移出消失
+  → 术语弹出卡片（Bottom Dock）：正下方展开、单人词典释义+角色头像框展示，弹性盒排版防御（防图鉴按钮被挤飞）
+  → 术语词库：Resources/Terms.json（全篇 65 条核心工业术语，覆盖动力总成、机车空气制动、工务保线等，346处高亮）
+  → 样式：Resources/UI/VN/DialogueBox.uss
 ```
 
-### 3.7 要改标题界面
+### 3.7 要改 VN 对话回顾与铁道滚动条 (VNBacklog.cs)
+```
+VN/VNBacklog.cs (1,959行)
+  → 有色半透明背景：MakeBacklogWashiTex() 128×128 双线性平铺，包含造纸横向经纬丝、32px菱形方格暗纹、悬浮金箔/沙能微斑；透光度 65%，底层场景/立绘清晰可见
+  → 顶部渐隐与磨砂：MakeBacklogFadeMaskTex() 与 Resources/UI/frosted.uss，暖沙褐过渡
+  → 第一阶段（驻留景）：道砟平齐轨顶(top=0)防遮挡、列车加长至104px、完备段(200px)内自由拖拽并就地停驻（Park）、无反弹拖影
+  → 第二阶段（正常滚动）：SbThumbHeight() 上下文自适应弹性缩放（最高达轨长70%）、拦截原生大刻度步进、16ms动量指数阻尼平滑滑行(* 0.88f)
+  → 条目排版：暖木纹姓名横向缎带、高反差象牙白台词、柔和缩进旁白、纤细暖金分割线、黑底金边圆角「跳转」药丸按钮
+```
+
+### 3.8 要改标题界面
 ```
 TitleScreen.cs — 使用 UI Toolkit
   → 布局在 Resources/UI/TitleScreen.uxml
@@ -139,7 +152,7 @@ TitleScreen.cs — 使用 UI Toolkit
   → PanelSettings 在 Resources/UI/TitleScreenPanelSettings.asset
 ```
 
-### 3.8 平板系统架构 (Tablet UI & Apps)
+### 3.9 平板系统架构 (Tablet UI & Apps)
 ```
 GameMainUI.cs (Tablet OS Shell, ~2,000行)
   ├── TabletUIHelper.cs (色系定义/字体定义/统一样式卡片骨架)

@@ -167,14 +167,14 @@ namespace RailwayRenaissance.UI
             // 卡片 2：线路基础设施分项老化
             var cardDecay = CreateCard("🛤 全线路网物理损伤分项", 48);
             var totalDecay = GameData.GetInfrastructureDecay();
-            // 外显红线：老化只显定性档位词（档位定义见 docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md §六），禁显百分比
-            var decaySummary = new Label($"综合线网物理状态: {DecayLevelWord(totalDecay)}");
+            // 外显红线：老化只显定性档位词（工务定期检定评级），禁显百分比，禁实时翻牌（T308 §8.4）
+            var decaySummary = new Label($"综合线网物理状态: {GameData.GetDecayGradeWord()}");
             decaySummary.style.fontSize = 13;
             decaySummary.style.color = totalDecay >= 0.60f ? ColorPolitics : ColorDecay;
             decaySummary.style.unityFontDefinition = Fd();
             cardDecay.Add(decaySummary);
 
-            var decaySub = new Label($"路基: {DecayLevelWord(GameData.DecayRoadbed)}  |  桥隧: {DecayLevelWord(GameData.DecayBridge)}  |  信号: {DecayLevelWord(GameData.DecaySignal)}");
+            var decaySub = new Label($"路基: {GameData.GetDecayGradeRoadbedWord()}  |  桥隧: {GameData.GetDecayGradeBridgeWord()}  |  信号: {GameData.GetDecayGradeSignalWord()}");
             decaySub.style.fontSize = 11;
             decaySub.style.color = ColorTextDim;
             decaySub.style.unityFontDefinition = Fd();

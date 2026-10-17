@@ -85,9 +85,9 @@ namespace Narrative
             else if (trust < TrustWarning)
                 events.Add(NewThreshold("trust", TrustWarning, TrendDirection.Falling, "warning"));
 
-            // 沙能渗透：越高越危险
+            // 沙能渗透：越高越危险（T308 §8.2 必须经股权交割程序完毕才置入不可逆控制态）
             float sand = GetSandPenetration();
-            if (sand > SandIrreversible)
+            if (sand > SandIrreversible && RailwayRenaissance.Systems.RegulatoryEventSystem.IsSandControlled())
                 events.Add(NewThreshold("sand", SandIrreversible, TrendDirection.Rising, "irreversible"));
             else if (sand > SandWarning)
                 events.Add(NewThreshold("sand", SandWarning, TrendDirection.Rising, "warning"));
@@ -99,14 +99,11 @@ namespace Narrative
             else if (fiscal > PressureWarning)
                 events.Add(NewThreshold("fiscal", PressureWarning, TrendDirection.Rising, "warning"));
 
-            // 政治压力
-            float political = GameData.CurrentSeed != null
-                ? GameData.CurrentSeed.initialTrends.politicalPressure
-                : 0.20f;
-            if (political > PressureIrreversible)
-                events.Add(NewThreshold("political", PressureIrreversible, TrendDirection.Rising, "irreversible"));
-            else if (political > PressureWarning)
-                events.Add(NewThreshold("political", PressureWarning, TrendDirection.Rising, "warning"));
+            // 政治压力：对齐 T308 离散状态机 PoliticalTier，禁按瞬时连续量直接宣布不可逆
+            if (GameData.PoliticalTier >= 3)
+                events.Add(NewThreshold("political", 0.85f, TrendDirection.Rising, "irreversible"));
+            else if (GameData.PoliticalTier >= 1)
+                events.Add(NewThreshold("political", 0.45f, TrendDirection.Rising, "warning"));
 
             // 设施衰减
             float decay = (100f - GameData.TrainCondition) / 100f;
