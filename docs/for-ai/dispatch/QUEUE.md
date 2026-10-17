@@ -31,8 +31,9 @@
 | **T306** | **Phase 1 实施：GameMainUI 业务 App 剥离（4 批）** | ✅ **已交付已核验 · 已提交** `4c19f32`（2026-10-17） | GameMainUI + 新增 `UI/Tablet/` | 7,091→2,019 行；T304 三处入口全保；**终审用 DLL 取证**（batch 日志被覆盖+锁冲突，见当前备注） |
 | **T307** | **视觉小说体验与专有工业术语系统综合精修** | ✅ **已交付已核验 · 已提交**（2026-10-17，待用户 Play） | `DialogueBox.cs` / `Terms.json` / `VNBacklog.cs` / `frosted.uss` | 术语 hover 下划线+单人头像卡；30→65 条（实测65✓）；道砟 top=0、列车104px、就地停驻、0.88 滚轮阻尼、65% 透光和纸底；csc EXIT=0（唯一 CS0618=PreventDefault 过时警告，Play 盯滚轮刻度）；`frosted.uss` 未列入其自述白名单（2 行改动，放行） |
 | **T308** | **状态瞬变全盘事件化（政治五档+§8 追加：破产/沙能/信任系数/老化检定）** | ✅ **第二轮已交付已核验 · 已提交**（2026-10-17 16:20，9 项整改全过：csc 实测 **EXIT=0**（rsp L541 已含新文件）、meta ✓、分项检定缓存 ✓、档词统一 §六 ✓、新平×8→雾峰 ✓、2a/单调勘误 ✓） | GameData / Systems/RegulatoryEventSystem / WorldAnalyzer / 看板 / 两份公式文档 | **待用户 Play**：公文日才变档、补贴随文一次到位、破产 12 天两期到账、沙能 5 天交割、看板分项 30 天检定才换词、信任 30/70 无跳变；遗留=看板死方法 `DecayLevelWord` 未删（无调用，无害） |
-| **T310** | **Play 模式代验收单（T301/T304/T307/T308 机器可测项）** | 🟡 **已派 · 执行中**（2026-10-17，用户授权 AGY 调试会话代验） | 仅临时 Editor 钩子（用后删）+ `Tools/playtest/` 证据 | **只验不修**；断言清单 §1-§4；手感/审美=客观截图归「待用户终审」；规格 `orders/T310.md` |
-| **T311** | **Phase 2 实施：LoginManager 遗留解耦与瘦身（2-A/2-B/2-C 三批）** | ⚪ **规格就绪 · 待派**（**T310 回执核验后发指针**） | Core/{GameVersion,GameCursorManager,Core/Auth/UserAuthService} 新增 + LoginManager 原地瘦身 + AutoLoginUI 适配 | 按 T305 方案章2；路径裁决=Core/Auth/；三批三份归档编译日志；auth.json 同路径同键名实读验证；规格 `orders/T311.md` |
+| **T310** | **Play 模式代验收单（T301/T304/T307/T308 机器可测项）** | ✅ **验收完成 · 回执已核**（2026-10-17 19:28：21 断言 16P/4F/1人审；4F 裁决=2 真整改→T312、1 断言笔误(沙能7天保留)、1 改判 PASS(信任步长容差0.06)；**6.3 P0 种子 cities 反序列化 MiMo 静态定罪**） | 临时 runner 已删；证据留 `Tools/playtest/` | 详见 T310 文末 MiMo 批注；**待用户终审**=和纸质感图+滚轮手感 |
+| **T312** | **T310 整改：摘牌销号闭环 + 破产文书时序 + P0 种子 cities 崩溃 + 交割7天文档对齐** | 🟡 **已派 · 执行中**（2026-10-17） | RegulatoryEventSystem / GameData / WorldGen / SandRivalManager / Seeds JSON 格式转换 / 两公式文档 | P0=LoadFromResources→cities 空必崩；规格 `orders/T312.md` |
+| **T311** | **Phase 2 实施：LoginManager 遗留解耦与瘦身（2-A/2-B/2-C 三批）** | ⚪ **规格就绪 · 待派**（**排 T312 回执核验后**；箱子队列升级落地后可并行） | Core/{GameVersion,GameCursorManager,Core/Auth/UserAuthService} 新增 + LoginManager 原地瘦身 + AutoLoginUI 适配 | 按 T305 方案章2；三批三份归档编译日志；规格 `orders/T311.md` |
 | **T309** | **VN 底栏里程地貌断面条 + 全10话世界名线图鉴/煤姬百科联动规范** | ✅ **已交付已核验**（15:34 更新版通过，等用户生成图；百科实施待另立单） | 无代码（纯文档 `orders/T309.md`） | 鸭大线现实依据全过；10 个剧本文件名逐一吻合；**3 处引文勘误+2 裁定点见文末 MiMo 批注** |
 
 ### 10-13 优化回执其余两项的处置（MiMo 裁定）
@@ -46,8 +47,8 @@
 - **T305 已交付已核验**（`e3ef75e`）：P1 方案三章通过，Phase 3 GameData Facade 建议按需缓行获认可
 - **T307 已交付已核验并提交**（2026-10-17）：术语卡/词库/回顾面板三块；**T301 的 Play 待验项已被 T307 接管合并**（道砟遮挡二次修=top 归 0、滚轮惯性重做=0.88 阻尼+PreventDefault），Play 一次验 T301+T307：hover 下划线、卡片下方弹出、道砟不遮红旗、104px 列车自由停驻、滚轮无刻度跳、65% 透光底
 - **T308 执行中**（政治档位事件化，用户 2026-10-17 拍板）；滚轮 PreventDefault 已于 14:47 被换为 StopImmediatePropagation（全工程 CS0618 清零，MiMo csc 核验后随单提交）
-- **T310 执行中**（AGY 调试会话 Play 代验收 T301/T304/T307/T308 机器可测项，用户 2026-10-17 授权）；**下一单 T311（Phase 2 LoginManager）规格已落盘，T310 回执核验后发指针**
-- 待用户终审（机器代不了）：滚轮/拖动手感、和纸缎带口味、T309 提示词体例与图生成
+- **T312 执行中**（T310 整改，含 **P0 种子 cities 崩溃**）；**T311 规格就绪排其后**——箱子队列升级落地后两单可并行
+- 待用户终审（机器代不了）：和纸质感图 `Tools/playtest/backlog_washi_preview.png`、滚轮/拖动手感、T309 提示词体例与图生成
 - T301 / T304 仍待用户 Play 实测；待出图队列：`station_office` ✅ → `depot_morning` ✅ → **`railway_map_aerial`** → `station`（改接）
 - 画风方向已纠偏：**清晰像素体系**（10-13 回执 P2 + railway_shop 规格两处），后续任何出图/规格以像素风为准
 
