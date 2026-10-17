@@ -168,11 +168,10 @@ public class VNBacklog : MonoBehaviour
         // 滚轮自由滚动 + 柔和惯性阻尼滑行：
         // 1. 本次基础步长 12px 响应手感，新滚轮打断前次惯性并适度叠加速度
         // 鼠标滚轮自由滚动 + 平滑惯性滑行：
-        // 1. PreventDefault 强阻断 UI Toolkit 原生大步长刻度跳跃
+        // 1. TrickleDown + StopImmediatePropagation 拦截 UI Toolkit 原生大步长刻度跳跃
         // 2. 动量注入：微步连续推力，按 0.88f 阻尼指数平滑衰减
         backlogScroll.RegisterCallback<WheelEvent>(e =>
         {
-            e.PreventDefault();
             e.StopImmediatePropagation();
             float dy = e.delta.y;
             if (Mathf.Abs(dy) > 10f) dy /= 120f;
