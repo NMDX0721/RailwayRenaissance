@@ -139,6 +139,22 @@ TitleScreen.cs — 使用 UI Toolkit
   → PanelSettings 在 Resources/UI/TitleScreenPanelSettings.asset
 ```
 
+### 3.8 平板系统架构 (Tablet UI & Apps)
+```
+GameMainUI.cs (Tablet OS Shell, ~2,000行)
+  ├── TabletUIHelper.cs (色系定义/字体定义/统一样式卡片骨架)
+  └── Assets/Scripts/UI/Tablet/Apps/
+        ├── TabletReturnJourneyUI.cs   (归途：主线剧情时间轴/全幕回溯)
+        ├── TabletMusicAppUI.cs        (音乐：13首原声/后台播放器/悬浮进度)
+        ├── TabletGalleryAppUI.cs      (相册：回忆画廊/全屏大图灯箱)
+        ├── TabletSettingsAppUI.cs     (设置：24截图分类/TIPS图鉴/按键映射/开发者)
+        ├── TabletRDAAppUI.cs          (RDA：调度助手/线路车况/T304五线态势联动)
+        ├── TabletNotesAppUI.cs        (百科与便签：媒姬百科/三栏自动化备忘)
+        └── TabletSystemToolsAppUI.cs  (系统工具集：时钟/日历/天气/计算器/米家/安全等)
+```
+
+---
+
 ---
 
 ## 四、资源引用关系
