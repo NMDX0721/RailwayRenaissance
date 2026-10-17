@@ -144,7 +144,8 @@ namespace RailwayRenaissance.UI
             var cardPolitics = CreateCard("🏛 政治监管制裁态势", 32);
             var tier = GameData.GetSanctionTierName();
             var polVal = GameData.GetPoliticalPressure();
-            var polLabel = new Label($"综合压力指数: {(polVal * 100f):F1}% · [{tier}]");
+            // 外显红线（2026-10-17 用户拍板）：政治压力只显监管评级档，禁止显示指数数值/百分比
+            var polLabel = new Label($"[{tier}]");
             polLabel.style.fontSize = 13;
             polLabel.style.color = polVal >= 0.70f ? ColorPolitics : Color.white;
             polLabel.style.unityFontDefinition = Fd();
@@ -162,13 +163,14 @@ namespace RailwayRenaissance.UI
             // 卡片 2：线路基础设施分项老化
             var cardDecay = CreateCard("🛤 全线路网物理损伤分项", 48);
             var totalDecay = GameData.GetInfrastructureDecay();
-            var decaySummary = new Label($"综合线网老化率: {(totalDecay * 100f):F1}% (路基40% / 桥隧35% / 信号25%)");
+            // 外显红线：老化只显定性档位词（档位定义见 docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md §六），禁显百分比
+            var decaySummary = new Label($"综合线网物理状态: {DecayLevelWord(totalDecay)}");
             decaySummary.style.fontSize = 13;
             decaySummary.style.color = totalDecay >= 0.60f ? ColorPolitics : ColorDecay;
             decaySummary.style.unityFontDefinition = Fd();
             cardDecay.Add(decaySummary);
 
-            var decaySub = new Label($"路基翻浆沉降: {(GameData.DecayRoadbed * 100f):F1}%  |  桥隧应力疲劳: {(GameData.DecayBridge * 100f):F1}%  |  信号联锁衰耗: {(GameData.DecaySignal * 100f):F1}%");
+            var decaySub = new Label($"路基: {DecayLevelWord(GameData.DecayRoadbed)}  |  桥隧: {DecayLevelWord(GameData.DecayBridge)}  |  信号: {DecayLevelWord(GameData.DecaySignal)}");
             decaySub.style.fontSize = 11;
             decaySub.style.color = ColorTextDim;
             decaySub.style.unityFontDefinition = Fd();
@@ -186,6 +188,15 @@ namespace RailwayRenaissance.UI
             row.Add(cardInstant);
 
             return row;
+        }
+
+        // 外显红线：老化只准以定性档位呈现；档位阈值必须与 DAILY_SETTLEMENT_FORMULAS.md §六 保持一致
+        private static string DecayLevelWord(float d)
+        {
+            if (d >= 0.75f) return "严重劣化";
+            if (d >= 0.55f) return "明显劣化";
+            if (d >= 0.30f) return "轻度磨损";
+            return "状态良好";
         }
 
         private static VisualElement CreateCard(string title, float widthPercent)
@@ -236,8 +247,8 @@ namespace RailwayRenaissance.UI
             legend.Add(CreateLegendItem("● 民众信任 (0-100)", ColorTrust));
             legend.Add(CreateLegendItem("● 财政资金 (标度化)", ColorMoney));
             legend.Add(CreateLegendItem("● 沙能渗透率 (0-100%)", ColorSand));
-            legend.Add(CreateLegendItem("● 政治压力 (0-100%)", ColorPolitics));
-            legend.Add(CreateLegendItem("● 线路老化 (0-100%)", ColorDecay));
+            legend.Add(CreateLegendItem("● 政治压力（态势）", ColorPolitics));
+            legend.Add(CreateLegendItem("● 线路老化（趋势）", ColorDecay));
             box.Add(legend);
 
             // 2. 坐标图区域
@@ -246,7 +257,7 @@ namespace RailwayRenaissance.UI
             graphArea.style.position = Position.Relative;
             graphArea.style.overflow = Overflow.Hidden;
 
-            // 悬停提示气泡
+            // 悬停提示气泡（当前为死元素；外显红线：若未来启用，只准显示日期/评级档，禁显政治压力与老化数值）
             var tooltip = new Label("");
             tooltip.style.position = Position.Absolute;
             tooltip.style.backgroundColor = new Color(0.05f, 0.05f, 0.08f, 0.90f);
