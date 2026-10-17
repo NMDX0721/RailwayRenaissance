@@ -112,6 +112,8 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ## 关键约定
 
+- **代码改动必同步文档（核心记忆铁律）**：任何功能、数值或架构变更，**必须强制同步更新对应的设计/接口/公式文档**（如 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md`、`docs/for-ai/CODE_MAP.md`、派单回执等），严禁“只改代码不更文档”！
+- **数值两铁律（2026-10-17 用户拍板）**：①**一切存档初值由千里马创世核按种子抖动生成，严禁固定数值**（`Jitter(基准, ±0.05, r)`；常量只许作无种子/老档兼容兜底）；②**政治压力与线路老化绝对禁止数值外显**——UI 只准监管评级/定性档位词，**钱与信任可外显**。新数值功能先过这两条再动 UI（细则见 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md` §六）。
 - **不要直接编辑 `.unity` YAML 文件** — 用 Unity Editor 或编辑器脚本
 - **中文 UI 优先**
 - **资源命名**: `characters/{ID}/{表情}.png`, `bg/{ID}.png`, `bgm/{ID}.ogg`, `Scripts/prologue_XX_{名称}.json`
@@ -220,9 +222,9 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 - **JSON 技术标签规范**：
   - 心理活动统一使用 `{"t": "thought", "s": "说话人", "e": "表情", "text": "[...]"}`（必须带说话人 `s` 与表情 `e`，text 保留方括号，DialogueBox 遵守独白不叠色规则，清空或缺失 `s` 会导致姓名牌丢失及立绘被清空）；
   - 地点卡统一使用 `{"t": "loc", "text": "..."}`；
-  - 核心铁路专有名词必须完整保留，以保证 `Terms.json` 的 30 条术语能被 `TermHighlightSystem` 稳定高亮并支持弹窗；
+  - 核心铁路专有名词必须完整保留，以保证 `Terms.json` 的 65 条术语（涵盖工务保线、机车动力机械、车辆制动、电气信号闭塞）能被 `TermHighlightSystem` 稳定高亮并支持弹窗；
   - BGM 切换遵守驻留规则（`ambient_nature` -> `melancholy` -> `calm` -> `embers`）。
 
 ---
 
-*Changes to this project: update `docs/for-ai/` docs when modifying code, and update AGENTS.md when adding new major systems.*
+*核心纪律：代码改动必须同步更新 `docs/for-ai/` 相关文档及公式表，添加或重构重大系统时必须更新 `AGENTS.md` 与代码地图。*
