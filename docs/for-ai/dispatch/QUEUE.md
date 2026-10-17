@@ -30,7 +30,7 @@
 | **T305** | **P1 重构方案文档（只出方案不动代码）** | ✅ **已交付已核验 · 已提交**（2026-10-17） | 仅 `docs/for-ai/refactor/P1_refactor_plan.md` | 217 调用点/21 文件、93,890 字节精确核实；Phase 3 建议缓行获认可 |
 | **T306** | **Phase 1 实施：GameMainUI 业务 App 剥离（4 批）** | ✅ **已交付已核验 · 已提交** `4c19f32`（2026-10-17） | GameMainUI + 新增 `UI/Tablet/` | 7,091→2,019 行；T304 三处入口全保；**终审用 DLL 取证**（batch 日志被覆盖+锁冲突，见当前备注） |
 | **T307** | **视觉小说体验与专有工业术语系统综合精修** | ✅ **已交付已核验 · 已提交**（2026-10-17，待用户 Play） | `DialogueBox.cs` / `Terms.json` / `VNBacklog.cs` / `frosted.uss` | 术语 hover 下划线+单人头像卡；30→65 条（实测65✓）；道砟 top=0、列车104px、就地停驻、0.88 滚轮阻尼、65% 透光和纸底；csc EXIT=0（唯一 CS0618=PreventDefault 过时警告，Play 盯滚轮刻度）；`frosted.uss` 未列入其自述白名单（2 行改动，放行） |
-| **T308** | **政治压力档位事件化（现实事件+程序驱动，禁瞬变禁实时直切）** | 🟡 **已派 · 执行中**（2026-10-17） | GameData / EventManager / 新 `Systems/RegulatoryEventSystem.cs` / 两份公式文档 | 用户拍板硬核事件化；双层模型=隐温度计+PoliticalTier 状态机；七条链跨日推进+摘牌滞回；罚则挂档；规格 `orders/T308.md` |
+| **T308** | **状态瞬变全盘事件化（政治五档+§8 追加：破产/沙能/信任系数/老化检定）** | 🟡 **已派 · 执行中**（2026-10-17，含补发追加条款） | GameData / EventManager / SandRivalManager / WorldAnalyzer / 新 `Systems/RegulatoryEventSystem.cs` / 两份公式文档 | 用户拍板"政治只是例子，全盘找同类"；双层模型+七链+摘牌滞回；8.1 重整程序/8.2 股权交割/8.3 信任系数±3过渡带/8.4 工务检定制/8.5 观察项；规格 `orders/T308.md` §1-§8 |
 
 ### 10-13 优化回执其余两项的处置（MiMo 裁定）
 
