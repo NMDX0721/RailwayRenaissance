@@ -151,8 +151,12 @@ namespace RailwayRenaissance.UI
             polLabel.style.unityFontDefinition = Fd();
             cardPolitics.Add(polLabel);
 
-            var polDesc = new Label(polVal >= 0.85f ? "当前处于红牌整顿：安全强制限速(发车-1)，补贴削减50%" :
-                                   (polVal >= 0.70f ? "当前处于黄牌通报：地方补贴扣减25%，公关成本增加" : "监管评价稳定，正常履行地方铁路运营特许协议。"));
+            // 描述句严格对齐现实监管反馈公文语（警示→约谈→挂牌督办→停产停业整顿，见 DAILY_SETTLEMENT_FORMULAS.md §六）
+            var polDesc = new Label(polVal >= 0.95f ? "责令停产停业整顿，启动运营许可听证：全线停运，接管程序进行中。" :
+                                   polVal >= 0.85f ? "重大隐患挂牌督办：减班限速运行，运营补贴核减50%。" :
+                                   polVal >= 0.70f ? "市政府约谈负责人：责令限期提交整改方案，运营补贴核减25%。" :
+                                   polVal >= 0.45f ? "予以安全生产警示通报，责令限期消除设备隐患。" :
+                                   "安全生产形势平稳，考核优良：运营补贴上浮10%。");
             polDesc.style.fontSize = 11;
             polDesc.style.color = ColorTextDim;
             polDesc.style.unityFontDefinition = Fd();
@@ -190,13 +194,13 @@ namespace RailwayRenaissance.UI
             return row;
         }
 
-        // 外显红线：老化只准以定性档位呈现；档位阈值必须与 DAILY_SETTLEMENT_FORMULAS.md §六 保持一致
+        // 现实用语（《铁路线路修理规则》评定/修程：状态合格→经常保养→临时补修→评定失格）；外显红线：禁数值；阈值必须与 DAILY_SETTLEMENT_FORMULAS.md §六 一致
         private static string DecayLevelWord(float d)
         {
-            if (d >= 0.75f) return "严重劣化";
-            if (d >= 0.55f) return "明显劣化";
-            if (d >= 0.30f) return "轻度磨损";
-            return "状态良好";
+            if (d >= 0.75f) return "评定失格";
+            if (d >= 0.55f) return "临时补修";
+            if (d >= 0.30f) return "经常保养";
+            return "状态合格";
         }
 
         private static VisualElement CreateCard(string title, float widthPercent)

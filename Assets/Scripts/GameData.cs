@@ -370,11 +370,12 @@ public static class GameData
     /// <summary>获取当前监管制裁评级（四档状态规范）。</summary>
     public static string GetSanctionTierName()
     {
-        if (PoliticalPressure < 0.45f) return "Ⅰ 信任蜜月期";
-        if (PoliticalPressure < 0.70f) return "Ⅱ 审慎监管区";
-        if (PoliticalPressure < 0.85f) return "Ⅲ 黄牌通报";
-        if (PoliticalPressure < 0.95f) return "Ⅳ 红牌整顿";
-        return "听证接管危机";
+        // 现实依据：交通运输部《交通运输安全生产警示约谈和挂牌督办办法》警示→约谈→挂牌督办，末档依《安全生产法》责令停产停业整顿
+        if (PoliticalPressure < 0.45f) return "Ⅰ 常态监管";
+        if (PoliticalPressure < 0.70f) return "Ⅱ 警示通报";
+        if (PoliticalPressure < 0.85f) return "Ⅲ 约谈整改";
+        if (PoliticalPressure < 0.95f) return "Ⅳ 挂牌督办";
+        return "停产停业整顿";
     }
 
     /// <summary>记录每日五线趋势快照（360 天环形存储）。</summary>
@@ -1054,12 +1055,12 @@ public static class GameData
         // 加载难度与游戏配置（G4）
         GameConfig config = GameConfig.Load();
 
-        // 1. 发车方案决定今日趟数（受政治压力红牌整顿制约）
+        // 1. 发车方案决定今日趟数（受政治压力挂牌督办制约）
         int trips = GetTripsForDispatchPlan();
         if (PoliticalPressure >= 0.85f)
         {
             trips = Mathf.Max(1, trips - 1);
-            Notices.Add("⚠ 监管红牌整顿中：市政安全督查要求强制限速，今日最高发车趟数上限 -1。");
+            Notices.Add("⚠ 重大隐患挂牌督办期间：安全督查要求减班限速，今日最高发车趟数上限 -1。");
         }
 
         // 2. 计算单趟客流（A9：统一单趟口径），按 passengerMultiplier 接入（G4）
@@ -1097,17 +1098,17 @@ public static class GameData
         int subsidy = rawSubsidy;
         if (PoliticalPressure < 0.45f)
         {
-            subsidy = Mathf.RoundToInt(rawSubsidy * 1.10f); // Ⅰ 信任蜜月期：奖励 +10%
+            subsidy = Mathf.RoundToInt(rawSubsidy * 1.10f); // Ⅰ 常态监管：安全生产考核优良奖励 +10%
         }
         else if (PoliticalPressure >= 0.70f && PoliticalPressure < 0.85f)
         {
-            subsidy = Mathf.RoundToInt(rawSubsidy * 0.75f); // Ⅲ 黄牌通报：扣减 25%
-            Notices.Add("⚠ 黄牌警告通报：地方财政补贴扣减 25%。");
+            subsidy = Mathf.RoundToInt(rawSubsidy * 0.75f); // Ⅲ 约谈整改：核减 25%
+            Notices.Add("⚠ 市政府约谈整改：责令限期提交整改方案，地方财政补贴核减 25%。");
         }
         else if (PoliticalPressure >= 0.85f)
         {
-            subsidy = Mathf.RoundToInt(rawSubsidy * 0.50f); // Ⅳ 红牌整顿：扣减 50%
-            Notices.Add("⚠ 监管红牌整顿：地方财政补贴扣减 50%。");
+            subsidy = Mathf.RoundToInt(rawSubsidy * 0.50f); // Ⅳ 挂牌督办：核减 50%
+            Notices.Add("⚠ 重大隐患挂牌督办：减班限速运行，地方财政补贴核减 50%。");
         }
 
         // 9.5 [新] 先民人事系统每日更新（G2：疲劳/成长/忠诚/冷却，不改当日工资）
