@@ -1350,9 +1350,6 @@ public static class GameData
             cumulativeDeficitPressure = Mathf.Max(0f, cumulativeDeficitPressure - 0.005f);
         }
 
-        // T308: 监管法定程序推进（升降档只在程序节点日迁移，严禁按连续量瞬变直切）
-        RailwayRenaissance.Systems.RegulatoryEventSystem.AdvanceDay(Notices);
-
         // 记录 360 天环形趋势快照
         RecordTrendSnapshot(Day, Trust, Money, SandRivalManager.GetPenetration("wufeng"), PoliticalPressure, InfrastructureDecay);
 
@@ -1397,9 +1394,6 @@ public static class GameData
             CurrentMonth = new MonthlySummary();
         }
 
-        // A7：破产保护检查（ClampStats 后资金已 ≥0，但原始资金可能 ≤0）
-        CheckBankruptcy();
-
         DailyMoneyChange = Money - startMoney;
         DailyTrustChange = Trust - startTrust;
         DailyTrainConditionChange = TrainCondition - startCondition;
@@ -1426,6 +1420,10 @@ public static class GameData
         }
 
         RefreshBoards(tone);
+
+        // [T308/T312] 监管法定程序推进与破产保护检查：必须在 RefreshBoards 之后调用，防止被 RefreshBoards 重建 Notices 清空覆盖
+        RailwayRenaissance.Systems.RegulatoryEventSystem.AdvanceDay(Notices);
+        CheckBankruptcy();
 
         // 叙事引擎检查（N4.8）：Day 已推进（沙能竞争之后），检查并挂载叙事事件。
         // 注意：必须在 RefreshBoards 之后调用——RefreshBoards 以 new List 重建 Briefing/Notices，

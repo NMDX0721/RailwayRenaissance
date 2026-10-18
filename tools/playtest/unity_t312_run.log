@@ -1,0 +1,1924 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26300) Professional' Language: 'zh' Physical Memory: 31934 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-10-18T04:05:15.8270887Z"
+Process architecture: x64
+Date: 2026-10-18T04:05:15Z
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\Unity 6.5\Editor\Unity.exe
+-quit
+-batchmode
+-projectPath
+D:\Unity Project\RailwayRenaissance
+-executeMethod
+PlaytestRunner_T312.RunAll
+-logFile
+Tools\playtest\unity_t312_run.log
+Successfully changed project path to: D:\Unity Project\RailwayRenaissance
+D:/Unity Project/RailwayRenaissance
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [61684]  Target information:
+
+Player connection [61684]  * "[IP] 192.168.71.9 [Port] 55504 [Flags] 2 [Guid] 454341613 [EditorId] 454341613 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [61684]  * "[IP] 172.24.240.1 [Port] 55504 [Flags] 2 [Guid] 454341613 [EditorId] 454341613 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [61684]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 454341613 [EditorId] 454341613 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [61684]  * "[IP] 192.168.31.127 [Port] 55504 [Flags] 2 [Guid] 454341613 [EditorId] 454341613 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [61684] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [61684] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-81636" after 0.2 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-Oe_Lee"
+[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-Oe_Lee-6000.5.8 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 73932)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8" at "2026-10-18T04:05:17.5602888Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 73932, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              f59b70427e3a4c6992e189c8bac6699a
+  Correlation Id:          71374663028c1f0829cfd029fa00ff85
+  External correlation Id: 3901133293631667750
+  Machine Id:              ZO+yfxaVFmW/OFopdVuYEhjz7wI=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee-6000.5.8" (connect: 0.25s, validation: 0.16s, handshake: 0.01s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8-notifications" at "2026-10-18T04:05:17.7309523Z"
+[Licensing::Module] Connected to LicensingClient (PId: 73932, launch time: 0.01, total connection time: 0.42s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX
+  Product: Unity Personal Version
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 1.94s
+[Licensing::Module] Licensing is initialized (took 1.42s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.5.8f1 (5cb7df797b7d)
+[Subsystems] Discovering subsystems at path D:/Unity Hub/Unity 6.5/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Unity Project/RailwayRenaissance/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)
+    Vendor:   NVIDIA
+    VRAM:     11944 MB
+    Driver:   32.0.16.1742
+Initialize mono
+Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
+Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56636
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001159 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.395 seconds
+Domain Reload Profiling: 784ms
+	BeginReloadAssembly (121ms)
+		CreateAndSetChildDomain (33ms)
+	RebuildCommonClasses (4ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (209ms)
+		LoadAssemblies (88ms)
+		AnalyzeDomain (156ms)
+			TypeCache.Refresh (155ms)
+				TypeCache.ScanAssembly (143ms)
+	FinalizeReload (396ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (73ms)
+			ProcessInitializeOnLoadAttributes (72ms)
+			ProcessInitializeOnLoadMethodAttributes (193ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.burst@1.8.30 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.burst@2f3d916873ea)
+    com.unity.settings-manager@2.1.1 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: D:/Unity Project/RailwayRenaissance
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 2s609ms
+[759/969    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[961/969    1s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+[963/969    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 139 defines and 365 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[965/969    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 141 defines and 343 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[966/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[968/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+*** Tundra build success (2.58 seconds), 6 items updated, 969 evaluated
+Total cache size 261212012
+Total cache size after purge 261212012, took 00:00:00.1486338
+AssetDatabase: script compilation time: 3.158307s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.183 seconds
+Domain Reload Profiling: 2880ms
+	BeginReloadAssembly (184ms)
+		DisableScriptedObjects (19ms)
+		CreateAndSetChildDomain (56ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (36ms)
+	LoadAllAssembliesAndSetupDomain (454ms)
+		LoadAssemblies (233ms)
+		AnalyzeDomain (217ms)
+			TypeCache.Refresh (157ms)
+				TypeCache.ScanAssembly (148ms)
+			BuildScriptInfoCaches (51ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (2185ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (65ms)
+			ProcessInitializeOnLoadAttributes (1420ms)
+			ProcessInitializeOnLoadMethodAttributes (364ms)
+		AwakeInstancesAfterBackupRestoration (97ms)
+Starting new worker id: 0 with log in D:/Unity Project/RailwayRenaissance/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=b1302eb4f9e2d564386e0662ed3c594e): Total: 6.838 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2733 ms
+		Asset DB Callback time: managed=158 ms, native=18 ms
+		Scripting: domain reloads=1, domain reload time=726 ms, compile time=3160 ms, other=39 ms
+		Project Asset Count: scripts=1476, non-scripts=2619
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 15.366ms
+	ApplyChangesToAssetFolders: 0.898ms
+	Scan: 209.487ms
+	Collect global state as custom dependencies: 18.836ms
+	OnSourceAssetsModified: 0.593ms
+	CategorizeScriptCompilationAssets: 40.371ms
+	ProcessAssetsWithTransientArtifactChanges: 68.876ms
+	CategorizeAssets: 68.495ms
+	CompileScripts: 3160.120ms
+	ImportOutOfDateAssets: 2238.716ms (2199.550ms without children)
+		UnloadImportedAssets: 0.859ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.651ms
+		ImportSchedulerStart: 37.618ms
+	PostProcessAllAssets: 160.264ms
+		VCAutoAddAssetPostprocess 1.177ms
+		XRBuildSystem.XRAssetImported 0.243ms
+		MonoPostProcessAllAssets: 158.440ms
+			AssetPostprocessor.OnPostprocessAllAssets 104.854ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 11.390ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 10.028ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 5.054ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 2.093ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 2.032ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.918ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.483ms
+			AssetChangedListener.OnPostprocessAllAssets 1.211ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.071ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.875ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.817ms
+			MaterialPostprocessor.OnPostprocessAllAssets 0.652ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.571ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.570ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.422ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.296ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.294ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.277ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.262ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.244ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.221ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.215ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.201ms
+			AssetEvents.OnPostprocessAllAssets 0.198ms
+			PostProcessor.OnPostprocessAllAssets 0.174ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.172ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.142ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.141ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.132ms
+			SyncVS.PostprocessSyncProject 0.127ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.101ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.098ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.096ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.087ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.056ms
+	PostAssetChangesProfiler: 2.729ms
+	UnloadStreamsBegin: 3.053ms
+	PersistCurrentRevisions: 0.095ms
+	GenerateScriptTypeHashes: 1.773ms
+	GenerateScriptTypeSerializationHashes: 3.627ms
+	Untracked: 846.273ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 2.792ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6885 unused Assets / (6.8 MB). Loaded Objects now: 7917.
+Memory consumption went from 435.7 MB to 428.9 MB.
+Total: 16.761100 ms (FindLiveObjects: 0.895100 ms CreateObjectMapping: 1.751200 ms MarkObjects: 8.319800 ms  DeleteObjects: 5.788500 ms)
+
+[12:05:26.250] =================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:42)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.258]   T312 · 整改单回归验证自动化断言启动
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:43)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.259] =================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:44)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.260] --- [§3 种子城市反序列化验证] ---
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:64)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.271] [PASS] seed_001: cities.Count = 7, citiesList.Count = 7 > 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:80)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.271] [PASS] seed_042: cities.Count = 7, citiesList.Count = 7 > 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:80)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.272] [PASS] seed_077: cities.Count = 6, citiesList.Count = 6 > 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:80)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.272] --- [§2 破产 D0 文书时序验证] ---
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:93)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[OrderManager] Loaded 8 order templates
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:LoadTemplates () (at Assets/Scripts/OrderManager.cs:44)
+OrderManager:Initialize () (at Assets/Scripts/OrderManager.cs:22)
+OrderManager:InitializeIfNeeded () (at Assets/Scripts/OrderManager.cs:269)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:192)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:97)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 44)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:97)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[NarrativeEngine] 已注册区域解锁回调（GAP1：解锁 → post_* 叙事事件）
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Narrative.NarrativeEngine:RegisterRegionUnlockCallback () (at Assets/Scripts/Narrative/NarrativeEngine.cs:140)
+Narrative.NarrativeEngine:Initialize () (at Assets/Scripts/Narrative/NarrativeEngine.cs:51)
+Narrative.NarrativeEngine:CheckForEvent () (at Assets/Scripts/Narrative/NarrativeEngine.cs:64)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1431)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:97)
+
+(Filename: Assets/Scripts/Narrative/NarrativeEngine.cs Line: 140)
+
+[NarrativeEngine] 初始化完成：Resources 模板 0 个（将使用内置默认模板）
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Narrative.NarrativeEngine:Initialize () (at Assets/Scripts/Narrative/NarrativeEngine.cs:53)
+Narrative.NarrativeEngine:CheckForEvent () (at Assets/Scripts/Narrative/NarrativeEngine.cs:64)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1431)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:97)
+
+(Filename: Assets/Scripts/Narrative/NarrativeEngine.cs Line: 53)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:98)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:105)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[12:05:26.304] [PASS] D0 当日 Notices 成功读取破产重整申请文书: 雾峰村车站破产重整事务组：关于向市中级人民法院提交重整申请的公告（第 1 次破产预警）。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:110)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.304] --- [§1 摘牌销号闭环断言验证] ---
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:121)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:131)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:131)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:137)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[12:05:26.309] [PASS] 1a 低风险静默整改：整改期内维持 Tier=2，5天期满成功降至 Tier=1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:143)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:156)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:156)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:162)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[12:05:26.313] [PASS] 1b 违章阻断：中途触发安全险情后，期满未降档(Tier=2)，收到维持公文，进入冷却期(8天)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:168)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:181)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:181)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:186)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[12:05:26.316] [PASS] 1c 滞回回弹阻断：P 回弹至 0.72 后，期满维持 Tier=2，收到风险裕度不足维持通告，进入冷却期(8天)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:192)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.316] --- [§3 沙能 35 天全流程推进断言] ---
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:203)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 1 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[NarrativeEngine] 铁龙行动 free_trial → 叙事事件（GAP6）
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Narrative.NarrativeEngine:OnSandRivalAction (string) (at Assets/Scripts/Narrative/NarrativeEngine.cs:164)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1312)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/Narrative/NarrativeEngine.cs Line: 164)
+
+[NarrativeEngine] 分发事件 sand_action_resistance（news → VN）：铁龙集团在雾峰村推出一元票价广告，摆明了要撬少羽1111的墙角。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Narrative.NarrativeEngine:DispatchEvent (Narrative.NarrativeEvent) (at Assets/Scripts/Narrative/NarrativeEngine.cs:107)
+Narrative.NarrativeEngine:DispatchAll (System.Collections.Generic.List`1<Narrative.NarrativeEvent>) (at Assets/Scripts/Narrative/NarrativeEngine.cs:119)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1432)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/Narrative/NarrativeEngine.cs Line: 107)
+
+[12:05:26.333] [STEP] Day 30 reached successfully! Sand action executed with 0 exceptions.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:216)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[OrderManager] 2 orders expired due to deadline
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OrderManager:DailyTick () (at Assets/Scripts/OrderManager.cs:241)
+OrderManager:DailySettle () (at Assets/Scripts/OrderManager.cs:197)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1153)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/OrderManager.cs Line: 241)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[CrewManager] 每日更新完成。
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+CrewManager:DailyUpdate (bool,string,string) (at Assets/Scripts/CrewManager.cs:1122)
+CrewManager:AdvanceDay (bool) (at Assets/Scripts/CrewManager.cs:718)
+GameData:AdvanceDay () (at Assets/Scripts/GameData.cs:1194)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:212)
+
+(Filename: Assets/Scripts/CrewManager.cs Line: 1122)
+
+[12:05:26.335] [PASS] 35 天连续推进顺利完成，原 Day 30 沙能城市 Dictionary 空引用崩溃彻底根除！
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:229)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.335] =================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:237)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.335]   T312 整改单自动化断言全部执行完毕！总体判定: ALL PASS ✓
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:238)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+[12:05:26.335] =================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlaytestRunner_T312:<RunAll>g__Log|3_0 (string,PlaytestRunner_T312/<>c__DisplayClass3_0&) (at Assets/Editor/PlaytestRunner_T312.cs:38)
+PlaytestRunner_T312:RunAll () (at Assets/Editor/PlaytestRunner_T312.cs:239)
+
+(Filename: Assets/Editor/PlaytestRunner_T312.cs Line: 38)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8 channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

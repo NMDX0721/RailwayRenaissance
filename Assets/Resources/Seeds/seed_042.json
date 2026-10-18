@@ -3,102 +3,236 @@
   "name": "资源危机",
   "version": "v3.0",
   "seedCode": "RR-0002A-0007E",
-  "cities": {
-    "wufeng": {
-      "name": "雾峰村",
-      "type": "agriculture",
-      "population": 8000,
-      "populationGrowth": 0.0002,
-      "coordinates": { "x": 120, "y": 340 },
-      "industries": ["tea", "tourism"],
-      "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] },
-      "sandPenetrationBase": 0.15,
-      "politicalLean": "welfare",
-      "unlockRegion": 0,
-      "npcPool": ["laochen", "liayi"]
+  "citiesList": [
+    {
+      "key": "wufeng",
+      "value": {
+        "name": "雾峰村",
+        "type": "agriculture",
+        "population": 8000,
+        "populationGrowth": 0.0002,
+        "coordinates": {
+          "x": 120,
+          "y": 340
+        },
+        "industries": [
+          "tea",
+          "tourism"
+        ],
+        "dependencies": {
+          "imports": [
+            "kuangqu:coal"
+          ],
+          "exports": [
+            "qingxi:tea"
+          ]
+        },
+        "sandPenetrationBase": 0.15,
+        "politicalLean": "welfare",
+        "unlockRegion": 0,
+        "npcPool": [
+          "laochen",
+          "liayi"
+        ]
+      }
     },
-    "kuangqu": {
-      "name": "乌金岭",
-      "type": "mining",
-      "population": 4000,
-      "populationGrowth": -0.0003,
-      "coordinates": { "x": 200, "y": 380 },
-      "industries": ["coal", "iron"],
-      "dependencies": { "imports": ["fenglin:machinery"], "exports": ["wufeng:coal", "qingxi:iron"] },
-      "sandPenetrationBase": 0.20,
-      "politicalLean": "authoritarian",
-      "unlockRegion": 0,
-      "npcPool": ["zhanggong"]
+    {
+      "key": "kuangqu",
+      "value": {
+        "name": "乌金岭",
+        "type": "mining",
+        "population": 4000,
+        "populationGrowth": -0.0003,
+        "coordinates": {
+          "x": 200,
+          "y": 380
+        },
+        "industries": [
+          "coal",
+          "iron"
+        ],
+        "dependencies": {
+          "imports": [
+            "fenglin:machinery"
+          ],
+          "exports": [
+            "wufeng:coal",
+            "qingxi:iron"
+          ]
+        },
+        "sandPenetrationBase": 0.2,
+        "politicalLean": "authoritarian",
+        "unlockRegion": 0,
+        "npcPool": [
+          "zhanggong"
+        ]
+      }
     },
-    "qingxi": {
-      "name": "青溪镇",
-      "type": "industrial",
-      "population": 12000,
-      "populationGrowth": 0.0004,
-      "coordinates": { "x": 340, "y": 300 },
-      "industries": ["manufacturing", "light_industry"],
-      "dependencies": { "imports": ["kuangqu:coal", "fenglin:steel"], "exports": ["yundu:machinery"] },
-      "sandPenetrationBase": 0.25,
-      "politicalLean": "neutral",
-      "unlockRegion": 1,
-      "npcPool": ["wangxiaodi"]
+    {
+      "key": "qingxi",
+      "value": {
+        "name": "青溪镇",
+        "type": "industrial",
+        "population": 12000,
+        "populationGrowth": 0.0004,
+        "coordinates": {
+          "x": 340,
+          "y": 300
+        },
+        "industries": [
+          "manufacturing",
+          "light_industry"
+        ],
+        "dependencies": {
+          "imports": [
+            "kuangqu:coal",
+            "fenglin:steel"
+          ],
+          "exports": [
+            "yundu:machinery"
+          ]
+        },
+        "sandPenetrationBase": 0.25,
+        "politicalLean": "neutral",
+        "unlockRegion": 1,
+        "npcPool": [
+          "wangxiaodi"
+        ]
+      }
     },
-    "yundu": {
-      "name": "云渡港",
-      "type": "port",
-      "population": 25000,
-      "populationGrowth": 0.0006,
-      "coordinates": { "x": 460, "y": 420 },
-      "industries": ["shipping", "trade"],
-      "dependencies": { "imports": ["qingxi:machinery"], "exports": ["bailuzhou:shipping_goods"] },
-      "sandPenetrationBase": 0.35,
-      "politicalLean": "market",
-      "unlockRegion": 2,
-      "npcPool": ["chenhenian"]
+    {
+      "key": "yundu",
+      "value": {
+        "name": "云渡港",
+        "type": "port",
+        "population": 25000,
+        "populationGrowth": 0.0006,
+        "coordinates": {
+          "x": 460,
+          "y": 420
+        },
+        "industries": [
+          "shipping",
+          "trade"
+        ],
+        "dependencies": {
+          "imports": [
+            "qingxi:machinery"
+          ],
+          "exports": [
+            "bailuzhou:shipping_goods"
+          ]
+        },
+        "sandPenetrationBase": 0.35,
+        "politicalLean": "market",
+        "unlockRegion": 2,
+        "npcPool": [
+          "chenhenian"
+        ]
+      }
     },
-    "bailuzhou": {
-      "name": "白鹭洲",
-      "type": "administrative",
-      "population": 50000,
-      "populationGrowth": 0.0004,
-      "coordinates": { "x": 580, "y": 260 },
-      "industries": ["finance", "education", "administration"],
-      "dependencies": { "imports": ["yundu:shipping_goods"], "exports": ["fenglin:finance"] },
-      "sandPenetrationBase": 0.40,
-      "politicalLean": "authoritarian",
-      "unlockRegion": 3,
-      "npcPool": ["baiguan"]
+    {
+      "key": "bailuzhou",
+      "value": {
+        "name": "白鹭洲",
+        "type": "administrative",
+        "population": 50000,
+        "populationGrowth": 0.0004,
+        "coordinates": {
+          "x": 580,
+          "y": 260
+        },
+        "industries": [
+          "finance",
+          "education",
+          "administration"
+        ],
+        "dependencies": {
+          "imports": [
+            "yundu:shipping_goods"
+          ],
+          "exports": [
+            "fenglin:finance"
+          ]
+        },
+        "sandPenetrationBase": 0.4,
+        "politicalLean": "authoritarian",
+        "unlockRegion": 3,
+        "npcPool": [
+          "baiguan"
+        ]
+      }
     },
-    "fenglin": {
-      "name": "枫林渡",
-      "type": "industrial",
-      "population": 35000,
-      "populationGrowth": 0.0003,
-      "coordinates": { "x": 620, "y": 180 },
-      "industries": ["heavy_industry", "chemical"],
-      "dependencies": { "imports": ["kuangqu:coal", "bailuzhou:finance"], "exports": ["qingxi:steel", "wanghai:steel"] },
-      "sandPenetrationBase": 0.30,
-      "politicalLean": "welfare",
-      "unlockRegion": 4,
-      "npcPool": ["fenglin_foreman"]
+    {
+      "key": "fenglin",
+      "value": {
+        "name": "枫林渡",
+        "type": "industrial",
+        "population": 35000,
+        "populationGrowth": 0.0003,
+        "coordinates": {
+          "x": 620,
+          "y": 180
+        },
+        "industries": [
+          "heavy_industry",
+          "chemical"
+        ],
+        "dependencies": {
+          "imports": [
+            "kuangqu:coal",
+            "bailuzhou:finance"
+          ],
+          "exports": [
+            "qingxi:steel",
+            "wanghai:steel"
+          ]
+        },
+        "sandPenetrationBase": 0.3,
+        "politicalLean": "welfare",
+        "unlockRegion": 4,
+        "npcPool": [
+          "fenglin_foreman"
+        ]
+      }
     },
-    "wanghai": {
-      "name": "望海港",
-      "type": "port",
-      "population": 40000,
-      "populationGrowth": 0.0005,
-      "coordinates": { "x": 700, "y": 400 },
-      "industries": ["international_trade", "shipping"],
-      "dependencies": { "imports": ["fenglin:steel"], "exports": ["yundu:imported_goods"] },
-      "sandPenetrationBase": 0.50,
-      "politicalLean": "market",
-      "unlockRegion": 5,
-      "npcPool": ["wanghai_merchant"]
+    {
+      "key": "wanghai",
+      "value": {
+        "name": "望海港",
+        "type": "port",
+        "population": 40000,
+        "populationGrowth": 0.0005,
+        "coordinates": {
+          "x": 700,
+          "y": 400
+        },
+        "industries": [
+          "international_trade",
+          "shipping"
+        ],
+        "dependencies": {
+          "imports": [
+            "fenglin:steel"
+          ],
+          "exports": [
+            "yundu:imported_goods"
+          ]
+        },
+        "sandPenetrationBase": 0.5,
+        "politicalLean": "market",
+        "unlockRegion": 5,
+        "npcPool": [
+          "wanghai_merchant"
+        ]
+      }
     }
-  },
+  ],
   "resourceDistribution": {
     "pattern": "concentrated",
-    "criticalNodes": ["kuangqu"],
+    "criticalNodes": [
+      "kuangqu"
+    ],
     "bottleneckRisk": 0.35,
     "governmentInterventionProb": 0.05
   },
@@ -107,76 +241,133 @@
   "politicalFavor": 0.4,
   "stability": 0.55,
   "initialTrends": {
-    "trust": 0.50,
-    "fiscalPressure": 0.40,
-    "sandPenetration": 0.20,
+    "trust": 0.5,
+    "fiscalPressure": 0.4,
+    "sandPenetration": 0.2,
     "politicalPressure": 0.35,
     "infrastructureDecay": 0.25
   },
   "railEdges": [
-    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
-    { "fromCity": "kuangqu", "toCity": "qingxi", "travelTime": 60, "capacity": 25, "trackType": "single" },
-    { "fromCity": "qingxi", "toCity": "yundu", "travelTime": 120, "capacity": 40, "trackType": "single" },
-    { "fromCity": "yundu", "toCity": "bailuzhou", "travelTime": 150, "capacity": 45, "trackType": "single" },
-    { "fromCity": "bailuzhou", "toCity": "fenglin", "travelTime": 100, "capacity": 40, "trackType": "single" },
-    { "fromCity": "bailuzhou", "toCity": "wanghai", "travelTime": 200, "capacity": 50, "trackType": "single" }
+    {
+      "fromCity": "wufeng",
+      "toCity": "kuangqu",
+      "travelTime": 45,
+      "capacity": 30,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "kuangqu",
+      "toCity": "qingxi",
+      "travelTime": 60,
+      "capacity": 25,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "qingxi",
+      "toCity": "yundu",
+      "travelTime": 120,
+      "capacity": 40,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "yundu",
+      "toCity": "bailuzhou",
+      "travelTime": 150,
+      "capacity": 45,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "bailuzhou",
+      "toCity": "fenglin",
+      "travelTime": 100,
+      "capacity": 40,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "bailuzhou",
+      "toCity": "wanghai",
+      "travelTime": 200,
+      "capacity": 50,
+      "trackType": "single"
+    }
   ],
   "globalRules": {
-    "incidentBaseChance": 0.005,
-    "trustNaturalDecay": 0.0002,
-    "fiscalGrowthBase": 0.001,
-    "maxRepairCostMultiplier": 2.0,
-    "subsidyBase": 8000,
+    "incidentBaseChance": 0.006,
+    "trustNaturalDecay": 0.0003,
+    "fiscalGrowthBase": 0.0015,
+    "maxRepairCostMultiplier": 2,
+    "subsidyBase": 7200,
     "fluctuationIntensity": 0.08,
-    "eventSigmoidSteepness": 1.0,
+    "eventSigmoidSteepness": 1,
     "eventMaxMultiplier": 0.5,
-    "baseLearningRate": 1.0,
+    "baseLearningRate": 1,
     "gapBonusMaxRate": 0.5,
     "inertiaCoefficient": 0.15,
     "inertiaClampMin": 0.5,
     "inertiaClampMax": 1.5,
     "parentFeedbackRate": 0.3,
-    "baseFatigueGain": 10.0,
-    "fatigueRestRecovery": 30.0,
-    "fatigueForceRestThreshold": 80.0,
+    "baseFatigueGain": 10,
+    "fatigueRestRecovery": 30,
+    "fatigueForceRestThreshold": 80,
     "baseLoyaltyChange": 0.1,
     "socialComparisonRate": 0.1,
-    "fatigueDangerThreshold": 80.0,
-    "fatigueDangerMultiplier": 2.0,
-    "loyaltyDangerThreshold": 30.0,
+    "fatigueDangerThreshold": 80,
+    "fatigueDangerMultiplier": 2,
+    "loyaltyDangerThreshold": 30,
     "loyaltyDangerMultiplier": 1.5,
-    "skillCeilingThreshold": 80.0,
+    "skillCeilingThreshold": 80,
     "skillCeilingMultiplier": 0.5,
-    "skillNewbieThreshold": 20.0,
+    "skillNewbieThreshold": 20,
     "salaryComparisonThreshold": 1.1,
     "salaryJealousyMagnitude": 0.1,
     "quitProbabilityBase": 0.1,
     "synergyCoefficient": 0.2,
-    "mentorshipApprenticeBonus": 2.0,
+    "mentorshipApprenticeBonus": 2,
     "mentorshipMentorGainRate": 0.1,
-    "mentorshipMentorFatigue": 5.0,
-    "mentorHighLevelThreshold": 4.0,
-    "mentorHighLevelMultiplier": 2.0,
+    "mentorshipMentorFatigue": 5,
+    "mentorHighLevelThreshold": 4,
+    "mentorHighLevelMultiplier": 2,
     "mentorNormalMultiplier": 1.5,
-    "wageNegotiationThreshold": 5.0,
-    "wageNegotiationAcceptBonus": 5.0,
-    "wageNegotiationRefusePenalty": 15.0,
-    "matchCoefficientCore": 1.0,
+    "wageNegotiationThreshold": 5,
+    "wageNegotiationAcceptBonus": 5,
+    "wageNegotiationRefusePenalty": 15,
+    "matchCoefficientCore": 1,
     "matchCoefficientRelated": 0.5,
     "matchCoefficientUnrelated": 0.2,
-    "trainingCost": 200.0,
-    "trainingCooldownDays": 7.0,
+    "trainingCost": 200,
+    "trainingCooldownDays": 7,
     "fluctuationWeightsList": [
-      { "formulaName": "skill_growth", "weights": [1.0, 0.3, 0.1, 0.3] },
-      { "formulaName": "salary", "weights": [1.0, 0.5, 0.3] },
-      { "formulaName": "loyalty", "weights": [1.0, 0.5, 0.3, 0.1] }
+      {
+        "formulaName": "skill_growth",
+        "weights": [
+          1,
+          0.3,
+          0.1,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "salary",
+        "weights": [
+          1,
+          0.5,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "loyalty",
+        "weights": [
+          1,
+          0.5,
+          0.3,
+          0.1
+        ]
+      }
     ]
-  }
-    "incidentBaseChance": 0.006,
-    "trustNaturalDecay": 0.0003,
-    "fiscalGrowthBase": 0.0015,
-    "maxRepairCostMultiplier": 2.0,
-    "subsidyBase": 7200
   },
-  "storyTags": ["crisis", "high_difficulty", "wufeng_main"]
+  "storyTags": [
+    "crisis",
+    "high_difficulty",
+    "wufeng_main"
+  ]
 }

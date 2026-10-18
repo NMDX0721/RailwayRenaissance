@@ -3,72 +3,217 @@
   "name": "废土重生",
   "version": "v3.0",
   "seedCode": "RR-003E7-00BB5",
-  "cities": {
-    "wufeng": { "name": "雾峰村", "type": "agriculture", "population": 8000, "populationGrowth": -0.0001, "coordinates": { "x": 120, "y": 340 }, "industries": ["tea"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["qingxi:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "authoritarian", "unlockRegion": 0, "npcPool": ["laochen"] },
-    "kuangqu": { "name": "乌金岭", "type": "mining", "population": 4000, "populationGrowth": -0.0005, "coordinates": { "x": 200, "y": 380 }, "industries": ["coal"], "dependencies": { "imports": ["qingxi:machinery"], "exports": ["wufeng:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "authoritarian", "unlockRegion": 0, "npcPool": ["zhanggong"] },
-    "qingxi": { "name": "青溪镇", "type": "industrial", "population": 12000, "populationGrowth": 0.0001, "coordinates": { "x": 340, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["kuangqu:coal"], "exports": ["yundu:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "authoritarian", "unlockRegion": 1, "npcPool": ["wangxiaodi"] }
+  "citiesList": [
+    {
+      "key": "wufeng",
+      "value": {
+        "name": "雾峰村",
+        "type": "agriculture",
+        "population": 8000,
+        "populationGrowth": -0.0001,
+        "coordinates": {
+          "x": 120,
+          "y": 340
+        },
+        "industries": [
+          "tea"
+        ],
+        "dependencies": {
+          "imports": [
+            "kuangqu:coal"
+          ],
+          "exports": [
+            "qingxi:tea"
+          ]
+        },
+        "sandPenetrationBase": 0.15,
+        "politicalLean": "authoritarian",
+        "unlockRegion": 0,
+        "npcPool": [
+          "laochen"
+        ]
+      }
+    },
+    {
+      "key": "kuangqu",
+      "value": {
+        "name": "乌金岭",
+        "type": "mining",
+        "population": 4000,
+        "populationGrowth": -0.0005,
+        "coordinates": {
+          "x": 200,
+          "y": 380
+        },
+        "industries": [
+          "coal"
+        ],
+        "dependencies": {
+          "imports": [
+            "qingxi:machinery"
+          ],
+          "exports": [
+            "wufeng:coal"
+          ]
+        },
+        "sandPenetrationBase": 0.2,
+        "politicalLean": "authoritarian",
+        "unlockRegion": 0,
+        "npcPool": [
+          "zhanggong"
+        ]
+      }
+    },
+    {
+      "key": "qingxi",
+      "value": {
+        "name": "青溪镇",
+        "type": "industrial",
+        "population": 12000,
+        "populationGrowth": 0.0001,
+        "coordinates": {
+          "x": 340,
+          "y": 300
+        },
+        "industries": [
+          "manufacturing"
+        ],
+        "dependencies": {
+          "imports": [
+            "kuangqu:coal"
+          ],
+          "exports": [
+            "yundu:machinery"
+          ]
+        },
+        "sandPenetrationBase": 0.25,
+        "politicalLean": "authoritarian",
+        "unlockRegion": 1,
+        "npcPool": [
+          "wangxiaodi"
+        ]
+      }
+    }
+  ],
+  "resourceDistribution": {
+    "pattern": "concentrated",
+    "criticalNodes": [
+      "kuangqu"
+    ],
+    "bottleneckRisk": 0.4,
+    "governmentInterventionProb": 0.1
   },
-  "resourceDistribution": { "pattern": "concentrated", "criticalNodes": ["kuangqu"], "bottleneckRisk": 0.40, "governmentInterventionProb": 0.10 },
   "politicalTendency": "authoritarian",
   "politicalCycleLength": 160,
   "politicalFavor": 0.3,
   "stability": 0.45,
-  "initialTrends": { "trust": 0.30, "fiscalPressure": 0.55, "sandPenetration": 0.30, "politicalPressure": 0.40, "infrastructureDecay": 0.45 },
+  "initialTrends": {
+    "trust": 0.3,
+    "fiscalPressure": 0.55,
+    "sandPenetration": 0.3,
+    "politicalPressure": 0.4,
+    "infrastructureDecay": 0.45
+  },
   "railEdges": [
-    { "fromCity": "wufeng", "toCity": "kuangqu", "travelTime": 45, "capacity": 30, "trackType": "single" },
-    { "fromCity": "wufeng", "toCity": "qingxi", "travelTime": 90, "capacity": 30, "trackType": "single" },
-    { "fromCity": "kuangqu", "toCity": "qingxi", "travelTime": 60, "capacity": 25, "trackType": "single" }
+    {
+      "fromCity": "wufeng",
+      "toCity": "kuangqu",
+      "travelTime": 45,
+      "capacity": 30,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "wufeng",
+      "toCity": "qingxi",
+      "travelTime": 90,
+      "capacity": 30,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "kuangqu",
+      "toCity": "qingxi",
+      "travelTime": 60,
+      "capacity": 25,
+      "trackType": "single"
+    }
   ],
   "globalRules": {
-    "incidentBaseChance": 0.005,
-    "trustNaturalDecay": 0.0002,
-    "fiscalGrowthBase": 0.001,
-    "maxRepairCostMultiplier": 2.0,
-    "subsidyBase": 8000,
+    "incidentBaseChance": 0.008,
+    "trustNaturalDecay": 0.0005,
+    "fiscalGrowthBase": 0.002,
+    "maxRepairCostMultiplier": 2,
+    "subsidyBase": 5600,
     "fluctuationIntensity": 0.08,
-    "eventSigmoidSteepness": 1.0,
+    "eventSigmoidSteepness": 1,
     "eventMaxMultiplier": 0.5,
-    "baseLearningRate": 1.0,
+    "baseLearningRate": 1,
     "gapBonusMaxRate": 0.5,
     "inertiaCoefficient": 0.15,
     "inertiaClampMin": 0.5,
     "inertiaClampMax": 1.5,
     "parentFeedbackRate": 0.3,
-    "baseFatigueGain": 10.0,
-    "fatigueRestRecovery": 30.0,
-    "fatigueForceRestThreshold": 80.0,
+    "baseFatigueGain": 10,
+    "fatigueRestRecovery": 30,
+    "fatigueForceRestThreshold": 80,
     "baseLoyaltyChange": 0.1,
     "socialComparisonRate": 0.1,
-    "fatigueDangerThreshold": 80.0,
-    "fatigueDangerMultiplier": 2.0,
-    "loyaltyDangerThreshold": 30.0,
+    "fatigueDangerThreshold": 80,
+    "fatigueDangerMultiplier": 2,
+    "loyaltyDangerThreshold": 30,
     "loyaltyDangerMultiplier": 1.5,
-    "skillCeilingThreshold": 80.0,
+    "skillCeilingThreshold": 80,
     "skillCeilingMultiplier": 0.5,
-    "skillNewbieThreshold": 20.0,
+    "skillNewbieThreshold": 20,
     "salaryComparisonThreshold": 1.1,
     "salaryJealousyMagnitude": 0.1,
     "quitProbabilityBase": 0.1,
     "synergyCoefficient": 0.2,
-    "mentorshipApprenticeBonus": 2.0,
+    "mentorshipApprenticeBonus": 2,
     "mentorshipMentorGainRate": 0.1,
-    "mentorshipMentorFatigue": 5.0,
-    "mentorHighLevelThreshold": 4.0,
-    "mentorHighLevelMultiplier": 2.0,
+    "mentorshipMentorFatigue": 5,
+    "mentorHighLevelThreshold": 4,
+    "mentorHighLevelMultiplier": 2,
     "mentorNormalMultiplier": 1.5,
-    "wageNegotiationThreshold": 5.0,
-    "wageNegotiationAcceptBonus": 5.0,
-    "wageNegotiationRefusePenalty": 15.0,
-    "matchCoefficientCore": 1.0,
+    "wageNegotiationThreshold": 5,
+    "wageNegotiationAcceptBonus": 5,
+    "wageNegotiationRefusePenalty": 15,
+    "matchCoefficientCore": 1,
     "matchCoefficientRelated": 0.5,
     "matchCoefficientUnrelated": 0.2,
-    "trainingCost": 200.0,
-    "trainingCooldownDays": 7.0,
+    "trainingCost": 200,
+    "trainingCooldownDays": 7,
     "fluctuationWeightsList": [
-      { "formulaName": "skill_growth", "weights": [1.0, 0.3, 0.1, 0.3] },
-      { "formulaName": "salary", "weights": [1.0, 0.5, 0.3] },
-      { "formulaName": "loyalty", "weights": [1.0, 0.5, 0.3, 0.1] }
+      {
+        "formulaName": "skill_growth",
+        "weights": [
+          1,
+          0.3,
+          0.1,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "salary",
+        "weights": [
+          1,
+          0.5,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "loyalty",
+        "weights": [
+          1,
+          0.5,
+          0.3,
+          0.1
+        ]
+      }
     ]
-  } "incidentBaseChance": 0.008, "trustNaturalDecay": 0.0005, "fiscalGrowthBase": 0.002, "maxRepairCostMultiplier": 2.0, "subsidyBase": 5600 },
-  "storyTags": ["wasteland", "hardcore", "wufeng_main"]
+  },
+  "storyTags": [
+    "wasteland",
+    "hardcore",
+    "wufeng_main"
+  ]
 }

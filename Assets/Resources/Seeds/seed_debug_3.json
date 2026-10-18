@@ -3,75 +3,270 @@
   "name": "调试-全分散",
   "version": "v3.0",
   "seedCode": "RR-FFFCB-FFF61",
-  "cities": {
-    "a": { "name": "甲城", "type": "agriculture", "population": 8000, "populationGrowth": 0.0, "coordinates": { "x": 100, "y": 100 }, "industries": ["tea"], "dependencies": { "imports": ["a:self"], "exports": ["b:tea"] }, "sandPenetrationBase": 0.15, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
-    "b": { "name": "乙城", "type": "mining", "population": 4000, "populationGrowth": 0.0, "coordinates": { "x": 200, "y": 200 }, "industries": ["coal"], "dependencies": { "imports": ["b:self"], "exports": ["c:coal"] }, "sandPenetrationBase": 0.20, "politicalLean": "neutral", "unlockRegion": 0, "npcPool": [] },
-    "c": { "name": "丙城", "type": "industrial", "population": 12000, "populationGrowth": 0.0, "coordinates": { "x": 300, "y": 300 }, "industries": ["manufacturing"], "dependencies": { "imports": ["c:self"], "exports": ["d:machinery"] }, "sandPenetrationBase": 0.25, "politicalLean": "neutral", "unlockRegion": 1, "npcPool": [] },
-    "d": { "name": "丁城", "type": "port", "population": 25000, "populationGrowth": 0.0, "coordinates": { "x": 400, "y": 400 }, "industries": ["shipping"], "dependencies": { "imports": ["d:self"], "exports": ["a:goods"] }, "sandPenetrationBase": 0.35, "politicalLean": "neutral", "unlockRegion": 2, "npcPool": [] },
-    "e": { "name": "戊城", "type": "administrative", "population": 30000, "populationGrowth": 0.0, "coordinates": { "x": 500, "y": 500 }, "industries": ["administration"], "dependencies": { "imports": ["e:self"], "exports": ["b:policy"] }, "sandPenetrationBase": 0.40, "politicalLean": "neutral", "unlockRegion": 3, "npcPool": [] }
+  "citiesList": [
+    {
+      "key": "a",
+      "value": {
+        "name": "甲城",
+        "type": "agriculture",
+        "population": 8000,
+        "populationGrowth": 0,
+        "coordinates": {
+          "x": 100,
+          "y": 100
+        },
+        "industries": [
+          "tea"
+        ],
+        "dependencies": {
+          "imports": [
+            "a:self"
+          ],
+          "exports": [
+            "b:tea"
+          ]
+        },
+        "sandPenetrationBase": 0.15,
+        "politicalLean": "neutral",
+        "unlockRegion": 0,
+        "npcPool": []
+      }
+    },
+    {
+      "key": "b",
+      "value": {
+        "name": "乙城",
+        "type": "mining",
+        "population": 4000,
+        "populationGrowth": 0,
+        "coordinates": {
+          "x": 200,
+          "y": 200
+        },
+        "industries": [
+          "coal"
+        ],
+        "dependencies": {
+          "imports": [
+            "b:self"
+          ],
+          "exports": [
+            "c:coal"
+          ]
+        },
+        "sandPenetrationBase": 0.2,
+        "politicalLean": "neutral",
+        "unlockRegion": 0,
+        "npcPool": []
+      }
+    },
+    {
+      "key": "c",
+      "value": {
+        "name": "丙城",
+        "type": "industrial",
+        "population": 12000,
+        "populationGrowth": 0,
+        "coordinates": {
+          "x": 300,
+          "y": 300
+        },
+        "industries": [
+          "manufacturing"
+        ],
+        "dependencies": {
+          "imports": [
+            "c:self"
+          ],
+          "exports": [
+            "d:machinery"
+          ]
+        },
+        "sandPenetrationBase": 0.25,
+        "politicalLean": "neutral",
+        "unlockRegion": 1,
+        "npcPool": []
+      }
+    },
+    {
+      "key": "d",
+      "value": {
+        "name": "丁城",
+        "type": "port",
+        "population": 25000,
+        "populationGrowth": 0,
+        "coordinates": {
+          "x": 400,
+          "y": 400
+        },
+        "industries": [
+          "shipping"
+        ],
+        "dependencies": {
+          "imports": [
+            "d:self"
+          ],
+          "exports": [
+            "a:goods"
+          ]
+        },
+        "sandPenetrationBase": 0.35,
+        "politicalLean": "neutral",
+        "unlockRegion": 2,
+        "npcPool": []
+      }
+    },
+    {
+      "key": "e",
+      "value": {
+        "name": "戊城",
+        "type": "administrative",
+        "population": 30000,
+        "populationGrowth": 0,
+        "coordinates": {
+          "x": 500,
+          "y": 500
+        },
+        "industries": [
+          "administration"
+        ],
+        "dependencies": {
+          "imports": [
+            "e:self"
+          ],
+          "exports": [
+            "b:policy"
+          ]
+        },
+        "sandPenetrationBase": 0.4,
+        "politicalLean": "neutral",
+        "unlockRegion": 3,
+        "npcPool": []
+      }
+    }
+  ],
+  "resourceDistribution": {
+    "pattern": "dispersed",
+    "criticalNodes": [],
+    "bottleneckRisk": 0.05,
+    "governmentInterventionProb": 0
   },
-  "resourceDistribution": { "pattern": "dispersed", "criticalNodes": [], "bottleneckRisk": 0.05, "governmentInterventionProb": 0.0 },
   "politicalTendency": "market",
   "politicalCycleLength": 180,
   "politicalFavor": 0.5,
   "stability": 0.6,
-  "initialTrends": { "trust": 0.62, "fiscalPressure": 0.30, "sandPenetration": 0.15, "politicalPressure": 0.20, "infrastructureDecay": 0.30 },
+  "initialTrends": {
+    "trust": 0.62,
+    "fiscalPressure": 0.3,
+    "sandPenetration": 0.15,
+    "politicalPressure": 0.2,
+    "infrastructureDecay": 0.3
+  },
   "railEdges": [
-    { "fromCity": "a", "toCity": "b", "travelTime": 45, "capacity": 30, "trackType": "single" },
-    { "fromCity": "b", "toCity": "c", "travelTime": 60, "capacity": 25, "trackType": "single" },
-    { "fromCity": "c", "toCity": "d", "travelTime": 75, "capacity": 30, "trackType": "single" },
-    { "fromCity": "d", "toCity": "e", "travelTime": 90, "capacity": 35, "trackType": "single" }
+    {
+      "fromCity": "a",
+      "toCity": "b",
+      "travelTime": 45,
+      "capacity": 30,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "b",
+      "toCity": "c",
+      "travelTime": 60,
+      "capacity": 25,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "c",
+      "toCity": "d",
+      "travelTime": 75,
+      "capacity": 30,
+      "trackType": "single"
+    },
+    {
+      "fromCity": "d",
+      "toCity": "e",
+      "travelTime": 90,
+      "capacity": 35,
+      "trackType": "single"
+    }
   ],
   "globalRules": {
     "incidentBaseChance": 0.005,
     "trustNaturalDecay": 0.0002,
     "fiscalGrowthBase": 0.001,
-    "maxRepairCostMultiplier": 2.0,
+    "maxRepairCostMultiplier": 2,
     "subsidyBase": 8000,
     "fluctuationIntensity": 0.08,
-    "eventSigmoidSteepness": 1.0,
+    "eventSigmoidSteepness": 1,
     "eventMaxMultiplier": 0.5,
-    "baseLearningRate": 1.0,
+    "baseLearningRate": 1,
     "gapBonusMaxRate": 0.5,
     "inertiaCoefficient": 0.15,
     "inertiaClampMin": 0.5,
     "inertiaClampMax": 1.5,
     "parentFeedbackRate": 0.3,
-    "baseFatigueGain": 10.0,
-    "fatigueRestRecovery": 30.0,
-    "fatigueForceRestThreshold": 80.0,
+    "baseFatigueGain": 10,
+    "fatigueRestRecovery": 30,
+    "fatigueForceRestThreshold": 80,
     "baseLoyaltyChange": 0.1,
     "socialComparisonRate": 0.1,
-    "fatigueDangerThreshold": 80.0,
-    "fatigueDangerMultiplier": 2.0,
-    "loyaltyDangerThreshold": 30.0,
+    "fatigueDangerThreshold": 80,
+    "fatigueDangerMultiplier": 2,
+    "loyaltyDangerThreshold": 30,
     "loyaltyDangerMultiplier": 1.5,
-    "skillCeilingThreshold": 80.0,
+    "skillCeilingThreshold": 80,
     "skillCeilingMultiplier": 0.5,
-    "skillNewbieThreshold": 20.0,
+    "skillNewbieThreshold": 20,
     "salaryComparisonThreshold": 1.1,
     "salaryJealousyMagnitude": 0.1,
     "quitProbabilityBase": 0.1,
     "synergyCoefficient": 0.2,
-    "mentorshipApprenticeBonus": 2.0,
+    "mentorshipApprenticeBonus": 2,
     "mentorshipMentorGainRate": 0.1,
-    "mentorshipMentorFatigue": 5.0,
-    "mentorHighLevelThreshold": 4.0,
-    "mentorHighLevelMultiplier": 2.0,
+    "mentorshipMentorFatigue": 5,
+    "mentorHighLevelThreshold": 4,
+    "mentorHighLevelMultiplier": 2,
     "mentorNormalMultiplier": 1.5,
-    "wageNegotiationThreshold": 5.0,
-    "wageNegotiationAcceptBonus": 5.0,
-    "wageNegotiationRefusePenalty": 15.0,
-    "matchCoefficientCore": 1.0,
+    "wageNegotiationThreshold": 5,
+    "wageNegotiationAcceptBonus": 5,
+    "wageNegotiationRefusePenalty": 15,
+    "matchCoefficientCore": 1,
     "matchCoefficientRelated": 0.5,
     "matchCoefficientUnrelated": 0.2,
-    "trainingCost": 200.0,
-    "trainingCooldownDays": 7.0,
+    "trainingCost": 200,
+    "trainingCooldownDays": 7,
     "fluctuationWeightsList": [
-      { "formulaName": "skill_growth", "weights": [1.0, 0.3, 0.1, 0.3] },
-      { "formulaName": "salary", "weights": [1.0, 0.5, 0.3] },
-      { "formulaName": "loyalty", "weights": [1.0, 0.5, 0.3, 0.1] }
+      {
+        "formulaName": "skill_growth",
+        "weights": [
+          1,
+          0.3,
+          0.1,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "salary",
+        "weights": [
+          1,
+          0.5,
+          0.3
+        ]
+      },
+      {
+        "formulaName": "loyalty",
+        "weights": [
+          1,
+          0.5,
+          0.3,
+          0.1
+        ]
+      }
     ]
-  } "incidentBaseChance": 0.005, "trustNaturalDecay": 0.0002, "fiscalGrowthBase": 0.001, "maxRepairCostMultiplier": 2.0, "subsidyBase": 8000 },
-  "storyTags": ["debug"]
+  },
+  "storyTags": [
+    "debug"
+  ]
 }

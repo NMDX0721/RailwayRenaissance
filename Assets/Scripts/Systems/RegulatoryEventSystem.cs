@@ -25,6 +25,7 @@ namespace RailwayRenaissance.Systems
             public int daysRemaining;      // 距离下一步天数
             public int targetTier;         // 目标档位
             public string docNumber;       // 文号
+            public bool violationTriggered; // [T312 §1] 整改期内是否触发上行监管事件（违章/险情/舆情/挂牌）
         }
 
         [Serializable]
@@ -36,6 +37,7 @@ namespace RailwayRenaissance.Systems
             public int sandStage;
             public int daysInExtremePressure;
             public int daysSinceLastInspection;
+            public int delistCooldownDays; // [T312 §1] 销号闭环失败/整改维持冷却期
             public List<ActiveProcedure> activeChains = new List<ActiveProcedure>();
         }
 
@@ -44,11 +46,14 @@ namespace RailwayRenaissance.Systems
         private static int daysInExtremePressure = 0;
         private static int daysSinceLastInspection = 0;
         private static int sandStage = 0; // 0:正常, 1:预警通报已发, 2:交割中, 3:已交割控制
+        private static int delistCooldownDays = 0; // [T312 §1] 销号冷却天数
 
         // 现实文号序列号计数器
         private static int checkDocSeq = 11;
         private static int courtDocSeq = 4;
         private static int safetyNoticeSeq = 7;
+
+        public static int DelistCooldownDays => delistCooldownDays;
 
         public static void Initialize()
         {
@@ -56,7 +61,45 @@ namespace RailwayRenaissance.Systems
             daysInExtremePressure = 0;
             daysSinceLastInspection = 0;
             sandStage = 0;
+            delistCooldownDays = 0;
             LoadState();
+        }
+
+        public static void ResetState()
+        {
+            activeChains.Clear();
+            daysInExtremePressure = 0;
+            daysSinceLastInspection = 0;
+            sandStage = 0;
+            delistCooldownDays = 0;
+            PlayerPrefs.DeleteKey("GameData_RegulatoryState");
+            PlayerPrefs.DeleteKey("GameData_PoliticalTier");
+            PlayerPrefs.DeleteKey("GameData_DecayGrade");
+        }
+
+        private static void StartProcedure(ActiveProcedure proc)
+        {
+            activeChains.Add(proc);
+            if (proc.chainType == "A_Check" || proc.chainType == "B_Media" || proc.chainType == "C_Accident" || proc.chainType == "D_Blacklist" || proc.chainType == "G_Crisis")
+            {
+                var delist = activeChains.Find(c => c.chainType == "E_Delist");
+                if (delist != null)
+                {
+                    delist.violationTriggered = true;
+                }
+            }
+        }
+
+        public static void TriggerAccidentProcedure(string details, List<string> notices)
+        {
+            StartProcedure(new ActiveProcedure
+            {
+                chainType = "C_Accident",
+                startDay = GameData.Day,
+                currentStep = 1,
+                daysRemaining = 3
+            });
+            notices.Add($"市交通运输局运行安全警示通报：发生线路运行异常险情（{details}），启动安全生产事故调查与整改督办。");
         }
 
         // ================= 每日结算流水驱动 =================
@@ -66,6 +109,9 @@ namespace RailwayRenaissance.Systems
         /// </summary>
         public static void AdvanceDay(List<string> notices)
         {
+            if (delistCooldownDays > 0)
+                delistCooldownDays--;
+
             float p = GameData.PoliticalPressure;
             int currentTier = GameData.PoliticalTier;
 
@@ -203,11 +249,21 @@ namespace RailwayRenaissance.Systems
             notices.Add("市安全生产委员会〔2076〕第07号：重大事故隐患挂牌督办决定书——鉴于约谈整改期间安全短板未除，即日起实施挂牌督办，减班运行。");
         }
 
-        // --- E 摘牌销号降档链 (滞回机制) ---
+        // --- E 摘牌销号降档链 (滞回与销号闭环机制) ---
         private static void ExecuteDelistChainStep(ActiveProcedure chain, List<string> notices, float p)
         {
             chain.currentStep = 99;
             int cur = GameData.PoliticalTier;
+
+            // [T312 §1] 销号闭环判定：
+            // 1. 硬条件：整改期内未触发任何新上行监管链（A/B/C/D 任一）
+            // 2. 加强条件：整改期内线路评定非“评定失格”（DecayGrade < 3）
+            if (chain.violationTriggered || GameData.DecayGrade >= 3)
+            {
+                delistCooldownDays = 8; // 8 天冷却期后方可重新启动
+                notices.Add("市交通运输局整改销号复查不予通过决定书：整改期内发生安全险情或线路评定失格，隐患整改闭环验收未通过，维持原监管档位。");
+                return;
+            }
 
             // 滞回硬约束：必须温度计回落且整改验收合格
             if (cur == 3 && p <= 0.75f) // Ⅳ -> Ⅲ (0.85 - 0.10)
@@ -227,6 +283,7 @@ namespace RailwayRenaissance.Systems
             }
             else
             {
+                delistCooldownDays = 8;
                 notices.Add("市交通运输局整改复查通告：现场复查发现整改不彻底，风险裕度不足，维持当前监管档位继续整改。");
             }
         }
@@ -291,7 +348,7 @@ namespace RailwayRenaissance.Systems
             {
                 // 启动检查链
                 checkDocSeq++;
-                activeChains.Add(new ActiveProcedure
+                StartProcedure(new ActiveProcedure
                 {
                     chainType = "A_Check",
                     startDay = GameData.Day,
@@ -304,7 +361,7 @@ namespace RailwayRenaissance.Systems
             else if (tier == 1 && p >= 0.70f && !HasActiveChain("A_Check") && !HasActiveChain("B_Media"))
             {
                 // 启动约谈推进链（通过舆情或专项督查）
-                activeChains.Add(new ActiveProcedure
+                StartProcedure(new ActiveProcedure
                 {
                     chainType = "B_Media",
                     startDay = GameData.Day,
@@ -316,7 +373,7 @@ namespace RailwayRenaissance.Systems
             else if (tier == 2 && p >= 0.85f && !HasActiveChain("D_Blacklist"))
             {
                 // 启动挂牌督办链
-                activeChains.Add(new ActiveProcedure
+                StartProcedure(new ActiveProcedure
                 {
                     chainType = "D_Blacklist",
                     startDay = GameData.Day,
@@ -327,8 +384,8 @@ namespace RailwayRenaissance.Systems
                 notices.Add($"市安全生产委员会〔2076〕第0{safetyNoticeSeq}号预警通报：雾峰村车站隐患整治进展迟缓，纳入挂牌督办拟定名单。");
             }
 
-            // 2. 下行缓和（摘牌销号）事件检测（严格滞回）
-            if (tier > 0 && !HasActiveChain("E_Delist"))
+            // 2. 下行缓和（摘牌销号）事件检测（严格滞回与冷却期约束）
+            if (tier > 0 && !HasActiveChain("E_Delist") && delistCooldownDays <= 0)
             {
                 bool canDelist = false;
                 if (tier == 3 && p <= 0.75f) canDelist = true;
@@ -337,7 +394,7 @@ namespace RailwayRenaissance.Systems
 
                 if (canDelist)
                 {
-                    activeChains.Add(new ActiveProcedure
+                    StartProcedure(new ActiveProcedure
                     {
                         chainType = "E_Delist",
                         startDay = GameData.Day,
@@ -358,7 +415,7 @@ namespace RailwayRenaissance.Systems
             else if (sandStage == 1 && sand >= 0.55f && !HasActiveChain("Sand_M&A"))
             {
                 sandStage = 2;
-                activeChains.Add(new ActiveProcedure
+                StartProcedure(new ActiveProcedure
                 {
                     chainType = "Sand_M&A",
                     startDay = GameData.Day,
@@ -381,7 +438,7 @@ namespace RailwayRenaissance.Systems
                 }
                 else if (daysInExtremePressure >= 7 && GameData.PoliticalTier < 4 && !HasActiveChain("G_Crisis"))
                 {
-                    activeChains.Add(new ActiveProcedure
+                    StartProcedure(new ActiveProcedure
                     {
                         chainType = "G_Crisis",
                         startDay = GameData.Day,
@@ -411,7 +468,7 @@ namespace RailwayRenaissance.Systems
                 return;
             }
 
-            activeChains.Add(new ActiveProcedure
+            StartProcedure(new ActiveProcedure
             {
                 chainType = "Bankruptcy",
                 startDay = GameData.Day,
@@ -488,6 +545,7 @@ namespace RailwayRenaissance.Systems
                     sandStage = sandStage,
                     daysInExtremePressure = daysInExtremePressure,
                     daysSinceLastInspection = daysSinceLastInspection,
+                    delistCooldownDays = delistCooldownDays,
                     activeChains = new List<ActiveProcedure>(activeChains)
                 };
                 string json = JsonUtility.ToJson(container);
@@ -518,6 +576,7 @@ namespace RailwayRenaissance.Systems
                         sandStage = container.sandStage;
                         daysInExtremePressure = container.daysInExtremePressure;
                         daysSinceLastInspection = container.daysSinceLastInspection;
+                        delistCooldownDays = container.delistCooldownDays;
                         activeChains = container.activeChains ?? new List<ActiveProcedure>();
                         return;
                     }
