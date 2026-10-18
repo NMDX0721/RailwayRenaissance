@@ -42,10 +42,22 @@ public class LoginManager : MonoBehaviour
     private Sprite dialogBgSprite;
     private Sprite confirmBtnSprite;
     private Sprite cancelBtnSprite;
-    public static Texture2D cursorTexture;
+    public static Texture2D cursorTexture
+    {
+        get => RailwayRenaissance.Core.GameCursorManager.cursorTexture;
+        set => RailwayRenaissance.Core.GameCursorManager.cursorTexture = value;
+    }
     private AudioSource sfxSource;
-    private static AudioClip clickClip;
-    public static bool sfxEnabled = true;
+    private static AudioClip clickClip
+    {
+        get => RailwayRenaissance.Core.GameCursorManager.clickClip;
+        set => RailwayRenaissance.Core.GameCursorManager.clickClip = value;
+    }
+    public static bool sfxEnabled
+    {
+        get => RailwayRenaissance.Core.GameCursorManager.sfxEnabled;
+        set => RailwayRenaissance.Core.GameCursorManager.sfxEnabled = value;
+    }
 
     private InputField regUsernameInput;
     private InputField regPasswordInput;
@@ -62,7 +74,7 @@ public class LoginManager : MonoBehaviour
     private bool isPasswordVisible = false;
     private bool isRegPasswordVisible = false;
     private bool isConfirmPasswordVisible = false;
-    public const string GAME_VERSION = "Beta v0.9.0";
+    public const string GAME_VERSION = RailwayRenaissance.Core.GameVersion.Current;
     public static bool showAutoLoginOnStart = true;
     public static bool showRegisterOnStart = false;
 
@@ -117,39 +129,17 @@ public class LoginManager : MonoBehaviour
 
     void SetupGameCursor()
     {
-        if (cursorTexture == null) cursorTexture = LoadCursorTexture("Cursors/cursor_arrow", 3);
-        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
+        RailwayRenaissance.Core.GameCursorManager.SetDefaultCursor();
     }
 
     public static Texture2D GetArrowTexture()
     {
-        if (cursorTexture == null) cursorTexture = LoadCursorTexture("Cursors/cursor_arrow", 3);
-        return cursorTexture;
+        return RailwayRenaissance.Core.GameCursorManager.GetArrowTexture();
     }
 
     public static Texture2D LoadCursorTexture(string resourcePath, int scale)
     {
-        Texture2D src = Resources.Load<Texture2D>(resourcePath);
-        if (src == null) return Texture2D.whiteTexture;
-
-        if (scale <= 1) return src;
-
-        int ow = src.width, oh = src.height;
-        int nw = ow * scale, nh = oh * scale;
-        Color[] srcPx = src.GetPixels();
-        Color[] dstPx = new Color[nw * nh];
-        for (int y = 0; y < nh; y++)
-        {
-            for (int x = 0; x < nw; x++)
-            {
-                dstPx[y * nw + x] = srcPx[(y / scale) * ow + (x / scale)];
-            }
-        }
-        Texture2D tex = new Texture2D(nw, nh, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        tex.SetPixels(dstPx);
-        tex.Apply();
-        return tex;
+        return RailwayRenaissance.Core.GameCursorManager.LoadCursorTexture(resourcePath, scale);
     }
 
     void LoadSprites()
@@ -795,10 +785,7 @@ public class LoginManager : MonoBehaviour
 
     public static void PlayClickSound()
     {
-        if (!sfxEnabled || clickClip == null) return;
-        var sfx = FindAnyObjectByType<LoginManager>();
-        if (sfx != null && sfx.sfxSource != null)
-            sfx.sfxSource.PlayOneShot(clickClip, 0.8f);
+        RailwayRenaissance.Core.GameCursorManager.PlayClickSound();
     }
 
     void LoadBackground()
@@ -2259,12 +2246,10 @@ public class LoginManager : MonoBehaviour
         });
     }
 
+    // 向后兼容别名：核心数据模型已解耦至 RailwayRenaissance.Core.Auth.AuthData
     [System.Serializable]
-    public class AuthData
+    public class AuthData : RailwayRenaissance.Core.Auth.AuthData
     {
-        public string username;
-        public string password;
-        public string lastLogin;
     }
 }
 
