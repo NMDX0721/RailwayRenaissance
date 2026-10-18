@@ -39,6 +39,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             public Button sleepTimerBtn;
             public Button radioFilterBtn;
             public Button lyricsToggleBtn;
+            public Button immersiveBtn;
             public VisualElement vuNeedle;
             public Button volBtn;
             public Slider volSlider;
@@ -70,7 +71,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Action onVolMuteToggle,
             Action onLyricsToggle,
             Action onCycleSleepTimer = null,
-            Action onCycleRadioFilter = null)
+            Action onCycleRadioFilter = null,
+            Action onToggleImmersive = null)
         {
             var h = new PlayerBarHandle();
 
@@ -476,6 +478,33 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicIconHelper.SetHandCursor(archiveBtn);
             rightGroup.Add(archiveBtn);
             h.lyricsToggleBtn = archiveBtn;
+
+            // 3.5 Folia 全屏沉浸视听巨幕模式切换
+            var immBtn = new Button(() => onToggleImmersive?.Invoke());
+            immBtn.text = "⛶ 沉浸";
+            immBtn.style.height = 22;
+            immBtn.style.paddingLeft = 7;
+            immBtn.style.paddingRight = 7;
+            immBtn.style.fontSize = 9.5f;
+            immBtn.style.unityFontDefinition = Fd();
+            immBtn.style.backgroundColor = new Color(0.20f, 0.17f, 0.14f, 1f);
+            immBtn.style.color = BrassGold;
+            immBtn.style.borderTopLeftRadius = 11;
+            immBtn.style.borderTopRightRadius = 11;
+            immBtn.style.borderBottomLeftRadius = 11;
+            immBtn.style.borderBottomRightRadius = 11;
+            immBtn.style.borderTopWidth = 1;
+            immBtn.style.borderBottomWidth = 1;
+            immBtn.style.borderLeftWidth = 1;
+            immBtn.style.borderRightWidth = 1;
+            immBtn.style.borderTopColor = new Color(0.40f, 0.33f, 0.22f, 0.7f);
+            immBtn.style.borderBottomColor = immBtn.style.borderTopColor;
+            immBtn.style.borderLeftColor = immBtn.style.borderTopColor;
+            immBtn.style.borderRightColor = immBtn.style.borderTopColor;
+            immBtn.style.marginRight = 8;
+            MusicIconHelper.SetHandCursor(immBtn);
+            rightGroup.Add(immBtn);
+            h.immersiveBtn = immBtn;
 
             // 4. 喇叭图标（纯代码矢量图元，朝右展开小喇叭）
             var volBtn = new Button(() => onVolMuteToggle?.Invoke());

@@ -15,7 +15,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             Clean = 0,      // 纯净现代高保真
             Locomotive = 1, // 工务机车电台 (轻度磁带抖晃 + 沿线沙风微粒)
-            Pioneer = 2     // 先民真空电台 (经典电子管微晃 + 暖调老收音机)
+            Pioneer = 2,    // 先民真空电台 (经典电子管微晃 + 暖调老收音机)
+            VintageTubeFM = 3 // 电子管调频立体声
         }
 
         public enum SleepTimerOption
@@ -241,6 +242,37 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             int m = (int)(RemainingSleepSeconds / 60f);
             int s = (int)(RemainingSleepSeconds % 60f);
             return $"{m:D2}:{s:D2}";
+        }
+
+        public static bool IsPlaying()
+        {
+            var a = GetActiveDeck();
+            var b = GetStandbyDeck();
+            return (a != null && a.isPlaying) || (b != null && b.isPlaying);
+        }
+
+        public static void Pause()
+        {
+            if (s_deckA != null && s_deckA.isPlaying) s_deckA.Pause();
+            if (s_deckB != null && s_deckB.isPlaying) s_deckB.Pause();
+        }
+
+        public static void UnPause()
+        {
+            var active = GetActiveDeck();
+            if (active != null) active.UnPause();
+            if (s_isCrossfading)
+            {
+                var standby = GetStandbyDeck();
+                if (standby != null) standby.UnPause();
+            }
+        }
+
+        public static void Stop()
+        {
+            s_isCrossfading = false;
+            if (s_deckA != null) { s_deckA.Stop(); s_deckA.clip = null; }
+            if (s_deckB != null) { s_deckB.Stop(); s_deckB.clip = null; }
         }
     }
 }

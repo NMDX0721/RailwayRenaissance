@@ -520,11 +520,19 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.45f);
         desktop.Add(statusBar);
 
+        var leftGroup = new VisualElement();
+        leftGroup.style.flexDirection = FlexDirection.Row;
+        leftGroup.style.alignItems = Align.Center;
+        statusBar.Add(leftGroup);
+
         statusClock = new Label(System.DateTime.Now.ToString("HH:mm"));
         statusClock.style.fontSize = 17;
         statusClock.style.color = GlassText;
         statusClock.style.unityFontDefinition = Fd();
-        statusBar.Add(statusClock);
+        leftGroup.Add(statusClock);
+
+        // Folia 风格全局随身听 Mini 胶囊（紧随时间右侧，未播放时自动隐藏）
+        BuildHudMusicCapsule(leftGroup);
 
         var rightInfo = new VisualElement();
         rightInfo.style.flexDirection = FlexDirection.Row;
@@ -1646,24 +1654,24 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null)
     {
         appLayer.Clear();
-        // 全屏视窗（覆盖整个视口，HyperOS 真实安卓平板应用容器：白底/极浅灰）
+        // 全屏视窗（Folia / 现代工业暗黑沉浸视听容器：深墨黑、去白色“狗皮膏药”）
         var win = new VisualElement { name = "app-fullscreen-window" };
         win.style.position = Position.Absolute;
         win.style.top = 0; win.style.left = 0; win.style.right = 0; win.style.bottom = 0;
-        win.style.backgroundColor = SurfaceApp;
+        win.style.backgroundColor = new Color(0.08f, 0.09f, 0.11f, 1f);
         win.style.flexDirection = FlexDirection.Column;
         appLayer.Add(win);
 
-        // 系统级平板顶栏（高度 48px，纯白底 + 1px 细边线）
+        // 系统级顶栏（高度 44px，深邃毛玻璃底 + 细黄铜拉丝底边）
         var topBar = new VisualElement();
-        topBar.style.height = 48;
+        topBar.style.height = 44;
         topBar.style.flexDirection = FlexDirection.Row;
         topBar.style.justifyContent = Justify.SpaceBetween;
         topBar.style.alignItems = Align.Center;
-        topBar.style.paddingLeft = 20; topBar.style.paddingRight = 20;
-        topBar.style.backgroundColor = SurfaceTopBar;
+        topBar.style.paddingLeft = 18; topBar.style.paddingRight = 18;
+        topBar.style.backgroundColor = new Color(0.07f, 0.08f, 0.10f, 0.96f);
         topBar.style.borderBottomWidth = 1;
-        topBar.style.borderBottomColor = BorderDivider;
+        topBar.style.borderBottomColor = new Color(0.24f, 0.22f, 0.18f, 0.5f);
         win.Add(topBar);
 
         // 左侧：返回桌面胶囊按钮 + 应用名
@@ -1677,26 +1685,42 @@ public class GameMainUI : MonoBehaviour
             if (onBack != null) onBack();
             else appLayer.style.display = DisplayStyle.None;
         }) { text = "◀  返回桌面" };
-        backBtn.style.height = 32;
+        backBtn.style.height = 30;
         backBtn.style.paddingLeft = 14; backBtn.style.paddingRight = 14;
-        backBtn.style.fontSize = 13;
+        backBtn.style.fontSize = 12;
         backBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         backBtn.style.unityFontDefinition = Fd();
-        backBtn.style.backgroundColor = new Color(0.92f, 0.93f, 0.95f, 1f);
-        backBtn.style.color = InkPrimary;
-        backBtn.style.borderTopLeftRadius = 16; backBtn.style.borderTopRightRadius = 16;
-        backBtn.style.borderBottomLeftRadius = 16; backBtn.style.borderBottomRightRadius = 16;
+        backBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
+        backBtn.style.color = new Color(0.92f, 0.90f, 0.85f, 1f);
+        backBtn.style.borderTopLeftRadius = 15; backBtn.style.borderTopRightRadius = 15;
+        backBtn.style.borderBottomLeftRadius = 15; backBtn.style.borderBottomRightRadius = 15;
         backBtn.style.borderTopWidth = 1; backBtn.style.borderBottomWidth = 1;
         backBtn.style.borderLeftWidth = 1; backBtn.style.borderRightWidth = 1;
-        backBtn.style.borderTopColor = BorderCard; backBtn.style.borderBottomColor = BorderCard;
-        backBtn.style.borderLeftColor = BorderCard; backBtn.style.borderRightColor = BorderCard;
-        backBtn.RegisterCallback<PointerEnterEvent>(_ => backBtn.style.backgroundColor = SurfaceHover);
-        backBtn.RegisterCallback<PointerLeaveEvent>(_ => backBtn.style.backgroundColor = new Color(0.92f, 0.93f, 0.95f, 1f));
+        backBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+        backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
+        backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
+        backBtn.style.borderRightColor = backBtn.style.borderTopColor;
+        backBtn.RegisterCallback<PointerEnterEvent>(_ =>
+        {
+            backBtn.style.backgroundColor = new Color(0.20f, 0.22f, 0.26f, 1f);
+            backBtn.style.borderTopColor = new Color(0.83f, 0.66f, 0.26f, 0.8f);
+            backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
+            backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
+            backBtn.style.borderRightColor = backBtn.style.borderTopColor;
+        });
+        backBtn.RegisterCallback<PointerLeaveEvent>(_ =>
+        {
+            backBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
+            backBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+            backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
+            backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
+            backBtn.style.borderRightColor = backBtn.style.borderTopColor;
+        });
         leftGroup.Add(backBtn);
 
         var titleLabel = new Label(appTitle);
-        titleLabel.style.fontSize = 17;
-        titleLabel.style.color = InkPrimary;
+        titleLabel.style.fontSize = 16;
+        titleLabel.style.color = new Color(0.96f, 0.94f, 0.88f, 1f);
         titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
         titleLabel.style.unityFontDefinition = Fd();
         titleLabel.style.marginLeft = 16;
@@ -1705,8 +1729,8 @@ public class GameMainUI : MonoBehaviour
         if (!string.IsNullOrEmpty(subtitle))
         {
             var subLabel = new Label("· " + subtitle);
-            subLabel.style.fontSize = 13;
-            subLabel.style.color = InkSecondary;
+            subLabel.style.fontSize = 12;
+            subLabel.style.color = new Color(0.83f, 0.66f, 0.26f, 0.85f);
             subLabel.style.unityFontDefinition = Fd();
             subLabel.style.marginLeft = 10;
             leftGroup.Add(subLabel);
@@ -1714,28 +1738,36 @@ public class GameMainUI : MonoBehaviour
 
         // 右侧关闭按钮
         var closeBtn = new Button(() => { appLayer.style.display = DisplayStyle.None; }) { text = "✕" };
-        closeBtn.style.width = 32; closeBtn.style.height = 32;
-        closeBtn.style.fontSize = 15;
+        closeBtn.style.width = 30; closeBtn.style.height = 30;
+        closeBtn.style.fontSize = 14;
         closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         closeBtn.style.unityFontDefinition = Fd();
-        closeBtn.style.backgroundColor = new Color(0.94f, 0.94f, 0.96f, 1f);
-        closeBtn.style.color = InkSecondary;
-        closeBtn.style.borderTopLeftRadius = 16; closeBtn.style.borderTopRightRadius = 16;
-        closeBtn.style.borderBottomLeftRadius = 16; closeBtn.style.borderBottomRightRadius = 16;
+        closeBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
+        closeBtn.style.color = new Color(0.70f, 0.70f, 0.72f, 1f);
+        closeBtn.style.borderTopLeftRadius = 15; closeBtn.style.borderTopRightRadius = 15;
+        closeBtn.style.borderBottomLeftRadius = 15; closeBtn.style.borderBottomRightRadius = 15;
         closeBtn.style.borderTopWidth = 1; closeBtn.style.borderBottomWidth = 1;
         closeBtn.style.borderLeftWidth = 1; closeBtn.style.borderRightWidth = 1;
-        closeBtn.style.borderTopColor = BorderCard; closeBtn.style.borderBottomColor = BorderCard;
-        closeBtn.style.borderLeftColor = BorderCard; closeBtn.style.borderRightColor = BorderCard;
-        closeBtn.RegisterCallback<PointerEnterEvent>(_ => { closeBtn.style.backgroundColor = new Color(0.95f, 0.4f, 0.4f, 0.2f); closeBtn.style.color = new Color(0.85f, 0.2f, 0.2f, 1f); });
-        closeBtn.RegisterCallback<PointerLeaveEvent>(_ => { closeBtn.style.backgroundColor = new Color(0.94f, 0.94f, 0.96f, 1f); closeBtn.style.color = InkSecondary; });
+        closeBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+        closeBtn.style.borderBottomColor = closeBtn.style.borderTopColor;
+        closeBtn.style.borderLeftColor = closeBtn.style.borderTopColor;
+        closeBtn.style.borderRightColor = closeBtn.style.borderTopColor;
+        closeBtn.RegisterCallback<PointerEnterEvent>(_ => {
+            closeBtn.style.backgroundColor = new Color(0.80f, 0.22f, 0.22f, 0.8f);
+            closeBtn.style.color = Color.white;
+        });
+        closeBtn.RegisterCallback<PointerLeaveEvent>(_ => {
+            closeBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
+            closeBtn.style.color = new Color(0.70f, 0.70f, 0.72f, 1f);
+        });
         topBar.Add(closeBtn);
 
         // 主体内容区（供具体 App 渲染）
         var content = new VisualElement { name = "app-content" };
         content.style.flexGrow = 1;
         content.style.flexShrink = 1;
-        content.style.paddingLeft = 24; content.style.paddingRight = 24;
-        content.style.paddingTop = 18; content.style.paddingBottom = 18;
+        content.style.paddingLeft = 20; content.style.paddingRight = 20;
+        content.style.paddingTop = 16; content.style.paddingBottom = 16;
         win.Add(content);
 
         appLayer.style.display = DisplayStyle.Flex;
@@ -1777,6 +1809,24 @@ public class GameMainUI : MonoBehaviour
             return;
         }
 
+        if (name == "音乐")
+        {
+            appLayer.Clear();
+            var musicWin = new VisualElement { name = "app-fullscreen-music" };
+            musicWin.style.position = Position.Absolute;
+            musicWin.style.top = 0; musicWin.style.left = 0; musicWin.style.right = 0; musicWin.style.bottom = 0;
+            musicWin.style.backgroundColor = new Color(0.08f, 0.08f, 0.10f, 1f);
+            musicWin.style.flexDirection = FlexDirection.Column;
+            appLayer.Add(musicWin);
+
+            TabletMusicAppUI.BuildMusicApp(musicWin, ShowBackupToast, () =>
+            {
+                if (appLayer != null) appLayer.style.display = DisplayStyle.None;
+            });
+            appLayer.style.display = DisplayStyle.Flex;
+            return;
+        }
+
         var win = BuildFullScreenAppContainer(name, AppSubtitle(name));
 
         switch (name)
@@ -1787,7 +1837,6 @@ public class GameMainUI : MonoBehaviour
             case "媒姬百科": BuildWikiApp(win); break;
             case "设置": BuildSettingsPage(win); break;
             case "笔记": BuildNotesApp(win); break;
-            case "音乐": BuildMusicApp(win); break;
             case "相册": BuildGalleryApp(win); break;
             case "时钟": BuildClockApp(win); break;
             case "日历": BuildCalendarApp(win); break;
@@ -1915,7 +1964,10 @@ public class GameMainUI : MonoBehaviour
     private void BuildNotesApp(VisualElement win) => TabletNotesAppUI.BuildNotesApp(win, ShowBackupToast);
 
     // ============ App: 音乐（已抽离至 TabletMusicAppUI）============
-    private void BuildMusicApp(VisualElement win) => TabletMusicAppUI.BuildMusicApp(win, ShowBackupToast);
+    private void BuildMusicApp(VisualElement win) => TabletMusicAppUI.BuildMusicApp(win, ShowBackupToast, () =>
+    {
+        if (appLayer != null) appLayer.style.display = DisplayStyle.None;
+    });
     private void PlayNextTabletTrack() => TabletMusicAppUI.PlayNextTabletTrack();
     private void PlayPrevTabletTrack() => TabletMusicAppUI.PlayPrevTabletTrack();
 
@@ -1998,6 +2050,68 @@ public class GameMainUI : MonoBehaviour
 
         // 随身听音乐播放器进度同步（已下沉至 TabletMusicAppUI）
         TabletMusicAppUI.UpdateAudioProgress();
+
+        // 驱动全局常驻随身听 Mini 胶囊旋转与曲名同步
+        if (hudMusicCapsule != null)
+        {
+            hudMusicCapsule.UpdateRotation(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying, Time.unscaledDeltaTime);
+            UpdateHudMusicCapsule();
+        }
+    }
+
+    private RailwayRenaissance.UI.Tablet.Apps.MusicIconHelper.FloatingCapsuleHandle hudMusicCapsule;
+    private string lastHudTrackTitle = "";
+    private bool lastHudIsPlaying = false;
+
+    private void BuildHudMusicCapsule(VisualElement parent)
+    {
+        hudMusicCapsule = RailwayRenaissance.UI.Tablet.Apps.MusicIconHelper.CreateFloatingCapsulePlayer(
+            RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle,
+            RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying,
+            onTogglePlay: () =>
+            {
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ToggleTabletMusicPlayPause();
+                UpdateHudMusicCapsule(force: true);
+            },
+            onNext: () =>
+            {
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.PlayNextTabletTrack();
+                UpdateHudMusicCapsule(force: true);
+            },
+            onOpenFull: () =>
+            {
+                LaunchApp("音乐");
+            });
+
+        hudMusicCapsule.root.style.marginLeft = 14;
+        hudMusicCapsule.root.style.alignSelf = Align.Center;
+        hudMusicCapsule.root.style.display = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying ? DisplayStyle.Flex : DisplayStyle.None;
+        parent.Add(hudMusicCapsule.root);
+    }
+
+    private void UpdateHudMusicCapsule(bool force = false)
+    {
+        if (hudMusicCapsule == null) return;
+        bool isPlaying = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying;
+        hudMusicCapsule.root.style.display = isPlaying ? DisplayStyle.Flex : DisplayStyle.None;
+        if (!isPlaying) return;
+
+        string title = string.IsNullOrEmpty(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle) ? "铁道原声品质" : RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle;
+
+        if (force || isPlaying != lastHudIsPlaying || title != lastHudTrackTitle)
+        {
+            lastHudIsPlaying = isPlaying;
+            lastHudTrackTitle = title;
+
+            if (hudMusicCapsule.trackTitle != null) hudMusicCapsule.trackTitle.text = title;
+            if (hudMusicCapsule.playBtn != null)
+            {
+                hudMusicCapsule.playBtn.Clear();
+                hudMusicCapsule.playBtn.Add(isPlaying 
+                    ? RailwayRenaissance.UI.Tablet.Apps.MusicIconHelper.CreatePauseIcon(2f, 9f, 2.5f, Color.black) 
+                    : RailwayRenaissance.UI.Tablet.Apps.MusicIconHelper.CreatePlayIcon(9f, Color.black));
+            }
+        }
     }
 
     private void ShowSuiyueIdleBubble()

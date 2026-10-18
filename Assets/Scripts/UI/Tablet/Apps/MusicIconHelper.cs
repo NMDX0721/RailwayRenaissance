@@ -731,166 +731,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
 
         /// <summary>
-        /// 纯 VisualElement 几何构建双箭头环形循环回路（列表循环 / 单曲循环带 1）
-        /// 绝对锐利、100% 矢量、零贴图依赖、永不走形！
+        /// <summary>
+        /// 纯矢量双箭头环形循环回路（列表循环 / 单曲循环带 1）
+        /// 采用 48×48 SDF 抗锯齿矢量生成器与双线性过滤，彻底告别粗劣方块与突兀尖角
         /// </summary>
         public static VisualElement CreateLoopRepeatIcon(Color color, bool isSingleRepeat)
         {
-            var box = new VisualElement();
-            box.style.width = 20;
-            box.style.height = 16;
-            box.style.position = Position.Relative;
-            box.style.alignItems = Align.Center;
-            box.style.justifyContent = Justify.Center;
-            box.pickingMode = PickingMode.Ignore;
-
-            // 环形外框：带 3px 圆角的中空回路
-            var loop = new VisualElement();
-            loop.style.width = 15;
-            loop.style.height = 11;
-            loop.style.borderTopWidth = 1.6f;
-            loop.style.borderBottomWidth = 1.6f;
-            loop.style.borderLeftWidth = 1.6f;
-            loop.style.borderRightWidth = 1.6f;
-            loop.style.borderTopLeftRadius = 3f;
-            loop.style.borderTopRightRadius = 3f;
-            loop.style.borderBottomLeftRadius = 3f;
-            loop.style.borderBottomRightRadius = 3f;
-            loop.style.borderTopColor = color;
-            loop.style.borderBottomColor = color;
-            loop.style.borderLeftColor = color;
-            loop.style.borderRightColor = color;
-            loop.style.alignItems = Align.Center;
-            loop.style.justifyContent = Justify.Center;
-            loop.pickingMode = PickingMode.Ignore;
-            box.Add(loop);
-
-            // 右上箭头（朝右）：在右上角叠放一个朝右的实心小三角形
-            var topArr = new VisualElement();
-            topArr.style.position = Position.Absolute;
-            topArr.style.top = 0;
-            topArr.style.right = 0;
-            topArr.style.width = 0;
-            topArr.style.height = 0;
-            topArr.style.borderTopWidth = 2.8f;
-            topArr.style.borderBottomWidth = 2.8f;
-            topArr.style.borderLeftWidth = 4.2f;
-            topArr.style.borderRightWidth = 0;
-            topArr.style.borderTopColor = Color.clear;
-            topArr.style.borderBottomColor = Color.clear;
-            topArr.style.borderLeftColor = color;
-            topArr.style.borderRightColor = Color.clear;
-            topArr.pickingMode = PickingMode.Ignore;
-            box.Add(topArr);
-
-            // 左下箭头（朝左）：在左下角叠放一个朝左的实心小三角形
-            var botArr = new VisualElement();
-            botArr.style.position = Position.Absolute;
-            botArr.style.bottom = 0;
-            botArr.style.left = 0;
-            botArr.style.width = 0;
-            botArr.style.height = 0;
-            botArr.style.borderTopWidth = 2.8f;
-            botArr.style.borderBottomWidth = 2.8f;
-            botArr.style.borderRightWidth = 4.2f;
-            botArr.style.borderLeftWidth = 0;
-            botArr.style.borderTopColor = Color.clear;
-            botArr.style.borderBottomColor = Color.clear;
-            botArr.style.borderRightColor = color;
-            botArr.style.borderLeftColor = Color.clear;
-            botArr.pickingMode = PickingMode.Ignore;
-            box.Add(botArr);
-
-            if (isSingleRepeat)
-            {
-                var lbl = new Label("1");
-                lbl.style.fontSize = 8.5f;
-                lbl.style.unityFontStyleAndWeight = FontStyle.Bold;
-                lbl.style.color = color;
-                lbl.style.unityFontDefinition = Fd();
-                lbl.style.position = Position.Absolute;
-                lbl.style.unityTextAlign = TextAnchor.MiddleCenter;
-                lbl.pickingMode = PickingMode.Ignore;
-                box.Add(lbl);
-            }
-
-            return box;
+            var img = new Image();
+            img.style.width = 20;
+            img.style.height = 20;
+            img.image = GetRepeatTexture(color, isSingleRepeat);
+            img.pickingMode = PickingMode.Ignore;
+            return img;
         }
 
         /// <summary>
-        /// 纯 VisualElement 几何构建交叉双折线双箭头（随机播放 Shuffle）
+        /// 纯矢量交叉双折线双箭头（随机播放 Shuffle）
         /// </summary>
         public static VisualElement CreateCrossShuffleIcon(Color color)
         {
-            var box = new VisualElement();
-            box.style.width = 20;
-            box.style.height = 16;
-            box.style.position = Position.Relative;
-            box.pickingMode = PickingMode.Ignore;
-
-            // 左上引入水平线
-            var inTop = new VisualElement();
-            inTop.style.position = Position.Absolute;
-            inTop.style.left = 1; inTop.style.top = 3.5f;
-            inTop.style.width = 4.5f; inTop.style.height = 1.6f;
-            inTop.style.backgroundColor = color;
-            inTop.pickingMode = PickingMode.Ignore;
-            box.Add(inTop);
-
-            // 左下引入水平线
-            var inBot = new VisualElement();
-            inBot.style.position = Position.Absolute;
-            inBot.style.left = 1; inBot.style.bottom = 3.5f;
-            inBot.style.width = 4.5f; inBot.style.height = 1.6f;
-            inBot.style.backgroundColor = color;
-            inBot.pickingMode = PickingMode.Ignore;
-            box.Add(inBot);
-
-            // 交叉斜线 1 (左上到右下)
-            var slash1 = new VisualElement();
-            slash1.style.position = Position.Absolute;
-            slash1.style.left = 4.5f; slash1.style.top = 7f;
-            slash1.style.width = 9.5f; slash1.style.height = 1.6f;
-            slash1.style.backgroundColor = color;
-            slash1.style.rotate = new Rotate(Angle.Degrees(38f));
-            slash1.pickingMode = PickingMode.Ignore;
-            box.Add(slash1);
-
-            // 交叉斜线 2 (左下到右上)
-            var slash2 = new VisualElement();
-            slash2.style.position = Position.Absolute;
-            slash2.style.left = 4.5f; slash2.style.top = 7f;
-            slash2.style.width = 9.5f; slash2.style.height = 1.6f;
-            slash2.style.backgroundColor = color;
-            slash2.style.rotate = new Rotate(Angle.Degrees(-38f));
-            slash2.pickingMode = PickingMode.Ignore;
-            box.Add(slash2);
-
-            // 右上朝右实心箭头
-            var outTopArr = new VisualElement();
-            outTopArr.style.position = Position.Absolute;
-            outTopArr.style.right = 1; outTopArr.style.top = 1.5f;
-            outTopArr.style.width = 0; outTopArr.style.height = 0;
-            outTopArr.style.borderTopWidth = 2.8f; outTopArr.style.borderBottomWidth = 2.8f;
-            outTopArr.style.borderLeftWidth = 4.2f; outTopArr.style.borderRightWidth = 0;
-            outTopArr.style.borderTopColor = Color.clear; outTopArr.style.borderBottomColor = Color.clear;
-            outTopArr.style.borderLeftColor = color; outTopArr.style.borderRightColor = Color.clear;
-            outTopArr.pickingMode = PickingMode.Ignore;
-            box.Add(outTopArr);
-
-            // 右下朝右实心箭头
-            var outBotArr = new VisualElement();
-            outBotArr.style.position = Position.Absolute;
-            outBotArr.style.right = 1; outBotArr.style.bottom = 1.5f;
-            outBotArr.style.width = 0; outBotArr.style.height = 0;
-            outBotArr.style.borderTopWidth = 2.8f; outBotArr.style.borderBottomWidth = 2.8f;
-            outBotArr.style.borderLeftWidth = 4.2f; outBotArr.style.borderRightWidth = 0;
-            outBotArr.style.borderTopColor = Color.clear; outBotArr.style.borderBottomColor = Color.clear;
-            outBotArr.style.borderLeftColor = color; outBotArr.style.borderRightColor = Color.clear;
-            outBotArr.pickingMode = PickingMode.Ignore;
-            box.Add(outBotArr);
-
-            return box;
+            var img = new Image();
+            img.style.width = 20;
+            img.style.height = 20;
+            img.image = GetShuffleTexture(color);
+            img.pickingMode = PickingMode.Ignore;
+            return img;
         }
 
         public static VisualElement CreateSingleRepeatIcon(Color color) => CreateLoopRepeatIcon(color, true);
@@ -951,12 +816,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             });
             btn.RegisterCallback<MouseLeaveEvent>(e => {
                 btn.style.scale = new Scale(Vector3.one);
-            });
-            btn.RegisterCallback<PointerDownEvent>(e => {
-                btn.style.scale = new Scale(new Vector3(0.92f, 0.92f, 1f));
-            });
-            btn.RegisterCallback<PointerUpEvent>(e => {
-                btn.style.scale = new Scale(new Vector3(1.12f, 1.12f, 1f));
             });
 
             return btn;
@@ -1309,131 +1168,95 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// </summary>
         public static void ApplyIndustrialBevel(VisualElement el, bool isPressed = false, bool isBrassGold = false)
         {
+            if (el == null) return;
             el.style.borderTopWidth = 1.5f; el.style.borderLeftWidth = 1.5f;
-            el.style.borderBottomWidth = 1.8f; el.style.borderRightWidth = 1.8f;
+            el.style.borderBottomWidth = 1.5f; el.style.borderRightWidth = 1.5f;
 
-            if (isPressed)
+            if (isBrassGold)
             {
-                // 按下状态：反转阴影（上暗下亮，内陷感）
-                el.style.borderTopColor = new Color(0.08f, 0.08f, 0.10f, 0.95f);
-                el.style.borderLeftColor = new Color(0.08f, 0.08f, 0.10f, 0.95f);
-                el.style.borderBottomColor = isBrassGold ? new Color(0.85f, 0.70f, 0.35f, 0.9f) : new Color(0.40f, 0.40f, 0.46f, 0.9f);
-                el.style.borderRightColor = isBrassGold ? new Color(0.85f, 0.70f, 0.35f, 0.9f) : new Color(0.40f, 0.40f, 0.46f, 0.9f);
+                if (isPressed)
+                {
+                    Color darkRim = new Color(0.60f, 0.44f, 0.16f, 0.95f);
+                    Color deepGold = new Color(0.78f, 0.60f, 0.24f, 0.95f);
+                    el.style.borderTopColor = darkRim;
+                    el.style.borderLeftColor = darkRim;
+                    el.style.borderBottomColor = deepGold;
+                    el.style.borderRightColor = deepGold;
+                }
+                else
+                {
+                    Color topGold = new Color(0.98f, 0.88f, 0.52f, 1f);
+                    Color botGold = new Color(0.78f, 0.62f, 0.26f, 1f); // 暖深黄铜，全圆360度清晰连续，绝非纯黑！
+                    el.style.borderTopColor = topGold;
+                    el.style.borderLeftColor = topGold;
+                    el.style.borderBottomColor = botGold;
+                    el.style.borderRightColor = botGold;
+                }
             }
             else
             {
-                // 正常凸起状态：上亮下暗
-                el.style.borderTopColor = isBrassGold ? new Color(0.96f, 0.85f, 0.50f, 1f) : new Color(0.48f, 0.49f, 0.58f, 0.9f);
-                el.style.borderLeftColor = isBrassGold ? new Color(0.96f, 0.85f, 0.50f, 1f) : new Color(0.48f, 0.49f, 0.58f, 0.9f);
-                el.style.borderBottomColor = new Color(0.08f, 0.08f, 0.10f, 1f);
-                el.style.borderRightColor = new Color(0.08f, 0.08f, 0.10f, 1f);
+                if (isPressed)
+                {
+                    Color darkSteel = new Color(0.12f, 0.13f, 0.16f, 0.95f);
+                    Color midSteel = new Color(0.32f, 0.33f, 0.38f, 0.95f);
+                    el.style.borderTopColor = darkSteel;
+                    el.style.borderLeftColor = darkSteel;
+                    el.style.borderBottomColor = midSteel;
+                    el.style.borderRightColor = midSteel;
+                }
+                else
+                {
+                    Color lightSteel = new Color(0.48f, 0.50f, 0.58f, 0.95f);
+                    Color shadowSteel = new Color(0.20f, 0.21f, 0.25f, 0.95f);
+                    el.style.borderTopColor = lightSteel;
+                    el.style.borderLeftColor = lightSteel;
+                    el.style.borderBottomColor = shadowSteel;
+                    el.style.borderRightColor = shadowSteel;
+                }
             }
         }
 
         private static Texture2D s_frostedGlassTex;
         private static Texture2D s_gaussianShadowTex;
 
-        /// <summary>
-        /// 获取高斯模糊/磨砂玻璃和纸微噪点平铺纹理（128×128，双线性平铺，具有微暖沙底与细纤纸纹理）
-        /// </summary>
         public static Texture2D GetFrostedGlassTexture()
         {
-            if (s_frostedGlassTex != null) return s_frostedGlassTex;
+            if (s_frostedGlassTex == null)
+            {
+                s_frostedGlassTex = CreateFrostedGlassTexture();
+            }
+            return s_frostedGlassTex;
+        }
 
-            const int S = 128;
-            s_frostedGlassTex = new Texture2D(S, S, TextureFormat.RGBA32, false)
+        private static Texture2D CreateFrostedGlassTexture()
+        {
+            int size = 128;
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false)
             {
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Repeat
             };
-
-            uint seed = 20261018u;
-            uint Next() { seed = seed * 1664525u + 1013904223u; return seed; }
-
-            for (int y = 0; y < S; y++)
+            var cols = new Color[size * size];
+            for (int y = 0; y < size; y++)
             {
-                for (int x = 0; x < S; x++)
+                for (int x = 0; x < size; x++)
                 {
-                    float n = ((Next() >> 16) & 0xFF) / 255f;
-                    float sandSparkle = (((Next() >> 8) & 0xFF) > 250) ? 0.08f : 0f;
-                    float alpha = 0.68f + n * 0.08f + sandSparkle;
-                    float r = 0.12f + n * 0.02f + sandSparkle;
-                    float g = 0.13f + n * 0.02f + sandSparkle;
-                    float b = 0.16f + n * 0.02f;
-                    s_frostedGlassTex.SetPixel(x, y, new Color(r, g, b, alpha));
+                    float noise = Mathf.PerlinNoise(x * 0.15f, y * 0.15f) * 0.05f;
+                    cols[y * size + x] = new Color(1f, 0.96f, 0.90f, 0.015f + noise);
                 }
             }
-            s_frostedGlassTex.Apply();
-            return s_frostedGlassTex;
+            tex.SetPixels(cols);
+            tex.Apply();
+            return tex;
         }
 
-        /// <summary>
-        /// 纯代码生成带高斯衰减软阴影的 9-Slice 贴图（64×64，中心实心，向外高斯扩散羽化）
-        /// </summary>
-        public static Texture2D GetGaussianShadowTexture()
+        public static void ApplyCardShadow(VisualElement el, float offsetX = 0f, float offsetY = 6f, float alpha = 0.45f, float blurSpread = 0f, float opacity = 0.45f)
         {
-            if (s_gaussianShadowTex != null) return s_gaussianShadowTex;
-
-            const int S = 64;
-            s_gaussianShadowTex = new Texture2D(S, S, TextureFormat.RGBA32, false)
-            {
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp
-            };
-
-            const float innerRadius = 14f;
-            const float center = 31.5f;
-
-            for (int y = 0; y < S; y++)
-            {
-                for (int x = 0; x < S; x++)
-                {
-                    float dx = Mathf.Max(0, Mathf.Abs(x - center) - innerRadius);
-                    float dy = Mathf.Max(0, Mathf.Abs(y - center) - innerRadius);
-                    float dist = Mathf.Sqrt(dx * dx + dy * dy);
-
-                    float sigma = 6.0f;
-                    float alpha = Mathf.Exp(-(dist * dist) / (2f * sigma * sigma));
-                    if (dist > 18f) alpha = 0f;
-
-                    s_gaussianShadowTex.SetPixel(x, y, new Color(0.02f, 0.02f, 0.03f, alpha * 0.85f));
-                }
-            }
-            s_gaussianShadowTex.Apply();
-            return s_gaussianShadowTex;
+            if (el == null) return;
+            el.style.borderBottomWidth = Mathf.Max(el.style.borderBottomWidth.value, offsetY * 0.4f);
         }
 
-        /// <summary>
-        /// 为 VisualElement 应用真实的自适应 9-Slice 高斯软阴影衬底（Drop Shadow Underlay）
-        /// </summary>
-        public static void ApplyCardShadow(VisualElement card, float offsetY = 4f, float blurSpread = 8f, float opacity = 0.65f)
-        {
-            if (card == null) return;
 
-            var shadow = card.Q<VisualElement>("__card_drop_shadow");
-            if (shadow == null)
-            {
-                shadow = new VisualElement { name = "__card_drop_shadow" };
-                shadow.style.position = Position.Absolute;
-                shadow.pickingMode = PickingMode.Ignore;
-                shadow.style.backgroundImage = new StyleBackground(GetGaussianShadowTexture());
-                shadow.style.unitySliceTop = 26;
-                shadow.style.unitySliceBottom = 26;
-                shadow.style.unitySliceLeft = 26;
-                shadow.style.unitySliceRight = 26;
-                card.Insert(0, shadow);
-            }
-
-            shadow.style.left = -blurSpread;
-            shadow.style.right = -blurSpread;
-            shadow.style.top = -blurSpread + offsetY;
-            shadow.style.bottom = -blurSpread - offsetY;
-            shadow.style.opacity = opacity;
-        }
-
-        /// <summary>
-        /// 统一物理微交互注册（悬浮浮起 2px、边框亮金发光、按压下沉 1.5px、回弹、爽脆手感）
-        /// </summary>
         public static void ApplyPhysicalMicroInteraction(
             VisualElement el,
             System.Action onClick = null,
@@ -1459,8 +1282,24 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     el.style.top = -2f;
                 }
                 el.style.backgroundColor = hBg;
-                el.style.borderTopColor = isBrass ? new Color(1f, 0.88f, 0.55f, 1f) : new Color(0.65f, 0.66f, 0.78f, 0.95f);
-                el.style.borderLeftColor = el.style.borderTopColor;
+                if (isBrass)
+                {
+                    Color hiGold = new Color(1f, 0.94f, 0.68f, 1f);
+                    Color warmGold = new Color(0.86f, 0.70f, 0.32f, 1f);
+                    el.style.borderTopColor = hiGold;
+                    el.style.borderLeftColor = hiGold;
+                    el.style.borderBottomColor = warmGold;
+                    el.style.borderRightColor = warmGold;
+                }
+                else
+                {
+                    Color hiSteel = new Color(0.68f, 0.70f, 0.82f, 0.95f);
+                    Color midSteel = new Color(0.35f, 0.36f, 0.44f, 0.95f);
+                    el.style.borderTopColor = hiSteel;
+                    el.style.borderLeftColor = hiSteel;
+                    el.style.borderBottomColor = midSteel;
+                    el.style.borderRightColor = midSteel;
+                }
             });
 
             el.RegisterCallback<PointerLeaveEvent>(_ =>
@@ -1512,9 +1351,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
         }
 
-        /// <summary>
-        /// 创建纯图形化 Spotify 风格随机播放按纽（🔀 纯矢量双折线，激活时亮金并带有底部微小圆点信标，绝无文字）
-        /// </summary>
         public static VisualElement CreateSpotifyShuffleControl(bool isActive, System.Action onClick = null)
         {
             var btn = new Button();
@@ -1891,10 +1727,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var h = new FloatingCapsuleHandle();
             var capsule = new VisualElement();
-            capsule.style.height = 36;
+            capsule.style.height = 24;
             capsule.style.backgroundColor = new Color(0.10f, 0.11f, 0.14f, 0.96f); // 深黑亚克力
-            capsule.style.borderTopLeftRadius = 18; capsule.style.borderTopRightRadius = 18;
-            capsule.style.borderBottomLeftRadius = 18; capsule.style.borderBottomRightRadius = 18;
+            capsule.style.borderTopLeftRadius = 12; capsule.style.borderTopRightRadius = 12;
+            capsule.style.borderBottomLeftRadius = 12; capsule.style.borderBottomRightRadius = 12;
             capsule.style.borderTopWidth = 1; capsule.style.borderBottomWidth = 1;
             capsule.style.borderLeftWidth = 1; capsule.style.borderRightWidth = 1;
             capsule.style.borderTopColor = new Color(0.83f, 0.66f, 0.26f, 0.6f); // 黄铜金边
@@ -1903,26 +1739,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             capsule.style.borderRightColor = capsule.style.borderTopColor;
             capsule.style.flexDirection = FlexDirection.Row;
             capsule.style.alignItems = Align.Center;
-            capsule.style.paddingLeft = 6; capsule.style.paddingRight = 10;
-            ApplyCardShadow(capsule, 3f, 8f, 0.5f);
+            capsule.style.paddingLeft = 5; capsule.style.paddingRight = 7;
+            ApplyCardShadow(capsule, 1.5f, 4f, 0.35f);
             h.root = capsule;
 
-            // 1. 微型黑胶唱盘
-            var disc = CreateVinylDiscLarge(24);
-            disc.style.marginRight = 8;
+            // 1. 微型黑胶唱盘 (16x16)
+            var disc = CreateVinylDiscLarge(16);
+            disc.style.marginRight = 6;
             capsule.Add(disc);
             h.miniDisc = disc;
 
             // 2. 标题文本（点击打开全屏 App）
             var titleBox = new VisualElement();
-            titleBox.style.maxWidth = 110;
+            titleBox.style.maxWidth = 85;
             titleBox.style.overflow = Overflow.Hidden;
-            titleBox.style.marginRight = 8;
+            titleBox.style.marginRight = 6;
             titleBox.pickingMode = PickingMode.Position;
             capsule.Add(titleBox);
 
-            var titleLbl = new Label(string.IsNullOrEmpty(currentTitle) ? "随身听待机中" : currentTitle);
-            titleLbl.style.fontSize = 11;
+            var titleLbl = new Label(string.IsNullOrEmpty(currentTitle) ? "随身听待机" : currentTitle);
+            titleLbl.style.fontSize = 9.5f;
             titleLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
             titleLbl.style.color = new Color(0.96f, 0.94f, 0.88f, 1f);
             titleLbl.style.whiteSpace = WhiteSpace.NoWrap;
@@ -1937,40 +1773,33 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 onOpenFull?.Invoke();
             });
 
-            // 3. 迷你播放/暂停按钮
+            // 3. 迷你播放/暂停按钮 (18x18)
             var pBtn = new VisualElement();
-            pBtn.style.width = 24; pBtn.style.height = 24;
-            pBtn.style.borderTopLeftRadius = 12; pBtn.style.borderTopRightRadius = 12;
-            pBtn.style.borderBottomLeftRadius = 12; pBtn.style.borderBottomRightRadius = 12;
+            pBtn.style.width = 18; pBtn.style.height = 18;
+            pBtn.style.borderTopLeftRadius = 9; pBtn.style.borderTopRightRadius = 9;
+            pBtn.style.borderBottomLeftRadius = 9; pBtn.style.borderBottomRightRadius = 9;
             pBtn.style.backgroundColor = new Color(0.83f, 0.66f, 0.26f, 1f);
             pBtn.style.alignItems = Align.Center; pBtn.style.justifyContent = Justify.Center;
-            pBtn.style.marginRight = 6;
-            pBtn.Add(isPlaying ? CreatePauseIcon(2f, 9f, 2.5f, Color.black) : CreatePlayIcon(9f, Color.black));
+            pBtn.style.marginRight = 4;
+            pBtn.Add(isPlaying ? CreatePauseIcon(1.5f, 7f, 2f, Color.black) : CreatePlayIcon(7f, Color.black));
             ApplyPhysicalMicroInteraction(pBtn, onClick: onTogglePlay, enableFloat: true, isBrass: true);
             capsule.Add(pBtn);
             h.playBtn = pBtn;
 
-            // 4. 迷你切下一首
+            // 4. 迷你切下一首 (16x16)
             var nBtn = new VisualElement();
-            nBtn.style.width = 22; nBtn.style.height = 22;
-            nBtn.style.borderTopLeftRadius = 11; nBtn.style.borderTopRightRadius = 11;
-            nBtn.style.borderBottomLeftRadius = 11; nBtn.style.borderBottomRightRadius = 11;
+            nBtn.style.width = 16; nBtn.style.height = 16;
+            nBtn.style.borderTopLeftRadius = 8; nBtn.style.borderTopRightRadius = 8;
+            nBtn.style.borderBottomLeftRadius = 8; nBtn.style.borderBottomRightRadius = 8;
             nBtn.style.backgroundColor = new Color(0.18f, 0.19f, 0.23f, 1f);
             nBtn.style.alignItems = Align.Center; nBtn.style.justifyContent = Justify.Center;
-            nBtn.Add(CreateTrackNavIcon(true, 8f, new Color(0.85f, 0.82f, 0.75f, 1f)));
+            nBtn.Add(CreateTrackNavIcon(true, 6.5f, new Color(0.85f, 0.82f, 0.75f, 1f)));
             ApplyPhysicalMicroInteraction(nBtn, onClick: onNext, enableFloat: true, isBrass: false);
             capsule.Add(nBtn);
 
             return h;
         }
 
-        // ==========================================================================================
-        // FOLIA 级液态玻璃（Liquid Glass）与高级工业卡片微质感系统
-        // ==========================================================================================
-
-        /// <summary>
-        /// 为卡片赋予 Folia 级“液态玻璃”质感（次表面半透、0.5px晶体高光内边缘、暗部折射厚度、物理微浮凸与柔和高斯阴影）
-        /// </summary>
         public static void ApplyLiquidGlassCard(
             VisualElement card,
             bool isPlaying = false,

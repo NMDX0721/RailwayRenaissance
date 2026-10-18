@@ -161,6 +161,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static readonly Dictionary<string, CardBinding> s_cardBindings = new Dictionary<string, CardBinding>();
 
         // 右侧正在播放大视窗引用（高质感 16-bit 像素发光黑胶唱盘与世界观剧情档案）
+        private static bool s_isImmersiveMode = false;
         private static VisualElement s_nowPlayingVinylDisc;
         private static VisualElement s_nowPlayingHaloGlow;
         private static MusicIconHelper.VuMeterHandle s_vuMeterHandle;
@@ -348,20 +349,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public static void ToggleTabletMusicPlayPause()
         {
-            if (tabletMusicSource == null || tabletCurrentClip == null)
+            if (tabletCurrentClip == null)
             {
                 AutoPlayDefaultMusic();
                 return;
             }
 
-            if (tabletMusicSource.isPlaying)
+            if (MusicAudioEffectsEngine.IsPlaying())
             {
-                tabletMusicSource.Pause();
+                MusicAudioEffectsEngine.Pause();
+                if (tabletMusicSource != null && tabletMusicSource.isPlaying) tabletMusicSource.Pause();
                 tabletIsPlaying = false;
             }
             else
             {
-                tabletMusicSource.UnPause();
+                MusicAudioEffectsEngine.UnPause();
+                tabletMusicSource = MusicAudioEffectsEngine.GetActiveDeck();
+                if (tabletMusicSource != null && !tabletMusicSource.isPlaying && !MusicAudioEffectsEngine.IsPlaying())
+                {
+                    tabletMusicSource.UnPause();
+                }
                 tabletIsPlaying = true;
             }
 
@@ -715,7 +722,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             UpdatePlayerBarUI();
         }
 
-        private static void UpdatePlayerBarUI()
+        public static void UpdatePlayerBarUI()
         {
             if (tabletPlayerTitleLbl != null) tabletPlayerTitleLbl.text = string.IsNullOrEmpty(tabletCurrentTrackTitle) ? "未选择播放曲目" : tabletCurrentTrackTitle;
             if (tabletPlayerSubLbl != null) tabletPlayerSubLbl.text = string.IsNullOrEmpty(tabletCurrentTrackCategory) ? "随身听已就绪 · 点击上方曲目开启调频" : tabletCurrentTrackCategory + " · 铁道原声品质";
@@ -1073,6 +1080,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     string name = next == 0 ? "纯净现代原声" : (next == 1 ? "工务机车电台 (轻度微晃+风沙)" : "先民真空电台 (经典电子管微晃)");
                     ShowToast(" 调频质感已切换为: " + name);
                     UpdatePlayerBarUI();
+                },
+                onToggleImmersive: () => {
+                    s_isImmersiveMode = !s_isImmersiveMode;
+                    ShowToast(s_isImmersiveMode ? "已开启 Folia 全屏沉浸巨幕模式" : "已返回标准控制台视图");
+                    if (win != null) BuildMusicApp(win);
                 }
             );
 
@@ -1108,6 +1120,134 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 PlayerPrefs.SetInt("TabletMusic_GuideSeen", 1);
                 PlayerPrefs.Save();
                 ShowOnboardingGuideModal(win);
+            }
+        }
+
+
+        // ==================== Folia 全屏沉浸黑胶视听巨幕 ====================
+        private static void BuildImmersiveStageView(VisualElement root, VisualElement win)
+        {
+            var stage = new VisualElement();
+            stage.style.flexGrow = 1;
+            stage.style.flexDirection = FlexDirection.Column;
+            stage.style.backgroundColor = new Color(0.07f, 0.06f, 0.06f, 1f);
+            stage.style.position = Position.Relative;
+            root.Add(stage);
+
+            // 1. 动态自适应色彩光晕
+            var glow = new VisualElement();
+            glow.style.position = Position.Absolute;
+            glow.style.left = Length.Percent(8);
+            glow.style.top = Length.Percent(12);
+            glow.style.width = Length.Percent(48);
+            glow.style.height = Length.Percent(70);
+            Color domColor = MusicAlbumArtResolver.GetDominantColor(tabletCurrentTrackId, tabletCurrentTrackCategory);
+            glow.style.backgroundColor = new Color(domColor.r, domColor.g, domColor.b, 0.22f);
+            glow.style.borderTopLeftRadius = 180; glow.style.borderTopRightRadius = 180;
+            glow.style.borderBottomLeftRadius = 180; glow.style.borderBottomRightRadius = 180;
+            glow.pickingMode = PickingMode.Ignore;
+            stage.Add(glow);
+
+            // 2. 顶栏返回与状态
+            var topBar = new VisualElement();
+            topBar.style.height = 40;
+            topBar.style.flexDirection = FlexDirection.Row;
+            topBar.style.justifyContent = Justify.SpaceBetween;
+            topBar.style.alignItems = Align.Center;
+            topBar.style.paddingLeft = 20; topBar.style.paddingRight = 20;
+            stage.Add(topBar);
+
+            var exitBtn = new Button(() =>
+            {
+                s_isImmersiveMode = false;
+                if (win != null) BuildMusicApp(win);
+            }) { text = "⛶ 退出沉浸模式" };
+            exitBtn.style.height = 24; exitBtn.style.fontSize = 10; exitBtn.style.unityFontDefinition = Fd();
+            exitBtn.style.backgroundColor = new Color(0.20f, 0.17f, 0.14f, 0.85f);
+            exitBtn.style.color = MusicIconHelper.BrassGold;
+            exitBtn.style.borderTopLeftRadius = 12; exitBtn.style.borderTopRightRadius = 12;
+            exitBtn.style.borderBottomLeftRadius = 12; exitBtn.style.borderBottomRightRadius = 12;
+            exitBtn.style.borderTopWidth = 1; exitBtn.style.borderBottomWidth = 1;
+            exitBtn.style.borderLeftWidth = 1; exitBtn.style.borderRightWidth = 1;
+            exitBtn.style.borderTopColor = new Color(0.83f, 0.66f, 0.26f, 0.6f);
+            exitBtn.style.borderBottomColor = exitBtn.style.borderTopColor;
+            exitBtn.style.borderLeftColor = exitBtn.style.borderTopColor;
+            exitBtn.style.borderRightColor = exitBtn.style.borderTopColor;
+            MusicIconHelper.SetHandCursor(exitBtn);
+            topBar.Add(exitBtn);
+
+            var modeTag = new Label("FM-88.5 铁道解调广播 · Folia 沉浸黑胶视听巨幕");
+            modeTag.style.fontSize = 11;
+            modeTag.style.color = new Color(0.80f, 0.75f, 0.68f, 0.85f);
+            modeTag.style.unityFontDefinition = Fd();
+            topBar.Add(modeTag);
+
+            var rightPill = MusicIconHelper.CreatePlatformCapsule("[IMMERSIVE]", MusicIconHelper.BrassGold);
+            topBar.Add(rightPill);
+
+            // 3. 左右分栏巨幕
+            var mainContent = new VisualElement();
+            mainContent.style.flexGrow = 1;
+            mainContent.style.flexDirection = FlexDirection.Row;
+            mainContent.style.alignItems = Align.Center;
+            mainContent.style.justifyContent = Justify.SpaceAround;
+            mainContent.style.paddingLeft = 32; mainContent.style.paddingRight = 32;
+            stage.Add(mainContent);
+
+            // 左侧：200px 发光黑胶唱盘与曲目元数据
+            var leftCol = new VisualElement();
+            leftCol.style.width = Length.Percent(44);
+            leftCol.style.alignItems = Align.Center;
+            leftCol.style.justifyContent = Justify.Center;
+            mainContent.Add(leftCol);
+
+            var vinylDisc = MusicIconHelper.CreateVinylDiscLarge(190);
+            vinylDisc.style.marginBottom = 14;
+            leftCol.Add(vinylDisc);
+            s_nowPlayingVinylDisc = vinylDisc;
+
+            var bigTitle = new Label(string.IsNullOrEmpty(tabletCurrentTrackTitle) ? "随身听待机中" : tabletCurrentTrackTitle);
+            bigTitle.style.fontSize = 17;
+            bigTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
+            bigTitle.style.color = new Color(0.98f, 0.95f, 0.90f, 1f);
+            bigTitle.style.unityFontDefinition = Fd();
+            bigTitle.style.marginBottom = 4;
+            leftCol.Add(bigTitle);
+
+            var bigSub = new Label(string.IsNullOrEmpty(tabletCurrentTrackCategory) ? "随车电波" : (tabletCurrentTrackCategory + " · 先民工业原声巡礼"));
+            bigSub.style.fontSize = 10.5f;
+            bigSub.style.color = MusicIconHelper.TextMuted;
+            bigSub.style.unityFontDefinition = Fd();
+            leftCol.Add(bigSub);
+
+            // 右侧：大字瀑布流光歌词
+            var rightCol = new VisualElement();
+            rightCol.style.width = Length.Percent(50);
+            rightCol.style.height = Length.Percent(82);
+            rightCol.style.backgroundColor = new Color(0.10f, 0.11f, 0.13f, 0.65f);
+            rightCol.style.borderTopLeftRadius = 10; rightCol.style.borderTopRightRadius = 10;
+            rightCol.style.borderBottomLeftRadius = 10; rightCol.style.borderBottomRightRadius = 10;
+            rightCol.style.borderTopWidth = 1; rightCol.style.borderBottomWidth = 1;
+            rightCol.style.borderLeftWidth = 1; rightCol.style.borderRightWidth = 1;
+            rightCol.style.borderTopColor = new Color(1f, 1f, 1f, 0.08f);
+            rightCol.style.borderBottomColor = rightCol.style.borderTopColor;
+            rightCol.style.borderLeftColor = rightCol.style.borderTopColor;
+            rightCol.style.borderRightColor = rightCol.style.borderTopColor;
+            rightCol.style.paddingLeft = 24; rightCol.style.paddingRight = 24;
+            rightCol.style.paddingTop = 20; rightCol.style.paddingBottom = 20;
+            rightCol.style.justifyContent = Justify.Center;
+            mainContent.Add(rightCol);
+
+            var logs = MusicNowPlayingSidebarView.GetTrackArchiveLogs(tabletCurrentTrackId, tabletCurrentTrackCategory);
+            for (int i = 0; i < logs.Length; i++)
+            {
+                var lineLbl = new Label(logs[i]);
+                lineLbl.style.fontSize = (i == 1 || i == 2) ? 13.5f : 11f;
+                lineLbl.style.unityFontStyleAndWeight = (i == 1 || i == 2) ? FontStyle.Bold : FontStyle.Normal;
+                lineLbl.style.color = (i == 1 || i == 2) ? MusicIconHelper.BrassGold : MusicIconHelper.TextMuted;
+                lineLbl.style.unityFontDefinition = Fd();
+                lineLbl.style.marginBottom = 12;
+                rightCol.Add(lineLbl);
             }
         }
 

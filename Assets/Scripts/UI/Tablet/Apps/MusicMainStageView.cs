@@ -121,6 +121,74 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             radioBanner.style.marginBottom = 14;
             scroll.Add(radioBanner);
 
+            // ===== 朝鲜对外频道 (Voice of Korea / 平壤广播电台) 专属短波专卡 =====
+            var dprkCard = new VisualElement();
+            dprkCard.style.backgroundColor = new Color(0.12f, 0.10f, 0.12f, 0.95f);
+            dprkCard.style.borderTopLeftRadius = 8; dprkCard.style.borderTopRightRadius = 8;
+            dprkCard.style.borderBottomLeftRadius = 8; dprkCard.style.borderBottomRightRadius = 8;
+            dprkCard.style.borderTopWidth = 1; dprkCard.style.borderBottomWidth = 1;
+            dprkCard.style.borderLeftWidth = 1; dprkCard.style.borderRightWidth = 1;
+            dprkCard.style.borderTopColor = new Color(0.85f, 0.25f, 0.25f, 0.8f); // 红金边框
+            dprkCard.style.borderBottomColor = dprkCard.style.borderTopColor;
+            dprkCard.style.borderLeftColor = dprkCard.style.borderTopColor;
+            dprkCard.style.borderRightColor = dprkCard.style.borderTopColor;
+            dprkCard.style.paddingLeft = 14; dprkCard.style.paddingRight = 14;
+            dprkCard.style.paddingTop = 10; dprkCard.style.paddingBottom = 10;
+            dprkCard.style.marginBottom = 14;
+            dprkCard.style.flexDirection = FlexDirection.Row;
+            dprkCard.style.justifyContent = Justify.SpaceBetween;
+            dprkCard.style.alignItems = Align.Center;
+
+            var dprkLeft = new VisualElement();
+            dprkLeft.style.flexDirection = FlexDirection.Row;
+            dprkLeft.style.alignItems = Align.Center;
+            dprkLeft.style.flexGrow = 1;
+            dprkCard.Add(dprkLeft);
+
+            var dprkBadge = MusicIconHelper.CreatePlatformCapsule("[VOK]", new Color(0.95f, 0.30f, 0.30f, 1f));
+            dprkBadge.style.marginRight = 10;
+            dprkLeft.Add(dprkBadge);
+
+            var dprkInfo = new VisualElement();
+            dprkLeft.Add(dprkInfo);
+
+            var dprkTitle = new Label("📡 朝鲜之声 (Voice of Korea) · 平壤短波 6070kHz / 7220kHz 华语对外广播");
+            dprkTitle.style.fontSize = 11.5f;
+            dprkTitle.style.unityFontStyleAndWeight = FontStyle.Bold;
+            dprkTitle.style.color = MusicIconHelper.TextParchment;
+            dprkTitle.style.unityFontDefinition = Fd();
+            dprkInfo.Add(dprkTitle);
+
+            var dprkDesc = new Label("平壤广播电台 · 朝鲜中央广播电台 (KCBS) 实况电波中继 · 支持全频段短波解调");
+            dprkDesc.style.fontSize = 9f;
+            dprkDesc.style.color = MusicIconHelper.TextMuted;
+            dprkDesc.style.unityFontDefinition = Fd();
+            dprkDesc.style.marginTop = 2;
+            dprkInfo.Add(dprkDesc);
+
+            var tuneDprkBtn = new Button(() =>
+            {
+                MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.VintageTubeFM;
+                TabletMusicAppUI.ShowToast("📡 已捕获平壤短波电波！正在解调《朝鲜之声》华语广播...");
+                // 播发朝鲜之声或新闻电波
+                var vTrack = Array.Find(TabletMusicAppUI.TabletMusicList, m => m.id == "news" || m.id == "news_explosive");
+                if (vTrack != null) TabletMusicAppUI.PlayTabletTrack(vTrack);
+                else TabletMusicAppUI.AutoPlayDefaultMusic();
+            }) { text = "接入平壤电波" };
+            tuneDprkBtn.style.height = 26; tuneDprkBtn.style.paddingLeft = 12; tuneDprkBtn.style.paddingRight = 12;
+            tuneDprkBtn.style.fontSize = 10; tuneDprkBtn.style.unityFontDefinition = Fd();
+            tuneDprkBtn.style.backgroundColor = new Color(0.85f, 0.25f, 0.25f, 1f);
+            tuneDprkBtn.style.color = Color.white;
+            tuneDprkBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
+            tuneDprkBtn.style.borderTopLeftRadius = 13; tuneDprkBtn.style.borderTopRightRadius = 13;
+            tuneDprkBtn.style.borderBottomLeftRadius = 13; tuneDprkBtn.style.borderBottomRightRadius = 13;
+            tuneDprkBtn.style.borderTopWidth = 0; tuneDprkBtn.style.borderBottomWidth = 0;
+            tuneDprkBtn.style.borderLeftWidth = 0; tuneDprkBtn.style.borderRightWidth = 0;
+            MusicIconHelper.SetHandCursor(tuneDprkBtn);
+            dprkCard.Add(tuneDprkBtn);
+
+            scroll.Add(dprkCard);
+
             var bannerLeft = new VisualElement();
             bannerLeft.style.flexDirection = FlexDirection.Row;
             bannerLeft.style.alignItems = Align.Center;
@@ -149,8 +217,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var tuneBtn = new Button(() =>
             {
-                TabletMusicAppUI.ShowToast("已锁定 FM-88.5 铁道解调广播频率");
-                TabletMusicAppUI.AutoPlayDefaultMusic();
+                // 开启电子管复古微晃电台滤镜
+                MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.VintageTubeFM;
+                if (TabletMusicAppUI.tabletIsPlaying)
+                {
+                    TabletMusicAppUI.ShowToast("📻 已开启电子管调频微晃 · 锁定 FM-88.5 调度频段 (正在调谐)");
+                    TabletMusicAppUI.UpdatePlayerBarUI();
+                }
+                else
+                {
+                    var rTrack = Array.Find(TabletMusicAppUI.TabletMusicList, m => m.category == "广播" || m.id == "news" || m.id == "platform");
+                    if (rTrack != null) TabletMusicAppUI.PlayTabletTrack(rTrack);
+                    else TabletMusicAppUI.AutoPlayDefaultMusic();
+                    TabletMusicAppUI.ShowToast("📻 已开机并锁定 FM-88.5 铁道机车广播频段");
+                }
             }) { text = "一键调频" };
             tuneBtn.style.height = 26; tuneBtn.style.paddingLeft = 14; tuneBtn.style.paddingRight = 14;
             tuneBtn.style.fontSize = 10; tuneBtn.style.unityFontDefinition = Fd();
@@ -1184,6 +1264,67 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             netDirectBtn.style.marginLeft = 8;
             MusicIconHelper.SetHandCursor(netDirectBtn);
             netDirectRow.Add(netDirectBtn);
+
+            if (isNetease)
+            {
+                var plListBox = new VisualElement();
+                plListBox.style.marginTop = 10;
+                plListBox.style.backgroundColor = new Color(0.08f, 0.08f, 0.09f, 0.65f);
+                plListBox.style.borderTopLeftRadius = 6; plListBox.style.borderTopRightRadius = 6;
+                plListBox.style.borderBottomLeftRadius = 6; plListBox.style.borderBottomRightRadius = 6;
+                plListBox.style.paddingLeft = 10; plListBox.style.paddingRight = 10;
+                plListBox.style.paddingTop = 8; plListBox.style.paddingBottom = 8;
+                neteaseCard.Add(plListBox);
+
+                var plHeader = new Label("▼ 已同步网易云云端歌单库 (点击即播)");
+                plHeader.style.fontSize = 10;
+                plHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+                plHeader.style.color = MusicIconHelper.BrassGold;
+                plHeader.style.unityFontDefinition = Fd();
+                plHeader.style.marginBottom = 6;
+                plListBox.Add(plHeader);
+
+                MusicCloudSyncEngine.Instance.FetchNeteaseUserPlaylists(PlayerPrefs.GetString("Netease_Uid", ""), list =>
+                {
+                    if (list != null)
+                    {
+                        foreach (var pl in list)
+                        {
+                            var plItem = new VisualElement();
+                            plItem.style.flexDirection = FlexDirection.Row;
+                            plItem.style.justifyContent = Justify.SpaceBetween;
+                            plItem.style.alignItems = Align.Center;
+                            plItem.style.height = 28;
+                            plItem.style.borderBottomWidth = 1;
+                            plItem.style.borderBottomColor = new Color(1f, 1f, 1f, 0.06f);
+                            MusicIconHelper.SetHandCursor(plItem);
+
+                            var plTitle = new Label($"♫ {pl.title} ({pl.trackCount} 首)");
+                            plTitle.style.fontSize = 10f;
+                            plTitle.style.color = MusicIconHelper.TextParchment;
+                            plTitle.style.unityFontDefinition = Fd();
+                            plItem.Add(plTitle);
+
+                            var playPlBtn = new Button(() =>
+                            {
+                                TabletMusicAppUI.ShowToast($"正在调频播放网易云歌单：{pl.title}");
+                                TabletMusicAppUI.AutoPlayDefaultMusic();
+                            }) { text = "播发" };
+                            playPlBtn.style.height = 20; playPlBtn.style.fontSize = 9;
+                            playPlBtn.style.backgroundColor = MusicIconHelper.BrassDark;
+                            playPlBtn.style.color = new Color(0.12f, 0.10f, 0.08f, 1f);
+                            playPlBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            playPlBtn.style.borderTopLeftRadius = 10; playPlBtn.style.borderTopRightRadius = 10;
+                            playPlBtn.style.borderBottomLeftRadius = 10; playPlBtn.style.borderBottomRightRadius = 10;
+                            playPlBtn.style.borderTopWidth = 0; playPlBtn.style.borderBottomWidth = 0;
+                            playPlBtn.style.borderLeftWidth = 0; playPlBtn.style.borderRightWidth = 0;
+                            plItem.Add(playPlBtn);
+
+                            plListBox.Add(plItem);
+                        }
+                    }
+                }, null);
+            }
 
             // 2. Bilibili 卡片
             bool isBili = MusicCloudSyncEngine.IsBilibiliLoggedIn();
