@@ -113,6 +113,12 @@ public class VNAudioManager : MonoBehaviour
 
         bgmFadeCoroutine = StartCoroutine(CrossfadeBGM(clip, name, fadeDuration));
         OnBGMStarted?.Invoke(name);
+
+        // 剧情遭遇即解锁：将曲目标记存入档案库（随身听与系统退出时统一批量持久化，杜绝切歌 I/O 卡顿）
+        if (PlayerPrefs.GetInt("ArchiveMusic_" + name, 0) == 0)
+        {
+            PlayerPrefs.SetInt("ArchiveMusic_" + name, 1);
+        }
     }
 
     /// <summary>当前是否人声曲（歌曲类）。</summary>
