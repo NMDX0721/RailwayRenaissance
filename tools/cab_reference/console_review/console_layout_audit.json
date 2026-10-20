@@ -1,0 +1,173 @@
+{
+  "status": "first assembled console study",
+  "estimated_dimensions": true,
+  "width_m": 1.55,
+  "worktop_top_m": 0.839,
+  "panel_back_tilt_degrees": 15,
+  "knee_opening_width_m": 0.99,
+  "mounts": [
+    {
+      "tag": "Pressure",
+      "source": "pressure_review/duplex_air_gauges_final.blend",
+      "bounds": {
+        "min": [
+          -0.6010000109672546,
+          0.11500557512044907,
+          0.8637982606887817
+        ],
+        "max": [
+          -0.3190000057220459,
+          0.23394876718521118,
+          1.0122628211975098
+        ]
+      }
+    },
+    {
+      "tag": "Current",
+      "source": "linear_gauge_review/linear_gauge_final.blend",
+      "bounds": {
+        "min": [
+          -0.2680000066757202,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.22200000286102295,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "RPM",
+      "source": "tachometer_review/diesel_tachometer_final.blend",
+      "bounds": {
+        "min": [
+          -0.1979999989271164,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.15199999511241913,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "Temperature",
+      "source": "temperature_review/temperature_gauges_final.blend",
+      "bounds": {
+        "min": [
+          -0.11800000071525574,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.01199999637901783,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "Speed",
+      "source": "speedometer_review/speedometer_final.blend",
+      "bounds": {
+        "min": [
+          0.46880000829696655,
+          0.12881115078926086,
+          1.1200000047683716
+        ],
+        "max": [
+          0.651199996471405,
+          0.24399998784065247,
+          1.3100000619888306
+        ]
+      }
+    },
+    {
+      "tag": "Controller",
+      "source": "controller_review/controller_handwheel_final.blend",
+      "bounds": {
+        "min": [
+          -0.2789999842643738,
+          -0.2939999997615814,
+          0.8399999737739563
+        ],
+        "max": [
+          0.054999999701976776,
+          0.013999998569488525,
+          0.9290199875831604
+        ]
+      }
+    },
+    {
+      "tag": "Brake",
+      "source": "brake_review/brake_final_with_handles.blend",
+      "bounds": {
+        "min": [
+          -0.6888998746871948,
+          -0.177141472697258,
+          0.8399999737739563
+        ],
+        "max": [
+          -0.49950000643730164,
+          0.06200000271201134,
+          1.060499906539917
+        ]
+      }
+    },
+    {
+      "tag": "Switches",
+      "source": "switches_review/piano_switches_10gang_optimized.blend",
+      "bounds": {
+        "min": [
+          0.25607497453689576,
+          -0.26455001294612884,
+          0.794749948501587
+        ],
+        "max": [
+          0.48392505407333375,
+          -0.17544997990131378,
+          0.8614405722618104
+        ]
+      },
+      "integration_scale": 3
+    }
+  ],
+  "apertures": [
+    {
+      "x_m": -0.46,
+      "width_m": 0.255,
+      "height_m": 0.125
+    },
+    {
+      "x_m": -0.245,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.175,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.095,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.035,
+      "width_m": 0.039,
+      "height_m": 0.163
+    }
+  ],
+  "not_yet_validated": [
+    "full human reach envelope",
+    "valve handle swept volumes",
+    "driver sightlines",
+    "wiring and pipe routing"
+  ],
+  "interactive_controller_and_switches": false
+}

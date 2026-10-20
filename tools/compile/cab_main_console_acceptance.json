@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "shared_engine_state": true,
+  "bounds_m": [
+    1.55,
+    1.31,
+    0.72
+  ],
+  "renderers": 366,
+  "csharp_errors": 0,
+  "clean_editor_shutdown": true,
+  "review_scene_reloaded": true,
+  "bound_signals": [
+    "traction current",
+    "diesel RPM",
+    "MR/BC/BP pressures",
+    "coolant temperature"
+  ],
+  "missing_signals": [
+    "oil temperature",
+    "equalizing reservoir"
+  ],
+  "control_interaction_implemented": false,
+  "ergonomics_certified": false
+}

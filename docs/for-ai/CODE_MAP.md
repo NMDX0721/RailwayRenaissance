@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+主驾驶台试装入口：`tools/cab_reference/build_console_body.py`，原生导出 `export_main_console_unity.py`，Unity编辑器入口 `CabMainConsoleAssetSetup.BatchBuild`。输出MainConsoleStudy预制体与CabMainConsoleReview场景；电流/转速/风压/水温共用一个CabEngineState，油温/均衡风缸缺失，控制件尚未交互绑定。参见[主体试装任务](dispatch/orders/CODEX-CAB-MAIN-CONSOLE-20261020.md)。
+
 温度表Unity入口：`Assets/Editor/CabTemperatureAssetSetup.cs`，运行组件 `Assets/Scripts/Cab/CabTemperatureGauge.cs`；原生资源 `UnityTemperatureGauges`、预制体 `TemperatureGaugesFinal.prefab`、场景 `CabTemperatureReview.unity`。各表读取共享配置，水温接WaterTempCelsius、油温缺失标无效，保留原值及量程/红区状态；后端热模拟未实现。最终源/预览及验证边界见温度表任务。
 
 最新温度配置：`Assets/Resources/Cab/temperature_instrument_profile.json`，模型脚本读取水温40–120/油温50–150 ℃及各自红区；41/21刻度基线与各361行程点检查。后端计划见 [热管理设计](CAB_THERMAL_SIMULATION_DESIGN.md)，尚未替换CabEngineState旧水温公式；未新增油温运行信号。
