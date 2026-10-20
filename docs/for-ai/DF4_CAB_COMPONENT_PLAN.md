@@ -1,5 +1,7 @@
 # 东风4系驾驶台组件计划
 
+用户确认范围扩展为完整驾驶室、机车仿真、轨道与窗外场景；近期先接主台启动操作链，其余按 [仿真路线](LOCOMOTIVE_SIMULATION_ROADMAP.md) 分阶段实施。现有Cab3DSceneController只是程序化循环窗景，不能当作真实曲线坡道线路。
+
 启动/使能组已制作独立钥匙与带钥匙/空锁两版；Unity组件提供局部启动条件与插拔联锁接口，独立预制体阶段，尚未整体装入主台或接鼠标派发。见[启动任务](dispatch/orders/CODEX-CAB-STARTUP-20261020.md)。
 
 机油压力表已补：0–1 MPa、小格0.02/大格0.1，接既有OilPressureMpa；主台窄框仪表保持同族外观。前裙增加压筋、通风框及带槽固定件，主体漆钢/酚醛/黑面板/裸钢分PBR材质。见[油压表任务](dispatch/orders/CODEX-CAB-OIL-PRESSURE-20261020.md)。

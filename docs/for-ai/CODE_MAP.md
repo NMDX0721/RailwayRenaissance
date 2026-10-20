@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+主台启动鼠标链：`CabStartupClickTarget`按Key/FuelPump/Start/Stop派发，`CabStartupPointer`使用Input System鼠标和限定层Physics射线；主台编辑器构建安装StartupControlsWithoutKey并绑定同一CabEngineState。左键插钥匙/转主控/开关/启动停机，右键拔钥匙。完整驾驶室/后端/线路/场景路线见 [仿真实施路线](LOCOMOTIVE_SIMULATION_ROADMAP.md)，这些扩展尚未实现。
+
 启动组件：`build_startup_controls.py`生成with_key/without_key/key_only GLB与FBX；`CabStartupAssetSetup.BatchBuild`生成带钥匙、空锁与独立MasterKey三预制体。`CabStartupControls`提供插拔/旋转/燃油泵/启动停机接口与状态灯，显式绑定CabEngineState；局部联锁非全局发动机守卫，鼠标射线及背包尚未接。见启动组件任务。
 
 机油压力表：`build_oil_pressure_gauge.py`生成0–1 MPa窄框表；`CabOilPressureGauge.cs`读取OilPressureMpa。主台构建加入OilPressure标定节点和运行组件，301点校验世界位置、异常/超量程及停机状态。主体PBR纹理由build_console_body.py生成到Textures/MainConsole，统一导出URP。见油压表任务。

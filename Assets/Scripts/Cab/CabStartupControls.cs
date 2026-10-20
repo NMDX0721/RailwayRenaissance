@@ -14,8 +14,10 @@ namespace RailwayRenaissance.Cab
         [SerializeField] Vector3 turnAxis;
         [SerializeField] bool keyInserted;
         [SerializeField] bool masterEnabled;
+        [SerializeField] bool initializeColdPanel;
         public bool KeyInserted => keyInserted;
         public bool MasterEnabled => masterEnabled;
+        public bool FuelPumpEnabled => engineState != null && engineState.FuelPumpOn;
         public string LastWarning { get; private set; }
 
         public void Configure(GameObject visual, GameObject looseKey, Transform pivot, Vector3 axis, bool inserted,
@@ -28,6 +30,13 @@ namespace RailwayRenaissance.Cab
             keyInserted = inserted; masterEnabled = false; ApplyVisual();
         }
         public void BindEngineState(CabEngineState state) { engineState = state; ApplyVisual(); }
+        public void PrepareColdPanel() { initializeColdPanel = true; }
+        void Start()
+        {
+            if (initializeColdPanel && engineState != null && !engineState.IsEngineStarted && !masterEnabled)
+                engineState.FuelPumpOn = false;
+            initializeColdPanel = false; ApplyVisual();
+        }
         void LateUpdate() { UpdateAuxiliaryVisuals(); }
         public bool InsertKey()
         {
@@ -37,6 +46,8 @@ namespace RailwayRenaissance.Cab
                 var spawned = Instantiate(looseKeyPrefab, transform);
                 spawned.transform.localPosition = Vector3.zero;
                 spawned.transform.localRotation = Quaternion.identity;
+                // The key and panel share the FBX conversion basis; do not multiply the import scale.
+                spawned.transform.localScale = Vector3.one;
                 keyVisual = spawned;
                 foreach (var t in spawned.GetComponentsInChildren<Transform>())
                     if (t.name == "Key_Turn_Pivot") { keyPivot = t; offRotation = t.localRotation; break; }

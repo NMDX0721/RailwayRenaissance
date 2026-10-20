@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "path": "Physics.Raycast -> CabStartupClickTarget -> CabStartupControls -> shared CabEngineState",
+  "actions": [
+    "insert key",
+    "master on",
+    "reject start with pump off",
+    "pump on",
+    "start",
+    "reject running key removal",
+    "stop",
+    "master off",
+    "remove key"
+  ],
+  "inserted_key_scale_checked": true,
+  "review_scene_reloaded": true,
+  "renderers": 488,
+  "manual_mouse_playtest_completed": false,
+  "whole_cab_built": false,
+  "high_fidelity_physics_built": false,
+  "real_route_built": false
+}

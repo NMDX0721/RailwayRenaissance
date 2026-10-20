@@ -181,12 +181,74 @@ public static class CabMainConsoleAssetSetup
                 new[] {Find("MR_BC_Calibration_Origin"),Find("MR_BC_Calibration_Origin"),Find("BP_ER_Calibration_Origin"),Find("BP_ER_Calibration_Origin")});
             pressure.BindEngineState(state);
             ValidateAssembly(instance, state);
+            InstallStartupControls(instance, state);
             PrefabUtility.SaveAsPrefabAsset(instance, Output + "/" + instance.name + ".prefab");
             UnityEngine.Object.DestroyImmediate(instance);
         }
         AssetDatabase.SaveAssets();
         CreateReviewScene();
         Debug.Log("CAB_MAIN_CONSOLE_IMPORT_OK: URP prefab and review scene created");
+    }
+
+    static void InstallStartupControls(GameObject model, CabEngineState state)
+    {
+        var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Cab/StartupControlsWithoutKey.prefab");
+        if(prefab==null)throw new InvalidOperationException("Build startup variants before the console");
+        var panel=(GameObject)PrefabUtility.InstantiatePrefab(prefab);
+        // Both FBXs have import conversion roots. Preserve world scale instead of multiplying them.
+        panel.transform.SetParent(model.transform,true);
+        panel.transform.position=model.transform.position+new Vector3(-.37f,.883f,.06f);
+        var controls=panel.GetComponent<CabStartupControls>();controls.BindEngineState(state);
+        controls.PrepareColdPanel();
+        var spacer=GameObject.CreatePrimitive(PrimitiveType.Cube);spacer.name="Startup_Panel_Isolation_Mount";
+        UnityEngine.Object.DestroyImmediate(spacer.GetComponent<Collider>());
+        spacer.transform.localScale=new Vector3(.24f,.006f,.115f);
+        spacer.transform.SetParent(model.transform,true);spacer.transform.position=model.transform.position+new Vector3(-.37f,.842f,.06f);
+        spacer.GetComponent<Renderer>().sharedMaterial=AssetDatabase.LoadAssetAtPath<Material>(Source+"/Materials/Console_Black_Panel.mat");
+        CabStartupClickTarget Target(string name,CabStartupAction action)
+        {
+            Transform node=null;
+            foreach(var t in model.GetComponentsInChildren<Transform>(true))if(t.name==name){node=t;break;}
+            if(node==null)throw new InvalidOperationException("Startup click mesh missing: "+name);
+            var box=node.gameObject.AddComponent<BoxCollider>();box.center=node.GetComponent<MeshFilter>().sharedMesh.bounds.center;
+            box.size=node.GetComponent<MeshFilter>().sharedMesh.bounds.size;
+            var target=node.gameObject.AddComponent<CabStartupClickTarget>();target.Configure(controls,action);return target;
+        }
+        var key=Target("Fixed_Key_Bezel",CabStartupAction.Key);
+        var pump=Target("Pump_Selector",CabStartupAction.FuelPump);
+        var start=Target("Starter_Button",CabStartupAction.Start);
+        var stop=Target("Engine_Stop_Mushroom",CabStartupAction.Stop);
+        Physics.SyncTransforms();
+        var pointer=model.AddComponent<CabStartupPointer>();pointer.Configure(null,~0);
+        bool Click(CabStartupClickTarget target,bool secondary=false)
+        {
+            var center=target.GetComponent<Collider>().bounds.center;
+            var ray=new Ray(center+Vector3.up*.25f,Vector3.down);
+            Physics.SyncTransforms();
+            bool result=pointer.ActivateRay(ray,secondary);
+            if(!result)
+            {
+                Physics.Raycast(ray,out var hit,4,~0,QueryTriggerInteraction.Ignore);
+                Debug.Log("STARTUP_RAY_DIAGNOSTIC: target="+target.name+"; hit="+(hit.collider==null?"none":hit.collider.name)
+                    +"; inserted="+controls.KeyInserted+"; master="+controls.MasterEnabled+"; warning="+controls.LastWarning
+                    +"; active="+target.gameObject.activeInHierarchy+"; bounds="+target.GetComponent<Collider>().bounds
+                    +"; scene="+target.gameObject.scene.name+"; loaded="+target.gameObject.scene.isLoaded);
+            }
+            return result;
+        }
+        state.FuelPumpOn=false;
+        if(!Click(key)||!controls.KeyInserted||!Click(key)||!controls.MasterEnabled)throw new InvalidOperationException("Key raycast sequence failed");
+        var keyGrip=panel.GetComponentsInChildren<Renderer>();
+        foreach(var renderer in keyGrip)
+            if(renderer.name=="Key_Grip" && renderer.bounds.size.magnitude>.08f)
+                throw new InvalidOperationException("Inserted key import scale multiplied");
+        if(Click(start)||!Click(pump)||!Click(start)||!state.IsEngineStarted)throw new InvalidOperationException("Start raycast sequence failed");
+        if(Click(key,true)||!Click(stop)||!Click(key)||!Click(key,true)||controls.KeyInserted)
+            throw new InvalidOperationException("Stop/removal raycast sequence failed");
+        // Restore a fresh empty-lock state; ray tests may instantiate the removable key.
+        controls.SetFuelPump(false);state.FuelPumpOn=false;
+        PrefabUtility.RecordPrefabInstancePropertyModifications(controls);
+        Debug.Log("CAB_STARTUP_RAYCAST_SEQUENCE_OK: insert/master/pump/start/stop/off/remove");
     }
 
     static void ValidateAssembly(GameObject model, CabEngineState state)
@@ -279,6 +341,8 @@ public static class CabMainConsoleAssetSetup
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.tag = "MainCamera";
         camera.cullingMask = 1 << 31;
+        model.GetComponent<CabStartupPointer>().Configure(camera,1 << 31);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(model.GetComponent<CabStartupPointer>());
         var light = new GameObject("ReviewLight").AddComponent<Light>();
         light.type = LightType.Directional;
         light.cullingMask = 1 << 31;
