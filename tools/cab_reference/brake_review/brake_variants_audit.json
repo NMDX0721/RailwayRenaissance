@@ -1,0 +1,14 @@
+[
+  {
+    "variant": "without_handles",
+    "meshes": 42,
+    "triangles": 18084,
+    "interface_verified": false
+  },
+  {
+    "variant": "with_handles",
+    "meshes": 48,
+    "triangles": 22556,
+    "interface_verified": false
+  }
+]

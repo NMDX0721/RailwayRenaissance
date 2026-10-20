@@ -1,0 +1,16 @@
+[
+  {
+    "variant": "without_handles",
+    "art_status": "final",
+    "historical_or_load_validation": false,
+    "meshes": 44,
+    "triangles": 22564
+  },
+  {
+    "variant": "with_handles",
+    "art_status": "final",
+    "historical_or_load_validation": false,
+    "meshes": 57,
+    "triangles": 33392
+  }
+]

@@ -1,6 +1,10 @@
 # 铁路复兴：沙能冲击 — AI 项目总览
 
+2026-10-20驾驶台单体进展：速度表及大小制动阀已有Unity预制体；窄长电流表新增`CabLinearCurrentGauge`及原生FBX/URP导入，单体验收场景绑定现有牵引电流。主3D操纵台尚未整组装配，动力学仍是简化实现。组件资产/原车考证边界/下一批仪表及信号缺口见[东风4驾驶台组件计划](DF4_CAB_COMPONENT_PLAN.md)。
+
 > 给 AI 代理的快速上手文档。读完本文你应能理解：这个项目是什么、怎么跑、核心系统如何协作、哪里可以改。
+
+> **核对日期：2026-10-18**。当前 `Assets/Scripts/` 为 99 个 C# 文件、约 46,895 行，包含未提交的驾驶台工作。以下「已实现」指代码与调用链存在，不代表本轮通过 Unity 运行验收。风险证据见 [本轮审查](dispatch/orders/CODEX-AUDIT-20261018.md)。
 
 ---
 
@@ -14,7 +18,7 @@
 | 平台 | Windows + Android |
 | 许可证 | MIT |
 | 项目路径 | `D:\Unity Project\RailwayRenaissance` |
-| 开发阶段 | Phase 2 核心代码完成 ✅，Phase 3 资产生成 ⏳，Phase 4 整合打磨 ⏳ |
+| 开发阶段 | 多个核心系统已接线，正处于整合阶段；开局种子接线、存档完整性和结算收尾一致性仍需修复与验收 |
 
 ---
 
@@ -30,30 +34,32 @@
 
 ## 三、四大核心系统（设计概念）
 
-> 以下四个系统在 README 和设计文档中有完整定义，但代码只实现了**沙本位经济核**的部分。其余三个处于设计阶段，尚未编码。
+> 四个系统均已有代码。经济核、创世核、人事与模板叙事已相互接线；完整生成式叙事、完整存档和部分剧情解锁条件仍未完成。
 
 ### 3.1 沙本位经济核（Sand Standard Core）
-- **现状**：✅ 部分实现（`GameData.cs` 874 行）
+- **现状**：✅ 每日结算主链已实现（`GameData.cs`；本轮 1,757 行），仍有收尾一致性风险
 - **核心逻辑**：`GameData.AdvanceDay()` 每日结算
   - 客流 → 收入 → 扣除燃料/维护/工资 → 净收入
   - 信任 + 车况 + 竞争影响 → 更新状态
-  - 见 `参考资料/沙本位经济核.md` v4.2（基于真实数据推算）
-- **公式来源**：`docs/compose/specs/跨系统联动公式.md`（8 个公式）
-- **代码中已实现**：客流公式、收入公式、燃料费公式、维护费公式、信任变化基础、沙能渗透
-- **代码中未实现**：事故概率公式、员工疲劳公式、货运收入、天气影响
+  - 见 `参考资料/设定/沙本位经济核.md` 与 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md`
+- **公式来源**：`参考资料/系统/跨系统联动公式.md`；公式表第一、二节保留历史基线，当前核对见其第七节
+- **代码中已实现**：客流/客货运收入/成本/补贴、订单结算、人事日更、月报、政治与老化演化、监管程序、区域检查及模板叙事
+- **仍有缺口**：`sandPriceMultiplier` 未见消费端；`EventManager` 未消费老化事故倍率；天气机制未见经济结算消费端；日快照与后置效果不完整一致
 
 ### 3.2 千里马创世核（Chollima Genesis Core）
-- **现状**：✅ 已实现（`Assets/Scripts/WorldGen/`：`WorldGenerator` + `WorldSeedData`；标题屏「n创世核 v3.0（世界种子、确定性生成算法）」）
-- **设计**：`docs/compose/specs/核心玩法循环.md` §2
+- **现状**：⚠️ 生成算法与注入 API 已实现，正常新游戏入口尚有接线缺口（`Assets/Scripts/WorldGen/`）
+- **设计**：`参考资料/引擎/核心玩法循环.md` §2
 - **核心思想**：开局种子决定三样不可见结构——城市依赖图、资源分布逻辑、政治倾向
 - **目标**：两局游戏体验不同，因为世界本身就是不同的世界
+- **当前路径风险**：`NewGameSetupUI.OnConfirm` 改 `seedCode`，`GameData.InitializeSubsystems` 却按 `seedId` 加载资源；`ApplyVNExitData` 没有调用 `ApplySeedInitialValues`。不能据生成 API 存在就宣称正常新档已满足全部种子初值规则。
 - **初值铁律（2026-10-17 用户拍板）**：**每个存档的全部趋势初值必须由创世核按种子生成，严禁固定数值**——`WorldGenerator` 对称抖动 `Jitter(base, ±0.05, r)`（信任0.62 / 财政0.30 / 沙能基线 / 政治0.20 / 老化0.30，同种子确定性可复现）。代码中的 0.20、0.30、Trust=62 等常量**仅作无种子与老档缺字段的兼容兜底**，不得出现在正常开局路径。
 
 ### 3.3 岁月叙事引擎（Suiyue Narrative Engine）
-- **现状**：❌ 设计阶段，未编码
-- **设计**：`docs/compose/specs/岁月叙事引擎.md` + `参考资料/视觉小说系统设计.md`
+- **现状**：⚠️ 模板阶段已实现（`Assets/Scripts/Narrative/`），已挂接 `AdvanceDay`；生成式 LLM 阶段未核实实现
+- **设计**：`参考资料/引擎/岁月叙事引擎.md`
 - **核心思想**：AI 分析世界状态生成事件，而非从模板随机挑选
-- **三阶段路线**：模板化 AI（当前设计）→ 本地 LLM 服务（FastAPI + llama.cpp）→ 嵌入式推理（Unity Sentis）
+- **当前管线**：`WorldAnalyzer` → `StoryEvaluator` → `TemplateFiller` → 效果应用 → 简报/公告分发；VN 与临时订单输出仍有 TODO，车况/客流/疲劳叙事效果尚未全部落地
+- **三阶段路线**：模板阶段（已有代码）→ 本地 LLM 服务 → 嵌入式推理；后两者属于后续设计
 - **岁月**：2053 年制造、沉睡 23 年的强 AI 原型，搭载于沙子飞猪号，是游戏中的 AI 角色
 
 ### 3.4 先民人事系统（Seonmin Personnel System）
@@ -68,10 +74,10 @@
 | 趋势线 | 代码映射 | 状态 | 阈值行为 |
 |--------|----------|------|----------|
 | **信任** (Trust) | `GameData.Trust` (0-100) | ✅ 已实现，多策略影响 | <40 预警，<30 持续30天→代际断层 |
-| **财政** (Money) | `GameData.Money` | ✅ 已实现，收支结算 | <0 破产保护（TutorialManager） |
+| **财政** (Money) | `GameData.Money` | ✅ 已实现，收支结算 | 资金截断至非负；归零后触发多日破产程序，不能按旧立即注资描述判断 |
 | **沙能渗透** (Sand Penetration) | `SandRivalManager.cityPenetration` (0-1) | ✅ 已实现，城市级 | >0.40 预警，>0.55→关键线路被控制 |
-| **政治压力** (Political Pressure) | `GameData.PoliticalPressure`（0-1，T304） | ✅ 已实现（Nordhaus 180天周期 + 非对称冲击） | 0.70 约谈整改（补贴−25%）→ 0.85 挂牌督办（补贴−50%、发车−1）→ 0.95 责令停产停业整顿（档名依现实公文语） |
-| **设施老化** (Infrastructure Decay) | `GameData.InfrastructureDecay`（路基0.40/桥隧0.35/信号0.25 加权，T304） | ✅ 已实现（Weibull 危险率演化） | 无维护约180~200天进入重度（~0.60）→ 燃油+25% / 准点−18% / 事故概率二次方放大 |
+| **政治压力** (Political Pressure) | `PoliticalPressure` + `PoliticalTier` | ✅ 连续演化与监管程序已实现 | 罚则读离散档位，经多日程序迁移，不能由连续量直接切档 |
+| **设施老化** (Infrastructure Decay) | `InfrastructureDecay` + 三分项 + 缓存评级 | ✅ 磨耗、维护及定期检定已实现 | 当前燃油倍率 `1+D×0.25`，客流吸引力 `1−D×0.18`；事故二次方放大尚未在 EventManager 中接入 |
 
 > **外显红线（2026-10-17 用户拍板）**：**政治压力与线路老化禁止在任何 UI 显示数值/百分比**，只准定性呈现且**档名/反馈句严格用现实公文与工务用语**（监管五档：警示通报→约谈整改→挂牌督办→停产停业整顿；老化四档：状态合格→经常保养→临时补修→评定失格；见 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md` §六）——延续 §3.4「疲劳与忠诚不显数值」的硬核哲学；**信任与财政（钱）可外显**，沙能保持现状。初值一律走 §3.2 创世核抖动，禁固定。
 
@@ -165,21 +171,19 @@ StationSlice_V1.unity
   → 点击 End Day (两次确认)
   → UIManager.AdvanceDayFlow()
   → GameData.AdvanceDay()
-      1. 发车方案 → 趟数
-      2. 计算客流
-      3. 收入 = 客流 × 票价 × 趟数
-      4. 燃料费 = 油耗 × 里程 × 油价 × 车况系数
-      5. 工资 = 月薪/30
-      6. 维护费 = 策略决定 × 车况系数 × 技能系数
-      7. 净收入 = 收入 - 燃料 - 维护 - 工资
-      8. 信任变化 (基础+1 + 策略影响)
-      9. 车况变化 (维护策略决定)
-      10. 随机事件 (EventManager.TryTriggerEvent)
-      11. 沙能竞争 (SandRivalManager.DailyUpdate + CheckForAction)
-      12. 员工更新 (CrewManager.DailyUpdate)
-      13. 订单更新 (OrderManager.DailyTick)
-      14. 教程检查 (TutorialManager.CheckForTip)
-      15. 刷新 UI
+      1. 发车方案 + PoliticalTier → 趟数；停业档位旅客趟数为 0
+      2. 单趟客流 × 老化吸引力 × 难度 → 容量约束
+      3. 客运收入 + 货运收入 × cargoMultiplier
+      4. OrderManager.DailySettle → 待奖励收入；订单倒计时只由此推进
+      5. 燃料/工资/维护 + 按监管档位调整补贴
+      6. CrewManager.AdvanceDay → 成长/疲劳等（工资已计算）
+      7. 净收入 = round(日收入 × incomeMultiplier) + 订单 - round(三项成本 × costMultiplier) + 补贴
+      8. 信任/车况策略效果 → 老化磨耗/维护 → 政治连续量演化
+      9. 经济随机事件 → 沙能竞争（单次 DailyUpdate / CheckForAction）
+      10. 主经营月账、赤字反馈、趋势快照、持久化、月报、日变化
+      11. Day++ → 区域检查 → 教程 → RefreshBoards
+      12. 监管程序 → 破产检查 → 模板叙事检查/分发
+      13. 返回 DayResult，由调用方刷新 UI
   → 显示日结面板
 ```
 
@@ -211,7 +215,7 @@ VN 中执行 t:"special" + text:"TRANSITION_TO_GAMEPLAY"
   → 序列化到 PlayerPrefs
   → SceneManager.LoadSceneAsync("StationSlice_V1")
   → RailRevivalRuntimeBootstrap 自动执行
-  → UIManager.Start() → GameData.ResetState()
+  → UIManager.Start() → 有 VNExitData 时 ApplyVNExitData；无数据或解析失败时 ResetState
 ```
 
 ---
@@ -262,38 +266,37 @@ JSON 结构：
 
 | 组 | 文件 | 行数 | 职责 |
 |----|------|------|------|
-| **入口/登录** | `LoginManager.cs` | 2327 | 登录/注册/自动登录/UI 构建 |
-| **入口/登录** | `AutoLoginUI.cs` | 224 | 自动登录界面 |
-| **标题** | `TitleScreen.cs` | 285 | 标题界面（UI Toolkit） |
-| **标题** | `TitleScreenVideoBg.cs` | 66 | 视频背景 |
-| **标题** | `NewGameSetupUI.cs` | 269 | 新游戏设置（别名+难度+自定义参数） |
-| **标题** | `TitleArchiveUI.cs` | 703 | 档案界面 |
-| **VN 核心** | `VN/VNManager.cs` | 1006 | VN 单例，管理剧本执行 |
-| **VN 核心** | `VN/VNData.cs` | 57 | 剧本数据结构 |
+| **入口/登录** | `LoginManager.cs` | 2336 | 登录/注册/自动登录/UI 构建 |
+| **入口/登录** | `AutoLoginUI.cs` | 245 | 自动登录界面 |
+| **标题** | `TitleScreen.cs` | 546 | 标题界面（UI Toolkit） |
+| **标题** | `NewGameSetupUI.cs` | 417 | 新游戏设置（别名+难度+自定义参数） |
+| **标题** | `TitleArchiveUI.cs` | 2351 | 档案界面 |
+| **VN 核心** | `VN/VNManager.cs` | 3179 | VN 单例，管理剧本执行 |
+| **VN 核心** | `VN/VNData.cs` | 61 | 剧本数据结构 |
 | **VN 核心** | `VN/JSONParser.cs` | 46 | JSON 加载 |
 | **VN 核心** | `VN/VNExitData.cs` | 26 | VN→经营过渡数据 |
-| **VN 对话** | `VN/DialogueBox.cs` | 1061 | 对话框 + 术语悬浮下划线 + 下方卡片弹窗 + 角色头像框 + 排版防御 |
-| **VN 对话** | `VN/TypewriterEffect.cs` | 104 | 打字机效果 |
-| **VN 对话** | `VN/VNBacklog.cs` | 1959 | 对话回顾（有色半透明和纸沙质图层背景 + 铁道物理双态滚动条 + 滚轮惯性阻尼 + 暖木纹缎带排版） |
-| **VN 视觉** | `VN/BackgroundManager.cs` | 176 | 背景切换（淡入/滑入） |
-| **VN 视觉** | `VN/CharacterSpriteManager.cs` | 138 | 角色立绘（左/中/右） |
-| **VN 视觉** | `VN/FullScreenNews.cs` | 121 | 全屏滚动新闻 |
-| **VN 音频** | `VN/AudioManager.cs` | 141 | VN BGM + SFX |
-| **VN 存档** | `VN/VNSaveSystem.cs` | 136 | 存档系统（3槽位） |
-| **VN 存档** | `VN/VNSaveLoadUI.cs` | 431 | 存读档 UI |
-| **经济核心** | `GameData.cs` | 874 | 经济模拟引擎（静态类） |
-| **经济核心** | `GameConfig.cs` | 88 | 配置持久化（PlayerPrefs） |
-| **经营 UI** | `UIManager.cs` | 612 | 经营 UI 面板管理 |
-| **经营 UI** | `ButtonController.cs` | 51 | 按钮回调 |
-| **经营 UI** | `VisualAssetBinder.cs` | 115 | 视觉资源绑定 |
-| **Bootstrap** | `RailRevivalRuntimeBootstrap.cs` | 560 | 运行时自动构建 UI |
-| **员工** | `CrewManager.cs` | 269 | 员工数据 + NPC 记忆 |
-| **对手 AI** | `SandRivalManager.cs` | 112 | USET 沙能渗透 |
-| **事件** | `EventManager.cs` | 93 | 随机事件（events.json） |
-| **订单** | `OrderManager.cs` | 216 | 订单系统（orders.json） |
+| **VN 对话** | `VN/DialogueBox.cs` | 836 | 对话框 + 术语悬浮下划线 + 下方卡片弹窗 + 角色头像框 + 排版防御 |
+| **VN 对话** | `VN/TypewriterEffect.cs` | 137 | 打字机效果 |
+| **VN 对话** | `VN/VNBacklog.cs` | 1958 | 对话回顾（有色半透明和纸沙质图层背景 + 铁道物理双态滚动条 + 滚轮惯性阻尼 + 暖木纹缎带排版） |
+| **VN 视觉** | `VN/BackgroundManager.cs` | 295 | 背景切换（淡入/滑入） |
+| **VN 视觉** | `VN/CharacterSpriteManager.cs` | 266 | 角色立绘（左/中/右） |
+| **VN 视觉** | `VN/FullScreenNews.cs` | 122 | 全屏滚动新闻 |
+| **VN 音频** | `VN/AudioManager.cs` | 237 | VN BGM + SFX |
+| **VN 存档** | `VN/VNSaveSystem.cs` | 138 | 存档系统（3槽位） |
+| **VN 存档** | `VN/VNSaveLoadUI.cs` | 556 | 存读档 UI |
+| **经济核心** | `GameData.cs` | 1757 | 经济模拟引擎（静态类） |
+| **经济核心** | `GameConfig.cs` | 94 | 配置持久化（PlayerPrefs） |
+| **经营 UI** | `UIManager.cs` | 634 | 经营 UI 面板管理 |
+| **经营 UI** | `ButtonController.cs` | 53 | 按钮回调 |
+| **经营 UI** | `VisualAssetBinder.cs` | 119 | 视觉资源绑定 |
+| **Bootstrap** | `RailRevivalRuntimeBootstrap.cs` | 567 | 运行时自动构建 UI |
+| **员工** | `CrewManager.cs` | 1784 | 员工数据 + NPC 记忆 |
+| **对手 AI** | `SandRivalManager.cs` | 182 | USET 沙能渗透 |
+| **事件** | `EventManager.cs` | 145 | 随机事件（events.json） |
+| **订单** | `OrderManager.cs` | 296 | 订单系统（orders.json） |
 | **引导** | `TutorialManager.cs` | 145 | 新手引导（按天解锁） |
-| **成就** | `AchievementManager.cs` | 169 | 成就系统 |
-| **其他** | `TermHighlightSystem.cs` | 77 | 术语高亮匹配器（驱动 Terms.json 65条工业术语） |
+| **成就** | `AchievementManager.cs` | 183 | 成就系统 |
+| **其他** | `TermHighlightSystem.cs` | 221 | 术语高亮匹配器（驱动 Terms.json 65条工业术语） |
 | **其他** | `SceneSetup.cs` | 40 | 场景设置 |
 | **其他** | `TrainPlaceholderLoader.cs` | 26 | 火车占位符 |
 | **其他** | `CloudSeaTrainBackground.cs` | 65 | 云海背景 |
@@ -351,7 +354,7 @@ JSON 结构：
 | `序章剧本_归乡.md` | 序章完整剧本 | ⭐⭐ |
 | `故事线时间轴.md` | 世界历史时间线 | ⭐ |
 
-### 设计文档（docs/compose/specs/）
+### 设计文档（按 `参考资料/INDEX.md` 定位，旧 docs/compose 路径仅作历史线索）
 | 文档 | 内容 | 阅读优先级 |
 |------|------|-----------|
 | `核心玩法循环.md` v2.0 | 三层时间结构 + 五条趋势线 | ⭐⭐⭐ |
@@ -368,10 +371,11 @@ JSON 结构：
 
 ## 十二、设计-实现差距（待办清单）
 
-### P0 — 核心玩法缺失
-- [ ] **政治压力趋势线**：代码无映射，作用在财政/事件上
-- [ ] **设施老化趋势线**：代码无映射，线路级磨损
-- [ ] **五条趋势线可视化**：UI 上显示趋势图
+### 优先整合问题（2026-10-18 静态审查）
+- [ ] 正常开局把种子码、资源种子、趋势注入串为唯一入口，并核对 VN 过渡的初值规则
+- [ ] 按槽位保存/恢复完整世界、监管、人事、订单与叙事状态，避免旧基础状态与全局新状态混装
+- [ ] 统一结算后置效果、日变化、快照、公告和日结展示的时序
+- [x] 政治压力、设施老化及趋势看板已有代码；保留政治/老化只准定性呈现的要求，运行验收另行完成
 
 ### P1 — 系统性重构
 - [ ] `LoginManager.cs` 拆分（2308行 → 3-4文件）
@@ -380,15 +384,15 @@ JSON 结构：
 
 ### P2 — 玩法扩展
 - [ ] 科技树系统（4 领域 28 节点）
-- [ ] 员工疲劳/忠诚度隐藏 UI
-- [ ] 月/年时间模型
-- [ ] 区域解锁系统
-- [ ] 事故概率公式实现
+- [ ] 疲劳/忠诚的行为反馈体验验收（人事日更已有实现）
+- [ ] 月/年玩法扩展（30天月报、360天季节周期已有实现）
+- [ ] 区域解锁补齐剧情/科技门槛（数值解锁与每日检查已有实现）
+- [ ] 老化事故倍率接入与天气影响实现；核对沙价倍率消费端
 
 ### P3 — 高级系统
 - [ ] VN AI 三模式对话（预设/自由/混合）
-- [ ] 千里马创世核（种子世界生成）
-- [ ] 岁月叙事引擎（AI 事件生成）
+- [ ] 创世核正常入口与完整世界存档验收（生成算法已有）
+- [ ] 岁月叙事生成式阶段、VN/订单输出和未落地效果（模板阶段已有）
 - [ ] 手机 AI 助手（玩家 API Key 驱动）
 - [ ] 更多剧本内容
 

@@ -26,6 +26,27 @@ namespace RailwayRenaissance.Cab
         private CabEngineState engineState;
         private Cab3DSceneController sceneController;
 
+        // 拟真指针与物理构件缓存
+        private VisualElement needleSpeed;
+        private VisualElement needleRpm;
+        private VisualElement needleBrakePipe; // 列车管白针
+        private VisualElement needleMainRes;   // 总风缸红针
+        private VisualElement needleWaterTemp;
+        private VisualElement needleOilPress;
+        private VisualElement needleCurrent;   // 牵引电流
+        private VisualElement throttleGripHandle;
+        private VisualElement reverserGripHandle;
+        private VisualElement brakeGripHandle;
+        private VisualElement signalLampGreen;
+        private VisualElement signalLampYellow;
+        private VisualElement signalLampRedYellow;
+        private VisualElement signalLampRed;
+
+        private Label lblTotalMileage;
+        private Label lblCurrentAmps;
+        private Label lblMainResPress;
+        private Label lblBrakePipePress;
+
         // UI 引用缓存
         private Label lblSpeed;
         private Label lblRpm;
@@ -38,6 +59,13 @@ namespace RailwayRenaissance.Cab
         private Label lblDistanceToStation;
         private Label lblStartupSequenceGuide;
         private Label lblAlert;
+
+        // 琴键按键高亮视觉项
+        private VisualElement keyHeadlight;
+        private VisualElement keyInstrument;
+        private VisualElement keyFuelPump;
+        private VisualElement keySand;
+        private VisualElement keyHeater;
 
         // 悬浮 HUD 引用
         private Label hudSpeedBig;
@@ -166,7 +194,7 @@ namespace RailwayRenaissance.Cab
         }
 
         /// <summary>
-        /// 绘制工业车窗框 (中间镂空视窗，四周厚重金属框、雨刷臂与遮阳板)
+        /// 绘制工业车窗框 (中间镂空视窗，四周厚重金属框、中柱机车信号灯箱、雨刷臂与遮阳板)
         /// </summary>
         private void BuildWindowFrameMask()
         {
@@ -185,31 +213,33 @@ namespace RailwayRenaissance.Cab
             roofFrame.style.right = 0;
             roofFrame.style.top = 0;
             roofFrame.style.height = 42;
-            roofFrame.style.backgroundColor = CabPalette.DarkBronze;
+            roofFrame.style.backgroundColor = CabPalette.CabGreen;
             roofFrame.style.borderBottomWidth = 3;
-            roofFrame.style.borderBottomColor = CabPalette.IronBlack;
+            roofFrame.style.borderBottomColor = CabPalette.CabConsoleDark;
             windowFrameMask.Add(roofFrame);
 
-            // 遮阳板装饰卡条
+            // 遮阳板装饰卡条 (茶色半透明滤光板)
             var sunVisor = new VisualElement();
-            sunVisor.style.width = 320;
-            sunVisor.style.height = 18;
+            sunVisor.style.width = 340;
+            sunVisor.style.height = 20;
             sunVisor.style.marginLeft = 60;
-            sunVisor.style.backgroundColor = new Color(0.18f, 0.16f, 0.14f, 0.95f);
+            sunVisor.style.backgroundColor = new Color(0.28f, 0.22f, 0.12f, 0.88f);
             sunVisor.style.borderBottomLeftRadius = 6;
             sunVisor.style.borderBottomRightRadius = 6;
+            SetBorder(sunVisor.style, 1, CabPalette.GoldTrim);
             roofFrame.Add(sunVisor);
 
-            // 左侧立柱 A 柱
+            // 左侧立柱 A 柱 (工业墨绿 + 铆钉细节)
             var leftPillar = new VisualElement();
             leftPillar.style.position = Position.Absolute;
             leftPillar.style.left = 0;
             leftPillar.style.top = 0;
-            leftPillar.style.bottom = 180;
-            leftPillar.style.width = 48;
-            leftPillar.style.backgroundColor = CabPalette.DarkBronze;
+            leftPillar.style.bottom = 240;
+            leftPillar.style.width = 50;
+            leftPillar.style.backgroundColor = CabPalette.CabGreen;
             leftPillar.style.borderRightWidth = 3;
-            leftPillar.style.borderRightColor = CabPalette.IronBlack;
+            leftPillar.style.borderRightColor = CabPalette.CabConsoleDark;
+            AddRivets(leftPillar, 6);
             windowFrameMask.Add(leftPillar);
 
             // 右侧立柱
@@ -217,32 +247,109 @@ namespace RailwayRenaissance.Cab
             rightPillar.style.position = Position.Absolute;
             rightPillar.style.right = 0;
             rightPillar.style.top = 0;
-            rightPillar.style.bottom = 180;
-            rightPillar.style.width = 48;
-            rightPillar.style.backgroundColor = CabPalette.DarkBronze;
+            rightPillar.style.bottom = 240;
+            rightPillar.style.width = 50;
+            rightPillar.style.backgroundColor = CabPalette.CabGreen;
             rightPillar.style.borderLeftWidth = 3;
-            rightPillar.style.borderLeftColor = CabPalette.IronBlack;
+            rightPillar.style.borderLeftColor = CabPalette.CabConsoleDark;
+            AddRivets(rightPillar, 6);
             windowFrameMask.Add(rightPillar);
 
-            // 中央中分窗柱 (制造真实驾驶室双窗视野)
+            // 中央中分窗柱 (制造真实机车双窗视野，并在中柱安装竖排机车信号机)
             var centerPillar = new VisualElement();
             centerPillar.style.position = Position.Absolute;
-            centerPillar.style.left = Length.Percent(49.2f);
-            centerPillar.style.top = 40;
-            centerPillar.style.bottom = 180;
-            centerPillar.style.width = 18;
-            centerPillar.style.backgroundColor = CabPalette.WarmBronze;
+            centerPillar.style.left = Length.Percent(48.5f);
+            centerPillar.style.top = 38;
+            centerPillar.style.bottom = 240;
+            centerPillar.style.width = 34;
+            centerPillar.style.backgroundColor = CabPalette.CabGreen;
             centerPillar.style.borderLeftWidth = 2;
             centerPillar.style.borderRightWidth = 2;
-            centerPillar.style.borderLeftColor = CabPalette.IronBlack;
-            centerPillar.style.borderRightColor = CabPalette.IronBlack;
+            centerPillar.style.borderLeftColor = CabPalette.CabConsoleDark;
+            centerPillar.style.borderRightColor = CabPalette.CabConsoleDark;
+            centerPillar.style.alignItems = Align.Center;
+
+            // 竖立在中柱上的八显示机车信号机灯箱 (Cab Signal Box)
+            var signalBox = new VisualElement();
+            signalBox.style.marginTop = 24;
+            signalBox.style.width = 28;
+            signalBox.style.paddingTop = 6;
+            signalBox.style.paddingBottom = 6;
+            signalBox.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(signalBox.style, 2, CabPalette.GaugeBezelMetal);
+            signalBox.style.borderTopLeftRadius = 4; signalBox.style.borderTopRightRadius = 4;
+            signalBox.style.borderBottomLeftRadius = 4; signalBox.style.borderBottomRightRadius = 4;
+            signalBox.style.alignItems = Align.Center;
+
+            // 铭牌小字 [信号]
+            var lblSigTitle = new Label("信号") { style = { fontSize = 8, color = CabPalette.RicePaper, marginBottom = 4 } };
+            signalBox.Add(lblSigTitle);
+
+            // 4 颗透镜灯 (绿 / 黄 / 红黄 / 红)
+            signalLampGreen = CreateSignalLens(CabPalette.SignalLensGreen);
+            signalLampYellow = CreateSignalLens(CabPalette.SignalLensYellow);
+            signalLampRedYellow = CreateSignalLens(new Color(0.95f, 0.5f, 0.1f));
+            signalLampRed = CreateSignalLens(CabPalette.SignalLensRed);
+
+            signalBox.Add(signalLampGreen);
+            signalBox.Add(signalLampYellow);
+            signalBox.Add(signalLampRedYellow);
+            signalBox.Add(signalLampRed);
+
+            centerPillar.Add(signalBox);
             windowFrameMask.Add(centerPillar);
 
             root.Add(windowFrameMask);
         }
 
+        private VisualElement CreateSignalLens(Color glowColor)
+        {
+            var holder = new VisualElement();
+            holder.style.width = 18;
+            holder.style.height = 18;
+            holder.style.marginBottom = 4;
+            holder.style.borderTopLeftRadius = 9; holder.style.borderTopRightRadius = 9;
+            holder.style.borderBottomLeftRadius = 9; holder.style.borderBottomRightRadius = 9;
+            holder.style.backgroundColor = CabPalette.SignalLensDark;
+            SetBorder(holder.style, 1.5f, new Color(0.1f, 0.1f, 0.12f));
+            holder.style.alignItems = Align.Center;
+            holder.style.justifyContent = Justify.Center;
+
+            var innerCore = new VisualElement();
+            innerCore.name = "lens-core";
+            innerCore.style.width = 10;
+            innerCore.style.height = 10;
+            innerCore.style.borderTopLeftRadius = 5; innerCore.style.borderTopRightRadius = 5;
+            innerCore.style.borderBottomLeftRadius = 5; innerCore.style.borderBottomRightRadius = 5;
+            innerCore.style.backgroundColor = new Color(0.18f, 0.18f, 0.2f);
+            holder.Add(innerCore);
+
+            return holder;
+        }
+
+        private void AddRivets(VisualElement pillar, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var rivet = new VisualElement();
+                rivet.style.position = Position.Absolute;
+                rivet.style.left = 18;
+                rivet.style.top = 60 + i * 55;
+                rivet.style.width = 8;
+                rivet.style.height = 8;
+                rivet.style.borderTopLeftRadius = 4; rivet.style.borderTopRightRadius = 4;
+                rivet.style.borderBottomLeftRadius = 4; rivet.style.borderBottomRightRadius = 4;
+                rivet.style.backgroundColor = CabPalette.BoltSilver;
+                SetBorder(rivet.style, 1, CabPalette.IronBlack);
+                pillar.Add(rivet);
+            }
+        }
+
         /// <summary>
         /// 构建硬核拟真控制台 (下半部 190px 仪表板与操控手柄台)
+        /// </summary>
+        /// <summary>
+        /// 构建硬核拟真控制台 (NF-5「耕牛·改」762mm 窄轨内燃机车工业机械操纵台)
         /// </summary>
         private void BuildHardcorePanel()
         {
@@ -251,196 +358,602 @@ namespace RailwayRenaissance.Cab
             hardcorePanel.style.left = 0;
             hardcorePanel.style.right = 0;
             hardcorePanel.style.bottom = 0;
-            hardcorePanel.style.height = 190;
-            hardcorePanel.style.backgroundColor = new Color(0.14f, 0.12f, 0.11f, 0.98f);
+            hardcorePanel.style.height = 250;
+            hardcorePanel.style.backgroundColor = CabPalette.CabConsoleDark;
             hardcorePanel.style.borderTopWidth = 4;
-            hardcorePanel.style.borderTopColor = CabPalette.WarmBronze;
-            hardcorePanel.style.flexDirection = FlexDirection.Row;
-            hardcorePanel.style.paddingLeft = 24;
-            hardcorePanel.style.paddingRight = 24;
-            hardcorePanel.style.paddingTop = 10;
-            hardcorePanel.style.paddingBottom = 10;
+            hardcorePanel.style.borderTopColor = CabPalette.CabPanelTrim;
+            hardcorePanel.style.flexDirection = FlexDirection.Column;
+            hardcorePanel.style.paddingLeft = 16;
+            hardcorePanel.style.paddingRight = 16;
+            hardcorePanel.style.paddingTop = 0;
+            hardcorePanel.style.paddingBottom = 8;
 
-            // 1. 左侧：操纵手柄与钥匙区 (换向手柄 + 主控推杆 + 大闸手柄)
-            var leverSection = new VisualElement();
-            leverSection.style.width = Length.Percent(32);
-            leverSection.style.flexDirection = FlexDirection.Column;
-            leverSection.style.justifyContent = Justify.SpaceBetween;
-            hardcorePanel.Add(leverSection);
+            // 0. 操纵台顶边缘黄铜铸造长方铭牌与内六角螺栓装饰条
+            var topPlaqueBar = new VisualElement();
+            topPlaqueBar.style.height = 24;
+            topPlaqueBar.style.backgroundColor = CabPalette.CabPanelTrim;
+            topPlaqueBar.style.flexDirection = FlexDirection.Row;
+            topPlaqueBar.style.justifyContent = Justify.Center;
+            topPlaqueBar.style.alignItems = Align.Center;
+            topPlaqueBar.style.marginLeft = -16;
+            topPlaqueBar.style.marginRight = -16;
+            topPlaqueBar.style.borderBottomWidth = 1;
+            topPlaqueBar.style.borderBottomColor = CabPalette.IronBlack;
 
-            // 开机程序卡与状态指示
-            lblStartupSequenceGuide = new Label("【开机规程】①启机 -> ②挂前进档 -> ③制动缓解 -> ④提手柄牵引");
-            lblStartupSequenceGuide.style.fontSize = 11;
+            var plaqueText = new Label("【 NF-5 型窄轨内燃机车 · 耕牛·改 】 太原机车车辆厂 1965 定型 · 762mm 轨距");
+            plaqueText.style.fontSize = 11;
+            plaqueText.style.color = CabPalette.BrassPlaqueGold;
+            plaqueText.style.unityFontStyleAndWeight = FontStyle.Bold;
+            topPlaqueBar.Add(plaqueText);
+            hardcorePanel.Add(topPlaqueBar);
+
+            // 主操纵区域 (分为：左动力主控区、中机械仪表群、右 JZ-7 制动操控区)
+            var mainDeskRow = new VisualElement();
+            mainDeskRow.style.flexDirection = FlexDirection.Row;
+            mainDeskRow.style.flexGrow = 1;
+            mainDeskRow.style.paddingTop = 6;
+            mainDeskRow.style.paddingBottom = 4;
+            hardcorePanel.Add(mainDeskRow);
+
+            // ================= 1. 左侧：动力主控台 (主控提手柄导轨 + 换向手柄) =================
+            var leftCtrlDesk = new VisualElement();
+            leftCtrlDesk.style.width = Length.Percent(27);
+            leftCtrlDesk.style.flexDirection = FlexDirection.Column;
+            leftCtrlDesk.style.justifyContent = Justify.SpaceBetween;
+            leftCtrlDesk.style.paddingRight = 10;
+            mainDeskRow.Add(leftCtrlDesk);
+
+            // 开机规程标牌
+            lblStartupSequenceGuide = new Label("规程: ①启机 -> ②换向 -> ③缓解 -> ④提手柄");
+            lblStartupSequenceGuide.style.fontSize = 10;
             lblStartupSequenceGuide.style.color = CabPalette.AmberGlow;
-            leverSection.Add(lblStartupSequenceGuide);
+            leftCtrlDesk.Add(lblStartupSequenceGuide);
 
-            // 控制手柄水平列
             var leversRow = new VisualElement();
             leversRow.style.flexDirection = FlexDirection.Row;
             leversRow.style.justifyContent = Justify.SpaceAround;
             leversRow.style.alignItems = Align.Center;
             leversRow.style.flexGrow = 1;
-            leverSection.Add(leversRow);
+            leftCtrlDesk.Add(leversRow);
 
-            // (1) 启机电门按键
-            var startBtn = new Button(() =>
-            {
-                if (!engineState.IsEngineRunning)
-                {
-                    engineState.StartEngine();
-                }
-                else
-                {
-                    engineState.StopEngine();
-                }
-            }) { text = "柴油机启机" };
-            StyleLeverButton(startBtn, CabPalette.GoldTrim);
-            leversRow.Add(startBtn);
-
-            // (2) 换向手柄 (后 - 中 - 前)
+            // (1) 机械换向手柄 (后退 - 中立 - 前进)
             var reverserBox = new VisualElement();
             reverserBox.style.alignItems = Align.Center;
             lblReverser = new Label("换向: 中立");
-            lblReverser.style.fontSize = 12;
+            lblReverser.style.fontSize = 11;
             lblReverser.style.color = CabPalette.RicePaper;
             reverserBox.Add(lblReverser);
 
-            var reverserBtnRow = new VisualElement();
-            reverserBtnRow.style.flexDirection = FlexDirection.Row;
-            var btnRevBack = new Button(() => engineState.SetReverser(ReverserPosition.Reverse)) { text = "后" };
-            var btnRevNeutral = new Button(() => engineState.SetReverser(ReverserPosition.Neutral)) { text = "中" };
-            var btnRevForward = new Button(() => engineState.SetReverser(ReverserPosition.Forward)) { text = "前" };
-            StyleMiniButton(btnRevBack); StyleMiniButton(btnRevNeutral); StyleMiniButton(btnRevForward);
-            reverserBtnRow.Add(btnRevBack); reverserBtnRow.Add(btnRevNeutral); reverserBtnRow.Add(btnRevForward);
-            reverserBox.Add(reverserBtnRow);
+            var reverserFrame = new VisualElement();
+            reverserFrame.style.width = 68;
+            reverserFrame.style.height = 70;
+            reverserFrame.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(reverserFrame.style, 1.5f, CabPalette.CabPanelTrim);
+            reverserFrame.style.borderTopLeftRadius = 4; reverserFrame.style.borderTopRightRadius = 4;
+            reverserFrame.style.borderBottomLeftRadius = 4; reverserFrame.style.borderBottomRightRadius = 4;
+            reverserFrame.style.justifyContent = Justify.SpaceAround;
+            reverserFrame.style.alignItems = Align.Center;
+            reverserFrame.style.paddingTop = 2; reverserFrame.style.paddingBottom = 2;
+
+            var btnRevFwd = new Button(() => engineState.SetReverser(ReverserPosition.Forward)) { text = "▲ 前进 F" };
+            var btnRevNeu = new Button(() => engineState.SetReverser(ReverserPosition.Neutral)) { text = "● 中立 N" };
+            var btnRevRev = new Button(() => engineState.SetReverser(ReverserPosition.Reverse)) { text = "▼ 后退 R" };
+            StyleMiniLeverBtn(btnRevFwd); StyleMiniLeverBtn(btnRevNeu); StyleMiniLeverBtn(btnRevRev);
+            reverserFrame.Add(btnRevFwd); reverserFrame.Add(btnRevNeu); reverserFrame.Add(btnRevRev);
+            reverserBox.Add(reverserFrame);
             leversRow.Add(reverserBox);
 
-            // (3) 主控手柄 (0 - 8 阶)
+            // (2) 主控提手柄实体铣槽 (0 ~ 8 阶)
             var throttleBox = new VisualElement();
             throttleBox.style.alignItems = Align.Center;
             lblThrottle = new Label("主控: 0 阶");
-            lblThrottle.style.fontSize = 12;
+            lblThrottle.style.fontSize = 11;
             lblThrottle.style.color = CabPalette.RicePaper;
             throttleBox.Add(lblThrottle);
 
-            var throttleBtnRow = new VisualElement();
-            throttleBtnRow.style.flexDirection = FlexDirection.Row;
-            var btnThrottleDec = new Button(() => engineState.ThrottleDown()) { text = "降档 -" };
-            var btnThrottleInc = new Button(() => engineState.ThrottleUp()) { text = "升档 +" };
-            StyleMiniButton(btnThrottleDec); StyleMiniButton(btnThrottleInc);
-            throttleBtnRow.Add(btnThrottleDec); throttleBtnRow.Add(btnThrottleInc);
-            throttleBox.Add(throttleBtnRow);
+            var throttleSlotFrame = new VisualElement();
+            throttleSlotFrame.style.width = 82;
+            throttleSlotFrame.style.height = 96;
+            throttleSlotFrame.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(throttleSlotFrame.style, 1.5f, CabPalette.CabPanelTrim);
+            throttleSlotFrame.style.borderTopLeftRadius = 4; throttleSlotFrame.style.borderTopRightRadius = 4;
+            throttleSlotFrame.style.borderBottomLeftRadius = 4; throttleSlotFrame.style.borderBottomRightRadius = 4;
+            throttleSlotFrame.style.flexDirection = FlexDirection.Row;
+            throttleSlotFrame.style.alignItems = Align.Center;
+            throttleSlotFrame.style.justifyContent = Justify.SpaceAround;
+
+            // 竖槽导轨
+            var trackSlot = new VisualElement();
+            trackSlot.style.width = 16;
+            trackSlot.style.height = 80;
+            trackSlot.style.backgroundColor = new Color(0.05f, 0.05f, 0.06f);
+            SetBorder(trackSlot.style, 1, new Color(0.2f, 0.2f, 0.22f));
+            trackSlot.style.borderTopLeftRadius = 3; trackSlot.style.borderTopRightRadius = 3;
+            trackSlot.style.borderBottomLeftRadius = 3; trackSlot.style.borderBottomRightRadius = 3;
+            trackSlot.style.position = Position.Relative;
+
+            // 手柄滑块头
+            throttleGripHandle = new VisualElement();
+            throttleGripHandle.style.position = Position.Absolute;
+            throttleGripHandle.style.left = -6;
+            throttleGripHandle.style.top = 64; // 0档位于底部
+            throttleGripHandle.style.width = 28;
+            throttleGripHandle.style.height = 16;
+            throttleGripHandle.style.backgroundColor = CabPalette.BrassPlaqueGold;
+            SetBorder(throttleGripHandle.style, 1, CabPalette.IronBlack);
+            throttleGripHandle.style.borderTopLeftRadius = 3; throttleGripHandle.style.borderTopRightRadius = 3;
+            throttleGripHandle.style.borderBottomLeftRadius = 3; throttleGripHandle.style.borderBottomRightRadius = 3;
+            trackSlot.Add(throttleGripHandle);
+            throttleSlotFrame.Add(trackSlot);
+
+            // 快速提档/降档按钮列
+            var throttleBtns = new VisualElement();
+            throttleBtns.style.flexDirection = FlexDirection.Column;
+            throttleBtns.style.justifyContent = Justify.SpaceAround;
+            var btnThrotInc = new Button(() => engineState.ThrottleUp()) { text = "提手柄 +" };
+            var btnThrotDec = new Button(() => engineState.ThrottleDown()) { text = "降手柄 -" };
+            StyleMiniLeverBtn(btnThrotInc); StyleMiniLeverBtn(btnThrotDec);
+            btnThrotInc.style.height = 34; btnThrotDec.style.height = 34;
+            throttleBtns.Add(btnThrotInc); throttleBtns.Add(btnThrotDec);
+            throttleSlotFrame.Add(throttleBtns);
+
+            throttleBox.Add(throttleSlotFrame);
             leversRow.Add(throttleBox);
 
-            // (4) 大闸制动手柄 (充/运/初/常/紧)
-            var brakeBox = new VisualElement();
-            brakeBox.style.alignItems = Align.Center;
-            lblBrakeNotch = new Label("大闸: 运转位");
-            lblBrakeNotch.style.fontSize = 12;
-            lblBrakeNotch.style.color = CabPalette.RicePaper;
-            brakeBox.Add(lblBrakeNotch);
+            // ================= 2. 中间：经典机械指针仪表阵列 (4 块高精度机械表盘) =================
+            var gaugeDesk = new VisualElement();
+            gaugeDesk.style.width = Length.Percent(46);
+            gaugeDesk.style.flexDirection = FlexDirection.Row;
+            gaugeDesk.style.justifyContent = Justify.SpaceAround;
+            gaugeDesk.style.alignItems = Align.Center;
+            mainDeskRow.Add(gaugeDesk);
 
-            var brakeBtnRow = new VisualElement();
-            brakeBtnRow.style.flexDirection = FlexDirection.Row;
-            var btnBrakeDec = new Button(() => engineState.BrakeReleaseStep()) { text = "缓解" };
-            var btnBrakeInc = new Button(() => engineState.BrakeApplyStep()) { text = "制动" };
-            var btnBrakeEmg = new Button(() => engineState.SetBrakeNotch(BrakeNotch.Emergency)) { text = "紧急" };
-            StyleMiniButton(btnBrakeDec); StyleMiniButton(btnBrakeInc); StyleMiniButton(btnBrakeEmg);
-            btnBrakeEmg.style.backgroundColor = CabPalette.CrimsonRed;
-            brakeBtnRow.Add(btnBrakeDec); brakeBtnRow.Add(btnBrakeInc); brakeBtnRow.Add(btnBrakeEmg);
-            brakeBox.Add(brakeBtnRow);
-            leversRow.Add(brakeBox);
+            // (1) 双针风表 (红针: 总风缸 800kPa / 白针: 列车管 500kPa)
+            var dualAirGauge = CreateDualAirPressureGauge(out needleMainRes, out needleBrakePipe, out lblMainResPress, out lblBrakePipePress);
+            gaugeDesk.Add(dualAirGauge);
 
-            // 2. 中间：拟真圆形仪表盘 (速度表、柴油机转速表、总风/列车管压表、水温表)
-            var gaugeSection = new VisualElement();
-            gaugeSection.style.width = Length.Percent(44);
-            gaugeSection.style.flexDirection = FlexDirection.Row;
-            gaugeSection.style.justifyContent = Justify.SpaceAround;
-            gaugeSection.style.alignItems = Align.Center;
-            hardcorePanel.Add(gaugeSection);
+            // (2) 方形外壳老式机械速度表 (0 ~ 120 km/h)
+            var speedSquareGauge = CreateSpeedGauge(out needleSpeed, out lblSpeed, out lblTotalMileage);
+            gaugeDesk.Add(speedSquareGauge);
 
-            // 速度表圆盘
-            var speedDial = CreateRoundDial("速度 (km/h)", out lblSpeed);
-            gaugeSection.Add(speedDial);
+            // (3) 柴油机转速表 (0 ~ 1200 rpm)
+            var rpmGauge = CreatePhysicalGauge("转速表", "RPM", 0, 1200, -120f, 120f, CabPalette.NeedleRed, out needleRpm, out lblRpm, 90);
+            gaugeDesk.Add(rpmGauge);
 
-            // 转速表圆盘
-            var rpmDial = CreateRoundDial("柴油机转速 (rpm)", out lblRpm);
-            gaugeSection.Add(rpmDial);
+            // (4) 柴油机工况双针表 (水温 & 机油压力)
+            var engineStatusGauge = CreateEngineDualStatusGauge(out needleWaterTemp, out needleOilPress, out lblWaterTemp);
+            gaugeDesk.Add(engineStatusGauge);
 
-            // 风压表圆盘
-            var pressDial = CreateRoundDial("制动风压 (kPa)", out lblBrakePressure);
-            gaugeSection.Add(pressDial);
+            // ================= 3. 右侧：JZ-7 型空气制动机与行车状态卡 =================
+            var rightBrakeDesk = new VisualElement();
+            rightBrakeDesk.style.width = Length.Percent(27);
+            rightBrakeDesk.style.flexDirection = FlexDirection.Column;
+            rightBrakeDesk.style.justifyContent = Justify.SpaceBetween;
+            rightBrakeDesk.style.paddingLeft = 8;
+            mainDeskRow.Add(rightBrakeDesk);
 
-            // 水温表圆盘
-            var tempDial = CreateRoundDial("冷却水温 (℃)", out lblWaterTemp);
-            gaugeSection.Add(tempDial);
-
-            // 3. 右侧：信号机状态、鸣笛、车灯、雨刷辅助按键
-            var auxSection = new VisualElement();
-            auxSection.style.width = Length.Percent(24);
-            auxSection.style.flexDirection = FlexDirection.Column;
-            auxSection.style.justifyContent = Justify.SpaceAround;
-            auxSection.style.paddingLeft = 12;
-            hardcorePanel.Add(auxSection);
-
-            // 信号与进站信息卡
+            // 闭塞与站距行车信息卡
             var infoCard = new VisualElement();
-            infoCard.style.backgroundColor = new Color(0.08f, 0.08f, 0.09f, 0.9f);
-            SetBorder(infoCard.style, 1, CabPalette.WarmBronze);
+            infoCard.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(infoCard.style, 1.5f, CabPalette.CabPanelTrim);
             infoCard.style.paddingLeft = 8; infoCard.style.paddingRight = 8;
             infoCard.style.paddingTop = 4; infoCard.style.paddingBottom = 4;
             infoCard.style.borderTopLeftRadius = 4; infoCard.style.borderTopRightRadius = 4;
             infoCard.style.borderBottomLeftRadius = 4; infoCard.style.borderBottomRightRadius = 4;
 
-            lblSignalStatus = new Label("前方信号: [绿灯] 通行");
-            lblSignalStatus.style.fontSize = 12;
-            lblSignalStatus.style.color = new Color(0.2f, 0.9f, 0.3f);
-            infoCard.Add(lblSignalStatus);
-
             lblDistanceToStation = new Label("距松桥站: 1000 m");
-            lblDistanceToStation.style.fontSize = 12;
+            lblDistanceToStation.style.fontSize = 11;
             lblDistanceToStation.style.color = CabPalette.RicePaper;
+            lblDistanceToStation.style.unityFontStyleAndWeight = FontStyle.Bold;
             infoCard.Add(lblDistanceToStation);
 
             lblAlert = new Label("");
-            lblAlert.style.fontSize = 11;
+            lblAlert.style.fontSize = 10;
             lblAlert.style.color = CabPalette.CrimsonRed;
             infoCard.Add(lblAlert);
+            rightBrakeDesk.Add(infoCard);
 
-            auxSection.Add(infoCard);
+            // JZ-7 制动大闸操控槽
+            var brakeBox = new VisualElement();
+            brakeBox.style.alignItems = Align.Center;
+            lblBrakeNotch = new Label("JZ-7自阀: 运转位");
+            lblBrakeNotch.style.fontSize = 11;
+            lblBrakeNotch.style.color = CabPalette.RicePaper;
+            brakeBox.Add(lblBrakeNotch);
 
-            // 鸣笛与辅助设备按键列
-            var auxButtons = new VisualElement();
-            auxButtons.style.flexDirection = FlexDirection.Row;
-            auxButtons.style.justifyContent = Justify.SpaceBetween;
+            var brakeSlotFrame = new VisualElement();
+            brakeSlotFrame.style.width = Length.Percent(98);
+            brakeSlotFrame.style.height = 68;
+            brakeSlotFrame.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(brakeSlotFrame.style, 1.5f, CabPalette.CabPanelTrim);
+            brakeSlotFrame.style.borderTopLeftRadius = 4; brakeSlotFrame.style.borderTopRightRadius = 4;
+            brakeSlotFrame.style.borderBottomLeftRadius = 4; brakeSlotFrame.style.borderBottomRightRadius = 4;
+            brakeSlotFrame.style.flexDirection = FlexDirection.Row;
+            brakeSlotFrame.style.justifyContent = Justify.SpaceAround;
+            brakeSlotFrame.style.alignItems = Align.Center;
 
-            // 鸣笛按钮 (带惊动震颤反馈)
-            var hornBtn = new Button(() =>
+            var btnBrakeRel = new Button(() => engineState.BrakeReleaseStep()) { text = "缓解" };
+            var btnBrakeApp = new Button(() => engineState.BrakeApplyStep()) { text = "制动" };
+            var btnBrakeEmg = new Button(() => engineState.SetBrakeNotch(BrakeNotch.Emergency)) { text = "紧急排风" };
+            var btnIndepBrake = new Button(() =>
             {
-                if (sceneController != null) sceneController.TriggerHornShock();
-            }) { text = "汽笛鸣笛" };
-            StyleAuxButton(hornBtn, CabPalette.AmberGlow);
-            auxButtons.Add(hornBtn);
+                float next = engineState.IndependentBrakeNotch > 0.1f ? 0f : 1f;
+                engineState.SetIndependentBrake(next);
+            }) { text = "小闸" };
 
-            // 前照灯开关
-            var lightBtn = new Button(() =>
+            StyleMiniLeverBtn(btnBrakeRel); StyleMiniLeverBtn(btnBrakeApp); StyleMiniLeverBtn(btnBrakeEmg); StyleMiniLeverBtn(btnIndepBrake);
+            btnBrakeEmg.style.backgroundColor = CabPalette.CrimsonRed;
+            btnBrakeEmg.style.color = Color.white;
+
+            brakeSlotFrame.Add(btnBrakeRel);
+            brakeSlotFrame.Add(btnBrakeApp);
+            brakeSlotFrame.Add(btnIndepBrake);
+            brakeSlotFrame.Add(btnBrakeEmg);
+            brakeBox.Add(brakeSlotFrame);
+            rightBrakeDesk.Add(brakeBox);
+
+            // ================= 4. 底区：一整排象牙白琴键开关 (Piano Switches) =================
+            var pianoKeysRow = new VisualElement();
+            pianoKeysRow.style.height = 42;
+            pianoKeysRow.style.backgroundColor = new Color(0.1f, 0.09f, 0.08f);
+            SetBorder(pianoKeysRow.style, 1, CabPalette.CabPanelTrim);
+            pianoKeysRow.style.borderTopLeftRadius = 4; pianoKeysRow.style.borderTopRightRadius = 4;
+            pianoKeysRow.style.borderBottomLeftRadius = 4; pianoKeysRow.style.borderBottomRightRadius = 4;
+            pianoKeysRow.style.flexDirection = FlexDirection.Row;
+            pianoKeysRow.style.justifyContent = Justify.SpaceAround;
+            pianoKeysRow.style.alignItems = Align.Center;
+            pianoKeysRow.style.paddingLeft = 4;
+            pianoKeysRow.style.paddingRight = 4;
+
+            // 1. 启机电门 (带黄黑警戒边框)
+            var startKey = CreatePianoSwitch("启机点火", CabPalette.BrassPlaqueGold, () =>
+            {
+                if (!engineState.IsEngineRunning) engineState.StartEngine();
+                else engineState.StopEngine();
+            });
+            SetBorder(startKey.style, 1.5f, CabPalette.AmberGlow);
+            pianoKeysRow.Add(startKey);
+
+            // 2. 前照大灯
+            keyHeadlight = CreatePianoSwitch("前照大灯", CabPalette.RicePaper, () =>
             {
                 if (sceneController != null) sceneController.ToggleHeadlight();
-            }) { text = "前照大灯" };
-            StyleAuxButton(lightBtn, CabPalette.GoldTrim);
-            auxButtons.Add(lightBtn);
+                engineState.HeadlightOn = !engineState.HeadlightOn;
+            });
+            pianoKeysRow.Add(keyHeadlight);
 
-            // 雨刷开关
-            var wiperBtn = new Button(() =>
+            // 3. 仪表照明
+            keyInstrument = CreatePianoSwitch("仪表背光", CabPalette.RicePaper, () =>
+            {
+                engineState.InstrumentLightOn = !engineState.InstrumentLightOn;
+            });
+            pianoKeysRow.Add(keyInstrument);
+
+            // 4. 燃油供给泵
+            keyFuelPump = CreatePianoSwitch("燃油泵", CabPalette.RicePaper, () =>
+            {
+                engineState.FuelPumpOn = !engineState.FuelPumpOn;
+            });
+            pianoKeysRow.Add(keyFuelPump);
+
+            // 5. 风挡除霜风机
+            keyHeater = CreatePianoSwitch("除霜风机", CabPalette.RicePaper, () =>
             {
                 if (sceneController != null) sceneController.ToggleWipers();
-            }) { text = "风挡雨刷" };
-            StyleAuxButton(wiperBtn, CabPalette.RicePaper);
-            auxButtons.Add(wiperBtn);
+                engineState.CabHeaterOn = !engineState.CabHeaterOn;
+            });
+            pianoKeysRow.Add(keyHeater);
 
-            auxSection.Add(auxButtons);
+            // 6. 轨面撒砂 (防空转)
+            keySand = CreatePianoSwitch("轨面撒砂", CabPalette.RicePaper, () =>
+            {
+                engineState.SandOn = !engineState.SandOn;
+            });
+            pianoKeysRow.Add(keySand);
 
+            // 7. 车顶汽笛 (鸣笛)
+            var hornKey = CreatePianoSwitch("汽笛鸣响", CabPalette.AmberGlow, () =>
+            {
+                if (sceneController != null) sceneController.TriggerHornShock();
+                engineState.TriggerHorn();
+            });
+            pianoKeysRow.Add(hornKey);
+
+            // 8. 红色大蘑菇头紧急停车拍钮
+            var emergencyStopBtn = new Button(() =>
+            {
+                engineState.SetBrakeNotch(BrakeNotch.Emergency);
+                engineState.SetThrottle(0);
+                if (sceneController != null) sceneController.TriggerHornShock();
+            }) { text = "● 急停拍钮" };
+            emergencyStopBtn.style.height = 32;
+            emergencyStopBtn.style.paddingLeft = 8; emergencyStopBtn.style.paddingRight = 8;
+            emergencyStopBtn.style.fontSize = 10;
+            emergencyStopBtn.style.backgroundColor = CabPalette.CrimsonRed;
+            emergencyStopBtn.style.color = Color.white;
+            emergencyStopBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
+            SetBorder(emergencyStopBtn.style, 1.5f, Color.white);
+            emergencyStopBtn.style.borderTopLeftRadius = 4; emergencyStopBtn.style.borderTopRightRadius = 4;
+            emergencyStopBtn.style.borderBottomLeftRadius = 4; emergencyStopBtn.style.borderBottomRightRadius = 4;
+            pianoKeysRow.Add(emergencyStopBtn);
+
+            hardcorePanel.Add(pianoKeysRow);
             root.Add(hardcorePanel);
+        }
+
+        private VisualElement CreatePianoSwitch(string labelText, Color textColor, System.Action onClick)
+        {
+            var btn = new Button(onClick) { text = labelText };
+            btn.style.height = 32;
+            btn.style.paddingLeft = 6;
+            btn.style.paddingRight = 6;
+            btn.style.fontSize = 10;
+            btn.style.backgroundColor = CabPalette.IvoryKeyCap;
+            btn.style.color = CabPalette.IronBlack;
+            btn.style.unityFontStyleAndWeight = FontStyle.Bold;
+            SetBorder(btn.style, 1, CabPalette.CabPanelTrim);
+            btn.style.borderTopLeftRadius = 3; btn.style.borderTopRightRadius = 3;
+            btn.style.borderBottomLeftRadius = 3; btn.style.borderBottomRightRadius = 3;
+            return btn;
+        }
+
+        private VisualElement CreatePhysicalGauge(string title, string unit, float minVal, float maxVal, float minAngle, float maxAngle, Color needleColor, out VisualElement needle, out Label valLbl, int size)
+        {
+            var gauge = new VisualElement();
+            gauge.style.width = size;
+            gauge.style.height = size;
+            gauge.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(gauge.style, 3, CabPalette.GaugeBezelMetal);
+            gauge.style.borderTopLeftRadius = size / 2;
+            gauge.style.borderTopRightRadius = size / 2;
+            gauge.style.borderBottomLeftRadius = size / 2;
+            gauge.style.borderBottomRightRadius = size / 2;
+            gauge.style.position = Position.Relative;
+            gauge.style.alignItems = Align.Center;
+            gauge.style.justifyContent = Justify.Center;
+            gauge.style.overflow = Overflow.Hidden;
+
+            // 内部刻度环微光
+            var innerRing = new VisualElement();
+            innerRing.style.position = Position.Absolute;
+            innerRing.style.left = 3; innerRing.style.top = 3; innerRing.style.right = 3; innerRing.style.bottom = 3;
+            SetBorder(innerRing.style, 1, new Color(0.24f, 0.24f, 0.26f, 0.8f));
+            innerRing.style.borderTopLeftRadius = (size - 6) / 2; innerRing.style.borderTopRightRadius = (size - 6) / 2;
+            innerRing.style.borderBottomLeftRadius = (size - 6) / 2; innerRing.style.borderBottomRightRadius = (size - 6) / 2;
+            gauge.Add(innerRing);
+
+            var lblTitle = new Label(title) { style = { position = Position.Absolute, top = 10, fontSize = 9, color = CabPalette.RicePaper, unityFontStyleAndWeight = FontStyle.Bold } };
+            gauge.Add(lblTitle);
+
+            var lblUnit = new Label(unit) { style = { position = Position.Absolute, top = 22, fontSize = 8, color = CabPalette.IvoryKeyDark } };
+            gauge.Add(lblUnit);
+
+            // 刻度范围标记
+            var lblMin = new Label(minVal.ToString("F0")) { style = { position = Position.Absolute, left = 8, bottom = 14, fontSize = 8, color = CabPalette.RicePaper } };
+            var lblMax = new Label(maxVal.ToString("F0")) { style = { position = Position.Absolute, right = 8, bottom = 14, fontSize = 8, color = CabPalette.RicePaper } };
+            gauge.Add(lblMin); gauge.Add(lblMax);
+
+            // 指针 (针尖向上，中心为旋转轴点)
+            float needleLen = size * 0.36f;
+            needle = new VisualElement();
+            needle.style.position = Position.Absolute;
+            needle.style.width = 2.5f;
+            needle.style.height = needleLen;
+            needle.style.left = (size / 2f) - 1.25f;
+            needle.style.top = (size / 2f) - needleLen;
+            needle.style.backgroundColor = needleColor;
+            needle.style.borderTopLeftRadius = 1; needle.style.borderTopRightRadius = 1;
+            needle.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needle.style.rotate = new Rotate(minAngle);
+            gauge.Add(needle);
+
+            // 表心金属轴盖
+            var hub = new VisualElement();
+            hub.style.position = Position.Absolute;
+            hub.style.width = 12; hub.style.height = 12;
+            hub.style.left = (size / 2f) - 6f; hub.style.top = (size / 2f) - 6f;
+            hub.style.borderTopLeftRadius = 6; hub.style.borderTopRightRadius = 6;
+            hub.style.borderBottomLeftRadius = 6; hub.style.borderBottomRightRadius = 6;
+            hub.style.backgroundColor = CabPalette.DarkBronze;
+            SetBorder(hub.style, 1, CabPalette.GoldTrim);
+            gauge.Add(hub);
+
+            // 底部数字
+            valLbl = new Label("0") { style = { position = Position.Absolute, bottom = 4, fontSize = 10, color = CabPalette.AmberGlow, unityFontStyleAndWeight = FontStyle.Bold } };
+            gauge.Add(valLbl);
+
+            return gauge;
+        }
+
+        /// <summary>
+        /// 双针风表 (红针: 总风缸 0~1000 kPa, 白针: 列车管 0~1000 kPa)
+        /// </summary>
+        private VisualElement CreateDualAirPressureGauge(out VisualElement needleRed, out VisualElement needleWhite, out Label valRedLbl, out Label valWhiteLbl)
+        {
+            int size = 90;
+            var gauge = new VisualElement();
+            gauge.style.width = size;
+            gauge.style.height = size;
+            gauge.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(gauge.style, 3, CabPalette.GaugeBezelMetal);
+            gauge.style.borderTopLeftRadius = size / 2; gauge.style.borderTopRightRadius = size / 2;
+            gauge.style.borderBottomLeftRadius = size / 2; gauge.style.borderBottomRightRadius = size / 2;
+            gauge.style.position = Position.Relative;
+            gauge.style.alignItems = Align.Center;
+            gauge.style.justifyContent = Justify.Center;
+            gauge.style.overflow = Overflow.Hidden;
+
+            var titleLbl = new Label("双针风表 (kPa)") { style = { position = Position.Absolute, top = 8, fontSize = 9, color = CabPalette.RicePaper, unityFontStyleAndWeight = FontStyle.Bold } };
+            gauge.Add(titleLbl);
+
+            float needleLen = size * 0.35f;
+
+            // 红针: 总风缸
+            needleRed = new VisualElement();
+            needleRed.style.position = Position.Absolute;
+            needleRed.style.width = 2.5f; needleRed.style.height = needleLen;
+            needleRed.style.left = (size / 2f) - 1.25f; needleRed.style.top = (size / 2f) - needleLen;
+            needleRed.style.backgroundColor = CabPalette.NeedleRed;
+            needleRed.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needleRed.style.rotate = new Rotate(-120f);
+            gauge.Add(needleRed);
+
+            // 白针: 列车管
+            needleWhite = new VisualElement();
+            needleWhite.style.position = Position.Absolute;
+            needleWhite.style.width = 2f; needleWhite.style.height = needleLen * 0.95f;
+            needleWhite.style.left = (size / 2f) - 1f; needleWhite.style.top = (size / 2f) - (needleLen * 0.95f);
+            needleWhite.style.backgroundColor = CabPalette.NeedleWhite;
+            needleWhite.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needleWhite.style.rotate = new Rotate(-120f);
+            gauge.Add(needleWhite);
+
+            // 表心轴盖
+            var hub = new VisualElement();
+            hub.style.position = Position.Absolute;
+            hub.style.width = 12; hub.style.height = 12;
+            hub.style.left = (size / 2f) - 6f; hub.style.top = (size / 2f) - 6f;
+            hub.style.borderTopLeftRadius = 6; hub.style.borderTopRightRadius = 6;
+            hub.style.borderBottomLeftRadius = 6; hub.style.borderBottomRightRadius = 6;
+            hub.style.backgroundColor = CabPalette.CabPanelTrim;
+            SetBorder(hub.style, 1, CabPalette.BoltSilver);
+            gauge.Add(hub);
+
+            // 双值标签 (总风 红 / 列车 白)
+            var labelsBox = new VisualElement();
+            labelsBox.style.position = Position.Absolute;
+            labelsBox.style.bottom = 4;
+            labelsBox.style.flexDirection = FlexDirection.Row;
+
+            valRedLbl = new Label("820") { style = { fontSize = 9, color = CabPalette.NeedleRed, marginRight = 4, unityFontStyleAndWeight = FontStyle.Bold } };
+            valWhiteLbl = new Label("500") { style = { fontSize = 9, color = CabPalette.NeedleWhite, unityFontStyleAndWeight = FontStyle.Bold } };
+            labelsBox.Add(valRedLbl); labelsBox.Add(valWhiteLbl);
+            gauge.Add(labelsBox);
+
+            return gauge;
+        }
+
+        /// <summary>
+        /// 方形外框老式机械速度表 (0 ~ 120 km/h + 滚轮数字里程)
+        /// </summary>
+        private VisualElement CreateSpeedGauge(out VisualElement needle, out Label speedLbl, out Label odoLbl)
+        {
+            int size = 90;
+            var box = new VisualElement();
+            box.style.width = size;
+            box.style.height = size;
+            box.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(box.style, 3, CabPalette.GaugeBezelMetal);
+            box.style.borderTopLeftRadius = 6; box.style.borderTopRightRadius = 6;
+            box.style.borderBottomLeftRadius = 6; box.style.borderBottomRightRadius = 6;
+            box.style.position = Position.Relative;
+            box.style.alignItems = Align.Center;
+            box.style.justifyContent = Justify.Center;
+            box.style.overflow = Overflow.Hidden;
+
+            var titleLbl = new Label("速度计 KM/H") { style = { position = Position.Absolute, top = 8, fontSize = 9, color = CabPalette.RicePaper, unityFontStyleAndWeight = FontStyle.Bold } };
+            box.Add(titleLbl);
+
+            float needleLen = size * 0.35f;
+            needle = new VisualElement();
+            needle.style.position = Position.Absolute;
+            needle.style.width = 2.5f; needle.style.height = needleLen;
+            needle.style.left = (size / 2f) - 1.25f; needle.style.top = (size / 2f) - needleLen;
+            needle.style.backgroundColor = CabPalette.NeedleAmber;
+            needle.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needle.style.rotate = new Rotate(-120f);
+            box.Add(needle);
+
+            var hub = new VisualElement();
+            hub.style.position = Position.Absolute;
+            hub.style.width = 12; hub.style.height = 12;
+            hub.style.left = (size / 2f) - 6f; hub.style.top = (size / 2f) - 6f;
+            hub.style.borderTopLeftRadius = 6; hub.style.borderTopRightRadius = 6;
+            hub.style.borderBottomLeftRadius = 6; hub.style.borderBottomRightRadius = 6;
+            hub.style.backgroundColor = CabPalette.DarkBronze;
+            SetBorder(hub.style, 1, CabPalette.GoldTrim);
+            box.Add(hub);
+
+            // 速度读数与机械里程计
+            speedLbl = new Label("0.0") { style = { position = Position.Absolute, bottom = 14, fontSize = 11, color = CabPalette.NeedleAmber, unityFontStyleAndWeight = FontStyle.Bold } };
+            odoLbl = new Label("ODO: 0012.4km") { style = { position = Position.Absolute, bottom = 2, fontSize = 7, color = CabPalette.IvoryKeyDark } };
+            box.Add(speedLbl); box.Add(odoLbl);
+
+            return box;
+        }
+
+        /// <summary>
+        /// 柴油机工况双针表 (水温 40~120 ℃ & 机油压力 0~0.8 MPa)
+        /// </summary>
+        private VisualElement CreateEngineDualStatusGauge(out VisualElement needleTemp, out VisualElement needleOil, out Label tempLbl)
+        {
+            int size = 90;
+            var gauge = new VisualElement();
+            gauge.style.width = size;
+            gauge.style.height = size;
+            gauge.style.backgroundColor = CabPalette.GaugeFaceDark;
+            SetBorder(gauge.style, 3, CabPalette.GaugeBezelMetal);
+            gauge.style.borderTopLeftRadius = size / 2; gauge.style.borderTopRightRadius = size / 2;
+            gauge.style.borderBottomLeftRadius = size / 2; gauge.style.borderBottomRightRadius = size / 2;
+            gauge.style.position = Position.Relative;
+            gauge.style.alignItems = Align.Center;
+            gauge.style.justifyContent = Justify.Center;
+            gauge.style.overflow = Overflow.Hidden;
+
+            var titleLbl = new Label("水温 / 油压") { style = { position = Position.Absolute, top = 8, fontSize = 9, color = CabPalette.RicePaper, unityFontStyleAndWeight = FontStyle.Bold } };
+            gauge.Add(titleLbl);
+
+            float needleLen = size * 0.35f;
+
+            // 水温针 (红)
+            needleTemp = new VisualElement();
+            needleTemp.style.position = Position.Absolute;
+            needleTemp.style.width = 2.5f; needleTemp.style.height = needleLen;
+            needleTemp.style.left = (size / 2f) - 1.25f; needleTemp.style.top = (size / 2f) - needleLen;
+            needleTemp.style.backgroundColor = CabPalette.NeedleRed;
+            needleTemp.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needleTemp.style.rotate = new Rotate(-80f);
+            gauge.Add(needleTemp);
+
+            // 机油针 (黄)
+            needleOil = new VisualElement();
+            needleOil.style.position = Position.Absolute;
+            needleOil.style.width = 2f; needleOil.style.height = needleLen * 0.9f;
+            needleOil.style.left = (size / 2f) - 1f; needleOil.style.top = (size / 2f) - (needleLen * 0.9f);
+            needleOil.style.backgroundColor = CabPalette.NeedleAmber;
+            needleOil.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(100));
+            needleOil.style.rotate = new Rotate(80f);
+            gauge.Add(needleOil);
+
+            var hub = new VisualElement();
+            hub.style.position = Position.Absolute;
+            hub.style.width = 12; hub.style.height = 12;
+            hub.style.left = (size / 2f) - 6f; hub.style.top = (size / 2f) - 6f;
+            hub.style.borderTopLeftRadius = 6; hub.style.borderTopRightRadius = 6;
+            hub.style.borderBottomLeftRadius = 6; hub.style.borderBottomRightRadius = 6;
+            hub.style.backgroundColor = CabPalette.DarkBronze;
+            SetBorder(hub.style, 1, CabPalette.GoldTrim);
+            gauge.Add(hub);
+
+            tempLbl = new Label("75 ℃ | 0.45 MPa") { style = { position = Position.Absolute, bottom = 4, fontSize = 8, color = CabPalette.RicePaper, unityFontStyleAndWeight = FontStyle.Bold } };
+            gauge.Add(tempLbl);
+
+            return gauge;
+        }
+
+        private void StyleMiniLeverBtn(Button btn)
+        {
+            btn.style.height = 24;
+            btn.style.marginLeft = 2;
+            btn.style.marginRight = 2;
+            btn.style.paddingLeft = 5;
+            btn.style.paddingRight = 5;
+            btn.style.fontSize = 10;
+            btn.style.backgroundColor = new Color(0.2f, 0.19f, 0.18f);
+            btn.style.color = CabPalette.RicePaper;
+            SetBorder(btn.style, 1, CabPalette.CabPanelTrim);
+            btn.style.borderTopLeftRadius = 3; btn.style.borderTopRightRadius = 3;
+            btn.style.borderBottomLeftRadius = 3; btn.style.borderBottomRightRadius = 3;
         }
 
         /// <summary>
@@ -548,7 +1061,7 @@ namespace RailwayRenaissance.Cab
             // 左侧标题
             var titleBox = new VisualElement { style = { flexDirection = FlexDirection.Row, alignItems = Align.Center } };
             var iconLbl = new Label("🚂") { style = { fontSize = 18, marginRight = 8 } };
-            var titleLbl = new Label("0721型机车驾驶台 · 3D程序化像素视界")
+            var titleLbl = new Label("NF-5「耕牛·改」762mm 窄轨内燃机车操纵台 · 3D程序化像素视界")
             {
                 style = { fontSize = 13, color = CabPalette.AmberGlow, unityFontStyleAndWeight = FontStyle.Bold }
             };
@@ -705,41 +1218,90 @@ namespace RailwayRenaissance.Cab
 
         private void UpdateUI()
         {
-            // 更新硬核面板文字
+            // 1. 物理机械指针旋转驱动
+            if (needleSpeed != null)
+            {
+                float speedRatio = Mathf.Clamp01(Mathf.Abs(engineState.CurrentSpeedKmh) / 120f);
+                needleSpeed.style.rotate = new Rotate(Mathf.Lerp(-120f, 120f, speedRatio));
+            }
+            if (needleRpm != null)
+            {
+                float rpmRatio = Mathf.Clamp01(engineState.EngineRpm / 1200f);
+                needleRpm.style.rotate = new Rotate(Mathf.Lerp(-120f, 120f, rpmRatio));
+            }
+            if (needleMainRes != null)
+            {
+                float mainResRatio = Mathf.Clamp01(engineState.MainReservoirKpa / 1000f);
+                needleMainRes.style.rotate = new Rotate(Mathf.Lerp(-120f, 120f, mainResRatio));
+            }
+            if (needleBrakePipe != null)
+            {
+                float pipeRatio = Mathf.Clamp01(engineState.BrakePipeKpa / 1000f);
+                needleBrakePipe.style.rotate = new Rotate(Mathf.Lerp(-120f, 120f, pipeRatio));
+            }
+            if (needleWaterTemp != null)
+            {
+                float tempRatio = Mathf.Clamp01((engineState.WaterTempCelsius - 40f) / 80f);
+                needleWaterTemp.style.rotate = new Rotate(Mathf.Lerp(-80f, 0f, tempRatio));
+            }
+            if (needleOilPress != null)
+            {
+                float oilRatio = Mathf.Clamp01(engineState.OilPressureMpa / 0.8f);
+                needleOilPress.style.rotate = new Rotate(Mathf.Lerp(80f, 0f, oilRatio));
+            }
+
+            // 2. 主控提手柄滑块垂直位置 (0 阶在槽底 64px, 8 阶在槽顶 4px)
+            if (throttleGripHandle != null)
+            {
+                float throtT = engineState.ThrottleNotch / 8f;
+                throttleGripHandle.style.top = Mathf.Lerp(64f, 4f, throtT);
+            }
+
+            // 3. 挡风中柱竖排八显示机车信号机灯箱联动
+            UpdateSignalBoxLenses();
+
+            // 4. 文字与读数刷新
             if (lblSpeed != null) lblSpeed.text = engineState.CurrentSpeedKmh.ToString("F1");
             if (lblRpm != null) lblRpm.text = Mathf.RoundToInt(engineState.EngineRpm).ToString();
-            if (lblBrakePressure != null) lblBrakePressure.text = Mathf.RoundToInt(engineState.BrakeCylinderKpa).ToString();
-            if (lblWaterTemp != null) lblWaterTemp.text = engineState.WaterTempCelsius.ToString("F0");
+            if (lblMainResPress != null) lblMainResPress.text = Mathf.RoundToInt(engineState.MainReservoirKpa).ToString();
+            if (lblBrakePipePress != null) lblBrakePipePress.text = Mathf.RoundToInt(engineState.BrakePipeKpa).ToString();
+            if (lblTotalMileage != null) lblTotalMileage.text = $"ODO: {(engineState.TotalTraveledMeters / 1000f):F1}km";
+            if (lblWaterTemp != null) lblWaterTemp.text = $"{engineState.WaterTempCelsius:F0} ℃ | {engineState.OilPressureMpa:F2} MPa";
 
             if (lblThrottle != null) lblThrottle.text = $"主控: {engineState.ThrottleNotch} 阶";
             if (lblReverser != null) lblReverser.text = $"换向: {engineState.GetReverserString()}";
-            if (lblBrakeNotch != null) lblBrakeNotch.text = $"大闸: {engineState.GetBrakeNotchString()}";
+            if (lblBrakeNotch != null)
+            {
+                string indepStr = engineState.IndependentBrakeNotch > 0.1f ? " [小闸制动中]" : "";
+                lblBrakeNotch.text = $"JZ-7自阀: {engineState.GetBrakeNotchString()}{indepStr}";
+            }
 
             if (lblDistanceToStation != null)
             {
                 lblDistanceToStation.text = $"距松桥站: {Mathf.Max(0, Mathf.RoundToInt(engineState.DistanceToStationMeters))} m";
             }
 
-            if (lblSignalStatus != null)
-            {
-                bool isGreen = engineState.SignalIsGreen;
-                lblSignalStatus.text = isGreen ? "前方信号: [绿灯] 允许运行" : "前方信号: [红灯] 停车警戒";
-                lblSignalStatus.style.color = isGreen ? new Color(0.2f, 0.9f, 0.3f) : CabPalette.CrimsonRed;
-            }
-
             if (lblAlert != null)
             {
                 if (!engineState.IsEngineRunning)
                 {
-                    lblAlert.text = "【未启机】点击电门启机";
+                    lblAlert.text = "【未启机】点击底部启机电门点火";
                 }
                 else if (engineState.CurrentReverser == ReverserPosition.Neutral && engineState.ThrottleNotch > 0)
                 {
-                    lblAlert.text = "【警告】换向器居中空转中！";
+                    lblAlert.text = "【警告】换向器中立空转中！";
                 }
                 else if (engineState.CurrentBrakeNotch >= BrakeNotch.Common && engineState.ThrottleNotch > 0)
                 {
                     lblAlert.text = "【警示】严禁带制动牵引！";
+                }
+                else if (engineState.BrakePos == BrakeNotch.Emergency)
+                {
+                    lblAlert.text = "【紧急排风】列车管气压排空全列抱死！";
+                }
+                else if (engineState.SandOn)
+                {
+                    lblAlert.text = "【撒砂中】轨面喷砂防空转";
                 }
                 else
                 {
@@ -747,17 +1309,59 @@ namespace RailwayRenaissance.Cab
                 }
             }
 
-            // 更新悬浮 HUD 大字
+            // 5. 琴键开关选中状态反馈
+            SyncPianoKeyVisual(keyHeadlight, engineState.HeadlightOn);
+            SyncPianoKeyVisual(keyInstrument, engineState.InstrumentLightOn);
+            SyncPianoKeyVisual(keyFuelPump, engineState.FuelPumpOn);
+            SyncPianoKeyVisual(keySand, engineState.SandOn);
+            SyncPianoKeyVisual(keyHeater, engineState.CabHeaterOn);
+
+            // 6. 更新悬浮 HUD 大字
             if (hudSpeedBig != null) hudSpeedBig.text = engineState.CurrentSpeedKmh.ToString("F1");
             if (hudNotchBig != null) hudNotchBig.text = $"{engineState.ThrottleNotch} 阶";
             if (hudBrakeBig != null) hudBrakeBig.text = engineState.GetBrakeNotchString();
-            if (hudPressBig != null) hudPressBig.text = Mathf.RoundToInt(engineState.BrakeCylinderKpa).ToString();
+            if (hudPressBig != null) hudPressBig.text = Mathf.RoundToInt(engineState.BrakePipeKpa).ToString();
             if (hudDistanceBig != null) hudDistanceBig.text = $"{Mathf.Max(0, Mathf.RoundToInt(engineState.DistanceToStationMeters))}m";
 
             // 保持 RenderTexture 图像实时刷新
             if (rtDisplayImage != null && sceneController != null && rtDisplayImage.image != sceneController.TargetTexture)
             {
                 rtDisplayImage.image = sceneController.TargetTexture;
+            }
+        }
+
+        private void SyncPianoKeyVisual(VisualElement key, bool isOn)
+        {
+            if (key == null) return;
+            key.style.backgroundColor = isOn ? CabPalette.IvoryKeyCap : CabPalette.IvoryKeyDark;
+            key.style.color = isOn ? CabPalette.IronBlack : new Color(0.2f, 0.2f, 0.25f);
+        }
+
+        private void UpdateSignalBoxLenses()
+        {
+            if (signalLampGreen == null) return;
+            var aspect = engineState.CurrentSignalAspect;
+
+            SetLensState(signalLampGreen, aspect == CabSignalAspect.Green, CabPalette.SignalLensGreen);
+            SetLensState(signalLampYellow, aspect == CabSignalAspect.Yellow, CabPalette.SignalLensYellow);
+            SetLensState(signalLampRedYellow, aspect == CabSignalAspect.RedYellow, new Color(0.95f, 0.55f, 0.1f));
+            SetLensState(signalLampRed, aspect == CabSignalAspect.Red, CabPalette.SignalLensRed);
+        }
+
+        private void SetLensState(VisualElement lensHolder, bool isActive, Color activeColor)
+        {
+            var core = lensHolder.Q<VisualElement>("lens-core");
+            if (core == null) return;
+
+            if (isActive)
+            {
+                core.style.backgroundColor = activeColor;
+                SetBorder(lensHolder.style, 1.5f, activeColor);
+            }
+            else
+            {
+                core.style.backgroundColor = new Color(0.18f, 0.18f, 0.2f);
+                SetBorder(lensHolder.style, 1.5f, new Color(0.1f, 0.1f, 0.12f));
             }
         }
 

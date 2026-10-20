@@ -1,0 +1,38 @@
+{
+  "variants": [
+    {
+      "variant": "connection_without_handles",
+      "meshes": 42,
+      "triangles": 20644
+    },
+    {
+      "variant": "connection_with_handles",
+      "meshes": 57,
+      "triangles": 30812
+    }
+  ],
+  "interfaces": [
+    {
+      "label": "Tall",
+      "top": 0.023000000044703484,
+      "radius": 0.016,
+      "seat_length": 0.022,
+      "initial_angle_deg": 55,
+      "side_clearance_m": 0.00025,
+      "bottom_clearance_m": 0.0005,
+      "radial_clearance_m": 0.0003
+    },
+    {
+      "label": "Short",
+      "top": 0.03500000014901161,
+      "radius": 0.013,
+      "seat_length": 0.018,
+      "initial_angle_deg": 105,
+      "side_clearance_m": 0.00025,
+      "bottom_clearance_m": 0.0005,
+      "radial_clearance_m": 0.0003
+    }
+  ],
+  "historical_interface_verified": false,
+  "load_or_sweep_tested": false
+}

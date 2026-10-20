@@ -1,0 +1,9 @@
+{
+  "art_status": "final",
+  "meshes": 31,
+  "triangles": 18936,
+  "historical_dimensions_verified": false,
+  "unity_validated": false,
+  "glass_requires_transmission_support": true,
+  "front_inclination_visual_estimate_deg": 7
+}

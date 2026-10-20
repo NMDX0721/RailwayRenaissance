@@ -1,0 +1,25 @@
+{
+  "source": "D:\\Unity Project\\RailwayRenaissance\\Assets\\Models\\Cab\\jz7_brake_valve.glb",
+  "mesh_count": 1,
+  "source_dimensions_units_unknown": [
+    1.9028912782669067,
+    0.954870879650116,
+    1.5702476501464844
+  ],
+  "bounds_min": [
+    -0.9519015550613403,
+    -0.4839022159576416,
+    -0.7858683466911316
+  ],
+  "bounds_max": [
+    0.9509897232055664,
+    0.47096866369247437,
+    0.784379243850708
+  ],
+  "parts": [
+    {
+      "name": "Mesh_0",
+      "triangles": 327864
+    }
+  ]
+}

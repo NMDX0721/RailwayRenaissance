@@ -1,0 +1,71 @@
+{
+  "materials": [
+    {
+      "name": "Joint_Clay",
+      "metallic": 0.0,
+      "smoothness": 0.5200000107288361,
+      "color": [
+        0.06499999761581421,
+        0.07000000029802322,
+        0.06499999761581421,
+        1.0
+      ]
+    },
+    {
+      "name": "Reference_CastSilver",
+      "metallic": 0.6800000071525574,
+      "smoothness": 0.5,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityBrake/Reference_CastSilver_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityBrake/Reference_CastSilver_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityBrake/Reference_CastSilver_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_MachinedSilver",
+      "metallic": 0.8600000143051147,
+      "smoothness": 0.5,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityBrake/Reference_MachinedSilver_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityBrake/Reference_MachinedSilver_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityBrake/Reference_MachinedSilver_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_OldSteel",
+      "metallic": 0.8600000143051147,
+      "smoothness": 0.5,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityBrake/Reference_OldSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityBrake/Reference_OldSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityBrake/Reference_OldSteel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_WornBlack",
+      "metallic": 0.0,
+      "smoothness": 0.5,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityBrake/Reference_WornBlack_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityBrake/Reference_WornBlack_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityBrake/Reference_WornBlack_MetallicSmoothness.png"
+    }
+  ]
+}

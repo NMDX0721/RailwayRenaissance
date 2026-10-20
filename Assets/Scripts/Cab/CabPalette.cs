@@ -27,10 +27,9 @@ namespace RailwayRenaissance.Cab
         public static readonly Color RicePaper        = ColorOffWhite;
         public static readonly Color CrimsonRed       = HexColor("#B22222"); // 暗红警戒
         public static readonly Color GoldTrim         = ColorGold;
+        // 场景特定色值（铁道、植被、信号）
         public static readonly Color RailSteel        = HexColor("#8C9EAF"); // 钢轨银蓝
         public static readonly Color IronBlack        = HexColor("#1A1412"); // 铁黑底色
-
-        // 场景特定色值（铁道、植被、信号）
         public static readonly Color ColorSteelRail   = HexColor("#8C9EAF"); // 钢轨银蓝
         public static readonly Color ColorBallast     = HexColor("#47413B"); // 道砟中灰
         public static readonly Color ColorSleeper     = HexColor("#281C13"); // 枕木深褐
@@ -43,6 +42,24 @@ namespace RailwayRenaissance.Cab
         public static readonly Color ColorPoleWood    = HexColor("#544030"); // 电线杆深木色
         public static readonly Color ColorStationWall = HexColor("#D9CEB8"); // 站房米灰墙面
         public static readonly Color ColorStationRoof = HexColor("#8B3322"); // 站房红陶瓦屋顶
+
+        // 驾驶台重工业专用色彩
+        public static readonly Color CabGreen         = HexColor("#233D2D"); // 经典内燃机车工业墨绿
+        public static readonly Color CabConsoleDark   = HexColor("#161413"); // 铸铁防锈操纵台深色基座
+        public static readonly Color CabPanelTrim     = HexColor("#38322B"); // 操纵台深褐耐磨包边
+        public static readonly Color GaugeFaceDark    = HexColor("#0F1012"); // 亚光黑仪表盘底色
+        public static readonly Color GaugeBezelMetal  = HexColor("#4E4942"); // 仪表金属外圈压圈
+        public static readonly Color NeedleRed        = HexColor("#E53935"); // 仪表鲜红指示针
+        public static readonly Color NeedleWhite      = HexColor("#F5F3E8"); // 仪表米白/夜光指示针
+        public static readonly Color NeedleAmber      = HexColor("#FFB300"); // 速度表金黄细针
+        public static readonly Color IvoryKeyCap      = HexColor("#F5EFE0"); // 象牙白琴键开关
+        public static readonly Color IvoryKeyDark     = HexColor("#A89E8C"); // 琴键开关未激活阴影
+        public static readonly Color BrassPlaqueGold  = HexColor("#C6933A"); // 纯铜/黄铜铸造铭牌
+        public static readonly Color SignalLensGreen  = HexColor("#00E676"); // 信号机绿透镜亮灯
+        public static readonly Color SignalLensYellow = HexColor("#FFD600"); // 信号机黄透镜亮灯
+        public static readonly Color SignalLensRed    = HexColor("#FF1744"); // 信号机红透镜亮灯
+        public static readonly Color SignalLensDark   = HexColor("#2A2C30"); // 信号灯未点亮暗透镜
+        public static readonly Color BoltSilver       = HexColor("#8E8880"); // 六角固定螺栓银灰
 
         private static Shader s_CachedShader;
         private static readonly Dictionary<Color, Material> s_MaterialCache = new Dictionary<Color, Material>();

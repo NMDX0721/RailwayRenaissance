@@ -1,0 +1,16 @@
+{
+  "range_A": [
+    0,
+    1500
+  ],
+  "minor_division_A": 50,
+  "major_division_A": 250,
+  "tick_count": 31,
+  "label_count": 7,
+  "full_range_positions_checked": 301,
+  "minimum_pointer_side_clearance_m": 0.00334724092932482,
+  "screws_on_bezel": true,
+  "historical_identity_verified": false,
+  "accuracy_or_drive_certified": false,
+  "triangles": 6151
+}

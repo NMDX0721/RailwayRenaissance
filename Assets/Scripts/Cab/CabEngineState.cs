@@ -19,6 +19,14 @@ namespace RailwayRenaissance.Cab
         Emergency = 4   // 紧急制动
     }
 
+    public enum CabSignalAspect
+    {
+        Green = 0,       // 绿灯：进路开通，按规定速度运行
+        Yellow = 1,      // 黄灯：一个闭塞分区空闲，注意减速
+        RedYellow = 2,   // 红黄灯/双黄：进站道岔开通侧向
+        Red = 3          // 红灯：停车信号，严禁越过
+    }
+
     /// <summary>
     /// 驾驶台机车动力学物理与操作状态机
     /// 硬核版/悬浮版两套皮肤共用此单份数据与状态机
@@ -37,8 +45,13 @@ namespace RailwayRenaissance.Cab
         public BrakeNotch BrakePos { get; private set; } = BrakeNotch.Run;
         public BrakeNotch CurrentBrakeNotch => BrakePos;
 
+        public float IndependentBrakeNotch { get; private set; } = 0f; // 单阀/小闸 (0: 缓解, 1: 全制动)
+
         public bool HeadlightOn { get; set; } = true;
         public bool SandOn { get; set; } = false;
+        public bool InstrumentLightOn { get; set; } = true;
+        public bool FuelPumpOn { get; set; } = true;
+        public bool CabHeaterOn { get; set; } = false;
 
         // 2. 物理运动状态
         public float CurrentSpeedKmh { get; set; } = 0f;
@@ -46,14 +59,26 @@ namespace RailwayRenaissance.Cab
         public float EngineRpm { get; private set; } = 600f; // 怠速 600
         public float WaterTempCelsius { get; private set; } = 75f;
         public float OilPressureMpa { get; private set; } = 0.45f;
-        public float BrakeCylinderKpa { get; private set; } = 0f;
-        public float MainReservoirMpa { get; private set; } = 0.85f;
+        public float BrakeCylinderKpa { get; private set; } = 0f;      // 制动缸气压 (0~400 kPa)
+        public float BrakePipeKpa { get; private set; } = 500f;        // 列车管压力 (标准定压 500 kPa)
+        public float MainReservoirKpa { get; private set; } = 820f;    // 总风缸压力 (750~900 kPa)
+        public float TractionCurrentAmps { get; private set; } = 0f;   // 牵引电流 (0~1800 A)
 
         // 3. 运行环境与区间
         public float TotalTraveledMeters { get; private set; } = 0f;
         public float DistanceToNextStation { get; set; } = 1200f; // 默认距离下个站 1200m
         public float DistanceToStationMeters => DistanceToNextStation;
-        public bool SignalIsGreen => DistanceToNextStation > 55f;
+        public bool SignalIsGreen => CurrentSignalAspect == CabSignalAspect.Green;
+        public CabSignalAspect CurrentSignalAspect
+        {
+            get
+            {
+                if (DistanceToNextStation <= 45f) return CabSignalAspect.Red;
+                if (DistanceToNextStation <= 180f) return CabSignalAspect.RedYellow;
+                if (DistanceToNextStation <= 450f) return CabSignalAspect.Yellow;
+                return CabSignalAspect.Green;
+            }
+        }
         public bool IsStationArrivalNear => DistanceToNextStation <= 180f;
         public bool IsStationStopped => Mathf.Abs(CurrentSpeedKmh) < 0.2f && DistanceToNextStation <= 15f;
 
@@ -311,11 +336,47 @@ namespace RailwayRenaissance.Cab
             float targetOilPressure = IsEngineStarted ? (0.35f + (EngineRpm / 1800f) * 0.25f) : 0f;
             OilPressureMpa = Mathf.MoveTowards(OilPressureMpa, targetOilPressure, 0.5f * dt);
 
-            float targetBrakeCylinder = (int)BrakePos * 80f;
-            BrakeCylinderKpa = Mathf.MoveTowards(BrakeCylinderKpa, targetBrakeCylinder, 350f * dt);
+            // JZ-7 制动系统压力逻辑：
+            // 大闸不同档位对应列车管减压量：
+            // 运转/缓解: 列车管 500 kPa
+            // 常用初制: 列车管减压至 430 kPa，制动缸升压至 140 kPa
+            // 全常用: 列车管减压至 360 kPa，制动缸升压至 320 kPa
+            // 紧急制动: 列车管瞬间排风至 0 kPa，制动缸达到最大 420 kPa
+            float targetBrakePipe = BrakePos switch
+            {
+                BrakeNotch.Release => 520f,
+                BrakeNotch.Run => 500f,
+                BrakeNotch.Common => 430f,
+                BrakeNotch.Full => 360f,
+                BrakeNotch.Emergency => 0f,
+                _ => 500f
+            };
+            float pipeRate = BrakePos == BrakeNotch.Emergency ? 1200f : 200f; // 紧急排风极快
+            BrakePipeKpa = Mathf.MoveTowards(BrakePipeKpa, targetBrakePipe, pipeRate * dt);
+
+            // 制动缸压力：大闸制动缸 + 单阀小闸制动缸（取较大值）
+            float autoCylinder = Mathf.Clamp((500f - BrakePipeKpa) * 0.85f, 0f, 420f);
+            float indepCylinder = IndependentBrakeNotch * 300f;
+            float targetBrakeCylinder = Mathf.Max(autoCylinder, indepCylinder);
+            BrakeCylinderKpa = Mathf.MoveTowards(BrakeCylinderKpa, targetBrakeCylinder, 380f * dt);
+
+            // 总风缸气压：正常维持在 780~880 kPa，排风充风时轻微波动
+            float targetMainReservoir = (BrakePos == BrakeNotch.Emergency || BrakePos == BrakeNotch.Release) ? 760f : 840f;
+            MainReservoirKpa = Mathf.MoveTowards(MainReservoirKpa, targetMainReservoir, 25f * dt);
+
+            // 牵引电流模拟：与主控手柄档位和车速负载相关
+            float targetCurrent = (IsEngineStarted && ThrottleNotch > 0 && Reverser != ReverserPosition.Neutral)
+                ? (ThrottleNotch * 180f + Mathf.Clamp(100f - Mathf.Abs(CurrentSpeedKmh), 0f, 100f) * 4f)
+                : 0f;
+            TractionCurrentAmps = Mathf.MoveTowards(TractionCurrentAmps, targetCurrent, 600f * dt);
 
             // 7. 加减速俯仰目标角 (±2度内，禁止瞬变)
             TargetPitchAngle = Mathf.Clamp(-AccelerationMps2 * 2.2f, -1.8f, 1.8f);
+        }
+
+        public void SetIndependentBrake(float val)
+        {
+            IndependentBrakeNotch = Mathf.Clamp01(val);
         }
     }
 }
