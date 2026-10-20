@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "samples_per_gauge": 301,
+  "water_max_position_error_m": 6.144799e-08,
+  "oil_max_position_error_m": 6.211998e-08,
+  "renderers": 66,
+  "bounds_m": [
+    0.11,
+    0.18,
+    0.05
+  ],
+  "checks": [
+    "coordinate and rotation",
+    "cold and overrange raw preservation",
+    "red zone boundaries",
+    "NaN and infinities",
+    "live water signal",
+    "missing oil invalid",
+    "scene reload render"
+  ],
+  "csharp_compile_errors": 0,
+  "clean_editor_shutdown": true,
+  "thermal_backend_implemented": false,
+  "main_cab_assembled": false,
+  "preview_only_C": [
+    82,
+    65
+  ]
+}

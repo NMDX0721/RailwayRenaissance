@@ -1,5 +1,17 @@
 # 水温／机油温度表组首版
 
+## 材质定稿与Unity接线（2026-10-20）
+
+验收完成：两模块各301位置/方向检查通过，最大模型位置误差水温6.144799e-8 m、油温6.211998e-8 m；66渲染器，包围盒约0.11×0.18×0.05 m。日志无C#编译错误，场景重开后完成截图，编辑器正常退出；证据 `tools/compile/cab_temperature_acceptance.json`、`temperature_review/unity_temperature_review.png`。
+
+最终资产 `Assets/Models/Cab/water_oil_temperature_gauges_final.glb`；入口 `tools/cab_reference/finalize_temperature_gauges.py`，源文件 `temperature_review/temperature_gauges_final.blend`。玻璃IOR1.52、粗糙度0.028、轻微冷绿，柔光及低亮宽反射；发黑钢压框、金属螺丝与刻度底板分材质，底板法线强度0.08。
+
+原生导出 `tools/cab_reference/export_temperature_gauges_unity.py` 输出 `Assets/Models/Cab/UnityTemperatureGauges/` FBX与PBR。编辑器入口 `CabTemperatureAssetSetup.BatchBuild` 生成 `Assets/Resources/Cab/TemperatureGaugesFinal.prefab` 和 `Assets/Scenes/CabTemperatureReview.unity`，不直接编辑场景YAML。
+
+`Assets/Scripts/Cab/CabTemperatureGauge.cs` 每只表独立校准，读取共享JSON配置；水温绑定显式CabEngineState.WaterTempCelsius，油温尚无状态信号，绑定后HasValidInput=false、停在下限位置，不表示真实50 ℃。无绑定的预制体也为无效停放，SetTemperature支持未来外部温度通道输入。InputCelsius保留低温/超温原值；UnderRange、OverRange、InRedZone与HasValidInput独立。
+
+Unity验收每只301位置/方向、低温-20 ℃、超量程180 ℃、红区边界、NaN/正负无穷、实时水温刷新及油温缺失状态；保存后重开场景截图。截图82/65 ℃仅作外观展示，不写回场景为真实信号。当前没有后端热网络、延时报警、显示阻尼或主驾驶台整体装配；InRedZone只是读数状态标志。
+
 ## 最新非零刻度设计（优先于下方历史记录）
 
 水温改为40–120 ℃、2 ℃小格/10 ℃大格，红区100–120 ℃；油温改为50–150 ℃、5 ℃小格/10 ℃大格，红区110–150 ℃。数字与指示位置按各自量程重建，不仅替换文字。两个模块各361位置通过，水温41/油温21刻度基线通过；预览仍为82/65 ℃，对应52.5%/15%行程。
