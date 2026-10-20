@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+驾驶客运合造头车灰模：`CabInteriorBlockoutSetup.BatchBuild`生成CabInteriorBlockout场景，左侧单台、侧门/前风挡、顶棚占位、客室隔门与三排客席首段。用户明确NF-5K头车内含客运空间，撤销“18 m短机车内双司机室”试排；另一端随整列编组安排。权威说明见 [NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)。
+
 主台启动鼠标链：`CabStartupClickTarget`按Key/FuelPump/Start/Stop派发，`CabStartupPointer`使用Input System鼠标和限定层Physics射线；主台编辑器构建安装StartupControlsWithoutKey并绑定同一CabEngineState。左键插钥匙/转主控/开关/启动停机，右键拔钥匙。完整驾驶室/后端/线路/场景路线见 [仿真实施路线](LOCOMOTIVE_SIMULATION_ROADMAP.md)，这些扩展尚未实现。
 
 启动组件：`build_startup_controls.py`生成with_key/without_key/key_only GLB与FBX；`CabStartupAssetSetup.BatchBuild`生成带钥匙、空锁与独立MasterKey三预制体。`CabStartupControls`提供插拔/旋转/燃油泵/启动停机接口与状态灯，显式绑定CabEngineState；局部联锁非全局发动机守卫，鼠标射线及背包尚未接。见启动组件任务。

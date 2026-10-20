@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-20",
+  "scene": "Assets/Scenes/CabInteriorBlockout.unity",
+  "unity_compile_errors": 0,
+  "saved_scene_reload_render": "passed",
+  "console_startup_binding": "passed",
+  "layout": "single driving compartment connected to integrated passenger first bay",
+  "dimensions": "estimated, not engineering measurements",
+  "full_passenger_car": false,
+  "opposite_driving_end_installed": false,
+  "door_sweep_and_ergonomics_verified": false,
+  "physical_glass_verified": false,
+  "log": "tools/compile/cab_interior_blockout.log"
+}

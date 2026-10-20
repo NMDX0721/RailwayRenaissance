@@ -1,5 +1,7 @@
 # 从单张驾驶台到可驾驶柴油机车与线路
 
+当前车型结构以2026-10-20用户确认优先：NF-5K头车整合驾驶室与客运空间，后隔门通向客室，动力设备需隔离，另一端驾驶室按编组安排。本文下方“机车模块”指动力学/设备逻辑，不等于纯独立机车头。见 [NF-5K头车结构](NF5K_HEADCAR_LAYOUT.md)。
+
 技术对照来源：Open Rails官方物理介绍 https://www.openrails.org/learn/physics/ 及官方文档源码 https://github.com/openrails/openrails/blob/master/Source/Documentation/Manual/physics.rst 支持将牵引、黏着和充排风过程分别建模的路线；Unity6.5 LOD说明 https://docs.unity.com/en-us/engine/6000.5/manual/analysis/graphics-performance-profiling/lod/level-of-detail 用于远景分级策略。当前不引入其代码或额外包，也不以引用说明本项目已达到同样仿真程度。
 
 2026-10-20。用户确认最终范围包含完整驾驶室、拟真机车后端、轨道与窗外景色；分阶段实现，不把目前单台组件预制体当成完整机车。
