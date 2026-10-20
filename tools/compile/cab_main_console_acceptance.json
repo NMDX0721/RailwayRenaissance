@@ -3,10 +3,10 @@
   "shared_engine_state": true,
   "bounds_m": [
     1.55,
-    1.31,
-    0.72
+    1.3,
+    0.73
   ],
-  "renderers": 366,
+  "renderers": 368,
   "csharp_errors": 0,
   "clean_editor_shutdown": true,
   "review_scene_reloaded": true,
@@ -21,5 +21,8 @@
     "equalizing reservoir"
   ],
   "control_interaction_implemented": false,
-  "ergonomics_certified": false
+  "ergonomics_certified": false,
+  "revision": 2,
+  "lower_structure": "continuous folded shell with knee recess",
+  "log": "tools/compile/cab_main_console_revision2.log"
 }

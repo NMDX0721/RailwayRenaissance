@@ -30,20 +30,42 @@ def bolt(name,loc,parent=root):
     bpy.ops.mesh.primitive_cylinder_add(vertices=16,radius=.004,depth=.002)
     o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc;o.rotation_euler.x=math.pi/2;o.data.materials.append(steel)
     return o
-worktop=cube('Worktop',(0,-.08,.825),(1.55,.66,.028),topmat,bevel=.009)
-cube('Front_Edge_Steel',(0,-.412,.813),(1.55,.012,.035),steel,bevel=.003)
-cube('Left_Cabinet',(-.63,-.07,.40),(.27,.55,.79),paint,bevel=.012)
-cube('Right_Cabinet',(.63,-.07,.40),(.27,.55,.79),paint,bevel=.012)
-cube('Rear_Crossmember',(0,.185,.72),(1.05,.045,.15),paint)
-cube('Left_Service_Door',(-.63,-.351,.42),(.22,.012,.63),paint,bevel=.004)
-cube('Right_Service_Door',(.63,-.351,.42),(.22,.012,.63),paint,bevel=.004)
-for x in [-.63,.63]:
-    cube('Door_Recessed_Latch',(x,-.361,.61),(.035,.008,.025),black)
-    for z in [.20,.48]:cube('Door_Hinge',(x-.105,-.36,z),(.012,.012,.055),steel)
-    for j in range(7):cube('Cabinet_Vent',(x,-.360,.16+j*.012),(.13,.004,.003),black,bevel=.001)
+def prism(name,polygon,axis,limits,material,bevel=.004,parent=root):
+    # Extruded polygon: arbitrary section for folded console sheet-metal volumes.
+    vertices=[]
+    for distance in limits:
+        for a,b in polygon:
+            vertices.append((distance,a,b) if axis=='X' else (a,b,distance))
+    n=len(polygon);faces=[tuple(reversed(range(n))),tuple(range(n,2*n))]
+    faces.extend((i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n))
+    mesh=bpy.data.meshes.new(name+'_Mesh');mesh.from_pydata(vertices,[],faces);mesh.update()
+    obj=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(obj);obj.parent=parent;mesh.materials.append(material)
+    bpy.context.view_layer.objects.active=obj;obj.select_set(True)
+    bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT');bpy.ops.mesh.normals_make_consistent(inside=False);bpy.ops.object.mode_set(mode='OBJECT');obj.select_set(False)
+    if bevel:
+        m=obj.modifiers.new('Folded_Edge_Radius','BEVEL');m.width=bevel;m.segments=3
+        obj.modifiers.new('Weighted_Normals','WEIGHTED_NORMAL')
+    return obj
+# A continuous cab-mounted shell with recessed knees replaces the desk-like two pedestals.
+section=[(-.35,.805),(.30,.805),(.30,.045),(.035,.045),(.035,.40),(-.10,.57),(-.30,.65)]
+prism('Continuous_Folded_Console_Shell',section,'X',(-.755,.755),paint,.008)
+outline=[(-.775,-.32),(-.69,-.415),(-.39,-.415),(-.30,-.345),(.20,-.345),(.29,-.415),(.69,-.415),(.775,-.32),(.775,.20),(.71,.265),(-.71,.265),(-.775,.20)]
+worktop=prism('Contoured_Control_Deck',outline,'Z',(.811,.839),topmat,.006)
+cube('Recessed_Toe_Plinth',(0,.16,.038),(1.45,.31,.065),rubber,bevel=.008)
+cube('Upper_Front_Service_Fascia',(0,-.312,.715),(1.42,.012,.105),paint,bevel=.004)
+for x in [-.53,0,.53]:
+    cube('Fascia_Service_Seam',(x,-.320,.715),(.002,.003,.087),black,bevel=.0003)
+    for dx in [-.19,.19]:bolt('Fascia_Captive_Fastener',(x+dx,-.323,.744))
+for x in [-.60,.60]:
+    for j in range(6):cube('Lower_Recess_Vent',(x,.027,.22+j*.014),(.16,.006,.004),black,bevel=.001)
+cube('Knee_Recess_Kick_Plate',(0,.025,.16),(.78,.008,.20),black)
 panel=empty('Instrument_Bank',(0,.14,.85),(-math.radians(15),0,0))
 panelmesh=cube('Removable_Instrument_Panel',(0,0,.12),(1.50,.008,.27),black,panel,0)
 cube('Instrument_Bank_Rear_Housing',(0,.10,.105),(1.50,.008,.235),paint,panel)
+cube('Instrument_Bank_Top_Return',(0,.05,.257),(1.52,.115,.012),paint,panel)
+for side in [-1,1]:
+    prism('Instrument_Bank_Side_Cheek', [(-.008,-.01),(.108,-.01),(.108,.255),(-.008,.255)],'X',
+        (side*.755-.006,side*.755+.006),paint,.003,panel)
 mounts=[];apertures=[]
 def aperture(x,width,height,z=.09):
     cutter=cube('Aperture_Cutter',(x,0,z),(width,.08,height),None,panel,0)
@@ -91,8 +113,8 @@ for tag in ['Water','Oil']:
 cube('Future_Instrument_Blanking_Plate',(.36,-.007,.12),(.43,.006,.215),black,panel)
 for x in [-.72,.72,.13]:
     for z in [.005,.245]:bolt('Instrument_Panel_Fastener',(x,-.006,z),panel)
-append_asset('Speed','speedometer_review/speedometer_final.blend',root,(.56,.19,1.12))
-cube('Speedometer_Stand',(.56,.23,1.09),(.19,.12,.06),paint)
+append_asset('Speed','speedometer_review/speedometer_final.blend',root,(.33,.21,1.12))
+cube('Speedometer_Stand',(.33,.25,1.09),(.19,.12,.06),paint)
 append_asset('Controller','controller_review/controller_handwheel_final.blend',root,(-.10,-.15,.84))
 append_asset('Brake','brake_review/brake_final_with_handles.blend',root,(-.58,-.02,.84))
 switch_mount,switch_objects=append_asset('Switches','switches_review/piano_switches_10gang_optimized.blend',root,(.37,-.22,.839))
@@ -105,14 +127,14 @@ bpy.ops.object.modifier_apply(modifier=mod.name);bpy.data.objects.remove(cutter,
 empty('Driver_Eye_Reference',(-.10,-.78,1.38))
 empty('Seat_Center_Reference',(-.10,-.80,.48))
 root['design_status']='DF4-inspired retrofit layout study; estimated dimensions; no certified ergonomics'
-root['knee_opening_width_m']=.99
+root['lower_structure']='continuous folded shell with recessed knees; no freestanding desk pedestals'
 root['worktop_height_m']=.839
 bpy.context.view_layer.update()
 points=[o.matrix_world@Vector(c) for o in switch_objects if o.type=='MESH' for c in o.bound_box]
 mounts[-1]['bounds']={'min':[min(p[i] for p in points) for i in range(3)],'max':[max(p[i] for p in points) for i in range(3)]}
 mounts[-1]['integration_scale']=3
 report={'status':'first assembled console study','estimated_dimensions':True,'width_m':1.55,'worktop_top_m':.839,
- 'panel_back_tilt_degrees':15,'knee_opening_width_m':.99,'mounts':mounts,'apertures':apertures,
+ 'panel_back_tilt_degrees':15,'lower_structure':'continuous recessed shell','mounts':mounts,'apertures':apertures,
  'not_yet_validated':['full human reach envelope','valve handle swept volumes','driver sightlines','wiring and pipe routing'],
  'interactive_controller_and_switches':False}
 (OUT/'console_layout_audit.json').write_text(json.dumps(report,indent=2),encoding='utf-8')

@@ -40,6 +40,18 @@
       ]
     },
     {
+      "name": "Console_Dark_Gasket",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.007000000216066837,
+        0.008999999612569809,
+        0.00800000037997961,
+        1.0
+      ]
+    },
+    {
       "name": "Console_Fastener",
       "metallic": 0.8500000238418579,
       "smoothness": 0.5399999916553497,

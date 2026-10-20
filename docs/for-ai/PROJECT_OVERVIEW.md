@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — AI 项目总览
 
+驾驶台主体第二版：按用户反馈撤销办公桌式双柜，改成连续折板操纵台下壳、膝部退让凹腔和倾斜前裙；台面削角内收，仪表板补侧封与顶折边，速度表向中部收。沿用MainConsoleStudy独立场景与现有信号绑定，详见主体任务最新说明。
+
 最新驾驶台进度：已完成主驾驶台主体第一版及现有组件试装，`MainConsoleStudy.prefab` / `CabMainConsoleReview.unity` 独立装配场景通过共用CabEngineState接线验证。控制件鼠标交互、速度表动态、油温/均衡风缸后端和完整人因验证仍待完成。见[主体任务](dispatch/orders/CODEX-CAB-MAIN-CONSOLE-20261020.md)。
 
 2026-10-20补充：双针风压表Unity预制体及三路状态绑定已接入，均衡风缸独立仿真仍缺失；柴油机转速表已有窄长表首版，0–1500 r/min为设计候选。现有EngineRpm范围与同系列资料不一致，待独立校准，详见[组件计划](DF4_CAB_COMPONENT_PLAN.md)。
