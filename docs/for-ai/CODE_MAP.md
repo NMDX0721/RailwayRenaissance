@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+双针空气压力表组最终美术稿：`Assets/Models/Cab/duplex_air_gauges_final.glb`，入口`tools/cab_reference/finalize_duplex_air_gauges.py`。发黑钢压圈/漆壳/玻璃分材质，独立内轴与黑针外套、背面通道标识；四针各361位置径向检查，四孔口中心/壁面射线复核，77网格/52931三角面。量程和针色仍是设计选型，均衡风缸信号缺失，尚未接Unity。见[最终稿说明](dispatch/orders/CODEX-CAB-PRESSURE-20261020.md)。
+
 双针空气压力表组首版：`Assets/Models/Cab/duplex_air_gauges_study.glb`，入口`tools/cab_reference/build_duplex_air_gauges.py`；两只模块、四个独立指针节点、背面四只开孔接口。总风/制动缸候选0–1600 kPa，列车管/均衡风缸候选0–1000 kPa；量程及针色为设计选型，均衡风缸信号尚未实现，未接Unity。见[压力表任务](dispatch/orders/CODEX-CAB-PRESSURE-20261020.md)。
 
 电流表Unity接口：`Assets/Scripts/Cab/CabLinearCurrentGauge.cs`读取显式绑定的`CabEngineState.TractionCurrentAmps`，支持0–1500 A弧形指示、超量程/无效输入标志。导入入口`Assets/Editor/CabLinearGaugeAssetSetup.cs`，FBX/PBR资源在`Assets/Models/Cab/UnityLinearGauge`，预制体`Assets/Resources/Cab/LinearCurrentGaugeFinal.prefab`及验收场景`Assets/Scenes/CabLinearGaugeReview.unity`；单体已绑定，尚未组装主3D操纵台。301位置/转角及状态绑定检查随导入执行。下一批组件与信号缺口见[东风4组件计划](DF4_CAB_COMPONENT_PLAN.md)。

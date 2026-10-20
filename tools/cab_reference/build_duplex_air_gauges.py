@@ -117,8 +117,9 @@ for index,(tag,full,channels,values) in enumerate([
         socket=cylinder(tag+'_RearSocket_'+label,.0068,.017,(x,.036,.074),brass,group,6)
         bpy.ops.mesh.primitive_cylinder_add(vertices=48,radius=.0032,depth=.024,
             location=(x,.041,.074),rotation=(math.pi/2,0,0))
-        cutter=bpy.context.object;bpy.context.view_layer.objects.active=socket
+        cutter=bpy.context.object;cutter.parent=group;bpy.context.view_layer.objects.active=socket
         mod=socket.modifiers.new('Pressure_Port_Bore','BOOLEAN');mod.operation='DIFFERENCE';mod.solver='EXACT';mod.object=cutter
+        bpy.ops.object.modifier_move_to_index(modifier=mod.name,index=0)
         bpy.ops.object.modifier_apply(modifier=mod.name);bpy.data.objects.remove(cutter,do_unlink=True)
     modules.append(group)
 parts=[o for o in bpy.data.objects if o.type=='MESH'];ensure_uvs(parts)
