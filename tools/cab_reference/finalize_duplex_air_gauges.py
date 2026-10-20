@@ -113,6 +113,9 @@ bpy.ops.object.light_add(type='AREA',location=(-.20,-.34,.30));light=bpy.context
 light.name='Preview_Glass_Reflection';light.data.shape='RECTANGLE';light.data.energy=1.0
 light.data.size=.025;light.data.size_y=.26
 light.rotation_euler=(Vector((0,0,.08))-light.location).to_track_quat('-Z','Y').to_euler()
+bpy.ops.object.light_add(type='AREA',location=(.04,-.40,.025));fill=bpy.context.object
+fill.name='Preview_Lower_Mounting_Fill';fill.data.energy=2.2;fill.data.size=.24
+fill.rotation_euler=(Vector((0,0,.025))-fill.location).to_track_quat('-Z','Y').to_euler()
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'duplex_air_gauges_final.blend'))
 if '--skip-render' not in sys.argv:bpy.ops.render.render(write_still=True)
 print(json.dumps(report))

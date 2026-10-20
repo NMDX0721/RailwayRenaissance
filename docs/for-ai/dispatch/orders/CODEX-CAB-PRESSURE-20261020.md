@@ -2,6 +2,8 @@
 
 ## 最终美术稿（2026-10-20）
 
+预览补光修正：用户指出左表右下角似乎缺螺钉。复核GLB每模块均有4颗Mount_Screw，共8颗；左表右下角位于表壳投影中，原预览过暗。新增仅用于预览的下部面积补光，保持固定件位置和模型结构；补光不导出GLB。
+
 用户要求质感与科学性优化后定稿。当前最终资产`Assets/Models/Cab/duplex_air_gauges_final.glb`，入口`tools/cab_reference/finalize_duplex_air_gauges.py`；源/图/回执为`tools/cab_reference/pressure_review/duplex_air_gauges_final.blend`、`duplex_air_gauges_final_reference.png`、`duplex_air_gauges_final_audit.json`，新增材质贴图位于`Assets/Models/Cab/Textures/DuplexPressureFinal/`。
 
 保留非金属旧漆层的钢壳/面板，压圈改为独立发黑钢材质；缎面钢紧固件、略暗的黄铜接口、暗红哑光针、米白盘与低粗糙度玻璃分开处理。预览使用条形灯形成真实玻璃反射，灯不导出。kPa标识移开近竖直指针，避免经常被遮挡。
