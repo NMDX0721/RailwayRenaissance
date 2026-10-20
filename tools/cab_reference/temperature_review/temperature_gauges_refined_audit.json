@@ -28,5 +28,11 @@
       "minimum_side_clearance_m": 0.003353456100208093
     }
   ],
-  "meshes": 58
+  "alarm_design": {
+    "water_red_start_C": 100,
+    "oil_red_start_C": 110,
+    "basis": "adjustable fictional retrofit design, not original locomotive limits",
+    "runtime_alarm_implemented": false
+  },
+  "meshes": 60
 }

@@ -16,6 +16,13 @@ def bow(z):return R-math.sqrt(R*R-(z-.089)**2)-.006
 report={'status':'refined game-art design','range_C':[0,150],'minor_C':5,'major_C':25,
  'historical_identity_verified':False,'unity_bound':False,'oil_temperature_signal_available':False,
  'alarm_thresholds_verified':False,'modules':[]}
+red=bpy.data.materials.new('Temperature_Alarm_OxideRed');red.use_nodes=True
+bs=red.node_tree.nodes['Principled BSDF']
+bs.inputs['Base Color'].default_value=(.38,.018,.010,1)
+bs.inputs['Roughness'].default_value=.72
+report['alarm_design']={'water_red_start_C':100,'oil_red_start_C':110,
+ 'basis':'adjustable fictional retrofit design, not original locomotive limits',
+ 'runtime_alarm_implemented':False}
 for tag,value in [('Water',82),('Oil',65)]:
     moving=bpy.data.objects[tag+'_Temperature_Indicator']
     head=bpy.data.objects[tag+'_RPM_Reading_Head']
@@ -46,6 +53,18 @@ for tag,value in [('Water',82),('Oil',65)]:
     for obj in bpy.data.objects:
         if obj.name.startswith(tag+'_Value_'):obj.scale*=1.10
     module=bpy.data.objects[tag+'_Temperature_Meter']
+    start=100 if tag=='Water' else 110
+    module['red_zone_start_C']=start
+    module['red_zone_basis']='game retrofit design, not certified engine safety limit'
+    vertices=[];faces=[]
+    for j in range(61):
+        x,z,a=pose((start+(150-start)*j/60)/150)
+        vertices.extend([(x-.0016,-.01834,z),(x-.0008,-.01834,z)])
+        if j:faces.append((2*j-2,2*j-1,2*j+1,2*j))
+    mesh=bpy.data.meshes.new(tag+'_Alarm_Band_Mesh');mesh.from_pydata(vertices,[],faces)
+    band=bpy.data.objects.new(tag+'_Alarm_Red_Zone',mesh)
+    bpy.context.collection.objects.link(band);band.parent=module;mesh.materials.append(red)
+    assert len(mesh.polygons)==60
     module['signal_chain']='matched temperature sender/converter -> calibrated electrical indicator; exact electrical interface unassigned'
     report['modules'].append({'name':tag,'preview_C':value,'travel_samples':361,
       'scale_baselines_checked':31,'baseline_error_m':baseline_error,'minimum_side_clearance_m':minimum})
