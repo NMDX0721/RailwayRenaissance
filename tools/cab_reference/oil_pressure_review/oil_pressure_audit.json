@@ -1,0 +1,17 @@
+{
+  "range_MPa": [
+    0,
+    1
+  ],
+  "equivalent_bar": [
+    0,
+    10
+  ],
+  "minor_MPa": 0.02,
+  "major_MPa": 0.1,
+  "preview_MPa": 0.45,
+  "travel_samples": 361,
+  "minimum_side_clearance_m": 0.003347240741047159,
+  "historical_model_verified": false,
+  "static_alarm_band": false
+}

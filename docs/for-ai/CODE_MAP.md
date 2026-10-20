@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+机油压力表：`build_oil_pressure_gauge.py`生成0–1 MPa窄框表；`CabOilPressureGauge.cs`读取OilPressureMpa。主台构建加入OilPressure标定节点和运行组件，301点校验世界位置、异常/超量程及停机状态。主体PBR纹理由build_console_body.py生成到Textures/MainConsole，统一导出URP。见油压表任务。
+
 主体第三版在 `build_console_body.py` 中分离Short系列制动阀部件安装位置，并增加辅助控制/铭牌几何；审计断言双阀主轴平面间距>0.20 m。完整性与各国参考见 [设备核对](CAB_EQUIPMENT_COMPLETENESS.md)，新增按钮/换向柄/警示镜片尚未实现交互驱动。
 
 主体第二版仍由 `build_console_body.py` 生成：`prism` 挤出非矩形控制台截面与台面轮廓，连续壳体替代左右桌柜；渲染/FBX/Unity重建流程及资源路径不变。具体结构变更见主体任务第二版条目。

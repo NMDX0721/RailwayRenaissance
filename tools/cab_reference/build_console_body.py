@@ -5,6 +5,7 @@ from mathutils import Vector,Matrix
 ROOT=Path(__file__).resolve().parents[2];BASE=ROOT/'tools/cab_reference';OUT=BASE/'console_review'
 OUT.mkdir(parents=True,exist_ok=True);sys.path.insert(0,str(BASE))
 from pressure_preview_lighting import configure
+from switch_materials import finish_material,ensure_uvs
 bpy.ops.wm.read_factory_settings(use_empty=True)
 def mat(name,color,rough=.6,metal=0):
     m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes['Principled BSDF']
@@ -18,6 +19,15 @@ rubber=mat('Console_Dark_Gasket',(.007,.009,.008),.8)
 ivory=mat('Console_Engraved_Legend',(.65,.62,.48),.78)
 red=mat('Console_Red_Control',(.25,.008,.005),.55)
 amber=mat('Console_Amber_Lens',(.28,.12,.012),.35)
+texture_dir=ROOT/'Assets/Models/Cab/Textures/MainConsole';texture_dir.mkdir(parents=True,exist_ok=True)
+for material,label,base,rough,metal,seed in [
+    (paint,'Console_Paint',(.075,.105,.085),.62,0,771),
+    (topmat,'Console_Phenolic',(.055,.024,.014),.50,0,772),
+    (black,'Console_Black',(.012,.017,.015),.57,.05,773),
+    (steel,'Console_Steel',(.17,.18,.16),.46,.85,774)]:
+    finish_material(material,label,base,rough,metal,0,.003,seed,texture_dir)
+    for n in material.node_tree.nodes:
+        if n.type=='NORMAL_MAP':n.inputs['Strength'].default_value=.2
 root=bpy.data.objects.new('Main_Cab_Console_Assembly',None);bpy.context.collection.objects.link(root)
 def cube(name,loc,size,material,parent=root,bevel=.002):
     bpy.ops.mesh.primitive_cube_add(size=1);o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc;o.dimensions=size
@@ -32,6 +42,7 @@ def empty(name,loc=(0,0,0),rotation=(0,0,0),parent=root):
 def bolt(name,loc,parent=root):
     bpy.ops.mesh.primitive_cylinder_add(vertices=16,radius=.004,depth=.002)
     o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc;o.rotation_euler.x=math.pi/2;o.data.materials.append(steel)
+    cube(name+'_Driver_Slot',(loc[0],loc[1]-.0011,loc[2]),(.0045,.0003,.00065),black,parent,.0001)
     return o
 def legend(name,body,loc,parent=root,size=.008,deck=False):
     bpy.ops.object.text_add();o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc
@@ -40,9 +51,9 @@ def legend(name,body,loc,parent=root,size=.008,deck=False):
     o.data.align_x='CENTER';o.data.align_y='CENTER';o.data.extrude=.00003;o.data.materials.append(ivory)
     bpy.ops.object.convert(target='MESH');return o
 def deck_button(name,loc,radius,material):
-    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius+.004,depth=.005,location=(loc[0],loc[1],.8415))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius+.004,depth=.005,location=loc)
     base=bpy.context.object;base.name=name+'_Bezel';base.parent=root;base.data.materials.append(steel)
-    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius,depth=.014,location=(loc[0],loc[1],.8505))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius,depth=.009,location=(loc[0],loc[1],loc[2]+.006))
     o=bpy.context.object;o.name=name;o.parent=root;o.data.materials.append(material)
     bevel=o.modifiers.new('Grip_Edge','BEVEL');bevel.width=.0015;bevel.segments=3
     return o
@@ -75,6 +86,13 @@ for x in [-.53,0,.53]:
 for x in [-.60,.60]:
     for j in range(6):cube('Lower_Recess_Vent',(x,.027,.22+j*.014),(.16,.006,.004),black,bevel=.001)
 cube('Knee_Recess_Kick_Plate',(0,.025,.16),(.78,.008,.20),black)
+for x in [-.36,.36]:
+    for z in [.085,.235]:bolt('Kick_Plate_Fixing',(x,.019,z))
+for j in range(5):cube('Kick_Plate_Pressed_Rib',(0,.018,.105+j*.025),(.61,.006,.004),black,bevel=.0015)
+for x in [-.60,.60]:
+    cube('Vent_Frame_Top',(x,.018,.309),(.19,.007,.006),paint)
+    cube('Vent_Frame_Bottom',(x,.018,.207),(.19,.007,.006),paint)
+    for dx in [-.09,.09]:bolt('Vent_Panel_Fixing',(x+dx,.017,.32))
 panel=empty('Instrument_Bank',(0,.14,.85),(-math.radians(15),0,0))
 panelmesh=cube('Removable_Instrument_Panel',(0,0,.12),(1.50,.008,.27),black,panel,0)
 cube('Instrument_Bank_Rear_Housing',(0,.10,.105),(1.50,.008,.235),paint,panel)
@@ -122,6 +140,7 @@ append_asset('Current','linear_gauge_review/linear_gauge_final.blend',panel,(-.2
 append_asset('RPM','tachometer_review/diesel_tachometer_final.blend',panel,(-.175,-.002,.018),(.039,.163,.104))
 _,temps=append_asset('Temperature','temperature_review/temperature_gauges_final.blend',panel,(-.065,-.002,.018))
 for x in [-.095,-.035]:aperture(x,.039,.163,.104)
+append_asset('OilPressure','oil_pressure_review/oil_pressure_gauge_final.blend',panel,(.055,-.002,.018),(.039,.163,.104))
 # Per-module calibration origins also include the temperature pair's internal offset.
 for tag in ['Water','Oil']:
     r=next(o for o in temps if o.name==tag+'_Temperature_Meter')
@@ -153,8 +172,8 @@ legend('Horn_Legend','鸣笛',(-.30,-.326,.842),size=.007,deck=True)
 deck_button('Engine_Stop_Mushroom',(.62,-.28,.847),.016,red)
 for x in [.59,.65]:cube('Stop_Button_Guard',(x,-.28,.860),(.006,.060,.027),steel)
 legend('Engine_Stop_Legend','柴油机停机',(.62,-.33,.842),size=.0065,deck=True)
-cube('Reverser_Mount',(.13,-.10,.844),(.055,.075,.010),black)
-cube('Reverser_Handle',(.13,-.10,.859),(.012,.045,.025),black,bevel=.003)
+cube('Reverser_Mount',(.13,-.10,.846),(.055,.075,.010),black)
+cube('Reverser_Handle',(.13,-.10,.868),(.012,.045,.025),black,bevel=.003)
 legend('Reverser_Legend','后  空  前',(.13,-.155,.842),size=.0065,deck=True)
 switch_mount,switch_objects=append_asset('Switches','switches_review/piano_switches_10gang_optimized.blend',root,(.37,-.22,.839))
 switch_mount.scale=(3,3,3)
@@ -177,13 +196,14 @@ report={'status':'revision 3: separated brake valves and auxiliary controls','es
  'not_yet_validated':['full human reach envelope','valve handle swept volumes','driver sightlines','wiring and pipe routing'],
  'interactive_controller_and_switches':False,'automatic_brake_present':True,'independent_brake_present':True,
  'new_controls_unbound':['horn push','engine stop mushroom','reverser','warning lamps'],
- 'incomplete_systems':['live speedometer','oil pressure gauge','fuel gauge','electrical supply gauge','cab signal/ATP','vigilance','radio','wipers','parking brake','oil temperature simulation','equalizing reservoir']}
+ 'incomplete_systems':['live speedometer','fuel gauge','electrical supply gauge','cab signal/ATP','vigilance','radio','wipers','parking brake','oil temperature simulation','equalizing reservoir']}
 brake_pivots=[next(o for o in brake_objects if o.name==name) for name in ['Tall_Spindle_Pivot','Short_Spindle_Pivot']]
 delta=brake_pivots[0].matrix_world.translation-brake_pivots[1].matrix_world.translation
 report['brake_spindle_plan_separation_m']=math.hypot(delta.x,delta.y)
 assert report['brake_spindle_plan_separation_m']>.20
 (OUT/'console_layout_audit.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 parts=[o for o in bpy.data.objects if o.type in {'MESH','EMPTY'}]
+ensure_uvs([o for o in parts if o.type=='MESH'])
 bpy.ops.object.select_all(action='DESELECT')
 for o in parts:o.select_set(True)
 bpy.context.view_layer.objects.active=root

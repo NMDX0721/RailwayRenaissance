@@ -167,6 +167,10 @@ public static class CabMainConsoleAssetSetup
             current.Configure(Find("Curved_Indicator_Carriage"), Find("Current_Calibration_Origin"),
                 Find("Current_Calibration_AxisX"), Find("Current_Calibration_AxisY"), Find("Current_Calibration_AxisZ"));
             current.BindEngineState(state);
+            var oil = instance.AddComponent<CabOilPressureGauge>();
+            oil.Configure(Find("Oil_Pressure_Indicator"), Find("OilPressure_Calibration_Origin"),
+                Find("OilPressure_Calibration_AxisX"), Find("OilPressure_Calibration_AxisY"), Find("OilPressure_Calibration_AxisZ"));
+            oil.BindEngineState(state);
             var rpm = instance.AddComponent<CabDieselTachometer>();
             rpm.Configure(Find("Tachometer_Reading_Carriage"), Find("RPM_Calibration_Origin"),
                 Find("RPM_Calibration_AxisX"), Find("RPM_Calibration_AxisY"), Find("RPM_Calibration_AxisZ"));
@@ -190,6 +194,35 @@ public static class CabMainConsoleAssetSetup
         state.StartEngine(); state.SetReverser(ReverserPosition.Forward); state.SetThrottle(4); state.UpdatePhysics(.5f);
         var rpm=model.GetComponent<CabDieselTachometer>();rpm.RefreshFromState();
         var current=model.GetComponent<CabLinearCurrentGauge>();current.RefreshFromState();
+        var oil=model.GetComponent<CabOilPressureGauge>();oil.RefreshFromState();
+        if(oil.InputMpa!=state.OilPressureMpa || !oil.HasValidInput)
+            throw new InvalidOperationException("Live oil pressure binding failed");
+        for(int i=0;i<=300;i++)
+        {
+            oil.SetPressure(i/300f);
+            if(!oil.HasValidInput || oil.IsOutOfRange || Mathf.Abs(oil.DisplayedMpa-i/300f)>1e-6f)
+                throw new InvalidOperationException("Oil pressure calibration failed");
+            Transform Node(string name)
+            {
+                foreach(var t in model.GetComponentsInChildren<Transform>()) if(t.name==name)return t;
+                throw new InvalidOperationException("Missing oil calibration node");
+            }
+            var origin=Node("OilPressure_Calibration_Origin");
+            var x=Node("OilPressure_Calibration_AxisX").position-origin.position;
+            var y=Node("OilPressure_Calibration_AxisY").position-origin.position;
+            var z=Node("OilPressure_Calibration_AxisZ").position-origin.position;
+            float radius=(.0715f*.0715f+.006f*.006f)/.012f;
+            float low=Mathf.Asin(-.063f/radius), angle=Mathf.Lerp(low,-low,i/300f);
+            var expected=origin.position+x*((.001f+radius-radius*Mathf.Cos(angle)-.006f)/.01f)
+                +y*(-.0189f/.01f)+z*((.089f+radius*Mathf.Sin(angle))/.01f);
+            if(Vector3.Distance(Node("Oil_Pressure_Indicator").position,expected)>.00001f)
+                throw new InvalidOperationException("Oil pressure FBX coordinate mismatch");
+        }
+        oil.SetPressure(1.2f);
+        if(!oil.IsOutOfRange || oil.InputMpa!=1.2f || oil.DisplayedMpa!=1f) throw new InvalidOperationException("Oil overrange failed");
+        oil.SetPressure(float.NaN);
+        if(oil.HasValidInput)throw new InvalidOperationException("Oil invalid signal failed");
+        oil.RefreshFromState();
         var pressure=model.GetComponent<CabDuplexPressureGauges>();pressure.RefreshFromState();
         if(rpm.InputRpm!=state.EngineRpm || current.InputAmps!=state.TractionCurrentAmps)
             throw new InvalidOperationException("Shared engine state binding failed");
@@ -201,6 +234,8 @@ public static class CabMainConsoleAssetSetup
         }
         if(pressure.HasEqualizingReservoirSignal)throw new InvalidOperationException("Missing ER channel invented");
         state.StopEngine();state.UpdatePhysics(3);rpm.RefreshFromState();current.RefreshFromState();
+        oil.RefreshFromState();
+        if(oil.InputMpa!=0)throw new InvalidOperationException("Oil pressure did not drop on stop");
         if(rpm.DisplayedRpm!=0)throw new InvalidOperationException("Stop state mismatch");
         Debug.Log("CAB_MAIN_CONSOLE_BINDINGS_OK: shared state; missing oil/ER invalid; stop checked");
     }

@@ -29,27 +29,33 @@
     },
     {
       "name": "Console_Black_Panel",
-      "metallic": 0.15000000596046448,
-      "smoothness": 0.44999998807907104,
+      "metallic": 0.05000000074505806,
+      "smoothness": 0.4300000071525574,
       "transmission": 0.0,
       "color": [
         0.012000000104308128,
         0.017000000923871994,
         0.014999999664723873,
         1.0
-      ]
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_MetallicSmoothness.png"
     },
     {
       "name": "Console_Brown_Phenolic",
       "metallic": 0.0,
-      "smoothness": 0.4700000286102295,
+      "smoothness": 0.5,
       "transmission": 0.0,
       "color": [
         0.06499999761581421,
         0.026000000536441803,
         0.014000000432133675,
         1.0
-      ]
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_MetallicSmoothness.png"
     },
     {
       "name": "Console_Dark_Gasket",
@@ -85,19 +91,25 @@
         0.18000000715255737,
         0.1599999964237213,
         1.0
-      ]
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_MetallicSmoothness.png"
     },
     {
       "name": "Console_Olive_Painted_Steel",
-      "metallic": 0.05000000074505806,
-      "smoothness": 0.3500000238418579,
+      "metallic": 0.0,
+      "smoothness": 0.3799999952316284,
       "transmission": 0.0,
       "color": [
         0.07500000298023224,
         0.10499999672174454,
         0.08500000089406967,
         1.0
-      ]
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_MetallicSmoothness.png"
     },
     {
       "name": "Console_Red_Control",
@@ -412,6 +424,18 @@
       ]
     },
     {
+      "name": "Linear_Protective_Glass.003",
+      "metallic": 0.0,
+      "smoothness": 0.9649999998509884,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    {
       "name": "Pressure_AgedSteel",
       "metallic": 0.8799999952316284,
       "smoothness": 0.5699999928474426,
@@ -565,6 +589,18 @@
       ]
     },
     {
+      "name": "RPM_Black_Indicator.002",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
       "name": "RPM_BlackenedSteel_Retainer",
       "metallic": 0.7200000286102295,
       "smoothness": 0.5099999904632568,
@@ -595,6 +631,21 @@
       "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.001_MetallicSmoothness.png"
     },
     {
+      "name": "RPM_BlackenedSteel_Retainer.002",
+      "metallic": 0.7200000286102295,
+      "smoothness": 0.5099999904632568,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_MetallicSmoothness.png"
+    },
+    {
       "name": "RPM_Case_Legend",
       "metallic": 0.0,
       "smoothness": 0.48000001907348633,
@@ -619,6 +670,18 @@
       ]
     },
     {
+      "name": "RPM_Case_Legend.002",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.550000011920929,
+        0.550000011920929,
+        0.44999998807907104,
+        1.0
+      ]
+    },
+    {
       "name": "RPM_Connector_Insulator",
       "metallic": 0.0,
       "smoothness": 0.19999998807907104,
@@ -632,6 +695,18 @@
     },
     {
       "name": "RPM_Connector_Insulator.001",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Connector_Insulator.002",
       "metallic": 0.0,
       "smoothness": 0.19999998807907104,
       "transmission": 0.0,

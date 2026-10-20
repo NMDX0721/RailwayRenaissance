@@ -71,6 +71,22 @@
       }
     },
     {
+      "tag": "OilPressure",
+      "source": "oil_pressure_review/oil_pressure_gauge_final.blend",
+      "bounds": {
+        "min": [
+          0.03199999779462814,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          0.07800000160932541,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
       "tag": "Speed",
       "source": "speedometer_review/speedometer_final.blend",
       "bounds": {
@@ -108,11 +124,11 @@
       "bounds": {
         "min": [
           -0.6088998913764954,
-          -0.38714146614074707,
+          -0.28714150190353394,
           0.8399999737739563
         ],
         "max": [
-          -0.3894999921321869,
+          -0.4194999933242798,
           -0.047999992966651917,
           1.060499906539917
         ]
@@ -161,6 +177,11 @@
       "x_m": -0.035,
       "width_m": 0.039,
       "height_m": 0.163
+    },
+    {
+      "x_m": 0.055,
+      "width_m": 0.039,
+      "height_m": 0.163
     }
   ],
   "not_yet_validated": [
@@ -180,7 +201,6 @@
   ],
   "incomplete_systems": [
     "live speedometer",
-    "oil pressure gauge",
     "fuel gauge",
     "electrical supply gauge",
     "cab signal/ATP",
@@ -191,32 +211,5 @@
     "oil temperature simulation",
     "equalizing reservoir"
   ],
-  "brake_spindle_plan_separation_m": 0.20865520058025708,
-  "brake_moving_geometry_envelopes": [
-    {
-      "pivot": "Tall_Spindle_Pivot",
-      "center_m": [
-        -0.5239999890327454,
-        -0.09299999475479126,
-        1.0184999704360962
-      ],
-      "full_rotation_radial_envelope_m": 0.1515585422336672,
-      "moving_geometry_min_z_m": 1.0175000429153442,
-      "moving_geometry_max_z_m": 1.060499906539917
-    },
-    {
-      "pivot": "Short_Spindle_Pivot",
-      "center_m": [
-        -0.4399999976158142,
-        -0.2839999794960022,
-        0.9044999480247498
-      ],
-      "full_rotation_radial_envelope_m": 0.1039999768164021,
-      "moving_geometry_min_z_m": 0.9044999480247498,
-      "moving_geometry_max_z_m": 0.9674999713897705
-    }
-  ],
-  "conservative_plan_envelope_gap_m": -0.046903318469812244,
-  "envelope_limitation": "unmodified mesh vertices, no hands/gloves or certified valve stops; not operational clearance certification",
-  "moving_geometry_vertical_gap_m": 0.05000007152557373
+  "brake_spindle_plan_separation_m": 0.20865520058025708
 }
