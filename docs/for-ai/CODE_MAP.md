@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+主体第三版在 `build_console_body.py` 中分离Short系列制动阀部件安装位置，并增加辅助控制/铭牌几何；审计断言双阀主轴平面间距>0.20 m。完整性与各国参考见 [设备核对](CAB_EQUIPMENT_COMPLETENESS.md)，新增按钮/换向柄/警示镜片尚未实现交互驱动。
+
 主体第二版仍由 `build_console_body.py` 生成：`prism` 挤出非矩形控制台截面与台面轮廓，连续壳体替代左右桌柜；渲染/FBX/Unity重建流程及资源路径不变。具体结构变更见主体任务第二版条目。
 
 主驾驶台试装入口：`tools/cab_reference/build_console_body.py`，原生导出 `export_main_console_unity.py`，Unity编辑器入口 `CabMainConsoleAssetSetup.BatchBuild`。输出MainConsoleStudy预制体与CabMainConsoleReview场景；电流/转速/风压/水温共用一个CabEngineState，油温/均衡风缸缺失，控制件尚未交互绑定。参见[主体试装任务](dispatch/orders/CODEX-CAB-MAIN-CONSOLE-20261020.md)。

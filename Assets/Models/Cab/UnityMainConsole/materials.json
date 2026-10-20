@@ -16,6 +16,18 @@
       "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Black_Painted_Steel_MetallicSmoothness.png"
     },
     {
+      "name": "Console_Amber_Lens",
+      "metallic": 0.0,
+      "smoothness": 0.6500000059604645,
+      "transmission": 0.0,
+      "color": [
+        0.2800000011920929,
+        0.11999999731779099,
+        0.012000000104308128,
+        1.0
+      ]
+    },
+    {
       "name": "Console_Black_Panel",
       "metallic": 0.15000000596046448,
       "smoothness": 0.44999998807907104,
@@ -52,6 +64,18 @@
       ]
     },
     {
+      "name": "Console_Engraved_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.2200000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.6499999761581421,
+        0.6200000047683716,
+        0.47999998927116394,
+        1.0
+      ]
+    },
+    {
       "name": "Console_Fastener",
       "metallic": 0.8500000238418579,
       "smoothness": 0.5399999916553497,
@@ -72,6 +96,18 @@
         0.07500000298023224,
         0.10499999672174454,
         0.08500000089406967,
+        1.0
+      ]
+    },
+    {
+      "name": "Console_Red_Control",
+      "metallic": 0.0,
+      "smoothness": 0.44999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.25,
+        0.00800000037997961,
+        0.004999999888241291,
         1.0
       ]
     },

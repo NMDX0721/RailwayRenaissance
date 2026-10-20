@@ -15,6 +15,9 @@ topmat=mat('Console_Brown_Phenolic',(.065,.026,.014),.53,0)
 black=mat('Console_Black_Panel',(.012,.017,.015),.55,.15)
 steel=mat('Console_Fastener',(.17,.18,.16),.46,.85)
 rubber=mat('Console_Dark_Gasket',(.007,.009,.008),.8)
+ivory=mat('Console_Engraved_Legend',(.65,.62,.48),.78)
+red=mat('Console_Red_Control',(.25,.008,.005),.55)
+amber=mat('Console_Amber_Lens',(.28,.12,.012),.35)
 root=bpy.data.objects.new('Main_Cab_Console_Assembly',None);bpy.context.collection.objects.link(root)
 def cube(name,loc,size,material,parent=root,bevel=.002):
     bpy.ops.mesh.primitive_cube_add(size=1);o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc;o.dimensions=size
@@ -29,6 +32,19 @@ def empty(name,loc=(0,0,0),rotation=(0,0,0),parent=root):
 def bolt(name,loc,parent=root):
     bpy.ops.mesh.primitive_cylinder_add(vertices=16,radius=.004,depth=.002)
     o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc;o.rotation_euler.x=math.pi/2;o.data.materials.append(steel)
+    return o
+def legend(name,body,loc,parent=root,size=.008,deck=False):
+    bpy.ops.object.text_add();o=bpy.context.object;o.name=name;o.parent=parent;o.location=loc
+    o.rotation_euler=(0,0,0) if deck else (math.pi/2,0,0)
+    o.data.font=bpy.data.fonts.load('C:/Windows/Fonts/simsun.ttc');o.data.body=body;o.data.size=size
+    o.data.align_x='CENTER';o.data.align_y='CENTER';o.data.extrude=.00003;o.data.materials.append(ivory)
+    bpy.ops.object.convert(target='MESH');return o
+def deck_button(name,loc,radius,material):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius+.004,depth=.005,location=(loc[0],loc[1],.8415))
+    base=bpy.context.object;base.name=name+'_Bezel';base.parent=root;base.data.materials.append(steel)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32,radius=radius,depth=.014,location=(loc[0],loc[1],.8505))
+    o=bpy.context.object;o.name=name;o.parent=root;o.data.materials.append(material)
+    bevel=o.modifiers.new('Grip_Edge','BEVEL');bevel.width=.0015;bevel.segments=3
     return o
 def prism(name,polygon,axis,limits,material,bevel=.004,parent=root):
     # Extruded polygon: arbitrary section for folded console sheet-metal volumes.
@@ -110,13 +126,36 @@ for x in [-.095,-.035]:aperture(x,.039,.163,.104)
 for tag in ['Water','Oil']:
     r=next(o for o in temps if o.name==tag+'_Temperature_Meter')
     for name,pos in [('Origin',(0,0,0)),('AxisX',(.01,0,0)),('AxisY',(0,.01,0)),('AxisZ',(0,0,.01))]:empty(tag+'_Calibration_'+name,pos,parent=r)
-cube('Future_Instrument_Blanking_Plate',(.36,-.007,.12),(.43,.006,.215),black,panel)
+cube('Auxiliary_Control_Plate',(.36,-.007,.12),(.43,.006,.215),black,panel)
+for i,(title,lens) in enumerate([('油压低',red),('水温高',red),('充电',amber),('故障',amber)]):
+    x=.21+i*.095
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=20,ring_count=10)
+    o=bpy.context.object;o.name='Unbound_Warning_Lens_'+str(i);o.parent=panel;o.location=(x,-.018,.18);o.scale=(.009,.004,.009);o.data.materials.append(lens)
+    o['binding_status']='physical lens only; no live warning logic yet'
+    legend('Warning_Legend_'+str(i),title,(x,-.019,.153),panel,.007)
+legend('Auxiliary_Plate_Title','辅助控制 / 状态',(.35,-.019,.222),panel,.009)
+legend('Future_Radio_Location','通信 / 备用安装位',(.35,-.019,.075),panel,.008)
 for x in [-.72,.72,.13]:
     for z in [.005,.245]:bolt('Instrument_Panel_Fastener',(x,-.006,z),panel)
 append_asset('Speed','speedometer_review/speedometer_final.blend',root,(.33,.21,1.12))
 cube('Speedometer_Stand',(.33,.25,1.09),(.19,.12,.06),paint)
 append_asset('Controller','controller_review/controller_handwheel_final.blend',root,(-.10,-.15,.84))
-append_asset('Brake','brake_review/brake_final_with_handles.blend',root,(-.58,-.02,.84))
+brake_mount,brake_objects=append_asset('Brake','brake_review/brake_final_with_handles.blend',root,(-.50,-.13,.84))
+brake_root=next(o for o in brake_objects if o.name=='Brake_Valve_Photo_Study')
+for o in brake_objects:
+    if o.parent==brake_root and o.name.startswith('Short_'):
+        o.location.x+=.03;o.location.y-=.10
+brake_root['installation']='automatic and independent valves separated for visibility; functional roles are retrofit design'
+legend('Automatic_Brake_Legend','大闸 / 列车制动',(-.52,-.027,.842),size=.007,deck=True)
+legend('Independent_Brake_Legend','小闸 / 机车制动',(-.44,-.355,.842),size=.007,deck=True)
+deck_button('Horn_Push',(-.30,-.30,.846),.011,black)
+legend('Horn_Legend','鸣笛',(-.30,-.326,.842),size=.007,deck=True)
+deck_button('Engine_Stop_Mushroom',(.62,-.28,.847),.016,red)
+for x in [.59,.65]:cube('Stop_Button_Guard',(x,-.28,.860),(.006,.060,.027),steel)
+legend('Engine_Stop_Legend','柴油机停机',(.62,-.33,.842),size=.0065,deck=True)
+cube('Reverser_Mount',(.13,-.10,.844),(.055,.075,.010),black)
+cube('Reverser_Handle',(.13,-.10,.859),(.012,.045,.025),black,bevel=.003)
+legend('Reverser_Legend','后  空  前',(.13,-.155,.842),size=.0065,deck=True)
 switch_mount,switch_objects=append_asset('Switches','switches_review/piano_switches_10gang_optimized.blend',root,(.37,-.22,.839))
 switch_mount.scale=(3,3,3)
 switch_mount['integration_scale_basis']='source bank is 76 mm wide; retrofit fit scales complete assembly to 228 mm; unverified original dimensions'
@@ -133,10 +172,16 @@ bpy.context.view_layer.update()
 points=[o.matrix_world@Vector(c) for o in switch_objects if o.type=='MESH' for c in o.bound_box]
 mounts[-1]['bounds']={'min':[min(p[i] for p in points) for i in range(3)],'max':[max(p[i] for p in points) for i in range(3)]}
 mounts[-1]['integration_scale']=3
-report={'status':'first assembled console study','estimated_dimensions':True,'width_m':1.55,'worktop_top_m':.839,
+report={'status':'revision 3: separated brake valves and auxiliary controls','estimated_dimensions':True,'width_m':1.55,'worktop_top_m':.839,
  'panel_back_tilt_degrees':15,'lower_structure':'continuous recessed shell','mounts':mounts,'apertures':apertures,
  'not_yet_validated':['full human reach envelope','valve handle swept volumes','driver sightlines','wiring and pipe routing'],
- 'interactive_controller_and_switches':False}
+ 'interactive_controller_and_switches':False,'automatic_brake_present':True,'independent_brake_present':True,
+ 'new_controls_unbound':['horn push','engine stop mushroom','reverser','warning lamps'],
+ 'incomplete_systems':['live speedometer','oil pressure gauge','fuel gauge','electrical supply gauge','cab signal/ATP','vigilance','radio','wipers','parking brake','oil temperature simulation','equalizing reservoir']}
+brake_pivots=[next(o for o in brake_objects if o.name==name) for name in ['Tall_Spindle_Pivot','Short_Spindle_Pivot']]
+delta=brake_pivots[0].matrix_world.translation-brake_pivots[1].matrix_world.translation
+report['brake_spindle_plan_separation_m']=math.hypot(delta.x,delta.y)
+assert report['brake_spindle_plan_separation_m']>.20
 (OUT/'console_layout_audit.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 parts=[o for o in bpy.data.objects if o.type in {'MESH','EMPTY'}]
 bpy.ops.object.select_all(action='DESELECT')
