@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+NF-5K前脸第二轮：`NF5KReferenceBody.BuildNoseDetails`生成内收下裙、通风口、翼徽与车钩预留包络，`Cylinder`生成圆筒顶灯及压圈；侧门补固定门框。车钩暂无运动/受力功能。
+
 2026-10-21：驾驶客运头车外壳由`Assets/Editor/NF5KReferenceBody.cs`生成圆弧肩部、拱顶、圆角窗框及钢门/扶手/登车梯，入口仍为`CabInteriorBlockoutSetup.BatchBuild`；持久网格位于`Assets/Models/Cab/NF5KBodyMeshes/`，新增外观参考视角。设计推定与未完成项见[NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)。
 
 驾驶客运合造头车灰模：`CabInteriorBlockoutSetup.BatchBuild`生成CabInteriorBlockout场景，左侧单台、侧门/前风挡、顶棚占位、客室隔门与三排客席首段。用户明确NF-5K头车内含客运空间，撤销“18 m短机车内双司机室”试排；另一端随整列编组安排。权威说明见 [NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)。

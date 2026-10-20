@@ -43,6 +43,7 @@ public static class NF5KReferenceBody
         var frontContour = outline.GetRange(1, outline.Count - 2);
         FrontChevron("Front_Cream_Chevron", frontContour, .071f, cream, -.009f);
         FrontChevron("Front_Red_Chevron", frontContour, .033f, red, -.012f);
+        BuildNoseDetails(frontContour);
 
         // Facets are confined to the rounded shoulders; the main face remains broad and flat.
         for (int side = -1; side <= 1; side += 2)
@@ -116,16 +117,68 @@ public static class NF5KReferenceBody
         }
         MeshObject("Barrel_Roof", verts, triangles, cream, roof.transform);
         MeshObject("Curved_Front_Roof_Brow", brow, browTriangles, cream, roof.transform);
-        Cube("Headlamp_Housing", new Vector3(0, 2.35f, -.54f), new Vector3(.38f, .27f, .30f), blue, Quaternion.identity, roof.transform);
+        Cylinder("Headlamp_Housing",new Vector3(0,2.37f,-.55f),.34f,.30f,blue,roof.transform);
+        Cylinder("Headlamp_Bezel",new Vector3(0,2.37f,-.711f),.30f,.035f,steel,roof.transform);
         var lamp = GameObject.CreatePrimitive(PrimitiveType.Cylinder); lamp.name = "Roof_Headlamp_Lens";
-        lamp.transform.SetParent(roof.transform); lamp.transform.position = new Vector3(0, 2.37f, -.70f);
+        lamp.transform.SetParent(roof.transform); lamp.transform.position = new Vector3(0, 2.37f, -.745f);
         lamp.transform.rotation = Quaternion.Euler(90, 0, 0); lamp.transform.localScale = new Vector3(.22f, .016f, .22f);
         lamp.GetComponent<Renderer>().sharedMaterial = cream;
         Debug.Log("NF5K_REFERENCE_BODY_OK: rounded shoulders, barrel roof, framed steel doors, grab rails and access steps");
     }
 
+    static void BuildNoseDetails(List<Vector2> contour)
+    {
+        var v=new List<Vector3>();var t=new List<int>();
+        foreach(var p in contour)
+        {
+            v.Add(new Vector3(p.x,.025f,p.y));
+            v.Add(new Vector3(p.x*.96f,-.18f,p.y+.045f));
+            v.Add(new Vector3(p.x*.87f,-.61f,p.y+.19f));
+        }
+        for(int i=0;i<contour.Count-1;i++)for(int row=0;row<2;row++)
+            Quad(t,i*3+row,(i+1)*3+row,(i+1)*3+row+1,i*3+row+1);
+        MeshObject("Tapered_Nose_Skirt",v,t,blue,root);
+        foreach(int side in new[]{-1,1})
+        {
+            for(int i=0;i<3;i++)
+                RoundedPanel("Skirt_Vent_"+side+"_"+i,new Vector3(side*.83f,-.24f-i*.12f,-.61f+i*.04f),
+                    .43f,.042f,.018f,Quaternion.Euler(-18,0,0),trim,steel);
+            Cube("Front_Buffer_Bracket_"+side,new Vector3(side*.52f,-.06f,-.72f),new Vector3(.11f,.13f,.09f),steel);
+            Cube("Nose_Grab_Stanchion_"+side,new Vector3(side*.48f,.13f,-.72f),new Vector3(.025f,.11f,.035f),steel);
+        }
+        Cube("Nose_Grab_Bar",new Vector3(0,.18f,-.74f),new Vector3(.98f,.032f,.032f),steel);
+        Cube("Coupler_Mount_Pad",new Vector3(0,-.12f,-.70f),new Vector3(.37f,.32f,.08f),steel);
+        Cube("Coupler_Shank_Reserved",new Vector3(0,-.13f,-.87f),new Vector3(.14f,.14f,.28f),trim);
+        // Coupler is a reserved envelope, not a functional knuckle mechanism.
+        Cube("Coupler_Head_Reserved",new Vector3(0,-.12f,-1.03f),new Vector3(.24f,.23f,.14f),steel);
+        RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.46f,.17f,.018f,Quaternion.identity,trim,cream);
+        Cylinder("Wing_Badge_Base",new Vector3(0,.92f,-.68f),.24f,.018f,cream);
+        Cylinder("Wing_Badge_Field",new Vector3(0,.92f,-.695f),.20f,.012f,blue);
+        var star=new List<Vector3>{new Vector3(0,.92f,-.706f)};var starTriangles=new List<int>();
+        for(int i=0;i<10;i++)
+        {
+            float angle=(90+i*36)*Mathf.Deg2Rad,r=i%2==0?.087f:.039f;
+            star.Add(new Vector3(Mathf.Cos(angle)*r,.92f+Mathf.Sin(angle)*r,-.706f));
+        }
+        for(int i=0;i<10;i++){starTriangles.Add(0);starTriangles.Add(i+1);starTriangles.Add((i+1)%10+1);}
+        MeshObject("Red_Star_Badge",star,starTriangles,red,root);
+        foreach(int side in new[]{-1,1})for(int row=0;row<3;row++)
+            Cube("Badge_Wing",new Vector3(side*(.20f-row*.018f),.97f-row*.044f,-.69f),new Vector3(.18f-row*.03f,.022f,.012f),cream);
+    }
+
+    static GameObject Cylinder(string name,Vector3 position,float diameter,float depth,Material material,Transform parent=null)
+    {
+        var obj=GameObject.CreatePrimitive(PrimitiveType.Cylinder);obj.name=name;obj.transform.SetParent(parent??root,false);
+        obj.transform.position=position;obj.transform.rotation=Quaternion.Euler(90,0,0);
+        obj.transform.localScale=new Vector3(diameter,depth/2,diameter);obj.GetComponent<Renderer>().sharedMaterial=material;
+        return obj;
+    }
+
     static void BuildDoor(int side, string name)
     {
+        foreach(float z in new[]{1.125f,1.855f})
+            Cube(name+"_Fixed_Door_Jamb",new Vector3(side*1.454f,.99f,z),new Vector3(.085f,1.94f,.035f),steel);
+        Cube(name+"_Fixed_Door_Header",new Vector3(side*1.454f,1.96f,1.49f),new Vector3(.085f,.035f,.765f),steel);
         var assembly = new GameObject(name + "_Door_Pivot"); assembly.transform.SetParent(root, false);
         assembly.transform.position = new Vector3(side * 1.447f, 0, 1.11f);
         Quaternion facing = Quaternion.Euler(0, 90, 0);

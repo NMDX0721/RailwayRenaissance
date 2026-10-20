@@ -11,6 +11,8 @@
   "door_sweep_and_ergonomics_verified": false,
   "physical_glass_verified": false,
   "reference_body": "rounded shoulders, barrel roof, narrow steel doors and access ladders",
+  "nose_detail_revision": "tapered lower skirt, vent recess outlines, round roof lamp, simplified wing badge and fixed door jambs",
+  "coupler": "reserved envelope only, no locking or force simulation",
   "door_window_openings_and_persistent_mesh_reload": "passed",
   "reference": "ExternalAssets/nf5_exterior_ref.png",
   "log": "tools/compile/cab_interior_reference.log"
