@@ -1,0 +1,121 @@
+{
+  "materials": [
+    {
+      "name": "Gauge_BlackPaint",
+      "metallic": 0.0,
+      "smoothness": 0.4700000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.017000000923871994,
+        0.019999999552965164,
+        0.017999999225139618,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityTachometer/Gauge_BlackPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityTachometer/Gauge_BlackPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityTachometer/Gauge_BlackPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_Fastener",
+      "metallic": 0.8799999952316284,
+      "smoothness": 0.550000011920929,
+      "transmission": 0.0,
+      "color": [
+        0.1599999964237213,
+        0.17499999701976776,
+        0.16500000655651093,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Ink",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Scale",
+      "metallic": 0.0,
+      "smoothness": 0.38999998569488525,
+      "transmission": 0.0,
+      "color": [
+        0.6499999761581421,
+        0.6200000047683716,
+        0.49000000953674316,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityTachometer/Gauge_Scale_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityTachometer/Gauge_Scale_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityTachometer/Gauge_Scale_MetallicSmoothness.png"
+    },
+    {
+      "name": "Linear_Protective_Glass",
+      "metallic": 0.0,
+      "smoothness": 0.9649999998509884,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Black_Indicator",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_BlackenedSteel_Retainer",
+      "metallic": 0.7200000286102295,
+      "smoothness": 0.5099999904632568,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityTachometer/RPM_BlackenedSteel_Retainer_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityTachometer/RPM_BlackenedSteel_Retainer_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityTachometer/RPM_BlackenedSteel_Retainer_MetallicSmoothness.png"
+    },
+    {
+      "name": "RPM_Case_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.550000011920929,
+        0.550000011920929,
+        0.44999998807907104,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Connector_Insulator",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    }
+  ]
+}

@@ -24,3 +24,11 @@
 内部显示运动沿用已明确标记为自主设计的弧导轨，不声称复原YDC-1动圈机构。背面增加一只三触点凹式电连接外形，针脚定义、输入额定值、传感器类型及脉冲数均未确定，不冒充原车插头标准。接线原理后续需明确是转速传感器/测速发电机及匹配变换器，转速不是车速，不能从km/h直接当作r/min。
 
 尚未绑定Unity；后续接`CabEngineState.EngineRpm`。现有仿真600怠速、档位最高可达1760 r/min，超出本盘面1500，也不吻合同系列430–1000参考范围。接线时应保留超量程标记，并单独校准机车动力参数，不能只修改显示数值掩盖差异。本轮没有改动原仿真。
+## Unity 接线验收（2026-10-20）
+
+- 原生FBX/PBR：`Assets/Models/Cab/UnityTachometer/`；预制体：`Assets/Resources/Cab/DieselTachometerFinal.prefab`；独立场景：`Assets/Scenes/CabTachometerReview.unity`。
+- 运行组件 `Assets/Scripts/Cab/CabDieselTachometer.cs` 显式绑定 `CabEngineState.EngineRpm`；编辑器入口 `Assets/Editor/CabTachometerAssetSetup.cs`；导出 `tools/cab_reference/export_tachometer_unity.py`。
+- Unity批处理验证301位置，最大位置误差6.128806e-8 m；29渲染器，包围盒约0.05×0.18×0.05 m；异常、负值、实时发动机刷新、最高档超量程及停机归零检查通过。保存场景重新打开后完成截图，日志无C#编译错误，编辑器正常退出。
+- 现有简化仿真最高转速可超过1500，组件限制表显并保留原始值/超量程标记，本次不修改发动机物理。只完成单体预制体与场景绑定，主驾驶台装配另行进行。
+- 证据：`tools/compile/cab_tachometer_acceptance.json`、`tools/cab_reference/tachometer_review/unity_tachometer_review.png`。
+

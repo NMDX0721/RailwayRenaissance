@@ -404,3 +404,5 @@ Unity Editor 日志: C:\Users\Oe_Lee\AppData\Local\Unity\Editor\Editor.log
 ---
 
 *本文档由 AI 代理于 2026-08-14 自动生成，修改代码后请同步更新。*
+2026-10-20 最新接线：`CabDieselTachometer` 读取显式绑定的 `CabEngineState.EngineRpm`，`CabTachometerAssetSetup.BatchBuild` 生成 `DieselTachometerFinal.prefab` / `CabTachometerReview.unity`。301 点、异常输入、发动机启停与超量程通过；表显上限1500 r/min，保留原始输入和超量程标记，不改发动机物理。下一件 `build_temperature_gauges.py` 输出水温/油温双模块首版，油温独立信号缺失，尚未绑定。详见对应组件任务。
+
