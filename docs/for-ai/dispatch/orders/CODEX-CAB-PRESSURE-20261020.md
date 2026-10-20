@@ -6,7 +6,7 @@
 
 用户要求质感与科学性优化后定稿。当前最终资产`Assets/Models/Cab/duplex_air_gauges_final.glb`，入口`tools/cab_reference/finalize_duplex_air_gauges.py`；源/图/回执为`tools/cab_reference/pressure_review/duplex_air_gauges_final.blend`、`duplex_air_gauges_final_reference.png`、`duplex_air_gauges_final_audit.json`，新增材质贴图位于`Assets/Models/Cab/Textures/DuplexPressureFinal/`。
 
-保留非金属旧漆层的钢壳/面板，压圈改为独立发黑钢材质；缎面钢紧固件、略暗的黄铜接口、暗红哑光针、米白盘与低粗糙度玻璃分开处理。预览使用条形灯形成真实玻璃反射，灯不导出。kPa标识移开近竖直指针，避免经常被遮挡。
+保留非金属旧漆层的钢壳/面板，压圈改为独立发黑钢材质；缎面钢紧固件、略暗的黄铜接口、暗红哑光针、米白盘与低粗糙度玻璃分开处理。按用户最新要求，预览改用浅灰背景、均匀环境光及大面积柔光，移除条形强反射，避免遮挡盘面；预览灯不导出。入口`tools/cab_reference/pressure_preview_lighting.py`，最终生成脚本复用同一配置。kPa标识移开近竖直指针，避免经常被遮挡。
 
 机械细化：黑针中心增加孔口与环形外套，红针使用独立内轴；旧实心公共前轴帽改为环形轴承盖，避免实体封死两轴。外套内径与内轴名义径向间隙0.20毫米；每个背面接头补对应针色的识别环及中文通道名，保持两路独立，不建相通腔。内部波登管、齿轮传动及完整轴承座未建模，不能将外部装配细化称为完整测压机械认证。
 

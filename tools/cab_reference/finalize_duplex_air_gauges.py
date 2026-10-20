@@ -108,15 +108,8 @@ bpy.context.view_layer.objects.active=root
 bpy.ops.export_scene.gltf(filepath=str(ROOT/'Assets/Models/Cab/duplex_air_gauges_final.glb'),export_format='GLB',use_selection=True,export_apply=True,export_extras=True)
 (OUT/'duplex_air_gauges_final_audit.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 scene=bpy.context.scene;scene.render.filepath=str(OUT/'duplex_air_gauges_final_reference.png')
-# Narrow strip produces an actual glass reflection; the light is excluded from GLB.
-bpy.ops.object.light_add(type='AREA',location=(-.20,-.34,.30));light=bpy.context.object
-light.name='Preview_Glass_Reflection';light.data.shape='RECTANGLE';light.data.energy=1.0
-light.data.size=.025;light.data.size_y=.26
-light.rotation_euler=(Vector((0,0,.08))-light.location).to_track_quat('-Z','Y').to_euler()
-bpy.ops.object.light_add(type='AREA',location=(.04,-.40,.025));fill=bpy.context.object
-fill.name='Preview_Lower_Mounting_Fill';fill.data.energy=2.2;fill.data.size=.24
-fill.data.specular_factor=0;fill.visible_glossy=False
-fill.rotation_euler=(Vector((0,0,.025))-fill.location).to_track_quat('-Z','Y').to_euler()
+from pressure_preview_lighting import configure
+configure(scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'duplex_air_gauges_final.blend'))
 if '--skip-render' not in sys.argv:bpy.ops.render.render(write_still=True)
 print(json.dumps(report))
