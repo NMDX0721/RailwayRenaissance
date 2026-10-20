@@ -1,0 +1,20 @@
+{
+  "modules": 2,
+  "independent_pointers": 4,
+  "range_kPa": [
+    1600,
+    1000
+  ],
+  "minor_division_kPa": 20,
+  "major_division_kPa": 200,
+  "rear_pressure_connections": 4,
+  "glass_to_cap_nominal_clearance_m": 0.0006,
+  "historical_configuration_verified": false,
+  "equalizing_reservoir_signal_implemented": false,
+  "socket_bores_are_open": true,
+  "needle_tip_radius_m": 0.044,
+  "dial_radius_m": 0.0495,
+  "needle_layer_clearance_m": 0.00076,
+  "triangles": 47314,
+  "meshes": 65
+}
