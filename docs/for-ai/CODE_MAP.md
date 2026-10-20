@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+NF-5K完整车体候选：`NF5KReferenceBody`延长至z=17.5并封闭后端；`NF5KRunningGear`生成2组双轴动力转向架及持久车轮截面/螺旋弹簧网格，`ValidateReload`检查2架/4轴/8轮及后贯通门；`NF5KLivery`生成樱花、旗帜及几何车号，字牌使用普通深度测试，避免默认TextMesh透视显示。仍是静态模型，不接轮轨/驱动仿真。见[NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)最新条目。
+
 NF-5K前脸第二轮：`NF5KReferenceBody.BuildNoseDetails`生成内收下裙、通风口、翼徽与车钩预留包络，`Cylinder`生成圆筒顶灯及压圈；侧门补固定门框。车钩暂无运动/受力功能。
 
 2026-10-21：驾驶客运头车外壳由`Assets/Editor/NF5KReferenceBody.cs`生成圆弧肩部、拱顶、圆角窗框及钢门/扶手/登车梯，入口仍为`CabInteriorBlockoutSetup.BatchBuild`；持久网格位于`Assets/Models/Cab/NF5KBodyMeshes/`，新增外观参考视角。设计推定与未完成项见[NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)。

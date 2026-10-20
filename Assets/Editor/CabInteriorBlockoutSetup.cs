@@ -31,9 +31,15 @@ public static class CabInteriorBlockoutSetup
                 var camera=Camera.main;
                 Shot(camera,Output+"driver_view.png");
                 var eyePosition=camera.transform.position;var eyeRotation=camera.transform.rotation;
-                camera.transform.position=new Vector3(7,4,-7);
-                camera.transform.LookAt(new Vector3(0,.95f,1.7f));camera.orthographic=true;camera.orthographicSize=3.8f;
+                camera.transform.position=new Vector3(12,8,-11);
+                camera.transform.LookAt(new Vector3(0,.65f,8.0f));camera.orthographic=true;camera.orthographicSize=7.0f;
                 Shot(camera,Output+"exterior_reference_view.png");
+                camera.transform.position=new Vector3(7,3.8f,-7);camera.transform.LookAt(new Vector3(0,.65f,1.4f));camera.orthographicSize=3.8f;
+                Shot(camera,Output+"front_detail_view.png");
+                camera.transform.position=new Vector3(4, .15f, 4.5f);camera.transform.LookAt(new Vector3(0,-.65f,2.5f));camera.orthographicSize=1.75f;
+                Shot(camera,Output+"powered_bogie_view.png");
+                camera.transform.position=new Vector3(6,3,21);camera.transform.LookAt(new Vector3(0,.9f,16));camera.orthographicSize=3.5f;
+                Shot(camera,Output+"rear_complete_view.png");
                 camera.transform.position=new Vector3(5,1.65f,.25f);
                 camera.transform.LookAt(new Vector3(1.45f,.85f,1.48f));camera.orthographicSize=1.60f;
                 Shot(camera,Output+"door_reference_view.png");
@@ -59,6 +65,7 @@ public static class CabInteriorBlockoutSetup
                 }
                 if(AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Models/Cab/NF5KBodyMeshes/Barrel_Roof.asset")==null)
                     throw new InvalidOperationException("Curved roof mesh was not persisted");
+                NF5KRunningGear.ValidateReload();
                 Debug.Log("NF5K_REFERENCE_RELOAD_AUDIT_OK: two open-window steel leaves, access ladders, persistent curved roof");
                 Debug.Log("CAB_INTERIOR_RELOAD_RENDER_OK");
             }
@@ -93,9 +100,9 @@ public static class CabInteriorBlockoutSetup
         var trim=Mat("Interior_Blockout_Trim",new Color(.08f,.10f,.09f));
         var seat=Mat("Interior_Blockout_Seat",new Color(.12f,.15f,.14f));
         var glass=Mat("Interior_Blockout_Glass",new Color(.65f,.8f,.78f,.08f));
-        var blue=Mat("Interior_NF5_Blue_Exterior",new Color(.025f,.09f,.28f));
-        var cream=Mat("Interior_NF5_Cream_Exterior",new Color(.78f,.73f,.60f));
-        var stripe=Mat("Interior_NF5_Red_Stripe",new Color(.45f,.025f,.025f));
+        var blue=Mat("Interior_NF5_Blue_Exterior",new Color(.035f,.12f,.34f));
+        var cream=Mat("Interior_NF5_Cream_Exterior",new Color(.80f,.79f,.72f));
+        var stripe=Mat("Interior_NF5_Red_Stripe",new Color(.65f,.035f,.05f));
         var hardware=Mat("Interior_NF5_Hardware",new Color(.33f,.35f,.36f),.75f);
         glass.SetFloat("_Surface",1);glass.SetFloat("_SrcBlend",(float)BlendMode.SrcAlpha);glass.SetFloat("_DstBlend",(float)BlendMode.OneMinusSrcAlpha);
         glass.SetFloat("_ZWrite",0);glass.SetFloat("_Smoothness",.93f);glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");glass.SetOverrideTag("RenderType","Transparent");glass.renderQueue=3000;glass.SetShaderPassEnabled("ShadowCaster",false);
@@ -117,19 +124,19 @@ public static class CabInteriorBlockoutSetup
         Box("Passenger_Door_Handle",new Vector3(.23f,.98f,1.87f),new Vector3(.07f,.025f,.025f),trim,passage.transform);
         Box("Rear_Electrical_Service_Panel",new Vector3(.85f,1.48f,1.85f),new Vector3(.65f,.35f,.035f),trim,rear.transform);
         var passenger=new GameObject("Integrated_Passenger_Bay_Blockout");passenger.transform.SetParent(root.transform);
-        Box("Passenger_Floor_First_Module",new Vector3(0,-.045f,4.0f),new Vector3(2.8f,.09f,4.2f),floor,passenger.transform);
+        Box("Passenger_Floor_First_Module",new Vector3(0,-.045f,9.7f),new Vector3(2.8f,.09f,15.6f),floor,passenger.transform);
         foreach(float x in new[]{-1.4f,1.4f})
         {
-            Box("Passenger_Lower_Wall",new Vector3(x,.5f,4),new Vector3(.07f,1f,4.2f),wall,passenger.transform);
-            for(int i=0;i<3;i++)
+            Box("Passenger_Lower_Wall",new Vector3(x,.5f,9.7f),new Vector3(.07f,1f,15.6f),wall,passenger.transform);
+            for(int i=0;i<12;i++)
             {
                 float z=2.8f+i*1.1f;
                 Box("Passenger_Window",new Vector3(x,1.5f,z),new Vector3(.009f,.80f,.94f),glass,passenger.transform,false);
                 Box("Passenger_Window_Post",new Vector3(x,1.5f,z+.51f),new Vector3(.07f,1f,.10f),wall,passenger.transform);
             }
-            Box("Passenger_Header",new Vector3(x,2.04f,4),new Vector3(.07f,.15f,4.2f),wall,passenger.transform);
+            Box("Passenger_Header",new Vector3(x,2.04f,9.7f),new Vector3(.07f,.15f,15.6f),wall,passenger.transform);
         }
-        for(int row=0;row<3;row++)foreach(float x in new[]{-.84f,.84f})
+        for(int row=0;row<12;row++)foreach(float x in new[]{-.84f,.84f})
         {
             float z=2.85f+row*1.1f;
             Box("Passenger_Seat_Block",new Vector3(x,.48f,z),new Vector3(.95f,.12f,.48f),seat,passenger.transform);

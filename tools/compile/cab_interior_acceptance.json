@@ -4,9 +4,9 @@
   "unity_compile_errors": 0,
   "saved_scene_reload_render": "passed",
   "console_startup_binding": "passed",
-  "layout": "single driving compartment connected to integrated passenger first bay",
+  "layout": "single driving compartment integrated with a complete estimated 18.15m passenger head car and rear gangway",
   "dimensions": "estimated, not engineering measurements",
-  "full_passenger_car": false,
+  "full_passenger_car": "exterior envelope complete; passenger interior remains schematic",
   "opposite_driving_end_installed": false,
   "door_sweep_and_ergonomics_verified": false,
   "physical_glass_verified": false,
@@ -15,5 +15,10 @@
   "coupler": "reserved envelope only, no locking or force simulation",
   "door_window_openings_and_persistent_mesh_reload": "passed",
   "reference": "ExternalAssets/nf5_exterior_ref.png",
-  "log": "tools/compile/cab_interior_reference.log"
+  "running_gear": "2 provisional powered bogies, 4 rigid wheelsets, 8 steel wheels",
+  "wheel_radius_m": 0.46,
+  "flange_radius_m": 0.49,
+  "wheel_rail_dynamics_verified": false,
+  "livery": "geometric sakura, flags and depth-tested number lettering; detailed poster pending",
+  "log": "tools/compile/cab_interior_full_car.log"
 }

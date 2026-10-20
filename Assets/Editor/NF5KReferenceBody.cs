@@ -17,7 +17,7 @@ public static class NF5KReferenceBody
         if (!AssetDatabase.IsValidFolder(MeshFolder))
             AssetDatabase.CreateFolder("Assets/Models/Cab", "NF5KBodyMeshes");
         var outline = new List<Vector2>();
-        outline.Add(new Vector2(-1.45f, 6.1f));
+        outline.Add(new Vector2(-1.45f, 17.5f));
         outline.Add(new Vector2(-1.45f, -.15f));
         for (int i = 1; i <= 12; i++)
         {
@@ -31,7 +31,7 @@ public static class NF5KReferenceBody
             float a = -Mathf.PI / 2 + i * Mathf.PI / 24;
             outline.Add(new Vector2(1.10f + .35f * Mathf.Cos(a), -.15f + .50f * Mathf.Sin(a)));
         }
-        outline.Add(new Vector2(1.45f, 6.1f));
+        outline.Add(new Vector2(1.45f, 17.5f));
         Band("Lower_Blue_Shell", outline, .02f, .28f, blue);
         Band("Cream_Waist_Lower", outline, .28f, .35f, cream);
         Band("Red_Waist_Line", outline, .35f, .38f, red);
@@ -90,10 +90,18 @@ public static class NF5KReferenceBody
                 new Vector3(.07f, .80f, .12f), blue);
             BuildDoor(side, name);
             // Outside skin below passenger windows; interior walls remain separate.
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 12; i++)
                 RoundedPanel(name + "_Passenger_Window_" + i,
                     new Vector3(side * 1.442f, 1.50f, 2.8f + i * 1.1f),
                     .93f, .75f, .065f, sideFacing, glass, trim);
+            Cube(name+"_Rear_Vestibule_Front_Panel",new Vector3(side*1.45f,1.53f,15.76f),new Vector3(.08f,.80f,.74f),blue);
+            Cube(name+"_Rear_Vestibule_End_Panel",new Vector3(side*1.45f,1.53f,17.23f),new Vector3(.08f,.80f,.54f),blue);
+            foreach(float z in new[]{16.12f,16.88f})
+                Cube(name+"_Rear_Entry_Stile",new Vector3(side*1.47f,1.53f,z),new Vector3(.06f,.80f,.09f),blue);
+            Cube(name+"_Rear_Entry_Lower",new Vector3(side*1.47f,.58f,16.50f),new Vector3(.06f,1.10f,.85f),blue);
+            Cube(name+"_Rear_Entry_Header",new Vector3(side*1.47f,1.94f,16.50f),new Vector3(.06f,.10f,.85f),blue);
+            RoundedPanel(name+"_Rear_Entry_Window",new Vector3(side*1.477f,1.50f,16.5f),.65f,.68f,.055f,sideFacing,glass,trim);
+            Cube(name+"_Rear_Entry_Threshold",new Vector3(side*1.56f,0,16.50f),new Vector3(.23f,.05f,.90f),steel);
         }
         Cube("Front_Center_Mullion", new Vector3(0, 1.53f, -.59f), new Vector3(.065f, .82f, .065f), blue);
         var roof = new GameObject("Roof"); roof.transform.SetParent(root, false);
@@ -107,7 +115,7 @@ public static class NF5KReferenceBody
             float shoulder = Mathf.Clamp01((Mathf.Abs(x) - 1.10f) / .35f);
             float lowerFront = -.15f - .50f * Mathf.Sqrt(1 - shoulder * shoulder);
             float front = lowerFront + .12f;
-            verts.Add(new Vector3(x, y, front)); verts.Add(new Vector3(x, y, 6.1f));
+            verts.Add(new Vector3(x, y, front)); verts.Add(new Vector3(x, y, 17.5f));
             brow.Add(new Vector3(x, 2.08f, lowerFront)); brow.Add(new Vector3(x, y, front));
             if (i < sections)
             {
@@ -123,7 +131,33 @@ public static class NF5KReferenceBody
         lamp.transform.SetParent(roof.transform); lamp.transform.position = new Vector3(0, 2.37f, -.745f);
         lamp.transform.rotation = Quaternion.Euler(90, 0, 0); lamp.transform.localScale = new Vector3(.22f, .016f, .22f);
         lamp.GetComponent<Renderer>().sharedMaterial = cream;
+        NF5KRunningGear.Build(root);
+        NF5KLivery.Build(root,blue,cream,red);
+        BuildRearEnd();
         Debug.Log("NF5K_REFERENCE_BODY_OK: rounded shoulders, barrel roof, framed steel doors, grab rails and access steps");
+    }
+
+    static void BuildRearEnd()
+    {
+        foreach(float x in new[]{-.97f,.97f})
+            Cube("Rear_End_Wall",new Vector3(x,1.06f,17.5f),new Vector3(.96f,2.12f,.09f),blue);
+        var capVertices=new List<Vector3>();var capTriangles=new List<int>();
+        for(int i=0;i<=32;i++)
+        {
+            float a=-Mathf.PI/2+Mathf.PI*i/32,x=1.45f*Mathf.Sin(a);
+            capVertices.Add(new Vector3(x,2.03f,17.5f));capVertices.Add(new Vector3(x,2.10f+.24f*Mathf.Cos(a),17.5f));
+            if(i<32)Quad(capTriangles,i*2,i*2+1,i*2+3,i*2+2);
+        }
+        MeshObject("Rear_Curved_Roof_Cap",capVertices,capTriangles,cream,root);
+        Cube("Rear_Gangway_Door",new Vector3(0,.56f,17.51f),new Vector3(.88f,1.12f,.055f),blue);
+        foreach(float x in new[]{-.36f,.36f})
+            Cube("Rear_Door_Window_Stile",new Vector3(x,1.50f,17.51f),new Vector3(.16f,.76f,.055f),blue);
+        Cube("Rear_Door_Window_Header",new Vector3(0,1.82f,17.51f),new Vector3(.88f,.12f,.055f),blue);
+        RoundedPanel("Rear_Door_Window",new Vector3(0,1.43f,17.55f),.55f,.58f,.055f,Quaternion.identity,glass,trim);
+        foreach(float x in new[]{-.51f,.51f})
+            Cube("Rear_Gangway_Bellows",new Vector3(x,1.05f,17.67f),new Vector3(.12f,2.1f,.25f),trim);
+        Cube("Rear_Gangway_Bellows_Top",new Vector3(0,2.10f,17.67f),new Vector3(1.14f,.12f,.25f),trim);
+        Cube("Rear_Gangway_Plate",new Vector3(0,.01f,17.70f),new Vector3(1.05f,.055f,.35f),steel);
     }
 
     static void BuildNoseDetails(List<Vector2> contour)
