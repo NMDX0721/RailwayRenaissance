@@ -4,6 +4,7 @@ from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'tools/cab_reference/temperature_review'
+profile=json.loads((ROOT/'Assets/Resources/Cab/temperature_instrument_profile.json').read_text(encoding='utf-8'))
 sys.path.insert(0,str(Path(__file__).parent))
 from pressure_preview_lighting import configure
 bpy.ops.wm.open_mainfile(filepath=str(OUT/'temperature_gauges_study.blend'))
@@ -13,7 +14,7 @@ def pose(u):
     a=low-2*low*u
     return .001+R-R*math.cos(a)-.006,.089+R*math.sin(a),a
 def bow(z):return R-math.sqrt(R*R-(z-.089)**2)-.006
-report={'status':'refined game-art design','range_C':[0,150],'minor_C':5,'major_C':25,
+report={'status':'refined game-art design','profile':profile,
  'historical_identity_verified':False,'unity_bound':False,'oil_temperature_signal_available':False,
  'alarm_thresholds_verified':False,'modules':[]}
 red=bpy.data.materials.new('Temperature_Alarm_OxideRed');red.use_nodes=True
@@ -24,6 +25,8 @@ report['alarm_design']={'water_red_start_C':100,'oil_red_start_C':110,
  'basis':'adjustable fictional retrofit design, not original locomotive limits',
  'runtime_alarm_implemented':False}
 for tag,value in [('Water',82),('Oil',65)]:
+    spec=profile[tag.lower()];lo=spec['minimumC'];hi=spec['maximumC']
+    value=spec['previewC']
     moving=bpy.data.objects[tag+'_Temperature_Indicator']
     head=bpy.data.objects[tag+'_RPM_Reading_Head']
     # Keep the tip on the calibrated baseline; thin the blade vertically.
@@ -35,11 +38,30 @@ for tag,value in [('Water',82),('Oil',65)]:
     moving['construction']='thin reading blade; visual guide design, not verified original movement'
     minimum=1.;baseline_error=0.
     ticks=bpy.data.objects[tag+'_Fixed_Right_Hand_Scale_Marks']
-    assert len(ticks.data.polygons)==31
+    # Replace inherited RPM marks and labels with this channel's physical scale.
+    ink=ticks.data.materials[0]
+    for obj in list(bpy.data.objects):
+        if obj.name.startswith(tag+'_Value_'):bpy.data.objects.remove(obj,do_unlink=True)
+    verts=[];polys=[];count=int((hi-lo)/spec['minorStepC'])
+    module=bpy.data.objects[tag+'_Temperature_Meter']
+    for i in range(count+1):
+        temperature=lo+i*spec['minorStepC'];x,z,a=pose(i/count)
+        major=abs(temperature/spec['majorStepC']-round(temperature/spec['majorStepC']))<1e-6
+        length=.0035 if major else .0018
+        for dx,dz in [(0,-.000075),(length,-.000075),(length,.000075),(0,.000075)]:
+            verts.append((x+math.cos(a)*dx+math.sin(a)*dz,-.0183,z-math.sin(a)*dx+math.cos(a)*dz))
+        n=4*i;polys.append((n,n+1,n+2,n+3))
+        if major:
+            bpy.ops.object.text_add(location=(x+.0046,-.0183,z-math.sin(a)*.0036),rotation=(math.pi/2,0,0))
+            obj=bpy.context.object;obj.name=tag+'_Value_'+str(temperature);obj.parent=module
+            obj.data.body=str(temperature);obj.data.size=.00315;obj.data.align_y='CENTER'
+            obj.data.resolution_u=4;obj.data.materials.append(ink);bpy.ops.object.convert(target='MESH')
+    mesh=bpy.data.meshes.new(tag+'_Calibrated_Temperature_Marks');mesh.from_pydata(verts,[],polys);mesh.materials.append(ink)
+    ticks.data=mesh
     for i,p in enumerate(ticks.data.polygons):
         a=ticks.data.vertices[p.vertices[0]].co
         b=ticks.data.vertices[p.vertices[3]].co
-        baseline=(a+b)/2;x,z,_=pose(i/30)
+        baseline=(a+b)/2;x,z,_=pose(i/count)
         baseline_error=max(baseline_error,math.hypot(baseline.x-x,baseline.z-z))
     assert baseline_error<1e-6
     for i in range(361):
@@ -49,16 +71,16 @@ for tag,value in [('Water',82),('Oil',65)]:
             zz=z-math.sin(a)*v.co.x+math.cos(a)*v.co.z
             gap=.015-abs(xx-bow(zz));minimum=min(minimum,gap)
             assert gap>.001 and .019<zz<.159
-    x,z,a=pose(value/150);moving.location=(x,-.01855,z);moving.rotation_euler.y=a
-    for obj in bpy.data.objects:
-        if obj.name.startswith(tag+'_Value_'):obj.scale*=1.10
+    x,z,a=pose((value-lo)/(hi-lo));moving.location=(x,-.01855,z);moving.rotation_euler.y=a
+    moving['motion_design']='u=clamp((raw_C-minimum_C)/(maximum_C-minimum_C),0,1); retain raw and under/overrange flags'
     module=bpy.data.objects[tag+'_Temperature_Meter']
-    start=100 if tag=='Water' else 110
+    start=spec['redStartC']
+    module['range_C']=[lo,hi];module['minor_division_C']=spec['minorStepC'];module['major_division_C']=spec['majorStepC']
     module['red_zone_start_C']=start
     module['red_zone_basis']='game retrofit design, not certified engine safety limit'
     vertices=[];faces=[]
     for j in range(61):
-        x,z,a=pose((start+(150-start)*j/60)/150)
+        x,z,a=pose((start+(hi-start)*j/60-lo)/(hi-lo))
         vertices.extend([(x-.0016,-.01834,z),(x-.0008,-.01834,z)])
         if j:faces.append((2*j-2,2*j-1,2*j+1,2*j))
     mesh=bpy.data.meshes.new(tag+'_Alarm_Band_Mesh');mesh.from_pydata(vertices,[],faces)
@@ -67,7 +89,7 @@ for tag,value in [('Water',82),('Oil',65)]:
     assert len(mesh.polygons)==60
     module['signal_chain']='matched temperature sender/converter -> calibrated electrical indicator; exact electrical interface unassigned'
     report['modules'].append({'name':tag,'preview_C':value,'travel_samples':361,
-      'scale_baselines_checked':31,'baseline_error_m':baseline_error,'minimum_side_clearance_m':minimum})
+      'range_C':[lo,hi],'scale_baselines_checked':count+1,'baseline_error_m':baseline_error,'minimum_side_clearance_m':minimum})
 # Coated metal and exposed steel remain different materials; no invented corrosion on the scale.
 for name in ['Gauge_BlackPaint','RPM_BlackenedSteel_Retainer']:
     mat=bpy.data.materials.get(name)

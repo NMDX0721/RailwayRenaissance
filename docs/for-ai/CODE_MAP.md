@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+最新温度配置：`Assets/Resources/Cab/temperature_instrument_profile.json`，模型脚本读取水温40–120/油温50–150 ℃及各自红区；41/21刻度基线与各361行程点检查。后端计划见 [热管理设计](CAB_THERMAL_SIMULATION_DESIGN.md)，尚未替换CabEngineState旧水温公式；未新增油温运行信号。
+
 温度表科学校核入口：`tools/cab_reference/refine_temperature_gauges.py`，输出 `Assets/Models/Cab/water_oil_temperature_gauges_refined.glb` 及温度表目录内审计/源文件/柔光预览；各361行程点和31刻度基线检查。油温信号及Unity接线尚未实现，参见温度表任务。
 
 柴油机转速表最终美术稿：`Assets/Models/Cab/diesel_tachometer_final.glb`，入口`tools/cab_reference/finalize_diesel_tachometer.py`。0–1500 r/min设计选型、50细分/250数字，31条刻度基线与361位置包络检查；旧漆/发黑钢/玻璃分材质，凹式三触点接头加定位口。内部表芯及电气接口仍未考证，尚未接Unity；现有EngineRpm范围需另校准。见[定稿说明](dispatch/orders/CODEX-CAB-TACHOMETER-20261020.md)。

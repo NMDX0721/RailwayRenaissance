@@ -1,11 +1,32 @@
 {
   "status": "refined game-art design",
-  "range_C": [
-    0,
-    150
-  ],
-  "minor_C": 5,
-  "major_C": 25,
+  "profile": {
+    "schemaVersion": 1,
+    "profileId": "retrofit-diesel-v1",
+    "basis": "game design using comparable instruments; not a certified engine limit",
+    "water": {
+      "minimumC": 40,
+      "maximumC": 120,
+      "minorStepC": 2,
+      "majorStepC": 10,
+      "redStartC": 100,
+      "previewC": 82
+    },
+    "oil": {
+      "minimumC": 50,
+      "maximumC": 150,
+      "minorStepC": 5,
+      "majorStepC": 10,
+      "redStartC": 110,
+      "previewC": 65
+    },
+    "displayPolicy": {
+      "clampIndicationOnly": true,
+      "preserveRawTemperature": true,
+      "invalidIsNotCold": true
+    },
+    "runtimeSimulationImplemented": false
+  },
   "historical_identity_verified": false,
   "unity_bound": false,
   "oil_temperature_signal_available": false,
@@ -15,16 +36,24 @@
       "name": "Water",
       "preview_C": 82,
       "travel_samples": 361,
-      "scale_baselines_checked": 31,
-      "baseline_error_m": 1.001358417150914e-08,
+      "range_C": [
+        40,
+        120
+      ],
+      "scale_baselines_checked": 41,
+      "baseline_error_m": 1.089792888794428e-08,
       "minimum_side_clearance_m": 0.003353456100208093
     },
     {
       "name": "Oil",
       "preview_C": 65,
       "travel_samples": 361,
-      "scale_baselines_checked": 31,
-      "baseline_error_m": 1.001358417150914e-08,
+      "range_C": [
+        50,
+        150
+      ],
+      "scale_baselines_checked": 21,
+      "baseline_error_m": 1.089792888794428e-08,
       "minimum_side_clearance_m": 0.003353456100208093
     }
   ],
@@ -34,5 +63,5 @@
     "basis": "adjustable fictional retrofit design, not original locomotive limits",
     "runtime_alarm_implemented": false
   },
-  "meshes": 60
+  "meshes": 66
 }

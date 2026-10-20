@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "profileId": "retrofit-diesel-v1",
+  "basis": "game design using comparable instruments; not a certified engine limit",
+  "water": {"minimumC": 40, "maximumC": 120, "minorStepC": 2, "majorStepC": 10, "redStartC": 100, "previewC": 82},
+  "oil": {"minimumC": 50, "maximumC": 150, "minorStepC": 5, "majorStepC": 10, "redStartC": 110, "previewC": 65},
+  "displayPolicy": {"clampIndicationOnly": true, "preserveRawTemperature": true, "invalidIsNotCold": true},
+  "runtimeSimulationImplemented": false
+}
