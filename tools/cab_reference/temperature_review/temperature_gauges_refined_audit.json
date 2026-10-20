@@ -1,0 +1,32 @@
+{
+  "status": "refined game-art design",
+  "range_C": [
+    0,
+    150
+  ],
+  "minor_C": 5,
+  "major_C": 25,
+  "historical_identity_verified": false,
+  "unity_bound": false,
+  "oil_temperature_signal_available": false,
+  "alarm_thresholds_verified": false,
+  "modules": [
+    {
+      "name": "Water",
+      "preview_C": 82,
+      "travel_samples": 361,
+      "scale_baselines_checked": 31,
+      "baseline_error_m": 1.001358417150914e-08,
+      "minimum_side_clearance_m": 0.003353456100208093
+    },
+    {
+      "name": "Oil",
+      "preview_C": 65,
+      "travel_samples": 361,
+      "scale_baselines_checked": 31,
+      "baseline_error_m": 1.001358417150914e-08,
+      "minimum_side_clearance_m": 0.003353456100208093
+    }
+  ],
+  "meshes": 58
+}

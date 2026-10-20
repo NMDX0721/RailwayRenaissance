@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+温度表科学校核入口：`tools/cab_reference/refine_temperature_gauges.py`，输出 `Assets/Models/Cab/water_oil_temperature_gauges_refined.glb` 及温度表目录内审计/源文件/柔光预览；各361行程点和31刻度基线检查。油温信号及Unity接线尚未实现，参见温度表任务。
+
 柴油机转速表最终美术稿：`Assets/Models/Cab/diesel_tachometer_final.glb`，入口`tools/cab_reference/finalize_diesel_tachometer.py`。0–1500 r/min设计选型、50细分/250数字，31条刻度基线与361位置包络检查；旧漆/发黑钢/玻璃分材质，凹式三触点接头加定位口。内部表芯及电气接口仍未考证，尚未接Unity；现有EngineRpm范围需另校准。见[定稿说明](dispatch/orders/CODEX-CAB-TACHOMETER-20261020.md)。
 
 压力表Unity接线：`Assets/Scripts/Cab/CabDuplexPressureGauges.cs`读取三路现有风压，四针独立、缺失均衡风缸信号回零停放并标无效；入口`Assets/Editor/CabPressureGaugeAssetSetup.cs`，预制体`Assets/Resources/Cab/DuplexPressureGaugesFinal.prefab`，验收场景`Assets/Scenes/CabPressureGaugeReview.unity`。四针各361位置/异常输入/状态刷新随导入核验。下一件柴油机转速表首版`Assets/Models/Cab/diesel_tachometer_study.glb`，入口`tools/cab_reference/build_diesel_tachometer.py`，0–1500 r/min候选、黑色指示端，尚未接Unity；见[转速表任务](dispatch/orders/CODEX-CAB-TACHOMETER-20261020.md)。
