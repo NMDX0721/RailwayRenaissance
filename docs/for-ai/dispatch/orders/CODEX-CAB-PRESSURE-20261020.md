@@ -1,5 +1,17 @@
 # 双针空气压力表组：首版
 
+## Unity导入与三路风压绑定（2026-10-20）
+
+新增 `tools/cab_reference/export_pressure_gauges_unity.py` 导出原生FBX及URP贴图至`Assets/Models/Cab/UnityPressureGauges/`。编辑器入口`Assets/Editor/CabPressureGaugeAssetSetup.cs`，菜单RailRevival/驾驶台/导入双针压力表定稿；输出预制体`Assets/Resources/Cab/DuplexPressureGaugesFinal.prefab`与验收场景`Assets/Scenes/CabPressureGaugeReview.unity`。
+
+新增运行时组件`Assets/Scripts/Cab/CabDuplexPressureGauges.cs`：BindEngineState读取总风缸、制动缸、列车管三路状态，LateUpdate刷新；均衡风缸不复制列车管值。缺失/无效输入时，保留实物指针回零停放，同时ValidChannels=false及HasEqualizingReservoirSignal=false；此零位不作为有效测量值。未来可通过不绑定状态的SetPressures显式提供四通道，或扩展真实均衡风缸接口。越量程夹取并保留OutOfRange标记。没有新增均衡风缸仿真、没有修改原动力学或制动公式。
+
+原生FBX独立轴标定用于四针转角映射；导入入口执行四通道各361个转角位置检查，另验上下越量程、NaN/Infinity、三路状态绑定及刷新。场景保存对独立ReviewEngineState的绑定；截图使用840/180/500/470 kPa作为明确的模型展示值，Play状态读取三路实际仿真，第四针停放。玻璃为URP透明近似。预览输出`tools/cab_reference/pressure_review/unity_pressure_gauges_review.png`，浅色背景。
+
+验收使用进程参数`--burst-disable-compilation`，不改变项目设置；日志位于`tools/compile/cab_pressure_gauges_final.log`。主3D驾驶台整组装配仍未完成。
+
+最终验收通过：四针共1444个转角样本、越量程与无效输入、实时三路风压刷新、保存场景重载及渲染通过；0个C#编译错误、0个元数据写入失败，日志无崩溃并完成关闭。77个Renderer，约0.28×0.15×0.09米。汇总回执`tools/compile/cab_pressure_gauges_acceptance.json`。
+
 ## 最终美术稿（2026-10-20）
 
 预览补光修正：用户指出左表右下角似乎缺螺钉。复核GLB每模块均有4颗Mount_Screw，共8颗；左表右下角位于表壳投影中，原预览过暗。新增仅用于预览的下部面积补光，保持固定件位置和模型结构；补光不导出GLB。

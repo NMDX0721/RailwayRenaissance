@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+压力表Unity接线：`Assets/Scripts/Cab/CabDuplexPressureGauges.cs`读取三路现有风压，四针独立、缺失均衡风缸信号回零停放并标无效；入口`Assets/Editor/CabPressureGaugeAssetSetup.cs`，预制体`Assets/Resources/Cab/DuplexPressureGaugesFinal.prefab`，验收场景`Assets/Scenes/CabPressureGaugeReview.unity`。四针各361位置/异常输入/状态刷新随导入核验。下一件柴油机转速表首版`Assets/Models/Cab/diesel_tachometer_study.glb`，入口`tools/cab_reference/build_diesel_tachometer.py`，0–1500 r/min候选、黑色指示端，尚未接Unity；见[转速表任务](dispatch/orders/CODEX-CAB-TACHOMETER-20261020.md)。
+
 双针空气压力表组最终美术稿：`Assets/Models/Cab/duplex_air_gauges_final.glb`，入口`tools/cab_reference/finalize_duplex_air_gauges.py`。发黑钢压圈/漆壳/玻璃分材质，独立内轴与黑针外套、背面通道标识；四针各361位置径向检查，四孔口中心/壁面射线复核，77网格/52931三角面。量程和针色仍是设计选型，均衡风缸信号缺失，尚未接Unity。见[最终稿说明](dispatch/orders/CODEX-CAB-PRESSURE-20261020.md)。
 
 双针空气压力表组首版：`Assets/Models/Cab/duplex_air_gauges_study.glb`，入口`tools/cab_reference/build_duplex_air_gauges.py`；两只模块、四个独立指针节点、背面四只开孔接口。总风/制动缸候选0–1600 kPa，列车管/均衡风缸候选0–1000 kPa；量程及针色为设计选型，均衡风缸信号尚未实现，未接Unity。见[压力表任务](dispatch/orders/CODEX-CAB-PRESSURE-20261020.md)。

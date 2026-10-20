@@ -1,0 +1,133 @@
+{
+  "materials": [
+    {
+      "name": "Pressure_AgedSteel",
+      "metallic": 0.8799999952316284,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.1599999964237213,
+        0.18000000715255737,
+        0.17000000178813934,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_BlackInk",
+      "metallic": 0.0,
+      "smoothness": 0.3399999737739563,
+      "transmission": 0.0,
+      "color": [
+        0.004000000189989805,
+        0.004999999888241291,
+        0.004000000189989805,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_Blackened_Steel_Retainer",
+      "metallic": 0.7799999713897705,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityPressureGauges/Pressure_Blackened_Steel_Retainer_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityPressureGauges/Pressure_Blackened_Steel_Retainer_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityPressureGauges/Pressure_Blackened_Steel_Retainer_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_BrassSocket",
+      "metallic": 0.8199999928474426,
+      "smoothness": 0.49000000953674316,
+      "transmission": 0.0,
+      "color": [
+        0.27000001072883606,
+        0.1599999964237213,
+        0.054999999701976776,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_ClearGlass",
+      "metallic": 0.0,
+      "smoothness": 0.974999999627471,
+      "transmission": 1.0,
+      "color": [
+        0.9399999976158142,
+        0.9800000190734863,
+        0.9599999785423279,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_Gasket",
+      "metallic": 0.0,
+      "smoothness": 0.18000000715255737,
+      "transmission": 0.0,
+      "color": [
+        0.004000000189989805,
+        0.004999999888241291,
+        0.004000000189989805,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_IvoryDial",
+      "metallic": 0.0,
+      "smoothness": 0.36000001430511475,
+      "transmission": 0.0,
+      "color": [
+        0.6899999976158142,
+        0.6499999761581421,
+        0.5099999904632568,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityPressureGauges/Pressure_IvoryDial_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityPressureGauges/Pressure_IvoryDial_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityPressureGauges/Pressure_IvoryDial_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_OldBlackPaint",
+      "metallic": 0.0,
+      "smoothness": 0.4700000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.013000000268220901,
+        0.010999999940395355,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityPressureGauges/Pressure_OldBlackPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityPressureGauges/Pressure_OldBlackPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityPressureGauges/Pressure_OldBlackPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_Rear_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.3399999737739563,
+      "transmission": 0.0,
+      "color": [
+        0.5600000023841858,
+        0.550000011920929,
+        0.4399999976158142,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_RedNeedle",
+      "metallic": 0.0,
+      "smoothness": 0.4399999976158142,
+      "transmission": 0.0,
+      "color": [
+        0.23000000417232513,
+        0.014000000432133675,
+        0.00800000037997961,
+        1.0
+      ]
+    }
+  ]
+}

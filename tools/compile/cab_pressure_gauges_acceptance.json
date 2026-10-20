@@ -1,0 +1,15 @@
+{
+  "pressure_unity_imported": true,
+  "rotation_samples_per_pointer": 361,
+  "pointers": 4,
+  "live_channels": [
+    "MainReservoirKpa",
+    "BrakeCylinderKpa",
+    "BrakePipeKpa"
+  ],
+  "equalizing_reservoir_available": false,
+  "unavailable_needle": "parked at zero, valid flag false",
+  "cs_errors": 0,
+  "burst_disabled_for_verification_only": true,
+  "main_cab_assembled": false
+}
