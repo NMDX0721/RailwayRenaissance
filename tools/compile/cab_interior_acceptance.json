@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "scene": "Assets/Scenes/CabInteriorBlockout.unity",
   "unity_compile_errors": 0,
   "saved_scene_reload_render": "passed",
@@ -10,5 +10,8 @@
   "opposite_driving_end_installed": false,
   "door_sweep_and_ergonomics_verified": false,
   "physical_glass_verified": false,
-  "log": "tools/compile/cab_interior_blockout.log"
+  "reference_body": "rounded shoulders, barrel roof, narrow steel doors and access ladders",
+  "door_window_openings_and_persistent_mesh_reload": "passed",
+  "reference": "ExternalAssets/nf5_exterior_ref.png",
+  "log": "tools/compile/cab_interior_reference.log"
 }

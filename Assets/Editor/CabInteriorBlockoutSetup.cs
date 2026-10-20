@@ -30,6 +30,14 @@ public static class CabInteriorBlockoutSetup
             {
                 var camera=Camera.main;
                 Shot(camera,Output+"driver_view.png");
+                var eyePosition=camera.transform.position;var eyeRotation=camera.transform.rotation;
+                camera.transform.position=new Vector3(7,4,-7);
+                camera.transform.LookAt(new Vector3(0,.95f,1.7f));camera.orthographic=true;camera.orthographicSize=3.8f;
+                Shot(camera,Output+"exterior_reference_view.png");
+                camera.transform.position=new Vector3(5,1.65f,.25f);
+                camera.transform.LookAt(new Vector3(1.45f,.85f,1.48f));camera.orthographicSize=1.60f;
+                Shot(camera,Output+"door_reference_view.png");
+                camera.orthographic=false;camera.transform.position=eyePosition;camera.transform.rotation=eyeRotation;
                 var hidden=new List<GameObject>();
                 foreach(var name in new[]{"Roof","Rear_Assembly","Left_Upper_Wall","Left_Lower_Wall","Left_Door_Pivot","Left_Header"})
                 {
@@ -42,6 +50,16 @@ public static class CabInteriorBlockoutSetup
                 camera.orthographic=false;camera.transform.position=new Vector3(0,1.45f,.15f);
                 camera.transform.LookAt(new Vector3(0,1.30f,1.91f));camera.fieldOfView=90;
                 Shot(camera,Output+"rear_wall_view.png");
+                foreach(var side in new[]{"Left","Right"})
+                {
+                    if(GameObject.Find(side+"_Door_Leaf_Fill")!=null||GameObject.Find(side+"_Door_Window_Fill")==null)
+                        throw new InvalidOperationException("Steel door window opening was lost on scene reload");
+                    if(GameObject.Find(side+"_Access_Step_2")==null)
+                        throw new InvalidOperationException("Access ladder was lost on scene reload");
+                }
+                if(AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Models/Cab/NF5KBodyMeshes/Barrel_Roof.asset")==null)
+                    throw new InvalidOperationException("Curved roof mesh was not persisted");
+                Debug.Log("NF5K_REFERENCE_RELOAD_AUDIT_OK: two open-window steel leaves, access ladders, persistent curved roof");
                 Debug.Log("CAB_INTERIOR_RELOAD_RENDER_OK");
             }
             if(frames>=40){EditorApplication.update-=Review;EditorApplication.Exit(0);}
@@ -61,7 +79,6 @@ public static class CabInteriorBlockoutSetup
     public static void Build()
     {
         Directory.CreateDirectory(Output);
-        var previous=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
         var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         var root=new GameObject("CabInterior_Blockout");
         Material Mat(string name,Color color,float metallic=0)
@@ -79,6 +96,7 @@ public static class CabInteriorBlockoutSetup
         var blue=Mat("Interior_NF5_Blue_Exterior",new Color(.025f,.09f,.28f));
         var cream=Mat("Interior_NF5_Cream_Exterior",new Color(.78f,.73f,.60f));
         var stripe=Mat("Interior_NF5_Red_Stripe",new Color(.45f,.025f,.025f));
+        var hardware=Mat("Interior_NF5_Hardware",new Color(.33f,.35f,.36f),.75f);
         glass.SetFloat("_Surface",1);glass.SetFloat("_SrcBlend",(float)BlendMode.SrcAlpha);glass.SetFloat("_DstBlend",(float)BlendMode.OneMinusSrcAlpha);
         glass.SetFloat("_ZWrite",0);glass.SetFloat("_Smoothness",.93f);glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");glass.SetOverrideTag("RenderType","Transparent");glass.renderQueue=3000;glass.SetShaderPassEnabled("ShadowCaster",false);
         GameObject Box(string name,Vector3 position,Vector3 size,Material material,Transform parent=null,bool solid=true)
@@ -88,36 +106,7 @@ public static class CabInteriorBlockoutSetup
             if(!solid)UnityEngine.Object.DestroyImmediate(obj.GetComponent<Collider>());return obj;
         }
         Box("Floor",new Vector3(0,-.045f,.7f),new Vector3(2.8f,.09f,2.4f),floor);
-        Box("Roof",new Vector3(0,2.15f,.7f),new Vector3(2.8f,.08f,2.4f),wall);
-        Box("Front_Lower_Bulkhead",new Vector3(0,.52f,-.51f),new Vector3(2.8f,1.04f,.08f),wall);
-        Box("NF5_Blue_Nose_Envelope",new Vector3(0,.59f,-.562f),new Vector3(2.8f,.85f,.025f),blue);
-        Box("NF5_Cream_Lower_Band",new Vector3(0,.25f,-.580f),new Vector3(2.8f,.10f,.012f),cream);
-        Box("NF5_Red_Lower_Pinstripe",new Vector3(0,.31f,-.587f),new Vector3(2.8f,.018f,.008f),stripe);
-        Box("Front_Header",new Vector3(0,2.05f,-.34f),new Vector3(2.8f,.15f,.08f),wall);
-        Box("Front_Center_Pillar",new Vector3(0,1.53f,-.43f),new Vector3(.08f,.92f,.085f),trim).transform.rotation=Quaternion.Euler(10,0,0);
-        foreach(float x in new[]{-1.36f,1.36f})Box("Front_Corner_Pillar",new Vector3(x,1.53f,-.51f),new Vector3(.08f,.9f,.085f),wall);
-        foreach(float x in new[]{-.68f,.68f})
-        {
-            var frame=new GameObject("Windscreen_Frame");frame.transform.SetParent(root.transform);frame.transform.position=new Vector3(x,1.53f,-.43f);
-            Box("Front_Windscreen",frame.transform.position,new Vector3(1.26f,.88f,.009f),glass,frame.transform,false);
-            foreach(float dx in new[]{-.64f,.64f})Box("Glass_Side_Seal",frame.transform.position+Vector3.right*dx,new Vector3(.025f,.92f,.022f),trim,frame.transform);
-            foreach(float dy in new[]{-.45f,.45f})Box("Glass_Cross_Seal",frame.transform.position+Vector3.up*dy,new Vector3(1.30f,.025f,.022f),trim,frame.transform);
-            frame.transform.rotation=Quaternion.Euler(10,0,0);
-        }
-        foreach(var side in new[]{"Left","Right"})
-        {
-            // Facing -Z: the driver's left is +X.
-            float x=side=="Left"?1.40f:-1.40f;
-            Box(side+"_Lower_Wall",new Vector3(x,.50f,.3f),new Vector3(.07f,1f,1.6f),wall);
-            Box(side+"_Upper_Wall",new Vector3(x,1.55f,-.44f),new Vector3(.07f,1.1f,.14f),wall);
-            Box(side+"_Window",new Vector3(x,1.52f,.34f),new Vector3(.009f,.82f,1.36f),glass,null,false);
-            Box(side+"_Header",new Vector3(x,2.04f,.70f),new Vector3(.07f,.16f,2.4f),wall);
-            var pivot=new GameObject(side+"_Door_Pivot");pivot.transform.SetParent(root.transform);pivot.transform.position=new Vector3(x,0,1.12f);
-            Box(side+"_Door_Lower",new Vector3(x,.52f,1.43f),new Vector3(.065f,1.04f,.60f),wall,pivot.transform);
-            Box(side+"_Door_Glass",new Vector3(x,1.5f,1.43f),new Vector3(.009f,.84f,.53f),glass,pivot.transform,false);
-            Box(side+"_Door_Rear_Frame",new Vector3(x,1.0f,1.76f),new Vector3(.08f,2f,.08f),wall);
-            Box(side+"_Door_Handle",new Vector3(x+(x<0?.05f:-.05f),.96f,1.64f),new Vector3(.03f,.035f,.10f),trim,pivot.transform);
-        }
+        NF5KReferenceBody.Build(root.transform,blue,cream,stripe,trim,glass,hardware);
         var rear=new GameObject("Rear_Assembly");rear.transform.SetParent(root.transform);
         foreach(float x in new[]{-.855f,.855f})
             Box("Rear_Passenger_Partition",new Vector3(x,1.05f,1.91f),new Vector3(1.09f,2.1f,.08f),wall,rear.transform);
