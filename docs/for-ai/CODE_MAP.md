@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+启动组件：`build_startup_controls.py`生成with_key/without_key/key_only GLB与FBX；`CabStartupAssetSetup.BatchBuild`生成带钥匙、空锁与独立MasterKey三预制体。`CabStartupControls`提供插拔/旋转/燃油泵/启动停机接口与状态灯，显式绑定CabEngineState；局部联锁非全局发动机守卫，鼠标射线及背包尚未接。见启动组件任务。
+
 机油压力表：`build_oil_pressure_gauge.py`生成0–1 MPa窄框表；`CabOilPressureGauge.cs`读取OilPressureMpa。主台构建加入OilPressure标定节点和运行组件，301点校验世界位置、异常/超量程及停机状态。主体PBR纹理由build_console_body.py生成到Textures/MainConsole，统一导出URP。见油压表任务。
 
 主体第三版在 `build_console_body.py` 中分离Short系列制动阀部件安装位置，并增加辅助控制/铭牌几何；审计断言双阀主轴平面间距>0.20 m。完整性与各国参考见 [设备核对](CAB_EQUIPMENT_COMPLETENESS.md)，新增按钮/换向柄/警示镜片尚未实现交互驱动。
