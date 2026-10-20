@@ -1,0 +1,21 @@
+{
+  "status": "final game-art design",
+  "range_rpm": [
+    0,
+    1500
+  ],
+  "minor_division_rpm": 50,
+  "major_division_rpm": 250,
+  "preview_rpm": 650,
+  "travel_samples": 361,
+  "scale_baselines_checked": 31,
+  "maximum_baseline_error_m": 1.001358417150914e-08,
+  "minimum_pointer_side_clearance_m": 0.003347240741047159,
+  "connector_contact_edge_clearance_m": 0.00295692205544033,
+  "contact_recess_m": 0.0010000001192092892,
+  "historical_identity_verified": false,
+  "sensor_and_drive_certified": false,
+  "unity_bound": false,
+  "meshes": 29,
+  "triangles": 9486
+}

@@ -1,5 +1,17 @@
 # 柴油机转速表：首版
 
+## 最终美术稿（2026-10-20）
+
+用户要求质感、科学性优化后定稿。最终资产`Assets/Models/Cab/diesel_tachometer_final.glb`；入口`tools/cab_reference/finalize_diesel_tachometer.py`，源/预览/回执为`tools/cab_reference/tachometer_review/diesel_tachometer_final.blend`、`diesel_tachometer_final_reference.png`、`diesel_tachometer_final_audit.json`。新增贴图`Assets/Models/Cab/Textures/DieselTachometerFinal/`。
+
+保留窄长弧形外观、0–1500 r/min、50细分/250数字及650展示值。新增独立发黑钢压框材质，保持外壳为非金属旧漆涂层；钢螺钉及电接头为缎面金属，黑色指示端与盘面印刷加深对比，数字及单位放大10%，纸白盘法线减弱，玻璃粗糙度0.035、IOR1.5。预览继续浅色背景和柔光，增加均匀环境照明，不加遮挡刻度的强光斑。
+
+31条刻线的实际基线与转速映射逐一比对，361个全量程位置检查指示端顶点不越窗口。误差及最小侧隙记录在回执；不是完整三维碰撞、磨耗或计量试验。背面三触点保留1毫米凹入深度、触点之间约2.96毫米边缘距离，金属壳口补定位缺口和小倒角；这些是模型几何参数，不代表额定绝缘距离、连接器标准或已验证插配。
+
+本稿定义为游戏美术与读数规格定稿。量程不是柴油机安全工作上限，不印未经核实的红线、精度或厂家标识；原车型号、内部表芯及接口电气制式仍未确认。若未来采用脉冲转速传感器，转换应使用`rpm = 60 × f_Hz / PPR`，PPR须由实际传感器确定；若采用测速发电机则需对应的标定/变换关系，不能混用。当前三触点不分配虚构针脚。
+
+尚未接Unity与EngineRpm；现有仿真转速范围不匹配的问题仍保留为独立待办，本轮不修改动力学，也不把超量程夹取伪装成物理修复。
+
 用户要求压力表完成Unity接入后继续柴油机转速表。入口`tools/cab_reference/build_diesel_tachometer.py`，输出`Assets/Models/Cab/diesel_tachometer_study.glb`；源、图、回执为`tools/cab_reference/tachometer_review/diesel_tachometer_study.blend`、`diesel_tachometer_reference.png`、`diesel_tachometer_audit.json`。
 
 沿用原图窄长仪表组的黑漆框、向左弯刻度窗及内嵌玻璃，与已完成电流表形成同一外形系列；顶部加“柴油机转速”，盘面单位r/min，黑色指示端区别于电流表。0–1500 r/min为设计选型，每小格50、每250标数，展示650 r/min。29网格、8350三角面，指示节点独立为`Tachometer_Reading_Carriage`。使用浅灰背景、柔光，不添加遮住盘面的强光斑。
