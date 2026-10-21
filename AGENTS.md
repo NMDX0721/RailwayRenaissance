@@ -230,5 +230,5 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 *核心纪律：代码改动必须同步更新 `docs/for-ai/` 相关文档及公式表，添加或重构重大系统时必须更新 `AGENTS.md` 与代码地图。*
 
-## NF-5K?????2026-10-21?
-`CabExteriorLighting`????/??/??/??/????????????CabEngineState.HeadlightOn?????NF5KFrontLightingSetup???/PlayMode???NF5KLightingReview??????????????????????????docs/for-ai/NF5K_HEADCAR_LAYOUT.md?
+## NF-5K exterior lighting (2026-10-21)
+CabExteriorLighting supplies Off/Marker/Dim/Bright/Tail modes and auxiliary power input, compatible with CabEngineState.HeadlightOn. NF5KFrontLightingSetup builds optics; NF5KLightingReview verifies dark renders and Play Mode. Light output is art-tuned; automatic consist end selection, battery and fault simulation remain pending. See docs/for-ai/NF5K_EXTERIOR_LIGHTING.md.
