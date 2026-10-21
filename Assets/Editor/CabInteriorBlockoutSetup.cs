@@ -86,12 +86,30 @@ public static class CabInteriorBlockoutSetup
     }
     static void Shot(Camera camera,string path)
     {
-        var target=new RenderTexture(1400,1000,24);var previous=RenderTexture.active;
-        camera.targetTexture=target;camera.Render();RenderTexture.active=target;
-        var image=new Texture2D(1400,1000,TextureFormat.RGB24,false);
-        image.ReadPixels(new Rect(0,0,1400,1000),0,0);image.Apply();File.WriteAllBytes(path,image.EncodeToPNG());
-        camera.targetTexture=null;RenderTexture.active=previous;target.Release();
-        UnityEngine.Object.DestroyImmediate(target);UnityEngine.Object.DestroyImmediate(image);
+        const int width=1400,height=1000,scale=3;
+        var target=new RenderTexture(width*scale,height*scale,24){filterMode=FilterMode.Bilinear};
+        var resolved=new RenderTexture(width,height,0);
+        var previous=RenderTexture.active;var previousTarget=camera.targetTexture;
+        Texture2D image=null;
+        try
+        {
+            camera.targetTexture=target;camera.Render();
+            // A 3:1 bilinear reduction alone misses source pixels; explicitly average all nine samples.
+            var shader=Shader.Find("Hidden/NF5K/ReviewDownsample");
+            if(shader==null)throw new InvalidOperationException("Review downsample shader is missing");
+            var material=new Material(shader);
+            try{Graphics.Blit(target,resolved,material);}finally{UnityEngine.Object.DestroyImmediate(material);}
+            RenderTexture.active=resolved;
+            image=new Texture2D(width,height,TextureFormat.RGB24,false);
+            image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();File.WriteAllBytes(path,image.EncodeToPNG());
+        }
+        finally
+        {
+            camera.targetTexture=previousTarget;RenderTexture.active=previous;
+            target.Release();resolved.Release();
+            UnityEngine.Object.DestroyImmediate(target);UnityEngine.Object.DestroyImmediate(resolved);
+            if(image!=null)UnityEngine.Object.DestroyImmediate(image);
+        }
     }
     [MenuItem("RailRevival/Cab/Build Complete Interior Blockout")]
     public static void Build()
@@ -111,9 +129,9 @@ public static class CabInteriorBlockoutSetup
         var trim=Mat("Interior_Blockout_Trim",new Color(.08f,.10f,.09f));
         var seat=Mat("Interior_Blockout_Seat",new Color(.12f,.15f,.14f));
         var glass=Mat("Interior_Blockout_Glass",new Color(.65f,.8f,.78f,.08f));
-        var blue=Mat("Interior_NF5_Blue_Exterior",new Color(.035f,.12f,.34f));
-        var cream=Mat("Interior_NF5_Cream_Exterior",new Color(.80f,.79f,.72f));
-        var stripe=Mat("Interior_NF5_Red_Stripe",new Color(.65f,.035f,.05f));
+        var blue=Mat("Interior_NF5_Blue_Exterior",new Color(.055f,.145f,.32f));
+        var cream=Mat("Interior_NF5_Cream_Exterior",new Color(.84f,.81f,.73f));
+        var stripe=Mat("Interior_NF5_Red_Stripe",new Color(.70f,.045f,.085f));
         var hardware=Mat("Interior_NF5_Hardware",new Color(.33f,.35f,.36f),.75f);
         glass.SetFloat("_Surface",1);glass.SetFloat("_SrcBlend",(float)BlendMode.SrcAlpha);glass.SetFloat("_DstBlend",(float)BlendMode.OneMinusSrcAlpha);
         glass.SetFloat("_ZWrite",0);glass.SetFloat("_Smoothness",.93f);glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");glass.SetOverrideTag("RenderType","Transparent");glass.renderQueue=3000;glass.SetShaderPassEnabled("ShadowCaster",false);

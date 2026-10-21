@@ -9,12 +9,13 @@ public static class NF5KLivery
     public static void Build(Transform parent,Material blue,Material cream,Material red)
     {
         root=new GameObject("Reference_Livery").transform;root.SetParent(parent,false);
-        pink=Mat("Livery_Sakura_Pink",new Color(.94f,.45f,.58f));
-        pale=Mat("Livery_Sakura_Pale",new Color(.98f,.65f,.74f));
-        pollen=Mat("Livery_Sakura_Pollen",new Color(.89f,.65f,.24f));
+        pink=Mat("Livery_Sakura_Pink",new Color(.88f,.43f,.55f));
+        pale=Mat("Livery_Sakura_Pale",new Color(.97f,.69f,.75f));
+        pollen=Mat("Livery_Sakura_Pollen",new Color(.82f,.63f,.32f));
         branch=Mat("Livery_Branch",new Color(.32f,.13f,.16f));
         blue.SetFloat("_Metallic",.22f);blue.SetFloat("_Smoothness",.32f);EditorUtility.SetDirty(blue);
         cream.SetFloat("_Metallic",.10f);cream.SetFloat("_Smoothness",.27f);EditorUtility.SetDirty(cream);
+        var seam=Mat("Livery_Panel_Seam",new Color(.035f,.075f,.14f));
         foreach(int side in new[]{-1,1})
         {
             foreach(float centre in new[]{3.3f,6.4f,10.8f,14.0f})
@@ -40,7 +41,7 @@ public static class NF5KLivery
             foreach(var f in new[]{new Vector3(.48f,.32f,.065f),new Vector3(.65f,.40f,.080f),new Vector3(.80f,.49f,.072f),new Vector3(.72f,.73f,.059f),new Vector3(.98f,.59f,.075f),new Vector3(1.06f,.72f,.047f)})
                 Flower(new Vector3(side*f.x,f.y,FrontZ(side*f.x)-.009f),0,f.z);
             // Window rail and panel joints remain separate from decorative artwork.
-            for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.012f,.61f,branch);
+            for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.006f,.61f,seam);
         }
         Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.11f,cream);
         Debug.Log("NF5K_LIVERY_OK: geometric sakura, flags, lettering; no baked illustration pasted onto body");

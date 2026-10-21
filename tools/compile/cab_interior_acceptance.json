@@ -28,5 +28,8 @@
   "aperture_junctions": "integrated painted spandrels, metal press lips, rubber seals, recessed glass and 45mm returns; raked shoulder transition",
   "industrial_materials": "regional matte enamel, separate rubber and exposed metal, preserved glass specular, 4mm maximum edge bevels, lamp optics and neutral review ground",
   "markings_cast_shadows": false,
-  "log": "tools/compile/cab_industrial_finish.log"
+  "log": "tools/compile/cab_livery_aa.log",
+  "livery_palette": "deep blue, warm ivory, crimson, soft two-tone pink blossoms; 6mm blue panel seams",
+  "review_antialiasing": "3x SSAA: 4200x3000 to 1400x1000 with nine-sample resolve; screenshots inspected",
+  "runtime_global_antialiasing_changed": false
 }
