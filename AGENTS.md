@@ -236,3 +236,7 @@ CabExteriorLighting supplies Off/Marker/Dim/Bright/Tail modes and auxiliary powe
 
 ## NF-5K interior lighting (2026-10-21)
 CabInteriorLighting controls separate cab/task, instrument dimmer, two passenger zones and automatic emergency lights from explicit normal/backup supply inputs. InstrumentLightOn remains compatible. Generation/review: NF5KInteriorLightingSetup and NF5KInteriorLightingReview. See docs/for-ai/NF5K_INTERIOR_LIGHTING.md; battery and physical reflection simulation remain pending.
+
+
+## NF-5K passenger fittings (2026-10-21)
+NF5KPassengerInterior generates shared native seat meshes, luggage racks, inner window returns and vestibule fittings. ValidateReload checks 48 seats and candidate aisle clearance; NF5KDoorReview includes new fixed seat/rack colliders. See docs/for-ai/NF5K_PASSENGER_INTERIOR.md. Geometry capacity is not connected to the economy or passenger simulation.

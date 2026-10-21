@@ -52,7 +52,7 @@ public static class NF5KInteriorLightingSetup
         for(int i=0;i<6;i++)
         {
             float z=3.0f+i*2.6f;
-            Fixture("Passenger_Luminaire_"+i,i<3?InteriorLightCircuit.PassengerFront:InteriorLightCircuit.PassengerRear,new Vector3(0,2.105f,z),new Vector3(0,.40f,z),new Vector3(.24f,.025f,.72f),15,115,4.0f);
+            Fixture("Passenger_Luminaire_"+i,i<3?InteriorLightCircuit.PassengerFront:InteriorLightCircuit.PassengerRear,new Vector3(0,2.105f,z),new Vector3(0,.40f,z),new Vector3(.24f,.025f,.72f),4.5f,115,4.0f);
         }
         foreach(float z in new[]{2.25f,9.3f,16.45f})
             Fixture("Emergency_Aisle_Light_"+z.ToString(System.Globalization.CultureInfo.InvariantCulture),InteriorLightCircuit.Emergency,new Vector3(0,2.085f,z),new Vector3(0,.15f,z),new Vector3(.10f,.025f,.15f),3.5f,115,5.0f);
@@ -80,7 +80,14 @@ public static class NF5KInteriorLightingSetup
             bounce.transform.position=new Vector3(p.x*.4f,1.60f,1.05f);bounce.type=LightType.Point;bounce.range=2.2f;bounce.color=light.color;
             bounce.intensity=0;bounce.enabled=false;bounce.shadows=LightShadows.None;bounce.cullingMask=1<<30;
         }
-        fixtures.Add(new CabInteriorLighting.Fixture{light=light,bounce=bounce,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
+        bool passenger=circuit==InteriorLightCircuit.PassengerFront||circuit==InteriorLightCircuit.PassengerRear;
+        if(passenger)
+        {
+            bounce=new GameObject("Passenger_Local_Bounce_Approximation").AddComponent<Light>();bounce.gameObject.layer=30;bounce.transform.SetParent(root,false);
+            bounce.transform.position=new Vector3(0,1.50f,p.z-.40f);bounce.type=LightType.Point;bounce.range=2.6f;bounce.color=light.color;
+            bounce.intensity=0;bounce.enabled=false;bounce.shadows=LightShadows.None;bounce.cullingMask=1<<30;
+        }
+        fixtures.Add(new CabInteriorLighting.Fixture{light=light,bounce=bounce,bounceIntensity=passenger?.12f:.22f,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
         GameObject Part(string suffix,Vector3 position,Vector3 dimensions,Material mat)
         {
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name+"_"+suffix;obj.layer=30;obj.transform.SetParent(assembly,false);obj.transform.localPosition=position;obj.transform.localScale=dimensions;

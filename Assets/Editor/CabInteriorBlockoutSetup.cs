@@ -56,6 +56,7 @@ public static class CabInteriorBlockoutSetup
                 camera.transform.position=junctionPosition;camera.transform.rotation=junctionRotation;camera.orthographicSize=junctionSize;
                 var leftDoor=GameObject.Find("Left_Door_Pivot").GetComponent<CabSideDoor>();
                 leftDoor.Open();Shot(camera,Output+"door_open_view.png");leftDoor.Close();
+                NF5KPassengerInterior.ValidateReload();
                 NF5KDoorReview.Validate();
                 NF5KLightingReview.Render(camera,Shot);
                 NF5KInteriorLightingReview.Render(camera,Shot);
@@ -159,24 +160,7 @@ public static class CabInteriorBlockoutSetup
         Box("Rear_Electrical_Service_Panel",new Vector3(.85f,1.48f,1.85f),new Vector3(.65f,.35f,.035f),trim,rear.transform);
         var passenger=new GameObject("Integrated_Passenger_Bay_Blockout");passenger.transform.SetParent(root.transform);
         for(int module=0;module<4;module++)Box("Passenger_Floor_Module_"+module,new Vector3(0,-.045f,3.85f+module*3.9f),new Vector3(2.8f,.09f,3.9f),floor,passenger.transform);
-        foreach(float x in new[]{-1.4f,1.4f})
-        {
-            Box("Passenger_Lower_Wall",new Vector3(x,.5f,8.98f),new Vector3(.07f,1f,14.16f),wall,passenger.transform);
-            Box("Passenger_Rear_End_Lower_Wall",new Vector3(x,.5f,17.22f),new Vector3(.07f,1f,.56f),wall,passenger.transform);
-            for(int i=0;i<12;i++)
-            {
-                float z=2.8f+i*1.1f;
-                Box("Passenger_Window",new Vector3(x,1.5f,z),new Vector3(.009f,.80f,.94f),glass,passenger.transform,false);
-                Box("Passenger_Window_Post",new Vector3(x,1.5f,z+.51f),new Vector3(.07f,1f,.10f),wall,passenger.transform);
-            }
-            Box("Passenger_Header",new Vector3(x,2.04f,9.7f),new Vector3(.07f,.15f,15.6f),wall,passenger.transform);
-        }
-        for(int row=0;row<12;row++)foreach(float x in new[]{-.84f,.84f})
-        {
-            float z=2.85f+row*1.1f;
-            Box("Passenger_Seat_Block",new Vector3(x,.48f,z),new Vector3(.95f,.12f,.48f),seat,passenger.transform);
-            Box("Passenger_Seat_Back",new Vector3(x,.80f,z+.23f),new Vector3(.95f,.56f,.08f),seat,passenger.transform);
-        }
+        NF5KPassengerInterior.Build(passenger.transform);
         Box("Ceiling_Light_Base",new Vector3(0,2.085f,.65f),new Vector3(.35f,.035f,.16f),trim);
         Box("Ceiling_Light_Diffuser",new Vector3(0,2.06f,.65f),new Vector3(.30f,.015f,.12f),wall);
         foreach(float x in new[]{-.75f,.75f})

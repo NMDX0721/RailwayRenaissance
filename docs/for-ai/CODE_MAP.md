@@ -466,3 +466,7 @@ CabInteriorLighting and NF5KInteriorLightingSetup add independent cab ceiling/ta
 
 ### 2026-10-21 Cab lighting real-reference revision
 Vossloh DE18 documents two ceiling lights, dimmable instruments/reading lights and access lighting. NF-5K now has 18 interior fixtures: two cab ceiling, independent driver/assistant task lights, two access footlights, two instrument lights, six passenger and four emergency. Normal, night and service views are rendered separately. New APIs: SetAssistantTask and SetAccess. See NF5K_INTERIOR_LIGHTING.md.
+
+
+### 2026-10-21 Passenger interior fittings
+NF5KPassengerInterior replaces passenger seat/wall blocks with 48 individual seats, supported luggage racks, framed inner windows, heater covers and vestibule details. Native rounded meshes and woven texture are persisted/shared. ValidateReload checks candidate aisle and reserved zones; NF5KDoorReview now includes new seat/rack colliders. See NF5K_PASSENGER_INTERIOR.md for references and unverified certification/interaction limits.

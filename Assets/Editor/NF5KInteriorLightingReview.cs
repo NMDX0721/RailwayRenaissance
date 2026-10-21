@@ -65,12 +65,19 @@ public static class NF5KInteriorLightingReview
             c.AllOff();exterior.SetMode(ExteriorLightMode.Off);
             camera.transform.position=new Vector3(0,1.58f,2.18f);camera.transform.LookAt(new Vector3(0,1.28f,11));
             Capture("passenger_lights_off");c.SetPassengerZone(0,true);c.SetPassengerZone(1,true);Capture("passenger_lights_on");
+            camera.transform.position=new Vector3(0,1.48f,15.65f);camera.transform.LookAt(new Vector3(0,1.05f,8));Capture("passenger_reverse_view");
+            camera.transform.position=new Vector3(.15f,1.22f,4.10f);camera.transform.LookAt(new Vector3(1.03f,.85f,3.15f));camera.fieldOfView=64;Capture("passenger_seat_detail");
+            camera.transform.position=new Vector3(0,1.58f,2.18f);camera.transform.LookAt(new Vector3(0,1.28f,11));camera.fieldOfView=72;
             c.SetSupply(false,true);Capture("passenger_emergency");c.SetSupply(false,false);Capture("passenger_blackout");
             float off=Brightness("passenger_lights_off"),on=Brightness("passenger_lights_on"),emergency=Brightness("passenger_emergency"),blackout=Brightness("passenger_blackout");
             if(on<off+.008f||emergency<=blackout+.002f||on<=emergency)throw new InvalidOperationException("Passenger illumination render contrast invalid: "+off+" / "+on+" / "+emergency+" / "+blackout);
             float low=Brightness("driver_night_instruments"),high=Brightness("driver_instruments_full");
             if(high<=low+.001f)throw new InvalidOperationException("Instrument dimmer does not measurably illuminate driver panel: "+low+" / "+high);
             Debug.Log("NF5K_INTERIOR_RENDER_OK: passenger off/on/emergency/blackout="+off+"/"+on+"/"+emergency+"/"+blackout+"; instrument low/high="+low+"/"+high);
+            key.intensity=keyValue;fill.intensity=fillValue;RenderSettings.ambientSkyColor=sky;RenderSettings.ambientEquatorColor=eq;RenderSettings.ambientGroundColor=bottom;camera.backgroundColor=bg;
+            c.SetSupply(true,true);c.SetPassengerZone(0,true);c.SetPassengerZone(1,true);
+            camera.transform.position=new Vector3(0,1.58f,2.18f);camera.transform.LookAt(new Vector3(0,1.28f,11));Capture("passenger_daylight");
+            camera.transform.position=new Vector3(.15f,1.22f,4.10f);camera.transform.LookAt(new Vector3(1.03f,.85f,3.15f));camera.fieldOfView=64;Capture("passenger_seat_daylight");
         }
         finally
         {

@@ -13,6 +13,7 @@ namespace RailwayRenaissance.Cab
         {
             public Light light;
             public Light bounce;
+            public float bounceIntensity;
             public Renderer diffuser;
             public InteriorLightCircuit circuit;
             public float intensity;
@@ -109,7 +110,7 @@ namespace RailwayRenaissance.Cab
             {
                 float level = Level(fixture.circuit);
                 if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level; }
-                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = .22f * level; }
+                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = fixture.bounceIntensity * level; }
                 if (fixture.diffuser == null) continue;
                 fixture.diffuser.GetPropertyBlock(properties);
                 var tint = fixture.light != null ? fixture.light.color : Color.white;
