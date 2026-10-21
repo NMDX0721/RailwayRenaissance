@@ -47,6 +47,10 @@ public static class CabInteriorBlockoutSetup
                 camera.transform.position=new Vector3(5,1.65f,.25f);
                 camera.transform.LookAt(new Vector3(1.45f,.85f,1.48f));camera.orthographicSize=1.60f;
                 Shot(camera,Output+"door_reference_view.png");
+                var junctionPosition=camera.transform.position;var junctionRotation=camera.transform.rotation;float junctionSize=camera.orthographicSize;
+                camera.transform.position=new Vector3(3.8f,1.70f,.85f);camera.transform.LookAt(new Vector3(1.47f,1.50f,1.08f));camera.orthographicSize=.65f;
+                Shot(camera,Output+"door_window_junction_view.png");
+                camera.transform.position=junctionPosition;camera.transform.rotation=junctionRotation;camera.orthographicSize=junctionSize;
                 var leftDoor=GameObject.Find("Left_Door_Pivot").GetComponent<CabSideDoor>();
                 leftDoor.Open();Shot(camera,Output+"door_open_view.png");leftDoor.Close();
                 NF5KDoorReview.Validate();

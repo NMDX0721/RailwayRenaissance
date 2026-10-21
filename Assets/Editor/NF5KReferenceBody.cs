@@ -52,7 +52,7 @@ public static class NF5KReferenceBody
         for (int side = -1; side <= 1; side += 2)
         {
             float x = side * .555f;
-            RoundedPanel("Front_Glass_" + side, new Vector3(x, 1.53f, -.582f),
+            RoundedPanel("Front_Glass_" + side, new Vector3(x, 1.53f, -.5952f),
                 1.045f, .72f, .065f, Quaternion.Euler(8, 0, 0), glass, trim);
             Cube("Front_Wiper_" + side, new Vector3(x + .13f, 1.52f, -.625f),
                 new Vector3(.018f, .66f, .018f), steel, Quaternion.Euler(0, 0, -9));
@@ -72,32 +72,25 @@ public static class NF5KReferenceBody
                 lens.transform.localScale = new Vector3(diameter, .012f, diameter);
                 lens.GetComponent<Renderer>().sharedMaterial = cream;
             }
-            for (int i = 0; i < 12; i++)
-            {
-                float a = i * Mathf.PI / 24;
-                var p = new Vector3(side * (1.10f + .35f * Mathf.Sin(a)), 1.53f,
-                    -.15f - .50f * Mathf.Cos(a));
-                var q = new Vector3(side * (1.10f + .35f * Mathf.Sin(a + Mathf.PI / 24)), 1.53f,
-                    -.15f - .50f * Mathf.Cos(a + Mathf.PI / 24));
-                Edge("Rounded_Cab_Shoulder", p, q, .04f, .79f, blue);
-            }
+            Shoulder(side);
             string name = side > 0 ? "Left" : "Right";
             foreach(var range in new[]{new Vector2(-.15f,1.145f),new Vector2(1.835f,16.06f),new Vector2(16.94f,17.5f)})
                 Cube(name+"_Window_Sill_Pinstripe",new Vector3(side*1.453f,1.11f,(range.x+range.y)/2),new Vector3(.004f,.035f,range.y-range.x),cream);
             Quaternion sideFacing = Quaternion.Euler(0, 90, 0);
-            RoundedPanel(name + "_Cab_Side_Window", new Vector3(side * 1.405f, 1.53f, .44f),
+            RoundedPanel(name + "_Cab_Side_Window", new Vector3(side * 1.455f, 1.53f, .44f),
                 1.03f, .72f, .075f, sideFacing, glass, trim);
-            Cube(name + "_Window_Divider", new Vector3(side * 1.417f, 1.53f, .48f),
+            Cube(name + "_Window_Divider", new Vector3(side * 1.455f, 1.53f, .48f),
                 new Vector3(.035f, .74f, .025f), blue);
             Cube(name + "_Door_Forward_Pillar", new Vector3(side * 1.42f, 1.53f, 1.025f),
                 new Vector3(.07f, .80f, .15f), blue);
             Cube(name + "_Door_Rear_Pillar", new Vector3(side * 1.42f, 1.53f, 1.91f),
                 new Vector3(.07f, .80f, .12f), blue);
             BuildDoor(side, name);
+            Cube(name+"_Door_To_Passenger_Transition",new Vector3(side*1.443f,1.50f,2.105f),new Vector3(.030f,.84f,.29f),blue);
             // Outside skin below passenger windows; interior walls remain separate.
             for (int i = 0; i < 12; i++)
                 RoundedPanel(name + "_Passenger_Window_" + i,
-                    new Vector3(side * 1.442f, 1.50f, 2.8f + i * 1.1f),
+                    new Vector3(side * 1.455f, 1.50f, 2.8f + i * 1.1f),
                     .93f, .75f, .065f, sideFacing, glass, trim);
             Cube(name+"_Rear_Vestibule_Front_Panel",new Vector3(side*1.45f,1.53f,15.76f),new Vector3(.08f,.80f,.74f),blue);
             Cube(name+"_Rear_Vestibule_End_Panel",new Vector3(side*1.45f,1.53f,17.23f),new Vector3(.08f,.80f,.54f),blue);
@@ -113,7 +106,7 @@ public static class NF5KReferenceBody
             rearDoor.AddComponent<CabSideDoor>().Configure(side*86);
             Cube(name+"_Rear_Entry_Threshold",new Vector3(side*1.56f,0,16.50f),new Vector3(.23f,.05f,.90f),steel);
         }
-        Cube("Front_Center_Mullion", new Vector3(0, 1.53f, -.59f), new Vector3(.065f, .82f, .065f), blue);
+        Cube("Front_Center_Mullion", new Vector3(0, 1.53f, -.5952f), new Vector3(.065f, .82f, .065f), blue,Quaternion.Euler(8,0,0));
         var roof = new GameObject("Roof"); roof.transform.SetParent(root, false);
         var verts = new List<Vector3>(); var triangles = new List<int>();
         var brow = new List<Vector3>(); var browTriangles = new List<int>();
@@ -125,6 +118,7 @@ public static class NF5KReferenceBody
             float shoulder = Mathf.Clamp01((Mathf.Abs(x) - 1.10f) / .35f);
             float lowerFront = -.15f - .50f * Mathf.Sqrt(1 - shoulder * shoulder);
             float front = lowerFront + .12f;
+            lowerFront += .94f*Mathf.Tan(8*Mathf.Deg2Rad)*Mathf.Sqrt(1-shoulder*shoulder);
             verts.Add(new Vector3(x, y, front)); verts.Add(new Vector3(x, y, 17.5f));
             brow.Add(new Vector3(x, 2.08f, lowerFront)); brow.Add(new Vector3(x, y, front));
             if (i < sections)
@@ -248,12 +242,13 @@ public static class NF5KReferenceBody
         foreach(float z in new[]{1.125f,1.855f})
             Cube(name+"_Fixed_Door_Jamb",new Vector3(side*1.454f,.99f,z),new Vector3(.085f,1.94f,.035f),steel);
         Cube(name+"_Fixed_Door_Header",new Vector3(side*1.454f,1.96f,1.49f),new Vector3(.085f,.035f,.765f),steel);
+        Cube(name+"_Door_Header_Seal",new Vector3(side*1.443f,1.9375f,1.49f),new Vector3(.035f,.015f,.68f),trim);
         var assembly = new GameObject(name + "_Door_Pivot"); assembly.transform.SetParent(root, false);
         assembly.transform.position = new Vector3(side * 1.447f, 0, 1.84f);
         Quaternion facing = Quaternion.Euler(0, 90, 0);
         // Narrow steel leaf, rounded upper window, independent hinge and external access hardware.
-        RoundedPanel(name + "_Door_Leaf", new Vector3(side * 1.448f, .98f, 1.49f),
-            .67f, 1.89f, .055f, facing, blue, trim, assembly.transform);
+        RoundedPanel(name + "_Door_Leaf", new Vector3(side * 1.478f, .98f, 1.49f),
+            .67f, 1.89f, .018f, facing, blue, trim, assembly.transform);
         // The leaf mesh is built as a lower panel plus window surround, leaving a real opening.
         var leaf = assembly.transform.Find(name + "_Door_Leaf_Fill");
         if (leaf != null) Object.DestroyImmediate(leaf.gameObject);
@@ -262,9 +257,9 @@ public static class NF5KReferenceBody
         foreach (float z in new[] {1.205f, 1.775f})
             Cube(name + "_Door_Window_Stile", new Vector3(side * 1.448f, 1.50f, z),
                 new Vector3(.055f, .77f, .09f), blue, Quaternion.identity, assembly.transform);
-        Cube(name + "_Door_Top_Rail", new Vector3(side * 1.448f, 1.875f, 1.49f),
-            new Vector3(.055f, .09f, .64f), blue, Quaternion.identity, assembly.transform);
-        RoundedPanel(name + "_Door_Window", new Vector3(side * 1.452f, 1.49f, 1.49f),
+        Cube(name + "_Door_Top_Rail", new Vector3(side * 1.448f, 1.8825f, 1.49f),
+            new Vector3(.055f, .105f, .64f), blue, Quaternion.identity, assembly.transform);
+        RoundedPanel(name + "_Door_Window", new Vector3(side * 1.477f, 1.49f, 1.49f),
             .47f, .70f, .065f, facing, glass, trim, assembly.transform);
         foreach (float y in new[] {.30f, 1.55f})
             Cube(name + "_Door_Hinge", new Vector3(side * 1.49f, y, 1.84f),
@@ -301,8 +296,8 @@ public static class NF5KReferenceBody
         var v = new List<Vector3>(); var t = new List<int>();
         foreach (var p in contour)
         {
-            v.Add(new Vector3(p.x, bottom, p.y));
-            v.Add(new Vector3(p.x, top, p.y));
+            v.Add(new Vector3(p.x, bottom, RakedZ(p,bottom)));
+            v.Add(new Vector3(p.x, top, RakedZ(p,top)));
         }
         for (int i = 0; i < contour.Count - 1; i++)
         {
@@ -326,6 +321,57 @@ public static class NF5KReferenceBody
         for (int i = 0; i < contour.Count - 1; i++) Quad(t, i * 2, i * 2 + 2, i * 2 + 3, i * 2 + 1);
         MeshObject(name, v, t, material, root);
     }
+    static float RakedZ(Vector2 p,float height)
+    {
+        if(p.y>-.149f||height<=1.14f)return p.y;
+        float corner=Mathf.Clamp01((Mathf.Abs(p.x)-1.10f)/.35f);
+        return p.y+(height-1.14f)*Mathf.Tan(8*Mathf.Deg2Rad)*Mathf.Sqrt(1-corner*corner);
+    }
+    static void Shoulder(int side)
+    {
+        var v=new List<Vector3>();var t=new List<int>();
+        for(int i=0;i<=24;i++)
+        {
+            float a=i*Mathf.PI/48;var p=new Vector2(side*(1.10f+.35f*Mathf.Sin(a)),-.15f-.50f*Mathf.Cos(a));
+            v.Add(new Vector3(p.x,1.14f,RakedZ(p,1.14f)));v.Add(new Vector3(p.x,1.93f,RakedZ(p,1.93f)));
+            if(i<24)Quad(t,i*2,i*2+1,i*2+3,i*2+2);
+        }
+        MeshObject("Integrated_Shoulder_"+side,v,t,blue,root);
+    }
+    static void GlazedOpening(string name,Vector3 position,float width,float height,float radius,Quaternion rotation,Transform parent)
+    {
+        bool side=Mathf.Abs(position.x)>1.2f;
+        float outward=side?Mathf.Sign(position.x):(position.z>10?1:-1);
+        var outer=Rounded(width+.045f,height+.045f,radius+.0225f);
+        var gasket=Rounded(width+.035f,height+.035f,radius+.0175f);
+        var hole=Rounded(width-.025f,height-.025f,Mathf.Max(.015f,radius-.0125f));
+        float cellW=width+.10f,cellH=height+.08f;
+        if(name.Contains("Cab_Side")){cellW=1.175f;cellH=.80f;}
+        else if(name.Contains("Passenger_Window")){cellW=1.10f;cellH=.84f;}
+        else if(name.Contains("Front_Glass")){cellW=1.11f;cellH=.80f;}
+        else if(name=="Left_Door_Window"||name=="Right_Door_Window"){cellW=.57f;cellH=.78f;}
+        else if(name.Contains("Rear_Entry_Window")){cellW=.75f;cellH=.84f;}
+        var rectangle=new List<Vector3>();
+        for(int corner=0;corner<4;corner++)for(int i=0;i<=6;i++)
+            rectangle.Add(new Vector3(corner==0||corner==3?cellW/2:-cellW/2,corner<2?cellH/2:-cellH/2,0));
+        Ring(name+"_Painted_Spandrel",rectangle,outer,outward*.003f,outward*.003f,blue);
+        Ring(name+"_Metal_Press_Lip",outer,gasket,outward*.004f,outward*.004f,steel);
+        Ring(name+"_Frame",gasket,hole,outward*.002f,outward*.002f,trim);
+        Ring(name+"_Recess_Return",hole,hole,0,-outward*.045f,trim);
+        var innerOuter=Rounded(width+.005f,height+.005f,radius+.0025f);
+        Ring(name+"_Inner_Finishing_Lip",innerOuter,hole,-outward*.045f,-outward*.045f,trim);
+        var pane=new List<Vector3>();foreach(var p in hole)pane.Add(new Vector3(p.x,p.y,-outward*.010f));
+        var triangles=new List<int>();for(int i=1;i<pane.Count-1;i++){triangles.Add(0);triangles.Add(i);triangles.Add(i+1);}
+        Place(MeshObject(name+"_Fill",pane,triangles,glass,parent));
+        void Place(GameObject obj){obj.transform.position=position;obj.transform.rotation=rotation;}
+        void Ring(string id,List<Vector3> a,List<Vector3> b,float za,float zb,Material material)
+        {
+            var v=new List<Vector3>();var t=new List<int>();
+            for(int i=0;i<a.Count;i++){v.Add(new Vector3(a[i].x,a[i].y,za));v.Add(new Vector3(b[i].x,b[i].y,zb));}
+            for(int i=0;i<a.Count;i++)Quad(t,i*2,(i*2+2)%v.Count,(i*2+3)%v.Count,i*2+1);
+            Place(MeshObject(id,v,t,material,parent));
+        }
+    }
     static List<Vector3> Rounded(float width, float height, float radius)
     {
         var v = new List<Vector3>();
@@ -344,6 +390,7 @@ public static class NF5KReferenceBody
     static void RoundedPanel(string name, Vector3 position, float width, float height, float radius,
         Quaternion rotation, Material fill, Material border, Transform parent = null)
     {
+        if(fill==glass){GlazedOpening(name,position,width,height,radius,rotation,parent??root);return;}
         var inner = Rounded(width - .035f, height - .035f, Mathf.Max(.012f, radius - .0175f));
         var outer = Rounded(width + .035f, height + .035f, radius + .0175f);
         var verts = new List<Vector3>(); var tris = new List<int>();
