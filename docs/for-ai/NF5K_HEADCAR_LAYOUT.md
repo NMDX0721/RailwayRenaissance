@@ -79,3 +79,7 @@ Solid polygon lettering on a 640x220mm plate; 320mm wing badge; static articulat
 
 ### 2026-10-21 NF-5K mechanical and interior-lighting scope
 Front placeholder coupler replaced with static cast parts, independent knuckle, carrier and sill; closed angle cock and parked hose; service skirt details. Coupling forces and brake-pipe continuity are not simulated. Driver/task, instrument and passenger lighting remain separate planned circuits. See [scope and references](NF5K_FRONT_MECHANICAL.md).
+
+
+### 2026-10-21 NF-5K cabin and passenger lighting
+CabInteriorLighting and NF5KInteriorLightingSetup add independent cab ceiling/task, dimmable instrument, two passenger zones and automatic emergency transfer from explicit normal/backup supply inputs. NF5KInteriorLightingReview checks renders and NF5KLightingPlayReview checks runtime. See [interior lighting specification](NF5K_INTERIOR_LIGHTING.md). Passenger interior remains a blockout; physical glass reflections and battery simulation are unverified.

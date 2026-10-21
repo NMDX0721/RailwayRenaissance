@@ -28,7 +28,7 @@
   "aperture_junctions": "integrated painted spandrels, metal press lips, rubber seals, recessed glass and 45mm returns; raked shoulder transition",
   "industrial_materials": "regional matte enamel, separate rubber and exposed metal, preserved glass specular, 4mm maximum edge bevels, lamp optics and neutral review ground",
   "markings_cast_shadows": false,
-  "log": "tools/compile/cab_front_mechanical.log",
+  "log": "tools/compile/cab_interior_lighting.log",
   "livery_palette": "deep blue, warm ivory, crimson, soft two-tone pink blossoms; 6mm blue panel seams",
   "review_antialiasing": "3x SSAA: 4200x3000 to 1400x1000 with nine-sample resolve; screenshots inspected",
   "runtime_global_antialiasing_changed": false,
@@ -42,5 +42,10 @@
   "lighting_simulation_limits": "art tuned light output, manual auxiliary power, no battery/fuse faults or automatic consist end detection",
   "brake_hose": "closed angle cock, ferrules, drooped hose, gladhand seal and lug, parking bracket; no pneumatic connectivity",
   "front_mechanical_reload": "passed: original placeholders absent, required parts persisted, nominal hose clearance",
-  "interior_lighting_plan": "separate driver/task, instrument dimming and zoned passenger ceiling circuits; emergency supply and windshield reflections to verify; not installed"
+  "interior_lighting_plan": "first implementation installed; battery capacity, measured illuminance, physical reflection and finished passenger furnishings remain pending",
+  "interior_lighting": "14 real spot fixtures: 1 cab ceiling, 1 task, 2 dimmable instrument, 6 passenger in two zones, 4 emergency",
+  "interior_lighting_runtime": "passed: circuit independence, supply transfer, total outage, restore, legacy instrument switch and remembered level, disable cleanup",
+  "interior_lighting_render": "NF5K_INTERIOR_RENDER_OK: passenger off/on/emergency/blackout=0.0242137/0.1534838/0.0332986/0.0242137; instrument low/high=0.02455923/0.04176699",
+  "interior_lighting_controls": "right-side Chinese review GUI; I toggles cab ceiling; formal 3D switches pending",
+  "passenger_floor": "four modules for local additional-light selection; ceiling liner and luminaire housings installed"
 }

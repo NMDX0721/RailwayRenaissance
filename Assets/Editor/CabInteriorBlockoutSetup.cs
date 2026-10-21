@@ -58,9 +58,10 @@ public static class CabInteriorBlockoutSetup
                 leftDoor.Open();Shot(camera,Output+"door_open_view.png");leftDoor.Close();
                 NF5KDoorReview.Validate();
                 NF5KLightingReview.Render(camera,Shot);
+                NF5KInteriorLightingReview.Render(camera,Shot);
                 camera.orthographic=false;camera.transform.position=eyePosition;camera.transform.rotation=eyeRotation;
                 var hidden=new List<GameObject>();
-                foreach(var name in new[]{"Roof","Rear_Assembly","Left_Upper_Wall","Left_Lower_Wall","Left_Door_Pivot","Left_Header"})
+                foreach(var name in new[]{"Roof","Interior_Lighting_Assembly","Rear_Assembly","Left_Upper_Wall","Left_Lower_Wall","Left_Door_Pivot","Left_Header"})
                 {
                     var obj=GameObject.Find(name);if(obj!=null){hidden.Add(obj);obj.SetActive(false);}
                 }
@@ -157,7 +158,7 @@ public static class CabInteriorBlockoutSetup
         Box("Passenger_Door_Handle",new Vector3(.23f,.98f,1.87f),new Vector3(.07f,.025f,.025f),trim,passage.transform);
         Box("Rear_Electrical_Service_Panel",new Vector3(.85f,1.48f,1.85f),new Vector3(.65f,.35f,.035f),trim,rear.transform);
         var passenger=new GameObject("Integrated_Passenger_Bay_Blockout");passenger.transform.SetParent(root.transform);
-        Box("Passenger_Floor_First_Module",new Vector3(0,-.045f,9.7f),new Vector3(2.8f,.09f,15.6f),floor,passenger.transform);
+        for(int module=0;module<4;module++)Box("Passenger_Floor_Module_"+module,new Vector3(0,-.045f,3.85f+module*3.9f),new Vector3(2.8f,.09f,3.9f),floor,passenger.transform);
         foreach(float x in new[]{-1.4f,1.4f})
         {
             Box("Passenger_Lower_Wall",new Vector3(x,.5f,8.98f),new Vector3(.07f,1f,14.16f),wall,passenger.transform);
@@ -206,6 +207,7 @@ public static class CabInteriorBlockoutSetup
         RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.45f,.45f,.45f);
         NF5KSurfaceFinish.Build(root.transform);
         NF5KIndustrialFinish.Build(root.transform);
+        NF5KInteriorLightingSetup.Build(root.transform);
         light.shadows=LightShadows.Soft;light.shadowStrength=.70f;light.shadowBias=.02f;light.shadowNormalBias=.02f;light.intensity=.90f;
         RenderSettings.ambientMode=AmbientMode.Trilight;
         RenderSettings.ambientSkyColor=new Color(.34f,.37f,.40f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.24f);RenderSettings.ambientGroundColor=new Color(.07f,.075f,.08f);

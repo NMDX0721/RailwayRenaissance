@@ -99,13 +99,18 @@ public static class NF5KLightingPlayReview
             if(++frames==10)
             {
                 var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+                NF5KInteriorLightingReview.Validate(UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>());
                 NF5KLightingReview.Validate(controller);controller.SetMode(ExteriorLightMode.Bright);
+                var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();interior.SetInstrumentDimmer(.37f);
+                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().InstrumentLightOn=false;
                 UnityEngine.Object.FindFirstObjectByType<CabEngineState>().HeadlightOn=false;
             }
             if(frames==25)
             {
                 var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
                 if(controller.Mode!=ExteriorLightMode.Off)throw new InvalidOperationException("Legacy headlight switch did not disable runtime lighting");
+                if(UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>().InstrumentDimmer!=0)throw new InvalidOperationException("Legacy instrument switch did not turn lighting off");
+                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().InstrumentLightOn=true;
                 UnityEngine.Object.FindFirstObjectByType<CabEngineState>().HeadlightOn=true;
             }
             if(frames>=40)
@@ -113,6 +118,11 @@ public static class NF5KLightingPlayReview
                 var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
                 if(controller.Mode!=ExteriorLightMode.Bright)throw new InvalidOperationException("Legacy switch did not restore selected mode");
                 controller.enabled=false;foreach(var beam in controller.Beams)if(beam.enabled)throw new InvalidOperationException("Disabled controller left lights on");
+                var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+                if(!Mathf.Approximately(interior.InstrumentDimmer,.37f))throw new InvalidOperationException("Legacy instrument switch did not restore dimmer");
+                interior.SetSupply(false,true);interior.enabled=false;
+                foreach(var fixture in interior.Fixtures)if(fixture.light.enabled)throw new InvalidOperationException("Disabled interior controller left emergency lamps energized");
+                Debug.Log("NF5K_INTERIOR_PLAYMODE_OK: circuit/power tests, legacy instrument switch and remembered dimmer, emergency disable cleanup");
                 Debug.Log("NF5K_LIGHTING_PLAYMODE_OK: actual runtime mode API, power isolation, legacy switch off/on, disable cleanup");
                 EditorApplication.update-=Check;EditorApplication.isPlaying=false;
             }

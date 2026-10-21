@@ -458,3 +458,7 @@ NF5KIndustrialFinish calls NF5KFrontLightingSetup, which binds CabExteriorLighti
 
 ### 2026-10-21 NF-5K front mechanical fittings
 NF5KReferenceBody.BuildNoseDetails calls NF5KFrontMechanical.Build for cast coupler parts, support/draft-sill geometry, parked brake hose and skirt details. ValidateReload checks persistence and nominal hose clearance. See [mechanical specification and planned interior lighting](NF5K_FRONT_MECHANICAL.md).
+
+
+### 2026-10-21 NF-5K interior lighting
+CabInteriorLighting and NF5KInteriorLightingSetup add independent cab ceiling/task, dimmable instrument, two passenger zones and automatic emergency transfer from explicit normal/backup supply inputs. NF5KInteriorLightingReview checks renders and NF5KLightingPlayReview checks runtime. See [interior lighting specification](NF5K_INTERIOR_LIGHTING.md). Passenger interior remains a blockout; physical glass reflections and battery simulation are unverified.

@@ -232,3 +232,7 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ## NF-5K exterior lighting (2026-10-21)
 CabExteriorLighting supplies Off/Marker/Dim/Bright/Tail modes and auxiliary power input, compatible with CabEngineState.HeadlightOn. NF5KFrontLightingSetup builds optics; NF5KLightingReview verifies dark renders and Play Mode. Light output is art-tuned; automatic consist end selection, battery and fault simulation remain pending. See docs/for-ai/NF5K_EXTERIOR_LIGHTING.md.
+
+
+## NF-5K interior lighting (2026-10-21)
+CabInteriorLighting controls separate cab/task, instrument dimmer, two passenger zones and automatic emergency lights from explicit normal/backup supply inputs. InstrumentLightOn remains compatible. Generation/review: NF5KInteriorLightingSetup and NF5KInteriorLightingReview. See docs/for-ai/NF5K_INTERIOR_LIGHTING.md; battery and physical reflection simulation remain pending.
