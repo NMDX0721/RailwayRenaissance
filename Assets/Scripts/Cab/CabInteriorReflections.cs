@@ -26,6 +26,13 @@ namespace RailwayRenaissance.Cab
                 }
                 signature = signature * 31 + RenderSettings.ambientSkyColor.GetHashCode();
                 signature = signature * 31 + RenderSettings.ambientEquatorColor.GetHashCode();
+                signature = signature * 31 + RenderSettings.ambientGroundColor.GetHashCode();
+                if(RenderSettings.sun!=null)
+                {
+                    signature=signature*31+RenderSettings.sun.intensity.GetHashCode();
+                    signature=signature*31+RenderSettings.sun.color.GetHashCode();
+                    signature=signature*31+RenderSettings.sun.transform.rotation.GetHashCode();
+                }
             }
             if (signature == previousSignature || probes == null) return false;
             previousSignature = signature;

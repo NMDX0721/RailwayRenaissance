@@ -1,0 +1,11 @@
+{
+    "units": "metres; scene geometry measured; NF5K exterior dimensions remain design estimates",
+    "seatCount": 48,
+    "cushionWidth": 0.44999998807907107,
+    "seatTop": 0.5399886965751648,
+    "rowPitch": 1.0999999046325684,
+    "clearAisle": 0.6639999747276306,
+    "clearInnerWidth": 2.7049999237060549,
+    "ceilingClearHeight": 2.1475000381469728,
+    "driverEyeHeight": 1.3799999952316285
+}

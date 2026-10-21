@@ -419,3 +419,6 @@ JSON 结构：
 *本文档由 AI 代理于 2026-08-14 阅读全项目后自动生成，供 AI 代理快速上手。*
 2026-10-20 最新进展：柴油机转速表已完成原生 Unity 导入与 EngineRpm 绑定，预制体及独立验收场景可用；主驾驶台尚未整体装配。水温/机油温度表组首版已出，现有仿真只有水温，油温暂不接线。接线与验证见转速表任务，温度表的候选量程及证据边界见温度表任务。
 
+# Daylight review environment (2026-10-21)
+
+`Assets/Scenes/CabDaylightReview.unity` provides an independent NF5K daylight inspection environment with clear/overcast/low-sun presets and independent interior-lamp controls. Measured proportions and usage are documented in `NF5K_DAYLIGHT_REVIEW.md`; this is not a completed route or calibrated lighting simulation.

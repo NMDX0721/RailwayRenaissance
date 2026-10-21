@@ -29,6 +29,7 @@ public static class CabInteriorBlockoutSetup
             if(++frames==30)
             {
                 var camera=Camera.main;
+                NF5KDaylightReview.AuditDimensions();
                 Shot(camera,Output+"driver_view.png");
                 var eyePosition=camera.transform.position;var eyeRotation=camera.transform.rotation;
                 camera.transform.position=new Vector3(12,8,-11);
@@ -85,6 +86,7 @@ public static class CabInteriorBlockoutSetup
                 NF5KRunningGear.ValidateReload();
                 Debug.Log("NF5K_REFERENCE_RELOAD_AUDIT_OK: two open-window steel leaves, access ladders, persistent curved roof");
                 Debug.Log("CAB_INTERIOR_RELOAD_RENDER_OK");
+                NF5KDaylightReview.Render(Shot);
             }
             if(frames>=40){EditorApplication.update-=Review;NF5KLightingPlayReview.Begin();}
         }
