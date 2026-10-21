@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace RailwayRenaissance.Cab
 {
-    public enum InteriorLightCircuit { CabCeiling, Task, Instrument, PassengerFront, PassengerRear, Emergency }
+    public enum InteriorLightCircuit { CabCeiling, Task, Instrument, PassengerFront, PassengerRear, Emergency, AssistantTask, Access }
 
     public sealed class CabInteriorLighting : MonoBehaviour
     {
@@ -12,13 +12,14 @@ namespace RailwayRenaissance.Cab
         public struct Fixture
         {
             public Light light;
+            public Light bounce;
             public Renderer diffuser;
             public InteriorLightCircuit circuit;
             public float intensity;
         }
         [SerializeField] CabEngineState engineState;
         [SerializeField] Fixture[] fixtures;
-        [SerializeField] bool cabCeiling, task, passengerFront, passengerRear;
+        [SerializeField] bool cabCeiling, task, passengerFront, passengerRear, assistantTask, access;
         [SerializeField, Range(0,1)] float instrumentDimmer;
         [SerializeField] float lastInstrumentDimmer = .25f;
         [SerializeField] bool mainPower = true, batteryPower = true;
@@ -28,6 +29,8 @@ namespace RailwayRenaissance.Cab
         Font reviewFont;
         public bool CabCeilingOn => cabCeiling;
         public bool TaskOn => task;
+        public bool AssistantTaskOn => assistantTask;
+        public bool AccessOn => access;
         public bool MainPower => mainPower;
         public bool BatteryPower => batteryPower;
         public bool EmergencyActive => !mainPower && batteryPower;
@@ -53,6 +56,14 @@ namespace RailwayRenaissance.Cab
         }
         public void SetCabCeiling(bool on) { cabCeiling = on; Apply(); }
         public void SetTask(bool on) { task = on; Apply(); }
+        public void SetAssistantTask(bool on) { assistantTask = on; Apply(); }
+        public void SetAccess(bool on) { access = on; Apply(); }
+        public void SetCabPreset(int preset)
+        {
+            if (preset < 0 || preset > 2) throw new ArgumentOutOfRangeException(nameof(preset));
+            cabCeiling = preset != 1; task = assistantTask = preset == 2; access = true;
+            SetInstrumentDimmer(preset == 1 ? .25f : preset == 0 ? .5f : .65f);
+        }
         public void SetPassengerZone(int zone, bool on)
         {
             if (zone < 0 || zone > 1) throw new ArgumentOutOfRangeException(nameof(zone));
@@ -69,7 +80,7 @@ namespace RailwayRenaissance.Cab
         public void SetSupply(bool normal, bool backup) { mainPower = normal; batteryPower = backup; Apply(); }
         public void AllOff()
         {
-            cabCeiling = task = passengerFront = passengerRear = false; instrumentDimmer = 0; Apply();
+            cabCeiling = task = passengerFront = passengerRear = assistantTask = access = false; instrumentDimmer = 0; Apply();
         }
         float Level(InteriorLightCircuit circuit)
         {
@@ -80,6 +91,8 @@ namespace RailwayRenaissance.Cab
             {
                 case InteriorLightCircuit.CabCeiling: return cabCeiling ? 1 : 0;
                 case InteriorLightCircuit.Task: return task ? 1 : 0;
+                case InteriorLightCircuit.AssistantTask: return assistantTask ? 1 : 0;
+                case InteriorLightCircuit.Access: return access ? 1 : 0;
                 case InteriorLightCircuit.Instrument: return instrumentDimmer;
                 case InteriorLightCircuit.PassengerFront: return passengerFront ? 1 : 0;
                 case InteriorLightCircuit.PassengerRear: return passengerRear ? 1 : 0;
@@ -96,6 +109,7 @@ namespace RailwayRenaissance.Cab
             {
                 float level = Level(fixture.circuit);
                 if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level; }
+                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = .22f * level; }
                 if (fixture.diffuser == null) continue;
                 fixture.diffuser.GetPropertyBlock(properties);
                 var tint = fixture.light != null ? fixture.light.color : Color.white;
@@ -109,10 +123,17 @@ namespace RailwayRenaissance.Cab
             if (!reviewControls) return;
             if (reviewFont == null) reviewFont = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var font = GUI.skin.font; if (reviewFont != null) GUI.skin.font = reviewFont;
-            GUILayout.BeginArea(new Rect(Mathf.Max(250, Screen.width - 260),16,244,340), GUI.skin.box);
+            GUILayout.BeginArea(new Rect(Mathf.Max(250, Screen.width - 260),16,244,400), GUI.skin.box);
             GUILayout.Label("室内照明（I 切换顶灯）");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("正常")) SetCabPreset(0);
+            if (GUILayout.Button("夜间")) SetCabPreset(1);
+            if (GUILayout.Button("检修")) SetCabPreset(2);
+            GUILayout.EndHorizontal();
             bool ceiling = GUILayout.Toggle(cabCeiling,"司机室顶灯"); if (ceiling != cabCeiling) SetCabCeiling(ceiling);
             bool work = GUILayout.Toggle(task,"司机工作灯"); if (work != task) SetTask(work);
+            bool assistant = GUILayout.Toggle(assistantTask,"副司机阅读灯"); if (assistant != assistantTask) SetAssistantTask(assistant);
+            bool doors = GUILayout.Toggle(access,"两侧门区低位灯"); if (doors != access) SetAccess(doors);
             GUILayout.Label("仪表照明");
             float dim = GUILayout.HorizontalSlider(instrumentDimmer,0,1); if (!Mathf.Approximately(dim,instrumentDimmer)) SetInstrumentDimmer(dim);
             bool front = GUILayout.Toggle(passengerFront,"客舱前区"); if (front != passengerFront) SetPassengerZone(0,front);

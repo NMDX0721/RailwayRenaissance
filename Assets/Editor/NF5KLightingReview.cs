@@ -121,7 +121,7 @@ public static class NF5KLightingPlayReview
                 var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
                 if(!Mathf.Approximately(interior.InstrumentDimmer,.37f))throw new InvalidOperationException("Legacy instrument switch did not restore dimmer");
                 interior.SetSupply(false,true);interior.enabled=false;
-                foreach(var fixture in interior.Fixtures)if(fixture.light.enabled)throw new InvalidOperationException("Disabled interior controller left emergency lamps energized");
+                foreach(var fixture in interior.Fixtures)if(fixture.light.enabled||(fixture.bounce!=null&&fixture.bounce.enabled))throw new InvalidOperationException("Disabled interior controller left emergency lamps energized");
                 Debug.Log("NF5K_INTERIOR_PLAYMODE_OK: circuit/power tests, legacy instrument switch and remembered dimmer, emergency disable cleanup");
                 Debug.Log("NF5K_LIGHTING_PLAYMODE_OK: actual runtime mode API, power isolation, legacy switch off/on, disable cleanup");
                 EditorApplication.update-=Check;EditorApplication.isPlaying=false;

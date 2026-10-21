@@ -7,13 +7,15 @@ public static class NF5KInteriorLightingReview
 {
     public static void Validate(CabInteriorLighting c)
     {
-        if(c==null||c.Fixtures.Length!=14)throw new InvalidOperationException("Interior fixture bindings incomplete");
+        if(c==null||c.Fixtures.Length!=18)throw new InvalidOperationException("Interior fixture bindings incomplete");
         c.SetSupply(true,true);c.AllOff();Expect(c,0);
-        c.SetCabCeiling(true);Expect(c,1);c.SetTask(true);Expect(c,2);c.SetInstrumentDimmer(.25f);Expect(c,4);
-        c.SetPassengerZone(0,true);Expect(c,7);c.SetPassengerZone(1,true);Expect(c,10);
+        c.SetCabPreset(0);Expect(c,6);c.SetCabPreset(1);Expect(c,4);c.SetCabPreset(2);Expect(c,8);c.AllOff();
+        c.SetCabCeiling(true);Expect(c,2);c.SetTask(true);Expect(c,3);c.SetInstrumentDimmer(.25f);Expect(c,5);
+        c.SetPassengerZone(0,true);Expect(c,8);c.SetPassengerZone(1,true);Expect(c,11);
+        c.SetAssistantTask(true);Expect(c,12);c.SetAccess(true);Expect(c,14);
         c.SetSupply(false,true);Expect(c,4);
         foreach(var f in c.Fixtures)if(f.light.enabled&&f.circuit!=InteriorLightCircuit.Emergency)throw new InvalidOperationException("Ordinary circuit energized during outage");
-        c.SetSupply(false,false);Expect(c,0);c.SetSupply(true,true);Expect(c,10);
+        c.SetSupply(false,false);Expect(c,0);c.SetSupply(true,true);Expect(c,14);
         c.AllOff();c.SetInstrumentDimmer(2);if(c.InstrumentDimmer!=1)throw new InvalidOperationException("Instrument dimmer not clamped");
         c.SetInstrumentDimmer(-1);Expect(c,0);
         var ext=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();var previous=ext.Mode;ext.SetMode(ExteriorLightMode.Marker);
@@ -21,7 +23,7 @@ public static class NF5KInteriorLightingReview
         c.AllOff();ext.SetMode(previous);
         foreach(var f in c.Fixtures)
         {
-            if(f.circuit!=InteriorLightCircuit.CabCeiling&&f.circuit!=InteriorLightCircuit.Task)continue;
+            if(f.circuit!=InteriorLightCircuit.CabCeiling&&f.circuit!=InteriorLightCircuit.Task&&f.circuit!=InteriorLightCircuit.AssistantTask)continue;
             var glassPoint=new Vector3(.55f,1.65f,-.58f);var delta=glassPoint-f.light.transform.position;
             if(delta.magnitude<f.light.range && Vector3.Angle(f.light.transform.forward,delta)<f.light.spotAngle/2)
                 throw new InvalidOperationException("Cab light directly illuminates upper forward observation area");
@@ -31,6 +33,7 @@ public static class NF5KInteriorLightingReview
     static void Expect(CabInteriorLighting c,int count)
     {
         int active=0;foreach(var f in c.Fixtures)if(f.light.enabled&&f.light.intensity>0)active++;
+        foreach(var f in c.Fixtures)if(f.bounce!=null&&f.bounce.enabled!=f.light.enabled)throw new InvalidOperationException("Local bounce is not synchronized");
         if(active!=count)throw new InvalidOperationException("Interior active fixture count: "+active+" expected "+count);
     }
     public static void Render(Camera camera,Action<Camera,string> shot)
@@ -50,7 +53,15 @@ public static class NF5KInteriorLightingReview
             c.SetInstrumentDimmer(.25f);Capture("driver_night_instruments");
             c.SetInstrumentDimmer(1);Capture("driver_instruments_full");
             c.SetInstrumentDimmer(.25f);c.SetTask(true);Capture("driver_task_light");
-            c.SetCabCeiling(true);Capture("driver_cab_service");
+            c.SetCabCeiling(true);c.SetAssistantTask(true);c.SetAccess(true);c.SetInstrumentDimmer(.65f);Capture("driver_cab_service");
+            c.AllOff();c.SetCabCeiling(true);c.SetAccess(true);c.SetInstrumentDimmer(.5f);Capture("driver_cab_normal");
+            camera.transform.position=new Vector3(0,1.32f,1.83f);camera.transform.LookAt(new Vector3(0,1.43f,.25f));camera.fieldOfView=95;
+            Capture("cab_normal_overview");
+            c.AllOff();c.SetInstrumentDimmer(.25f);c.SetAccess(true);Capture("cab_night_overview");
+            float normal=Brightness("cab_normal_overview"),night=Brightness("cab_night_overview");
+            if(normal<=night+.035f)throw new InvalidOperationException("Normal cab lighting is not sufficiently distinct from night mode: "+normal+" / "+night);
+            Debug.Log("NF5K_CAB_NORMAL_RENDER_OK: normal="+normal+", night="+night);
+            camera.fieldOfView=72;
             c.AllOff();exterior.SetMode(ExteriorLightMode.Off);
             camera.transform.position=new Vector3(0,1.58f,2.18f);camera.transform.LookAt(new Vector3(0,1.28f,11));
             Capture("passenger_lights_off");c.SetPassengerZone(0,true);c.SetPassengerZone(1,true);Capture("passenger_lights_on");

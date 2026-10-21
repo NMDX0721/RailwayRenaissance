@@ -83,3 +83,7 @@ Front placeholder coupler replaced with static cast parts, independent knuckle, 
 
 ### 2026-10-21 NF-5K cabin and passenger lighting
 CabInteriorLighting and NF5KInteriorLightingSetup add independent cab ceiling/task, dimmable instrument, two passenger zones and automatic emergency transfer from explicit normal/backup supply inputs. NF5KInteriorLightingReview checks renders and NF5KLightingPlayReview checks runtime. See [interior lighting specification](NF5K_INTERIOR_LIGHTING.md). Passenger interior remains a blockout; physical glass reflections and battery simulation are unverified.
+
+
+### 2026-10-21 Cab lighting real-reference revision
+Vossloh DE18 documents two ceiling lights, dimmable instruments/reading lights and access lighting. NF-5K now has 18 interior fixtures: two cab ceiling, independent driver/assistant task lights, two access footlights, two instrument lights, six passenger and four emergency. Normal, night and service views are rendered separately. New APIs: SetAssistantTask and SetAccess. See NF5K_INTERIOR_LIGHTING.md.

@@ -2,12 +2,14 @@
 
 ## 独立回路与接口
 
-运行组件：`Assets/Scripts/Cab/CabInteriorLighting.cs`。新增14组灯具与真实Spot照明，灯面发光通过MaterialPropertyBlock同步，普通灯与备用回路独立于外部头灯。
+运行组件：`Assets/Scripts/Cab/CabInteriorLighting.cs`。现有18组灯具与真实Spot照明，灯面发光通过MaterialPropertyBlock同步，普通灯与备用回路独立于外部头灯。此前14组、单驾驶室顶灯的版本已被本轮替换。
 
 | 回路 | 灯具数 | 接口 |
 |---|---|---|
-| 司机室顶灯 | 1 | `SetCabCeiling(bool)`，审阅场景I键 |
+| 司机室顶灯 | 2 | `SetCabCeiling(bool)`，审阅场景I键 |
 | 司机工作灯 | 1 | `SetTask(bool)`，窄光束指向台面 |
+| 副司机阅读灯 | 1 | `SetAssistantTask(bool)`，指向副司机座位阅读区，不增加第二驾驶台 |
+| 两侧门区低位灯 | 2 | `SetAccess(bool)`，普通供电回路，独立于应急灯 |
 | 仪表罩灯 | 2 | `SetInstrumentDimmer(float)`，0–1连续调光 |
 | 客舱前区 | 3 | `SetPassengerZone(0,bool)` |
 | 客舱后区 | 3 | `SetPassengerZone(1,bool)` |
@@ -41,7 +43,22 @@
 
 ## 资料与设计推定
 
+- [Vossloh DE 18官方驾驶室介绍](https://www.vl-rs.com/en/customized-traction/areas-of-application)，页面“Very good interior lighting”：明确采用两盏常规顶灯，可调光仪表与阅读射灯，以及通道、台阶、入口区域地面照明。此为本轮增加双顶灯和门区灯的直接实车参考，不代表所有机车均有固定数量，也不是NF-5K原车电路证明。
+- [Helopal铁路室内灯具](https://www.helopal.de/en/products/interior-lights)：RL119为驾驶室/机房顶灯，采用粉末涂层钢壳与磨砂扩散罩；借鉴封闭式金属灯壳，不按其18W参数宣称本模型真实光度。
+
 - [Luminator铁路氛围照明设计](https://de.luminator.com/news/rail-mood-lighting-one-interior.-many-atmospheres)：借鉴客舱分区、阅读/休息状态与控制协调的思路，不直接复制现代车型外观。
 - [Schaltbau铁路空调与照明供电设备](https://schaltbau.com/en/solutions/rail/hvac-lighting/)：供电与开关回路可独立设计；本项目目前仅实现供电状态输入。
 
 本车灯具外形与回路是NF-5K项目设计，不是已考证的朝鲜原车电路。
+
+## 正常、夜间与检修展示（本轮修订）
+
+上一轮仅展示低亮度仪表/局部工作灯，不足以展示整室正常照明。现增加正常全室、夜间低亮度与检修状态的独立截图；相机与暗场环境相同时比较正常和夜间亮度，避免依靠抬高全局环境光伪装灯具效果。
+
+正常状态：双顶灯、仪表中亮度、门区灯；夜间状态：低亮度仪表与门区灯，顶灯可关闭；检修状态：双顶灯、两侧工作/阅读灯、仪表与门区灯。各开关仍可自由组合，未实现按速度自动禁用顶灯。顶灯提高实际光源强度并扩大覆盖，原低亮度夜间状态保留；光强仍为游戏候选，未做lux标定。
+
+图片包括`driver_cab_normal.png`、`driver_cab_service.png`、`cab_normal_overview.png`、`cab_night_overview.png`。日志：`tools/compile/cab_lighting_real_reference.log`。
+
+右侧审阅面板增加“正常／夜间／检修”按钮，对应`SetCabPreset(0/1/2)`；不改变客舱分区或供电输入。普通开关仍可覆盖这些组合。
+
+双顶灯采用较中性的暖白色，降低直射台面强度。为改善实时直接照明中“台面亮、顶棚黑”的现象，增加两只随顶灯同步的低强度局部Point补光作为反弹光近似（对象名`Cab_Local_Bounce_Approximation`）。这两只辅助光源不算额外实体灯具：18组实体灯具、20个Unity Light。补光不投阴影、限定短距离与审阅车体图层，不是路径追踪GI；仍可能存在局部漏光，正式场景需再评估。关闭顶灯、断电与禁用组件时，补光也同步关闭。未抬高全局夜间环境光或曝光来制造正常照明变亮的效果。

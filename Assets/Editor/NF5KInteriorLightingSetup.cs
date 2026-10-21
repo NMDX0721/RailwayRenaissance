@@ -24,11 +24,14 @@ public static class NF5KInteriorLightingSetup
             Box("Passenger_Ceiling_Module_"+module,new Vector3(0,2.17f,z),new Vector3(2.60f,.045f,3.88f),liner);
             foreach(float x in new[]{-1.18f,1.18f})Box("Ceiling_Service_Trim",new Vector3(x,2.135f,z),new Vector3(.025f,.016f,3.84f),housing);
         }
-        Fixture("Cab_Ceiling_Light",InteriorLightCircuit.CabCeiling,new Vector3(0,2.10f,1.08f),new Vector3(0,.55f,.75f),new Vector3(.32f,.025f,.19f),8,100,3.2f);
-        // Wall-supported narrow task lamp points away from the front windshield.
-        Box("Task_Lamp_Wall_Plate",new Vector3(1.34f,1.78f,.72f),new Vector3(.025f,.14f,.10f),housing);
-        Box("Task_Lamp_Support",new Vector3(1.22f,1.80f,.72f),new Vector3(.22f,.025f,.025f),housing);
-        Fixture("Driver_Task_Light",InteriorLightCircuit.Task,new Vector3(1.12f,1.78f,.72f),new Vector3(.72f,.85f,.12f),new Vector3(.09f,.02f,.12f),3.5f,38,2.0f);
+        foreach(int side in new[]{-1,1})
+        {
+            Fixture("Cab_Ceiling_Light_"+side,InteriorLightCircuit.CabCeiling,new Vector3(side*.64f,2.10f,1.10f),new Vector3(side*.50f,.60f,.78f),new Vector3(.24f,.025f,.42f),7.5f,110,3.4f);
+            Box("Task_Lamp_Wall_Plate_"+side,new Vector3(side*1.34f,1.78f,.72f),new Vector3(.025f,.14f,.10f),housing);
+            Box("Task_Lamp_Support_"+side,new Vector3(side*1.22f,1.80f,.72f),new Vector3(.22f,.025f,.025f),housing);
+            Fixture(side>0?"Driver_Task_Light":"Assistant_Reading_Light",side>0?InteriorLightCircuit.Task:InteriorLightCircuit.AssistantTask,new Vector3(side*1.12f,1.78f,.72f),side>0?new Vector3(.72f,.85f,.12f):new Vector3(-.85f,.70f,.90f),new Vector3(.09f,.02f,.12f),5,42,2.0f);
+            Fixture("Cab_Door_Footlight_"+side,InteriorLightCircuit.Access,new Vector3(side*1.30f,.45f,1.065f),new Vector3(side*.92f,.05f,1.35f),new Vector3(.10f,.022f,.07f),1.8f,95,1.8f);
+        }
         var state=parent.GetComponentInChildren<CabEngineState>();
         var console=state.transform;
         Bounds panel=new Bounds();bool found=false;
@@ -55,7 +58,7 @@ public static class NF5KInteriorLightingSetup
             Fixture("Emergency_Aisle_Light_"+z.ToString(System.Globalization.CultureInfo.InvariantCulture),InteriorLightCircuit.Emergency,new Vector3(0,2.085f,z),new Vector3(0,.15f,z),new Vector3(.10f,.025f,.15f),3.5f,115,5.0f);
         Fixture("Cab_Emergency_Exit_Light",InteriorLightCircuit.Emergency,new Vector3(0,1.92f,1.75f),new Vector3(0,.15f,1.05f),new Vector3(.18f,.025f,.08f),.65f,85,2.2f);
         parent.gameObject.AddComponent<CabInteriorLighting>().Configure(state,fixtures.ToArray());
-        Debug.Log("NF5K_INTERIOR_LIGHTING_BUILT: cab ceiling, task, two hooded instrument lights, six zoned passenger lights and four emergency fixtures");
+        Debug.Log("NF5K_INTERIOR_LIGHTING_BUILT: two cab ceiling lights, independent driver/assistant reading lights, two door footlights, two hooded instrument lights, six zoned passenger lights and four emergency fixtures");
     }
     static void Fixture(string name,InteriorLightCircuit circuit,Vector3 p,Vector3 target,Vector3 size,float intensity,float angle,float range)
     {
@@ -69,7 +72,15 @@ public static class NF5KInteriorLightingSetup
         light.type=LightType.Spot;light.spotAngle=angle;light.innerSpotAngle=angle*.58f;light.range=range;light.intensity=0;light.enabled=false;
         light.color=circuit==InteriorLightCircuit.Instrument?new Color(1,.72f,.43f):circuit==InteriorLightCircuit.Emergency?new Color(1,.89f,.72f):new Color(1,.87f,.70f);
         light.shadows=LightShadows.Soft;light.shadowBias=.003f;light.shadowNormalBias=.01f;light.cullingMask=~0;light.renderMode=LightRenderMode.ForcePixel;
-        fixtures.Add(new CabInteriorLighting.Fixture{light=light,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
+        Light bounce=null;
+        if(circuit==InteriorLightCircuit.CabCeiling)
+        {
+            light.color=new Color(1,.94f,.84f);
+            bounce=new GameObject("Cab_Local_Bounce_Approximation").AddComponent<Light>();bounce.gameObject.layer=30;bounce.transform.SetParent(root,false);
+            bounce.transform.position=new Vector3(p.x*.4f,1.60f,1.05f);bounce.type=LightType.Point;bounce.range=2.2f;bounce.color=light.color;
+            bounce.intensity=0;bounce.enabled=false;bounce.shadows=LightShadows.None;bounce.cullingMask=1<<30;
+        }
+        fixtures.Add(new CabInteriorLighting.Fixture{light=light,bounce=bounce,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
         GameObject Part(string suffix,Vector3 position,Vector3 dimensions,Material mat)
         {
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name+"_"+suffix;obj.layer=30;obj.transform.SetParent(assembly,false);obj.transform.localPosition=position;obj.transform.localScale=dimensions;

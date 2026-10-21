@@ -28,7 +28,7 @@
   "aperture_junctions": "integrated painted spandrels, metal press lips, rubber seals, recessed glass and 45mm returns; raked shoulder transition",
   "industrial_materials": "regional matte enamel, separate rubber and exposed metal, preserved glass specular, 4mm maximum edge bevels, lamp optics and neutral review ground",
   "markings_cast_shadows": false,
-  "log": "tools/compile/cab_interior_lighting.log",
+  "log": "tools/compile/cab_lighting_real_reference.log",
   "livery_palette": "deep blue, warm ivory, crimson, soft two-tone pink blossoms; 6mm blue panel seams",
   "review_antialiasing": "3x SSAA: 4200x3000 to 1400x1000 with nine-sample resolve; screenshots inspected",
   "runtime_global_antialiasing_changed": false,
@@ -43,9 +43,12 @@
   "brake_hose": "closed angle cock, ferrules, drooped hose, gladhand seal and lug, parking bracket; no pneumatic connectivity",
   "front_mechanical_reload": "passed: original placeholders absent, required parts persisted, nominal hose clearance",
   "interior_lighting_plan": "first implementation installed; battery capacity, measured illuminance, physical reflection and finished passenger furnishings remain pending",
-  "interior_lighting": "14 real spot fixtures: 1 cab ceiling, 1 task, 2 dimmable instrument, 6 passenger in two zones, 4 emergency",
+  "interior_lighting": "18 physical fixtures: 2 cab ceiling, 2 independent reading/task, 2 instrument, 2 access, 6 passenger, 4 emergency; 2 additional local bounce approximation point lights",
   "interior_lighting_runtime": "passed: circuit independence, supply transfer, total outage, restore, legacy instrument switch and remembered level, disable cleanup",
   "interior_lighting_render": "NF5K_INTERIOR_RENDER_OK: passenger off/on/emergency/blackout=0.0242137/0.1534838/0.0332986/0.0242137; instrument low/high=0.02455923/0.04176699",
-  "interior_lighting_controls": "right-side Chinese review GUI; I toggles cab ceiling; formal 3D switches pending",
-  "passenger_floor": "four modules for local additional-light selection; ceiling liner and luminaire housings installed"
+  "interior_lighting_controls": "right-side Chinese review GUI and normal/night/service buttons; I toggles both ceiling lights",
+  "passenger_floor": "four modules for local additional-light selection; ceiling liner and luminaire housings installed",
+  "cab_reference": "Vossloh DE18 official two ceiling lights, dimmable instruments/reading and access lighting; NF5K design adaptation, not original vehicle proof",
+  "cab_presets": "SetCabPreset(0/1/2): normal/night/service; review GUI buttons; independently overrideable circuits",
+  "cab_normal_night_render": "NF5K_CAB_NORMAL_RENDER_OK: normal=0.1289486, night=0.013693"
 }
