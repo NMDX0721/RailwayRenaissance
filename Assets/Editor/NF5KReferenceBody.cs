@@ -54,10 +54,16 @@ public static class NF5KReferenceBody
             float x = side * .555f;
             RoundedPanel("Front_Glass_" + side, new Vector3(x, 1.53f, -.5952f),
                 1.045f, .72f, .065f, Quaternion.Euler(8, 0, 0), glass, trim);
-            Cube("Front_Wiper_" + side, new Vector3(x + .13f, 1.52f, -.625f),
-                new Vector3(.018f, .66f, .018f), steel, Quaternion.Euler(0, 0, -9));
-            Cube("Front_Wiper_Pivot_" + side, new Vector3(x + .18f, 1.19f, -.64f),
-                new Vector3(.065f, .035f, .035f), steel);
+            var pivot=new Vector3(x+.18f,1.19f,-.676f);
+            var joint=new Vector3(x+.08f,1.55f,-.626f);
+            Cylinder("Wiper_Spindle_"+side,pivot,.045f,.030f,steel);
+            Link("Wiper_Spring_Arm_"+side,pivot,joint,.018f,.012f,steel);
+            Link("Wiper_Parallel_Link_"+side,pivot+Vector3.right*.025f,joint+Vector3.right*.025f,.009f,.008f,steel);
+            var bladeBottom=new Vector3(x+.025f,1.28f,-.663f);
+            var bladeTop=new Vector3(x+.135f,1.84f,-.584f);
+            Link("Wiper_Blade_Spine_"+side,bladeBottom,bladeTop,.015f,.010f,steel);
+            Link("Wiper_Rubber_Blade_"+side,bladeBottom+Vector3.forward*.009f,bladeTop+Vector3.forward*.009f,.008f,.006f,trim);
+            Cylinder("Wiper_Blade_Coupling_"+side,joint,.027f,.012f,steel);
             Cube("Front_Grab_" + side, new Vector3(side * .77f, 1.10f, -.685f),
                 new Vector3(.46f, .025f, .025f), cream);
             RoundedPanel("Front_Lamp_Box_" + side, new Vector3(side * .87f, .72f, -.68f),
@@ -214,19 +220,24 @@ public static class NF5KReferenceBody
         Cube("Coupler_Shank_Reserved",new Vector3(0,-.13f,-.87f),new Vector3(.14f,.14f,.28f),trim);
         // Coupler is a reserved envelope, not a functional knuckle mechanism.
         Cube("Coupler_Head_Reserved",new Vector3(0,-.12f,-1.03f),new Vector3(.24f,.23f,.14f),steel);
-        RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.56f,.20f,.018f,Quaternion.identity,trim,cream);
-        Cylinder("Wing_Badge_Base",new Vector3(0,.92f,-.68f),.24f,.018f,cream);
-        Cylinder("Wing_Badge_Field",new Vector3(0,.92f,-.695f),.20f,.012f,blue);
-        var star=new List<Vector3>{new Vector3(0,.92f,-.706f)};var starTriangles=new List<int>();
+        RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.64f,.22f,.018f,Quaternion.identity,trim,cream);
+        Cylinder("Wing_Badge_Base",new Vector3(0,.94f,-.68f),.32f,.018f,cream);
+        Cylinder("Wing_Badge_Field",new Vector3(0,.94f,-.695f),.275f,.012f,blue);
+        var star=new List<Vector3>{new Vector3(0,.94f,-.706f)};var starTriangles=new List<int>();
         for(int i=0;i<10;i++)
         {
-            float angle=(90+i*36)*Mathf.Deg2Rad,r=i%2==0?.087f:.039f;
-            star.Add(new Vector3(Mathf.Cos(angle)*r,.92f+Mathf.Sin(angle)*r,-.706f));
+            float angle=(90+i*36)*Mathf.Deg2Rad,r=i%2==0?.119f:.053f;
+            star.Add(new Vector3(Mathf.Cos(angle)*r,.94f+Mathf.Sin(angle)*r,-.706f));
         }
         for(int i=0;i<10;i++){starTriangles.Add(0);starTriangles.Add(i+1);starTriangles.Add((i+1)%10+1);}
         MeshObject("Red_Star_Badge",star,starTriangles,red,root);
         foreach(int side in new[]{-1,1})for(int row=0;row<3;row++)
-            Cube("Badge_Wing",new Vector3(side*(.20f-row*.018f),.97f-row*.044f,-.69f),new Vector3(.18f-row*.03f,.022f,.012f),cream);
+            Cube("Badge_Wing",new Vector3(side*(.255f-row*.022f),1.00f-row*.049f,-.69f),new Vector3(.23f-row*.036f,.027f,.012f),cream);
+    }
+
+    static void Link(string name,Vector3 a,Vector3 b,float width,float depth,Material material)
+    {
+        Cube(name,(a+b)/2,new Vector3(width,Vector3.Distance(a,b),depth),material,Quaternion.FromToRotation(Vector3.up,(b-a).normalized));
     }
 
     static GameObject Cylinder(string name,Vector3 position,float diameter,float depth,Material material,Transform parent=null)

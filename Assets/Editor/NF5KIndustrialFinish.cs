@@ -33,29 +33,9 @@ public static class NF5KIndustrialFinish
     }
     static void LampOptics(Transform root,Material glass)
     {
-        const string path="Assets/Resources/Cab/Headlamp_Optical_Glass.mat";
-        var lens=AssetDatabase.LoadAssetAtPath<Material>(path);
-        if(lens==null){lens=new Material(glass);AssetDatabase.CreateAsset(lens,path);}else lens.CopyPropertiesFromMaterial(glass);
-        lens.SetColor("_BaseColor",new Color(.75f,.80f,.82f,.15f));EditorUtility.SetDirty(lens);
-        var reflector=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Interior_NF5_Hardware.mat");
-        var bulb=Material("Headlamp_Unlit_Bulb",new Color(.64f,.51f,.30f),.35f,.40f);
-        foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>())
-        {
-            if(renderer.name!="Roof_Headlamp_Lens"&&renderer.name!="Front_Lamp_Lens")continue;
-            renderer.sharedMaterial=lens;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
-            float diameter=renderer.transform.lossyScale.x;
-            Detail("Lamp_Reflector",diameter*.90f,.006f,reflector);
-            Detail("Lamp_Unlit_Bulb",diameter*.18f,-.001f,bulb);
-            void Detail(string name,float size,float zOffset,Material material)
-            {
-                var obj=GameObject.CreatePrimitive(PrimitiveType.Cylinder);obj.name=name;obj.layer=renderer.gameObject.layer;
-                obj.transform.SetParent(renderer.transform.parent,true);obj.transform.position=renderer.transform.position+Vector3.forward*zOffset;
-                obj.transform.rotation=renderer.transform.rotation;obj.transform.localScale=new Vector3(size,.0015f,size);
-                obj.GetComponent<Renderer>().sharedMaterial=material;obj.GetComponent<Renderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
-                Object.DestroyImmediate(obj.GetComponent<Collider>());
-            }
-        }
+        NF5KFrontLightingSetup.Build(root,glass);
     }
+
     static void Coating(MeshRenderer renderer,Transform root,bool roof)
     {
         string id=roof?"Roof_Aged_Enamel":"Body_Painted_Steel";

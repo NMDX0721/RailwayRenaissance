@@ -43,7 +43,7 @@ public static class NF5KLivery
             // Window rail and panel joints remain separate from decorative artwork.
             for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.006f,.61f,seam);
         }
-        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.125f,cream);
+        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.13f,cream);
         Debug.Log("NF5K_LIVERY_OK: geometric sakura, flags, lettering; no baked illustration pasted onto body");
     }
     static float FrontZ(float x)
@@ -132,25 +132,36 @@ public static class NF5KLivery
     {
         var v=new List<Vector3>();var t=new List<int>();
         // Custom condensed industrial lettering; deliberately not identified as a historical railway font.
-        var glyphs=new Dictionary<char,Vector2[][]>
+        var glyphs=new Dictionary<char,Vector2[]>
         {
-            ['N']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(0,1),new Vector2(.55f,0)},new[]{new Vector2(.55f,0),new Vector2(.55f,1)}},
-            ['F']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(0,1),new Vector2(.55f,1)},new[]{new Vector2(0,.55f),new Vector2(.43f,.55f)}},
-            ['-']=new[]{new[]{new Vector2(.04f,.5f),new Vector2(.49f,.5f)}},
-            ['0']=new[]{new[]{new Vector2(0,0),new Vector2(0,1),new Vector2(.55f,1),new Vector2(.55f,0),new Vector2(0,0)}},
-            ['7']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.10f,0)}},
-            ['2']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.55f,.55f),new Vector2(0,.10f),new Vector2(0,0),new Vector2(.55f,0)}},
-            ['1']=new[]{new[]{new Vector2(.10f,.75f),new Vector2(.30f,1),new Vector2(.30f,0)},new[]{new Vector2(.08f,0),new Vector2(.52f,0)}},
-            ['5']=new[]{new[]{new Vector2(.55f,.94f),new Vector2(.06f,.94f),new Vector2(.06f,.56f),new Vector2(.43f,.56f),new Vector2(.52f,.46f),new Vector2(.52f,.12f),new Vector2(.43f,.04f),new Vector2(.08f,.04f),new Vector2(.02f,.11f)}},
-            ['K']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(.55f,1),new Vector2(0,.5f),new Vector2(.55f,0)}}
+            ['N']=Polygon(0,0, .17f,0, .17f,.69f, .51f,0, .70f,0, .70f,1, .53f,1, .53f,.31f, .19f,1, 0,1),
+            ['F']=Polygon(0,0, .18f,0, .18f,.43f, .53f,.43f, .53f,.59f, .18f,.59f, .18f,.83f, .65f,.83f, .65f,1, 0,1),
+            ['-']=Polygon(.08f,.42f, .54f,.42f, .54f,.58f, .08f,.58f),
+            ['5']=Polygon(.02f,.08f, .12f,0, .49f,0, .65f,.14f, .65f,.46f, .52f,.60f, .19f,.60f, .21f,.83f, .64f,.83f, .64f,1, .05f,1, 0,.44f, .44f,.44f, .48f,.39f, .48f,.20f, .43f,.16f, .19f,.16f, .14f,.20f),
+            ['K']=Polygon(0,0, .18f,0, .18f,.32f, .28f,.44f, .51f,0, .72f,0, .40f,.58f, .72f,1, .50f,1, .18f,.60f, .18f,1, 0,1)
         };
-        for(int c=0;c<value.Length;c++)foreach(var line in glyphs[value[c]])for(int i=0;i<line.Length-1;i++)
+        for(int c=0;c<value.Length;c++)
         {
-            Vector2 a=line[i],b=line[i+1],n=new Vector2(-(b-a).y,(b-a).x).normalized*.087f;
-            Vector2 join=(b-a).normalized*.045f;a-=join;b+=join;
-            var offset=new Vector2(c*.77f-(value.Length-1)*.385f-.275f,-.5f);
-            int k=v.Count;foreach(var point in new[]{a+n,a-n,b-n,b+n})v.Add((Vector3)(point+offset));
-            t.Add(k);t.Add(k+2);t.Add(k+1);t.Add(k);t.Add(k+3);t.Add(k+2);
+            var polygon=glyphs[value[c]];int start=v.Count;
+            var offset=new Vector2(c*.82f-(value.Length-1)*.41f-.35f,-.5f);
+            foreach(var point in polygon)v.Add((Vector3)(point+offset));
+            var remaining=new List<int>();for(int i=0;i<polygon.Length;i++)remaining.Add(i);
+            int guard=0;
+            while(remaining.Count>2 && guard++<100)
+            {
+                bool clipped=false;
+                for(int j=0;j<remaining.Count;j++)
+                {
+                    int ia=remaining[(j+remaining.Count-1)%remaining.Count],ib=remaining[j],ic=remaining[(j+1)%remaining.Count];
+                    var a=polygon[ia];var b=polygon[ib];var d=polygon[ic];
+                    if(Cross(b-a,d-b)<=0)continue;
+                    bool inside=false;
+                    foreach(int k in remaining)if(k!=ia&&k!=ib&&k!=ic&&Cross(b-a,polygon[k]-a)>=0&&Cross(d-b,polygon[k]-b)>=0&&Cross(a-d,polygon[k]-d)>=0){inside=true;break;}
+                    if(inside)continue;
+                    t.Add(start+ia);t.Add(start+ic);t.Add(start+ib);remaining.RemoveAt(j);clipped=true;break;
+                }
+                if(!clipped)throw new System.InvalidOperationException("Nameplate glyph triangulation failed: "+value[c]);
+            }
         }
         string path="Assets/Models/Cab/NF5KBodyMeshes/"+name+"_Lettering.asset";
         var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(path);
@@ -159,6 +170,13 @@ public static class NF5KLivery
         obj.transform.localPosition=p;obj.transform.localRotation=rotation;obj.transform.localScale=Vector3.one*size;
         obj.GetComponent<MeshFilter>().sharedMesh=mesh;obj.GetComponent<Renderer>().sharedMaterial=color;
     }
+
+    static Vector2[] Polygon(params float[] values)
+    {
+        var points=new Vector2[values.Length/2];for(int i=0;i<points.Length;i++)points[i]=new Vector2(values[i*2],values[i*2+1]);
+        return points;
+    }
+    static float Cross(Vector2 a,Vector2 b){return a.x*b.y-a.y*b.x;}
 
     static Material Mat(string name,Color color)
     {

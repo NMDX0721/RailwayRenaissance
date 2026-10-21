@@ -54,6 +54,7 @@ public static class CabInteriorBlockoutSetup
                 var leftDoor=GameObject.Find("Left_Door_Pivot").GetComponent<CabSideDoor>();
                 leftDoor.Open();Shot(camera,Output+"door_open_view.png");leftDoor.Close();
                 NF5KDoorReview.Validate();
+                NF5KLightingReview.Render(camera,Shot);
                 camera.orthographic=false;camera.transform.position=eyePosition;camera.transform.rotation=eyeRotation;
                 var hidden=new List<GameObject>();
                 foreach(var name in new[]{"Roof","Rear_Assembly","Left_Upper_Wall","Left_Lower_Wall","Left_Door_Pivot","Left_Header"})
@@ -80,7 +81,7 @@ public static class CabInteriorBlockoutSetup
                 Debug.Log("NF5K_REFERENCE_RELOAD_AUDIT_OK: two open-window steel leaves, access ladders, persistent curved roof");
                 Debug.Log("CAB_INTERIOR_RELOAD_RENDER_OK");
             }
-            if(frames>=40){EditorApplication.update-=Review;EditorApplication.Exit(0);}
+            if(frames>=40){EditorApplication.update-=Review;NF5KLightingPlayReview.Begin();}
         }
         catch(Exception e){Debug.LogException(e);EditorApplication.update-=Review;EditorApplication.Exit(1);}
     }
