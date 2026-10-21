@@ -1,5 +1,11 @@
 # NF5K proportions and daylight review
 
+## Deferred requirement — user decision 2026-10-21
+
+真实动态日照与天气暂缓实现，当前只保留检查预设，不继续扩展光照系统。后续需要太阳随游戏时间连续移动并落山，白天、黄昏、夜间自然过渡；天气、云量、雾雨应持续影响直射光、天空散射、能见度与室内受光。车内灯、仪表灯、头灯和应急灯仍独立于环境光控制。实现时统一时间、路线位置/朝向、天气状态与存档恢复，避免各模块各自计时或仅瞬间切换滤镜。届时需验证日落前后、阴晴变化及进入遮蔽区域的连续效果，并核对反射更新、性能和现有 Gamma/间接光近似的处理方案。
+
+Status: deferred by user; no solar-motion, continuous weather or time simulation is implemented by this note.
+
 ## Scope
 
 `Assets/Scenes/CabDaylightReview.unity` is an independent copy of the assembled car prepared by `NF5KDaylightReview.Prepare`. The original interior scene retains its paired night/emergency regression workflow. This scene supplies procedural sky, a directional sun with soft shadows and a large neutral ground for daylight review. It is a lighting test environment, not the finished route, railway terrain or weather simulation.
