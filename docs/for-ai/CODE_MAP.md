@@ -472,6 +472,8 @@ Vossloh DE18 documents two ceiling lights, dimmable instruments/reading lights a
 NF5KPassengerInterior replaces passenger seat/wall blocks with 48 individual seats, supported luggage racks, framed inner windows, heater covers and vestibule details. Native rounded meshes and woven texture are persisted/shared. ValidateReload checks candidate aisle and reserved zones; NF5KDoorReview now includes new seat/rack colliders. See NF5K_PASSENGER_INTERIOR.md for references and unverified certification/interaction limits.
 # NF5K lighting audit (2026-10-21)
 
+`Assets/Scripts/Cab/CabInteriorReflections.cs` refreshes four local reflection probes on lighting-signature changes. `NF5KLightingRendererSetup` creates the probes; review capture refreshes them before screenshots. Reflection improves environmental specular response and does not implement diffuse GI.
+
 `NF5KLightingRendererSetup.ConfigureSurfaces` separates approximate bounce from transparent surfaces through rendering layers and installs an isolated Neutral tone-map Volume. Review screenshots use HDR intermediate render targets before SDR PNG conversion.
 
 Follow-up: renderer setup enables shared additional-light soft shadows; `CabInteriorLighting.Fixture.lowerBounce` binds floor-reflection fill to the same circuit and power/disable lifecycle as its parent fixture.

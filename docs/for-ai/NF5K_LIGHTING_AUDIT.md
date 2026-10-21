@@ -1,5 +1,11 @@
 # NF5K lighting audit — 2026-10-21
 
+## Local environmental reflections follow-up
+
+Four 128px HDR realtime reflection probes now cover the cab and three passenger segments, using box projection, overlapping bounds and black capture clear. Shared URP probe blending and box-projection capabilities are enabled. `CabInteriorReflections` refreshes only when the signature of local lamp enable/intensity/colour or ambient sky/equator changes; it does not capture continuously every frame. Rendering the review camera once before the screenshot allows a requested no-time-slicing capture to update before the recorded frame. This is environmental specular reflection, not diffuse GI or physically traced glass refraction. The fallback studio cubemap still applies outside the local volumes. Dynamic doors, moving scenery, geometry/material edits and changing external ambient/skybox without matching tracked inputs do not yet automatically request new captures. Runtime capture spikes and Android memory/GPU performance remain unaccepted.
+
+Validation: tools/compile/cab_local_reflections.log passes scene reload, paired rendered states and Play Mode circuit/power regressions. Passenger on/off/emergency means are 0.3040614/0.01332935/0.03061017; cab normal/night 0.2131897/0.01067846. This confirms mode contrast after replacing interior studio reflections, not physical photometric accuracy. The normal passenger screenshot retains bright seat-edge artifacts from approximate direct-light fill, which this reflection-only step does not claim to fix.
+
 ## Natural-lighting research and implemented follow-up
 
 - [Unity render pipeline lighting support](https://docs.unity.com/en-us/engine/6000.0/manual/render-pipelines/choose-a-render-pipeline/feature-comparison): URP supports baked GI, light probes/APV and reflection probes; these are different tools for diffuse indirect illumination and environmental specular reflection. No claim that point-light fills equal GI.

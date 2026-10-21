@@ -26,6 +26,8 @@ public static class NF5KLightingRendererSetup
         serialized.FindProperty("m_AdditionalLightShadowsSupported").boolValue = true;
         serialized.FindProperty("m_SoftShadowsSupported").boolValue = true;
         serialized.FindProperty("m_SupportsLightLayers").boolValue = true;
+        serialized.FindProperty("m_ReflectionProbeBlending").boolValue = true;
+        serialized.FindProperty("m_ReflectionProbeBoxProjection").boolValue = true;
         serialized.FindProperty("m_AdditionalLightsShadowmapResolution").intValue = 4096;
         var list = serialized.FindProperty("m_RendererDataList");
         int index = -1;
@@ -74,5 +76,22 @@ public static class NF5KLightingRendererSetup
         volume.gameObject.layer = 30; volume.transform.SetParent(root, false); volume.isGlobal = true; volume.priority = 10; volume.sharedProfile = profile;
         camera.allowHDR = true;
         var data = camera.GetUniversalAdditionalCameraData(); data.renderPostProcessing = true; data.volumeLayerMask = 1 << 30;
+        var probes = new ReflectionProbe[4];
+        for (int i=0;i<probes.Length;i++)
+        {
+            var probe = new GameObject("Cabin_Local_Reflection_"+i).AddComponent<ReflectionProbe>();
+            probe.transform.SetParent(root,false); probe.gameObject.layer=30;
+            probe.transform.localPosition = new Vector3(0,1.1f,i==0?.7f:4.4f+(i-1)*5.1f);
+            probe.size = new Vector3(2.75f,2.2f,i==0?2.4f:5.6f);
+            probe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
+            probe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.ViaScripting;
+            probe.timeSlicingMode = UnityEngine.Rendering.ReflectionProbeTimeSlicingMode.NoTimeSlicing;
+            probe.resolution=128; probe.hdr=true; probe.boxProjection=true; probe.blendDistance=.35f;
+            probe.cullingMask=1<<30; probe.nearClipPlane=.05f; probe.farClipPlane=19;
+            probe.clearFlags=UnityEngine.Rendering.ReflectionProbeClearFlags.SolidColor;
+            probe.backgroundColor=Color.black; probe.intensity=.65f;
+            probes[i]=probe;
+        }
+        root.gameObject.AddComponent<RailwayRenaissance.Cab.CabInteriorReflections>().Configure(probes);
     }
 }
