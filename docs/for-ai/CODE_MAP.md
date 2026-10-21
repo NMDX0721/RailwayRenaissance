@@ -1,6 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+2026-10-21场景交互首版：`CabContextInteraction`接管模拟审阅场景的聚焦、近邻提示、多动作、InputAction改键与首次设置/状态引导；`CabStartupPointer`在其存在时停用旧逐帧输入，保留射线验证接口。`NF5KContextInteractionReview`验证绑定切换与设置输入隔离。规格见[场景交互与驾驶教学](../../参考资料/系统/场景交互与驾驶教学设计.md)。小黄鼠委托、全局快捷键冲突管理和完整线路教学尚未实现。
 2026-10-21驾驶交互：`CabDrivingTarget`通过`CabStartupPointer`射线分发牵引手轮、大小闸及换向手柄动作；`NF5KDrivingInteractionSetup`由`NF5KSimulationReview.Prepare`在模拟审阅场景中安装网格碰撞体与校准转轴。操作沿用CabEngineState联锁，F2隐藏测试面板。见[NF5K驾驶交互](NF5K_DRIVING_INTERACTION.md)。
 
 NF-5K全车工业材质：`NF5KIndustrialFinish.Build`在SurfaceFinish后应用区域漆面、独立橡胶、玻璃预乘反射及毫米级倒角，保留BoxCollider体积；专用贴图/倒角网格保存于`NF5KBodyMeshes`。`CabInteriorBlockoutSetup`增加分层天光、主光软阴影、弱补光和独立审阅地面，默认仍保存闭门场景。

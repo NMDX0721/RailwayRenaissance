@@ -18,6 +18,7 @@ namespace RailwayRenaissance.Cab
         SimulationClock clock=new SimulationClock();
         Font font;
         [SerializeField] bool showReviewPanel=true;
+        public bool ReviewPanelVisible {get=>showReviewPanel;set=>showReviewPanel=value;}
         public Rect ReviewPanelRect=>new Rect(16,Mathf.Max(265,Screen.height-370),470,354);
         public bool BlocksPointer(Vector2 screenPoint)=>showReviewPanel&&ReviewPanelRect.Contains(new Vector2(screenPoint.x,Screen.height-screenPoint.y));
         void Update()

@@ -154,6 +154,7 @@ public static class NF5KSimulationReview
             Assert(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Physical brake failed to cut traction");
             driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
             Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
+            NF5KContextInteractionReview.Validate(state);
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");
             Debug.Log("NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop");
         }

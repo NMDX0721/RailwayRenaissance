@@ -255,3 +255,12 @@ NF5KDaylightReview generates a separate CabDaylightReview scene and measures cab
 ## NF5K simulation backend (2026-10-21)
 
 CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
+
+## Cab contextual interaction (2026-10-21)
+
+CabContextInteraction owns contextual action lists, runtime primary binding and first-use driving guidance in CabSimulationReview. CabStartupPointer retains raycast verification but suppresses its legacy frame input when the contextual component exists. Preserve physical control interlocks; assistance must use the same command path. Mouse helper delegation, complete route tutorials and global shortcut conflict handling remain pending. See 参考资料/系统/场景交互与驾驶教学设计.md.
+
+
+## NF5K simulation backend (2026-10-21)
+
+CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
