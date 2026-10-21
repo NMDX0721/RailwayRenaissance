@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-21转向架精修：`NF5KRunningGear`补轴箱导向、弹簧承座与弧形踏面闸瓦，将电机/齿轮箱移到非旋转驱动组；`NF5KIndustrialFinish.FinishRunningGear`补钢构小倒角。`NF5KBogieDetailReview`更新三份既有审阅场景并出柔光近景，不重建驾驶台。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+
 2026-10-21场景交互首版：`CabContextInteraction`接管模拟审阅场景的聚焦、近邻提示、多动作、InputAction改键与首次设置/状态引导；`CabStartupPointer`在其存在时停用旧逐帧输入，保留射线验证接口。`NF5KContextInteractionReview`验证绑定切换与设置输入隔离。规格见[场景交互与驾驶教学](../../参考资料/系统/场景交互与驾驶教学设计.md)。小黄鼠委托、全局快捷键冲突管理和完整线路教学尚未实现。
 
 2026-10-21驾驶交互：`CabDrivingTarget`通过`CabStartupPointer`射线分发牵引手轮、大小闸及换向手柄动作；`NF5KDrivingInteractionSetup`由`NF5KSimulationReview.Prepare`在模拟审阅场景中安装网格碰撞体与校准转轴。操作沿用CabEngineState联锁，F2隐藏测试面板。见[NF5K驾驶交互](NF5K_DRIVING_INTERACTION.md)。

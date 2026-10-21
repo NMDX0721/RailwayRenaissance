@@ -6,6 +6,13 @@ using UnityEngine;
 public static class NF5KIndustrialFinish
 {
     const string Folder="Assets/Models/Cab/NF5KBodyMeshes";
+    public static void FinishRunningGear(Transform root)
+    {
+        foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>())
+        {
+            if(renderer.GetComponent<MeshFilter>().sharedMesh.name=="Cube")BevelBox(renderer);
+        }
+    }
     public static void Build(Transform root)
     {
         var rubber=Material("Rubber_Window_Seals",new Color(.024f,.027f,.030f),0,.09f);
