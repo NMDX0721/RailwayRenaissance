@@ -17,8 +17,13 @@ namespace RailwayRenaissance.Cab
         CabExteriorLighting exteriorLights;
         SimulationClock clock=new SimulationClock();
         Font font;
+        [SerializeField] bool showReviewPanel=true;
         public Rect ReviewPanelRect=>new Rect(16,Mathf.Max(265,Screen.height-370),470,354);
-        public bool BlocksPointer(Vector2 screenPoint)=>ReviewPanelRect.Contains(new Vector2(screenPoint.x,Screen.height-screenPoint.y));
+        public bool BlocksPointer(Vector2 screenPoint)=>showReviewPanel&&ReviewPanelRect.Contains(new Vector2(screenPoint.x,Screen.height-screenPoint.y));
+        void Update()
+        {
+            if(UnityEngine.InputSystem.Keyboard.current?.f2Key.wasPressedThisFrame==true)showReviewPanel=!showReviewPanel;
+        }
         public CabSimulation Model {get;private set;}
         public SimulationInput Input {get;private set;}=new SimulationInput();
         public bool ParkingBrake {get=>parkingBrake;set=>parkingBrake=value;}
@@ -85,6 +90,7 @@ namespace RailwayRenaissance.Cab
         }
         void OnGUI()
         {
+            if(!showReviewPanel)return;
             EnsureInitialized();var s=Model.State;
             if(font==null)font=Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");var old=GUI.skin.font;if(font!=null)GUI.skin.font=font;
             GUILayout.BeginArea(ReviewPanelRect,GUI.skin.box);
