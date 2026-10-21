@@ -174,6 +174,7 @@ public static class CabInteriorBlockoutSetup
         var pointer=console.GetComponent<CabStartupPointer>();pointer.Configure(camera,1<<30);PrefabUtility.RecordPrefabInstancePropertyModifications(pointer);
         var light=new GameObject("Interior_Review_Key").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.1f;light.transform.rotation=Quaternion.Euler(45,-30,0);light.cullingMask=1<<30;
         RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.45f,.45f,.45f);
+        NF5KSurfaceFinish.Build(root.transform);
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene,ScenePath);
         var state=console.GetComponent<CabEngineState>();
         if(state==null||console.GetComponentsInChildren<CabStartupControls>().Length!=1)throw new InvalidOperationException("Interior lost console startup/state binding");

@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+NF-5K材质：`NF5KSurfaceFinish.Build`在场景保存前补UV、生成Paint/Metal微表面纹理与Soft_Studio_Environment立方体，调整漆面/金属/玻璃材质并补紧固件及踏步磨耗。入口仍`CabInteriorBlockoutSetup.BatchBuild`；纹理与环境资源持久保存至`NF5KBodyMeshes`，未新增运行时依赖或物理玻璃模型。
+
 NF-5K涂装纠偏：`FrontChevron`降低中心并加深弧线，`BuildNoseDetails`补奶油色下裙围带；`NF5KLivery.PetalMesh/Flower/Branch`使用共享缺口花瓣、细蕊与枝条构图替代圆片散点。生成入口及整车/轮对接线不变。
 
 NF-5K完整车体候选：`NF5KReferenceBody`延长至z=17.5并封闭后端；`NF5KRunningGear`生成2组双轴动力转向架及持久车轮截面/螺旋弹簧网格，`ValidateReload`检查2架/4轴/8轮及后贯通门；`NF5KLivery`生成樱花、旗帜及几何车号，字牌使用普通深度测试，避免默认TextMesh透视显示。仍是静态模型，不接轮轨/驱动仿真。见[NF-5K结构基线](NF5K_HEADCAR_LAYOUT.md)最新条目。
