@@ -26,6 +26,7 @@ public static class NF5KRunningGear
             Box("Cabinet_Service_Cover",new Vector3(1.01f,-.55f,z),new Vector3(.06f,.39f,1.28f),spring,root);
         }
         NF5KIndustrialFinish.FinishRunningGear(root);
+        NF5KRunningGearFinish.Apply(root);
         foreach(var node in root.GetComponentsInChildren<Transform>(true))node.gameObject.layer=parent.gameObject.layer;
         Debug.Log("NF5K_RUNNING_GEAR_BUILD_OK: 2 powered two-axle bogies; 4 rigid wheelsets; assumed layout");
     }
@@ -48,8 +49,8 @@ public static class NF5KRunningGear
             }
             texture.SetPixels(pixels);texture.Apply(true,false);AssetDatabase.CreateAsset(texture,path);
         }
-        rolling.SetColor("_BaseColor",new Color(.66f,.69f,.72f));rolling.SetFloat("_Metallic",.86f);rolling.SetFloat("_Smoothness",.40f);
-        plate.SetColor("_BaseColor",new Color(.39f,.405f,.42f));plate.SetFloat("_Metallic",.38f);plate.SetFloat("_Smoothness",.28f);
+        rolling.SetColor("_BaseColor",new Color(.61f,.64f,.66f));rolling.SetFloat("_Metallic",.88f);rolling.SetFloat("_Smoothness",.31f);
+        plate.SetColor("_BaseColor",new Color(.40f,.42f,.43f));plate.SetFloat("_Metallic",.43f);plate.SetFloat("_Smoothness",.18f);
         foreach(var mat in new[]{rolling,plate})
         {
             mat.SetTexture("_BaseMap",texture);mat.SetTextureScale("_BaseMap",Vector2.one);
@@ -156,23 +157,27 @@ public static class NF5KRunningGear
     }
     static Mesh WheelMesh()
     {
-        string path=Folder+"/Profiled_Driving_Wheel.asset";
+        string path=Folder+"/Profiled_Wheel_Hard_Shoulders.asset";
         var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null){WheelUV(existing);return existing;}
         var profile=new[]{new Vector2(-.11f,.10f),new Vector2(-.11f,.38f),new Vector2(-.10f,.46f),
             new Vector2(-.095f,.49f),new Vector2(-.065f,.49f),new Vector2(-.045f,.462f),
             new Vector2(.09f,.455f),new Vector2(.095f,.39f),new Vector2(.035f,.18f),new Vector2(.05f,.10f)};
         var v=new List<Vector3>();var dark=new List<int>();var bright=new List<int>();
-        const int segments=64;
-        for(int p=0;p<profile.Length;p++)for(int i=0;i<=segments;i++)
-        {float a=2*Mathf.PI*i/segments;v.Add(new Vector3(profile[p].x,profile[p].y*Mathf.Cos(a),profile[p].y*Mathf.Sin(a)));}
-        for(int p=0;p<profile.Length;p++)for(int i=0;i<segments;i++)
+        const int segments=96;var normals=new List<Vector3>();
+        for(int p=0;p<profile.Length;p++)
         {
-            int a=p*(segments+1)+i,b=((p+1)%profile.Length)*(segments+1)+i;
-            var t=p>=2&&p<=6?bright:dark;
-            t.Add(a);t.Add(b+1);t.Add(b);t.Add(a);t.Add(a+1);t.Add(b+1);
+            var from=profile[p];var to=profile[(p+1)%profile.Length];var delta=to-from;
+            int start=v.Count;
+            for(int i=0;i<=segments;i++)
+            {
+                float a=2*Mathf.PI*i/segments;
+                foreach(var point in new[]{from,to})
+                {v.Add(new Vector3(point.x,point.y*Mathf.Cos(a),point.y*Mathf.Sin(a)));normals.Add(new Vector3(-delta.y,delta.x*Mathf.Cos(a),delta.x*Mathf.Sin(a)).normalized);}
+                if(i<segments){int k=start+i*2;var t=p>=2&&p<=6?bright:dark;t.AddRange(new[]{k,k+3,k+1,k,k+2,k+3});}
+            }
         }
         var mesh=new Mesh{name="Profiled_Driving_Wheel"};mesh.SetVertices(v);mesh.subMeshCount=2;
-        mesh.SetTriangles(dark,0);mesh.SetTriangles(bright,1);mesh.RecalculateNormals();mesh.RecalculateBounds();
+        mesh.SetTriangles(dark,0);mesh.SetTriangles(bright,1);mesh.SetNormals(normals);mesh.RecalculateBounds();
         WheelUV(mesh);AssetDatabase.CreateAsset(mesh,path);return mesh;
     }
     static void WheelUV(Mesh mesh)

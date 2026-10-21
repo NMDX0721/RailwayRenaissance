@@ -1,6 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+2026-10-21走行部灰色系：`NF5KRunningGearFinish`分配灰绿漆架/浅灰轴箱/暖灰设备材质；钢轮改用截面硬肩法线网格。`NF5KAccessLadder`生成开口格栅、六角螺栓/垫圈与12块反光片，`Assets/Shaders/CabRetroreflective.shader`提供受光方向回归近似；`NF5KReflectorReview`独立验证关灯与不同照射角。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-21梯子/钢轮修正：`NF5KAccessLadder.BuildSide`由车体持续生成入口和转向架独立更新入口共用，构建固定板、托臂、斜撑及踏步连接；`NF5KRunningGear.FinishWheelMaterials/WheelUV`提供轮辐板/踏面分区及同心加工纹理，`NF5KIndustrialFinish.Build`收尾复用以防旧材质覆盖。见[NF5K转向架细化](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-21转向架精修：`NF5KRunningGear`补轴箱导向、弹簧承座与弧形踏面闸瓦，将电机/齿轮箱移到非旋转驱动组；`NF5KIndustrialFinish.FinishRunningGear`补钢构小倒角。`NF5KBogieDetailReview`更新三份既有审阅场景并出柔光近景，不重建驾驶台。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-21场景交互首版：`CabContextInteraction`接管模拟审阅场景的聚焦、近邻提示、多动作、InputAction改键与首次设置/状态引导；`CabStartupPointer`在其存在时停用旧逐帧输入，保留射线验证接口。`NF5KContextInteractionReview`验证绑定切换与设置输入隔离。规格见[场景交互与驾驶教学](../../参考资料/系统/场景交互与驾驶教学设计.md)。小黄鼠委托、全局快捷键冲突管理和完整线路教学尚未实现。

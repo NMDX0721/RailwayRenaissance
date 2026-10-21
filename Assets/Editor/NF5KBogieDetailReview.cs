@@ -40,9 +40,13 @@ public static class NF5KBogieDetailReview
             var fill=new GameObject("Bogie_Review_Soft_Fill_Not_Vehicle").AddComponent<Light>();
             fill.type=LightType.Directional;fill.intensity=.75f;fill.color=new Color(.95f,.97f,1);fill.shadows=LightShadows.None;fill.transform.rotation=Quaternion.Euler(35,-50,0);
             camera.transform.position=new Vector3(4.3f,-.15f,4.4f);camera.transform.LookAt(new Vector3(.3f,-.63f,2.5f));
-            Shot(camera,"tools/cab_reference/interior_review/ladder_wheel_refined.png");
+            Shot(camera,"tools/cab_reference/interior_review/japan_grey_running_gear_final.png");
             camera.transform.position=new Vector3(3.2f,-.25f,4.8f);camera.transform.LookAt(new Vector3(.7f,-.70f,3.6f));camera.orthographicSize=.78f;
-            Shot(camera,"tools/cab_reference/interior_review/ladder_wheel_closeup.png");
+            Shot(camera,"tools/cab_reference/interior_review/japan_grey_wheel_detail_final.png");
+            camera.transform.position=new Vector3(3.1f,.18f,2.25f);camera.transform.LookAt(new Vector3(1.5f,-.35f,1.49f));camera.orthographicSize=.65f;
+            Shot(camera,"tools/cab_reference/interior_review/ladder_grating_reflector_final.png");
+            var shader=Shader.Find("RailwayRenaissance/RetroreflectiveSheet");
+            if(shader==null||ShaderUtil.ShaderHasError(shader))throw new InvalidOperationException("Reflective sheet shader compilation failed");
             EditorSceneManager.OpenScene("Assets/Scenes/CabSimulationReview.unity");
             NF5KSimulationPlayReview.Begin();
         }
