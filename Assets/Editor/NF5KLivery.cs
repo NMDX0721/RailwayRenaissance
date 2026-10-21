@@ -43,7 +43,7 @@ public static class NF5KLivery
             // Window rail and panel joints remain separate from decorative artwork.
             for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.006f,.61f,seam);
         }
-        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.11f,cream);
+        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.125f,cream);
         Debug.Log("NF5K_LIVERY_OK: geometric sakura, flags, lettering; no baked illustration pasted onto body");
     }
     static float FrontZ(float x)
@@ -131,6 +131,7 @@ public static class NF5KLivery
     static void Text(string name,string value,Vector3 p,Quaternion rotation,float size,Material color)
     {
         var v=new List<Vector3>();var t=new List<int>();
+        // Custom condensed industrial lettering; deliberately not identified as a historical railway font.
         var glyphs=new Dictionary<char,Vector2[][]>
         {
             ['N']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(0,1),new Vector2(.55f,0)},new[]{new Vector2(.55f,0),new Vector2(.55f,1)}},
@@ -140,13 +141,14 @@ public static class NF5KLivery
             ['7']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.10f,0)}},
             ['2']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.55f,.55f),new Vector2(0,.10f),new Vector2(0,0),new Vector2(.55f,0)}},
             ['1']=new[]{new[]{new Vector2(.10f,.75f),new Vector2(.30f,1),new Vector2(.30f,0)},new[]{new Vector2(.08f,0),new Vector2(.52f,0)}},
-            ['5']=new[]{new[]{new Vector2(.55f,1),new Vector2(0,1),new Vector2(0,.55f),new Vector2(.55f,.55f),new Vector2(.55f,0),new Vector2(0,0)}},
+            ['5']=new[]{new[]{new Vector2(.55f,.94f),new Vector2(.06f,.94f),new Vector2(.06f,.56f),new Vector2(.43f,.56f),new Vector2(.52f,.46f),new Vector2(.52f,.12f),new Vector2(.43f,.04f),new Vector2(.08f,.04f),new Vector2(.02f,.11f)}},
             ['K']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(.55f,1),new Vector2(0,.5f),new Vector2(.55f,0)}}
         };
         for(int c=0;c<value.Length;c++)foreach(var line in glyphs[value[c]])for(int i=0;i<line.Length-1;i++)
         {
-            Vector2 a=line[i],b=line[i+1],n=new Vector2(-(b-a).y,(b-a).x).normalized*.050f;
-            var offset=new Vector2(c*.75f-value.Length*.375f+.10f,-.5f);
+            Vector2 a=line[i],b=line[i+1],n=new Vector2(-(b-a).y,(b-a).x).normalized*.087f;
+            Vector2 join=(b-a).normalized*.045f;a-=join;b+=join;
+            var offset=new Vector2(c*.77f-(value.Length-1)*.385f-.275f,-.5f);
             int k=v.Count;foreach(var point in new[]{a+n,a-n,b-n,b+n})v.Add((Vector3)(point+offset));
             t.Add(k);t.Add(k+2);t.Add(k+1);t.Add(k);t.Add(k+3);t.Add(k+2);
         }
