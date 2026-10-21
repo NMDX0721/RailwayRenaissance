@@ -108,6 +108,8 @@ public class TitleScreen : MonoBehaviour
         newGameSetup.Init(GetComponent<UIDocument>(), () =>
         {
             PlayerPrefs.SetInt("VN_AutoLoad", 0);
+            // 新周目：清除本局 0721 进度；Username 保留（已注册账号仍走确认弹窗而非答题）
+            PlayerPrefs.SetInt("VN_Got0721", 0);
             PlayerPrefs.Save();
             SceneManager.LoadScene("VN_Test");
         });
@@ -476,7 +478,7 @@ public class TitleScreen : MonoBehaviour
         AddSection("\u2606 美术与世界观", new[] {
             "沙子飞猪号0721完整设计（两舱布局，无方向盘）",
             "驾驶舱/客舱图片绑定（昼夜版本）",
-            "朝鲜「有限开放」世界观（统一便当店、先富带动后富）",
+            "朝鲜『有限开放』世界观（统一便当店、先富带动后富）",
             "角色立绘占位 + 表情映射",
             "像素风格UI（Zpix字体，暖棕色调金色边框）",
         });

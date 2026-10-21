@@ -1,0 +1,10 @@
+{
+  "mechanism": "designed curved-guide sliding indicator",
+  "historical_mechanism_verified": false,
+  "sampled_positions": 101,
+  "minimum_pointer_side_clearance_m": 0.0033472409293248163,
+  "reading_tip_error_m": 0,
+  "drive_force_friction_and_dynamic_collision_tested": false,
+  "meshes": 14,
+  "triangles": 3938
+}

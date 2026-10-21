@@ -87,7 +87,12 @@ namespace WorldGen
         {
             TextAsset json = Resources.Load<TextAsset>("Seeds/" + seedId);
             if (json == null) return null;
-            return JsonUtility.FromJson<WorldSeedData>(json.text);
+            var data = JsonUtility.FromJson<WorldSeedData>(json.text);
+            if (data != null)
+            {
+                data.SyncCities();
+            }
+            return data;
         }
 
         /// <summary>从种子编码还原并生成世界。</summary>

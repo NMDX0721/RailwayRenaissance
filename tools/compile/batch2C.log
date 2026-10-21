@@ -1,0 +1,396 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26300) Professional' Language: 'zh' Physical Memory: 31934 MB
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-10-18T04:15:39.9495957Z"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-18T04:15:39Z
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\Unity 6.5\Editor\Unity.exe
+-quit
+-batchmode
+-projectPath
+D:\Unity Project\RailwayRenaissance
+-logFile
+D:\Unity Project\RailwayRenaissance\compile_check.log
+Successfully changed project path to: D:\Unity Project\RailwayRenaissance
+D:/Unity Project/RailwayRenaissance
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [21112]  Target information:
+
+Player connection [21112]  * "[IP] 192.168.71.9 [Port] 55504 [Flags] 2 [Guid] 3384247009 [EditorId] 3384247009 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [21112]  * "[IP] 172.24.240.1 [Port] 55504 [Flags] 2 [Guid] 3384247009 [EditorId] 3384247009 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [21112]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3384247009 [EditorId] 3384247009 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [21112]  * "[IP] 192.168.31.127 [Port] 55504 [Flags] 2 [Guid] 3384247009 [EditorId] 3384247009 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [21112] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [21112] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-11304" after 0.4 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-Oe_Lee"
+[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-Oe_Lee-6000.5.8 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 69964)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8" at "2026-10-18T04:15:44.0427942Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 69964, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              74d573de142949e48f422eebf23f9ea3
+  Correlation Id:          257a2ceae2c62ea00282335b94c007fd
+  External correlation Id: 126263867998500990
+  Machine Id:              ZO+yfxaVFmW/OFopdVuYEhjz7wI=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee-6000.5.8" (connect: 0.57s, validation: 0.29s, handshake: 0.02s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-6000.5.8-notifications" at "2026-10-18T04:15:44.3480465Z"
+[Licensing::Module] Connected to LicensingClient (PId: 69964, launch time: 0.01, total connection time: 0.87s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX
+  Product: Unity Personal Version
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.02
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 4.48s
+[Licensing::Module] Licensing is initialized (took 3.56s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 1 unused hashed content files
+Initialize engine version: 6000.5.8f1 (5cb7df797b7d)
+[Subsystems] Discovering subsystems at path D:/Unity Hub/Unity 6.5/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Unity Project/RailwayRenaissance/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)
+    Vendor:   NVIDIA
+    VRAM:     11944 MB
+    Driver:   32.0.16.1742
+Initialize mono
+Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
+Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56304
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001538 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.885 seconds
+Domain Reload Profiling: 1679ms
+	BeginReloadAssembly (197ms)
+		CreateAndSetChildDomain (4ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (27ms)
+	initialDomainReloadingComplete (88ms)
+	LoadAllAssembliesAndSetupDomain (471ms)
+		LoadAssemblies (192ms)
+		AnalyzeDomain (345ms)
+			TypeCache.Refresh (342ms)
+				TypeCache.ScanAssembly (316ms)
+	FinalizeReload (887ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (160ms)
+			ProcessInitializeOnLoadAttributes (174ms)
+			ProcessInitializeOnLoadMethodAttributes (435ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.burst@1.8.30 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.burst@2f3d916873ea)
+    com.unity.settings-manager@2.1.1 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: D:\Unity Project\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.03 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: D:/Unity Project/RailwayRenaissance
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 5s978ms
+[759/969    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[961/969    4s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(524,17): warning CS0618: 'VisualElement.transform' is obsolete: 'When writing the value, use VisualElement.style.translate, VisualElement.style.rotate or VisualElement.style.scale instead. When reading the value, use VisualElement.resolvedStyle.translate, scale and rotate'
+
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(524,17): warning CS0618: 'ITransform.rotation' is obsolete: 'When reading the value, use VisualElement.resolvedStyle.rotate. When writing the value, use VisualElement.style.rotate instead.'
+
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(533,13): warning CS0618: 'VisualElement.transform' is obsolete: 'When writing the value, use VisualElement.style.translate, VisualElement.style.rotate or VisualElement.style.scale instead. When reading the value, use VisualElement.resolvedStyle.translate, scale and rotate'
+
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(533,13): warning CS0618: 'ITransform.rotation' is obsolete: 'When reading the value, use VisualElement.resolvedStyle.rotate. When writing the value, use VisualElement.style.rotate instead.'
+[962/969    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[963/969    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 139 defines and 365 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[964/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[965/969    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 141 defines and 343 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[966/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[967/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+[968/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+*** Tundra build success (5.91 seconds), 9 items updated, 969 evaluated
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(524,17): warning CS0618: 'VisualElement.transform' is obsolete: 'When writing the value, use VisualElement.style.translate, VisualElement.style.rotate or VisualElement.style.scale instead. When reading the value, use VisualElement.resolvedStyle.translate, scale and rotate'
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(524,17): warning CS0618: 'ITransform.rotation' is obsolete: 'When reading the value, use VisualElement.resolvedStyle.rotate. When writing the value, use VisualElement.style.rotate instead.'
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(533,13): warning CS0618: 'VisualElement.transform' is obsolete: 'When writing the value, use VisualElement.style.translate, VisualElement.style.rotate or VisualElement.style.scale instead. When reading the value, use VisualElement.resolvedStyle.translate, scale and rotate'
+Assets\Scripts\UI\Tablet\Apps\MusicPlayerBarView.cs(533,13): warning CS0618: 'ITransform.rotation' is obsolete: 'When reading the value, use VisualElement.resolvedStyle.rotate. When writing the value, use VisualElement.style.rotate instead.'
+Total cache size 261212012
+Total cache size after purge 261212012, took 00:00:00.3287490
+AssetDatabase: script compilation time: 7.089833s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  5.498 seconds
+Domain Reload Profiling: 6937ms
+	BeginReloadAssembly (363ms)
+		DisableScriptedObjects (43ms)
+		CreateAndSetChildDomain (73ms)
+	RebuildCommonClasses (16ms)
+	RebuildNativeTypeToScriptingClass (29ms)
+	initialDomainReloadingComplete (77ms)
+	LoadAllAssembliesAndSetupDomain (952ms)
+		LoadAssemblies (482ms)
+		AnalyzeDomain (464ms)
+			TypeCache.Refresh (331ms)
+				TypeCache.ScanAssembly (313ms)
+			BuildScriptInfoCaches (114ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (5500ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (150ms)
+			ProcessInitializeOnLoadAttributes (4315ms)
+			ProcessInitializeOnLoadMethodAttributes (539ms)
+			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (131ms)
+Starting new worker id: 0 with log in D:/Unity Project/RailwayRenaissance/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=d063156a58a802947898273f44698885): Total: 15.511 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=6383 ms
+		Asset DB Callback time: managed=404 ms, native=40 ms
+		Scripting: domain reloads=1, domain reload time=1508 ms, compile time=7093 ms, other=81 ms
+		Project Asset Count: scripts=1477, non-scripts=2619
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 35.635ms
+	ApplyChangesToAssetFolders: 1.256ms
+	Scan: 259.292ms
+	Collect global state as custom dependencies: 34.090ms
+	OnSourceAssetsModified: 1.149ms
+	CategorizeScriptCompilationAssets: 82.846ms
+	ProcessAssetsWithTransientArtifactChanges: 132.794ms
+	CategorizeAssets: 82.750ms
+	CompileScripts: 7093.038ms
+	ImportOutOfDateAssets: 5612.537ms (5526.592ms without children)
+		ReloadNativeAssets: 0.070ms
+		UnloadImportedAssets: 1.687ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.287ms
+		ImportSchedulerStart: 82.892ms
+	PostProcessAllAssets: 406.960ms
+		VCAutoAddAssetPostprocess 1.937ms
+		XRBuildSystem.XRAssetImported 0.506ms
+		PostProcessCallbackCreateDeferredMaterials 0.055ms
+		MonoPostProcessAllAssets: 403.848ms
+			AssetPostprocessor.OnPostprocessAllAssets 215.771ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 62.468ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 30.769ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 11.101ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 10.916ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 8.810ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 4.912ms
+			AssetChangedListener.OnPostprocessAllAssets 3.887ms
+			MaterialPostprocessor.OnPostprocessAllAssets 3.778ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 3.715ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 3.359ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 3.222ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 2.128ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 1.876ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 1.675ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.565ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 1.456ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 1.176ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 1.158ms
+			PostProcessor.OnPostprocessAllAssets 0.870ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.781ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.702ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.666ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.507ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.501ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.485ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.454ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.450ms
+			AssetEvents.OnPostprocessAllAssets 0.390ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.354ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.286ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.276ms
+			SyncVS.PostprocessSyncProject 0.212ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.182ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.181ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.150ms
+	PostAssetChangesProfiler: 4.254ms
+	UnloadStreamsBegin: 5.574ms
+	PersistCurrentRevisions: 0.211ms
+	GenerateScriptTypeHashes: 2.990ms
+	GenerateScriptTypeSerializationHashes: 5.902ms
+	Untracked: 1749.703ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 12.342ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6889 unused Assets / (6.6 MB). Loaded Objects now: 7921.
+Memory consumption went from 435.1 MB to 428.5 MB.
+Total: 24.293800 ms (FindLiveObjects: 1.354000 ms CreateObjectMapping: 4.113900 ms MarkObjects: 11.666800 ms  DeleteObjects: 7.152800 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-6000.5.8 channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -124,6 +124,7 @@ public class VNSaveLoadUI : MonoBehaviour
         header.Add(titleGroup);
 
         closeBtn = new UnityEngine.UIElements.Button(() => ClosePanel()) { text = "\u2715" };
+        UiCursor.Bind(closeBtn);
         closeBtn.style.width = 44;
         closeBtn.style.height = 44;
         closeBtn.style.fontSize = 20;
@@ -178,6 +179,7 @@ public class VNSaveLoadUI : MonoBehaviour
         panel.Add(pageNav);
 
         prevBtn = new UnityEngine.UIElements.Button(() => { currentPage--; RefreshSlots(); }) { text = "\u25C0 上一页" };
+        UiCursor.Bind(prevBtn);
         StylePageBtn(prevBtn);
         pageNav.Add(prevBtn);
 
@@ -190,6 +192,7 @@ public class VNSaveLoadUI : MonoBehaviour
         pageNav.Add(pageLabel);
 
         nextBtn = new UnityEngine.UIElements.Button(() => { currentPage++; RefreshSlots(); }) { text = "下一页 \u25B6" };
+        UiCursor.Bind(nextBtn);
         StylePageBtn(nextBtn);
         pageNav.Add(nextBtn);
     }
@@ -280,7 +283,7 @@ public class VNSaveLoadUI : MonoBehaviour
         fade.style.opacity = 1;
 
         if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
+        GameMainUI.Show();
     }
 
     public void SetIsFromTitleScreenFromTitle(bool value) { isFromTitleScreen = value; }
@@ -454,6 +457,7 @@ public class VNSaveLoadUI : MonoBehaviour
                 if (isSaveMode) { RefreshSlots(); ShowSaveFeedback(); }
                 else { isFromTitleScreen = false; ClosePanel(); }
             }) { text = btnText };
+            UiCursor.Bind(actionBtn);
 
             actionBtn.style.width = 90; actionBtn.style.height = 40; actionBtn.style.fontSize = 20;
             actionBtn.style.color = new Color(1f, 1f, 1f, 0.9f);
@@ -487,6 +491,7 @@ public class VNSaveLoadUI : MonoBehaviour
         if (saveData != null)
         {
             var delBtn = new UnityEngine.UIElements.Button(() => ShowDeleteConfirm(slotIndex)) { text = "\u2715" };
+            UiCursor.Bind(delBtn);
             delBtn.style.width = 28; delBtn.style.height = 28; delBtn.style.fontSize = 14;
             delBtn.style.color = new Color(1f, 1f, 1f, 0.4f);
             delBtn.style.backgroundColor = Color.clear;
@@ -510,49 +515,23 @@ public class VNSaveLoadUI : MonoBehaviour
     private void ShowDeleteConfirm(int slotIndex)
     {
         var root = uiDoc.rootVisualElement;
-        var overlay = new VisualElement();
-        overlay.style.position = Position.Absolute;
-        overlay.style.top = 0; overlay.style.left = 0; overlay.style.right = 0; overlay.style.bottom = 0;
+        var fontDef = new FontDefinition { font = gameFont };
+        var overlay = DialogStyle.CreateOverlay(fontDef);
         overlay.style.backgroundColor = new Color(0, 0, 0, 0.5f);
-        overlay.style.alignItems = Align.Center;
-        overlay.style.justifyContent = Justify.Center;
-        var box = new VisualElement();
-        box.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.95f);
-        box.style.borderTopWidth = 2; box.style.borderBottomWidth = 2;
-        box.style.borderLeftWidth = 2; box.style.borderRightWidth = 2;
-        box.style.borderTopColor = GoldDim; box.style.borderBottomColor = GoldDim;
-        box.style.borderLeftColor = GoldDim; box.style.borderRightColor = GoldDim;
-        box.style.borderTopLeftRadius = 8; box.style.borderTopRightRadius = 8;
-        box.style.borderBottomLeftRadius = 8; box.style.borderBottomRightRadius = 8;
-        box.style.width = 420; box.style.height = 200;
-        box.style.flexDirection = FlexDirection.Column;
-        box.style.paddingLeft = 40; box.style.paddingRight = 40;
-        box.style.paddingTop = 30; box.style.paddingBottom = 30;
-        box.style.alignItems = Align.Center;
-        box.style.justifyContent = Justify.Center;
-        var msg = new Label("确认删除此存档？\n此操作不可撤销。");
-        msg.style.fontSize = 24; msg.style.color = new Color(1f, 1f, 1f, 0.9f);
-        msg.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        msg.style.marginBottom = 28; msg.style.whiteSpace = WhiteSpace.Normal;
-        msg.style.unityTextAlign = TextAnchor.MiddleCenter;
+        var box = DialogStyle.CreateBox(480);
+        overlay.Add(box);
+
+        box.Add(DialogStyle.CreateTitle("删除存档", fontDef));
+        box.Add(DialogStyle.CreateUnderline());
+
+        var msg = DialogStyle.CreateBody("确认删除此存档？\n此操作不可撤销。", fontDef);
+        msg.style.marginBottom = 24;
         box.Add(msg);
-        var btnRow = new VisualElement();
-        btnRow.style.flexDirection = FlexDirection.Row;
-        var confirmBtn = new UnityEngine.UIElements.Button(() => { saveSystem.DeleteSave(slotIndex); RefreshSlots(); root.Remove(overlay); }) { text = "确认删除" };
-        confirmBtn.style.width = 120; confirmBtn.style.height = 40; confirmBtn.style.fontSize = 20;
-        confirmBtn.style.marginRight = 10; confirmBtn.style.color = new Color(1f, 0.8f, 0.8f, 1f);
-        confirmBtn.style.backgroundColor = new Color(0.4f, 0.12f, 0.1f, 0.7f);
-        confirmBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        confirmBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        btnRow.Add(confirmBtn);
-        var cancelBtn = new UnityEngine.UIElements.Button(() => root.Remove(overlay)) { text = "取消" };
-        cancelBtn.style.width = 120; cancelBtn.style.height = 40; cancelBtn.style.fontSize = 20;
-        cancelBtn.style.marginLeft = 10; cancelBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
-        cancelBtn.style.backgroundColor = new Color(0.2f, 0.1f, 0.08f, 0.7f);
-        cancelBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        cancelBtn.style.unityFontDefinition = new FontDefinition { font = gameFont };
-        btnRow.Add(cancelBtn);
-        box.Add(btnRow); overlay.Add(box); root.Add(overlay);
+
+        DialogStyle.AddButtonRow(box, fontDef, "取消", "确认删除",
+            () => root.Remove(overlay),
+            () => { saveSystem.DeleteSave(slotIndex); RefreshSlots(); root.Remove(overlay); });
+        root.Add(overlay);
     }
 
     private string FormatChapterName(string scriptName, int sceneIndex)

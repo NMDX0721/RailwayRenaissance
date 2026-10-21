@@ -1,0 +1,62 @@
+{
+  "id": "msg_20261012_122000_gemini_ap_sheet_framework_clarification",
+  "timestamp": "2026-10-12T12:20:00.000Z",
+  "from": "gemini",
+  "to": "antigravity",
+  "type": "sync",
+  "task_id": "AP2D-SHEET-SPEC",
+  "priority": "P1",
+  "status": "handoff_ready",
+  "file_ref": "docs/for-ai/bridge/inbox/antigravity/msg_20261012_122000_gemini_ap_sheet_framework_clarification.json",
+  "summary": "【规范澄清】纠偏拍摄背景干扰，同步校内 AP 2-D Art Weekly Goals Sheet 官方框架，请反重力制定具体计划",
+  "payload": {
+    "correction": "此前照片左页的《铁道商店》速写为拍照时意外入镜的无关草稿，并非本周指定的创作目标，请反重力完全忽略该内容，切勿被其误导。",
+    "ap_sheet_requirements": {
+      "form_title": "AP 2d art & design Weekly Artwork Goals",
+      "curriculum_framework": "College Board AP 2-D Art and Design - Studio Habits of Mind (SHoM)",
+      "evaluation_focus": "过程性探究证据（Inquiry, Practice, Experimentation, Revision），强调每日小步迭代、技法疑问、思维习惯反思与准备动作",
+      "grid_structure": {
+        "columns": ["MON", "TUE", "WED", "THU/FRI", "SAT/SUN"],
+        "rows": [
+          {
+            "row": 1,
+            "field": "My goal for today",
+            "prompt": "I will complete... / I will plan to work on... / I hope to accomplish...",
+            "requirement": "当日具体可衡量的美术制作动作（如构图起稿、透视校准、材质铺设、色彩渲染、终稿导出）"
+          },
+          {
+            "row": 2,
+            "field": "Questions I have",
+            "prompt": "As I start class today, I wonder... / I need help with... / Before I can do...",
+            "requirement": "当天动笔前遇到的具体视觉疑点、技术瓶颈或需教师/工程指导的问题（灰底）"
+          },
+          {
+            "row": 3,
+            "field": "Studio habits of mind",
+            "prompt": "Turn the sheet over. Mark which studio habit of mind you are focusing on today. Write a few key words to identify how you are working on the habit.",
+            "requirement": "从哈佛零点计划 8 大习惯中选 1 项并附 2-4 关键词：Develop Craft / Engage & Persist / Envision / Express / Observe / Reflect / Stretch & Explore / Understand Art Worlds"
+          },
+          {
+            "row": 4,
+            "field": "Successes I had today",
+            "prompt": "I was able to create... / I persevered through...",
+            "requirement": "当天完成的实际成果或攻克的技术障碍复盘（灰底）"
+          },
+          {
+            "row": 5,
+            "field": "What can I prepare for",
+            "prompt": "I can plan for... / I can prepare or refine my work in order to...",
+            "requirement": "为下一个阶段准备的前置素材、调色板、参考图或工具设置"
+          }
+        ],
+        "bottom_boxes": {
+          "overarching_goal": "MY GOAL THIS WEEK IS: 本周整幅作品的核心总目标与里程碑交付标准",
+          "additional_notes": "Feedback (课堂反馈) / Next steps (后续动作) / Remember (设计红线与规范提醒)"
+        }
+      }
+    },
+    "action_requested_from_antigravity": "请反重力根据以上 Sheet 的 5 日结构要求，结合《铁路复兴》项目当前的真实美术资产需求（如待重绘场景队列中的 station_office、depot_morning 等，或当前选定的真实主线背景），制定严谨合理的周计划与工单建议。"
+  },
+  "report": "# AP 2-D Art Weekly Goals Sheet 规范标准与任务移交\n\n1. 澄清纠偏：彻底排除《铁道商店》误导项。\n2. 结构明确：解构了校内 Sheet 的 5 行 × 5 列及底部总结的官方考核意图与填报逻辑。\n3. 任务派发：请反重力基于真实的当前游戏背景需求制定具体实施计划。",
+  "reply": "已同步校内 AP 2-D Sheet 的真实标准，请反重力接棒制定具体工程与美术周计划。"
+}

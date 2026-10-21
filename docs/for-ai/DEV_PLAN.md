@@ -107,6 +107,32 @@
 - **参考文档**：`参考资料/沙本位经济核.md` §0.7（含优化后结算循环）+ §0.8（演算验证）
 - **验证**：跑 60 天，确认客流随季节波动、渗透上升导致客流下降、秋季高信任时容量封顶生效
 
+#### P1.5 🔴 VNSaveData 分支变量持久化与还原（紧急技术债）
+- **目标**：解决读档后选择题分支变量丢失问题（`arrival_feeling`, `repair_choice`, `fund_choice`, `final_vow` 等丢失导致 condition 判定失效）
+- **修改文件**：`VNSaveSystem.cs`（`VNSaveData` 扩展 `List<string> activeVariables`）、`VNManager.cs`（Save/Load 同步）
+- **参考文档**：`docs/compose/spec/vn-architecture-optimization.md` §2.1
+- **验证**：在含有 condition 判定的场景存档并重新读档，验证变量完整保留、后续分支台词正确触发
+
+#### P1.6 🟡 VNManager.cs 单体类解耦重构（3,184 行分层）
+- **目标**：按单一职责原则将超大 God-Object 拆解为分层架构
+- **拆分规划**：
+  - `VNDialogueController.cs` — 纯逻辑剧本流转与分支条件计算
+  - `VNUIController.cs` — UI Toolkit 视觉元素层级管理、卡片与弹窗控制
+  - `VNInputHandler.cs` — 键盘/手势与长按快进统一输入调度
+  - `VNVariableStore.cs` — 剧情变量字典与经营侧状态同步
+- **参考文档**：`docs/compose/spec/vn-architecture-optimization.md` §2.2
+- **验证**：编译通过，序章 01-10 正常播放，无功能与事件衰退
+
+#### P1.7 🟡 VN 资源生命周期管理与显存释放
+- **目标**：实现 `VNAssetManager`，统一立绘/背景按需预加载与换章淘汰，统一 `AudioManager` 与 `VNAudioManager`
+- **参考文档**：`docs/compose/spec/vn-architecture-optimization.md` §2.3
+- **验证**：Android/Profiler 测试换章时无用纹理及时卸载
+
+#### P1.8 🟢 UI Toolkit 样式抽离（USS 样式表）
+- **目标**：将 `VNBacklog`（1,734行）与 `DialogueBox`（765行）中的 C# 手写 inline 样式剥离到 `Assets/Resources/UI/VNStyle.uss`
+- **参考文档**：`docs/compose/spec/vn-architecture-optimization.md` §2.4
+- **验证**：C# 代码量削减 1,000+ 行，样式保持 pixel-perfect
+
 ### P2 — 玩法扩展
 
 #### P2.0 经济核数学底层落地（v4.2，见《沙本位经济核.md》§0.11-0.14）

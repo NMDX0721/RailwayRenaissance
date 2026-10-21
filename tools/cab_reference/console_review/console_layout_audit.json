@@ -1,0 +1,215 @@
+{
+  "status": "revision 3: separated brake valves and auxiliary controls",
+  "estimated_dimensions": true,
+  "width_m": 1.55,
+  "worktop_top_m": 0.839,
+  "panel_back_tilt_degrees": 15,
+  "lower_structure": "continuous recessed shell",
+  "mounts": [
+    {
+      "tag": "Pressure",
+      "source": "pressure_review/duplex_air_gauges_final.blend",
+      "bounds": {
+        "min": [
+          -0.6010000109672546,
+          0.11500557512044907,
+          0.8637982606887817
+        ],
+        "max": [
+          -0.3190000057220459,
+          0.23394876718521118,
+          1.0122628211975098
+        ]
+      }
+    },
+    {
+      "tag": "Current",
+      "source": "linear_gauge_review/linear_gauge_final.blend",
+      "bounds": {
+        "min": [
+          -0.2680000066757202,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.22200000286102295,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "RPM",
+      "source": "tachometer_review/diesel_tachometer_final.blend",
+      "bounds": {
+        "min": [
+          -0.1979999989271164,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.15199999511241913,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "Temperature",
+      "source": "temperature_review/temperature_gauges_final.blend",
+      "bounds": {
+        "min": [
+          -0.11800000071525574,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          -0.01199999637901783,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "OilPressure",
+      "source": "oil_pressure_review/oil_pressure_gauge_final.blend",
+      "bounds": {
+        "min": [
+          0.03199999779462814,
+          0.12104818969964981,
+          0.8640221357345581
+        ],
+        "max": [
+          0.07800000160932541,
+          0.20225030183792114,
+          1.0429543256759644
+        ]
+      }
+    },
+    {
+      "tag": "Speed",
+      "source": "speedometer_review/speedometer_final.blend",
+      "bounds": {
+        "min": [
+          0.2388000190258026,
+          0.14881113171577454,
+          1.1200000047683716
+        ],
+        "max": [
+          0.4212000072002411,
+          0.2639999985694885,
+          1.3100000619888306
+        ]
+      }
+    },
+    {
+      "tag": "Controller",
+      "source": "controller_review/controller_handwheel_final.blend",
+      "bounds": {
+        "min": [
+          -0.2789999842643738,
+          -0.2939999997615814,
+          0.8399999737739563
+        ],
+        "max": [
+          0.054999999701976776,
+          0.013999998569488525,
+          0.9290199875831604
+        ]
+      }
+    },
+    {
+      "tag": "Brake",
+      "source": "brake_review/brake_final_with_handles.blend",
+      "bounds": {
+        "min": [
+          -0.6088998913764954,
+          -0.28714150190353394,
+          0.8399999737739563
+        ],
+        "max": [
+          -0.4194999933242798,
+          -0.047999992966651917,
+          1.060499906539917
+        ]
+      }
+    },
+    {
+      "tag": "Switches",
+      "source": "switches_review/piano_switches_10gang_optimized.blend",
+      "bounds": {
+        "min": [
+          0.256074994802475,
+          -0.26455000042915344,
+          0.7947499752044678
+        ],
+        "max": [
+          0.4839250147342682,
+          -0.17544999718666077,
+          0.8614407181739807
+        ]
+      },
+      "integration_scale": 3
+    }
+  ],
+  "apertures": [
+    {
+      "x_m": -0.46,
+      "width_m": 0.255,
+      "height_m": 0.125
+    },
+    {
+      "x_m": -0.245,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.175,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.095,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": -0.035,
+      "width_m": 0.039,
+      "height_m": 0.163
+    },
+    {
+      "x_m": 0.055,
+      "width_m": 0.039,
+      "height_m": 0.163
+    }
+  ],
+  "not_yet_validated": [
+    "full human reach envelope",
+    "valve handle swept volumes",
+    "driver sightlines",
+    "wiring and pipe routing"
+  ],
+  "interactive_controller_and_switches": false,
+  "automatic_brake_present": true,
+  "independent_brake_present": true,
+  "new_controls_unbound": [
+    "horn push",
+    "engine stop mushroom",
+    "reverser",
+    "warning lamps"
+  ],
+  "incomplete_systems": [
+    "live speedometer",
+    "fuel gauge",
+    "electrical supply gauge",
+    "cab signal/ATP",
+    "vigilance",
+    "radio",
+    "wipers",
+    "parking brake",
+    "oil temperature simulation",
+    "equalizing reservoir"
+  ],
+  "brake_spindle_plan_separation_m": 0.20865520058025708
+}

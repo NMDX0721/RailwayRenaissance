@@ -49,21 +49,87 @@ public class BackgroundManager : MonoBehaviour
         SetBackground(bgName, TransitionType.Fade);
     }
 
+    /// <summary>复古画风选图：预渲染 bg_low/（tools/pixelate_bg.py v2 产物，零运行时开销）优先；
+    /// 未预渲染的新图回退到动态降采样兜底。</summary>
+    private static readonly System.Collections.Generic.Dictionary<string, Texture2D> _retroCache = new();
+
+    private static Texture2D LoadBgTex(string bgName)
+    {
+        if (PlayerPrefs.GetInt("RetroLowResBG", 0) != 1)
+            return Resources.Load<Texture2D>("bg/" + bgName);
+
+        // 1) 预渲染优先（目标宽度法低颗粒，离线生成）
+        var prerendered = Resources.Load<Texture2D>("bg_low/" + bgName);
+        if (prerendered != null) return prerendered;
+
+        // 2) 兜底：新图未预渲染 → 动态降采样
+        var src = Resources.Load<Texture2D>("bg/" + bgName);
+        if (src == null) return null;
+
+        string key = bgName + "@" + src.width + "x" + src.height;
+        if (_retroCache.TryGetValue(key, out var cached) && cached != null) return cached;
+
+        var retro = DownscalePoint(src, 4);
+        if (retro != null)
+        {
+            _retroCache[key] = retro;
+            return retro;
+        }
+        return src;
+    }
+
+    private static Texture2D DownscalePoint(Texture2D src, int factor)
+    {
+        try
+        {
+            int w = Mathf.Max(8, src.width / factor);
+            int h = Mathf.Max(8, src.height / factor);
+            var rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
+            var prev = RenderTexture.active;
+            Graphics.Blit(src, rt);
+            RenderTexture.active = rt;
+            var small = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            small.filterMode = FilterMode.Point;   // 硬像素块（复古颗粒的关键）
+            small.wrapMode = TextureWrapMode.Clamp;
+            small.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+            small.Apply(false, false);
+            RenderTexture.active = prev;
+            RenderTexture.ReleaseTemporary(rt);
+            return small;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[VN BG] retro downscale failed: " + ex.Message);
+            return null;
+        }
+    }
+
+    /// <summary>设计即黑屏字卡的背景名（缺图队列标注"非缺图"）：缺图属正常，不打警告。</summary>
+    private static bool IsDesignBlackBg(string name) => name == "news_2050" || name == "news_2072";
+
     public void SetBackground(string bgName, TransitionType transition)
     {
         if (string.IsNullOrEmpty(bgName)) return;
 
-        // 纯黑背景：不加载图片，直接渲染黑色（black 无资源文件）
-        if (bgName == "black")
+        // 纯黑 / 标题卡缺图：不加载图片，直接纯色（避免透出清屏紫）
+        if (bgName == "black" || bgName == "title_card")
         {
-            ApplySolidColor(Color.black);
-            return;
+            var missingTitle = bgName == "title_card" && Resources.Load<Texture2D>("bg/title_card") == null;
+            if (bgName == "black" || missingTitle)
+            {
+                ApplySolidColor(bgName == "title_card" && !missingTitle ? Color.black : new Color(0.04f, 0.03f, 0.05f, 1f));
+                if (missingTitle) Debug.LogWarning("[VN BG] title_card.png missing, solid fallback");
+                return;
+            }
         }
 
-        var tex = Resources.Load<Texture2D>("bg/" + bgName);
+        var tex = LoadBgTex(bgName);
         if (tex == null)
         {
-            Debug.LogWarning("[VN BG] Background not found: " + bgName);
+            // news_2050/news_2072 设计即黑屏字卡（缺图队列标注"非缺图"）：静默纯色兜底，不刷警告
+            if (!IsDesignBlackBg(bgName))
+                Debug.LogWarning("[VN BG] Background not found: " + bgName + " — solid black fallback");
+            ApplySolidColor(new Color(0.04f, 0.03f, 0.05f, 1f));
             return;
         }
 
@@ -114,7 +180,7 @@ public class BackgroundManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(bgName)) return;
 
-        // 纯黑背景：用 1x1 黑纹理（image=null + tint 不渲染，会透出清屏紫色）
+        // 纯黑 / 缺图标题卡：用 1x1 纹理纯色（image=null + tint 不渲染，会透出清屏紫）
         if (bgName == "black")
         {
             var blackTex = GetSolidBlack();
@@ -125,8 +191,19 @@ public class BackgroundManager : MonoBehaviour
             return;
         }
 
-        var tex = Resources.Load<Texture2D>("bg/" + bgName);
-        if (tex == null) return;
+        var tex = LoadBgTex(bgName);
+        if (tex == null)
+        {
+            // 缺图（如 title_card 未生成）→ 深色纯底，不透紫
+            var blackTex = GetSolidBlack();
+            bgOld.style.backgroundImage = new StyleBackground(blackTex);
+            bgOld.style.unityBackgroundImageTintColor = new Color(0.04f, 0.03f, 0.05f, 1f);
+            bgNew.style.backgroundImage = null;
+            bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
+            if (!IsDesignBlackBg(bgName))
+                Debug.LogWarning("[VN BG] missing " + bgName + ", solid fallback");
+            return;
+        }
 
         bgOld.style.backgroundImage = new StyleBackground(tex);
         bgOld.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
@@ -135,6 +212,7 @@ public class BackgroundManager : MonoBehaviour
 
     private IEnumerator TransitionFade(Texture2D newTex)
     {
+        if (newTex == null) { isTransitioning = false; yield break; }
         isTransitioning = true;
 
         // Fade out old

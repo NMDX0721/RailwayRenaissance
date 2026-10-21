@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "mesh_counts": {
+    "with_key": 31,
+    "without_key": 26,
+    "key_only": 5
+  },
+  "variants": [
+    "with_key",
+    "without_key",
+    "key_only"
+  ],
+  "interlocks": [
+    "no key cannot enable",
+    "master off cannot start",
+    "ON key cannot be removed",
+    "pump off cannot start",
+    "valid start",
+    "running cannot remove or disable master",
+    "stop then OFF allows removal"
+  ],
+  "key_and_plug_share_turn_pivot": true,
+  "global_startup_guard": false,
+  "mouse_dispatch_implemented": false,
+  "main_console_installed": false,
+  "clean_editor_shutdown": true
+}

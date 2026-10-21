@@ -70,3 +70,12 @@ compile*.log
 compile*.txt
 build_log.txt
 validate_json.py
+
+# 低颗粒派生图（tools/pixelate_bg.py 随时重生成）
+Assets/Resources/bg_low/
+
+# Release output
+发行/
+
+# Antigravity skills junction
+/.agents/skills

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "samples": 301,
+  "max_position_error_m": 6.128806e-08,
+  "renderers": 29,
+  "checks": [
+    "live EngineRpm binding",
+    "engine stop zero",
+    "overrange preserves raw input",
+    "negative and invalid input",
+    "saved scene reload render"
+  ],
+  "csharp_compile_errors": 0,
+  "clean_editor_shutdown": true,
+  "main_cab_assembled": false
+}

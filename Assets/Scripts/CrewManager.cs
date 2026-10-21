@@ -710,6 +710,15 @@ public static class CrewManager
     }
 
     /// <summary>
+    /// 每日推进接口（G2），供 AdvanceDay 步骤 9.5 调用。
+    /// 推进员工疲劳、技能经验成长、忠诚度与冷却；不改动当日工资（成长次日生效）。
+    /// </summary>
+    public static List<CrewMember> AdvanceDay(bool wagePaidToday = true)
+    {
+        return DailyUpdate(wagePaidToday);
+    }
+
+    /// <summary>
     /// 每日更新：疲劳/技能经验 + 忠诚度变化 + 离职触发。
     /// </summary>
     /// <param name="wagePaidToday">工资是否按时发放（默认 true）</param>
@@ -1737,5 +1746,39 @@ public static class CrewManager
         // 将 0-100 等级映射到 0-(ranks.Length-1) 的索引
         int rankIndex = Mathf.Clamp(Mathf.RoundToInt(level / 100f * (ranks.Length - 1)), 0, ranks.Length - 1);
         return ranks[rankIndex];
+    }
+
+    // ===== T304: 全线路网维护能力查询 =====
+
+    /// <summary>
+    /// [T304] 获取在岗工务/维修团队综合维护能力（日减缓率基准）。
+    /// 依据《跨系统联动公式》§10.3：Power = MechanicLevel * 0.0015f。
+    /// 若无在岗机械师则回退基准 2 级。
+    /// </summary>
+    public static float GetMaintenancePower()
+    {
+        int effectiveLevel = GetMechanicEffectiveLevel();
+        return effectiveLevel * 0.0015f;
+    }
+
+    /// <summary>
+    /// [T304] 获取当前最高在岗机械师有效职级（1~5 阶）。
+    /// </summary>
+    public static int GetMechanicEffectiveLevel()
+    {
+        int bestLevel = 0;
+        foreach (var m in crew)
+        {
+            if (m.isResting) continue;
+            foreach (var sk in m.skills)
+            {
+                if (sk.skillName == "repair")
+                {
+                    int lvl = Mathf.Clamp(Mathf.FloorToInt(sk.level / 20f) + 1, 1, 5);
+                    if (lvl > bestLevel) bestLevel = lvl;
+                }
+            }
+        }
+        return bestLevel > 0 ? bestLevel : 2; // 默认回退 2 级 (初级技工)
     }
 }

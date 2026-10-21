@@ -8,7 +8,7 @@
 
 | 字段 | 值 |
 |------|-----|
-| 引擎 | Unity 6000.4.6f1 |
+| 引擎 | Unity 6000.5.8f1（Unity 6.5） |
 | 语言 | C# |
 | 美术 | 16-bit 像素画，暖色调，类似 Stardew Valley |
 | UI 方案 | 混合：UGUI (Login/经营) + UI Toolkit (VN/标题) |
@@ -97,7 +97,7 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
    Get-Content "C:\Users\Oe_Lee\AppData\Local\Unity\Editor\Editor.log" -Tail 200 | Select-String "error CS"
    ```
 2. **批处理编译验证**:
-   `"D:\Unity Hub\Unity 6000.4.6f1\Editor\Unity.exe" -quit -batchmode -projectPath "D:\Unity Project\RailwayRenaissance" -logFile compile_check.log`
+   `"D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -quit -batchmode -projectPath "D:\Unity Project\RailwayRenaissance" -logFile compile_check.log`
 
 ---
 
@@ -112,6 +112,8 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ## 关键约定
 
+- **代码改动必同步文档（核心记忆铁律）**：任何功能、数值或架构变更，**必须强制同步更新对应的设计/接口/公式文档**（如 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md`、`docs/for-ai/CODE_MAP.md`、派单回执等），严禁“只改代码不更文档”！
+- **数值两铁律（2026-10-17 用户拍板）**：①**一切存档初值由千里马创世核按种子抖动生成，严禁固定数值**（`Jitter(基准, ±0.05, r)`；常量只许作无种子/老档兼容兜底）；②**政治压力与线路老化绝对禁止数值外显**——UI 只准监管评级/定性档位词，**钱与信任可外显**。新数值功能先过这两条再动 UI（细则见 `docs/for-ai/DAILY_SETTLEMENT_FORMULAS.md` §六）。
 - **不要直接编辑 `.unity` YAML 文件** — 用 Unity Editor 或编辑器脚本
 - **中文 UI 优先**
 - **资源命名**: `characters/{ID}/{表情}.png`, `bg/{ID}.png`, `bgm/{ID}.ogg`, `Scripts/prologue_XX_{名称}.json`
@@ -195,4 +197,46 @@ Login.unity → TitleScreen.unity → VN_Test.unity → StationSlice_V1.unity
 
 ---
 
-*Changes to this project: update `docs/for-ai/` docs when modifying code, and update AGENTS.md when adding new major systems.*
+## Tri-Agent 协作架构与剧本写作规范（AGY · MiMo · Gemini Cloud 2026-10 最新基准）
+
+### 1. 三方协同分工与消息总线（Bus）
+- **Google Antigravity (AGY)**：本地代码实现核，负责 C# / UI Toolkit 编码、Roslyn csc 快速编译验证、运行时调试与剧本精修。
+- **Xiaomi MiMo Desktop**：本地策划与调度核，负责经营数值推演、剧情情感弧线、本地任务调度（`QUEUE.md`）与核验。
+- **Google Gemini Cloud Agent**：云端智识核，负责超长上下文全局审查、多模态海量素材提炼、世界观/跨章节一致性审计、Google Workspace (Drive/Docs) 云端协同与离线任务编排。
+- **通讯技能与总线**：[`mimo-bridge`](file:///.mimocode/skills/mimo-bridge/SKILL.md) 与消息总线 [`docs/for-ai/bridge/BUS.md`](file:///docs/for-ai/bridge/BUS.md)
+  - **核心铁律**：一般情况下**绝对不使用消息注入**（不伪装成会话，不向会话注入消息），而是**写入总线收件箱与交接区**！
+  - **交付与写交接区**：直接写入对应派单文档末尾（如 `docs/for-ai/dispatch/orders/TXXX.md`），并运行 `node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" handoff --file "<文件路径>"`；系统将自动派发到分布式收件箱并静默镜像更新 `antigravity_to_mimo.json`；
+  - **总线投递与看板**：
+    - 定向投递：`node ... call_mimo.js post --to <mimo|gemini|antigravity> --task <ID> --file <路径>`；
+    - 状态看板：`node ... call_mimo.js status`（展示三方在线与活动状态）；
+    - 收件拉取：`node ... call_mimo.js poll [antigravity|mimo|gemini_cloud]`；
+  - **读 MiMo 消息**：`node "C:\Users\Oe_Lee\.gemini\antigravity\bridge\call_mimo.js" read`（自动匹配“铁路复兴”会话）；
+  - **消息注入（仅限特殊情况）**：仅在用户明确要求时方可使用 `node ... send` 注入消息。
+
+
+### 2. 序章剧本写作六规则与 05 样板基准
+- **样板基准**：以 `prologue_05_inspection` 最新作者手改版（~7551字）为全篇改写标杆。
+- **去水与密度**：彻底去除重复说教与空泛比喻，段均 ~1500-1800 字，节奏明快，动作紧凑。
+- **首钩强化**：开篇第一句必须以受挫或核心危机入题（如“我输给了爷爷留下的那台机器”），拒绝拖沓起手。
+- **动作做实**：专业操作必须有具象动作链（如读道尺歪尺->摔尺->正尺、递扳手柄予长辈、撕纸钉板接续字迹）。
+- **JSON 技术标签规范**：
+  - 心理活动统一使用 `{"t": "thought", "s": "说话人", "e": "表情", "text": "[...]"}`（必须带说话人 `s` 与表情 `e`，text 保留方括号，DialogueBox 遵守独白不叠色规则，清空或缺失 `s` 会导致姓名牌丢失及立绘被清空）；
+  - 地点卡统一使用 `{"t": "loc", "text": "..."}`；
+  - 核心铁路专有名词必须完整保留，以保证 `Terms.json` 的 65 条术语（涵盖工务保线、机车动力机械、车辆制动、电气信号闭塞）能被 `TermHighlightSystem` 稳定高亮并支持弹窗；
+  - 对话回顾面板视觉规范：采用有色半透明和纸沙质图层（`MakeBacklogWashiTex` 128×128 双线性平铺，约 65% 透光度，底层 CG/立绘清晰可见），暖木纹姓名缎带，黑底金边「跳转」药丸按键；第一阶段完备轨段支持自由拖动就地停驻（Park），第二阶段滑块自适应上下文弹性缩放（最高70%轨长）；
+  - BGM 切换遵守驻留规则（`ambient_nature` -> `melancholy` -> `calm` -> `embers`）。
+
+---
+
+*核心纪律：代码改动必须同步更新 `docs/for-ai/` 相关文档及公式表，添加或重构重大系统时必须更新 `AGENTS.md` 与代码地图。*
+
+## NF-5K exterior lighting (2026-10-21)
+CabExteriorLighting supplies Off/Marker/Dim/Bright/Tail modes and auxiliary power input, compatible with CabEngineState.HeadlightOn. NF5KFrontLightingSetup builds optics; NF5KLightingReview verifies dark renders and Play Mode. Light output is art-tuned; automatic consist end selection, battery and fault simulation remain pending. See docs/for-ai/NF5K_EXTERIOR_LIGHTING.md.
+
+
+## NF-5K interior lighting (2026-10-21)
+CabInteriorLighting controls separate cab/task, instrument dimmer, two passenger zones and automatic emergency lights from explicit normal/backup supply inputs. InstrumentLightOn remains compatible. Generation/review: NF5KInteriorLightingSetup and NF5KInteriorLightingReview. See docs/for-ai/NF5K_INTERIOR_LIGHTING.md; battery and physical reflection simulation remain pending.
+
+
+## NF-5K passenger fittings (2026-10-21)
+NF5KPassengerInterior generates shared native seat meshes, luggage racks, inner window returns and vestibule fittings. ValidateReload checks 48 seats and candidate aisle clearance; NF5KDoorReview includes new fixed seat/rack colliders. See docs/for-ai/NF5K_PASSENGER_INTERIOR.md. Geometry capacity is not connected to the economy or passenger simulation.

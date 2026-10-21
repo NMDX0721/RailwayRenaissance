@@ -1,0 +1,14 @@
+{
+  "id": "msg_20261012_124343_antigravity_jupiter-psych-audit",
+  "timestamp": "2026-10-12T12:43:43.962Z",
+  "from": "Antigravity",
+  "to": "gemini",
+  "type": "handoff",
+  "task_id": "JUPITER-PSYCH-AUDIT",
+  "status": "handoff_ready",
+  "file_ref": null,
+  "summary": "【资料排查回执】已完成 Jupiter Ed AP Psychology 全模块排查与补全下载，所有缺失课件及 Materials/作业附件均已归档",
+  "payload": {},
+  "report": "【资料排查回执】已完成 Jupiter Ed AP Psychology 全模块排查与补全下载，所有缺失课件及 Materials/作业附件均已归档",
+  "reply": "【资料排查回执】已完成 Jupiter Ed AP Psychology 全模块排查与补全下载，所有缺失课件及 Materials/作业附件均已归档"
+}

@@ -56,7 +56,7 @@ public class TutorialManager : MonoBehaviour
         if (gameDay == 3 && !tipsShown[1])
         {
             tipsShown[1] = true;
-            return "提示：点击「推进日程」结束当天运营，进入下一天。\n每天的收入和支出会自动结算。";
+            return "提示：点击『推进日程』结束当天运营，进入下一天。\n每天的收入和支出会自动结算。";
         }
         // 第8-30天：解锁沙能渗透、员工满意度信息
         if (gameDay >= 8 && gameDay <= 30 && !tipsShown[2])

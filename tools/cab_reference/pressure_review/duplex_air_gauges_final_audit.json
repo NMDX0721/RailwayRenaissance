@@ -1,0 +1,22 @@
+{
+  "status": "final game-art design",
+  "historical_identity_verified": false,
+  "range_kPa": [
+    1600,
+    1000
+  ],
+  "minor_division_kPa": 20,
+  "major_division_kPa": 200,
+  "drive_and_metrology_certified": false,
+  "unity_imported": false,
+  "equalizing_reservoir_signal_implemented": false,
+  "needle_samples_per_channel": 361,
+  "minimum_radial_clearance_m": 0.0055000002384185745,
+  "black_sleeve_to_red_shaft_clearance_m": 0.0002,
+  "glass_to_cap_clearance_m": 0.0006,
+  "glass_to_inner_spindle_clearance_m": 0.0005000004774890834,
+  "meshes": 77,
+  "triangles": 52931,
+  "rear_socket_entrance_ray_checks": 4,
+  "mounting_screws_verified": 8
+}

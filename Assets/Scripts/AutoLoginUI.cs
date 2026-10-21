@@ -61,7 +61,7 @@ public class AutoLoginUI : MonoBehaviour
         if (File.Exists(authFilePath))
         {
             string json = File.ReadAllText(authFilePath);
-            var auth = JsonUtility.FromJson<LoginManager.AuthData>(json);
+            var auth = JsonUtility.FromJson<RailwayRenaissance.Core.Auth.AuthData>(json);
             if (auth != null && !string.IsNullOrEmpty(auth.username))
             {
                 SetState(AutoLoginState.AutoLogin);
@@ -112,7 +112,7 @@ public class AutoLoginUI : MonoBehaviour
         yield return StartCoroutine(LoadResource("校验凭证", 0f, 0.15f, 0.6f, () => {
             if (!File.Exists(authFilePath)) return false;
             string json = File.ReadAllText(authFilePath);
-            var auth = JsonUtility.FromJson<LoginManager.AuthData>(json);
+            var auth = JsonUtility.FromJson<RailwayRenaissance.Core.Auth.AuthData>(json);
             return auth != null && !string.IsNullOrEmpty(auth.username);
         }));
 
@@ -185,7 +185,7 @@ public class AutoLoginUI : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
         if (Camera.main != null) Camera.main.backgroundColor = Color.black;
-        SceneManager.LoadScene("TitleScreen");
+        SceneManager.LoadScene("VN_Test");
     }
 
     IEnumerator LoadResource(string name, float from, float to, float duration, System.Func<bool> loader)
@@ -222,7 +222,7 @@ public class AutoLoginUI : MonoBehaviour
 
     void OnReturnLogin()
     {
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadScene("VN_Test");
     }
 
     void OnResetAccount()
@@ -234,7 +234,7 @@ public class AutoLoginUI : MonoBehaviour
 
         LoginManager.showAutoLoginOnStart = false;
         LoginManager.showRegisterOnStart = true;
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadScene("VN_Test");
     }
 
     public void StartAfterRegister()

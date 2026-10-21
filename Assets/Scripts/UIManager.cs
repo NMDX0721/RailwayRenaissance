@@ -46,7 +46,29 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        GameData.ResetState();
+        if (PlayerPrefs.HasKey("VNExitData"))
+        {
+            string json = PlayerPrefs.GetString("VNExitData");
+            PlayerPrefs.DeleteKey("VNExitData");
+            PlayerPrefs.Save();
+            try
+            {
+                VNExitData exitData = JsonUtility.FromJson<VNExitData>(json);
+                GameData.ApplyVNExitData(exitData);
+                Debug.Log("[UIManager] 成功承接序章过渡数据 (VNExitData): 资金=" + GameData.Money + ", 信任=" + GameData.Trust + ", 车况=" + GameData.TrainCondition);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[UIManager] 解析 VNExitData 失败，回退默认初始状态: " + ex);
+                GameData.ResetState();
+            }
+        }
+        else
+        {
+            // 无前置过渡数据且未加载存档时才执行全新重置
+            GameData.ResetState();
+        }
+
         RefreshAll();
         HideAllPanels();
         SetDefaultDescription();

@@ -9,14 +9,22 @@ public static class OrderManager
     private static List<GameOrder> templatePool;
     private static HashSet<string> completedOrderIds = new HashSet<string>();
     private static bool initialized;
+    private static int pendingDailyIncome = 0;
+
+    public static int PendingDailyIncome => pendingDailyIncome;
 
     public static void Initialize()
     {
         if (initialized) return;
         activeOrders = new List<GameOrder>();
         completedCount = 0;
+        pendingDailyIncome = 0;
         LoadTemplates();
         initialized = true;
+        if (templatePool != null && templatePool.Count > 0)
+        {
+            GenerateDailyOrders();
+        }
     }
 
     private static void LoadTemplates()
@@ -164,8 +172,8 @@ public static class OrderManager
             return;
         }
 
-        // 结算奖励
-        GameData.AddMoney(order.reward);
+        // 结算奖励：信任立即增加，资金计入当日待结算订单收入（由 AdvanceDay 步骤 5.5 统筹入账）
+        pendingDailyIncome += order.reward;
         GameData.AddTrust(order.trustDelta);
 
         activeOrders.Remove(order);
@@ -173,6 +181,38 @@ public static class OrderManager
         completedCount++;
 
         Debug.Log("[OrderManager] Completed order: " + order.title + " (+" + order.reward + " money, +" + order.trustDelta + " trust)");
+    }
+
+    /// <summary>
+    /// 日订单结算（G1）：在 AdvanceDay 步骤 5.5（工资前）调用。
+    /// 推进订单倒计时、自动补充可用订单池，并返回当日待结算订单总收入，并入净收入。
+    /// </summary>
+    public static int DailySettle()
+    {
+        InitializeIfNeeded();
+
+        int income = pendingDailyIncome;
+        pendingDailyIncome = 0;
+
+        DailyTick();
+
+        if (activeOrders.Count < 3)
+        {
+            GenerateDailyOrders();
+        }
+
+        return income;
+    }
+
+    /// <summary>重置订单系统状态（新游戏或状态重置时调用）。</summary>
+    public static void ResetState()
+    {
+        activeOrders = new List<GameOrder>();
+        completedCount = 0;
+        pendingDailyIncome = 0;
+        completedOrderIds.Clear();
+        initialized = false;
+        Initialize();
     }
 
     public static List<GameOrder> GetActiveOrders()

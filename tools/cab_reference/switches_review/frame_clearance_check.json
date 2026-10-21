@@ -1,0 +1,9 @@
+{
+  "method": "evaluated key triangles vs padded convex frame solids",
+  "padding_m": 0.00015,
+  "pose_angles_deg": [
+    -22.0,
+    22.0
+  ],
+  "collisions": []
+}

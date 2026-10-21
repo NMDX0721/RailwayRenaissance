@@ -1,0 +1,69 @@
+# NF-5K 室内照明 — 2026-10-21
+
+## 独立回路与接口
+
+运行组件：`Assets/Scripts/Cab/CabInteriorLighting.cs`。现有18组灯具与真实Spot照明，灯面发光通过MaterialPropertyBlock同步，普通灯与备用回路独立于外部头灯。此前14组、单驾驶室顶灯的版本已被本轮替换。
+
+| 回路 | 灯具数 | 接口 |
+|---|---|---|
+| 司机室顶灯 | 2 | `SetCabCeiling(bool)`，审阅场景I键 |
+| 司机工作灯 | 1 | `SetTask(bool)`，窄光束指向台面 |
+| 副司机阅读灯 | 1 | `SetAssistantTask(bool)`，指向副司机座位阅读区，不增加第二驾驶台 |
+| 两侧门区低位灯 | 2 | `SetAccess(bool)`，普通供电回路，独立于应急灯 |
+| 仪表罩灯 | 2 | `SetInstrumentDimmer(float)`，0–1连续调光 |
+| 客舱前区 | 3 | `SetPassengerZone(0,bool)` |
+| 客舱后区 | 3 | `SetPassengerZone(1,bool)` |
+| 应急通道灯 | 4 | 主电源失效且备用电源可用时自动接通 |
+
+`SetSupply(normal, backup)`输入主照明/备用供电可用状态。主电源失效时普通灯全部熄灭；有备用电则只启用应急灯。两路均失效则全部熄灭。恢复主电源后，恢复此前选择的普通灯状态，应急灯退出。`AllOff()`关闭普通灯，不越过应急安全回路强制关闭备用灯。禁用整个组件时所有光源与发光都关闭。
+
+供电布尔量目前是后端输入接口，不是电池容量、电压或发电机仿真；备用电池续航、接触器故障、熔断器及整列供电尚未实现。电源不以发动机是否运转作硬绑定。
+
+`CabEngineState.InstrumentLightOn`兼容已有二值开关：关闭时调光至0，重新打开恢复此前非零亮度。普通灯选项、调光与上次亮度、供电状态均序列化。生成场景普通灯默认关闭，主/备用电源可用。
+
+审阅场景右侧中文控制面板提供分区开关、仪表滑块和供电测试，`reviewControls`可关闭；正式3D驾驶台灯光旋钮尚未接线。
+
+## 外观与光学边界
+
+`NF5KInteriorLightingSetup`增加司机室与客舱内顶板、客舱顶棚检修饰条、金属灯壳、压边和扩散罩，替换旧司机室顶灯占位件。工作灯有侧壁安装板及支臂；仪表罩灯根据现有表盘渲染包络放置，照亮现有实体仪表，不把整个面板变成自发光显示屏。
+
+客舱仍为座椅灰模，本轮不宣称完成客舱精装修。客舱地板分成4段以降低URP逐物体附加灯数量限制对长地板的影响；全局渲染质量设置未更改。
+
+司机室灯束避开前方上部风挡观察区；检查一个代表性观察点是否在顶灯/工作灯光锥内。此检查不等于全风挡眩光验算。当前玻璃主要使用环境反射，未建立真实室内反射/光线追踪或实测照度，不能据此声称夜间反射问题全部解决。正式动态场景仍需复核。
+
+光色、光强和射程为画面候选，未标定为lux，也不声称符合铁路照明标准。应急灯保持较低亮度，主要覆盖门区与通道。
+
+## 验证与交付
+
+`NF5KInteriorLightingReview`检查各回路计数、供电失效/恢复、调光上下限、外部灯光独立及代表性风挡观察点。暗场输出司机仪表低/高亮、工作灯、顶灯、客舱全开、应急与全断电对比；通过PNG像素比较验证实体面板与客舱被真实照亮。
+
+现有`NF5KLightingPlayReview`同时进入真实Play Mode，验证室内回路及应急转供、旧仪表开关恢复此前亮度，以及禁用组件清理。外部灯光、门扇扫掠和机械结构重载检查保留。
+
+日志：`tools/compile/cab_interior_lighting.log`。预览：`tools/cab_reference/interior_review/driver_*.png`、`passenger_*.png`。
+
+## 资料与设计推定
+
+- [Vossloh DE 18官方驾驶室介绍](https://www.vl-rs.com/en/customized-traction/areas-of-application)，页面“Very good interior lighting”：明确采用两盏常规顶灯，可调光仪表与阅读射灯，以及通道、台阶、入口区域地面照明。此为本轮增加双顶灯和门区灯的直接实车参考，不代表所有机车均有固定数量，也不是NF-5K原车电路证明。
+- [Helopal铁路室内灯具](https://www.helopal.de/en/products/interior-lights)：RL119为驾驶室/机房顶灯，采用粉末涂层钢壳与磨砂扩散罩；借鉴封闭式金属灯壳，不按其18W参数宣称本模型真实光度。
+
+- [Luminator铁路氛围照明设计](https://de.luminator.com/news/rail-mood-lighting-one-interior.-many-atmospheres)：借鉴客舱分区、阅读/休息状态与控制协调的思路，不直接复制现代车型外观。
+- [Schaltbau铁路空调与照明供电设备](https://schaltbau.com/en/solutions/rail/hvac-lighting/)：供电与开关回路可独立设计；本项目目前仅实现供电状态输入。
+
+本车灯具外形与回路是NF-5K项目设计，不是已考证的朝鲜原车电路。
+
+## 正常、夜间与检修展示（本轮修订）
+
+上一轮仅展示低亮度仪表/局部工作灯，不足以展示整室正常照明。现增加正常全室、夜间低亮度与检修状态的独立截图；相机与暗场环境相同时比较正常和夜间亮度，避免依靠抬高全局环境光伪装灯具效果。
+
+正常状态：双顶灯、仪表中亮度、门区灯；夜间状态：低亮度仪表与门区灯，顶灯可关闭；检修状态：双顶灯、两侧工作/阅读灯、仪表与门区灯。各开关仍可自由组合，未实现按速度自动禁用顶灯。顶灯提高实际光源强度并扩大覆盖，原低亮度夜间状态保留；光强仍为游戏候选，未做lux标定。
+
+图片包括`driver_cab_normal.png`、`driver_cab_service.png`、`cab_normal_overview.png`、`cab_night_overview.png`。日志：`tools/compile/cab_lighting_real_reference.log`。
+
+右侧审阅面板增加“正常／夜间／检修”按钮，对应`SetCabPreset(0/1/2)`；不改变客舱分区或供电输入。普通开关仍可覆盖这些组合。
+
+双顶灯采用较中性的暖白色，降低直射台面强度。为改善实时直接照明中“台面亮、顶棚黑”的现象，增加两只随顶灯同步的低强度局部Point补光作为反弹光近似（对象名`Cab_Local_Bounce_Approximation`）。后续客舱内装轮又增加六只随客舱分区同步的局部反弹近似：当前为18组实体灯具、26个Unity Light，辅助光源不算额外实体灯具。强度由`Fixture.bounceIntensity`分别设置。补光不投阴影、限定短距离与审阅车体图层，不是路径追踪GI；仍可能存在局部漏光，正式场景需再评估。关闭相应顶灯、断电与禁用组件时，补光也同步关闭。未抬高全局夜间环境光或曝光来制造正常照明变亮的效果。
+# 2026-10-21 render audit
+
+Follow-up: additional-light soft shadows are enabled in the shared URP asset (4096px atlas). Eight circuit-bound floor-reflection approximation lights lift seat bases and floors; total interior light components are now 34 for 18 physical fixtures. Passenger upper/lower bounce intensities 1.8/1.2; cab 1.1/0.8. Supply failure, ordinary-light off and component disable also extinguish the lower fill. See the lighting audit for global pipeline impact and performance limits.
+
+NF5K review camera now uses a dedicated Forward+ renderer to remove the four-additional-lights-per-object bottleneck. Passenger local bounce is 0.95 with 3.2m range; cab bounce is 0.65. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for evidence and remaining rendering limits. These values are renderer intensity settings, not lux.

@@ -65,7 +65,11 @@ public class TypewriterEffect : MonoBehaviour
         isTyping = true;
         dialogueText.text = "";
 
-        for (int i = 0; i < text.Length; i++)
+        // 时间步进而非逐字 WaitForSeconds：帧率会把短延迟抬到 1 帧下限，
+        // 导致 Shift 加速（0.005s/字）被削成与正常速度几乎无差；按帧累计后一帧可吐多字。
+        float acc = 0f;
+        int i = 0;
+        while (i < text.Length)
         {
             if (skipRequested)
             {
@@ -73,35 +77,51 @@ public class TypewriterEffect : MonoBehaviour
                 break;
             }
 
-            // 富文本标签整段吞入（如 <color=...> <i> </i>），避免逐字打出控制码
-            if (text[i] == '<')
+            bool fast = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift);
+            float interval = fast ? FastSpeed : NormalSpeed;
+            acc += Time.deltaTime;
+
+            while (i < text.Length)
             {
-                int closeTag = text.IndexOf('>', i);
-                if (closeTag != -1)
+                if (skipRequested) break;
+
+                // 富文本标签整段吞入（如 <color=...> <i> </i>），不计时
+                if (text[i] == '<')
                 {
-                    textBuilder.Append(text, i, closeTag - i + 1);
-                    dialogueText.text = textBuilder.ToString();
-                    i = closeTag;
-                    continue;
+                    int closeTag = text.IndexOf('>', i);
+                    if (closeTag != -1)
+                    {
+                        textBuilder.Append(text, i, closeTag - i + 1);
+                        dialogueText.text = textBuilder.ToString();
+                        i = closeTag + 1;
+                        continue;
+                    }
                 }
+
+                if (acc < interval) break;
+                acc -= interval;
+
+                if (useTypingSFX && text[i] != ' ' && text[i] != '\n' && GameData.TypewriterVolume > 0.01f)
+                {
+                    sfxTimer += interval;
+                    if (sfxTimer >= sfxInterval)
+                    {
+                        VNAudioManager.Instance?.PlayTypewriterSFX();
+                        sfxTimer = 0f;
+                    }
+                }
+
+                textBuilder.Append(text[i]);
+                dialogueText.text = textBuilder.ToString();
+                i++;
             }
 
-            textBuilder.Append(text[i]);
-            dialogueText.text = textBuilder.ToString();
-
-            float delay = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? FastSpeed : NormalSpeed;
-
-            if (useTypingSFX && text[i] != ' ' && GameData.TypewriterVolume > 0.01f)
+            if (skipRequested)
             {
-                sfxTimer += delay;
-                if (sfxTimer >= sfxInterval)
-                {
-                    VNAudioManager.Instance?.PlayTypewriterSFX();
-                    sfxTimer = 0f;
-                }
+                dialogueText.text = text;
+                break;
             }
-
-            yield return new WaitForSeconds(delay);
+            yield return null;
         }
 
         isTyping = false;

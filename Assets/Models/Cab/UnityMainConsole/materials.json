@@ -1,0 +1,847 @@
+{
+  "materials": [
+    {
+      "name": "Black_Painted_Steel",
+      "metallic": 0.0,
+      "smoothness": 0.7100000083446503,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.010999999940395355,
+        0.008999999612569809,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Black_Painted_Steel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Black_Painted_Steel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Black_Painted_Steel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Console_Amber_Lens",
+      "metallic": 0.0,
+      "smoothness": 0.6500000059604645,
+      "transmission": 0.0,
+      "color": [
+        0.2800000011920929,
+        0.11999999731779099,
+        0.012000000104308128,
+        1.0
+      ]
+    },
+    {
+      "name": "Console_Black_Panel",
+      "metallic": 0.05000000074505806,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.012000000104308128,
+        0.017000000923871994,
+        0.014999999664723873,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Black_Panel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Console_Brown_Phenolic",
+      "metallic": 0.0,
+      "smoothness": 0.5,
+      "transmission": 0.0,
+      "color": [
+        0.06499999761581421,
+        0.026000000536441803,
+        0.014000000432133675,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Brown_Phenolic_MetallicSmoothness.png"
+    },
+    {
+      "name": "Console_Dark_Gasket",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.007000000216066837,
+        0.008999999612569809,
+        0.00800000037997961,
+        1.0
+      ]
+    },
+    {
+      "name": "Console_Engraved_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.2200000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.6499999761581421,
+        0.6200000047683716,
+        0.47999998927116394,
+        1.0
+      ]
+    },
+    {
+      "name": "Console_Fastener",
+      "metallic": 0.8500000238418579,
+      "smoothness": 0.5399999916553497,
+      "transmission": 0.0,
+      "color": [
+        0.17000000178813934,
+        0.18000000715255737,
+        0.1599999964237213,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Fastener_MetallicSmoothness.png"
+    },
+    {
+      "name": "Console_Olive_Painted_Steel",
+      "metallic": 0.0,
+      "smoothness": 0.3799999952316284,
+      "transmission": 0.0,
+      "color": [
+        0.07500000298023224,
+        0.10499999672174454,
+        0.08500000089406967,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Console_Olive_Painted_Steel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Console_Red_Control",
+      "metallic": 0.0,
+      "smoothness": 0.44999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.25,
+        0.00800000037997961,
+        0.004999999888241291,
+        1.0
+      ]
+    },
+    {
+      "name": "Controller_Steel",
+      "metallic": 0.8500000238418579,
+      "smoothness": 0.6699999868869781,
+      "transmission": 0.0,
+      "color": [
+        0.3199999928474426,
+        0.33000001311302185,
+        0.3400000035762787,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Controller_Steel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Controller_Steel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Controller_Steel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Dial_Center",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.41999998688697815,
+        0.30000001192092896,
+        0.05999999865889549,
+        1.0
+      ]
+    },
+    {
+      "name": "Dial_Ink",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.012000000104308128,
+        0.014000000432133675,
+        0.012000000104308128,
+        1.0
+      ]
+    },
+    {
+      "name": "Dial_Ivory",
+      "metallic": 0.0,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.6899999976158142,
+        0.6600000262260437,
+        0.5099999904632568,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Dial_Ivory_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Dial_Ivory_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Dial_Ivory_MetallicSmoothness.png"
+    },
+    {
+      "name": "Final_Aged_Grip",
+      "metallic": 0.0,
+      "smoothness": 0.7650000005960464,
+      "transmission": 0.0,
+      "color": [
+        0.08500000089406967,
+        0.09000000357627869,
+        0.0949999988079071,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Grip_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Grip_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Grip_MetallicSmoothness.png"
+    },
+    {
+      "name": "Final_Aged_Housing",
+      "metallic": 0.0,
+      "smoothness": 0.6599999964237213,
+      "transmission": 0.0,
+      "color": [
+        0.1899999976158142,
+        0.20000000298023224,
+        0.20499999821186066,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Housing_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Housing_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Housing_MetallicSmoothness.png"
+    },
+    {
+      "name": "Final_Aged_Plate",
+      "metallic": 0.0,
+      "smoothness": 0.699999988079071,
+      "transmission": 0.0,
+      "color": [
+        0.11999999731779099,
+        0.12999999523162842,
+        0.13500000536441803,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Plate_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Plate_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Final_Aged_Plate_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_Aged_Retainer_Enamel",
+      "metallic": 0.0,
+      "smoothness": 0.5399999916553497,
+      "transmission": 0.0,
+      "color": [
+        0.017000000923871994,
+        0.019999999552965164,
+        0.017999999225139618,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Gauge_Aged_Retainer_Enamel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Gauge_Aged_Retainer_Enamel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Gauge_Aged_Retainer_Enamel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_BlackPaint",
+      "metallic": 0.0,
+      "smoothness": 0.4700000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.017000000923871994,
+        0.019999999552965164,
+        0.017999999225139618,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Gauge_BlackPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Gauge_BlackPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Gauge_BlackPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_Fastener",
+      "metallic": 0.8799999952316284,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.12999999523162842,
+        0.14499999582767487,
+        0.14000000059604645,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Ink",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Pointer",
+      "metallic": 0.0,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.2199999988079071,
+        0.032999999821186066,
+        0.014000000432133675,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Scale",
+      "metallic": 0.0,
+      "smoothness": 0.38999998569488525,
+      "transmission": 0.0,
+      "color": [
+        0.6499999761581421,
+        0.6200000047683716,
+        0.49000000953674316,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Gauge_Scale_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Gauge_Scale_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Gauge_Scale_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_BlackenedSteel",
+      "metallic": 0.6600000262260437,
+      "smoothness": 0.6500000059604645,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Instrument_BlackenedSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Instrument_BlackenedSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Instrument_BlackenedSteel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_OldPaint",
+      "metallic": 0.019999999552965164,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Instrument_OldPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Instrument_OldPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Instrument_OldPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_Protective_Glass",
+      "metallic": 0.0,
+      "smoothness": 0.8999999985098839,
+      "transmission": 1.0,
+      "color": [
+        0.9850000143051147,
+        0.9900000095367432,
+        0.9850000143051147,
+        1.0
+      ]
+    },
+    {
+      "name": "Instrument_SatinMetal",
+      "metallic": 0.8399999737739563,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Instrument_SatinMetal_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Instrument_SatinMetal_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Instrument_SatinMetal_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_ScrewSteel",
+      "metallic": 0.8999999761581421,
+      "smoothness": 0.6800000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Instrument_ScrewSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Instrument_ScrewSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Instrument_ScrewSteel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Joint_Clay",
+      "metallic": 0.0,
+      "smoothness": 0.5200000107288361,
+      "transmission": 0.0,
+      "color": [
+        0.06499999761581421,
+        0.07000000029802322,
+        0.06499999761581421,
+        1.0
+      ]
+    },
+    {
+      "name": "Linear_Protective_Glass",
+      "metallic": 0.0,
+      "smoothness": 0.9450000002980232,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "Linear_Protective_Glass.001",
+      "metallic": 0.0,
+      "smoothness": 0.9649999998509884,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "Linear_Protective_Glass.002",
+      "metallic": 0.0,
+      "smoothness": 0.9719999991357327,
+      "transmission": 1.0,
+      "color": [
+        0.9300000071525574,
+        0.9750000238418579,
+        0.9599999785423279,
+        1.0
+      ]
+    },
+    {
+      "name": "Linear_Protective_Glass.003",
+      "metallic": 0.0,
+      "smoothness": 0.9649999998509884,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_AgedSteel",
+      "metallic": 0.8799999952316284,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.1599999964237213,
+        0.18000000715255737,
+        0.17000000178813934,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_BlackInk",
+      "metallic": 0.0,
+      "smoothness": 0.3399999737739563,
+      "transmission": 0.0,
+      "color": [
+        0.004000000189989805,
+        0.004999999888241291,
+        0.004000000189989805,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_Blackened_Steel_Retainer",
+      "metallic": 0.7799999713897705,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Pressure_Blackened_Steel_Retainer_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Pressure_Blackened_Steel_Retainer_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Pressure_Blackened_Steel_Retainer_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_BrassSocket",
+      "metallic": 0.8199999928474426,
+      "smoothness": 0.49000000953674316,
+      "transmission": 0.0,
+      "color": [
+        0.27000001072883606,
+        0.1599999964237213,
+        0.054999999701976776,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_ClearGlass",
+      "metallic": 0.0,
+      "smoothness": 0.974999999627471,
+      "transmission": 1.0,
+      "color": [
+        0.9399999976158142,
+        0.9800000190734863,
+        0.9599999785423279,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_Gasket",
+      "metallic": 0.0,
+      "smoothness": 0.18000000715255737,
+      "transmission": 0.0,
+      "color": [
+        0.004000000189989805,
+        0.004999999888241291,
+        0.004000000189989805,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_IvoryDial",
+      "metallic": 0.0,
+      "smoothness": 0.36000001430511475,
+      "transmission": 0.0,
+      "color": [
+        0.6899999976158142,
+        0.6499999761581421,
+        0.5099999904632568,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Pressure_IvoryDial_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Pressure_IvoryDial_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Pressure_IvoryDial_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_OldBlackPaint",
+      "metallic": 0.0,
+      "smoothness": 0.4700000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.013000000268220901,
+        0.010999999940395355,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Pressure_OldBlackPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Pressure_OldBlackPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Pressure_OldBlackPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Pressure_Rear_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.3399999737739563,
+      "transmission": 0.0,
+      "color": [
+        0.5600000023841858,
+        0.550000011920929,
+        0.4399999976158142,
+        1.0
+      ]
+    },
+    {
+      "name": "Pressure_RedNeedle",
+      "metallic": 0.0,
+      "smoothness": 0.4399999976158142,
+      "transmission": 0.0,
+      "color": [
+        0.23000000417232513,
+        0.014000000432133675,
+        0.00800000037997961,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Black_Indicator",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Black_Indicator.001",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Black_Indicator.002",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.003000000026077032,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_BlackenedSteel_Retainer",
+      "metallic": 0.7200000286102295,
+      "smoothness": 0.5099999904632568,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer_MetallicSmoothness.png"
+    },
+    {
+      "name": "RPM_BlackenedSteel_Retainer.001",
+      "metallic": 0.7799999713897705,
+      "smoothness": 0.5099999904632568,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.001_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.001_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.001_MetallicSmoothness.png"
+    },
+    {
+      "name": "RPM_BlackenedSteel_Retainer.002",
+      "metallic": 0.7200000286102295,
+      "smoothness": 0.5099999904632568,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/RPM_BlackenedSteel_Retainer.002_MetallicSmoothness.png"
+    },
+    {
+      "name": "RPM_Case_Legend",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.550000011920929,
+        0.550000011920929,
+        0.44999998807907104,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Case_Legend.001",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.550000011920929,
+        0.550000011920929,
+        0.44999998807907104,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Case_Legend.002",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.550000011920929,
+        0.550000011920929,
+        0.44999998807907104,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Connector_Insulator",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Connector_Insulator.001",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "RPM_Connector_Insulator.002",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "Recess_Shadow",
+      "metallic": 0.0,
+      "smoothness": 0.1499999761581421,
+      "transmission": 0.0,
+      "color": [
+        0.003000000026077032,
+        0.003000000026077032,
+        0.0020000000949949026,
+        1.0
+      ]
+    },
+    {
+      "name": "Reference_CastSilver",
+      "metallic": 0.6800000071525574,
+      "smoothness": 0.5,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Reference_CastSilver_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Reference_CastSilver_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Reference_CastSilver_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_MachinedSilver",
+      "metallic": 0.8600000143051147,
+      "smoothness": 0.5,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Reference_MachinedSilver_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Reference_MachinedSilver_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Reference_MachinedSilver_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_OldSteel",
+      "metallic": 0.8600000143051147,
+      "smoothness": 0.5,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Reference_OldSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Reference_OldSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Reference_OldSteel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Reference_WornBlack",
+      "metallic": 0.0,
+      "smoothness": 0.5,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Reference_WornBlack_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Reference_WornBlack_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Reference_WornBlack_MetallicSmoothness.png"
+    },
+    {
+      "name": "Socket_Interior",
+      "metallic": 0.0,
+      "smoothness": 0.19999998807907104,
+      "transmission": 0.0,
+      "color": [
+        0.014999999664723873,
+        0.017000000923871994,
+        0.017999999225139618,
+        1.0
+      ]
+    },
+    {
+      "name": "Temperature_Alarm_OxideRed",
+      "metallic": 0.0,
+      "smoothness": 0.2799999713897705,
+      "transmission": 0.0,
+      "color": [
+        0.3799999952316284,
+        0.017999999225139618,
+        0.009999999776482582,
+        1.0
+      ]
+    },
+    {
+      "name": "Warm_Ivory_Phenolic",
+      "metallic": 0.0,
+      "smoothness": 0.7249999940395355,
+      "transmission": 0.0,
+      "color": [
+        0.6600000262260437,
+        0.5699999928474426,
+        0.30000001192092896,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Warm_Ivory_Phenolic_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Warm_Ivory_Phenolic_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Warm_Ivory_Phenolic_MetallicSmoothness.png"
+    },
+    {
+      "name": "Worn_Edge_Steel",
+      "metallic": 0.8500000238418579,
+      "smoothness": 0.5999999940395355,
+      "transmission": 0.0,
+      "color": [
+        0.20000000298023224,
+        0.2199999988079071,
+        0.20999999344348907,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityMainConsole/Worn_Edge_Steel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityMainConsole/Worn_Edge_Steel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityMainConsole/Worn_Edge_Steel_MetallicSmoothness.png"
+    }
+  ]
+}

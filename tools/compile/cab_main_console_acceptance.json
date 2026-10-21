@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "shared_engine_state": true,
+  "bounds_m": [
+    1.55,
+    1.3,
+    0.73
+  ],
+  "renderers": 461,
+  "csharp_errors": 0,
+  "clean_editor_shutdown": true,
+  "review_scene_reloaded": true,
+  "bound_signals": [
+    "traction current",
+    "diesel RPM",
+    "MR/BC/BP pressures",
+    "coolant temperature",
+    "engine oil pressure MPa"
+  ],
+  "missing_signals": [
+    "oil temperature",
+    "equalizing reservoir"
+  ],
+  "control_interaction_implemented": false,
+  "ergonomics_certified": false,
+  "revision": 4,
+  "lower_structure": "continuous folded shell with knee recess",
+  "log": "tools/compile/cab_main_console_revision4.log",
+  "new_controls_interactive": false,
+  "oil_pressure_samples": 301,
+  "oil_pressure_binding": true,
+  "oil_pressure_backend": "existing simplified OilPressureMpa",
+  "lubrication_protection_implemented": false
+}

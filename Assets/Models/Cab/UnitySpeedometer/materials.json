@@ -1,0 +1,115 @@
+{
+  "materials": [
+    {
+      "name": "Dial_Center",
+      "metallic": 0.0,
+      "smoothness": 0.3700000047683716,
+      "transmission": 0.0,
+      "color": [
+        0.41999998688697815,
+        0.30000001192092896,
+        0.05999999865889549,
+        1.0
+      ]
+    },
+    {
+      "name": "Dial_Ink",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.012000000104308128,
+        0.014000000432133675,
+        0.012000000104308128,
+        1.0
+      ]
+    },
+    {
+      "name": "Dial_Ivory",
+      "metallic": 0.0,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.6899999976158142,
+        0.6600000262260437,
+        0.5099999904632568,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnitySpeedometer/Dial_Ivory_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnitySpeedometer/Dial_Ivory_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnitySpeedometer/Dial_Ivory_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_BlackenedSteel",
+      "metallic": 0.6600000262260437,
+      "smoothness": 0.6500000059604645,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnitySpeedometer/Instrument_BlackenedSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnitySpeedometer/Instrument_BlackenedSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnitySpeedometer/Instrument_BlackenedSteel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_OldPaint",
+      "metallic": 0.019999999552965164,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnitySpeedometer/Instrument_OldPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnitySpeedometer/Instrument_OldPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnitySpeedometer/Instrument_OldPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_Protective_Glass",
+      "metallic": 0.0,
+      "smoothness": 0.8999999985098839,
+      "transmission": 1.0,
+      "color": [
+        0.9850000143051147,
+        0.9900000095367432,
+        0.9850000143051147,
+        1.0
+      ]
+    },
+    {
+      "name": "Instrument_SatinMetal",
+      "metallic": 0.8399999737739563,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnitySpeedometer/Instrument_SatinMetal_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnitySpeedometer/Instrument_SatinMetal_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnitySpeedometer/Instrument_SatinMetal_MetallicSmoothness.png"
+    },
+    {
+      "name": "Instrument_ScrewSteel",
+      "metallic": 0.8999999761581421,
+      "smoothness": 0.6800000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnitySpeedometer/Instrument_ScrewSteel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnitySpeedometer/Instrument_ScrewSteel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnitySpeedometer/Instrument_ScrewSteel_MetallicSmoothness.png"
+    }
+  ]
+}

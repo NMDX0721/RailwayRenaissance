@@ -1,0 +1,93 @@
+{
+  "model": "controller_handwheel_blockout",
+  "dimensions_estimated": true,
+  "spokes_provisional": true,
+  "parts": [
+    {
+      "name": "Fixed_Mounting_Plate",
+      "triangles": 1216,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Mount_Bolt_-0.139_-0.097",
+      "triangles": 188,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Mount_Bolt_-0.139_0.097",
+      "triangles": 188,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Mount_Bolt_0.139_-0.097",
+      "triangles": 188,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Mount_Bolt_0.139_0.097",
+      "triangles": 188,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Fixed_Socket_Ring",
+      "triangles": 640,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Socket_Dark_Floor",
+      "triangles": 252,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Fixed_Pedestal",
+      "triangles": 1280,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Fixed_Shaft",
+      "triangles": 1020,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Fixed_Shaft_Collar",
+      "triangles": 800,
+      "parent": "Controller_Handwheel_Study"
+    },
+    {
+      "name": "Moving_Handwheel_Rim",
+      "triangles": 2304,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Hub",
+      "triangles": 960,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Spoke_1",
+      "triangles": 284,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Spoke_2",
+      "triangles": 284,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Spoke_3",
+      "triangles": 284,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Center_Cap",
+      "triangles": 1020,
+      "parent": "Handwheel_Pivot"
+    },
+    {
+      "name": "Moving_Retainer",
+      "triangles": 316,
+      "parent": "Handwheel_Pivot"
+    }
+  ],
+  "triangles": 11412
+}

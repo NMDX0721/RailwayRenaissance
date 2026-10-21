@@ -1,0 +1,21 @@
+{
+  "status": "temperature pair first design",
+  "modules": 2,
+  "independent_indicators": 2,
+  "range_C": [
+    0,
+    150
+  ],
+  "minor_division_C": 5,
+  "major_division_C": 25,
+  "preview_C": [
+    82,
+    65
+  ],
+  "water_signal_available": true,
+  "oil_temperature_signal_available": false,
+  "historical_identity_verified": false,
+  "unity_bound": false,
+  "meshes": 58,
+  "triangles": 18377
+}

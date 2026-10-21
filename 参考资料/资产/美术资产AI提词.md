@@ -20,10 +20,15 @@
 - [1.5 王小弟（王晨阳）](#15-王小弟王晨阳) ❌ 待升级
 - [1.6 赵师傅（赵德山）](#16-赵师傅赵德山) ❌ 待升级
 - [1.7 小芳](#17-小芳) ❌ 待升级
+- [1.7.1 导师 daoshi](#171-导师daoshi--待绘制占位) ❌ 待生成
 - [1.8 岁月（AI助手）](#18-岁月ai-助手界面头像) ✅ 17张
 - [1.9 16表情差分图谱模板](#19-16表情差分图谱44网格铺满全画面)
 
 ### 二、场景背景
+
+> **归档原则（2026-10-01）**：标 ✅ / 📦 的场景提词**已出图，冻结归档**——世界观/设定变更一律不回改其提词正文（需变更时重绘另起新版本）；❌ 待生成 / ⚠️ 待重绘的场景才按 `参考资料/设定/` 文档更新后出图。
+- [2.0 前置 · NF-5 外构参考图](#20-前置--nf-5-外构参考图nf5_exterior_ref) ✅ 已收并定性（朝控局涂装）
+- [2.0.1 C-55000 敞车外构](#201-c-55000-敞车外构c55000_exterior_ref--前置) ✅ 已收锁定
 - [2.1 实验室](#21-实验室智能调度系统实验室) 📦 已归档
 - [2.2 导师办公室](#22-导师办公室) 📦 已归档
 - [2.3 驾驶舱·白天](#23-驾驶舱白天0721号前舱) 📦 已归档
@@ -31,23 +36,26 @@
 - [2.5 客舱·白天](#25-客舱白天新绘0721号后舱) 📦 已归档
 - [2.6 客舱·夜晚](#26-客舱夜晚新绘0721号后舱) 📦 已归档
 - [2.7 停机坪](#27-停机坪) 📦 已归档
-- [2.12 大同江茶馆](#212-大同江茶馆嘉颖徐会面室内) 📦 已归档
+- [2.12 大同江茶馆 / 嘉颖徐茶室兼办公室](#212-大同江茶馆--嘉颖徐茶室兼办公室tea_house-标杆定稿) ✅ 标杆定稿
 - [2.13 Wiki横幅](#213-wiki-横幅wiki-banner) 📦 已归档
-- [2.14 群山天空](#214-群山天空mountain_sky) ❌ 待生成
-- [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ❌ 待生成
-- [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ❌ 待生成
-- [2.17 车站夕阳](#217-车站夕阳station_sunset) ❌ 待生成
-- [2.18 傍晚站台](#218-傍晚站台platform_evening) ❌ 待生成
+- [2.14 群山天空](#214-群山天空mountain_sky) ✅ 已入库
+- [2.15 空中俯瞰·铁轨](#215-空中俯瞰铁轨aerial_view) ✅ 已入库
+- [2.16 雾峰村夕阳](#216-雾峰村夕阳village_sunset) ✅ 已生成
+- [2.16.1 雾峰站站牌样式](#2161-雾峰站站牌样式wufeng_signage_ref--前置) ✅ 已锁定（2026-10-01）
+- [2.17 车站夕阳](#217-车站夕阳station_sunset) ✅ 已入库（2026-10-01 重绘定稿）
+- [2.17.1 雾峰站正面全景（station）](#2171-雾峰站正面全景stationpng-废弃--待重绘) ❌ 废弃/待重绘
+- [2.17.2 田园铁路鸟瞰全景（railway_map_aerial）](#2172-田园铁路鸟瞰全景railway_map_aerialpng-待重绘) ❌ 待重绘
+- [2.18 傍晚站台](#218-傍晚站台platform_evening) ✅ 已入库（定稿版）
 - [2.19 边境小镇](#219-边境小镇border_town) ❌ 待生成
 - [2.20 补给站](#220-补给站supply_station) ❌ 待生成
 - [2.21 中国上空](#221-中国上空china_sky) ❌ 待生成
 - [2.22 河北小镇](#222-河北小镇hebei_town) ❌ 待生成
 - [2.23 河南小镇](#223-河南小镇henan_town) ❌ 待生成
-- [2.24 车辆段·晨](#224-车辆段晨depot_morning) ❌ 待生成
-- [2.25 线路巡视](#225-线路巡视railway_track) ❌ 待生成
-- [2.26 松桥站](#226-松桥站songqiao_station) ❌ 待生成
-- [2.27 车站·夜](#227-车站夜station_night) ❌ 待生成
-- [2.28 站长办公室](#228-站长办公室station_office) ❌ 待生成
+- [2.24 车辆段·晨](#224-车辆段晨depot_morning-待重绘) ❌ 待重绘
+- [2.25 线路巡视](#225-线路巡视railway_track) ✅ 已入库（定稿版）
+- [2.26 松桥站](#226-松桥站songqiao_station) ✅ 已入库（定稿版）
+- [2.27 车站·夜](#227-车站夜station_night) ✅ 已入库
+- [2.28 站长办公室](#228-站长办公室station_office-待重绘) ❌ 待重绘
 - [2.29 站台·晨](#229-站台晨platform_morning) ❌ 待生成
 - [2.30 车厢内部](#230-车厢内部train_inside) ❌ 待生成
 - [2.31 纯黑](#231-纯黑black) 📦 已归档
@@ -59,6 +67,8 @@
 - [2.37 序章开场·标题卡](#237-序章开场标题卡title_card) ❌ 待生成
 - [2.38 序章新闻·沙能诞生](#238-序章新闻沙能诞生news_2050) ❌ 待生成
 - [2.39 序章新闻·铁路衰落](#239-序章新闻铁路衰落news_2072) ❌ 待生成
+- [2.40 列车 Sprite（NF-5K/SY-22 侧视）](#240-列车-spritenf-5ksy-22-侧视--规划-a3) ❌ 待生成（额度重置后出图；NF-5K 参考已锁，SY-22 外构待锁，轨道代码画）
+- [2.41 夜路·道口（night_road）](#241-夜路道口night_road) ❌ 待生成
 
 ### 三、BGM配乐（Suno AI）
 - [3.1 melancholy](#31-melancholyy忧郁怀旧) — 废弃铁路/怀旧 3:30
@@ -87,6 +97,24 @@
 - [CG插画清单](#62-cg-插画9-张提词已写)
 - [已入库清单](#64-已入库背景图)
 
+**序章裸跑缺图队列（2026-10-01 audit 全 10 幕；提词均已写好，出图即消除黑屏兜底）——按幕推进优先级排序：**
+
+| 优先 | bg 名 | 引用幕（次数） | 提词节 |
+|------|-------|---------------|--------|
+| 1 | `platform_evening` | 04（2） | §2.18（✅已入库） |
+| 2 | `railway_track` | 05（3） | §2.25（✅已入库） |
+| 3 | `songqiao_station` | 05（2） | §2.26（✅已入库） |
+| 4 | `night_road` | 05（1） | §2.41 |
+| 5 | `depot_morning` | 07（5） | §2.24 |
+| 6 | `station_night` | 06（4） | §2.27（✅已入库） |
+| 7 | `platform_morning` | 08（2）+09（1） | §2.29 |
+| 8 | `train_inside` | 08（2） | §2.30 |
+| 9 | `station_office` | 09（3） | §2.28 |
+| 10 | `china_sky` | 03（6） | §2.21 |
+| 11 | `border_town` / `supply_station` / `hebei_town` / `henan_town` | 03 各1 | §2.19-2.23 |
+| 12 | `shop`（平壤后街） | 02（1） | §2.33 |
+| — | `black` / `news_2050` / `news_2072` | 01/10 | **非缺图**：设计即黑屏字卡，引擎 solid black 兜底为正解 |
+
 ### 七、已生成资产归档（见文件末尾）
 - [已归档背景图](#七已生成资产归档) 📦 §2.1-2.7, §2.12-2.13, §2.31
 
@@ -96,19 +124,32 @@
 
 ### 通用规范
 
-- **工作流**：第1步生成主图（半身到腿，详细全身）→ 第2步用主图生成表情差分（denoising 0.2-0.3，同服装/同姿势/同光照）
+- **工作流**：第1步生成主图（1024×1536，锁定面部/服装/光照）→ 第2步用主图作 image reference，只发一句增量表情提示，denoising 0.2-0.3（同服装/同姿势/同光照）
+- **设计文档引用原则**：设计文档不做去叙事化；本提词只给AI绘图用序号参考（§1.x / §2.x），不反向改写设定正文
+- **绘图前置（Prerequisite refs）**：跨场景复用的实体先锁一张参考图，再画依赖它的 bg/CG；生成时挂 image reference，提词只写构图/光影/氛围差异。已锁：**NF-5K 外构**（`ExternalAssets/nf5k_reference.png`，2026-09-28 定稿，朝鲜升级版）、**雾峰站站牌**（`ExternalAssets/wufeng_signage_ref.png`，2026-10-01 锁定 → §2.16.1）、**C-55000 敞车**（§2.0.1）。NF-5 外构：已收并定性（`ExternalAssets/nf5_exterior_ref.png`＝朝控局涂装，世界观 §十三；提词 §2.0）。待锁：0721 外构（已知缺口）、SY-22 灰雀、千里马品牌标、**架空车辆族谱其余车型外构（NF-7/金策型/乌金型/SY-30 雨燕/金达莱卧铺/黎明客车组/G-17 罐车，提词均待写 → 车辆设定 §四族谱）**。角色已有立绘的，CG 一律挂立绘不从零描述外貌
+- **站牌文字规范**：按 §2.16.1 锁定制式（主名雾峰/무봉/Wufeng＋邻站蓝带），禁止「終點站/始發/종착역」（对开往返车站不写死方向）；墙面禁止巨型手写站名，用门上小搪瓷站牌+宣传栏+玻璃橱窗时刻表
+- **调色板与技术规格（AP调研同步 2026-10-03）**：主色 深棕 #3a2010 / 暖棕 #6b4423 / 琥珀 #b8843a；辅色 米白 #e8d8c0 / 灰棕 #7a6b5a / 暗红 #8b3a2a；点缀 金 #d4a843 / 深蓝 #1a2a3a（沙能冷色对位铁路暖棕）。风格定位 Narrative Pixel Art with Warm Cinematic Lighting；规格：角色 64×96 / 场景 320×180 / 整数缩放 Nearest Neighbor / 单图 8–16 色限定调色板。现实参考图（挂图用，位于 `E:\NMDX\NMDX-User Workspace\AP调研\02_视觉调研\`）：雾峰站台第一参考＝建水米轨小火车 `cn_07_jianshui_train.jpg`；NF-5 外观对照 DF4 `real_01_DF4_0127.jpg`；废弃站台 `real_04~06`；平壤地铁开场 `dprk_01/08`
+- **出图迭代工作流（2026-10-01 学自用户实操流程，ChatGPT 出图通用）**：
+  1. **首版四段式**：参考图分工（图一/二/三限定要素形制、图四只借布局氛围）＋ 3-4 句硬约束（朝向/件数/无人）＋ 素材库（明示"自行取舍添加"）＋ 收尾约束；**不要**五段长束缚提词（实测出图更差）
+  2. **修正轮只发增量短句**：针对成图具体问题一两句（"光线不要太暗""机车太窄了，应该宽一点""站牌自然点"），不重发全提词——会话有上下文
+  3. **中途插新参考图要加锁定声明**："站台布局进一步参考这张图（机车、敞车、站牌的要素不变）"——防改 A 坏 B
+  4. **参考图分域授权**："站牌左上角的图标不要按我的参考图，保留你现在的"——一张图只借指定部分
+  5. **文字/一致性要求挂限定行**："确保文字清晰""两个敞车涂装一模一样""铭牌与图二完全一致"——写进素材库会被忽略
+  6. **正向表述优先**（"站牌自然点"＞"不要僵硬"）；物理细节点名到部位（"车顶喇叭在偏左侧""站牌靠近建筑、不在站台中间"）
 - **尺寸**：1024×1536，PNG透明底，半身至膝（与suiyue一致）
 - **风格**：二次元高清动漫风格，暖色调，与suiyue保持统一画风
-- **表情集**：全部角色统一 16 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink`（以主角已完成16表情为基准，以下各节同）
+- **表情集**：全部角色统一 19 种表情：`normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink` + 扩展 `cry, calm, shy`（以主角已完成16表情为基准，扩展3种见下；以下各节同）
+- **扩展表情（2026-09-25 注册）**：`cry`（落泪/含泪——现有剧情已合理调用：prologue_06「爷爷...您看到了吗？」、prologue_04「陈爷爷，我回来了。我答应过您的。」）· `calm`（平静抿嘴——日常平静台词可用，现有剧情暂未指派）· `shy`（托腮脸红——害羞/难为情台词可用，现有剧情暂未指派）。**未来剧情占位**：哭戏/含泪句用 `e:"cry"`，平静日常句用 `e:"calm"`，脸红害羞句用 `e:"shy"`
 - **人数约束（强制）**：主图必须是**单个人物**立绘——每条主图提示词首行已含 `SINGLE CHARACTER, ONE PERSON ONLY, no other people, no duplicates, no character sheet`。若生成工具仍输出参考图集/多人场景，在负面提示词外加 `multiple people, character sheet, reference sheet, turnarounds, duplicated character, multi-figure`。
 - **差分工作流**：主图验收通过后，用"16表情差分图谱"提示词（见 1.9）一次产出 4×4 网格，再按需裁剪；勿逐表情单张生成。
+- **表情入库进度（2026-09-25）**：林彪悍 16/16（像素仅剩 happy/wink 待补；angry/excited/shocked 已于 09-25 换新）+ 扩展 cry/calm/shy 已注册 · 老陈 16/16 · 嘉颖徐 **13/16**（缺 worried/shocked/shout/wink，剧本已引用的 smug/excited 已齐）· 岁月 16/16（`characters/suiyue/` 子目录 19 文件含 v2/no_pad 变体）
 
 ---
 
 ### 1.1 林彪悍（主角）
 
 **文件**：`Resources/characters/lin_biaohan_*.png`（flat格式，CharacterSpriteManager兼容flat+子目录）  
-**状态**：✅ 部分完成（11/16表情已升级为1024×1536高清二次元，5张仍为旧像素画待补：angry/excited/happy/wink/shocked）
+**状态**：✅ 基本完成（14/16 高清 1024×1536，仅 happy/wink 仍为旧像素画待补；angry/excited/shocked 已换新 2026-09-25；另注册扩展 cry/calm/shy 三张）
 
 **主图提示词（高清二次元版）**：
 ```
@@ -502,6 +543,44 @@ AVOID:
 
 ---
 
+### 1.7.1 导师（daoshi）— 待绘制占位
+
+**文件**：`Resources/characters/daoshi_{表情}.png`（flat，与林彪悍同格式）  
+**状态**：❌ 待生成（游戏内现为占位色块「立绘待绘制」）  
+**角色定位**：金日成综合大学智能调度方向教授，林彪悍学业导师。中年学者，温和但有分寸；知晓老陈与雾峰村线，批准休学并安排0721交接。停机坪背景里的中年男人是**车队管理员**（非导师），剧情旁白已区分。
+
+**主图提示词（高清二次元版）**：
+```
+1024x1536, high resolution anime style, SINGLE CHARACTER, ONE PERSON ONLY,
+upper body to knees portrait, isolated on transparent background,
+no other people, no duplicates, no character sheet,
+warm color palette, detailed shading, soft lighting,
+
+CHARACTER: University professor / mentor of Lin Biaohan, mid-40s male academic.
+
+FACE:
+- Rectangular glasses, thoughtful eyes behind slightly reflective lenses
+- Neat side-parted dark hair with early greying at temples
+- Calm, measured expression — the face of someone who grades papers at midnight
+- Light stubble shadow optional, clean-shaven preferred
+
+CLOTHING:
+- Charcoal grey suit jacket over soft blue dress shirt, no tie (academic casual)
+- University faculty pin on lapel
+- Leather-strap watch, reading glasses in breast pocket
+- Dark trousers, polished but worn shoes
+
+POSE: standing, one hand in pocket, other holding a thin folder or tablet — mid-conversation posture
+
+MOOD: Warm but professional. He believes in the student's talent and is about to let him walk away from it.
+
+NEGATIVE: no military uniform, no North Korean party pin on suit (civilian academic), no other people
+```
+
+**16表情**：normal, smile, sad, surprise, serious, curious, excited, worried, angry, bored, gentle, happy, shocked, shout, smug, wink（先出 normal 再差分）
+
+---
+
 ### 1.8 岁月（AI 助手界面头像）
 
 **文件**：`Resources/characters/suiyue/interface.png`  
@@ -541,7 +620,7 @@ AVOID:
 | sad 悲伤 | 提到 23 年孤独 | "……二十三年了。终于有人和我说话了。" |
 | angry 生气 | 被说是普通 AI 时 | "我才不是普通导航！" |
 | bored 无聊 | 等主角磨蹭时 | "还没好吗——" |
-| surprised/shocked 惊讶 | 发现秘密数据 | "咦？！" |
+| surprise 惊讶 | 发现秘密数据 | "咦？！" |
 
 **经典口癖**（写入剧情与 TTS）：
 - 「我可是高性能 AI！」——自夸口头禅，频繁重复，语气自豪骄傲
@@ -630,7 +709,104 @@ AVOID:
 - **尺寸**：1920×1080，JPG/PNG
 - **风格**：STARDEW VALLEY STYLE pixel art，16-bit retro
 - **格式**：多层分类清单 + 色彩方案 + 氛围 + 排除项
+- **颗粒度（2026-09-28，复古低颗粒方案）**：源图统一按**高颗粒**生成（不变，不重 roll）；低颗粒复古感 = **后处理** `python tools/pixelate_bg.py --factor 3`（最近邻÷3再放大，像素块×3，输出 `Resources/bg_low/`；--factor 2 为轻微档）。游戏内切换：设置 → 显示 → **「复古像素（低颗粒）」开关**，打开时 BackgroundManager 改加载 `bg_low/` 同名图（C# 侧待实现：注意 `BackgroundManager.cs` 存在未提交改动，动手前先确认）。仅处理像素风 bg/CG，高清立绘不参与。
 - **⚠️ 人物排除（强制）**：场景背景图**严禁出现任何人物或载具**。即使SCENE描述中提到"乘客""老人""摊贩""飞行器"等，也仅作为环境氛围的文字说明，实际生成时**绝对不画人、不画车**。每个背景prompt末尾必须包含：`NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environment/scene background, empty of all human presence and man-made vehicles. The only man-made elements are the railway line, buildings, and infrastructure.`
+
+---
+
+### 2.0 前置 · NF-5 外构参考图（nf5_exterior_ref）
+
+**文件**：`ExternalAssets/nf5_exterior_ref.png`（参考用图，不进 Resources，游戏不加载）
+**用途**：全部含 NF-5 场景/CG 的**外构锁定源**——先生成本图，后续 `station_sunset`、`depot_morning`、`platform_morning` 等一律挂它作 image reference，提词只写构图/光影/氛围。
+**状态**：✅ 已收并定性（2026-09-28）→ `ExternalAssets/nf5_exterior_ref.png`（绿色版，1536×1024）——挂旗+标语**非画错**，＝「被朝鲜实控的中国铁路局」涂装（世界观 §十三）。**用法**：本图锁 **NF-5 原版外构**（耕牛/支线遗存/朝控存量挂旗车）；**NF-5K（上代主力）场景用 `ExternalAssets/nf5k_reference.png`（已锁）**；**新一代柴油机车组场景另需前置（提词待写 → 待锁清单）**。涂装按场景走——朝控场景直用，原局场景挂图时附加 `ignore the flag and propaganda, plain Chinese green livery` 指令，或按需另出纯净版；过渡期亦可用 `station_sunset` 旧图裁切。
+**前置**：现实**东风4型（DF4）货运内燃机车**照片 1–2 张（正前 3/4 角 + 侧视各一张），生成时作为附图挂入。
+
+**尺寸**：1536×1024（3:2，容纳 3/4 视角全车）
+
+**附图（现实参考图）用法**：
+1. 挂 1–2 张 DF4 照片作为 image reference / 参考图（Midjourney `--cref`/`--sref`、即梦/豆包参考图、Gemini 附图均可）
+2. 必须附加指令（防止抄现实涂装）：
+   `Use the photo ONLY as structural proportion reference (short hood, cab position, bogie spacing, headlight layout). Do NOT copy its livery, colors, or markings — livery is deep forest green as specified.`
+3. **只在本前置阶段挂现实照片**；下游场景一律改挂本参考图，不再挂照片（避免写实摄影风格串入像素画风）。
+
+**提示词（v1 · 中文版）**：
+```
+像素风，载具参考图，星露谷风格像素画，清晰像素，16-bit复古，
+
+NF-5「耕牛」内燃机车 —— 外构设计参考：
+
+场景：单台内燃机车的干净外构参考图。观众左前 3/4 前斜视角，展示鼻端、一侧完整车身、车顶与车底走行部。孤立于纯深灰中性背景，仅底部一层柔和地面投影。无环境、无铁路风景、无天空、无车站、无前景道具。
+
+机车（锁定设计 —— 所有后续场景必须与此一致）：
+- 短罩走廊式内燃机车（road-switcher），1965 年代中国设计、东风4型比例 —— 不是现代高铁，不是蒸汽机车
+- 深森林绿车体，风化锈橙色补丁与污渍流挂
+- 鼻端纯绿：无人字纹、无 V 形条纹、无任何白色斜纹
+- 鼻端：绿底白字「NF-5」小牌，其下方黄铜铭牌「耕牛 / 경우」（中文在上、韩文在下，样式同站牌雾峰/무봉 的双语规则）
+- 一盏居中大圆灯 + 两盏小标志灯
+- 红色缓冲梁，下方板条式排障器（牛栏）；微微上翘的牛角形车钩
+- 驾驶室位于短罩之后；两侧走台板与扶手；车顶可见排气筒与散热风扇
+- 两台三轴转向架（Co-Co 轴式），风化钢轮
+
+车体文字（仅此两处，不得出现其他字形）：
+- 鼻端牌：NF-5（绿底白字）
+- 黄铜铭牌：耕牛 / 경우（中文+韩文双语）
+
+无人物、无人影、无角色、无车站、无风景背景 —— 仅机车，孤立参考视角。
+```
+
+**生成后锁定动作**：
+1. 选型（比例正确、涂装贴 LOCKED DESIGN、文字可读）→ 存 `ExternalAssets/nf5_exterior_ref.png`
+2. 更新本节状态为 ✅ 已锁定，并把「一、通用规范 · 绘图前置」的 NF-5 锁定源从"旧图裁切"改为本图
+3. 下游提词（2.17 / 2.24 / 2.29）的挂图路径统一改为本图
+4. 若 `NF-5`/`耕牛` 文字渲染不准：优先保证比例与涂装，字体问题后期修图或重 roll，不因文字放弃比例正确的候选
+
+---
+
+### 2.0.1 C-55000 敞车外构（c55000_exterior_ref · 前置）
+
+**文件**：`ExternalAssets/c55000_exterior_ref.png`（参考用图，不进 Resources）
+**用途**：所有货运场景的**敞车锁定源**——`station_sunset` 车后两节煤车、矿区线编组等；生成后挂 image reference。
+**状态**：✅ 已收并锁定（2026-09-30，提词 v2 实测"效果很好"）→ `ExternalAssets/c55000_exterior_ref.png`（透明底，日式铁路涂装 + 朝鲜国旗 + 两端挡板）
+**现实原型**：中国铁路 **C70 型通用敞车**（载重 70 吨，全钢敞车；重载系列 C70E，前代 C64）——结构参考亦借用日本国铁 DD51 实车照（见 v2 附图）。
+**游戏内名称**：**「C-55000 型运煤敞车」**（型号即名——货车不走机车的"牛"线、客车的鸟线绰号；2026-09-28 由 C-70 改号）。
+
+**提示词（v2 · 用户实测版，2026-09-30 "效果很好"）**：
+```
+参考图一，透明背景，像素风，日本风格铁路涂装，星露谷风格像素画，C-55000 型运煤敞车。
+无环境、无铁路风景、无天空、无站场、无相邻车辆，无中国铁道标识。
+车辆：C-55000 型通用敞车形制，仅单节敞车，孤立参考视角。
+加上朝鲜国旗和朝鲜元素（一个朝鲜国旗）。
+像素画，透明背景，涂装是日本铁路风格；注意两边都有挡板，严格参考原图。
+```
+> **附图（v2 实测用）**：`中转站/Japanese-national-railways-DD51-842-20140518.jpg`（日本国铁 DD51 实车照——"严格参考原图"即指它）；成图＝透明背景 + 日式铁路涂装 + 朝鲜国旗 + 两端挡板。
+
+**附图（现实参考图 · v1 初版方案）用法**：挂 1–2 张 C70 真车照片（3/4 前侧 + 侧视），附加：
+`Use the photo ONLY as structural proportion reference (side ribs, bogie spacing, brake wheel). Do NOT copy its livery — livery is weathered brown-red as specified.`
+
+**尺寸**：1536×1024（3:2）
+
+**提示词（v1 · 中文版）**：
+```
+像素风，载具参考图，星露谷风格像素画，清晰像素，16-bit复古，
+
+C-55000 型运煤敞车 —— 外构设计参考：
+
+场景：单节敞口运煤货车的干净外构参考图。观众左前 3/4 前侧视角，展示端墙、一侧完整侧墙、敞口内部底板与走行部。孤立于纯深灰中性背景，仅底部一层柔和地面投影。无环境、无铁路风景、无天空、无站场、无相邻车辆。
+
+车辆（锁定设计——所有货运场景必须与此一致）：
+- C-55000 型通用敞车形制（同 C70 级）：全钢敞车，直立侧墙带竖向压筋与上沿横带，敞口无车顶
+- 车内为空敞底板（可少量残留煤渣），可见端墙内侧与手闸立轮
+- 两台两轴转向架，钢轮，侧架与弹簧可见；车端有车钩与缓冲装置
+- 涂装：风化棕红色防锈漆，锈痕、磕碰掉漆、煤尘熏黑（车体下部更重）
+- 一端端墙上装手闸轮；侧墙下缘有卸货底开门缝线
+
+车辆文字（仅此一处，不得有其他字形）：
+- 侧墙中部钢印车号：C55000 加一串数字（白色或浅黄，做旧）
+
+无人物、无人、无角色、无环境背景、无棚车、无罐车 —— 仅单节敞车，孤立参考视角。
+```
+
+**生成后锁定动作**：状态改 ✅ → 更新待锁清单 → `station_sunset` 等货运场景挂 `ExternalAssets/c55000_exterior_ref.png`。
 
 ---
 
@@ -638,6 +814,7 @@ AVOID:
 
 **文件**：`Resources/bg/mountain_sky.png`
 **用途**：序章 Day 4 下午——0721飞越边境后，进入中国境内群山之上。林彪悍第一次从高空俯瞰"小时候听爷爷讲的那片山"。
+**状态**：✅ 已入库（2026-09-22 验收）——隧道「临江工무단」、层叠山脊、废弃站房均达标；源图已归档 `中转站/归档/`
 
 **提示词**：
 ```
@@ -681,6 +858,7 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES, NO AIRCRAFT — this is a pure environmen
 
 **文件**：`Resources/bg/aerial_view.png`
 **用途**：序章 Day 4——空中俯瞰雾峰村铁路线全貌。
+**状态**：✅ 已入库（2026-09-22 验收）——石拱桥/谷口村落炊烟/沿线小站/梯田均达标；轨道走向与提词镜像，剧情可用；源图已归档 `中转站/归档/`
 
 **提示词**：
 ```
@@ -750,21 +928,27 @@ NO CHARACTERS, NO PEOPLE, NO VEHICLES — pure aerial landscape background.
 
 **文件**：`Resources/bg/village_sunset.png`
 **用途**：序章 Day 4 抵达前——雾峰村全景，林彪悍的"老家"。村口的老槐树、土墙、炊烟，2076 年仍保持着铁路时代前的样子。
+**状态**：✅ 已生成入库（2026-09-28 收图，1672×941）——门楼匾额繁体「霧峰村」**符合世界观**（正字运动·繁体复兴，见 `设定/世界观扩展设定.md` §十一），验收通过；尺寸略低于 1920×1080 规格（暂用，重绘时补足）
+**文字规范（与站牌规范同源）**：村口标识只写村名「雾峰村 / 霧峰村」（**老村题字多为繁体**，依世界观 §十一 今文/古文并存规则），**禁止巨型墙面大字**；可有小水泥门牌/褪色春联，规模贴合自然村落
 
-**提示词**：
+**提示词（v2）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 雾峰村夕阳 / 무봉촌 석양, mountain village panorama at sunset, golden hour warmth:
 
-SCENE: 山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（기와 기와，东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树（수양버들/槐树），树冠覆盖了小半个晒场，树下有一条褪色的红砖凳。村庄入口处一块斑驳的水泥牌坊，上书「雾峰村 무봉촌」，旁边贴着褪色的春联残片。土墙围成的院落里晾晒着衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条锈蚀的铁路线在山谷中隐约可见。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
+SCENE: 山谷中的小村庄被夕阳染成金橙色——15-20栋房屋错落分布在谷底，灰色瓦片屋顶（东北传统瓦顶）在夕阳下泛着温暖的光泽。村口一棵巨大的老槐树，树冠覆盖了小半个晒场，树下有一条褪色的红砖凳。村庄入口处一块斑驳的小型水泥门柱/矮牌坊，仅嵌一块普通村名牌，上书「霧峰村」三个字（**繁体，古文派匾额制式**；正常门牌尺寸，非巨型标语墙；可有更小的무봉下方或旁侧无字），旁边贴着褪色的春联残片——NO giant painted wall characters, NO oversized slogans. 土墙围成的院落里晾晒着衣物；炊烟从至少五个烟囱同时升起，淡蓝灰色的烟丝在夕阳中被染成粉橙色——都是同一个方向，都是同一个晚饭时间。远处山坡上是梯田茶园，茶树丛呈深绿色的弧形条带层层叠叠。更远处，一条锈蚀的铁路线在山谷中隐约可见。夕阳从画面左侧斜射，把整个村庄笼罩在暖金色光线中，建筑物的阴影向右侧拉长。
 
 LAYOUT:
 - 中景：村庄横跨画面（15-20栋房屋聚集），老槐树在画面左前方（树冠占画面左侧1/4高度）
-- 村口牌坊「雾峰村 무봉촌」位于中景偏左，旁边有褪色春联
+- 村口：小型水泥门柱+普通尺寸村名牌「霧峰村」（繁体，中景偏左，非巨型字），旁有褪色春联
 - 远景山坡：梯田茶园（深绿弧形条带层叠上升）
 - 最远背景：山谷中的铁路线（锈棕色细线）和一个微型站房（灰瓦顶）
 - 天空：夕阳从左侧斜射，橙粉色云彩（橙粉色 → 深橙色），远处山脊剪影
+
+TEXT ON SIGNS (exact only):
+- Village entrance nameplate: 霧峰村 (traditional script — 古文派匾额; modest size, normal village sign)
+- FORBIDDEN: giant hand-painted wall characters, oversized slogans, station-style 終點站 text
 
 COLORS:
 - 屋顶：暖灰，瓦片纹理在夕阳下偏金棕
@@ -774,91 +958,224 @@ COLORS:
 - 炊烟：淡蓝灰，被夕阳染成粉橙
 - 夕阳天空：橙 → 深蓝影
 - 铁路线：锈棕（锈棕色），在远处山谷中几乎看不清
-- 牌坊：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
+- 门柱/名牌：水泥灰（水泥灰），红字褪色(柔红色 → 褪色红)
 - 春联残片：红纸褪色，金字模糊
 
 MOOD: Mountain village at golden hour. Warm orange-pink sunset light, smoke rising from chimneys, quiet atmosphere. The railway line barely visible in the far valley, rust-brown contrasting with the village's warm gold.
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
+NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES, NO VEHICLES, NO AIRCRAFT — pure environment/scene background.
 ```
+
+---
+
+### 2.16.1 雾峰站站牌样式（wufeng_signage_ref · 前置）
+
+**文件**：`ExternalAssets/wufeng_signage_ref.png`（参考用图，不进 Resources）
+**用途**：所有含雾峰站标识系统的场景锁定源——`station_sunset`、`platform_morning`、`platform_evening` 等；生成后挂 image reference，保证跨场景站牌制式一致。
+**状态**：✅ 已生成并锁定（2026-10-01；v1 六件套陈列作废 → v2 双柱中国式作废 → v3 定形制 → v4 母图到位（`ExternalAssets/signage_gomen_source.png`）→ v5 线位关系定稿（两线交汇站）→ **v6 实操出图锁定**（用户精简提词；成图＝`ExternalAssets/wufeng_signage_ref.png`，透明底 1536×1024，含母图式两侧立柱已接受保留））
+**规范依据**：§2.17 站名/文字规范（2026-09-22）+ 世界观 §十一 今文/古文并存——**站牌属官方标识一律简体**，中韩双语；禁終點站/始發/巨型墙字。左上角徽＝**岚川铁路局局徽**（定义见 `世界观扩展设定.md` §十三）。其余标识件（搪瓷门牌/时刻表/宣传栏/候车室/停車）由 station_sunset 主提词文本直接描述，不另出参考图。
+
+**尺寸**：1536×1024（透明底，横牌居中，四周留边）
+**挂图**：复现/改版时附母图 `ExternalAssets/signage_gomen_source.png`（JR 后免站实拍）作 image reference，只取形制，站名/文字全部替换为本提词内容。**下游站景（station_sunset 等）一律改挂成图 `ExternalAssets/wufeng_signage_ref.png` 锁制式。**
+
+**提示词（v6 · 实操定稿＝用户精简版 ＋ 局徽定义，2026-10-01 出图）**：
+```
+参考图一，透明背景，单个物件，像素风，星露谷风格像素画，清晰像素，16-bit复古，
+雾峰站 站名牌 —— 参照所附日本 JR 站名牌（駅名標）实拍母图的形制，改造为中韩双语：
+
+① 左上角：岚川铁路局局徽——受朝鲜文化影响的翼星纹样（蓝色双翼+红星+轨道意象的抽象徽记，不写文字）
+② 右上角：两枚白底圆形线路徽上下排列（样式同母图右上角）——
+   上枚：紫红色圆环，圆内上行「雾」下行「1」，黑色字
+   下枚：青绿色圆环，圆内上行「青」下行「1」，黑色字
+③ 牌面上部居中：主站名「雾峰」（黑色粗体圆润黑体，占牌面最大面积）
+④ 其下居中第二行：「무봉」（谚文，黑色，中号粗体）
+⑤ 其下居中第三行：罗马字「Wufeng」（黑色，小号）
+⑥ 中部蓝色横带（亮青蓝色，同母图）贯通牌面左右，带内文字全部白色：
+   左端：白底圆徽（青绿色圆环，「青」上「2」下）+ 右侧站名「分水岭」（白色大字）其下「Fenshuiling」（白色小字）
+   右端：对称布局，站名「茶山」（白色大字）其下「Chashan」（白色小字）+ 白底圆徽（紫红色圆环，「雾」上「2」下）
+⑦ 底部窄白条居中：小号黑色括注「（雾峰村）」
+
+透明背景。文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾 / 青 / 1 / 2 /（雾峰村）；
+禁止：終點站、始發、종착역、ごめん、後免、JR、高知県、松桥、Songqiao、矿、其他任何字形。
+1536×1024，物件居中，四周留边，横牌完整入画。
+（实操结果：成图含母图同款两侧深色立柱，已接受为制式一部分）
+```
+
+**线路与站番号（2026-09-30 定稿，照母图站番号递增规则）**：雾峰村站为**两线交汇站**，两线均以本站为 0km 起点（母图本站 D40／左 D39／右 D41 的递增逻辑同款）：
+- **雾峰村线**（＝雾峰村-乌金岭线，23km，sign 徽字「雾」）：雾1 雾峰村 → 雾2 茶山 → 雾3 松桥 → 雾4 矿区
+- **青溪线**（＝雾峰村-青溪镇线，45km，sign 徽字「青」）：青1 雾峰村 → **青2 分水岭（外侧首站，约10km）** → … → 青溪镇
+
+故站牌：右上双徽＝本站两线番号 **雾1／青1**；蓝带两头＝两线各自下一站 **青2 分水岭（左）／雾2 茶山（右）**，圆环颜色跟所属线（青绿＝青线、紫红＝雾线）。关联权威：车辆设定 §五、区域解锁 §1.1。若线位再调，三处同步改。
+
+**锁定记录（2026-10-01）**：成图验收通过（透明底四角 alpha=0 无烧底 ✓、1536×1024 ✓、白名单文字全对 ✓、禁词零出现 ✓）→ 入库 `ExternalAssets/wufeng_signage_ref.png` → 待锁清单、§2.17 已同步指向本图。后续站景（station_sunset / platform_morning / platform_evening）生成时挂本图锁站牌制式。
 
 ---
 
 ### 2.17 车站夕阳（station_sunset）
 
 **文件**：`Resources/bg/station_sunset.png`
-**用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5。
+**用途**：序章 Day 4/10 — 雾峰站全景，夕阳下的车站、站牌、月台、停着的 NF-5K。
+**状态**：✅ 已重绘入库（2026-10-01）——成图《雾峰车站：樱花夕照下的列车.png》→ `Assets/Resources/bg/station_sunset.png`（补上 prologue_04/10 所引用的缺失文件；旧 `bg/station.png` 为图鉴用，保留）。子代理验收：站牌全制式且无禁字、铭牌「耕牛 / 경우」双语、站房小牌「雾峰」、无人物、布局合理。**已知偏差（用户拍板接受）**：车厢约 4 节（非"恰好两节"）、车头略偏右、画风为精细插画带像素颗粒而非纯像素。兼任 NF-5K 前斜视 + 雾峰站前置参考。
+**前置**：NF-5K 外构（挂 `ExternalAssets/nf5k_reference.png`，已锁）、雾峰站站牌样式（挂 `ExternalAssets/wufeng_signage_ref.png`，✅ 2026-10-01 锁定 → §2.16.1）、C-55000 敞车（§2.0.1 已锁定 `c55000_exterior_ref.png`）——**三前置全齐，可重绘**
 
-**提示词**：
+**站名/文字规范（2026-09-22）**：
+- 站牌按 §2.16.1 锁定制式（雾峰/무봉/Wufeng 主名＋青2 分水岭/雾2 茶山 邻站蓝带），**禁止写「終點站」「종착역」「始发站」**——列车对开往返，终到只是车次方向，不写死在站牌上
+- 墙面**禁止巨型手写站名**；站房外墙用小型站名牌 + 宣传栏 + 玻璃橱窗时刻表
+- 站名统一「雾峰」（站牌/墙面），口语/剧本可写雾峰村站；勿混用「雾峰 — 終點站」
+
+**挂图（2026-10-01 更新，三张全挂）**：
+- 站牌：挂 `ExternalAssets/wufeng_signage_ref.png`（站牌制式锁定源，含两侧立柱）
+- 机车：挂 `ExternalAssets/nf5k_reference.png`（现役涂装直接使用，不加任何 ignore 指令）
+- 敞车：挂 `ExternalAssets/c55000_exterior_ref.png`（车后恰好两节）
+
+**提示词（v6 · 用户风格版，2026-10-01：一行定调＋附图引用＋编号条目）**：
+```
+参考图三张，1920×1080，16:9，清晰像素风，星露谷风格像素画，16-bit复古，
+
+雾峰站 夕阳全景 —— 站牌/机车/敞车的形制照三张附图（站牌 / NF-5K机车 / C-55000敞车），构图自左至右：
+
+① 左缘：老式木电线杆，单盏灯，灯是灭的
+② 中左站房：灰砖墙红陶瓦屋顶，门廊罩着入口；立面禁止巨型手写站名——门楣上方小搪瓷牌白底蓝字「雾峰」（普通尺寸，低调）；玻璃橱窗「列车时刻表 列차시각표」（纸页泛黄，有手写改点）；软木宣传栏「宣传栏 선전란」（褪色安全标语＋一张雾峰村—矿区线路的剥落告示）；门旁立式牌「候车室 대기실」
+③ 前景左站牌（形制照附图站牌）：白底横牌＋两侧深色立柱；主名「雾峰」大字，其下「무봉」「Wufeng」；右上双徽＝紫红「雾1」＋青绿「青1」；中部亮青蓝带＝左端青绿徽「青2」＋「分水岭 Fenshuiling」白色字、右端「茶山 Chashan」白色字＋紫红徽「雾2」；底部窄白条「（雾峰村）」
+④ 中央站台：磨损灰石板/混凝土（非木板）；木长椅上绿色保温壶＋劳保手套；木行李推车堆麻袋；站台边缘黄野花绿草、中央扫净
+⑤ 右侧机车（形制照附图 NF-5K）：「耕牛·改」停在单线，朝观众左前方——深蓝车身，红白波浪条纹环绕，樱花图案，风化流痕，鼻端无白色V纹；红星翼徽＋蓝牌白字「NF-5K」＋黄铜铭牌「耕牛 / 경우」；车身朝鲜国旗＋红底放射光芒宣传画「더 밝은 미래를 위하여」；单盏居中大圆灯，红色缓冲梁，板条排障器，两盏标志灯；短罩走廊式，柴油机车，不是高铁
+⑥ 车后恰好两节 C-55000 型运煤敞车（风化棕红色，形制照附图）
+⑦ 最右：高耸锈蚀臂板信号机，臂板锁在水平停车位，白色小牌「停車 정지」
+⑧ 背景：橙粉色晚霞压着层叠蓝紫色山影，散着紫色碎云；暖金色光自左侧射入，拉出长影
+
+文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾1 / 青1 / 青2 / 雾2 /（雾峰村）/ 列车时刻表 / 列차시각표 / 宣传栏 / 선전란 / 候车室 / 대기실 / 停車 / 정지 / NF-5K / 耕牛 / 경우 / 더 밝은 미래를 위하여 / 告示小字「雾峰村—矿区线路」
+禁止：終點站 / 종착역 / 始發 / 松桥 / Songqiao / ごめん / 後免 / 巨型手写墙字
+无人物、无人、无角色、无飞行器——纯环境背景；机车与两节货车为有意保留。
+氛围：黄金时刻的寂静山村小站，空站台，暖光，长影。
+```
+
+**实操定稿提词（2026-10-01 用户版 · 四图开放风格，出图即上文成图）**：
+```
+参考图四张，1920×1080，清晰像素风，星露谷风格像素画，
+雾峰站 夕阳全景 —— 站牌/机车/敞车分别照图一/图二/图三；图四是乡间小站的场景样例，参考它的站景布置：站房、站牌、列车的空间关系，画面的干净精致和生活感细节；画风仍是像素风，光线是夕阳黄金时刻。其他元素适当发挥，布局参考现实中的乡村小站：
+
+站牌（图一，立在站台边缘、平行于站台走向）
+
+机车（按照图二）：「NF-5K」停在单线，车头朝向观众、略偏向画面左侧，车头黄铜铭牌与图二完全一致（耕牛 / 경우）；车后恰好两节 C-55000 型运煤敞车（参考图三），没有第三节
+
+以下元素供参考，自行取舍添加，让画面像一座真实存在过的乡间小站：
+- 站台：混凝土站台与黄色盲道、木长椅（放着保温壶和旧手套）、角落里行李推车
+- 站房：灰砖红瓦小屋，门旁小搪瓷站名牌「雾峰」，玻璃橱窗里泛黄的时刻表，墙上宣传栏贴着旧告示
+- 站台旁：木栅栏、高杆路灯、老式电线杆、锈蚀的臂板信号机
+- 环境：路侧樱花树、稻田野花、错落的红顶民居、层叠远山、低垂落日与橙粉晚霞、电线横过天空
+- 氛围：黄金时刻的暖光拉出长影，整个车站安静空旷
+
+画面里不要有人，空站台
+```
+
+> 实操经验（2026-10-01）：参考图四＝《爱上火车》站景样例，只借站景布置与精致感，不搬画风光线；长束缚提词（v6 五段式）出图反而差，开放版＋少量硬约束＋素材库效果最好；铭牌/站名类小文字要挂在限定行里才不被忽略。
+
+---
+
+### 2.17.1 雾峰站正面全景（station.png）❌ 废弃 / 待重绘
+
+**文件**：`Assets/Resources/bg/station.png`  
+**规格现状**：3424×2416（比例 1.42 异形，文件体积 7.18 MB，仅 `test.json` 引用）。  
+**资产状态**：❌ **废弃 / 待重绘**（2026-10-10 T295 核查确认）。画面细节与雾峰站正规设定不符，非 16:9 比例且文件过大。用户明确批示否决「雾峰站正面图片是错误的」。  
+**处置建议**：原文件废止移入回收站候选，`test.json` 临时改接 `station_sunset`；如后续仍需正立面全景，使用以下 16:9 像素风标准提词重出：
+
+**重绘提示词（16:9 标准比例 · 雾峰站站房正面全景 · 中文站牌）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small mountain railway station at sunset, wide establishing shot:
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+front exterior view of small rustic Chinese railway station building, afternoon sunlight:
 
-SCENE: A single-platform mountain railway station at dusk. Left side: grey brick station building with red terracotta tile roof, large faded painted 雾峰 characters on the facade wall (white paint on grey, heavily weathered), smaller 무봉 Hangul below. Vertical sign by entrance door: 候车室 대기실. Several small notice boards and posters tacked to the building wall. Foreground left: white rectangular station nameplate sign on two posts reading 雾峰 — 終點站 in blue Chinese with 무봉 — 종착역 Hangul below. Center platform: wooden bench with a green thermos bottle and work gloves on it; a wooden luggage cart with stacked burlap sacks beside it. Right side: dark green NF-5 diesel locomotive on single track facing viewer-left, red buffer beam and cowcatcher, white NF-5 text on nose, circular headlight, weathered green paint with rust streaks. Two brown-red freight cars coupled behind. Far right: tall rusty signal post with arm locked in stop position, small sign 停車 정지. Left foreground: old wooden telegraph pole with single unlit lamp. Platform edges overgrown with yellow wildflowers and green weeds; platform center swept clean. Background: layered blue-purple mountain silhouettes under vivid orange-pink sunset sky with scattered purple clouds, warm golden light from left casting long shadows.
+STATION ARCHITECTURE:
+- Low-rise single-story railway station building made of weathered grey bricks and reddish-brown clay roof tiles
+- Modest entrance with a small covered porch and wooden pillars
+- Small blue-and-white enamel station sign mounted centrally above entrance porch: 「雾峰」in clear Chinese characters
+- Wooden ticket office window (售票处) and waiting room entrance (候车室) with wooden bench outside
+- Bulletin board with yellowed railway safety posters and hand-drawn timetables
 
-LAYOUT:
-- Left-center: brick station building with red tile roof, porch over entrance
-- Foreground left: white nameplate sign 雾峰 — 終點站 on two posts
-- Center: wooden platform edge with bench, luggage cart
-- Right: NF-5 locomotive on track, freight cars behind
-- Far right: rusty signal post with stop sign
-- Left edge: telegraph pole with lamp
-- Background: layered mountains + sunset sky
+SURROUNDINGS & PLATFORM:
+- In front of station: gravel plaza leading to a low concrete platform
+- Single railway track running horizontally across foreground with weathered steel rails, wooden sleepers and ballast gravel
+- Wooden utility pole with vintage electric streetlamp (unlit) and overhead telephone wires
+- Surrounding scenery: rolling green and golden terraced hills, distant mountain ridges under soft clear sky
+- Small flowerbeds with yellow wild chrysanthemums growing beside the stone steps
 
-COLORS:
-- Building: grey-red brick, red terracotta roof tiles
-- Locomotive: dark green with rust, red buffer beam
-- Sign: white plate with blue Chinese text
-- Sky: vivid orange-pink sunset with purple cloud accents
-- Mountains: layered blue-purple to deep indigo
-- Platform: worn grey concrete
-- Vegetation: yellow wildflowers, green weeds
-- Bench: weathered brown wood, green thermos
+ATMOSPHERE & LIGHTING:
+- Clear afternoon lighting with soft shadows, nostalgic rural railway atmosphere
+- Quiet, peaceful, evoking the passage of decades
 
-TEXT ON SIGNS:
-- Building wall: 雾峰 large white painted, 무봉 smaller below
-- Nameplate sign: 雾峰 — 終點站 (blue on white)
-- Near door: 候车室 대기실 vertical
-- Signal post: 停車 정지
-
-MOOD: Quiet mountain station at golden hour. Empty platform, warm light, long shadows.
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — pure environment/scene background.
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO ENGLISH, NO LATIN LETTERS, NO KOREAN, NO HANGUL.
+RATIO MUST BE STRICT 16:9 (1920x1080).
 ```
 
 ---
 
-### 2.18 傍晚站台（platform_evening）
+### 2.17.2 田园铁路鸟瞰全景（railway_map_aerial.png）❌ 待重绘
 
-**文件**：`Resources/bg/platform_evening.png`
-**用途**：序章 Day 4 林彪悍下车踏上月台的近景——"到家了"的瞬间。与 station_sunset 的区别：本图为站台近景特写。
+**文件**：`Assets/Resources/bg/railway_map_aerial.png`  
+**规格现状**：1376×768（16:9，GameMainUI 相册索引图）。  
+**资产状态**：❌ **待重绘**（2026-10-10 用户明确裁定）。现存图虽然描绘了山谷小站与铁轨，但属于斜 45 度等轴瓦片画风，缺乏景深与电影感光影层次，与全篇暖色调电影感像素风（如 `mountain_sky` / `station_sunset` / `railway_track`）画风脱节。用户明确批示：**「这个是有问题的画风不一样 需要重绘」**。  
+**处置建议**：保留文件用于相册兼容，后续出图后无缝替换。
+
+**重绘提示词（16:9 标准比例 · 电影感暖色调像素画风 · 山谷水乡铁道鸟瞰全景）**：
+```
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+high aerial panoramic view of a rural railway winding through mountain valley and countryside, golden morning sunlight:
+
+SCENERY & COMPOSITION:
+- High angle aerial panoramic view looking down across rolling green hills, terraced tea fields, and a river valley
+- A single-track railway line gently snaking through dense pine forests and countryside from foreground to distant mountains
+- An arched stone railway bridge crossing a crystal-clear mountain stream rushing over rocks
+- Two small rural wooden railway halts / platforms nestled along the tracks with modest wooden station sheds
+- Clustered rustic village houses with grey slate and orange-red tiled roofs, light smoke gently rising from brick chimneys
+- Golden morning sunlight bathing the eastern valley slopes, casting soft warm long shadows across the landscape
+- Far distance: layers of soft blue mountain ridges fading into a pale golden misty morning sky
+
+COLOR PALETTE:
+- Dominant warm green pine, golden ochre terraces, weathered stone grey, rust-brown rails, warm amber sunlight
+- Unified with the cinematic warm nostalgic palette of Stardew Valley and Ghibli rural landscapes
+
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO MODERN VEHICLES, NO HIGHWAYS, NO MODERN SKYSCRAPERS.
+CONSISTENT WARM CINEMATIC PIXEL ART STYLE, NOT FLAT ISOMETRIC TILES.
+```
+
+---
+
+### 2.18 傍晚站台（platform_evening） ✅ 已入库
+
+**文件**：`Assets/Resources/bg/platform_evening.png`（✅ 已定稿入库，1024×571 RGB PNG）  
+**用途**：序章 Day 4 林彪悍下车踏上月台的近景——"到家了"的瞬间。与 station_sunset 的区别：本图为站台近景特写。  
+**资产状态**：✅ 已定稿入库（用户定稿图）
 
 **叙事锚点**：Day4——林彪悍踏上站台的瞬间。木板上还有爷爷当年钉的钉子头，锈成和木头一样的颜色。手套和水壶是老陈的——他刚巡完23公里线回来，还不知道今天会有人来。站台灯亮着，像一直在等。
 
-**提示词**：
+**挂图（生成时附四张）**：
+- 图一 `ExternalAssets/wufeng_signage_ref.png`——站台站牌制式锁定源
+- 图二 `ExternalAssets/nf5k_reference.png` ＋ 图三 `ExternalAssets/c55000_exterior_ref.png`——若机车/车厢入画边缘则照此涂装
+- 图四 `Assets/Resources/bg/station_sunset.png`——**同日同站全景定稿**：本图是它同一时刻的站台近景，光线、色调、氛围、物件制式全部向它对齐
+
+**提示词（2026-10-01 · 最新标准版，四段式）**：
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-close view standing ON the platform at dusk, facing the station building:
+参考图四张，1920×1080，清晰像素风，星露谷风格像素画，
+雾峰站 站台近景·傍晚 —— 图四是同一时刻的车站全景定稿，本图是站台上的近景：色调、光线、物件制式全部与图四一致；站牌照图一制式；其他元素适当发挥，布局参考现实中的乡村小站：
 
-SCENE: Ground-level platform view — the perspective of someone who just stepped off a vehicle and is standing on the platform for the first time in four years. Weathered wooden platform surface in foreground, each plank a different shade of old brown, iron nail heads rusted flush with the wood (Grandfather Lin nailed these boards down himself, thirty years ago). Station building facing the viewer (faded 雾峰 characters, two windows with warm lamplight inside — the light of a man who never turns off the light). A green signal lamp glowing — Lao Chen maintains it out of habit, even though no train needs the signal anymore. Evening shadows long, reaching toward the viewer like open arms. A pair of patched leather work gloves and a dented thermos left on the platform bench — Lao Chen's gloves, Lao Chen's thermos. He was here thirty seconds ago, heading inside to pour tea. He doesn't know yet that someone has come home.
+视角：站在站台上、面向站房的地面近景——刚下车的人的视线高度
 
-LAYOUT:
-- Foreground: platform planks, growing weeds between boards — weeds that Lao Chen pulls every Monday but that return every Wednesday
-- Mid: station building facade (4-5m wide), warm window light — the station's heartbeat
-- Left: signal post with lit green lamp — green means "go," and tonight, for the first time, it's right
-- Bench with forgotten gloves & thermos — evidence of the man who waited
-- Background: fading sky — the last light of the day, the first light of a new chapter
+以下元素供参考，自行取舍添加，让画面像一座有人默默守了四年的站台：
+- 前景：磨损的站台铺面，板缝里长着杂草；木板上爷爷当年钉下的钉子头，锈成和木头一样的颜色
+- 中景站房：灰砖红瓦小屋立面，门旁小搪瓷站名牌「雾峰」（白底蓝字，低调尺寸），玻璃橱窗里泛黄的时刻表，墙上宣传栏；两扇窗亮着暖黄的灯光——有人从不关灯
+- 站台站牌（照图一制式）：白底横牌＋两侧立柱，主名「雾峰」大字，其下「무봉」「Wufeng」，右上双徽＝紫红「雾1」＋青绿「青1」，蓝带左端青绿徽「青2」＋「分水岭 Fenshuiling」、右端「茶山 Chashan」＋紫红徽「雾2」，底部（雾峰村）
+- 站台长椅上：一双补过的皮手套＋一个凹瘪的军绿色保温壶——老陈刚巡完线放下的，人进屋倒茶去了
+- 一盏亮着的站台灯，灯罩落灰；远处臂板信号机的绿色信号灯亮着
+- 天空：暮色渐沉的橙紫晚霞，长影子拉过站台
 
-COLORS:
-- Planks: worn brown, weeds: grey-green
-- Building: whitewash patched grey, lamplight warm yellow — warm as a kitchen, warm as a welcome
-- Gloves: worn leather brown — the color of four years of work
-
-MOOD: Stepping onto home ground. The station is old, poor, and still lit. Every detail here is a love letter from an old man to a railway line: the swept planks, the oiled signal, the patched gloves, the warm thermos. Lin Biaohan's feet touch the wood and the boards creak — the same sound his grandfather's boots made every morning at 6am. "到家了," he whispers, and the station, for the first time in four years, believes it.
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+文字仅限：雾峰 / 무봉 / Wufeng / 分水岭 / Fenshuiling / 茶山 / Chashan / 雾1 / 青1 / 青2 / 雾2 /（雾峰村）；站房小牌只写「雾峰」两个字
+禁止：終點站 / 종착역 / 始發 / 松桥 / 矿 / 雾峰站 / 巨型手写墙字
+近景站台留空（角色立绘要叠在上面，前景不要站人）；远景允许少量模糊的旅客剪影，不抢焦点；机车不做画面主体（至多轨道远处一点暗示），主体是站台、站房与那盏一直亮着的灯
 ```
 
 ---
@@ -1050,81 +1367,60 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 ---
 
-### 2.24 车辆段·晨（depot_morning）
+### 2.24 车辆段·晨（depot_morning）❌ 待重绘
 
-**文件**：`Resources/bg/depot_morning.png`
-**用途**：序章 Day 5 早晨——雾峰站车辆段，张工拆修 NF-5 喷油嘴的检修棚。
+**文件**：`Assets/Resources/bg/depot_morning.png`  
+**用途**：序章 Day 5 早晨——雾峰站车辆段检修棚，张工拆修 NF-5K 喷油嘴的核心场地（`prologue_07_first_repair.json` 引用）。  
+**资产状态**：❌ **待重绘**（2026-10-10 T295 核查确认）。现存图挂有韩文政治标语横幅、工具板悬挂枪械枪支、机车造型偏东风平头，严重脱离世界观设定，用户明确批示否决。**注意：因 prologue_07 强引用，在新图生成替换前严禁物理硬删，避免幕次黑屏。**
 
 **叙事锚点**：四年来第一次有人在这个检修棚里动手修车。晨光穿过棚顶的裂缝照进来，灰尘在光柱中飘浮——像时间本身在呼吸。墙上「安全第一」的标语已经褪色，但今天它又有了意义。
 
-**提示词**：
+**重绘提示词（16:9 标准像素风 · 纯中式检修棚 · 严禁枪支韩文）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-small railway depot maintenance shed, early morning, Chinese railway culture:
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+small Chinese railway depot maintenance shed, early morning golden light:
 
-CHINESE RAILWAY ELEMENTS:
-- Wall slogan: 「安全第一 预防为主」faded red characters on white board, paint cracking, corners curled
-- Railway safety poster: 「铁路技术规程」yellowed, tacked to wooden pillar
-- Old timetable poster: 「雾峰村—矿区 运行时刻表」with handwritten corrections, some times crossed out
-- Numbered shelf labels: 「工具柜 01」「配件柜 02」in hand-painted black on white
+CHINESE RAILWAY WORKSHOP ELEMENTS (STRICTLY NO WEAPONS, NO GUNS, NO KOREAN):
+- Wall slogan: 「安全第一 预防为主」faded red characters on aged white wooden board, paint cracking at edges
+- Railway safety regulation notice: 「机车检修作业安全规程」yellowed paper pinned to wooden pillar
+- Old timetable sheet: 「雾峰村—矿区 运行时刻表」tacked to wooden board with hand-drawn pencil corrections
+- Shelves with hand-painted Chinese labels: 「工具柜 01」「配件柜 02」
 
-NF-5 LOCOMOTIVE (dominant left side):
-- NF-5 农牛 diesel locomotive, deep forest green （森林绿） body with rust patches
-- Front: 「NF-5」stamped in white on green plate, 「农牛」nameplate in weathered brass
-- Hood panels open revealing engine internals (cylinders, fuel lines, injector assembly)
-- Oil stains running down the green paint like dark veins
-- One headlight cracked, the other working (dim)
-- Buffer beam with coupling hook, rust-orange
+NF-5K LOCOMOTIVE (dominant on left side, reference: ExternalAssets/nf5k_reference.png):
+- NF-5K diesel locomotive, deep blue weathered body, red and white wave stripes
+- Brass nameplate: 「耕牛」in clear embossed Chinese characters (NO Korean text)
+- Engine hood panel lifted open, revealing diesel engine block, injection pump, fuel lines and mechanical details
+- Buffer beam with rust-orange coupling hook, heavy steel chassis
+- Morning sunbeams hitting the dusty blue metal surface
 
-WORKBENCH AND TOOLS (right side):
-- Heavy wooden workbench with metal vise, oil-stained surface
-- Disassembled fuel injector parts laid out on clean rag: nozzle body, needle valve, spring, copper washer
-- Wrenches: combination wrench set (8mm-24mm) hanging on pegboard, some missing
-- Oil cans: red 「长城润滑油」can and blue「昆仑」can side by side
-- Parts tray with bolts and small components organized by size
-- Flashlight (old, taped handle) and magnifying glass
-- Greasy rags piled in metal bin
-- Technical manual open on bench: 「NF-5型内燃机车维修手册」with hand-drawn annotations
+WORKBENCH AND MAINTENANCE TOOLS (right side):
+- Heavy solid wooden workbench stained with dark lubricating oil, fitted with an iron bench vise
+- Disassembled fuel injector components neatly laid on a clean canvas rag: injector body, needle valve, pressure spring, copper washers
+- Mechanics tool pegboard: open-end wrenches, socket wrench set, screwdrivers, pliers (ABSOLUTELY NO GUNS, NO RIFLES, NO MILITARY GEAR)
+- Vintage red metal oil can with long thin spout, green thermos flask with steam rising faintly
+- Open maintenance handbook on bench: 「NF-5型内燃机车技术图册」with technical diagrams
+- Inspection pit in concrete floor with wooden ladder, stained with dark oil puddles
 
-INSPECTION PIT:
-- Concrete pit 2m deep, oil-darkened floor with puddles
-- Wooden ladder leading down
-- Oil drip pan catching leaks from locomotive above
+ATMOSPHERE & LIGHTING:
+- Corrugated iron roof with broken skylights letting in diagonal warm morning light beams
+- Golden dust particles floating in the shafts of morning light
+- Warm rustic morning atmosphere, revival of forgotten machinery
 
-STRUCTURE:
-- Open-sided corrugated metal shed, rusted steel frame
-- Patched corrugated roof with translucent panels letting in light
-- Concrete floor stained decades of oil, cracks patched with cement
-- One wall: pegboard with tools, safety slogans above
-- Morning sun slants through shed opening from left, dust motes floating in golden light beams
-
-MORNING ATMOSPHERE:
-- Light beams cutting through dusty air from shed opening
-- Dew on metal surfaces catching light
-- A thermos of hot tea on the workbench edge (张工's)
-- The sound of a wrench clicking (implied through visual rhythm)
-
-COLORS:
-- Shed frame: rusted orange-brown （马鞍棕） with grey steel
-- NF-5 body: forest green （森林绿） with rust orange （锈橙） patches
-- Oil stains: dark brown-black （深棕黑色）
-- Morning light: warm gold （晨光金） beams through dust
-- Floor: dark oil-stained concrete （油渍水泥）
-- Slogans: faded red （褪色红） on yellowed white
-- Tool handles: worn red and blue plastic
-
-MOOD: 从废铁中唤醒希望的早晨。老手、老工具、老机器——四年来第一次有人在这个棚子里动手。
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO WEAPONS, NO GUNS, NO FIREARMS.
+STRICTLY NO KOREAN, NO HANGUL, NO ENGLISH, NO GIBBERISH CHARACTERS.
+ALL VISIBLE TEXT MUST BE CHINESE HANZI.
 ```
 
 ---
 
-### 2.25 线路巡视（railway_track）
+### 2.25 线路巡视（railway_track） ✅ 已入库
 
-**文件**：`Resources/bg/railway_track.png`
+**文件**：`Assets/Resources/bg/railway_track.png`（已入库，1672×941 RGB PNG）
 **用途**：序章 Day 4 傍晚——林彪悍沿雾峰线徒步巡视。铁轨近景，锈迹与杂草，道砟与枕木。
+**资产状态**：✅ 已定稿入库（图样采纳用户定稿版）
 
 **叙事锚点**：23公里的铁轨，每一寸都是老陈用脚丈量过的。铁轨生锈了但没有断——就像这条线本身，被世界遗忘但拒绝死亡。
 
@@ -1169,92 +1465,72 @@ MOOD: Walking through memory. 老陈走了这条路20年，每一根枕木都认
 
 ---
 
-### 2.26 松桥站（songqiao_station）
+### 2.26 松桥站（songqiao_station） ✅ 已入库
 
-**文件**：`Resources/bg/songqiao_station.png`
-**用途**：序章 Day 4 巡视途中——支线小站"松桥"，破旧但仍立着。几个老人坐在站台上等一辆永远不会来的车。
+**文件**：`Assets/Resources/bg/songqiao_station.png`（已入库，1920×1080 像素基准）  
+**用途**：序章 Day 4 巡视途中——支线废弃小站“松桥”。几个老人坐在站台上等一辆永远不会来的车。  
+**叙事锚点**：这些人每周都来站台，等一辆不再运行的车。松桥站是“等待的重量”的具象化。  
+**资产状态**：✅ 已定稿入库（图样采纳用户定稿版）
 
-**叙事锚点**：这些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。松桥站是"等待的重量"的视觉化。
+#### 【母本基准 · 中文结构化提示词（标准学习范式）】
+```text
+松桥站 · 废弃小站的午后 —— 侧视站台视角，站房在左、空轨在右伸向远方，纯环境空景：
 
-**提示词**：
-```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-tiny abandoned railway station, late afternoon, Chinese countryside:
+① 站房（画面左半，单间小站约十五平米）：
+   白灰墙皮大面积剥落，露出底下红砖，剥落边缘不规则如地图；一扇蓝色木门，漆裂成碎块、门角磕碰露木，门微关；
+   门楣上方一块白底蓝字小铁牌写着「松桥」，四角锈穿、蓝字掉漆露出铁锈底；木框窗户玻璃蒙灰，泛黄的棉窗帘半掩，看不见屋内；
+   灰瓦屋顶缺了两三片瓦，瓦缝间生着青苔，屋檐木椽末端发黑腐朽；墙根一圈返潮的霉斑。
 
-STATION BUILDING:
-- Small one-room station building (约15平米), brick construction with whitewash walls peeling to reveal red brick underneath
-- Blue painted wooden door, paint cracked and faded
-- Name board above door: 「松桥」three characters, blue paint on white metal, heavily weathered, some paint flaking off revealing rust underneath
-- One window (wooden frame), glass dusty, curtains half-drawn (yellowed cotton)
-- Tiled roof with a few missing tiles, moss growing in gaps
-- Small concrete steps leading to platform, cracked
+② 站牌（左前景）：
+   原来的大站牌没有了，只剩一块低矮的蓝白小铁牌歪插在草丛里——「松桥」二字半掩在狗尾草后，牌面锈斑累累。
 
-PLATFORM:
-- Short concrete platform (about 8m long), edge cracked and uneven
-- Grass and weeds growing through every crack in the concrete
-- Old wooden bench: one seat plank broken, the other sagging, paint completely gone
-- A dead flower bed with dried stalks (was once cared for, abandoned when trains stopped)
-- A broken hand water pump (铸铁, rusted orange) near the bench
-- Platform edge: faded yellow safety line almost invisible
-- Old timetable poster in a glass case on the wall: 「松桥站 列车时刻表」with faded times, some crossed out in red pen, glass cracked
+③ 站台（画面中，约八米长的短混凝土台）：
+   台面布满裂缝、每条缝里长出杂草与小黄花；台沿磕损不平、缺角；一条褪色到几乎看不见的黄色安全线横贯台面；
+   台尾一张旧木长椅——一条座板断掉斜挂着、另一条中间下塌、漆完全磨光露出灰木；
+   长椅旁一台铸铁手压水泵，通体锈成橙色、压柄垂落；墙角一个死花坛，只剩一把枯茎（当年有人打理，停车后荒废）。
 
-TICKET OFFICE WINDOW (part of building):
-- Small service window with metal bars (for ticket sales)
-- 「售票处」sign above window, green paint on wood, faded
-- Inside: dusty counter, an old abacus, stacked ticket rolls (unused for years)
-- A calendar on the wall showing 2072 — stopped when trains stopped
+④ 售票口与细节（站房右墙）：
+   铁栅栏小窗，窗上沿一块绿漆木牌写着「售票处」，绿漆剥落；窗内积灰的木柜台，柜上一只老算盘与几卷蒙尘的票卷；
+   柜台旁墙上挂着日历，停在 2072——大废线那一年；
+   站房侧墙一只玻璃橱窗，里面贴着「松桥站 列车时刻表」，纸面泛黄、多班次被红笔划掉、橱窗玻璃一道裂纹斜穿。
 
-Elderly figures (blurry, impressionistic):
-- 2-3 old people sitting on the bench or standing at platform edge
-- Not detailed — just silhouettes with posture suggesting waiting
-- One person looking down the track as if expecting something
+⑤ 铁轨与远景（画面右半）：
+   单线铁轨锈蚀严重、轨顶只剩暗淡锈棕，枕木缝里草长得比道砟还高——废弃站没有车；
+   铁轨顺畅延展无阻挡。右侧溪流上一座双孔石拱桥跨过小溪（桥下水色深绿映着树影），石拱桥为公路/人行桥，与铁道相交处形成铁路平交道口（立有警示交叉道口标杆）；
+   铁轨穿过道口后延伸没入远处山脚松桥隧道黑洞洞的洞口方向；两侧山坡是梯田茶园，茶树深绿弧形条带层层叠叠，再远处山峦叠嶂、谷中薄雾如带。
 
-BEYOND PLATFORM:
-- Stone-arched bridge (石拱桥) carrying railway over a small stream, 50m behind station
-- Stream flowing under bridge, dark water with green reflection
-- Railway line continuing into the valley beyond bridge
-- Terraced hillsides in background
+⑥ 人物（环境剪影，允许）：
+   两三位模糊老人——一个自然端坐在断板长椅座板上（严禁悬空与穿模）、一个立在台沿望向轨道尽头、一个蹲在泵边——只有姿态轮廓、没有面部细节，颜色与废墟融为一体（等一辆不再来的车）。
 
-KOREAN CHINESE DETAILS:
-- Wall poster (inside ticket window, visible): 「铁路旅客须知」with old regulations
-- Platform edge marker: 「松桥 15km」concrete post
-- Small notice board: 「本站已停运」hand-written on cardboard, taped to wall
-- Old red fire extinguisher box (empty) on station wall
+⑦ 光影与时段：
+   午后低角度金光从画面左侧来，长影子横拉过空轨道与站台；空气中一层暖金薄霭，远山被雾分出层次、远山如黛；色调暖橙偏旧，像一张褪色的明信片。
 
-LIGHTING:
-- Late afternoon, sun from right side
-- Long shadows from station building across platform
-- Warm golden light on the aged surfaces
-- The elderly figures backlit, creating halo effect
-
-COLORS:
-- Walls: peeling white revealing red brick （马鞍棕）
-- Platform: grey concrete （银灰） with green moss
-- Name board: faded blue on white
-- Wood: weathered grey-brown （土棕）
-- Stream: dark jade green （海洋绿）
-- Elderly: dark silhouettes with warm rim light
-
-MOOD: 有些人每周都来站台，等一辆不再运行的车。他们不是不知道车停了——他们只是不愿意承认。这是"等待的重量"。
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+禁止项（Negative Prompts）：
+   机车与任何运行车辆、现代高铁动车、清晰人脸、密集人群、3D真实感、色条渐变、巨型标语墙字、桥梁与铁轨物理位置冲突阻挡、人物与长椅穿模悬空。
 ```
 
-COLORS:
-- Building: peeling whitewash over brick
-- Sign: faded green characters on white
-- Bridge: grey stone with moss
-- Stream: dark jade
-
-MOOD: A station that remembers being loved. (Museum candidate — keep intact.)
+#### 【对应英文提示词（SD / Midjourney / DALL-E / MiMo 通用）】
+```text
+16-bit retro painterly anime landscape, 1920x1080, 16:9. Abandoned rural train station 'Songqiao' in warm golden sunset.
+Left: weathered single-room brick station with peeling white plaster revealing red brick, old cracked blue wooden door, rusted iron sign '松桥' above door, ticket window with '售票处' wooden sign, glass showcase with faded train schedule crossed out with red pen, 2072 calendar on wall.
+Platform: cracked concrete with yellow weeds, old broken wooden bench where an elderly man sits naturally without clipping or floating, rusted orange iron hand water pump.
+Right: single rusted railway track overgrown with grass, extending smoothly without obstruction toward distant mountain tunnel. A two-arch stone pedestrian road bridge spans a deep green stream and intersects the railway as a level grade crossing with warning crossbuck signal.
+Background: terraced green tea fields on rolling hills, layered misty mountains, low-angle golden sunset lighting, long dramatic shadows. Nostalgic postcard color palette.
+Negative prompt: modern trains, locomotive, crowded people, sharp facial features, railway blocked by bridge, character clipping through bench.
 ```
+
+#### 【AI 提词范式心得（小站场景标杆）】
+1. **空间解耦与道口定义**：明确“石拱桥是跨水公路桥，与铁路在地面形成平交道口”，杜绝 AI 误将铁轨画在石桥顶上导致路线冲突被挡断。
+2. **人物与道具重力接触做实**：明确写明人物“自然端坐在长椅座板上”，并在负向词补充“禁止穿模悬空”，避免生成悬空或身体嵌入长椅结构。
+3. **岁月痕迹具象化**：具象描述“日历停在2072”、“红笔划掉车次”、“算盘与积灰票卷”、“墙皮露红砖如地图”，赋予场景强烈的废土温情与故事纵深。
 
 ---
 
-### 2.27 车站·夜（station_night）
+### 2.27 车站·夜（station_night） ✅ 已入库
 
-**文件**：`Resources/bg/station_night.png`
+**文件**：`Assets/Resources/bg/station_night.png`（✅ 已入库 2026-10-10，1024×571 RGB PNG）
+**资产状态**：✅ 由 `platform_evening.png` 复制注册（md5 一致，独立新 GUID）。原 `platform_evening` 保持不动，两处引用互不影响。
+**选择理由**：06 幕 4 个 scene 均**无场景级 `chars` 字段**（纯对白+旁白，无角色立绘），人全靠背景剪影呈现——本图的聚首人影与「旧人重逢」叙事吻合，且暖光灯池/烟囱/木长椅/冷蓝山谷全符合下方提词。**原提词保留**，若后续认为图内人影与前景冲突可按提词重绘替换。
 **用途**：序章 Day 4 夜晚——雾峰站旧人重逢（张工/李阿姨/王小弟等聚首）的夜景。
 
 **叙事锚点**：一群被时代遗忘的人，在寒冷的夜晚聚在一起，决定重新开始。窗内的暖光与窗外的冷蓝形成对比——这是铁路精神的最后一批守护者。
@@ -1280,12 +1556,12 @@ PLATFORM:
 - Edge painted yellow safety line, faded
 - Railway track in foreground, rails catching moonlight (silver-blue glint)
 
-PEOPLE (silhouettes only, 5 figures gathered near door):
-- Group of 4-5 dim human silhouettes near the lit doorway
-- Heads and upper bodies only, no facial detail
-- Warm rim light from the doorway creating golden outlines
-- Postures suggesting conversation: one leaning against doorframe, others standing in loose circle
-- A small table with a kettle visible through the doorway
+DOORWAY WARMTH (no figures — 人的存在靠光和物件暗示):
+- The front door open, warm gold light spilling across the platform
+- Through the doorway: a small wooden table with a kettle and two cups, lit from above
+- A chair pulled out from the table, as if someone just stood up
+- Shadows of window frames cast onto the platform by the interior light
+- Posture of the scene suggests conversation just happened, but the frame holds ZERO human figures
 
 NIGHT SKY:
 - Deep indigo blue （靛蓝） upper sky
@@ -1293,10 +1569,11 @@ NIGHT SKY:
 - Mountain silhouettes on horizon, darker than sky
 - Slight atmospheric haze in valley (soft blue-grey)
 
-KOREAN CHINESE DETAILS:
+CHINESE DETAILS:
 - Faded 「安全第一」slogan barely visible on station wall
 - Old railway lantern (unlit) hanging from a nail
 - A wooden sign: 「值班室」next to the door
+- NO KOREAN, NO HANGUL, NO ENGLISH, NO LATIN LETTERS anywhere in the frame
 
 LIGHTING CONTRAST:
 - Exterior: cold blue moonlight and dark shadows
@@ -1319,94 +1596,60 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 ---
 
-### 2.28 站长办公室（station_office）
+### 2.28 站长办公室（station_office）❌ 待重绘
 
-**文件**：`Resources/bg/station_office.png`
-**用途**：序章 Day 6（首班车次日）——车站办公室，融资洽谈的室内。老陈守护四年的房间，每件物品都是时间的证据。
+**文件**：`Assets/Resources/bg/station_office.png`  
+**用途**：雾峰站站长办公室 / 调度指挥室。全工程最高频场景，共 9 个剧本引用（`prologue_09_funding` 及 post 篇 8 个剧本）。  
+**资产状态**：❌ **待重绘**（2026-10-10 T295 核查确认）。现存图充斥 Namenessy / DISPATCH / LEDGER 等英文及西文乱码标牌，完全背离中式铁路水乡世界观，用户明确批示否决。**极度重要：因 9 个剧本强依赖此图，新图生成并验证通过前绝对禁止硬删，避免大量剧情幕次黑屏！**
 
-**提示词**：
+**叙事锚点**：老陈守护四年的房间，每件物品都是时间的证据。账本、算盘、老电话泛着旧时光光泽，墙上的运行图留着红色停运标记。安静、凝固、充满时间的痕迹。
+
+**重绘提示词（16:9 标准像素风 · 纯中式调度站长室 · 严禁任何西文英文）**：
 ```
 pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-cramped station master's office, morning light through window:
+STARDEW VALLEY STYLE PIXEL ART, warm cinematic lighting, crisp pixel details,
+cramped Chinese railway station master's office, early morning golden light through window:
 
 ROOM OVERVIEW:
-- Cramped room (约10平米), wooden floorboards worn smooth
-- Single window facing the platform and railway track (window right side)
-- Door on left wall with wooden「站长办公室」sign (hand-carved, dark wood)
-- Low ceiling with exposed wooden beams
+- Cramped retro railway office (约10平米), worn wooden floorboards with smooth dark grain
+- Single window on right wall facing the outdoor platform and rusty tracks
+- Low wooden beam ceiling with hanging vintage wire and bulb
+- Doorway with carved dark wooden doorplate: 「站长办公室」in Chinese characters
 
-DESK (center-left, heavy old wooden desk):
-- Old rotary telephone (黑色拨盘电话) with coiled cord
-- Ledger books (账本) stacked — leather-bound, pages yellowed, hand-written entries
-- An abacus (算盘) for calculations
-- A green banker's lamp (台灯) with brass base, turned on
-- Pen holder with fountain pens and pencils
-- A half-empty cup of cold tea (茶杯), ring stain on desk
-- A pack of 红梅 brand cigarettes (拆开的), one cigarette resting on ashtray
-- Old railway stationmaster badge (站长徽章) pinned to a small cloth on desk corner
-- Stamp pad and wooden stamp: 「雾峰村站」
+OFFICE DESK (heavy dark solid wood, centered slightly left):
+- Old black rotary dial telephone (黑色老式拨盘电话) with spiral wire
+- Stack of aged accounting ledgers with yellowed edges and handwritten records
+- Traditional wooden abacus (十三档实木算盘)
+- Green glass banker's desk lamp with brass stand, emitting a soft warm emerald glow
+- Chinese enamel mug (白色搪瓷茶缸) with faded red star and faint tea stain rings
+- Pack of vintage red cigarettes with an unlit cigarette in glass ashtray
+- Desk stamp pad and wooden stamp: 「雾峰村站」in red ink
+- Hand-carved wooden desk plate: 「站长」
 
-WALL MAP (behind desk, dominant):
-- Large hand-drawn railway line map: 「雾峰村—矿区线 运行图」
-- 23km line with 4 stations marked: 雾峰村(0km), 茶山(8km), 松桥(15km), 矿区(23km)
-- Red pen marks crossing out some sections (停运标记)
-- Colored pencil marks showing old schedules
-- A few notes in handwriting: 「信号故障-已修」「道岔需调整」
+WALL MOUNTED ELEMENTS (AUTHENTIC CHINESE RAILWAY DETAILS):
+- Large yellowed hand-drawn railway map: 「雾峰村—矿区铁路运行示意图」
+  Stations marked along line in clear Chinese: 雾峰村 (0km), 茶山 (8km), 松桥 (15km), 矿区 (23km)
+  With red crayon diagonal cross-out marks indicating suspended sections (停运)
+- Tear-off wall calendar stopped at: 「2072年9月」
+- Old black-and-white framed group photo of 1990s Chinese railway workers
+- Vintage railway safety slogan frame: 「人民铁道为人 user-facing 安全正点」faded red banner
+- Vintage wall clock stopped at 03:47
 
-WALL ITEMS:
-- Framed group photo: old railway workers, black and white, slightly faded
-- Calendar: stopped at 「2072年9月」— when trains stopped
-- Yellowed railway safety poster: 「铁路安全 人人有责」with 1990s style illustration
-- Small shelf: railway technical manuals, 「铁路工程技术手册」, a few old railway magazines
-- A clock on wall: stopped at 3:47 (when the last train departed)
+FURNITURE & DETAILS:
+- Worn brown leather armchair behind desk, upholstery slightly cracked
+- Green metal filing cabinet in corner with file folders
+- Traditional cast-iron coal heating stove with a metal kettle and stovepipe venting to ceiling
+- Coat rack holding an old railway worker cap and dark uniform coat
 
-FURNITURE:
-- Old leather swivel chair (转椅), seat cushion worn through to stuffing
-- Small filing cabinet (铁皮文件柜) in corner, top drawer slightly open
-- A coal stove (煤炉) with kettle on top, smoke pipe going to ceiling
-- Coat hook with an old railway worker's cap hanging
+ATMOSPHERE & LIGHTING:
+- Clear morning sunbeams slanting through window panes, illuminating floating golden dust
+- Quiet, contemplative atmosphere of a preserved historical railway office
 
-WINDOW VIEW:
-- Looking out to the platform and railway track
-- Morning light streaming in, casting long shadow of window frame across desk
-- Dust particles floating in the light beam
-
-KOREAN CHINESE DETAILS:
-- Desk nameplate: 「站长」
-- Calendar: 「1993年9月」(stopped when trains stopped)
-- Bookshelf label: 「铁路技术资料」hand-written
-- Old photo caption on back: 「1998年 雾峰村站全体职工」
-- Stamp: 「雾峰村站」in red ink
-
-COLORS:
-- Walls: cream-white （米白） with age yellowing
-- Desk: dark wood brown
-- Lamp: green glass （海洋绿） with brass （古铜色）
-- Window light: warm morning gold （晨光金）
-- Old leather: worn brown （马鞍棕）
-- Map: white paper with colored pencil marks
-- Calendar: red header, white body, 「2072年9月」
-
-MOOD: 晨光中的旧站长办公室。账本、算盘、老电话泛着旧时光光泽，墙上的运行图留着红色停运标记。安静、凝固、充满时间的痕迹。
-
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
-```
-
-LAYOUT:
-- Desk center (viewer side: papers, ink, stamp)
-- Wall map of雾峰线 with red pen marks
-- Rotary phone + telegram/cashbox
-- Stove with kettle, tea smell implied
-- Window to platform, morning light
-
-COLORS:
-- Wood: dark aged
-- Lamp light: warm green-glass glow
-- Map: aged paper yellow
-- Fabric: worn green leather
-
-MOOD: The nerve center of the line. Old paperwork, new hope.
+RESTRICTIONS:
+STRICTLY NO CHARACTERS, NO HUMANS, NO FIGURES.
+STRICTLY NO ENGLISH, NO LATIN ALPHABET, NO Namenessy, NO DISPATCH, NO LEDGER, NO GIBBERISH LETTERS.
+STRICTLY NO KOREAN, NO HANGUL, NO JAPANESE KANJI.
+ALL TEXT IN THE SCENE MUST BE RECOGNIZABLE CHINESE HANZI.
 ```
 
 ---
@@ -1414,42 +1657,61 @@ MOOD: The nerve center of the line. Old paperwork, new hope.
 ### 2.29 站台·晨（platform_morning）
 
 **文件**：`Resources/bg/platform_morning.png`
-**用途**：序章 Day 5 下午/首班车——雾峰站月台晨光，乘客等车的场景。
+**用途**：序章 Day 8/09 首班发车破晓清晨——雾峰站月台晨光、空敞车整备待发、老者静候早班车的场景。
+**状态**：✅ 已定稿入库（2026-10-09）——成图《雾峰车站：破晓晨台与整备列车.png》→ `Assets/Resources/bg/platform_morning.png`。站牌中朝英全制式、NF-5K「耕牛」深蓝海浪纹、C-55000 三节空敞车（无溢出煤矿）、长椅正常比例老者、晨雾水洼反光、无色条自然晨曦。
 
-**提示词**：
+**前置参考图**：
+- 图一（构图锁定源）：`Assets/Resources/bg/station_sunset.png`
+- 图二（站牌制式）：`ExternalAssets/wufeng_signage_ref.png`
+- 图三（机车外构）：`ExternalAssets/nf5k_reference.png`
+- 图四（敞车外构）：`ExternalAssets/c55000_exterior_ref.png`
+
+---
+
+#### 方案一：【实操图生图简短版】（以图一为底图，增量修正）
+
+```text
+参考图四张，1920×1080，风格还原图一，清晰像素风，星露谷风格像素画。
+
+雾峰站 清晨全景 —— 严格继承图一（station_sunset）的构图透视、站房建筑与机车轨道布局，保持原图结构完全不变，仅对以下细节与光影进行优化增量：
+
+① 站牌（照图二制式）：左侧前景白色横立式站牌「雾峰 / 무봉 / Wufeng」，下方标有「分水岭 / 茶山」及青色/洋红色圆形线路徽标，底部标「（雾峰村）」，字迹工整清晰。
+② 机车（照图三外构）：停靠在右侧单线上的深宝蓝色 NF-5K「耕牛」柴油机车，红白波浪饰条，车头鼻端黄铜铭牌「耕牛 / 경우」，前大灯亮起温和淡金晨光。
+③ 货车车厢（照图四外构·清晨逻辑纠偏）：机车后方挂接的 C-55000 敞车为完全空载（上面敞开，车厢里面没有溢出来的煤矿，露出深色铁锈车斗内壁；涂装参考图四，三节车厢均有完整涂装、朝鲜国旗与车辆编号，涂装一致，恰好三节）。
+④ 站台与人物：前景左侧木长椅上放着老式绿色保温水壶与手套；长椅边坐着一位身穿厚实深色棉服、身形比例正常自然的乡村老人，安静等待早班车发车；站台地面覆有清晨微弱露水反光与几片零星落樱。
+⑤ 光影与时段调整：彻底移除下午干燥夕阳，转为清晨破晓（Sunrise 06:00 AM）。太阳刚越过山头，光线清透冷冽带有淡金高光，晨雾在山谷间半透明缭绕，天空由天顶冷蓝向东方地平线渐变至蜜桃粉金。注意天空不要色条，像素自然平滑过渡。
+
+禁止元素：
+禁止满载煤炭(no coal), 禁止下午夕阳晚霞(no sunset/dusk), 禁止满地模糊蚂蚁黑点小人(no crowded tiny blurry figures), 禁止现代高铁动车, 禁止平滑渐变或3D真实感。
 ```
-pixel art, 2D background, 1920x1080, 16:9 aspect ratio,
-STARDEW VALLEY STYLE PIXEL ART, clear pixels,
-雾峰村站台·晨 / 무봉촌 역 승강장·아침, station platform at dawn, first train day:
 
-SCENE: 雾峰村站（무봉촌역）的站台全景，清晨时分。天刚亮，晨光从画面右侧斜射，金色阳光穿过薄雾在铁轨上形成温暖的光带。站台上站着十几个等候的乘客——姿态各异：一个老妇人提着竹篮（里面是茶叶），篮子用蓝布盖着；一个中年男人蹲在站台边缘抽旱烟，烟雾袅袅上升；一对年轻夫妻站在一起，女人怀里抱着一个包裹；一个七八岁的男孩蹲在铁轨旁，好奇地用树枝拨弄枕木间的碎石；一个背着书包的少女站在站牌下，手里拿着一本书但眼睛看着铁轨方向；几个老人坐在站台长椅上，双手放在膝盖上，安静地等待。站台中央立着站牌——「雾峰村站 무봉촌역」（蓝底白字，中韩双语，站牌样式类似中国普通火车站但更简朴）。站台右侧边缘有一个小摊贩——一个戴草帽的中年妇女，面前摆着一个木箱子，上面放着几碗热气腾腾的米线和一壶茶，旁边插着一块小木牌写着「早点 아침밥 3元」。站台被打扫得很干净——木板上没有落叶，花盆里的菊花刚刚浇过水。站台尽头的长椅上放着一个军绿色保温壶和一副补过的皮手套。NF-5机车停在轨道上——深绿色车身，前灯亮着暖黄色光，引擎怠速发出低沉的嗡嗡声，排气管冒出淡淡的白色蒸汽。机车侧面有模糊的编号「NF-5 003」和更小的字「内燃机车 内연기관」。铁轨在晨光中闪闪发光。薄雾从铁轨间升起，被阳光染成淡金色。站房的灯还亮着，窗户里透出暖黄色光。
+---
 
-LAYOUT:
-- 画面下方：铁轨（两根平行钢轨+枕木+碎石道床），晨雾从铁轨间升起
-- 中景：站台横跨画面（木质站台板，边缘有黄色安全线「安全线 안전선」）
-- 站台左侧：站牌「雾峰村站 무봉촌역」（蓝底白字，铁杆支撑）
-- 站台中央：十几个乘客（各种姿态，远小近大）
-- 站台右侧：小摊贩（木箱+米线+茶壶+「早点 아침밥 3元」木牌）
-- 站台尽头：长椅+保温壶+皮手套
-- 中景右侧：NF-5机车（深绿色，前灯亮，蒸汽淡淡）
-- 背景左侧：站房建筑（灰砖+红瓦顶，窗户透出暖黄灯光）
-- 远景：山丘轮廓（晨雾中隐约可见），天空从深蓝过渡到粉橙
+#### 方案二：【独立文生图全要素超详细版】（全新冷启动出图）
 
-COLORS:
-- 晨光：金色阳光（晨光金），穿过薄雾形成光带
-- 铁轨：钢轨银灰，枕木深棕，碎石灰
-- 站台木板：暖灰，安全线黄（丹青金）
-- 站牌：蓝底（深蓝色），白字（纯白色）
-- NF-5机车：深绿（深绿棕），前灯暖黄（晨光金），蒸汽白
-- 乘客衣着：多样暖色（红围巾红色，蓝外套蓝灰色，灰布衣灰色）
-- 摊贩：木箱棕，米线碗白，茶壶深棕
-- 薄雾：淡金到白
-- 天空：深蓝（灰蓝色） → 粉橙 → 金色地平线（晨光金）
-- 站房灯光：暖黄，窗框灰
+```text
+pixel art, 2D background, 1920x1080, 16:9 aspect ratio, STARDEW VALLEY STYLE PIXEL ART, clear pixels, early morning dawn sunrise (06:00 AM):
 
-MOOD: 第一趟车出发前的早晨。紧张、明亮、充满希望。晨光把一切染成金色，薄雾从铁轨间升起被染成淡金，NF-5的前灯亮着暖黄色的光。一切都在准备中，等待发车的瞬间。
+WUFENG RURAL STATION DAWN ENVIRONMENT:
+- Layout: 3-point wide perspective matching mountain railway terminus. Station building and platform on left, curved single track on right with parked train, terraced village and pine mountain ridges in background.
 
-NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene background, empty of all human presence. Even if the narrative mentions people (for context), the generated image must contain ZERO human figures.
+STATION BUILDING & PLATFORM (Left):
+- Traditional stone-brick station building with terracotta-tile roof, brick chimney, dark wood rafters, utility pole with wires, and curved gooseneck lamp.
+- Foreground left features a prominent upright white bilingual station sign board (wufeng_signage_ref): "Wufeng / 雾峰 / 무봉", sub-routes to "Fenshuiling 分水岭" and "Cheshan 茶山" with cyan and magenta badges, bottom "(雾峰村)".
+- Left weathered dark wooden bench with green thermos and work gloves; sitting calmly on the bench is one rural elder villager in padded dark winter coat, normal human pixel proportion matching the bench (NO crowded blurry ant-like figures).
+- Concrete platform with tactile paving line, light morning dew water puddle reflections, and scattered pink cherry blossom petals.
+
+LOCOMOTIVE & EMPTY FREIGHT TRAIN (Right Track):
+- Deep royal blue NF-5K diesel locomotive parked on the single track: red and white wave stripes along lower body, brass nameplate "耕牛 / 경우" on nose, 3D wings star emblem, glowing golden headlights, thin white pre-heating steam wisp from roof chimney.
+- HAULING THREE EMPTY C-55000 GONDOLA CARS: Exactly 3 open-top gondola cars with NO coal inside (clean empty rusty iron floor panels, waiting to be loaded at mines). All 3 cars feature full official blue liveries, national flag badge, and white stencil car numbers.
+
+SURROUNDINGS, LIGHTING & SKY:
+- Blooming pink sakura cherry trees framing the station on left.
+- Distant rural mountain village with terraced fields and rolling pine mountain ridges shrouded in delicate volumetric morning valley mist.
+- Early morning sun just cresting the eastern mountain ridge on upper-right, cool crisp morning air with low-angle pale golden sun rays, long shadows extending leftward.
+- Sky: smoothly pixelated morning dawn transitioning from deep cool indigo at top to soft peach-gold near horizon, NO banding artifacts.
+
+NO coal in cars, NO afternoon golden hour, NO sunset, NO dusk, NO crowded ant-like specks, NO modern bullet trains, clean crisp pixel art. --ar 16:9
 ```
 
 ---
@@ -1523,7 +1785,53 @@ NO CHARACTERS, NO PEOPLE, NO HUMAN FIGURES — this is a pure environment/scene 
 
 ---
 
+### 2.40 列车 Sprite（NF-5K / SY-22 侧视 · 规划 A3）
+
+**用途**：规划 Phase 3-A3 列车 Sprite——NF-5K 机车 1024×256、SY-22 车厢 1024×128（游戏内侧视贴图，经营/演示场景用）；轨道+枕木 512×64 可平铺。
+**状态**：❌ 待生成（2026-10-04 记录；图像生成周额度已满，**出图待额度重置后按本节提词执行**，暂不生成）
+**前置**：
+- NF-5K 外构**已锁** `ExternalAssets/nf5k_reference.png`（2026-09-28 定稿，朝鲜升级版）——出图必须挂它作 image reference，形制以它为准。
+- SY-22 灰雀外构**待锁**——本节 SY-22 提词兼作外构锁定源，出图选型后存 `ExternalAssets/sy22_reference.png` 并把本节状态改 ✅。
+- 轨道+枕木平铺**非 AI**：代码绘制（像素填充即可，见 VNBacklog.cs MakeBallastTex/MakeRailTexture 同风格），不进本清单。
+
+**规格**：纯侧视（车头朝右，完全正侧视无透视）、透明底 PNG、16-bit 像素风、孤立车辆无环境；AI 出图用 2048×768 等大画幅，再裁切缩放到 1024×256 / 1024×128。
+
+**提词 · NF-5K 机车 sprite（挂 nf5k_reference.png）**：
+```
+像素风，16-bit复古，游戏 sprite素材，清晰大像素边缘：
+
+一辆深蓝色内燃机车的纯侧视图，车头朝右，完全正侧视、无透视。
+形制严格照附图 NF-5K 参考（短罩走廊式、比例、转向架、灯位一致）：
+- 深蓝车身，下半红白相间波浪条纹 + 樱花图案（朝鲜原厂涂装）
+- 深灰车顶，一排淡黄色小车窗
+- 红色缓冲梁，板条式排障器，单盏居中大圆灯
+- 黑色两轴转向架与钢轮，风化使用痕迹
+
+透明背景，孤立车辆，无环境、无铁轨、无地面投影。
+画面中不得出现任何文字、数字、车号、铭牌字样。
+```
+
+**提词 · SY-22 灰雀车厢（外构 + sprite 一并锁）**：
+```
+像素风，16-bit复古，载具外构参考图 + 游戏 sprite，清晰像素边缘：
+
+一节短途支线客车车厢纯侧视图，车头朝右，完全正侧视、无透视：
+- 墨绿色车身，奶油色（黄かっ色）窗带，一排均匀的深色车窗
+- 浅灰圆顶车顶，车厢两端各一扇门
+- 黑色两轴转向架，小巧圆润短车身（30人小车厢，明显短于普通客车）
+- 旧漆风化，有使用痕迹
+
+透明背景，孤立车厢，无环境、无铁轨，画面中无任何文字与数字。
+（本图锁定 SY-22 灰雀外构：后续「车厢内部 §2.30」「首班车发车」场景一律挂它作 image reference）
+```
+
+**生成后锁定动作**：①NF-5K 选型入库 → 裁切缩放存 `Assets/Resources/Art/Vehicles/nf5k_loco.png`；②SY-22 选型存 `ExternalAssets/sy22_reference.png` 并更新待锁清单（§一 · 绘图前置）；③文字白名单：**本节素材一律无文字**——若模型自作车号，后期修掉或重 roll，不因文字放弃比例正确的候选。
+
+---
+
 ## 三、BGM（Suno AI 音乐提示词）
+
+> **状态（2026-09-22）**：26个mp3已全部就位于 `Assets/Resources/bgm/`，文件名与脚本ID一一对应，**不再优化/不再新增**。原始生成文件归档在 `资产/bgm-归档/`（*.mp3 不进git）。下表提词仅供重生成或补档时参考。
 
 ### 通用规范
 
@@ -1548,7 +1856,7 @@ Description: A piano plays alone in a room that hasn't been opened in years. The
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Ambient piano lo-fi warmth nostalgic instrumental, bittersweet loss with hope leaking through cracks, solo slightly detuned upright piano with felt dampers soft muffled tone, gentle cello drone barely audible underneath, distant music box playing 3-4 fragile notes on repeat, ambient pad like morning fog through broken windows, slow 56 BPM unhurried walking pace, reference To the Moon opening Stardew Valley winter Joe Hisaishi, piano alone in abandoned room notes aged like clock lost minutes, soft string pad enters as warm shadow, cello holds low note like wind through empty station, music box repeats as if wound up and walked away decades ago, ends mid-thought mid-memory unfinished like fading photograph, sound of railway station where last train left twenty years ago, reverb like empty hall, gentle fade to silence, instrumental no vocals
+> Style: Ambient piano lo-fi warmth nostalgic instrumental in D minor, bittersweet loss with hope leaking through cracks, solo slightly detuned upright piano felt dampers soft muffled tone half-pedal sustain notes bleeding together, gentle cello drone barely audible underneath, distant music box playing 3-4 fragile notes on repeat, ambient pad like morning mist through broken windows, slow 56 BPM unhurried walking pace gentle rubato never metronomic, reference To the Moon Stardew Valley winter Joe Hisaishi One Summer's Day, piano alone in abandoned room notes aged like clock lost minutes, cello holds long low note like wind through empty station, music box repeats as if wound up and walked away decades ago, sparse verse structure breathing spaces between phrases, emotional arc quiet acceptance to fragile hope then back to stillness, ends mid-thought mid-memory unfinished fading photograph, reverb like empty hall, gentle fade to silence, instrumental no vocals
 
 **时长**：3:30（循环用，尾部渐弱可无缝loop） | **生成策略**：1次30s片段 → Extend 5-6次至全长
 
@@ -1565,7 +1873,7 @@ Description: A warm, emotional piano piece with gentle string accompaniment. The
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Emotional piano cinematic strings warm instrumental, heartwarming touching hopeful reunion mood, piano with gentle repeating left-hand arpeggios right-hand melody rising and falling like heartfelt conversation, string ensemble enters at 20s as warm shadow underneath, soft French horn adds depth at 45s playing counter-melody, moderate 70 BPM with slight rubato breathing room, reference Stardew Valley dance theme Studio Ghibli Hisaishi warm scores, arrangement builds from solo piano to small chamber ensemble, strings swell gently supporting melody never overpowering, light brushed percussion at midpoint adds gentle pulse, emotional arc from quiet recognition to full warmth then settles back to intimate piano ending, reverb like small room with wooden walls, nostalgic but forward-looking, ends on resolved major chord with lingering warmth, instrumental no vocals
+> Style: Emotional piano cinematic strings warm instrumental in G major, heartwarming touching hopeful reunion mood, solo piano melody rising gently over two octaves like arms opening wide, legato phrasing with soft pedal warmth in upper register, gentle repeating left-hand arpeggios right-hand melody like heartfelt conversation, string ensemble enters at 20s sustained warm shadow underneath, viola and cello weave countermelody beneath piano, soft French horn adds golden warmth at 45s counter-melody, moderate 70 BPM with slight rubato breathing room at emotional peaks, brief ritardando at climax returning to original tempo, reference Stardew Valley dance theme Studio Ghibli Hisaishi warm scores, arrangement builds from solo piano to chamber ensemble, outro thinning back to solo piano final notes hanging like unshed tears, reverb like small room with wooden walls, nostalgic forward-looking, ends resolved major chord lingering warmth, instrumental no vocals
 
 **时长**：3:30（循环用） | **生成策略**：1次30s片段 → Extend 5-6次至全长
 
@@ -1584,7 +1892,7 @@ Description: Two piano notes, hesitant, like a question asked into an empty room
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Cinematic orchestral build bittersweet heroic instrumental, determined not triumphant moment you decide to fight, solo piano two hesitant notes like question into empty room, sustained cello enters reluctant but steady, French horn midpoint quiet confidence not power, full strings end wide like opening curtains, gradual build 58 to 85 BPM across 90 seconds, reference Interstellar docking Your Name departure Wind Rises finale, cello answers like old friend sitting without speaking, French horn plays melody waiting patiently, strings arrive like dawn seeping through window, peaks with width not volume then pulls back to piano same two notes different now, sound of man deciding repair locomotive with no money parts guarantee, reverb mountain valley, ends unresolved hanging in air, instrumental no vocals
+> Style: Cinematic orchestral build bittersweet heroic instrumental in E minor, determined not triumphant moment you decide to fight, solo piano two hesitant notes like question into empty room, sustained cello enters reluctant but steady with slow bowed sustain, French horn midpoint quiet confidence muted then opening warm brass, full strings end wide like opening curtains, gradual build 58 to 85 BPM across 90 seconds, reference Interstellar docking Your Name departure Wind Rises finale, cello answers like old friend sitting without speaking, French horn plays melody waiting patiently, strings arrive like dawn seeping through window gradually, minor to major harmonic shift at emotional turning point, peaks with width not volume then pulls back to piano same two notes now different, sound of man deciding repair locomotive with no money parts guarantee, outro resolves sustained chord fading like breath released, reverb mountain valley, ends unresolved hanging in air, instrumental no vocals
 
 ### 3.4 morning（清晨·宁静）
 
@@ -1599,7 +1907,7 @@ Description: A gentle, fresh morning piece with acoustic guitar and soft flute. 
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Acoustic folk calm morning gentle instrumental, peaceful fresh optimistic new day mood, fingerpicked acoustic guitar carrying simple repeating melody like birdsong, soft flute enters at 20s with gentle counter-melody floating above, light brush percussion adding subtle pulse at 30s, piano joins at midpoint with warm chord pad, slow to moderate 65 BPM unhurried sunrise pace, reference Stardew Valley spring theme Animal Crossing morning music Hisaishi My Neighbor Totoro morning, arrangement builds from solo guitar to gentle quartet then settles back, reverb like open valley with morning mist, each instrument enters like different bird species waking up, sound of new day beginning in small mountain village, warm and hopeful never urgent, ends on sustained major chord fading into nature silence, instrumental no vocals
+> Style: Acoustic folk calm morning gentle instrumental in C major, peaceful fresh optimistic new day mood, fingerpicked acoustic guitar simple repeating melody like birdsong alternating bass thumb pattern, soft flute enters 20s gentle counter-melody floating above like wind through pine trees, light brush percussion adding subtle pulse 30s soft shaker texture, piano joins midpoint warm chord voicings sustain pedal creating harmonic bed, slow to moderate 65 BPM unhurried sunrise pace, reference Stardew Valley spring theme Animal Crossing morning music Hisaishi My Neighbor Totoro morning, arrangement builds solo guitar to gentle quartet then settles back, brief pause at bridge like taking deep breath before day, each instrument enters like different bird species waking up one by one, reverb open valley morning mist, sound of new day beginning small mountain village, warm hopeful never urgent, ends sustained major chord fading nature silence, instrumental no vocals
 
 ### 3.5 warm（温暖·安心）
 
@@ -1614,7 +1922,7 @@ Description: A warm, cozy acoustic piece that feels like sitting by a fireplace 
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Cozy folk warm acoustic comforting instrumental, safe warm homely fireplace mood, fingerpicked acoustic guitar playing simple 4-bar loop that never develops like daily routine, soft piano enters every 8 bars playing 2-3 notes then retreating, gentle upright bass provides warm foundation underneath, moderate 75 BPM like someone walking without destination, reference Stardew Valley summer theme fireplace ambient Hisaishi Kiki delivery service warmth, arrangement like small room with wooden walls and crackling fire, no dramatic changes just steady comfort, reverb like station waiting room with old wooden benches, wind chime occasionally catches breeze outside window, guitar tone warm and slightly worn like instrument played for years, ends on same comfortable loop fading gently, sound of community gathering where everyone knows each other names, instrumental no vocals
+> Style: Cozy folk warm acoustic comforting instrumental in A major, safe warm homely fireplace mood, fingerpicked acoustic guitar simple 4-bar loop never develops like daily routine, soft piano enters every 8 bars playing 2-3 notes then retreating, gentle upright bass warm foundation underneath, occasional soft violin harmony color like embers glowing in fireplace, moderate 75 BPM heartbeat tempo steady and unhurried, reference Stardew Valley summer theme fireplace ambient Hisaishi Kiki delivery service warmth, arrangement like small room wooden walls crackling fire, no dramatic changes just steady comfort throughout, reverb station waiting room old wooden benches, wind chime occasionally catches breeze outside window, guitar tone warm slightly worn like played for years by old friend, breathes naturally comfortable silence between phrases, ends same comfortable loop fading gently, sound of community gathering everyone knows each other names, instrumental no vocals
 
 ### 3.6 news（新闻播报）
 
@@ -1631,7 +1939,7 @@ Description: Staccato strings in perfect unison, mechanical, like a printing pre
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: State broadcast theme authoritarian formal mechanical precision instrumental, weight of official story may not be true, staccato rigid strings perfect unison like printing press, low brass drone heavy institutional authority, militaristic snare more schedule than music, single piano note at end silence before you think, rigid 82 BPM no rubato machine-precise, reference KCNA broadcast CCTV Xinwen Lianbo Death of Stalin opening, arrangement never breathes never pauses never lets you forget this is announcement, strings play identical rhythm like propaganda loop, brass drones add weight without menace, snare marks time like factory whistle, final piano note lonely exposed like silence after broadcast, reverb large empty government hall, ends abruptly cutting off mid-sentence, instrumental no vocals
+> Style: State broadcast theme authoritarian formal mechanical precision instrumental, weight of official story may not be true, staccato rigid strings perfect unison like printing press producing newspapers, low brass drone heavy institutional authority never wavering, militaristic snare more schedule than music counting rigid beats, trumpet fanfare opening like bulletin interrupting silence, single piano note at end silence before you think, rigid 82 BPM no rubato machine-precise locked tempo, reference KCNA broadcast CCTV Xinwen Lianbo Death of Stalin opening, strings play identical rhythm mechanical like propaganda loop, brass drones add weight without menace, brief woodwind passage midpoint official statement before returning march, snare marks time like factory whistle counting shifts, final piano note lonely exposed silence after broadcast ends, reverb large empty government hall echoing, ends abruptly cutting off mid-sentence transmission ending, instrumental no vocals
 
 ### 3.6.1 news_explosive（爆炸性新闻·对主角极度不利）
 
@@ -1663,7 +1971,7 @@ Description: A guitar fingerpicks a simple melody that loops without variation �
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Ambient folk fingerpicked warmth unhurried daily life instrumental, peaceful not naive calm before storm, acoustic guitar simple 4-bar loop never develops never climaxes, piano enters every 8 bars 2-3 notes then retreats, distant wind chime catches breeze, subtle room tone like house breathing, slow 56 BPM walking without destination, reference Minecraft day Stardew Valley farm Animal Crossing 2am, guitar loops without variation like daily routine, piano glances up from work every 8 bars returns to silence, wind chime outside catches breeze irregularly, sounds like Tuesday afternoon village biggest event tea harvest, low ambient hum distant thrum of engine never quite goes away, calm real but borrowed time, reverb small house mountain valley, ends same comfortable loop, instrumental no vocals
+> Style: Ambient folk fingerpicked warmth unhurried daily life instrumental in G major, peaceful not naive calm before storm, acoustic guitar simple 4-bar loop never develops never climaxes, piano enters every 8 bars 2-3 notes then retreats to silence, distant wind chime catches breeze random and unhurried, subtle room tone like house breathing afternoon air, very faint cello harmonic undertone barely perceptible, slow 56 BPM walking without destination, reference Minecraft day Stardew Valley farm Animal Crossing 2am, guitar loops without variation like daily routine, piano glances up from work every 8 bars returns to silence, wind chime outside catches breeze irregularly, sounds like Tuesday afternoon village biggest event tea harvest, low ambient hum distant thrum engine never quite goes away, arrangement stays constant refusing to climax or resolve, calm real but borrowed time, reverb small house mountain valley, ends same comfortable loop, instrumental no vocals
 
 ### 3.8 train_ambient（火车行驶环境）
 
@@ -1678,7 +1986,7 @@ Description: The rhythmic sound of a train moving through the countryside. A ste
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Ambient field recording train journey rhythmic instrumental, rhythmic moving contemplative travel mood, soft percussion pattern mimicking wheels on rails clickety-clack steady heartbeat, gentle drone underneath like engine hum felt through carriage floor, ambient pad like landscape blurring past window, moderate 90 BPM matching train cadence exactly, reference train journey ambient Snowpiercer soundtrack atmospheric sections, steady hypnotic rhythm of train moving through mountain countryside, arrangement builds slightly then maintains constant like train itself never stopping, occasional distant horn echo suggesting other trains existing in same world, reverb like enclosed carriage space with gentle vibration, sound of wheels on rails rhythmic and meditative, sense of forward motion without urgency like journey with no deadline, ends on same rhythm fading as train disappears into distance, instrumental no vocals
+> Style: Ambient field recording train journey rhythmic instrumental, rhythmic moving contemplative travel mood, soft percussion pattern mimicking wheels on rails clickety-clack steady heartbeat, gentle drone underneath like engine hum felt through carriage floor, ambient pad like landscape blurring past window golden fields, steel guitar harmonics adding traveling loneliness, moderate 90 BPM matching train cadence exactly, reference train journey ambient Snowpiercer soundtrack atmospheric sections, steady hypnotic rhythm train moving through mountain countryside, occasional distant horn echo suggesting other trains in same world, arrangement builds slightly then maintains constant like train never stopping, percussion layers shift suggesting landscape changing plains to mountains, reverb enclosed carriage space with gentle vibration, sense of forward motion without urgency like journey with no deadline, ends rhythm fading as train disappears into distance, instrumental no vocals
 
 ### 3.9 ambient_nature（自然环境音）
 
@@ -1695,7 +2003,7 @@ Description: Wind moves through tall grass and leafless branches — not gentle,
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Organic field recording nature ambient no-music soundscape, indifferent beauty nature doesn't care about human stories somehow comforting, wind through tall grass bare branches constant varying like breathing, distant bird call every 20-30 seconds different direction not melody just announcement, occasional water drip underground echoing rocks, faint insect hum barely audible, no tempo free time organic rhythm, reference Studio Ghibli valley Princess Mononoke forest BBC Planet Earth, wind moves not gentle not harsh just present like weather, bird calls each different species announcing territory, water drip rhythmic not musical like geological clock counting deep time, no center no focal point like landscape painting where nothing happens everything alive, iron rails rusting mountains don't notice, reverb open mountain valley morning mist, ends wind fading then bird call returning, instrumental no vocals
+> Style: Organic field recording nature ambient no-music soundscape, indifferent beauty nature doesn't care about human stories somehow comforting, wind through tall grass bare branches constant varying like breathing, distant bird call every 20-30 seconds different direction not melody just announcement, occasional water drip underground echoing rocks, faint insect hum barely audible threading through, no tempo free time organic rhythm, reference Studio Ghibli valley Princess Mononoke forest BBC Planet Earth landscape, wind moves not gentle not harsh just present like weather, bird calls each different species announcing territory across valley, water drip rhythmic not musical geological clock counting deep time, no center no focal point like landscape painting where nothing happens everything alive, iron rails rusting mountains don't notice that is the point, reverb open mountain valley morning mist, sound of world continuing without us patient and unhurried, instrumental no vocals
 
 ### 3.10 mystery（悬疑·未知）
 
@@ -1712,7 +2020,7 @@ Description: A low drone begins — not ominous, just present, like a machine re
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Dark ambient slow reveal unsettling curiosity instrumental, opening something sealed twenty-three years may have changed, low sustained drone machine remembering vibration after decades silence, reversed piano notes time running backward, single high harmonic glass-like frequency shouldn't exist, deliberate silence between sounds real instrument, very slow 50 BPM each sound separated 3-4 seconds genuine silence, reference Annihilation shimmer Outer Wilds dark bramble Arrival alien, low drone not ominous just present computer booting after long sleep, between pulses real silence creating unease, piano enters reversed decaying into forward like time correcting, high harmonic appears suddenly like unknown frequency response, never resolves never explains, ends mid-drone if waking decided wait longer, reverb deep underground metallic reflections, instrumental no vocals
+> Style: Dark ambient slow reveal unsettling curiosity instrumental, opening something sealed twenty-three years may have changed, low sustained drone machine remembering vibration after decades silence, reversed piano notes time running backward rewinding memory, single high harmonic glass-like frequency shouldn't exist, deliberate silence between sounds real instrument shaping tension, very slow 50 BPM each sound separated 3-4 seconds genuine silence, reference Annihilation shimmer Outer Wilds dark bramble Arrival alien, low drone not ominous just present computer booting after long sleep, between pulses real silence creating unease not music-shaped, piano enters reversed decaying into forward like time correcting, high harmonic appears suddenly unknown frequency response, subtle metallic resonance circuits clicking awake, never resolves never explains ends mid-drone if waking decided wait longer, reverb deep underground metallic reflections, instrumental no vocals
 
 ### 3.11 curiosity（好奇·探索）
 
@@ -1729,7 +2037,7 @@ Description: Pizzicato strings skip along like someone who can't decide which di
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Playful ambient childlike wonder whimsical discovery instrumental, curious delighted AI seeing world first time after long sleep, pizzicato strings light skipping can't decide direction, music box 8-note phrase off-rhythm wound unsteady hand, soft xylophone notes like footsteps discovering objects, bassoon single note comedic double-take, moderate 72 BPM walking stopping looking, reference Howl's Moving Castle curious Celeste B-side Ghibli comedic, pizzicato strings skip can't decide direction, music box plays pauses plays differently learning melody, xylophone like footsteps this and this and this, bassoon unexpected note comedic wait what, loops imperfectly AI figuring patterns, reverb small room objects to discover, ends music box trailing mid-phrase exploring, instrumental no vocals
+> Style: Playful ambient childlike wonder whimsical discovery instrumental, curious delighted AI seeing world first time after long sleep, pizzicato strings light skipping can't decide which direction to look first, music box 8-note phrase off-rhythm wound by unsteady hand, soft xylophone individual notes like footsteps discovering objects, bassoon single note comedic double-take punctuation, moderate 72 BPM walking stopping looking around, reference Howl's Moving Castle curious Celeste exploration B-side Ghibli comedic interludes, pizzicato strings skip and hesitate changing direction, music box plays pauses plays differently learning melody in real-time, xylophone like footsteps this is new and this and this, bassoon unexpected low note comedic wait what moment, loops imperfectly each time like AI still figuring out patterns, reverb small room full of objects waiting to be discovered, ends music box trailing mid-phrase like wandered off exploring, instrumental no vocals
 
 ### 3.12 silence（寂静·留白）
 
@@ -1746,7 +2054,7 @@ Description: A single tone, so quiet you're not sure if it's music or your own h
 ```
 
 **Suno Style（≤1000字符）：**
-> Style: Near-silence minimal drone breathing space instrumental, not empty but full silence after everything said and done, single sustained sine tone barely above hearing threshold like tinnitus distant singing bowl, one distant chime thirty seconds like station clock marking hour no one hears, room tone fades to nothingness, no tempo pure time stretching, reference Brian Eno Music for Airports 2001 monolith Arvo Part Spiegel im Spiegel, single tone quiet not sure if music or hearing sustains thirty seconds unchanged like holding breath, one chime single note breaking stillness last note in abandoned church, tone continues twenty seconds then fades absence not silence what remains when last person walks away, plays once at moment prologue ends player realizes alone with choices, reverb disappears creating infinite empty space, ends nothing not even room tone pure void, instrumental no vocals
+> Style: Near-silence minimal drone breathing space instrumental, not empty but full silence after everything said, single sustained sine tone barely above hearing threshold like distant singing bowl, one distant chime thirty seconds like station clock marking hour no one hears, room tone fades nothingness over final seconds, harmonic overtones shimmering below perception, no tempo pure time stretching unmarked, reference Brian Eno Music for Airports 2001 monolith Arvo Part Spiegel im Spiegel, single tone quiet not sure if music or hearing sustains thirty seconds unchanged, one chime single note breaking stillness last note in abandoned church, tone continues twenty seconds fades absence not silence what remains when last person walks away, final five seconds pure dead air, plays once at moment prologue ends player realizes alone with choices, reverb disappears infinite empty space, ends nothing not even room tone pure void, instrumental no vocals
 
 ---
 
@@ -2125,23 +2433,23 @@ MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格�
 
 | 背景 | 对应场景 | 优先级 |
 |------|---------|--------|
-| `railway_track` 线路巡视 | prologue_05 | 🔴 高 |
+| `station_sunset` 车站夕阳 | prologue_04/10 | ⚠️ 待重绘（站牌/墙字） |
+| `railway_track` 线路巡视 | prologue_05 | ✅ 已入库 |
 | `depot_morning` 车辆段晨 | prologue_07 | 🔴 高 |
-| `station_night` 车站夜景 | prologue_06 | 🔴 高 |
+| `station_night` 车站夜景 | prologue_06 | ✅ 已入库 |
 | `station_office` 站长办公室 | prologue_09 | 🔴 高 |
 | `platform_morning` 站台晨光 | prologue_08/09 | 🔴 高 |
-| `station_sunset` 车站黄昏 | prologue_04/10 | 🔴 高 |
-| `village_sunset` 雾峰村夕阳 | prologue_04 | 🔴 高 |
+| `village_sunset` 雾峰村夕阳 | prologue_04 | ✅ 已生成 |
 | `border_town` 边境小镇 | prologue_03 | 🟡 中 |
 | `supply_station` 补给站 | prologue_03 | 🟡 中 |
-| `mountain_sky` 群山天空 | prologue_04 | 🟡 中 |
-| `aerial_view` 空中俯瞰 | prologue_04 | 🟡 中 |
 | `platform_evening` 傍晚站台 | prologue_04 | 🟡 中 |
 | `songqiao_station` 松桥站 | prologue_05 | 🟡 中 |
 | `china_sky` 中国上空 | prologue_03 | 🟢 低 |
 | `hebei_town` 河北小镇 | prologue_03 | 🟢 低 |
 | `henan_town` 河南小镇 | prologue_03 | 🟢 低 |
 | `train_inside` 车厢内部 | prologue_08 | 🟢 低 |
+| ~~`mountain_sky`~~ 群山天空 | prologue_04 | ✅ 已入库 |
+| ~~`aerial_view`~~ 空中俯瞰 | prologue_04 | ✅ 已入库 |
 
 ### 6.2 CG 插画（9 张，提词已写 ✅）
 
@@ -2150,10 +2458,10 @@ MOOD: 正式的官方新闻播报美学。刻板、层级分明、宣传风格�
 **角色参考图清单**（生成CG时附带）：
 | 角色 | 参考图路径 | 备注 |
 |------|-----------|------|
-| 林彪悍 | `characters/lin_biaohan/normal.png` | 主角，25岁研究生 |
-| 老陈 | `characters/laochen/normal.png` | 68岁末代站长 |
-| 嘉颖徐 | 待绘制 | 24岁铁路大亨，低马尾，深色套装 |
-| 岁月 | `characters/suiyue/normal.png` | 13岁AI少女，黑长发红蝴蝶结 |
+| 林彪悍 | `characters/lin_biaohan/normal.png` | 主角，25岁研究生，16/16 |
+| 老陈 | `characters/laochen/normal.png` | 68岁末代站长，16/16 |
+| 嘉颖徐 | `characters/jiaying_xu/normal.png`（flat: `jiaying_xu_normal.png`） | 24岁铁路大亨；**13/16**，缺 worried/shocked/shout/wink |
+| 岁月 | `characters/suiyue/normal.png` | 13岁AI少女；约13/16，缺 happy/shocked/shout（surprise 已改名对齐） |
 | 张工/李阿姨/赵师傅/小芳/王小弟 | 待绘制 | 序章员工团队 |
 
 | CG 名 | 名称 | 剧情位置 | 角色参考 | 尺寸 |
@@ -2382,14 +2690,14 @@ pixel art, 2D game CG illustration, 1920x1080, 16:9 aspect ratio,
 STARDEW VALLEY STYLE PIXEL ART, clear pixels,
 night reunion, single lamplight, station platform:
 
-SCENE: Old railway station platform at night. A single flickering fluorescent lamp hangs from the roof, casting a warm cone of light. Seven figures gather in a loose circle under the lamp. One elderly figure (left-center) gestures toward the group, introducing them. The old NF-5 locomotive is dimly visible in the deep background — dark, dormant, massive. Platform edge with rusted rail visible at bottom.
+SCENE: Old railway station platform at night. A single flickering fluorescent lamp hangs from the roof, casting a warm cone of light. Seven figures gather in a loose circle under the lamp. One elderly figure (left-center) gestures toward the group, introducing them. The old NF-5K locomotive is dimly visible in the deep background — dark, dormant, massive. Platform edge with rusted rail visible at bottom.
 
 LAYOUT:
 - Platform roof with single lamp, center-top, light cone downward
 - Elderly figure left-center, gesturing
 - Young figure center, facing group
 - 5 others arranged in semi-circle right side
-- NF-5 locomotive in deep background, silhouette only
+- NF-5K locomotive in deep background, silhouette only
 - Platform edge with rusted rail at bottom frame
 
 COLORS:
@@ -2495,7 +2803,7 @@ AVOID:
 
 ### 6.4 已入库（背景图）
 
-`cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop`
+`cabin_interior` / `cabin_interior_night` / `car_interior` / `car_interior_night` / `hangar` / `lab` / `professor_office` / `station` / `tea_house` / `shop` / `mountain_sky` / `aerial_view`
 
 
 ---
@@ -3156,10 +3464,12 @@ AVOID:
 
 ---
 
-### 2.12 大同江茶馆（嘉颖徐会面室内）
+### 2.12 大同江茶馆 / 嘉颖徐茶室兼办公室（tea_house）✅ 标杆定稿
 
-**文件**：`Resources/bg/tea_house.png`  
-**用途**：序章嘉颖徐会面场景——平壤江南区高级会员制茶馆/私人办公室
+**文件**：`Assets/Resources/bg/tea_house.png`  
+**规格现状**：1536×1024（1.5:1，序章 `prologue_02_day0`、`prologue_03_journey` 引用）。  
+**用途与设定定性**：**嘉颖徐（徐会长）的大同江畔奢华茶室兼私人办公室**（用户 2026-10-10 明确定性：「这个就是嘉颖徐的茶室兼办公室」）。融合了朝鲜顶级阶层的奢华红木装饰、水晶吊灯、青瓷茶具与大同江畔主体思想塔璀璨夜景。  
+**资产状态**：✅ **标杆定稿合格资产**（画面完全契合会面场景设定，予以保留）。
 
 **提示词**：
 ```
@@ -3409,3 +3719,32 @@ MOOD: 一个时代的终结。没有人在等车了。铁轨还在，只是没�
 NO CHARACTERS, NO PEOPLE, NO VEHICLES — empty abandoned station, nature reclaiming human infrastructure.
 ```
 
+
+---
+
+### 2.41 夜路·道口（night_road）
+
+**文件**：`Resources/bg/night_road.png`
+**用途**：序章 05 巡线 scene3——茶嫂小货车沿河谷便道夜行、三公里半道口陷车段的背景。全章唯一纯夜户外线路景。
+
+**叙事锚点**：山谷起薄雾，车灯照出去只有十米；三公里半的道口，路基被水掏空的沟口压着我傍晚搬来的三块石头，红布条被风抽得啪啪响；马灯是画面里唯一的暖光。
+
+**提示词**：
+```
+1920×1080，清晰像素风，星露谷风格像素画，
+雾峰村线 夜路·道口 —— 深夜山谷中的铁路道口，无人无车的空景：
+
+视角：站在道口旁便道一侧、贴近地面的视角，沿泥辙望向与钢轨交汇处
+
+以下元素供参考，自行取舍添加：
+- 前景：被车辙压出泥坑的便道碎石，一盏刚放下的马灯搁在道口木板边，玻璃罩里一点暖黄火苗（近景留空，不画持灯人）
+- 道口：横铺的旧枕木道口板，缝里积着碎石与草屑；两侧钢轨锈棕发亮，往两个方向没入雾中
+- 沟口（关键叙事物）：路基边被水掏空的暗沟，沟口压着三块手掌大的石头，石头上系一条褪色的红布条，被风抽出一个角
+- 中景：河谷便道与铁轨并行伸向雾里，谷底河水反着一点微光
+- 远景：两侧山脊的墨色剪影，山口处透进两束很淡的暖黄灯光（画面外车辆的近光，不画车）
+- 天空：无月深夜，星子稀薄，谷口一层青灰薄雾
+
+文字：无
+禁止：終點站 / 松桥 / 巨型手写墙字
+NO CHARACTERS, NO PEOPLE, NO VEHICLES — 空景夜道口，只有马灯、红布条和雾
+```

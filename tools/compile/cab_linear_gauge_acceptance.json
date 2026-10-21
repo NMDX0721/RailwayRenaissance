@@ -1,0 +1,16 @@
+{
+  "resource_import": true,
+  "coordinate_rotation_samples": 301,
+  "bounds_m": [
+    0.05,
+    0.18,
+    0.04
+  ],
+  "renderers": 23,
+  "state_binding_and_refresh": true,
+  "scene_reloaded_and_rendered": true,
+  "cs_errors": 0,
+  "burst_disabled_for_acceptance_only": true,
+  "normal_burst_shutdown_issue_resolved": false,
+  "main_cab_assembly_complete": false
+}

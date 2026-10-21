@@ -6,7 +6,6 @@ public static class KeyBindings
     public enum Action
     {
         Advance,
-        SkipBack,
         SkipForward,
         ToggleAuto,
         OpenMenu
@@ -15,7 +14,6 @@ public static class KeyBindings
     private static readonly Dictionary<Action, KeyCode> defaults = new Dictionary<Action, KeyCode>
     {
         { Action.Advance, KeyCode.Space },
-        { Action.SkipBack, KeyCode.LeftArrow },
         { Action.SkipForward, KeyCode.RightArrow },
         { Action.ToggleAuto, KeyCode.F5 },
         { Action.OpenMenu, KeyCode.Escape }
@@ -55,7 +53,6 @@ public static class KeyBindings
         switch (action)
         {
             case Action.Advance: return "推进对话";
-            case Action.SkipBack: return "后退";
             case Action.SkipForward: return "快进";
             case Action.ToggleAuto: return "自动模式";
             case Action.OpenMenu: return "菜单";
@@ -66,14 +63,14 @@ public static class KeyBindings
     public static bool IsDown(Action action)
     {
         KeyCode k = GetKey(action);
-        if (k == KeyCode.Mouse0) return Input.GetMouseButtonDown(0);
-        return Input.GetKeyDown(k);
+        if (k == KeyCode.Mouse0) return LegacyInputAdapter.GetMouseButtonDown(0);
+        return LegacyInputAdapter.GetKeyDown(k);
     }
 
     public static bool IsHeld(Action action)
     {
         KeyCode k = GetKey(action);
-        if (k == KeyCode.Mouse0) return Input.GetMouseButton(0);
-        return Input.GetKey(k);
+        if (k == KeyCode.Mouse0) return LegacyInputAdapter.GetMouseButton(0);
+        return LegacyInputAdapter.GetKey(k);
     }
 }

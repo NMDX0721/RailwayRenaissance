@@ -81,14 +81,19 @@ public static class SandRivalManager
 
     public static float GetPenetration(string cityId)
     {
-        if (cityPenetration.ContainsKey(cityId))
+        if (cityPenetration == null)
+            Initialize();
+        if (cityId != null && cityPenetration.ContainsKey(cityId))
             return cityPenetration[cityId];
         return 0.15f;
     }
 
     public static void SetPenetration(string cityId, float value)
     {
-        cityPenetration[cityId] = Mathf.Clamp01(value);
+        if (cityPenetration == null)
+            Initialize();
+        if (cityId != null)
+            cityPenetration[cityId] = Mathf.Clamp01(value);
     }
 
     public static SandAction CheckForAction()

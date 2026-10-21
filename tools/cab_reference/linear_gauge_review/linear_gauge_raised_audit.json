@@ -1,0 +1,10 @@
+{
+  "meshes": 14,
+  "triangles": 5502,
+  "shared_baseline": true,
+  "bezel_front_m": -0.02525,
+  "glass_front_m": -0.0223,
+  "glass_to_pointer_clearance_m": 0.00195,
+  "upper_screw_to_bezel_clearance_m": 0.0024,
+  "original_mechanism_and_drive_unverified": true
+}

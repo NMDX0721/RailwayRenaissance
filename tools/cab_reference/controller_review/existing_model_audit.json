@@ -1,0 +1,25 @@
+{
+  "source": "D:\\Unity Project\\RailwayRenaissance\\Assets\\Models\\Cab\\throttle_controller.glb",
+  "mesh_count": 1,
+  "source_dimensions_units_unknown": [
+    1.9019660949707031,
+    1.1163690090179443,
+    1.4695874452590942
+  ],
+  "bounds_min": [
+    -0.9511423110961914,
+    -0.5575471520423889,
+    -0.7339995503425598
+  ],
+  "bounds_max": [
+    0.9508237242698669,
+    0.5588217973709106,
+    0.7355878949165344
+  ],
+  "parts": [
+    {
+      "name": "Mesh_0",
+      "triangles": 422384
+    }
+  ]
+}

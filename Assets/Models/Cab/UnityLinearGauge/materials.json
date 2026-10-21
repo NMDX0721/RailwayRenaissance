@@ -1,0 +1,97 @@
+{
+  "materials": [
+    {
+      "name": "Gauge_Aged_Retainer_Enamel",
+      "metallic": 0.0,
+      "smoothness": 0.5399999916553497,
+      "transmission": 0.0,
+      "color": [
+        0.017000000923871994,
+        0.019999999552965164,
+        0.017999999225139618,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityLinearGauge/Gauge_Aged_Retainer_Enamel_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityLinearGauge/Gauge_Aged_Retainer_Enamel_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityLinearGauge/Gauge_Aged_Retainer_Enamel_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_BlackPaint",
+      "metallic": 0.0,
+      "smoothness": 0.4700000286102295,
+      "transmission": 0.0,
+      "color": [
+        0.017000000923871994,
+        0.019999999552965164,
+        0.017999999225139618,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityLinearGauge/Gauge_BlackPaint_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityLinearGauge/Gauge_BlackPaint_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityLinearGauge/Gauge_BlackPaint_MetallicSmoothness.png"
+    },
+    {
+      "name": "Gauge_Fastener",
+      "metallic": 0.8799999952316284,
+      "smoothness": 0.5699999928474426,
+      "transmission": 0.0,
+      "color": [
+        0.12999999523162842,
+        0.14499999582767487,
+        0.14000000059604645,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Ink",
+      "metallic": 0.0,
+      "smoothness": 0.48000001907348633,
+      "transmission": 0.0,
+      "color": [
+        0.008999999612569809,
+        0.009999999776482582,
+        0.008999999612569809,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Pointer",
+      "metallic": 0.0,
+      "smoothness": 0.4300000071525574,
+      "transmission": 0.0,
+      "color": [
+        0.2199999988079071,
+        0.032999999821186066,
+        0.014000000432133675,
+        1.0
+      ]
+    },
+    {
+      "name": "Gauge_Scale",
+      "metallic": 0.0,
+      "smoothness": 0.38999998569488525,
+      "transmission": 0.0,
+      "color": [
+        0.6499999761581421,
+        0.6200000047683716,
+        0.49000000953674316,
+        1.0
+      ],
+      "BaseColor": "Assets/Models/Cab/UnityLinearGauge/Gauge_Scale_BaseColor.png",
+      "Normal": "Assets/Models/Cab/UnityLinearGauge/Gauge_Scale_Normal.png",
+      "MetallicSmoothness": "Assets/Models/Cab/UnityLinearGauge/Gauge_Scale_MetallicSmoothness.png"
+    },
+    {
+      "name": "Linear_Protective_Glass",
+      "metallic": 0.0,
+      "smoothness": 0.9450000002980232,
+      "transmission": 1.0,
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    }
+  ]
+}
