@@ -17,6 +17,7 @@ public static class NF5KBogieDetailReview
             var parent=old.transform.parent;
             UnityEngine.Object.DestroyImmediate(old);
             NF5KRunningGear.Build(parent);NF5KRunningGear.ValidateReload();
+            NF5KAccessLadder.Build(parent);
             EditorSceneManager.SaveScene(scene);
         }
         AssetDatabase.SaveAssets();
@@ -39,9 +40,9 @@ public static class NF5KBogieDetailReview
             var fill=new GameObject("Bogie_Review_Soft_Fill_Not_Vehicle").AddComponent<Light>();
             fill.type=LightType.Directional;fill.intensity=.75f;fill.color=new Color(.95f,.97f,1);fill.shadows=LightShadows.None;fill.transform.rotation=Quaternion.Euler(35,-50,0);
             camera.transform.position=new Vector3(4.3f,-.15f,4.4f);camera.transform.LookAt(new Vector3(.3f,-.63f,2.5f));
-            Shot(camera,"tools/cab_reference/interior_review/bogie_detail_refined.png");
+            Shot(camera,"tools/cab_reference/interior_review/ladder_wheel_refined.png");
             camera.transform.position=new Vector3(3.2f,-.25f,4.8f);camera.transform.LookAt(new Vector3(.7f,-.70f,3.6f));camera.orthographicSize=.78f;
-            Shot(camera,"tools/cab_reference/interior_review/bogie_suspension_brake_detail.png");
+            Shot(camera,"tools/cab_reference/interior_review/ladder_wheel_closeup.png");
             EditorSceneManager.OpenScene("Assets/Scenes/CabSimulationReview.unity");
             NF5KSimulationPlayReview.Begin();
         }

@@ -12,8 +12,9 @@ public static class NF5KRunningGear
     {
         root=new GameObject("Running_Gear").transform;root.SetParent(parent,false);
         frame=Mat("Bogie_Cast_Steel",new Color(.095f,.105f,.115f),.65f,.24f);
-        tread=Mat("Wheel_Machined_Tread",new Color(.31f,.33f,.35f),.90f,.28f);
-        web=Mat("Wheel_Oxidized_Web",new Color(.15f,.13f,.115f),.70f,.19f);
+        tread=Mat("Wheel_Machined_Tread",new Color(.66f,.69f,.72f),.86f,.40f);
+        web=Mat("Wheel_Oxidized_Web",new Color(.39f,.405f,.42f),.38f,.28f);
+        FinishWheelMaterials();
         spring=Mat("Bogie_Spring_Steel",new Color(.19f,.20f,.21f),.75f,.30f);
         rubber=Mat("Bogie_Elastomer",new Color(.035f,.039f,.038f),0,.12f);
         friction=Mat("Bogie_Brake_Friction",new Color(.21f,.20f,.18f),.08f,.14f);
@@ -27,6 +28,33 @@ public static class NF5KRunningGear
         NF5KIndustrialFinish.FinishRunningGear(root);
         foreach(var node in root.GetComponentsInChildren<Transform>(true))node.gameObject.layer=parent.gameObject.layer;
         Debug.Log("NF5K_RUNNING_GEAR_BUILD_OK: 2 powered two-axle bogies; 4 rigid wheelsets; assumed layout");
+    }
+    public static void FinishWheelMaterials()
+    {
+        var rolling=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Wheel_Machined_Tread.mat");
+        var plate=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Wheel_Oxidized_Web.mat");
+        if(rolling==null||plate==null)return;
+        string path=Folder+"/Wheel_Subtle_Machining.asset";
+        var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        if(texture==null)
+        {
+            texture=new Texture2D(256,256,TextureFormat.RGBA32,true,true){name="Wheel_Subtle_Machining",wrapMode=TextureWrapMode.Repeat,filterMode=FilterMode.Trilinear,anisoLevel=4};
+            var pixels=new Color[256*256];
+            for(int y=0;y<256;y++)for(int x=0;x<256;x++)
+            {
+                float grain=Mathf.Repeat(Mathf.Sin(x*12.9898f+y*78.233f)*43758.5453f,1);
+                float value=.955f+.017f*Mathf.Sin(y*2.5f)+.024f*(grain-.5f);
+                pixels[y*256+x]=new Color(value,value,value,1);
+            }
+            texture.SetPixels(pixels);texture.Apply(true,false);AssetDatabase.CreateAsset(texture,path);
+        }
+        rolling.SetColor("_BaseColor",new Color(.66f,.69f,.72f));rolling.SetFloat("_Metallic",.86f);rolling.SetFloat("_Smoothness",.40f);
+        plate.SetColor("_BaseColor",new Color(.39f,.405f,.42f));plate.SetFloat("_Metallic",.38f);plate.SetFloat("_Smoothness",.28f);
+        foreach(var mat in new[]{rolling,plate})
+        {
+            mat.SetTexture("_BaseMap",texture);mat.SetTextureScale("_BaseMap",Vector2.one);
+            mat.SetTexture("_MetallicGlossMap",null);mat.DisableKeyword("_METALLICSPECGLOSSMAP");EditorUtility.SetDirty(mat);
+        }
     }
     static void BuildBogie(float z)
     {
@@ -129,7 +157,7 @@ public static class NF5KRunningGear
     static Mesh WheelMesh()
     {
         string path=Folder+"/Profiled_Driving_Wheel.asset";
-        var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null)return existing;
+        var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null){WheelUV(existing);return existing;}
         var profile=new[]{new Vector2(-.11f,.10f),new Vector2(-.11f,.38f),new Vector2(-.10f,.46f),
             new Vector2(-.095f,.49f),new Vector2(-.065f,.49f),new Vector2(-.045f,.462f),
             new Vector2(.09f,.455f),new Vector2(.095f,.39f),new Vector2(.035f,.18f),new Vector2(.05f,.10f)};
@@ -145,7 +173,13 @@ public static class NF5KRunningGear
         }
         var mesh=new Mesh{name="Profiled_Driving_Wheel"};mesh.SetVertices(v);mesh.subMeshCount=2;
         mesh.SetTriangles(dark,0);mesh.SetTriangles(bright,1);mesh.RecalculateNormals();mesh.RecalculateBounds();
-        AssetDatabase.CreateAsset(mesh,path);return mesh;
+        WheelUV(mesh);AssetDatabase.CreateAsset(mesh,path);return mesh;
+    }
+    static void WheelUV(Mesh mesh)
+    {
+        var vertices=mesh.vertices;var uv=new Vector2[vertices.Length];
+        for(int i=0;i<vertices.Length;i++){var p=vertices[i];uv[i]=new Vector2(Mathf.Atan2(p.z,p.y)/(2*Mathf.PI),Mathf.Sqrt(p.y*p.y+p.z*p.z)*2);}
+        mesh.uv=uv;EditorUtility.SetDirty(mesh);
     }
     static void Helix(Vector3 position,Transform parent)
     {
