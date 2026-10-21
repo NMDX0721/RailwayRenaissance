@@ -26,5 +26,7 @@
   "lettering": "independent bold NF-5K type plates only; fleet number unassigned; 0721 belongs to sand-energy vehicle",
   "door_input_and_traction_interlock": false,
   "aperture_junctions": "integrated painted spandrels, metal press lips, rubber seals, recessed glass and 45mm returns; raked shoulder transition",
-  "log": "tools/compile/cab_aperture_junction.log"
+  "industrial_materials": "regional matte enamel, separate rubber and exposed metal, preserved glass specular, 4mm maximum edge bevels, lamp optics and neutral review ground",
+  "markings_cast_shadows": false,
+  "log": "tools/compile/cab_industrial_finish.log"
 }

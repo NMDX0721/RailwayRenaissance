@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+NF-5K全车工业材质：`NF5KIndustrialFinish.Build`在SurfaceFinish后应用区域漆面、独立橡胶、玻璃预乘反射及毫米级倒角，保留BoxCollider体积；专用贴图/倒角网格保存于`NF5KBodyMeshes`。`CabInteriorBlockoutSetup`增加分层天光、主光软阴影、弱补光和独立审阅地面，默认仍保存闭门场景。
+
 NF-5K门窗专项：`NF5KReferenceBody.GlazedOpening`统一封板/压边/密封/玻璃/回口；`RakedZ/Shoulder`连接倾斜风挡与车壳；驾驶侧窗安装基准外移、客室窗间与门后过渡面闭合。渲染新增`door_window_junction_view.png`，独立门扇控制和扫掠检查保留。
 
 NF-5K侧门：运行组件`CabSideDoor`提供开度与锁舌退入，编辑器`NF5KDoorReview`检查4门扫掠；`NF5KReferenceBody`切分门洞并将连续腰带挂在门扇上，`NF5KLivery`按字牌名称持久化独立粗体车型标识。0721属于沙能载具，NF-5K车队编号未指定。`CabInteriorBlockoutSetup`保存闭门场景，并另渲染开门预览。门控输入/牵引联锁仍未接。

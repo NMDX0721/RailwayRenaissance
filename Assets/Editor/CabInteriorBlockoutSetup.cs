@@ -183,6 +183,14 @@ public static class CabInteriorBlockoutSetup
         var light=new GameObject("Interior_Review_Key").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.1f;light.transform.rotation=Quaternion.Euler(45,-30,0);light.cullingMask=1<<30;
         RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.45f,.45f,.45f);
         NF5KSurfaceFinish.Build(root.transform);
+        NF5KIndustrialFinish.Build(root.transform);
+        light.shadows=LightShadows.Soft;light.shadowStrength=.70f;light.shadowBias=.02f;light.shadowNormalBias=.02f;light.intensity=.90f;
+        RenderSettings.ambientMode=AmbientMode.Trilight;
+        RenderSettings.ambientSkyColor=new Color(.34f,.37f,.40f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.24f);RenderSettings.ambientGroundColor=new Color(.07f,.075f,.08f);
+        var fill=new GameObject("Industrial_Review_Fill").AddComponent<Light>();fill.type=LightType.Directional;fill.intensity=.28f;fill.color=new Color(.80f,.87f,1);fill.transform.rotation=Quaternion.Euler(20,-110,0);fill.cullingMask=1<<30;
+        var ground=GameObject.CreatePrimitive(PrimitiveType.Cube);ground.name="Review_Ground_Not_Vehicle";ground.layer=30;
+        ground.transform.position=new Vector3(0,-1.39f,8);ground.transform.localScale=new Vector3(18,.04f,32);
+        ground.GetComponent<Renderer>().sharedMaterial=Mat("Industrial_Review_Ground",new Color(.57f,.59f,.60f));
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene,ScenePath);
         var state=console.GetComponent<CabEngineState>();
         if(state==null||console.GetComponentsInChildren<CabStartupControls>().Length!=1)throw new InvalidOperationException("Interior lost console startup/state binding");
