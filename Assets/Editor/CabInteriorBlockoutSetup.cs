@@ -185,6 +185,7 @@ public static class CabInteriorBlockoutSetup
         var camera=new GameObject("Driver_View_Camera").AddComponent<Camera>();camera.tag="MainCamera";
         camera.transform.position=new Vector3(.65f,1.38f,.78f);camera.transform.LookAt(new Vector3(.60f,1.22f,-.8f));
         camera.fieldOfView=75;camera.nearClipPlane=.025f;camera.farClipPlane=40;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.72f,.78f,.80f);camera.cullingMask=1<<30;
+        NF5KLightingRendererSetup.Configure(camera);
         foreach(var t in root.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
         var pointer=console.GetComponent<CabStartupPointer>();pointer.Configure(camera,1<<30);PrefabUtility.RecordPrefabInstancePropertyModifications(pointer);
         var light=new GameObject("Interior_Review_Key").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.1f;light.transform.rotation=Quaternion.Euler(45,-30,0);light.cullingMask=1<<30;

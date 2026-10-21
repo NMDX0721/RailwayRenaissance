@@ -84,10 +84,10 @@ public static class NF5KInteriorLightingSetup
         if(passenger)
         {
             bounce=new GameObject("Passenger_Local_Bounce_Approximation").AddComponent<Light>();bounce.gameObject.layer=30;bounce.transform.SetParent(root,false);
-            bounce.transform.position=new Vector3(0,1.50f,p.z-.40f);bounce.type=LightType.Point;bounce.range=2.6f;bounce.color=light.color;
+            bounce.transform.position=new Vector3(0,1.50f,p.z-.40f);bounce.type=LightType.Point;bounce.range=3.2f;bounce.color=light.color;
             bounce.intensity=0;bounce.enabled=false;bounce.shadows=LightShadows.None;bounce.cullingMask=1<<30;
         }
-        fixtures.Add(new CabInteriorLighting.Fixture{light=light,bounce=bounce,bounceIntensity=passenger?.12f:.22f,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
+        fixtures.Add(new CabInteriorLighting.Fixture{light=light,bounce=bounce,bounceIntensity=passenger?.95f:.65f,diffuser=surface.GetComponent<Renderer>(),circuit=circuit,intensity=intensity});
         GameObject Part(string suffix,Vector3 position,Vector3 dimensions,Material mat)
         {
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name+"_"+suffix;obj.layer=30;obj.transform.SetParent(assembly,false);obj.transform.localPosition=position;obj.transform.localScale=dimensions;

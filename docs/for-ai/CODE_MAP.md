@@ -470,3 +470,6 @@ Vossloh DE18 documents two ceiling lights, dimmable instruments/reading lights a
 
 ### 2026-10-21 Passenger interior fittings
 NF5KPassengerInterior replaces passenger seat/wall blocks with 48 individual seats, supported luggage racks, framed inner windows, heater covers and vestibule details. Native rounded meshes and woven texture are persisted/shared. ValidateReload checks candidate aisle and reserved zones; NF5KDoorReview now includes new seat/rack colliders. See NF5K_PASSENGER_INTERIOR.md for references and unverified certification/interaction limits.
+# NF5K lighting audit (2026-10-21)
+
+`Assets/Editor/NF5KLightingRendererSetup.cs` installs the camera-specific Forward+ renderer during `CabInteriorBlockoutSetup.Build`. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for measured-render checks, reference sources and unresolved shadow/Gamma/GI limitations.
