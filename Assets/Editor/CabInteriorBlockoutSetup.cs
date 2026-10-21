@@ -93,7 +93,7 @@ public static class CabInteriorBlockoutSetup
     static void Shot(Camera camera,string path)
     {
         const int width=1400,height=1000,scale=3;
-        var target=new RenderTexture(width*scale,height*scale,24){filterMode=FilterMode.Bilinear};
+        var target=new RenderTexture(width*scale,height*scale,24,RenderTextureFormat.ARGBHalf){filterMode=FilterMode.Bilinear};
         var resolved=new RenderTexture(width,height,0);
         var previous=RenderTexture.active;var previousTarget=camera.targetTexture;
         Texture2D image=null;
@@ -193,6 +193,7 @@ public static class CabInteriorBlockoutSetup
         NF5KSurfaceFinish.Build(root.transform);
         NF5KIndustrialFinish.Build(root.transform);
         NF5KInteriorLightingSetup.Build(root.transform);
+        NF5KLightingRendererSetup.ConfigureSurfaces(root.transform,camera);
         light.shadows=LightShadows.Soft;light.shadowStrength=.70f;light.shadowBias=.02f;light.shadowNormalBias=.02f;light.intensity=.90f;
         RenderSettings.ambientMode=AmbientMode.Trilight;
         RenderSettings.ambientSkyColor=new Color(.34f,.37f,.40f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.24f);RenderSettings.ambientGroundColor=new Color(.07f,.075f,.08f);

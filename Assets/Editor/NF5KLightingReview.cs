@@ -122,7 +122,12 @@ public static class NF5KLightingPlayReview
                 if(!Mathf.Approximately(interior.InstrumentDimmer,.37f))throw new InvalidOperationException("Legacy instrument switch did not restore dimmer");
                 interior.SetSupply(false,true);interior.enabled=false;
                 foreach(var fixture in interior.Fixtures)if(fixture.light.enabled||(fixture.bounce!=null&&fixture.bounce.enabled))throw new InvalidOperationException("Disabled interior controller left emergency lamps energized");
-                Debug.Log("NF5K_INTERIOR_PLAYMODE_OK: circuit/power tests, legacy instrument switch and remembered dimmer, emergency disable cleanup");
+                interior.enabled=true;interior.SetSupply(true,true);interior.SetCabCeiling(true);interior.SetPassengerZone(0,true);interior.SetPassengerZone(1,true);
+                int lowerCount=0;foreach(var fixture in interior.Fixtures)if(fixture.lowerBounce!=null&&fixture.lowerBounce.enabled)lowerCount++;
+                if(lowerCount!=8)throw new InvalidOperationException("Lower cabin fill did not energize all eight bindings");
+                interior.enabled=false;
+                foreach(var fixture in interior.Fixtures)if(fixture.lowerBounce!=null&&fixture.lowerBounce.enabled)throw new InvalidOperationException("Disabled interior controller left floor fill energized");
+                Debug.Log("NF5K_INTERIOR_PLAYMODE_OK: circuit/power tests, legacy instrument switch and remembered dimmer, emergency and eight floor-fill disable cleanup");
                 Debug.Log("NF5K_LIGHTING_PLAYMODE_OK: actual runtime mode API, power isolation, legacy switch off/on, disable cleanup");
                 EditorApplication.update-=Check;EditorApplication.isPlaying=false;
             }

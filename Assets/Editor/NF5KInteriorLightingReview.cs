@@ -34,6 +34,7 @@ public static class NF5KInteriorLightingReview
     {
         int active=0;foreach(var f in c.Fixtures)if(f.light.enabled&&f.light.intensity>0)active++;
         foreach(var f in c.Fixtures)if(f.bounce!=null&&f.bounce.enabled!=f.light.enabled)throw new InvalidOperationException("Local bounce is not synchronized");
+        foreach(var f in c.Fixtures)if(f.lowerBounce!=null&&f.lowerBounce.enabled!=f.light.enabled)throw new InvalidOperationException("Floor bounce is not synchronized");
         if(active!=count)throw new InvalidOperationException("Interior active fixture count: "+active+" expected "+count);
     }
     public static void Render(Camera camera,Action<Camera,string> shot)
