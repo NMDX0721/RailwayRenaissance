@@ -1,5 +1,13 @@
 # NF-5K 转向架细化
 
+## 2026-10-21 梯子固定与车轮材质修正
+
+用户指出梯子连接薄弱、车轮过黑。本轮新增NF5KAccessLadder，替换驾驶室两侧原细直边梁：每侧2块底架固定板、2根上托臂、2根斜撑及加粗倾斜边梁，固定板以4螺栓表现连接；每级踏步增加两端角托、前缘下折和低矮防滑筋。连接到Continuous_Underframe侧缘，不挂在门扇、薄外皮或转向架上。踏步仍为3级、约240mm高差；属于静态设计候选，未做载人强度、疲劳或车辆限界认证。未变更原侧门开向。
+
+车轮原高金属度、暗底色与通用微表面叠乘造成背光黑盘。Wheel_Oxidized_Web改为中性氧化钢灰及较低金属度，保留扩散分量；Wheel_Machined_Tread单独采用较亮钢色与适中粗糙度。新增低幅度同心加工纹理、径向UV，取消轮用材质上的旧通用金属贴图叠乘，不增加自发光。FinishWheelMaterials在走行部与整车最终材质阶段调用，避免后续重建覆盖回旧参数。
+
+沿用NF5KBogieDetailReview更新3份既有场景，保留驾驶交互；新图为`tools/cab_reference/interior_review/ladder_wheel_refined.png`、`ladder_wheel_closeup.png`，与上轮bogie图保留对照。验证日志`tools/compile/cab_ladder_wheel_finish_final.log`。机械设计仍需后续检查转向架转角、悬挂全行程及人员攀登姿态，当前模型固定连接不等于工程认证。
+
 2026-10-21。本轮精修现有两组双轴动力转向架，不改变头车外形、涂装、客席布局或已接入的驾驶交互。
 
 ## 依据与边界

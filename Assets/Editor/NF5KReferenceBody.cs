@@ -292,12 +292,7 @@ public static class NF5KReferenceBody
         }
         Cube(name + "_Door_Threshold", new Vector3(side * 1.51f, .025f, 1.49f),
             new Vector3(.22f, .05f, .73f), steel);
-        for (int i = 0; i < 3; i++)
-            Cube(name + "_Access_Step_" + i, new Vector3(side * (1.50f + .04f * i), -.24f - .24f * i, 1.49f),
-                new Vector3(.24f, .04f, .66f), steel);
-        foreach (float z in new[] {1.18f, 1.80f})
-            Cube(name + "_Ladder_Stringer", new Vector3(side * 1.52f, -.37f, z),
-                new Vector3(.05f, .78f, .04f), trim);
+        NF5KAccessLadder.BuildSide(root,name,side,steel,trim);
     }
 
     static void Band(string name, List<Vector2> contour, float bottom, float top, Material material)
