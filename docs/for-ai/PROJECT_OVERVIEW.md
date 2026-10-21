@@ -420,3 +420,6 @@ JSON 结构：
 # Daylight review environment (2026-10-21)
 
 `Assets/Scenes/CabDaylightReview.unity` provides an independent NF5K daylight inspection environment with clear/overcast/low-sun presets and independent interior-lamp controls. Measured proportions and usage are documented in `NF5K_DAYLIGHT_REVIEW.md`; this is not a completed route or calibrated lighting simulation.
+# NF5K backend prototype (2026-10-21)
+
+An opt-in fixed-step backend now models delayed diesel start, finite-air automatic/independent brakes, power/adhesion-limited traction, grade, fuel, battery and thermal protection. `CabSimulationReview.unity` connects it to the existing cockpit state/gauges through `CabSimulationDriver`; other scenes retain legacy demonstration physics. This is a lumped prototype with candidate NF5K short-consist parameters, not calibrated original-vehicle dynamics. Full route movement, 3D handle interaction and global save-slot integration remain pending. Research/formulas/validation: `NF5K_SIMULATION_BACKEND.md`.

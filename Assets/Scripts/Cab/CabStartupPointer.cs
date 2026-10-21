@@ -15,6 +15,8 @@ namespace RailwayRenaissance.Cab
             var mouse = Mouse.current;
             if (mouse == null || viewCamera == null) return;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            var simulation=GetComponent<CabSimulationDriver>();
+            if(simulation!=null&&simulation.isActiveAndEnabled&&simulation.BlocksPointer(mouse.position.ReadValue()))return;
             bool primary = mouse.leftButton.wasPressedThisFrame;
             bool secondary = mouse.rightButton.wasPressedThisFrame;
             if (!primary && !secondary) return;
