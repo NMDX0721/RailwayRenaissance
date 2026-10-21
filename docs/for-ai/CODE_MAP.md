@@ -484,3 +484,6 @@ Follow-up: renderer setup enables shared additional-light soft shadows; `CabInte
 # Passenger seat clearance follow-up (2026-10-21)
 
 `NF5KPassengerInterior.ValidateReload` now checks seat/wall-envelope clearance, floor grounding and seat intersections with window sills, lower liners and heater covers, in addition to aisle/vestibule checks. See `NF5K_PASSENGER_INTERIOR.md` for corrected dimensions.
+# NF5K daylight and proportion review (2026-10-21)
+
+`NF5KDaylightReview` measures reloaded geometry, generates `CabDaylightReview.unity` and captures three daylight lamp-off/on pairs. Runtime `CabDaylightEnvironment` provides the same presets in Chinese. See `NF5K_DAYLIGHT_REVIEW.md` for scene usage and approximation boundaries.

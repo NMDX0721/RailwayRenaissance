@@ -245,3 +245,8 @@ NF5KPassengerInterior generates shared native seat meshes, luggage racks, inner 
 ## NF5K diffuse lighting (2026-10-21)
 
 CabDiffuseFill supplies circuit-dependent custom SH irradiance to opaque cabin surfaces. Approximation point lights remain bindings with cullingMask=0. Refresh diffuse data before local reflection capture. This is authored fill, not baked or traced GI. Keep normal/night/emergency comparisons and the lower-visibility/highlight check in tools/cab_reference/compare_diffuse_fill.py. See docs/for-ai/NF5K_LIGHTING_AUDIT.md.
+
+
+## NF5K daylight review (2026-10-21)
+
+NF5KDaylightReview generates a separate CabDaylightReview scene and measures cabin proportions. CabDaylightEnvironment supplies clear/overcast/low-sun presets and driver/passenger/exterior inspection views. Preserve the original night/emergency regression scene. See docs/for-ai/NF5K_DAYLIGHT_REVIEW.md for usage and scale/lighting limits.
