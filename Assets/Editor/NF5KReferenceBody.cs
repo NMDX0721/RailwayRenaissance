@@ -17,6 +17,9 @@ public static class NF5KReferenceBody
         trim = seals; glass = glazing; steel = metal;
         if (!AssetDatabase.IsValidFolder(MeshFolder))
             AssetDatabase.CreateFolder("Assets/Models/Cab", "NF5KBodyMeshes");
+        foreach(string obsolete in new[]{"Front_Fleet_Number_Lettering","Side_Fleet_Number_Lettering","Front_Fleet_Plate_Frame","Front_Fleet_Plate_Fill"})
+            if(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(MeshFolder+"/"+obsolete+".asset")!=null)
+                AssetDatabase.DeleteAsset(MeshFolder+"/"+obsolete+".asset");
         var outline = new List<Vector2>();
         foreach(float z in new[]{17.5f,16.94f,16.06f,1.835f,1.145f,-.15f})outline.Add(new Vector2(-1.45f,z));
         for (int i = 1; i <= 12; i++)
@@ -218,7 +221,6 @@ public static class NF5KReferenceBody
         // Coupler is a reserved envelope, not a functional knuckle mechanism.
         Cube("Coupler_Head_Reserved",new Vector3(0,-.12f,-1.03f),new Vector3(.24f,.23f,.14f),steel);
         RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.56f,.20f,.018f,Quaternion.identity,trim,cream);
-        RoundedPanel("Front_Fleet_Plate",new Vector3(0,.26f,-.682f),.32f,.12f,.012f,Quaternion.identity,trim,cream);
         Cylinder("Wing_Badge_Base",new Vector3(0,.92f,-.68f),.24f,.018f,cream);
         Cylinder("Wing_Badge_Field",new Vector3(0,.92f,-.695f),.20f,.012f,blue);
         var star=new List<Vector3>{new Vector3(0,.92f,-.706f)};var starTriangles=new List<int>();

@@ -34,7 +34,6 @@ public static class NF5KLivery
             Disc("Flag_White_Disc",new Vector3(side*1.474f,.76f,.21f),.090f,cream,side);
             Star("Flag_Red_Star",new Vector3(side*1.477f,.76f,.21f),.072f,red,side);
             Text("Side_Number", "NF-5K",new Vector3(side*1.47f,.65f,2.25f),side>0?Quaternion.Euler(0,-90,0):Quaternion.Euler(0,90,0),.17f,cream);
-            Text("Side_Fleet_Number","0721",new Vector3(side*1.47f,.49f,2.25f),side>0?Quaternion.Euler(0,-90,0):Quaternion.Euler(0,90,0),.070f,cream);
             var frontBranch=new[]{new Vector2(side*.39f,.29f),new Vector2(side*.62f,.35f),new Vector2(side*.90f,.47f),new Vector2(side*1.08f,.69f)};
             Branch(frontBranch,0,.006f);
             Branch(new[]{frontBranch[1],new Vector2(side*.77f,.58f),new Vector2(side*.72f,.76f)},0,.004f);
@@ -44,7 +43,6 @@ public static class NF5KLivery
             for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.012f,.61f,branch);
         }
         Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.11f,cream);
-        Text("Front_Fleet_Number","0721",new Vector3(0,.26f,-.696f),Quaternion.identity,.070f,cream);
         Debug.Log("NF5K_LIVERY_OK: geometric sakura, flags, lettering; no baked illustration pasted onto body");
     }
     static float FrontZ(float x)

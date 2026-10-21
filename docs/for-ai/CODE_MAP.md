@@ -1,6 +1,6 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
-NF-5K侧门：运行组件`CabSideDoor`提供开度与锁舌退入，编辑器`NF5KDoorReview`检查4门扫掠；`NF5KReferenceBody`切分门洞并将连续腰带挂在门扇上，`NF5KLivery`按字牌名称持久化独立粗体网格及展示编号0721。`CabInteriorBlockoutSetup`保存闭门场景，并另渲染开门预览。门控输入/牵引联锁仍未接。
+NF-5K侧门：运行组件`CabSideDoor`提供开度与锁舌退入，编辑器`NF5KDoorReview`检查4门扫掠；`NF5KReferenceBody`切分门洞并将连续腰带挂在门扇上，`NF5KLivery`按字牌名称持久化独立粗体车型标识。0721属于沙能载具，NF-5K车队编号未指定。`CabInteriorBlockoutSetup`保存闭门场景，并另渲染开门预览。门控输入/牵引联锁仍未接。
 
 NF-5K材质：`NF5KSurfaceFinish.Build`在场景保存前补UV、生成Paint/Metal微表面纹理与Soft_Studio_Environment立方体，调整漆面/金属/玻璃材质并补紧固件及踏步磨耗。入口仍`CabInteriorBlockoutSetup.BatchBuild`；纹理与环境资源持久保存至`NF5KBodyMeshes`，未新增运行时依赖或物理玻璃模型。
 

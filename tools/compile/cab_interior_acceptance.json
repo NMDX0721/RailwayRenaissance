@@ -23,7 +23,7 @@
   "surface_finish": "paint and metal microtexture, imported subtle normal map, soft environment reflection, fasteners and worn step edges",
   "physical_refraction_verified": false,
   "door_livery": "continuous across closed leaf, moves with leaf, fixed jamb and inner lining remain distinct",
-  "lettering": "independent bold NF-5K type plates and static display fleet number 0721",
+  "lettering": "independent bold NF-5K type plates only; fleet number unassigned; 0721 belongs to sand-energy vehicle",
   "door_input_and_traction_interlock": false,
   "log": "tools/compile/cab_door_design.log"
 }
