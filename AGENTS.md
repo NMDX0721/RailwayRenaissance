@@ -250,3 +250,8 @@ CabDiffuseFill supplies circuit-dependent custom SH irradiance to opaque cabin s
 ## NF5K daylight review (2026-10-21)
 
 NF5KDaylightReview generates a separate CabDaylightReview scene and measures cabin proportions. CabDaylightEnvironment supplies clear/overcast/low-sun presets and driver/passenger/exterior inspection views. Preserve the original night/emergency regression scene. See docs/for-ai/NF5K_DAYLIGHT_REVIEW.md for usage and scale/lighting limits.
+
+
+## NF5K simulation backend (2026-10-21)
+
+CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
