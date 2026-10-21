@@ -157,11 +157,12 @@ public static class NF5KRunningGear
     }
     static Mesh WheelMesh()
     {
-        string path=Folder+"/Profiled_Wheel_Hard_Shoulders.asset";
+        string path=Folder+"/Forged_Dished_Wheel_Detailed_V2.asset";
         var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null){WheelUV(existing);return existing;}
-        var profile=new[]{new Vector2(-.11f,.10f),new Vector2(-.11f,.38f),new Vector2(-.10f,.46f),
+        var profile=new[]{new Vector2(-.11f,.10f),new Vector2(-.11f,.16f),new Vector2(-.065f,.20f),new Vector2(-.06f,.34f),new Vector2(-.10f,.40f),new Vector2(-.10f,.46f),
             new Vector2(-.095f,.49f),new Vector2(-.065f,.49f),new Vector2(-.045f,.462f),
-            new Vector2(.09f,.455f),new Vector2(.095f,.39f),new Vector2(.035f,.18f),new Vector2(.05f,.10f)};
+            new Vector2(.09f,.455f),new Vector2(.095f,.42f),new Vector2(.085f,.385f),new Vector2(.045f,.365f),new Vector2(.015f,.30f),
+            new Vector2(.018f,.24f),new Vector2(.045f,.18f),new Vector2(.075f,.145f),new Vector2(.08f,.10f)};
         var v=new List<Vector3>();var dark=new List<int>();var bright=new List<int>();
         const int segments=96;var normals=new List<Vector3>();
         for(int p=0;p<profile.Length;p++)
@@ -171,9 +172,14 @@ public static class NF5KRunningGear
             for(int i=0;i<=segments;i++)
             {
                 float a=2*Mathf.PI*i/segments;
-                foreach(var point in new[]{from,to})
-                {v.Add(new Vector3(point.x,point.y*Mathf.Cos(a),point.y*Mathf.Sin(a)));normals.Add(new Vector3(-delta.y,delta.x*Mathf.Cos(a),delta.x*Mathf.Sin(a)).normalized);}
-                if(i<segments){int k=start+i*2;var t=p>=2&&p<=6?bright:dark;t.AddRange(new[]{k,k+3,k+1,k,k+2,k+3});}
+                for(int edge=0;edge<2;edge++)
+                {
+                    var point=edge==0?from:to;int index=p+edge;var tangent=delta;
+                    if(index>=12&&index<=15)tangent=profile[index+1]-profile[index-1];
+                    v.Add(new Vector3(point.x,point.y*Mathf.Cos(a),point.y*Mathf.Sin(a)));
+                    normals.Add(new Vector3(-tangent.y,tangent.x*Mathf.Cos(a),tangent.x*Mathf.Sin(a)).normalized);
+                }
+                if(i<segments){int k=start+i*2;var t=p>=5&&p<=10?bright:dark;t.AddRange(new[]{k,k+3,k+1,k,k+2,k+3});}
             }
         }
         var mesh=new Mesh{name="Profiled_Driving_Wheel"};mesh.SetVertices(v);mesh.subMeshCount=2;

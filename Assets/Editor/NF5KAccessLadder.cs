@@ -24,8 +24,20 @@ public static class NF5KAccessLadder
         var amber=Reflector("Ladder_Reflective_Amber",new Color(.85f,.57f,.12f));
         var old=parent.Find(name+"_Fixed_Access_Ladder");if(old!=null)Object.DestroyImmediate(old.gameObject);
         foreach(var t in parent.GetComponentsInChildren<Transform>())
-            if(t.name==name+"_Ladder_Stringer"||t.name.StartsWith(name+"_Access_Step_"))Object.DestroyImmediate(t.gameObject);
+            if(t.name==name+"_Ladder_Stringer"||t.name.StartsWith(name+"_Access_Step_")
+                ||t.name=="Worn_Step_Leading_Edge"&&Mathf.Sign(t.localPosition.x)==side)Object.DestroyImmediate(t.gameObject);
         var root=new GameObject(name+"_Fixed_Access_Ladder").transform;root.SetParent(parent,false);
+        foreach(var t in parent.GetComponentsInChildren<Transform>())
+        {
+            if(t.name==name+"_Long_Grab_Rail")
+            {
+                var p=t.localPosition;p.x=side*1.59f;t.localPosition=p;t.localScale=new Vector3(.032f,.785f,.032f);
+                var primitive=GameObject.CreatePrimitive(PrimitiveType.Cylinder);t.GetComponent<MeshFilter>().sharedMesh=primitive.GetComponent<MeshFilter>().sharedMesh;Object.DestroyImmediate(primitive);
+                if(t.TryGetComponent<BoxCollider>(out var box))box.size=new Vector3(1,2,1);
+            }
+            if(t.name==name+"_Grab_Rail_Bracket")
+            {var p=t.localPosition;p.x=side*1.505f;t.localPosition=p;var scale=t.localScale;scale.x=.18f;t.localScale=scale;}
+        }
         void Box(string id,Vector3 p,Vector3 size,Material mat)
         {
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name+"_"+id;obj.transform.SetParent(root,false);obj.transform.localPosition=p;
@@ -40,8 +52,8 @@ public static class NF5KAccessLadder
         {
             Box("Underframe_Anchor_Plate",new Vector3(side*1.24f,-.19f,z),new Vector3(.04f,.23f,.18f),frame);
             Box("Ladder_Upper_Cantilever",new Vector3(side*1.39f,-.24f,z),new Vector3(.34f,.07f,.105f),frame);
-            Beam("Ladder_Diagonal_Brace",new Vector3(side*1.25f,-.26f,z),new Vector3(side*1.58f,-.70f,z),.055f,.055f);
-            Beam("Ladder_Stringer",new Vector3(side*1.478f,-.11f,z),new Vector3(side*1.59f,-.78f,z),.065f,.065f);
+            Beam("Ladder_Diagonal_Brace",new Vector3(side*1.25f,-.26f,z),new Vector3(side*1.59f,-1.08f,z),.055f,.055f);
+            Beam("Ladder_Stringer",new Vector3(side*1.50f,-.29f,z),new Vector3(side*1.59f,-1.13f,z),.045f,.055f);
             foreach(float y in new[]{-.12f,-.26f})foreach(float dz in new[]{-.052f,.052f})
             {
                 var bolt=GameObject.CreatePrimitive(PrimitiveType.Cylinder);bolt.name=name+"_Ladder_Anchor_Bolt";bolt.transform.SetParent(root,false);
@@ -52,9 +64,9 @@ public static class NF5KAccessLadder
                 washer.transform.localPosition=new Vector3(side*1.264f,y,z+dz);washer.transform.localRotation=Quaternion.Euler(0,0,90);washer.transform.localScale=new Vector3(.041f,.002f,.041f);washer.GetComponent<Renderer>().sharedMaterial=steel;Object.DestroyImmediate(washer.GetComponent<Collider>());
             }
         }
-        for(int i=0;i<3;i++)
+        for(int i=0;i<4;i++)
         {
-            float x=1.50f+.04f*i,y=-.24f-.24f*i;
+            float x=1.50f+.03f*i,y=-.26f-.28f*i;
             var step=new GameObject(name+"_Access_Step_"+i);step.transform.SetParent(root,false);step.transform.localPosition=new Vector3(side*x,y,1.49f);
             step.AddComponent<BoxCollider>().size=new Vector3(.24f,.04f,.66f);
             foreach(float z in new[]{1.169f,1.811f})Box("Tread_Perimeter",new Vector3(side*x,y,z),new Vector3(.24f,.035f,.018f),steel);

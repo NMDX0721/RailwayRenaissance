@@ -284,11 +284,11 @@ public static class NF5KReferenceBody
         assembly.AddComponent<CabSideDoor>().Configure(side*86,bolt.transform);
         foreach (float z in new[] {1.04f, 1.94f})
         {
-            Cube(name + "_Long_Grab_Rail", new Vector3(side * 1.53f, .99f, z),
-                new Vector3(.027f, 1.57f, .027f), cream);
+            var grab=Cylinder(name + "_Long_Grab_Rail",new Vector3(side*1.59f,.99f,z),.032f,1.57f,cream);
+            grab.transform.localRotation=Quaternion.identity;
             foreach (float y in new[] {.23f, 1.75f})
-                Cube(name + "_Grab_Rail_Bracket", new Vector3(side * 1.485f, y, z),
-                    new Vector3(.09f, .025f, .025f), steel);
+                Cube(name + "_Grab_Rail_Bracket", new Vector3(side * 1.505f, y, z),
+                    new Vector3(.18f, .025f, .025f), steel);
         }
         Cube(name + "_Door_Threshold", new Vector3(side * 1.51f, .025f, 1.49f),
             new Vector3(.22f, .05f, .73f), steel);
