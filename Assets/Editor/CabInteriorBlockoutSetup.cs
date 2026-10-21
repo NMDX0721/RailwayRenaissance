@@ -99,7 +99,10 @@ public static class CabInteriorBlockoutSetup
         Texture2D image=null;
         try
         {
-            camera.targetTexture=target;camera.Render();
+            camera.targetTexture=target;
+            var reflections=UnityEngine.Object.FindFirstObjectByType<CabInteriorReflections>();
+            if(reflections!=null&&reflections.RefreshIfChanged())camera.Render();
+            camera.Render();
             // A 3:1 bilinear reduction alone misses source pixels; explicitly average all nine samples.
             var shader=Shader.Find("Hidden/NF5K/ReviewDownsample");
             if(shader==null)throw new InvalidOperationException("Review downsample shader is missing");
