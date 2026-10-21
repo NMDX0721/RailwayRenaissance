@@ -18,6 +18,7 @@ public static class NF5KBogieDetailReview
             UnityEngine.Object.DestroyImmediate(old);
             NF5KRunningGear.Build(parent);NF5KRunningGear.ValidateReload();
             NF5KAccessLadder.Build(parent);
+            NF5KBoardingAudit.Validate();
             EditorSceneManager.SaveScene(scene);
         }
         AssetDatabase.SaveAssets();
@@ -40,11 +41,21 @@ public static class NF5KBogieDetailReview
             var fill=new GameObject("Bogie_Review_Soft_Fill_Not_Vehicle").AddComponent<Light>();
             fill.type=LightType.Directional;fill.intensity=.75f;fill.color=new Color(.95f,.97f,1);fill.shadows=LightShadows.None;fill.transform.rotation=Quaternion.Euler(35,-50,0);
             camera.transform.position=new Vector3(4.3f,-.15f,4.4f);camera.transform.LookAt(new Vector3(.3f,-.63f,2.5f));
-            Shot(camera,"tools/cab_reference/interior_review/japan_grey_running_gear_final.png");
+            Shot(camera,"tools/cab_reference/interior_review/dished_wheel_boarding_overview.png");
             camera.transform.position=new Vector3(3.2f,-.25f,4.8f);camera.transform.LookAt(new Vector3(.7f,-.70f,3.6f));camera.orthographicSize=.78f;
-            Shot(camera,"tools/cab_reference/interior_review/japan_grey_wheel_detail_final.png");
+            Shot(camera,"tools/cab_reference/interior_review/dished_wheel_detail.png");
+            var wheel=GameObject.Find("Running_Gear").GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer sample=null;foreach(var renderer in wheel)if(renderer.name=="Steel_Wheel"&&renderer.transform.position.x>0){sample=renderer;break;}
+            var hidden=new System.Collections.Generic.List<MeshRenderer>();
+            foreach(var renderer in UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))
+                if(renderer!=sample&&renderer.enabled){renderer.enabled=false;hidden.Add(renderer);}
+            camera.transform.position=sample.bounds.center+new Vector3(1.8f,.5f,1.2f);camera.transform.LookAt(sample.bounds.center);camera.orthographicSize=.65f;
+            Shot(camera,"tools/cab_reference/interior_review/wheel_profile_review_final.png");
+            foreach(var renderer in hidden)renderer.enabled=true;
             camera.transform.position=new Vector3(3.1f,.18f,2.25f);camera.transform.LookAt(new Vector3(1.5f,-.35f,1.49f));camera.orthographicSize=.65f;
-            Shot(camera,"tools/cab_reference/interior_review/ladder_grating_reflector_final.png");
+            Shot(camera,"tools/cab_reference/interior_review/four_step_ladder_detail.png");
+            var figure=NF5KBoardingAudit.Figure();camera.transform.position=new Vector3(4.3f,.8f,3.5f);camera.transform.LookAt(new Vector3(1.5f,.10f,1.49f));camera.orthographicSize=1.55f;
+            Shot(camera,"tools/cab_reference/interior_review/boarding_175cm_review_final.png");UnityEngine.Object.DestroyImmediate(figure);
             var shader=Shader.Find("RailwayRenaissance/RetroreflectiveSheet");
             if(shader==null||ShaderUtil.ShaderHasError(shader))throw new InvalidOperationException("Reflective sheet shader compilation failed");
             EditorSceneManager.OpenScene("Assets/Scenes/CabSimulationReview.unity");

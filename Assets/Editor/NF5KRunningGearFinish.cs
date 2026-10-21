@@ -9,10 +9,15 @@ public static class NF5KRunningGearFinish
         var frame=Paint("Bogie_Cast_Steel",new Color(.46f,.49f,.48f));
         var box=Paint("Bogie_Axlebox_Grey",new Color(.57f,.59f,.56f));
         var equipment=Paint("Bogie_Equipment_Warm_Grey",new Color(.43f,.45f,.42f));
+        string metalPath="Assets/Resources/Cab/Bogie_Machined_Hardware.mat";
+        var hardware=AssetDatabase.LoadAssetAtPath<Material>(metalPath);
+        if(hardware==null){hardware=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(hardware,metalPath);}
+        hardware.SetColor("_BaseColor",new Color(.57f,.59f,.60f));hardware.SetFloat("_Metallic",.82f);hardware.SetFloat("_Smoothness",.34f);EditorUtility.SetDirty(hardware);
         foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>())
         {
             string name=renderer.name;
-            if(name=="Axlebox"||name=="Axlebox_End_Cover"||name=="Axlebox_Spring_Wing")renderer.sharedMaterial=box;
+            if(name.Contains("_Bolt")||name.EndsWith("_Pin")||name=="Wheel_Hub"||name=="Solid_Axle")renderer.sharedMaterial=hardware;
+            else if(name=="Axlebox"||name=="Axlebox_End_Cover"||name=="Axlebox_Spring_Wing")renderer.sharedMaterial=box;
             else if(name=="Traction_Motor_Envelope"||name=="Motor_End_Shield"||name=="Axle_Gearcase"||name=="Underfloor_Equipment_Cabinet"||name=="Cabinet_Service_Cover")renderer.sharedMaterial=equipment;
             else if(renderer.sharedMaterial!=null&&renderer.sharedMaterial.name=="Bogie_Cast_Steel")renderer.sharedMaterial=frame;
         }

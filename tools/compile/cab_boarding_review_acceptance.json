@@ -1,0 +1,7 @@
+{
+  "NF5K_BOARDING_STATIC_OK": true,
+  "NF5K_BOGIE_DETAIL_OK": true,
+  "NF5K_CONTEXT_INTERACTION_OK": true,
+  "NF5K_SIMULATION_PLAYMODE_OK": true,
+  "compileErrors": false
+}
