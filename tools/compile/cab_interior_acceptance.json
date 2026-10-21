@@ -19,6 +19,6 @@
   "wheel_radius_m": 0.46,
   "flange_radius_m": 0.49,
   "wheel_rail_dynamics_verified": false,
-  "livery": "geometric sakura, flags and depth-tested number lettering; detailed poster pending",
-  "log": "tools/compile/cab_interior_full_car.log"
+  "livery": "lowered curved front chevron, wide cream apron, notched five-petal blossoms with stamens and branched clusters; detailed poster pending",
+  "log": "tools/compile/cab_livery_correction.log"
 }

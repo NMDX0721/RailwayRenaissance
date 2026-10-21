@@ -36,6 +36,10 @@ public static class CabInteriorBlockoutSetup
                 Shot(camera,Output+"exterior_reference_view.png");
                 camera.transform.position=new Vector3(7,3.8f,-7);camera.transform.LookAt(new Vector3(0,.65f,1.4f));camera.orthographicSize=3.8f;
                 Shot(camera,Output+"front_detail_view.png");
+                camera.transform.position=new Vector3(0,1.05f,-5);camera.transform.LookAt(new Vector3(0,.85f,-.65f));camera.orthographicSize=1.85f;
+                Shot(camera,Output+"front_livery_view.png");
+                camera.transform.position=new Vector3(5,.85f,3.45f);camera.transform.LookAt(new Vector3(1.46f,.70f,3.45f));camera.orthographicSize=.65f;
+                Shot(camera,Output+"sakura_livery_view.png");
                 camera.transform.position=new Vector3(4, .15f, 4.5f);camera.transform.LookAt(new Vector3(0,-.65f,2.5f));camera.orthographicSize=1.75f;
                 Shot(camera,Output+"powered_bogie_view.png");
                 camera.transform.position=new Vector3(6,3,21);camera.transform.LookAt(new Vector3(0,.9f,16));camera.orthographicSize=3.5f;

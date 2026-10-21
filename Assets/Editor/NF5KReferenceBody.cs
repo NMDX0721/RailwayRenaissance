@@ -24,8 +24,8 @@ public static class NF5KReferenceBody
             float a = Mathf.PI + i * Mathf.PI / 24;
             outline.Add(new Vector2(-1.10f + .35f * Mathf.Cos(a), -.15f + .50f * Mathf.Sin(a)));
         }
-        foreach (float x in new[] {-.8f, -.4f, 0f, .4f, .8f, 1.10f})
-            outline.Add(new Vector2(x, -.65f));
+        for(int i=1;i<=44;i++)
+            outline.Add(new Vector2(-1.10f+2.20f*i/44,-.65f));
         for (int i = 1; i <= 12; i++)
         {
             float a = -Mathf.PI / 2 + i * Mathf.PI / 24;
@@ -37,7 +37,7 @@ public static class NF5KReferenceBody
         Band("Red_Waist_Line", outline, .35f, .38f, red);
         Band("Cream_Waist_Upper", outline, .38f, .42f, cream);
         Band("Blue_Belt_Shell", outline, .42f, 1.08f, blue);
-        Band("Window_Sill", outline, 1.08f, 1.14f, cream);
+        Band("Window_Sill", outline, 1.08f, 1.14f, blue);
         Band("Blue_Cant_Rail", outline, 1.92f, 2.03f, blue);
         Band("Cream_Roof_Edge", outline, 2.03f, 2.10f, cream);
         var frontContour = outline.GetRange(1, outline.Count - 2);
@@ -55,7 +55,7 @@ public static class NF5KReferenceBody
                 new Vector3(.018f, .66f, .018f), steel, Quaternion.Euler(0, 0, -9));
             Cube("Front_Wiper_Pivot_" + side, new Vector3(x + .18f, 1.19f, -.64f),
                 new Vector3(.065f, .035f, .035f), steel);
-            Cube("Front_Grab_" + side, new Vector3(side * .77f, 1.01f, -.685f),
+            Cube("Front_Grab_" + side, new Vector3(side * .77f, 1.10f, -.685f),
                 new Vector3(.46f, .025f, .025f), cream);
             RoundedPanel("Front_Lamp_Box_" + side, new Vector3(side * .87f, .72f, -.68f),
                 .40f, .24f, .025f, Quaternion.identity, trim, steel);
@@ -79,6 +79,7 @@ public static class NF5KReferenceBody
                 Edge("Rounded_Cab_Shoulder", p, q, .04f, .79f, blue);
             }
             string name = side > 0 ? "Left" : "Right";
+            Cube(name+"_Window_Sill_Pinstripe",new Vector3(side*1.453f,1.11f,8.675f),new Vector3(.004f,.035f,17.65f),cream);
             Quaternion sideFacing = Quaternion.Euler(0, 90, 0);
             RoundedPanel(name + "_Cab_Side_Window", new Vector3(side * 1.405f, 1.53f, .44f),
                 1.03f, .72f, .075f, sideFacing, glass, trim);
@@ -172,6 +173,22 @@ public static class NF5KReferenceBody
         for(int i=0;i<contour.Count-1;i++)for(int row=0;row<2;row++)
             Quad(t,i*3+row,(i+1)*3+row,(i+1)*3+row+1,i*3+row+1);
         MeshObject("Tapered_Nose_Skirt",v,t,blue,root);
+        var apron=new List<Vector3>();var apronTriangles=new List<int>();
+        var pinstripe=new List<Vector3>();var pinstripeTriangles=new List<int>();
+        foreach(var p in contour)
+        {
+            apron.Add(new Vector3(p.x,.025f,p.y-.004f));
+            apron.Add(new Vector3(p.x*.96f,-.18f,p.y+.041f));
+            pinstripe.Add(new Vector3(p.x*.96f,-.18f,p.y+.037f));
+            pinstripe.Add(new Vector3(p.x*.953f,-.21f,p.y+.047f));
+        }
+        for(int i=0;i<contour.Count-1;i++)
+        {
+            Quad(apronTriangles,i*2,i*2+1,i*2+3,i*2+2);
+            Quad(pinstripeTriangles,i*2,i*2+1,i*2+3,i*2+2);
+        }
+        MeshObject("Cream_Lower_Apron",apron,apronTriangles,cream,root);
+        MeshObject("Red_Apron_Pinstripe",pinstripe,pinstripeTriangles,red,root);
         foreach(int side in new[]{-1,1})
         {
             for(int i=0;i<3;i++)
@@ -270,7 +287,7 @@ public static class NF5KReferenceBody
         var v = new List<Vector3>(); var t = new List<int>();
         foreach (var p in contour)
         {
-            float center = .79f + .23f * Mathf.Pow(Mathf.Abs(p.x) / 1.45f, .75f);
+            float center = .57f + .47f * Mathf.Pow(Mathf.Sin(Mathf.Abs(p.x) / 1.45f * Mathf.PI / 2), .85f);
             v.Add(new Vector3(p.x, center - halfWidth, p.y + offset));
             v.Add(new Vector3(p.x, center + halfWidth, p.y + offset));
         }
