@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using RailwayRenaissance.Cab;
 
 // Reference artwork determines silhouette and fittings, not measured engineering dimensions.
 public static class NF5KReferenceBody
@@ -17,8 +18,7 @@ public static class NF5KReferenceBody
         if (!AssetDatabase.IsValidFolder(MeshFolder))
             AssetDatabase.CreateFolder("Assets/Models/Cab", "NF5KBodyMeshes");
         var outline = new List<Vector2>();
-        outline.Add(new Vector2(-1.45f, 17.5f));
-        outline.Add(new Vector2(-1.45f, -.15f));
+        foreach(float z in new[]{17.5f,16.94f,16.06f,1.835f,1.145f,-.15f})outline.Add(new Vector2(-1.45f,z));
         for (int i = 1; i <= 12; i++)
         {
             float a = Mathf.PI + i * Mathf.PI / 24;
@@ -31,7 +31,7 @@ public static class NF5KReferenceBody
             float a = -Mathf.PI / 2 + i * Mathf.PI / 24;
             outline.Add(new Vector2(1.10f + .35f * Mathf.Cos(a), -.15f + .50f * Mathf.Sin(a)));
         }
-        outline.Add(new Vector2(1.45f, 17.5f));
+        foreach(float z in new[]{1.145f,1.835f,16.06f,16.94f,17.5f})outline.Add(new Vector2(1.45f,z));
         Band("Lower_Blue_Shell", outline, .02f, .28f, blue);
         Band("Cream_Waist_Lower", outline, .28f, .35f, cream);
         Band("Red_Waist_Line", outline, .35f, .38f, red);
@@ -40,7 +40,7 @@ public static class NF5KReferenceBody
         Band("Window_Sill", outline, 1.08f, 1.14f, blue);
         Band("Blue_Cant_Rail", outline, 1.92f, 2.03f, blue);
         Band("Cream_Roof_Edge", outline, 2.03f, 2.10f, cream);
-        var frontContour = outline.GetRange(1, outline.Count - 2);
+        var frontContour = outline.FindAll(p=>p.y<=-.149f);
         FrontChevron("Front_Cream_Chevron", frontContour, .071f, cream, -.009f);
         FrontChevron("Front_Red_Chevron", frontContour, .033f, red, -.012f);
         BuildNoseDetails(frontContour);
@@ -79,7 +79,8 @@ public static class NF5KReferenceBody
                 Edge("Rounded_Cab_Shoulder", p, q, .04f, .79f, blue);
             }
             string name = side > 0 ? "Left" : "Right";
-            Cube(name+"_Window_Sill_Pinstripe",new Vector3(side*1.453f,1.11f,8.675f),new Vector3(.004f,.035f,17.65f),cream);
+            foreach(var range in new[]{new Vector2(-.15f,1.145f),new Vector2(1.835f,16.06f),new Vector2(16.94f,17.5f)})
+                Cube(name+"_Window_Sill_Pinstripe",new Vector3(side*1.453f,1.11f,(range.x+range.y)/2),new Vector3(.004f,.035f,range.y-range.x),cream);
             Quaternion sideFacing = Quaternion.Euler(0, 90, 0);
             RoundedPanel(name + "_Cab_Side_Window", new Vector3(side * 1.405f, 1.53f, .44f),
                 1.03f, .72f, .075f, sideFacing, glass, trim);
@@ -97,11 +98,16 @@ public static class NF5KReferenceBody
                     .93f, .75f, .065f, sideFacing, glass, trim);
             Cube(name+"_Rear_Vestibule_Front_Panel",new Vector3(side*1.45f,1.53f,15.76f),new Vector3(.08f,.80f,.74f),blue);
             Cube(name+"_Rear_Vestibule_End_Panel",new Vector3(side*1.45f,1.53f,17.23f),new Vector3(.08f,.80f,.54f),blue);
+            var rearDoor=new GameObject(name+"_Rear_Entry_Pivot");rearDoor.transform.SetParent(root,false);rearDoor.transform.position=new Vector3(side*1.47f,0,16.94f);
             foreach(float z in new[]{16.12f,16.88f})
-                Cube(name+"_Rear_Entry_Stile",new Vector3(side*1.47f,1.53f,z),new Vector3(.06f,.80f,.09f),blue);
-            Cube(name+"_Rear_Entry_Lower",new Vector3(side*1.47f,.58f,16.50f),new Vector3(.06f,1.10f,.85f),blue);
-            Cube(name+"_Rear_Entry_Header",new Vector3(side*1.47f,1.94f,16.50f),new Vector3(.06f,.10f,.85f),blue);
-            RoundedPanel(name+"_Rear_Entry_Window",new Vector3(side*1.477f,1.50f,16.5f),.65f,.68f,.055f,sideFacing,glass,trim);
+                Cube(name+"_Rear_Entry_Stile",new Vector3(side*1.47f,1.53f,z),new Vector3(.06f,.80f,.09f),blue,Quaternion.identity,rearDoor.transform);
+            Cube(name+"_Rear_Entry_Lower",new Vector3(side*1.47f,.58f,16.50f),new Vector3(.06f,1.10f,.85f),blue,Quaternion.identity,rearDoor.transform);
+            Cube(name+"_Rear_Entry_Header",new Vector3(side*1.47f,1.94f,16.50f),new Vector3(.06f,.10f,.85f),blue,Quaternion.identity,rearDoor.transform);
+            RoundedPanel(name+"_Rear_Entry_Window",new Vector3(side*1.477f,1.50f,16.5f),.65f,.68f,.055f,sideFacing,glass,trim,rearDoor.transform);
+            PaintDoor(rearDoor.transform,side,16.50f,.82f);
+            Cube(name+"_Rear_Entry_Inner_Lining",new Vector3(side*1.438f,.58f,16.50f),new Vector3(.003f,1.06f,.81f),AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Interior_Blockout_Wall.mat"),Quaternion.identity,rearDoor.transform);
+            Cube(name+"_Rear_Entry_Handle",new Vector3(side*1.52f,1.0f,16.18f),new Vector3(.025f,.035f,.12f),cream,Quaternion.identity,rearDoor.transform);
+            rearDoor.AddComponent<CabSideDoor>().Configure(side*86);
             Cube(name+"_Rear_Entry_Threshold",new Vector3(side*1.56f,0,16.50f),new Vector3(.23f,.05f,.90f),steel);
         }
         Cube("Front_Center_Mullion", new Vector3(0, 1.53f, -.59f), new Vector3(.065f, .82f, .065f), blue);
@@ -126,16 +132,25 @@ public static class NF5KReferenceBody
         }
         MeshObject("Barrel_Roof", verts, triangles, cream, roof.transform);
         MeshObject("Curved_Front_Roof_Brow", brow, browTriangles, cream, roof.transform);
-        Cylinder("Headlamp_Housing",new Vector3(0,2.37f,-.55f),.34f,.30f,blue,roof.transform);
-        Cylinder("Headlamp_Bezel",new Vector3(0,2.37f,-.711f),.30f,.035f,steel,roof.transform);
+        Cylinder("Headlamp_Housing",new Vector3(0,2.43f,-.55f),.42f,.36f,blue,roof.transform);
+        Cylinder("Headlamp_Bezel",new Vector3(0,2.43f,-.747f),.38f,.035f,steel,roof.transform);
         var lamp = GameObject.CreatePrimitive(PrimitiveType.Cylinder); lamp.name = "Roof_Headlamp_Lens";
-        lamp.transform.SetParent(roof.transform); lamp.transform.position = new Vector3(0, 2.37f, -.745f);
-        lamp.transform.rotation = Quaternion.Euler(90, 0, 0); lamp.transform.localScale = new Vector3(.22f, .016f, .22f);
+        lamp.transform.SetParent(roof.transform); lamp.transform.position = new Vector3(0, 2.43f, -.775f);
+        lamp.transform.rotation = Quaternion.Euler(90, 0, 0); lamp.transform.localScale = new Vector3(.31f, .016f, .31f);
         lamp.GetComponent<Renderer>().sharedMaterial = cream;
         NF5KRunningGear.Build(root);
         NF5KLivery.Build(root,blue,cream,red);
         BuildRearEnd();
         Debug.Log("NF5K_REFERENCE_BODY_OK: rounded shoulders, barrel roof, framed steel doors, grab rails and access steps");
+    }
+
+    static void PaintDoor(Transform door,int side,float z,float width)
+    {
+        float surface=z>10?1.502f:1.478f;
+        Cube("Door_Cream_Lower_Band",new Vector3(side*surface,.315f,z),new Vector3(.002f,.07f,width),cream,Quaternion.identity,door);
+        Cube("Door_Red_Band",new Vector3(side*surface,.365f,z),new Vector3(.002f,.03f,width),red,Quaternion.identity,door);
+        Cube("Door_Cream_Upper_Band",new Vector3(side*surface,.40f,z),new Vector3(.002f,.04f,width),cream,Quaternion.identity,door);
+        Cube("Door_Sill_Pinstripe",new Vector3(side*surface,1.11f,z),new Vector3(.002f,.035f,width),cream,Quaternion.identity,door);
     }
 
     static void BuildRearEnd()
@@ -202,7 +217,8 @@ public static class NF5KReferenceBody
         Cube("Coupler_Shank_Reserved",new Vector3(0,-.13f,-.87f),new Vector3(.14f,.14f,.28f),trim);
         // Coupler is a reserved envelope, not a functional knuckle mechanism.
         Cube("Coupler_Head_Reserved",new Vector3(0,-.12f,-1.03f),new Vector3(.24f,.23f,.14f),steel);
-        RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.46f,.17f,.018f,Quaternion.identity,trim,cream);
+        RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.56f,.20f,.018f,Quaternion.identity,trim,cream);
+        RoundedPanel("Front_Fleet_Plate",new Vector3(0,.26f,-.682f),.32f,.12f,.012f,Quaternion.identity,trim,cream);
         Cylinder("Wing_Badge_Base",new Vector3(0,.92f,-.68f),.24f,.018f,cream);
         Cylinder("Wing_Badge_Field",new Vector3(0,.92f,-.695f),.20f,.012f,blue);
         var star=new List<Vector3>{new Vector3(0,.92f,-.706f)};var starTriangles=new List<int>();
@@ -231,7 +247,7 @@ public static class NF5KReferenceBody
             Cube(name+"_Fixed_Door_Jamb",new Vector3(side*1.454f,.99f,z),new Vector3(.085f,1.94f,.035f),steel);
         Cube(name+"_Fixed_Door_Header",new Vector3(side*1.454f,1.96f,1.49f),new Vector3(.085f,.035f,.765f),steel);
         var assembly = new GameObject(name + "_Door_Pivot"); assembly.transform.SetParent(root, false);
-        assembly.transform.position = new Vector3(side * 1.447f, 0, 1.11f);
+        assembly.transform.position = new Vector3(side * 1.447f, 0, 1.84f);
         Quaternion facing = Quaternion.Euler(0, 90, 0);
         // Narrow steel leaf, rounded upper window, independent hinge and external access hardware.
         RoundedPanel(name + "_Door_Leaf", new Vector3(side * 1.448f, .98f, 1.49f),
@@ -249,10 +265,17 @@ public static class NF5KReferenceBody
         RoundedPanel(name + "_Door_Window", new Vector3(side * 1.452f, 1.49f, 1.49f),
             .47f, .70f, .065f, facing, glass, trim, assembly.transform);
         foreach (float y in new[] {.30f, 1.55f})
-            Cube(name + "_Door_Hinge", new Vector3(side * 1.49f, y, 1.13f),
+            Cube(name + "_Door_Hinge", new Vector3(side * 1.49f, y, 1.84f),
                 new Vector3(.035f, .12f, .045f), steel);
-        Cube(name + "_Door_Latch", new Vector3(side * 1.49f, 1.0f, 1.73f),
+        Cube(name + "_Door_Latch", new Vector3(side * 1.49f, 1.0f, 1.22f),
             new Vector3(.025f, .035f, .12f), cream, Quaternion.identity, assembly.transform);
+        PaintDoor(assembly.transform,side,1.49f,.63f);
+        var inner=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Interior_Blockout_Wall.mat");
+        Cube(name+"_Door_Inner_Lining",new Vector3(side*1.417f,.59f,1.49f),new Vector3(.003f,1.04f,.60f),inner,Quaternion.identity,assembly.transform);
+        Cube(name+"_Door_Inner_Handle",new Vector3(side*1.40f,.99f,1.24f),new Vector3(.024f,.025f,.10f),cream,Quaternion.identity,assembly.transform);
+        Cube(name+"_Door_Lock_Case",new Vector3(side*1.414f,.97f,1.22f),new Vector3(.02f,.12f,.06f),steel,Quaternion.identity,assembly.transform);
+        var bolt=Cube(name+"_Door_Lock_Bolt",new Vector3(side*1.448f,.97f,1.153f),new Vector3(.022f,.025f,.045f),steel,Quaternion.identity,assembly.transform);
+        assembly.AddComponent<CabSideDoor>().Configure(side*86,bolt.transform);
         foreach (float z in new[] {1.04f, 1.94f})
         {
             Cube(name + "_Long_Grab_Rail", new Vector3(side * 1.53f, .99f, z),
@@ -279,7 +302,14 @@ public static class NF5KReferenceBody
             v.Add(new Vector3(p.x, bottom, p.y));
             v.Add(new Vector3(p.x, top, p.y));
         }
-        for (int i = 0; i < contour.Count - 1; i++) Quad(t, i * 2, i * 2 + 2, i * 2 + 3, i * 2 + 1);
+        for (int i = 0; i < contour.Count - 1; i++)
+        {
+            float z=(contour[i].y+contour[i+1].y)/2;
+            bool side=Mathf.Abs(contour[i].x)>1.449f&&Mathf.Abs(contour[i+1].x)>1.449f&&Mathf.Sign(contour[i].x)==Mathf.Sign(contour[i+1].x);
+            bool opening=z>1.145f&&z<1.835f||z>16.06f&&z<16.94f;
+            if(side&&opening&&bottom<1.92f)continue;
+            Quad(t,i*2,i*2+2,i*2+3,i*2+1);
+        }
         MeshObject(name, v, t, material, root);
     }
     static void FrontChevron(string name, List<Vector2> contour, float halfWidth, Material material, float offset)

@@ -86,7 +86,7 @@ public static class NF5KSurfaceFinish
             foreach(float dx in new[]{-.18f,.18f})foreach(float dy in new[]{-.095f,.095f})
                 Bolt("Lamp_Housing_Screw",new Vector3(side*.87f+dx,.72f+dy,-.720f),Quaternion.Euler(90,0,0),.018f,steel,root);
             foreach(float y in new[]{.30f,1.55f})foreach(float dy in new[]{-.04f,.04f})
-                Bolt("Door_Hinge_Bolt",new Vector3(side*1.515f,y+dy,1.13f),Quaternion.Euler(0,0,90),.014f,steel,root);
+                Bolt("Door_Hinge_Bolt",new Vector3(side*1.515f,y+dy,1.84f),Quaternion.Euler(0,0,90),.014f,steel,root);
             for(int i=0;i<3;i++)
             {
                 var strip=GameObject.CreatePrimitive(PrimitiveType.Cube);strip.name="Worn_Step_Leading_Edge";strip.transform.SetParent(root,false);
@@ -96,7 +96,7 @@ public static class NF5KSurfaceFinish
             for(int i=0;i<8;i++)
                 Bolt("Side_Sill_Fastener",new Vector3(side*1.456f,.09f,2.5f+i*1.8f),Quaternion.Euler(0,0,90),.015f,dark,root);
         }
-        foreach(float x in new[]{-.21f,.21f})foreach(float y in new[]{.465f,.595f})
+        foreach(float x in new[]{-.25f,.25f})foreach(float y in new[]{.465f,.595f})
             Bolt("Number_Plate_Fastener",new Vector3(x,y,-.715f),Quaternion.Euler(90,0,0),.012f,steel,root);
     }
     static void Bolt(string name,Vector3 p,Quaternion rotation,float diameter,Material material,Transform parent)

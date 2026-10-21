@@ -33,7 +33,8 @@ public static class NF5KLivery
             SideRect("Flag_Blue_Bottom",side,.61f,.39f,.80f,.035f,blue,.005f);
             Disc("Flag_White_Disc",new Vector3(side*1.474f,.76f,.21f),.090f,cream,side);
             Star("Flag_Red_Star",new Vector3(side*1.477f,.76f,.21f),.072f,red,side);
-            Text("Side_Number", "NF-5K",new Vector3(side*1.47f,.61f,2.25f),side>0?Quaternion.Euler(0,-90,0):Quaternion.Euler(0,90,0),.13f,cream);
+            Text("Side_Number", "NF-5K",new Vector3(side*1.47f,.65f,2.25f),side>0?Quaternion.Euler(0,-90,0):Quaternion.Euler(0,90,0),.17f,cream);
+            Text("Side_Fleet_Number","0721",new Vector3(side*1.47f,.49f,2.25f),side>0?Quaternion.Euler(0,-90,0):Quaternion.Euler(0,90,0),.070f,cream);
             var frontBranch=new[]{new Vector2(side*.39f,.29f),new Vector2(side*.62f,.35f),new Vector2(side*.90f,.47f),new Vector2(side*1.08f,.69f)};
             Branch(frontBranch,0,.006f);
             Branch(new[]{frontBranch[1],new Vector2(side*.77f,.58f),new Vector2(side*.72f,.76f)},0,.004f);
@@ -42,7 +43,8 @@ public static class NF5KLivery
             // Window rail and panel joints remain separate from decorative artwork.
             for(int i=0;i<7;i++)SideRect("Painted_Panel_Seam",side,.73f,3.8f+i*1.8f,.012f,.61f,branch);
         }
-        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.085f,cream);
+        Text("Front_Number_Text","NF-5K",new Vector3(0,.53f,-.710f),Quaternion.identity,.11f,cream);
+        Text("Front_Fleet_Number","0721",new Vector3(0,.26f,-.696f),Quaternion.identity,.070f,cream);
         Debug.Log("NF5K_LIVERY_OK: geometric sakura, flags, lettering; no baked illustration pasted onto body");
     }
     static float FrontZ(float x)
@@ -135,19 +137,23 @@ public static class NF5KLivery
             ['N']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(0,1),new Vector2(.55f,0)},new[]{new Vector2(.55f,0),new Vector2(.55f,1)}},
             ['F']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(0,1),new Vector2(.55f,1)},new[]{new Vector2(0,.55f),new Vector2(.43f,.55f)}},
             ['-']=new[]{new[]{new Vector2(.04f,.5f),new Vector2(.49f,.5f)}},
+            ['0']=new[]{new[]{new Vector2(0,0),new Vector2(0,1),new Vector2(.55f,1),new Vector2(.55f,0),new Vector2(0,0)}},
+            ['7']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.10f,0)}},
+            ['2']=new[]{new[]{new Vector2(0,1),new Vector2(.55f,1),new Vector2(.55f,.55f),new Vector2(0,.10f),new Vector2(0,0),new Vector2(.55f,0)}},
+            ['1']=new[]{new[]{new Vector2(.10f,.75f),new Vector2(.30f,1),new Vector2(.30f,0)},new[]{new Vector2(.08f,0),new Vector2(.52f,0)}},
             ['5']=new[]{new[]{new Vector2(.55f,1),new Vector2(0,1),new Vector2(0,.55f),new Vector2(.55f,.55f),new Vector2(.55f,0),new Vector2(0,0)}},
             ['K']=new[]{new[]{new Vector2(0,0),new Vector2(0,1)},new[]{new Vector2(.55f,1),new Vector2(0,.5f),new Vector2(.55f,0)}}
         };
         for(int c=0;c<value.Length;c++)foreach(var line in glyphs[value[c]])for(int i=0;i<line.Length-1;i++)
         {
-            Vector2 a=line[i],b=line[i+1],n=new Vector2(-(b-a).y,(b-a).x).normalized*.035f;
+            Vector2 a=line[i],b=line[i+1],n=new Vector2(-(b-a).y,(b-a).x).normalized*.050f;
             var offset=new Vector2(c*.75f-value.Length*.375f+.10f,-.5f);
             int k=v.Count;foreach(var point in new[]{a+n,a-n,b-n,b+n})v.Add((Vector3)(point+offset));
             t.Add(k);t.Add(k+2);t.Add(k+1);t.Add(k);t.Add(k+3);t.Add(k+2);
         }
-        string path="Assets/Models/Cab/NF5KBodyMeshes/Number_Lettering.asset";
+        string path="Assets/Models/Cab/NF5KBodyMeshes/"+name+"_Lettering.asset";
         var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        if(mesh==null){mesh=new Mesh();mesh.SetVertices(v);mesh.SetTriangles(t,0);mesh.RecalculateNormals();AssetDatabase.CreateAsset(mesh,path);}
+        if(mesh==null){mesh=new Mesh();AssetDatabase.CreateAsset(mesh,path);}else mesh.Clear();mesh.SetVertices(v);mesh.SetTriangles(t,0);mesh.RecalculateNormals();EditorUtility.SetDirty(mesh);
         var obj=new GameObject(name,typeof(MeshFilter),typeof(MeshRenderer));obj.transform.SetParent(root,false);
         obj.transform.localPosition=p;obj.transform.localRotation=rotation;obj.transform.localScale=Vector3.one*size;
         obj.GetComponent<MeshFilter>().sharedMesh=mesh;obj.GetComponent<Renderer>().sharedMaterial=color;

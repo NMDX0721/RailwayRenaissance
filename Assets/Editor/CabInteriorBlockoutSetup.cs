@@ -47,6 +47,9 @@ public static class CabInteriorBlockoutSetup
                 camera.transform.position=new Vector3(5,1.65f,.25f);
                 camera.transform.LookAt(new Vector3(1.45f,.85f,1.48f));camera.orthographicSize=1.60f;
                 Shot(camera,Output+"door_reference_view.png");
+                var leftDoor=GameObject.Find("Left_Door_Pivot").GetComponent<CabSideDoor>();
+                leftDoor.Open();Shot(camera,Output+"door_open_view.png");leftDoor.Close();
+                NF5KDoorReview.Validate();
                 camera.orthographic=false;camera.transform.position=eyePosition;camera.transform.rotation=eyeRotation;
                 var hidden=new List<GameObject>();
                 foreach(var name in new[]{"Roof","Rear_Assembly","Left_Upper_Wall","Left_Lower_Wall","Left_Door_Pivot","Left_Header"})
@@ -131,7 +134,8 @@ public static class CabInteriorBlockoutSetup
         Box("Passenger_Floor_First_Module",new Vector3(0,-.045f,9.7f),new Vector3(2.8f,.09f,15.6f),floor,passenger.transform);
         foreach(float x in new[]{-1.4f,1.4f})
         {
-            Box("Passenger_Lower_Wall",new Vector3(x,.5f,9.7f),new Vector3(.07f,1f,15.6f),wall,passenger.transform);
+            Box("Passenger_Lower_Wall",new Vector3(x,.5f,8.98f),new Vector3(.07f,1f,14.16f),wall,passenger.transform);
+            Box("Passenger_Rear_End_Lower_Wall",new Vector3(x,.5f,17.22f),new Vector3(.07f,1f,.56f),wall,passenger.transform);
             for(int i=0;i<12;i++)
             {
                 float z=2.8f+i*1.1f;
