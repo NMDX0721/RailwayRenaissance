@@ -1,5 +1,19 @@
 # NF-5K 转向架细化
 
+## 2026-10-21 灰色走行部、格栅踏步与被动反光片
+
+用户要求消除塑料感，参考日本铁路配色，不局限于深色，并补梯子细节及反光条。参考[日本制铁轮轴实物](https://www.nipponsteel.com/en/product/railway-automotive-machinery-parts/list/05.html)与[2025年转向架技术资料](https://www.nipponsteel.com/common/secure/en/tech/report/pdf/133-04.pdf)的构件区分；本项目选择灰绿主架、浅灰轴箱、暖灰设备壳体、石墨色弹簧及金属踏面的层次，并非“日本铁路统一标准色”。
+
+NF5KRunningGearFinish为钢构漆层设置低金属度、低平滑度、低幅度色差和微法线，不能以钢材基体为由把漆面设成裸金属。轮辐板与踏面继续独立材质；新Profiled_Wheel_Hard_Shoulders保留截面尺寸，96段圆周方向平滑、截面肩部拆法线，消除跨轮辋/轮面大范围平滑形成的橡胶胎式高光。二者不是靠自发光提亮。
+
+梯子3级踏面改为有真实间隙的开口条栅、周边框和中部横系条；保留完整踏步包络碰撞盒，尚非可踩空的精密网格碰撞。补六角螺栓、垫圈与窄赭黄边缘标识。每级前缘有白/琥珀色薄反光片，两侧总计12片，不参与碰撞、不充当灯具或阴影遮挡物。具体配色和位置是项目设计，不作为车辆反光标识标准引用。
+
+CabRetroreflective.shader使用URP PBR基底与光照驱动的方向回归项：入射方向与观察方向接近时增强，乘光源强度、面朝向、距离衰减及阴影衰减；支持主光与附加点/聚光灯循环、Forward+，无自发光项。它是经验型回归反射近似，未标定真实反光膜角度曲线；多附加平行光的回归分量、严格能量守恒、Android低阶兼容及性能尚待评估。
+
+三份既有审阅场景均更新，保留启动/驾驶交互。整车材质收尾再次调用走行部配色，避免被旧通用材质覆盖。颜色微纹理为固定美术资源，不修改任何存档初值。
+
+图片：`japan_grey_running_gear_final.png`、`japan_grey_wheel_detail_final.png`、`ladder_grating_reflector_final.png`，位于`tools/cab_reference/interior_review/`。日志`tools/compile/cab_grey_grating_reflector.log`验证编译/着色器及原驾驶交互；NF5KReflectorReview.BatchBuild另外隔离比较关灯、近视线聚光和斜向聚光，输出`tools/compile/cab_reflector_acceptance.json`，结果以实际通过标记为准。
+
 ## 2026-10-21 梯子固定与车轮材质修正
 
 用户指出梯子连接薄弱、车轮过黑。本轮新增NF5KAccessLadder，替换驾驶室两侧原细直边梁：每侧2块底架固定板、2根上托臂、2根斜撑及加粗倾斜边梁，固定板以4螺栓表现连接；每级踏步增加两端角托、前缘下折和低矮防滑筋。连接到Continuous_Underframe侧缘，不挂在门扇、薄外皮或转向架上。踏步仍为3级、约240mm高差；属于静态设计候选，未做载人强度、疲劳或车辆限界认证。未变更原侧门开向。

@@ -37,6 +37,7 @@ public static class NF5KIndustrialFinish
         glass.SetColor("_BaseColor",new Color(.46f,.60f,.66f,.16f));EditorUtility.SetDirty(glass);
         LampOptics(root,glass);
         NF5KRunningGear.FinishWheelMaterials();
+        var gear=root.Find("Running_Gear");if(gear!=null)NF5KRunningGearFinish.Apply(gear);
         Debug.Log("NF5K_INDUSTRIAL_FINISH_OK: millimetre bevels, rubber separation, spatial coating variation and preserved glass reflections");
     }
     static void LampOptics(Transform root,Material glass)

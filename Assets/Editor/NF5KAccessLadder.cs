@@ -12,6 +12,16 @@ public static class NF5KAccessLadder
     public static void BuildSide(Transform parent,string name,int side,Material steel,Material frame)
     {
         frame=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Bogie_Cast_Steel.mat")??frame;
+        var edge=NF5KRunningGearFinish.Paint("Ladder_Muted_Ochre_Edge",new Color(.66f,.51f,.22f));
+        Material Reflector(string id,Color color)
+        {
+            string path="Assets/Resources/Cab/"+id+".mat";var mat=AssetDatabase.LoadAssetAtPath<Material>(path);
+            var shader=Shader.Find("RailwayRenaissance/RetroreflectiveSheet");
+            if(shader==null)throw new System.InvalidOperationException("Reflective sheet shader missing");
+            if(mat==null){mat=new Material(shader);AssetDatabase.CreateAsset(mat,path);}mat.shader=shader;mat.SetColor("_BaseColor",color);mat.SetFloat("_ReturnGain",2);EditorUtility.SetDirty(mat);return mat;
+        }
+        var white=Reflector("Ladder_Reflective_White",new Color(.75f,.78f,.73f));
+        var amber=Reflector("Ladder_Reflective_Amber",new Color(.85f,.57f,.12f));
         var old=parent.Find(name+"_Fixed_Access_Ladder");if(old!=null)Object.DestroyImmediate(old.gameObject);
         foreach(var t in parent.GetComponentsInChildren<Transform>())
             if(t.name==name+"_Ladder_Stringer"||t.name.StartsWith(name+"_Access_Step_"))Object.DestroyImmediate(t.gameObject);
@@ -35,19 +45,48 @@ public static class NF5KAccessLadder
             foreach(float y in new[]{-.12f,-.26f})foreach(float dz in new[]{-.052f,.052f})
             {
                 var bolt=GameObject.CreatePrimitive(PrimitiveType.Cylinder);bolt.name=name+"_Ladder_Anchor_Bolt";bolt.transform.SetParent(root,false);
-                bolt.transform.localPosition=new Vector3(side*1.267f,y,z+dz);bolt.transform.localRotation=Quaternion.Euler(0,0,90);bolt.transform.localScale=new Vector3(.026f,.009f,.026f);bolt.GetComponent<Renderer>().sharedMaterial=steel;
+                bolt.transform.localPosition=new Vector3(side*1.275f,y,z+dz);bolt.transform.localRotation=Quaternion.Euler(0,0,90);bolt.transform.localScale=new Vector3(.03f,.018f,.03f);bolt.GetComponent<Renderer>().sharedMaterial=steel;
+                bolt.GetComponent<MeshFilter>().sharedMesh=HexHead();
                 Object.DestroyImmediate(bolt.GetComponent<Collider>());
+                var washer=GameObject.CreatePrimitive(PrimitiveType.Cylinder);washer.name=name+"_Ladder_Anchor_Washer";washer.transform.SetParent(root,false);
+                washer.transform.localPosition=new Vector3(side*1.264f,y,z+dz);washer.transform.localRotation=Quaternion.Euler(0,0,90);washer.transform.localScale=new Vector3(.041f,.002f,.041f);washer.GetComponent<Renderer>().sharedMaterial=steel;Object.DestroyImmediate(washer.GetComponent<Collider>());
             }
         }
         for(int i=0;i<3;i++)
         {
             float x=1.50f+.04f*i,y=-.24f-.24f*i;
-            Box("Access_Step_"+i,new Vector3(side*x,y,1.49f),new Vector3(.24f,.04f,.66f),steel);
+            var step=new GameObject(name+"_Access_Step_"+i);step.transform.SetParent(root,false);step.transform.localPosition=new Vector3(side*x,y,1.49f);
+            step.AddComponent<BoxCollider>().size=new Vector3(.24f,.04f,.66f);
+            foreach(float z in new[]{1.169f,1.811f})Box("Tread_Perimeter",new Vector3(side*x,y,z),new Vector3(.24f,.035f,.018f),steel);
+            foreach(float dx in new[]{-.111f,.111f})Box("Tread_Perimeter",new Vector3(side*(x+dx),y,1.49f),new Vector3(.018f,.035f,.66f),steel);
+            for(int bar=0;bar<7;bar++)Box("Open_Grating_Bar",new Vector3(side*(x-.09f+bar*.03f),y,1.49f),new Vector3(.012f,.032f,.624f),steel);
+            Box("Grating_Mid_Tie",new Vector3(side*x,y-.005f,1.49f),new Vector3(.21f,.02f,.012f),frame);
             foreach(float z in new[]{1.20f,1.78f})Box("Tread_Angle_Cleat",new Vector3(side*x,y-.035f,z),new Vector3(.23f,.04f,.055f),frame);
-            for(int ridge=0;ridge<4;ridge++)Box("Tread_Anti_Slip_Rib",new Vector3(side*(x-.075f+ridge*.05f),y+.023f,1.49f),new Vector3(.008f,.006f,.61f),frame);
+            Box("Tread_Worn_Safety_Edge",new Vector3(side*(x+.115f),y+.019f,1.49f),new Vector3(.010f,.003f,.61f),edge);
+            foreach(float z in new[]{1.25f,1.73f})
+            {
+                Box("Passive_Reflective_Strip",new Vector3(side*(x+.122f),y-.023f,z),new Vector3(.002f,.025f,.10f),z<1.49f?white:amber);
+                var strip=root.GetChild(root.childCount-1);Object.DestroyImmediate(strip.GetComponent<Collider>());
+                strip.GetComponent<Renderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
             Box("Tread_Front_Return",new Vector3(side*(x+.112f),y-.026f,1.49f),new Vector3(.016f,.045f,.66f),frame);
         }
         NF5KIndustrialFinish.FinishRunningGear(root);
         foreach(var t in root.GetComponentsInChildren<Transform>())t.gameObject.layer=parent.gameObject.layer;
+    }
+    static Mesh HexHead()
+    {
+        string path="Assets/Models/Cab/NF5KBodyMeshes/Ladder_Hex_Fastener.asset";
+        var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(mesh!=null)return mesh;
+        var v=new System.Collections.Generic.List<Vector3>();var t=new System.Collections.Generic.List<int>();
+        for(int i=0;i<6;i++)
+        {
+            float a=i*Mathf.PI/3,b=(i+1)*Mathf.PI/3;
+            var aa=new Vector3(Mathf.Cos(a)*.5f,-.5f,Mathf.Sin(a)*.5f);var bb=new Vector3(Mathf.Cos(b)*.5f,-.5f,Mathf.Sin(b)*.5f);
+            int k=v.Count;v.AddRange(new[]{aa,aa+Vector3.up,bb+Vector3.up,bb});t.AddRange(new[]{k,k+1,k+2,k,k+2,k+3});
+            k=v.Count;v.AddRange(new[]{Vector3.up*.5f,bb+Vector3.up,aa+Vector3.up});t.AddRange(new[]{k,k+1,k+2});
+            k=v.Count;v.AddRange(new[]{Vector3.down*.5f,aa,bb});t.AddRange(new[]{k,k+1,k+2});
+        }
+        mesh=new Mesh{name="Ladder_Hex_Fastener"};mesh.SetVertices(v);mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateBounds();AssetDatabase.CreateAsset(mesh,path);return mesh;
     }
 }
