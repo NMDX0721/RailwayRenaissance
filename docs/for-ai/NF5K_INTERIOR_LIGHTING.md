@@ -64,6 +64,8 @@
 双顶灯采用较中性的暖白色，降低直射台面强度。为改善实时直接照明中“台面亮、顶棚黑”的现象，增加两只随顶灯同步的低强度局部Point补光作为反弹光近似（对象名`Cab_Local_Bounce_Approximation`）。后续客舱内装轮又增加六只随客舱分区同步的局部反弹近似：当前为18组实体灯具、26个Unity Light，辅助光源不算额外实体灯具。强度由`Fixture.bounceIntensity`分别设置。补光不投阴影、限定短距离与审阅车体图层，不是路径追踪GI；仍可能存在局部漏光，正式场景需再评估。关闭相应顶灯、断电与禁用组件时，补光也同步关闭。未抬高全局夜间环境光或曝光来制造正常照明变亮的效果。
 # 2026-10-21 render audit
 
+Latest follow-up replaces rendered approximation point lights with circuit-dependent diffuse spherical-harmonic fill (`CabDiffuseFill`). Sixteen legacy approximation Light bindings now have cullingMask=0; only real lamp sources contribute direct light and specular highlights. The diffuse field adds smooth ambient/upward/downward contributions, isolated across the cab/passenger partition. It is authored irradiance rather than simulated multi-bounce GI. Normal-light off, main-supply loss and component disable update it immediately. See the audit for remaining occlusion and large-surface limitations.
+
 Follow-up: additional-light soft shadows are enabled in the shared URP asset (4096px atlas). Eight circuit-bound floor-reflection approximation lights lift seat bases and floors; total interior light components are now 34 for 18 physical fixtures. Passenger upper/lower bounce intensities 1.8/1.2; cab 1.1/0.8. Supply failure, ordinary-light off and component disable also extinguish the lower fill. See the lighting audit for global pipeline impact and performance limits.
 
 NF5K review camera now uses a dedicated Forward+ renderer to remove the four-additional-lights-per-object bottleneck. Passenger local bounce is 0.95 with 3.2m range; cab bounce is 0.65. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for evidence and remaining rendering limits. These values are renderer intensity settings, not lux.

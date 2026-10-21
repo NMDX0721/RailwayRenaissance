@@ -120,6 +120,7 @@ namespace RailwayRenaissance.Cab
                 properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : .65f));
                 fixture.diffuser.SetPropertyBlock(properties);
             }
+            GetComponent<CabDiffuseFill>()?.Refresh();
         }
         void OnDisable() { Apply(); }
         void OnGUI()

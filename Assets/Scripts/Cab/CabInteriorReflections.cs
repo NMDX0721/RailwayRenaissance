@@ -13,6 +13,7 @@ namespace RailwayRenaissance.Cab
         void LateUpdate() { RefreshIfChanged(); }
         public bool RefreshIfChanged()
         {
+            GetComponent<CabDiffuseFill>()?.Refresh();
             lamps ??= GetComponentsInChildren<Light>(true);
             int signature = 17;
             unchecked

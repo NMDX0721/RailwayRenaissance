@@ -100,6 +100,7 @@ public static class CabInteriorBlockoutSetup
         try
         {
             camera.targetTexture=target;
+            UnityEngine.Object.FindFirstObjectByType<CabDiffuseFill>()?.Refresh();
             var reflections=UnityEngine.Object.FindFirstObjectByType<CabInteriorReflections>();
             if(reflections!=null&&reflections.RefreshIfChanged())camera.Render();
             camera.Render();
