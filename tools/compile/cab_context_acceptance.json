@@ -1,0 +1,7 @@
+{
+  "NF5K_CONTEXT_INTERACTION_OK": true,
+  "NF5K_DRIVING_INTERACTION_OK": true,
+  "NF5K_SIMULATION_PLAYMODE_OK": true,
+  "NF5K_SIMULATION_KERNEL_OK": true,
+  "compileErrors": false
+}

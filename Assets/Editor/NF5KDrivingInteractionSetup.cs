@@ -10,6 +10,7 @@ public static class NF5KDrivingInteractionSetup
         Bind(state, "Tall_Spindle_Pivot", CabDrivingAction.AutomaticBrake, 100);
         Bind(state, "Short_Spindle_Pivot", CabDrivingAction.IndependentBrake, 65);
         Bind(state, "Reverser_Handle", CabDrivingAction.Reverser, 25);
+        state.gameObject.AddComponent<CabContextInteraction>();
     }
     static void Bind(CabEngineState state, string name, CabDrivingAction action, float travel)
     {

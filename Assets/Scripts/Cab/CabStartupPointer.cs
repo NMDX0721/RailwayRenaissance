@@ -14,6 +14,7 @@ namespace RailwayRenaissance.Cab
         void OnEnable() { if (viewCamera == null) viewCamera = Camera.main; }
         void Update()
         {
+            if (GetComponent<CabContextInteraction>() != null) return;
             var mouse = Mouse.current;
             drivingHint = null;
             if (mouse == null || viewCamera == null) return;
