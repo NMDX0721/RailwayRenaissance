@@ -12,7 +12,7 @@
   "physical_glass_verified": false,
   "reference_body": "rounded shoulders, barrel roof, narrow steel doors and access ladders",
   "nose_detail_revision": "tapered lower skirt, vent recess outlines, round roof lamp, simplified wing badge and fixed door jambs",
-  "coupler": "reserved envelope only, no locking or force simulation",
+  "coupler": "static cast head and independent knuckle/pin, shank, carrier, wear pad, draft yoke and sill; no coupling or force simulation",
   "door_window_openings_and_persistent_mesh_reload": "passed",
   "reference": "ExternalAssets/nf5_exterior_ref.png",
   "running_gear": "2 provisional powered bogies, 4 rigid wheelsets, 8 steel wheels",
@@ -28,7 +28,7 @@
   "aperture_junctions": "integrated painted spandrels, metal press lips, rubber seals, recessed glass and 45mm returns; raked shoulder transition",
   "industrial_materials": "regional matte enamel, separate rubber and exposed metal, preserved glass specular, 4mm maximum edge bevels, lamp optics and neutral review ground",
   "markings_cast_shadows": false,
-  "log": "tools/compile/cab_front_lighting.log",
+  "log": "tools/compile/cab_front_mechanical.log",
   "livery_palette": "deep blue, warm ivory, crimson, soft two-tone pink blossoms; 6mm blue panel seams",
   "review_antialiasing": "3x SSAA: 4200x3000 to 1400x1000 with nine-sample resolve; screenshots inspected",
   "runtime_global_antialiasing_changed": false,
@@ -39,5 +39,8 @@
   "lighting_ground_render": "passed: road crop brightness off 0.04953 / bright 0.1180094",
   "lighting_emission_render": "passed: roof lamp center brightness off 0.02190981 / bright 1.0",
   "lighting_controls": "review scene GUI and L key; programmatic SetMode/SetPowerAvailable; formal cab selector pending",
-  "lighting_simulation_limits": "art tuned light output, manual auxiliary power, no battery/fuse faults or automatic consist end detection"
+  "lighting_simulation_limits": "art tuned light output, manual auxiliary power, no battery/fuse faults or automatic consist end detection",
+  "brake_hose": "closed angle cock, ferrules, drooped hose, gladhand seal and lug, parking bracket; no pneumatic connectivity",
+  "front_mechanical_reload": "passed: original placeholders absent, required parts persisted, nominal hose clearance",
+  "interior_lighting_plan": "separate driver/task, instrument dimming and zoned passenger ceiling circuits; emergency supply and windshield reflections to verify; not installed"
 }

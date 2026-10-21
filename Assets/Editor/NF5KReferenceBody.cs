@@ -189,7 +189,10 @@ public static class NF5KReferenceBody
             v.Add(new Vector3(p.x*.87f,-.61f,p.y+.19f));
         }
         for(int i=0;i<contour.Count-1;i++)for(int row=0;row<2;row++)
+        {
+            if(row==1 && Mathf.Max(Mathf.Abs(contour[i].x),Mathf.Abs(contour[i+1].x))<.30f)continue;
             Quad(t,i*3+row,(i+1)*3+row,(i+1)*3+row+1,i*3+row+1);
+        }
         MeshObject("Tapered_Nose_Skirt",v,t,blue,root);
         var apron=new List<Vector3>();var apronTriangles=new List<int>();
         var pinstripe=new List<Vector3>();var pinstripeTriangles=new List<int>();
@@ -212,14 +215,9 @@ public static class NF5KReferenceBody
             for(int i=0;i<3;i++)
                 RoundedPanel("Skirt_Vent_"+side+"_"+i,new Vector3(side*.83f,-.24f-i*.12f,-.61f+i*.04f),
                     .43f,.042f,.018f,Quaternion.Euler(-18,0,0),trim,steel);
-            Cube("Front_Buffer_Bracket_"+side,new Vector3(side*.52f,-.06f,-.72f),new Vector3(.11f,.13f,.09f),steel);
-            Cube("Nose_Grab_Stanchion_"+side,new Vector3(side*.48f,.13f,-.72f),new Vector3(.025f,.11f,.035f),steel);
+            Cube("Front_Buffer_Bracket_"+side,new Vector3(side*.52f,-.06f,-.69f),new Vector3(.075f,.085f,.022f),steel);
         }
-        Cube("Nose_Grab_Bar",new Vector3(0,.18f,-.74f),new Vector3(.98f,.032f,.032f),steel);
-        Cube("Coupler_Mount_Pad",new Vector3(0,-.12f,-.70f),new Vector3(.37f,.32f,.08f),steel);
-        Cube("Coupler_Shank_Reserved",new Vector3(0,-.13f,-.87f),new Vector3(.14f,.14f,.28f),trim);
-        // Coupler is a reserved envelope, not a functional knuckle mechanism.
-        Cube("Coupler_Head_Reserved",new Vector3(0,-.12f,-1.03f),new Vector3(.24f,.23f,.14f),steel);
+        NF5KFrontMechanical.Build(root,blue,cream,red,trim,steel);
         RoundedPanel("Front_Number_Plate",new Vector3(0,.53f,-.682f),.64f,.22f,.018f,Quaternion.identity,trim,cream);
         Cylinder("Wing_Badge_Base",new Vector3(0,.94f,-.68f),.32f,.018f,cream);
         Cylinder("Wing_Badge_Field",new Vector3(0,.94f,-.695f),.275f,.012f,blue);

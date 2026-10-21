@@ -454,3 +454,7 @@ Unity Editor 日志: C:\Users\Oe_Lee\AppData\Local\Unity\Editor\Editor.log
 
 ### 2026-10-21 NF-5K exterior lighting
 NF5KIndustrialFinish calls NF5KFrontLightingSetup, which binds CabExteriorLighting to CabEngineState. NF5KLightingReview verifies dark renders and NF5KLightingPlayReview verifies real Play Mode switching and cleanup. See [lighting specification](NF5K_EXTERIOR_LIGHTING.md).
+
+
+### 2026-10-21 NF-5K front mechanical fittings
+NF5KReferenceBody.BuildNoseDetails calls NF5KFrontMechanical.Build for cast coupler parts, support/draft-sill geometry, parked brake hose and skirt details. ValidateReload checks persistence and nominal hose clearance. See [mechanical specification and planned interior lighting](NF5K_FRONT_MECHANICAL.md).

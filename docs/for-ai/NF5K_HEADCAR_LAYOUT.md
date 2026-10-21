@@ -75,3 +75,7 @@
 
 ### 2026-10-21 NF-5K front identity and functional lighting
 Solid polygon lettering on a 640x220mm plate; 320mm wing badge; static articulated wiper geometry; five optical assemblies with Off/Marker/Dim/Bright/Tail modes. Runtime and dark-scene acceptance passed. See [exterior lighting specification](NF5K_EXTERIOR_LIGHTING.md) for interfaces, assumptions, sources and verification.
+
+
+### 2026-10-21 NF-5K mechanical and interior-lighting scope
+Front placeholder coupler replaced with static cast parts, independent knuckle, carrier and sill; closed angle cock and parked hose; service skirt details. Coupling forces and brake-pipe continuity are not simulated. Driver/task, instrument and passenger lighting remain separate planned circuits. See [scope and references](NF5K_FRONT_MECHANICAL.md).

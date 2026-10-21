@@ -38,6 +38,9 @@ public static class CabInteriorBlockoutSetup
                 Shot(camera,Output+"front_detail_view.png");
                 camera.transform.position=new Vector3(0,1.05f,-5);camera.transform.LookAt(new Vector3(0,.85f,-.65f));camera.orthographicSize=1.85f;
                 Shot(camera,Output+"front_livery_view.png");
+                camera.transform.position=new Vector3(2.2f,.75f,-3.5f);camera.transform.LookAt(new Vector3(.10f,-.40f,-.95f));camera.orthographicSize=.90f;
+                Shot(camera,Output+"front_mechanical_view.png");
+                NF5KFrontMechanical.ValidateReload();
                 camera.transform.position=new Vector3(5,.85f,3.45f);camera.transform.LookAt(new Vector3(1.46f,.70f,3.45f));camera.orthographicSize=.65f;
                 Shot(camera,Output+"sakura_livery_view.png");
                 camera.transform.position=new Vector3(4, .15f, 4.5f);camera.transform.LookAt(new Vector3(0,-.65f,2.5f));camera.orthographicSize=1.75f;
