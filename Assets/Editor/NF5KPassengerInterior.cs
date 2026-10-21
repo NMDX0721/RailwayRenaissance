@@ -34,7 +34,7 @@ public static class NF5KPassengerInterior
                 WindowRing("Passenger_Inner_Window_Frame_"+side+"_"+i,side,z,1.075f,.86f,.075f, .96f,.79f,.05f,ivory,1.344f);
                 WindowRing("Passenger_Inner_Window_Gasket_"+side+"_"+i,side,z,.96f,.79f,.05f,.925f,.745f,.045f,rubber,1.340f);
                 WindowReturn(side,z,i);
-                Box("Passenger_Window_Sill",new Vector3(side*1.325f,1.065f,z),new Vector3(.12f,.045f,1.075f),ivory,.012f);
+                Box("Passenger_Window_Sill",new Vector3(side*1.355f,1.065f,z),new Vector3(.04f,.045f,1.075f),ivory,.008f);
                 Box("Passenger_Window_Post",new Vector3(side*1.37f,1.52f,z+.55f),new Vector3(.045f,.93f,.085f),ivory,.006f);
                 Box("Passenger_Heater_Cover",new Vector3(side*1.325f,.19f,z),new Vector3(.09f,.25f,.86f),shell,.007f);
                 for(int vent=0;vent<4;vent++)
@@ -62,14 +62,14 @@ public static class NF5KPassengerInterior
     }
     static void SeatPair(int side,int row,float z)
     {
-        Box("Passenger_Seat_Crossbeam",new Vector3(side*.855f,.34f,z+.06f),new Vector3(.98f,.065f,.065f),steel,.006f);
+        Box("Passenger_Seat_Crossbeam",new Vector3(side*.855f,.36f,z+.06f),new Vector3(.98f,.065f,.065f),steel,.006f);
         foreach(float x in new[]{.58f,1.10f})
         {
-            Box("Passenger_Seat_Leg",new Vector3(side*x,.175f,z+.075f),new Vector3(.055f,.29f,.085f),steel,.006f);
-            Box("Passenger_Seat_Foot",new Vector3(side*x,.023f,z+.075f),new Vector3(.12f,.045f,.21f),steel,.005f);
+            Box("Passenger_Seat_Leg",new Vector3(side*x,.18f,z+.075f),new Vector3(.055f,.30f,.085f),steel,.006f);
+            Box("Passenger_Seat_Foot",new Vector3(side*x,.0225f,z+.075f),new Vector3(.12f,.045f,.21f),steel,.005f);
             foreach(float dz in new[]{-.07f,.07f})Rod("Seat_Anchor_Bolt",new Vector3(side*x,.043f,z+.075f+dz),new Vector3(side*x,.057f,z+.075f+dz),.009f,steel);
         }
-        foreach(float x in new[]{.60f,1.10f})
+        foreach(float x in new[]{.60f,1.075f})
         {
             float sx=side*x;
             Box("Passenger_Seat_Pan",new Vector3(sx,.425f,z),new Vector3(.47f,.065f,.50f),shell,.023f);
@@ -83,7 +83,7 @@ public static class NF5KPassengerInterior
             foreach(float dx in new[]{-.12f,.12f})Rod("Tray_Hinge",new Vector3(sx+dx-.022f,.705f,z+.31f),new Vector3(sx+dx+.022f,.705f,z+.31f),.008f,steel);
             Rod("Seat_Back_Support",new Vector3(sx,.34f,z+.16f),new Vector3(sx,1.11f,z+.30f),.016f,steel);
         }
-        foreach(float x in new[]{.35f,.85f,1.34f})
+        foreach(float x in new[]{.35f,.85f,1.315f})
         {
             Rod("Passenger_Arm_Support",new Vector3(side*x,.36f,z+.16f),new Vector3(side*x,.69f,z+.16f),.012f,steel);
             Box("Passenger_Armrest",new Vector3(side*x,.70f,z+.015f),new Vector3(.036f,.045f,.34f),wood,.014f);
@@ -195,6 +195,24 @@ public static class NF5KPassengerInterior
                 if(box.bounds.max.z>15.70f||box.bounds.min.z<2.40f)throw new InvalidOperationException("Seat extends into reserved vestibule");
                 if(box.bounds.min.x<.32f&&box.bounds.max.x>-.32f)throw new InvalidOperationException("Seat obstructs center aisle");
             }
+        var fittings=root.GetComponentsInChildren<BoxCollider>();int checks=0,feet=0;
+        foreach(var seat in fittings)
+        {
+            if(!(seat.name.StartsWith("Passenger_Seat_")||seat.name=="Passenger_Back_Cushion"||seat.name=="Passenger_Headrest"||seat.name=="Passenger_Closed_Tray"||seat.name=="Passenger_Armrest"))continue;
+            if(seat.bounds.min.y<-.0001f)throw new InvalidOperationException("Seat penetrates floor: "+seat.name);
+            if(Mathf.Max(Mathf.Abs(seat.bounds.min.x),Mathf.Abs(seat.bounds.max.x))>1.3525f)throw new InvalidOperationException("Seat penetrates inner wall: "+seat.name);
+            if(seat.name=="Passenger_Seat_Foot") {feet++;if(Mathf.Abs(seat.bounds.min.y)>.001f)throw new InvalidOperationException("Seat foot is not grounded");}
+            foreach(var wall in fittings)
+            {
+                if(!(wall.name=="Passenger_Window_Sill"||wall.name=="Passenger_Lower_Liner"||wall.name=="Passenger_Heater_Cover"))continue;
+                if(!seat.bounds.Intersects(wall.bounds))continue;
+                checks++;
+                if(Physics.ComputePenetration(seat,seat.transform.position,seat.transform.rotation,wall,wall.transform.position,wall.transform.rotation,out _,out float depth)&&depth>.0001f)
+                    throw new InvalidOperationException("Seat/wall fitting overlap: "+seat.name+" / "+wall.name+" depth="+depth);
+            }
+        }
+        if(feet!=48)throw new InvalidOperationException("Expected 48 grounded seat feet");
+        Debug.Log("NF5K_SEAT_WALL_FLOOR_CLEARANCE_OK: 48 grounded feet; no seat intersection with window sills, inner liners or heater covers; narrow phase candidates="+checks);
         Debug.Log("NF5K_PASSENGER_RELOAD_OK: 48 seats, aisle="+(aisleHalf*2)+"m, reserved vestibule clear; dimensions and loading are design candidates");
     }
 }
