@@ -1,0 +1,10 @@
+{
+  "point_fill": {
+    "lower_mean": 99.70618441558442,
+    "near_white_fraction": 0.05960779220779221
+  },
+  "diffuse_fill": {
+    "lower_mean": 68.16221818181818,
+    "near_white_fraction": 0.0031974025974025972
+  }
+}

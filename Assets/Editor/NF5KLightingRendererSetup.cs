@@ -55,6 +55,7 @@ public static class NF5KLightingRendererSetup
         }
         else layerIndex = Mathf.RoundToInt(Mathf.Log(RenderingLayerMask.GetDefinedRenderingLayerValues()[layerIndex],2));
         uint indirectMask = 1u << layerIndex;
+        var diffuseReceivers = new System.Collections.Generic.List<Renderer>();
         foreach (var surface in root.GetComponentsInChildren<Renderer>(true))
         {
             bool transparent = false;
@@ -62,10 +63,16 @@ public static class NF5KLightingRendererSetup
                 if (material != null && material.renderQueue >= 3000) transparent = true;
             // Real lamps affect both; approximate bounce must not appear as bulbs in glass.
             surface.renderingLayerMask = transparent ? 1u : 1u | indirectMask;
+            var p = surface.bounds.center;
+            if(!transparent && Mathf.Abs(p.x)<1.39f && p.y>-.05f && p.y<2.20f && p.z>-.5f && p.z<17.4f) diffuseReceivers.Add(surface);
         }
         foreach (var lamp in root.GetComponentsInChildren<Light>(true))
             if (lamp.name.Contains("Bounce_Approximation") || lamp.name.Contains("Reflected_Light_Approximation"))
+            {
                 lamp.GetUniversalAdditionalLightData().renderingLayers = indirectMask;
+                lamp.cullingMask = 0; // Retain circuit bindings; replace direct point fill with diffuse SH.
+            }
+        root.gameObject.AddComponent<RailwayRenaissance.Cab.CabDiffuseFill>().Configure(diffuseReceivers.ToArray());
         Debug.Log("NF5K_INDIRECT_LAYER_OK: defined mask=" + indirectMask + "; glass excluded from approximation lights");
         const string path = "Assets/Settings/URP/NF5KLightingVolume.asset";
         var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path);

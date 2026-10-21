@@ -240,3 +240,8 @@ CabInteriorLighting controls separate cab/task, instrument dimmer, two passenger
 
 ## NF-5K passenger fittings (2026-10-21)
 NF5KPassengerInterior generates shared native seat meshes, luggage racks, inner window returns and vestibule fittings. ValidateReload checks 48 seats and candidate aisle clearance; NF5KDoorReview includes new fixed seat/rack colliders. See docs/for-ai/NF5K_PASSENGER_INTERIOR.md. Geometry capacity is not connected to the economy or passenger simulation.
+
+
+## NF5K diffuse lighting (2026-10-21)
+
+CabDiffuseFill supplies circuit-dependent custom SH irradiance to opaque cabin surfaces. Approximation point lights remain bindings with cullingMask=0. Refresh diffuse data before local reflection capture. This is authored fill, not baked or traced GI. Keep normal/night/emergency comparisons and the lower-visibility/highlight check in tools/cab_reference/compare_diffuse_fill.py. See docs/for-ai/NF5K_LIGHTING_AUDIT.md.
