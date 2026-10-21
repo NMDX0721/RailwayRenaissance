@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-21驾驶交互：`CabDrivingTarget`通过`CabStartupPointer`射线分发牵引手轮、大小闸及换向手柄动作；`NF5KDrivingInteractionSetup`由`NF5KSimulationReview.Prepare`在模拟审阅场景中安装网格碰撞体与校准转轴。操作沿用CabEngineState联锁，F2隐藏测试面板。见[NF5K驾驶交互](NF5K_DRIVING_INTERACTION.md)。
+
 NF-5K全车工业材质：`NF5KIndustrialFinish.Build`在SurfaceFinish后应用区域漆面、独立橡胶、玻璃预乘反射及毫米级倒角，保留BoxCollider体积；专用贴图/倒角网格保存于`NF5KBodyMeshes`。`CabInteriorBlockoutSetup`增加分层天光、主光软阴影、弱补光和独立审阅地面，默认仍保存闭门场景。
 
 NF-5K门窗专项：`NF5KReferenceBody.GlazedOpening`统一封板/压边/密封/玻璃/回口；`RakedZ/Shoulder`连接倾斜风挡与车壳；驾驶侧窗安装基准外移、客室窗间与门后过渡面闭合。渲染新增`door_window_junction_view.png`，独立门扇控制和扫掠检查保留。

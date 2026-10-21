@@ -93,6 +93,7 @@ public static class NF5KSimulationReview
         var scene=EditorSceneManager.OpenScene(ScenePath);
         var state=UnityEngine.Object.FindFirstObjectByType<CabEngineState>();
         var driver=state.gameObject.AddComponent<CabSimulationDriver>();driver.ConfigureReviewSeed(20261021);
+        NF5KDrivingInteractionSetup.Configure(state);
         EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
         Debug.Log("NF5K_SIMULATION_SCENE_OK: opt-in backend, existing gauge bindings retained, cold seeded review scenario");
     }
@@ -126,17 +127,33 @@ public static class NF5KSimulationReview
         {
             var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
             driver.EnsureInitialized();var controls=state.GetComponentInChildren<CabStartupControls>();
+            var targets=state.GetComponentsInChildren<CabDrivingTarget>();
+            Assert(targets.Length==4,"Driving target bindings missing");
+            CabDrivingTarget Driving(CabDrivingAction action)=>Array.Find(targets,t=>t.Action==action);
+            var throttle=Driving(CabDrivingAction.Throttle);
+            Assert(!throttle.Activate()&&state.ThrottleNotch==0,"Cold traction accepted");
             Assert(controls.InsertKey()&&controls.SetMaster(true)&&controls.SetFuelPump(true)&&controls.TryStartEngine(),"Physical startup chain failed");
             driver.Advance(6);Assert(driver.Model.State.Running&&state.IsEngineRunning,"Adapter did not expose running engine");
             driver.Advance(300);Assert(state.BrakePipeKpa>490,"Adapter pipe charging failed");
             var lights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
             Assert(lights.MainPower&&lights.BatteryPower,"Backend generator/battery supply not projected to lighting");
-            state.SetReverser(ReverserPosition.Forward);state.SetBrakeNotch(BrakeNotch.Run);driver.ParkingBrake=false;state.SetThrottle(6);driver.Advance(30);
+            Assert(ClickDriving(state,Driving(CabDrivingAction.Reverser)),"Physical reverser rejected ready engine");
+            state.SetBrakeNotch(BrakeNotch.Run);driver.ParkingBrake=false;
+            for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
+            throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
             Assert(!state.SetReverser(ReverserPosition.Reverse),"Moving reversal not rejected");
+            Assert(!Driving(CabDrivingAction.Reverser).Activate(true)&&state.Reverser==ReverserPosition.Forward,"Physical moving reversal accepted");
+            Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake)),"Independent brake ray missed");driver.Advance(3);
+            Assert(state.IndependentBrakeNotch==.25f&&driver.Model.State.LocoCylinderKpa>10&&driver.Model.State.TrainCylinderKpa<5,"Physical independent brake not isolated");
+            Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake),true),"Independent release ray missed");
             string saved=driver.CaptureCheckpoint();driver.Advance(1);driver.RestoreCheckpoint(saved);
             Assert(Math.Abs(driver.Model.State.SpeedMps*3.6-state.CurrentSpeedKmh)<1e-4,"Adapter checkpoint projection failed");
-            state.SetBrakeNotch(BrakeNotch.Emergency);driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
+            var automatic=Driving(CabDrivingAction.AutomaticBrake);
+            for(int i=0;i<3;i++)Assert(ClickDriving(state,automatic),"Automatic brake ray missed");
+            Assert(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Physical brake failed to cut traction");
+            driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
+            Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");
             Debug.Log("NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop");
         }
@@ -144,4 +161,19 @@ public static class NF5KSimulationReview
         EditorApplication.update-=Check;EditorApplication.isPlaying=false;
     }
     static void Assert(bool ok,string why){if(!ok)throw new InvalidOperationException(why);}
+    static bool ClickDriving(CabEngineState state,CabDrivingTarget target,bool secondary=false)
+    {
+        target.ApplyVisual();Physics.SyncTransforms();
+        var pointer=state.GetComponent<CabStartupPointer>();
+        foreach(var collider in target.GetComponentsInChildren<MeshCollider>())
+        foreach(var direction in new[]{Vector3.up,Vector3.right,Vector3.forward,Vector3.left,Vector3.back,Vector3.down})
+        {
+            var bounds=collider.bounds;
+            var ray=new Ray(bounds.center+direction*(bounds.extents.magnitude+.02f),-direction);
+            if(Physics.Raycast(ray,out var hit,4,1<<collider.gameObject.layer,QueryTriggerInteraction.Ignore)
+                &&hit.collider.GetComponentInParent<CabDrivingTarget>()==target)
+                return pointer.ActivateRay(ray,secondary);
+        }
+        throw new InvalidOperationException("No unobstructed mesh ray for "+target.Action);
+    }
 }
