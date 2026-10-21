@@ -79,6 +79,8 @@ public static class NF5KInteriorLightingReview
             c.SetSupply(true,true);c.SetPassengerZone(0,true);c.SetPassengerZone(1,true);
             camera.transform.position=new Vector3(0,1.58f,2.18f);camera.transform.LookAt(new Vector3(0,1.28f,11));Capture("passenger_daylight");
             camera.transform.position=new Vector3(.15f,1.22f,4.10f);camera.transform.LookAt(new Vector3(1.03f,.85f,3.15f));camera.fieldOfView=64;Capture("passenger_seat_daylight");
+            camera.transform.position=new Vector3(.28f,1.30f,3.90f);camera.transform.LookAt(new Vector3(1.20f,1.05f,3.15f));camera.fieldOfView=58;Capture("seat_wall_clearance");
+            camera.transform.position=new Vector3(.18f,.22f,3.75f);camera.transform.LookAt(new Vector3(.98f,.27f,2.94f));camera.fieldOfView=64;Capture("seat_floor_clearance");
         }
         finally
         {

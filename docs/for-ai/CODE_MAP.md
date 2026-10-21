@@ -481,3 +481,6 @@ NF5KPassengerInterior replaces passenger seat/wall blocks with 48 individual sea
 Follow-up: renderer setup enables shared additional-light soft shadows; `CabInteriorLighting.Fixture.lowerBounce` binds floor-reflection fill to the same circuit and power/disable lifecycle as its parent fixture.
 
 `Assets/Editor/NF5KLightingRendererSetup.cs` installs the camera-specific Forward+ renderer during `CabInteriorBlockoutSetup.Build`. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for measured-render checks, reference sources and unresolved shadow/Gamma/GI limitations.
+# Passenger seat clearance follow-up (2026-10-21)
+
+`NF5KPassengerInterior.ValidateReload` now checks seat/wall-envelope clearance, floor grounding and seat intersections with window sills, lower liners and heater covers, in addition to aisle/vestibule checks. See `NF5K_PASSENGER_INTERIOR.md` for corrected dimensions.
