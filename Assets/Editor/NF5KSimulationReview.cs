@@ -128,8 +128,15 @@ public static class NF5KSimulationReview
             var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
             driver.EnsureInitialized();var controls=state.GetComponentInChildren<CabStartupControls>();
             var targets=state.GetComponentsInChildren<CabDrivingTarget>();
-            Assert(targets.Length==4,"Driving target bindings missing");
+            Assert(targets.Length>=4,"Driving target bindings missing");
             CabDrivingTarget Driving(CabDrivingAction action)=>Array.Find(targets,t=>t.Action==action);
+            var parking=Driving(CabDrivingAction.ParkingBrake);
+            if(parking!=null)
+            {
+                Assert(parking.Activate(true)&&!driver.ParkingBrake,"Parking selector did not release");
+                Assert(parking.Activate()&&driver.ParkingBrake,"Parking selector did not apply");
+                Debug.Log("NF5K_PARKING_SELECTOR_PLAY_OK: physical selector applies/releases existing backend command");
+            }
             var throttle=Driving(CabDrivingAction.Throttle);
             Assert(!throttle.Activate()&&state.ThrottleNotch==0,"Cold traction accepted");
             Assert(controls.InsertKey()&&controls.SetMaster(true)&&controls.SetFuelPump(true)&&controls.TryStartEngine(),"Physical startup chain failed");

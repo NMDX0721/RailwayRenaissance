@@ -200,6 +200,7 @@ public static class CabInteriorBlockoutSetup
         NF5KIndustrialFinish.Build(root.transform);
         NF5KAnimeDetailPass.Apply(root.transform);
         NF5KPneumaticEquipment.Apply(root.transform);
+        NF5KCabFittings.Apply(root.transform);
         NF5KInteriorLightingSetup.Build(root.transform);
         NF5KLightingRendererSetup.ConfigureSurfaces(root.transform,camera);
         light.shadows=LightShadows.Soft;light.shadowStrength=.70f;light.shadowBias=.02f;light.shadowNormalBias=.02f;light.intensity=.90f;
