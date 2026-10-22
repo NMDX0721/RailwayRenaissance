@@ -32,30 +32,7 @@ public static class NF5KRunningGear
     }
     public static void FinishWheelMaterials()
     {
-        var rolling=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Wheel_Machined_Tread.mat");
-        var plate=AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Cab/Wheel_Oxidized_Web.mat");
-        if(rolling==null||plate==null)return;
-        string path=Folder+"/Wheel_Subtle_Machining.asset";
-        var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-        if(texture==null)
-        {
-            texture=new Texture2D(256,256,TextureFormat.RGBA32,true,true){name="Wheel_Subtle_Machining",wrapMode=TextureWrapMode.Repeat,filterMode=FilterMode.Trilinear,anisoLevel=4};
-            var pixels=new Color[256*256];
-            for(int y=0;y<256;y++)for(int x=0;x<256;x++)
-            {
-                float grain=Mathf.Repeat(Mathf.Sin(x*12.9898f+y*78.233f)*43758.5453f,1);
-                float value=.955f+.017f*Mathf.Sin(y*2.5f)+.024f*(grain-.5f);
-                pixels[y*256+x]=new Color(value,value,value,1);
-            }
-            texture.SetPixels(pixels);texture.Apply(true,false);AssetDatabase.CreateAsset(texture,path);
-        }
-        rolling.SetColor("_BaseColor",new Color(.61f,.64f,.66f));rolling.SetFloat("_Metallic",.88f);rolling.SetFloat("_Smoothness",.31f);
-        plate.SetColor("_BaseColor",new Color(.40f,.42f,.43f));plate.SetFloat("_Metallic",.43f);plate.SetFloat("_Smoothness",.18f);
-        foreach(var mat in new[]{rolling,plate})
-        {
-            mat.SetTexture("_BaseMap",texture);mat.SetTextureScale("_BaseMap",Vector2.one);
-            mat.SetTexture("_MetallicGlossMap",null);mat.DisableKeyword("_METALLICSPECGLOSSMAP");EditorUtility.SetDirty(mat);
-        }
+        NF5KWheelSteelFinish.Apply();
     }
     static void BuildBogie(float z)
     {
@@ -186,11 +163,20 @@ public static class NF5KRunningGear
         mesh.SetTriangles(dark,0);mesh.SetTriangles(bright,1);mesh.SetNormals(normals);mesh.RecalculateBounds();
         WheelUV(mesh);AssetDatabase.CreateAsset(mesh,path);return mesh;
     }
-    static void WheelUV(Mesh mesh)
+    public static void WheelUV(Mesh mesh)
     {
         var vertices=mesh.vertices;var uv=new Vector2[vertices.Length];
-        for(int i=0;i<vertices.Length;i++){var p=vertices[i];uv[i]=new Vector2(Mathf.Atan2(p.z,p.y)/(2*Mathf.PI),Mathf.Sqrt(p.y*p.y+p.z*p.z)*2);}
-        mesh.uv=uv;EditorUtility.SetDirty(mesh);
+        const int stride=194;int bands=vertices.Length/stride;float total=0;
+        for(int b=0;b<bands;b++)total+=Vector3.Distance(vertices[b*stride],vertices[b*stride+1]);
+        float distance=0;
+        for(int b=0;b<bands;b++)
+        {
+            float length=Vector3.Distance(vertices[b*stride],vertices[b*stride+1]);
+            for(int i=0;i<=96;i++)for(int e=0;e<2;e++)
+                uv[b*stride+i*2+e]=new Vector2(i/96f,(distance+e*length)/total);
+            distance+=length;
+        }
+        mesh.uv=uv;mesh.RecalculateTangents();EditorUtility.SetDirty(mesh);
     }
     static void Helix(Vector3 position,Transform parent)
     {
