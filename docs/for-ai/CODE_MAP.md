@@ -503,6 +503,10 @@ Follow-up: renderer setup enables shared additional-light soft shadows; `CabInte
 `NF5KDaylightReview` measures reloaded geometry, generates `CabDaylightReview.unity` and captures three daylight lamp-off/on pairs. Runtime `CabDaylightEnvironment` provides the same presets in Chinese. See `NF5K_DAYLIGHT_REVIEW.md` for scene usage and approximation boundaries.
 # NF5K cab fittings (2026-10-22)
 
+Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip, mount/cover/legend details and proportioned clipboard. The same generator adds front/rear passenger fire-extinguisher models, front passage grab rails and a rear emergency-hammer mounting panel. Safety equipment remains static. Selected seat-envelope checks and parking mesh-ray/moving-command regressions are included; see the specification below.
+
+`CabWorldLabel` binds dynamic font atlases to a depth-tested URP `CabWorldLabel.shader` through property blocks; font rebuilds refresh the binding, and physical labels are occluded by opaque cab walls.
+
 `NF5KCabFittings` adds a driver-side parking selector and auxiliary shelf/radio/handset/map pockets in four whole-car review scenes. `CabDrivingTarget.ParkingBrake` feeds the existing simulation driver with stopped/zero-throttle guards; `CabContextInteraction` exposes held apply/release choices. Auxiliary equipment remains visual only. See [NF5K_CAB_FITTINGS.md](NF5K_CAB_FITTINGS.md).
 
 # NF5K pneumatic equipment (2026-10-22)

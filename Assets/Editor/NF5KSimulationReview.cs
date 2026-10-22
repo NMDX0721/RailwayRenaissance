@@ -133,8 +133,8 @@ public static class NF5KSimulationReview
             var parking=Driving(CabDrivingAction.ParkingBrake);
             if(parking!=null)
             {
-                Assert(parking.Activate(true)&&!driver.ParkingBrake,"Parking selector did not release");
-                Assert(parking.Activate()&&driver.ParkingBrake,"Parking selector did not apply");
+                Assert(ClickDriving(state,parking,true)&&!driver.ParkingBrake,"Parking selector ray did not release");
+                Assert(ClickDriving(state,parking)&&driver.ParkingBrake,"Parking selector ray did not apply");
                 Debug.Log("NF5K_PARKING_SELECTOR_PLAY_OK: physical selector applies/releases existing backend command");
             }
             var throttle=Driving(CabDrivingAction.Throttle);
@@ -149,6 +149,14 @@ public static class NF5KSimulationReview
             for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
             throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
+            if(parking!=null)
+            {
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted traction/moving command");
+                state.SetThrottle(0);
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted moving zero-throttle command");
+                state.SetThrottle(6);
+                Debug.Log("NF5K_PARKING_SELECTOR_GUARD_OK: moving command rejected even with zero throttle");
+            }
             var railMotion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();
             if(railMotion!=null)
             {

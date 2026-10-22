@@ -15,3 +15,17 @@
 独立 Unity BatchBuild 输出 `tools/compile/cab_service_fittings_final.log`，截图位于 `tools/cab_reference/interior_review/assistant_station_fittings_final.png` 和 `parking_selector_fittings_final.png`。NF5KSimulationPlayReview 对有选择器的场景检查同一后端施加／缓解状态，并保留启动、牵引、制动、随轨运动及上下文输入回归。旧的独立驾驶场景可不含该新增选择器。
 
 后续顺序：警惕／信号报警系统的功能设计与实体件 → 现有鸣笛撒砂雨刷控制接线 → 驾驶室后壁设备 → 客舱门区、扶手和紧急标识。驾驶日志／回顾／生涯与辅助角色设计继续保留，不由外观补件冒充功能完成。
+
+## 精修与下一批（2026-10-22）
+
+新增专用低光泽灰绿烤漆、暖纸色及红色安全设备漆，避免修改共用车底材料。选择器手柄从140 mm收至105 mm，增底部锚固法兰、检修盖、轴套和 PARK / SET / REL 铭字；夹板改170×230 mm，纸张150×210 mm。通信旋钮改圆柱体并加索引，搁板补安装板、紧固件及挡边，所有方形件复用持久倒角网格。尺寸为游戏候选，非实车测量。
+
+功能检查改为通过真实网格射线调用既有 CabStartupPointer，检查选择器施加和缓解。运行中还检查有牵引及牵引归零两种情况下均拒绝停放制动命令；不直接修改模拟核或绕过浮动交互的长按要求。原有0.1 km/h门槛和同一后端状态保持。
+
+下一批已开始落地：客室前隔板附近和后端门区各一具带支架、压柄、保险销和软管的灭火器，前贯通门两侧扶手，以及后门区安全锤托板。这些是静态模型，不支持取用、灭火或破窗；也不代表已通过疏散/消防认证。现阶段不添加无后端支撑的警惕/信号功能。
+
+新增静态校核选定的选择器立柱、搁板和灭火器包络与座椅碰撞体无交叠，尚非全场景碰撞/触达验证。精修日志 `tools/compile/cab_fittings_delivery_verified.log`；检查图为 `assistant_station_refined_verified.png`、`parking_selector_refined_verified.png`、`passenger_safety_fittings_verified.png`，位于既有 interior_review 目录。截图补光仅用于检查，不保存到场景。
+
+???? NF5KIndustrialFinish.FinishRunningGear ????? MeshFilter ??? Renderer???????????????????????
+
+???????? CabWorldLabel.shader??? LEqual ??????????????CabWorldLabel ?? MaterialPropertyBlock ??????????? Font.textureRebuilt ??????????????????????

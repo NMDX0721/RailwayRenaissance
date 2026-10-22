@@ -10,7 +10,8 @@ public static class NF5KIndustrialFinish
     {
         foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>())
         {
-            if(renderer.GetComponent<MeshFilter>().sharedMesh.name=="Cube")BevelBox(renderer);
+            var filter=renderer.GetComponent<MeshFilter>();
+            if(filter!=null&&filter.sharedMesh!=null&&filter.sharedMesh.name=="Cube")BevelBox(renderer);
         }
     }
     public static void Build(Transform root)
