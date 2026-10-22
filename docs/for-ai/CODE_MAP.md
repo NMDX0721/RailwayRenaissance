@@ -1,6 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+2026-10-22轮轨与使用痕迹：`NF5KWheelTrackReview`保存三份检查场景的静态支承轨、降低的轨下地面和保留登车基准的轨旁走道，核对8轮踏面接触与轮缘净空；`NF5KWheelSteelFinish`沿截面分配磨亮带/氧化肩部/积尘；`NF5KBoardingAudit`优先采用走道顶面。检查轨不属于线路后端，见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-22钢轮表面：`NF5KWheelSteelFinish`分离踏面与氧化辐板的颜色、金属度/光滑度和细法线纹理；`NF5KRunningGear.WheelUV`改用截面累计弧长展开并生成切线，消除圆柱面UV退化。轮体几何保持不变。见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-22登车/轮体复核：`NF5KBoardingAudit`检查四级梯两侧靴子/抬脚与扶手距离，输出JSON和临时比例人偶；`NF5KAccessLadder`改四级、外移圆管扶手并清理旧磨耗条碰撞体，`NF5KSurfaceFinish`停止重建旧装饰。`NF5KRunningGear`采用18点凹形轮体截面，细节见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。收纳、桥板及站台联锁仍未实现。
 2026-10-21走行部灰色系：`NF5KRunningGearFinish`分配灰绿漆架/浅灰轴箱/暖灰设备材质；钢轮改用截面硬肩法线网格。`NF5KAccessLadder`生成开口格栅、六角螺栓/垫圈与12块反光片，`Assets/Shaders/CabRetroreflective.shader`提供受光方向回归近似；`NF5KReflectorReview`独立验证关灯与不同照射角。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。

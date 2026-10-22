@@ -22,11 +22,19 @@ public static class NF5KWheelSteelFinish
             float patches=Mathf.PerlinNoise(u*17+11,v*13+7);
             float grain=Mathf.Repeat(Mathf.Sin(x*12.9898f+y*78.233f)*43758.5453f,1)-.5f;
             float machining=Mathf.Sin(v*Mathf.PI*2*139);
-            float oxide=tread?0:Mathf.SmoothStep(0,1,Mathf.Clamp01((patches-.40f)*2.2f));
-            Color steel=tread?new Color(.65f,.67f,.68f):new Color(.52f,.53f,.53f);
-            color[y*size+x]=Color.Lerp(steel,new Color(.27f,.245f,.215f),oxide*.65f)*(1+grain*.035f+machining*.002f);
-            mask[y*size+x]=new Color(tread?.98f:Mathf.Lerp(.95f,.28f,oxide),0,0,
-                tread?.40f+patches*.12f+machining*.012f:Mathf.Lerp(.29f,.17f,oxide)+grain*.025f);
+            float oxide=Mathf.SmoothStep(0,1,Mathf.Clamp01((patches-.30f)*2.5f));
+            // Arc-length UV: rolling band is profile segment 8; remaining rim shoulders collect oxide.
+            float contact=tread?Mathf.SmoothStep(.402f,.416f,v)*(1-Mathf.SmoothStep(.495f,.510f,v)):0;
+            float scratches=Mathf.Pow(Mathf.Max(0,Mathf.Sin(v*2317+Mathf.Sin(u*37)*.15f)),24);
+            float dust=Mathf.PerlinNoise(u*31+4,v*19+31);
+            Color steel=new Color(.58f,.60f,.61f);
+            Color worn=Color.Lerp(new Color(.30f,.205f,.12f),new Color(.46f,.37f,.25f),dust);
+            Color surface=Color.Lerp(steel,worn,tread?(1-contact)*(.45f+oxide*.4f):.48f+oxide*.32f);
+            surface=Color.Lerp(surface,new Color(.12f,.115f,.10f),Mathf.Clamp01((dust-.52f)*2.4f)*(1-contact)*.65f);
+            color[y*size+x]=surface*(1+grain*.06f+machining*.003f-scratches*.055f);
+            float metal=tread?Mathf.Lerp(.48f,.98f,contact):Mathf.Lerp(.65f,.22f,oxide);
+            float polish=tread?Mathf.Lerp(.23f,.47f,contact):Mathf.Lerp(.30f,.15f,oxide);
+            mask[y*size+x]=new Color(metal,0,0,polish+grain*.03f-scratches*.025f);
             var n=new Vector3(grain*.012f,machining*(tread?.009f:.004f),1).normalized;
             normal[y*size+x]=new Color(n.x*.5f+.5f,n.y*.5f+.5f,n.z*.5f+.5f,1);
         }
