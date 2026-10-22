@@ -82,6 +82,16 @@ public static class NF5KBogieDetailReview
         }
         catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}
     }
+    public static void Capture(Camera camera,string path)=>Shot(camera,path);
+    public static void ConfigureInspectionLighting()
+    {
+        StudioReflection();
+        RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Trilight;
+        RenderSettings.ambientSkyColor=new Color(.65f,.68f,.72f);RenderSettings.ambientEquatorColor=new Color(.45f,.47f,.49f);RenderSettings.ambientGroundColor=new Color(.26f,.27f,.29f);
+        var light=new GameObject("Temporary_Rail_Motion_Inspection_Fill").AddComponent<Light>();
+        light.type=LightType.Directional;light.intensity=.25f;light.shadows=LightShadows.None;light.transform.rotation=Quaternion.Euler(25,120,0);
+        Camera.main.clearFlags=CameraClearFlags.SolidColor;Camera.main.backgroundColor=new Color(.72f,.75f,.77f);
+    }
     static void StudioReflection()
     {
         // Temporary neutral inspection surround; never saved as the vehicle's environment.

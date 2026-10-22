@@ -142,19 +142,29 @@ public static class NF5KSimulationReview
             for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
             throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
+            var railMotion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();
+            if(railMotion!=null)
+            {
+                railMotion.ApplyBackend(true);
+                Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6&&Math.Abs(railMotion.WheelAngleDegrees+driver.Model.State.PositionM/CabRailMotion.RollingRadius*180/Math.PI)<1e-5,"Live rail motion is not reading the backend");
+                Debug.Log("NF5K_RAIL_MOTION_PLAY_OK: live backend signed position drives body, bogies and wheel phase");
+            }
             Assert(!state.SetReverser(ReverserPosition.Reverse),"Moving reversal not rejected");
             Assert(!Driving(CabDrivingAction.Reverser).Activate(true)&&state.Reverser==ReverserPosition.Forward,"Physical moving reversal accepted");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake)),"Independent brake ray missed");driver.Advance(3);
             Assert(state.IndependentBrakeNotch==.25f&&driver.Model.State.LocoCylinderKpa>10&&driver.Model.State.TrainCylinderKpa<5,"Physical independent brake not isolated");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake),true),"Independent release ray missed");
             string saved=driver.CaptureCheckpoint();driver.Advance(1);driver.RestoreCheckpoint(saved);
+            if(railMotion!=null){railMotion.ApplyBackend(true);Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6,"Restored checkpoint left stale visual position");}
             Assert(Math.Abs(driver.Model.State.SpeedMps*3.6-state.CurrentSpeedKmh)<1e-4,"Adapter checkpoint projection failed");
             var automatic=Driving(CabDrivingAction.AutomaticBrake);
             for(int i=0;i<3;i++)Assert(ClickDriving(state,automatic),"Automatic brake ray missed");
             Assert(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Physical brake failed to cut traction");
             driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
             Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
-            NF5KContextInteractionReview.Validate(state);
+            var railViews=UnityEngine.Object.FindFirstObjectByType<CabRailReviewViews>();int priorView=railViews!=null?railViews.View:0;
+            if(railMotion!=null){railMotion.ApplyBackend(true);railViews?.SetView(0);}
+            try{NF5KContextInteractionReview.Validate(state);}finally{railViews?.SetView(priorView);}
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");
             Debug.Log("NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop");
         }

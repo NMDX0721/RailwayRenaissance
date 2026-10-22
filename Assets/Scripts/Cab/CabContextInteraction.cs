@@ -83,7 +83,8 @@ namespace RailwayRenaissance.Cab
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return true;
             if (driver != null && driver.BlocksPointer(Pointer)) return true;
             var day = FindFirstObjectByType<CabDaylightEnvironment>();
-            return day != null && new Rect(Mathf.Max(0,(Screen.width-400)/2),Screen.height-108,400,98).Contains(GuiPointer);
+            if(day!=null&&day.isActiveAndEnabled&&new Rect(Mathf.Max(0,(Screen.width-400)/2),Screen.height-108,400,98).Contains(GuiPointer))return true;
+            return FindFirstObjectByType<CabRailReviewViews>()?.BlocksPointer(Pointer)==true;
         }
         void Update()
         {
