@@ -1,0 +1,18 @@
+{
+    "straight": true,
+    "curve": true,
+    "reverse": true,
+    "phaseFromDistance": true,
+    "stationaryWheels": true,
+    "suspensionSettles": true,
+    "frameNotRotating": true,
+    "brakeClearance": true,
+    "backendDrive": true,
+    "maxContactErrorM": 0.005123212467879057,
+    "maxSteeringDegrees": 1.942493200302124,
+    "minShoeGapM": 0.0024812345504760526,
+    "settledHeaveM": 8.131516293641283e-20,
+    "serviceStopM": 59.29993044455759,
+    "emergencyStopM": 53.96171582304902,
+    "scope": "Kinematic rigid wheelsets, authored test alignment and bounded damped suspension visuals; not wheel/rail contact-force or slip simulation."
+}

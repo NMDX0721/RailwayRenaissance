@@ -38,7 +38,7 @@ public static class NF5KContextInteractionReview
             Set("actionRect",new Rect(0,0,Screen.width,Screen.height));Set("settings",false);Set("inputAfter",-1f);
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.E));Pump();Update();
             var action=(InputAction)typeof(CabContextInteraction).GetField("primary",flags).GetValue(ui);
-            Assert(state.IndependentBrakeNotch==before+.25f,"Rebound E did not execute selected action; pressed="+action.WasPressedThisFrame()+" enabled="+action.enabled+" camera="+Camera.main+" mouse="+Mouse.current.position.ReadValue()+" screen="+Screen.width+"x"+Screen.height+" modal="+ui.ModalOpen);
+            Assert(state.IndependentBrakeNotch==before+.25f,"Rebound E did not execute selected action; pressed="+action.WasPressedThisFrame()+" enabled="+action.enabled+" camera="+Camera.main+" mouse="+Mouse.current.position.ReadValue()+" screen="+Screen.width+"x"+Screen.height+" modal="+ui.ModalOpen+" distance="+Vector3.Distance(Camera.main.transform.position,target.GetComponentInChildren<Collider>().bounds.center)+" focused="+typeof(CabContextInteraction).GetField("focused",flags).GetValue(ui)+" otherUI="+typeof(CabContextInteraction).GetMethod("OverOtherUI",flags).Invoke(ui,null));
             InputSystem.QueueStateEvent(keyboard,new KeyboardState());Pump();
             Set("settings",true);
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.E));Pump();Update();
