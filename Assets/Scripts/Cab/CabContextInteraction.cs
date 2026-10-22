@@ -152,11 +152,19 @@ namespace RailwayRenaissance.Cab
             choices.Clear();
             if(focused is CabDrivingTarget d)
             {
+                if(d.Action==CabDrivingAction.ParkingBrake)
+                {
+                    choices.Add(new Choice("施加停放制动",()=>d.Activate(),true));
+                    choices.Add(new Choice("缓解停放制动",()=>d.Activate(true),true));
+                }
+                else
+                {
                 string up=d.Action==CabDrivingAction.Throttle?"增加一档":d.Action==CabDrivingAction.Reverser?"向前一位":"施加一档";
                 string down=d.Action==CabDrivingAction.Throttle?"减少一档":d.Action==CabDrivingAction.Reverser?"向后一位":"缓解一档";
                 bool emergency=d.Action==CabDrivingAction.AutomaticBrake&&state.BrakePos==BrakeNotch.Full;
                 choices.Add(new Choice(emergency?"进入紧急制动":up,()=>d.Activate(),emergency));
                 choices.Add(new Choice(down,()=>d.Activate(true)));
+                }
             }
             else if(focused is CabStartupClickTarget s)
             {
@@ -181,6 +189,12 @@ namespace RailwayRenaissance.Cab
         {
             if(focused is CabDrivingTarget d)
             {
+                if(d.Action==CabDrivingAction.ParkingBrake)
+                {
+                    if(driver==null)return "当前场景未启用模拟后端";
+                    if(Mathf.Abs(state.CurrentSpeedKmh)>.1f||state.ThrottleNotch!=0)return "先停车并将牵引归零";
+                    return driver.ParkingBrake==(index==0)?"已到该位置":null;
+                }
                 if(d.Action==CabDrivingAction.Throttle)
                 {
                     if(index==1)return state.ThrottleNotch==0?"已归零":null;
