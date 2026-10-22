@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-22动漫3D细节：`NF5KAnimeDetailPass`为四门补充随动五金、全车导水沿并收敛主车漆细噪点；从既有生成入口调用，独立BatchBuild同步四个检查场景并执行门扇/驾驶回归。视觉基线为双像素VN、动漫3D、硬核机制，见[细节轮次说明](NF5K_ANIME_DETAIL_PASS.md)。
+
 2026-10-22走行部运动：`CabReviewTrack`提供独立检查线路；`CabRailMotion`只读后端有符号位移，驱动轮对转角、车体/转向架循迹及有限悬挂表现；`CabRailReviewViews`提供跟随视角。`NF5KRailMotionReview`生成CabRailMotionReview并验证直线/曲线/倒车/制动；原静态场景保留。不是轮轨接触力求解器，见[运动说明](NF5K_RAIL_MOTION.md)。
 
 2026-10-22钢轮分层修正：`NF5KWheelGeometry`外侧辐板改连续弧面；`NF5KWheelSteelFinish`统一非接触区基础材质，积尘按局部分布；`NF5KBogieDetailReview`出图临时增加双侧补光和中性反射围场，不改变保存的车灯。见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
