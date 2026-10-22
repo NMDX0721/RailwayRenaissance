@@ -1,5 +1,7 @@
 # 驾驶台与副司机区域补件（2026-10-22）
 
+后续更新：消防设备已由静态模型升级为查看铭牌、取下检查及原挂架归位；以下“静态”描述保留为前轮历史。当前接口、限制及验证见 [NF5K_SAFETY_INTERACTION.md](NF5K_SAFETY_INTERACTION.md)。
+
 入口：`Assets/Editor/NF5KCabFittings.cs` 的 Apply / BatchBuild。持续生成由 CabInteriorBlockoutSetup 调用；独立入口更新四份整车审阅场景，不重建既有操纵台。保留单侧主驾驶台和另一侧辅助席，不复制驾驶控制台。
 
 ## 本轮组件
