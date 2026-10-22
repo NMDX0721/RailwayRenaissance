@@ -16,26 +16,31 @@ public static class NF5KWheelSteelFinish
         if(material==null)return;
         const int size=512;
         var color=new Color[size*size];var mask=new Color[size*size];var normal=new Color[size*size];
+        var crossSection=new Vector2[size];
+        for(int y=0;y<size;y++)crossSection[y]=NF5KWheelGeometry.At(y/(float)size);
         for(int y=0;y<size;y++)for(int x=0;x<size;x++)
         {
-            float u=x/(float)size,v=y/(float)size;
-            float patches=Mathf.PerlinNoise(u*17+11,v*13+7);
+            float u=x/(float)size,v=y/(float)size,angle=u*Mathf.PI*2;
+            var point=crossSection[y];float radius=point.y;
+            var position=new Vector3(point.x,radius*Mathf.Cos(angle),radius*Mathf.Sin(angle));
+            float fine=Noise(position,260), medium=Noise(position,110);
             float grain=Mathf.Repeat(Mathf.Sin(x*12.9898f+y*78.233f)*43758.5453f,1)-.5f;
-            float machining=Mathf.Sin(v*Mathf.PI*2*139);
-            float oxide=Mathf.SmoothStep(0,1,Mathf.Clamp01((patches-.30f)*2.5f));
-            // Arc-length UV: rolling band is profile segment 8; remaining rim shoulders collect oxide.
-            float contact=tread?Mathf.SmoothStep(.402f,.416f,v)*(1-Mathf.SmoothStep(.495f,.510f,v)):0;
-            float scratches=Mathf.Pow(Mathf.Max(0,Mathf.Sin(v*2317+Mathf.Sin(u*37)*.15f)),24);
-            float dust=Mathf.PerlinNoise(u*31+4,v*19+31);
-            Color steel=new Color(.58f,.60f,.61f);
-            Color worn=Color.Lerp(new Color(.30f,.205f,.12f),new Color(.46f,.37f,.25f),dust);
-            Color surface=Color.Lerp(steel,worn,tread?(1-contact)*(.45f+oxide*.4f):.48f+oxide*.32f);
-            surface=Color.Lerp(surface,new Color(.12f,.115f,.10f),Mathf.Clamp01((dust-.52f)*2.4f)*(1-contact)*.65f);
-            color[y*size+x]=surface*(1+grain*.06f+machining*.003f-scratches*.055f);
-            float metal=tread?Mathf.Lerp(.48f,.98f,contact):Mathf.Lerp(.65f,.22f,oxide);
-            float polish=tread?Mathf.Lerp(.23f,.47f,contact):Mathf.Lerp(.30f,.15f,oxide);
-            mask[y*size+x]=new Color(metal,0,0,polish+grain*.03f-scratches*.025f);
-            var n=new Vector3(grain*.012f,machining*(tread?.009f:.004f),1).normalized;
+            bool rolling=radius>.452f&&radius<.465f&&point.x>-.044f&&point.x<.089f;
+            float flangeRub=Mathf.SmoothStep(.466f,.477f,radius)*(1-Mathf.SmoothStep(.485f,.490f,radius));
+            float polish=rolling?1:tread?flangeRub*.65f:0;
+            float crevice=Mathf.Exp(-Mathf.Pow((radius-.175f)/.025f,2))+Mathf.Exp(-Mathf.Pow((radius-.382f)/.016f,2));
+            float rust=Mathf.Clamp01((medium-.58f)*3)*(.18f+Mathf.Clamp01(crevice)*.4f)*(1-polish);
+            float pits=Mathf.Clamp01((fine-.61f)*5)*(1-polish);
+            Color steel=rolling?new Color(.74f,.76f,.77f):tread?new Color(.66f,.68f,.68f):new Color(.64f,.66f,.66f);
+            Color surface=Color.Lerp(steel,new Color(.30f,.22f,.15f),rust);
+            surface=Color.Lerp(surface,new Color(.22f,.215f,.20f),Mathf.Clamp01(crevice)*.16f*(1-polish));
+            float machining=Mathf.Sin(v*1391+Mathf.Sin(angle*3)*.08f);
+            float score=Mathf.Pow(Mathf.Max(0,Mathf.Sin(v*2317)),32)*polish;
+            color[y*size+x]=surface*(1+grain*.055f+(fine-.5f)*.055f-score*.045f);
+            float metal=Mathf.Lerp(tread?.86f:.82f,.98f,polish)*(1-rust*.72f-pits*.20f);
+            float smooth=Mathf.Lerp(tread?.35f:.34f,.51f,polish)-rust*.12f+(fine-.5f)*.04f-score*.025f;
+            mask[y*size+x]=new Color(metal,0,0,smooth);
+            var n=new Vector3(grain*.018f,(machining*.004f+grain*.012f)*(1-polish*.5f),1).normalized;
             normal[y*size+x]=new Color(n.x*.5f+.5f,n.y*.5f+.5f,n.z*.5f+.5f,1);
         }
         material.SetColor("_BaseColor",Color.white);
@@ -48,6 +53,11 @@ public static class NF5KWheelSteelFinish
         material.EnableKeyword("_METALLICSPECGLOSSMAP");material.EnableKeyword("_NORMALMAP");
         material.DisableKeyword("_EMISSION");material.SetColor("_EmissionColor",Color.black);
         material.SetTextureScale("_BaseMap",Vector2.one);EditorUtility.SetDirty(material);
+    }
+    static float Noise(Vector3 p,float frequency)
+    {
+        p*=frequency;
+        return (Mathf.PerlinNoise(20+p.x,20+p.y)+Mathf.PerlinNoise(70+p.y,70+p.z)+Mathf.PerlinNoise(120+p.z,120+p.x))/3;
     }
     static Texture2D Texture(string name,Color[] colors,bool linear)
     {

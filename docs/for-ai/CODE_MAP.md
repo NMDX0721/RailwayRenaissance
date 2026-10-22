@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-22钢轮实拍精修：`NF5KWheelGeometry`提供带圆角的V3共享轮体和截面采样；`NF5KWheelSteelFinish`按截面位置生成克制的细锈与磨亮带；`NF5KWheelTrackReview`替换现有轮网格并扫描截面验证支承。参考图存于`中转站/NF5K_Wheel_References/`，见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
+
 2026-10-22轮轨与使用痕迹：`NF5KWheelTrackReview`保存三份检查场景的静态支承轨、降低的轨下地面和保留登车基准的轨旁走道，核对8轮踏面接触与轮缘净空；`NF5KWheelSteelFinish`沿截面分配磨亮带/氧化肩部/积尘；`NF5KBoardingAudit`优先采用走道顶面。检查轨不属于线路后端，见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
 
 2026-10-22钢轮表面：`NF5KWheelSteelFinish`分离踏面与氧化辐板的颜色、金属度/光滑度和细法线纹理；`NF5KRunningGear.WheelUV`改用截面累计弧长展开并生成切线，消除圆柱面UV退化。轮体几何保持不变。见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
