@@ -11,10 +11,10 @@ public static class NF5KBoardingAudit
         public bool staticFootClearance, gripEnvelope;
         public string scope="Static 290x115x110 mm boot and 1.75 m figure proxy; no animated climb, strength or platform certification";
     }
-    public static void Validate()
+    public static void Validate(string reportPath="tools/compile/cab_boarding_static_audit.json")
     {
         Physics.SyncTransforms();var r=new Result{stepsPerSide=4,stepRiseM=.28f,treadDepthM=.24f,treadWidthM=.66f,gripClearanceM=1.59f-.016f-1.49f,supportedBootLengthM=.215f};
-        var ground=GameObject.Find("Review_Ground_Not_Vehicle");r.groundY=ground.GetComponent<Renderer>().bounds.max.y;
+        var ground=GameObject.Find("Inspection_Apron_Right")??GameObject.Find("Review_Ground_Not_Vehicle");r.groundY=ground.GetComponent<Renderer>().bounds.max.y;
         r.firstRiseM=-1.10f+.02f-r.groundY;
         if(r.firstRiseM>.45f||r.firstRiseM<.15f||r.gripClearanceM<.075f)throw new InvalidOperationException("Boarding rise or fist space failed");
         foreach(string name in new[]{"Left","Right"})
@@ -43,7 +43,7 @@ public static class NF5KBoardingAudit
             }
         }
         r.staticFootClearance=true;r.gripEnvelope=true;
-        File.WriteAllText("tools/compile/cab_boarding_static_audit.json",JsonUtility.ToJson(r,true));
+        File.WriteAllText(reportPath,JsonUtility.ToJson(r,true));
         Debug.Log("NF5K_BOARDING_STATIC_OK: "+JsonUtility.ToJson(r));
     }
     public static GameObject Figure()

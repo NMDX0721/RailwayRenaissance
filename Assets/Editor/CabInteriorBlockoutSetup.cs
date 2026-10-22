@@ -207,6 +207,7 @@ public static class CabInteriorBlockoutSetup
         var ground=GameObject.CreatePrimitive(PrimitiveType.Cube);ground.name="Review_Ground_Not_Vehicle";ground.layer=30;
         ground.transform.position=new Vector3(0,-1.39f,8);ground.transform.localScale=new Vector3(18,.04f,32);
         ground.GetComponent<Renderer>().sharedMaterial=Mat("Industrial_Review_Ground",new Color(.57f,.59f,.60f));
+        NF5KWheelTrackReview.Install();
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene,ScenePath);
         var state=console.GetComponent<CabEngineState>();
         if(state==null||console.GetComponentsInChildren<CabStartupControls>().Length!=1)throw new InvalidOperationException("Interior lost console startup/state binding");
