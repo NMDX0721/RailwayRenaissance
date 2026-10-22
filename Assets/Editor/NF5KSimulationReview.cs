@@ -146,6 +146,12 @@ public static class NF5KSimulationReview
             if(railMotion!=null)
             {
                 railMotion.ApplyBackend(true);
+                foreach(var hose in railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>())
+                {
+                    hose.UpdateGeometry(hose.GetComponent<MeshFilter>().sharedMesh);
+                    Assert(hose.EndpointError()<.001f,"Moving bogie service hose detached from its endpoint");
+                }
+                if(railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>().Length>0)Debug.Log("NF5K_FLEXIBLE_HOSE_PLAY_OK: actual moved body/bogie endpoints within 1 mm");
                 Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6&&Math.Abs(railMotion.WheelAngleDegrees+driver.Model.State.PositionM/CabRailMotion.RollingRadius*180/Math.PI)<1e-5,"Live rail motion is not reading the backend");
                 Debug.Log("NF5K_RAIL_MOTION_PLAY_OK: live backend signed position drives body, bogies and wheel phase");
             }

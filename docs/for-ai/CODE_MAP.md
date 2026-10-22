@@ -511,6 +511,10 @@ Follow-up: renderer setup enables shared additional-light soft shadows; `CabInte
 # NF5K daylight and proportion review (2026-10-21)
 
 `NF5KDaylightReview` measures reloaded geometry, generates `CabDaylightReview.unity` and captures three daylight lamp-off/on pairs. Runtime `CabDaylightEnvironment` provides the same presets in Chinese. See `NF5K_DAYLIGHT_REVIEW.md` for scene usage and approximation boundaries.
+# NF5K pneumatic equipment (2026-10-22)
+
+`NF5KPneumaticEquipment.Apply` generates reservoirs, dryer/manifold, separate MR/BP/BC visual piping and eight sanding assemblies in all four review scenes. `CabFlexibleHose` follows body/bogie ports after `CabRailMotion`; `NF5KSimulationPlayReview` checks moved endpoints. This is visual equipment, without new pressure or sanding simulation. See [NF5K_PNEUMATIC_EQUIPMENT.md](NF5K_PNEUMATIC_EQUIPMENT.md).
+
 # NF5K simulation backend (2026-10-21)
 
 `CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.
