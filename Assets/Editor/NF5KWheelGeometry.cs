@@ -14,6 +14,17 @@ public static class NF5KWheelGeometry
             new Vector2(-.095f,.49f),new Vector2(-.065f,.49f),new Vector2(-.045f,.462f),new Vector2(.09f,.455f),new Vector2(.095f,.42f),new Vector2(.085f,.385f),
             new Vector2(.060f,.365f),new Vector2(.048f,.30f),new Vector2(.050f,.24f),new Vector2(.062f,.18f),new Vector2(.075f,.145f),new Vector2(.08f,.10f)};
         profile=new List<Vector2>();
+        for(int i=1;i<=5;i++)
+        {
+            float t=(p[i].y-.16f)/.30f;
+            p[i].x=-.11f+.01f*t+.035f*Mathf.Sin(Mathf.PI*t);
+        }
+        // A single curved plate between rim and hub, rather than stacked annular shoulders.
+        for(int i=10;i<p.Length;i++)
+        {
+            float t=(.42f-p[i].y)/.32f;
+            p[i].x=.08f-.032f*Mathf.Sin(Mathf.PI*t)+.015f*(1-t);
+        }
         for(int i=0;i<p.Length;i++)
         {
             var previous=p[(i+p.Length-1)%p.Length];var next=p[(i+1)%p.Length];

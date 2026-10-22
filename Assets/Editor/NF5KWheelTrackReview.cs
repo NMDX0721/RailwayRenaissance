@@ -12,7 +12,7 @@ public static class NF5KWheelTrackReview
         {
             var scene=EditorSceneManager.OpenScene(path);
             Install();
-            NF5KBoardingAudit.Validate("tools/compile/wheel_finalsteel_boarding_"+scene.name+".json");
+            NF5KBoardingAudit.Validate("tools/compile/wheel_continuous_boarding_"+scene.name+".json");
             EditorSceneManager.SaveScene(scene);
         }
     }
