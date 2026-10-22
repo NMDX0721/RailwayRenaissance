@@ -105,40 +105,29 @@ public static class NF5KCabFittings
         {
             float x=z<3?1.21f:-1.21f;
             float face=z<3?1:-1, mountZ=z-.075f-face*.075f;
-            Box("Extinguisher_Back_Mount",new Vector3(x,.46f,mountZ),new Vector3(.12f,.58f,.025f),enamel);
-            foreach(float y in new[]{.23f,.68f})
+            Box("Extinguisher_Back_Mount",new Vector3(x,.44f,mountZ),new Vector3(.12f,.42f,.018f),enamel);
+            foreach(float y in new[]{.26f,.61f})
             {
                 Rod("Extinguisher_Wall_Anchor",new Vector3(x,y,mountZ),new Vector3(x,y,z<3?1.96f:17.30f),.012f,steel);
-                Part("Extinguisher_Mount_Bolt",PrimitiveType.Sphere,new Vector3(x,y,mountZ+face*.02f),new Vector3(.016f,.016f,.01f),steel);
+                Part("Extinguisher_Mount_Bolt",PrimitiveType.Sphere,new Vector3(x,y,mountZ+face*.011f),new Vector3(.016f,.016f,.004f),steel);
             }
-            foreach(float y in new[]{.32f,.59f})
-            {
-                Box("Extinguisher_Fixed_Strap",new Vector3(x,y,mountZ),new Vector3(.15f,.023f,.016f),black);
-                Box("Extinguisher_Strap_Buckle",new Vector3(x+.08f,y,z-.04f),new Vector3(.026f,.036f,.018f),steel);
-            }
-            Box("Extinguisher_Base_Cup",new Vector3(x,.22f,z-.075f),new Vector3(.16f,.025f,.17f),steel);
-            int first=root.childCount;
-            Part("Extinguisher_Cylinder",PrimitiveType.Capsule,new Vector3(x,.46f,z-.075f),new Vector3(.13f,.23f,.13f),safety);
-            Part("Extinguisher_Neck",PrimitiveType.Cylinder,new Vector3(x,.71f,z-.075f),new Vector3(.035f,.025f,.035f),steel);
-            Rod("Extinguisher_Lever",new Vector3(x-.045f,.75f,z-.075f),new Vector3(x+.045f,.75f,z-.075f),.010f,black);
-            Rod("Extinguisher_Safety_Pin",new Vector3(x-.03f,.735f,z-.08f),new Vector3(x-.06f,.735f,z-.08f),.004f,steel);
-            Rod("Extinguisher_Hose",new Vector3(x+.04f,.72f,z-.075f),new Vector3(x+.075f,.35f,z-.075f),.008f,black);
-            Box("Extinguisher_Instruction_Label",new Vector3(x,.48f,z-.075f+face*.067f),new Vector3(.075f,.14f,.004f),paper);
-            for(int i=0;i<5;i++)Box("Extinguisher_Label_Rule",new Vector3(x,.52f-i*.02f,z-.075f+face*.070f),new Vector3(.055f,.002f,.001f),black);
-            var parts=new Transform[root.childCount-first];for(int i=0;i<parts.Length;i++)parts[i]=root.GetChild(first+i);
-            var item=new GameObject("Extinguisher_Removable_Assembly").transform;item.SetParent(root,false);item.localPosition=new Vector3(x,.46f,z-.075f);
-            foreach(var part in parts)part.SetParent(item,true);
+            Box("Extinguisher_Base_Cup",new Vector3(x,.232f,z-.075f),new Vector3(.16f,.025f,.17f),steel);
+            var item=new GameObject("Extinguisher_Removable_Assembly").transform;item.SetParent(root,false);item.localPosition=new Vector3(x,.245f,z-.075f);
+            item.localRotation=Quaternion.Euler(0,face>0?0:180,0);
+            NF5KExtinguisherModel.Build(item);
+            var band=NF5KExtinguisherModel.BuildBand(root,new Vector3(x,.49f,z-.075f),face);
             var mount=new GameObject("Extinguisher_Interaction_Dock");mount.transform.SetParent(root,false);mount.transform.localPosition=new Vector3(x,.46f,z-.075f);mount.layer=30;
             var hit=mount.AddComponent<BoxCollider>();hit.size=new Vector3(.17f,.60f,.19f);
-            mount.AddComponent<CabSafetyEquipment>().Configure(item,true);
-            Box("Extinguisher_Identification_Plate",new Vector3(x,.88f,z-.015f),new Vector3(.20f,.12f,.012f),safety);
-            Label("Extinguisher_Nameplate","灭火器\nFIRE",new Vector3(x,.88f,z-.015f+face*.008f),.003f,Quaternion.Euler(0,face>0?180:0,0));
+            mount.AddComponent<CabSafetyEquipment>().Configure(item,true,new[]{band});
+            Box("Extinguisher_Identification_Plate",new Vector3(x,.74f,z-.015f),new Vector3(.20f,.12f,.012f),safety);
+            Label("Extinguisher_Nameplate",z<3?"灭火器 FX-01\nFIRE EXTINGUISHER":"灭火器 FX-02\nFIRE EXTINGUISHER",new Vector3(x,.74f,z-.015f+face*.008f),.003f,Quaternion.Euler(0,face>0?180:0,0));
         }
         foreach(float x in new[]{-.51f,.51f})
         {
             Rod("Front_Passage_Grab_Rail",new Vector3(x,.78f,2.01f),new Vector3(x,1.64f,2.01f),.016f,steel);
             foreach(float y in new[]{.78f,1.64f})Rod("Passage_Grab_Wall_StandOff",new Vector3(x,y,2.01f),new Vector3(x,y,1.96f),.012f,steel);
         }
+        NF5KExtinguisherModel.BuildManual(root);
         Box("Rear_Vestibule_Safety_Panel",new Vector3(-1.34f,1.35f,17.12f),new Vector3(.025f,.30f,.24f),enamel);
         int hammerStart=root.childCount;
         Rod("Emergency_Hammer_Grip_Visual_Only",new Vector3(-1.31f,1.25f,17.12f),new Vector3(-1.31f,1.43f,17.12f),.013f,safety);
@@ -180,9 +169,15 @@ public static class NF5KCabFittings
             NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/assistant_station_safety_round.png");
             camera.transform.position=new Vector3(.25f,1.18f,1.05f);camera.transform.LookAt(new Vector3(.98f,.71f,.75f));
             NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/parking_selector_safety_round.png");
-            camera.transform.position=new Vector3(.82f,1.03f,2.70f);camera.transform.LookAt(new Vector3(1.21f,.60f,2.12f));camera.fieldOfView=58;
+            camera.transform.position=new Vector3(.86f,.82f,2.65f);camera.transform.LookAt(new Vector3(1.21f,.48f,2.055f));camera.fieldOfView=50;
             fill.transform.position=new Vector3(0,1.6f,2.7f);
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passenger_safety_interactive_delivery.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_mounted_delivery.png");
+            camera.transform.position=new Vector3(1.21f,.46f,2.48f);camera.transform.LookAt(new Vector3(1.21f,.435f,2.055f));camera.fieldOfView=58;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_front_delivery.png");
+            camera.transform.position=new Vector3(1.21f,.575f,2.30f);camera.transform.LookAt(new Vector3(1.21f,.572f,2.09f));camera.fieldOfView=30;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_gauge_valve_delivery.png");
+            camera.transform.position=new Vector3(.95f,.84f,2.45f);camera.transform.LookAt(new Vector3(.95f,.84f,2.02f));camera.fieldOfView=45;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/baiyue_fire_manual_delivery.png");
             EditorSceneManager.OpenScene("Assets/Scenes/CabRailMotionReview.unity");NF5KSimulationPlayReview.Begin();
         }
         catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}

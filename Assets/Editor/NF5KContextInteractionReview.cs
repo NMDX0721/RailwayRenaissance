@@ -50,6 +50,17 @@ public static class NF5KContextInteractionReview
             InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(30,Screen.height-40)}.WithButton(MouseButton.Left));Pump();
             Assert(action.WasPressedThisFrame(),"Mouse rebinding not active");
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E restore rejected");
+            var equipment=state.GetComponentInChildren<CabSafetyEquipment>();
+            if(equipment!=null)
+            {
+                float brakeBeforeInfo=state.IndependentBrakeNotch;
+                Assert(ui.ShowEquipmentInfo(equipment)&&ui.ModalOpen,"Equipment information did not open");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.E));Pump();Update();
+                Assert(state.IndependentBrakeNotch==brakeBeforeInfo&&!equipment.Held,"Information page allowed background interaction");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState());Pump();ui.CloseEquipmentInfo();
+                Assert(!ui.ModalOpen,"Equipment information did not close");
+                Debug.Log("NF5K_EQUIPMENT_INFORMATION_OK: modal equipment dossier blocks background commands and closes cleanly");
+            }
             var stop=Array.Find(state.GetComponentsInChildren<CabStartupClickTarget>(),t=>t.Action==CabStartupAction.Stop);
             Set("focused",stop);Set("focusedCollider",stop.GetComponent<Collider>());
             Set("actionRect",new Rect(0,0,Screen.width,Screen.height));Set("inputAfter",-1f);

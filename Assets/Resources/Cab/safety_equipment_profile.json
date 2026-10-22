@@ -1,0 +1,23 @@
+{
+  "manufacturer": "白岳消防器材厂",
+  "manufacturerEnglish": "BAIYUE FIRE EQUIPMENT",
+  "series": "守安系列 · 车辆型",
+  "seriesEnglish": "SHOUAN SERIES · VEHICLE TYPE",
+  "model": "BYF-23R",
+  "type": "贮压式 ABC 干粉灭火器",
+  "typeEnglish": "Stored-pressure ABC dry chemical extinguisher",
+  "agent": "磷酸铵盐干粉",
+  "agentEnglish": "Monoammonium-phosphate dry chemical",
+  "charge": "2.27 kg（5 lb）",
+  "pressure": "1.34 MPa / 195 psig",
+  "temperature": "−54～+49 ℃",
+  "rating": "3-A:40-B:C",
+  "application": "A：木材、纸张、织物等固体\nB：可燃液体及气体\nC：带电电气设备\n不用于可燃金属及烹饪油脂火灾。",
+  "applicationEnglish": "A: Ordinary combustibles such as wood, paper and textiles.\nB: Flammable liquids and gases.\nC: Energized electrical equipment.\nNot for combustible metals or cooking-oil fires.",
+  "operation": "保持瓶体直立，拔出保险销；将喷嘴对准火焰根部，压下压柄并左右扫射。",
+  "operationEnglish": "Keep upright. Pull the safety pin. Aim at the base of the fire. Squeeze the lever and sweep from side to side.",
+  "inspection": "确认压力指针位于绿色区；检查保险销、封签、软管与固定装置完整。使用后交专业人员检查和重新充装。",
+  "inspectionEnglish": "Check that the pressure pointer is in the green zone. Check the pin, seal, hose and mounting bracket. After use, have qualified personnel inspect and recharge the unit.",
+  "records": "设备编号见挂架识别牌；检修与充装记录见随车检修册。",
+  "recordsEnglish": "See the bracket plate for the equipment ID. Inspection and recharge records are kept in the onboard service log."
+}

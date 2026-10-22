@@ -24,9 +24,20 @@ namespace RailwayRenaissance.Cab
         float inputAfter, holdStart = -1, feedbackUntil;
         string feedback, bindingMessage;
         Rect actionRect;
+        CabSafetyEquipment equipmentInfo;
+        Vector2 equipmentInfoScroll;
         public string PrimaryPath => primary.bindings[0].effectivePath;
         public string PrimaryLabel => primary.GetBindingDisplayString();
-        public bool ModalOpen => settings;
+        public bool ModalOpen => settings || equipmentInfo!=null;
+        public bool ShowEquipmentInfo(CabSafetyEquipment equipment)
+        {
+            if(equipment==null)return false;
+            equipmentInfo=equipment;equipmentInfoScroll=Vector2.zero;holdStart=-1;return true;
+        }
+        public void CloseEquipmentInfo()
+        {
+            equipmentInfo=null;focused=null;focusedCollider=null;holdStart=-1;inputAfter=Time.unscaledTime+.25f;
+        }
         struct Choice
         {
             public string label;
@@ -91,6 +102,12 @@ namespace RailwayRenaissance.Cab
         void Update()
         {
             if (view == null) view=Camera.main;
+            if(equipmentInfo!=null)
+            {
+                holdStart=-1;
+                if(Keyboard.current?.escapeKey.wasPressedThisFrame==true)CloseEquipmentInfo();
+                return;
+            }
             if (settings)
             {
                 holdStart=-1;
@@ -156,8 +173,8 @@ namespace RailwayRenaissance.Cab
             choices.Clear();
             if(focused is CabSafetyEquipment equipment)
             {
-                choices.Add(new Choice("查看铭牌与用途",()=>{feedback=equipment.Description;feedbackUntil=Time.unscaledTime+8;return true;}));
-                choices.Add(new Choice(equipment.Held?"放回并固定":"取下检查",()=>equipment.Toggle(),true));
+                choices.Add(new Choice(equipment.IsManual?"阅读手册 / READ MANUAL":"设备资料 / EQUIPMENT DETAILS",()=>ShowEquipmentInfo(equipment)));
+                if(!equipment.IsManual)choices.Add(new Choice(equipment.Held?"放回并固定 / RETURN":"取下检查 / REMOVE",()=>equipment.Toggle(),true));
             }
             else if(focused is CabDrivingTarget d)
             {
@@ -245,7 +262,8 @@ namespace RailwayRenaissance.Cab
             bool accepted=choices[selected].execute();
             if(focused is CabSafetyEquipment equipment)
             {
-                feedback=accepted?(selected==0?equipment.Description:equipment.Hint):"请靠近原挂架，且一次只取用一件设备";
+                if(selected==0&&accepted){feedbackUntil=0;return;}
+                feedback=accepted?(selected==0?equipment.Description:equipment.Hint):"请靠近原挂架，一次只取用一件。\nReturn to the original bracket; carry one item at a time.";
                 feedbackUntil=Time.unscaledTime+(selected==0?8:2.5f);return;
             }
             feedback=accepted?"操作已提交":focused is CabStartupClickTarget s?
@@ -281,13 +299,25 @@ namespace RailwayRenaissance.Cab
             if(state.MainReservoirKpa<600||state.BrakePipeKpa<470)return "等待充风，观察总风和制动管压力；暂不能施加牵引。";
             if(state.Reverser==ReverserPosition.Neutral)return "看向换向手柄 → 置前进位。";
             if(state.BrakePos>=BrakeNotch.Common||state.IndependentBrakeNotch>.01f||state.BrakeCylinderKpa>=20)return "操作大小闸缓解制动，等待缸压下降。";
-            if(driver!=null&&driver.ParkingBrake)return "交互设置 → 打开测试面板 → 解除停放制动（机械操作件待制作）。";
+            if(driver!=null&&driver.ParkingBrake)return "看向座旁停放制动选择器 → 长按缓解停放制动。";
             return state.ThrottleNotch==0?"看向牵引手轮 → 增加一档。提示随时可在交互设置里关闭。":"已完成启动与初次牵引；用实体闸把练习减速和停车。";
         }
         void OnGUI()
         {
             if(font==null)font=Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var old=GUI.skin.font;if(font!=null)GUI.skin.font=font;
+            if(equipmentInfo!=null)
+            {
+                float width=Mathf.Min(640,Screen.width-24),height=Mathf.Min(740,Screen.height-24);
+                GUILayout.BeginArea(new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height),GUI.skin.box);
+                GUILayout.Label(equipmentInfo.IsManual?"使用与维护手册 / O&M MANUAL":"随车设备资料 / EQUIPMENT DOSSIER",new GUIStyle(GUI.skin.label){fontSize=22});
+                GUILayout.Space(8);
+                equipmentInfoScroll=GUILayout.BeginScrollView(equipmentInfoScroll);
+                GUILayout.Label(equipmentInfo.Description,new GUIStyle(GUI.skin.label){fontSize=16,wordWrap=true});
+                GUILayout.EndScrollView();
+                if(GUILayout.Button("关闭 / CLOSE  ·  Esc",GUILayout.Height(32)))CloseEquipmentInfo();
+                GUILayout.EndArea();GUI.skin.font=old;return;
+            }
             if(GUI.Button(SettingsButton,"交互设置")){settings=true;inputAfter=Time.unscaledTime+.25f;holdStart=-1;}
             if(settings){DrawSettings();GUI.skin.font=old;return;}
             if(!cursorAim)GUI.Label(new Rect(Screen.width/2f-6,Screen.height/2f-12,20,24),"·");
