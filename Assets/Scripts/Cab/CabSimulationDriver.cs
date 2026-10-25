@@ -33,6 +33,8 @@ namespace RailwayRenaissance.Cab
         public CabSimulation Model {get;private set;}
         public SimulationInput Input {get;private set;}=new SimulationInput();
         public event Action<long> BeforeSimulationStep;
+        public event Action CheckpointRestoring;
+        public bool SimulationPaused {get;set;}
         public bool ParkingBrake {get=>parkingBrake;set=>parkingBrake=value;}
         public void ConfigureReviewSeed(int seed) {noWorldSeedReviewFallback=seed;}
         void OnEnable()
@@ -55,6 +57,7 @@ namespace RailwayRenaissance.Cab
         }
         public void Advance(double seconds)
         {
+            if(SimulationPaused)return;
             EnsureInitialized();facade.UseDebugSpeedOverride=false;
             ReadCommands();
             clock.Advance(seconds,()=>
@@ -93,8 +96,18 @@ namespace RailwayRenaissance.Cab
         public string CaptureCheckpoint()
         {EnsureInitialized();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
         // Restore via a cold/paused scene; global game slot integration is intentionally separate.
+        public static void ValidateCheckpoint(string json)
+        {
+            var saved=JsonUtility.FromJson<Checkpoint>(json);
+            if(saved==null||saved.version!=2||!double.TryParse(saved.remainder,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double rest)||double.IsNaN(rest)||double.IsInfinity(rest)||rest<0||rest>=CabSimulation.StepSeconds)
+                throw new ArgumentException("Invalid simulation checkpoint");
+            var config=SimulationCodec.Decode<SimulationConfig>(saved.exactConfig);
+            var input=SimulationCodec.Decode<SimulationInput>(saved.exactInput);input.Validate();
+            var state=SimulationCodec.Decode<SimulationState>(saved.exactState);new CabSimulation(state.Seed,config).Restore(state);
+        }
         public void RestoreCheckpoint(string json)
         {
+            ValidateCheckpoint(json);
             var saved=JsonUtility.FromJson<Checkpoint>(json);
             if(saved==null||saved.version!=2||!double.TryParse(saved.remainder,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double remainder)||double.IsNaN(remainder)||double.IsInfinity(remainder)||remainder<0||remainder>=CabSimulation.StepSeconds)
                 throw new ArgumentException("Invalid simulation checkpoint");
@@ -102,6 +115,7 @@ namespace RailwayRenaissance.Cab
             input.Validate();var candidate=new CabSimulation(state.Seed,config);candidate.Restore(state);
             EnsureInitialized();
             if(startup!=null&&startup.MasterEnabled!=input.Master)throw new InvalidOperationException("Restore requires matching key/master state in the paused cockpit");
+            CheckpointRestoring?.Invoke();
             configuration=config;Model=candidate;Input=input;clock.Remainder=remainder;
             parkingBrake=Input.ParkingBrake;coolingFailure=Input.CoolingFailure;compressorFailure=Input.CompressorFailure;
             gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;
