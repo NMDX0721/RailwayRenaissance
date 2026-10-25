@@ -1,5 +1,7 @@
 # ATO研究开发运行器
 
+第三轮：`--stress`读取`stress-protocol-v1.json`，固定控制器测试观测延迟、弱制动和动态黏着；新增jerk、气量代理、燃油与速度指标。`python research/ato/analyze_stress.py <结果目录>`核对并分析。结果与不能推出的结论见[压力测试报告](../../docs/research/stress_metrics_review.md)。不覆盖前轮结果。
+
 第二轮已执行开发参数比较和首次留出工况。`--tune`比较9组切换参数，`--holdout`读取冻结的`heldout-protocol-v1.json`，`analyze.py <结果目录>`做配对/哈希与驻留间隔核对。详见[本轮结果与限制](../../docs/research/switching_and_holdout_review.md)。下文“尚未冻结”是第一轮历史描述；首次留出测试已冻结并执行，后续改算法须另设新测试集。
 
 本目录是开发平台，正式测试协议尚未冻结。直接链接现有纯内核和研究控制器，不读取Unity/PlayerPrefs或经济存档。

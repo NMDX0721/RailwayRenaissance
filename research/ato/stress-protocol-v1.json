@@ -1,0 +1,26 @@
+{
+  "frozenBeforeExecution": true,
+  "scope": "Finite stress cases. No control retuning based on these outputs.",
+  "controllerHash": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+  "seeds": [3000, 3001],
+  "methods": ["EarlyPredictive", "AdaptivePredictive"],
+  "dwellTicks": [0, 25],
+  "switchPenalty": 0.15,
+  "mass": 1.1,
+  "grip": 0.55,
+  "grade": 0,
+  "distance": 900,
+  "speed": 16,
+  "cases": [
+    {"name":"reference", "delayTicks":0, "brakeScale":1.0, "gripDrop":false},
+    {"name":"observation-delay-100ms", "delayTicks":5, "brakeScale":1.0, "gripDrop":false},
+    {"name":"observation-delay-300ms", "delayTicks":15, "brakeScale":1.0, "gripDrop":false},
+    {"name":"brake-force-minus20pct", "delayTicks":0, "brakeScale":0.8, "gripDrop":false},
+    {"name":"grip-drop-at450m", "delayTicks":0, "brakeScale":1.0, "gripDrop":true},
+    {"name":"combined", "delayTicks":15, "brakeScale":0.8, "gripDrop":true}
+  ],
+  "primary": "Stop within absolute 5m; keep failures and signed overshoot",
+  "secondary": ["brake switches", "moving jerk RMS", "raw peak jerk", "exhaust/compressor kPa L proxies", "fuel", "pre-braking speed RMSE including acceleration", "peak speed"],
+  "measurement": "Delay all measured physical quantities by queue ticks; observation Tick denotes command time, not sensor sample time. Warm-up repeats first sample. Grip drops to 60% at 450m relative displacement. Brake-force mismatch changes only ServiceBrakeN in a plant config copy, not production source. Raw jerk uses 20ms acceleration difference; moving jerk excludes adjacent speeds <=0.5m/s. Pressure-volume totals are proxies, not certified gas mass/energy.",
+  "restrictions": "Two seeds per finite profile do not provide independent field evidence. Do not infer passenger comfort or safety certification. Do not claim braking response-rate mismatch: this suite varies force capability, not pressure rates. Reference grid success does not establish performance on these stresses."
+}

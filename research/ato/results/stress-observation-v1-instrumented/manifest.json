@@ -1,0 +1,20 @@
+{
+  "scope": "Frozen finite stress cases; not field evidence",
+  "protocolHash": "3BDFEAECCB95AE6751432FF4A7627EFBB83E5D1B76661356A39D4325C9223B25",
+  "utc": "2026-10-25T11:19:39.1662104Z",
+  "sourceHash": "523D13EDD4A56873917B08D6E282304FCD227026EDA28DCB24AEFF9577FF52AD",
+  "controllerHash": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+  "runtime": "6.0.36",
+  "controlTicks": 5,
+  "stepSeconds": 0.02,
+  "seedSet": [
+    3000,
+    3001
+  ],
+  "rowCount": 48,
+  "stopSpeedMps": 0.01,
+  "stopHoldTicks": 100,
+  "toleranceM": 5,
+  "replayFrameGrouping": true,
+  "legacyMetricCompatibilityChecked": true
+}

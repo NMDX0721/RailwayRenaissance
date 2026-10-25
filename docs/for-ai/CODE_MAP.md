@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-25研究指标：`research/ato/Program.cs`新增观测队列与冻结压力协议执行，`analyze_stress.py`核对配对、哈希与调控代价；未变更游戏控制器/内核。见[压力测试](../research/stress_metrics_review.md)。
+
 2026-10-25研究后续：`CabAtoController`暴露切换惩罚/最短驻留参数，Unity适配器默认0.5秒；`research/ato/heldout-protocol-v1.json`冻结首次留出工况，`analyze.py`核对配对、哈希和实际切换间隔。见[本轮结果](../research/switching_and_holdout_review.md)。
 
 2026-10-25研究原型：`Cab/Research/CabAtoController`为独立离散预测/有效响应估计核心，`CabAtoResearchDriver`通过`CabSimulationDriver.BeforeSimulationStep`每5步发送既有驾驶命令；人工接管与联锁保留。`NF5KAtoResearchReview`生成独立场景并做真实Play验收，`research/ato`保存开发对照。见[实现与限制](ATO_RESEARCH_IMPLEMENTATION.md)，未完成留出测试或实车标定。
