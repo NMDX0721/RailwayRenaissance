@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-25研究后续：`CabAtoController`暴露切换惩罚/最短驻留参数，Unity适配器默认0.5秒；`research/ato/heldout-protocol-v1.json`冻结首次留出工况，`analyze.py`核对配对、哈希和实际切换间隔。见[本轮结果](../research/switching_and_holdout_review.md)。
+
 2026-10-25研究原型：`Cab/Research/CabAtoController`为独立离散预测/有效响应估计核心，`CabAtoResearchDriver`通过`CabSimulationDriver.BeforeSimulationStep`每5步发送既有驾驶命令；人工接管与联锁保留。`NF5KAtoResearchReview`生成独立场景并做真实Play验收，`research/ato`保存开发对照。见[实现与限制](ATO_RESEARCH_IMPLEMENTATION.md)，未完成留出测试或实车标定。
 
 2026-10-22动漫3D细节：`NF5KAnimeDetailPass`为四门补充随动五金、全车导水沿并收敛主车漆细噪点；从既有生成入口调用，独立BatchBuild同步四个检查场景并执行门扇/驾驶回归。视觉基线为双像素VN、动漫3D、硬核机制，见[细节轮次说明](NF5K_ANIME_DETAIL_PASS.md)。

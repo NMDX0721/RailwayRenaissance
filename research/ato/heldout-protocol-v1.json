@@ -1,0 +1,19 @@
+{
+  "frozenBeforeExecution": true,
+  "scope": "First held-out scenario grid; not independent field samples or safety certification",
+  "selection": "Development-only choice: retain original 0.15 switching penalty and add 25 physics ticks (0.5s) minimum residence; prioritise sub-0.5m joint development MAE and fewer switches",
+  "penalty": 0.15,
+  "dwellTicks": 25,
+  "seeds": [2000, 2001],
+  "mass": [0.9, 1.1],
+  "grip": [0.4, 0.7],
+  "grade": [-5, 5],
+  "distance": [750, 1100],
+  "speed": [14, 18],
+  "methods": ["FixedPoint", "DistanceRule", "Predictive", "EarlyPredictive", "AdaptivePredictive"],
+  "ablation": "For EarlyPredictive and AdaptivePredictive, compare dwell 0 and 25 at identical penalty and conditions",
+  "primary": "Fraction stopped within absolute 5m target tolerance; retain failures",
+  "secondary": ["absolute error", "signed overshoot", "brake switches", "time", "decision time"],
+  "stop": "abs(speed)<0.01m/s for 100 physics ticks; maximum 300s",
+  "restrictions": "No test-driven retuning. Development seeds 1000/1001 excluded. Report deterministic scenarios as a finite set, not 64 independent random draws. No confidence interval interpreted as real-world probability. Broader mass/grip/delay/noise remain untested."
+}

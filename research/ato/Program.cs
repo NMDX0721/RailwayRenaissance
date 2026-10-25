@@ -29,12 +29,14 @@ static class Program
         public double decisionMaxMs {get;set;} public double decisionP95Ms {get;set;}
         public string finalState {get;set;}
         public string initialState {get;set;} public string configuration {get;set;}
+        public double penalty {get;set;} public int dwellTicks {get;set;}
+        public double targetDistance {get;set;} public double targetSpeed {get;set;}
     }
-    static Result Run(AtoMethod method,int seed,double mass,double grip,double grade,string trace=null,int frame=1)
+    static Result Run(AtoMethod method,int seed,double mass,double grip,double grade,string trace=null,int frame=1,double penalty=.15,int dwellTicks=0,double distance=900,double limit=16)
     {
         var start=Ready(seed);start.TrainMassKg*=mass;
         var m=new CabSimulation(seed);m.Restore(start);
-        double target=start.PositionM+900;var controller=new CabAtoController(method,target,16);
+        double target=start.PositionM+distance;var controller=new CabAtoController(method,target,limit,180,penalty,dwellTicks);
         var u=new SimulationInput{Master=true,FuelPump=true,EngineRun=true,ParkingBrake=false,Direction=1,Brake=1,RailGrip=grip,GradePermille=grade};
         using var writer=trace==null?null:new StreamWriter(trace);
         writer?.WriteLine("tick,time_s,position_m,target_m,speed_mps,pipe_kpa,cylinder_kpa,throttle,brake,requested_throttle,estimated_decel,plans");
@@ -59,7 +61,7 @@ static class Program
             }
         }
         times.Sort();double error=m.State.PositionM-target;
-        return new Result{method=method.ToString(),seed=seed,mass=mass,grip=grip,grade=grade,stopped=didStop,reachedTolerance=didStop&&Math.Abs(error)<=5,errorM=error,seconds=ticks*.02,switches=switches,decisionMaxMs=times.Max(),decisionP95Ms=times[(int)((times.Count-1)*.95)],initialState=SimulationCodec.Encode(start),configuration=SimulationCodec.Encode(m.Config),finalState=SimulationCodec.Encode(m.State)};
+        return new Result{method=method.ToString(),seed=seed,mass=mass,grip=grip,grade=grade,penalty=penalty,dwellTicks=dwellTicks,targetDistance=distance,targetSpeed=limit,stopped=didStop,reachedTolerance=didStop&&Math.Abs(error)<=5,errorM=error,seconds=ticks*.02,switches=switches,decisionMaxMs=times.Max(),decisionP95Ms=times[(int)((times.Count-1)*.95)],initialState=SimulationCodec.Encode(start),configuration=SimulationCodec.Encode(m.Config),finalState=SimulationCodec.Encode(m.State)};
     }
     static string Hash(string p)=>Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(p)));
     static void Main(string[] args)
@@ -83,6 +85,44 @@ static class Program
             foreach(double mass in new[]{.8,1.0,1.2})foreach(double grip in new[]{.3,.55,1.0})foreach(double grade in new[]{-10.0,0,10.0})
                 results.Add(Run(method,seed,mass,grip,grade,Path.Combine(dir,$"{method}-{seed}-{F(mass)}-{F(grip)}-{F(grade)}.csv")));
         }
+        if(args.Length>1&&args[1]=="--tune")
+        {
+            results.Clear();
+            foreach(double penalty in new[]{.15,1.0,4.0})foreach(int dwell in new[]{0,15,25})
+            foreach(AtoMethod method in new[]{AtoMethod.EarlyPredictive,AtoMethod.AdaptivePredictive})foreach(int seed in new[]{1000,1001})
+            foreach(double mass in new[]{.8,1.0,1.2})foreach(double grip in new[]{.3,.55,1.0})foreach(double grade in new[]{-10.0,0,10.0})
+                results.Add(Run(method,seed,mass,grip,grade,null,1,penalty,dwell));
+        }
+        bool heldout=args.Length>1&&args[1]=="--holdout";
+        if(heldout)
+        {
+            results.Clear();
+            using var protocol=JsonDocument.Parse(File.ReadAllText("research/ato/heldout-protocol-v1.json"));
+            var p=protocol.RootElement;
+            foreach(string name in p.GetProperty("methods").EnumerateArray().Select(v=>v.GetString()))
+            foreach(int seed in p.GetProperty("seeds").EnumerateArray().Select(v=>v.GetInt32()))
+            foreach(double mass in p.GetProperty("mass").EnumerateArray().Select(v=>v.GetDouble()))
+            foreach(double grip in p.GetProperty("grip").EnumerateArray().Select(v=>v.GetDouble()))
+            foreach(double grade in p.GetProperty("grade").EnumerateArray().Select(v=>v.GetDouble()))
+            foreach(double distance in p.GetProperty("distance").EnumerateArray().Select(v=>v.GetDouble()))
+            foreach(double speed in p.GetProperty("speed").EnumerateArray().Select(v=>v.GetDouble()))
+            {
+                var method=Enum.Parse<AtoMethod>(name);
+                var dwellValues=method==AtoMethod.EarlyPredictive||method==AtoMethod.AdaptivePredictive?new[]{0,p.GetProperty("dwellTicks").GetInt32()}:new[]{p.GetProperty("dwellTicks").GetInt32()};
+                foreach(int dwell in dwellValues)
+                {
+                    string path=Path.Combine(dir,$"{name}-{seed}-{F(mass)}-{F(grip)}-{F(grade)}-{F(distance)}-{F(speed)}-{dwell}.csv");
+                    results.Add(Run(method,seed,mass,grip,grade,path,1,p.GetProperty("penalty").GetDouble(),dwell,distance,speed));
+                }
+            }
+            foreach(var method in new[]{AtoMethod.EarlyPredictive,AtoMethod.AdaptivePredictive})
+            {
+                var a=Run(method,1000,1,1,0,null,1,.15,25);
+                var b=Run(method,1000,1,1,0,null,7,.15,25);
+                Require(a.finalState==b.finalState,"Dwell frame replay mismatch");
+            }
+            File.Copy("research/ato/heldout-protocol-v1.json",Path.Combine(dir,"protocol.json"));
+        }
         bool invalid=false;try{new CabAtoController(AtoMethod.Predictive,1,0);}catch(ArgumentException){invalid=true;}
         Require(invalid,"Invalid task accepted");
         var controller=new CabAtoController(AtoMethod.Predictive,100,16);var o=new AtoObservation{Tick=1};controller.Decide(o);
@@ -92,8 +132,8 @@ static class Program
         File.WriteAllText(Path.Combine(dir,"results.json"),JsonSerializer.Serialize(results,new JsonSerializerOptions{WriteIndented=true}));
         foreach(string source in new[]{"Assets/Scripts/Cab/CabSimulation.cs","Assets/Scripts/Cab/CabSimulationCodec.cs","Assets/Scripts/Cab/Research/CabAtoController.cs","research/ato/Program.cs","research/ato/AtoResearch.csproj"})
             File.Copy(source,Path.Combine(dir,Path.GetFileName(source)+".txt"),false);
-        File.WriteAllText(Path.Combine(dir,"manifest.json"),JsonSerializer.Serialize(new{scope="Development only. No held-out test or real-train claim.",utc=DateTime.UtcNow,sourceHash=Hash("Assets/Scripts/Cab/CabSimulation.cs"),controllerHash=Hash("Assets/Scripts/Cab/Research/CabAtoController.cs"),runtime=Environment.Version.ToString(),controlTicks=5,stepSeconds=.02,seedSet=new[]{1000,1001},targetRelativeM=900,speedLimitMps=16,stopSpeedMps=.01,stopHoldTicks=100,toleranceM=5,replayFrameGrouping=true},new JsonSerializerOptions{WriteIndented=true}));
+        File.WriteAllText(Path.Combine(dir,"manifest.json"),JsonSerializer.Serialize(new{scope=heldout?"Frozen held-out scenario grid; finite simulation conditions, not real-world evidence":"Development only. No held-out test or real-train claim.",protocolHash=heldout?Hash("research/ato/heldout-protocol-v1.json"):null,utc=DateTime.UtcNow,sourceHash=Hash("Assets/Scripts/Cab/CabSimulation.cs"),controllerHash=Hash("Assets/Scripts/Cab/Research/CabAtoController.cs"),runtime=Environment.Version.ToString(),controlTicks=5,stepSeconds=.02,seedSet=results.Select(r=>r.seed).Distinct().ToArray(),rowCount=results.Count,stopSpeedMps=.01,stopHoldTicks=100,toleranceM=5,replayFrameGrouping=true},new JsonSerializerOptions{WriteIndented=true}));
         Console.WriteLine("ATO development checks passed: replay, invalid inputs, overshoot guard.");
-        foreach(var group in results.GroupBy(r=>r.method))Console.WriteLine($"{group.Key} n={group.Count()} stopped={group.Count(r=>r.stopped)} within5m={group.Count(r=>r.reachedTolerance)} meanAbsError={group.Average(r=>Math.Abs(r.errorM)):F2}m meanSwitches={group.Average(r=>r.switches):F1} maxDecision={group.Max(r=>r.decisionMaxMs):F2}ms");
+        foreach(var group in results.GroupBy(r=>$"{r.method}/penalty={r.penalty}/dwell={r.dwellTicks}"))Console.WriteLine($"{group.Key} n={group.Count()} stopped={group.Count(r=>r.stopped)} within5m={group.Count(r=>r.reachedTolerance)} meanAbsError={group.Average(r=>Math.Abs(r.errorM)):F2}m meanSwitches={group.Average(r=>r.switches):F1} maxDecision={group.Max(r=>r.decisionMaxMs):F2}ms");
     }
 }

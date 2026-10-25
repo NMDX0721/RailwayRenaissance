@@ -23,14 +23,19 @@ namespace RailwayRenaissance.Cab.Research
         public double EstimatedDeceleration {get;private set;}=1.10;
         public int PlansLastUpdate {get;private set;}
         public bool BrakingPhase {get;private set;}
+        public double SwitchPenalty {get;}
+        public int MinimumBrakeTicks {get;}
         readonly double fixedDistance;
         long lastTick=-1;
+        long lastSwitchTick=-1;
         int lastBrake=1;
         int calibrationUpdates;
-        public CabAtoController(AtoMethod method,double target,double speedLimit,double fixedDistance=180)
+        public CabAtoController(AtoMethod method,double target,double speedLimit,double fixedDistance=180,double switchPenalty=.15,int minimumBrakeTicks=0)
         {
             if(!Enum.IsDefined(typeof(AtoMethod),method)||!Finite(target)||!Finite(speedLimit)||speedLimit<=0||!Finite(fixedDistance)||fixedDistance<=0)throw new ArgumentException("Invalid ATO task");
+            if(!Finite(switchPenalty)||switchPenalty<0||minimumBrakeTicks<0||minimumBrakeTicks>50)throw new ArgumentException("Invalid switching constraints");
             Method=method;Target=target;SpeedLimit=speedLimit;this.fixedDistance=fixedDistance;
+            SwitchPenalty=switchPenalty;MinimumBrakeTicks=minimumBrakeTicks;
         }
         static bool Finite(double v)=>!double.IsNaN(v)&&!double.IsInfinity(v);
         static double Clamp(double v,double lo,double hi)=>Math.Max(lo,Math.Min(hi,v));
@@ -60,7 +65,7 @@ namespace RailwayRenaissance.Cab.Research
                 return new AtoCommand(throttle,1,throttle>0?"跟踪目标速度":"接近目标速度，惰行");
             }
             if(o.Speed<.01)return new AtoCommand(0,3,"已停稳，保持制动");
-            if(calibrationUpdates>0){calibrationUpdates--;lastBrake=2;return new AtoCommand(0,2,"提前施加常用制动，采样有效减速度");}
+            if(calibrationUpdates>0){calibrationUpdates--;RememberBrake(2,o.Tick);return new AtoCommand(0,2,"提前施加常用制动，采样有效减速度");}
             if(Method==AtoMethod.FixedPoint)return new AtoCommand(0,3,"固定制动点");
             if(Method==AtoMethod.DistanceRule)return new AtoCommand(0,remaining<=ruleDistance?3:1,"恒减速度距离规则");
             double gain=Method==AtoMethod.AdaptivePredictive?EstimatedDeceleration:1.10;
@@ -68,11 +73,12 @@ namespace RailwayRenaissance.Cab.Research
             // Three one-second blocks, final block held to a terminal stop: 3*3*2=18 plans.
             foreach(int first in new[]{1,2,3})foreach(int second in new[]{1,2,3})foreach(int final in new[]{2,3})
             {
+                if(first!=lastBrake&&lastSwitchTick>=0&&o.Tick-lastSwitchTick<MinimumBrakeTicks)continue;
                 PlansLastUpdate++;
                 double x=o.Position,v=Math.Max(0,o.Speed),pipe=o.PipeKpa,cylinder=o.CylinderKpa;
                 double score=0;bool stopped=false;int prior=lastBrake;
                 int[] plan={first,second,final};
-                for(int block=0;block<3;block++){if(plan[block]!=prior)score+=.15;prior=plan[block];}
+                for(int block=0;block<3;block++){if(plan[block]!=prior)score+=SwitchPenalty;prior=plan[block];}
                 for(int k=0;k<600;k++)
                 {
                     int brake=k<5?first:k<10?second:final;
@@ -88,8 +94,9 @@ namespace RailwayRenaissance.Cab.Research
                 score+=error*error*(error>0?4:1)+(stopped?0:1e6);
                 if(score<best-1e-9){best=score;selected=first;}
             }
-            lastBrake=selected;
+            RememberBrake(selected,o.Tick);
             return new AtoCommand(0,selected,"预测停车距离，滚动选择常用制动");
         }
+        void RememberBrake(int brake,long tick){if(brake!=lastBrake)lastSwitchTick=tick;lastBrake=brake;}
     }
 }

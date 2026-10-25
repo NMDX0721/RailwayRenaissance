@@ -10,6 +10,8 @@ namespace RailwayRenaissance.Cab.Research
     {
         public AtoMethod Method=AtoMethod.AdaptivePredictive;
         public float RelativeTargetMeters=900,TargetSpeedMps=16;
+        public double SwitchPenalty=.15;
+        public int MinimumBrakeTicks=25;
         public bool ShowPanel=true;
         public bool Active {get;private set;}
         public string Status {get;private set;}="研究自动驾驶未接管";
@@ -30,7 +32,7 @@ namespace RailwayRenaissance.Cab.Research
             driver.EnsureInitialized();var s=driver.Model.State;
             if(!s.Running||s.PipeKpa<470||s.MainKpa<600||driver.ParkingBrake||facade.Reverser!=ReverserPosition.Forward)
             {Status="请先启机、充风、前进换向并缓解停放制动";return false;}
-            controller=new CabAtoController(Method,s.PositionM+RelativeTargetMeters,TargetSpeedMps);
+            controller=new CabAtoController(Method,s.PositionM+RelativeTargetMeters,TargetSpeedMps,180,SwitchPenalty,MinimumBrakeTicks);
             lastControl=-1;hadCommand=false;heldTicks=0;Active=true;Status="自动运行已接管";return true;
         }
         public void TakeOver(){if(Active&&facade!=null)facade.SetThrottle(0);Relinquish();}
