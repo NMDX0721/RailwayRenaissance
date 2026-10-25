@@ -139,15 +139,17 @@ namespace RailwayRenaissance.Cab
             if(GUILayout.Button("启动"))startup?.TryStartEngine();
             if(GUILayout.Button("停机"))startup?.StopEngine();GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("后退"))facade.SetReverser(ReverserPosition.Reverse);
-            if(GUILayout.Button("中立"))facade.SetReverser(ReverserPosition.Neutral);
-            if(GUILayout.Button("前进"))facade.SetReverser(ReverserPosition.Forward);
-            if(GUILayout.Button("牵引 −"))facade.ThrottleDown();GUILayout.Label(facade.ThrottleNotch.ToString());
-            if(GUILayout.Button("牵引 +"))facade.ThrottleUp();GUILayout.EndHorizontal();
+            if(GUILayout.Button("后退"))Manual(()=>facade.SetReverser(ReverserPosition.Reverse));
+            if(GUILayout.Button("中立"))Manual(()=>facade.SetReverser(ReverserPosition.Neutral));
+            if(GUILayout.Button("前进"))Manual(()=>facade.SetReverser(ReverserPosition.Forward));
+            if(GUILayout.Button("牵引 −"))Manual(facade.ThrottleDown);GUILayout.Label(facade.ThrottleNotch.ToString());
+            if(GUILayout.Button("牵引 +"))Manual(facade.ThrottleUp);GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();string[] labels={"缓解","运转","初制","全制","紧急"};
-            for(int i=0;i<5;i++)if(GUILayout.Button(labels[i]))facade.SetBrakeNotch((BrakeNotch)i);GUILayout.EndHorizontal();
-            GUILayout.Label("独立制动");facade.SetIndependentBrake(GUILayout.HorizontalSlider(facade.IndependentBrakeNotch,0,1));
-            parkingBrake=GUILayout.Toggle(parkingBrake,"停放制动（冷车默认施加）");
+            for(int i=0;i<5;i++)if(GUILayout.Button(labels[i])){int index=i;Manual(()=>facade.SetBrakeNotch((BrakeNotch)index));}GUILayout.EndHorizontal();
+            GUILayout.Label("独立制动");float independent=GUILayout.HorizontalSlider(facade.IndependentBrakeNotch,0,1);
+            if(independent!=facade.IndependentBrakeNotch)Manual(()=>facade.SetIndependentBrake(independent));
+            bool parking=GUILayout.Toggle(parkingBrake,"停放制动（冷车默认施加）");
+            if(parking!=parkingBrake)Manual(()=>parkingBrake=parking);
             GUILayout.BeginHorizontal();wetRail=GUILayout.Toggle(wetRail,"低黏着");coolingFailure=GUILayout.Toggle(coolingFailure,"冷却故障");compressorFailure=GUILayout.Toggle(compressorFailure,"空压机故障");GUILayout.EndHorizontal();
             GUILayout.Label($"坡度 {gradePermille:F0}‰  牵引 {s.TractionN/1000:F1} kN  制动 {s.BrakeN/1000:F1} kN");
             gradePermille=GUILayout.HorizontalSlider(gradePermille,-40,40);
@@ -155,5 +157,6 @@ namespace RailwayRenaissance.Cab
             if(s.ThermalTrip&&GUILayout.Button("复位热保护"))Model.ResetThermalTrip();
             GUILayout.EndArea();GUI.skin.font=old;
         }
+        void Manual(Action command){Research.CabManualControlIntent.Notify(facade);command();}
     }
 }

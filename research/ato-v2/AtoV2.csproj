@@ -6,5 +6,6 @@
     <Compile Include="../../Assets/Scripts/Cab/CabSimulationCodec.cs" />
     <Compile Include="../../Assets/Scripts/Cab/Research/CabAtoController.cs" />
     <Compile Include="../../Assets/Scripts/Cab/Research/CabAtoCheckpoint.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/Research/AtoRouteTask.cs" />
   </ItemGroup>
 </Project>

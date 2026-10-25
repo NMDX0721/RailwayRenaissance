@@ -62,6 +62,10 @@ public static class NF5KAtoPlayReview
             driver.Advance(306);Require(state.IsEngineRunning&&state.BrakePipeKpa>490,"Charging failed");
             Require(state.SetReverser(ReverserPosition.Forward),"Forward rejected");
             driver.ParkingBrake=false;state.SetBrakeNotch(BrakeNotch.Run);
+            Require(ato.Engage(),"Pre-manual engagement failed");
+            var independent=Array.Find(state.GetComponentsInChildren<CabDrivingTarget>(),t=>t.Action==CabDrivingAction.IndependentBrake);
+            Require(independent!=null&&independent.Activate(true),"Physical no-change action failed");
+            Require(!ato.Active&&state.IndependentBrakeNotch==0,"Same-setting manual input did not relinquish");
             Require(ato.Engage(),"Prepared ATO rejected");driver.Advance(1);
             Require(state.ThrottleNotch>0,"ATO did not command real traction");
             ato.SetPaused(true);string research=ato.CaptureResearchCheckpoint();string unchanged=driver.CaptureCheckpoint();
