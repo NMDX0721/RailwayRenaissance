@@ -64,6 +64,14 @@ public static class NF5KAtoPlayReview
             driver.ParkingBrake=false;state.SetBrakeNotch(BrakeNotch.Run);
             Require(ato.Engage(),"Prepared ATO rejected");driver.Advance(1);
             Require(state.ThrottleNotch>0,"ATO did not command real traction");
+            ato.SetPaused(true);string research=ato.CaptureResearchCheckpoint();string unchanged=driver.CaptureCheckpoint();
+            driver.Advance(1);Require(driver.CaptureCheckpoint()==unchanged,"Paused physics advanced");
+            bool rejected=false;try{ato.RestoreResearchCheckpoint(research.Replace("\"version\":1","\"version\":99"));}catch(ArgumentException){rejected=true;}
+            Require(rejected&&driver.CaptureCheckpoint()==unchanged,"Bad research checkpoint mutated physics");
+            ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);string continued=driver.CaptureCheckpoint();
+            ato.RestoreResearchCheckpoint(research);ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);
+            Require(driver.CaptureCheckpoint()==continued,"Research adapter resume diverged");
+            ato.SetPaused(false);
             state.SetBrakeNotch(BrakeNotch.Emergency);driver.Advance(.02);
             Require(!ato.Active&&state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Manual emergency takeover lost");
             state.SetBrakeNotch(BrakeNotch.Run);driver.Advance(30);

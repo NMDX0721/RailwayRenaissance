@@ -20,13 +20,44 @@ namespace RailwayRenaissance.Cab.Research
         int lastThrottle,lastBrake;long lastControl=-1;int heldTicks;
         bool hadCommand;
         Font font;
+        string savedResearch;
         public bool BlocksPointer(Vector2 guiPoint)=>ShowPanel&&new Rect(16,16,470,160).Contains(guiPoint);
         void OnEnable()
         {
             driver=GetComponent<CabSimulationDriver>();facade=GetComponent<CabEngineState>();
             driver.BeforeSimulationStep+=OnStep;
+            driver.CheckpointRestoring+=Relinquish;
         }
-        void OnDisable(){if(driver!=null)driver.BeforeSimulationStep-=OnStep;TakeOver();}
+        void OnDisable(){if(driver!=null){driver.BeforeSimulationStep-=OnStep;driver.CheckpointRestoring-=Relinquish;}TakeOver();}
+        [Serializable] public sealed class ResearchCheckpoint
+        {
+            public int version;
+            public string physics,controller,adapter;
+        }
+        public void SetPaused(bool paused){driver.SimulationPaused=paused;}
+        public string CaptureResearchCheckpoint()
+        {
+            if(!driver.SimulationPaused)throw new InvalidOperationException("Pause before saving research state");
+            var state=new AtoAdapterState{Active=Active,HadCommand=hadCommand,LastControl=lastControl,LastThrottle=lastThrottle,LastBrake=lastBrake,HeldTicks=heldTicks,Method=(int)Method,RelativeTarget=RelativeTargetMeters,TargetSpeed=TargetSpeedMps,Penalty=SwitchPenalty,MinimumBrakeTicks=MinimumBrakeTicks};
+            return JsonUtility.ToJson(new ResearchCheckpoint{version=1,physics=driver.CaptureCheckpoint(),controller=controller==null?null:SimulationCodec.Encode(CabAtoCheckpoint.Capture(controller)),adapter=SimulationCodec.Encode(state)});
+        }
+        public void RestoreResearchCheckpoint(string json)
+        {
+            if(!driver.SimulationPaused)throw new InvalidOperationException("Pause before restoring research state");
+            var pack=JsonUtility.FromJson<ResearchCheckpoint>(json);
+            if(pack==null||pack.version!=1)throw new ArgumentException("Unsupported research checkpoint");
+            CabSimulationDriver.ValidateCheckpoint(pack.physics);
+            var physics=JsonUtility.FromJson<CabSimulationDriver.Checkpoint>(pack.physics);
+            var physicalState=SimulationCodec.Decode<SimulationState>(physics.exactState);
+            var adapter=SimulationCodec.Decode<AtoAdapterState>(pack.adapter);CabAtoCheckpoint.ValidateAdapter(adapter,physicalState.Tick);
+            var candidate=string.IsNullOrEmpty(pack.controller)?null:CabAtoCheckpoint.Restore(SimulationCodec.Decode<AtoLegacyState>(pack.controller));
+            if(adapter.Active&&candidate==null)throw new ArgumentException("Active checkpoint lacks controller");
+            if(candidate!=null&&CabAtoCheckpoint.Capture(candidate).LastTick>physicalState.Tick)throw new ArgumentException("Controller ahead of physics");
+            driver.RestoreCheckpoint(pack.physics);
+            controller=candidate;Active=adapter.Active;hadCommand=adapter.HadCommand;lastControl=adapter.LastControl;
+            lastThrottle=adapter.LastThrottle;lastBrake=adapter.LastBrake;heldTicks=adapter.HeldTicks;Status="研究状态已恢复（暂停）";
+            Method=(AtoMethod)adapter.Method;RelativeTargetMeters=(float)adapter.RelativeTarget;TargetSpeedMps=(float)adapter.TargetSpeed;SwitchPenalty=adapter.Penalty;MinimumBrakeTicks=adapter.MinimumBrakeTicks;
+        }
         public bool Engage()
         {
             driver.EnsureInitialized();var s=driver.Model.State;
@@ -70,6 +101,11 @@ namespace RailwayRenaissance.Cab.Research
             if(Active){if(GUILayout.Button("人工接管"))TakeOver();}
             else if(GUILayout.Button("准备完成后启用自动运行"))Engage();
             if(controller!=null)GUILayout.Label($"目标误差 {SignedErrorMeters:F2}m · 估计减速度 {controller.EstimatedDeceleration:F2}m/s²");
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button(driver.SimulationPaused?"继续":"暂停"))SetPaused(!driver.SimulationPaused);
+            if(driver.SimulationPaused&&GUILayout.Button("保存研究检查点"))savedResearch=CaptureResearchCheckpoint();
+            if(driver.SimulationPaused&&!string.IsNullOrEmpty(savedResearch)&&GUILayout.Button("恢复"))RestoreResearchCheckpoint(savedResearch);
+            GUILayout.EndHorizontal();
             GUILayout.EndArea();
             GUI.skin.font=previousFont;
         }
