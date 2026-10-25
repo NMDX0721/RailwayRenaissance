@@ -1,0 +1,19 @@
+{
+  "scope": "Development only. No held-out test or real-train claim.",
+  "utc": "2026-10-25T06:07:34.5530754Z",
+  "sourceHash": "523D13EDD4A56873917B08D6E282304FCD227026EDA28DCB24AEFF9577FF52AD",
+  "controllerHash": "2DEC868E54DA58D3D6B593EF363940FDD23AE17FD381E010AEE1B53EF5C1CC71",
+  "runtime": "6.0.36",
+  "controlTicks": 5,
+  "stepSeconds": 0.02,
+  "seedSet": [
+    1000,
+    1001
+  ],
+  "targetRelativeM": 900,
+  "speedLimitMps": 16,
+  "stopSpeedMps": 0.01,
+  "stopHoldTicks": 100,
+  "toleranceM": 5,
+  "replayFrameGrouping": true
+}

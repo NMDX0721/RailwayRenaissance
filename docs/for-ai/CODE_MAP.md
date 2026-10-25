@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-25研究原型：`Cab/Research/CabAtoController`为独立离散预测/有效响应估计核心，`CabAtoResearchDriver`通过`CabSimulationDriver.BeforeSimulationStep`每5步发送既有驾驶命令；人工接管与联锁保留。`NF5KAtoResearchReview`生成独立场景并做真实Play验收，`research/ato`保存开发对照。见[实现与限制](ATO_RESEARCH_IMPLEMENTATION.md)，未完成留出测试或实车标定。
+
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
 2026-10-22动漫3D细节：`NF5KAnimeDetailPass`为四门补充随动五金、全车导水沿并收敛主车漆细噪点；从既有生成入口调用，独立BatchBuild同步四个检查场景并执行门扇/驾驶回归。视觉基线为双像素VN、动漫3D、硬核机制，见[细节轮次说明](NF5K_ANIME_DETAIL_PASS.md)。
 2026-10-22走行部运动：`CabReviewTrack`提供独立检查线路；`CabRailMotion`只读后端有符号位移，驱动轮对转角、车体/转向架循迹及有限悬挂表现；`CabRailReviewViews`提供跟随视角。`NF5KRailMotionReview`生成CabRailMotionReview并验证直线/曲线/倒车/制动；原静态场景保留。不是轮轨接触力求解器，见[运动说明](NF5K_RAIL_MOTION.md)。

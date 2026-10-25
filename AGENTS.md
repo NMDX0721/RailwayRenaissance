@@ -1,5 +1,9 @@
 # AGENTS.md — 铁路复兴：沙能冲击
 
+## ATO research prototype (2026-10-25)
+
+CabAtoController is a System-only development controller; CabAtoResearchDriver is opt-in in the separate CabAtoResearchReview scene. BeforeSimulationStep schedules commands on simulation ticks through existing facade interlocks. Keep manual takeover, signed target errors and immutable run artifacts. Independent development-grid and Unity Play checks passed; held-out validation, controller checkpoint restore and real-train calibration remain pending. See docs/for-ai/ATO_RESEARCH_IMPLEMENTATION.md.
+
 > AI 代理快速上手文档。修改代码前先读 `docs/for-ai/PROJECT_OVERVIEW.md` 和 `docs/for-ai/CODE_MAP.md`。
 
 ---
