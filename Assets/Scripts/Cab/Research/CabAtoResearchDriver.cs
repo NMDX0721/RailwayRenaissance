@@ -27,8 +27,10 @@ namespace RailwayRenaissance.Cab.Research
             driver=GetComponent<CabSimulationDriver>();facade=GetComponent<CabEngineState>();
             driver.BeforeSimulationStep+=OnStep;
             driver.CheckpointRestoring+=Relinquish;
+            CabManualControlIntent.Requested+=ManualRequested;
         }
-        void OnDisable(){if(driver!=null){driver.BeforeSimulationStep-=OnStep;driver.CheckpointRestoring-=Relinquish;}TakeOver();}
+        void OnDisable(){CabManualControlIntent.Requested-=ManualRequested;if(driver!=null){driver.BeforeSimulationStep-=OnStep;driver.CheckpointRestoring-=Relinquish;}TakeOver();}
+        void ManualRequested(CabEngineState owner){if(owner==facade)Relinquish();}
         [Serializable] public sealed class ResearchCheckpoint
         {
             public int version;
