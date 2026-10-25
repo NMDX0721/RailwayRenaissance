@@ -20,13 +20,19 @@ namespace RailwayRenaissance.Cab
         [SerializeField] bool showReviewPanel=true;
         public bool ReviewPanelVisible {get=>showReviewPanel;set=>showReviewPanel=value;}
         public Rect ReviewPanelRect=>new Rect(16,Mathf.Max(265,Screen.height-370),470,354);
-        public bool BlocksPointer(Vector2 screenPoint)=>showReviewPanel&&ReviewPanelRect.Contains(new Vector2(screenPoint.x,Screen.height-screenPoint.y));
+        public bool BlocksPointer(Vector2 screenPoint)
+        {
+            var point=new Vector2(screenPoint.x,Screen.height-screenPoint.y);
+            var ato=GetComponent<Research.CabAtoResearchDriver>();
+            return showReviewPanel&&ReviewPanelRect.Contains(point)||ato!=null&&ato.isActiveAndEnabled&&ato.BlocksPointer(point);
+        }
         void Update()
         {
             if(UnityEngine.InputSystem.Keyboard.current?.f2Key.wasPressedThisFrame==true)showReviewPanel=!showReviewPanel;
         }
         public CabSimulation Model {get;private set;}
         public SimulationInput Input {get;private set;}=new SimulationInput();
+        public event Action<long> BeforeSimulationStep;
         public bool ParkingBrake {get=>parkingBrake;set=>parkingBrake=value;}
         public void ConfigureReviewSeed(int seed) {noWorldSeedReviewFallback=seed;}
         void OnEnable()
@@ -50,14 +56,28 @@ namespace RailwayRenaissance.Cab
         public void Advance(double seconds)
         {
             EnsureInitialized();facade.UseDebugSpeedOverride=false;
+            ReadCommands();
+            clock.Advance(seconds,()=>
+            {
+                if(BeforeSimulationStep!=null)
+                {
+                    facade.ApplySimulation(Model.State);
+                    BeforeSimulationStep.Invoke(Model.State.Tick);
+                    ReadCommands();
+                }
+                Model.Step(Input);
+            });
+            facade.ApplySimulation(Model.State);
+            ApplyPower();
+        }
+        void ReadCommands()
+        {
             Input.Master=startup!=null&&startup.MasterEnabled;
             Input.FuelPump=facade.FuelPumpOn;Input.EngineRun=facade.IsEngineStarted;
             Input.Direction=(int)facade.Reverser;Input.Throttle=facade.ThrottleNotch;Input.Brake=(int)facade.BrakePos;
             Input.IndependentBrake=facade.IndependentBrakeNotch;Input.Sand=facade.SandOn;
             Input.ParkingBrake=parkingBrake;Input.GradePermille=gradePermille;Input.RailGrip=wetRail?.55:1;
             Input.CoolingFailure=coolingFailure;Input.CompressorFailure=compressorFailure;
-            clock.Advance(seconds,()=>Model.Step(Input));facade.ApplySimulation(Model.State);
-            ApplyPower();
         }
         void ApplyPower()
         {
