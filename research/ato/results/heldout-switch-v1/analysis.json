@@ -1,0 +1,80 @@
+{
+  "scope": "Finite held-out scenario grid, not independent field samples",
+  "pairedConditions": 64,
+  "rows": 448,
+  "regularSwitchIntervalsChecked": 2589,
+  "minimumRegularIntervalTicks": 25,
+  "terminalAndCalibrationTransitionsExcluded": true,
+  "summary": [
+    {
+      "method": "AdaptivePredictive",
+      "dwellTicks": 0,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 64,
+      "meanAbsoluteError": 0.3381567141633557,
+      "maxAbsoluteError": 0.5436533790118574,
+      "meanSwitches": 76.0625
+    },
+    {
+      "method": "AdaptivePredictive",
+      "dwellTicks": 25,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 64,
+      "meanAbsoluteError": 0.24691255300453285,
+      "maxAbsoluteError": 0.5626107407098289,
+      "meanSwitches": 23.078125
+    },
+    {
+      "method": "DistanceRule",
+      "dwellTicks": 25,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 56,
+      "meanAbsoluteError": 1.6015763445581808,
+      "maxAbsoluteError": 11.079544430318037,
+      "meanSwitches": 17.34375
+    },
+    {
+      "method": "EarlyPredictive",
+      "dwellTicks": 0,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 64,
+      "meanAbsoluteError": 0.30713607802929843,
+      "maxAbsoluteError": 0.5233059288146933,
+      "meanSwitches": 99.828125
+    },
+    {
+      "method": "EarlyPredictive",
+      "dwellTicks": 25,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 64,
+      "meanAbsoluteError": 0.24528154671055802,
+      "maxAbsoluteError": 0.5029289245244399,
+      "meanSwitches": 35.765625
+    },
+    {
+      "method": "FixedPoint",
+      "dwellTicks": 25,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 3,
+      "meanAbsoluteError": 44.23799912308624,
+      "maxAbsoluteError": 86.59171494787688,
+      "meanSwitches": 9.578125
+    },
+    {
+      "method": "Predictive",
+      "dwellTicks": 25,
+      "n": 64,
+      "stopped": 64,
+      "within5m": 52,
+      "meanAbsoluteError": 2.7302702468411137,
+      "maxAbsoluteError": 16.413091839066965,
+      "meanSwitches": 22.953125
+    }
+  ]
+}

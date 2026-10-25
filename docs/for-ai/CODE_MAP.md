@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-25研究后续：`CabAtoController`暴露切换惩罚/最短驻留参数，Unity适配器默认0.5秒；`research/ato/heldout-protocol-v1.json`冻结首次留出工况，`analyze.py`核对配对、哈希和实际切换间隔。见[本轮结果](../research/switching_and_holdout_review.md)。
+
 2026-10-25研究原型：`Cab/Research/CabAtoController`为独立离散预测/有效响应估计核心，`CabAtoResearchDriver`通过`CabSimulationDriver.BeforeSimulationStep`每5步发送既有驾驶命令；人工接管与联锁保留。`NF5KAtoResearchReview`生成独立场景并做真实Play验收，`research/ato`保存开发对照。见[实现与限制](ATO_RESEARCH_IMPLEMENTATION.md)，未完成留出测试或实车标定。
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。

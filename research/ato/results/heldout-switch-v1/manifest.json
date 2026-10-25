@@ -1,0 +1,19 @@
+{
+  "scope": "Frozen held-out scenario grid; finite simulation conditions, not real-world evidence",
+  "protocolHash": "11011F0F535279682B9F9E91C00DC3BF187B3F0125320906E6D1DB85D19E89F7",
+  "utc": "2026-10-25T06:37:18.6264651Z",
+  "sourceHash": "523D13EDD4A56873917B08D6E282304FCD227026EDA28DCB24AEFF9577FF52AD",
+  "controllerHash": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+  "runtime": "6.0.36",
+  "controlTicks": 5,
+  "stepSeconds": 0.02,
+  "seedSet": [
+    2000,
+    2001
+  ],
+  "rowCount": 448,
+  "stopSpeedMps": 0.01,
+  "stopHoldTicks": 100,
+  "toleranceM": 5,
+  "replayFrameGrouping": true
+}
