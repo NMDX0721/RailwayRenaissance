@@ -174,6 +174,9 @@ public static class NF5KSimulationReview
             Assert(!Driving(CabDrivingAction.Reverser).Activate(true)&&state.Reverser==ReverserPosition.Forward,"Physical moving reversal accepted");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake)),"Independent brake ray missed");driver.Advance(3);
             Assert(state.IndependentBrakeNotch==.25f&&driver.Model.State.LocoCylinderKpa>10&&driver.Model.State.TrainCylinderKpa<5,"Physical independent brake not isolated");
+            int throttleBeforeBrakeReduction=state.ThrottleNotch;
+            Assert(state.BrakeCylinderKpa>=20,"Independent brake did not reach the traction-interlock threshold");
+            Assert(throttle.Activate(true)&&state.ThrottleNotch==throttleBeforeBrakeReduction-1,"Traction interlock prevented a positive-notch throttle reduction");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake),true),"Independent release ray missed");
             string saved=driver.CaptureCheckpoint();driver.Advance(1);driver.RestoreCheckpoint(saved);
             if(railMotion!=null){railMotion.ApplyBackend(true);Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6,"Restored checkpoint left stale visual position");}
