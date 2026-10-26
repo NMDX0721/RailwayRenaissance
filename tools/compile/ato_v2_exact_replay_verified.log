@@ -1,0 +1,11 @@
+V2 replay phase at 15500 calibration=0 braking=False arrived=False
+V2 replay phase at 19046 calibration=29 braking=True arrived=False
+V2 replay phase at 19297 calibration=0 braking=True arrived=False
+V2 replay phase at 21571 calibration=0 braking=True arrived=True
+V2 four-phase exact replay, mode preservation, 30/60/144 FPS, overshoot, infeasibility and corruption checks passed.
+capture=500 braking=False calibration=0 switchAge=15496
+capture=2700 braking=True calibration=1 switchAge=140
+capture=3000 braking=True calibration=0 switchAge=290
+capture=2706 braking=True calibration=0 switchAge=0
+ATO exact V1 sidecar replay: four capture times passed.
+Route encoding, boundaries and advance limit preview passed.

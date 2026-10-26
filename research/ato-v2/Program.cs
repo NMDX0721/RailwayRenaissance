@@ -49,7 +49,8 @@ static partial class Program
     }
     static void Main(string[] args)
     {
-        CheckLegacyReplay();Console.WriteLine("ATO exact V1 sidecar replay: four capture times passed.");
+        if(Array.IndexOf(args,"--freeze")>=0){FreezeTrials();return;}if(Array.IndexOf(args,"--test")>=0){RunTrials();return;}
+        if(Array.IndexOf(args,"--dev")>=0)RouteExperiments(); else CheckV2(); CheckLegacyReplay();Console.WriteLine("ATO exact V1 sidecar replay: four capture times passed.");
         var task=AtoRouteTask.Standard(37);Assert(AtoRouteTask.Decode(task.Encode()).Encode()==task.Encode(),"Task round trip failed");
         Assert(task.LimitAt(37)==12&&task.LimitAt(287)==18&&task.LimitAt(687)==10,"Segment boundary wrong");
         Assert(task.PreviewSpeed(650)<18,"No advance warning of lower limit");
@@ -57,3 +58,6 @@ static partial class Program
         Console.WriteLine("Route encoding, boundaries and advance limit preview passed.");
     }
 }
+
+
+

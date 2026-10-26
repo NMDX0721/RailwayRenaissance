@@ -17,6 +17,7 @@ namespace RailwayRenaissance.Cab
         CabExteriorLighting exteriorLights;
         SimulationClock clock=new SimulationClock();
         Font font;
+        double? restoredGrip,restoredGrade;
         [SerializeField] bool showReviewPanel=true;
         public bool ReviewPanelVisible {get=>showReviewPanel;set=>showReviewPanel=value;}
         public Rect ReviewPanelRect=>new Rect(16,Mathf.Max(265,Screen.height-370),470,354);
@@ -79,7 +80,7 @@ namespace RailwayRenaissance.Cab
             Input.FuelPump=facade.FuelPumpOn;Input.EngineRun=facade.IsEngineStarted;
             Input.Direction=(int)facade.Reverser;Input.Throttle=facade.ThrottleNotch;Input.Brake=(int)facade.BrakePos;
             Input.IndependentBrake=facade.IndependentBrakeNotch;Input.Sand=facade.SandOn;
-            Input.ParkingBrake=parkingBrake;Input.GradePermille=gradePermille;Input.RailGrip=wetRail?.55:1;
+            Input.ParkingBrake=parkingBrake;Input.GradePermille=restoredGrade??gradePermille;Input.RailGrip=restoredGrip??(wetRail?.55:1);
             Input.CoolingFailure=coolingFailure;Input.CompressorFailure=compressorFailure;
         }
         void ApplyPower()
@@ -118,7 +119,7 @@ namespace RailwayRenaissance.Cab
             CheckpointRestoring?.Invoke();
             configuration=config;Model=candidate;Input=input;clock.Remainder=remainder;
             parkingBrake=Input.ParkingBrake;coolingFailure=Input.CoolingFailure;compressorFailure=Input.CompressorFailure;
-            gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;
+            gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;restoredGrip=Input.RailGrip;restoredGrade=Input.GradePermille;
             GetComponent<CabEngineState>().RestoreSimulationCommands(Input);
             GetComponent<CabEngineState>().ApplySimulation(Model.State);
             ApplyPower();
@@ -150,9 +151,9 @@ namespace RailwayRenaissance.Cab
             if(independent!=facade.IndependentBrakeNotch)Manual(()=>facade.SetIndependentBrake(independent));
             bool parking=GUILayout.Toggle(parkingBrake,"停放制动（冷车默认施加）");
             if(parking!=parkingBrake)Manual(()=>parkingBrake=parking);
-            GUILayout.BeginHorizontal();wetRail=GUILayout.Toggle(wetRail,"低黏着");coolingFailure=GUILayout.Toggle(coolingFailure,"冷却故障");compressorFailure=GUILayout.Toggle(compressorFailure,"空压机故障");GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();bool wet=GUILayout.Toggle(wetRail,"低黏着");if(wet!=wetRail){wetRail=wet;restoredGrip=null;}coolingFailure=GUILayout.Toggle(coolingFailure,"冷却故障");compressorFailure=GUILayout.Toggle(compressorFailure,"空压机故障");GUILayout.EndHorizontal();
             GUILayout.Label($"坡度 {gradePermille:F0}‰  牵引 {s.TractionN/1000:F1} kN  制动 {s.BrakeN/1000:F1} kN");
-            gradePermille=GUILayout.HorizontalSlider(gradePermille,-40,40);
+            float grade=GUILayout.HorizontalSlider(gradePermille,-40,40);if(grade!=gradePermille){gradePermille=grade;restoredGrade=null;}
             GUILayout.Label(s.ThermalTrip?"过热保护：停机冷却后复位":facade.LastProcedureWarning);
             if(s.ThermalTrip&&GUILayout.Button("复位热保护"))Model.ResetThermalTrip();
             GUILayout.EndArea();GUI.skin.font=old;
