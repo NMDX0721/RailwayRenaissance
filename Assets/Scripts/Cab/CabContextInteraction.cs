@@ -82,6 +82,8 @@ namespace RailwayRenaissance.Cab
             if (SettingsButton.Contains(GuiPointer)) return true;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return true;
             if (driver != null && driver.BlocksPointer(Pointer)) return true;
+            if (FindFirstObjectByType<CabInteriorLighting>()?.BlocksPointer(GuiPointer) == true) return true;
+            if (FindFirstObjectByType<CabExteriorLighting>()?.BlocksPointer(GuiPointer) == true) return true;
             var day = FindFirstObjectByType<CabDaylightEnvironment>();
             if(day!=null&&day.isActiveAndEnabled&&new Rect(Mathf.Max(0,(Screen.width-400)/2),Screen.height-108,400,98).Contains(GuiPointer))return true;
             return FindFirstObjectByType<CabRailReviewViews>()?.BlocksPointer(Pointer)==true;
@@ -197,7 +199,8 @@ namespace RailwayRenaissance.Cab
                 {
                     if(Mathf.Abs(state.CurrentSpeedKmh)>.5f||state.ThrottleNotch!=0)return "先停车并将牵引归零";
                     if((index==0&&state.Reverser==ReverserPosition.Forward)||(index==1&&state.Reverser==ReverserPosition.Reverse))return "已到端位";
-                    if(!state.IsEngineRunning)return "等待柴油机运行";
+                    var target=(ReverserPosition)Mathf.Clamp((int)state.Reverser+(index==0?1:-1),-1,1);
+                    if(!state.IsEngineRunning&&target!=ReverserPosition.Neutral)return "等待柴油机运行";
                 }
             }
             if(focused is CabStartupClickTarget s)

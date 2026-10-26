@@ -148,7 +148,7 @@ namespace RailwayRenaissance.Cab
         public bool SetThrottle(int notch)
         {
             notch = Mathf.Clamp(notch, 0, 8);
-            if (notch > 0)
+            if (notch > ThrottleNotch)
             {
                 if(DetailedSimulation!=null&&(!IsEngineRunning||DetailedSimulation.ParkingBrake||MainReservoirKpa<600||BrakePipeKpa<470||BrakeCylinderKpa>=20))
                 {LastProcedureWarning="牵引闭锁：等待启机、充风，并缓解空气制动与停放制动";return false;}
@@ -169,6 +169,14 @@ namespace RailwayRenaissance.Cab
                 }
                 CurrentStartupStep = 3;
                 LastProcedureWarning = $"牵引力输出中：第 {notch} 档位。";
+            }
+            else if (notch > 0 && notch < ThrottleNotch)
+            {
+                LastProcedureWarning = $"主控手柄降至第 {notch} 档。";
+            }
+            else if (notch > 0)
+            {
+                return true;
             }
             else
             {
