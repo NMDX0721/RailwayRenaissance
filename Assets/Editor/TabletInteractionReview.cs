@@ -17,13 +17,78 @@ public static class TabletInteractionReview
             CheckDraftRestore();
             CheckBackAndRebind();
             CheckKeyboardRebind();
-            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1");
+            CheckLiveTaskSwitch();
+            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1");
             EditorApplication.Exit(0);
         }
         catch (Exception ex)
         {
             Debug.LogException(ex);
             EditorApplication.Exit(1);
+        }
+    }
+
+    private static void CheckLiveTaskSwitch()
+    {
+        const BindingFlags instance = BindingFlags.NonPublic | BindingFlags.Instance;
+        const BindingFlags statics = BindingFlags.NonPublic | BindingFlags.Static;
+        var filterField = typeof(TabletSettingsAppUI).GetField("settingsSearchFilter", statics);
+        var categoryField = typeof(TabletSettingsAppUI).GetField("currentSettingsCategory", statics);
+        object oldFilter = filterField.GetValue(null);
+        object oldCategory = categoryField.GetValue(null);
+        var previous = TabletSettingsAppUI.TabletRebindAction;
+        var go = new GameObject("TabletTaskSwitchReview");
+        go.SetActive(false);
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>();
+        window.Show();
+        try
+        {
+            filterField.SetValue(null, "");
+            categoryField.SetValue(null, 1);
+            var host = go.AddComponent<GameMainUI>();
+            host.unlocked = true;
+            var root = window.rootVisualElement;
+            var desktop = new VisualElement();
+            root.Add(desktop);
+            typeof(GameMainUI).GetField("root", instance).SetValue(host, root);
+            typeof(GameMainUI).GetField("desktop", instance).SetValue(host, desktop);
+            typeof(GameMainUI).GetMethod("BuildAppLayer", instance).Invoke(host, null);
+            var launch = typeof(GameMainUI).GetMethod("LaunchApp", instance);
+            var find = typeof(GameMainUI).GetMethod("FindTabletTask", instance);
+            var activate = typeof(GameMainUI).GetMethod("ActivateTabletTask", instance);
+            launch.Invoke(host, new object[] { "设置" });
+            var settings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
+            var firstRoot = settings.Root;
+            var search = firstRoot.Q<TextField>("settings-compact-search");
+            Assert(search != null, "settings search exists");
+            search.value = "声音";
+
+            launch.Invoke(host, new object[] { "验收占位" });
+            Assert(settings.Root == firstRoot && search.value == "声音" &&
+                   firstRoot.style.display.value == DisplayStyle.None, "switch preserves live settings view");
+            activate.Invoke(host, new object[] { settings });
+            Assert(settings.Root == firstRoot && settings.Root.Q<TextField>("settings-compact-search").value == "声音",
+                   "switch returns to settings state");
+
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
+            Assert(settings.IsSuspended, "inactive settings view evicted");
+            activate.Invoke(host, new object[] { settings });
+            Assert(!settings.IsSuspended && settings.Root != firstRoot &&
+                   settings.Root.Q<TextField>("settings-compact-search").value == "声音", "evicted settings rebuilt with state");
+
+            typeof(GameMainUI).GetMethod("ReturnToTabletHome", instance).Invoke(host, null);
+            Assert(find.Invoke(host, new object[] { "设置" }) != null, "home keeps task");
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "设置" });
+            Assert(find.Invoke(host, new object[] { "设置" }) == null, "close removes task");
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(go);
+            window.Close();
+            filterField.SetValue(null, oldFilter);
+            categoryField.SetValue(null, oldCategory);
+            TabletSettingsAppUI.TabletRebindAction = previous;
         }
     }
 
