@@ -1,0 +1,80 @@
+[
+  {
+    "mode": "Smooth",
+    "adaptive": false,
+    "stopError": 3.2422191414441386,
+    "arrival": 133.5,
+    "timeError": 13.5,
+    "switches": 17,
+    "jerk": 18.455208028378348,
+    "air": 31929.003200000516,
+    "fuel": 1.2626730718222883,
+    "violations": 0,
+    "intervention": false
+  },
+  {
+    "mode": "Smooth",
+    "adaptive": true,
+    "stopError": 3.2422191414441386,
+    "arrival": 133.5,
+    "timeError": 13.5,
+    "switches": 17,
+    "jerk": 18.455208028378348,
+    "air": 31929.003200000516,
+    "fuel": 1.2626730718222883,
+    "violations": 0,
+    "intervention": false
+  },
+  {
+    "mode": "AirSaving",
+    "adaptive": false,
+    "stopError": -3.6423230627301564,
+    "arrival": 124.7,
+    "timeError": 4.700000000000003,
+    "switches": 9,
+    "jerk": 15.577915471852304,
+    "air": 44655.01919999624,
+    "fuel": 1.334627882791447,
+    "violations": 0,
+    "intervention": false
+  },
+  {
+    "mode": "AirSaving",
+    "adaptive": true,
+    "stopError": -3.6423230627301564,
+    "arrival": 124.7,
+    "timeError": 4.700000000000003,
+    "switches": 9,
+    "jerk": 15.577915471852304,
+    "air": 44655.01919999624,
+    "fuel": 1.334627882791447,
+    "violations": 0,
+    "intervention": false
+  },
+  {
+    "mode": "Punctual",
+    "adaptive": false,
+    "stopError": -3.1099680998553367,
+    "arrival": 120,
+    "timeError": 0,
+    "switches": 82,
+    "jerk": 73.37966362639102,
+    "air": 44887.347199997996,
+    "fuel": 1.1110267593778798,
+    "violations": 0,
+    "intervention": false
+  },
+  {
+    "mode": "Punctual",
+    "adaptive": true,
+    "stopError": -0.8322050457961723,
+    "arrival": 119.9,
+    "timeError": -0.09999999999999432,
+    "switches": 82,
+    "jerk": 89.38380659594105,
+    "air": 39495.22119999996,
+    "fuel": 1.1106656482667685,
+    "violations": 0,
+    "intervention": false
+  }
+]

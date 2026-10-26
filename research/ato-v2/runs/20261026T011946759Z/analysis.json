@@ -1,0 +1,98 @@
+{
+  "rows": 84,
+  "uniqueCases": 6,
+  "repeatsExact": true,
+  "summary": [
+    {
+      "name": "AirSavingAdaptive",
+      "cases": 6,
+      "normalSuccess": 4,
+      "interventions": 2,
+      "speedViolationCases": 1,
+      "onTimeNormal": 0,
+      "meanAbsStopError": 64.11555430620668,
+      "meanSwitches": 8.333333333333334,
+      "meanJerk": 19.750645073535164,
+      "meanExhaust": 39235.56165367889,
+      "meanFuel": 1.6066569858144135
+    },
+    {
+      "name": "AirSavingFixed",
+      "cases": 6,
+      "normalSuccess": 2,
+      "interventions": 4,
+      "speedViolationCases": 1,
+      "onTimeNormal": 0,
+      "meanAbsStopError": 70.14937829551845,
+      "meanSwitches": 7.666666666666667,
+      "meanJerk": 25.86089813884238,
+      "meanExhaust": 39647.78298701251,
+      "meanFuel": 1.5811384672958848
+    },
+    {
+      "name": "FrozenV1RouteGuard",
+      "cases": 6,
+      "normalSuccess": 4,
+      "interventions": 0,
+      "speedViolationCases": 2,
+      "onTimeNormal": 0,
+      "meanAbsStopError": 0.36216713576256626,
+      "meanSwitches": 180.66666666666666,
+      "meanJerk": 55.93567984777037,
+      "meanExhaust": 99138.55217452842,
+      "meanFuel": 1.4301399733787858
+    },
+    {
+      "name": "PunctualAdaptive",
+      "cases": 6,
+      "normalSuccess": 6,
+      "interventions": 0,
+      "speedViolationCases": 0,
+      "onTimeNormal": 6,
+      "meanAbsStopError": 3.0692224780052015,
+      "meanSwitches": 445.1666666666667,
+      "meanJerk": 204.76773122099263,
+      "meanExhaust": 76832.12621882238,
+      "meanFuel": 1.1424080543988377
+    },
+    {
+      "name": "PunctualFixed",
+      "cases": 6,
+      "normalSuccess": 4,
+      "interventions": 2,
+      "speedViolationCases": 0,
+      "onTimeNormal": 4,
+      "meanAbsStopError": 3.8361601941454637,
+      "meanSwitches": 446,
+      "meanJerk": 203.0587815825665,
+      "meanExhaust": 65500.798810360146,
+      "meanFuel": 1.143395091435875
+    },
+    {
+      "name": "SmoothAdaptive",
+      "cases": 6,
+      "normalSuccess": 4,
+      "interventions": 2,
+      "speedViolationCases": 2,
+      "onTimeNormal": 0,
+      "meanAbsStopError": 46.92232959449541,
+      "meanSwitches": 8.166666666666666,
+      "meanJerk": 15.747250855294176,
+      "meanExhaust": 41413.76038254205,
+      "meanFuel": 1.6383702222059777
+    },
+    {
+      "name": "SmoothFixed",
+      "cases": 6,
+      "normalSuccess": 2,
+      "interventions": 4,
+      "speedViolationCases": 0,
+      "onTimeNormal": 0,
+      "meanAbsStopError": 82.91053012656295,
+      "meanSwitches": 7.333333333333333,
+      "meanJerk": 21.866015518573754,
+      "meanExhaust": 36931.494382543155,
+      "meanFuel": 1.595301703687442
+    }
+  ]
+}

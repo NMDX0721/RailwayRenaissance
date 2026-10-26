@@ -28,6 +28,7 @@ namespace RailwayRenaissance.Cab
         public bool Activate(bool secondary = false)
         {
             if (state == null) return false;
+            Research.CabManualControlIntent.Notify(state);
             int step = secondary ? -1 : 1;
             switch (action)
             {

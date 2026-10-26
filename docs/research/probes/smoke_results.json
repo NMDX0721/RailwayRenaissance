@@ -1,0 +1,121 @@
+{
+  "scope": "audit smoke checks, not a policy comparison or real vehicle validation",
+  "seed": 20261021,
+  "stepSeconds": 0.02,
+  "checkpointReplay": true,
+  "sourceHash": "523D13EDD4A56873917B08D6E282304FCD227026EDA28DCB24AEFF9577FF52AD",
+  "codecHash": "36E515D8B7C5F107309BF1688FCED3C9F37B1BE3505DF8F51AD12422AEC044FD",
+  "runtime": "6.0.36",
+  "cases": [
+    {
+      "brake": 2,
+      "grip": 1,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 591.3546891718684,
+      "elapsedSeconds": 48.980000000000004,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 328.88888417960857,
+      "elapsedSeconds": 26.64,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 4,
+      "grip": 1,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 314.44272530893477,
+      "elapsedSeconds": 26.04,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 0.15,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 721.1340047989577,
+      "elapsedSeconds": 59.86,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 0.3,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 399.4050448719097,
+      "elapsedSeconds": 32.82,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 1,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 328.88888417960857,
+      "elapsedSeconds": 26.64,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 0.8,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 272.7183595750853,
+      "elapsedSeconds": 22.12,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 1.2,
+      "grade": 0,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 384.99074824572085,
+      "elapsedSeconds": 31.16,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 1,
+      "grade": -10,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 361.4027550626024,
+      "elapsedSeconds": 29.060000000000002,
+      "finalSpeedMps": 0
+    },
+    {
+      "brake": 3,
+      "grip": 1,
+      "massScale": 1,
+      "grade": 10,
+      "initialSpeedMps": 24.78553530781385,
+      "stopped": true,
+      "distanceM": 301.70067892430006,
+      "elapsedSeconds": 24.62,
+      "finalSpeedMps": 0
+    }
+  ]
+}
