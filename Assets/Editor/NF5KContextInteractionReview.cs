@@ -7,12 +7,23 @@ using RailwayRenaissance.Cab;
 
 public static class NF5KContextInteractionReview
 {
+    public static void BatchPR6()
+    {
+        try
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/CabSimulationReview.unity");
+            NF5KSimulationReview.Validate();NF5KSimulationPlayReview.Begin();
+        }
+        catch(Exception e){Debug.LogException(e);UnityEditor.EditorApplication.Exit(1);}
+    }
     public static void Validate(CabEngineState state)
     {
         var ui=state.GetComponent<CabContextInteraction>();
         if(ui==null)throw new InvalidOperationException("Context interaction missing");
         string saved=ui.PrimaryPath;
         bool modal=ui.ModalOpen;
+        var interactionFlags=BindingFlags.Instance|BindingFlags.NonPublic;
+        bool originalCursorAim=(bool)typeof(CabContextInteraction).GetField("cursorAim",interactionFlags).GetValue(ui);
         var originalSettings=InputSystem.settings;
         var background=originalSettings.backgroundBehavior;
         var editorBehavior=originalSettings.editorInputBehaviorInPlayMode;
@@ -58,6 +69,20 @@ public static class NF5KContextInteractionReview
             // Test action lookup after a binding change without changing the saved user preference.
             InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(300,Screen.height-40)}.WithButton(MouseButton.Left));Pump();
             Assert(action.WasPressedThisFrame(),"Mouse rebinding not active");
+            Set("cursorAim",false);
+            Assert(interiorLights!=null&&exteriorLights!=null,"Lighting panel fixtures missing from committed review scene");
+            foreach(var point in new[]{new Vector2(30,40),interiorPanelPoint})
+            {
+                InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(point.x,Screen.height-point.y)});Pump();
+                Set("focused",target);Set("focusedCollider",target.GetComponentInChildren<Collider>());Set("inputAfter",-1f);
+                Assert((bool)overOtherUI.Invoke(ui,null),"Context pointer guard omitted a lighting panel");
+                float priorBrake=state.IndependentBrakeNotch;
+                InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(point.x,Screen.height-point.y)}.WithButton(MouseButton.Left));Pump();Update();
+                Assert(state.IndependentBrakeNotch==priorBrake,"Mouse lighting-panel click executed the center-reticle cab action");
+            }
+            Debug.Log("PR6_LIGHTING_POINTER_OK: both lighting panels block actual mouse-primary center-reticle dispatch");
+            InputSystem.QueueStateEvent(mouse,new MouseState{position=new Vector2(300,Screen.height-40)});Pump();
+            Set("cursorAim",originalCursorAim);
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E restore rejected");
             var equipment=state.GetComponentInChildren<CabSafetyEquipment>();
             if(equipment!=null)
@@ -81,17 +106,25 @@ public static class NF5KContextInteractionReview
             var driver=state.GetComponent<CabSimulationDriver>();
             if(reverser!=null&&driver!=null)
             {
-                state.StopEngine();driver.Advance(6);
-                Set("focused",reverser);Set("focusedCollider",reverser.GetComponentInChildren<Collider>());
+                var controls=state.GetComponentInChildren<CabStartupControls>();
                 var unavailable=typeof(CabContextInteraction).GetMethod("UnavailableReason",flags);
-                Assert(unavailable.Invoke(ui,new object[]{1})==null,"Stopped forward reverser could not return to neutral");
-                Assert(reverser.Activate(true)&&state.Reverser==ReverserPosition.Neutral,"Stopped physical reverser failed to return to neutral");
+                foreach(var direction in new[]{ReverserPosition.Forward,ReverserPosition.Reverse})
+                {
+                    Assert(state.SetReverser(direction),"Stopped reverser setup failed");state.StopEngine();driver.Advance(6);
+                    Set("focused",reverser);Set("focusedCollider",reverser.GetComponentInChildren<Collider>());
+                    int neutralIndex=direction==ReverserPosition.Forward?1:0;
+                    Assert(unavailable.Invoke(ui,new object[]{neutralIndex})==null,"Stopped reverser could not return to neutral");
+                    Assert(reverser.Activate(neutralIndex==1)&&state.Reverser==ReverserPosition.Neutral,"Stopped physical reverser failed to return to neutral");
+                    Assert(unavailable.Invoke(ui,new object[]{0})!=null&&unavailable.Invoke(ui,new object[]{1})!=null,"Stopped engine allowed selecting a driving direction");
+                    Assert(controls.TryStartEngine(),"Neutral recovery did not permit restart");driver.Advance(6);Assert(state.IsEngineRunning,"Recovered engine did not restart");
+                }
+                Debug.Log("PR6_STOPPED_REVERSER_OK: forward/reverse return to neutral, stopped direction guards and actual restart");
             }
             Debug.Log("NF5K_CONTEXT_INTERACTION_OK: E action dispatch, live mouse rebind, reserved key rejection, modal input isolation, critical hold cancellation; user preferences unchanged");
         }
         finally
         {
-            state.SetIndependentBrake(before);ui.SetPrimaryPath(saved,false);Set("settings",modal);Set("focused",null);Set("focusedCollider",null);
+            state.SetIndependentBrake(before);Set("cursorAim",originalCursorAim);ui.SetPrimaryPath(saved,false);Set("settings",modal);Set("focused",null);Set("focusedCollider",null);
             InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);
             originalKeyboard?.MakeCurrent();originalMouse?.MakeCurrent();
             originalSettings.backgroundBehavior=background;originalSettings.editorInputBehaviorInPlayMode=editorBehavior;
