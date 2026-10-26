@@ -77,6 +77,16 @@ public static class NF5KContextInteractionReview
             Assert(state.IsEngineStarted,"Critical stop executed on initial press");
             InputSystem.QueueStateEvent(keyboard,new KeyboardState());Pump();Update();
             Assert((float)typeof(CabContextInteraction).GetField("holdStart",flags).GetValue(ui)<0&&state.IsEngineStarted,"Released hold was not cancelled");
+            var reverser=Array.Find(state.GetComponentsInChildren<CabDrivingTarget>(),t=>t.Action==CabDrivingAction.Reverser);
+            var driver=state.GetComponent<CabSimulationDriver>();
+            if(reverser!=null&&driver!=null)
+            {
+                state.StopEngine();driver.Advance(6);
+                Set("focused",reverser);Set("focusedCollider",reverser.GetComponentInChildren<Collider>());
+                var unavailable=typeof(CabContextInteraction).GetMethod("UnavailableReason",flags);
+                Assert(unavailable.Invoke(ui,new object[]{1})==null,"Stopped forward reverser could not return to neutral");
+                Assert(reverser.Activate(true)&&state.Reverser==ReverserPosition.Neutral,"Stopped physical reverser failed to return to neutral");
+            }
             Debug.Log("NF5K_CONTEXT_INTERACTION_OK: E action dispatch, live mouse rebind, reserved key rejection, modal input isolation, critical hold cancellation; user preferences unchanged");
         }
         finally
