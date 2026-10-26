@@ -122,6 +122,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_crossfadeTimer = 0f;
         }
 
+        internal static AudioSource PlayWithCrossfadeAndGetTarget(AudioClip newClip, float baseVolume)
+        {
+            EnsureDecks(null);
+            AudioSource targetDeck = GetActiveDeck();
+            if (targetDeck != null && targetDeck.isPlaying)
+            {
+                targetDeck = GetStandbyDeck();
+            }
+
+            PlayWithCrossfade(newClip, baseVolume);
+            return targetDeck;
+        }
+
         /// <summary>
         /// 每帧更新音频效果、磁带抖晃微扰与睡眠定时器
         /// </summary>

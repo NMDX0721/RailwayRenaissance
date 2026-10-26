@@ -72,9 +72,22 @@ namespace RailwayRenaissance.Systems
             daysSinceLastInspection = 0;
             sandStage = 0;
             delistCooldownDays = 0;
+            checkDocSeq = 11;
+            courtDocSeq = 4;
+            safetyNoticeSeq = 7;
+            GameData.PoliticalTier = 0;
+            GameData.DecayGrade = 0;
+            GameData.DecayGradeRoadbed = 0;
+            GameData.DecayGradeBridge = 0;
+            GameData.DecayGradeSignal = 0;
+            GameData.BankruptcyCount = 0;
             PlayerPrefs.DeleteKey("GameData_RegulatoryState");
             PlayerPrefs.DeleteKey("GameData_PoliticalTier");
             PlayerPrefs.DeleteKey("GameData_DecayGrade");
+            PlayerPrefs.DeleteKey("GameData_DecayGradeRoadbed");
+            PlayerPrefs.DeleteKey("GameData_DecayGradeBridge");
+            PlayerPrefs.DeleteKey("GameData_DecayGradeSignal");
+            PlayerPrefs.Save();
         }
 
         private static void StartProcedure(ActiveProcedure proc)
@@ -113,12 +126,13 @@ namespace RailwayRenaissance.Systems
                 delistCooldownDays--;
 
             float p = GameData.PoliticalPressure;
-            int currentTier = GameData.PoliticalTier;
 
             // 1. 推进现有在途程序
             AdvanceInFlightChains(notices, p);
 
             // 2. 检测新的程序触发源（若无冲突同类在途）
+            p = GameData.PoliticalPressure;
+            int currentTier = GameData.PoliticalTier;
             DetectNewProcedures(notices, p, currentTier);
 
             // 3. 极高压危机倒计时（≥0.95 连续 7 天未回落）
@@ -449,7 +463,7 @@ namespace RailwayRenaissance.Systems
             }
             else
             {
-                daysInExtremePressure = Mathf.Max(0, daysInExtremePressure - 1);
+                daysInExtremePressure = 0;
             }
         }
 
@@ -465,6 +479,7 @@ namespace RailwayRenaissance.Systems
             if (GameData.BankruptcyCount >= 3)
             {
                 notices.Add("市中级人民法院清算预警函：重整期内未改善现金流，第三次面临破产清算与运营资质注销风险。");
+                SaveState();
                 return;
             }
 
@@ -476,6 +491,7 @@ namespace RailwayRenaissance.Systems
                 daysRemaining = 3
             });
             notices.Add($"雾峰村车站破产重整事务组：关于向市中级人民法院提交重整申请的公告（第 {GameData.BankruptcyCount} 次破产预警）。");
+            SaveState();
         }
 
         // ================= 8.4 工务检定制定期推进 =================

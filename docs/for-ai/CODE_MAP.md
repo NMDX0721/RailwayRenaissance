@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+
 NF-5K全车工业材质：`NF5KIndustrialFinish.Build`在SurfaceFinish后应用区域漆面、独立橡胶、玻璃预乘反射及毫米级倒角，保留BoxCollider体积；专用贴图/倒角网格保存于`NF5KBodyMeshes`。`CabInteriorBlockoutSetup`增加分层天光、主光软阴影、弱补光和独立审阅地面，默认仍保存闭门场景。
 
 NF-5K门窗专项：`NF5KReferenceBody.GlazedOpening`统一封板/压边/密封/玻璃/回口；`RakedZ/Shoulder`连接倾斜风挡与车壳；驾驶侧窗安装基准外移、客室窗间与门后过渡面闭合。渲染新增`door_window_junction_view.png`，独立门扇控制和扫掠检查保留。
@@ -109,9 +111,9 @@ Unity制动阀资源已导入：`Assets/Resources/Cab/BrakeValvesWithHandles.pre
 | 世界生成 | `WorldGen/WorldGenerator.cs`、`WorldSeedData.cs`、`WorldInitializer.cs` | 生成/注入 API 已有；新游戏只写 seedCode，经营入口却读 seedId，正常路径需整合 |
 | 区域解锁 | `WorldGen/RegionUnlockManager.cs` | `GameData.AdvanceDay` 调用 DailyCheck；剧情/科技门槛仍有 TODO，依赖种子初始化 |
 | 模板叙事 | `Narrative/NarrativeEngine.cs`、`WorldAnalyzer.cs`、`StoryEvaluator.cs`、`TemplateFiller.cs`、`NarrativeRhythm.cs` | 每日结算末尾检查并分发；部分效果、VN 与临时订单消费尚未接入 |
-| 政治/老化 | `GameData.cs`、`Systems/RegulatoryEventSystem.cs` | 连续量与外显离散评级分离；监管/检定/破产程序推进后保存全局状态 |
-| 趋势看板 | `UI/TabletTrendDashboardUI.cs`、`UI/Tablet/Apps/TabletRDAAppUI.cs` | 已有趋势与定性评级展示；不可在政治/老化 UI 添加读数 |
-| 人事 | `CrewManager.cs`、`Core/FluctuationEngine.cs` | 工资先计算，随后 CrewManager.AdvanceDay 更新成长/疲劳；维护力量也供老化演化读取 |
+| 政治/老化 | `GameData.cs`、`Systems/RegulatoryEventSystem.cs` | 新局清除旧监管持久化；监管档位在法定程序节点迁移，破产触发后立即保存 |
+| 趋势看板 | `UI/TabletTrendDashboardUI.cs`、`UI/Tablet/Apps/TabletRDAAppUI.cs` | 政治/老化曲线使用快照中的离散档位阶梯；连续量不得映射到图形位置 |
+| 人事 | `CrewManager.cs`、`Core/FluctuationEngine.cs` | VNExitData 核心技能与疲劳先注入，随后日结更新成长/疲劳；工资先计算 |
 | 订单 | `OrderManager.cs` | CompleteOrder 累计 pendingDailyIncome；DailySettle 返回并清零，GameData 统一入账 |
 | 登录服务 | `Core/Auth/UserAuthService.cs`、`LoginManager.cs` | 独立认证服务已存在，但大型登录 UI 类仍未完成拆分 |
 | 驾驶台 | `Cab/CabConsoleUI.cs`、`CabEngineState.cs`、`Cab3DSceneController.cs`、`CabPalette.cs` | 已有状态机、UI 和 3D 控制；当前工作区存在未提交修改，本轮未改动 |
@@ -195,7 +197,7 @@ LoginManager ──────────→ TitleScreen ───────
 | `SandRivalManager` | `SandRivalManager.XXX` | 同上 |
 | `OrderManager` | `OrderManager.XXX` | GameData.InitializeSubsystems 调 Initialize；每日由 DailySettle 推进 |
 | `Narrative.NarrativeEngine` | `NarrativeEngine.XXX` | CheckForEvent 懒初始化；新局清理完整性待核验 |
-| `RegulatoryEventSystem` | 完整命名空间或 using | ResetState / RestoreFromSave 调 Initialize，读取全局持久化键；不等于槽位完整恢复 |
+| `RegulatoryEventSystem` | 完整命名空间或 using | 新局 `ResetState` 删除监管持久化；`Initialize`/`RestoreFromSave` 用于恢复既有状态 |
 
 ### 单例
 | 类 | Instance | 创建时机 |
