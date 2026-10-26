@@ -31,14 +31,17 @@ namespace RailwayRenaissance.Cab
                 var sh = new SphericalHarmonicsL2();
                 sh.AddAmbientLight(RenderSettings.ambientEquatorColor);
                 sh.AddDirectionalLight(Vector3.up, RenderSettings.ambientSkyColor, .35f);
-                var center = surface.bounds.center;
+                // Receiver and lamp positions must share the vehicle frame: the
+                // rail-motion review can translate and rotate the complete car.
+                var center = transform.InverseTransformPoint(surface.transform.TransformPoint(surface.localBounds.center));
                 foreach (var f in lighting.Fixtures)
                 {
                     if (f.bounce == null || !f.light.isActiveAndEnabled) continue;
                     bool passenger = f.circuit == InteriorLightCircuit.PassengerFront || f.circuit == InteriorLightCircuit.PassengerRear;
                     // Partition separates cab/passenger energy; no inverse-square point hot spots.
+                    var fixturePosition = transform.InverseTransformPoint(f.light.transform.position);
                     if ((center.z > 2.05f) != passenger) continue;
-                    float dz = center.z - f.light.transform.position.z;
+                    float dz = center.z - fixturePosition.z;
                     float weight = Mathf.Exp(-dz * dz / (passenger ? 5.0f : 1.8f));
                     float energy = weight * (passenger ? 1f : .7f);
                     sh.AddAmbientLight(f.light.color * energy * .50f);
