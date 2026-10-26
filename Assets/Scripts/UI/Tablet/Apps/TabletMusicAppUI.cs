@@ -291,20 +291,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             if (tabletMusicSource == null)
             {
-                var go = new GameObject("TabletMusicPlayer");
-                UnityEngine.Object.DontDestroyOnLoad(go);
-                tabletMusicSource = go.AddComponent<AudioSource>();
                 s_currentVolume = PlayerPrefs.GetFloat("TabletMusic_Vol", 0.65f);
             }
 
             MusicAudioEffectsEngine.EnsureDecks(tabletMusicSource);
-            tabletMusicSource = MusicAudioEffectsEngine.GetActiveDeck();
 
             string prevTrackId = tabletCurrentTrackId;
 
             float targetVol = s_isMuted ? 0f : s_currentVolume;
-            MusicAudioEffectsEngine.PlayWithCrossfade(clip, targetVol);
-            tabletMusicSource.loop = (tabletPlayMode == TabletPlayMode.SingleRepeat);
+            tabletMusicSource = MusicAudioEffectsEngine.PlayWithCrossfadeAndGetTarget(clip, targetVol);
+            if (tabletMusicSource != null)
+                tabletMusicSource.loop = (tabletPlayMode == TabletPlayMode.SingleRepeat);
 
             tabletCurrentClip = clip;
             tabletCurrentTrackId = m.id;
@@ -323,18 +320,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (clip == null) return;
             if (tabletMusicSource == null)
             {
-                var go = new GameObject("TabletMusicPlayer");
-                UnityEngine.Object.DontDestroyOnLoad(go);
-                tabletMusicSource = go.AddComponent<AudioSource>();
                 s_currentVolume = PlayerPrefs.GetFloat("TabletMusic_Vol", 0.65f);
             }
 
+            MusicAudioEffectsEngine.EnsureDecks(tabletMusicSource);
             string prevTrackId = tabletCurrentTrackId;
 
-            tabletMusicSource.clip = clip;
-            tabletMusicSource.volume = s_isMuted ? 0f : s_currentVolume;
-            tabletMusicSource.loop = (tabletPlayMode == TabletPlayMode.SingleRepeat);
-            tabletMusicSource.Play();
+            float targetVol = s_isMuted ? 0f : s_currentVolume;
+            tabletMusicSource = MusicAudioEffectsEngine.PlayWithCrossfadeAndGetTarget(clip, targetVol);
+            if (tabletMusicSource != null)
+                tabletMusicSource.loop = (tabletPlayMode == TabletPlayMode.SingleRepeat);
 
             tabletCurrentClip = clip;
             tabletCurrentTrackId = trackId;

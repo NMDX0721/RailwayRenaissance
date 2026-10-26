@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/CabSimulation.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/CabSimulationCodec.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/Research/CabAtoController.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/Research/CabAtoCheckpoint.cs" />
+    <Compile Include="../../Assets/Scripts/Cab/Research/AtoRouteTask.cs" /><Compile Include="../../Assets/Scripts/Cab/Research/CabAtoControllerV2.cs" />
+  </ItemGroup>
+</Project>
+

@@ -132,37 +132,7 @@ public static class NF5KRunningGear
         parent.GetChild(parent.childCount-1).localRotation=Quaternion.Euler(90,0,0);
         Link("Brake_Push_Rod",new Vector3(x,-.87f,axleZ+direction*.53f),new Vector3(x,-.87f,axleZ+direction*.74f),.022f,.022f,spring,parent);
     }
-    static Mesh WheelMesh()
-    {
-        string path=Folder+"/Forged_Dished_Wheel_Detailed_V2.asset";
-        var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null){WheelUV(existing);return existing;}
-        var profile=new[]{new Vector2(-.11f,.10f),new Vector2(-.11f,.16f),new Vector2(-.065f,.20f),new Vector2(-.06f,.34f),new Vector2(-.10f,.40f),new Vector2(-.10f,.46f),
-            new Vector2(-.095f,.49f),new Vector2(-.065f,.49f),new Vector2(-.045f,.462f),
-            new Vector2(.09f,.455f),new Vector2(.095f,.42f),new Vector2(.085f,.385f),new Vector2(.045f,.365f),new Vector2(.015f,.30f),
-            new Vector2(.018f,.24f),new Vector2(.045f,.18f),new Vector2(.075f,.145f),new Vector2(.08f,.10f)};
-        var v=new List<Vector3>();var dark=new List<int>();var bright=new List<int>();
-        const int segments=96;var normals=new List<Vector3>();
-        for(int p=0;p<profile.Length;p++)
-        {
-            var from=profile[p];var to=profile[(p+1)%profile.Length];var delta=to-from;
-            int start=v.Count;
-            for(int i=0;i<=segments;i++)
-            {
-                float a=2*Mathf.PI*i/segments;
-                for(int edge=0;edge<2;edge++)
-                {
-                    var point=edge==0?from:to;int index=p+edge;var tangent=delta;
-                    if(index>=12&&index<=15)tangent=profile[index+1]-profile[index-1];
-                    v.Add(new Vector3(point.x,point.y*Mathf.Cos(a),point.y*Mathf.Sin(a)));
-                    normals.Add(new Vector3(-tangent.y,tangent.x*Mathf.Cos(a),tangent.x*Mathf.Sin(a)).normalized);
-                }
-                if(i<segments){int k=start+i*2;var t=p>=5&&p<=10?bright:dark;t.AddRange(new[]{k,k+3,k+1,k,k+2,k+3});}
-            }
-        }
-        var mesh=new Mesh{name="Profiled_Driving_Wheel"};mesh.SetVertices(v);mesh.subMeshCount=2;
-        mesh.SetTriangles(dark,0);mesh.SetTriangles(bright,1);mesh.SetNormals(normals);mesh.RecalculateBounds();
-        WheelUV(mesh);AssetDatabase.CreateAsset(mesh,path);return mesh;
-    }
+    static Mesh WheelMesh() => NF5KWheelGeometry.Build();
     public static void WheelUV(Mesh mesh)
     {
         var vertices=mesh.vertices;var uv=new Vector2[vertices.Length];

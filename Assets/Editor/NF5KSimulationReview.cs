@@ -128,8 +128,15 @@ public static class NF5KSimulationReview
             var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
             driver.EnsureInitialized();var controls=state.GetComponentInChildren<CabStartupControls>();
             var targets=state.GetComponentsInChildren<CabDrivingTarget>();
-            Assert(targets.Length==4,"Driving target bindings missing");
+            Assert(targets.Length>=4,"Driving target bindings missing");
             CabDrivingTarget Driving(CabDrivingAction action)=>Array.Find(targets,t=>t.Action==action);
+            var parking=Driving(CabDrivingAction.ParkingBrake);
+            if(parking!=null)
+            {
+                Assert(ClickDriving(state,parking,true)&&!driver.ParkingBrake,"Parking selector ray did not release");
+                Assert(ClickDriving(state,parking)&&driver.ParkingBrake,"Parking selector ray did not apply");
+                Debug.Log("NF5K_PARKING_SELECTOR_PLAY_OK: physical selector applies/releases existing backend command");
+            }
             var throttle=Driving(CabDrivingAction.Throttle);
             Assert(!throttle.Activate()&&state.ThrottleNotch==0,"Cold traction accepted");
             Assert(controls.InsertKey()&&controls.SetMaster(true)&&controls.SetFuelPump(true)&&controls.TryStartEngine(),"Physical startup chain failed");
@@ -139,22 +146,59 @@ public static class NF5KSimulationReview
             Assert(lights.MainPower&&lights.BatteryPower,"Backend generator/battery supply not projected to lighting");
             Assert(ClickDriving(state,Driving(CabDrivingAction.Reverser)),"Physical reverser rejected ready engine");
             state.SetBrakeNotch(BrakeNotch.Run);driver.ParkingBrake=false;
+            Assert(state.SetThrottle(6),"Parking reduction setup failed");driver.ParkingBrake=true;
+            Assert(!state.SetThrottle(7)&&state.ThrottleNotch==6,"Parking interlock accepted a throttle increase");
+            for(int notch=5;notch>=0;notch--)Assert(throttle.Activate(true)&&state.ThrottleNotch==notch,"Parking interlock prevented throttle return to zero");
+            Assert(!state.SetThrottle(1)&&state.ThrottleNotch==0,"Parking interlock accepted traction from zero");
+            driver.ParkingBrake=false;Assert(state.ThrottleNotch==0,"Releasing parking restored a stale throttle notch");
             for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
             throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
+            if(parking!=null)
+            {
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted traction/moving command");
+                state.SetThrottle(0);
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted moving zero-throttle command");
+                state.SetThrottle(6);
+                Debug.Log("NF5K_PARKING_SELECTOR_GUARD_OK: moving command rejected even with zero throttle");
+            }
+            var railMotion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();
+            if(railMotion!=null)
+            {
+                railMotion.ApplyBackend(true);
+                foreach(var hose in railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>())
+                {
+                    hose.UpdateGeometry(hose.GetComponent<MeshFilter>().sharedMesh);
+                    Assert(hose.EndpointError()<.001f,"Moving bogie service hose detached from its endpoint");
+                }
+                if(railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>().Length>0)Debug.Log("NF5K_FLEXIBLE_HOSE_PLAY_OK: actual moved body/bogie endpoints within 1 mm");
+                Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6&&Math.Abs(railMotion.WheelAngleDegrees+driver.Model.State.PositionM/CabRailMotion.RollingRadius*180/Math.PI)<1e-5,"Live rail motion is not reading the backend");
+                Debug.Log("NF5K_RAIL_MOTION_PLAY_OK: live backend signed position drives body, bogies and wheel phase");
+            }
             Assert(!state.SetReverser(ReverserPosition.Reverse),"Moving reversal not rejected");
             Assert(!Driving(CabDrivingAction.Reverser).Activate(true)&&state.Reverser==ReverserPosition.Forward,"Physical moving reversal accepted");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake)),"Independent brake ray missed");driver.Advance(3);
             Assert(state.IndependentBrakeNotch==.25f&&driver.Model.State.LocoCylinderKpa>10&&driver.Model.State.TrainCylinderKpa<5,"Physical independent brake not isolated");
+            int throttleBeforeBrakeReduction=state.ThrottleNotch;
+            Assert(state.BrakeCylinderKpa>=20,"Independent brake did not reach the traction-interlock threshold");
+            Assert(throttle.Activate(true)&&state.ThrottleNotch==throttleBeforeBrakeReduction-1,"Traction interlock prevented a positive-notch throttle reduction");
+            Assert(!state.SetThrottle(throttleBeforeBrakeReduction)&&state.ThrottleNotch==throttleBeforeBrakeReduction-1,"Independent brake accepted a throttle increase");
+            while(state.ThrottleNotch>0){int next=state.ThrottleNotch-1;Assert(throttle.Activate(true)&&state.ThrottleNotch==next,"Independent brake prevented throttle return to zero");}
+            Assert(!state.SetThrottle(1)&&state.ThrottleNotch==0,"Independent brake accepted traction from zero");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake),true),"Independent release ray missed");
+            Assert(state.ThrottleNotch==0,"Independent brake release restored a stale throttle notch");
+            Debug.Log("PR6_THROTTLE_INTERLOCK_OK: parking and independent brake reject increases, allow every reduction to zero, and retain zero on release");
             string saved=driver.CaptureCheckpoint();driver.Advance(1);driver.RestoreCheckpoint(saved);
+            if(railMotion!=null){railMotion.ApplyBackend(true);Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6,"Restored checkpoint left stale visual position");}
             Assert(Math.Abs(driver.Model.State.SpeedMps*3.6-state.CurrentSpeedKmh)<1e-4,"Adapter checkpoint projection failed");
             var automatic=Driving(CabDrivingAction.AutomaticBrake);
             for(int i=0;i<3;i++)Assert(ClickDriving(state,automatic),"Automatic brake ray missed");
             Assert(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Physical brake failed to cut traction");
             driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
             Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
-            NF5KContextInteractionReview.Validate(state);
+            var railViews=UnityEngine.Object.FindFirstObjectByType<CabRailReviewViews>();int priorView=railViews!=null?railViews.View:0;
+            if(railMotion!=null){railMotion.ApplyBackend(true);railViews?.SetView(0);}
+            try{NF5KSafetyEquipmentReview.Validate(state);NF5KContextInteractionReview.Validate(state);}finally{railViews?.SetView(priorView);}
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");
             Debug.Log("NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop");
         }

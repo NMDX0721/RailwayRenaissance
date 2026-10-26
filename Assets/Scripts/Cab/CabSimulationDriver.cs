@@ -17,16 +17,25 @@ namespace RailwayRenaissance.Cab
         CabExteriorLighting exteriorLights;
         SimulationClock clock=new SimulationClock();
         Font font;
+        double? restoredGrip,restoredGrade;
         [SerializeField] bool showReviewPanel=true;
         public bool ReviewPanelVisible {get=>showReviewPanel;set=>showReviewPanel=value;}
         public Rect ReviewPanelRect=>new Rect(16,Mathf.Max(265,Screen.height-370),470,354);
-        public bool BlocksPointer(Vector2 screenPoint)=>showReviewPanel&&ReviewPanelRect.Contains(new Vector2(screenPoint.x,Screen.height-screenPoint.y));
+        public bool BlocksPointer(Vector2 screenPoint)
+        {
+            var point=new Vector2(screenPoint.x,Screen.height-screenPoint.y);
+            var ato=GetComponent<Research.CabAtoResearchDriver>();
+            return showReviewPanel&&ReviewPanelRect.Contains(point)||ato!=null&&ato.isActiveAndEnabled&&ato.BlocksPointer(point);
+        }
         void Update()
         {
             if(UnityEngine.InputSystem.Keyboard.current?.f2Key.wasPressedThisFrame==true)showReviewPanel=!showReviewPanel;
         }
         public CabSimulation Model {get;private set;}
         public SimulationInput Input {get;private set;}=new SimulationInput();
+        public event Action<long> BeforeSimulationStep;
+        public event Action CheckpointRestoring;
+        public bool SimulationPaused {get;set;}
         public bool ParkingBrake {get=>parkingBrake;set=>parkingBrake=value;}
         public void ConfigureReviewSeed(int seed) {noWorldSeedReviewFallback=seed;}
         void OnEnable()
@@ -49,15 +58,30 @@ namespace RailwayRenaissance.Cab
         }
         public void Advance(double seconds)
         {
+            if(SimulationPaused)return;
             EnsureInitialized();facade.UseDebugSpeedOverride=false;
+            ReadCommands();
+            clock.Advance(seconds,()=>
+            {
+                if(BeforeSimulationStep!=null)
+                {
+                    facade.ApplySimulation(Model.State);
+                    BeforeSimulationStep.Invoke(Model.State.Tick);
+                    ReadCommands();
+                }
+                Model.Step(Input);
+            });
+            facade.ApplySimulation(Model.State);
+            ApplyPower();
+        }
+        void ReadCommands()
+        {
             Input.Master=startup!=null&&startup.MasterEnabled;
             Input.FuelPump=facade.FuelPumpOn;Input.EngineRun=facade.IsEngineStarted;
             Input.Direction=(int)facade.Reverser;Input.Throttle=facade.ThrottleNotch;Input.Brake=(int)facade.BrakePos;
             Input.IndependentBrake=facade.IndependentBrakeNotch;Input.Sand=facade.SandOn;
-            Input.ParkingBrake=parkingBrake;Input.GradePermille=gradePermille;Input.RailGrip=wetRail?.55:1;
+            Input.ParkingBrake=parkingBrake;Input.GradePermille=restoredGrade??gradePermille;Input.RailGrip=restoredGrip??(wetRail?.55:1);
             Input.CoolingFailure=coolingFailure;Input.CompressorFailure=compressorFailure;
-            clock.Advance(seconds,()=>Model.Step(Input));facade.ApplySimulation(Model.State);
-            ApplyPower();
         }
         void ApplyPower()
         {
@@ -71,10 +95,20 @@ namespace RailwayRenaissance.Cab
             public int version=2; public string exactConfig,exactState,exactInput,remainder;
         }
         public string CaptureCheckpoint()
-        {EnsureInitialized();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
+        {EnsureInitialized();if(SimulationPaused)ReadCommands();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
         // Restore via a cold/paused scene; global game slot integration is intentionally separate.
+        public static void ValidateCheckpoint(string json)
+        {
+            var saved=JsonUtility.FromJson<Checkpoint>(json);
+            if(saved==null||saved.version!=2||!double.TryParse(saved.remainder,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double rest)||double.IsNaN(rest)||double.IsInfinity(rest)||rest<0||rest>=CabSimulation.StepSeconds)
+                throw new ArgumentException("Invalid simulation checkpoint");
+            var config=SimulationCodec.Decode<SimulationConfig>(saved.exactConfig);
+            var input=SimulationCodec.Decode<SimulationInput>(saved.exactInput);input.Validate();
+            var state=SimulationCodec.Decode<SimulationState>(saved.exactState);new CabSimulation(state.Seed,config).Restore(state);
+        }
         public void RestoreCheckpoint(string json)
         {
+            ValidateCheckpoint(json);
             var saved=JsonUtility.FromJson<Checkpoint>(json);
             if(saved==null||saved.version!=2||!double.TryParse(saved.remainder,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double remainder)||double.IsNaN(remainder)||double.IsInfinity(remainder)||remainder<0||remainder>=CabSimulation.StepSeconds)
                 throw new ArgumentException("Invalid simulation checkpoint");
@@ -82,9 +116,10 @@ namespace RailwayRenaissance.Cab
             input.Validate();var candidate=new CabSimulation(state.Seed,config);candidate.Restore(state);
             EnsureInitialized();
             if(startup!=null&&startup.MasterEnabled!=input.Master)throw new InvalidOperationException("Restore requires matching key/master state in the paused cockpit");
+            CheckpointRestoring?.Invoke();
             configuration=config;Model=candidate;Input=input;clock.Remainder=remainder;
             parkingBrake=Input.ParkingBrake;coolingFailure=Input.CoolingFailure;compressorFailure=Input.CompressorFailure;
-            gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;
+            gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;restoredGrip=Input.RailGrip;restoredGrade=Input.GradePermille;
             GetComponent<CabEngineState>().RestoreSimulationCommands(Input);
             GetComponent<CabEngineState>().ApplySimulation(Model.State);
             ApplyPower();
@@ -105,21 +140,24 @@ namespace RailwayRenaissance.Cab
             if(GUILayout.Button("启动"))startup?.TryStartEngine();
             if(GUILayout.Button("停机"))startup?.StopEngine();GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("后退"))facade.SetReverser(ReverserPosition.Reverse);
-            if(GUILayout.Button("中立"))facade.SetReverser(ReverserPosition.Neutral);
-            if(GUILayout.Button("前进"))facade.SetReverser(ReverserPosition.Forward);
-            if(GUILayout.Button("牵引 −"))facade.ThrottleDown();GUILayout.Label(facade.ThrottleNotch.ToString());
-            if(GUILayout.Button("牵引 +"))facade.ThrottleUp();GUILayout.EndHorizontal();
+            if(GUILayout.Button("后退"))Manual(()=>facade.SetReverser(ReverserPosition.Reverse));
+            if(GUILayout.Button("中立"))Manual(()=>facade.SetReverser(ReverserPosition.Neutral));
+            if(GUILayout.Button("前进"))Manual(()=>facade.SetReverser(ReverserPosition.Forward));
+            if(GUILayout.Button("牵引 −"))Manual(facade.ThrottleDown);GUILayout.Label(facade.ThrottleNotch.ToString());
+            if(GUILayout.Button("牵引 +"))Manual(facade.ThrottleUp);GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();string[] labels={"缓解","运转","初制","全制","紧急"};
-            for(int i=0;i<5;i++)if(GUILayout.Button(labels[i]))facade.SetBrakeNotch((BrakeNotch)i);GUILayout.EndHorizontal();
-            GUILayout.Label("独立制动");facade.SetIndependentBrake(GUILayout.HorizontalSlider(facade.IndependentBrakeNotch,0,1));
-            parkingBrake=GUILayout.Toggle(parkingBrake,"停放制动（冷车默认施加）");
-            GUILayout.BeginHorizontal();wetRail=GUILayout.Toggle(wetRail,"低黏着");coolingFailure=GUILayout.Toggle(coolingFailure,"冷却故障");compressorFailure=GUILayout.Toggle(compressorFailure,"空压机故障");GUILayout.EndHorizontal();
+            for(int i=0;i<5;i++)if(GUILayout.Button(labels[i])){int index=i;Manual(()=>facade.SetBrakeNotch((BrakeNotch)index));}GUILayout.EndHorizontal();
+            GUILayout.Label("独立制动");float independent=GUILayout.HorizontalSlider(facade.IndependentBrakeNotch,0,1);
+            if(independent!=facade.IndependentBrakeNotch)Manual(()=>facade.SetIndependentBrake(independent));
+            bool parking=GUILayout.Toggle(parkingBrake,"停放制动（冷车默认施加）");
+            if(parking!=parkingBrake)Manual(()=>parkingBrake=parking);
+            GUILayout.BeginHorizontal();bool wet=GUILayout.Toggle(wetRail,"低黏着");if(wet!=wetRail){wetRail=wet;restoredGrip=null;}coolingFailure=GUILayout.Toggle(coolingFailure,"冷却故障");compressorFailure=GUILayout.Toggle(compressorFailure,"空压机故障");GUILayout.EndHorizontal();
             GUILayout.Label($"坡度 {gradePermille:F0}‰  牵引 {s.TractionN/1000:F1} kN  制动 {s.BrakeN/1000:F1} kN");
-            gradePermille=GUILayout.HorizontalSlider(gradePermille,-40,40);
+            float grade=GUILayout.HorizontalSlider(gradePermille,-40,40);if(grade!=gradePermille){gradePermille=grade;restoredGrade=null;}
             GUILayout.Label(s.ThermalTrip?"过热保护：停机冷却后复位":facade.LastProcedureWarning);
             if(s.ThermalTrip&&GUILayout.Button("复位热保护"))Model.ResetThermalTrip();
             GUILayout.EndArea();GUI.skin.font=old;
         }
+        void Manual(Action command){Research.CabManualControlIntent.Notify(facade);command();}
     }
 }

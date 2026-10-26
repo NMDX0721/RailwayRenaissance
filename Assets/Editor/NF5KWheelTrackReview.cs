@@ -12,7 +12,7 @@ public static class NF5KWheelTrackReview
         {
             var scene=EditorSceneManager.OpenScene(path);
             Install();
-            NF5KBoardingAudit.Validate("tools/compile/wheel_service_boarding_"+scene.name+".json");
+            NF5KBoardingAudit.Validate("tools/compile/wheel_continuous_boarding_"+scene.name+".json");
             EditorSceneManager.SaveScene(scene);
         }
     }
@@ -35,15 +35,24 @@ public static class NF5KWheelTrackReview
             Box("Rail_Foot",new Vector3(side*.75f,top-.157f,8),new Vector3(.15f,.022f,26),body,root);
         }
         int count=0;
+        var sharedWheel=NF5KWheelGeometry.Build();
         foreach(var wheel in GameObject.Find("Running_Gear").GetComponentsInChildren<MeshFilter>())
         {
             if(wheel.name!="Steel_Wheel")continue;count++;
-            // Sample actual tread vertices at rail-head centre, interpolating the conical profile.
+            wheel.sharedMesh=sharedWheel;
+            // Find tread crossing at rail centre without assuming a fixed profile segment index.
             var verts=wheel.sharedMesh.vertices;
-            int start=8*194+48*2;
-            Vector3 a=wheel.transform.TransformPoint(verts[start]),b=wheel.transform.TransformPoint(verts[start+1]);
             float railX=Mathf.Sign(wheel.transform.position.x)*.75f;
-            float contactY=a.y+(b.y-a.y)*(railX-a.x)/(b.x-a.x);
+            float contactY=float.PositiveInfinity;
+            int stride=2*(NF5KWheelGeometry.Segments+1);
+            for(int band=0;band<verts.Length/stride;band++)
+            {
+                int start=band*stride+NF5KWheelGeometry.Segments;
+                Vector3 a=wheel.transform.TransformPoint(verts[start]),b=wheel.transform.TransformPoint(verts[start+1]);
+                if(Mathf.Abs(b.x-a.x)<1e-7f||railX<Mathf.Min(a.x,b.x)||railX>Mathf.Max(a.x,b.x))continue;
+                float height=a.y+(b.y-a.y)*(railX-a.x)/(b.x-a.x);
+                if(height<contactY)contactY=height;
+            }
             if(Mathf.Abs(contactY-top)>.0005f)throw new InvalidOperationException("Wheel / rail gap: "+(contactY-top));
             if(wheel.GetComponent<Renderer>().bounds.min.y<=ground.GetComponent<Renderer>().bounds.max.y)
                 throw new InvalidOperationException("Wheel intersects inspection ground");

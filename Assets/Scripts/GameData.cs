@@ -251,6 +251,8 @@ public static class GameData
         public float sandPenetration;
         public float politicalPressure;
         public float infrastructureDecay;
+        public int politicalTier;
+        public int decayGrade;
     }
 
     public const int TrendHistoryCapacity = 360;
@@ -424,7 +426,9 @@ public static class GameData
             money = money,
             sandPenetration = sand,
             politicalPressure = politics,
-            infrastructureDecay = decay
+            infrastructureDecay = decay,
+            politicalTier = PoliticalTier,
+            decayGrade = DecayGrade
         };
         trendHistoryHead = (trendHistoryHead + 1) % TrendHistoryCapacity;
         if (trendHistoryCount < TrendHistoryCapacity)
@@ -545,6 +549,7 @@ public static class GameData
         GameConfig config = GameConfig.Load();
         Day = 1;
         Money = Mathf.RoundToInt(config.startMoney);
+        BankruptcyCount = 0;
         Trust = 62;
         TrainCondition = 70;
         ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
@@ -563,7 +568,7 @@ public static class GameData
         cumulativeDeficitPressure = 0f;
         trendHistoryCount = 0;
         trendHistoryHead = 0;
-        RailwayRenaissance.Systems.RegulatoryEventSystem.Initialize();
+        RailwayRenaissance.Systems.RegulatoryEventSystem.ResetState();
 
         // 记录 Day 1 初始快照
         RecordTrendSnapshot(1, Trust, Money, 0.15f, PoliticalPressure, InfrastructureDecay);
@@ -598,6 +603,10 @@ public static class GameData
     {
         // 1. 先初始化所有底层子系统（加载种子、沙能、事件等）
         InitializeSubsystems();
+
+        RailwayRenaissance.Systems.RegulatoryEventSystem.ResetState();
+
+        CrewManager.ApplyVNExitCrewData(data.crew);
 
         // 2. 注入序章结算数据
         Day = 1;
@@ -785,14 +794,13 @@ public static class GameData
     }
 
     /// <summary>
-    /// [T308 §8.3] 计算平滑信任客流系数（在 27~33 与 67~73 设过渡插值带，左右极限完全相等）。
+    /// [T308 §8.3] 计算连续、单调不减的信任客流系数；高信任段平滑趋近 1.0 并封顶。
     /// </summary>
     public static float CalculateTrustCoefficient(int trust)
     {
         float t = Mathf.Clamp(trust, 0, 100);
         float f1(float v) => 0.25f + v * 0.005f;        // 雪崩区基准
         float f2(float v) => 0.45f + v * 0.008f;        // 线性区基准
-        float f3(float v) => 0.85f + (v - 70f) * 0.003f;// 饱和区基准
 
         if (t <= 27f)
             return f1(t);
@@ -806,9 +814,10 @@ public static class GameData
         if (t < 73f)
         {
             float beta = (t - 67f) / 6f;
-            return Mathf.Lerp(f2(67f), f3(73f), beta);
+            float eased = Mathf.SmoothStep(0f, 1f, beta);
+            return Mathf.Lerp(f2(67f), 1f, eased);
         }
-        return f3(t);
+        return 1f;
     }
 
     /// <summary>计算日收入（G5：客运 + 货运），货运出口支持难度乘数 cargoMultiplier（G4）。</summary>
@@ -1112,6 +1121,8 @@ public static class GameData
     {
         InitializeIfNeeded();
 
+        var settlementNotices = new List<string>();
+
         int startMoney = Money;
         int startTrust = Trust;
         int startCondition = TrainCondition;
@@ -1125,12 +1136,12 @@ public static class GameData
         if (PoliticalTier >= 3)
         {
             trips = Mathf.Max(1, trips - 1);
-            Notices.Add("⚠ 重大隐患挂牌督办期间：安全督查要求减班限速，今日最高发车趟数上限 -1。");
+            settlementNotices.Add("⚠ 重大隐患挂牌督办期间：安全督查要求减班限速，今日最高发车趟数上限 -1。");
         }
         if (PoliticalTier >= 4)
         {
             trips = 0;
-            Notices.Add("⛔ 停产停业整顿期间：根据应急与交通部门决定，全线暂停旅客列车发车。");
+            settlementNotices.Add("⛔ 停产停业整顿期间：根据应急与交通部门决定，全线暂停旅客列车发车。");
         }
 
         // 2. 计算单趟客流（A9：统一单趟口径），按 passengerMultiplier 接入（G4）
@@ -1177,17 +1188,17 @@ public static class GameData
         else if (PoliticalTier == 2)
         {
             subsidy = Mathf.RoundToInt(rawSubsidy * 0.75f); // Ⅲ 约谈整改：核减 25%
-            Notices.Add("⚠ 市政府约谈整改：责令限期提交整改方案，地方财政补贴核减 25%。");
+            settlementNotices.Add("⚠ 市政府约谈整改：责令限期提交整改方案，地方财政补贴核减 25%。");
         }
         else if (PoliticalTier == 3)
         {
             subsidy = Mathf.RoundToInt(rawSubsidy * 0.50f); // Ⅳ 挂牌督办：核减 50%
-            Notices.Add("⚠ 重大隐患挂牌督办：减班限速运行，地方财政补贴核减 50%。");
+            settlementNotices.Add("⚠ 重大隐患挂牌督办：减班限速运行，地方财政补贴核减 50%。");
         }
         else if (PoliticalTier >= 4)
         {
             subsidy = 0; // Ⅴ 停产停业整顿：停发补贴
-            Notices.Add("⛔ 停产停业整顿：根据整顿决定，全线停发政府运营财政补贴。");
+            settlementNotices.Add("⛔ 停产停业整顿：根据整顿决定，全线停发政府运营财政补贴。");
         }
 
         // 9.5 [新] 先民人事系统每日更新（G2：疲劳/成长/忠诚/冷却，不改当日工资）
@@ -1334,7 +1345,7 @@ public static class GameData
                 float addPressure = Mathf.Min(0.004f * 2.25f, 0.08f - cumulativeDeficitPressure);
                 cumulativeDeficitPressure += addPressure;
                 PoliticalPressure = Mathf.Clamp01(PoliticalPressure + addPressure);
-                Notices.Add("⚠ 市议会质询：财政赤字持续扩大，地方监管部门已列入关注清单。");
+                settlementNotices.Add("⚠ 市议会质询：财政赤字持续扩大，地方监管部门已列入关注清单。");
             }
             else if (consecutiveDeficitDays > 10 && cumulativeDeficitPressure < 0.08f)
             {
@@ -1349,9 +1360,6 @@ public static class GameData
             consecutiveDeficitDays = 0;
             cumulativeDeficitPressure = Mathf.Max(0f, cumulativeDeficitPressure - 0.005f);
         }
-
-        // 记录 360 天环形趋势快照
-        RecordTrendSnapshot(Day, Trust, Money, SandRivalManager.GetPenetration("wufeng"), PoliticalPressure, InfrastructureDecay);
 
         // 本地落盘向下兼容持久化
         PlayerPrefs.SetFloat("GameData_PoliticalPressure", PoliticalPressure);
@@ -1372,7 +1380,7 @@ public static class GameData
         // 财政压力：累计月亏损 > 50,000 时输出警告
         if (CurrentMonth.NetProfit < -50000)
         {
-            Notices.Add("⚠ 财政压力：本月已累计亏损 " + (-CurrentMonth.NetProfit) + " 沙币");
+            settlementNotices.Add("⚠ 财政压力：本月已累计亏损 " + (-CurrentMonth.NetProfit) + " 沙币");
         }
 
         // 月报：Day % 30 == 0 时生成（注意 Day 尚未 +1，当前 Day 是月末日）
@@ -1384,7 +1392,7 @@ public static class GameData
                 + "\n  利润: " + CurrentMonth.NetProfit
                 + "\n  运营天数: " + CurrentMonth.DaysInMonth;
             MonthlyReports.Add(report);
-            Notices.Add("📊 " + report.Replace("\n", " | "));
+            settlementNotices.Add("📊 " + report.Replace("\n", " | "));
 
             // 成就：首次月度盈利 10 万
             if (CurrentMonth.NetProfit >= 100000)
@@ -1421,9 +1429,15 @@ public static class GameData
 
         RefreshBoards(tone);
 
+        // 保留本次日结产生的公告；RefreshBoards 会重建 Notices，不能让监管与财政说明丢失。
+        Notices.AddRange(settlementNotices);
+
         // [T308/T312] 监管法定程序推进与破产保护检查：必须在 RefreshBoards 之后调用，防止被 RefreshBoards 重建 Notices 清空覆盖
         RailwayRenaissance.Systems.RegulatoryEventSystem.AdvanceDay(Notices);
         CheckBankruptcy();
+
+        // 快照记录结算后的状态并使用推进后的 Day，避免初始 Day 1 与首次日结重复。
+        RecordTrendSnapshot(Day, Trust, Money, SandRivalManager.GetPenetration("wufeng"), PoliticalPressure, InfrastructureDecay);
 
         // 叙事引擎检查（N4.8）：Day 已推进（沙能竞争之后），检查并挂载叙事事件。
         // 注意：必须在 RefreshBoards 之后调用——RefreshBoards 以 new List 重建 Briefing/Notices，

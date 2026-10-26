@@ -1,5 +1,25 @@
 # NF-5K 转向架细化
 
+## 2026-10-22 连续辐板与柔光审阅
+
+按用户指出的同心圈分层问题，将内外侧轮辐板从多处环状肩部调整为连续浅弧，保留轮毂、厚轮辋和内侧轮缘的必要结构。踏面位置/锥度不变。两种材质的非接触区域统一底色/基础光滑度，避免子网格边界形成假拼装圈；整圈积尘遮罩改为局部斑块调制，暖棕灰薄氧化、细锈点与磨亮面连续过渡，不添加实体裂纹或假磨耗沟槽。
+
+`NF5KBogieDetailReview`在出图阶段使用两侧临时补光（0.18/0.20）与中性HDR反射围场，浅灰背景，便于观察暗部金属与轮缘。围场是美术检查照明近似，不保存到车灯/驾驶环境，不能据此认定线路真实日夜照明已完成。图片`wheel_continuous_isolated.png`、`wheel_continuous_mounted.png`与`wheel_continuous_flange.png`；验证日志`tools/compile/cab_wheel_continuous.log`。
+
+最终检查：三场景轮轨静态接触、登车靴子和握持包络通过，驾驶与上下文交互Play Mode回归通过，无C#编译错误；不包含动态轮轨接触与真实磨耗演化验收。
+
+## 2026-10-22 实拍对照精修
+
+本地参考位于`中转站/NF5K_Wheel_References/`，来源说明见该目录README。对照日本制铁厂家新轮对与APEC待检轮对照片：移除大块棕黑迷彩噪声；使用细尺度、周向接缝连续的锈点/粗糙度变化，把周向磨耗保留在踏面与轮缘侧面。APEC照片中的制动盘/盘孔不属于现有踏面制动布局，没有照搬。
+
+`NF5KWheelGeometry`生成V3轮体：原18点截面各连接处引入小圆角连续采样，周向192段；轮缘尖折角改圆顶和圆角连接，辐板凹深减浅。尺寸仍为候选，未宣称复刻标准轮缘曲线；保留锥形踏面中部与轨头的既有位置。`NF5KWheelSteelFinish`按实际截面坐标分配磨亮与氧化区域，替代依赖旧UV区间的分区。`NF5KWheelTrackReview`只替换轮网格，不重建驾驶台；轮轨检查从固定段号改为扫描实际截面，避免圆角细分后误检。
+
+专项入口仍为`NF5KBogieDetailReview.BatchSteel`；图像`wheel_finalsteel_mounted.png`、`wheel_finalsteel_isolated.png`和`wheel_finalsteel_flange.png`，日志`tools/compile/cab_wheel_finalsteel.log`。首次检查发现角度UV使锈点出现径向拉伸，改为轮体物理坐标的三平面噪声采样，避免大块云斑与径向雨痕；随后提亮偏暗的裸钢底色并降低临时检查补光0.75→0.35，车灯不变。该阶段不新增运行裂纹、踏面擦伤故障或动态磨耗仿真。V3为高细节共享检查网格，移动端LOD和性能未验收。
+
+参考来源：[日本制铁轮对](https://www.nipponsteel.com/en/product/railway-automotive-machinery-parts/list/05.html)、[APEC待检轮对照片所在页面](https://www.apecinspect.com.au/blog/magnetic-particle-inspection/magnetic-particle-inspection-applications-manufacturing-rail-australia.html)。下载图仅留本地参考，不导入Assets、不作为游戏材质分发。
+
+最终Unity检查无C#编译错误；三场景轮轨/靴子包络检查，以及交互和驾驶Play Mode回归均通过。真实微表面方向反射、磨耗随里程增长和轮轨载荷接触斑仍未实现；图像是现有URP/Lit近似表现。
+
 ## 2026-10-22 使用痕迹与静态轮轨支承
 
 旧展示平面顶面为-1.370m，轮缘最低约-1.390m，确有约20mm视觉穿地。`NF5KWheelTrackReview`生成与车辆分离的两条静态检查轨，内侧净距1435mm，轨头宽65mm；轨顶按当前锥形踏面在x=±0.750m的截面高度设为-1.361222m。轨下地面顶面改为-1.550m，检查8轮实际网格截面接触误差不大于0.5mm、轮缘不穿地。这不提供轮轨碰撞解算、线路运动或正式轨型认证。

@@ -1,5 +1,9 @@
 # AGENTS.md — 铁路复兴：沙能冲击
 
+## ATO research prototype (2026-10-25)
+
+CabAtoController is a System-only research controller; CabAtoResearchDriver is opt-in in the separate CabAtoResearchReview scene. BeforeSimulationStep schedules commands on simulation ticks through existing facade interlocks. Keep manual takeover, signed target errors and immutable run artifacts. A frozen finite-grid holdout verified the 0.5s switching constraint; Unity Play checks passed. V2 adds versioned full checkpoints, route tasks and switchable smooth/air-saving/punctual objectives; Windows nominal Play and exact replay pass. Frozen mismatch trials retain interventions and speed violations, so full-envelope reliability and real-train calibration remain pending. See docs/for-ai/ATO_V2_IMPLEMENTATION.md and docs/research/ato_v2_results.md.
+
 > AI 代理快速上手文档。修改代码前先读 `docs/for-ai/PROJECT_OVERVIEW.md` 和 `docs/for-ai/CODE_MAP.md`。
 
 ---
@@ -264,3 +268,7 @@ CabContextInteraction owns contextual action lists, runtime primary binding and 
 ## NF5K simulation backend (2026-10-21)
 
 CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
+
+## NF5K rail motion review (2026-10-22)
+
+CabRailMotion reads signed backend PositionM to place the vehicle, steer bogies and rotate wheelsets in the separate CabRailMotionReview scene. CabReviewTrack supplies an authored straight/transition/180m curve inspection alignment; CabRailReviewViews supplies following views. NF5KRailMotionReview checks wheel phase, reverse, conservative contact anchors, shoe clearance, bounded suspension settling and actual backend wiring. This is kinematic rail following plus suspension presentation, not a wheel/rail contact-force, slip or derailment solver. Preserve static review scenes and non-rotating drive housings. See docs/for-ai/NF5K_RAIL_MOTION.md.

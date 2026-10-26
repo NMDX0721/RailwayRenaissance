@@ -1,0 +1,3 @@
+Smooth error=3.2309523640788 arrival=132.1
+AirSaving error=-3.71332994615796 arrival=133.5
+Punctual error=-3.3150212704644 arrival=120.1
