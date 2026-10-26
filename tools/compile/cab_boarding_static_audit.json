@@ -1,0 +1,13 @@
+{
+    "stepsPerSide": 4,
+    "groundY": -1.3700000047683716,
+    "firstRiseM": 0.28999996185302737,
+    "stepRiseM": 0.2800000011920929,
+    "treadDepthM": 0.23999999463558198,
+    "treadWidthM": 0.6600000262260437,
+    "gripClearanceM": 0.08399999141693115,
+    "supportedBootLengthM": 0.2150000035762787,
+    "staticFootClearance": true,
+    "gripEnvelope": true,
+    "scope": "Static 290x115x110 mm boot and 1.75 m figure proxy; no animated climb, strength or platform certification"
+}

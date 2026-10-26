@@ -7,6 +7,8 @@ namespace RailwayRenaissance.Cab
     {
         [SerializeField] CabStartupControls controls;
         [SerializeField] CabStartupAction action;
+        public CabStartupAction Action => action;
+        public CabStartupControls Controls => controls;
         public void Configure(CabStartupControls owner, CabStartupAction kind) { controls = owner; action = kind; }
         public bool Activate(bool secondary = false)
         {

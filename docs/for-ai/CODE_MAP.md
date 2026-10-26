@@ -1,6 +1,18 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+2026-10-22走行部运动：`CabReviewTrack`提供独立检查线路；`CabRailMotion`只读后端有符号位移，驱动轮对转角、车体/转向架循迹及有限悬挂表现；`CabRailReviewViews`提供跟随视角。`NF5KRailMotionReview`生成CabRailMotionReview并验证直线/曲线/倒车/制动；原静态场景保留。不是轮轨接触力求解器，见[运动说明](NF5K_RAIL_MOTION.md)。
+2026-10-22钢轮分层修正：`NF5KWheelGeometry`外侧辐板改连续弧面；`NF5KWheelSteelFinish`统一非接触区基础材质，积尘按局部分布；`NF5KBogieDetailReview`出图临时增加双侧补光和中性反射围场，不改变保存的车灯。见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-22钢轮实拍精修：`NF5KWheelGeometry`提供带圆角的V3共享轮体和截面采样；`NF5KWheelSteelFinish`按截面位置生成克制的细锈与磨亮带；`NF5KWheelTrackReview`替换现有轮网格并扫描截面验证支承。参考图存于`中转站/NF5K_Wheel_References/`，见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-22轮轨与使用痕迹：`NF5KWheelTrackReview`保存三份检查场景的静态支承轨、降低的轨下地面和保留登车基准的轨旁走道，核对8轮踏面接触与轮缘净空；`NF5KWheelSteelFinish`沿截面分配磨亮带/氧化肩部/积尘；`NF5KBoardingAudit`优先采用走道顶面。检查轨不属于线路后端，见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-22钢轮表面：`NF5KWheelSteelFinish`分离踏面与氧化辐板的颜色、金属度/光滑度和细法线纹理；`NF5KRunningGear.WheelUV`改用截面累计弧长展开并生成切线，消除圆柱面UV退化。轮体几何保持不变。见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-22登车/轮体复核：`NF5KBoardingAudit`检查四级梯两侧靴子/抬脚与扶手距离，输出JSON和临时比例人偶；`NF5KAccessLadder`改四级、外移圆管扶手并清理旧磨耗条碰撞体，`NF5KSurfaceFinish`停止重建旧装饰。`NF5KRunningGear`采用18点凹形轮体截面，细节见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。收纳、桥板及站台联锁仍未实现。
+2026-10-21走行部灰色系：`NF5KRunningGearFinish`分配灰绿漆架/浅灰轴箱/暖灰设备材质；钢轮改用截面硬肩法线网格。`NF5KAccessLadder`生成开口格栅、六角螺栓/垫圈与12块反光片，`Assets/Shaders/CabRetroreflective.shader`提供受光方向回归近似；`NF5KReflectorReview`独立验证关灯与不同照射角。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21梯子/钢轮修正：`NF5KAccessLadder.BuildSide`由车体持续生成入口和转向架独立更新入口共用，构建固定板、托臂、斜撑及踏步连接；`NF5KRunningGear.FinishWheelMaterials/WheelUV`提供轮辐板/踏面分区及同心加工纹理，`NF5KIndustrialFinish.Build`收尾复用以防旧材质覆盖。见[NF5K转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21转向架精修：`NF5KRunningGear`补轴箱导向、弹簧承座与弧形踏面闸瓦，将电机/齿轮箱移到非旋转驱动组；`NF5KIndustrialFinish.FinishRunningGear`补钢构小倒角。`NF5KBogieDetailReview`更新三份既有审阅场景并出柔光近景，不重建驾驶台。见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21场景交互首版：`CabContextInteraction`接管模拟审阅场景的聚焦、近邻提示、多动作、InputAction改键与首次设置/状态引导；`CabStartupPointer`在其存在时停用旧逐帧输入，保留射线验证接口。`NF5KContextInteractionReview`验证绑定切换与设置输入隔离。规格见[场景交互与驾驶教学](../../参考资料/系统/场景交互与驾驶教学设计.md)。小黄鼠委托、全局快捷键冲突管理和完整线路教学尚未实现。
+驾驶台联锁补充：`CabContextInteraction`拦截照明审阅面板的鼠标区域，并允许停机后将换向器退回空档；`CabEngineState.SetThrottle`允许在牵引闭锁期间减档，增档仍受启机、供风、制动及停放制动约束。见[NF5K驾驶交互](NF5K_DRIVING_INTERACTION.md)。
+2026-10-21驾驶交互：`CabDrivingTarget`通过`CabStartupPointer`射线分发牵引手轮、大小闸及换向手柄动作；`NF5KDrivingInteractionSetup`由`NF5KSimulationReview.Prepare`在模拟审阅场景中安装网格碰撞体与校准转轴。操作沿用CabEngineState联锁，F2隐藏测试面板。见[NF5K驾驶交互](NF5K_DRIVING_INTERACTION.md)。
 
 NF-5K全车工业材质：`NF5KIndustrialFinish.Build`在SurfaceFinish后应用区域漆面、独立橡胶、玻璃预乘反射及毫米级倒角，保留BoxCollider体积；专用贴图/倒角网格保存于`NF5KBodyMeshes`。`CabInteriorBlockoutSetup`增加分层天光、主光软阴影、弱补光和独立审阅地面，默认仍保存闭门场景。
 
@@ -474,8 +486,21 @@ Vossloh DE18 documents two ceiling lights, dimmable instruments/reading lights a
 NF5KPassengerInterior replaces passenger seat/wall blocks with 48 individual seats, supported luggage racks, framed inner windows, heater covers and vestibule details. Native rounded meshes and woven texture are persisted/shared. ValidateReload checks candidate aisle and reserved zones; NF5KDoorReview now includes new seat/rack colliders. See NF5K_PASSENGER_INTERIOR.md for references and unverified certification/interaction limits.
 # NF5K lighting audit (2026-10-21)
 
+`CabDiffuseFill` supplies smooth circuit-dependent diffuse SH to opaque interior receivers; approximation point-light bindings are culled from rendering. `CabInteriorReflections.RefreshIfChanged` refreshes diffuse coefficients before capturing reflection probes. See the audit for approximation limits.
+
+`Assets/Scripts/Cab/CabInteriorReflections.cs` refreshes four local reflection probes on lighting-signature changes. `NF5KLightingRendererSetup` creates the probes; review capture refreshes them before screenshots. Reflection improves environmental specular response and does not implement diffuse GI.
+
 `NF5KLightingRendererSetup.ConfigureSurfaces` separates approximate bounce from transparent surfaces through rendering layers and installs an isolated Neutral tone-map Volume. Review screenshots use HDR intermediate render targets before SDR PNG conversion.
 
 Follow-up: renderer setup enables shared additional-light soft shadows; `CabInteriorLighting.Fixture.lowerBounce` binds floor-reflection fill to the same circuit and power/disable lifecycle as its parent fixture.
 
 `Assets/Editor/NF5KLightingRendererSetup.cs` installs the camera-specific Forward+ renderer during `CabInteriorBlockoutSetup.Build`. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for measured-render checks, reference sources and unresolved shadow/Gamma/GI limitations.
+# Passenger seat clearance follow-up (2026-10-21)
+
+`NF5KPassengerInterior.ValidateReload` now checks seat/wall-envelope clearance, floor grounding and seat intersections with window sills, lower liners and heater covers, in addition to aisle/vestibule checks. See `NF5K_PASSENGER_INTERIOR.md` for corrected dimensions.
+# NF5K daylight and proportion review (2026-10-21)
+
+`NF5KDaylightReview` measures reloaded geometry, generates `CabDaylightReview.unity` and captures three daylight lamp-off/on pairs. Runtime `CabDaylightEnvironment` provides the same presets in Chinese. See `NF5K_DAYLIGHT_REVIEW.md` for scene usage and approximation boundaries.
+# NF5K simulation backend (2026-10-21)
+
+`CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.

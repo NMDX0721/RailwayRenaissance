@@ -87,12 +87,6 @@ public static class NF5KSurfaceFinish
                 Bolt("Lamp_Housing_Screw",new Vector3(side*.87f+dx,.72f+dy,-.720f),Quaternion.Euler(90,0,0),.018f,steel,root);
             foreach(float y in new[]{.30f,1.55f})foreach(float dy in new[]{-.04f,.04f})
                 Bolt("Door_Hinge_Bolt",new Vector3(side*1.515f,y+dy,1.84f),Quaternion.Euler(0,0,90),.014f,steel,root);
-            for(int i=0;i<3;i++)
-            {
-                var strip=GameObject.CreatePrimitive(PrimitiveType.Cube);strip.name="Worn_Step_Leading_Edge";strip.transform.SetParent(root,false);
-                strip.transform.localPosition=new Vector3(side*(1.61f+.04f*i),-.215f-.24f*i,1.49f);
-                strip.transform.localScale=new Vector3(.015f,.008f,.60f);strip.GetComponent<Renderer>().sharedMaterial=steel;
-            }
             for(int i=0;i<8;i++)
                 Bolt("Side_Sill_Fastener",new Vector3(side*1.456f,.09f,2.5f+i*1.8f),Quaternion.Euler(0,0,90),.015f,dark,root);
         }

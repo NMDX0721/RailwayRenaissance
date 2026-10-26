@@ -27,12 +27,14 @@ namespace RailwayRenaissance.Cab
         [SerializeField] float lastInstrumentDimmer = .25f;
         [SerializeField] bool mainPower = true, batteryPower = true;
         [SerializeField] bool reviewControls = true;
+        Rect ReviewPanelRect => new Rect(Mathf.Max(250, Screen.width - 260),16,244,400);
         MaterialPropertyBlock properties;
         bool previousLegacy;
         Font reviewFont;
         public bool CabCeilingOn => cabCeiling;
         public bool TaskOn => task;
         public bool AssistantTaskOn => assistantTask;
+        public bool BlocksPointer(Vector2 guiPoint) => isActiveAndEnabled && reviewControls && ReviewPanelRect.Contains(guiPoint);
         public bool AccessOn => access;
         public bool MainPower => mainPower;
         public bool BatteryPower => batteryPower;
@@ -120,6 +122,7 @@ namespace RailwayRenaissance.Cab
                 properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : .65f));
                 fixture.diffuser.SetPropertyBlock(properties);
             }
+            GetComponent<CabDiffuseFill>()?.Refresh();
         }
         void OnDisable() { Apply(); }
         void OnGUI()
@@ -127,7 +130,7 @@ namespace RailwayRenaissance.Cab
             if (!reviewControls) return;
             if (reviewFont == null) reviewFont = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var font = GUI.skin.font; if (reviewFont != null) GUI.skin.font = reviewFont;
-            GUILayout.BeginArea(new Rect(Mathf.Max(250, Screen.width - 260),16,244,400), GUI.skin.box);
+            GUILayout.BeginArea(ReviewPanelRect, GUI.skin.box);
             GUILayout.Label("室内照明（I 切换顶灯）");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("正常")) SetCabPreset(0);

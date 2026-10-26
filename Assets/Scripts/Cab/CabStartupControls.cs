@@ -93,7 +93,7 @@ namespace RailwayRenaissance.Cab
             if (pumpSelector != null) pumpSelector.localRotation = Quaternion.AngleAxis(
                 engineState != null && engineState.FuelPumpOn ? -30 : 0, turnAxis) * pumpOffRotation;
             SetLamp(powerLamp, masterEnabled && keyInserted);
-            SetLamp(runningLamp, engineState != null && engineState.IsEngineStarted);
+            SetLamp(runningLamp, engineState != null && engineState.IsEngineRunning);
         }
         void SetLamp(Renderer lamp, bool enabled)
         {

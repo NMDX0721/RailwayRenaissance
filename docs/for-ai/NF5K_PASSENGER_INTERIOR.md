@@ -44,3 +44,10 @@
 - [Ellamp铁路内装](https://ellampsystems.com/train/)：内衬、灯光、行李架及阅读灯的集成方式。
 
 剩余工作包括座位编号和必要标识、行李架真实承载、乘客与行李交互、完整客舱热通风、无障碍/疏散校核，以及车内声学和精细做旧。本轮没有擅自添加车号、虚构朝鲜语标语或人物宣传画。
+# Seat/wall/floor clearance correction — 2026-10-21
+
+Window sills previously projected to x=1.265m, overlapping the window-seat back (outer edge 1.335m). Sill depth is now 40mm centred at |x|=1.355m, with an inner edge at 1.335m. Window seats move inward 25mm to |x|=1.075m, leaving 25mm between the seat shell and sill. Outer armrests move to |x|=1.315m and clear the inner liner by about 19.5mm. Cushion width stays 450mm and the aisle stays 664mm. The two pans within each pair retain a 5mm lateral gap.
+
+The crossbeam is raised 20mm to y=0.36m to clear the heater cover and contact the seat pan underside at y=0.3925m. Legs extend 10mm to meet it. Feet rest at y=0 without penetrating the floor. `ValidateReload` checks all relevant seat boxes against sill, lower liner and heater-cover colliders with narrow-phase penetration tests, checks the inner wall envelope, and checks all 48 feet against the floor plane. This scoped static check is not a complete passenger/body/seat collision simulation.
+
+Validated in tools/compile/cab_seat_clearance_final.log: 48 grounded feet, no seat/fitting AABB overlap candidates, 48 seats and 664mm aisle retained; scene reload and Play Mode lighting regression passed. Inspection images: seat_wall_clearance.png and seat_floor_clearance.png under tools/cab_reference/interior_review/.

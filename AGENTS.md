@@ -240,3 +240,31 @@ CabInteriorLighting controls separate cab/task, instrument dimmer, two passenger
 
 ## NF-5K passenger fittings (2026-10-21)
 NF5KPassengerInterior generates shared native seat meshes, luggage racks, inner window returns and vestibule fittings. ValidateReload checks 48 seats and candidate aisle clearance; NF5KDoorReview includes new fixed seat/rack colliders. See docs/for-ai/NF5K_PASSENGER_INTERIOR.md. Geometry capacity is not connected to the economy or passenger simulation.
+
+
+## NF5K diffuse lighting (2026-10-21)
+
+CabDiffuseFill supplies circuit-dependent custom SH irradiance to opaque cabin surfaces. Approximation point lights remain bindings with cullingMask=0. Refresh diffuse data before local reflection capture. This is authored fill, not baked or traced GI. Keep normal/night/emergency comparisons and the lower-visibility/highlight check in tools/cab_reference/compare_diffuse_fill.py. See docs/for-ai/NF5K_LIGHTING_AUDIT.md.
+
+
+## NF5K daylight review (2026-10-21)
+
+NF5KDaylightReview generates a separate CabDaylightReview scene and measures cabin proportions. CabDaylightEnvironment supplies clear/overcast/low-sun presets and driver/passenger/exterior inspection views. Preserve the original night/emergency regression scene. See docs/for-ai/NF5K_DAYLIGHT_REVIEW.md for usage and scale/lighting limits.
+
+
+## NF5K simulation backend (2026-10-21)
+
+CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
+
+## Cab contextual interaction (2026-10-21)
+
+CabContextInteraction owns contextual action lists, runtime primary binding and first-use driving guidance in CabSimulationReview. CabStartupPointer retains raycast verification but suppresses its legacy frame input when the contextual component exists. Preserve physical control interlocks; assistance must use the same command path. Mouse helper delegation, complete route tutorials and global shortcut conflict handling remain pending. See 参考资料/系统/场景交互与驾驶教学设计.md.
+
+
+## NF5K simulation backend (2026-10-21)
+
+CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded cold conditions. CabSimulationDriver is opt-in through CabEngineState; legacy scenes keep their prior physics. CabSimulationCodec preserves exact snapshot scalars. NF5KSimulationReview generates CabSimulationReview and checks kernel invariants plus Play Mode startup, traction, braking and lighting supply. Candidate parameters are not certified NF5K data; train-pipe propagation, wheel slip dynamics, real route movement, physical handles and global save slots remain pending. See docs/for-ai/NF5K_SIMULATION_BACKEND.md.
+
+## NF5K rail motion review (2026-10-22)
+
+CabRailMotion reads signed backend PositionM to place the vehicle, steer bogies and rotate wheelsets in the separate CabRailMotionReview scene. CabReviewTrack supplies an authored straight/transition/180m curve inspection alignment; CabRailReviewViews supplies following views. NF5KRailMotionReview checks wheel phase, reverse, conservative contact anchors, shoe clearance, bounded suspension settling and actual backend wiring. This is kinematic rail following plus suspension presentation, not a wheel/rail contact-force, slip or derailment solver. Preserve static review scenes and non-rotating drive housings. See docs/for-ai/NF5K_RAIL_MOTION.md.

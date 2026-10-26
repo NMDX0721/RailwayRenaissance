@@ -35,7 +35,8 @@ namespace RailwayRenaissance.Cab
     {
         // 1. 控制操作位
         public bool IsEngineStarted { get; private set; } = false;
-        public bool IsEngineRunning => IsEngineStarted;
+        internal CabSimulationDriver DetailedSimulation {get;set;}
+        public bool IsEngineRunning => DetailedSimulation!=null&&DetailedSimulation.isActiveAndEnabled ? DetailedSimulation.Model!=null&&DetailedSimulation.Model.State.Running : IsEngineStarted;
 
         public ReverserPosition Reverser { get; private set; } = ReverserPosition.Neutral;
         public ReverserPosition CurrentReverser => Reverser;
@@ -104,6 +105,8 @@ namespace RailwayRenaissance.Cab
         public void StartEngine()
         {
             if (IsEngineStarted) return;
+            if(DetailedSimulation!=null&&(!FuelPumpOn||Reverser!=ReverserPosition.Neutral||ThrottleNotch!=0||Mathf.Abs(CurrentSpeedKmh)>.36f))
+            {LastProcedureWarning="启动条件不满足：油泵、空挡、零位及停车状态";return;}
             IsEngineStarted = true;
             CurrentStartupStep = 1;
             LastProcedureWarning = "发动机已点火（怠速600转），请设置换向手柄。";
@@ -119,6 +122,10 @@ namespace RailwayRenaissance.Cab
 
         public bool SetReverser(ReverserPosition mode)
         {
+            if(DetailedSimulation!=null&&!IsEngineRunning&&mode!=ReverserPosition.Neutral)
+            {LastProcedureWarning="等待柴油机启动完成，再换向";return false;}
+            if(DetailedSimulation!=null&&mode!=Reverser&&(ThrottleNotch!=0||Mathf.Abs(CurrentSpeedKmh)>.36f))
+            {LastProcedureWarning="先归零并停稳，再换向";return false;}
             if (!IsEngineStarted && mode != ReverserPosition.Neutral)
             {
                 LastProcedureWarning = "【操作警告】发动机尚未点火，禁止换向！";
@@ -141,8 +148,10 @@ namespace RailwayRenaissance.Cab
         public bool SetThrottle(int notch)
         {
             notch = Mathf.Clamp(notch, 0, 8);
-            if (notch > 0)
+            if (notch > ThrottleNotch)
             {
+                if(DetailedSimulation!=null&&(!IsEngineRunning||DetailedSimulation.ParkingBrake||MainReservoirKpa<600||BrakePipeKpa<470||BrakeCylinderKpa>=20))
+                {LastProcedureWarning="牵引闭锁：等待启机、充风，并缓解空气制动与停放制动";return false;}
                 if (!IsEngineStarted)
                 {
                     LastProcedureWarning = "【操作警告】未启动发动机，无法施加牵引！";
@@ -160,6 +169,14 @@ namespace RailwayRenaissance.Cab
                 }
                 CurrentStartupStep = 3;
                 LastProcedureWarning = $"牵引力输出中：第 {notch} 档位。";
+            }
+            else if (notch > 0 && notch < ThrottleNotch)
+            {
+                LastProcedureWarning = $"主控手柄降至第 {notch} 档。";
+            }
+            else if (notch > 0)
+            {
+                return true;
             }
             else
             {
@@ -250,6 +267,7 @@ namespace RailwayRenaissance.Cab
         {
             if (HornPulseTimer > 0f) HornPulseTimer -= dt;
             if (BrakeImpactTimer > 0f) BrakeImpactTimer -= dt;
+            if(DetailedSimulation!=null&&DetailedSimulation.isActiveAndEnabled){DetailedSimulation.Advance(dt);return;}
 
             if (UseDebugSpeedOverride)
             {
@@ -377,6 +395,21 @@ namespace RailwayRenaissance.Cab
         public void SetIndependentBrake(float val)
         {
             IndependentBrakeNotch = Mathf.Clamp01(val);
+        }
+        internal void ApplySimulation(Simulation.SimulationState s)
+        {
+            CurrentSpeedKmh=(float)(s.SpeedMps*3.6);AccelerationMps2=(float)s.Acceleration;
+            EngineRpm=(float)s.Rpm;WaterTempCelsius=(float)s.CoolantC;OilPressureMpa=(float)s.OilMpa;
+            BrakeCylinderKpa=(float)s.LocoCylinderKpa;BrakePipeKpa=(float)s.PipeKpa;MainReservoirKpa=(float)s.MainKpa;
+            TractionCurrentAmps=(float)s.CurrentA;TotalTraveledMeters=(float)s.PositionM;
+            DistanceToNextStation=(float)Math.Max(0,s.StopPositionM-s.PositionM);
+            TargetPitchAngle=Mathf.Clamp(-AccelerationMps2*2.2f,-1.8f,1.8f);
+            CurrentStartupStep=s.Running?(s.PipeKpa>=470&&s.MainKpa>=600&&s.LocoCylinderKpa<20?3:2):s.Cranking?1:0;
+        }
+        internal void RestoreSimulationCommands(Simulation.SimulationInput u)
+        {
+            IsEngineStarted=u.EngineRun;FuelPumpOn=u.FuelPump;Reverser=(ReverserPosition)u.Direction;
+            ThrottleNotch=u.Throttle;BrakePos=(BrakeNotch)u.Brake;IndependentBrakeNotch=(float)u.IndependentBrake;SandOn=u.Sand;
         }
     }
 }

@@ -29,6 +29,7 @@ public static class CabInteriorBlockoutSetup
             if(++frames==30)
             {
                 var camera=Camera.main;
+                NF5KDaylightReview.AuditDimensions();
                 Shot(camera,Output+"driver_view.png");
                 var eyePosition=camera.transform.position;var eyeRotation=camera.transform.rotation;
                 camera.transform.position=new Vector3(12,8,-11);
@@ -85,6 +86,7 @@ public static class CabInteriorBlockoutSetup
                 NF5KRunningGear.ValidateReload();
                 Debug.Log("NF5K_REFERENCE_RELOAD_AUDIT_OK: two open-window steel leaves, access ladders, persistent curved roof");
                 Debug.Log("CAB_INTERIOR_RELOAD_RENDER_OK");
+                NF5KDaylightReview.Render(Shot);
             }
             if(frames>=40){EditorApplication.update-=Review;NF5KLightingPlayReview.Begin();}
         }
@@ -99,7 +101,11 @@ public static class CabInteriorBlockoutSetup
         Texture2D image=null;
         try
         {
-            camera.targetTexture=target;camera.Render();
+            camera.targetTexture=target;
+            UnityEngine.Object.FindFirstObjectByType<CabDiffuseFill>()?.Refresh();
+            var reflections=UnityEngine.Object.FindFirstObjectByType<CabInteriorReflections>();
+            if(reflections!=null&&reflections.RefreshIfChanged())camera.Render();
+            camera.Render();
             // A 3:1 bilinear reduction alone misses source pixels; explicitly average all nine samples.
             var shader=Shader.Find("Hidden/NF5K/ReviewDownsample");
             if(shader==null)throw new InvalidOperationException("Review downsample shader is missing");
@@ -201,6 +207,7 @@ public static class CabInteriorBlockoutSetup
         var ground=GameObject.CreatePrimitive(PrimitiveType.Cube);ground.name="Review_Ground_Not_Vehicle";ground.layer=30;
         ground.transform.position=new Vector3(0,-1.39f,8);ground.transform.localScale=new Vector3(18,.04f,32);
         ground.GetComponent<Renderer>().sharedMaterial=Mat("Industrial_Review_Ground",new Color(.57f,.59f,.60f));
+        NF5KWheelTrackReview.Install();
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene,ScenePath);
         var state=console.GetComponent<CabEngineState>();
         if(state==null||console.GetComponentsInChildren<CabStartupControls>().Length!=1)throw new InvalidOperationException("Interior lost console startup/state binding");

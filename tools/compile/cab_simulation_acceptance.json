@@ -1,0 +1,22 @@
+{
+    "scope": "Candidate lumped diesel-electric model; not certified NF5K physics",
+    "airConservation": true,
+    "coldStart": true,
+    "tractionCoastBrake": true,
+    "independentBrake": true,
+    "adhesion": true,
+    "gradeRollback": true,
+    "thermalTrip": true,
+    "checkpointReplay": true,
+    "frameRateReplay": true,
+    "invalidSnapshotRejected": true,
+    "noAirNoBrake": true,
+    "lowAirTractionGuard": true,
+    "movingReverseGuard": true,
+    "batteryDrain": true,
+    "seededInitials": true,
+    "speedAfterAccelerationKmh": 89.22792710812986,
+    "serviceStopM": 316.7667494419841,
+    "emergencyStopM": 302.61222111080476,
+    "maxAirBalanceError": 2.646156644914299e-7
+}

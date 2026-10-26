@@ -1,6 +1,13 @@
 # 铁路复兴：沙能冲击 — AI 项目总览
 
 2026-10-26：修复 PR #1 的历史审核问题：新局清理监管持久化、客流信任系数单调、日结公告保留、趋势图只绘制缓存离散档位、VN 回退保留已解锁进度、员工过渡数据生效、监管节点/危机/破产状态正确推进、快照使用推进后的日期、音乐切换跟随目标 AudioSource。构建场景顺序恢复为 Login → TitleScreen → VN_Test → StationSlice_V1。Unity 回归与审核状态以对应修复 PR 的验证为准。
+2026-10-22走行部新增独立运动检查场景CabRailMotionReview：后端位移驱动车体循迹、轮对正反转和转向架过弯，有限行程阻尼悬挂及制动闸瓦表现。属于轨道约束模型，不是完整轮轨接触/滑移动力学，正式线路与限界/收纳联锁未完成。见[走行部运动](NF5K_RAIL_MOTION.md)。
+2026-10-22修正：原登车梯首脚过高，现改四级、圆管扶手和靴子包络复核；钢轮改实体凹形轮辐板及轮毂/轮辋分区。当前为静态攀登候选，未通过动画实走、结构强度或收纳/站台适配验收。见[走行部复核](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21走行部新配色与梯子细节：参考日本轮轴/转向架实物的构件层次，采用灰绿钢构漆层、浅灰轴箱和深色弹簧；钢轮拆分加工面法线。梯子改开口格栅并增加六角紧固件、黄白被动反光片。反光片是受光驱动的经验型回归近似，未认证反光膜性能，见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21用户反馈修正：驾驶室两侧登车梯补连接底架的固定板、托臂与斜撑，踏步增加角托/折边/防滑筋；钢轮分区调整氧化层、踏面和加工纹理，修正暗色贴图叠乘。静态设计与力学校核边界见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21车底精修：两组转向架补轴箱导向、弹簧承座、弧形闸瓦与制动连接，分离轮对和电机外壳层级，同步既有夜间、白天和模拟审阅场景。仍为静态可视化候选，见[转向架细化](NF5K_BOGIE_REFINEMENT.md)。
+2026-10-21补充：模拟审阅场景采用就近动作提示与可自定义主交互键，首次引导选择E/鼠标或其他键，右上角可重新设置；分步启动提示按实际设备状态推进。硬核实体操作与休闲小黄鼠协助的设计边界见[场景交互与驾驶教学](../../参考资料/系统/场景交互与驾驶教学设计.md)，小黄鼠执行与完整教学仍待实现。
+2026-10-21驾驶交互首轮：独立CabSimulationReview场景已接牵引手轮、自动/独立制动和换向手柄的鼠标点击步进，原钥匙/启动链保留。档位动画读取控制状态；轨道行驶、完整操作可达性、驾驶记录/回顾/生涯仍待实现。见[驾驶台交互](NF5K_DRIVING_INTERACTION.md)。
 
 NF-5K客舱已完成首轮独立座椅、行李架、内窗框/回口、暖风罩与门区内装，替换原座椅方块；仍缺乘客/行李交互、完整标识及疏散认证。布局与候选尺寸见[客舱内装说明](NF5K_PASSENGER_INTERIOR.md)。
 
@@ -419,3 +426,9 @@ JSON 结构：
 *本文档由 AI 代理于 2026-08-14 阅读全项目后自动生成，供 AI 代理快速上手。*
 2026-10-20 最新进展：柴油机转速表已完成原生 Unity 导入与 EngineRpm 绑定，预制体及独立验收场景可用；主驾驶台尚未整体装配。水温/机油温度表组首版已出，现有仿真只有水温，油温暂不接线。接线与验证见转速表任务，温度表的候选量程及证据边界见温度表任务。
 
+# Daylight review environment (2026-10-21)
+
+`Assets/Scenes/CabDaylightReview.unity` provides an independent NF5K daylight inspection environment with clear/overcast/low-sun presets and independent interior-lamp controls. Measured proportions and usage are documented in `NF5K_DAYLIGHT_REVIEW.md`; this is not a completed route or calibrated lighting simulation.
+# NF5K backend prototype (2026-10-21)
+
+An opt-in fixed-step backend now models delayed diesel start, finite-air automatic/independent brakes, power/adhesion-limited traction, grade, fuel, battery and thermal protection. `CabSimulationReview.unity` connects it to the existing cockpit state/gauges through `CabSimulationDriver`; other scenes retain legacy demonstration physics. This is a lumped prototype with candidate NF5K short-consist parameters, not calibrated original-vehicle dynamics. Full route movement, 3D handle interaction and global save-slot integration remain pending. Research/formulas/validation: `NF5K_SIMULATION_BACKEND.md`.
