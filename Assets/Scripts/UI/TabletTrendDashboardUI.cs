@@ -326,7 +326,9 @@ namespace RailwayRenaissance.UI
                         money = GameData.Money,
                         sandPenetration = 0.15f,
                         politicalPressure = GameData.PoliticalPressure,
-                        infrastructureDecay = GameData.InfrastructureDecay
+                        infrastructureDecay = GameData.InfrastructureDecay,
+                        politicalTier = GameData.PoliticalTier,
+                        decayGrade = GameData.DecayGrade
                     }
                 };
             }
@@ -339,8 +341,39 @@ namespace RailwayRenaissance.UI
             DrawSingleLine(painter, w, h, points, p => p.trust / 100f, ColorTrust);
             DrawSingleLine(painter, w, h, points, p => Mathf.Clamp01(p.money / 100000f), ColorMoney);
             DrawSingleLine(painter, w, h, points, p => p.sandPenetration, ColorSand);
-            DrawSingleLine(painter, w, h, points, p => p.politicalPressure, ColorPolitics);
-            DrawSingleLine(painter, w, h, points, p => p.infrastructureDecay, ColorDecay);
+            DrawCategoricalLine(painter, w, h, points, p => p.politicalTier, 4, ColorPolitics);
+            DrawCategoricalLine(painter, w, h, points, p => p.decayGrade, 3, ColorDecay);
+        }
+
+        private static void DrawCategoricalLine(Painter2D painter, float w, float h, List<GameData.TrendSnapshot> list, Func<GameData.TrendSnapshot, int> levelSelector, int maxLevel, Color color)
+        {
+            if (list.Count == 0 || maxLevel <= 0) return;
+            painter.strokeColor = color;
+            painter.lineWidth = 2.2f;
+            painter.BeginPath();
+
+            float previousY = 0f;
+            for (int i = 0; i < list.Count; i++)
+            {
+                float x = list.Count == 1 ? w * 0.5f : (w / (list.Count - 1)) * i;
+                float level = Mathf.Clamp(levelSelector(list[i]), 0, maxLevel) / (float)maxLevel;
+                float y = h - (level * (h - 20f)) - 10f;
+                if (i == 0)
+                {
+                    painter.MoveTo(new Vector2(x, y));
+                }
+                else
+                {
+                    // 阶梯只表示离散监管/工务档位，不把内部连续量映射到图形位置。
+                    painter.LineTo(new Vector2(x, previousY));
+                    painter.LineTo(new Vector2(x, y));
+                }
+                previousY = y;
+            }
+
+            if (list.Count == 1)
+                painter.LineTo(new Vector2(w, previousY));
+            painter.Stroke();
         }
 
         private static void DrawSingleLine(Painter2D painter, float w, float h, List<GameData.TrendSnapshot> list, Func<GameData.TrendSnapshot, float> valSelector, Color color)
@@ -409,7 +442,9 @@ namespace RailwayRenaissance.UI
                             money = Mathf.RoundToInt(mSum / len),
                             sandPenetration = sSum / len,
                             politicalPressure = pSum / len,
-                            infrastructureDecay = dSum / len
+                            infrastructureDecay = dSum / len,
+                            politicalTier = source[i + len - 1].politicalTier,
+                            decayGrade = source[i + len - 1].decayGrade
                         });
                     }
                     return monthly;

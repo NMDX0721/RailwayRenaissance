@@ -307,6 +307,46 @@ public static class CrewManager
         Debug.Log("[CrewManager] 初始化完成，共 " + crew.Count + " 名员工。");
     }
 
+    internal static void ApplyVNExitCrewData(CrewData[] crewData)
+    {
+        if (crewData == null)
+        {
+            return;
+        }
+
+        foreach (CrewData data in crewData)
+        {
+            CrewMember member = GetCrew(data.id);
+            if (member == null)
+            {
+                Debug.LogWarning("[CrewManager] VN 过渡数据中包含未知员工，已跳过: " + data.id);
+                continue;
+            }
+
+            if (!string.IsNullOrWhiteSpace(data.name))
+            {
+                member.name = data.name;
+            }
+            if (!string.IsNullOrWhiteSpace(data.role))
+            {
+                member.role = data.role;
+            }
+
+            member.fatigue = Mathf.Clamp(Mathf.RoundToInt(Mathf.Clamp01(data.fatigue) * 100f), 0, 100);
+
+            string coreSkillName = GetCoreSkillForRole(member.role);
+            SkillData coreSkill = FindSkill(member, coreSkillName);
+            if (coreSkill == null && !string.IsNullOrWhiteSpace(data.specialty))
+            {
+                coreSkill = FindSkill(member, data.specialty);
+            }
+            if (coreSkill != null)
+            {
+                coreSkill.level = Mathf.Clamp(data.skillLevel, 0, coreSkill.maxLevel);
+            }
+        }
+    }
+
     // ===== G11：城市 npc_pool → 招募角色池 =====
 
     /// <summary>从种子各城市 npc_pool 构建招募池（key=城市ID，value=角色ID列表）。</summary>
