@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RailwayRenaissance.Cab
 {
-    public enum CabDrivingAction { Throttle, AutomaticBrake, IndependentBrake, Reverser }
+    public enum CabDrivingAction { Throttle, AutomaticBrake, IndependentBrake, Reverser, ParkingBrake }
 
     public sealed class CabDrivingTarget : MonoBehaviour
     {
@@ -17,6 +17,7 @@ namespace RailwayRenaissance.Cab
             CabDrivingAction.Throttle => $"牵引手轮 · {state.ThrottleNotch}/8",
             CabDrivingAction.AutomaticBrake => $"自动制动 · {state.GetBrakeNotchString()}",
             CabDrivingAction.IndependentBrake => $"独立制动 · {state.IndependentBrakeNotch:P0}",
+            CabDrivingAction.ParkingBrake => "停放制动 · " + (state.GetComponent<CabSimulationDriver>()?.ParkingBrake == true ? "已施加" : "已缓解"),
             _ => $"换向 · {state.GetReverserString()}"
         };
         public void Configure(CabEngineState owner, CabDrivingAction kind, Vector3 localAxis, float travel)
@@ -37,6 +38,10 @@ namespace RailwayRenaissance.Cab
                     state.SetIndependentBrake(state.IndependentBrakeNotch + step * .25f); break;
                 case CabDrivingAction.Reverser:
                     return state.SetReverser((ReverserPosition)Mathf.Clamp((int)state.Reverser + step, -1, 1));
+                case CabDrivingAction.ParkingBrake:
+                    var driver = state.GetComponent<CabSimulationDriver>();
+                    if (driver == null || Mathf.Abs(state.CurrentSpeedKmh) > .1f || state.ThrottleNotch != 0) return false;
+                    driver.ParkingBrake = !secondary; break;
             }
             ApplyVisual(); return true;
         }
@@ -49,6 +54,7 @@ namespace RailwayRenaissance.Cab
                 CabDrivingAction.Throttle => state.ThrottleNotch / 8f,
                 CabDrivingAction.AutomaticBrake => ((int)state.BrakePos - 1) / 4f,
                 CabDrivingAction.IndependentBrake => state.IndependentBrakeNotch,
+                CabDrivingAction.ParkingBrake => state.GetComponent<CabSimulationDriver>()?.ParkingBrake == true ? 1 : 0,
                 _ => (int)state.Reverser
             };
             transform.localRotation = restRotation * Quaternion.AngleAxis(fraction * travelDegrees, axis);

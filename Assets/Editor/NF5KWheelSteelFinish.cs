@@ -29,14 +29,14 @@ public static class NF5KWheelSteelFinish
             float flangeRub=Mathf.SmoothStep(.466f,.477f,radius)*(1-Mathf.SmoothStep(.485f,.490f,radius));
             float polish=rolling?1:tread?flangeRub*.65f:0;
             float crevice=Mathf.Exp(-Mathf.Pow((radius-.175f)/.025f,2))+Mathf.Exp(-Mathf.Pow((radius-.382f)/.016f,2));
-            float rust=(.09f+Mathf.Clamp01((patina-.44f)*2)*.34f+Mathf.Clamp01((medium-.52f)*4)*.25f)*(1-polish);
+            float rust=(.09f+Mathf.Clamp01((patina-.44f)*2)*.34f+Mathf.Clamp01((medium-.52f)*4)*.25f)*(1-polish)*.65f;
             float pits=Mathf.Clamp01((fine-.61f)*5)*(1-polish);
             Color steel=Color.Lerp(new Color(.66f,.68f,.68f),new Color(.74f,.76f,.77f),polish);
             Color surface=Color.Lerp(steel,new Color(.30f,.22f,.15f),rust);
             surface=Color.Lerp(surface,new Color(.28f,.27f,.25f),Mathf.Clamp01(crevice)*Mathf.Clamp01((patina-.48f)*3)*.16f*(1-polish));
             float machining=Mathf.Sin(v*1391+Mathf.Sin(angle*3)*.08f);
             float score=Mathf.Pow(Mathf.Max(0,Mathf.Sin(v*2317)),32)*polish;
-            color[y*size+x]=surface*(1+grain*.055f+(fine-.5f)*.055f-score*.045f);
+            color[y*size+x]=surface*(1+grain*.03f+(fine-.5f)*.035f-score*.045f);
             float metal=Mathf.Lerp(.84f,.98f,polish)*(1-rust*.72f-pits*.20f);
             float smooth=Mathf.Lerp(.34f,.51f,polish)-rust*.12f+(fine-.5f)*.04f-score*.025f;
             mask[y*size+x]=new Color(metal,0,0,smooth);

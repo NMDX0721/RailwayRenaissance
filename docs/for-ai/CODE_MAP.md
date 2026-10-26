@@ -1,6 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
 2026-10-26 历史审核修正：新局调用监管 `ResetState` 清除旧持久化；日结公告在面板重建后追加，快照使用监管结算后的新 Day 并记录离散档位；VN 进度条回退不降低已解锁上限，VNExitData 员工数据注入 CrewManager；音乐切歌保存目标 deck 引用。政治/老化趋势仅绘制缓存档位阶梯，不绘制连续压力值。
+2026-10-22动漫3D细节：`NF5KAnimeDetailPass`为四门补充随动五金、全车导水沿并收敛主车漆细噪点；从既有生成入口调用，独立BatchBuild同步四个检查场景并执行门扇/驾驶回归。视觉基线为双像素VN、动漫3D、硬核机制，见[细节轮次说明](NF5K_ANIME_DETAIL_PASS.md)。
 2026-10-22走行部运动：`CabReviewTrack`提供独立检查线路；`CabRailMotion`只读后端有符号位移，驱动轮对转角、车体/转向架循迹及有限悬挂表现；`CabRailReviewViews`提供跟随视角。`NF5KRailMotionReview`生成CabRailMotionReview并验证直线/曲线/倒车/制动；原静态场景保留。不是轮轨接触力求解器，见[运动说明](NF5K_RAIL_MOTION.md)。
 2026-10-22钢轮分层修正：`NF5KWheelGeometry`外侧辐板改连续弧面；`NF5KWheelSteelFinish`统一非接触区基础材质，积尘按局部分布；`NF5KBogieDetailReview`出图临时增加双侧补光和中性反射围场，不改变保存的车灯。见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
 2026-10-22钢轮实拍精修：`NF5KWheelGeometry`提供带圆角的V3共享轮体和截面采样；`NF5KWheelSteelFinish`按截面位置生成克制的细锈与磨亮带；`NF5KWheelTrackReview`替换现有轮网格并扫描截面验证支承。参考图存于`中转站/NF5K_Wheel_References/`，见[走行部说明](NF5K_BOGIE_REFINEMENT.md)。
@@ -501,6 +502,26 @@ Follow-up: renderer setup enables shared additional-light soft shadows; `CabInte
 # NF5K daylight and proportion review (2026-10-21)
 
 `NF5KDaylightReview` measures reloaded geometry, generates `CabDaylightReview.unity` and captures three daylight lamp-off/on pairs. Runtime `CabDaylightEnvironment` provides the same presets in Chinese. See `NF5K_DAYLIGHT_REVIEW.md` for scene usage and approximation boundaries.
+# NF5K cab fittings (2026-10-22)
+
+Gauge/manual follow-up: `NF5KExtinguisherModel` adds a continuous-zone printed pressure dial, tapered pointer, rolled bezel and convex lens; `BuildManual` builds an adjacent readable manual in a fixed pocket. `CabSafetyEquipment.IsManual` exposes only reading, while the three removable items retain their existing path. Catalog and labels now use full Chinese/English pairs without the parenthetical classification label. See [NF5K_FIRE_MANUAL_AND_GAUGE.md](NF5K_FIRE_MANUAL_AND_GAUGE.md).
+
+Formal equipment dossier: `CabSafetyCatalog` loads shared `safety_equipment_profile.json`; Python label generation reads the same manufacturer/model/specification fields. `CabContextInteraction` presents a scrollable modal dossier with Escape/close and background-input isolation, checked by `NF5KContextInteractionReview`. The fictional manufacturer is 白岳消防器材厂 and the product is 守安 BYF-23R; development limitations stay in documentation.
+
+Extinguisher rebuild: `NF5KExtinguisherModel` replaces capsule bodies with a drawn-cylinder profile, separate valve/flat handles/gauge/pin/seal and a curved discharge hose. `build_extinguisher_label.py` produces a complete Chinese reference label mapped to a curved mesh. `CabSafetyEquipment` now opens/closes retaining bands and orients held bottles toward the player. See [NF5K_EXTINGUISHER_REFERENCE.md](NF5K_EXTINGUISHER_REFERENCE.md).
+
+Safety follow-up: `CabSafetyEquipment` supplies inspection pickup/return for two extinguishers and one hammer via existing `CabContextInteraction`. `NF5KSafetyEquipmentReview` validates dock rays, menu choices, near-dock return and single-item/disable guards. The fittings generator adds Chinese identification plates and mount details. See [NF5K_SAFETY_INTERACTION.md](NF5K_SAFETY_INTERACTION.md); spraying and window breakage remain unimplemented.
+
+Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip, mount/cover/legend details and proportioned clipboard. The same generator adds front/rear passenger fire-extinguisher models, front passage grab rails and a rear emergency-hammer mounting panel. Safety equipment remains static. Selected seat-envelope checks and parking mesh-ray/moving-command regressions are included; see the specification below.
+
+`CabWorldLabel` binds dynamic font atlases to a depth-tested URP `CabWorldLabel.shader` through property blocks; font rebuilds refresh the binding, and physical labels are occluded by opaque cab walls.
+
+`NF5KCabFittings` adds a driver-side parking selector and auxiliary shelf/radio/handset/map pockets in four whole-car review scenes. `CabDrivingTarget.ParkingBrake` feeds the existing simulation driver with stopped/zero-throttle guards; `CabContextInteraction` exposes held apply/release choices. Auxiliary equipment remains visual only. See [NF5K_CAB_FITTINGS.md](NF5K_CAB_FITTINGS.md).
+
+# NF5K pneumatic equipment (2026-10-22)
+
+`NF5KPneumaticEquipment.Apply` generates reservoirs, dryer/manifold, separate MR/BP/BC visual piping and eight sanding assemblies in all four review scenes. `CabFlexibleHose` follows body/bogie ports after `CabRailMotion`; `NF5KSimulationPlayReview` checks moved endpoints. This is visual equipment, without new pressure or sanding simulation. See [NF5K_PNEUMATIC_EQUIPMENT.md](NF5K_PNEUMATIC_EQUIPMENT.md).
+
 # NF5K simulation backend (2026-10-21)
 
 `CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.

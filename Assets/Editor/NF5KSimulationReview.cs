@@ -128,8 +128,15 @@ public static class NF5KSimulationReview
             var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
             driver.EnsureInitialized();var controls=state.GetComponentInChildren<CabStartupControls>();
             var targets=state.GetComponentsInChildren<CabDrivingTarget>();
-            Assert(targets.Length==4,"Driving target bindings missing");
+            Assert(targets.Length>=4,"Driving target bindings missing");
             CabDrivingTarget Driving(CabDrivingAction action)=>Array.Find(targets,t=>t.Action==action);
+            var parking=Driving(CabDrivingAction.ParkingBrake);
+            if(parking!=null)
+            {
+                Assert(ClickDriving(state,parking,true)&&!driver.ParkingBrake,"Parking selector ray did not release");
+                Assert(ClickDriving(state,parking)&&driver.ParkingBrake,"Parking selector ray did not apply");
+                Debug.Log("NF5K_PARKING_SELECTOR_PLAY_OK: physical selector applies/releases existing backend command");
+            }
             var throttle=Driving(CabDrivingAction.Throttle);
             Assert(!throttle.Activate()&&state.ThrottleNotch==0,"Cold traction accepted");
             Assert(controls.InsertKey()&&controls.SetMaster(true)&&controls.SetFuelPump(true)&&controls.TryStartEngine(),"Physical startup chain failed");
@@ -142,10 +149,24 @@ public static class NF5KSimulationReview
             for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
             throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
+            if(parking!=null)
+            {
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted traction/moving command");
+                state.SetThrottle(0);
+                Assert(!parking.Activate()&&!driver.ParkingBrake,"Parking brake accepted moving zero-throttle command");
+                state.SetThrottle(6);
+                Debug.Log("NF5K_PARKING_SELECTOR_GUARD_OK: moving command rejected even with zero throttle");
+            }
             var railMotion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();
             if(railMotion!=null)
             {
                 railMotion.ApplyBackend(true);
+                foreach(var hose in railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>())
+                {
+                    hose.UpdateGeometry(hose.GetComponent<MeshFilter>().sharedMesh);
+                    Assert(hose.EndpointError()<.001f,"Moving bogie service hose detached from its endpoint");
+                }
+                if(railMotion.Vehicle.GetComponentsInChildren<CabFlexibleHose>().Length>0)Debug.Log("NF5K_FLEXIBLE_HOSE_PLAY_OK: actual moved body/bogie endpoints within 1 mm");
                 Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6&&Math.Abs(railMotion.WheelAngleDegrees+driver.Model.State.PositionM/CabRailMotion.RollingRadius*180/Math.PI)<1e-5,"Live rail motion is not reading the backend");
                 Debug.Log("NF5K_RAIL_MOTION_PLAY_OK: live backend signed position drives body, bogies and wheel phase");
             }
@@ -167,7 +188,7 @@ public static class NF5KSimulationReview
             Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
             var railViews=UnityEngine.Object.FindFirstObjectByType<CabRailReviewViews>();int priorView=railViews!=null?railViews.View:0;
             if(railMotion!=null){railMotion.ApplyBackend(true);railViews?.SetView(0);}
-            try{NF5KContextInteractionReview.Validate(state);}finally{railViews?.SetView(priorView);}
+            try{NF5KSafetyEquipmentReview.Validate(state);NF5KContextInteractionReview.Validate(state);}finally{railViews?.SetView(priorView);}
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");
             Debug.Log("NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop");
         }

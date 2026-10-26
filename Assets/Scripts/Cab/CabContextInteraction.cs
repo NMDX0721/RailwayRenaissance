@@ -24,9 +24,20 @@ namespace RailwayRenaissance.Cab
         float inputAfter, holdStart = -1, feedbackUntil;
         string feedback, bindingMessage;
         Rect actionRect;
+        CabSafetyEquipment equipmentInfo;
+        Vector2 equipmentInfoScroll;
         public string PrimaryPath => primary.bindings[0].effectivePath;
         public string PrimaryLabel => primary.GetBindingDisplayString();
-        public bool ModalOpen => settings;
+        public bool ModalOpen => settings || equipmentInfo!=null;
+        public bool ShowEquipmentInfo(CabSafetyEquipment equipment)
+        {
+            if(equipment==null)return false;
+            equipmentInfo=equipment;equipmentInfoScroll=Vector2.zero;holdStart=-1;return true;
+        }
+        public void CloseEquipmentInfo()
+        {
+            equipmentInfo=null;focused=null;focusedCollider=null;holdStart=-1;inputAfter=Time.unscaledTime+.25f;
+        }
         struct Choice
         {
             public string label;
@@ -52,6 +63,8 @@ namespace RailwayRenaissance.Cab
                 candidates.AddRange(t.GetComponents<Collider>());
             foreach (var t in GetComponentsInChildren<CabDrivingTarget>())
                 candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabSafetyEquipment>())
+                candidates.AddRange(t.GetComponents<Collider>());
         }
         void OnDisable() { primary?.Dispose(); primary=null; }
         public bool SetPrimaryPath(string path, bool persist = true)
@@ -91,6 +104,12 @@ namespace RailwayRenaissance.Cab
         void Update()
         {
             if (view == null) view=Camera.main;
+            if(equipmentInfo!=null)
+            {
+                holdStart=-1;
+                if(Keyboard.current?.escapeKey.wasPressedThisFrame==true)CloseEquipmentInfo();
+                return;
+            }
             if (settings)
             {
                 holdStart=-1;
@@ -146,19 +165,34 @@ namespace RailwayRenaissance.Cab
         }
         static Component Target(Collider collider)
         {
+            var equipment=collider.GetComponentInParent<CabSafetyEquipment>();
+            if(equipment!=null)return equipment;
             var startup=collider.GetComponent<CabStartupClickTarget>();
             return startup!=null?(Component)startup:collider.GetComponentInParent<CabDrivingTarget>();
         }
         void BuildChoices()
         {
             choices.Clear();
-            if(focused is CabDrivingTarget d)
+            if(focused is CabSafetyEquipment equipment)
             {
+                choices.Add(new Choice(equipment.IsManual?"阅读手册 / READ MANUAL":"设备资料 / EQUIPMENT DETAILS",()=>ShowEquipmentInfo(equipment)));
+                if(!equipment.IsManual)choices.Add(new Choice(equipment.Held?"放回并固定 / RETURN":"取下检查 / REMOVE",()=>equipment.Toggle(),true));
+            }
+            else if(focused is CabDrivingTarget d)
+            {
+                if(d.Action==CabDrivingAction.ParkingBrake)
+                {
+                    choices.Add(new Choice("施加停放制动",()=>d.Activate(),true));
+                    choices.Add(new Choice("缓解停放制动",()=>d.Activate(true),true));
+                }
+                else
+                {
                 string up=d.Action==CabDrivingAction.Throttle?"增加一档":d.Action==CabDrivingAction.Reverser?"向前一位":"施加一档";
                 string down=d.Action==CabDrivingAction.Throttle?"减少一档":d.Action==CabDrivingAction.Reverser?"向后一位":"缓解一档";
                 bool emergency=d.Action==CabDrivingAction.AutomaticBrake&&state.BrakePos==BrakeNotch.Full;
                 choices.Add(new Choice(emergency?"进入紧急制动":up,()=>d.Activate(),emergency));
                 choices.Add(new Choice(down,()=>d.Activate(true)));
+                }
             }
             else if(focused is CabStartupClickTarget s)
             {
@@ -183,6 +217,12 @@ namespace RailwayRenaissance.Cab
         {
             if(focused is CabDrivingTarget d)
             {
+                if(d.Action==CabDrivingAction.ParkingBrake)
+                {
+                    if(driver==null)return "当前场景未启用模拟后端";
+                    if(Mathf.Abs(state.CurrentSpeedKmh)>.1f||state.ThrottleNotch!=0)return "先停车并将牵引归零";
+                    return driver.ParkingBrake==(index==0)?"已到该位置":null;
+                }
                 if(d.Action==CabDrivingAction.Throttle)
                 {
                     if(index==1)return state.ThrottleNotch==0?"已归零":null;
@@ -223,6 +263,12 @@ namespace RailwayRenaissance.Cab
             if(selected>=choices.Count)return;
             if(choices[selected].reason!=null){feedback=choices[selected].reason;feedbackUntil=Time.unscaledTime+2.5f;return;}
             bool accepted=choices[selected].execute();
+            if(focused is CabSafetyEquipment equipment)
+            {
+                if(selected==0&&accepted){feedbackUntil=0;return;}
+                feedback=accepted?(selected==0?equipment.Description:equipment.Hint):"请靠近原挂架，一次只取用一件。\nReturn to the original bracket; carry one item at a time.";
+                feedbackUntil=Time.unscaledTime+(selected==0?8:2.5f);return;
+            }
             feedback=accepted?"操作已提交":focused is CabStartupClickTarget s?
                 (string.IsNullOrEmpty(s.Controls.LastWarning)?"当前条件不允许此操作":s.Controls.LastWarning):state.LastProcedureWarning;
             feedbackUntil=Time.unscaledTime+2.5f;
@@ -256,13 +302,25 @@ namespace RailwayRenaissance.Cab
             if(state.MainReservoirKpa<600||state.BrakePipeKpa<470)return "等待充风，观察总风和制动管压力；暂不能施加牵引。";
             if(state.Reverser==ReverserPosition.Neutral)return "看向换向手柄 → 置前进位。";
             if(state.BrakePos>=BrakeNotch.Common||state.IndependentBrakeNotch>.01f||state.BrakeCylinderKpa>=20)return "操作大小闸缓解制动，等待缸压下降。";
-            if(driver!=null&&driver.ParkingBrake)return "交互设置 → 打开测试面板 → 解除停放制动（机械操作件待制作）。";
+            if(driver!=null&&driver.ParkingBrake)return "看向座旁停放制动选择器 → 长按缓解停放制动。";
             return state.ThrottleNotch==0?"看向牵引手轮 → 增加一档。提示随时可在交互设置里关闭。":"已完成启动与初次牵引；用实体闸把练习减速和停车。";
         }
         void OnGUI()
         {
             if(font==null)font=Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var old=GUI.skin.font;if(font!=null)GUI.skin.font=font;
+            if(equipmentInfo!=null)
+            {
+                float width=Mathf.Min(640,Screen.width-24),height=Mathf.Min(740,Screen.height-24);
+                GUILayout.BeginArea(new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height),GUI.skin.box);
+                GUILayout.Label(equipmentInfo.IsManual?"使用与维护手册 / O&M MANUAL":"随车设备资料 / EQUIPMENT DOSSIER",new GUIStyle(GUI.skin.label){fontSize=22});
+                GUILayout.Space(8);
+                equipmentInfoScroll=GUILayout.BeginScrollView(equipmentInfoScroll);
+                GUILayout.Label(equipmentInfo.Description,new GUIStyle(GUI.skin.label){fontSize=16,wordWrap=true});
+                GUILayout.EndScrollView();
+                if(GUILayout.Button("关闭 / CLOSE  ·  Esc",GUILayout.Height(32)))CloseEquipmentInfo();
+                GUILayout.EndArea();GUI.skin.font=old;return;
+            }
             if(GUI.Button(SettingsButton,"交互设置")){settings=true;inputAfter=Time.unscaledTime+.25f;holdStart=-1;}
             if(settings){DrawSettings();GUI.skin.font=old;return;}
             if(!cursorAim)GUI.Label(new Rect(Screen.width/2f-6,Screen.height/2f-12,20,24),"·");
@@ -272,7 +330,7 @@ namespace RailwayRenaissance.Cab
                 float h=80+choices.Count*29;
                 actionRect=new Rect(Mathf.Clamp(p.x+24,8,Mathf.Max(8,Screen.width-308)),Mathf.Clamp(Screen.height-p.y-h/2,52,Mathf.Max(52,Screen.height-h-118)),300,h);
                 GUI.Box(actionRect,GUIContent.none);
-                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabDrivingTarget d?d.Hint:"驾驶台操作");
+                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabDrivingTarget d?d.Hint:focused is CabSafetyEquipment equipment?equipment.Hint:"驾驶台操作");
                 for(int i=0;i<choices.Count;i++)
                 {
                     string prefix=i==selected?"› ":"  ";
@@ -283,7 +341,7 @@ namespace RailwayRenaissance.Cab
                 GUI.Label(new Rect(actionRect.x+10,actionRect.yMax-23,280,22),$"[{PrimaryLabel}] 执行 · 滚轮或点击选择");
             }
             if(guide)GUI.Box(new Rect(12,Screen.height-162,Mathf.Min(680,Screen.width-24),45),GuideText());
-            if(Time.unscaledTime<feedbackUntil)GUI.Box(new Rect(Mathf.Max(8,(Screen.width-580)/2),64,580,38),feedback);
+            if(Time.unscaledTime<feedbackUntil)GUI.Box(new Rect(Mathf.Max(8,(Screen.width-580)/2),64,580,72),feedback,new GUIStyle(GUI.skin.box){wordWrap=true});
             GUI.skin.font=old;
         }
         void DrawSettings()
