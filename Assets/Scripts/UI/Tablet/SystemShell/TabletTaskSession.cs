@@ -10,6 +10,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         public string AppId { get; }
         public string Title { get; }
         public VisualElement Root { get; internal set; }
+        public Focusable LastFocusedElement { get; internal set; }
         public bool IsSuspended => Root == null;
         internal TabletViewStateSnapshot Snapshot { get; set; }
         internal long LastActivated { get; set; }

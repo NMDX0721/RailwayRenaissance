@@ -87,13 +87,37 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         win.Clear();
 
         var rootRow = new VisualElement();
+        rootRow.name = "settings-responsive-root";
         rootRow.style.flexDirection = FlexDirection.Row;
         rootRow.style.flexGrow = 1;
         win.Add(rootRow);
 
+        var compactToolbar = new VisualElement { name = "settings-compact-toolbar" };
+        compactToolbar.style.display = DisplayStyle.None;
+        compactToolbar.style.height = 48;
+        compactToolbar.style.flexDirection = FlexDirection.Row;
+        compactToolbar.style.alignItems = Align.Center;
+        compactToolbar.style.paddingLeft = 10;
+        compactToolbar.style.paddingRight = 10;
+        compactToolbar.style.backgroundColor = SurfaceCard;
+        var compactCategory = new DropdownField { name = "settings-compact-category" };
+        compactCategory.style.width = Length.Percent(48);
+        compactCategory.style.height = 40;
+        compactCategory.style.marginRight = 8;
+        compactToolbar.Add(compactCategory);
+        var compactSearch = new TextField { name = "settings-compact-search", value = settingsSearchFilter };
+        compactSearch.style.flexGrow = 1;
+        compactSearch.style.height = 38;
+        compactSearch.style.fontSize = 13;
+        compactSearch.style.unityFontDefinition = Fd();
+        compactToolbar.Add(compactSearch);
+        rootRow.Add(compactToolbar);
+
         // 左栏：300px 纯白/极浅灰导航条，含搜索框与 24 项
         var leftNav = new VisualElement();
+        leftNav.name = "settings-category-rail";
         leftNav.style.width = 300;
+        leftNav.style.flexShrink = 0;
         leftNav.style.backgroundColor = SurfaceCard;
         leftNav.style.borderRightWidth = 1;
         leftNav.style.borderRightColor = BorderDivider;
@@ -138,6 +162,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 右栏：内容详情区（隐藏滚动条）
         var rightPane = new ScrollView { name = "settings-right-pane" };
         rightPane.style.flexGrow = 1;
+        rightPane.style.flexShrink = 1;
         rightPane.verticalScrollerVisibility = ScrollerVisibility.Hidden;
         rightPane.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         rightPane.style.paddingLeft = 32; rightPane.style.paddingRight = 32;
@@ -252,10 +277,63 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             settingsSearchFilter = evt.newValue;
             populateCategories();
+            compactSearch.SetValueWithoutNotify(settingsSearchFilter);
         });
 
         populateCategories();
+        var compactChoices = new List<string>();
+        for (int i = 0; i < SettingsCategories.Length; i++) compactChoices.Add(SettingsCategories[i].name);
+        bool devUnlockedForCompact = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
+        if (devUnlockedForCompact) compactChoices.Add("开发者选项");
+        compactCategory.choices = compactChoices;
+        compactCategory.value = currentSettingsCategory == 99
+            ? "开发者选项"
+            : GetSettingsCategoryName(currentSettingsCategory);
+        compactCategory.RegisterValueChangedCallback(evt =>
+        {
+            if (evt.newValue == "开发者选项")
+                currentSettingsCategory = 99;
+            else
+            {
+                for (int i = 0; i < SettingsCategories.Length; i++)
+                {
+                    if (SettingsCategories[i].name == evt.newValue)
+                    {
+                        currentSettingsCategory = SettingsCategories[i].id;
+                        break;
+                    }
+                }
+            }
+            BuildSettingsPage(win);
+        });
+        compactSearch.RegisterValueChangedCallback(evt =>
+        {
+            settingsSearchFilter = evt.newValue;
+            searchInput.SetValueWithoutNotify(settingsSearchFilter);
+            populateCategories();
+        });
+
         RenderSettingsDetail(rightPane, win);
+        rootRow.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            float width = evt.newRect.width;
+            if (width <= 0) return;
+            bool compact = width < 760;
+            rootRow.style.flexDirection = compact ? FlexDirection.Column : FlexDirection.Row;
+            compactToolbar.style.display = compact ? DisplayStyle.Flex : DisplayStyle.None;
+            leftNav.style.display = compact ? DisplayStyle.None : DisplayStyle.Flex;
+            leftNav.style.width = width < 1020 ? 248 : 300;
+            rightPane.style.paddingLeft = compact ? 14 : width < 1020 ? 22 : 32;
+            rightPane.style.paddingRight = compact ? 14 : width < 1020 ? 22 : 32;
+            rightPane.style.paddingTop = compact ? 14 : 20;
+        });
+    }
+
+    private static string GetSettingsCategoryName(int id)
+    {
+        for (int i = 0; i < SettingsCategories.Length; i++)
+            if (SettingsCategories[i].id == id) return SettingsCategories[i].name;
+        return SettingsCategories[0].name;
     }
 
     private static void RenderSettingsDetail(ScrollView rightPane, VisualElement win)

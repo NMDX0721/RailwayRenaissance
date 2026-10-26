@@ -171,7 +171,6 @@ public class GameMainUI : MonoBehaviour
     private static readonly Color DeepRail = new Color(0.10f, 0.16f, 0.23f, 0.95f);      // #1A2A3A 深蓝底衬
 
     // 按键重绑定缓存与支持
-    private System.Action<KeyCode> _tabletRebindAction;
     private static readonly KeyCode[] AllKeyCodes = AllKeyCodesInit();
     private static KeyCode[] AllKeyCodesInit()
     {
@@ -434,7 +433,7 @@ public class GameMainUI : MonoBehaviour
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
-            if (evt.keyCode == KeyCode.Escape && _tabletRebindAction == null && tabletShellState.ClosePanel())
+            if (evt.keyCode == KeyCode.Escape && TabletSettingsAppUI.TabletRebindAction == null && tabletShellState.ClosePanel())
                 evt.StopImmediatePropagation();
             else if (tabletShellState.Panel != TabletSystemPanel.None && evt.target is VisualElement target &&
                      root.Q("tablet-shell-root") != null && !root.Q("tablet-shell-root").Contains(target))
@@ -1735,6 +1734,7 @@ public class GameMainUI : MonoBehaviour
     private ScrollView recentTasksList;
     private IVisualElementScheduledItem navFadeSchedule;
     private float memoryCheckTimer;
+    private long tabletActivationSequence;
     private int gesturePointerId = -1;
     private Vector2 gestureStart;
     private float gestureStartTime;
@@ -1751,6 +1751,7 @@ public class GameMainUI : MonoBehaviour
         appLayer.style.top = 48; appLayer.style.left = 0;
         appLayer.style.right = 0; appLayer.style.bottom = SystemNavBarHeight;
         appLayer.style.display = DisplayStyle.None;
+        appLayer.focusable = true;
         appLayer.style.alignItems = Align.Center;
         appLayer.style.justifyContent = Justify.Center;
         root.Add(appLayer);
@@ -1877,6 +1878,7 @@ public class GameMainUI : MonoBehaviour
         layer.style.right = 0;
         layer.style.bottom = SystemNavBarHeight;
         layer.style.display = DisplayStyle.None;
+        layer.focusable = true;
         layer.style.alignItems = Align.Center;
         layer.style.justifyContent = Justify.Center;
         int shellIndex = root.IndexOf(tabletShellView.RootElement);
@@ -1895,7 +1897,11 @@ public class GameMainUI : MonoBehaviour
     {
         tabletShellState.ClosePanel();
         CloseRecentTasks();
-        if (activeTabletTask?.Root != null) activeTabletTask.Root.style.display = DisplayStyle.None;
+        if (activeTabletTask?.Root != null)
+        {
+            activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
+            activeTabletTask.Root.style.display = DisplayStyle.None;
+        }
         activeTabletTask = null;
         appLayer = null;
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
@@ -1905,7 +1911,11 @@ public class GameMainUI : MonoBehaviour
     private void ActivateTabletTask(TabletTaskSession task)
     {
         if (task == null) return;
-        if (activeTabletTask?.Root != null) activeTabletTask.Root.style.display = DisplayStyle.None;
+        if (activeTabletTask?.Root != null)
+        {
+            activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
+            activeTabletTask.Root.style.display = DisplayStyle.None;
+        }
         tabletShellState.ClosePanel();
         CloseRecentTasks();
         if (task.Root == null)
@@ -1922,7 +1932,7 @@ public class GameMainUI : MonoBehaviour
         {
             appLayer = task.Root;
         }
-        task.LastActivated = System.DateTime.UtcNow.Ticks;
+        task.LastActivated = ++tabletActivationSequence;
         task.Root.style.display = DisplayStyle.Flex;
         desktop.style.display = DisplayStyle.Flex;
         activeTabletTask = task;
@@ -1931,6 +1941,11 @@ public class GameMainUI : MonoBehaviour
             systemNavigationBar.style.display = DisplayStyle.Flex;
             ShowTabletNavigationBar();
         }
+        Focusable lastFocus = task.LastFocusedElement;
+        if (lastFocus is VisualElement focusedElement && task.Root.Contains(focusedElement))
+            task.Root.schedule.Execute(() => focusedElement.Focus()).ExecuteLater(0);
+        else
+            task.Root.schedule.Execute(() => task.Root.Focus()).ExecuteLater(0);
         CheckTabletMemoryBudget(false);
     }
 
@@ -2189,8 +2204,10 @@ public class GameMainUI : MonoBehaviour
 
     private void OnTabletMemoryUsageChanged(in ApplicationMemoryUsageChange change)
     {
-        if (change.memoryUsage == ApplicationMemoryUsage.High || change.memoryUsage == ApplicationMemoryUsage.Critical)
-            ReclaimInactiveTabletTasks();
+        if (change.memoryUsage == ApplicationMemoryUsage.Critical)
+            ReclaimInactiveTabletTasks(true);
+        else if (change.memoryUsage == ApplicationMemoryUsage.High)
+            ReclaimInactiveTabletTasks(false);
     }
 
     private long GetTabletMemorySoftBudget()
@@ -2203,10 +2220,10 @@ public class GameMainUI : MonoBehaviour
     private void CheckTabletMemoryBudget(bool force)
     {
         long allocated = Profiler.GetTotalAllocatedMemoryLong();
-        if (force || allocated > GetTabletMemorySoftBudget()) ReclaimInactiveTabletTasks();
+        if (force || allocated > GetTabletMemorySoftBudget()) ReclaimInactiveTabletTasks(false);
     }
 
-    private void ReclaimInactiveTabletTasks()
+    private void ReclaimInactiveTabletTasks(bool releaseAll)
     {
         tabletTasks.Sort((a, b) => a.LastActivated.CompareTo(b.LastActivated));
         bool released = false;
@@ -2218,7 +2235,9 @@ public class GameMainUI : MonoBehaviour
             task.Root.Clear();
             if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
             task.Root = null;
+            task.LastFocusedElement = null;
             released = true;
+            if (!releaseAll) break;
         }
         if (released && isActiveAndEnabled) StartCoroutine(UnloadTabletTaskAssets());
     }
@@ -2243,6 +2262,17 @@ public class GameMainUI : MonoBehaviour
 
     private void OnShellStateChanged()
     {
+        if (tabletShellState.Panel != TabletSystemPanel.None)
+        {
+            CloseRecentTasks();
+            tabletShellView?.RootElement?.BringToFront();
+        }
+        else if (tabletShellView?.RootElement != null && systemNavigationBar?.parent == root)
+        {
+            int navIndex = root.IndexOf(systemNavigationBar);
+            if (navIndex >= 0) root.Insert(navIndex, tabletShellView.RootElement);
+        }
+
         if (tabletShellState.Panel == TabletSystemPanel.None)
         {
             if (blurCaptureCoroutine != null)
@@ -2662,6 +2692,7 @@ public class GameMainUI : MonoBehaviour
 
         if (tabletShellState.Panel != panel)
         {
+            CloseRecentTasks();
             tabletShellState.TogglePanel(panel);
         }
     }
