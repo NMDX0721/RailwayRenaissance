@@ -86,7 +86,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 if (!found) continue;
 
                 if (entry.HasText && element is TextField text)
-                    text.SetValueWithoutNotify(entry.TextValue ?? string.Empty);
+                    text.value = entry.TextValue ?? string.Empty;
                 if (entry.HasScroll && element is ScrollView scroll)
                     scroll.schedule.Execute(() => scroll.scrollOffset = entry.ScrollOffset).ExecuteLater(0);
             }

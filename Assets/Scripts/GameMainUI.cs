@@ -101,6 +101,8 @@ public class GameMainUI : MonoBehaviour
 
     public void Hide()
     {
+        ResetSystemGesture();
+        CancelTabletRebind();
         tabletShellState.ClosePanel();
         if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
         tabletShellView?.ClearBlurredBackground();
@@ -109,6 +111,8 @@ public class GameMainUI : MonoBehaviour
 
     private void OnDisable()
     {
+        ResetSystemGesture();
+        CancelTabletRebind();
         if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
         ReleaseCaptureRT();
     }
@@ -433,11 +437,31 @@ public class GameMainUI : MonoBehaviour
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
-            if (evt.keyCode == KeyCode.Escape && TabletSettingsAppUI.TabletRebindAction == null && tabletShellState.ClosePanel())
+            if (evt.keyCode == KeyCode.Escape && tabletShellState.ClosePanel())
+            {
+                rebindConsumedFrame = Time.frameCount;
                 evt.StopImmediatePropagation();
-            else if (tabletShellState.Panel != TabletSystemPanel.None && evt.target is VisualElement target &&
-                     root.Q("tablet-shell-root") != null && !root.Q("tablet-shell-root").Contains(target))
+                return;
+            }
+            if (tabletShellState.Panel != TabletSystemPanel.None)
+            {
+                if (evt.target is VisualElement target && root.Q("tablet-shell-root") != null &&
+                    !root.Q("tablet-shell-root").Contains(target)) evt.StopImmediatePropagation();
+                return;
+            }
+            if (rebindConsumedFrame == Time.frameCount)
+            {
                 evt.StopImmediatePropagation();
+                return;
+            }
+            if (TabletSettingsAppUI.TabletRebindAction != null && evt.keyCode != KeyCode.None)
+            {
+                var callback = TabletSettingsAppUI.TabletRebindAction;
+                TabletSettingsAppUI.TabletRebindAction = null;
+                rebindConsumedFrame = Time.frameCount;
+                callback(evt.keyCode);
+                evt.StopImmediatePropagation();
+            }
         }, TrickleDown.TrickleDown);
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
@@ -464,7 +488,7 @@ public class GameMainUI : MonoBehaviour
         root.RegisterCallback<PointerDownEvent>(OnSystemPointerDown, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerMoveEvent>(OnSystemPointerMove, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerUpEvent>(OnSystemPointerUp, TrickleDown.TrickleDown);
-        root.RegisterCallback<PointerCancelEvent>(_ => ResetSystemGesture(), TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCancelEvent>(evt => tabletEdgeGesture.Cancel(evt.pointerId), TrickleDown.TrickleDown);
         root.RegisterCallback<ClickEvent>(evt =>
         {
             if (!suppressNextGestureClick) return;
@@ -496,6 +520,7 @@ public class GameMainUI : MonoBehaviour
 
     private void ShowLockScreen()
     {
+        ResetSystemGesture();
         unlocked = false;
         if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
         ReturnToTabletHome();
@@ -1735,12 +1760,10 @@ public class GameMainUI : MonoBehaviour
     private IVisualElementScheduledItem navFadeSchedule;
     private float memoryCheckTimer;
     private long tabletActivationSequence;
-    private int gesturePointerId = -1;
-    private Vector2 gestureStart;
-    private float gestureStartTime;
-    private string gestureKind;
+    private readonly TabletEdgeGesture tabletEdgeGesture = new TabletEdgeGesture();
     private bool suppressNextGestureClick;
     private bool dispatchingSystemBack;
+    private int rebindConsumedFrame = -1;
     private const float SystemNavBarHeight = 44f;
     private const long MinimumMemorySoftBudgetBytes = 768L * 1024L * 1024L;
 
@@ -1895,6 +1918,7 @@ public class GameMainUI : MonoBehaviour
 
     private void ReturnToTabletHome()
     {
+        CancelTabletRebind();
         tabletShellState.ClosePanel();
         CloseRecentTasks();
         if (activeTabletTask?.Root != null)
@@ -1911,6 +1935,7 @@ public class GameMainUI : MonoBehaviour
     private void ActivateTabletTask(TabletTaskSession task)
     {
         if (task == null) return;
+        if (activeTabletTask != task) CancelTabletRebind();
         if (activeTabletTask?.Root != null)
         {
             activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
@@ -1952,6 +1977,7 @@ public class GameMainUI : MonoBehaviour
     private void OpenRecentTasks()
     {
         if (tabletTasks.Count == 0 || recentTasksOverlay == null) return;
+        CancelTabletRebind();
         tabletShellState.ClosePanel();
         RenderRecentTasks();
         recentTasksOverlay.style.display = DisplayStyle.Flex;
@@ -2077,6 +2103,7 @@ public class GameMainUI : MonoBehaviour
     private void RequestSystemBack()
     {
         if (tabletShellState.ClosePanel()) return;
+        if (CancelTabletRebind()) return;
         if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
         {
             CloseRecentTasks();
@@ -2108,66 +2135,45 @@ public class GameMainUI : MonoBehaviour
         if (!handled) ReturnToTabletHome();
     }
 
+    private bool CancelTabletRebind()
+    {
+        var callback = TabletSettingsAppUI.TabletRebindAction;
+        if (callback == null) return false;
+        TabletSettingsAppUI.TabletRebindAction = null;
+        rebindConsumedFrame = Time.frameCount;
+        callback(KeyCode.Escape);
+        return true;
+    }
+
     private void OnSystemPointerDown(PointerDownEvent evt)
     {
-        if (evt.pointerType != "touch" || root?.panel == null) return;
+        if (!unlocked || evt.pointerType != "touch" || root?.panel == null) return;
         if (activeTabletTask != null) ShowTabletNavigationBar();
         Vector2 point = evt.position;
         float width = root.panel.visualTree.layout.width;
         float height = root.panel.visualTree.layout.height;
-        if (width <= 0 || height <= 0) return;
-
-        string kind = null;
-        if (point.y <= 24f)
-            kind = point.x < width * 0.5f ? "notifications" : "controls";
-        else if (point.y >= height - SystemNavBarHeight)
-            kind = "bottom";
-        else if (point.x <= 18f || point.x >= width - 18f)
-            kind = "back";
-
-        if (kind == null) return;
-        if (kind == "back" && IsDirectManipulationTarget(evt.target)) return;
-        gestureKind = kind;
-        gesturePointerId = evt.pointerId;
-        gestureStart = point;
-        gestureStartTime = Time.unscaledTime;
+        tabletEdgeGesture.Begin(evt.pointerId, point, width, height, SystemNavBarHeight,
+            IsDirectManipulationTarget(evt.target));
     }
 
     private void OnSystemPointerMove(PointerMoveEvent evt)
     {
-        if (gesturePointerId != evt.pointerId) return;
+        tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
     }
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
-        if (gesturePointerId != evt.pointerId || string.IsNullOrEmpty(gestureKind)) return;
-        Vector2 delta = evt.position - gestureStart;
-        float elapsed = Time.unscaledTime - gestureStartTime;
-        bool completed = false;
-
-        if ((gestureKind == "notifications" || gestureKind == "controls") && delta.y >= 72f && Mathf.Abs(delta.y) > Mathf.Abs(delta.x) * 1.25f)
+        TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
+        switch (action)
         {
-            OpenSystemPanel(gestureKind == "notifications" ? TabletSystemPanel.Notifications : TabletSystemPanel.Controls);
-            completed = true;
+            case TabletGestureAction.Notifications: OpenSystemPanel(TabletSystemPanel.Notifications); break;
+            case TabletGestureAction.Controls: OpenSystemPanel(TabletSystemPanel.Controls); break;
+            case TabletGestureAction.Back: RequestSystemBack(); break;
+            case TabletGestureAction.Home: ReturnToTabletHome(); break;
         }
-        else if (gestureKind == "bottom" && delta.y <= -72f && Mathf.Abs(delta.y) > Mathf.Abs(delta.x) * 1.25f)
-        {
-            if (elapsed >= 0.28f) OpenRecentTasks();
-            else ReturnToTabletHome();
-            completed = true;
-        }
-        else if (gestureKind == "back" && Mathf.Abs(delta.x) >= 82f && Mathf.Abs(delta.x) > Mathf.Abs(delta.y) * 1.25f)
-        {
-            RequestSystemBack();
-            completed = true;
-        }
-
-        if (completed)
-        {
-            suppressNextGestureClick = true;
-            root.schedule.Execute(() => suppressNextGestureClick = false).ExecuteLater(80);
-        }
-        ResetSystemGesture();
+        if (action == TabletGestureAction.None) return;
+        suppressNextGestureClick = true;
+        root.schedule.Execute(() => suppressNextGestureClick = false).ExecuteLater(80);
     }
 
     private bool IsDirectManipulationTarget(IEventHandler target)
@@ -2175,7 +2181,8 @@ public class GameMainUI : MonoBehaviour
         VisualElement element = target as VisualElement;
         while (element != null)
         {
-            if (element is Button || element is TextField || element is Slider || element is Toggle) return true;
+            if (element is Button || element is TextField || element is Slider || element is SliderInt ||
+                element is Toggle || element is ScrollView) return true;
             element = element.parent;
         }
         return false;
@@ -2183,8 +2190,7 @@ public class GameMainUI : MonoBehaviour
 
     private void ResetSystemGesture()
     {
-        gesturePointerId = -1;
-        gestureKind = null;
+        tabletEdgeGesture.Reset();
     }
 
     private void ShowTabletNavigationBar()
@@ -2834,6 +2840,9 @@ public class GameMainUI : MonoBehaviour
         }
         if (root == null || root.style.display == DisplayStyle.None) return;
 
+        if (tabletEdgeGesture.Tick(Time.unscaledTime) == TabletGestureAction.Recents)
+            OpenRecentTasks();
+
         // 系统面板模糊尺寸自适应
         if (tabletShellState.Panel != TabletSystemPanel.None)
         {
@@ -2850,7 +2859,8 @@ public class GameMainUI : MonoBehaviour
         }
 
         // 触控笔与键盘：按键重绑定监听
-        if (TabletSettingsAppUI.TabletRebindAction != null)
+        if (TabletSettingsAppUI.TabletRebindAction != null && tabletShellState.Panel == TabletSystemPanel.None &&
+            rebindConsumedFrame != Time.frameCount)
         {
             foreach (KeyCode code in AllKeyCodes)
             {
@@ -2858,6 +2868,7 @@ public class GameMainUI : MonoBehaviour
                 {
                     var cb = TabletSettingsAppUI.TabletRebindAction;
                     TabletSettingsAppUI.TabletRebindAction = null;
+                    rebindConsumedFrame = Time.frameCount;
                     cb(code);
                     return;
                 }
