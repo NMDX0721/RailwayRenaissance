@@ -10,6 +10,66 @@
 
 2026-10-25研究原型：`Cab/Research/CabAtoController`为独立离散预测/有效响应估计核心，`CabAtoResearchDriver`通过`CabSimulationDriver.BeforeSimulationStep`每5步发送既有驾驶命令；人工接管与联锁保留。`NF5KAtoResearchReview`生成独立场景并做真实Play验收，`research/ato`保存开发对照。见[实现与限制](ATO_RESEARCH_IMPLEMENTATION.md)，未完成留出测试或实车标定。
 
+2026-10-24 单驾驶室行车灯光面板已通过Unity生成和Play回归：左旋钮关/弱/强，右旋钮关/日行/夜行/调车/本端尾灯/手动；后端协调实际灯组并支持手动退出预设、断电保持与旧接口恢复。多国规则来源及版本限制见[NF5K_EXTERIOR_CONTROL_PANEL](NF5K_EXTERIOR_CONTROL_PANEL.md)。
+
+2026-10-24 琴键v7：框架与上侧功能区整合成单一连续开口底板，双语印字改透明底消除色块分割；启机面板向仪表移35 mm、安装孔重算，检查两组实际间距。网络依据及限制见[NF5K_LIGHTING_KEYS](NF5K_LIGHTING_KEYS.md)。
+
+2026-10-24 琴键文字v6：提高功能字明暗对比、加粗放大中英文、压低印刷面镜面高光；`NF5KLightingKeysReview.RefreshPrintsBatch`提供贴图/材质更新与实景预览。见[NF5K_LIGHTING_KEYS](NF5K_LIGHTING_KEYS.md)。
+
+2026-10-24 操纵区布局：琴键功能名移至靠仪表的上侧边框；`NF5KConsoleRecessSetup`将钥匙/燃油泵/启机面板法兰贴近台面、接线盒下沉，台面生成真实安装开孔和孔壁，移除旧垫块。见[NF5K_LIGHTING_KEYS](NF5K_LIGHTING_KEYS.md)。
+
+2026-10-24 琴键标注修正：取消台面独立牌、可见编号与总标题，功能名称整合进原组件前边框加宽区，沿用边框金属；中英词条和照明接线保持。见[NF5K_LIGHTING_KEYS](NF5K_LIGHTING_KEYS.md)。
+
+2026-10-24 照明琴键：`CabLightingKey`逐键绑定原转轴/照明状态；`NF5KLightingKeysSetup`生成固定中英铭牌与独立碰撞体；`NF5KLightingKeysReview`验证射线/七路/供电/调光/中英文。`lighting_keys_profile.json`共用印刷与提示词条，`SetLanguage`为未来全局语言接口，非全游戏本地化。见[NF5K_LIGHTING_KEYS](NF5K_LIGHTING_KEYS.md)。
+
+2026-10-24 双雨刷：`CabWiperMotion`为独立相位/停放状态，`CabWiperSystem`为几何/供电/近距指令适配，`NF5KWiperSetup`替换静态杆件并补内侧总成及实体控制；`NF5KWiperMotionReview`检查运动、接触和上下文交互，`build_wiper_prints.py`生成双语标签。见[接口与边界](NF5K_WIPERS.md)。
+
+2026-10-24 平板设置按键恢复：`KeyBindings.ResetToDefaults()` 将全部操作映射恢复为默认键表并一次保存，`TabletSettingsAppUI.RenderControlSettings` 的恢复按钮调用该 API；源码审计见 `TABLET_SETTINGS_AUDIT.md`，Unity验收待做。
+
+2026-10-24 `Cab3DSceneController.WipersOn/SetWipers/WiperStateChanged`分离刮雨选择与天气；`NF5KWiperStateReview`进入驾驶Play回归，实体动作待接。`NF5KCabCirculators.PanHead`生成真实槽底/槽壁及双子网格，见[雨刷](NF5K_WIPERS.md)和[风扇收尾](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-24 风扇控制板v32：`NF5KCabCirculators`改3 mm板、浅旋钮与四角螺丝，`CabCirculationFan.Apply`以±12°翘板表示定向/摆动；`build_circulator_prints.py`输出V2刻度，回归测量旋钮高度及四角分布，见[控制板](NF5K_CAB_CIRCULATORS.md)。
+
+风扇v28：`CabCirculationFan.Head/ConfigureMotion/ToggleOscillation`接竖轴、独立选择器和线缆余量段；上下文四项动作。`build_circulator_prints.py`生成厂徽、背面铭牌及台面刻度，`NF5KCabCirculators.Print`生成正向UV印面；详见[回归范围](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 风扇v25：`NF5KCabCirculators`在固定中心盖上生成`Fan_Original_Wing_Rail_Logo`原创印层，独立于转子；见[中心标识](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 风扇v24：`NF5KCabCirculators.PanHead/Yoke`生成圆头五金及连续折弯叉架网格；`NF5KCabCirculatorsReview`核对吊杆直径、叉架接触和四颗螺丝安装面，见[循环风扇](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 风扇v23：`NF5KCabCirculators`生成V3连续护网、96边圆柱、后网固定筋、输出轴及随头部倾角定位的轴座。`NF5KCabCirculatorsReview`增加护网法线、轴座/壳体接触和两侧控制板实际网格高度检查；材质贴图与范围见[风扇文档](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 风扇v21：`NF5KCabCirculators`生成独立V2圆弧叶片/连续扫掠护网和台面控制板；`CabCirculationFan.Control`以台面旋钮父节点作为操作距离基准，风扇头部移除交互碰撞体。`NF5KCabCirculatorsReview`核对台面高度、射线与扩大后的转子包络，见[循环风扇](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 驾驶室补件：`NF5KCabCirculators`替换两个风扇占位件，生成150mm叶片、共用线材护网和连接顶棚的支架/走线；`CabCirculationFan`接现有上下文开关/低/高及供电状态。`NF5KCabCirculatorsReview`纳入驾驶回归，范围与真实参考见[循环风扇](NF5K_CAB_CIRCULATORS.md)。
+
+2026-10-23 原声同步样板：`tools/music/align_ost_lyrics.py` 本机独立识别/受约束对齐并生成审阅证据；`Resources/Music/Lyrics/sleepers.txt` 打包 35 行逐句自动草稿，`sleepers_info.json` 明示待试听校准。`MusicTimedText` 读取内置来源标签，`MusicLyricsView` 处理韩文字体及紧凑间奏标记；`TabletMusicAppUI.SeekTabletMusic` 暂停时也按活动 clip 选择声道。其余三首候选未发布。见 [对齐样板与限制](MUSIC_FOLIA_CORE_REVIEW.md)。
+
+2026-10-23 v16整门比例：`NF5KPassageDoorDetail`门扇0.86×1.87 m、窗0.68×0.75 m，紧凑把手底板；`AxisZ=1.85`与`AxisX=-0.44`由布局/基础生成器共享。`NF5KCabWorkstationReview`输出实际宽高、窗板和把手测量；`NF5KCabFittings`补完整视图/正交比例图，真实参考与边界见[通道门v16](NF5K_PASSAGE_DOOR.md)。
+
+2026-10-23 v15比例修正：`NF5KPassageDoorDetail.HandleHeight=0.92 m`统一双面把手、轴和锁孔高度；长底板顶端降至1.05 m，与窗下横框留30 mm错层，文字44×78 mm。`NF5KCabWorkstationReview`新增把手高度及底板/窗框间隔核对，见[通道门](NF5K_PASSAGE_DOOR.md)。
+
+2026-10-23 当前门五金：`NF5KPassageDoorDetail`改为140 mm握柄与不对称长底板直接标字，取消旁置推拉牌；`NF5KCabFittings`改50 mm圆扶手固定座。`NF5KCabWorkstationReview`核对新字面尺寸与位置。平板首批系统层由反重力通过ACP返回代码、Codex集成，接口及边界见[TABLET_SYSTEM_SHELL](TABLET_SYSTEM_SHELL.md)。
+
+2026-10-23 随身听后续：`RailwayMusicTerminalView.UpdateSliderFill` 提供真实水平滑条填充，USS 统一圆点/滑轨中心与对称播控；减少动态选项覆盖界面过渡和唱片旋转。`tools/music/extract_ost_lyric_sheets.py` 从四首 MP3 提取真实内嵌歌词，打包到 `Music/LyricSheets`；`MusicTimedText` 无同步资源时回退到歌词阅读稿，`MusicLyricsView` 区分阅读与同步，不猜时间戳。参见 [Folia 体验与歌词来源](MUSIC_FOLIA_CORE_REVIEW.md)。
+
+2026-10-23 门区可读性：`NF5KPassageDoorDetail` 将推拉牌移到把手同高的实体门板上并放大；`NF5KCabFittings` 补固定扶手法兰/回接及静态碰撞包络。见 [通道门](NF5K_PASSAGE_DOOR.md)。
+
+`NF5KEquipmentPrint.Add` 现会在目标尺寸改变时更新已有印刷面网格，`NF5KCabWorkstationReview` 核对推牌实际尺寸，避免旧资产缓存使文字未随底板放大。
+
+2026-10-23 隔门加宽：`NF5KPassageDoorDetail` 同步迁移隔板/门头/门体几何并使用 0.82 m 洞口、0.78 m 门扇、x=-0.40 m 铰轴；基础生成器保持相同尺寸。`passage_door_profile.json`、`build_passage_door_prints.py` 和 `NF5KEquipmentPrint` 提供双语门牌与玻璃字样。见 [通道门精修](NF5K_PASSAGE_DOOR.md)。
+
+2026-10-23 随身听字幕与打磨：`MusicTimedText` 解析 LRC/增强 LRC/SRT/WebVTT、字幕来源与翻译导入；`MusicLyricsView` 负责沉浸字幕页、真实时钟高亮/词填充、点句定位和校准。偏好随 `MusicLibrarySession` 的独立 JSON 保存，旧字段兼容；播放器补播放历史与界面内快捷键，并保留曲库滚动/焦点。参考上游 Folia 0.7.21 但未复制其源码；见 [核心体验对照](MUSIC_FOLIA_CORE_REVIEW.md)。
+
+2026-10-23 通道门：`NF5KPassageDoorDetail` 补框架/铰链/双面把手，`CabPassageDoor` 接现有交互键、限位转动与候选阻挡检测，`NF5KPassageDoorReview` 纳入 Play Mode。见 [通道门](NF5K_PASSAGE_DOOR.md)。真实玩家胶囊与门锁声学未接入。
+
+2026-10-23 通信与资料：`NF5KCabCommunicationDetail` 细化辅助台承力/走线和固定听筒，`CabWorkstationEquipment` 接本机开关、八频道和音量档位及资料阅读，`NF5KCabCommunicationReview` 验证射线、供电和上下文命令；双语文本/印刷共用 `workstation_equipment_profile.json`。见 [辅助台通信](NF5K_CAB_COMMUNICATION.md)。调度收发与音频未实现。
+
+2026-10-23 随身听改版：`TabletMusicAppUI.BuildMusicApp` 接入 `RailwayMusicTerminalView` 与 `Resources/UI/MusicTerminal.uss`；`MusicLibrarySession`/`MusicLibraryStore` 管理跨页面曲库、队列、收藏、歌单和独立 JSON 偏好，`MusicSessionDriver` 持续驱动音频，帧号去重兼容原 GameMainUI 调用。`MusicTerminalIcons` 绘制图形按钮，`MusicCoverImportSettings` 导入 9 张新绘铁路唱片封套，停止用场景截图作封面；云端入口明确配置与真实连接的边界。见 [铁路音乐终端](MUSIC_TERMINAL.md)。
+
+2026-10-23 布局：`NF5KCabLayoutAudit` 已完成修改前只读网格测量。`NF5KCabWorkstationLayout` 生成与主台同高的辅助工作台、前缘连接段及通信/资料区，并将副司机席内移 20 cm；`NF5KCabWorkstationReview` 验证尺寸、净空和门扇扫掠。见 [左右工作区复核](NF5K_CAB_LAYOUT_REVIEW.md)。音乐模块缺失接口补齐见 [接口兼容](MUSIC_PLAYBACK_API_COMPATIBILITY.md)。
+
+2026-10-23：`NF5KEquipmentPrint` 与 `build_first_aid_prints.py` 将急救柜和三类封装用品改为完整原创双语标签，内容源 `Cab/first_aid_label_profile.json`。`NF5KCabVisors` 替换遮阳板占位件，`CabSunVisor` 通过现有浮动交互提供两侧独立三档调节；网格顶点包络与交互回归纳入 `NF5KSafetyEquipmentReview`。见 [标签/柜体](NF5K_WALL_EQUIPMENT.md) 与 [遮阳板](NF5K_CAB_VISORS.md)。
+
 2026-10-22动漫3D细节：`NF5KAnimeDetailPass`为四门补充随动五金、全车导水沿并收敛主车漆细噪点；从既有生成入口调用，独立BatchBuild同步四个检查场景并执行门扇/驾驶回归。视觉基线为双像素VN、动漫3D、硬核机制，见[细节轮次说明](NF5K_ANIME_DETAIL_PASS.md)。
 
 2026-10-22走行部运动：`CabReviewTrack`提供独立检查线路；`CabRailMotion`只读后端有符号位移，驱动轮对转角、车体/转向架循迹及有限悬挂表现；`CabRailReviewViews`提供跟随视角。`NF5KRailMotionReview`生成CabRailMotionReview并验证直线/曲线/倒车/制动；原静态场景保留。不是轮轨接触力求解器，见[运动说明](NF5K_RAIL_MOTION.md)。
@@ -223,13 +283,13 @@ LoginManager ──────────→ TitleScreen ───────
 ### 静态类（无 GameObject，全局访问）
 | 类 | 访问方式 | 初始化时机 |
 |----|----------|-----------|
-| `GameData` | `GameData.XXX` | AdvanceDay 调 InitializeIfNeeded；VN 入口 ApplyVNExitData 调 InitializeSubsystems 并标记 initialized |
+| `GameData` | `GameData.XXX` | AdvanceDay 调 InitializeIfNeeded；`ResetState()` 清空监管在途持久状态、按当前种子重应用趋势初值并同步首日快照/全局兼容键；VN 入口 ApplyVNExitData 调 InitializeSubsystems 并标记 initialized |
 | `CrewManager` | `CrewManager.XXX` | GameData.InitializeSubsystems 调 Initialize |
 | `EventManager` | `EventManager.XXX` | `GameData.InitializeIfNeeded()` 中调用 |
 | `SandRivalManager` | `SandRivalManager.XXX` | 同上 |
 | `OrderManager` | `OrderManager.XXX` | GameData.InitializeSubsystems 调 Initialize；每日由 DailySettle 推进 |
 | `Narrative.NarrativeEngine` | `NarrativeEngine.XXX` | CheckForEvent 懒初始化；新局清理完整性待核验 |
-| `RegulatoryEventSystem` | 完整命名空间或 using | ResetState / RestoreFromSave 调 Initialize，读取全局持久化键；不等于槽位完整恢复 |
+| `RegulatoryEventSystem` | 完整命名空间或 using | `GameData.ResetState()` 调 `RegulatoryEventSystem.ResetState()` 清除旧在途程序及旧键；`RestoreFromSave` 仍调 `Initialize()` 读取当前全局持久化状态；不等于槽位完整恢复 |
 
 ### 单例
 | 类 | Instance | 创建时机 |
@@ -337,8 +397,6 @@ GameMainUI.cs (Tablet OS Shell, ~2,000行)
         ├── TabletNotesAppUI.cs        (百科与便签：媒姬百科/三栏自动化备忘)
         └── TabletSystemToolsAppUI.cs  (系统工具集：时钟/日历/天气/计算器/米家/安全等)
 ```
-
----
 
 ---
 
@@ -544,3 +602,117 @@ Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip
 # NF5K simulation backend (2026-10-21)
 
 `CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.
+# 2026-10-23 消防器材在役细节
+
+下一批：`NF5KWallEquipment` 在同一补件入口生成后壁检修面板细节和客舱前隔板急救柜；`CabStorageCabinet` 提供就近开合与停用归位，`CabContextInteraction` 注册柜体和门片碰撞体并复用用户按键。`NF5KSafetyEquipmentReview` 覆盖真实门片射线、命令、角度、距离和恢复。见 [后壁设备](NF5K_WALL_EQUIPMENT.md)。
+
+表盘 V5 将顶部正常状态文字居中；`NF5KExtinguisherModel` 生成连续环销、短连接颈及细闭合封签环和小锁头，替换原来的分段拉环与大吊牌。审阅图后缀 `_seal_aligned.png`。
+
+表头/握把修订：`NF5KExtinguisherModel.BentHandle` 生成带斜接转角的连续折弯条截面，持握柄与压柄分别保留；阀体补双侧铰座和压杆。`build_extinguisher_label.py` 输出 V4 大字表盘，文字避开指针路径。
+
+`NF5KExtinguisherModel.Build` 接受固定指针偏角；生成表头背壳、轴、手册底托及纸页细节。`build_extinguisher_label.py` 生成固定随机种子的磨损封面并跳过相同 PNG 写入。`NF5KSafetyEquipmentReview` 验证书册接触与表针范围；装配仍为静态安装加脚本取放，非结构强度求解。
+
+2026-10-24 音乐：MusicLyricsView 增加 lyricMotion 三种表现，真实词时间驱动舞台浮起/辉光；MusicTerminal.uss 隔离水平 Slider，修正竖向胶囊短轨越界；RailwayMusicTerminalReview 检查滚动条几何与模式存储。详见 MUSIC_FOLIA_CORE_REVIEW.md。
+
+音乐最终验收补记：RailwayMusicTerminalReview增加首/中/尾胶囊边界、三种歌词模式、真实词浮起与减少动态覆盖、跨进程lyricMotion恢复检查；MusicLyricsView限定纵向滚动，修正舞台模式小窗口白色横向条。music_motion_verified/restore均MUSIC_REVIEW_OK、退出0。
+
+2026-10-24 原声证据工具：tools/music/align_ost_lyrics.py新增--asr-only；compare_ost_asr.py输出原稿逐行与独立ASR匹配疑点；summarize_alignment_review.py汇总历史候选。均不自动发布字幕、不等同听校。
+
+2026-10-24 原声原稿纠正：check_ost_windows.py提供重叠区间独立ASR；align_ost_lyrics.py拒绝已撤回输入、记录显式演唱稿增删。南风44行原稿保持不变；自动漏识别不能支持删词，详情见MUSIC_FOLIA_CORE_REVIEW.md。
+
+2026-10-24 音乐交互升级：RailwayMusicTerminalView增加清空搜索、带数量队列、窄窗抽屉遮罩/Esc、焦点返回与入场；MusicLyricsView增加专注舞台、句时间进度和音频时钟背景，USS热区40/42/52。TabletMusicAppUI.TryGetCurrentPosition使MusicLibrarySession.Save避免音源销毁后将进度写0。完整工作树受其他Calculator验收缺类影响；隔离快照完整音乐与跨进程检查通过。详见MUSIC_TERMINAL.md。
+
+2026-10-24原声原稿追溯：recover_ost_prompt_source.py从固定Git版本恢复历史AI配乐文档和四首阅读正文，保留ID3；extract_ost_lyric_sheets.py避免重提取覆盖原稿；align_ost_lyrics.py --variant隔离来源候选。音乐阅读页39/47/49行在隔离快照验收通过，时间轴仍未全部听校。
+
+2026-10-24音频律动舞台：MusicReactiveStageView独立绘制每曲渐变光场与曲线，封面取色缓存+歌曲稳定种子/艺术配色；真实输出RMS或当前解压PCM窗驱动脉冲，音频时间驱动流动，支持暂停/减少动态，30Hz上限。MusicLyricsView复用背景实现切歌配色过渡。隔离真实入口MUSIC_REACTIVE_STAGE_OK通过，产物music_reactive_stage_review。
+
+2026-10-24歌词校时工具：recheck_ost_alignment.py做双模型上下文局部对齐；separate_ost_vocals.py生成保持时间的本地人声参考；download_vocal_model.py验证官方模型包；build_calibration_packet.py保留原稿并生成疑点原曲片段/复核报告。align_ost_lyrics.py支持带原曲哈希与0偏移元数据的--audio变体，保留原ASR。未修改运行时。
+
+2026-10-25：NF5KExteriorLightControlSetup同步隐藏旧Auxiliary_Plate_Title，并将Speedometer_Stand替换为开敞双腹板金属支架；见NF5K_EXTERIOR_CONTROL_PANEL.md。
+
+2026-10-25音乐：align_ost_phonemes.py新增MMS_FA音素对齐、跨停顿修正与可追溯ASR约束；publish_phonetic_draft.py严格检查后打包南风39句LRC草稿及不可变证据哈希。MusicLyricsView专注标题保留待听校，RailwayMusicTerminalReview验实际原曲尾句点选与高亮。南风隔离运行及跨进程通过；其余新候选仍被门槛拒绝。
+
+2026-10-25：十格状态/报警灯窗由NF5KAnnunciatorSetup替换四颗未接线圆灯；CabAnnunciatorPanel只读详细模拟，包含供电、启动低油压延时、压力/温度迟滞及中英印刷。来源、状态定义和验证见docs/for-ai/NF5K_ANNUNCIATOR.md。
+
+
+2026-10-25 歌词桥段联合校准复核：千里马最新候选仍有3项未通过（句17/42/44），星光仍有弱发音和哼唱时间疑点，均未发布；新增带原曲时间及哈希的疑点试听包。南风39句及沉睡者35行继续标注自动草稿待听校。工具、实测及外部查询授权边界见[MUSIC_FOLIA_CORE_REVIEW](MUSIC_FOLIA_CORE_REVIEW.md)。
+
+
+2026-10-25 获准仅发送两首ID后完成Suno匿名来源查询：公开歌词与星光47/千里马49行提词原稿一致；v2/v3时间接口均401，未取得时间轴。离线证据工具audit_suno_public_evidence.py及完整限制见docs/for-ai/MUSIC_FOLIA_CORE_REVIEW.md；未改Assets字幕或在线接入。
+2026-10-25 灯窗材质v2：独立磨砂光学面、线性扩散贴图、微法线与深色遮字；光学贴图用CabAnnunciatorOpticalMap标记避免被Sprite规则覆盖，URP发光变体跨进程持久化及驾驶回归通过。见NF5K_ANNUNCIATOR.md。
+
+
+2026-10-25 本地歌词审阅工具修复空时间当0导致的校验漏洞，并补输入标签/播放错误反馈；语法与校验fixture通过，浏览器实际试听因本机访问受阻仍未验收。见MUSIC_FOLIA_CORE_REVIEW.md。
+
+
+2026-10-25 本地歌词继续复核：新增弱主歌/副歌整段候选及带来源哈希的人声窗口识别。千里马两版仍3项未通过，分离人声识别失败证据保留，未改正式字幕或放宽发布门槛。详见docs/for-ai/MUSIC_FOLIA_CORE_REVIEW.md。
+
+
+2026-10-25 本地校准新增边界RMS图（6个争议句，非时间真值）和带语言/设备追溯的独立窗口识别；medium续传中尚无推理结果，CUDA缺库已保留失败证据。见MUSIC_FOLIA_CORE_REVIEW.md。
+2026-10-25：CabLampTestButton为灯窗右侧实体试灯按钮，复用主交互绑定，点按触发2秒十格检查及短行程弹回；断电终止、超时恢复真实指示，未改保护或驾驶指令。四场景、实际射线/上下文、供电/禁用守卫和checkpoint不变已通过。见NF5K_ANNUNCIATOR.md。
+
+
+2026-10-25 medium已完成权重校验和8个原曲窗口识别，归一化人声另3窗亦完成；仍有错词、无识别及时间争议，未发布新字幕。归一化、来源哈希和失败证据见MUSIC_FOLIA_CORE_REVIEW.md；准确同步需听校或原始时轴支持。
+2026-10-25：NF5KServiceControlSetup在原鸣笛位置生成横向双按钮和贴台面薄底板；CabServiceControl接入主交互键保持/释放及旧SandOn后端，CabHornAudio播放原创合成汽笛。四场景生成、实际射线/上下文、供电/风压/距离/禁用守卫、PCM播放和底板支承已检查，详见NF5K_SERVICE_CONTROLS.md。
+
+
+2026-10-25 页面内插件已真实导出两首LRC/SRT，audit_suno_timed_exports.py核对：千里马49句含28秒异常长句，星光53条与47行原稿顺序不符且桥段时间坍缩。原始文件与审计在tools/music/alignment_review/suno_exports；未替换正式字幕。详见docs/for-ai/MUSIC_FOLIA_CORE_REVIEW.md。
+
+
+2026-10-25 refine_suno_context.py新增导出/声学交叉支持的局部候选，星光第21句错误早起点修到105.682秒；严格发布仍9项未通过，千里马仍3项。正式字幕未替换，最新疑点包已更新。见MUSIC_FOLIA_CORE_REVIEW.md。
+
+
+2026-10-25 边界冲突候选新增星光16句79.622秒、20句92.642秒收敛；严格发布仍7项未通过，千里马仍3项。最新provider.boundaries候选及疑点包保留，正式字幕未替换。见MUSIC_FOLIA_CORE_REVIEW.md。
+2026-10-25：NF5KBrakeRefinement统一大小闸冷灰涂层/裸钢/深色握把，按钮底板缩至110×60 mm并移位，消除与小闸安装耳约6 mm旧包络重叠，新横向间隙约27 mm。生成及实际Play姿态检查15 mm扩展包络，交互回归通过。见NF5K_BRAKE_REFINEMENT.md。
+
+
+2026-10-25：本地歌词复核页改为真实波形＋可拖动起止/整体范围、连续试听、可调尾部、部分JSON保存恢复；build_alignment_review.py → review_ui.html，逻辑回归入口check_review_ui.cjs。仅模拟DOM/音频逻辑检查通过，实际浏览器试听/布局待验；未更新正式字幕。GitHub歌曲对齐项目选型及证据限制见docs/for-ai/MUSIC_FOLIA_CORE_REVIEW.md同日章节。
+
+2026-10-25自动校准后续：独立Qwen韩语对齐环境及32窗口实跑完成，8个疑点仅1个四向稳定候选且仍与MMS终点冲突，未更新正式字幕。新增download_qwen_aligner/check_qwen_boundaries/summarize_qwen_evidence；用户不需韩语听校。LyricSmith两曲上传已获授权，但网页对齐面板未响应，尚未上传或导出。证据和限制见MUSIC_FOLIA_CORE_REVIEW.md同日章节。
+
+2026-10-25：LyricSmith星光首次上传/47句对齐成功；audit_lyricsmith_ui.py核对原文及108词DOM渲染证据。原生导出未获，不把CSS动画时长当声学终点；6句起点与本地结果存在>0.25秒分歧，未写正式字幕。见MUSIC_FOLIA_CORE_REVIEW.md同日回执。
+
+2026-10-26：audit_lyricsmith_exports.py归档4份原生导出，发现18/32句与SRT重复记录；用已有网页证据恢复47句108词独立候选，未写Assets。refine_suno_context.py新增哈希及原生LRC/SRT约束的lyricsmith来源，实跑0接收/6拒绝，未放宽门槛。恢复稿往返/顺序、工具语法及试听页逻辑验证通过；准确同步仍未全部通过，详见MUSIC_FOLIA_CORE_REVIEW.md同日记录。
+2026-10-26大小闸材质v2：原图旧金属为主、现代产品图补充参考；BrakeLayeredMetal使用URP PBR，分铸件/加工面/涂层/握把，局部米制三向投影、网格磨损/积污遮罩；间隙检查改为旋转车体米制坐标。四场景及驾驶回归通过，见NF5K_BRAKE_REFINEMENT.md。
+2026-10-26大小闸配色细化：暖锡灰铸件、较亮冷钢灰加工件、深石墨支承及暖黑握把；PaletteBatch保存共享材质并完成同角度渲染/间隙检查。见NF5K_BRAKE_REFINEMENT.md。
+2026-10-26旧件实拍配色复核：加工件改中性偏暖银灰，局部暖色氧化/接缝压暗，支承件中性炭灰；不把全部零件统一成冷钢色。brake_palette_reference_v1检查与渲染通过，见NF5K_BRAKE_REFINEMENT.md。
+
+2026-10-26无人工听校后续：check_qwen_asr_windows.py完成15次独立无歌词提示原曲识别；audit_blind_consensus.py为星光第4/41句建立逐词起点/行终点交叉支持，第26句仅行级，14/46仍不足。六项负例/分层测试通过；旧发布器/正式字幕未改，详见MUSIC_FOLIA_CORE_REVIEW.md同日记录。
+
+2026-10-26：新增korean_ctc_path/check_korean_ctc及4项路径/断线续传测试；韩文模型下载仍待完整验证，尚无该模型歌声结果。analyze_vocal_activity已产生真实尾段周期性活动诊断，不能当语义歌词边界，未改正式字幕。详见MUSIC_FOLIA_CORE_REVIEW.md同日记录。
+
+2026-10-26 校准后续：韩文CTC权重已校验并实际执行12个窗口，但口白对照也失败，未采用；Qwen1.7B无提示识别8窗口、单句强制对齐8次与MMS编码对照16次仍未解决全部边界。Suno可见星光歌词与47句原稿完全一致。工具新增模型/单句选项、独立报告和流式权重校验；正式歌词及Unity运行时未变。详细证据与未完成范围见 docs/for-ai/MUSIC_FOLIA_CORE_REVIEW.md 的“后续自动校准实测”。
+
+2026-10-26 当前主工程Unity编译、RailwayMusicTerminalReview.Batch及第二进程BatchRestore均通过；本次不再是隔离快照。实际几何/舞台/队列/字幕交互/暂停恢复证据及源码哈希归档tools/compile/music_acceptance_20261026，详见MUSIC_FOLIA_CORE_REVIEW.md。尚未验证独立Windows Player；完整逐词歌词准确性仍未完成，不能以界面测试代替。
+
+2026-10-26 第二曲在线对齐准备：重新打开LyricSmith，选择Korean并填入千里马49句原稿；页面Start alignment仍禁用，音频尚未选择，不能报告上传/对齐完成。已请用户仅操作本机文件选择，无需听校。audit_lyricsmith_ui.py新增--id支持两曲，比较前校验本地报告的曲目ID、实际MP3/原稿SHA256与行数，防止旧音频/旧原文交叉核验。星光47句108词重新审计通过，起点冲突仍为1/2/16/25/29/45，不放宽精度标准。test_lyricsmith_comparison.py验证正常身份及错误ID/音频哈希/原稿哈希/实际音频更换拒绝，运行通过；仅工具改动，不改正式字幕或Unity运行时代码。
+
+2026-10-26 用户提供Edge下载文件chollima_ride (标准).json（11,509字节）：audit_lyrictimestamps.py实际归档原文件到alignment_review/lyrictimestamps/native，核对授权音频/提交歌词/当前原稿和本地报告SHA256，49句97词逐字覆盖，无负区间/逆序/重叠。输出chollima_ride.native-audit.json，保留提供方confidence但明确不是准确率、后端独立性未验证、未听校未发布。结构正确不能等同精确同步。
+
+原曲/人声MMS比较中，行起点均不相符的仅43/44；第43句网站164.47–172.66秒，与本地约170.84秒起点冲突（网站confidence仍0.906）；第44句网站198.10秒，本地人声189.302秒，且首词仅80ms、confidence0.496。第17句网站67.62–73.49秒与本地起点接近但词尾更长，不能单凭对比宣称网站或本地谁正确。多句词尾有差异，需区分持音与对齐漂移。所有数据保留，不修改Assets正式歌词、不根据高confidence直接放行。submission更新nativeExportObtained=true。
+
+test_lyrictimestamps_audit.py检查有效输入/真实起点冲突标记，以及缺行、错词、NaN、重叠、零长度、越界confidence/index拒绝，2项测试通过。此为工具与证据改动，没有新增Unity运行验证。
+
+2026-10-26 大小闸动漫配色：NF5KBrakeRefinement按功能分配灰青主体、暖米灰支承、银灰加工件及红棕握把，降低微表面噪声；CastMetal材质名保留但已改涂层参数。共享资源/渲染/间隙检查通过，见NF5K_BRAKE_REFINEMENT.md。
+
+2026-10-26 使用千里马原生JSON约束再对齐：refine_suno_context.py新增--provider lyrictimestamps，校验原生文件哈希、音频与原稿身份，保留原有窗口佐证/质量/分数门槛和独立输出。实际运行--include-boundary-conflicts，0项接收/5项拒绝：17句原曲音素碎裂反增，42句未改善或分数下降，44句导出窗口缺乏佐证；没有放宽门槛或修改正式歌词。
+
+此外通过网站原生“比较各个时间轴版本”对话框，逐词点击Next，读取97个词各四个直接显示的起止时间；未选radio、未提交自定义选择、未播放或下载额外版本。保存chollima_ride.visible-comparison.json及variants-audit.json。每个可见词计数/总数及标准版时间均与原生JSON逐项核对（显示精度0.01秒）。该对话框直接展示数据，不读取隐藏状态、网络或受阻blob。行引导/字对齐/共识版本均未解决关键冲突：43句标准与字对齐同为164.47–172.66，行引导174.65起、共识167.86起；44句首词分别198.10、180.66、196.09、191.62起，差异极大。共识是网站给出的版本名称，不代表独立方法准确验证。候选仍未发布。
+
+2026-10-26 大小闸integrated_v1取代浅青/米白试配：主体/支承统一现有深灰绿家族，暖深棕握把、克制银灰加工件；整台渲染及间隙通过，见NF5K_BRAKE_REFINEMENT.md。
+
+2026-10-26 重复副歌声学对照：新增probe_chorus_dtw.py，对哈希验证/零偏移的人声使用librosa 0.11.0，16kHz/20ms帧，MFCC与chroma分别做限斜率子序列DTW和独立固定速率偏移比较。前两段已知重复副歌为正对照，桥段与第二段主歌为无关对照（桥段并非保证无声/无歌词）。两特征的固定偏移正对照均67.20秒，最后副歌分别143.98/144.00秒；最后副歌相隔至少0.5秒的次优偏移代价明显更差，无关片段偏移优势弱。映射首个既有“아”候选到196.14/196.16秒。完整报告及8组特征/片段结果位于chorus_dtw/chollima_ride.json。自由DTW首词映射MFCC199.22 vs chroma196.54仍不一致，不能隐去这一局部不稳定或将整段固定偏移当逐词准确认证。
+
+无提示原曲Qwen0.6B对照：188–195.5秒返回“음악”，195.5–198.2秒返回“아.”，198.2–200.8秒返回“설립하”（非原文确切匹配）。第一窗口完成并落盘后，旧工具因Windows重定向stdout的GBK编码异常退出1；check_qwen_asr_windows.py修复stdout为UTF-8，随后独立标签只补跑剩余两窗口并退出0，未将未执行片段报完成。两个JSON标签final-onset-control/final-onset-followup分别留档。
+
+新增probe_chorus_phonetics.py，以两特征偏移及非邻近备选代价为前置检查，在196.15秒附近分别用0.35/0.7秒边距重算原曲/人声，4次均将아对到198.10–198.12秒，捕获的可能只是长元音末端；不把20ms路径当真实整词起止。另对194–201秒运行pyin/RMS，既有高阈值未检出可信区间（空结果），未由音高数据证明语义人声起点。结果共同支持继续检查196秒附近，但尚未达到精确首音确认，boundaryTransferVerified=false、humanListeningVerified=false、published=false。未改Assets歌词、未改Unity运行时。所有新增/修改工具语法检查通过。
+
+DTW来源为librosa官方Music Synchronization与sequence.dtw文档：https://librosa.org/doc/0.10.2/generated/librosa.sequence.dtw.html 。声学匹配不等于歌词语义识别。
+
+### 2026-10-26 直接导入逐词JSON，保留真实词尾
+
+MusicTimedText新增.json数组格式：每项word/start/end/line_index，line_index从0连续分组；按原始词顺序保留每个词的显式起止和词间空白，不均分、不插值、不将confidence当准确证明。拒绝缺字段、空数组、错序/重叠、跳行索引、非有限/非正区间；沿用1MB与5000行限制，另限10000词。Windows字幕选择器及本地同名字幕伴随导入支持.json，已有LRC/VTT/SRT优先级不变。导入只是用户选定的字幕数据，不改变内置原稿/解锁规则，也不自动导入当前未校准的千里马候选。
+
+归一化词尾逻辑改为同时取现有词尾、下一词起点和行尾的最小值，避免把JSON已知词尾拉长到下一词。LRC原有按相邻词时间推导的行为保持，JSON可准确表达词间静默；当前不支持任意其他网站JSON封装。界面沿用现有导入字幕入口与本机独立音乐存储。
+
+当前完整工程RailwayMusicTerminalReview.Batch重新编译/运行通过，日志tools/compile/music_json_runtime.log含MUSIC_NATIVE_JSON_OK（真实下载49句97词，14.44词尾与14.46下一词起点分别保留）、MUSIC_JSON_IMPORT_OK（导入/读取与坏文件保护）、MUSIC_REVIEW_OK。新增缺start/line_index、错序重叠、缺行索引、错误封装/空数组负例均由Unity实际解析检查。原有舞台/滚动/暂停/字幕交互回归通过。此轮未再运行第二进程恢复或独立Windows Player；不将原生数据解析成功称为歌词时间校准成功。
