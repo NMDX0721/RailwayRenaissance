@@ -32,10 +32,19 @@ public static class NF5KContextInteractionReview
             Assert(!CabContextInteraction.ValidPath("<Keyboard>/Escape")&&!CabContextInteraction.ValidPath("<Mouse>/delta")
                 &&!ui.SetPrimaryPath("<Keyboard>/F2",false),"Reserved binding accepted");
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E binding rejected");
+            var interiorLights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+            var exteriorLights=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+            var overOtherUI=typeof(CabContextInteraction).GetMethod("OverOtherUI",flags);
             InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(30,Screen.height-40)});
             Pump();
             Set("focused",target);Set("focusedCollider",target.GetComponentInChildren<Collider>());
             Set("actionRect",new Rect(0,0,Screen.width,Screen.height));Set("settings",false);Set("inputAfter",-1f);
+            Assert(exteriorLights==null||exteriorLights.BlocksPointer(new Vector2(30,40)),"Exterior lighting review panel did not block its visible area");
+            var interiorPanelPoint=new Vector2(Mathf.Max(250,Screen.width-260)+20,40);
+            Assert(interiorLights==null||interiorLights.BlocksPointer(interiorPanelPoint),"Interior lighting review panel did not block its visible area");
+            Assert((bool)overOtherUI.Invoke(ui,null),"Context interaction did not honor the exterior lighting panel rectangle");
+            InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(300,Screen.height-40)});Pump();
+            Assert(!(bool)overOtherUI.Invoke(ui,null),"Lighting panel pointer guard blocked an uncovered area");
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.E));Pump();Update();
             var action=(InputAction)typeof(CabContextInteraction).GetField("primary",flags).GetValue(ui);
             Assert(state.IndependentBrakeNotch==before+.25f,"Rebound E did not execute selected action; pressed="+action.WasPressedThisFrame()+" enabled="+action.enabled+" camera="+Camera.main+" mouse="+Mouse.current.position.ReadValue()+" screen="+Screen.width+"x"+Screen.height+" modal="+ui.ModalOpen+" distance="+Vector3.Distance(Camera.main.transform.position,target.GetComponentInChildren<Collider>().bounds.center)+" focused="+typeof(CabContextInteraction).GetField("focused",flags).GetValue(ui)+" otherUI="+typeof(CabContextInteraction).GetMethod("OverOtherUI",flags).Invoke(ui,null));
@@ -47,7 +56,7 @@ public static class NF5KContextInteractionReview
             Assert(ui.SetPrimaryPath("<Mouse>/leftButton",false),"Mouse binding rejected");
             Set("settings",false);Set("actionRect",new Rect());Set("inputAfter",-1f);
             // Test action lookup after a binding change without changing the saved user preference.
-            InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(30,Screen.height-40)}.WithButton(MouseButton.Left));Pump();
+            InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(300,Screen.height-40)}.WithButton(MouseButton.Left));Pump();
             Assert(action.WasPressedThisFrame(),"Mouse rebinding not active");
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E restore rejected");
             var equipment=state.GetComponentInChildren<CabSafetyEquipment>();
