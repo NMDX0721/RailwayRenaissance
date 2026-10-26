@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-26 ATO V2：`CabAtoControllerV2`共用有限候选预测并切换三目标；`AtoRouteTask`保存相对起点/限速/时刻，`CabManualControlIntent`处理真实操作接管。研究检查点封装v2、暂停落盘恢复、精确环境与Tick调度已验；冻结失配实验仍有失败。详见[研究结果](../research/ato_v2_results.md)及[接口记录](ATO_V2_IMPLEMENTATION.md)。
+
 2026-10-25 ATO第二版开始：`CabAtoCheckpoint`为冻结V1控制器提供精确兼容侧车；研究适配器新增完整检查点/暂停，物理适配器新增恢复通知与预验证。见[第二版实施记录](ATO_V2_IMPLEMENTATION.md)，路线/三模式状态按该记录后续验证。
 
 2026-10-25研究指标：`research/ato/Program.cs`新增观测队列与冻结压力协议执行，`analyze_stress.py`核对配对、哈希与调控代价；未变更游戏控制器/内核。见[压力测试](../research/stress_metrics_review.md)。

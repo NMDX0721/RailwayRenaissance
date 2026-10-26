@@ -1,0 +1,63 @@
+{
+  "Version": 1,
+  "FrozenUtc": "2026-10-26T01:19:45.2502233Z",
+  "Repeats": 2,
+  "Cases": [
+    {
+      "Seed": 4100,
+      "MassScale": 1,
+      "BrakeScale": 1,
+      "Grade": 0,
+      "Grip": 1,
+      "Name": "nominal"
+    },
+    {
+      "Seed": 4100,
+      "MassScale": 1.08,
+      "BrakeScale": 0.83,
+      "Grade": -3,
+      "Grip": 0.55,
+      "Name": "weak-wet-heavy"
+    },
+    {
+      "Seed": 4100,
+      "MassScale": 0.94,
+      "BrakeScale": 1.17,
+      "Grade": 3,
+      "Grip": 1,
+      "Name": "strong-uphill"
+    },
+    {
+      "Seed": 4101,
+      "MassScale": 1,
+      "BrakeScale": 1,
+      "Grade": 0,
+      "Grip": 1,
+      "Name": "nominal"
+    },
+    {
+      "Seed": 4101,
+      "MassScale": 1.08,
+      "BrakeScale": 0.83,
+      "Grade": -3,
+      "Grip": 0.55,
+      "Name": "weak-wet-heavy"
+    },
+    {
+      "Seed": 4101,
+      "MassScale": 0.94,
+      "BrakeScale": 1.17,
+      "Grade": 3,
+      "Grip": 1,
+      "Name": "strong-uphill"
+    }
+  ],
+  "Hashes": {
+    "Assets/Scripts/Cab/CabSimulation.cs": "523D13EDD4A56873917B08D6E282304FCD227026EDA28DCB24AEFF9577FF52AD",
+    "Assets/Scripts/Cab/CabSimulationCodec.cs": "36E515D8B7C5F107309BF1688FCED3C9F37B1BE3505DF8F51AD12422AEC044FD",
+    "Assets/Scripts/Cab/Research/CabAtoController.cs": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV2.cs": "4831928A77334C41BF1F8E7B8F0FA2A71C7413FE913359DA11C5BF92EF736F9B",
+    "Assets/Scripts/Cab/Research/AtoRouteTask.cs": "77938C25302179CFBCC1E1DD5BC9A899DBBE2A41D658080529CDB1583AF3807D",
+    "research/ato-v2/TrialRunner.cs": "691DAECBB8C7EFA52FCEC0C9C6506D2D2882748D04719B0CB7B3BAFAB0CE0F57"
+  }
+}
