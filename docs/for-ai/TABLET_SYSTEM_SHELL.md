@@ -1,12 +1,14 @@
 # 平板系统层与协作计划（2026-10-23）
 
-## 2026-10-26 系统导航与最近任务首轮实现
+## 2026-10-27 系统导航与最近任务首轮实现
 
-- `GameMainUI` 提供底部返回/主页/最近任务入口；返回优先关闭系统面板，再取消正在进行的按键重绑定，随后关闭最近任务或把 Escape 派给当前焦点控件，最后回到桌面。重绑定捕获的键有同帧消费保护。回桌面隐藏任务根节点，保留进程内页面。
-- 最近任务卡切回原任务；用户关闭卡片才结束任务。内存回收按最近激活顺序处理非活动视图，回收前暂存 `TextField` 值与 `ScrollView.scrollOffset`；恢复文本通过普通 `value` setter 通知控件回调，以保持界面和应用草稿状态同步。Android `Application.memoryUsageChanged` 提供系统高/临界压力信号，Windows 另用 Unity 分配内存软预算轮询。该机制不承诺后台进程保活。
+- `GameMainUI` 提供底部返回/主页/最近任务入口；返回优先关闭系统面板，再取消重绑定，随后关闭最近任务或把 Escape 派给当前焦点控件；未消费时退回应用内上一页，最后回桌面。重绑定捕获的键有同帧消费保护。回桌面保留任务。
+- `TabletPageEntry` 保存应用内页面栈和重建委托；设置的备份、图鉴、事务、剧情和应用管理子页可返回上一层，回收后重建页面路径。同标题刷新替换当前页，避免重复入栈；缺少重建委托的子页暂不回收。图鉴重建委托保留用户最后选择的词条。
+- `ITabletTaskLifecycle` 统一通知视图创建/恢复、前台、后台、视图回收和任务关闭。音乐回收/关闭时暂停界面调度并清除静态控件引用，保留播放与选页状态；后台音乐提示走系统通知通道。岁月对话用任务状态保留历史，主动关闭任务后清除；现有快捷回复不代表真实 AI 或实时运营分析。
+- 最近任务卡切回原任务；用户关闭卡片才结束任务。内存回收按最近激活顺序处理非活动视图，回收前暂存 `TextField` 值与 `ScrollView.scrollOffset`；恢复文本通过普通 `value` setter 通知控件回调；恢复滚动会等待有效视口和目标范围，最多一秒后按当前范围限幅。Android `Application.memoryUsageChanged` 提供系统高/临界压力信号，Windows 另用 Unity 分配内存软预算轮询。该机制不承诺后台进程保活。
 - `TabletEdgeGesture` 只跟踪一根从屏幕边缘开始的触点：上沿左右区分别下拉通知/控制面板；底沿上滑后停留 0.28 秒会在松手前打开最近任务，快速上滑回桌面；侧沿只接受向内滑动。监听器不截获指针，侧沿过滤按钮、文本框、滑块、开关和滚动区；锁屏清除手势状态且不接受新手势。需用 Windows 触屏与 Android 真机验证滚动/拖动误触和多指行为。
 - 通知与控制面板互斥，面板按横竖屏和宽高自适应；设置页在 760px 以下切单列，宽屏保留侧栏。`KeyBindings.ResetToDefaults()` 删除 `KB_` 键位项并保存，不清除其他 `PlayerPrefs`。
-- Unity 6000.5.8f1 批处理编译及 `TabletInteractionReview.Batch` 通过，日志 `tools/compile/tablet_interaction_review_complete_20261027.log`，进程退出码 0，包含 `TABLET_INTERACTION_REVIEW_OK`。该检查覆盖手势状态、草稿回调、面板优先级、重绑定取消、键盘事件和锁屏清理；Play Mode、真实触屏、Android 和应用视图回收恢复仍待验证。
+- Unity 6000.5.8f1 编译及 `TabletInteractionReview.Batch` 通过，日志 `tools/compile/tablet_interaction_review_lifecycle_final_20261027.log`，进程退出码 0，包含 `TABLET_INTERACTION_REVIEW_OK`。覆盖手势、草稿回调、返回/重绑定、锁屏、设置任务与子页回收重建、图鉴词条/直达、岁月历史及生命周期/音乐界面引用释放。音乐检查没有播放真实音频。独立 `ScrollBatch` 在无图形批处理下视口为 NaN，返回 `TABLET_SCROLL_REVIEW_NOT_RUN`（`tools/compile/tablet_scroll_review_20261027.log`，退出码 2）。滚动位置、Play Mode、真实触屏、输入法和 Android 仍需验证。
 - 此工作树原先缺少 36 个与已跟踪 `.meta` 对应的音视频文件；已从本机原工程复制并逐个核对 SHA-256。这些被 Git 忽略的媒体仅存在于当前工作树，其他工作树需要自行准备。
 
 最新状态：用户要求以双AI分工完成整体体验，完整范围及验收见 [体验升级](TABLET_EXPERIENCE_UPGRADE.md)。反重力独立ACP实际文件读写及受控原生命令探针已通过，当前模糊工程任务已发送，不再限于文本交付；具体本单只有六份文件写入权限。下方仅文本/未验收说明为历史记录；外观消费者与存储目前已由顶部所列Unity日志验收。MiMo新单基于更新后源码复核设置/导航，避免沿用旧审计结论。

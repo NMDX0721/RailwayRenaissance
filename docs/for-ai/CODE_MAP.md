@@ -1,6 +1,6 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
-2026-10-27 平板交互首轮：`GameMainUI` 管系统返回、最近任务与内存回收；`TabletEdgeGesture` 识别单指边缘手势和上滑停留；`TabletTaskSession` 在视图回收时快照文本框和滚动偏移；`TabletSettingsAppUI` 按宽度改排双栏/单列。`KeyBindings.ResetToDefaults()` 只删除 `KB_<Action>` 自定义键。`TabletInteractionReview.Batch` 的合成手势、草稿回调、重绑定与锁屏检查通过（`tools/compile/tablet_interaction_review_complete_20261027.log`，退出码 0）；真机触控/Play 行为尚未验收。限制见 [平板外壳](TABLET_SYSTEM_SHELL.md)。
+2026-10-27 平板交互：`GameMainUI` 管返回、最近任务、页面栈和内存回收；`TabletEdgeGesture` 识别单指边缘/上滑停留；`TabletTaskSession` 保存快照、子页重建委托和应用状态，`ITabletTaskLifecycle` 统一前后台/重建/回收/关闭。`TabletMusicAppUI.ReleaseTaskView` 清理界面引用，岁月状态保存任务内历史；设置图鉴保留选中词条。`TabletInteractionReview.Batch` 通过（`tools/compile/tablet_interaction_review_lifecycle_final_20261027.log`，退出码 0）；滚动布局和真机触控/Play 行为待验。见 [平板外壳](TABLET_SYSTEM_SHELL.md)。
 
 2026-10-26 ATO V2：`CabAtoControllerV2`共用有限候选预测并切换三目标；`AtoRouteTask`保存相对起点/限速/时刻，`CabManualControlIntent`处理真实操作接管。研究检查点封装v2、暂停落盘恢复、精确环境与Tick调度已验；冻结失配实验仍有失败。详见[研究结果](../research/ato_v2_results.md)及[接口记录](ATO_V2_IMPLEMENTATION.md)。
 

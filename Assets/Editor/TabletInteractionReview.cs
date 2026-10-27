@@ -18,7 +18,8 @@ public static class TabletInteractionReview
             CheckBackAndRebind();
             CheckKeyboardRebind();
             CheckLiveTaskSwitch();
-            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1");
+            CheckMusicViewRelease();
+            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1");
             EditorApplication.Exit(0);
         }
         catch (Exception ex)
@@ -26,6 +27,148 @@ public static class TabletInteractionReview
             Debug.LogException(ex);
             EditorApplication.Exit(1);
         }
+    }
+
+    public static void ScrollBatch()
+    {
+        try { StartScrollRestoreCheck(); }
+        catch (Exception ex) { Debug.LogException(ex); EditorApplication.Exit(1); }
+    }
+
+    private sealed class ReviewLifecycle : ITabletTaskLifecycle
+    {
+        internal int Foreground, Background, Reclaimed, Restored, Closed;
+        public void OnViewCreated(VisualElement view, bool restored) { if (restored) Restored++; }
+        public void OnForeground(VisualElement view) => Foreground++;
+        public void OnBackground(VisualElement view) => Background++;
+        public void OnViewReclaimed(VisualElement view) => Reclaimed++;
+        public void OnClosed(VisualElement view) => Closed++;
+    }
+
+    private static void CheckMusicViewRelease()
+    {
+        const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;
+        Type music = typeof(TabletMusicAppUI);
+        FieldInfo active = music.GetField("s_activeWindow", flags);
+        Assert(active.GetValue(null) == null, "music view review isolated");
+        bool oldPlaying = TabletMusicAppUI.tabletIsPlaying;
+        var oldView = TabletMusicAppUI.s_currentView;
+        var toast = music.GetField("s_showToast", flags);
+        object oldToast = toast.GetValue(null);
+        var close = music.GetField("s_onClose", flags);
+        object oldClose = close.GetValue(null);
+        var root = new VisualElement();
+        var view = new VisualElement();
+        root.Add(view);
+        bool notificationReceived = false;
+        try
+        {
+            active.SetValue(null, view);
+            music.GetField("tabletProgressFill", flags).SetValue(null, new VisualElement());
+            music.GetField("s_toastPill", flags).SetValue(null, new VisualElement());
+            music.GetField("s_toastLabel", flags).SetValue(null, new Label());
+            toast.SetValue(null, new Action<string>(_ => notificationReceived = true));
+            TabletMusicAppUI.tabletIsPlaying = true;
+            TabletMusicAppUI.s_currentView = MusicSidebarNavView.MusicViewId.Ost;
+            TabletMusicAppUI.SetTaskViewForeground(root, false);
+            TabletMusicAppUI.ShowToast("review");
+            Assert(notificationReceived, "background music prompt uses system channel");
+            TabletMusicAppUI.ReleaseTaskView(root);
+            Assert(active.GetValue(null) == null && music.GetField("tabletProgressFill", flags).GetValue(null) == null,
+                   "music view references released");
+            Assert(TabletMusicAppUI.tabletIsPlaying && TabletMusicAppUI.s_currentView == MusicSidebarNavView.MusicViewId.Ost,
+                   "music playback and page state retained");
+            TabletMusicAppUI.CloseTaskView(root);
+            Assert(toast.GetValue(null) == null && close.GetValue(null) == null, "closed music task releases host callbacks");
+        }
+        finally
+        {
+            TabletMusicAppUI.ReleaseTaskView(root);
+            TabletMusicAppUI.tabletIsPlaying = oldPlaying;
+            TabletMusicAppUI.s_currentView = oldView;
+            toast.SetValue(null, oldToast);
+            close.SetValue(null, oldClose);
+        }
+    }
+
+    private static void StartScrollRestoreCheck()
+    {
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>();
+        window.position = new Rect(0, 0, 600, 400);
+        window.Show();
+        var sourceRoot = new VisualElement();
+        var source = BuildReviewScroll();
+        sourceRoot.Add(source);
+        window.rootVisualElement.Add(sourceRoot);
+        Type snapshotType = typeof(TabletTaskSession).Assembly.GetType(
+            "RailwayRenaissance.UI.Tablet.SystemShell.TabletViewStateSnapshot", true);
+        MethodInfo capture = snapshotType.GetMethod("Capture", BindingFlags.Public | BindingFlags.Static);
+        MethodInfo restore = snapshotType.GetMethod("Restore", BindingFlags.Public | BindingFlags.Instance);
+        ScrollView target = null;
+        int stage = 0;
+        int targetFrames = 0;
+        double started = EditorApplication.timeSinceStartup;
+        EditorApplication.CallbackFunction update = null;
+        update = () =>
+        {
+            try
+            {
+                window.Repaint();
+                if (EditorApplication.timeSinceStartup - started > 20)
+                {
+                    EditorApplication.update -= update;
+                    Debug.LogWarning($"TABLET_SCROLL_REVIEW_NOT_RUN: no usable layout; stage={stage}, viewport={source.contentViewport.layout}, content={source.contentContainer.layout}, attached={source.panel != null}");
+                    window.Close();
+                    EditorApplication.Exit(2);
+                    return;
+                }
+                if (stage == 0 && source.contentViewport.layout.height > 0 &&
+                    source.contentContainer.layout.height > source.contentViewport.layout.height + 120)
+                {
+                    source.scrollOffset = new Vector2(0, 120);
+                    Assert(Mathf.Abs(source.scrollOffset.y - 120) < 1, "source scroll positioned");
+                    object snapshot = capture.Invoke(null, new object[] { sourceRoot });
+                    sourceRoot.RemoveFromHierarchy();
+                    var targetRoot = new VisualElement();
+                    target = BuildReviewScroll();
+                    targetRoot.Add(target);
+                    window.rootVisualElement.Add(targetRoot);
+                    restore.Invoke(snapshot, new object[] { targetRoot });
+                    stage = 1;
+                }
+                else if (stage == 1 && ++targetFrames >= 8 && target.contentViewport.layout.height > 0)
+                {
+                    Assert(Mathf.Abs(target.scrollOffset.y - 120) < 1, "scroll offset restored after layout");
+                    EditorApplication.update -= update;
+                    window.Close();
+                    Debug.Log("TABLET_SCROLL_REVIEW_OK offset=120");
+                    EditorApplication.Exit(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                EditorApplication.update -= update;
+                window.Close();
+                Debug.LogException(ex);
+                EditorApplication.Exit(1);
+            }
+        };
+        EditorApplication.update += update;
+    }
+
+    private static ScrollView BuildReviewScroll()
+    {
+        var scroll = new ScrollView();
+        scroll.style.width = 250;
+        scroll.style.height = 100;
+        for (int i = 0; i < 20; i++)
+        {
+            var row = new Label("row " + i);
+            row.style.height = 24;
+            row.style.flexShrink = 0;
+            scroll.Add(row);
+        }
+        return scroll;
     }
 
     private static void CheckLiveTaskSwitch()
@@ -37,6 +180,8 @@ public static class TabletInteractionReview
         object oldFilter = filterField.GetValue(null);
         object oldCategory = categoryField.GetValue(null);
         var previous = TabletSettingsAppUI.TabletRebindAction;
+        var instanceProperty = typeof(GameMainUI).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+        object previousInstance = instanceProperty.GetValue(null);
         var go = new GameObject("TabletTaskSwitchReview");
         go.SetActive(false);
         var window = ScriptableObject.CreateInstance<TabletReviewWindow>();
@@ -46,6 +191,7 @@ public static class TabletInteractionReview
             filterField.SetValue(null, "");
             categoryField.SetValue(null, 1);
             var host = go.AddComponent<GameMainUI>();
+            instanceProperty.GetSetMethod(true).Invoke(null, new object[] { host });
             host.unlocked = true;
             var root = window.rootVisualElement;
             var desktop = new VisualElement();
@@ -58,16 +204,26 @@ public static class TabletInteractionReview
             var activate = typeof(GameMainUI).GetMethod("ActivateTabletTask", instance);
             launch.Invoke(host, new object[] { "设置" });
             var settings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
+            var lifecycle = new ReviewLifecycle();
+            typeof(TabletTaskSession).GetProperty("Lifecycle", instance).SetValue(settings, lifecycle);
             var firstRoot = settings.Root;
             var search = firstRoot.Q<TextField>("settings-compact-search");
             Assert(search != null, "settings search exists");
             search.value = "声音";
+            Action openSubpage = null;
+            openSubpage = () =>
+            {
+                VisualElement page = host.BuildInnerPanel("验收子页", openSubpage);
+                page.Add(new TextField { name = "review-subpage-draft" });
+            };
+            openSubpage();
+            firstRoot.Q<TextField>("review-subpage-draft").value = "子页草稿";
 
             launch.Invoke(host, new object[] { "验收占位" });
             Assert(settings.Root == firstRoot && search.value == "声音" &&
                    firstRoot.style.display.value == DisplayStyle.None, "switch preserves live settings view");
             activate.Invoke(host, new object[] { settings });
-            Assert(settings.Root == firstRoot && settings.Root.Q<TextField>("settings-compact-search").value == "声音",
+            Assert(settings.Root == firstRoot && settings.Root.Q<TextField>("review-subpage-draft").value == "子页草稿",
                    "switch returns to settings state");
 
             launch.Invoke(host, new object[] { "验收占位" });
@@ -75,17 +231,81 @@ public static class TabletInteractionReview
             Assert(settings.IsSuspended, "inactive settings view evicted");
             activate.Invoke(host, new object[] { settings });
             Assert(!settings.IsSuspended && settings.Root != firstRoot &&
-                   settings.Root.Q<TextField>("settings-compact-search").value == "声音", "evicted settings rebuilt with state");
+                   settings.Root.Q<TextField>("settings-compact-search").value == "声音" &&
+                   settings.Root.Q<TextField>("review-subpage-draft").value == "子页草稿", "evicted settings subpage rebuilt with draft");
+            typeof(GameMainUI).GetMethod("RequestSystemBack", instance).Invoke(host, null);
+            Assert(settings.Root.Q<TextField>("review-subpage-draft") == null &&
+                   settings.Root.Q<TextField>("settings-compact-search").value == "声音", "back returns to prior app page");
 
+            TabletSettingsAppUI.ShowTipsPage(null);
+            var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", instance).GetValue(settings);
+            Assert(pages.Count == 1, "real tips subpage opens");
+            var term = settings.Root.Q<Label>("tips-term-rail_ballast");
+            Assert(term != null, "glossary term exists");
+            bool clickDelivered = false;
+            term.RegisterCallback<ClickEvent>(_ => clickDelivered = true);
+            using (ClickEvent click = ClickEvent.GetPooled()) { click.target = term; term.SendEvent(click); }
+            Debug.Log($"TABLET_TIPS_CLICK attached={term.panel != null} delivered={clickDelivered} title={settings.Root.Q<Label>("tips-detail-title")?.text}");
+            Assert(settings.Root.Q<Label>("tips-detail-title")?.text == "道砟", "glossary selection opens");
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
+            Assert(settings.IsSuspended, "real tips subpage evicted");
+            activate.Invoke(host, new object[] { settings });
+            Assert(!settings.IsSuspended && pages.Count == 1 &&
+                   settings.Root.Q<Label>("tips-detail-title")?.text == "道砟", "real tips selection rebuilt");
+            typeof(GameMainUI).GetMethod("RequestSystemBack", instance).Invoke(host, null);
+            Assert(pages.Count == 0, "real tips back returns to settings");
+
+            host.BuildInnerPanel("不可重建子页");
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
+            Assert(!settings.IsSuspended, "unrebuildable page is not evicted");
+            activate.Invoke(host, new object[] { settings });
+
+            var gesture = (TabletEdgeGesture)typeof(GameMainUI).GetField("tabletEdgeGesture", instance).GetValue(host);
+            Assert(gesture.Begin(21, new Vector2(500, 990), 1000, 1000, 44, false), "home gesture begin");
+            gesture.Move(21, new Vector2(500, 900), 1f);
             typeof(GameMainUI).GetMethod("ReturnToTabletHome", instance).Invoke(host, null);
+            Assert(gesture.Tick(2f) == TabletGestureAction.None, "home clears pending gesture");
             Assert(find.Invoke(host, new object[] { "设置" }) != null, "home keeps task");
             typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "设置" });
             Assert(find.Invoke(host, new object[] { "设置" }) == null, "close removes task");
+            Assert(lifecycle.Foreground > 0 && lifecycle.Background > 0 && lifecycle.Reclaimed > 0 &&
+                   lifecycle.Restored > 0 && lifecycle.Closed == 1, "task lifecycle callbacks connected");
+
+            typeof(GameMainUI).GetField("desktopBuilt", instance).SetValue(host, true);
+            GameMainUI.OpenTipsPage("rail_ballast");
+            var linkedSettings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
+            Assert(linkedSettings != null && linkedSettings.Root.Q<Label>("tips-detail-title")?.text == "道砟",
+                   "glossary deep link opens a task and selected term");
+            typeof(GameMainUI).GetMethod("ReturnToTabletHome", instance).Invoke(host, null);
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "设置" });
+            typeof(GameMainUI).GetMethod("ShowSuiyueDialogue", instance).Invoke(host, null);
+            var sui = (TabletTaskSession)find.Invoke(host, new object[] { "岁月 · AI对话" });
+            Assert(sui != null && sui.Root != null,
+                   "desktop dialogue opens its own task");
+            object dialogueState = typeof(TabletTaskSession).GetProperty("AppState", instance).GetValue(sui);
+            VisualElement chat = sui.Root.Q("suiyue-chat-area");
+            typeof(GameMainUI).GetMethod("AppendSuiyueLine", instance).Invoke(host,
+                new object[] { dialogueState, chat, "林彪悍", "验收消息", Color.white });
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
+            Assert(sui.IsSuspended, "dialogue view evicted");
+            activate.Invoke(host, new object[] { sui });
+            Assert(sui.Root.Q("suiyue-chat-area").Query<Label>("suiyue-message").ToList()
+                .Exists(label => label.text == "验收消息"), "dialogue history survives view eviction");
+            typeof(GameMainUI).GetMethod("ReturnToTabletHome", instance).Invoke(host, null);
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "岁月 · AI对话" });
+            typeof(GameMainUI).GetMethod("ShowSuiyueDialogue", instance).Invoke(host, null);
+            var reopened = (TabletTaskSession)find.Invoke(host, new object[] { "岁月 · AI对话" });
+            Assert(!reopened.Root.Q("suiyue-chat-area").Query<Label>("suiyue-message").ToList()
+                .Exists(label => label.text == "验收消息"), "closing task clears dialogue session");
         }
         finally
         {
             UnityEngine.Object.DestroyImmediate(go);
             window.Close();
+            instanceProperty.GetSetMethod(true).Invoke(null, new[] { previousInstance });
             filterField.SetValue(null, oldFilter);
             categoryField.SetValue(null, oldCategory);
             TabletSettingsAppUI.TabletRebindAction = previous;

@@ -95,12 +95,16 @@ public class GameMainUI : MonoBehaviour
         if (Instance.lockScreen != null && !Instance.unlocked)
             Instance.lockScreen.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
+        if (Instance.activeTabletTask?.Root != null)
+            NotifyTaskLifecycle(() => Instance.activeTabletTask.Lifecycle.OnForeground(Instance.activeTabletTask.Root));
         // 锁屏已显示 → 后台错帧加载桌面（中间页先行，性能与体验）
         Instance.EnsureDesktopBuilt();
     }
 
     public void Hide()
     {
+        if (activeTabletTask?.Root != null)
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
         ResetSystemGesture();
         CancelTabletRebind();
         tabletShellState.ClosePanel();
@@ -111,6 +115,8 @@ public class GameMainUI : MonoBehaviour
 
     private void OnDisable()
     {
+        if (activeTabletTask?.Root != null)
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
         ResetSystemGesture();
         CancelTabletRebind();
         if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
@@ -119,6 +125,9 @@ public class GameMainUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        foreach (TabletTaskSession task in tabletTasks)
+            NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
+        tabletTasks.Clear();
         TabletSystemToolsAppUI.SetToastHandler(null);
         if (PresentationPreferences != null) PresentationPreferences.Changed -= ApplyPresentation;
         tabletShellState.Changed -= OnShellStateChanged;
@@ -480,7 +489,7 @@ public class GameMainUI : MonoBehaviour
                 }
                 else if (activeTabletTask != null)
                 {
-                    ReturnToTabletHome();
+                    if (!ReturnToPreviousTabletPage()) ReturnToTabletHome();
                     evt.StopPropagation();
                 }
             }
@@ -1544,18 +1553,69 @@ public class GameMainUI : MonoBehaviour
 
     private void ShowSuiyueDialogue()
     {
-        var win = BuildInnerPanel("岁月 · AI对话");
+        LaunchApp("岁月 · AI对话");
+    }
+
+    private sealed class SuiyueLine
+    {
+        public string Sender;
+        public string Text;
+        public Color Color;
+    }
+
+    private sealed class SuiyueDialogueState : ITabletTaskLifecycle
+    {
+        public readonly List<SuiyueLine> Lines = new List<SuiyueLine>();
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) { }
+        public void OnBackground(VisualElement view) { }
+        public void OnViewReclaimed(VisualElement view) { }
+        public void OnClosed(VisualElement view) => Lines.Clear();
+    }
+
+    private sealed class MusicTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) => TabletMusicAppUI.SetTaskViewForeground(view, true);
+        public void OnBackground(VisualElement view) => TabletMusicAppUI.SetTaskViewForeground(view, false);
+        public void OnViewReclaimed(VisualElement view) => TabletMusicAppUI.ReleaseTaskView(view);
+        public void OnClosed(VisualElement view) => TabletMusicAppUI.CloseTaskView(view);
+    }
+
+    private static bool NotifyTaskLifecycle(System.Action callback)
+    {
+        try { callback(); return true; }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Tablet lifecycle callback failed: " + ex.Message);
+            return false;
+        }
+    }
+
+    private void BuildSuiyueDialogue(VisualElement win)
+    {
         win.style.height = 400;
+        var state = activeTabletTask?.AppState as SuiyueDialogueState;
+        if (state == null)
+        {
+            state = new SuiyueDialogueState();
+            state.Lines.Add(new SuiyueLine { Sender = "岁月", Text = "我可是高性能AI！有什么需要帮忙的吗？", Color = GlassAccent });
+            if (activeTabletTask != null)
+            {
+                activeTabletTask.AppState = state;
+                activeTabletTask.Lifecycle = state;
+            }
+        }
 
         // 对话历史区
-        var chatArea = new VisualElement();
+        var chatArea = new VisualElement { name = "suiyue-chat-area" };
         chatArea.style.flexGrow = 1;
         chatArea.style.flexDirection = FlexDirection.Column;
         chatArea.style.marginTop = 8;
         win.Add(chatArea);
 
-        // 初始对话
-        AddChatBubble(chatArea, "岁月", "我可是高性能AI！有什么需要帮忙的吗？", GlassAccent);
+        foreach (SuiyueLine line in state.Lines)
+            AddChatBubble(chatArea, line.Sender, line.Text, line.Color);
 
         // 快捷问题按钮
         string[] quickQuestions = { "今天运营怎么样？", "沙能渗透率多少？", "讲个故事吧", "你是谁？" };
@@ -1569,17 +1629,17 @@ public class GameMainUI : MonoBehaviour
         {
             var qb = new Button(() =>
             {
-                AddChatBubble(chatArea, "林彪悍", q, GlassText);
+                AppendSuiyueLine(state, chatArea, "林彪悍", q, GlassText);
                 // 岁月回复
                 string reply = q switch
                 {
-                    "今天运营怎么样？" => "根据数据，今天客流稳定，收入比昨天增长了5%！继续加油哦！",
-                    "沙能渗透率多少？" => "当前沙能渗透率15%，处于安全范围。但要注意乌金岭方向的广告攻势。",
+                    "今天运营怎么样？" => "请查看运营面板中的当日客流和收入。",
+                    "沙能渗透率多少？" => "当前线路的沙能竞争情况可以在运营面板查看。",
                     "讲个故事吧" => "从前有一条铁路，它被全世界遗忘了。但有一个人，他没有忘记它……",
                     "你是谁？" => "我叫岁月！是0721号沙子飞猪号搭载的AI原型。2053年制造，沉睡了23年呢。",
                     _ => "嗯……让我想想。",
                 };
-                AddChatBubble(chatArea, "岁月", reply, GlassAccent);
+                AppendSuiyueLine(state, chatArea, "岁月", reply, GlassAccent);
             }) { text = q };
             qb.style.fontSize = 11; qb.style.height = 28;
             qb.style.unityTextAlign = TextAnchor.MiddleCenter; qb.style.unityFontDefinition = Fd();
@@ -1589,6 +1649,12 @@ public class GameMainUI : MonoBehaviour
             qb.style.marginRight = 4; qb.style.marginBottom = 4;
             btnRow.Add(qb);
         }
+    }
+
+    private void AppendSuiyueLine(SuiyueDialogueState state, VisualElement chatArea, string sender, string text, Color color)
+    {
+        state.Lines.Add(new SuiyueLine { Sender = sender, Text = text, Color = color });
+        AddChatBubble(chatArea, sender, text, color);
     }
 
     private void AddChatBubble(VisualElement parent, string sender, string text, Color senderColor)
@@ -1606,7 +1672,7 @@ public class GameMainUI : MonoBehaviour
         name.style.fontSize = 12; name.style.color = senderColor; name.style.unityFontDefinition = Fd();
         bubble.Add(name);
 
-        var msg = new Label(text);
+        var msg = new Label(text) { name = "suiyue-message" };
         msg.style.fontSize = 13; msg.style.color = GlassText; msg.style.unityFontDefinition = Fd();
         msg.style.whiteSpace = WhiteSpace.Normal; msg.style.marginTop = 2;
         bubble.Add(msg);
@@ -1918,11 +1984,13 @@ public class GameMainUI : MonoBehaviour
 
     private void ReturnToTabletHome()
     {
+        ResetSystemGesture();
         CancelTabletRebind();
         tabletShellState.ClosePanel();
         CloseRecentTasks();
         if (activeTabletTask?.Root != null)
         {
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
             activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
             activeTabletTask.Root.style.display = DisplayStyle.None;
         }
@@ -1935,23 +2003,52 @@ public class GameMainUI : MonoBehaviour
     private void ActivateTabletTask(TabletTaskSession task)
     {
         if (task == null) return;
+        ResetSystemGesture();
         if (activeTabletTask != task) CancelTabletRebind();
         if (activeTabletTask?.Root != null)
         {
+            if (activeTabletTask != task)
+                NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
             activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
             activeTabletTask.Root.style.display = DisplayStyle.None;
         }
         tabletShellState.ClosePanel();
         CloseRecentTasks();
+        activeTabletTask = task;
         if (task.Root == null)
         {
             task.Root = CreateTabletTaskLayer(task.AppId);
             appLayer = task.Root;
-            BuildTabletTaskContent(task.AppId);
             TabletViewStateSnapshot snapshot = task.Snapshot;
-            task.Snapshot = null;
-            if (snapshot != null)
-                task.Root.schedule.Execute(() => snapshot.Restore(task.Root)).ExecuteLater(0);
+            List<System.Action> pageBuilders = task.SuspendedPageBuilders;
+            try
+            {
+                BuildTabletTaskContent(task.AppId);
+                if (pageBuilders != null)
+                {
+                    foreach (System.Action rebuild in pageBuilders) rebuild();
+                    if (task.Pages.Count != pageBuilders.Count)
+                        throw new System.InvalidOperationException("Tablet page reconstruction was incomplete.");
+                }
+                if (snapshot != null) snapshot.Restore(task.Root);
+                NotifyTaskLifecycle(() => task.Lifecycle.OnViewCreated(task.Root, snapshot != null));
+                task.Snapshot = null;
+                task.SuspendedPageBuilders = null;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[GameMainUI] Tablet task restore failed: " + ex.Message);
+                NotifyTaskLifecycle(() => task.Lifecycle.OnViewReclaimed(task.Root));
+                task.Pages.Clear();
+                task.Root.Clear();
+                task.Root.RemoveFromHierarchy();
+                task.Root = null;
+                activeTabletTask = null;
+                appLayer = null;
+                if (desktop != null) desktop.style.display = DisplayStyle.Flex;
+                ShowBackupToast("应用页面暂时无法恢复，请稍后重试");
+                return;
+            }
         }
         else
         {
@@ -1959,8 +2056,8 @@ public class GameMainUI : MonoBehaviour
         }
         task.LastActivated = ++tabletActivationSequence;
         task.Root.style.display = DisplayStyle.Flex;
+        NotifyTaskLifecycle(() => task.Lifecycle.OnForeground(task.Root));
         desktop.style.display = DisplayStyle.Flex;
-        activeTabletTask = task;
         if (systemNavigationBar != null)
         {
             systemNavigationBar.style.display = DisplayStyle.Flex;
@@ -2063,11 +2160,16 @@ public class GameMainUI : MonoBehaviour
         TabletTaskSession task = FindTabletTask(appId);
         if (task == null) return;
         if (task == activeTabletTask) ReturnToTabletHome();
+        NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
         if (task.Root != null)
         {
             task.Root.Clear();
             if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
         }
+        task.Pages.Clear();
+        task.SuspendedPageBuilders = null;
+        task.Snapshot = null;
+        task.AppState = null;
         tabletTasks.Remove(task);
         RenderRecentTasks();
         if (tabletTasks.Count == 0) CloseRecentTasks();
@@ -2079,6 +2181,7 @@ public class GameMainUI : MonoBehaviour
         for (int i = tabletTasks.Count - 1; i >= 0; i--)
         {
             var task = tabletTasks[i];
+            NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
             if (task.Root != null)
             {
                 task.Root.Clear();
@@ -2132,7 +2235,7 @@ public class GameMainUI : MonoBehaviour
                 dispatchingSystemBack = false;
             }
         }
-        if (!handled) ReturnToTabletHome();
+        if (!handled && !ReturnToPreviousTabletPage()) ReturnToTabletHome();
     }
 
     private bool CancelTabletRebind()
@@ -2237,7 +2340,18 @@ public class GameMainUI : MonoBehaviour
         {
             TabletTaskSession task = tabletTasks[i];
             if (task == activeTabletTask || task.Root == null) continue;
+            var pageBuilders = new List<System.Action>();
+            bool canRebuildPages = true;
+            foreach (TabletPageEntry page in task.Pages)
+            {
+                if (page.Rebuild == null) { canRebuildPages = false; break; }
+                pageBuilders.Add(page.Rebuild);
+            }
+            if (!canRebuildPages) continue;
             task.Snapshot = TabletViewStateSnapshot.Capture(task.Root);
+            if (!NotifyTaskLifecycle(() => task.Lifecycle.OnViewReclaimed(task.Root))) continue;
+            task.SuspendedPageBuilders = pageBuilders.Count == 0 ? null : pageBuilders;
+            task.Pages.Clear();
             task.Root.Clear();
             if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
             task.Root = null;
@@ -2442,9 +2556,9 @@ public class GameMainUI : MonoBehaviour
         }
     }
 
-    private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null)
+    private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null, bool clearLayer = true)
     {
-        appLayer.Clear();
+        if (clearLayer) appLayer.Clear();
         // 全屏视窗（Folia / 现代工业暗黑沉浸视听容器：深墨黑、去白色“狗皮膏药”）
         var win = new VisualElement { name = "app-fullscreen-window" };
         win.style.position = Position.Absolute;
@@ -2475,7 +2589,7 @@ public class GameMainUI : MonoBehaviour
         {
             if (onBack != null) onBack();
             else ReturnToTabletHome();
-        }) { text = "◀  返回桌面" };
+        }) { text = onBack == null ? "◀  返回桌面" : "◀  返回" };
         backBtn.style.height = 30;
         backBtn.style.paddingLeft = 14; backBtn.style.paddingRight = 14;
         backBtn.style.fontSize = 12;
@@ -2605,6 +2719,7 @@ public class GameMainUI : MonoBehaviour
         if (task == null)
         {
             task = new TabletTaskSession(name, name);
+            if (name == "音乐") task.Lifecycle = new MusicTabletTaskLifecycle();
             tabletTasks.Add(task);
         }
 
@@ -2638,6 +2753,7 @@ public class GameMainUI : MonoBehaviour
             case "RDA": BuildRDAApp(win); break;
             case "归途": BuildReturnJourneyApp(win); break;
             case "媒姬百科": BuildWikiApp(win); break;
+            case "岁月 · AI对话": BuildSuiyueDialogue(win); break;
             case "设置": BuildSettingsPage(win); break;
             case "笔记": BuildNotesApp(win); break;
             case "相册": BuildGalleryApp(win); break;
@@ -2690,6 +2806,7 @@ public class GameMainUI : MonoBehaviour
 
     public void OpenSystemPanel(TabletSystemPanel panel)
     {
+        ResetSystemGesture();
         if (panel == TabletSystemPanel.None)
         {
             tabletShellState.ClosePanel();
@@ -2730,6 +2847,8 @@ public class GameMainUI : MonoBehaviour
         if (Instance.lockScreen != null) Instance.lockScreen.style.display = DisplayStyle.None;
         if (Instance.desktop != null) Instance.desktop.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
+        Instance.tabletShellView?.SetVisible(true);
+        Instance.LaunchApp("设置");
         TabletSettingsAppUI.ShowTipsPage(termId);
     }
 
@@ -2780,7 +2899,7 @@ public class GameMainUI : MonoBehaviour
     }
 
     // ============ App: RDA（已抽离至 TabletRDAAppUI）============
-    private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, () => { ReturnToTabletHome(); ShowStoryPage(); }, () => { ReturnToTabletHome(); ShowAffairsPage(); }, ShowBackupToast);
+    private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
 
     // ============ App: 归途（已抽离至 TabletReturnJourneyUI）============
     private static (string scriptId, string episode, string title, string desc)[] PrologueEpisodes => TabletReturnJourneyUI.PrologueEpisodes;
@@ -2822,9 +2941,41 @@ public class GameMainUI : MonoBehaviour
     private void BuildMapApp(VisualElement win) => TabletSystemToolsAppUI.BuildMapApp(win);
     private void BuildPlaceholderApp(VisualElement win, string name) => TabletSystemToolsAppUI.BuildPlaceholderApp(win, name);
 
-    public VisualElement BuildInnerPanel(string title)
+    public VisualElement BuildInnerPanel(string title, System.Action rebuild = null)
     {
-        return BuildFullScreenAppContainer(title);
+        if (activeTabletTask == null || appLayer == null) return null;
+        List<TabletPageEntry> pages = activeTabletTask.Pages;
+        System.Action back = () => { if (!ReturnToPreviousTabletPage()) ReturnToTabletHome(); };
+        if (pages.Count > 0 && pages[pages.Count - 1].Title == title)
+        {
+            TabletPageEntry current = pages[pages.Count - 1];
+            current.View?.RemoveFromHierarchy();
+            current.View = BuildFullScreenAppContainer(title, null, back, false);
+            current.Rebuild = rebuild;
+            return current.View;
+        }
+
+        VisualElement previous = appLayer.childCount > 0 ? appLayer[appLayer.childCount - 1] : null;
+        Focusable previousFocus = root.panel?.focusController.focusedElement;
+        if (previous != null) previous.style.display = DisplayStyle.None;
+        VisualElement view = BuildFullScreenAppContainer(title, null, back, false);
+        pages.Add(new TabletPageEntry { Title = title, View = view, Rebuild = rebuild, PreviousFocus = previousFocus });
+        return view;
+    }
+
+    private bool ReturnToPreviousTabletPage()
+    {
+        if (activeTabletTask == null || appLayer == null || activeTabletTask.Pages.Count == 0) return false;
+        List<TabletPageEntry> pages = activeTabletTask.Pages;
+        TabletPageEntry current = pages[pages.Count - 1];
+        current.View?.RemoveFromHierarchy();
+        pages.RemoveAt(pages.Count - 1);
+        VisualElement previous = appLayer.childCount > 0 ? appLayer[appLayer.childCount - 1] : null;
+        if (previous != null) previous.style.display = DisplayStyle.Flex;
+        if (current.PreviousFocus is VisualElement focused && previous != null && previous.Contains(focused) &&
+            focused.panel == root.panel) focused.Focus();
+        else appLayer.Focus();
+        return true;
     }
 
     private void Update()

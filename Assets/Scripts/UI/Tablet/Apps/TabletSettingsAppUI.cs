@@ -67,9 +67,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         else Debug.Log("[Settings] " + msg);
     }
 
-    private static VisualElement BuildInnerPanel(string title)
+    private static VisualElement BuildInnerPanel(string title, Action rebuild)
     {
-        if (GameMainUI.Instance != null) return GameMainUI.Instance.BuildInnerPanel(title);
+        if (GameMainUI.Instance != null) return GameMainUI.Instance.BuildInnerPanel(title, rebuild);
         return null;
     }
 
@@ -1660,7 +1660,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         else
         {
-            win = BuildInnerPanel("备份与恢复");
+            win = BuildInnerPanel("备份与恢复", () => ShowBackupRestorePage());
         }
         if (win == null) return;
         win.name = "backup-restore-page";
@@ -1842,7 +1842,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// <summary>左索引右详情（Maitetsu TIPS 式，平板玻璃风）。</summary>
     public static void ShowTipsPage(string termId = null)
     {
-        var win = BuildInnerPanel("术语图鉴");
+        string selectedTermId = termId;
+        var win = BuildInnerPanel("术语图鉴", () => ShowTipsPage(selectedTermId));
         if (win == null) return;
         win.style.width = 900;
         win.style.height = 560;
@@ -1856,7 +1857,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         win.Add(body);
 
         // 左：按拼音首字母分组的可滚动索引
-        var indexScroll = new ScrollView();
+        var indexScroll = new ScrollView { name = "tips-index" };
         indexScroll.style.width = 230;
         indexScroll.style.flexShrink = 0;
         indexScroll.style.marginRight = 16;
@@ -1868,7 +1869,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         body.Add(indexScroll);
 
         // 右：详情（可滚动）
-        var detail = new ScrollView();
+        var detail = new ScrollView { name = "tips-detail" };
         detail.style.flexGrow = 1;
         detail.style.paddingLeft = 14; detail.style.paddingRight = 10;
         body.Add(detail);
@@ -1898,7 +1899,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 indexScroll.Add(head);
             }
 
-            var row = new Label(t.name);
+            var row = new Label(t.name) { name = "tips-term-" + t.id };
             row.style.fontSize = 15;
             row.style.color = GlassText;
             row.style.unityFontDefinition = Fd();
@@ -1911,6 +1912,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (selectedRow != null) selectedRow.style.backgroundColor = StyleKeyword.Null;
                 selectedRow = row;
+                selectedTermId = captured.id;
                 row.style.backgroundColor = GlassBgHover;
                 detail.Clear();
                 RenderTipsDetail(detail, captured);
@@ -1943,7 +1945,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         titleBar.style.borderBottomLeftRadius = 6; titleBar.style.borderBottomRightRadius = 6;
         titleBar.style.paddingLeft = 12; titleBar.style.paddingRight = 12;
         titleBar.style.paddingTop = 6; titleBar.style.paddingBottom = 6;
-        var title = new Label(t.name);
+        var title = new Label(t.name) { name = "tips-detail-title" };
         title.style.fontSize = 20;
         title.style.color = new Color(1f, 0.86f, 0.59f, 1f);
         title.style.unityFontDefinition = Fd();
@@ -2083,7 +2085,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public static void ShowAffairsPage()
     {
         // 事务页（简单占位）
-        var panel = BuildInnerPanel("事务");
+        var panel = BuildInnerPanel("事务", ShowAffairsPage);
         if (panel == null) return;
         var p = new Label("事务功能开发中（绑定经营系统后开放）。");
         p.style.fontSize = 15; p.style.color = GlassTextDim;
@@ -2093,7 +2095,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public static void ShowStoryPage()
     {
-        var panel = BuildInnerPanel("剧情");
+        var panel = BuildInnerPanel("剧情", ShowStoryPage);
         if (panel == null) return;
         var btn = new Button(() => { if (GameMainUI.Instance != null) GameMainUI.Instance.gameObject.SetActive(true); MainStoryUI.Show(); }) { text = "打开 Main Story" };
         btn.style.width = 240; btn.style.height = 50;
@@ -2110,7 +2112,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public static void ShowAppManagementPage()
     {
-        var win = BuildInnerPanel("应用管理");
+        var win = BuildInnerPanel("应用管理", ShowAppManagementPage);
         if (win == null) return;
         win.style.height = 480;
 
