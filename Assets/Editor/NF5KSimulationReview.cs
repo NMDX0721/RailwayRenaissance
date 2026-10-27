@@ -146,6 +146,11 @@ public static class NF5KSimulationReview
             Assert(lights.MainPower&&lights.BatteryPower,"Backend generator/battery supply not projected to lighting");
             Assert(ClickDriving(state,Driving(CabDrivingAction.Reverser)),"Physical reverser rejected ready engine");
             state.SetBrakeNotch(BrakeNotch.Run);driver.ParkingBrake=false;
+            Assert(state.SetThrottle(6),"Parking reduction setup failed");driver.ParkingBrake=true;
+            Assert(!state.SetThrottle(7)&&state.ThrottleNotch==6,"Parking interlock accepted a throttle increase");
+            for(int notch=5;notch>=0;notch--)Assert(throttle.Activate(true)&&state.ThrottleNotch==notch,"Parking interlock prevented throttle return to zero");
+            Assert(!state.SetThrottle(1)&&state.ThrottleNotch==0,"Parking interlock accepted traction from zero");
+            driver.ParkingBrake=false;Assert(state.ThrottleNotch==0,"Releasing parking restored a stale throttle notch");
             for(int i=0;i<6;i++)Assert(ClickDriving(state,throttle),"Physical throttle failed");
             throttle.ApplyVisual();Assert(state.ThrottleNotch==6,"Throttle detents invalid");driver.Advance(30);
             Assert(state.CurrentSpeedKmh>5&&state.EngineRpm>600&&state.TractionCurrentAmps>0,"Existing facade/gauge outputs not driven");
@@ -174,7 +179,15 @@ public static class NF5KSimulationReview
             Assert(!Driving(CabDrivingAction.Reverser).Activate(true)&&state.Reverser==ReverserPosition.Forward,"Physical moving reversal accepted");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake)),"Independent brake ray missed");driver.Advance(3);
             Assert(state.IndependentBrakeNotch==.25f&&driver.Model.State.LocoCylinderKpa>10&&driver.Model.State.TrainCylinderKpa<5,"Physical independent brake not isolated");
+            int throttleBeforeBrakeReduction=state.ThrottleNotch;
+            Assert(state.BrakeCylinderKpa>=20,"Independent brake did not reach the traction-interlock threshold");
+            Assert(throttle.Activate(true)&&state.ThrottleNotch==throttleBeforeBrakeReduction-1,"Traction interlock prevented a positive-notch throttle reduction");
+            Assert(!state.SetThrottle(throttleBeforeBrakeReduction)&&state.ThrottleNotch==throttleBeforeBrakeReduction-1,"Independent brake accepted a throttle increase");
+            while(state.ThrottleNotch>0){int next=state.ThrottleNotch-1;Assert(throttle.Activate(true)&&state.ThrottleNotch==next,"Independent brake prevented throttle return to zero");}
+            Assert(!state.SetThrottle(1)&&state.ThrottleNotch==0,"Independent brake accepted traction from zero");
             Assert(ClickDriving(state,Driving(CabDrivingAction.IndependentBrake),true),"Independent release ray missed");
+            Assert(state.ThrottleNotch==0,"Independent brake release restored a stale throttle notch");
+            Debug.Log("PR6_THROTTLE_INTERLOCK_OK: parking and independent brake reject increases, allow every reduction to zero, and retain zero on release");
             string saved=driver.CaptureCheckpoint();driver.Advance(1);driver.RestoreCheckpoint(saved);
             if(railMotion!=null){railMotion.ApplyBackend(true);Assert(Math.Abs(railMotion.Station-driver.Model.State.PositionM)<1e-6,"Restored checkpoint left stale visual position");}
             Assert(Math.Abs(driver.Model.State.SpeedMps*3.6-state.CurrentSpeedKmh)<1e-4,"Adapter checkpoint projection failed");

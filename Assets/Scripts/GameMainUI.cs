@@ -2929,7 +2929,16 @@ public class GameMainUI : MonoBehaviour
     private void BuildClockApp(VisualElement win) => TabletSystemToolsAppUI.BuildClockApp(win);
     private void BuildCalendarApp(VisualElement win) => TabletSystemToolsAppUI.BuildCalendarApp(win);
     private void BuildWeatherApp(VisualElement win) => TabletSystemToolsAppUI.BuildWeatherApp(win);
-    private void BuildCalculatorApp(VisualElement win) => TabletSystemToolsAppUI.BuildCalculatorApp(win);
+    private void BuildCalculatorApp(VisualElement win)
+    {
+        var engine = activeTabletTask?.AppState as TabletSystemToolsAppUI.TabletCalculatorEngine;
+        if (engine == null)
+        {
+            engine = new TabletSystemToolsAppUI.TabletCalculatorEngine();
+            if (activeTabletTask != null) activeTabletTask.AppState = engine;
+        }
+        TabletSystemToolsAppUI.BuildCalculatorApp(win, engine);
+    }
     private void BuildMijiaApp(VisualElement win) => TabletSystemToolsAppUI.BuildMijiaApp(win);
     private void BuildSecurityApp(VisualElement win) => TabletSystemToolsAppUI.BuildSecurityApp(win);
     private void BuildBrowserApp(VisualElement win) => TabletSystemToolsAppUI.BuildBrowserApp(win);

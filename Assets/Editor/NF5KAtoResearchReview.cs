@@ -75,9 +75,19 @@ public static class NF5KAtoPlayReview
             ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);string continued=driver.CaptureCheckpoint();
             ato.RestoreResearchCheckpoint(research);ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);
             Require(driver.CaptureCheckpoint()==continued,"Research adapter resume diverged");
+            ato.SetPaused(false);driver.Advance(.5);
+            Require(state.ThrottleNotch>0,"ATO traction was not restored before paused manual brake test");
+            ato.SetPaused(true);CabManualControlIntent.Notify(state);state.SetBrakeNotch(BrakeNotch.Emergency);
+            Require(!ato.Active&&state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Paused manual emergency brake did not take over");
+            string pausedManual=ato.CaptureResearchCheckpoint();
+            var manualEnvelope=JsonUtility.FromJson<CabAtoResearchDriver.ResearchCheckpoint>(pausedManual);
+            var manualPhysics=JsonUtility.FromJson<CabSimulationDriver.Checkpoint>(manualEnvelope.physics);
+            var manualInput=RailwayRenaissance.Cab.Simulation.SimulationCodec.Decode<RailwayRenaissance.Cab.Simulation.SimulationInput>(manualPhysics.exactInput);
+            Require(manualInput.Brake==(int)BrakeNotch.Emergency&&manualInput.Throttle==0,"Paused manual controls were stale in the saved checkpoint");
+            ato.RestoreResearchCheckpoint(pausedManual);
+            Require(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Paused checkpoint restore discarded the emergency brake");
+            Debug.Log("ATO_PAUSED_MANUAL_CHECKPOINT_OK: emergency brake and zero throttle survive capture and restore without advancing physics");
             ato.SetPaused(false);
-            state.SetBrakeNotch(BrakeNotch.Emergency);driver.Advance(.02);
-            Require(!ato.Active&&state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Manual emergency takeover lost");
             state.SetBrakeNotch(BrakeNotch.Run);driver.Advance(30);
             Require(ato.Engage(),"Second engagement failed");
             for(int i=0;i<15000&&ato.Active;i++)driver.Advance(.02);
@@ -118,11 +128,11 @@ public static class NF5KAtoPlayReview
             File.WriteAllLines("tools/compile/ato_v2_play_acceptance.txt",v2Results);
             Debug.Log("ATO_V2_PLAY_ACCEPTED: three modes, full replay, facade and pure-physics manual restore");
             Directory.CreateDirectory("tools/compile");
-            File.WriteAllText("tools/compile/ato_acceptance_"+DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ")+".json",JsonUtility.ToJson(new Result{errorM=ato.SignedErrorMeters,coldGuard=true,actualCommands=true,manualTakeover=true,stopped=true,panelGuard=true},true));
+            File.WriteAllText("tools/compile/ato_acceptance_"+DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ")+".json",JsonUtility.ToJson(new Result{errorM=ato.SignedErrorMeters,coldGuard=true,actualCommands=true,manualTakeover=true,stopped=true,panelGuard=true,pausedManualCheckpoint=true},true));
             Debug.Log("ATO_PLAY_ACCEPTED: actual facade commands, takeover, nominal stop error="+ato.SignedErrorMeters);
         }
         catch(Exception e){SessionState.SetBool(Failed,true);Debug.LogException(e);}
         EditorApplication.isPlaying=false;
     }
-    [Serializable]sealed class Result{public double errorM;public bool coldGuard,actualCommands,manualTakeover,stopped,panelGuard;}
+    [Serializable]sealed class Result{public double errorM;public bool coldGuard,actualCommands,manualTakeover,stopped,panelGuard,pausedManualCheckpoint;}
 }

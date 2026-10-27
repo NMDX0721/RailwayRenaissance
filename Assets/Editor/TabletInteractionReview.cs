@@ -19,7 +19,8 @@ public static class TabletInteractionReview
             CheckKeyboardRebind();
             CheckLiveTaskSwitch();
             CheckMusicViewRelease();
-            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1");
+            CheckBackupCompleteness();
+            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1 calculator=1 backup_completeness=1");
             EditorApplication.Exit(0);
         }
         catch (Exception ex)
@@ -27,6 +28,47 @@ public static class TabletInteractionReview
             Debug.LogException(ex);
             EditorApplication.Exit(1);
         }
+    }
+
+    private sealed class ReviewStorage : IKeyValueStorage
+    {
+        internal readonly System.Collections.Generic.Dictionary<string, string> Values = new();
+        internal int Writes;
+        public bool HasKey(string key) => Values.ContainsKey(key);
+        public string GetString(string key, string fallback = "") => Values.TryGetValue(key, out var value) ? value : fallback;
+        public void SetString(string key, string value) { Writes++; Values[key] = value; }
+        public void DeleteKey(string key) { Writes++; Values.Remove(key); }
+        public void Save() { Writes++; }
+    }
+
+    private static void CheckBackupCompleteness()
+    {
+        var storage = new ReviewStorage();
+        storage.Values["VN_Save_0"] = "save";
+        storage.Values["Achievements_Data"] = "achievements";
+        storage.Values[TabletLocalBackupService.ManualIndexKey] = "bm_20261027000000000";
+        storage.Values[TabletLocalBackupService.ManualKeyPrefix + "bm_20261027000000000"] = "bookmark";
+        string valid = TabletLocalBackupService.CreateBackupPayload(storage);
+        var partial = JsonUtility.FromJson<TabletLocalBackupService.BackupPayloadV2>(valid);
+        partial.fixedItems.RemoveAt(0);
+        string missingKey = JsonUtility.ToJson(partial);
+        int invalidCase = 0;
+        foreach (string invalid in new[] { "{\"schemaVersion\":2}", missingKey,
+            valid.Replace("\"manualBookmarks\"", "\"missingBookmarks\""),
+            valid.Replace("\"manualIndex\"", "\"missingIndex\""),
+            valid.Replace("\"fixedItems\"", "\"missingFixed\"") })
+        {
+            Assert(!TabletLocalBackupService.RestoreBackup(storage, invalid, out _, out _), "incomplete backup rejected case " + invalidCase);
+            Assert(storage.Writes == 0 && storage.Values.Count == 4 && storage.Values["VN_Save_0"] == "save",
+                   "invalid backup cannot mutate saves, achievements or bookmarks");
+            invalidCase++;
+        }
+        Assert(TabletLocalBackupService.RestoreBackup(storage, valid, out _, out _), "complete backup round trip");
+        var empty = new ReviewStorage();
+        Assert(TabletLocalBackupService.RestoreBackup(storage, TabletLocalBackupService.CreateBackupPayload(empty), out _, out _),
+               "explicit complete empty snapshot remains supported");
+        Assert(!storage.HasKey("VN_Save_0") && !storage.HasKey("Achievements_Data") && !storage.HasKey(TabletLocalBackupService.ManualIndexKey),
+               "complete empty snapshot retains exact deletion semantics");
     }
 
     public static void ScrollBatch()
@@ -300,6 +342,26 @@ public static class TabletInteractionReview
             var reopened = (TabletTaskSession)find.Invoke(host, new object[] { "岁月 · AI对话" });
             Assert(!reopened.Root.Q("suiyue-chat-area").Query<Label>("suiyue-message").ToList()
                 .Exists(label => label.text == "验收消息"), "closing task clears dialogue session");
+
+            launch.Invoke(host, new object[] { "计算器" });
+            var calculator = (TabletTaskSession)find.Invoke(host, new object[] { "计算器" });
+            var engine = calculator.Root.Q("calc-card").userData as TabletSystemToolsAppUI.TabletCalculatorEngine;
+            engine.InputDigit('1'); engine.InputDigit('2'); engine.InputOperator('+'); engine.InputDigit('3');
+            string beforeDisplay = engine.CurrentDisplay, beforeExpression = engine.ExpressionText;
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { true });
+            Assert(calculator.IsSuspended, "calculator view reclaimed under critical pressure");
+            activate.Invoke(host, new object[] { calculator });
+            Assert(ReferenceEquals(calculator.Root.Q("calc-card").userData, engine), "calculator retained engine reused");
+            Assert(calculator.Root.Q<Label>("calc-display-main").text == beforeDisplay &&
+                   calculator.Root.Q<Label>("calc-display-expression").text == beforeExpression, "calculator display restored");
+            engine.InputEquals();
+            Assert(engine.CurrentDisplay == "15" && calculator.Root.Q<Label>("calc-display-main").text == "15",
+                   "pending calculator operation and rebuilt event subscription survive reclamation");
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "计算器" });
+            launch.Invoke(host, new object[] { "计算器" });
+            calculator = (TabletTaskSession)find.Invoke(host, new object[] { "计算器" });
+            Assert(calculator.Root.Q<Label>("calc-display-main").text == "0", "closed calculator starts a fresh task");
         }
         finally
         {

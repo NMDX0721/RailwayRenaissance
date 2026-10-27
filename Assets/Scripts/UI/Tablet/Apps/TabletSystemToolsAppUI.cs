@@ -593,7 +593,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     }
 
     // ============ App: 计算器 ============
-    public static void BuildCalculatorApp(VisualElement win)
+    public static void BuildCalculatorApp(VisualElement win, TabletCalculatorEngine engine = null)
     {
         var body = BuildAppBody(win, "计算器", "基础四则运算");
 
@@ -602,7 +602,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         card.style.width = 420;
         card.style.alignSelf = Align.Center;
 
-        var engine = new TabletCalculatorEngine();
+        engine ??= new TabletCalculatorEngine();
         card.userData = engine;
 
         // 显示屏区域
@@ -653,7 +653,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
         }
 
-        engine.OnStateChanged += UpdateUI;
+        // A retained task engine must not retain a discarded view through its event.
+        card.RegisterCallback<AttachToPanelEvent>(_ => { engine.OnStateChanged -= UpdateUI; engine.OnStateChanged += UpdateUI; UpdateUI(); });
+        card.RegisterCallback<DetachFromPanelEvent>(_ => engine.OnStateChanged -= UpdateUI);
+        UpdateUI();
 
         var buttonRows = new[]
         {

@@ -95,7 +95,7 @@ namespace RailwayRenaissance.Cab
             public int version=2; public string exactConfig,exactState,exactInput,remainder;
         }
         public string CaptureCheckpoint()
-        {EnsureInitialized();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
+        {EnsureInitialized();if(SimulationPaused)ReadCommands();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
         // Restore via a cold/paused scene; global game slot integration is intentionally separate.
         public static void ValidateCheckpoint(string json)
         {

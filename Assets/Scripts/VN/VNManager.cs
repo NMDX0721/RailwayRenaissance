@@ -1958,14 +1958,14 @@ public class VNManager : MonoBehaviour
             int len = currentScript.scenes[si].d?.Length ?? 0;
             if (target < acc + len)
             {
-                OnBacklogEntryClicked(si, target - acc);
+                OnBacklogEntryClicked(si, target - acc, true);
                 return;
             }
             acc += len;
         }
         int last = currentScript.scenes.Length - 1;
         var d = currentScript.scenes[last].d;
-        OnBacklogEntryClicked(last, Mathf.Max(0, (d?.Length ?? 1) - 1));
+        OnBacklogEntryClicked(last, Mathf.Max(0, (d?.Length ?? 1) - 1), true);
     }
 
     /// <summary>进度条松手后补显示：当前句若是日期地点卡则补弹（拖动期间被抑制）。</summary>
@@ -3021,13 +3021,21 @@ public class VNManager : MonoBehaviour
 
     private void OnBacklogEntryClicked(int sceneIndex, int dialogueIndex)
     {
+        OnBacklogEntryClicked(sceneIndex, dialogueIndex, false);
+    }
+
+    private void OnBacklogEntryClicked(int sceneIndex, int dialogueIndex, bool preserveProgressFrontier)
+    {
         if (!isScriptRunning || currentScript == null) return;
         if (sceneIndex < 0 || sceneIndex >= currentScript.scenes.Length) return;
 
         StopAutoPlay();
         currentSceneIndex = sceneIndex;
         currentDialogueIndex = dialogueIndex;
-        ResetProgressShown();
+        if (!preserveProgressFrontier)
+        {
+            ResetProgressShown();
+        }
 
         // 恢复场景背景和BGM
         var scene = currentScript.scenes[sceneIndex];

@@ -14,10 +14,12 @@ namespace RailwayRenaissance.Cab
         [SerializeField] ExteriorLightMode mode;
         [SerializeField] bool powerAvailable = true;
         [SerializeField] bool reviewControls = true;
+        static readonly Rect ReviewPanelRect = new Rect(16,16,220,240);
         MaterialPropertyBlock properties;
         bool lastLegacySwitch;
         [SerializeField] ExteriorLightMode previousOnMode = ExteriorLightMode.Dim;
         public ExteriorLightMode Mode => mode;
+        public bool BlocksPointer(Vector2 guiPoint) => isActiveAndEnabled && reviewControls && ReviewPanelRect.Contains(guiPoint);
         public bool PowerAvailable => powerAvailable;
         public Light[] Beams => beams;
 
@@ -87,7 +89,7 @@ namespace RailwayRenaissance.Cab
             if (!reviewControls) return;
             if (reviewFont == null) reviewFont = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var previousFont = GUI.skin.font; if (reviewFont != null) GUI.skin.font = reviewFont;
-            GUILayout.BeginArea(new Rect(16,16,220,240), GUI.skin.box);
+            GUILayout.BeginArea(ReviewPanelRect, GUI.skin.box);
             GUILayout.Label("NF-5K 外部照明（L 切换）");
             string[] labels = { "关闭", "白色标志灯", "弱光", "强光", "红色尾灯" };
             for (int i = 0; i < labels.Length; i++)

@@ -45,10 +45,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public sealed class BackupPayloadV2
         {
             public int schemaVersion = CurrentSchemaVersion;
-            public string createdAt = "";
-            public List<FixedItemV2> fixedItems = new List<FixedItemV2>();
-            public string manualIndex = "";
-            public List<ManualBookmarkV2> manualBookmarks = new List<ManualBookmarkV2>();
+            public string createdAt;
+            public List<FixedItemV2> fixedItems;
+            public string manualIndex;
+            public List<ManualBookmarkV2> manualBookmarks;
         }
 
         [Serializable]
@@ -127,7 +127,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var payload = new BackupPayloadV2
             {
                 schemaVersion = CurrentSchemaVersion,
-                createdAt = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+                createdAt = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                fixedItems = new List<FixedItemV2>(),
+                manualBookmarks = new List<ManualBookmarkV2>()
             };
 
             // 1. Fixed archive items
@@ -230,7 +232,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     BackupPayloadV2 v2;
                     try
                     {
-                        v2 = JsonUtility.FromJson<BackupPayloadV2>(trimmed);
+                        // Unity synthesizes empty collections for null fields, even
+                        // during overwrite. Non-empty sentinels expose omitted fields.
+                        v2 = new BackupPayloadV2
+                        {
+                            createdAt = "__missing__", manualIndex = "__missing__",
+                            fixedItems = new List<FixedItemV2> { new FixedItemV2() },
+                            manualBookmarks = new List<ManualBookmarkV2> { new ManualBookmarkV2() }
+                        };
+                        JsonUtility.FromJsonOverwrite(trimmed, v2);
                     }
                     catch (Exception ex)
                     {
@@ -238,9 +248,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         return false;
                     }
 
-                    if (v2 == null)
+                    if (v2 == null || string.IsNullOrWhiteSpace(v2.createdAt) || v2.createdAt == "__missing__" ||
+                        v2.fixedItems == null || v2.manualIndex == null || v2.manualIndex == "__missing__" || v2.manualBookmarks == null)
                     {
-                        error = "V2 备份反序列化为空对象";
+                        error = "V2 备份缺少完整快照结构，未修改现有档案";
                         return false;
                     }
 
@@ -250,7 +261,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     {
                         foreach (var item in v2.fixedItems)
                         {
-                            if (item == null || string.IsNullOrEmpty(item.key))
+                            if (item == null || string.IsNullOrEmpty(item.key) || item.val == null)
                             {
                                 error = "固定档案项包含空键名";
                                 return false;
@@ -268,13 +279,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         }
                     }
 
+                    if (!seenFixed.SetEquals(FixedWhitelistSet))
+                    {
+                        error = "V2 备份缺少固定档案存在性映射，未修改现有档案";
+                        return false;
+                    }
+
                     // Validate manualBookmarks
                     var seenManual = new HashSet<string>();
                     if (v2.manualBookmarks != null)
                     {
                         foreach (var mb in v2.manualBookmarks)
                         {
-                            if (mb == null || string.IsNullOrEmpty(mb.id))
+                            if (mb == null || string.IsNullOrEmpty(mb.id) || mb.val == null)
                             {
                                 error = "手动书签项包含空 ID";
                                 return false;
