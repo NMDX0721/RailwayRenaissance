@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-28 PR #7 平板审查修正：`TabletNotificationStorage` 失败后只读；最近任务隔离键盘焦点；RDA/归途前台重建数据；图鉴重建状态与视图分离；高斯模糊 shader 位于 `Resources/UI/TabletGaussianBlur.shader`。见 `TABLET_SYSTEM_SHELL.md`。
+
 2026-10-27 平板：`GameMainUI`、`TabletEdgeGesture`、`TabletTaskSession` 提供系统导航、页面栈、快照与任务生命周期；计算器引擎保存在任务 AppState，回收视图时解除事件订阅。`TabletLocalBackupService` 在写入前拒绝不完整 V2 快照及固定键映射。见 [平板壳层](TABLET_SYSTEM_SHELL.md) 和 [PR7 修复记录](PR7_REVIEW_REPAIR.md)。
 
 2026-10-26 PR #6：同步main既有牵引退档/灯光面板防穿透/停机回中立修复，扩展NF5KSimulationReview和NF5KContextInteractionReview实际Play回归。见[审查修复与验证](PR6_REVIEW_REPAIR.md)。

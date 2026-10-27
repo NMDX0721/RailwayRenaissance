@@ -1840,10 +1840,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     }
 
     /// <summary>左索引右详情（Maitetsu TIPS 式，平板玻璃风）。</summary>
-    public static void ShowTipsPage(string termId = null)
+    private sealed class TipsSelection { public string Id; }
+    private static Action TipsRebuilder(TipsSelection selection) => () => ShowTipsPageWithSelection(selection);
+    public static void ShowTipsPage(string termId = null) => ShowTipsPageWithSelection(new TipsSelection { Id = termId });
+    private static void ShowTipsPageWithSelection(TipsSelection selection)
     {
-        string selectedTermId = termId;
-        var win = BuildInnerPanel("术语图鉴", () => ShowTipsPage(selectedTermId));
+        string termId = selection.Id;
+        var win = BuildInnerPanel("术语图鉴", TipsRebuilder(selection));
         if (win == null) return;
         win.style.width = 900;
         win.style.height = 560;
@@ -1912,7 +1915,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (selectedRow != null) selectedRow.style.backgroundColor = StyleKeyword.Null;
                 selectedRow = row;
-                selectedTermId = captured.id;
+                selection.Id = captured.id;
                 row.style.backgroundColor = GlassBgHover;
                 detail.Clear();
                 RenderTipsDetail(detail, captured);

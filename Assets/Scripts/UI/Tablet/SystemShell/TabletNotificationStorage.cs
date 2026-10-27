@@ -52,6 +52,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 return true;
             }
 
+            // Preserve an existing file unless it has been read and validated.
+            IsReadOnly = true;
+
             string rawJson;
             try
             {
@@ -104,6 +107,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             quietMode = data.quietMode;
             ParseItems(data.notifications, notifications, ref nextId);
+            IsReadOnly = false;
             return true;
         }
 

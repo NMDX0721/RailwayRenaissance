@@ -20,6 +20,9 @@ public static class TabletInteractionReview
             CheckLiveTaskSwitch();
             CheckMusicViewRelease();
             CheckBackupCompleteness();
+            CheckDamagedNotificationStorage();
+            Assert(Resources.Load<Shader>("UI/TabletGaussianBlur") != null, "blur shader included in Resources");
+            CheckBlurRendering();
             Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1 calculator=1 backup_completeness=1");
             EditorApplication.Exit(0);
         }
@@ -39,6 +42,49 @@ public static class TabletInteractionReview
         public void SetString(string key, string value) { Writes++; Values[key] = value; }
         public void DeleteKey(string key) { Writes++; Values.Remove(key); }
         public void Save() { Writes++; }
+    }
+
+    private static void CheckBlurRendering()
+    {
+        var input = new Texture2D(32, 32, TextureFormat.RGBA32, false);
+        var source = new RenderTexture(32, 32, 0);
+        var readback = new Texture2D(32, 32, TextureFormat.RGBA32, false);
+        var previous = RenderTexture.active;
+        try
+        {
+            for (int y = 0; y < 32; y++) for (int x = 0; x < 32; x++) input.SetPixel(x, y, x < 16 ? Color.black : Color.white);
+            input.Apply(); source.Create(); Graphics.Blit(input, source);
+            using (var blur = new UI.Tablet.Rendering.TabletGaussianBlur { Downsample = 1 })
+            {
+                Assert(blur.IsSupported, "blur shader supported: " + blur.LastError);
+                var result = blur.Process(source);
+                Assert(result != null && result != source, "blur creates a distinct result");
+                RenderTexture.active = result; readback.ReadPixels(new Rect(0, 0, 32, 32), 0, 0); readback.Apply();
+                float left = readback.GetPixel(15, 16).grayscale, right = readback.GetPixel(16, 16).grayscale;
+                Assert(left > .05f && right < .95f && right > left, "blur blends across a sharp edge");
+            }
+        }
+        finally
+        {
+            RenderTexture.active = previous; source.Release();
+            UnityEngine.Object.DestroyImmediate(source); UnityEngine.Object.DestroyImmediate(input); UnityEngine.Object.DestroyImmediate(readback);
+        }
+    }
+
+    private static void CheckDamagedNotificationStorage()
+    {
+        string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "tablet-notification-review-" + Guid.NewGuid() + ".json");
+        const string damaged = "{\"schemaVersion\":1,\"notifications\":";
+        try
+        {
+            System.IO.File.WriteAllText(path, damaged);
+            var storage = new TabletNotificationStorage(path);
+            Assert(!storage.Load(out _, out _, out _) && storage.IsReadOnly, "damaged notification file enters read-only mode");
+            Assert(!storage.Save(false, null) && System.IO.File.ReadAllText(path) == damaged, "automatic save preserves damaged file");
+            System.IO.File.WriteAllText(path, "{\"schemaVersion\":1,\"quietMode\":false,\"notifications\":[]}");
+            Assert(storage.Load(out _, out _, out _) && !storage.IsReadOnly && storage.Save(true, null), "successful reload releases read-only mode");
+        }
+        finally { if (System.IO.File.Exists(path)) System.IO.File.Delete(path); }
     }
 
     private static void CheckBackupCompleteness()

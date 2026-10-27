@@ -96,7 +96,10 @@ public class GameMainUI : MonoBehaviour
             Instance.lockScreen.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
         if (Instance.activeTabletTask?.Root != null)
+        {
+            Instance.RefreshProgressDependentTask(Instance.activeTabletTask);
             NotifyTaskLifecycle(() => Instance.activeTabletTask.Lifecycle.OnForeground(Instance.activeTabletTask.Root));
+        }
         // 锁屏已显示 → 后台错帧加载桌面（中间页先行，性能与体验）
         Instance.EnsureDesktopBuilt();
     }
@@ -446,6 +449,13 @@ public class GameMainUI : MonoBehaviour
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
+            if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
+            {
+                if (evt.keyCode == KeyCode.Escape) { CloseRecentTasks(); evt.StopImmediatePropagation(); return; }
+                if (!(evt.target is VisualElement focused) || !recentTasksOverlay.Contains(focused))
+                    evt.StopImmediatePropagation();
+                return;
+            }
             if (evt.keyCode == KeyCode.Escape && tabletShellState.ClosePanel())
             {
                 rebindConsumedFrame = Time.frameCount;
@@ -1822,6 +1832,7 @@ public class GameMainUI : MonoBehaviour
     private TabletTaskSession activeTabletTask;
     private VisualElement systemNavigationBar;
     private VisualElement recentTasksOverlay;
+    private Focusable recentPreviousFocus;
     private ScrollView recentTasksList;
     private IVisualElementScheduledItem navFadeSchedule;
     private float memoryCheckTimer;
@@ -1878,6 +1889,7 @@ public class GameMainUI : MonoBehaviour
         root.Add(systemNavigationBar);
 
         recentTasksOverlay = new VisualElement { name = "tablet-recent-tasks-overlay" };
+        recentTasksOverlay.focusable = true;
         recentTasksOverlay.style.position = Position.Absolute;
         recentTasksOverlay.style.left = 0;
         recentTasksOverlay.style.right = 0;
@@ -2053,6 +2065,7 @@ public class GameMainUI : MonoBehaviour
         else
         {
             appLayer = task.Root;
+            RefreshProgressDependentTask(task);
         }
         task.LastActivated = ++tabletActivationSequence;
         task.Root.style.display = DisplayStyle.Flex;
@@ -2071,20 +2084,37 @@ public class GameMainUI : MonoBehaviour
         CheckTabletMemoryBudget(false);
     }
 
+    private void RefreshProgressDependentTask(TabletTaskSession task)
+    {
+        if (task?.Root == null || (task.AppId != "归途" && task.AppId != "RDA") || task.Root.childCount == 0) return;
+        var content = task.Root[0].Q<VisualElement>("app-content");
+        if (content == null) return;
+        var snapshot = TabletViewStateSnapshot.Capture(content);
+        content.Clear();
+        if (task.AppId == "归途") BuildReturnJourneyApp(content);
+        else BuildRDAApp(content);
+        snapshot.Restore(content);
+    }
+
     private void OpenRecentTasks()
     {
-        if (tabletTasks.Count == 0 || recentTasksOverlay == null) return;
+        if (tabletTasks.Count == 0 || recentTasksOverlay == null || recentTasksOverlay.style.display == DisplayStyle.Flex) return;
         CancelTabletRebind();
         tabletShellState.ClosePanel();
+        recentPreviousFocus = root.panel?.focusController.focusedElement as Focusable;
         RenderRecentTasks();
         recentTasksOverlay.style.display = DisplayStyle.Flex;
         recentTasksOverlay.BringToFront();
         systemNavigationBar?.BringToFront();
+        recentTasksOverlay.Focus();
     }
 
     private void CloseRecentTasks()
     {
-        if (recentTasksOverlay != null) recentTasksOverlay.style.display = DisplayStyle.None;
+        if (recentTasksOverlay == null || recentTasksOverlay.style.display != DisplayStyle.Flex) return;
+        recentTasksOverlay.style.display = DisplayStyle.None;
+        if (recentPreviousFocus is VisualElement previous && previous.panel == root.panel) previous.Focus();
+        recentPreviousFocus = null;
     }
 
     private void RenderRecentTasks()
