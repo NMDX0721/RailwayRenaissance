@@ -70,7 +70,8 @@ public static class NF5KAtoPlayReview
             Require(state.ThrottleNotch>0,"ATO did not command real traction");
             ato.SetPaused(true);string research=ato.CaptureResearchCheckpoint();string unchanged=driver.CaptureCheckpoint();
             driver.Advance(1);Require(driver.CaptureCheckpoint()==unchanged,"Paused physics advanced");
-            bool rejected=false;try{ato.RestoreResearchCheckpoint(research.Replace("\"version\":2","\"version\":99"));}catch(ArgumentException){rejected=true;}
+            var legacy1=JsonUtility.FromJson<CabAtoResearchDriver.ResearchCheckpoint>(research);legacy1.version=1;legacy1.useV3=false;legacy1.v3=null;ato.RestoreResearchCheckpoint(JsonUtility.ToJson(legacy1));Require(ato.Active&&driver.CaptureCheckpoint()==unchanged,"V1 research checkpoint compatibility failed");
+            bool rejected=false;try{ato.RestoreResearchCheckpoint(research.Replace("\"version\":3","\"version\":99"));}catch(ArgumentException){rejected=true;}
             Require(rejected&&driver.CaptureCheckpoint()==unchanged,"Bad research checkpoint mutated physics");
             ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);string continued=driver.CaptureCheckpoint();
             ato.RestoreResearchCheckpoint(research);ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);
@@ -104,7 +105,8 @@ public static class NF5KAtoPlayReview
             foreach(AtoObjective mode in Enum.GetValues(typeof(AtoObjective)))
             {
                 ato.SetPaused(true);driver.RestoreCheckpoint(preparedPhysics);Require(!ato.Active,"Physical checkpoint retained automatic ownership");ato.SetPaused(false);
-                ato.UseRouteController=true;ato.SelectMode(mode);Require(ato.Engage(),"V2 engagement failed");
+                ato.UseV3=false;ato.UseRouteController=true;ato.SelectMode(mode);Require(ato.Engage(),"V2 engagement failed");
+                if(mode==AtoObjective.Smooth){driver.Advance(.12);ato.SetPaused(true);string original=ato.CaptureResearchCheckpoint();var legacy2=JsonUtility.FromJson<CabAtoResearchDriver.ResearchCheckpoint>(original);legacy2.version=2;legacy2.useV3=false;legacy2.v3=null;ato.RestoreResearchCheckpoint(JsonUtility.ToJson(legacy2));Require(ato.Active,"V2 research checkpoint compatibility failed");ato.SetPaused(false);}
                 bool a=false,b=false,c=false,d=false;
                 for(int i=0;i<18000&&ato.Active;i++)
                 {
@@ -125,11 +127,45 @@ public static class NF5KAtoPlayReview
                 if(mode==AtoObjective.Smooth)Require(a&&b&&c&&d,"Missing V2 checkpoint phases");
                 v2Results.Add(mode+" error="+ato.SignedErrorMeters+" arrival="+ato.RouteState.ArrivalSeconds);
             }
+            foreach(AtoObjective mode in Enum.GetValues(typeof(AtoObjective)))
+            {
+                ato.SetPaused(true);driver.RestoreCheckpoint(preparedPhysics);ato.SetPaused(false);
+                ato.UseV3=true;ato.UseRouteController=true;ato.SelectMode(mode);Require(ato.Engage(),"V3 engagement failed");
+                if(mode==AtoObjective.Smooth){Require(independent.Activate(true)&&!ato.Active&&state.IndependentBrakeNotch==0,"V3 same-setting manual takeover failed");Require(ato.Engage(),"V3 re-engagement failed");}
+                driver.Advance(1);
+                if(mode==AtoObjective.Smooth){var before=ato.RouteV3State;ato.SelectMode(AtoObjective.Punctual);var pending=ato.RouteV3State;Require(pending.Mode==before.Mode&&pending.PendingMode==(int)AtoObjective.Punctual&&pending.BrakeGain==before.BrakeGain,"V3 mode changed early or reset estimator");driver.Advance(.12);Require(ato.RouteV3State.Mode==(int)AtoObjective.Punctual,"V3 mode did not change on control cycle");ato.SelectMode(mode);driver.Advance(.12);}
+                ato.SetPaused(true);string checkpoint=ato.CaptureResearchCheckpoint();
+                var corrupt=JsonUtility.FromJson<CabAtoResearchDriver.ResearchCheckpoint>(checkpoint);var badState=RailwayRenaissance.Cab.Simulation.SimulationCodec.Decode<AtoV3State>(corrupt.v3);badState.BrakeGain=double.NaN;corrupt.v3=RailwayRenaissance.Cab.Simulation.SimulationCodec.Encode(badState);string beforeCorrupt=driver.CaptureCheckpoint();bool invalidV3=false;try{ato.RestoreResearchCheckpoint(JsonUtility.ToJson(corrupt));}catch(ArgumentException){invalidV3=true;}Require(invalidV3&&driver.CaptureCheckpoint()==beforeCorrupt,"V3 corrupt checkpoint changed runtime");
+                ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);string future=driver.CaptureCheckpoint();
+                ato.RestoreResearchCheckpoint(checkpoint);ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);Require(future==driver.CaptureCheckpoint(),"V3 replay diverged");ato.SetPaused(false);
+                bool accelerationPhase=false,coastingPhase=false,brakePhase=false,dwellPhase=false;
+                for(int i=0;i<18000&&ato.Active;i++){
+                    driver.Advance(.02);if(mode!=AtoObjective.Smooth)continue;
+                    var current=driver.Model.State;var stage=ato.RouteV3State;double relative=900+ato.SignedErrorMeters;bool capture=false;
+                    if(!accelerationPhase&&relative>10&&current.SpeedMps>1){accelerationPhase=true;capture=true;}
+                    if(!coastingPhase&&relative>250&&relative<650&&current.Acceleration<-.005&&state.ThrottleNotch==0&&current.SpeedMps>1){coastingPhase=true;capture=true;}
+                    if(!brakePhase&&relative>650&&stage.LastBrake>=2&&current.SpeedMps>1){brakePhase=true;capture=true;}
+                    if(!dwellPhase&&stage.Arrival>=0){dwellPhase=true;capture=true;}
+                    if(capture){ato.SetPaused(true);string stageCheckpoint=ato.CaptureResearchCheckpoint();ato.SetPaused(false);driver.Advance(.4);ato.SetPaused(true);string stageFuture=driver.CaptureCheckpoint();ato.RestoreResearchCheckpoint(stageCheckpoint);ato.SetPaused(false);driver.Advance(.4);ato.SetPaused(true);Require(stageFuture==driver.CaptureCheckpoint(),"V3 phase checkpoint replay diverged");ato.SetPaused(false);}
+                }
+                if(mode==AtoObjective.Smooth)Require(accelerationPhase&&coastingPhase&&brakePhase&&dwellPhase,"V3 phase checkpoint coverage incomplete");
+                Require(!ato.Active&&ato.RouteV3State.Arrival>=115&&ato.RouteV3State.Arrival<=125&&Math.Abs(ato.SignedErrorMeters)<=5,"V3 nominal failed: "+mode+" "+ato.Status);
+                v2Results.Add("V3 "+mode+" error="+ato.SignedErrorMeters+" arrival="+ato.RouteV3State.Arrival);
+            }
+            double nominalV3Error=ato.SignedErrorMeters;
+            ato.SetPaused(true);driver.RestoreCheckpoint(preparedPhysics);ato.SetPaused(false);ato.UseV3=true;ato.SelectMode(AtoObjective.Punctual);
+            Require(state.SetThrottle(5),"Moving-start traction setup failed");
+            for(int i=0;i<4000&&driver.Model.State.SpeedMps<4;i++)driver.Advance(.02);
+            Require(driver.Model.State.SpeedMps>=4,"Moving-start speed setup failed");state.SetThrottle(0);double startSpeed=driver.Model.State.SpeedMps;
+            Require(ato.Engage()&&Math.Abs(ato.RouteV3State.InitialSpeed-startSpeed)<1e-9,"V3 did not retain actual initial speed");
+            driver.Advance(1);ato.SetPaused(true);string movingPoint=ato.CaptureResearchCheckpoint();ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);string movingFuture=driver.CaptureCheckpoint();ato.RestoreResearchCheckpoint(movingPoint);ato.SetPaused(false);driver.Advance(2);ato.SetPaused(true);Require(movingFuture==driver.CaptureCheckpoint(),"Moving-start checkpoint replay diverged");ato.SetPaused(false);ato.TakeOver();
+            Debug.Log("ATO_V3_MOVING_START_OK: actual speed used by planner and checkpoint replay");
+            Debug.Log("ATO_V3_PLAY_ACCEPTED: three nominal modes and checkpoint replay");
             File.WriteAllLines("tools/compile/ato_v2_play_acceptance.txt",v2Results);
             Debug.Log("ATO_V2_PLAY_ACCEPTED: three modes, full replay, facade and pure-physics manual restore");
             Directory.CreateDirectory("tools/compile");
-            File.WriteAllText("tools/compile/ato_acceptance_"+DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ")+".json",JsonUtility.ToJson(new Result{errorM=ato.SignedErrorMeters,coldGuard=true,actualCommands=true,manualTakeover=true,stopped=true,panelGuard=true,pausedManualCheckpoint=true},true));
-            Debug.Log("ATO_PLAY_ACCEPTED: actual facade commands, takeover, nominal stop error="+ato.SignedErrorMeters);
+            File.WriteAllText("tools/compile/ato_acceptance_"+DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ")+".json",JsonUtility.ToJson(new Result{errorM=nominalV3Error,coldGuard=true,actualCommands=true,manualTakeover=true,stopped=true,panelGuard=true,pausedManualCheckpoint=true},true));
+            Debug.Log("ATO_PLAY_ACCEPTED: actual facade commands, takeover, nominal stop error="+nominalV3Error);
         }
         catch(Exception e){SessionState.SetBool(Failed,true);Debug.LogException(e);}
         EditorApplication.isPlaying=false;

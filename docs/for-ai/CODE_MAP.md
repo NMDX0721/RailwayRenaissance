@@ -537,3 +537,11 @@ Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip
 # NF5K simulation backend (2026-10-21)
 
 `CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.
+
+2026-10-28 ATO V3：新增独立空间速度包络候选及 .NET 检查；三目标规划、控制接线和实验尚未实现，见 ATO_V3_IMPLEMENTATION.md。
+
+2026-10-28 后续：V3 局部控制雏形已有单次内核运行；平稳和省气仍停在起点，未通过验收，详情见 ATO_V3_IMPLEMENTATION.md。
+
+2026-10-28 V3进度：`AtoTrajectoryPlanner`、`CabAtoControllerV3`及研究封装v3接入独立场景；V2仍为默认。冻结配对实验和失败及个人参赛范围见 [V3研究记录](../research/ato_v3_results.md)。
+
+2026-10-28 V3个人参赛准备：独立研究报告和事实底稿分别见 [V3研究记录](../research/ato_v3_results.md)、[个人参赛准备](../research/ato_v3_personal_entry.md)；学生实际贡献待按事实填写，实验含失败案例。
