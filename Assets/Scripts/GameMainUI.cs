@@ -2217,8 +2217,14 @@ public class GameMainUI : MonoBehaviour
                 task.Root.Clear();
                 if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
             }
+            task.Pages.Clear();
+            task.SuspendedPageBuilders = null;
+            task.Snapshot = null;
+            task.AppState = null;
+            task.LastFocusedElement = null;
         }
         tabletTasks.Clear();
+        recentTasksList?.Clear();
         if (appLayer == null && root != null)
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
@@ -2447,15 +2453,9 @@ public class GameMainUI : MonoBehaviour
             blurCaptureCoroutine = null;
         }
 
-        if (uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null && uiDoc.panelSettings.targetTexture.IsCreated())
-        {
-            RenderTexture blurred = CaptureAndBlurFromTexture(uiDoc.panelSettings.targetTexture);
-            tabletShellView?.ApplyBlurredBackground(blurred);
-            return;
-        }
-
         if (isActiveAndEnabled)
         {
+            tabletShellView?.PrepareForCapture();
             blurCaptureCoroutine = StartCoroutine(CaptureAndBlurScreenCoroutine());
         }
         else
@@ -2471,7 +2471,8 @@ public class GameMainUI : MonoBehaviour
         {
             if (tabletShellState.Panel != TabletSystemPanel.None)
             {
-                RenderTexture blurred = CaptureAndBlurScreen();
+                RenderTexture target = uiDoc != null && uiDoc.panelSettings != null ? uiDoc.panelSettings.targetTexture : null;
+                RenderTexture blurred = target != null && target.IsCreated() ? CaptureAndBlurFromTexture(target) : CaptureAndBlurScreen();
                 tabletShellView?.ApplyBlurredBackground(blurred);
             }
         }
@@ -2988,7 +2989,7 @@ public class GameMainUI : MonoBehaviour
         if (pages.Count > 0 && pages[pages.Count - 1].Title == title)
         {
             TabletPageEntry current = pages[pages.Count - 1];
-            current.View?.RemoveFromHierarchy();
+            current.View?.parent?.RemoveFromHierarchy();
             current.View = BuildFullScreenAppContainer(title, null, back, false);
             current.Rebuild = rebuild;
             return current.View;
@@ -3007,7 +3008,7 @@ public class GameMainUI : MonoBehaviour
         if (activeTabletTask == null || appLayer == null || activeTabletTask.Pages.Count == 0) return false;
         List<TabletPageEntry> pages = activeTabletTask.Pages;
         TabletPageEntry current = pages[pages.Count - 1];
-        current.View?.RemoveFromHierarchy();
+        current.View?.parent?.RemoveFromHierarchy();
         pages.RemoveAt(pages.Count - 1);
         VisualElement previous = appLayer.childCount > 0 ? appLayer[appLayer.childCount - 1] : null;
         if (previous != null) previous.style.display = DisplayStyle.Flex;

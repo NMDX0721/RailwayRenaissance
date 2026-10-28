@@ -323,7 +323,9 @@ public static class TabletInteractionReview
                    settings.Root.Q<TextField>("review-subpage-draft").value == "子页草稿", "evicted settings subpage rebuilt with draft");
             typeof(GameMainUI).GetMethod("RequestSystemBack", instance).Invoke(host, null);
             Assert(settings.Root.Q<TextField>("review-subpage-draft") == null &&
-                   settings.Root.Q<TextField>("settings-compact-search").value == "声音", "back returns to prior app page");
+                   settings.Root.Q<TextField>("settings-compact-search").value == "声音" &&
+                   settings.Root[0].style.display.value == DisplayStyle.Flex && settings.Root.childCount == 1,
+                   "back removes page wrapper and shows prior app page");
 
             TabletSettingsAppUI.ShowTipsPage(null);
             var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", instance).GetValue(settings);
