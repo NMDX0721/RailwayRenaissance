@@ -1,0 +1,24 @@
+REFERENCE_CHECK_OK samples=901 nominal_seconds=100.49
+ARRIVAL_REFERENCE_OK seconds=120.000000; infeasible target rejected
+DEV mode=Smooth error=-2.40 arrival=118.70 violations=0 intervention=False air=149925.5 fuel=1.196 reason=停车窗内停稳
+DEV mode=AirSaving error=-2.43 arrival=120.80 violations=0 intervention=False air=126981.4 fuel=1.162 reason=停车窗内停稳
+DEV mode=Punctual error=-2.32 arrival=124.10 violations=0 intervention=False air=109978.4 fuel=1.127 reason=停车窗内停稳
+V3_REPLAY_OK: three capture points exact for 300 ticks
+PAIR nominal Smooth V2 error=3.30 arrival=131.40 violationTicks=0 intervention=False switches=7 jerk=9.7 air=31878.5 fuel=1.279
+PAIR nominal Smooth V3 error=-2.40 arrival=118.70 violationTicks=0 intervention=False switches=326 jerk=83.9 air=149925.5 fuel=1.196
+PAIR nominal AirSaving V2 error=-3.78 arrival=132.40 violationTicks=0 intervention=False switches=8 jerk=14.2 air=31902.7 fuel=1.270
+PAIR nominal AirSaving V3 error=-2.43 arrival=120.80 violationTicks=0 intervention=False switches=308 jerk=85.5 air=126981.4 fuel=1.162
+PAIR nominal Punctual V2 error=-3.72 arrival=120.00 violationTicks=0 intervention=False switches=608 jerk=183.8 air=61061.6 fuel=1.116
+PAIR nominal Punctual V3 error=-2.32 arrival=124.10 violationTicks=0 intervention=False switches=283 jerk=18.5 air=109978.4 fuel=1.127
+PAIR weak_wet Smooth V2 error=-134.09 arrival=-1.00 violationTicks=6 intervention=True switches=6 jerk=3.4 air=38697.8 fuel=1.123
+PAIR weak_wet Smooth V3 error=-2.39 arrival=118.80 violationTicks=0 intervention=False switches=254 jerk=22.7 air=181998.8 fuel=1.064
+PAIR weak_wet AirSaving V2 error=-212.13 arrival=-1.00 violationTicks=0 intervention=True switches=5 jerk=7.6 air=23334.8 fuel=0.974
+PAIR weak_wet AirSaving V3 error=-2.52 arrival=117.40 violationTicks=0 intervention=False switches=30 jerk=23.6 air=36354.3 fuel=0.989
+PAIR weak_wet Punctual V2 error=-3.12 arrival=120.00 violationTicks=0 intervention=False switches=29 jerk=35.7 air=139053.9 fuel=0.927
+PAIR weak_wet Punctual V3 error=-2.43 arrival=119.40 violationTicks=0 intervention=False switches=48 jerk=9.9 air=55492.8 fuel=0.944
+PAIR strong_uphill Smooth V2 error=-0.22 arrival=154.00 violationTicks=0 intervention=False switches=10 jerk=5.7 air=30812.5 fuel=1.507
+PAIR strong_uphill Smooth V3 error=-2.48 arrival=116.80 violationTicks=0 intervention=False switches=228 jerk=109.0 air=144621.3 fuel=1.431
+PAIR strong_uphill AirSaving V2 error=1.54 arrival=153.50 violationTicks=0 intervention=False switches=9 jerk=11.5 air=32958.7 fuel=1.562
+PAIR strong_uphill AirSaving V3 error=-2.45 arrival=118.80 violationTicks=0 intervention=False switches=246 jerk=114.1 air=123308.3 fuel=1.414
+PAIR strong_uphill Punctual V2 error=-2.89 arrival=120.00 violationTicks=0 intervention=False switches=701 jerk=427.0 air=39493.8 fuel=1.356
+PAIR strong_uphill Punctual V3 error=-2.28 arrival=121.60 violationTicks=0 intervention=False switches=207 jerk=26.4 air=119551.0 fuel=1.389

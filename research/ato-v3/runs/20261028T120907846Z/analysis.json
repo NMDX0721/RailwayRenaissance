@@ -1,0 +1,91 @@
+{
+  "rows": 108,
+  "independentCases": 9,
+  "repeatFingerprintsMatch": true,
+  "summary": [
+    {
+      "controller": "V2Adaptive",
+      "mode": "Smooth",
+      "cases": 9,
+      "success": 0,
+      "interventions": 6,
+      "violationCases": 6,
+      "meanSwitches": 13.777777777777779,
+      "meanJerk": 7.850797507098247,
+      "meanExhaust": 53955.7490061843,
+      "meanFuel": 1.1920255382920535,
+      "maxControlP95Ms": 4.111,
+      "maxInitialPlanningMs": 0
+    },
+    {
+      "controller": "V2Adaptive",
+      "mode": "AirSaving",
+      "cases": 9,
+      "success": 0,
+      "interventions": 6,
+      "violationCases": 2,
+      "meanSwitches": 6.888888888888889,
+      "meanJerk": 16.288222481062995,
+      "meanExhaust": 33366.063966372676,
+      "meanFuel": 1.1630597667776774,
+      "maxControlP95Ms": 2.9605,
+      "maxInitialPlanningMs": 0
+    },
+    {
+      "controller": "V2Adaptive",
+      "mode": "Punctual",
+      "cases": 9,
+      "success": 9,
+      "interventions": 0,
+      "violationCases": 0,
+      "meanSwitches": 295.44444444444446,
+      "meanJerk": 125.24656043660706,
+      "meanExhaust": 130469.46786937908,
+      "meanFuel": 1.0727255082386769,
+      "maxControlP95Ms": 3.3108,
+      "maxInitialPlanningMs": 0
+    },
+    {
+      "controller": "V3",
+      "mode": "Smooth",
+      "cases": 9,
+      "success": 9,
+      "interventions": 0,
+      "violationCases": 0,
+      "meanSwitches": 270.44444444444446,
+      "meanJerk": 55.45169397968119,
+      "meanExhaust": 194642.96936205385,
+      "meanFuel": 1.185203387613619,
+      "maxControlP95Ms": 0.0351,
+      "maxInitialPlanningMs": 15.8953
+    },
+    {
+      "controller": "V3",
+      "mode": "AirSaving",
+      "cases": 9,
+      "success": 8,
+      "interventions": 0,
+      "violationCases": 0,
+      "meanSwitches": 203.11111111111111,
+      "meanJerk": 55.35122703629771,
+      "meanExhaust": 144222.3678556558,
+      "meanFuel": 1.1175240533222066,
+      "maxControlP95Ms": 0.0345,
+      "maxInitialPlanningMs": 12.5923
+    },
+    {
+      "controller": "V3",
+      "mode": "Punctual",
+      "cases": 9,
+      "success": 9,
+      "interventions": 0,
+      "violationCases": 0,
+      "meanSwitches": 275.6666666666667,
+      "meanJerk": 17.679379383181164,
+      "meanExhaust": 165621.8756792274,
+      "meanFuel": 1.0959220493122426,
+      "maxControlP95Ms": 0.0422,
+      "maxInitialPlanningMs": 16.6504
+    }
+  ]
+}
