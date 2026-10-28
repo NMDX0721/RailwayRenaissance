@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-28：`NotesTabletTaskLifecycle` 在任务回收、关闭时调用 `TabletNotesAppUI.ReleaseTaskView` 解除静态控件引用；任务快照仍负责草稿恢复。
+
 2026-10-28 PR #7：`GameMainUI` 子页返回移除完整窗口，批量关闭清理任务引用，壳层模糊重采样在隐藏后等待帧结束；详见 `TABLET_SYSTEM_SHELL.md`。
 
 2026-10-28 PR #7 平板审查修正：`TabletNotificationStorage` 失败后只读；最近任务隔离键盘焦点；RDA/归途前台重建数据；图鉴重建状态与视图分离；高斯模糊 shader 位于 `Resources/UI/TabletGaussianBlur.shader`。见 `TABLET_SYSTEM_SHELL.md`。

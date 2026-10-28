@@ -1583,6 +1583,15 @@ public class GameMainUI : MonoBehaviour
         public void OnClosed(VisualElement view) => Lines.Clear();
     }
 
+    private sealed class NotesTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) { }
+        public void OnBackground(VisualElement view) { }
+        public void OnViewReclaimed(VisualElement view) => TabletNotesAppUI.ReleaseTaskView(view);
+        public void OnClosed(VisualElement view) => TabletNotesAppUI.ReleaseTaskView(view);
+    }
+
     private sealed class MusicTabletTaskLifecycle : ITabletTaskLifecycle
     {
         public void OnViewCreated(VisualElement view, bool restored) { }
@@ -2751,6 +2760,7 @@ public class GameMainUI : MonoBehaviour
         {
             task = new TabletTaskSession(name, name);
             if (name == "音乐") task.Lifecycle = new MusicTabletTaskLifecycle();
+            if (name == "笔记") task.Lifecycle = new NotesTabletTaskLifecycle();
             tabletTasks.Add(task);
         }
 

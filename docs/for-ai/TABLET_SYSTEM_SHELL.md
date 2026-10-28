@@ -1,5 +1,9 @@
 # 平板系统层与协作计划（2026-10-23）
 
+PR #7 笔记内存修复：任务回收或关闭时仅释放属于该任务视图的笔记静态控件引用；回收前仍先捕获草稿快照，恢复时重建并还原输入。笔记视图内部重建也先释放旧控件。
+
+Unity 图形批处理 `TabletInteractionReview.Batch` 退出 0，`tools/compile/pr7_notes_reclaim.log` 包含 `TABLET_NOTES_RECLAIM_OK`：实际任务回收后静态控件引用为空，标题与正文草稿恢复，关闭后再次清空引用。此检查不测量 Android 真机内存或证明垃圾回收时机。
+
 PR #7 后续修正：返回和同名子页重建移除完整窗口；全部关闭清理任务页面、状态及卡片引用；每次模糊采样前隐藏壳层并等待帧结束。图形缩放采样仍需实际画面验证。
 
 验证：Unity 图形批处理 `TabletInteractionReview.Batch` 退出 0，日志 `tools/compile/pr7_pages_followup.log`；回归检查返回后父页面可见且无残留子页窗口。全部关闭后的垃圾回收和分辨率变化时的实际捕获画面仍待专项验证。

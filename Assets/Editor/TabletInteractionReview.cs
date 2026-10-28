@@ -410,6 +410,46 @@ public static class TabletInteractionReview
             launch.Invoke(host, new object[] { "计算器" });
             calculator = (TabletTaskSession)find.Invoke(host, new object[] { "计算器" });
             Assert(calculator.Root.Q<Label>("calc-display-main").text == "0", "closed calculator starts a fresh task");
+
+            var notesType = typeof(TabletNotesAppUI);
+            var notesField = notesType.GetField("userTabletNotes", statics);
+            var selectedField = notesType.GetField("currentSelectedNoteId", statics);
+            var titleField = notesType.GetField("noteTitleField", statics);
+            var bodyField = notesType.GetField("noteBodyField", statics);
+            var metaField = notesType.GetField("noteMetaLabel", statics);
+            object oldNotes = notesField.GetValue(null), oldSelected = selectedField.GetValue(null);
+            object oldTitle = titleField.GetValue(null), oldBody = bodyField.GetValue(null), oldMeta = metaField.GetValue(null);
+            try
+            {
+                var noteType = notesType.GetNestedType("TabletNoteItem", BindingFlags.NonPublic);
+                var note = Activator.CreateInstance(noteType, true);
+                foreach (var pair in new[] { ("title", "原题"), ("content", "原文"), ("category", "运营备忘"), ("date", "今日"), ("author", "测试") })
+                    noteType.GetField(pair.Item1).SetValue(note, pair.Item2);
+                noteType.GetField("id").SetValue(note, 41);
+                var items = (System.Collections.IList)Activator.CreateInstance(notesField.FieldType);
+                items.Add(note); notesField.SetValue(null, items); selectedField.SetValue(null, 41);
+                launch.Invoke(host, new object[] { "笔记" });
+                var notes = (TabletTaskSession)find.Invoke(host, new object[] { "笔记" });
+                var title = (TextField)titleField.GetValue(null); var body = (TextField)bodyField.GetValue(null);
+                Assert(title != null && body != null && metaField.GetValue(null) != null, "notes controls created");
+                title.value = "未提交标题"; body.value = "未提交正文";
+                launch.Invoke(host, new object[] { "验收占位" });
+                typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { true });
+                Assert(notes.IsSuspended && titleField.GetValue(null) == null && bodyField.GetValue(null) == null && metaField.GetValue(null) == null,
+                       "reclaimed notes release static controls");
+                activate.Invoke(host, new object[] { notes });
+                Assert(((TextField)titleField.GetValue(null)).value == "未提交标题" && ((TextField)bodyField.GetValue(null)).value == "未提交正文",
+                       "notes draft survives reclamation");
+                typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "笔记" });
+                Assert(titleField.GetValue(null) == null && bodyField.GetValue(null) == null && metaField.GetValue(null) == null,
+                       "closed notes release static controls");
+                Debug.Log("TABLET_NOTES_RECLAIM_OK: static controls released, draft restored, closed controls released");
+            }
+            finally
+            {
+                notesField.SetValue(null, oldNotes); selectedField.SetValue(null, oldSelected);
+                titleField.SetValue(null, oldTitle); bodyField.SetValue(null, oldBody); metaField.SetValue(null, oldMeta);
+            }
         }
         finally
         {

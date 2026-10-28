@@ -53,6 +53,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     private static TextField noteBodyField;
     private static Label noteMetaLabel;
 
+    public static void ReleaseTaskView(VisualElement root)
+    {
+        if (root == null) return;
+        if (noteTitleField != null && root.Contains(noteTitleField)) noteTitleField = null;
+        if (noteBodyField != null && root.Contains(noteBodyField)) noteBodyField = null;
+        if (noteMetaLabel != null && root.Contains(noteMetaLabel)) noteMetaLabel = null;
+    }
+
     [System.Serializable]
     private class TabletNoteItem
     {
@@ -235,6 +243,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public static void BuildNotesApp(VisualElement win, Action<string> showToast = null)
     {
         if (showToast != null) s_showToast = showToast;
+        ReleaseTaskView(win);
         win.Clear();
         if (userTabletNotes == null) LoadUserTabletNotes();
 
