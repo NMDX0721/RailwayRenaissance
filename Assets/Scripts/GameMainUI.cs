@@ -1,8 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.UIElements;
 using RailwayRenaissance.UI.Tablet;
 using RailwayRenaissance.UI.Tablet.Apps;
+using RailwayRenaissance.UI.Tablet.SystemShell;
+using UI.Tablet.Rendering;
 
 /// <summary>小米平板系统桌面（模拟经营主界面）。澎湃32·朝鲜特供版 像素演绎。
 /// 锁屏(扫脸)→桌面(状态栏+App网格+任务栏)→App窗口。</summary>
@@ -13,6 +17,16 @@ public class GameMainUI : MonoBehaviour
     private VisualElement root;
     private VisualElement lockScreen;
     private VisualElement desktop;
+    private readonly TabletShellState tabletShellState = new TabletShellState();
+    private TabletShellView tabletShellView;
+    private TabletGaussianBlur blurService;
+    private RenderTexture blurCaptureRT;
+    private Coroutine blurCaptureCoroutine;
+    public TabletPresentationPreferences PresentationPreferences { get; private set; }
+#if UNITY_EDITOR
+    internal static string PresentationReviewStorage;
+    internal static string NotificationReviewStorage;
+#endif
     private Font gameFont;
     private FontDefinition Fd() => new FontDefinition { font = gameFont };
 
@@ -81,13 +95,51 @@ public class GameMainUI : MonoBehaviour
         if (Instance.lockScreen != null && !Instance.unlocked)
             Instance.lockScreen.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
+        if (Instance.activeTabletTask?.Root != null)
+        {
+            Instance.RefreshProgressDependentTask(Instance.activeTabletTask);
+            NotifyTaskLifecycle(() => Instance.activeTabletTask.Lifecycle.OnForeground(Instance.activeTabletTask.Root));
+        }
         // 锁屏已显示 → 后台错帧加载桌面（中间页先行，性能与体验）
         Instance.EnsureDesktopBuilt();
     }
 
     public void Hide()
     {
+        if (activeTabletTask?.Root != null)
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
+        ResetSystemGesture();
+        CancelTabletRebind();
+        tabletShellState.ClosePanel();
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        tabletShellView?.ClearBlurredBackground();
         if (root != null) root.style.display = DisplayStyle.None;
+    }
+
+    private void OnDisable()
+    {
+        if (activeTabletTask?.Root != null)
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
+        ResetSystemGesture();
+        CancelTabletRebind();
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        ReleaseCaptureRT();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (TabletTaskSession task in tabletTasks)
+            NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
+        tabletTasks.Clear();
+        TabletSystemToolsAppUI.SetToastHandler(null);
+        if (PresentationPreferences != null) PresentationPreferences.Changed -= ApplyPresentation;
+        tabletShellState.Changed -= OnShellStateChanged;
+        Application.memoryUsageChanged -= OnTabletMemoryUsageChanged;
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        ReleaseCaptureRT();
+        if (blurService != null) { blurService.Dispose(); blurService = null; }
+        tabletShellView?.Dispose();
+        if (Instance == this) Instance = null;
     }
 
     public bool unlocked;
@@ -135,7 +187,6 @@ public class GameMainUI : MonoBehaviour
     private static readonly Color DeepRail = new Color(0.10f, 0.16f, 0.23f, 0.95f);      // #1A2A3A 深蓝底衬
 
     // 按键重绑定缓存与支持
-    private System.Action<KeyCode> _tabletRebindAction;
     private static readonly KeyCode[] AllKeyCodes = AllKeyCodesInit();
     private static KeyCode[] AllKeyCodesInit()
     {
@@ -155,12 +206,27 @@ public class GameMainUI : MonoBehaviour
         MigrateUsername();
         TraceLog.L("[GameMainUI] Init: migrate ok");
         gameFont = Resources.Load<Font>("Fonts/zpix");
+        string presentationPath = System.IO.Path.Combine(Application.persistentDataPath, "TabletSystem", "presentation-v1.json");
+#if UNITY_EDITOR
+        if (!string.IsNullOrEmpty(PresentationReviewStorage)) presentationPath = PresentationReviewStorage;
+#endif
+        PresentationPreferences = new TabletPresentationPreferences(presentationPath);
+        PresentationPreferences.Changed += ApplyPresentation;
+        string notificationPath = System.IO.Path.Combine(Application.persistentDataPath, "TabletSystem", "notifications-v1.json");
+#if UNITY_EDITOR
+        if (!string.IsNullOrEmpty(NotificationReviewStorage)) notificationPath = NotificationReviewStorage;
+#endif
+        tabletShellState.InitializeStorage(notificationPath);
+        TabletSystemToolsAppUI.SetToastHandler(ShowBackupToast);
+        tabletShellState.Changed += OnShellStateChanged;
+        Application.memoryUsageChanged += OnTabletMemoryUsageChanged;
         TraceLog.L("[GameMainUI] Init: font loaded=" + (gameFont != null));
         BuildDocument();
         TraceLog.L("[GameMainUI] Init: document ok");
         BuildLockScreen();
         TraceLog.L("[GameMainUI] Init: lock ok");
         ShowLockScreen();
+        ApplyPresentation();
         TraceLog.L("[GameMainUI] Init: phase1 done (desktop pending)");
     }
 
@@ -286,6 +352,10 @@ public class GameMainUI : MonoBehaviour
         {
             wallpaper.style.backgroundImage = new StyleBackground(GradientBackground());
         }
+        var dim = new VisualElement { name = "tablet-lock-wallpaper-dim", pickingMode = PickingMode.Ignore };
+        dim.style.position = Position.Absolute;
+        dim.style.left = 0; dim.style.right = 0; dim.style.top = 0; dim.style.bottom = 0;
+        wallpaper.Add(dim);
 
         // 上部留白 → 居中 HyperOS 96px 大时钟
         var spacerTop = new VisualElement();
@@ -379,17 +449,71 @@ public class GameMainUI : MonoBehaviour
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
+            if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
+            {
+                if (evt.keyCode == KeyCode.Escape) { CloseRecentTasks(); evt.StopImmediatePropagation(); return; }
+                if (!(evt.target is VisualElement focused) || !recentTasksOverlay.Contains(focused))
+                    evt.StopImmediatePropagation();
+                return;
+            }
+            if (evt.keyCode == KeyCode.Escape && tabletShellState.ClosePanel())
+            {
+                rebindConsumedFrame = Time.frameCount;
+                evt.StopImmediatePropagation();
+                return;
+            }
+            if (tabletShellState.Panel != TabletSystemPanel.None)
+            {
+                if (evt.target is VisualElement target && root.Q("tablet-shell-root") != null &&
+                    !root.Q("tablet-shell-root").Contains(target)) evt.StopImmediatePropagation();
+                return;
+            }
+            if (rebindConsumedFrame == Time.frameCount)
+            {
+                evt.StopImmediatePropagation();
+                return;
+            }
+            if (TabletSettingsAppUI.TabletRebindAction != null && evt.keyCode != KeyCode.None)
+            {
+                var callback = TabletSettingsAppUI.TabletRebindAction;
+                TabletSettingsAppUI.TabletRebindAction = null;
+                rebindConsumedFrame = Time.frameCount;
+                callback(evt.keyCode);
+                evt.StopImmediatePropagation();
+            }
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<KeyDownEvent>(evt =>
+        {
             if (evt.keyCode == KeyCode.Space && !unlocked && lockScreen.style.display == DisplayStyle.Flex)
             {
                 Unlock();
                 evt.StopPropagation();
             }
-            else if (evt.keyCode == KeyCode.Escape && appLayer != null && appLayer.style.display == DisplayStyle.Flex)
+            else if (evt.keyCode == KeyCode.Escape && !dispatchingSystemBack &&
+                     TabletSettingsAppUI.TabletRebindAction == null)
             {
-                appLayer.style.display = DisplayStyle.None;
-                evt.StopPropagation();
+                if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
+                {
+                    CloseRecentTasks();
+                    evt.StopPropagation();
+                }
+                else if (activeTabletTask != null)
+                {
+                    if (!ReturnToPreviousTabletPage()) ReturnToTabletHome();
+                    evt.StopPropagation();
+                }
             }
         });
+        root.RegisterCallback<PointerDownEvent>(OnSystemPointerDown, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerMoveEvent>(OnSystemPointerMove, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerUpEvent>(OnSystemPointerUp, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCancelEvent>(evt => tabletEdgeGesture.Cancel(evt.pointerId), TrickleDown.TrickleDown);
+        root.RegisterCallback<ClickEvent>(evt =>
+        {
+            if (!suppressNextGestureClick) return;
+            suppressNextGestureClick = false;
+            evt.StopImmediatePropagation();
+        }, TrickleDown.TrickleDown);
     }
 
     /// <summary>锁屏壁纸：深蓝黑纵向渐变（近似 HyperOS 冷调）。</summary>
@@ -415,7 +539,11 @@ public class GameMainUI : MonoBehaviour
 
     private void ShowLockScreen()
     {
+        ResetSystemGesture();
         unlocked = false;
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        ReturnToTabletHome();
+        tabletShellView?.SetVisible(false);
         // 显示即同步时钟（首次加载时 tick 尚未启动的窗口期）
         var now = System.DateTime.Now.ToString("HH:mm");
         var lc = lockScreen?.Q<Label>("lock-clock");
@@ -430,6 +558,14 @@ public class GameMainUI : MonoBehaviour
     {
         if (unlocked) return;
         unlocked = true;
+        if (PresentationPreferences != null && PresentationPreferences.ReduceMotion)
+        {
+            lockScreen.style.display = DisplayStyle.None;
+            desktop.style.display = DisplayStyle.Flex;
+            desktop.style.opacity = 1;
+            tabletShellView?.SetVisible(true);
+            return;
+        }
         // 光带扫一遍 → 桌面淡入
         var beam = lockScreen.Q<Label>("face-beam");
         if (beam != null)
@@ -444,6 +580,7 @@ public class GameMainUI : MonoBehaviour
         {
             lockScreen.style.display = DisplayStyle.None;
             desktop.style.display = DisplayStyle.Flex;
+            tabletShellView?.SetVisible(true);
             desktop.style.opacity = 0;
             desktop.schedule.Execute(() => { desktop.style.opacity = 1; }).ExecuteLater(10);
         }).ExecuteLater(420);
@@ -503,7 +640,7 @@ public class GameMainUI : MonoBehaviour
         root.Add(desktop);
 
         // 壁纸层（软化纸色渐变模拟）
-        var wallpaper = new VisualElement();
+        var wallpaper = new VisualElement { name = "tablet-desktop-wallpaper" };
         wallpaper.style.position = Position.Absolute;
         wallpaper.style.top = 0; wallpaper.style.left = 0; wallpaper.style.right = 0; wallpaper.style.bottom = 0;
         wallpaper.style.backgroundColor = Paper;
@@ -516,7 +653,8 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.justifyContent = Justify.SpaceBetween;
         statusBar.style.paddingLeft = 20; statusBar.style.paddingRight = 20;
         statusBar.style.paddingTop = 8; statusBar.style.paddingBottom = 6;
-        statusBar.style.height = 38;
+        statusBar.style.height = 48;
+        statusBar.style.flexShrink = 0;
         statusBar.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.45f);
         desktop.Add(statusBar);
 
@@ -534,7 +672,7 @@ public class GameMainUI : MonoBehaviour
         // Folia 风格全局随身听 Mini 胶囊（紧随时间右侧，未播放时自动隐藏）
         BuildHudMusicCapsule(leftGroup);
 
-        var rightInfo = new VisualElement();
+        var rightInfo = new VisualElement { name = "tablet-status-right" };
         rightInfo.style.flexDirection = FlexDirection.Row;
         rightInfo.style.alignItems = Align.Center;
         statusBar.Add(rightInfo);
@@ -545,11 +683,6 @@ public class GameMainUI : MonoBehaviour
         netTag.style.unityFontDefinition = Fd();
         netTag.style.marginRight = 14;
         rightInfo.Add(netTag);
-
-        var sig = new Label("●●●○○");
-        sig.style.fontSize = 14; sig.style.color = GlassText; sig.style.unityFontDefinition = Fd();
-        sig.style.marginRight = 12;
-        rightInfo.Add(sig);
 
         int battPct = -1;
         try { battPct = GetDeviceBatteryPercent(); }
@@ -1430,18 +1563,78 @@ public class GameMainUI : MonoBehaviour
 
     private void ShowSuiyueDialogue()
     {
-        var win = BuildInnerPanel("岁月 · AI对话");
+        LaunchApp("岁月 · AI对话");
+    }
+
+    private sealed class SuiyueLine
+    {
+        public string Sender;
+        public string Text;
+        public Color Color;
+    }
+
+    private sealed class SuiyueDialogueState : ITabletTaskLifecycle
+    {
+        public readonly List<SuiyueLine> Lines = new List<SuiyueLine>();
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) { }
+        public void OnBackground(VisualElement view) { }
+        public void OnViewReclaimed(VisualElement view) { }
+        public void OnClosed(VisualElement view) => Lines.Clear();
+    }
+
+    private sealed class NotesTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) { }
+        public void OnBackground(VisualElement view) { }
+        public void OnViewReclaimed(VisualElement view) => TabletNotesAppUI.ReleaseTaskView(view);
+        public void OnClosed(VisualElement view) => TabletNotesAppUI.ReleaseTaskView(view);
+    }
+
+    private sealed class MusicTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) => TabletMusicAppUI.SetTaskViewForeground(view, true);
+        public void OnBackground(VisualElement view) => TabletMusicAppUI.SetTaskViewForeground(view, false);
+        public void OnViewReclaimed(VisualElement view) => TabletMusicAppUI.ReleaseTaskView(view);
+        public void OnClosed(VisualElement view) => TabletMusicAppUI.CloseTaskView(view);
+    }
+
+    private static bool NotifyTaskLifecycle(System.Action callback)
+    {
+        try { callback(); return true; }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Tablet lifecycle callback failed: " + ex.Message);
+            return false;
+        }
+    }
+
+    private void BuildSuiyueDialogue(VisualElement win)
+    {
         win.style.height = 400;
+        var state = activeTabletTask?.AppState as SuiyueDialogueState;
+        if (state == null)
+        {
+            state = new SuiyueDialogueState();
+            state.Lines.Add(new SuiyueLine { Sender = "岁月", Text = "我可是高性能AI！有什么需要帮忙的吗？", Color = GlassAccent });
+            if (activeTabletTask != null)
+            {
+                activeTabletTask.AppState = state;
+                activeTabletTask.Lifecycle = state;
+            }
+        }
 
         // 对话历史区
-        var chatArea = new VisualElement();
+        var chatArea = new VisualElement { name = "suiyue-chat-area" };
         chatArea.style.flexGrow = 1;
         chatArea.style.flexDirection = FlexDirection.Column;
         chatArea.style.marginTop = 8;
         win.Add(chatArea);
 
-        // 初始对话
-        AddChatBubble(chatArea, "岁月", "我可是高性能AI！有什么需要帮忙的吗？", GlassAccent);
+        foreach (SuiyueLine line in state.Lines)
+            AddChatBubble(chatArea, line.Sender, line.Text, line.Color);
 
         // 快捷问题按钮
         string[] quickQuestions = { "今天运营怎么样？", "沙能渗透率多少？", "讲个故事吧", "你是谁？" };
@@ -1455,17 +1648,17 @@ public class GameMainUI : MonoBehaviour
         {
             var qb = new Button(() =>
             {
-                AddChatBubble(chatArea, "林彪悍", q, GlassText);
+                AppendSuiyueLine(state, chatArea, "林彪悍", q, GlassText);
                 // 岁月回复
                 string reply = q switch
                 {
-                    "今天运营怎么样？" => "根据数据，今天客流稳定，收入比昨天增长了5%！继续加油哦！",
-                    "沙能渗透率多少？" => "当前沙能渗透率15%，处于安全范围。但要注意乌金岭方向的广告攻势。",
+                    "今天运营怎么样？" => "请查看运营面板中的当日客流和收入。",
+                    "沙能渗透率多少？" => "当前线路的沙能竞争情况可以在运营面板查看。",
                     "讲个故事吧" => "从前有一条铁路，它被全世界遗忘了。但有一个人，他没有忘记它……",
                     "你是谁？" => "我叫岁月！是0721号沙子飞猪号搭载的AI原型。2053年制造，沉睡了23年呢。",
                     _ => "嗯……让我想想。",
                 };
-                AddChatBubble(chatArea, "岁月", reply, GlassAccent);
+                AppendSuiyueLine(state, chatArea, "岁月", reply, GlassAccent);
             }) { text = q };
             qb.style.fontSize = 11; qb.style.height = 28;
             qb.style.unityTextAlign = TextAnchor.MiddleCenter; qb.style.unityFontDefinition = Fd();
@@ -1475,6 +1668,12 @@ public class GameMainUI : MonoBehaviour
             qb.style.marginRight = 4; qb.style.marginBottom = 4;
             btnRow.Add(qb);
         }
+    }
+
+    private void AppendSuiyueLine(SuiyueDialogueState state, VisualElement chatArea, string sender, string text, Color color)
+    {
+        state.Lines.Add(new SuiyueLine { Sender = sender, Text = text, Color = color });
+        AddChatBubble(chatArea, sender, text, color);
     }
 
     private void AddChatBubble(VisualElement parent, string sender, string text, Color senderColor)
@@ -1492,7 +1691,7 @@ public class GameMainUI : MonoBehaviour
         name.style.fontSize = 12; name.style.color = senderColor; name.style.unityFontDefinition = Fd();
         bubble.Add(name);
 
-        var msg = new Label(text);
+        var msg = new Label(text) { name = "suiyue-message" };
         msg.style.fontSize = 13; msg.style.color = GlassText; msg.style.unityFontDefinition = Fd();
         msg.style.whiteSpace = WhiteSpace.Normal; msg.style.marginTop = 2;
         bubble.Add(msg);
@@ -1638,22 +1837,768 @@ public class GameMainUI : MonoBehaviour
 
     // ============ App 层（窗口化） ============
     private VisualElement appLayer;
+    private readonly List<TabletTaskSession> tabletTasks = new List<TabletTaskSession>();
+    private TabletTaskSession activeTabletTask;
+    private VisualElement systemNavigationBar;
+    private VisualElement recentTasksOverlay;
+    private Focusable recentPreviousFocus;
+    private ScrollView recentTasksList;
+    private IVisualElementScheduledItem navFadeSchedule;
+    private float memoryCheckTimer;
+    private long tabletActivationSequence;
+    private readonly TabletEdgeGesture tabletEdgeGesture = new TabletEdgeGesture();
+    private bool suppressNextGestureClick;
+    private bool dispatchingSystemBack;
+    private int rebindConsumedFrame = -1;
+    private const float SystemNavBarHeight = 44f;
+    private const long MinimumMemorySoftBudgetBytes = 768L * 1024L * 1024L;
 
     private void BuildAppLayer()
     {
         appLayer = new VisualElement { name = "tablet-app-layer" };
         appLayer.style.position = Position.Absolute;
-        appLayer.style.top = 0; appLayer.style.left = 0;
-        appLayer.style.right = 0; appLayer.style.bottom = 0;
+        appLayer.style.top = 48; appLayer.style.left = 0;
+        appLayer.style.right = 0; appLayer.style.bottom = SystemNavBarHeight;
         appLayer.style.display = DisplayStyle.None;
+        appLayer.focusable = true;
         appLayer.style.alignItems = Align.Center;
         appLayer.style.justifyContent = Justify.Center;
         root.Add(appLayer);
+        tabletShellView?.Dispose();
+        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"));
+        tabletShellView.OnRequestCapture = TriggerShellBlurCapture;
+        tabletShellView.SetVisible(unlocked);
+        BuildSystemNavigation();
+        ApplyPresentation();
     }
 
-    private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null)
+    private void BuildSystemNavigation()
     {
-        appLayer.Clear();
+        systemNavigationBar = new VisualElement { name = "tablet-system-navigation" };
+        systemNavigationBar.style.position = Position.Absolute;
+        systemNavigationBar.style.left = 0;
+        systemNavigationBar.style.right = 0;
+        systemNavigationBar.style.bottom = 0;
+        systemNavigationBar.style.height = SystemNavBarHeight;
+        systemNavigationBar.style.flexDirection = FlexDirection.Row;
+        systemNavigationBar.style.alignItems = Align.Center;
+        systemNavigationBar.style.justifyContent = Justify.SpaceAround;
+        systemNavigationBar.style.backgroundColor = new Color(0.055f, 0.06f, 0.075f, 0.96f);
+        systemNavigationBar.style.display = DisplayStyle.None;
+
+        var back = CreateTabletNavButton("‹", "返回", () => { ShowTabletNavigationBar(); RequestSystemBack(); });
+        back.name = "tablet-nav-back";
+        var home = CreateTabletNavButton("●", "主页", () => { ShowTabletNavigationBar(); ReturnToTabletHome(); });
+        home.name = "tablet-nav-home";
+        var recents = CreateTabletNavButton("▢", "最近应用", () => { ShowTabletNavigationBar(); OpenRecentTasks(); });
+        recents.name = "tablet-nav-recents";
+        systemNavigationBar.Add(back);
+        systemNavigationBar.Add(home);
+        systemNavigationBar.Add(recents);
+        root.Add(systemNavigationBar);
+
+        recentTasksOverlay = new VisualElement { name = "tablet-recent-tasks-overlay" };
+        recentTasksOverlay.focusable = true;
+        recentTasksOverlay.style.position = Position.Absolute;
+        recentTasksOverlay.style.left = 0;
+        recentTasksOverlay.style.right = 0;
+        recentTasksOverlay.style.top = 0;
+        recentTasksOverlay.style.bottom = SystemNavBarHeight;
+        recentTasksOverlay.style.display = DisplayStyle.None;
+        recentTasksOverlay.style.backgroundColor = new Color(0.035f, 0.045f, 0.07f, 0.94f);
+        recentTasksOverlay.RegisterCallback<ClickEvent>(evt =>
+        {
+            if (evt.target == recentTasksOverlay) CloseRecentTasks();
+        });
+
+        var recentContent = new VisualElement { name = "tablet-recent-tasks-content" };
+        recentContent.style.position = Position.Absolute;
+        recentContent.style.left = 28;
+        recentContent.style.right = 28;
+        recentContent.style.top = 24;
+        recentContent.style.bottom = 16;
+        recentContent.style.flexDirection = FlexDirection.Column;
+        recentTasksOverlay.Add(recentContent);
+
+        var header = new VisualElement();
+        header.style.height = 48;
+        header.style.flexDirection = FlexDirection.Row;
+        header.style.alignItems = Align.Center;
+        header.style.justifyContent = Justify.SpaceBetween;
+        var title = new Label("最近应用");
+        title.style.fontSize = 22;
+        title.style.color = new Color(0.95f, 0.92f, 0.86f, 1f);
+        title.style.unityFontDefinition = Fd();
+        header.Add(title);
+        var closeAll = CreateTabletNavButton("全部关闭", "关闭全部任务", CloseAllTabletTasks);
+        closeAll.name = "tablet-recent-close-all";
+        closeAll.style.width = 112;
+        closeAll.style.minWidth = 112;
+        header.Add(closeAll);
+        recentContent.Add(header);
+
+        recentTasksList = new ScrollView(ScrollViewMode.Horizontal) { name = "tablet-recent-tasks-list" };
+        recentTasksList.style.flexGrow = 1;
+        recentTasksList.horizontalScrollerVisibility = ScrollerVisibility.Auto;
+        recentTasksList.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+        recentContent.Add(recentTasksList);
+        var hint = new Label("轻触卡片切回应用 · × 结束任务");
+        hint.style.position = Position.Absolute;
+        hint.style.left = 28;
+        hint.style.bottom = 8;
+        hint.style.color = new Color(0.75f, 0.76f, 0.80f, 0.82f);
+        hint.style.fontSize = 11;
+        hint.style.unityFontDefinition = Fd();
+        recentTasksOverlay.Add(hint);
+        root.Add(recentTasksOverlay);
+    }
+
+    private Button CreateTabletNavButton(string text, string tooltip, System.Action action)
+    {
+        var button = new Button(action) { text = text };
+        button.tooltip = tooltip;
+        button.style.minWidth = 72;
+        button.style.width = 96;
+        button.style.height = 44;
+        button.style.marginLeft = 8;
+        button.style.marginRight = 8;
+        button.style.fontSize = 18;
+        button.style.color = new Color(0.94f, 0.92f, 0.88f, 1f);
+        button.style.backgroundColor = new Color(0.15f, 0.16f, 0.19f, 0.95f);
+        button.style.borderTopLeftRadius = 18;
+        button.style.borderTopRightRadius = 18;
+        button.style.borderBottomLeftRadius = 18;
+        button.style.borderBottomRightRadius = 18;
+        button.style.unityFontDefinition = Fd();
+        return button;
+    }
+
+    private VisualElement CreateTabletTaskLayer(string appId)
+    {
+        if (appLayer != null && appLayer.childCount == 0 && appLayer.parent == root)
+        {
+            appLayer.name = "tablet-app-layer-" + appId;
+            return appLayer;
+        }
+
+        var layer = new VisualElement { name = "tablet-app-layer-" + appId };
+        layer.style.position = Position.Absolute;
+        layer.style.top = 48;
+        layer.style.left = 0;
+        layer.style.right = 0;
+        layer.style.bottom = SystemNavBarHeight;
+        layer.style.display = DisplayStyle.None;
+        layer.focusable = true;
+        layer.style.alignItems = Align.Center;
+        layer.style.justifyContent = Justify.Center;
+        int shellIndex = root.IndexOf(tabletShellView.RootElement);
+        root.Insert(Mathf.Max(0, shellIndex), layer);
+        return layer;
+    }
+
+    private TabletTaskSession FindTabletTask(string appId)
+    {
+        for (int i = 0; i < tabletTasks.Count; i++)
+            if (string.Equals(tabletTasks[i].AppId, appId, System.StringComparison.Ordinal)) return tabletTasks[i];
+        return null;
+    }
+
+    private void ReturnToTabletHome()
+    {
+        ResetSystemGesture();
+        CancelTabletRebind();
+        tabletShellState.ClosePanel();
+        CloseRecentTasks();
+        if (activeTabletTask?.Root != null)
+        {
+            NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
+            activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
+            activeTabletTask.Root.style.display = DisplayStyle.None;
+        }
+        activeTabletTask = null;
+        appLayer = null;
+        if (desktop != null) desktop.style.display = DisplayStyle.Flex;
+        if (systemNavigationBar != null) systemNavigationBar.style.display = DisplayStyle.None;
+    }
+
+    private void ActivateTabletTask(TabletTaskSession task)
+    {
+        if (task == null) return;
+        ResetSystemGesture();
+        if (activeTabletTask != task) CancelTabletRebind();
+        if (activeTabletTask?.Root != null)
+        {
+            if (activeTabletTask != task)
+                NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
+            activeTabletTask.LastFocusedElement = root.panel?.focusController.focusedElement as Focusable;
+            activeTabletTask.Root.style.display = DisplayStyle.None;
+        }
+        tabletShellState.ClosePanel();
+        CloseRecentTasks();
+        activeTabletTask = task;
+        if (task.Root == null)
+        {
+            task.Root = CreateTabletTaskLayer(task.AppId);
+            appLayer = task.Root;
+            TabletViewStateSnapshot snapshot = task.Snapshot;
+            List<System.Action> pageBuilders = task.SuspendedPageBuilders;
+            try
+            {
+                BuildTabletTaskContent(task.AppId);
+                if (pageBuilders != null)
+                {
+                    foreach (System.Action rebuild in pageBuilders) rebuild();
+                    if (task.Pages.Count != pageBuilders.Count)
+                        throw new System.InvalidOperationException("Tablet page reconstruction was incomplete.");
+                }
+                if (snapshot != null) snapshot.Restore(task.Root);
+                NotifyTaskLifecycle(() => task.Lifecycle.OnViewCreated(task.Root, snapshot != null));
+                task.Snapshot = null;
+                task.SuspendedPageBuilders = null;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[GameMainUI] Tablet task restore failed: " + ex.Message);
+                NotifyTaskLifecycle(() => task.Lifecycle.OnViewReclaimed(task.Root));
+                task.Pages.Clear();
+                task.Root.Clear();
+                task.Root.RemoveFromHierarchy();
+                task.Root = null;
+                activeTabletTask = null;
+                appLayer = null;
+                if (desktop != null) desktop.style.display = DisplayStyle.Flex;
+                ShowBackupToast("应用页面暂时无法恢复，请稍后重试");
+                return;
+            }
+        }
+        else
+        {
+            appLayer = task.Root;
+            RefreshProgressDependentTask(task);
+        }
+        task.LastActivated = ++tabletActivationSequence;
+        task.Root.style.display = DisplayStyle.Flex;
+        NotifyTaskLifecycle(() => task.Lifecycle.OnForeground(task.Root));
+        desktop.style.display = DisplayStyle.Flex;
+        if (systemNavigationBar != null)
+        {
+            systemNavigationBar.style.display = DisplayStyle.Flex;
+            ShowTabletNavigationBar();
+        }
+        Focusable lastFocus = task.LastFocusedElement;
+        if (lastFocus is VisualElement focusedElement && task.Root.Contains(focusedElement))
+            task.Root.schedule.Execute(() => focusedElement.Focus()).ExecuteLater(0);
+        else
+            task.Root.schedule.Execute(() => task.Root.Focus()).ExecuteLater(0);
+        CheckTabletMemoryBudget(false);
+    }
+
+    private void RefreshProgressDependentTask(TabletTaskSession task)
+    {
+        if (task?.Root == null || (task.AppId != "归途" && task.AppId != "RDA") || task.Root.childCount == 0) return;
+        var content = task.Root[0].Q<VisualElement>("app-content");
+        if (content == null) return;
+        var snapshot = TabletViewStateSnapshot.Capture(content);
+        content.Clear();
+        if (task.AppId == "归途") BuildReturnJourneyApp(content);
+        else BuildRDAApp(content);
+        snapshot.Restore(content);
+    }
+
+    private void OpenRecentTasks()
+    {
+        if (tabletTasks.Count == 0 || recentTasksOverlay == null || recentTasksOverlay.style.display == DisplayStyle.Flex) return;
+        CancelTabletRebind();
+        tabletShellState.ClosePanel();
+        recentPreviousFocus = root.panel?.focusController.focusedElement as Focusable;
+        RenderRecentTasks();
+        recentTasksOverlay.style.display = DisplayStyle.Flex;
+        recentTasksOverlay.BringToFront();
+        systemNavigationBar?.BringToFront();
+        recentTasksOverlay.Focus();
+    }
+
+    private void CloseRecentTasks()
+    {
+        if (recentTasksOverlay == null || recentTasksOverlay.style.display != DisplayStyle.Flex) return;
+        recentTasksOverlay.style.display = DisplayStyle.None;
+        if (recentPreviousFocus is VisualElement previous && previous.panel == root.panel) previous.Focus();
+        recentPreviousFocus = null;
+    }
+
+    private void RenderRecentTasks()
+    {
+        if (recentTasksList == null) return;
+        recentTasksList.Clear();
+        tabletTasks.Sort((a, b) => b.LastActivated.CompareTo(a.LastActivated));
+        for (int i = 0; i < tabletTasks.Count; i++)
+        {
+            TabletTaskSession task = tabletTasks[i];
+            var card = new VisualElement { name = "tablet-recent-card-" + task.AppId };
+            card.style.width = 280;
+            card.style.height = 250;
+            card.style.marginRight = 16;
+            card.style.marginTop = 12;
+            card.style.paddingLeft = 16;
+            card.style.paddingRight = 16;
+            card.style.paddingTop = 14;
+            card.style.paddingBottom = 14;
+            card.style.flexDirection = FlexDirection.Column;
+            card.style.backgroundColor = new Color(0.13f, 0.15f, 0.19f, 1f);
+            card.style.borderTopLeftRadius = 14;
+            card.style.borderTopRightRadius = 14;
+            card.style.borderBottomLeftRadius = 14;
+            card.style.borderBottomRightRadius = 14;
+
+            var cardHeader = new VisualElement();
+            cardHeader.style.flexDirection = FlexDirection.Row;
+            cardHeader.style.alignItems = Align.Center;
+            cardHeader.style.justifyContent = Justify.SpaceBetween;
+            var appTitle = new Label(task.Title);
+            appTitle.style.flexGrow = 1;
+            appTitle.style.fontSize = 17;
+            appTitle.style.color = Color.white;
+            appTitle.style.unityFontDefinition = Fd();
+            cardHeader.Add(appTitle);
+            string appId = task.AppId;
+            var close = CreateTabletNavButton("×", "结束 " + task.Title, () => CloseTabletTask(appId));
+            close.name = "tablet-recent-close-" + appId;
+            close.style.width = 38;
+            close.style.minWidth = 38;
+            close.style.marginLeft = 4;
+            close.style.marginRight = 0;
+            cardHeader.Add(close);
+            card.Add(cardHeader);
+
+            var preview = new VisualElement();
+            preview.style.flexGrow = 1;
+            preview.style.marginTop = 10;
+            preview.style.marginBottom = 10;
+            preview.style.alignItems = Align.Center;
+            preview.style.justifyContent = Justify.Center;
+            preview.style.backgroundColor = new Color(0.055f, 0.065f, 0.085f, 1f);
+            var status = new Label(task.IsSuspended ? "已保存页面，可恢复" : "运行中 · 保留当前页面");
+            status.style.color = new Color(0.78f, 0.81f, 0.86f, 1f);
+            status.style.fontSize = 13;
+            status.style.unityFontDefinition = Fd();
+            preview.Add(status);
+            card.Add(preview);
+
+            var switchButton = CreateTabletNavButton("切回应用", "切回 " + task.Title, () => ActivateTabletTask(task));
+            switchButton.style.alignSelf = Align.Stretch;
+            switchButton.style.width = Length.Percent(100);
+            switchButton.style.marginLeft = 0;
+            switchButton.style.marginRight = 0;
+            card.Add(switchButton);
+            recentTasksList.Add(card);
+        }
+    }
+
+    private void CloseTabletTask(string appId)
+    {
+        TabletTaskSession task = FindTabletTask(appId);
+        if (task == null) return;
+        if (task == activeTabletTask) ReturnToTabletHome();
+        NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
+        if (task.Root != null)
+        {
+            task.Root.Clear();
+            if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+        }
+        task.Pages.Clear();
+        task.SuspendedPageBuilders = null;
+        task.Snapshot = null;
+        task.AppState = null;
+        tabletTasks.Remove(task);
+        RenderRecentTasks();
+        if (tabletTasks.Count == 0) CloseRecentTasks();
+    }
+
+    private void CloseAllTabletTasks()
+    {
+        ReturnToTabletHome();
+        for (int i = tabletTasks.Count - 1; i >= 0; i--)
+        {
+            var task = tabletTasks[i];
+            NotifyTaskLifecycle(() => task.Lifecycle.OnClosed(task.Root));
+            if (task.Root != null)
+            {
+                task.Root.Clear();
+                if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+            }
+            task.Pages.Clear();
+            task.SuspendedPageBuilders = null;
+            task.Snapshot = null;
+            task.AppState = null;
+            task.LastFocusedElement = null;
+        }
+        tabletTasks.Clear();
+        recentTasksList?.Clear();
+        if (appLayer == null && root != null)
+        {
+            appLayer = new VisualElement { name = "tablet-app-layer" };
+            appLayer.style.position = Position.Absolute;
+            appLayer.style.top = 48;
+            appLayer.style.left = 0;
+            appLayer.style.right = 0;
+            appLayer.style.bottom = SystemNavBarHeight;
+            appLayer.style.display = DisplayStyle.None;
+            root.Insert(Mathf.Max(0, root.IndexOf(tabletShellView.RootElement)), appLayer);
+        }
+        CloseRecentTasks();
+    }
+
+    private void RequestSystemBack()
+    {
+        if (tabletShellState.ClosePanel()) return;
+        if (CancelTabletRebind()) return;
+        if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
+        {
+            CloseRecentTasks();
+            return;
+        }
+        if (activeTabletTask == null) return;
+
+        VisualElement target = root.panel?.focusController.focusedElement as VisualElement;
+        if (target == null || activeTabletTask.Root == null || !activeTabletTask.Root.Contains(target))
+            target = activeTabletTask.Root;
+
+        bool handled = false;
+        if (target != null)
+        {
+            dispatchingSystemBack = true;
+            try
+            {
+                using (KeyDownEvent keyEvent = KeyDownEvent.GetPooled(Event.KeyboardEvent("escape")))
+                {
+                    target.SendEvent(keyEvent);
+                    handled = keyEvent.isPropagationStopped;
+                }
+            }
+            finally
+            {
+                dispatchingSystemBack = false;
+            }
+        }
+        if (!handled && !ReturnToPreviousTabletPage()) ReturnToTabletHome();
+    }
+
+    private bool CancelTabletRebind()
+    {
+        var callback = TabletSettingsAppUI.TabletRebindAction;
+        if (callback == null) return false;
+        TabletSettingsAppUI.TabletRebindAction = null;
+        rebindConsumedFrame = Time.frameCount;
+        callback(KeyCode.Escape);
+        return true;
+    }
+
+    private void OnSystemPointerDown(PointerDownEvent evt)
+    {
+        if (!unlocked || evt.pointerType != "touch" || root?.panel == null) return;
+        if (activeTabletTask != null) ShowTabletNavigationBar();
+        Vector2 point = evt.position;
+        float width = root.panel.visualTree.layout.width;
+        float height = root.panel.visualTree.layout.height;
+        tabletEdgeGesture.Begin(evt.pointerId, point, width, height, SystemNavBarHeight,
+            IsDirectManipulationTarget(evt.target));
+    }
+
+    private void OnSystemPointerMove(PointerMoveEvent evt)
+    {
+        tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
+    }
+
+    private void OnSystemPointerUp(PointerUpEvent evt)
+    {
+        TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
+        switch (action)
+        {
+            case TabletGestureAction.Notifications: OpenSystemPanel(TabletSystemPanel.Notifications); break;
+            case TabletGestureAction.Controls: OpenSystemPanel(TabletSystemPanel.Controls); break;
+            case TabletGestureAction.Back: RequestSystemBack(); break;
+            case TabletGestureAction.Home: ReturnToTabletHome(); break;
+        }
+        if (action == TabletGestureAction.None) return;
+        suppressNextGestureClick = true;
+        root.schedule.Execute(() => suppressNextGestureClick = false).ExecuteLater(80);
+    }
+
+    private bool IsDirectManipulationTarget(IEventHandler target)
+    {
+        VisualElement element = target as VisualElement;
+        while (element != null)
+        {
+            if (element is Button || element is TextField || element is Slider || element is SliderInt ||
+                element is Toggle || element is ScrollView) return true;
+            element = element.parent;
+        }
+        return false;
+    }
+
+    private void ResetSystemGesture()
+    {
+        tabletEdgeGesture.Reset();
+    }
+
+    private void ShowTabletNavigationBar()
+    {
+        if (systemNavigationBar == null || systemNavigationBar.style.display == DisplayStyle.None) return;
+        navFadeSchedule?.Pause();
+        systemNavigationBar.style.opacity = 1f;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            navFadeSchedule = systemNavigationBar.schedule.Execute(() =>
+            {
+                if (activeTabletTask != null && recentTasksOverlay.style.display != DisplayStyle.Flex)
+                    systemNavigationBar.style.opacity = 0.34f;
+            }).StartingIn(1600);
+        }
+    }
+
+    private void OnTabletMemoryUsageChanged(in ApplicationMemoryUsageChange change)
+    {
+        if (change.memoryUsage == ApplicationMemoryUsage.Critical)
+            ReclaimInactiveTabletTasks(true);
+        else if (change.memoryUsage == ApplicationMemoryUsage.High)
+            ReclaimInactiveTabletTasks(false);
+    }
+
+    private long GetTabletMemorySoftBudget()
+    {
+        long physicalMemory = SystemInfo.systemMemorySize * 1024L * 1024L;
+        if (physicalMemory <= 0) return MinimumMemorySoftBudgetBytes;
+        return System.Math.Max(MinimumMemorySoftBudgetBytes, (long)(physicalMemory * 0.62));
+    }
+
+    private void CheckTabletMemoryBudget(bool force)
+    {
+        long allocated = Profiler.GetTotalAllocatedMemoryLong();
+        if (force || allocated > GetTabletMemorySoftBudget()) ReclaimInactiveTabletTasks(false);
+    }
+
+    private void ReclaimInactiveTabletTasks(bool releaseAll)
+    {
+        tabletTasks.Sort((a, b) => a.LastActivated.CompareTo(b.LastActivated));
+        bool released = false;
+        for (int i = 0; i < tabletTasks.Count; i++)
+        {
+            TabletTaskSession task = tabletTasks[i];
+            if (task == activeTabletTask || task.Root == null) continue;
+            var pageBuilders = new List<System.Action>();
+            bool canRebuildPages = true;
+            foreach (TabletPageEntry page in task.Pages)
+            {
+                if (page.Rebuild == null) { canRebuildPages = false; break; }
+                pageBuilders.Add(page.Rebuild);
+            }
+            if (!canRebuildPages) continue;
+            task.Snapshot = TabletViewStateSnapshot.Capture(task.Root);
+            if (!NotifyTaskLifecycle(() => task.Lifecycle.OnViewReclaimed(task.Root))) continue;
+            task.SuspendedPageBuilders = pageBuilders.Count == 0 ? null : pageBuilders;
+            task.Pages.Clear();
+            task.Root.Clear();
+            if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+            task.Root = null;
+            task.LastFocusedElement = null;
+            released = true;
+            if (!releaseAll) break;
+        }
+        if (released && isActiveAndEnabled) StartCoroutine(UnloadTabletTaskAssets());
+    }
+
+    private System.Collections.IEnumerator UnloadTabletTaskAssets()
+    {
+        yield return Resources.UnloadUnusedAssets();
+    }
+
+    private void ApplyPresentation()
+    {
+        if (root == null || PresentationPreferences == null) return;
+        var p = PresentationPreferences;
+        var wallpaper = root.Q("tablet-desktop-wallpaper");
+        if (wallpaper != null) wallpaper.style.backgroundColor = Color.Lerp(Paper, Color.black, p.WallpaperDim);
+        var lockDim = root.Q("tablet-lock-wallpaper-dim");
+        if (lockDim != null) lockDim.style.backgroundColor = new Color(0,0,0,p.WallpaperDim);
+        var accent = p.Accent == TabletAccent.Teal ? new Color(.19f,.66f,.57f) : p.Accent == TabletAccent.Blue ? new Color(.32f,.60f,.92f) : new Color(.86f,.65f,.27f);
+        tabletShellView?.ApplyPresentation(accent, p.HighContrast);
+        if (p.ReduceMotion && desktop != null) desktop.style.opacity = 1;
+    }
+
+    private void OnShellStateChanged()
+    {
+        if (tabletShellState.Panel != TabletSystemPanel.None)
+        {
+            CloseRecentTasks();
+            tabletShellView?.RootElement?.BringToFront();
+        }
+        else if (tabletShellView?.RootElement != null && systemNavigationBar?.parent == root)
+        {
+            int navIndex = root.IndexOf(systemNavigationBar);
+            if (navIndex >= 0) root.Insert(navIndex, tabletShellView.RootElement);
+        }
+
+        if (tabletShellState.Panel == TabletSystemPanel.None)
+        {
+            if (blurCaptureCoroutine != null)
+            {
+                StopCoroutine(blurCaptureCoroutine);
+                blurCaptureCoroutine = null;
+            }
+        }
+    }
+
+    private void TriggerShellBlurCapture()
+    {
+        if (PresentationPreferences != null && PresentationPreferences.HighContrast)
+        {
+            tabletShellView?.ApplyBlurredBackground(null);
+            return;
+        }
+
+        if (blurCaptureCoroutine != null)
+        {
+            StopCoroutine(blurCaptureCoroutine);
+            blurCaptureCoroutine = null;
+        }
+
+        if (isActiveAndEnabled)
+        {
+            tabletShellView?.PrepareForCapture();
+            blurCaptureCoroutine = StartCoroutine(CaptureAndBlurScreenCoroutine());
+        }
+        else
+        {
+            tabletShellView?.ApplyBlurredBackground(null);
+        }
+    }
+
+    private System.Collections.IEnumerator CaptureAndBlurScreenCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        try
+        {
+            if (tabletShellState.Panel != TabletSystemPanel.None)
+            {
+                RenderTexture target = uiDoc != null && uiDoc.panelSettings != null ? uiDoc.panelSettings.targetTexture : null;
+                RenderTexture blurred = target != null && target.IsCreated() ? CaptureAndBlurFromTexture(target) : CaptureAndBlurScreen();
+                tabletShellView?.ApplyBlurredBackground(blurred);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Error during CaptureAndBlurScreenCoroutine: " + ex.Message);
+            tabletShellView?.ApplyBlurredBackground(null);
+        }
+        finally
+        {
+            blurCaptureCoroutine = null;
+        }
+    }
+
+    private void EnsureBlurService()
+    {
+        if (blurService == null)
+        {
+            blurService = new TabletGaussianBlur
+            {
+                Downsample = 2,
+                Sigma = 2.5f
+            };
+        }
+    }
+
+    private bool EnsureCaptureRT(int width, int height)
+    {
+        if (width <= 0 || height <= 0) return false;
+
+        if (blurCaptureRT != null && blurCaptureRT.width == width && blurCaptureRT.height == height)
+        {
+            return true;
+        }
+
+        ReleaseCaptureRT();
+
+        try
+        {
+            blurCaptureRT = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
+            {
+                name = "TabletShell_CaptureRT",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.DontSave
+            };
+            blurCaptureRT.Create();
+            return blurCaptureRT.IsCreated();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Failed to allocate blur capture RenderTexture: " + ex.Message);
+            return false;
+        }
+    }
+
+    private RenderTexture CaptureAndBlurFromTexture(RenderTexture sourceTexture)
+    {
+        if (sourceTexture == null || !sourceTexture.IsCreated()) return null;
+        EnsureBlurService();
+        if (blurService == null || !blurService.IsSupported) return null;
+
+        if (!EnsureCaptureRT(sourceTexture.width, sourceTexture.height)) return null;
+
+        RenderTexture prevActive = RenderTexture.active;
+        try
+        {
+            Graphics.Blit(sourceTexture, blurCaptureRT);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Blit from targetTexture failed: " + ex.Message);
+            return null;
+        }
+        finally
+        {
+            RenderTexture.active = prevActive;
+        }
+
+        return blurService.Process(blurCaptureRT);
+    }
+
+    private RenderTexture CaptureAndBlurScreen()
+    {
+        EnsureBlurService();
+        if (blurService == null || !blurService.IsSupported) return null;
+
+        int w = Mathf.Max(16, Screen.width);
+        int h = Mathf.Max(16, Screen.height);
+        if (!EnsureCaptureRT(w, h)) return null;
+
+        try
+        {
+            ScreenCapture.CaptureScreenshotIntoRenderTexture(blurCaptureRT);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] ScreenCapture into RT failed: " + ex.Message);
+            return null;
+        }
+
+        return blurService.Process(blurCaptureRT);
+    }
+
+    private void ReleaseCaptureRT()
+    {
+        if (blurCaptureRT != null)
+        {
+            blurCaptureRT.Release();
+            DestroyImmediate(blurCaptureRT);
+            blurCaptureRT = null;
+        }
+    }
+
+    private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null, bool clearLayer = true)
+    {
+        if (clearLayer) appLayer.Clear();
         // 全屏视窗（Folia / 现代工业暗黑沉浸视听容器：深墨黑、去白色“狗皮膏药”）
         var win = new VisualElement { name = "app-fullscreen-window" };
         win.style.position = Position.Absolute;
@@ -1683,8 +2628,8 @@ public class GameMainUI : MonoBehaviour
         var backBtn = new Button(() =>
         {
             if (onBack != null) onBack();
-            else appLayer.style.display = DisplayStyle.None;
-        }) { text = "◀  返回桌面" };
+            else ReturnToTabletHome();
+        }) { text = onBack == null ? "◀  返回桌面" : "◀  返回" };
         backBtn.style.height = 30;
         backBtn.style.paddingLeft = 14; backBtn.style.paddingRight = 14;
         backBtn.style.fontSize = 12;
@@ -1737,7 +2682,7 @@ public class GameMainUI : MonoBehaviour
         }
 
         // 右侧关闭按钮
-        var closeBtn = new Button(() => { appLayer.style.display = DisplayStyle.None; }) { text = "✕" };
+        var closeBtn = new Button(ReturnToTabletHome) { text = "✕", name = "tablet-app-close" };
         closeBtn.style.width = 30; closeBtn.style.height = 30;
         closeBtn.style.fontSize = 14;
         closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -1805,25 +2750,39 @@ public class GameMainUI : MonoBehaviour
     {
         if (name == "驾驶台")
         {
+            ReturnToTabletHome();
             OpenCabApp();
             return;
         }
 
+        TabletTaskSession task = FindTabletTask(name);
+        if (task == null)
+        {
+            task = new TabletTaskSession(name, name);
+            if (name == "音乐") task.Lifecycle = new MusicTabletTaskLifecycle();
+            if (name == "笔记") task.Lifecycle = new NotesTabletTaskLifecycle();
+            tabletTasks.Add(task);
+        }
+
+        ActivateTabletTask(task);
+    }
+
+    private void BuildTabletTaskContent(string name)
+    {
+        if (appLayer == null) return;
+        appLayer.Clear();
         if (name == "音乐")
         {
-            appLayer.Clear();
             var musicWin = new VisualElement { name = "app-fullscreen-music" };
             musicWin.style.position = Position.Absolute;
-            musicWin.style.top = 0; musicWin.style.left = 0; musicWin.style.right = 0; musicWin.style.bottom = 0;
+            musicWin.style.top = 0;
+            musicWin.style.left = 0;
+            musicWin.style.right = 0;
+            musicWin.style.bottom = 0;
             musicWin.style.backgroundColor = new Color(0.08f, 0.08f, 0.10f, 1f);
             musicWin.style.flexDirection = FlexDirection.Column;
             appLayer.Add(musicWin);
-
-            TabletMusicAppUI.BuildMusicApp(musicWin, ShowBackupToast, () =>
-            {
-                if (appLayer != null) appLayer.style.display = DisplayStyle.None;
-            });
-            appLayer.style.display = DisplayStyle.Flex;
+            TabletMusicAppUI.BuildMusicApp(musicWin, ShowBackupToast, ReturnToTabletHome);
             return;
         }
 
@@ -1835,6 +2794,7 @@ public class GameMainUI : MonoBehaviour
             case "RDA": BuildRDAApp(win); break;
             case "归途": BuildReturnJourneyApp(win); break;
             case "媒姬百科": BuildWikiApp(win); break;
+            case "岁月 · AI对话": BuildSuiyueDialogue(win); break;
             case "设置": BuildSettingsPage(win); break;
             case "笔记": BuildNotesApp(win); break;
             case "相册": BuildGalleryApp(win); break;
@@ -1854,11 +2814,11 @@ public class GameMainUI : MonoBehaviour
             default: BuildPlaceholderApp(win, name); break;
         }
 
-        appLayer.style.display = DisplayStyle.Flex;
     }
 
     private void OpenCabApp()
     {
+        tabletShellState.ClosePanel();
         if (root != null) root.style.display = DisplayStyle.None;
         var cabUI = RailwayRenaissance.Cab.CabConsoleUI.Create();
         cabUI.OnCloseRequested = () =>
@@ -1882,7 +2842,24 @@ public class GameMainUI : MonoBehaviour
     }
 
     // ============ App: 设置（已抽离至 TabletSettingsAppUI）============
-    private void BuildSettingsPage(VisualElement win) => TabletSettingsAppUI.BuildSettingsPage(win, ShowBackupToast);
+    private void BuildSettingsPage(VisualElement win) => TabletSettingsAppUI.BuildSettingsPage(win, ShowBackupToast, OpenSystemPanel);
+    public TabletShellState ShellState => tabletShellState;
+
+    public void OpenSystemPanel(TabletSystemPanel panel)
+    {
+        ResetSystemGesture();
+        if (panel == TabletSystemPanel.None)
+        {
+            tabletShellState.ClosePanel();
+            return;
+        }
+
+        if (tabletShellState.Panel != panel)
+        {
+            CloseRecentTasks();
+            tabletShellState.TogglePanel(panel);
+        }
+    }
     private void ShowAffairsPage() => TabletSettingsAppUI.ShowAffairsPage();
     private void ShowStoryPage() => TabletSettingsAppUI.ShowStoryPage();
 
@@ -1911,6 +2888,8 @@ public class GameMainUI : MonoBehaviour
         if (Instance.lockScreen != null) Instance.lockScreen.style.display = DisplayStyle.None;
         if (Instance.desktop != null) Instance.desktop.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
+        Instance.tabletShellView?.SetVisible(true);
+        Instance.LaunchApp("设置");
         TabletSettingsAppUI.ShowTipsPage(termId);
     }
 
@@ -1927,6 +2906,12 @@ public class GameMainUI : MonoBehaviour
     private Label backupToast;
     private void ShowBackupToast(string msg)
     {
+        tabletShellState.Post("应用提示", msg);
+        if (tabletShellState.QuietMode)
+        {
+            if (backupToast != null) backupToast.style.display = DisplayStyle.None;
+            return;
+        }
         if (backupToast == null)
         {
             backupToast = new Label(msg);
@@ -1942,7 +2927,9 @@ public class GameMainUI : MonoBehaviour
             backupToast.style.borderTopLeftRadius = 12; backupToast.style.borderTopRightRadius = 12;
             backupToast.style.borderBottomLeftRadius = 12; backupToast.style.borderBottomRightRadius = 12;
             backupToast.pickingMode = PickingMode.Ignore;
-            root.Add(backupToast);
+            var shell = root.Q("tablet-shell-root");
+            if (shell != null) root.Insert(root.IndexOf(shell), backupToast);
+            else root.Add(backupToast);
         }
         else
         {
@@ -1953,11 +2940,11 @@ public class GameMainUI : MonoBehaviour
     }
 
     // ============ App: RDA（已抽离至 TabletRDAAppUI）============
-    private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, () => { if (appLayer != null) appLayer.style.display = DisplayStyle.None; ShowStoryPage(); }, () => { if (appLayer != null) appLayer.style.display = DisplayStyle.None; ShowAffairsPage(); }, ShowBackupToast);
+    private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
 
     // ============ App: 归途（已抽离至 TabletReturnJourneyUI）============
     private static (string scriptId, string episode, string title, string desc)[] PrologueEpisodes => TabletReturnJourneyUI.PrologueEpisodes;
-    private void BuildReturnJourneyApp(VisualElement win) => TabletReturnJourneyUI.BuildReturnJourneyApp(win, () => { if (appLayer != null) appLayer.style.display = DisplayStyle.None; }, ShowBackupToast);
+    private void BuildReturnJourneyApp(VisualElement win) => TabletReturnJourneyUI.BuildReturnJourneyApp(win, ReturnToTabletHome, ShowBackupToast);
 
     // ============ App: 媒姬百科与便签（已抽离至 TabletNotesAppUI）============
     private void BuildWikiApp(VisualElement win) => TabletNotesAppUI.BuildWikiApp(win);
@@ -1966,7 +2953,7 @@ public class GameMainUI : MonoBehaviour
     // ============ App: 音乐（已抽离至 TabletMusicAppUI）============
     private void BuildMusicApp(VisualElement win) => TabletMusicAppUI.BuildMusicApp(win, ShowBackupToast, () =>
     {
-        if (appLayer != null) appLayer.style.display = DisplayStyle.None;
+        ReturnToTabletHome();
     });
     private void PlayNextTabletTrack() => TabletMusicAppUI.PlayNextTabletTrack();
     private void PlayPrevTabletTrack() => TabletMusicAppUI.PlayPrevTabletTrack();
@@ -1983,7 +2970,16 @@ public class GameMainUI : MonoBehaviour
     private void BuildClockApp(VisualElement win) => TabletSystemToolsAppUI.BuildClockApp(win);
     private void BuildCalendarApp(VisualElement win) => TabletSystemToolsAppUI.BuildCalendarApp(win);
     private void BuildWeatherApp(VisualElement win) => TabletSystemToolsAppUI.BuildWeatherApp(win);
-    private void BuildCalculatorApp(VisualElement win) => TabletSystemToolsAppUI.BuildCalculatorApp(win);
+    private void BuildCalculatorApp(VisualElement win)
+    {
+        var engine = activeTabletTask?.AppState as TabletSystemToolsAppUI.TabletCalculatorEngine;
+        if (engine == null)
+        {
+            engine = new TabletSystemToolsAppUI.TabletCalculatorEngine();
+            if (activeTabletTask != null) activeTabletTask.AppState = engine;
+        }
+        TabletSystemToolsAppUI.BuildCalculatorApp(win, engine);
+    }
     private void BuildMijiaApp(VisualElement win) => TabletSystemToolsAppUI.BuildMijiaApp(win);
     private void BuildSecurityApp(VisualElement win) => TabletSystemToolsAppUI.BuildSecurityApp(win);
     private void BuildBrowserApp(VisualElement win) => TabletSystemToolsAppUI.BuildBrowserApp(win);
@@ -1995,24 +2991,85 @@ public class GameMainUI : MonoBehaviour
     private void BuildMapApp(VisualElement win) => TabletSystemToolsAppUI.BuildMapApp(win);
     private void BuildPlaceholderApp(VisualElement win, string name) => TabletSystemToolsAppUI.BuildPlaceholderApp(win, name);
 
-    public VisualElement BuildInnerPanel(string title)
+    public VisualElement BuildInnerPanel(string title, System.Action rebuild = null)
     {
-        return BuildFullScreenAppContainer(title);
+        if (activeTabletTask == null || appLayer == null) return null;
+        List<TabletPageEntry> pages = activeTabletTask.Pages;
+        System.Action back = () => { if (!ReturnToPreviousTabletPage()) ReturnToTabletHome(); };
+        if (pages.Count > 0 && pages[pages.Count - 1].Title == title)
+        {
+            TabletPageEntry current = pages[pages.Count - 1];
+            current.View?.parent?.RemoveFromHierarchy();
+            current.View = BuildFullScreenAppContainer(title, null, back, false);
+            current.Rebuild = rebuild;
+            return current.View;
+        }
+
+        VisualElement previous = appLayer.childCount > 0 ? appLayer[appLayer.childCount - 1] : null;
+        Focusable previousFocus = root.panel?.focusController.focusedElement;
+        if (previous != null) previous.style.display = DisplayStyle.None;
+        VisualElement view = BuildFullScreenAppContainer(title, null, back, false);
+        pages.Add(new TabletPageEntry { Title = title, View = view, Rebuild = rebuild, PreviousFocus = previousFocus });
+        return view;
+    }
+
+    private bool ReturnToPreviousTabletPage()
+    {
+        if (activeTabletTask == null || appLayer == null || activeTabletTask.Pages.Count == 0) return false;
+        List<TabletPageEntry> pages = activeTabletTask.Pages;
+        TabletPageEntry current = pages[pages.Count - 1];
+        current.View?.parent?.RemoveFromHierarchy();
+        pages.RemoveAt(pages.Count - 1);
+        VisualElement previous = appLayer.childCount > 0 ? appLayer[appLayer.childCount - 1] : null;
+        if (previous != null) previous.style.display = DisplayStyle.Flex;
+        if (current.PreviousFocus is VisualElement focused && previous != null && previous.Contains(focused) &&
+            focused.panel == root.panel) focused.Focus();
+        else appLayer.Focus();
+        return true;
     }
 
     private void Update()
     {
+        if (tabletTasks.Count > 0)
+        {
+            memoryCheckTimer += Time.unscaledDeltaTime;
+            if (memoryCheckTimer >= 5f)
+            {
+                memoryCheckTimer = 0f;
+                CheckTabletMemoryBudget(false);
+            }
+        }
         if (root == null || root.style.display == DisplayStyle.None) return;
 
+        if (tabletEdgeGesture.Tick(Time.unscaledTime) == TabletGestureAction.Recents)
+            OpenRecentTasks();
+
+        // 系统面板模糊尺寸自适应
+        if (tabletShellState.Panel != TabletSystemPanel.None)
+        {
+            int curW = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
+                ? uiDoc.panelSettings.targetTexture.width
+                : Screen.width;
+            int curH = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
+                ? uiDoc.panelSettings.targetTexture.height
+                : Screen.height;
+            if (blurCaptureRT != null && (blurCaptureRT.width != curW || blurCaptureRT.height != curH))
+            {
+                TriggerShellBlurCapture();
+            }
+        }
+
         // 触控笔与键盘：按键重绑定监听
-        if (_tabletRebindAction != null)
+        if (TabletSettingsAppUI.TabletRebindAction != null && tabletShellState.Panel == TabletSystemPanel.None &&
+            rebindConsumedFrame != Time.frameCount)
         {
             foreach (KeyCode code in AllKeyCodes)
             {
                 if (LegacyInputAdapter.GetKeyDown(code))
                 {
-                    var cb = _tabletRebindAction;
-                    _tabletRebindAction = null;
+                    var cb = TabletSettingsAppUI.TabletRebindAction;
+                    TabletSettingsAppUI.TabletRebindAction = null;
+                    rebindConsumedFrame = Time.frameCount;
                     cb(code);
                     return;
                 }
@@ -2120,7 +3177,7 @@ public class GameMainUI : MonoBehaviour
         suiyueBubble.text = SuiyueIdleLines[suiyueIdleIndex % SuiyueIdleLines.Length];
         suiyueIdleIndex++;
         suiyueBubble.style.display = DisplayStyle.Flex;
-        suiyueBubble.style.opacity = 0;
+        suiyueBubble.style.opacity = PresentationPreferences != null && PresentationPreferences.ReduceMotion ? 1 : 0;
         // 淡入
         suiyueBubble.schedule.Execute(() => { suiyueBubble.style.opacity = 1; }).ExecuteLater(100);
         // 4秒后淡出

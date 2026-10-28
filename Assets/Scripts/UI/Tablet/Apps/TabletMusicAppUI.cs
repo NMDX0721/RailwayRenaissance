@@ -214,10 +214,56 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static IVisualElementScheduledItem s_toastScheduledItem;
         private static IVisualElementScheduledItem s_progressScheduledItem;
         private static Action<string> s_showToast;
+        private static bool s_viewForeground = true;
+
+        public static void SetTaskViewForeground(VisualElement taskRoot, bool foreground)
+        {
+            if (s_activeWindow != null && taskRoot != null &&
+                (taskRoot == s_activeWindow || taskRoot.Contains(s_activeWindow)))
+                s_viewForeground = foreground;
+        }
+
+        public static void ReleaseTaskView(VisualElement taskRoot)
+        {
+            if (s_activeWindow == null || taskRoot == null ||
+                (taskRoot != s_activeWindow && !taskRoot.Contains(s_activeWindow))) return;
+            s_toastScheduledItem?.Pause();
+            s_progressScheduledItem?.Pause();
+            s_toastScheduledItem = null;
+            s_progressScheduledItem = null;
+            s_activeWindow = null;
+            tabletProgressTrack = tabletProgressFill = tabletProgressKnob = null;
+            tabletCurTimeLbl = tabletTotalTimeLbl = tabletPlayerTitleLbl = tabletPlayerSubLbl = null;
+            tabletMiniCover = tabletModeToggleBtn = null;
+            tabletMiniDiscIcon = null;
+            tabletPlayToggleBtn = tabletFavToggleBtn = tabletVolBtn = null;
+            tabletVolSlider = null;
+            tabletProgressScrubbing = false;
+            s_sidebarHandle = null;
+            s_playerBarHandle = null;
+            s_nowPlayingSidebarHandle = null;
+            s_nowPlayingVinylDisc = s_nowPlayingHaloGlow = null;
+            s_vuMeterHandle = null;
+            s_nowPlayingTitleLbl = s_nowPlayingCategoryLbl = s_nowPlayingLoreLbl = s_nowPlayingNextTitleLbl = null;
+            s_toastPill = null;
+            s_toastLabel = null;
+            s_cardBindings.Clear();
+            s_waveBars.Clear();
+            s_viewForeground = false;
+        }
+
+        public static void CloseTaskView(VisualElement taskRoot)
+        {
+            if (s_activeWindow != null && (taskRoot == null ||
+                (taskRoot != s_activeWindow && !taskRoot.Contains(s_activeWindow)))) return;
+            ReleaseTaskView(taskRoot);
+            s_onClose = null;
+            s_showToast = null;
+        }
 
         public static void ShowToast(string msg)
         {
-            if (s_toastPill != null && s_toastLabel != null)
+            if (s_viewForeground && s_toastPill != null && s_toastLabel != null)
             {
                 s_toastLabel.text = msg;
                 s_toastPill.BringToFront();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Globalization;
 using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 
 namespace RailwayRenaissance.UI.Tablet.Apps
@@ -16,6 +17,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     private static void ShowToast(string msg)
     {
+        if (string.IsNullOrEmpty(msg)) return;
         if (s_showToast != null) s_showToast(msg);
         else Debug.Log("[SystemTools] " + msg);
     }
@@ -153,44 +155,568 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         body.Add(forecastCard);
     }
 
-    // ============ App: 计算器 ============
-    public static void BuildCalculatorApp(VisualElement win)
+    // ============ 平板四则计算器引擎 ============
+    public sealed class TabletCalculatorEngine
     {
-        var body = BuildAppBody(win, "运价计算器", "客货运里程运价核算与沙币换算");
+        private string _currentEntry = "0";
+        private bool _isEnteringNumber = false;
+        private bool _hasEvaluated = false;
+        private bool _hasError = false;
+        private string _errorMessage = "";
+
+        private readonly List<decimal> _numbers = new List<decimal>();
+        private readonly List<char> _operators = new List<char>();
+
+        private char _lastRepeatedOp = '\0';
+        private decimal _lastRepeatedOperand = 0m;
+
+        public string CurrentDisplay => _hasError ? _errorMessage : _currentEntry;
+        public string ExpressionText { get; private set; } = "";
+        public bool HasError => _hasError;
+        public string ErrorMessage => _errorMessage;
+
+        public event Action OnStateChanged;
+
+        public void InputDigit(int digit)
+        {
+            if (digit < 0 || digit > 9) return;
+            InputDigit((char)('0' + digit));
+        }
+
+        public void InputDigit(char digit)
+        {
+            if (digit < '0' || digit > '9') return;
+
+            if (_hasError || _hasEvaluated)
+            {
+                ClearInternal();
+                _currentEntry = digit.ToString();
+                _isEnteringNumber = true;
+                _hasEvaluated = false;
+            }
+            else if (!_isEnteringNumber)
+            {
+                _currentEntry = digit.ToString();
+                _isEnteringNumber = true;
+            }
+            else
+            {
+                if (_currentEntry == "0")
+                {
+                    _currentEntry = digit.ToString();
+                }
+                else if (_currentEntry == "-0")
+                {
+                    _currentEntry = "-" + digit.ToString();
+                }
+                else
+                {
+                    string pureDigits = _currentEntry.Replace("-", "").Replace(".", "");
+                    if (pureDigits.Length < 29)
+                    {
+                        _currentEntry += digit;
+                    }
+                }
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void InputDot()
+        {
+            if (_hasError || _hasEvaluated)
+            {
+                ClearInternal();
+                _currentEntry = "0.";
+                _isEnteringNumber = true;
+                _hasEvaluated = false;
+            }
+            else if (!_isEnteringNumber)
+            {
+                _currentEntry = "0.";
+                _isEnteringNumber = true;
+            }
+            else
+            {
+                if (!_currentEntry.Contains("."))
+                {
+                    _currentEntry += ".";
+                }
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void InputBackspace()
+        {
+            if (_hasError)
+            {
+                Clear();
+                return;
+            }
+
+            if (_hasEvaluated)
+            {
+                _currentEntry = "0";
+                _isEnteringNumber = false;
+                OnStateChanged?.Invoke();
+                return;
+            }
+
+            if (_isEnteringNumber)
+            {
+                if (_currentEntry.Length > 0)
+                {
+                    _currentEntry = _currentEntry.Substring(0, _currentEntry.Length - 1);
+                }
+
+                if (string.IsNullOrEmpty(_currentEntry) || _currentEntry == "-" || _currentEntry == "-0")
+                {
+                    _currentEntry = "0";
+                    _isEnteringNumber = false;
+                }
+            }
+            else
+            {
+                _currentEntry = "0";
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void InputNegate()
+        {
+            if (_hasError) return;
+
+            if (_currentEntry == "0" || _currentEntry == "0.")
+            {
+                return;
+            }
+
+            if (_currentEntry.StartsWith("-"))
+            {
+                _currentEntry = _currentEntry.Substring(1);
+            }
+            else
+            {
+                _currentEntry = "-" + _currentEntry;
+            }
+
+            if (_hasEvaluated)
+            {
+                _hasEvaluated = false;
+                _isEnteringNumber = true;
+                _numbers.Clear();
+                _operators.Clear();
+                ExpressionText = "";
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void InputOperator(char op)
+        {
+            op = NormalizeOp(op);
+            if (op != '+' && op != '-' && op != '×' && op != '÷') return;
+
+            if (_hasError) return;
+
+            decimal val;
+            if (!decimal.TryParse(_currentEntry, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
+            {
+                SetError("输入错误");
+                return;
+            }
+
+            if (_hasEvaluated)
+            {
+                _hasEvaluated = false;
+                _numbers.Clear();
+                _operators.Clear();
+                _numbers.Add(val);
+                _operators.Add(op);
+                _isEnteringNumber = false;
+                UpdateExpressionText();
+                OnStateChanged?.Invoke();
+                return;
+            }
+
+            if (_isEnteringNumber)
+            {
+                _numbers.Add(val);
+                _operators.Add(op);
+                _isEnteringNumber = false;
+                UpdateExpressionText();
+            }
+            else
+            {
+                if (_operators.Count > 0)
+                {
+                    _operators[_operators.Count - 1] = op;
+                    UpdateExpressionText();
+                }
+                else
+                {
+                    _numbers.Add(val);
+                    _operators.Add(op);
+                    UpdateExpressionText();
+                }
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void InputEquals()
+        {
+            if (_hasError) return;
+
+            if (_hasEvaluated)
+            {
+                if (_lastRepeatedOp != '\0')
+                {
+                    decimal current;
+                    if (!decimal.TryParse(_currentEntry, NumberStyles.Float, CultureInfo.InvariantCulture, out current))
+                    {
+                        SetError("输入错误");
+                        return;
+                    }
+
+                    try
+                    {
+                        decimal res = ApplyOp(current, _lastRepeatedOp, _lastRepeatedOperand);
+                        ExpressionText = $"{FormatDecimal(current)} {_lastRepeatedOp} {FormatDecimal(_lastRepeatedOperand)} =";
+                        _currentEntry = FormatDecimal(res);
+                        OnStateChanged?.Invoke();
+                    }
+                    catch (DivideByZeroException)
+                    {
+                        SetError("除数不能为0");
+                    }
+                    catch (OverflowException)
+                    {
+                        SetError("数值溢出");
+                    }
+                    catch (Exception)
+                    {
+                        SetError("运算错误");
+                    }
+                }
+                return;
+            }
+
+            decimal finalVal;
+            if (!decimal.TryParse(_currentEntry, NumberStyles.Float, CultureInfo.InvariantCulture, out finalVal))
+            {
+                SetError("输入错误");
+                return;
+            }
+
+            if (_operators.Count == 0)
+            {
+                _currentEntry = FormatDecimal(finalVal);
+                ExpressionText = $"{_currentEntry} =";
+                _hasEvaluated = true;
+                _isEnteringNumber = false;
+                OnStateChanged?.Invoke();
+                return;
+            }
+
+            _numbers.Add(finalVal);
+            _isEnteringNumber = false;
+
+            _lastRepeatedOp = _operators[_operators.Count - 1];
+            _lastRepeatedOperand = _numbers[_numbers.Count - 1];
+
+            ExpressionText = BuildExpressionString(_numbers, _operators) + " =";
+
+            var numsCopy = new List<decimal>(_numbers);
+            var opsCopy = new List<char>(_operators);
+
+            if (EvaluateInfix(numsCopy, opsCopy, out decimal result, out string error))
+            {
+                _currentEntry = FormatDecimal(result);
+                _hasEvaluated = true;
+                _numbers.Clear();
+                _operators.Clear();
+            }
+            else
+            {
+                SetError(error);
+            }
+
+            OnStateChanged?.Invoke();
+        }
+
+        public void Clear()
+        {
+            ClearInternal();
+            OnStateChanged?.Invoke();
+        }
+
+        private void ClearInternal()
+        {
+            _currentEntry = "0";
+            _isEnteringNumber = false;
+            _hasEvaluated = false;
+            _hasError = false;
+            _errorMessage = "";
+            _numbers.Clear();
+            _operators.Clear();
+            _lastRepeatedOp = '\0';
+            _lastRepeatedOperand = 0m;
+            ExpressionText = "";
+        }
+
+        private void SetError(string message)
+        {
+            _hasError = true;
+            _errorMessage = message;
+            _currentEntry = "0";
+            _isEnteringNumber = false;
+            _hasEvaluated = false;
+            _numbers.Clear();
+            _operators.Clear();
+            _lastRepeatedOp = '\0';
+            _lastRepeatedOperand = 0m;
+            OnStateChanged?.Invoke();
+        }
+
+        private void UpdateExpressionText()
+        {
+            ExpressionText = BuildExpressionString(_numbers, _operators);
+        }
+
+        private static string BuildExpressionString(List<decimal> nums, List<char> ops)
+        {
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < nums.Count; i++)
+            {
+                if (i > 0) sb.Append(" ");
+                sb.Append(FormatDecimal(nums[i]));
+                if (i < ops.Count)
+                {
+                    sb.Append(" ").Append(ops[i]);
+                }
+            }
+            return sb.ToString();
+        }
+
+        private static bool EvaluateInfix(List<decimal> nums, List<char> ops, out decimal result, out string error)
+        {
+            result = 0m;
+            error = null;
+            try
+            {
+                // 优先级第一轮：乘除运算（左结合）
+                int i = 0;
+                while (i < ops.Count)
+                {
+                    char op = ops[i];
+                    if (op == '×' || op == '÷')
+                    {
+                        decimal a = nums[i];
+                        decimal b = nums[i + 1];
+                        decimal r = ApplyOp(a, op, b);
+                        nums[i] = r;
+                        nums.RemoveAt(i + 1);
+                        ops.RemoveAt(i);
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+
+                // 优先级第二轮：加减运算（左结合）
+                i = 0;
+                while (i < ops.Count)
+                {
+                    char op = ops[i];
+                    decimal a = nums[i];
+                    decimal b = nums[i + 1];
+                    decimal r = ApplyOp(a, op, b);
+                    nums[i] = r;
+                    nums.RemoveAt(i + 1);
+                    ops.RemoveAt(i);
+                }
+
+                result = nums[0];
+                return true;
+            }
+            catch (DivideByZeroException)
+            {
+                error = "除数不能为0";
+                return false;
+            }
+            catch (OverflowException)
+            {
+                error = "数值溢出";
+                return false;
+            }
+            catch (Exception)
+            {
+                error = "运算错误";
+                return false;
+            }
+        }
+
+        private static decimal ApplyOp(decimal a, char op, decimal b)
+        {
+            switch (op)
+            {
+                case '+': return checked(a + b);
+                case '-': return checked(a - b);
+                case '×':
+                case '*': return checked(a * b);
+                case '÷':
+                case '/':
+                    if (b == 0m) throw new DivideByZeroException();
+                    return checked(a / b);
+                default:
+                    throw new InvalidOperationException("未知运算符: " + op);
+            }
+        }
+
+        private static char NormalizeOp(char op)
+        {
+            if (op == '*') return '×';
+            if (op == '/') return '÷';
+            return op;
+        }
+
+        public static string FormatDecimal(decimal value)
+        {
+            string s = value.ToString("0.############################", CultureInfo.InvariantCulture);
+            if (string.IsNullOrEmpty(s) || s == "-0") s = "0";
+            return s;
+        }
+    }
+
+    // ============ App: 计算器 ============
+    public static void BuildCalculatorApp(VisualElement win, TabletCalculatorEngine engine = null)
+    {
+        var body = BuildAppBody(win, "计算器", "基础四则运算");
 
         var card = BuildAppCard();
-        card.style.width = 420; card.style.alignSelf = Align.Center;
+        card.name = "calc-card";
+        card.style.width = 420;
+        card.style.alignSelf = Align.Center;
 
-        var display = new Label("0");
-        display.style.fontSize = 36; display.style.color = InkPrimary;
-        display.style.unityFontStyleAndWeight = FontStyle.Bold;
-        display.style.unityFontDefinition = Fd();
-        display.style.height = 54; display.style.unityTextAlign = TextAnchor.MiddleRight;
-        display.style.paddingRight = 10;
-        display.style.marginBottom = 12;
-        display.style.backgroundColor = SurfaceApp;
-        display.style.borderTopLeftRadius = 8; display.style.borderTopRightRadius = 8;
-        display.style.borderBottomLeftRadius = 8; display.style.borderBottomRightRadius = 8;
-        card.Add(display);
+        engine ??= new TabletCalculatorEngine();
+        card.userData = engine;
 
-        string[][] rows = {
-            new[]{"7","8","9","÷"},
-            new[]{"4","5","6","×"},
-            new[]{"1","2","3","-"},
-            new[]{"0",".","=","+"},
-        };
-        foreach (var row in rows)
+        // 显示屏区域
+        var displayBox = new VisualElement();
+        displayBox.name = "calc-display-container";
+        displayBox.style.backgroundColor = SurfaceApp;
+        displayBox.style.borderTopLeftRadius = 8; displayBox.style.borderTopRightRadius = 8;
+        displayBox.style.borderBottomLeftRadius = 8; displayBox.style.borderBottomRightRadius = 8;
+        displayBox.style.paddingLeft = 12; displayBox.style.paddingRight = 12;
+        displayBox.style.paddingTop = 8; displayBox.style.paddingBottom = 8;
+        displayBox.style.marginBottom = 12;
+
+        var exprLabel = new Label("");
+        exprLabel.name = "calc-display-expression";
+        exprLabel.style.fontSize = 13;
+        exprLabel.style.color = InkSecondary;
+        exprLabel.style.unityFontDefinition = Fd();
+        exprLabel.style.height = 20;
+        exprLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+        displayBox.Add(exprLabel);
+
+        var mainLabel = new Label("0");
+        mainLabel.name = "calc-display-main";
+        mainLabel.style.fontSize = 32;
+        mainLabel.style.color = InkPrimary;
+        mainLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        mainLabel.style.unityFontDefinition = Fd();
+        mainLabel.style.height = 44;
+        mainLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+        displayBox.Add(mainLabel);
+
+        card.Add(displayBox);
+
+        void UpdateUI()
         {
-            var btnRow = new VisualElement(); btnRow.style.flexDirection = FlexDirection.Row;
-            btnRow.style.marginTop = 6; btnRow.style.justifyContent = Justify.SpaceBetween;
+            mainLabel.text = engine.CurrentDisplay;
+            exprLabel.text = engine.ExpressionText;
+            if (engine.HasError)
+            {
+                mainLabel.style.color = CrimsonSeal;
+                mainLabel.style.fontSize = 20;
+            }
+            else
+            {
+                mainLabel.style.color = InkPrimary;
+                int len = mainLabel.text != null ? mainLabel.text.Length : 0;
+                mainLabel.style.fontSize = len > 16 ? 20 : (len > 10 ? 26 : 32);
+            }
+        }
+
+        // A retained task engine must not retain a discarded view through its event.
+        card.RegisterCallback<AttachToPanelEvent>(_ => { engine.OnStateChanged -= UpdateUI; engine.OnStateChanged += UpdateUI; UpdateUI(); });
+        card.RegisterCallback<DetachFromPanelEvent>(_ => engine.OnStateChanged -= UpdateUI);
+        UpdateUI();
+
+        var buttonRows = new[]
+        {
+            new (string text, string name, Action action, float width, bool isAccent, bool isOperator)[]
+            {
+                ("C", "calc-btn-c", engine.Clear, 88f, false, false),
+                ("⌫", "calc-btn-backspace", engine.InputBackspace, 88f, false, false),
+                ("±", "calc-btn-negate", engine.InputNegate, 88f, false, false),
+                ("÷", "calc-btn-div", () => engine.InputOperator('÷'), 88f, false, true),
+            },
+            new (string text, string name, Action action, float width, bool isAccent, bool isOperator)[]
+            {
+                ("7", "calc-btn-7", () => engine.InputDigit(7), 88f, false, false),
+                ("8", "calc-btn-8", () => engine.InputDigit(8), 88f, false, false),
+                ("9", "calc-btn-9", () => engine.InputDigit(9), 88f, false, false),
+                ("×", "calc-btn-mul", () => engine.InputOperator('×'), 88f, false, true),
+            },
+            new (string text, string name, Action action, float width, bool isAccent, bool isOperator)[]
+            {
+                ("4", "calc-btn-4", () => engine.InputDigit(4), 88f, false, false),
+                ("5", "calc-btn-5", () => engine.InputDigit(5), 88f, false, false),
+                ("6", "calc-btn-6", () => engine.InputDigit(6), 88f, false, false),
+                ("-", "calc-btn-sub", () => engine.InputOperator('-'), 88f, false, true),
+            },
+            new (string text, string name, Action action, float width, bool isAccent, bool isOperator)[]
+            {
+                ("1", "calc-btn-1", () => engine.InputDigit(1), 88f, false, false),
+                ("2", "calc-btn-2", () => engine.InputDigit(2), 88f, false, false),
+                ("3", "calc-btn-3", () => engine.InputDigit(3), 88f, false, false),
+                ("+", "calc-btn-add", () => engine.InputOperator('+'), 88f, false, true),
+            },
+            new (string text, string name, Action action, float width, bool isAccent, bool isOperator)[]
+            {
+                ("0", "calc-btn-0", () => engine.InputDigit(0), 184f, false, false),
+                (".", "calc-btn-dot", engine.InputDot, 88f, false, false),
+                ("=", "calc-btn-equal", engine.InputEquals, 88f, true, false),
+            }
+        };
+
+        foreach (var row in buttonRows)
+        {
+            var btnRow = new VisualElement();
+            btnRow.style.flexDirection = FlexDirection.Row;
+            btnRow.style.marginTop = 6;
+            btnRow.style.justifyContent = Justify.SpaceBetween;
             card.Add(btnRow);
+
             foreach (var b in row)
             {
-                var btn = new Button(() => { }) { text = b };
-                btn.style.width = 88; btn.style.height = 46; btn.style.fontSize = 18;
-                btn.style.unityTextAlign = TextAnchor.MiddleCenter; btn.style.unityFontDefinition = Fd();
-                btn.style.backgroundColor = b == "=" ? AccentSystem : SurfaceHover;
-                btn.style.color = b == "=" ? Color.white : InkPrimary;
+                var btn = new Button(b.action) { text = b.text };
+                btn.name = b.name;
+                btn.style.width = b.width;
+                btn.style.height = 46;
+                btn.style.minWidth = 44;
+                btn.style.minHeight = 44;
+                btn.style.fontSize = 18;
+                btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+                btn.style.unityFontDefinition = Fd();
+                btn.style.backgroundColor = b.isAccent ? AccentSystem : (b.isOperator ? SurfaceCardSoft : SurfaceHover);
+                btn.style.color = b.isAccent ? Color.white : InkPrimary;
                 btn.style.borderTopLeftRadius = 8; btn.style.borderTopRightRadius = 8;
                 btn.style.borderBottomLeftRadius = 8; btn.style.borderBottomRightRadius = 8;
                 btn.style.borderTopWidth = 0; btn.style.borderBottomWidth = 0;
@@ -198,10 +724,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 btnRow.Add(btn);
             }
         }
+
         body.Add(card);
     }
 
-    // ============ App: 米家（0721遥测）============
+        // ============ App: 米家（0721遥测）============
     public static void BuildMijiaApp(VisualElement win)
     {
         var body = BuildAppBody(win, "机车遥测", "米家物联网 · 0721型「沙子飞猪号」机车网关");

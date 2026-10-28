@@ -272,3 +272,7 @@ CabSimulation is a pure 50Hz lumped diesel-electric/air-brake kernel with seeded
 ## NF5K rail motion review (2026-10-22)
 
 CabRailMotion reads signed backend PositionM to place the vehicle, steer bogies and rotate wheelsets in the separate CabRailMotionReview scene. CabReviewTrack supplies an authored straight/transition/180m curve inspection alignment; CabRailReviewViews supplies following views. NF5KRailMotionReview checks wheel phase, reverse, conservative contact anchors, shoe clearance, bounded suspension settling and actual backend wiring. This is kinematic rail following plus suspension presentation, not a wheel/rail contact-force, slip or derailment solver. Preserve static review scenes and non-rotating drive housings. See docs/for-ai/NF5K_RAIL_MOTION.md.
+
+## Tablet system navigation and task sessions (2026-10-26)
+
+`GameMainUI` owns tablet navigation, app page stacks and task reclamation; `TabletEdgeGesture` recognizes one edge touch and an upward hold. `ITabletTaskLifecycle` supplies view-created, foreground, background, reclaimed and closed hooks. `TabletTaskSession` retains app state and page rebuild delegates across view eviction; music releases static UI references, and dialogue history lives until its task closes. `TabletInteractionReview.Batch` covers synthetic input, settings subpage restoration, glossary selection/deep links and lifecycle hooks. See `docs/for-ai/TABLET_SYSTEM_SHELL.md` for evidence and the pending graphics, touch, Android and audio checks.
