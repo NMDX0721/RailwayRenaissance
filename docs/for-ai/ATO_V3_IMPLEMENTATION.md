@@ -29,3 +29,5 @@
 项目修复后再次用版本 2 冻结压缩包重跑 108 条记录，并逐条比较原记录的结果 ID 与终态/命令指纹，全部一致。重跑输出位于本机 `tools/compile/ato-v3-replay-20261029T041528152/`；这是复现结果，不是新测试样本。
 
 Unity 复验尝试中，编辑器许可证服务初始化超时，日志未进入 ATO 测试；等待后中止，不能作为通过或失败的行为验收。临时修改的包配置已恢复为仓库内容，见 `tools/compile/ato_v3_fresh_20261029.log`。此前的通过标记和退出码缺失限制保持不变；展示机器的现场预演仍未完成。
+
+随后在宿主环境重新运行 `NF5KAtoResearchReview.Batch`，Unity 6000.5.8f1 退出码为 0，日志含 V3 三模式、移动初速及回放、V2 和人工接管的通过标记，没有检测到 `error CS`；`UnityEditor.Search.SearchDatabase` 仍有 `ArgumentOutOfRangeException`，不能称为无异常。原日志 `tools/compile/ato_v3_host_20261029.log` 和退出码记录保留本机；可提交的摘要及原日志 SHA-256 见 `tools/compile/ato_v3_host_acceptance_20261029.json`。复验使用从本机复制的 Burst 1.8.30 临时本地引用，结束后包配置恢复，Unity 导入副作用只恢复测试前确认干净的文件。这是自动化名义 Play 测试，不代替展示机视觉与实际操作预演。
