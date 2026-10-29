@@ -545,3 +545,5 @@ Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip
 2026-10-28 V3进度：`AtoTrajectoryPlanner`、`CabAtoControllerV3`及研究封装v3接入独立场景；V2仍为默认。冻结配对实验和失败及个人参赛范围见 [V3研究记录](../research/ato_v3_results.md)。
 
 2026-10-28 V3个人参赛准备：独立研究报告和事实底稿分别见 [V3研究记录](../research/ato_v3_results.md)、[个人参赛准备](../research/ato_v3_personal_entry.md)；学生实际贡献待按事实填写，实验含失败案例。
+
+2026-10-29 进度反馈开发实验：仅在 `research/ato-v3/followup/` 的冻结源码副本中添加反馈并对照；已观察到普遍晚到，不接入游戏，见 [开发记录](../research/ato_schedule_feedback_development.md)。
