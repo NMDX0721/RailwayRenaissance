@@ -1,0 +1,37 @@
+{
+  "frozenUtc": "2026-10-29T04:07:02.640005+00:00",
+  "seeds": [
+    65011,
+    65012,
+    65013
+  ],
+  "scenarios": [
+    "mid_down",
+    "weak_dry",
+    "slick_up"
+  ],
+  "modes": [
+    "Smooth",
+    "AirSaving",
+    "Punctual"
+  ],
+  "repeats": 2,
+  "variants": {
+    "baseline": "V3 unchanged",
+    "schedule_feedback": "bounded speed-reference correction using elapsed versus planned time at current position; exploratory gain 0.04, bound 0.5 m/s; tapered to zero within final 30 m"
+  },
+  "scenarioDefinitions": "mid_down mass 1.04 brake .90 grip .65 grade -3; weak_dry mass 1 brake .85 grip default grade 0; slick_up mass 1 brake 1 grip .55 grade +3",
+  "classification": "held-out seeds and scenario combinations; parameters frozen after development only",
+  "constraints": "900 m, first arrival 115-125 s, stop +/-5 m, 100-tick dwell, no intervention or speed violation above 0.15 m/s",
+  "hashes": {
+    "Assets/Scripts/Cab/CabSimulation.cs": "597F6AD2C06DD5A55D20BDA43A7442F53B5167043BF167AD391D5F6586EE120C",
+    "Assets/Scripts/Cab/CabSimulationCodec.cs": "99EFFB7FE1C7DA2CFF6B497FBDB266085B96BF8EC7328BCC3DFB9D491799B4AB",
+    "Assets/Scripts/Cab/Research/AtoRouteTask.cs": "77938C25302179CFBCC1E1DD5BC9A899DBBE2A41D658080529CDB1583AF3807D",
+    "Assets/Scripts/Cab/Research/AtoTrajectoryPlanner.cs": "112C59E3B2CD65B2F634298244B45F2675D17BDEC75A772393FD6BF06896858F",
+    "Assets/Scripts/Cab/Research/CabAtoController.cs": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV2.cs": "5614DC59E7DD362ABAD9A6C02407DD9DD4312F7D4ED1071433183E3D235B59CF",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV3.cs": "630412011DBE4FC336C456B78780499ED9056318A9F0BB5750B5143A8D2CCF94",
+    "research/ato-v3/followup/RunnerTaperHoldout.cs": "3CBB07FA4A730FF1215A5CE4ADF18DCBD16BAF9B743700B6533393A61F7C049B",
+    "research/ato-v3/followup/study_schedule_taper_holdout.py": "757CF8CDDE6DF35640CC5B5EA7878F1B33646BA9A28B1E800E86CF7E86A88865"
+  }
+}

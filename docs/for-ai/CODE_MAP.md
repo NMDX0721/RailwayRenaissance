@@ -547,3 +547,5 @@ Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip
 2026-10-28 V3个人参赛准备：独立研究报告和事实底稿分别见 [V3研究记录](../research/ato_v3_results.md)、[个人参赛准备](../research/ato_v3_personal_entry.md)；学生实际贡献待按事实填写，实验含失败案例。
 
 2026-10-29 进度反馈开发实验：仅在 `research/ato-v3/followup/` 的冻结源码副本中添加反馈并对照；已观察到普遍晚到，不接入游戏，见 [开发记录](../research/ato_schedule_feedback_development.md)。
+
+2026-10-29 末端渐退反馈候选：隔离研究实验与新种子/工况冻结测试已运行；成功率未优于 V3，部分模式 jerk 和排气代理增加，未接入游戏，见同一开发记录。
