@@ -1,0 +1,15 @@
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\bin\Release\net6.0\AtoV3.exe
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\bin\Release\net6.0\AtoV3.deps.json
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\bin\Release\net6.0\AtoV3.runtimeconfig.json
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\bin\Release\net6.0\AtoV3.dll
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\bin\Release\net6.0\AtoV3.pdb
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.csproj.AssemblyReference.cache
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.AssemblyInfoInputs.cache
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.AssemblyInfo.cs
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.csproj.CoreCompileInputs.cache
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.dll
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\refint\AtoV3.dll
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.pdb
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\AtoV3.genruntimeconfig.cache
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato-v3-replay-20261028T225148722\research\ato-v3\obj\Release\net6.0\ref\AtoV3.dll

@@ -1,0 +1,9 @@
+{
+    "errorM": -2.294223174758258,
+    "coldGuard": true,
+    "actualCommands": true,
+    "manualTakeover": true,
+    "stopped": true,
+    "panelGuard": true,
+    "pausedManualCheckpoint": true
+}

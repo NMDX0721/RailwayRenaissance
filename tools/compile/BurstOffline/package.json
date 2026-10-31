@@ -1,0 +1,27 @@
+{
+  "name": "com.unity.burst",
+  "displayName": "Burst",
+  "version": "1.8.30",
+  "unity": "6000.0",
+  "description": "Burst is a compiler that translates from IL/.NET bytecode to highly optimized native code using LLVM.",
+  "dependencies": {
+    "com.unity.mathematics": "1.2.1",
+    "com.unity.modules.jsonserialize": "1.0.0"
+  },
+  "relatedPackages": {
+    "com.unity.burst.tests": "1.8.30"
+  },
+  "_upm": {
+    "changelog": "### Fixed\n- Fix error while verifying module from invalid bitcast when converting nunit to float or double.\n- Fixed cases where the Burst Inspector could jitter when moving the divider.\n- Fixed that using a Bursted function pointer as argument to a method directly could cause a compiler error\n- Fixed Burst AOT builds for Embedded Linux and QNX when using Build Profiles: Burst now reads the active profile’s architecture instead of a stale editor setting, preventing sysroot/linker failures (e.g. x64 SDK with aarch64 target) in batchmode and CI.\n- Atomics were not generated when target web platform with threading enabled.\n- Fixed a race between Burst and the Editor compilation pipeline that could surface as a `Failed to find entry-points` error.\n- Burst could crash if Very Large static readonly data happened to be compiled in such a way that it would result in a direct store of the array. Now, the very large data is memmoved instead.\n- Web Player would crash if targeting wasm and the entities package is present.\n- Very large constants could cause Burst to crash when compiling for WebAssembly\n\n### Changed\n- Changed the default LLVM version to 21.\n- The minimum required Linux version to use Burst in the Unity Editor is now Ubuntu 18.04 or equivalent.\n- Changed minimum Editor version to 6.0\n- `[IgnoreWarning(1371)]` applied to a `[BurstDiscard]` method now suppresses the discarded-call warning for the calls discarded along with it, instead of having to annotate every caller.\n\n### Removed\n- Removed support for LLVM 10, 15, 16, 17.\n\n### Known Issues\n- Windows Smart App Control or WDAC policies may block JIT-compiled libraries at load time. Burst now logs a warning in such cases and deletes the affected library, which will be recompiled so Burst can attempt loading it again.\n\n### Added\n- Support for Wasm64 target\n- Added `ButtonFlowNewLineTest` editor test to verify that the Burst Inspector button bar wraps to a new line when the window is narrow, and fits on a single line when the window is wide.\n- Added a Restart Now button to the dialog shown when the Burst package is removed or updated."
+  },
+  "upmCi": {
+    "footprint": "6b5fcba763ab347e9b32a2d83b4193a65674c34e"
+  },
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/index.html",
+  "repository": {
+    "url": "https://github.cds.internal.unity3d.com/unity/burst.git",
+    "type": "git",
+    "revision": "bb334e47fbfa51086ada3fd51da8446e89853b1e"
+  },
+  "_fingerprint": "2f3d916873ea867ff077372df3fe42447ba7d4c6"
+}
