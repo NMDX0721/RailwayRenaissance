@@ -553,19 +553,21 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             topPillsRow.style.marginBottom = 10;
             scroll.Add(topPillsRow);
 
-            var quietBtn = CreateTileButton(_state.QuietMode ? "🌙 勿扰\n已开启" : "🌙 勿扰\n已关闭", "tablet-quiet-toggle", _state.QuietMode, () =>
+            var quietBtn = CreateTileButton(_state.QuietMode ? "勿扰\n已开启" : "勿扰\n已关闭", "tablet-quiet-toggle", _state.QuietMode, () =>
             {
                 _state.SetQuietMode(!_state.QuietMode);
             });
             StyleBigTile(quietBtn);
+            AttachTileIcon(quietBtn, TabletIconKind.Moon, _state.QuietMode, false);
             topPillsRow.Add(quietBtn);
 
             bool hc = _presentation != null && _presentation.HighContrast;
-            var hcBtn = CreateTileButton(hc ? "◐ 高对比\n已开启" : "◐ 高对比\n已关闭", "tablet-high-contrast-toggle", hc, () =>
+            var hcBtn = CreateTileButton(hc ? "高对比\n已开启" : "高对比\n已关闭", "tablet-high-contrast-toggle", hc, () =>
             {
                 if (_presentation != null) _presentation.SetHighContrast(!_presentation.HighContrast);
             });
             StyleBigTile(hcBtn);
+            AttachTileIcon(hcBtn, TabletIconKind.Contrast, hc, false);
             topPillsRow.Add(hcBtn);
 
             // ---- 2. 播控卡 + 两条竖向滑条（亮度 / 音量） ----
@@ -580,7 +582,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             centerRow.Add(mediaCard);
 
             float dimValue = _presentation != null ? _presentation.WallpaperDim : 0f;
-            var dimSlider = CreateVerticalSlider("tablet-wallpaper-dim-toggle", "☀",
+            var dimSlider = CreateVerticalSlider("tablet-wallpaper-dim-toggle", TabletIconKind.Sun,
                 1f - Mathf.Clamp01(dimValue / 0.4f),
                 () =>
                 {
@@ -594,7 +596,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             centerRow.Add(dimSlider);
 
             bool isMute = GameData.MasterVolume <= 0.001f;
-            var volSlider = CreateVerticalSlider("tablet-audio-mute-toggle", isMute ? "🔇" : "🔊",
+            var volSlider = CreateVerticalSlider("tablet-audio-mute-toggle", isMute ? TabletIconKind.SpeakerMuted : TabletIconKind.Speaker,
                 Mathf.Clamp01(GameData.MasterVolume),
                 () =>
                 {
@@ -625,17 +627,18 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             scroll.Add(roundRow);
 
             bool rm = _presentation != null && _presentation.ReduceMotion;
-            var rmBtn = CreateTileButton(rm ? "⚡\n动效减弱" : "⚡\n动效完整", "tablet-reduce-motion-toggle", rm, () =>
+            var rmBtn = CreateTileButton(rm ? "动效减弱" : "动效完整", "tablet-reduce-motion-toggle", rm, () =>
             {
                 if (_presentation != null) _presentation.SetReduceMotion(!_presentation.ReduceMotion);
             });
             StyleRoundTile(rmBtn);
+            AttachTileIcon(rmBtn, TabletIconKind.Bolt, rm, true);
             roundRow.Add(rmBtn);
 
             string accentName = _presentation == null ? "琥珀" :
                 _presentation.Accent == TabletAccent.Amber ? "琥珀" :
                 _presentation.Accent == TabletAccent.Teal ? "青绿" : "钴蓝";
-            var accentBtn = CreateTileButton("🎨\n" + accentName, "tablet-accent-cycle", false, () =>
+            var accentBtn = CreateTileButton(accentName, "tablet-accent-cycle", false, () =>
             {
                 if (_presentation != null)
                 {
@@ -645,14 +648,16 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 }
             });
             StyleRoundTile(accentBtn);
+            AttachTileIcon(accentBtn, TabletIconKind.Palette, false, true);
             roundRow.Add(accentBtn);
 
-            var quickSettingsBtn = CreateTileButton("⚙\n设置", "tablet-controls-settings", false, () =>
+            var quickSettingsBtn = CreateTileButton("设置", "tablet-controls-settings", false, () =>
             {
                 _state.ClosePanel();
                 _openSettings?.Invoke();
             });
             StyleRoundTile(quickSettingsBtn);
+            AttachTileIcon(quickSettingsBtn, TabletIconKind.Gear, false, true);
             roundRow.Add(quickSettingsBtn);
 
             // ---- 4. 本机网络状态（保持事实：内网沙箱，无公共网络） ----
@@ -749,7 +754,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         /// <summary>
         /// 竖向胶囊滑条：点击切换，纵向拖动调节；拖动过程只改填充高度，松手时一次性提交，避免重建界面打断拖动。
         /// </summary>
-        private Button CreateVerticalSlider(string name, string icon, float initialFill, Action onToggle, Action<float> onCommit)
+        private Button CreateVerticalSlider(string name, TabletIconKind icon, float initialFill, Action onToggle, Action<float> onCommit)
         {
             float fillValue = Mathf.Clamp01(initialFill);
             bool down = false, dragged = false;
@@ -779,13 +784,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             fill.style.backgroundColor = TabletTheme.GlassTileActive;
             btn.Add(fill);
 
-            var iconLabel = CreateLabel(icon, 20, false);
-            iconLabel.pickingMode = PickingMode.Ignore;
-            iconLabel.AddToClassList("shell-dark");
+            var iconLabel = new TabletIconElement(icon, 24f, fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white);
             iconLabel.style.position = Position.Absolute;
-            iconLabel.style.left = 0; iconLabel.style.right = 0; iconLabel.style.bottom = 14;
-            iconLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
-            iconLabel.style.color = fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white;
+            iconLabel.style.left = Length.Percent(50);
+            iconLabel.style.translate = new Translate(Length.Percent(-50), 0);
+            iconLabel.style.bottom = 16;
             btn.Add(iconLabel);
 
             btn.RegisterCallback<PointerDownEvent>(e => { down = true; dragged = false; startY = e.position.y; });
@@ -802,7 +805,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     float h = Mathf.Max(1f, btn.resolvedStyle.height);
                     fillValue = Mathf.Clamp01(1f - e.localPosition.y / h);
                     fill.style.height = Length.Percent(fillValue * 100f);
-                    iconLabel.style.color = fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white;
+                    iconLabel.IconColor = fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white;
                 }
             });
             btn.RegisterCallback<PointerUpEvent>(e =>
@@ -816,6 +819,25 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             return btn;
         }
 
+        private static void AttachTileIcon(Button btn, TabletIconKind kind, bool active, bool round)
+        {
+            var icon = new TabletIconElement(kind, round ? 24f : 26f, active ? TabletTheme.InkOnGlass : Color.white);
+            icon.style.position = Position.Absolute;
+            if (round)
+            {
+                icon.style.top = 14;
+                icon.style.left = Length.Percent(50);
+                icon.style.translate = new Translate(Length.Percent(-50), 0);
+            }
+            else
+            {
+                icon.style.left = 18;
+                icon.style.top = Length.Percent(50);
+                icon.style.translate = new Translate(0, Length.Percent(-50));
+            }
+            btn.Add(icon);
+        }
+
         private static void StyleBigTile(Button btn)
         {
             btn.style.width = Length.Percent(48.5f);
@@ -824,7 +846,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.fontSize = 13;
             btn.style.whiteSpace = WhiteSpace.Normal;
             btn.style.unityTextAlign = TextAnchor.MiddleLeft;
-            btn.style.paddingLeft = 18;
+            btn.style.paddingLeft = 56;
             btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 24;
             btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 24;
         }
@@ -837,7 +859,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.minHeight = 76;
             btn.style.fontSize = 11;
             btn.style.whiteSpace = WhiteSpace.Normal;
-            btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btn.style.unityTextAlign = TextAnchor.LowerCenter;
+            btn.style.paddingBottom = 12;
             btn.style.paddingLeft = btn.style.paddingRight = 2;
             btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 38;
             btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 38;
