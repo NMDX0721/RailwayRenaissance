@@ -561,6 +561,18 @@
 .music-stage-glow { position: absolute; left: 0; top: 0; }
 /* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
 .music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; padding: 36px 0 28px; }
+/* Cadenza style: each word sits on a zero-size holder placed from the middle of the field; the halo rides on the character being sung. */
+.music-stage-cadenza { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-cadenza-field { position: absolute; left: 0; right: 0; top: 0; bottom: 0; align-items: center; justify-content: center; }
+/* Out of the flex flow: a zero-size box in a row would queue behind the others and drag the whole group off centre. Offsets are margins from the field's middle. */
+.music-stage-cadenza-holder { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.music-stage-cadenza-halo { position: absolute; left: 50%; top: 50%; border-width: 2px; border-radius: 50%; }
+/* Claddagh style: glyphs positioned on a tilted ring around the middle of the ring element. */
+.music-stage-claddagh { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-claddagh-ring { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+.music-stage-claddagh-glyph { position: absolute; left: -70px; width: 140px; align-items: center; justify-content: center; }
+.music-stage-claddagh-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-text-align: middle-center; -unity-font-style: bold; }
+.music-stage-claddagh-translation { position: absolute; bottom: 4px; left: 0; right: 0; font-size: 20px; color: rgb(196, 204, 170); opacity: 0.85; white-space: normal; -unity-text-align: middle-center; }
 /* Tilt style: rows of plain type, one row maybe in italic accent. */
 .music-stage-tilt-column { align-self: stretch; align-items: center; justify-content: center; padding: 14px 0; }
 .music-stage-tilt-row { flex-direction: row; justify-content: center; align-items: center; margin: 2px 0; }

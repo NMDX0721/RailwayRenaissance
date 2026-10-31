@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -628,7 +629,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 7)
+                    if (styleStep < 11)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -672,8 +673,86 @@ public static class RailwayMusicTerminalReview
                             Assert(plainChar != null && italics[0].resolvedStyle.color != plainChar.resolvedStyle.color, "The italic Tilt row does not use the accent colour");
                             Capture("05v-tilt-italic");
                             MusicStageTilt.TiltRowOverride = -1;
-                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            MusicLibrarySession.State.stageStyle = "claddagh"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
                             Debug.Log("MUSIC_STAGE_TILT_ITALIC_OK: forced italic row, alternating lift " + firstLift.ToString("F1") + "/" + secondLift.ToString("F1") + ", accent colour");
+                        }
+                        else if (styleStep == 7)
+                        {
+                            var ringGlyphs = stageHost.Query(className: "music-stage-claddagh-glyph").ToList();
+                            Assert(stageHost.StyleId == "claddagh" && ringGlyphs.Count >= 6, "Claddagh did not put the lines on its ring (" + ringGlyphs.Count + " glyphs)");
+                            float ringMax = 0, ringMin = 1, xMin = float.MaxValue, xMax = float.MinValue, scaleMax = 0;
+                            foreach (var glyph in ringGlyphs)
+                            {
+                                float o = glyph.resolvedStyle.opacity; ringMax = Mathf.Max(ringMax, o); if (o > .02f) ringMin = Mathf.Min(ringMin, o);
+                                float gx = glyph.style.translate.value.x.value; xMin = Mathf.Min(xMin, gx); xMax = Mathf.Max(xMax, gx);
+                                scaleMax = Mathf.Max(scaleMax, glyph.style.scale.value.value.x);
+                            }
+                            Assert(ringMax > .6f && ringMin < ringMax - .1f, "Claddagh has no front/back difference in opacity (" + ringMin.ToString("F2") + ".." + ringMax.ToString("F2") + ")");
+                            Assert(xMax - xMin > 120f, "Claddagh glyphs are not spread along the ring (" + (xMax - xMin).ToString("F0") + " px)");
+                            Assert(scaleMax > 1f, "Claddagh's focused glyph is not magnified (" + scaleMax.ToString("F2") + ")");
+                            // Readable: glyphs that can be seen must not sit on top of each other.
+                            var visibleCentres = new List<Vector2>();
+                            foreach (var glyph in ringGlyphs) if (glyph.resolvedStyle.opacity > .5f) visibleCentres.Add(new Vector2(glyph.style.translate.value.x.value, glyph.style.translate.value.y.value));
+                            float closest = float.MaxValue;
+                            for (int a = 0; a < visibleCentres.Count; a++) for (int b = a + 1; b < visibleCentres.Count; b++) closest = Mathf.Min(closest, Vector2.Distance(visibleCentres[a], visibleCentres[b]));
+                            Assert(visibleCentres.Count < 2 || closest > 24f, "Claddagh glyphs pile on top of each other (closest visible pair " + closest.ToString("F0") + " px)");
+                            Capture("05w-claddagh-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 8)
+                        {
+                            Capture("05w-claddagh-b");
+                            MusicLibrarySession.State.stageStyle = "cadenza"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CLADDAGH_OK: lines on a tilted ring, front glyph focused, glyphs spread along the ring");
+                        }
+                        else if (styleStep == 9)
+                        {
+                            var holders = stageHost.Query(className: "music-stage-cadenza-holder").ToList();
+                            Assert(stageHost.StyleId == "cadenza" && holders.Count >= 2, "Cadenza did not place its words (" + holders.Count + " holders)");
+                            // Hero in the middle, everything else clear of it and of each other.
+                            // Real positions on screen, measured from the middle of the field, not the margin numbers the layout asked for.
+                            var fieldMiddle = stageHost.Q(className: "music-stage-cadenza-field").worldBound.center;
+                            float nearest = float.MaxValue, heroSpread = float.MaxValue;
+                            for (int a = 0; a < holders.Count; a++)
+                            {
+                                var pa = holders[a].worldBound.center - fieldMiddle;
+                                heroSpread = Mathf.Min(heroSpread, pa.magnitude);
+                                for (int b = a + 1; b < holders.Count; b++) nearest = Mathf.Min(nearest, Vector2.Distance(holders[a].worldBound.center, holders[b].worldBound.center));
+                            }
+                            Assert(heroSpread < 4f, "Cadenza has no hero word in the middle of the stage (closest to centre " + heroSpread.ToString("F1") + " px)");
+                            Assert(nearest > 40f, "Cadenza words were not pushed apart (closest pair " + nearest.ToString("F0") + " px)");
+                            var halo = stageHost.Q(className: "music-stage-cadenza-halo");
+                            Assert(halo != null && halo.resolvedStyle.opacity > .2f, "Cadenza's ring of light is not around the sung character");
+                            Capture("05x-cadenza-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 10)
+                        {
+                            // Words that can be seen at the same time must not cover each other: the shared area of any two stays small.
+                            var cadenzaWords = stageHost.Query(className: "music-stage-word").ToList();
+                            float worstOverlap = 0;
+                            for (int a = 0; a < cadenzaWords.Count; a++)
+                                for (int b = a + 1; b < cadenzaWords.Count; b++)
+                                {
+                                    if (cadenzaWords[a].resolvedStyle.opacity < .5f || cadenzaWords[b].resolvedStyle.opacity < .5f) continue;
+                                    // The text itself, not the word's wider box: the union of its character labels (the glow layer is skipped).
+                                    Rect TextRect(VisualElement word)
+                                    {
+                                        Rect union = Rect.zero; bool first = true;
+                                        foreach (var label in word.Query<Label>(className: "music-stage-word-text").ToList())
+                                        {
+                                            if (label.ClassListContains("music-stage-glow")) continue;
+                                            var r = label.worldBound; union = first ? r : Rect.MinMaxRect(Mathf.Min(union.xMin, r.xMin), Mathf.Min(union.yMin, r.yMin), Mathf.Max(union.xMax, r.xMax), Mathf.Max(union.yMax, r.yMax)); first = false;
+                                        }
+                                        return union;
+                                    }
+                                    Rect ra = TextRect(cadenzaWords[a]), rb = TextRect(cadenzaWords[b]);
+                                    float ox = Mathf.Max(0, Mathf.Min(ra.xMax, rb.xMax) - Mathf.Max(ra.xMin, rb.xMin)), oy = Mathf.Max(0, Mathf.Min(ra.yMax, rb.yMax) - Mathf.Max(ra.yMin, rb.yMin));
+                                    float smaller = Mathf.Max(1f, Mathf.Min(ra.width * ra.height, rb.width * rb.height));
+                                    worstOverlap = Mathf.Max(worstOverlap, ox * oy / smaller);
+                                }
+                            Assert(worstOverlap < .3f, "Cadenza words cover each other (worst shared area " + (worstOverlap * 100).ToString("F0") + "% of the smaller word)");
+                            Capture("05x-cadenza-b");
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CADENZA_OK: hero word in the middle, other words pushed clear, ring of light on the sung character");
                         }
                         else
                         {
