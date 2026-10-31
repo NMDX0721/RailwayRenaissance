@@ -29,7 +29,8 @@ public static class RailwayMusicTerminalReview
     static float previewPreviousPosition;
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
-    static int stageMotionFrame;
+    static int stageMotionFrame, lumiSeq;
+    static readonly float[] lumiPose = new float[8];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
     {
@@ -591,11 +592,30 @@ public static class RailwayMusicTerminalReview
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 10:
-                    ValidateScrollerGeometry();
-                    Assert(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value < -1,
-                        "Real timed word did not lift in stage mode");
-                    Assert(root.Q<Button>("music-lyric-line-1").ClassListContains("is-current"), "Clicked cue highlight stayed on the previous line due to rounding");
-                    Capture("05-lyrics");
+                    if (lumiSeq == 0)
+                    {
+                        ValidateScrollerGeometry();
+                        Assert(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value < -1,
+                            "Real timed word did not lift in stage mode");
+                        Assert(root.Q<Button>("music-lyric-line-1").ClassListContains("is-current"), "Clicked cue highlight stayed on the previous line due to rounding");
+                    }
+                    var stageHost = root.Q<MusicStageLyrics>("music-stage-lyrics");
+                    Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
+                    Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
+                    Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                    // Luminous poses are a function of the audio clock: step the clock forward and the words must actually move.
+                    if (lumiSeq < 8)
+                    {
+                        if (lumiSeq == 0) Capture("05-lyrics");
+                        float poseSum = 0; foreach (var word in stageHost.Query(className: "music-stage-word").ToList()) poseSum += word.resolvedStyle.scale.value.x + word.resolvedStyle.opacity;
+                        lumiPose[lumiSeq] = poseSum;
+                        Capture("05s-stage-seq-" + lumiSeq.ToString("D2")); lumiSeq++;
+                        TabletMusicAppUI.SeekTabletMusic((3f + lumiSeq * .1f) / TabletMusicAppUI.tabletCurrentClip.length);
+                        checkAfter = EditorApplication.timeSinceStartup + .12; frame = Time.frameCount; return;
+                    }
+                    float poseMin = lumiPose[0], poseMax = lumiPose[0]; foreach (float pose in lumiPose) { poseMin = Mathf.Min(poseMin, pose); poseMax = Mathf.Max(poseMax, pose); }
+                    Assert(poseMax - poseMin > .05f, "Luminous words did not move as the audio clock advanced");
+                    Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     var lyricScroll = root.Q<ScrollView>("music-lyrics-scroll");
                     using (var wheel = WheelEvent.GetPooled(new Event { type = EventType.ScrollWheel, delta = new Vector2(0, 3), mousePosition = lyricScroll.worldBound.center }))
                     { wheel.target = lyricScroll; lyricScroll.SendEvent(wheel); }
@@ -605,6 +625,15 @@ public static class RailwayMusicTerminalReview
                 case 11:
                     Assert(root.Q<ScrollView>("music-lyrics-scroll").horizontalScroller.resolvedStyle.display == DisplayStyle.None, "Stage lyrics exposed a horizontal scrollbar");
                     Capture("06-lyrics-compact");
+                    // Stage tuning is saved with the library and rebuilds the line; restore the defaults afterwards.
+                    int intensityBefore = MusicLibrarySession.State.stageIntensity;
+                    Submit(root.Q<Button>("music-stage-intensity"));
+                    Assert(MusicLibrarySession.State.stageIntensity == (intensityBefore + 1) % 3, "Stage intensity button did not change the saved tuning");
+                    root.Q<Toggle>("music-stage-rotation").value = false;
+                    root.Q<Slider>("music-stage-spacing").value = 1.4f;
+                    Assert(!MusicLibrarySession.State.stageRotation && Mathf.Approximately(MusicLibrarySession.State.stageSpacing, 1.4f), "Stage rotation/spacing were not saved");
+                    MusicLibrarySession.State.stageIntensity = intensityBefore; MusicLibrarySession.State.stageRotation = true; MusicLibrarySession.State.stageSpacing = .7f;
+                    root.Q<Toggle>("music-stage-rotation").SetValueWithoutNotify(true); root.Q<Slider>("music-stage-spacing").SetValueWithoutNotify(.7f);
                     Assert(root.Q<Button>("music-lyrics-reset").worldBound.yMax < root.Q("music-lyrics-progress").worldBound.yMin, "Compact lyric settings overlap playback controls");
                     Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display != DisplayStyle.None, "Manual scroll did not suspend lyric follow");
                     Submit(root.Q<Button>("music-lyrics-follow"));
