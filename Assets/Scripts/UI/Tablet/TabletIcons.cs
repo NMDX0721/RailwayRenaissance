@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace RailwayRenaissance.UI.Tablet
 {
-    public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast, Bell, MusicNote }
+    public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast, Bell, MusicNote, Search }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -140,6 +140,15 @@ namespace RailwayRenaissance.UI.Tablet
                     DrawDot(p, P(12, 4.3f), 1.2f * k);
                     break;
                 }
+
+                case TabletIconKind.Search:
+                    p.BeginPath();
+                    p.Arc(P(10.5f, 10.5f), 6.5f * k, Angle.Degrees(0), Angle.Degrees(360));
+                    p.Stroke();
+                    p.BeginPath();
+                    p.MoveTo(P(15.4f, 15.4f)); p.LineTo(P(20.5f, 20.5f));
+                    p.Stroke();
+                    break;
 
                 case TabletIconKind.MusicNote:
                     DrawDot(p, P(8.6f, 17.6f), 3.3f * k);

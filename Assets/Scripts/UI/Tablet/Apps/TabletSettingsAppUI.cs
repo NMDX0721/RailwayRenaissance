@@ -126,7 +126,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         leftNav.name = "settings-category-rail";
         leftNav.style.width = 300;
         leftNav.style.flexShrink = 0;
-        leftNav.style.backgroundColor = SurfaceCard;
+        leftNav.style.backgroundColor = SurfaceApp;   // 浅灰底，分组卡片用白色浮在上面（对齐 HyperOS 设置）
         leftNav.style.borderRightWidth = 1;
         leftNav.style.borderRightColor = BorderDivider;
         leftNav.style.flexDirection = FlexDirection.Column;
@@ -135,27 +135,27 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rootRow.Add(leftNav);
 
         var titleLbl = new Label("设置");
-        titleLbl.style.fontSize = 24; titleLbl.style.color = InkPrimary;
+        titleLbl.style.fontSize = 32; titleLbl.style.color = InkPrimary;
         titleLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
         titleLbl.style.unityFontDefinition = Fd();
-        titleLbl.style.marginBottom = 12;
+        titleLbl.style.marginTop = 6;
+        titleLbl.style.marginBottom = 16;
         leftNav.Add(titleLbl);
 
         // 搜索框
         var searchBox = new VisualElement();
-        searchBox.style.height = 36;
-        searchBox.style.backgroundColor = SurfaceApp;
-        searchBox.style.borderTopLeftRadius = 18; searchBox.style.borderTopRightRadius = 18;
-        searchBox.style.borderBottomLeftRadius = 18; searchBox.style.borderBottomRightRadius = 18;
+        searchBox.style.height = 44;
+        searchBox.style.backgroundColor = new Color(0.90f, 0.90f, 0.92f, 1f);
+        searchBox.style.borderTopLeftRadius = 22; searchBox.style.borderTopRightRadius = 22;
+        searchBox.style.borderBottomLeftRadius = 22; searchBox.style.borderBottomRightRadius = 22;
         searchBox.style.flexDirection = FlexDirection.Row;
         searchBox.style.alignItems = Align.Center;
         searchBox.style.paddingLeft = 12; searchBox.style.paddingRight = 12;
         searchBox.style.marginBottom = 12;
         leftNav.Add(searchBox);
 
-        var searchIcon = new Label("🔍");
-        searchIcon.style.fontSize = 13; searchIcon.style.color = InkTertiary;
-        searchIcon.style.unityFontDefinition = Fd(); searchIcon.style.marginRight = 6;
+        var searchIcon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Search, 20f, InkTertiary);
+        searchIcon.style.marginRight = 8;
         searchBox.Add(searchIcon);
 
         var searchInput = new TextField { value = settingsSearchFilter };
@@ -163,8 +163,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         searchInput.style.borderTopWidth = 0; searchInput.style.borderBottomWidth = 0;
         searchInput.style.borderLeftWidth = 0; searchInput.style.borderRightWidth = 0;
         searchInput.style.backgroundColor = Color.clear;
-        searchInput.style.fontSize = 13; searchInput.style.color = InkPrimary;
+        searchInput.style.fontSize = 14; searchInput.style.color = InkPrimary;
         searchInput.style.unityFontDefinition = Fd();
+        // 去掉输入框自带的边框与底色，只留文字（原来会露出一个灰色矩形）
+        var searchField = searchInput.Q(className: "unity-base-text-field__input");
+        if (searchField != null)
+        {
+            searchField.style.backgroundColor = Color.clear;
+            searchField.style.borderTopWidth = searchField.style.borderBottomWidth = searchField.style.borderLeftWidth = searchField.style.borderRightWidth = 0;
+            searchField.style.unityFontDefinition = Fd();
+        }
+        searchInput.textEdition.placeholder = "搜索设置";
+        searchInput.textEdition.hidePlaceholderOnFocus = true;
         searchBox.Add(searchInput);
 
         // 右栏：内容详情区（隐藏滚动条）
@@ -185,10 +195,51 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         navScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         leftNav.Add(navScroll);
 
+        Func<VisualElement> newCard = () =>
+        {
+            var card = new VisualElement();
+            card.style.backgroundColor = Color.white;
+            card.style.borderTopLeftRadius = card.style.borderTopRightRadius = 22;
+            card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 22;
+            card.style.paddingTop = 6; card.style.paddingBottom = 6;
+            card.style.paddingLeft = 6; card.style.paddingRight = 6;
+            card.style.marginBottom = 12;
+            navScroll.Add(card);
+            return card;
+        };
+
+        Func<string, string, Color, string, bool, Action, Button> buildNavItem = (icon, name, badgeColor, labelOverride, selected, onClick) =>
+        {
+            var itemBtn = new Button(onClick);
+            itemBtn.style.height = 56;
+            itemBtn.style.flexDirection = FlexDirection.Row;
+            itemBtn.style.alignItems = Align.Center;
+            itemBtn.style.paddingLeft = 12; itemBtn.style.paddingRight = 12;
+            itemBtn.style.marginTop = 0; itemBtn.style.marginBottom = 0;
+            itemBtn.style.marginLeft = 0; itemBtn.style.marginRight = 0;
+            itemBtn.style.backgroundColor = selected ? new Color(0.92f, 0.92f, 0.94f, 1f) : Color.clear;
+            itemBtn.style.borderTopLeftRadius = itemBtn.style.borderTopRightRadius = 16;
+            itemBtn.style.borderBottomLeftRadius = itemBtn.style.borderBottomRightRadius = 16;
+            itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
+            itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
+
+            var badge = BuildSquircleBadge(icon, badgeColor, 34);
+            badge.style.marginRight = 14;
+            itemBtn.Add(badge);
+
+            var nameLbl = new Label(labelOverride ?? name);
+            nameLbl.style.fontSize = 16;
+            nameLbl.style.color = InkPrimary;
+            nameLbl.style.unityFontDefinition = Fd();
+            itemBtn.Add(nameLbl);
+            return itemBtn;
+        };
+
         Action populateCategories = () =>
         {
             navScroll.Clear();
             string previousRenderedGroup = null;
+            VisualElement currentCard = null;
 
             for (int i = 0; i < SettingsCategories.Length; i++)
             {
@@ -196,86 +247,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (!string.IsNullOrEmpty(settingsSearchFilter) && !cat.name.Contains(settingsSearchFilter))
                     continue;
 
-                if (previousRenderedGroup != null && cat.group != previousRenderedGroup)
-                {
-                    var div = new VisualElement();
-                    div.style.height = 1; div.style.backgroundColor = BorderDivider;
-                    div.style.marginTop = 6; div.style.marginBottom = 6;
-                    navScroll.Add(div);
-                }
+                // 每个分组一张白色圆角卡片，卡片之间留出间距
+                if (currentCard == null || cat.group != previousRenderedGroup)
+                    currentCard = newCard();
                 previousRenderedGroup = cat.group;
 
                 int catId = cat.id;
                 bool isSelected = (catId == currentSettingsCategory);
-
-                var itemBtn = new Button(() =>
+                currentCard.Add(buildNavItem(cat.icon, cat.name, GetHyperOSCategoryColor(cat.id, cat.group), null, isSelected, () =>
                 {
                     currentSettingsCategory = catId;
                     BuildSettingsPage(win);
-                });
-                itemBtn.style.height = 44;
-                itemBtn.style.flexDirection = FlexDirection.Row;
-                itemBtn.style.alignItems = Align.Center;
-                itemBtn.style.paddingLeft = 10; itemBtn.style.paddingRight = 10;
-                itemBtn.style.marginBottom = 3;
-                itemBtn.style.backgroundColor = isSelected ? new Color(0.92f, 0.93f, 0.96f, 1f) : Color.clear;
-                itemBtn.style.borderTopLeftRadius = 12; itemBtn.style.borderTopRightRadius = 12;
-                itemBtn.style.borderBottomLeftRadius = 12; itemBtn.style.borderBottomRightRadius = 12;
-                itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
-                itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
-
-                var badge = BuildSquircleBadge(cat.icon, GetHyperOSCategoryColor(cat.id, cat.group), 28);
-                badge.style.marginRight = 10;
-                itemBtn.Add(badge);
-
-                var nameLbl = new Label(cat.name);
-                nameLbl.style.fontSize = 14;
-                nameLbl.style.color = isSelected ? AccentSystem : InkPrimary;
-                if (isSelected) nameLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
-                nameLbl.style.unityFontDefinition = Fd();
-                itemBtn.Add(nameLbl);
-
-                navScroll.Add(itemBtn);
+                }));
             }
 
             // 若已解锁开发者模式，渲染开发者选项入口
             bool devUnlocked = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
             if (devUnlocked && (string.IsNullOrEmpty(settingsSearchFilter) || "开发者选项".Contains(settingsSearchFilter)))
             {
-                var devDiv = new VisualElement();
-                devDiv.style.height = 1; devDiv.style.backgroundColor = BorderDivider;
-                devDiv.style.marginTop = 6; devDiv.style.marginBottom = 6;
-                navScroll.Add(devDiv);
-
+                var devCard = newCard();
                 bool isDevSelected = (currentSettingsCategory == 99);
-                var devBtn = new Button(() =>
+                devCard.Add(buildNavItem("🛠", "开发者选项", GetHyperOSCategoryColor(99, "system"), null, isDevSelected, () =>
                 {
                     currentSettingsCategory = 99;
                     BuildSettingsPage(win);
-                });
-                devBtn.style.height = 44;
-                devBtn.style.flexDirection = FlexDirection.Row;
-                devBtn.style.alignItems = Align.Center;
-                devBtn.style.paddingLeft = 10; devBtn.style.paddingRight = 10;
-                devBtn.style.marginBottom = 3;
-                devBtn.style.backgroundColor = isDevSelected ? new Color(0.92f, 0.93f, 0.96f, 1f) : Color.clear;
-                devBtn.style.borderTopLeftRadius = 12; devBtn.style.borderTopRightRadius = 12;
-                devBtn.style.borderBottomLeftRadius = 12; devBtn.style.borderBottomRightRadius = 12;
-                devBtn.style.borderTopWidth = 0; devBtn.style.borderBottomWidth = 0;
-                devBtn.style.borderLeftWidth = 0; devBtn.style.borderRightWidth = 0;
-
-                var devBadge = BuildSquircleBadge("🛠", GetHyperOSCategoryColor(99, "system"), 28);
-                devBadge.style.marginRight = 10;
-                devBtn.Add(devBadge);
-
-                var devName = new Label("开发者选项");
-                devName.style.fontSize = 14;
-                devName.style.color = isDevSelected ? AccentSystem : new Color(0.85f, 0.45f, 0.15f, 1f);
-                if (isDevSelected) devName.style.unityFontStyleAndWeight = FontStyle.Bold;
-                devName.style.unityFontDefinition = Fd();
-                devBtn.Add(devName);
-
-                navScroll.Add(devBtn);
+                }));
             }
         };
 
