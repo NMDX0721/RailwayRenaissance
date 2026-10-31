@@ -628,7 +628,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 6)
+                    if (styleStep < 7)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -657,8 +657,23 @@ public static class RailwayMusicTerminalReview
                             float tiltBest = 0; foreach (var tiltChar in stageHost.Query<Label>(className: "music-stage-tilt-char").ToList()) tiltBest = Mathf.Max(tiltBest, tiltChar.resolvedStyle.opacity);
                             Assert(tiltBest > .8f, "Tilt characters did not come in once their row was sung (best opacity " + tiltBest.ToString("F2") + ")");
                             Capture("05u-tilt-b");
-                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            // Force the first row into italic so the italic path is actually exercised.
+                            MusicStageTilt.TiltRowOverride = 0; stageHost.Invalidate(); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
                             Debug.Log("MUSIC_STAGE_TILT_OK: Tilt rows and per-character labels, characters come in with the row");
+                        }
+                        else if (styleStep == 6)
+                        {
+                            var italics = stageHost.Query<Label>(className: "music-stage-tilt-italic").ToList();
+                            Assert(italics.Count >= 2, "Forcing the first Tilt row did not produce italic characters");
+                            Assert(italics[0].resolvedStyle.unityFontStyleAndWeight == FontStyle.Italic, "Italic Tilt characters are not italic");
+                            float firstLift = italics[0].style.translate.value.y.value, secondLift = italics[1].style.translate.value.y.value;
+                            Assert(firstLift * secondLift < 0 && Mathf.Abs(firstLift) > 1f && Mathf.Abs(secondLift) > 1f, "Italic Tilt characters are not alternately lifted and dropped (" + firstLift.ToString("F1") + ", " + secondLift.ToString("F1") + ")");
+                            var plainChar = stageHost.Query<Label>(className: "music-stage-tilt-char").Where(l => !l.ClassListContains("music-stage-tilt-italic")).First();
+                            Assert(plainChar != null && italics[0].resolvedStyle.color != plainChar.resolvedStyle.color, "The italic Tilt row does not use the accent colour");
+                            Capture("05v-tilt-italic");
+                            MusicStageTilt.TiltRowOverride = -1;
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_TILT_ITALIC_OK: forced italic row, alternating lift " + firstLift.ToString("F1") + "/" + secondLift.ToString("F1") + ", accent colour");
                         }
                         else
                         {

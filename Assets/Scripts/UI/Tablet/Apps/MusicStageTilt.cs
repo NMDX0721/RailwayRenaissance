@@ -18,6 +18,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // Folia's defaults: how eagerly a line is split, and how often one row is set in italic.
         const float SplitProbability = .75f, TiltProbability = .35f;
 
+        /// <summary>Review seam: -1 leaves the seeded pick alone; 0 or more forces that row (clamped to the last row) to be the italic one.</summary>
+        public static int TiltRowOverride = -1;
+
         sealed class Segment
         {
             public VisualElement row;
@@ -207,6 +210,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var candidates = new List<int>();
             for (int i = 0; i < cuts.Count; i++) if (StageWord.Random(seed, 100 + i) < TiltProbability) candidates.Add(i);
             int tiltIndex = candidates.Count > 0 ? candidates[Mathf.Min(candidates.Count - 1, Mathf.FloorToInt(StageWord.Random(seed, 200) * candidates.Count))] : -1;
+            if (TiltRowOverride >= 0) tiltIndex = Mathf.Min(TiltRowOverride, cuts.Count - 1);
 
             // Type size follows the stage width (6.875% of it, between 50 and 90 px); the widest row sets the shrink so nothing leaves the stage.
             float stageWidth = width < 120 ? 760f : width, avail = Mathf.Max(240f, stageWidth * .85f);
@@ -224,6 +228,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float size = basePx * shrink * (shortLast ? 1.18f : 1f), spacing = size * (tilt ? .15f : .08f);
                 var segment = new Segment { tilt = tilt, lift = size / 6f, revealAt = cut[0].start - .15 };
                 segment.row = new VisualElement { pickingMode = PickingMode.Ignore }; segment.row.AddToClassList("music-stage-tilt-row");
+                // The italic row's characters are lifted and dropped by a sixth of their size; leave that much room above and below so a dropped
+                // character never touches the row beneath it.
+                if (tilt) { segment.row.style.marginTop = segment.lift + 2f; segment.row.style.marginBottom = segment.lift + 2f; }
                 int order = 0;
                 foreach (var unit in cut)
                 {
