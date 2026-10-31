@@ -2509,8 +2509,8 @@ public class GameMainUI : MonoBehaviour
         if (wallpaper != null) wallpaper.style.backgroundColor = Color.Lerp(Paper, Color.black, p.WallpaperDim);
         var lockDim = root.Q("tablet-lock-wallpaper-dim");
         if (lockDim != null) lockDim.style.backgroundColor = new Color(0,0,0,p.WallpaperDim);
-        var accent = p.Accent == TabletAccent.Teal ? new Color(.19f,.66f,.57f) : p.Accent == TabletAccent.Blue ? new Color(.32f,.60f,.92f) : new Color(.86f,.65f,.27f);
-        tabletShellView?.ApplyPresentation(accent, p.HighContrast);
+        RailwayRenaissance.UI.Tablet.TabletTheme.Apply(p.Accent, p.HighContrast, p.ReduceMotion);
+        tabletShellView?.ApplyPresentation(RailwayRenaissance.UI.Tablet.TabletTheme.Accent, p.HighContrast);
         if (p.ReduceMotion && desktop != null) desktop.style.opacity = 1;
     }
 
@@ -3253,7 +3253,7 @@ public class GameMainUI : MonoBehaviour
                 Title = title,
                 Subtitle = "车载随身听 · 正在播放",
                 Metric = "🎵 播放中",
-                AccentColor = RailwayRenaissance.UI.Tablet.TabletUIHelper.AccentSystem,
+                AccentColor = RailwayRenaissance.UI.Tablet.TabletTheme.Accent,
                 OnPrimaryAction = () =>
                 {
                     RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ToggleTabletMusicPlayPause();
@@ -3286,7 +3286,7 @@ public class GameMainUI : MonoBehaviour
                 Metric = string.Format("{0:F0} km/h", spd),
                 Subtitle = distKm > 0.05f ? string.Format("距下站 {0:F1}km", distKm) : "线路巡航中",
                 Progress = Mathf.Clamp01(spd / 100f),
-                AccentColor = new Color(0.96f, 0.72f, 0.20f, 1f),
+                AccentColor = RailwayRenaissance.UI.Tablet.TabletTheme.SpeedGold,
                 OnPrimaryAction = () =>
                 {
                     cab.SetThrottle(0);

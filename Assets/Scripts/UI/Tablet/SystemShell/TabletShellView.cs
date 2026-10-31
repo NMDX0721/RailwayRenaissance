@@ -23,7 +23,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private readonly Label _badge;
         private Focusable _previousFocus;
         private TabletSystemPanel _renderedPanel;
-        private Color _accent = new Color(.86f,.65f,.27f);
+        private Color _accent = TabletTheme.Accent;
         private bool _highContrast;
         private readonly TabletPresentationPreferences _presentation;
         private static float s_preMuteVolume = 1f;
@@ -77,7 +77,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _badge.style.borderTopRightRadius = 8;
             _badge.style.borderBottomLeftRadius = 8;
             _badge.style.borderBottomRightRadius = 8;
-            _badge.style.backgroundColor = new Color(0.92f, 0.22f, 0.22f, 1f);
+            _badge.style.backgroundColor = TabletTheme.Badge;
             _badge.style.color = Color.white;
             _badge.style.fontSize = 10;
             _badge.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -116,7 +116,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _scrim.style.top = 0;
             _scrim.style.right = 0;
             _scrim.style.bottom = 0;
-            _scrim.style.backgroundColor = new Color(0.05f, 0.05f, 0.07f, 0.45f);
+            _scrim.style.backgroundColor = TabletTheme.ShellScrim;
             _scrim.RegisterCallback<ClickEvent>(evt =>
             {
                 if (evt.target == _scrim)
@@ -134,12 +134,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _panel.style.right = StyleKeyword.Auto;
             _panel.style.width = 380;
             _panel.style.maxWidth = Length.Percent(100);
-            _panel.style.backgroundColor = new Color(0.13f, 0.14f, 0.16f, 0.98f);
+            _panel.style.backgroundColor = TabletTheme.ShellPanel;
             _panel.style.borderTopWidth = 1;
             _panel.style.borderRightWidth = 1;
             _panel.style.borderBottomWidth = 1;
             _panel.style.borderLeftWidth = 1;
-            var borderColor = new Color(0.35f, 0.36f, 0.40f, 1f);
+            var borderColor = TabletTheme.ShellBorder;
             _panel.style.borderTopColor = borderColor;
             _panel.style.borderRightColor = borderColor;
             _panel.style.borderBottomColor = borderColor;
@@ -242,11 +242,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             if (highContrast)
             {
                 ClearBlurredBackground();
-                _scrim.style.backgroundColor = new Color(0f, 0f, 0f, 0.85f);
+                _scrim.style.backgroundColor = TabletTheme.ShellScrimHighContrast;
             }
             else
             {
-                _scrim.style.backgroundColor = new Color(0.05f, 0.05f, 0.07f, 0.45f);
+                _scrim.style.backgroundColor = TabletTheme.ShellScrim;
                 if (contrastChanged && _state.Panel != TabletSystemPanel.None)
                 {
                     OnRequestCapture?.Invoke();
@@ -264,13 +264,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 if (button.name == "tablet-notifications-open" || button.name == "tablet-controls-open")
                 {
-                    button.style.backgroundColor = new Color(1f, 1f, 1f, 0.12f);
-                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = new Color(1f, 1f, 1f, 0.18f);
+                    button.style.backgroundColor = TabletTheme.OverlaySoft;
+                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = TabletTheme.OverlayMedium;
                 }
                 else
                 {
-                    button.style.backgroundColor = isActive ? new Color(0.24f, 0.38f, 0.28f, 1f) : highContrast ? Color.black : new Color(1f, 1f, 1f, 0.08f);
-                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = isActive ? accent : new Color(1f, 1f, 1f, 0.12f);
+                    button.style.backgroundColor = isActive ? TabletTheme.ActiveFill : highContrast ? Color.black : TabletTheme.OverlayFaint;
+                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = isActive ? accent : TabletTheme.OverlaySoft;
                 }
             });
             _panel.Query<Label>().ForEach(label => label.style.color = Color.white);
@@ -378,7 +378,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _panel.style.borderBottomLeftRadius = fullSheet ? 0 : 22;
             _panel.style.borderBottomRightRadius = fullSheet ? 0 : 22;
             _panel.style.borderTopWidth = 1; _panel.style.borderTopColor = GlassHighlightBorder;
-            _panel.style.borderLeftWidth = 1; _panel.style.borderLeftColor = new Color(1f, 1f, 1f, 0.10f);
+            _panel.style.borderLeftWidth = 1; _panel.style.borderLeftColor = TabletTheme.OverlaySoft;
             _panel.style.paddingLeft = compact ? 14 : 18;
             _panel.style.paddingRight = compact ? 14 : 18;
             _panel.style.paddingTop = compact ? 14 : 18;
@@ -429,7 +429,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 var empty = CreateLabel("暂无通知", 14, false);
                 empty.style.marginTop = 24;
                 empty.style.unityTextAlign = TextAnchor.MiddleCenter;
-                empty.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+                empty.style.color = TabletTheme.TextMuted;
                 scroll.Add(empty);
                 return;
             }
@@ -438,7 +438,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 var item = list[i];
                 var card = new VisualElement();
-                card.style.backgroundColor = new Color(0.18f, 0.19f, 0.22f, 1f);
+                card.style.backgroundColor = TabletTheme.ShellCard;
                 card.style.borderTopLeftRadius = 6;
                 card.style.borderTopRightRadius = 6;
                 card.style.borderBottomLeftRadius = 6;
@@ -460,7 +460,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 titleLabel.style.whiteSpace = WhiteSpace.Normal;
 
                 var timeLabel = CreateLabel(item.CreatedAt.ToString("HH:mm:ss"), 11, false);
-                timeLabel.style.color = new Color(0.70f, 0.70f, 0.75f, 1f);
+                timeLabel.style.color = TabletTheme.TextSecondary;
                 timeLabel.style.marginRight = 6;
 
                 long dismissId = item.Id;
@@ -477,7 +477,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     var bodyLabel = CreateLabel(item.Body, 12, false);
                     bodyLabel.style.marginTop = 4;
                     bodyLabel.style.whiteSpace = WhiteSpace.Normal;
-                    bodyLabel.style.color = new Color(0.85f, 0.85f, 0.88f, 1f);
+                    bodyLabel.style.color = TabletTheme.TextStrong;
                     card.Add(bodyLabel);
                 }
 
@@ -502,7 +502,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             scroll.Add(headerRow);
 
             var devTitle = CreateLabel("NF-5K 列控智能终端", 14, true);
-            devTitle.style.color = new Color(0.9f, 0.9f, 0.95f, 1f);
+            devTitle.style.color = TabletTheme.TextStrong;
             headerRow.Add(devTitle);
 
             var quickSettingsBtn = CreatePillButton("⚙ 设置", 54, 28, () =>
@@ -603,10 +603,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             mediaCard.style.height = 130;
             mediaCard.style.borderTopLeftRadius = 18; mediaCard.style.borderTopRightRadius = 18;
             mediaCard.style.borderBottomLeftRadius = 18; mediaCard.style.borderBottomRightRadius = 18;
-            mediaCard.style.backgroundColor = new Color(1f, 1f, 1f, 0.06f);
+            mediaCard.style.backgroundColor = TabletTheme.OverlaySubtle;
             mediaCard.style.borderTopWidth = 1; mediaCard.style.borderBottomWidth = 1;
             mediaCard.style.borderLeftWidth = 1; mediaCard.style.borderRightWidth = 1;
-            var mcBorder = new Color(1f, 1f, 1f, 0.12f);
+            var mcBorder = TabletTheme.OverlaySoft;
             mediaCard.style.borderTopColor = mcBorder; mediaCard.style.borderBottomColor = mcBorder;
             mediaCard.style.borderLeftColor = mcBorder; mediaCard.style.borderRightColor = mcBorder;
             mediaCard.style.paddingLeft = 12; mediaCard.style.paddingRight = 12;
@@ -618,7 +618,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             mediaHead.style.justifyContent = Justify.SpaceBetween;
             mediaHead.style.alignItems = Align.Center;
             var mediaTag = CreateLabel("📻 车载广播播控", 11, false);
-            mediaTag.style.color = new Color(0.7f, 0.75f, 0.85f, 1f);
+            mediaTag.style.color = TabletTheme.TextSecondary;
             mediaHead.Add(mediaTag);
             mediaCard.Add(mediaHead);
 
@@ -629,11 +629,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             vinylThumb.style.width = 32; vinylThumb.style.height = 32;
             vinylThumb.style.borderTopLeftRadius = 16; vinylThumb.style.borderTopRightRadius = 16;
             vinylThumb.style.borderBottomLeftRadius = 16; vinylThumb.style.borderBottomRightRadius = 16;
-            vinylThumb.style.backgroundColor = new Color(0.15f, 0.15f, 0.18f, 1f);
+            vinylThumb.style.backgroundColor = TabletTheme.VinylFill;
             vinylThumb.style.borderTopWidth = 1; vinylThumb.style.borderBottomWidth = 1;
             vinylThumb.style.borderLeftWidth = 1; vinylThumb.style.borderRightWidth = 1;
-            vinylThumb.style.borderTopColor = AccentSystem; vinylThumb.style.borderBottomColor = AccentSystem;
-            vinylThumb.style.borderLeftColor = AccentSystem; vinylThumb.style.borderRightColor = AccentSystem;
+            vinylThumb.style.borderTopColor = TabletTheme.Accent; vinylThumb.style.borderBottomColor = TabletTheme.Accent;
+            vinylThumb.style.borderLeftColor = TabletTheme.Accent; vinylThumb.style.borderRightColor = TabletTheme.Accent;
             vinylThumb.style.marginRight = 8;
             trackRow.Add(vinylThumb);
 
@@ -644,7 +644,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var songLbl = CreateLabel(curSong, 12, true);
             songLbl.style.maxWidth = 140;
             var artLbl = CreateLabel("铁道随身听", 10, false);
-            artLbl.style.color = new Color(0.6f, 0.6f, 0.65f, 1f);
+            artLbl.style.color = TabletTheme.TextMuted;
             trackInfo.Add(songLbl);
             trackInfo.Add(artLbl);
             trackRow.Add(trackInfo);
@@ -662,7 +662,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             });
             playBtn.name = "tablet-media-play-toggle";
             playBtn.style.fontSize = 11;
-            playBtn.style.backgroundColor = AccentSystem;
+            playBtn.style.backgroundColor = TabletTheme.Accent;
             mediaActions.Add(playBtn);
             mediaCard.Add(mediaActions);
 
@@ -709,12 +709,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             // ==================== 5. 硬件沙箱与通信隔离 ====================
             var offlineCard = new VisualElement { name = "settings-hardware-offline-box" };
-            offlineCard.style.backgroundColor = new Color(0.12f, 0.13f, 0.16f, 0.95f);
+            offlineCard.style.backgroundColor = TabletTheme.ShellCardDeep;
             offlineCard.style.borderTopLeftRadius = 14; offlineCard.style.borderTopRightRadius = 14;
             offlineCard.style.borderBottomLeftRadius = 14; offlineCard.style.borderBottomRightRadius = 14;
             offlineCard.style.borderTopWidth = 1; offlineCard.style.borderBottomWidth = 1;
             offlineCard.style.borderLeftWidth = 1; offlineCard.style.borderRightWidth = 1;
-            var boxBorder = new Color(1f, 1f, 1f, 0.08f);
+            var boxBorder = TabletTheme.OverlayFaint;
             offlineCard.style.borderTopColor = boxBorder; offlineCard.style.borderBottomColor = boxBorder;
             offlineCard.style.borderLeftColor = boxBorder; offlineCard.style.borderRightColor = boxBorder;
             offlineCard.style.paddingTop = 10; offlineCard.style.paddingBottom = 10;
@@ -726,22 +726,22 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             boxHead.style.alignItems = Align.Center;
             boxHead.style.marginBottom = 6;
             var shieldIc = CreateLabel("🛡 车载硬件物理隔离沙箱", 12, true);
-            shieldIc.style.color = new Color(0.35f, 0.85f, 0.55f, 1f);
+            shieldIc.style.color = TabletTheme.SuccessBright;
             boxHead.Add(shieldIc);
             offlineCard.Add(boxHead);
 
             var wlanRow = CreateLabel("● 无线网络 (WLAN) · 离线 [沙箱隔离 / NOT_RUN]", 11, false);
-            wlanRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+            wlanRow.style.color = TabletTheme.TextMuted;
             wlanRow.style.marginBottom = 3;
             offlineCard.Add(wlanRow);
 
             var btRow = CreateLabel("● 蓝牙无线射频 · 离线 [硬件未搭载 / NOT_RUN]", 11, false);
-            btRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+            btRow.style.color = TabletTheme.TextMuted;
             btRow.style.marginBottom = 3;
             offlineCard.Add(btRow);
 
             var simRow = CreateLabel("● 蜂窝移动基带 · 离线 [物理硬隔离 / NOT_RUN]", 11, false);
-            simRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+            simRow.style.color = TabletTheme.TextMuted;
             offlineCard.Add(simRow);
 
             scroll.Add(offlineCard);
@@ -766,7 +766,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.fontSize = 12;
             if (active)
             {
-                btn.style.backgroundColor = new Color(0.24f, 0.38f, 0.28f, 1f);
+                btn.style.backgroundColor = TabletTheme.ActiveFill;
             }
             return btn;
         }
@@ -776,13 +776,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var btn = new Button(onClick) { text = text };
             btn.style.minWidth = minWidth;
             btn.style.minHeight = minHeight;
-            btn.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+            btn.style.backgroundColor = TabletTheme.OverlayFaint;
             btn.style.color = Color.white;
             btn.style.borderTopWidth = 1;
             btn.style.borderRightWidth = 1;
             btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1;
-            var bc = new Color(1f, 1f, 1f, 0.12f);
+            var bc = TabletTheme.OverlaySoft;
             btn.style.borderTopColor = bc;
             btn.style.borderRightColor = bc;
             btn.style.borderBottomColor = bc;
@@ -813,13 +813,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var btn = new Button(onClick) { text = text };
             btn.style.minWidth = minWidth;
             btn.style.minHeight = minHeight;
-            btn.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+            btn.style.backgroundColor = TabletTheme.OverlayFaint;
             btn.style.color = Color.white;
             btn.style.borderTopWidth = 1;
             btn.style.borderRightWidth = 1;
             btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1;
-            var bc = new Color(1f, 1f, 1f, 0.12f);
+            var bc = TabletTheme.OverlaySoft;
             btn.style.borderTopColor = bc;
             btn.style.borderRightColor = bc;
             btn.style.borderBottomColor = bc;

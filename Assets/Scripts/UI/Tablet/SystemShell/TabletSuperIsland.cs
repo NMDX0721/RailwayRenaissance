@@ -31,7 +31,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             public string Title;
             public string Metric;
             public float Progress; // 0..1
-            public Color AccentColor = new Color(0.85f, 0.45f, 0.15f, 1f);
+            public Color AccentColor = TabletTheme.Accent;
             public Action OnClick;
             public Action OnPrimaryAction;
             public Action OnSecondaryAction;
@@ -89,7 +89,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _scrimOverlay.style.left = 0;
             _scrimOverlay.style.right = 0;
             _scrimOverlay.style.bottom = 0;
-            _scrimOverlay.style.backgroundColor = new Color(0f, 0f, 0f, 0.25f);
+            _scrimOverlay.style.backgroundColor = TabletTheme.IslandScrim;
             _scrimOverlay.style.display = DisplayStyle.None;
             _scrimOverlay.RegisterCallback<ClickEvent>(evt =>
             {
@@ -128,12 +128,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _pillContainer.style.borderTopRightRadius = 16;
             _pillContainer.style.borderBottomLeftRadius = 16;
             _pillContainer.style.borderBottomRightRadius = 16;
-            _pillContainer.style.backgroundColor = new Color(0.06f, 0.07f, 0.09f, 0.94f);
+            _pillContainer.style.backgroundColor = TabletTheme.IslandPill;
             _pillContainer.style.borderTopWidth = 1;
             _pillContainer.style.borderLeftWidth = 1;
             _pillContainer.style.borderRightWidth = 1;
             _pillContainer.style.borderBottomWidth = 1;
-            var borderCol = new Color(1f, 1f, 1f, 0.16f);
+            var borderCol = TabletTheme.OverlayMedium;
             _pillContainer.style.borderTopColor = borderCol;
             _pillContainer.style.borderLeftColor = borderCol;
             _pillContainer.style.borderRightColor = borderCol;
@@ -159,7 +159,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _subBubble.style.borderTopRightRadius = 16;
             _subBubble.style.borderBottomLeftRadius = 16;
             _subBubble.style.borderBottomRightRadius = 16;
-            _subBubble.style.backgroundColor = new Color(0.06f, 0.07f, 0.09f, 0.94f);
+            _subBubble.style.backgroundColor = TabletTheme.IslandPill;
             _subBubble.style.borderTopWidth = 1;
             _subBubble.style.borderLeftWidth = 1;
             _subBubble.style.borderRightWidth = 1;
@@ -190,12 +190,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _expandedCard.style.borderTopRightRadius = 22;
             _expandedCard.style.borderBottomLeftRadius = 22;
             _expandedCard.style.borderBottomRightRadius = 22;
-            _expandedCard.style.backgroundColor = new Color(0.08f, 0.09f, 0.12f, 0.96f);
+            _expandedCard.style.backgroundColor = TabletTheme.IslandExpanded;
             _expandedCard.style.borderTopWidth = 1;
             _expandedCard.style.borderLeftWidth = 1;
             _expandedCard.style.borderRightWidth = 1;
             _expandedCard.style.borderBottomWidth = 1;
-            var expBorder = new Color(1f, 1f, 1f, 0.20f);
+            var expBorder = TabletTheme.OverlayStrong;
             _expandedCard.style.borderTopColor = expBorder;
             _expandedCard.style.borderLeftColor = expBorder;
             _expandedCard.style.borderRightColor = expBorder;
@@ -363,16 +363,16 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     locoIcon.style.marginRight = 4;
                     leftBox.Add(locoIcon);
 
-                    var sigDot = CreateSignalDot(s.Progress > 0.9f ? Color.yellow : new Color(0.2f, 0.8f, 0.35f, 1f));
+                    var sigDot = CreateSignalDot(s.Progress > 0.9f ? TabletTheme.Caution : TabletTheme.Success);
                     leftBox.Add(sigDot);
 
                     var speedLbl = CreatePillLabel(s.Metric ?? $"{s.AuxValue:F0} km/h", 12, true);
-                    speedLbl.style.color = new Color(0.96f, 0.72f, 0.20f, 1f);
+                    speedLbl.style.color = TabletTheme.SpeedGold;
                     speedLbl.style.marginLeft = 6;
                     leftBox.Add(speedLbl);
 
                     var statusBadge = CreatePillLabel(s.Subtitle ?? "ATO巡航", 11, false);
-                    statusBadge.style.color = new Color(0.70f, 0.75f, 0.85f, 1f);
+                    statusBadge.style.color = TabletTheme.TextSecondary;
                     statusBadge.style.marginLeft = 6;
                     rightBox.Add(statusBadge);
                     break;
@@ -398,7 +398,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     leftBox.Add(timerIc);
 
                     var timerMetric = CreatePillLabel(s.Metric ?? "00:00", 12, true);
-                    timerMetric.style.color = new Color(0.35f, 0.75f, 1f, 1f);
+                    timerMetric.style.color = TabletTheme.Info;
                     leftBox.Add(timerMetric);
 
                     var timerSub = CreatePillLabel("计时中", 11, false);
@@ -427,7 +427,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     leftBox.Add(alertIc);
 
                     var alertTitle = CreatePillLabel(s.Title ?? "紧急调度", 12, true);
-                    alertTitle.style.color = new Color(1f, 0.35f, 0.25f, 1f);
+                    alertTitle.style.color = TabletTheme.Alert;
                     leftBox.Add(alertTitle);
 
                     var alertMetric = CreatePillLabel(s.Metric ?? "限速命令", 11, false);
@@ -488,7 +488,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             closeBtn.style.width = 24; closeBtn.style.height = 24;
             closeBtn.style.borderTopLeftRadius = 12; closeBtn.style.borderTopRightRadius = 12;
             closeBtn.style.borderBottomLeftRadius = 12; closeBtn.style.borderBottomRightRadius = 12;
-            closeBtn.style.backgroundColor = new Color(1f, 1f, 1f, 0.12f);
+            closeBtn.style.backgroundColor = TabletTheme.OverlaySoft;
             closeBtn.style.color = Color.white;
             closeBtn.style.fontSize = 11;
             closeBtn.style.borderTopWidth = 0; closeBtn.style.borderBottomWidth = 0;
@@ -499,7 +499,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 // ---------- 1. 音乐大岛 ----------
                 case IslandAppType.Music:
                     var musicHeader = CreatePillLabel("车载随身听 · 正在播放", 11, false);
-                    musicHeader.style.color = new Color(0.7f, 0.7f, 0.75f, 1f);
+                    musicHeader.style.color = TabletTheme.TextSecondary;
                     topRow.Add(musicHeader);
                     topRow.Add(closeBtn);
 
@@ -527,7 +527,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     musicText.Add(titleLbl);
 
                     var subLbl = CreatePillLabel(s.Subtitle ?? "高品质车厢广播音频", 11, false);
-                    subLbl.style.color = new Color(0.6f, 0.65f, 0.75f, 1f);
+                    subLbl.style.color = TabletTheme.TextMuted;
                     subLbl.style.marginTop = 2;
                     musicText.Add(subLbl);
 
@@ -551,7 +551,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 // ---------- 2. 列控遥测大岛 ----------
                 case IslandAppType.TrainCab:
                     var cabHeader = CreatePillLabel("列控遥测系统 · NF-5K 机车", 11, false);
-                    cabHeader.style.color = new Color(0.7f, 0.7f, 0.75f, 1f);
+                    cabHeader.style.color = TabletTheme.TextSecondary;
                     topRow.Add(cabHeader);
                     topRow.Add(closeBtn);
 
@@ -566,11 +566,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     cabBody.Add(speedBox);
 
                     var spdLbl = CreatePillLabel(s.Metric ?? $"{s.AuxValue:F1} km/h", 22, true);
-                    spdLbl.style.color = new Color(0.96f, 0.72f, 0.20f, 1f);
+                    spdLbl.style.color = TabletTheme.SpeedGold;
                     speedBox.Add(spdLbl);
 
                     var subSpd = CreatePillLabel(s.Subtitle ?? "限速 80 km/h · 自动巡航中", 11, false);
-                    subSpd.style.color = new Color(0.65f, 0.70f, 0.80f, 1f);
+                    subSpd.style.color = TabletTheme.TextSecondary;
                     speedBox.Add(subSpd);
 
                     var cabActions = new VisualElement();
@@ -578,11 +578,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     cabActions.style.alignItems = Align.Center;
                     cabBody.Add(cabActions);
 
-                    var brakeBtn = CreateTextActionBtn("紧急制动", new Color(0.85f, 0.22f, 0.22f, 1f), () => s.OnPrimaryAction?.Invoke());
+                    var brakeBtn = CreateTextActionBtn("紧急制动", TabletTheme.Danger, () => s.OnPrimaryAction?.Invoke());
                     brakeBtn.style.marginRight = 8;
                     cabActions.Add(brakeBtn);
 
-                    var rdaBtn = CreateTextActionBtn("驾驶室", AccentSystem, () => { SetExpanded(false); _onLaunchApp?.Invoke("归途"); });
+                    var rdaBtn = CreateTextActionBtn("驾驶室", TabletTheme.Accent, () => { SetExpanded(false); _onLaunchApp?.Invoke("归途"); });
                     cabActions.Add(rdaBtn);
                     break;
 
@@ -607,7 +607,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     recInfo.Add(durLbl);
 
                     var subRec = CreatePillLabel(s.Subtitle ?? "PCM 48kHz 立体声", 11, false);
-                    subRec.style.color = new Color(0.65f, 0.70f, 0.80f, 1f);
+                    subRec.style.color = TabletTheme.TextSecondary;
                     recInfo.Add(subRec);
 
                     var recActions = new VisualElement();
@@ -615,7 +615,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     recActions.style.alignItems = Align.Center;
                     recBody.Add(recActions);
 
-                    var flagBtn = CreateTextActionBtn("标记", new Color(1f, 1f, 1f, 0.15f), () => s.OnSecondaryAction?.Invoke());
+                    var flagBtn = CreateTextActionBtn("标记", TabletTheme.OverlayMedium, () => s.OnSecondaryAction?.Invoke());
                     flagBtn.style.marginRight = 8;
                     recActions.Add(flagBtn);
 
@@ -626,7 +626,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 // ---------- 4. 倒计时大岛 ----------
                 case IslandAppType.Timer:
                     var timerHeader = CreatePillLabel("运行区间测时秒表", 11, false);
-                    timerHeader.style.color = new Color(0.35f, 0.75f, 1f, 1f);
+                    timerHeader.style.color = TabletTheme.Info;
                     topRow.Add(timerHeader);
                     topRow.Add(closeBtn);
 
@@ -640,11 +640,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     timerBody.Add(tInfo);
 
                     var tVal = CreatePillLabel(s.Metric ?? "00:00", 22, true);
-                    tVal.style.color = new Color(0.35f, 0.75f, 1f, 1f);
+                    tVal.style.color = TabletTheme.Info;
                     tInfo.Add(tVal);
 
                     var tSub = CreatePillLabel(s.Subtitle ?? "区间行车时分测定", 11, false);
-                    tSub.style.color = new Color(0.65f, 0.70f, 0.80f, 1f);
+                    tSub.style.color = TabletTheme.TextSecondary;
                     tInfo.Add(tSub);
 
                     var tActions = new VisualElement();
@@ -652,18 +652,18 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     tActions.style.alignItems = Align.Center;
                     timerBody.Add(tActions);
 
-                    var rstBtn = CreateTextActionBtn("复位", new Color(1f, 1f, 1f, 0.15f), () => s.OnSecondaryAction?.Invoke());
+                    var rstBtn = CreateTextActionBtn("复位", TabletTheme.OverlayMedium, () => s.OnSecondaryAction?.Invoke());
                     rstBtn.style.marginRight = 8;
                     tActions.Add(rstBtn);
 
-                    var pauseBtn = CreateTextActionBtn("暂停", new Color(0.20f, 0.65f, 0.95f, 1f), () => s.OnPrimaryAction?.Invoke());
+                    var pauseBtn = CreateTextActionBtn("暂停", TabletTheme.InfoButton, () => s.OnPrimaryAction?.Invoke());
                     tActions.Add(pauseBtn);
                     break;
 
                 // ---------- 5. 云同步大岛 ----------
                 case IslandAppType.CloudSync:
                     var syncHeader = CreatePillLabel("系统备份与恢复 · 传输中", 11, false);
-                    syncHeader.style.color = new Color(0.4f, 0.75f, 0.95f, 1f);
+                    syncHeader.style.color = TabletTheme.Info;
                     topRow.Add(syncHeader);
                     topRow.Add(closeBtn);
 
@@ -690,7 +690,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 // ---------- 6. 调度警报大岛 ----------
                 case IslandAppType.DispatchAlert:
                     var alHeader = CreatePillLabel("⚠️ 铁道调度紧急令书", 11, true);
-                    alHeader.style.color = new Color(1f, 0.35f, 0.25f, 1f);
+                    alHeader.style.color = TabletTheme.Alert;
                     topRow.Add(alHeader);
                     topRow.Add(closeBtn);
 
@@ -708,7 +708,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     alText.Add(alTitle);
 
                     var alDesc = CreatePillLabel(s.Subtitle ?? "沙暴扬沙警告，严格控制在45km/h以下", 11, false);
-                    alDesc.style.color = new Color(0.85f, 0.85f, 0.88f, 1f);
+                    alDesc.style.color = TabletTheme.TextStrong;
                     alDesc.style.marginTop = 2;
                     alText.Add(alDesc);
 
@@ -717,7 +717,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     alActions.style.alignItems = Align.Center;
                     alBody.Add(alActions);
 
-                    var ackBtn = CreateTextActionBtn("已知晓", new Color(0.25f, 0.55f, 0.35f, 1f), () =>
+                    var ackBtn = CreateTextActionBtn("已知晓", TabletTheme.SuccessButton, () =>
                     {
                         s.OnPrimaryAction?.Invoke();
                         SetExpanded(false);
@@ -737,10 +737,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             disc.style.borderTopRightRadius = size * 0.5f;
             disc.style.borderBottomLeftRadius = size * 0.5f;
             disc.style.borderBottomRightRadius = size * 0.5f;
-            disc.style.backgroundColor = new Color(0.12f, 0.12f, 0.14f, 1f);
+            disc.style.backgroundColor = TabletTheme.DiscFill;
             disc.style.borderTopWidth = 1; disc.style.borderBottomWidth = 1;
             disc.style.borderLeftWidth = 1; disc.style.borderRightWidth = 1;
-            var bc = new Color(0.3f, 0.3f, 0.35f, 0.8f);
+            var bc = TabletTheme.DiscRim;
             disc.style.borderTopColor = bc; disc.style.borderBottomColor = bc;
             disc.style.borderLeftColor = bc; disc.style.borderRightColor = bc;
             disc.style.alignItems = Align.Center;
@@ -804,7 +804,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var track = new VisualElement();
             track.style.width = width;
             track.style.height = height;
-            track.style.backgroundColor = new Color(1f, 1f, 1f, 0.15f);
+            track.style.backgroundColor = TabletTheme.OverlayMedium;
             track.style.borderTopLeftRadius = height * 0.5f;
             track.style.borderTopRightRadius = height * 0.5f;
             track.style.borderBottomLeftRadius = height * 0.5f;
@@ -839,7 +839,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.borderTopRightRadius = 15;
             btn.style.borderBottomLeftRadius = 15;
             btn.style.borderBottomRightRadius = 15;
-            btn.style.backgroundColor = isAccent ? AccentSystem : new Color(1f, 1f, 1f, 0.12f);
+            btn.style.backgroundColor = isAccent ? TabletTheme.Accent : TabletTheme.OverlaySoft;
             btn.style.color = Color.white;
             btn.style.fontSize = 12;
             btn.style.borderTopWidth = 0; btn.style.borderBottomWidth = 0;
