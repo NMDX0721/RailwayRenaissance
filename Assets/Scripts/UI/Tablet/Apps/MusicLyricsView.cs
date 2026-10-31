@@ -138,6 +138,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             // Stage tunables (Folia's classic style): shown only while the stage look is active.
             var stageBox = Box(more, "music-lyrics-stage-tuning"); stageBox.name = "music-lyrics-stage-tuning";
             Text(stageBox, "舞台", "music-lyrics-section");
+            var styleButton = Action(stageBox, "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle), null, "music-stage-style");
+            styleButton.tooltip = "切换舞台样式：Luminous（逐词弹出）/ 云阶（分行错落）/ Still（静态三行）";
+            styleButton.clicked += () => {
+                MusicLibrarySession.State.stageStyle = StageStyles.Next(MusicLibrarySession.State.stageStyle); MusicLibrarySession.Save();
+                styleButton.text = "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle);
+            };
             string[] intensityNames = { "平静", "正常", "狂放" };
             var intensity = Action(stageBox, "散布：" + intensityNames[Mathf.Clamp(MusicLibrarySession.State.stageIntensity, 0, 2)], null, "music-stage-intensity");
             intensity.tooltip = "词在舞台上的散布与旋转幅度：平静（居中不转）/ 正常 / 狂放";

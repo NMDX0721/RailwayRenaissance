@@ -33,7 +33,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             style = StageStyles.Create(id);
             Clear();
             Add(previous); Add(style.Root); Add(translation); Add(upcoming);
-            shownDocument = null;
+            shownDocument = null;   // the subtitle layer is refreshed on the next Tick, which also applies OwnsSubtitles
         }
 
         /// <summary>Settings changed: rebuild the current line.</summary>
@@ -53,6 +53,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void RefreshSubtitles(MusicTimedDocument document, int active, bool showTranslation)
         {
             shownDocument = document; shownLine = active; shownTranslation = showTranslation;
+            // Some styles draw their own neighbouring lines and translation; the shared layer stays out of their way.
+            var own = style.OwnsSubtitles ? DisplayStyle.None : DisplayStyle.Flex;
+            previous.style.display = own; upcoming.style.display = own;
+            if (style.OwnsSubtitles) { translation.style.display = DisplayStyle.None; return; }
             string Plain(int index) => document != null && index >= 0 && index < document.lines.Count ? document.lines[index].text : "";
             previous.text = Plain(active - 1); upcoming.text = Plain(active < 0 ? 0 : active + 1);
             translation.text = ""; translation.style.display = DisplayStyle.None;

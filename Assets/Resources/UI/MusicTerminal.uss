@@ -559,6 +559,22 @@
 .music-stage-luminous { align-self: stretch; align-items: center; justify-content: center; }
 .music-stage-line-host { align-self: stretch; }
 .music-stage-glow { position: absolute; left: 0; top: 0; }
+/* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
+.music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-partita-row { flex-direction: row; align-items: center; justify-content: center; padding: 3px 8px; }
+.music-stage-guide-h { position: absolute; bottom: -8px; height: 1px; left: -16px; right: -20px; }
+.music-stage-guide-h.music-stage-guide-left { transform-origin: left center; }
+.music-stage-guide-h.music-stage-guide-right { transform-origin: right center; }
+.music-stage-guide-v { position: absolute; bottom: -16px; width: 1px; height: 32px; transform-origin: center bottom; }
+.music-stage-guide-v.music-stage-guide-left { left: -8px; }
+.music-stage-guide-v.music-stage-guide-right { right: -8px; }
+/* Still style: three static rows. */
+.music-stage-still { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-still-row { align-items: center; margin: 14px 0; max-width: 100%; }
+.music-stage-still-current { color: rgb(237, 230, 204); -unity-font-style: bold; white-space: normal; -unity-text-align: middle-center; }
+.music-stage-still-side { color: rgb(214, 204, 172); opacity: 0.3; white-space: normal; -unity-text-align: middle-center; }
+.music-stage-still-translation { color: rgb(196, 204, 170); opacity: 0.8; margin-top: 8px; white-space: normal; -unity-text-align: middle-center; }
+.music-stage-still-translation-side { color: rgb(196, 204, 170); opacity: 0.3; margin-top: 6px; white-space: normal; -unity-text-align: middle-center; }
 .music-stage-translation { margin-top: 10px; }
 .music-stage-previous { margin-bottom: 10px; }
 .music-lyrics-cover { background-size: contain; align-self: flex-start; }

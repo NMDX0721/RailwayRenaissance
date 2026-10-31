@@ -29,7 +29,7 @@ public static class RailwayMusicTerminalReview
     static float previewPreviousPosition;
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
-    static int stageMotionFrame, lumiSeq;
+    static int stageMotionFrame, lumiSeq, styleStep;
     static readonly float[] lumiPose = new float[10], lumiLast = new float[10];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
@@ -624,6 +624,35 @@ public static class RailwayMusicTerminalReview
                     Assert(poseMax - poseMin > .05f, "Luminous words did not move as the audio clock advanced");
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
+                    // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
+                    if (styleStep < 4)
+                    {
+                        float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
+                        if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
+                        else if (styleStep == 1)
+                        {
+                            Assert(stageHost.StyleId == "partita" && stageHost.Query(className: "music-stage-partita-row").ToList().Count >= 1, "Partita did not build its rows");
+                            Assert(stageHost.Q(className: "music-stage-guide-h") != null && stageHost.Q(className: "music-stage-guide-v") != null, "Partita did not build its guide lines");
+                            Capture("05p-partita-a"); TabletMusicAppUI.SeekTabletMusic(5.2f / styleClip);
+                        }
+                        else if (styleStep == 2)
+                        {
+                            Capture("05p-partita-b");
+                            float guideBest = 0; foreach (var guide in stageHost.Query(className: "music-stage-guide-h").ToList()) guideBest = Mathf.Max(guideBest, guide.resolvedStyle.opacity);
+                            Assert(guideBest > .5f, "Partita guide lines did not grow once their rows were sung (best opacity " + guideBest.ToString("F2") + ")");
+                            MusicLibrarySession.State.stageStyle = "still"; TabletMusicAppUI.SeekTabletMusic(4f / styleClip);
+                        }
+                        else
+                        {
+                            var stillCurrent = stageHost.Q<Label>(className: "music-stage-still-current");
+                            Assert(stageHost.StyleId == "still" && stillCurrent != null && stillCurrent.text == "归途回声", "Still did not show the current line");
+                            Assert(stageHost.Q(className: "music-stage-previous") == null || stageHost.Q(className: "music-stage-previous").resolvedStyle.display == DisplayStyle.None, "Shared subtitle layer was not hidden for Still");
+                            Capture("05t-still");
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_STYLES_OK: Partita rows and guide lines, Still three static lines, shared subtitle layer yields");
+                        }
+                        styleStep++; checkAfter = EditorApplication.timeSinceStartup + .7; frame = Time.frameCount; return;
+                    }
                     var lyricScroll = root.Q<ScrollView>("music-lyrics-scroll");
                     using (var wheel = WheelEvent.GetPooled(new Event { type = EventType.ScrollWheel, delta = new Vector2(0, 3), mousePosition = lyricScroll.worldBound.center }))
                     { wheel.target = lyricScroll; lyricScroll.SendEvent(wheel); }

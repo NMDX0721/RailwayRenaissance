@@ -40,6 +40,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         string Id { get; }
         string Title { get; }
+        /// <summary>True when the style draws its own previous / next line and translation, so the host hides its shared subtitle layer.</summary>
+        bool OwnsSubtitles { get; }
         /// <summary>The element the host places on stage.</summary>
         VisualElement Root { get; }
         void Tick(in StageContext context);
@@ -52,12 +54,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         sealed class Entry { public string id, title; public Func<IStageStyle> create; }
         static readonly List<Entry> entries = new List<Entry>
         {
-            new Entry { id = "luminous", title = "Luminous", create = () => new MusicStageLuminous() }
+            new Entry { id = "luminous", title = "Luminous", create = () => new MusicStageLuminous() },
+            new Entry { id = "partita", title = "云阶", create = () => new MusicStagePartita() },
+            new Entry { id = "still", title = "Still", create = () => new MusicStageStill() }
         };
 
         public const string Default = "luminous";
         public static int Count => entries.Count;
         public static string IdAt(int index) => entries[Mathf.Clamp(index, 0, entries.Count - 1)].id;
+        public static string Next(string id) { for (int i = 0; i < entries.Count; i++) if (entries[i].id == id) return entries[(i + 1) % entries.Count].id; return entries[0].id; }
         public static string TitleOf(string id) { foreach (var e in entries) if (e.id == id) return e.title; return entries[0].title; }
         public static bool Has(string id) { foreach (var e in entries) if (e.id == id) return true; return false; }
         public static IStageStyle Create(string id)

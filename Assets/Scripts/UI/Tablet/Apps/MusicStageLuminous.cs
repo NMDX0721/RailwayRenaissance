@@ -15,34 +15,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// </summary>
     public sealed class MusicStageLuminous : IStageStyle
     {
-        sealed class StageUnit
-        {
-            public VisualElement body, ripple;
-            public Label glow;
-            public readonly List<Label> labels = new List<Label>();
-            public readonly List<float> tones = new List<float>();
-            public LyricUnit unit;
-            public float baseScale, cx, cy, rot, passedRot, rippleScale;
-            public float x, y, s = .5f, r, o, vx, vy, vs, vr, rippleTime = 1, glowTone;
-            public int state = -1;
-        }
-
         sealed class Leaving { public VisualElement element; public float age, duration, endScale; }
-
-        enum Reveal { Normal, Fast, Instant }
 
         readonly VisualElement root = new VisualElement(), lineHost = new VisualElement();
         readonly Label dots = new Label("· · ·");
-        readonly List<StageUnit> units = new List<StageUnit>();
+        readonly List<StageWord> units = new List<StageWord>();
         readonly List<Leaving> leaving = new List<Leaving>();
         VisualElement line;
         MusicTimedDocument shownDocument; int shownLine = -2; float shownScale, shownWidth; bool shownEstimate, shownCalm; StageTuning shownTuning;
-        Reveal reveal; double lineStart, lineEnd = double.PositiveInfinity, nextStart = double.PositiveInfinity;
-        bool chorus, blank, spaced, built, legacy; float builtAt, fontSize = 40f, enterDuration, enterScale = 1, enterOpacity = 1, exitScale = 1.1f, exitDuration = .3f;
+        StageReveal reveal; double lineEnd = double.PositiveInfinity, nextStart = double.PositiveInfinity;
+        bool chorus, blank, spaced, legacy; float builtAt, fontSize = 40f, enterDuration, enterScale = 1, enterOpacity = 1, exitScale = 1.1f, exitDuration = .3f;
         float floatDistance = 14f, floatPeriod = 7f;
 
         public string Id => "luminous";
         public string Title => "Luminous";
+        public bool OwnsSubtitles => false;
         public VisualElement Root => root;
 
         public MusicStageLuminous()
@@ -74,69 +61,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             dots.style.opacity = c.calm ? .5f : .35f + .3f * (.5f + .5f * Mathf.Sin(now * 2.6f));
             float lineFade = finished ? 0f : 1f;
 
-            foreach (var u in units)
-            {
-                double lookahead = reveal == Reveal.Instant ? .03 : reveal == Reveal.Fast ? .08 : .15;
-                double end = reveal == Reveal.Instant ? (double.IsInfinity(lineEnd) ? u.unit.end : lineEnd)
-                    : reveal == Reveal.Fast ? Math.Min(double.IsInfinity(lineEnd) ? u.unit.end : lineEnd, Math.Max(u.unit.end, u.unit.start + .12)) : u.unit.end;
-                int state = c.clock > end ? 2 : c.clock >= u.unit.start - lookahead ? 1 : 0;
-                if (state == 1 && u.state != 1 && chorus && !c.calm) u.rippleTime = 0;
-                u.state = state;
-
-                if (c.calm)
-                {
-                    u.o = state == 0 ? .3f : 1f; u.s = 1; u.x = u.y = u.r = 0;
-                }
-                else
-                {
-                    // Waiting is small, faded and displaced; active springs large; passed settles back with a little afterglow.
-                    float tx = state == 0 ? u.cx + Mathf.Sin(u.cy) * 100f : u.cx, ty = state == 0 ? u.cy + Mathf.Cos(u.cx) * 50f : u.cy;
-                    float ts = state == 0 ? .5f : state == 1 ? u.baseScale * 1.4f : u.baseScale;
-                    float tr = state == 0 ? u.rot + (tuning.rotation ? 20f : 0) : state == 1 ? u.rot : u.rot + u.passedRot;
-                    // Active uses the spring Folia gives it (stiffness 200, damping 20); entering and leaving settle in about half a second.
-                    float stiffness = state == 1 ? (reveal == Reveal.Normal ? 200f : 300f) : 110f, damping = state == 1 ? (reveal == Reveal.Normal ? 20f : 26f) : 21f;
-                    Spring(ref u.s, ref u.vs, ts, dt, stiffness, damping); Spring(ref u.x, ref u.vx, tx, dt, stiffness, damping);
-                    Spring(ref u.y, ref u.vy, ty, dt, stiffness, damping); Spring(ref u.r, ref u.vr, tr, dt, stiffness, damping);
-                    float targetOpacity = state == 0 ? 0f : state == 1 ? 1f : chaotic ? .9f : .82f;
-                    u.o = Mathf.Lerp(u.o, targetOpacity, 1 - Mathf.Exp(-dt * (state == 1 ? 24f : 6f)));
-                }
-                u.body.style.opacity = u.o * lineFade;
-                u.body.style.scale = new Scale(new Vector3(u.s, u.s, 1));
-                u.body.style.translate = new Translate(u.x, u.y);
-                u.body.style.rotate = new Rotate(new Angle(u.r, AngleUnit.Degree));
-
-                // Inside an active unit the characters light up one by one on their own times (Folia's grapheme timing).
-                float lit = 0;
-                for (int g = 0; g < u.labels.Count; g++)
-                {
-                    float target = state == 1 ? (c.clock >= u.unit.glyphs[g].start ? 1f : .25f) : 0f;
-                    float rate = state == 1 ? 20f : state == 2 ? 2.5f : 8f;
-                    u.tones[g] = c.calm ? (state == 1 ? 1f : 0f) : Mathf.Lerp(u.tones[g], target, 1 - Mathf.Exp(-dt * rate));
-                    float tone = u.tones[g]; lit = Mathf.Max(lit, state == 1 && c.clock >= u.unit.glyphs[g].start ? 1f : 0f);
-                    u.labels[g].style.color = Color.Lerp(baseColor, activeColor, tone);
-                }
-                // The glow sits on its own layer behind the text, so it can be pushed hard without making the glyphs unreadable.
-                if (u.glow != null)
-                {
-                    u.glowTone = c.calm ? 0 : Mathf.Lerp(u.glowTone, lit, 1 - Mathf.Exp(-dt * (lit > u.glowTone ? 16f : 3f)));
-                    float blur = 12f + 14f * Mathf.Clamp01(c.high);
-                    u.glow.style.opacity = u.glowTone * lineFade;
-                    u.glow.style.textShadow = new TextShadow { offset = Vector2.zero, blurRadius = blur, color = new Color(c.accent.r, c.accent.g, c.accent.b, .8f) };
-                }
-
-                if (u.ripple != null)
-                {
-                    if (u.rippleTime < .5f)
-                    {
-                        u.rippleTime += dt; float t = Mathf.Clamp01(u.rippleTime / .5f), size = Mathf.Max(u.body.resolvedStyle.width, u.body.resolvedStyle.height) * 1.5f;
-                        if (!float.IsNaN(size) && size > 0) { u.ripple.style.width = size; u.ripple.style.height = size; u.ripple.style.marginLeft = -size / 2; u.ripple.style.marginTop = -size / 2; }
-                        float scale = Mathf.Lerp(.2f, u.rippleScale, 1 - (1 - t) * (1 - t));
-                        u.ripple.style.scale = new Scale(new Vector3(scale, scale, 1)); u.ripple.style.opacity = .8f * (1 - t);
-                        u.ripple.style.borderTopColor = u.ripple.style.borderBottomColor = u.ripple.style.borderLeftColor = u.ripple.style.borderRightColor = activeColor;
-                    }
-                    else u.ripple.style.opacity = 0;
-                }
-            }
+            foreach (var u in units) u.Tick(c.clock, dt, c.calm, reveal, lineEnd, chorus, tuning.rotation, chaotic, baseColor, activeColor, c.accent, c.high, lineFade);
 
             // The line arrives with a short scale/fade chosen by how fast it is sung (Folia's line transition: normal / fast / none).
             float intro = c.calm || enterDuration <= 0 ? 1f : Mathf.SmoothStep(0, 1, Mathf.Clamp01((now - builtAt) / enterDuration));
@@ -193,23 +118,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             spaced = true;
         }
 
-        static void Spring(ref float value, ref float velocity, float target, float dt, float stiffness, float damping)
-        {
-            if (dt <= 0) return;
-            int steps = Mathf.Max(1, Mathf.CeilToInt(dt / .008f)); float h = dt / steps;
-            for (int i = 0; i < steps; i++)
-            {
-                velocity += (stiffness * (target - value) - damping * velocity) * h;
-                value += velocity * h;
-            }
-        }
-
-        static float Random(int seed, float offset)
-        {
-            float x = Mathf.Sin(seed * 12.9898f + offset * 78.233f) * 43758.5453f;
-            return x - Mathf.Floor(x);
-        }
-
         static string Normalize(string text)
         {
             var letters = new System.Text.StringBuilder();
@@ -229,16 +137,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 leaving.Add(new Leaving { element = old, duration = exitDuration, endScale = exitScale });
             }
             else line?.RemoveFromHierarchy();
-            units.Clear(); chorus = false; blank = false; lineStart = 0; lineEnd = nextStart = double.PositiveInfinity;
+            units.Clear(); chorus = false; blank = false; lineEnd = nextStart = double.PositiveInfinity;
             line = new VisualElement { pickingMode = PickingMode.Ignore }; line.AddToClassList("music-stage-line");
             line.style.width = Length.Percent(100); line.style.minHeight = 150;
             lineHost.Add(line);
-            built = true;
             enterDuration = 0; enterScale = 1; enterOpacity = 1;
             if (document == null || active < 0 || active >= document.lines.Count) return;
             var data = document.lines[active];
             nextStart = active + 1 < document.lines.Count ? document.lines[active + 1].start : double.PositiveInfinity;
-            lineStart = data.start; lineEnd = !double.IsInfinity(data.end) && data.end > data.start ? data.end : nextStart;
+            lineEnd = !double.IsInfinity(data.end) && data.end > data.start ? data.end : nextStart;
             if (string.IsNullOrWhiteSpace(data.text)) { blank = true; return; }
 
             // A line sung more than once is treated as a chorus.
@@ -250,11 +157,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (glyphs.Count == 0) glyphs.Add(new LyricGlyph { text = data.text, start = data.start, end = double.IsInfinity(lineEnd) ? data.start + 4 : lineEnd });
             var grouped = legacy ? MusicLyricUnits.GroupLegacy(glyphs) : MusicLyricUnits.Group(glyphs);
 
-            // Fast lines do not wait for every word: the more words per second, the sooner each one is revealed.
-            double span = Math.Max(.1, grouped[grouped.Count - 1].end - grouped[0].start), perUnit = span / grouped.Count;
-            reveal = perUnit < .10 ? Reveal.Instant : perUnit < .18 ? Reveal.Fast : Reveal.Normal;
-            if (reveal == Reveal.Normal) { enterDuration = .3f; enterScale = .9f; enterOpacity = 0f; exitDuration = .3f; exitScale = 1.1f; }
-            else if (reveal == Reveal.Fast) { enterDuration = .16f; enterScale = .96f; enterOpacity = .35f; exitDuration = .16f; exitScale = 1.04f; }
+            reveal = StageWord.RevealFor(grouped);
+            if (reveal == StageReveal.Normal) { enterDuration = .3f; enterScale = .9f; enterOpacity = 0f; exitDuration = .3f; exitScale = 1.1f; }
+            else if (reveal == StageReveal.Fast) { enterDuration = .16f; enterScale = .96f; enterOpacity = .35f; exitDuration = .16f; exitScale = 1.04f; }
             else { enterDuration = 0; exitDuration = .12f; exitScale = 1.02f; }
 
             bool chaotic = tuning.intensity == 2, still = tuning.intensity == 0;
@@ -265,9 +170,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             float size = Mathf.Clamp(avail * (length <= 14 ? 1 : 2) / (length * 1.15f), 26f, 52f) * c.fontScale * (legacy ? 1f : .82f);
             fontSize = size = Mathf.Min(size, avail / 3f);
 
-            // Each line gets its own alignment, picked from the seed so it does not reshuffle when the screen redraws.
-            // A short line on its own row stays centred (a line pushed to one edge looks like a mistake next to the centred neighbours);
-            // longer lines wrap and use the seeded alignment.
+            // Each line gets its own alignment, picked from the seed so it does not reshuffle when the screen redraws. A short line on its own
+            // row stays centred (a line pushed to one edge looks like a mistake next to the centred neighbours).
             bool shortLine = grouped.Count <= 3;
             Justify[] justify = still || shortLine ? new[] { Justify.Center } : new[] { Justify.FlexStart, Justify.Center, Justify.FlexEnd, Justify.SpaceAround, Justify.SpaceBetween };
             Align[] align = still || shortLine ? new[] { Align.Center } : new[] { Align.FlexStart, Align.Center, Align.FlexEnd };
@@ -278,36 +182,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             for (int i = 0; i < grouped.Count; i++)
             {
-                var unit = grouped[i];
-                var stage = new StageUnit { unit = unit };
-                stage.baseScale = chaotic ? .8f + Random(seed + i, 4) * .6f : 1.1f + Random(seed + i, 4) * .2f;
-                stage.cx = (Random(seed + i, 1) - .5f) * spread * 2f; stage.cy = (Random(seed + i, 2) - .5f) * spread * 2f;
-                stage.rot = tuning.rotation ? (Random(seed + i, 3) - .5f) * tilt * 2f : 0; stage.passedRot = tuning.rotation ? (Random(seed + i, 8) - .5f) * 45f : 0;
-                if (c.calm) { stage.baseScale = 1; stage.cx = stage.cy = stage.rot = stage.passedRot = 0; }
-                stage.rippleScale = 1.5f + Random(seed + i, 9) * 2f;
-                stage.body = new VisualElement { pickingMode = PickingMode.Ignore }; stage.body.AddToClassList("music-stage-word");
-                stage.body.style.marginRight = Mathf.Max(4f, size * .2f);
-                if (chaotic && Random(seed + i, 6) > .7f) stage.body.style.alignSelf = Random(seed + i, 7) > .5f ? Align.FlexStart : Align.FlexEnd;
-                // Glow layer first so it sits behind the text.
-                string text = ""; foreach (var glyph in unit.glyphs) text += glyph.text;
-                stage.glow = new Label(text) { pickingMode = PickingMode.Ignore }; stage.glow.AddToClassList("music-stage-word-text"); stage.glow.AddToClassList("music-stage-glow");
-                stage.glow.style.fontSize = size; stage.glow.style.color = new Color(c.accent.r, c.accent.g, c.accent.b, .9f); stage.glow.style.opacity = 0;
-                stage.body.Add(stage.glow);
-                if (chorus)
-                {
-                    stage.ripple = new VisualElement { pickingMode = PickingMode.Ignore }; stage.ripple.AddToClassList("music-stage-ripple");
-                    stage.ripple.style.opacity = 0; stage.body.Add(stage.ripple);
-                }
-                foreach (var glyph in unit.glyphs)
-                {
-                    var label = new Label(glyph.text) { pickingMode = PickingMode.Ignore }; label.AddToClassList("music-stage-word-text");
-                    label.style.fontSize = size; stage.body.Add(label); stage.labels.Add(label); stage.tones.Add(0);
-                }
-                line.Add(stage.body);
-                // Start in the waiting pose so the first frame does not flash.
-                stage.s = .5f; stage.o = 0; stage.r = stage.rot + (tuning.rotation ? 20f : 0);
-                stage.x = stage.cx + Mathf.Sin(stage.cy) * 100f; stage.y = stage.cy + Mathf.Cos(stage.cx) * 50f;
-                units.Add(stage);
+                var word = StageWord.Create(grouped[i], size, c.accent, chorus, seed + i, spread, tilt, chaotic ? .8f : 1.1f, chaotic ? .6f : .2f, tuning.rotation, c.calm, chaotic);
+                line.Add(word.body); units.Add(word);
             }
         }
     }
