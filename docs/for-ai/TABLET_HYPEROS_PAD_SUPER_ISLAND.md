@@ -1,143 +1,60 @@
-# 平板端小米澎湃OS（Xiaomi HyperOS Pad）与小米超级岛（Super Island）前端重构文档
+# 平板端小米澎湃OS（HyperOS Pad）前端：超级岛、面板、应用外观
 
-> **版本**：v1.0 (2026-10-29)  
-> **验证状态**：`TABLET_HYPEROS_AESTHETIC_REVIEW_OK` (10/10 阶段全通过，11 张全彩渲染图归档于 `tools/compile/tablet_hyperos_aesthetic_v1/`)  
-> **回归状态**：`TABLET_SETTINGS_CONTROL_GRAPHIC_REVIEW_OK` (前序 T319 测试 100% 绿色兼容通过)
+> **版本**：v2.0（2026-10-31）。本文取代 2026-10-29 的 v1.0。v1.0 把超级岛写在“状态栏左侧展开”、控制中心写成 440px 实色侧栏，并声称“双纵向胶囊滑块”已实现；这些与实际画面不符，已按参考截图和当前源码改正。
+> **验证口径**：下列“已验证”仅指 Unity 6000.5.8f1 批处理编译通过、对应审查输出 OK 标记、并人工看过审查截图。Android 真机、触屏手势、高对比度/减少动效的实际观感均未验证，见末尾“未验证与待办”。
 
----
+## 一、参考与原则
 
-## 一、 美学重构背景与设计目标
+参考对象是真实 HyperOS Pad 的界面（用户提供的 6 张设置界面与桌面/通知/控制中心截图）。原则：
 
-为彻底消除平板系统早期粗糙的“老旧 Android”（纯灰暗沉底色、1px 钢灰硬分割线、4px 尖锐圆角与大段纯文本按钮）视感，本重构全面对标 **Xiaomi HyperOS Pad（小米澎湃OS 平板端）** 与现代平板人机工程学，践行**“高审美、强图形化、极简文字”**的原则：
+1. 结构和比例向真实系统靠拢：壁纸铺满、状态栏叠在壁纸上、通知与控制中心都是整屏模糊上的卡片列。
+2. 铁道游戏的元素只做颜色和细节：信号灯红黄绿、黄铜细节，不改骨架。
+3. 本终端是车载内网沙箱：不虚构 Wi-Fi、蓝牙、蜂窝或设备配对状态。状态栏只放真实状态（时间、电量、勿扰）。
 
-1. **材质系统升级**：引入**流体亚克力磨砂玻璃（Fluid Acrylic Glassmorphism）**（`GlassControlPanel = rgba(0.08, 0.09, 0.12, 0.90)`），搭配 1px 顶部发光微边框（`GlassHighlightBorder`）与微弱光晕。
-2. **大连续圆角（Squircles）**：全面普及 16px~32px 连续大圆角，摒弃尖锐方块。
-3. **小米超级岛（Super Island）全生态适配**：严格遵循 **Xiaomi HyperOS Pad 真实平板人机工程**，微胶囊**定位于状态栏左侧，紧随时间的右侧**，多端软件（音乐随身听、机车 ATO 遥测、区间测时秒表、声音录音备忘、云端备份与调度令）深度适配。展开大岛时自左侧时间下方悬浮下沉展开（`left: 20px, top: 46px`），完美契合横屏平板单手与视线聚焦习惯。
-4. **控制中心（Control Center）标志性卡片矩阵**：双胶囊掌控大卡、双纵向胶囊滑块（亮度/音量）与黑胶流体播控中心微件。
-5. **设置应用 Inset Grouped 卡片化**：左栏 24 类别彩色圆角 Squircle 徽章与右栏 Inset 缩进分割线。
+## 二、布局与交互（已验证）
 
----
+| 区域 | 当前实现 | 代码 |
+| :--- | :--- | :--- |
+| 状态栏 | 无整条底色；桌面上叠一层顶部渐变保证白字可读；右侧为勿扰月亮（开启时）和圆角电量徽标（只显示数字）。打开浅色应用时换成与应用顶栏一致的浅色底和深色文字 | `GameMainUI.BuildDesktop`、`ApplyStatusBarForApp`、`BuildStatusBarScrim` |
+| 超级岛紧凑态 | 状态栏左侧、紧随时间的纯黑小胶囊（高 34px，最小宽 96px）。音乐时只显示唱片缩略图和声波，不显示歌名；其他类型仍显示各自的指示（车速、录音计时等）。副岛为独立小圆球 | `TabletSuperIsland.RenderCompactContent` |
+| 超级岛展开态 | 点击后在屏幕上方正中展开：宽 460px（最多 90% 屏宽）、圆角 34px、纯黑，底部有一条黄铜色把手；带缩放与淡入过渡，开启“减少动效”时直接到位。展开时左侧胶囊隐藏 | `TabletSuperIsland.SetExpanded`、`PlayExpandAnimation` |
+| 通知中心 | 从状态栏**左半边**下拉触发；整屏模糊上居中一列（屏宽约 47%，限 420–640px，窄屏接近全宽）。顶部是大号时钟与日期，通知为浅色玻璃卡片，右上圆形关闭键，“全部清除”为浅色胶囊。空态文字保持“暂无通知” | `TabletShellView.RenderNotifications` |
+| 控制中心 | 从状态栏**右半边**下拉触发；整屏模糊上靠右一列（屏宽约 31%，限 380–480px）。内容：勿扰/高对比度两张大胶囊，播控卡与亮度、音量两条竖向滑条，动效/强调色/设置三个圆形开关，“车载内网 · 离线沙箱”说明，打开完整设置按钮 | `TabletShellView.RenderControls` |
+| 触发区 | 屏幕顶部 48px（原 24px）。上沿左半屏通知、右半屏控制；底沿与侧沿行为不变 | `TabletEdgeGesture.Begin` |
+| 面板动画 | 面板从上方 28px 处落下并淡入（240ms），开启减少动效时直接到位 | `TabletShellView.PlayPanelOpenAnimation` |
 
-## 二、 小米超级岛（Super Island）技术架构与多软件适配
+滑条行为：亮度滑条对应壁纸压暗（压暗范围 0–40%，填充越满越亮）；音量滑条对应主音量。点击切换（压暗开关/静音），纵向拖动调节，拖动过程只改填充，松手时一次性提交，避免重建界面打断拖动。
 
-### 1. 架构总览与交互模式 (`TabletSuperIsland.cs`)
+保留的节点名（审查依赖）：`tablet-shell-panel`、`tablet-shell-launcher`、`tablet-status-right`、`tablet-notifications-open`、`tablet-controls-open`、`tablet-quiet-toggle`、`tablet-high-contrast-toggle`、`tablet-reduce-motion-toggle`、`tablet-accent-cycle`、`tablet-wallpaper-dim-toggle`、`tablet-audio-mute-toggle`、`tablet-media-card`、`tablet-media-play-toggle`、`tablet-notifications-clear`、`tablet-shell-settings`、`settings-hardware-offline-box`、`super-island-pill`、`super-island-expanded`、`super-island-sub-bubble`。
 
-```mermaid
-flowchart TD
-    subgraph MultiApps["多软件数据源 (Adapted App Ecosystem)"]
-        A1["🎵 车载随身听 (TabletMusicAppUI)\n旋转唱片 + 3柱声波频谱"]
-        A2["🚂 NF-5K 机车遥测 (CabEngineState)\n车速(km/h) + 信号灯 + ATO巡航"]
-        A3["⏱ 区间测时秒表 (TabletSystemToolsAppUI)\n计时读数 + 倒计时进度"]
-        A4["🔴 车载声音备忘 (Voice Recorder)\n呼吸红点 + 动态音频振幅"]
-        A5["☁️ 数据备份与恢复 (TabletLocalBackupService)\n旋转环 + 传输百分比"]
-        A6["⚠️ 铁道调度紧急令 (DispatchAlert)\n闪烁警报徽标 + 限速指令"]
-    end
+## 三、主题令牌、图标与字体
 
-    subgraph FocusManager["超级岛焦点调度器 (Super Island Focus Manager)"]
-        PriorityQueue["多任务优先级队列\nDispatch(100) > TrainCab(80) > Timer/Rec(60) > Cloud(40) > Music(20)"]
-    end
+- **`TabletTheme`**（`Assets/Scripts/UI/Tablet/TabletTheme.cs`）：深色玻璃面的语义色、白色叠层阶梯、文字三档、状态色；信号灯 `SignalRed/Yellow/Green` 与黄铜 `Brass`；运行时外观状态（强调色、高对比度、减少动效）由 `GameMainUI.ApplyPresentation` 写入，`MotionMs()` 在减少动效时返回 0。`TabletUIHelper.AccentSystem` 现在跟随强调色。
+- **`TabletIcons`**（`TabletIcons.cs`）：用 Painter2D 绘制的矢量图标：月亮、太阳、喇叭（含静音）、闪电、调色盘、齿轮、对比度、铃铛、音符、搜索。尺寸按元素缩放，颜色可随状态改变。桌面“音乐/设置/天气”图标、控制中心磁贴和状态栏“通知/控制”按钮使用它们。其余桌面图标仍是单字符号，不是矢量图。
+- **`TabletFonts`**（`TabletFonts.cs`）：系统界面使用 MiSans（`Resources/Fonts/MiSans-Regular.ttf` 常规、`MiSans-Semibold.ttf` 标题）；找不到时退回像素字体 zpix。剧情、登录等游戏内容仍用 zpix，音乐窗口歌词区单独指定像素字体。
+- **字体许可未确认**：压缩包内没有许可协议文件。官网 FAQ 称可作为嵌入字体，但需在软件中注明使用 MiSans，且不得单独修改字体；发布前须通读《MiSans 字体知识产权许可协议》并在“关于”页署名（尚未添加）。
 
-    subgraph DualCapsule["超级岛呈现形态 (Dual Visual Presentations)"]
-        CompactPill["微胶囊态 (Compact Pill, 34px 高度)\n[ 🎵/🚂 ] [ 图形指示器 ] [ 极简数字/指标 ]"]
-        SubBubble["次要副岛气泡 (Sub-Bubble, 34×34px 圆球)\n当存在次高优先级任务时自动分化生成"]
-        ExpandedCard["大岛展开态 (Expanded Island, 390×98px 亚克力卡)\n唱片封套 / 机车仪表盘 / 秒表大字 / 快捷交互胶囊按键"]
-    end
+## 四、应用外观
 
-    MultiApps --> PriorityQueue
-    PriorityQueue --> CompactPill
-    PriorityQueue --> SubBubble
-    CompactPill -- "点击 / 长按" --> ExpandedCard
-    ExpandedCard -- "点击遮罩 / 关闭" --> CompactPill
-```
+- **应用窗口与顶栏**：默认浅色（窗口 0.97 灰白、顶栏同色、返回/关闭为淡灰圆角块）。深色保留给 `五线态势`、`岁月 · AI对话`、`驾驶台`（`GameMainUI.BuildFullScreenAppContainer`）。音乐应用使用自己的窗口，不经此容器。
+- **桌面与 Dock**：应用图标统一为 60px 正方形圆角方块（`BuildIconTile`，桌面与 Dock 共用）；Dock 为浅色磨砂圆角条，图标 54px；“铁路”文件夹缩略图为固定 2×2；桌面底部中央有小指示条。底部导航条按钮去掉外框，只留淡色符号。
+- **设置侧栏**（`TabletSettingsAppUI.BuildSettingsPage`）：大标题“设置”、胶囊搜索框（矢量放大镜与“搜索设置”占位字）、按分组的白色圆角卡片、34px 图标徽章、选中项灰底。右侧页面标题与分区标题使用 MiSans 半粗体。
+- **电池页**：顶部新增电量大色块，绿色填充宽度等于 `SystemInfo.batteryLevel`；平台无读数时为灰色并显示“平台未提供电量读数”。此读数仅代表运行平台的设备电池，不代表机车蓄电池。
 
-> **📌 HyperOS Pad 平板端专属人机工程定位**：  
-> 在真实小米澎湃OS 平板端（Xiaomi Pad HyperOS）中，状态栏布局与手机（居中打孔挖槽）截然不同：**超级岛微胶囊位于左侧，紧随时间标签右侧（`marginLeft: 12px`）**；当用户轻触展开时，大岛卡片在**左侧时间下方悬浮下沉展开（`left: 20px, top: 46px`）**，既不遮挡中央大面积应用画布，又便于横屏持握时左手拇指轻量盲操与余光监视。
+## 五、验证记录
 
-### 2. 软件适配矩阵
+| 项目 | 命令 / 日志 | 结果 |
+| :--- | :--- | :--- |
+| 系统壳图形审查 | `TabletSystemShellReview.Batch`，`tools/compile/bold_battery2_TabletSystemShellReview.log` | `TABLET_SYSTEM_SHELL_GRAPHIC_REVIEW_OK` |
+| HyperOS 15 阶段审查 | `RailwayRenaissance.Editor.TabletHyperOSAestheticReview.Batch`，`tools/compile/bold_battery2_TabletHyperOSAestheticReview.log` | `TABLET_HYPEROS_AESTHETIC_REVIEW_OK`；截图在 `tools/compile/tablet_hyperos_aesthetic_v1/` |
+| 设置与控制中心审查 | `TabletSettingsControlReview.Batch`，`tools/compile/bold_battery2_TabletSettingsControlReview.log` | `TABLET_SETTINGS_CONTROL_GRAPHIC_REVIEW_OK` |
 
-| 软件模块 | 触发条件 | 微胶囊态（Compact Pill）图形呈现 | 大岛展开态（Expanded Island）交互卡片 | 优先级 |
-| :--- | :--- | :--- | :--- | :--- |
-| **车载随身听**<br>(`TabletMusicAppUI`) | 音乐开始播放 | 旋转微型黑胶唱片 + 3 柱跳动音频频谱微条 + 歌名 | 44px 唱片封套 + 歌名/歌手 + 播放/暂停胶囊 + 切歌按键 + 打开音乐应用 | 20 (常规后台) |
-| **机车遥测/ATO**<br>(`CabEngineState`) | 机车运行速度 >0.5km/h 或牵引手柄非零 | 黄金机车头徽标 + 绿/黄信号灯点 + 实时车速（`78 km/h`）+ ATO 徽章 | 机车速度大字表盘 + 距下站里程 + 紧急制动胶囊（快速挂闸）+ 驾驶室直达 | 80 (高优先级) |
-| **区间测时秒表**<br>(`TabletSystemToolsAppUI`) | 时钟应用内启动秒表测时 | 沙漏/秒表图标 + 当前分秒走字（`04:59`） | 22px 走时大字 + 单程区间时分说明 + 暂停/恢复胶囊 + 归零复位 | 60 (前台工具) |
-| **车载声音备忘**<br>(Voice Recorder) | 录音任务处于拾音中 | 呼吸式闪烁红点 + 8 柱拾音波形 + 录制时长 | 动态声波示波器 + 录音时长 + 保存退出胶囊 + 打点标记胶囊 | 60 (前台工具) |
-| **系统备份与同步**<br>(`TabletLocalBackupService`) | 导出/导入/云同步中 | ☁️ 云同步徽标 + 微型进度条 + 百分比（`82%`） | 备份文件名 + 进度条 + 传输速率 + 取消胶囊 | 40 (后台服务) |
-| **铁道调度令**<br>(`DispatchAlert`) | 突发灾害/临时限速通知 | ⚠️ 闪烁警标 + "限速命令" 警报胶囊 | 红色紧急警报卡 + 调度指令摘录 + "已知晓" 确认胶囊 | 100 (最高警报) |
+审查脚本修正：`TabletHyperOSAestheticReview.Capture` 过去在动作发生的同一帧读取渲染目标，截到的是上一阶段的画面（例如“06 控制中心”里根本没有面板）。现在截图推迟到下一次检查（已等待 20 帧）再读取。2026-10-29 版本归档的 11 张截图因此不可信，本文以重跑后的截图为准。
 
----
+提交（按时间）：`f08d1953` 主题令牌；`e0d4ef12` 信号灯与黄铜；`5d717db8` 状态栏/通知/控制中心/超级岛布局；`6b08c602` 矢量图标；`1a4cd3ae` 两行磁贴与图标按钮；`12a52396` MiSans；`15a81b7f` 浅色应用顶栏、图标与 Dock；`3d994efa` 状态栏随应用换肤；`2a8caca1` 设置侧栏；`98339c10` 半粗体与电池大色块。
 
-## 三、 控制中心（Control Center）澎湃 OS 美学重构
+## 六、未验证与待办
 
-### 1. 结构布局 (`TabletShellView.cs`)
-
-1. **顶部状态栏把手（Frosted Capsule Handles）**：
-   - 告别老旧 4px 铁灰方块按键，升级为高度 32px 的半透明磨砂胶囊把手（`border-radius: 16px`）。
-   - 嵌入式未读红色徽标（`border-radius: 8px`，数字抗锯齿加粗）。
-2. **面板尺寸与材质**：
-   - 面板宽度自适应调整至 **440px**（平板大屏黄金视觉比例），连续大圆角 **22px**。
-   - 顶部与左侧漫反射光晕线（`GlassHighlightBorder`）。
-3. **双胶囊掌控大卡（Master Pill Cards）**：
-   - **勿扰模式**：左侧月牙光晕图标徽章，右侧上下排列主标题与当前状态，点击实现色彩流体填充激活。
-   - **高对比度 / 护眼**：眼睛/对比度光晕徽章，直观显示护眼模式状态。
-4. **双纵向胶囊滑块（Dual Vertical Pill Sliders）**：
-   - **防眩光 / 亮度滑块**（`tablet-wallpaper-dim-toggle`）：高度 130px，宽度 64px，圆角 32px，底部固定小太阳图标（`☀`），内部纵向填充条。
-   - **主音量滑块**（`tablet-audio-mute-toggle`）：高度 130px，宽度 64px，圆角 32px，底部固定喇叭图标（`🔊` / `🔇`），内部展现主音量电平。
-5. **车载流体播控微件（Media Player Widget）**：
-   - 占据控制中心中央卡片右侧（高度 130px，圆角 18px），配备旋转黑胶唱片缩略图、当前曲名、铁道随身听标签与播放/暂停胶囊按键。
-6. **次要圆形快捷磁贴（Quick Grid）**：
-   - 紧凑排列“动效减弱”（`⚡`）与“强调色切换”（`🎨` 琥珀/青绿/钴蓝）圆角磁贴。
-7. **硬件物理隔离安全卡（`settings-hardware-offline-box`）**：
-   - 升级为现代化芯片安全防护卡，搭载“🛡 车载硬件物理隔离沙箱”徽标与 WLAN / 蓝牙 / 蜂窝状态小胶囊。
-
----
-
-## 四、 设置应用（Settings App）Squircle 与 Inset Grouped 重构
-
-### 1. 左侧导航彩色 Squircle 徽章系统
-- 废弃原先的纯字符 emoji 标签，使用 `TabletUIHelper.BuildSquircleBadge()` 统一封装 28×28px 圆角徽章（圆角 10px）。
-- 按分类赋予色彩系统：
-  - 账号与乘务：`#3B82F6` 亮蓝
-  - 网络与连接：`#05AEE0` 青蓝
-  - 小米超级AI：`#8C52F2` 紫罗兰
-  - 个性化外观：`#EB4799` 玫瑰粉
-  - 显示与防眩：`#338CFA` 天蓝
-  - 声音与广播：`#FA731F` 阳光橙
-  - 安全与密码：`#26B26B` 安全绿
-  - 动力电池：`#38C759` 能量绿
-  - 开发者沙箱：`#D97326` 琥珀金
-- 选中项采用浮动药丸底色（`rgba(0, 0, 0, 0.04)`）与加粗主题强调色文字。
-
-### 2. 右侧 Inset Grouped 卡片化
-- 卡片圆角全面提升至 **18px**（`BuildWhiteCard`），边框采用隐性发丝级微边（`InsetCardBorder = rgba(0, 0, 0, 0.04)`）。
-- 列表行（`BuildWhiteRow`）内部分割线升级为 **56px 缩进发丝级细分界线**（`InsetDivider = rgba(0, 0, 0, 0.06)`），避开左侧图标区域。
-
----
-
-## 五、 自动化审查验证证据与归档截图
-
-自动化审查脚本 `Assets/Editor/TabletHyperOSAestheticReview.cs` 执行了 15 阶段全流程验证，所有截图保存在 `tools/compile/tablet_hyperos_aesthetic_v1/`：
-
-| 阶段 | 截图文件名 | 验证要点 |
-| :---: | :--- | :--- |
-| **00** | `00_desktop_init.png` | 桌面初始化、顶部状态栏与磨砂胶囊把手、超级岛实例挂载 |
-| **01** | `01_super_island_music_compact.png` | 车载随身听播放中，超级岛顶部左侧呈现 34px 微胶囊态（旋转唱片+3柱跳动声波+歌名） |
-| **02** | `02_super_island_music_expanded.png` | 点击展开车载音乐大岛（390×98px 亚克力卡片，唱片封套+切歌/暂停胶囊按键） |
-| **03** | `03_super_island_dual_capsules.png` | 多软件并发（秒表 + 音乐），超级岛自动分化为主胶囊（秒表走字）与副岛小气泡（音乐小唱片） |
-| **04** | `04_super_island_timer_expanded.png` | 展开秒表倒计时大岛，走时大字（`04:59`）与暂停/复位按键交互 |
-| **05** | `05_super_island_cab_expanded.png` | 机车运行中，展开列控遥测大岛（实时车速 `78.4 km/h`、ATO 巡航状态、紧急制动胶囊） |
-| **06** | `06_control_center_hyperos_full.png` | 展开控制中心面板，验证 440px 宽度、22px 连续大圆角与半透明亚克力深空磨砂玻璃 |
-| **07** | `07_control_center_active_interactions.png` | 点击双胶囊大卡激活勿扰模式（流体绿光激活态）、双纵向胶囊滑块（防眩光/音量）与播控微件 |
-| **08** | `08_settings_squircle_sidebar.png` | 打开系统设置，左侧 24 项分类展示色彩编码的 Squircle 徽章与圆角活动指示器 |
-| **09** | `09_settings_inset_grouped_cards.png` | 设置右侧详情区 Inset Grouped 卡片化（18px 圆角、56px 缩进分割线与胶囊开关） |
-| **10** | `10_app_wiki_knowledge_grid.png` | 打开媒姬百科，验证 Master-Detail 知识中枢网格、搜索过滤框、分类筛选胶囊群与 Squircle 徽章 |
-| **11** | `11_app_weather_hero_telemetry.png` | 打开气象监视，验证 Hero 气温大卡、2×2 铁路轮轨微观物理量规卡（轨面附着系数 μ、沙能阻力）与三日气象胶囊卡 |
-| **12** | `12_app_mijia_locomotive_gateway.png` | 打开机车遥测，验证 3 大核心动力进度槽（沙能 80%、电池 78%、续航 340km）、4 大 IoT 智能节点卡与一键挂载至超级岛按键 |
-| **13** | `13_app_file_manager_segmented_bar.png` | 打开文件管理，验证顶置多色分段存储条（文档/相册/音频/存档/空闲）与 2×2 分类 Inset 卡片 |
-| **14** | `14_app_railway_route_topology.png` | 打开铁路地图，验证全几何绘制的工务道床双轨路线图、4 站点信号灯里程节点与沿线沙能渗透指示卡 |
-| **15** | `15_hyperos_responsive_tablet.png` | 平板比例自适应测试（16:10 / 1920×1200 视口），验证响应式布局居中与缩放 |
-
----
-
-## 六、 结论与后续演进
-
-本次重构彻底解决了“老旧 Android”的视觉痛点，使平板界面全面升维至现代 **Xiaomi HyperOS Pad** 美学标准。所有新功能与改动均通过了自动化图形审查（`[TABLET_HYPEROS_AESTHETIC_REVIEW_OK] All 15 stages completed successfully`）与前序回归验证（`TABLET_SETTINGS_CONTROL_GRAPHIC_REVIEW_OK`），代码与架构文档严格保持一致。
+- **未验证**：Android 真机；Windows 触屏手势与 48px 触发区的误触；高对比度和减少动效下新布局的实际观感（逻辑已接线，审查通过，但没有逐张看图）；电池页大色块（现有审查不打开该页，只确认编译和其他审查不受影响）；竖屏与窄屏下通知列与控制列的观感。
+- **待办**：MiSans 许可确认与署名；账号页云空间蓝卡、“我的设备”渐变 Logo 等大色块页面；主屏更多应用；“岁月 少女”小窗和天气小组件文字仍偏挤；应用打开/切换/返回桌面的动画；其余桌面图标的矢量化；在 `TabletHyperOSAestheticReview` 中补通知中心、电池页的截图阶段。
+- **已知差异**：参考图状态栏有网速、VPN、蓝牙、Wi-Fi 图标，本终端按事实不显示。

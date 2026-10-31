@@ -233,3 +233,9 @@ Restored the existing ShowAffairsPage/ShowStoryPage entry points from HEAD after
   - 标志断言通过：`TABLET_SETTINGS_CONTROL_STATE_OK`、`TABLET_SETTINGS_CONTROL_GRAPHIC_REVIEW_OK`；
   - 回归测试全绿：T318 (`TabletGestureReview.Batch` 退出 0)、T317 (`TabletSystemShellReview.Batch` 退出 0)、T316 (`TabletInteractionReview.Batch` 退出 0)；
   - 真实输出 10 张测试截图至 `tools/compile/tablet_settings_review_v1/`。
+
+## 2026-10-31 HyperOS 布局校正（Claude / feat/music-app-v2）
+
+按真实 HyperOS Pad 参考截图校正：状态栏叠在壁纸上；通知中心为整屏模糊上居中一列、控制中心为靠右一列；超级岛紧凑态留在状态栏左侧、点击后在屏幕上方正中展开；顶部触发区 24px→48px；应用窗口与顶栏默认浅色；新增 `TabletTheme`、`TabletIcons`、`TabletFonts`（MiSans）。完整描述、验证日志与未验证项见 [TABLET_HYPEROS_PAD_SUPER_ISLAND.md](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)（v2.0 取代 v1.0）。
+
+此前 2026-10-29 归档的 `tablet_hyperos_aesthetic_v1` 截图存在读取时机错误（截到上一阶段画面），不能作为视觉证据；`TabletHyperOSAestheticReview.Capture` 已改为延迟到渲染后读取。控制面板中原先显示给玩家的 `NOT_RUN`、`沙箱隔离` 等调试字样已移除，改为“车载内网 · 离线沙箱”说明。
