@@ -1,0 +1,20 @@
+{
+  "id": "south_wind",
+  "source": "原声字幕 · 音素自动校准草稿（待试听确认）",
+  "status": "automatic_phonetic_calibration_draft",
+  "humanListeningVerified": false,
+  "lineCount": 39,
+  "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68",
+  "sourceSha256": "b759008ca17a23f3a71433d5ed26bda9828c58c2b50c0c7d641c42365dc0d078",
+  "promptRevision": "2318294a3fb98cccfe84eb3adc0ac1fe83a6fde0",
+  "model": "torchaudio MMS_FA",
+  "modelSha256": "20ef12963ab4924bef49ac4fc7f58ad5da2ee43b2c11bc8c853c9b90ecdbc680",
+  "lineTimingOnly": true,
+  "gapRule": "ordinary lines held until next cue; blank only for >=5s gaps or outro, release corroborated by original-audio alignment",
+  "evidenceReport": "tools\\music\\alignment_review\\releases\\south_wind-7631f82e2332-860170a0.json",
+  "evidenceSha256": "7631f82e2332c9b37c487dd38844dc8427ea899bacec0ae6b26c879daa450995",
+  "publicationCheck": "tools\\music\\alignment_review\\releases\\south_wind-7631f82e2332-860170a0.checks.json",
+  "publicationCheckSha256": "8183f805d9d0d53e3c87831af34204ad031184cad9cbf240b37f6cb980b456db",
+  "publisherSha256": "860170a0b0d61e2bbea002a0c27b7a01c7688cdc3f4ff593f96c3610e9afdc35",
+  "lrcSha256": "aecf1ddcb1a820cd91777d2445f6d7ac0ac744ae82258fc5b665a689449116e0"
+}

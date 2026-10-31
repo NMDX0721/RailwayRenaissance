@@ -14,6 +14,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public static class MusicAlbumArtResolver
     {
         private static readonly Dictionary<string, Texture2D> s_coverCache = new Dictionary<string, Texture2D>();
+        private static readonly Dictionary<string, List<Action<Texture2D>>> s_remoteRequests = new Dictionary<string, List<Action<Texture2D>>>();
+        private static readonly Dictionary<string, float> s_remoteFailed = new Dictionary<string, float>();
+        private static readonly Dictionary<string, string> s_remoteUrls = new Dictionary<string, string>();
+        private static readonly Dictionary<string, int> s_remoteVersions = new Dictionary<string, int>();
+        private static readonly HashSet<string> s_ownedCovers = new HashSet<string>();
         private static readonly Dictionary<string, Color> s_paletteCache = new Dictionary<string, Color>();
 
         // 经典调频暖调工业色板
@@ -47,7 +52,59 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 return cached;
             }
 
-            var genTex = GenerateProceduralCover(trackId, category);
+            var local = MusicLibrarySession.Find(trackId);
+            if (local != null && local.local)
+            {
+                try
+                {
+                    string stem = System.IO.Path.Combine(LocalMusicFileImporter.GetCustomMusicDirectory(), System.IO.Path.GetFileNameWithoutExtension(local.fileName));
+                    foreach (string extension in new[] { ".png", ".jpg", ".jpeg" })
+                    {
+                        string file = stem + extension;
+                        if (!System.IO.File.Exists(file) || new System.IO.FileInfo(file).Length > 4 * 1024 * 1024) continue;
+                        var cover = new Texture2D(2, 2);
+                        if (cover.LoadImage(System.IO.File.ReadAllBytes(file)) && cover.width <= 4096 && cover.height <= 4096)
+                        {
+                            cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
+                            s_coverCache[key] = cover; s_ownedCovers.Add(key); s_paletteCache[key] = ExtractPalette(cover); return cover;
+                        }
+                        UnityEngine.Object.Destroy(cover);
+                    }
+                    var embedded = MusicLocalMetadata.Read(MusicLibrarySession.LocalPath(local)).cover;
+                    if (embedded != null)
+                    {
+                        var cover = new Texture2D(2, 2);
+                        if (cover.LoadImage(embedded) && cover.width <= 4096 && cover.height <= 4096)
+                        {
+                            cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
+                            s_coverCache[key] = cover; s_ownedCovers.Add(key); s_paletteCache[key] = ExtractPalette(cover); return cover;
+                        }
+                        UnityEngine.Object.Destroy(cover);
+                    }
+                }
+                catch (Exception) { /* Fall back to the railway archive sleeve. */ }
+            }
+
+            string sleeve = trackId switch
+            {
+                "platform" or "calm" or "morning" => "platform",
+                "iron_and_ash" or "chollima_ride" => "iron_and_ash",
+                "cloud_rail" or "first_light" or "curious" => "cloud_rail",
+                "embers" or "warm" or "silence" => "embers",
+                "night_cargo" or "starlit_rails" or "borderline" or "mystery" => "night_cargo",
+                "determination" or "train_ambient" or "ambient_nature" => "determination",
+                "emotional" or "melancholy" or "train_through_keys" or "south_wind" or "sleepers" => "memory",
+                "news" or "news_explosive" or "wheels_joke" => "radio",
+                _ => "private_tape"
+            };
+            var existing = Resources.Load<Texture2D>("Music/Covers/" + sleeve);
+            if (existing != null)
+            {
+                s_coverCache[key] = existing;
+                return existing;
+            }
+            // Shared archive sleeve when there is no matching authored scene.
+            var genTex = GenerateProceduralCover("railway_archive", category);
             if (genTex != null)
             {
                 s_coverCache[key] = genTex;
@@ -56,6 +113,76 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
 
             return null;
+        }
+
+        public static bool HasRemoteCover(string id) => s_remoteUrls.ContainsKey(id) && s_ownedCovers.Contains(id);
+        public static void InvalidateRemote(string id)
+        {
+            InvalidateLocal(id); s_remoteFailed.Remove(id); s_remoteUrls.Remove(id); s_remoteRequests.Remove(id);
+            s_remoteVersions[id] = s_remoteVersions.TryGetValue(id, out int version) ? version + 1 : 1;
+        }
+        public static void LoadRemoteCover(string id, Action<Texture2D> onReady)
+        {
+            var track = MusicLibrarySession.Find(id);
+            if (track == null || string.IsNullOrEmpty(track.provider)) return;
+            if (string.IsNullOrEmpty(track.coverUrl))
+            {
+                MusicLibrarySession.EnsureRemoteMetadata(id, ok => { if (ok && !string.IsNullOrEmpty(track.coverUrl)) LoadRemoteImage(id, track.coverUrl, onReady); }); return;
+            }
+            LoadRemoteImage(id, track.coverUrl, onReady);
+        }
+        public static void LoadRemoteImage(string id, string address, Action<Texture2D> onReady)
+        {
+            if (!Uri.TryCreate(address, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps || !string.IsNullOrEmpty(uri.UserInfo)) return;
+            // Request a regular thumbnail rather than an oversized original from NetEase's image CDN.
+            if ((uri.Host == "music.126.net" || uri.Host.EndsWith(".music.126.net", StringComparison.OrdinalIgnoreCase)) && string.IsNullOrEmpty(uri.Query))
+                uri = new Uri(uri.AbsoluteUri + "?param=512y512");
+            string url = uri.AbsoluteUri;
+            if (s_remoteUrls.TryGetValue(id, out var previous) && previous != url) InvalidateRemote(id);
+            if (s_remoteFailed.TryGetValue(id, out float until) && Time.realtimeSinceStartup < until) return;
+            if (s_ownedCovers.Contains(id) && s_remoteUrls.ContainsKey(id) && s_coverCache.TryGetValue(id, out var existing) && existing != null) { onReady?.Invoke(existing); return; }
+            if (s_remoteRequests.TryGetValue(id, out var queued)) { if (onReady != null) queued.Add(onReady); return; }
+            var callbacks = new List<Action<Texture2D>>(); if (onReady != null) callbacks.Add(onReady); s_remoteRequests[id] = callbacks;
+            s_remoteUrls[id] = url;
+            int version = s_remoteVersions.TryGetValue(id, out int current) ? current + 1 : 1; s_remoteVersions[id] = version;
+            void Read(Uri target, int redirects)
+            {
+                var request = UnityEngine.Networking.UnityWebRequest.Get(target.AbsoluteUri);
+                request.timeout = 15; request.redirectLimit = 0;
+                request.SendWebRequest().completed += _ => {
+                    if (!s_remoteVersions.TryGetValue(id, out int live) || live != version) { request.Dispose(); return; }
+                    if (request.responseCode >= 300 && request.responseCode < 400 && redirects < 3 && Uri.TryCreate(target, request.GetResponseHeader("Location"), out var next) && next.Scheme == Uri.UriSchemeHttps && string.IsNullOrEmpty(next.UserInfo))
+                    { request.Dispose(); Read(next, redirects + 1); return; }
+                    Texture2D cover = null;
+                    try
+                    {
+                        var bytes = request.result == UnityEngine.Networking.UnityWebRequest.Result.Success ? request.downloadHandler.data : null;
+                        if (bytes != null && bytes.Length > 0 && bytes.Length <= 4 * 1024 * 1024)
+                        {
+                            var candidate = new Texture2D(2, 2);
+                            if (candidate.LoadImage(bytes) && candidate.width <= 4096 && candidate.height <= 4096)
+                            {
+                                candidate.wrapMode = TextureWrapMode.Clamp; candidate.filterMode = FilterMode.Bilinear;
+                                cover = candidate; s_coverCache[id] = candidate; s_ownedCovers.Add(id); s_paletteCache[id] = ExtractPalette(candidate);
+                            }
+                            else UnityEngine.Object.Destroy(candidate);
+                        }
+                    }
+                    catch (Exception) { }
+                    finally { request.Dispose(); s_remoteRequests.Remove(id); }
+                    if (cover == null) { s_remoteFailed[id] = Time.realtimeSinceStartup + 10; return; }
+                    s_remoteFailed.Remove(id);
+                    foreach (var callback in callbacks) callback?.Invoke(cover);
+                };
+            }
+            Read(uri, 0);
+        }
+
+        public static void InvalidateLocal(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            if (s_ownedCovers.Remove(id) && s_coverCache.TryGetValue(id, out var texture) && texture != null) UnityEngine.Object.Destroy(texture);
+            s_coverCache.Remove(id); s_paletteCache.Remove(id);
         }
 
         public static Color GetDominantColor(string trackId, string category)

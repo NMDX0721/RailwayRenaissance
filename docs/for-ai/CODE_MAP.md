@@ -545,3 +545,85 @@ Refinement: dedicated satin enamel/paper/safety materials, a 105 mm parking grip
 # NF5K simulation backend (2026-10-21)
 
 `CabSimulation.cs` is the pure 50Hz diesel-electric/air-brake/longitudinal kernel; `CabSimulationCodec.cs` preserves exact checkpoint scalars. `CabSimulationDriver` is an opt-in writer through `CabEngineState.UpdatePhysics`, projecting to existing gauges and lighting supply inputs. `NF5KSimulationReview` generates `CabSimulationReview.unity` and validates the kernel plus actual Play Mode. Legacy scenes keep the old physics path. See `NF5K_SIMULATION_BACKEND.md` for formulas, sources, candidate parameters and unimplemented systems.
+
+## 音乐实际入口校正（2026-10-27）
+GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 RailwayMusicTerminalView；MusicLibraryStore、MusicSessionDriver 与 MusicTimedText 分担本地持久化、统一播放推进和字幕解析。样式为 Resources/UI/MusicTerminal.uss。上文旧音乐条目列出的多平台全量支持不代表真实接入完成；云端保留配置入口，未接通同步明确返回失败，实际边界以 MUSIC_TERMINAL.md 和源码为准。歌词疑难片段保留未验证状态，不阻塞本轮 UI 验收。
+
+
+## 2026-10-28 Windows体验验收进展
+- Windows Player 按当前启用的 VN_Test、StationSlice_V1 场景构建至 tools/compile/music_windows_review_20261028，build.log 返回码0；使用本机已校验 Burst 1.8.30 tgz 路径，非可移植依赖方案。
+- 新增UI Toolkit聚焦按钮和音量滑块方向键事件回归，keyboard-review.log 含 MUSIC_KEYBOARD_FOCUS_OK 和 MUSIC_REVIEW_OK；已有音乐入口/滚动条/播放交互检查一并通过。
+- 实际独立程序界面、硬件听音、导入与重启恢复仍未执行；窗口动效和布局尚未完成新一轮精修，不能将构建通过等同整轮验收完成。原声含本地补齐的资源；场景入口与本机依赖按上述构建设置记录。
+
+2026-10-28 队列体验修正：直接播放缺失或锁定条目前先检查可用性并提示，保留队列项；正常连播跳过逻辑不变。新增缺失文件界面回归，结果待确认。
+
+2026-10-28 队列异步播放：直接播放的队列项仅在音频开始后移除；加载失败或取消时保留，加载期间队列变化则保守保留，防止误删重复曲目。常规连播保持原有跳过逻辑。待Unity运行回归。
+
+开发版独立Player验收：MusicPlayerReviewBuild设置独立测试应用身份后构建，MusicPlayerRuntimeReview仅在开发版收到-music-player-review时进入真实平板音乐入口。测试结果与边界见MUSIC_TERMINAL.md。
+
+
+独立Player首次运行入口/内存状态通过，但跨进程恢复失败；隔离LocalLow目录中File.Replace探针返回Access denied。开发版验收钩子改用测试包内独立review-state目录，应用身份仍独立，常规发布不启用；待重新构建及复验。
+
+独立Player验收结果：music_player_isolated_review_v2实际调用平板音乐并跨进程读取隔离状态通过；使用开发版、独立应用身份和review-state目录，具体覆盖及未验项见MUSIC_TERMINAL.md。
+
+
+独立Player v3额外验证模式、队列、歌单和按钮恢复播放；使用独立身份与review-state，结果及限制见MUSIC_TERMINAL.md。
+
+
+独立Player验收新增1440×900曲库/详情与1024×768曲库/队列截图、紧凑播控边界及音量滑块居中检查；测试包隔离应用身份与数据，待构建及实际截图核验。
+
+独立Player v4实际音乐入口、1024紧凑播控/音量滑块几何和跨进程按钮恢复播放通过；曲库截图可读。详情/队列截图捕获在入场动画期间，不能作为最终视觉验收；新增实时等待后复拍，待构建与核验。
+
+多渠道当前能力及逐项验收入口见 MUSIC_CHANNEL_CAPABILITIES.md；旧引擎方法不代表新版已接通。
+
+多来源标识基础：MusicSourceId保留旧原声ID和local:小写文件名，新增cloud:来源:曲目ID命名空间以防跨平台冲突；目前在线来源尚未接入共享曲库，待运行回归。
+
+- 网易云开发桥接：`tools/music/netease-service/bridge.js` 使用标准输入输出调用依赖，不监听 HTTP；已接入 Unity 并完成匿名播放测试，真实账号与正式分发仍待验证。参见同目录 README。
+
+- `NeteaseLocalBridge`：Unity 侧 Windows 子进程管理与 JSON 消息分发；处理服务缺失、退出、超时，不打印提供方输出。共用通信层已连接云端界面及播放器；真实账号登录和各来源的私人歌单仍待验证。
+
+- 网易云曲目元数据保存在音乐状态 `cloudTracks`，使用 `cloud:netease:<id>`；通过 `NeteaseLocalBridge` 临时解析音频，复用既有播放器、收藏与队列。Windows 隔离测试包已验证匿名播放，真实账号及正式发行仍待验证。
+
+- `LocalMusicFileImporter.ImportAudioFiles` 遇同名歌曲按文件内容判断重复；不同音频自动编号并保留同名字幕，不覆盖已存在的文件。
+
+- `MusicLocalMetadata` 安全读取常见 MP3 ID3 曲名和作者；`RefreshLocal` 更新检索元数据，缺失或不支持的标签回退文件名。
+
+- `MusicLyricsView` 可通过本机桥接请求网易云已有 LRC 和翻译；手动导入字幕优先，返回的时间数据原样解析。
+
+- `MusicAlbumArtResolver` 对本地曲目优先读取同名 PNG/JPEG，刷新曲库时失效旧封面缓存；缺失或无效时使用铁路档案封套。
+
+- `NeteaseLocalBridge.ForProvider` 为网易云、QQ、酷狗、波点、Subsonic 和 WebDAV 创建独立子进程；云端曲库用 `cloud:<provider>:<id>` 区分来源，QQ 路径为实验状态，真实账号验证待完成。
+
+- 酷狗来源桥接在 `tools/music/kugou-service/bridge.js`，与网易云、QQ 使用独立子进程；曲目标识包含 hash 和专辑关联编号。登录及播放为实验状态。
+
+- 本地 MP3 的 `MusicLocalMetadata` 还可读取普通 ID3 APIC 图片；`MusicAlbumArtResolver` 优先同名图片，再取嵌入图片，最后回退铁路档案封套。
+
+- 波点桥接 `tools/music/bodian-service/bridge.js` 使用 Node 24+ 与 AGPL-3.0 上游；账号状态为本机会话，地区限制会停止自动连播。账号及播放仍需验证，发行前审查许可证及源码义务。
+
+- `tools/music/subsonic-service/bridge.js` 实现 Subsonic 1.16.1 鉴权、搜索、歌单及临时音频地址；Unity 子进程只在内存持有认证，禁止远程明文 HTTP、跨服务器曲目误用和重定向。
+
+- `tools/music/webdav-service/bridge.js` 支持 HTTPS WebDAV 的根目录及直接子目录音频，并限制根目录和重定向。授权头仅经私有进程管道发送给播放器，不写存档；真实服务仍待验证。
+
+- 在线曲目 `coverUrl` 不参与存档；`MusicAlbumArtResolver.LoadRemoteCover` 异步读取 HTTPS 封面，歌词舞台在图片到达后重新取色，失败时保留铁路封套。
+
+- `MusicLibrarySession.Advance` 自动跳过但保留不可用队列条目，成功开始后才消费匹配项；队列在加载期间变化则不误删。
+
+
+- 音乐云端扫码：`RailwayMusicTerminalView.RenderCloud` 的 `music-cloud-qr-start`、`music-cloud-status`、`music-cloud-qr` 为开发验收定位点；`NeteaseMusicRuntimeReview` 增加点击后图片可见检查，2026-10-29 构建启动失败，尚未验收。
+
+- 2026-10-29：v10 Windows 界面测试证实网易云二维码在实际 UI 中显示为 150×150；扫码和个人歌单尚未验收。扫码生成期间防重复触发，完成后滚动至二维码。
+
+
+- 2026-10-29：Spotify 入口在 `RailwayMusicTerminalView.RenderCloud`，`NeteaseLocalBridge.ForProvider("spotify")` 启动 `tools/music/spotify-service/bridge.js`。后者基于保留 AGPL 许可证的 Folia 模块，PKCE/曲库/原生音频适配通过独立进程与仅回环音频服务连接 Unity；凭据只在内存。`MusicLibrarySession` 支持 `cloud:spotify:<22字符ID>`，Spotify HTTP 仅接受本机回环且禁用重定向。`MusicLyricsView` 读取来源已有逐行时间，不生成新时间轴。网易云补设备初始化与可失败的匿名刷新，非标准扫码状态明确报错。
+
+- v12 测试构建改为 `BuildOptions.None` + `MUSIC_RUNTIME_REVIEW`，仅本次 BuildPlayer 附加定义，不修改项目全局符号；保留隔离入口并移除 Development 调试广播，Windows 运行验证通过。
+
+
+- 2026-10-30：首页与统一搜索由 `RailwayMusicTerminalView.RenderHome/RenderSearch` 构建；曲目行共用 `AddTrackRow`，首页来源卡片直接选择顶部搜索或打开连接管理。`MusicCatalogSearch` 隔离在线搜索请求协调（350ms 视图防抖、每来源一个在途与最新待查词、60秒/24项缓存），视图代号保护过期响应。默认自动合并网易云与本应用已验证连接的来源，始终展示已收录匹配，并可手动筛选。匿名播放不等于账号登录；个人歌单仍走各来源验证。
+
+- 自动来源：`NeteaseLocalBridge.HasSession/SessionChanged` 只反映本应用验证过的进程会话；`RenderSearch` 默认自动合并网易云与已连接来源，`RenderOnlineSearch` 分来源展示请求状态。`RenderHome` 同时显示接入与登录状态。
+
+- 已连接来源页复用 `SessionUserId/SessionNickname` 的公开资料并自动读歌单；登录令牌仍仅在服务进程内。v17 实际 Windows 自动合并检查通过（私有服务使用 fixture）。
+
+
+- 2026-10-30 Folia 内容页精修：`RenderHome/HomeSongs/HomeCloudLists/CollectionCard` 构建封面优先的首页与真实歌单内容，来源状态压缩成栏；`RenderCloud` 的账户设置折叠，已登录默认展示歌单墙与可播放列表。`ShowDetail` 按来源显示歌手/专辑/真实时长与原声信息，支持刷新和队列/收藏/歌单。`EnsureRemoteMetadata` 补 NetEase/Spotify 曲目信息，网易云在 Tick 中按最多50首批量请求；`MusicAlbumArtResolver` 支持失败冷却重试、HTTPS有限跳转、URL版本保护、512缩略图和歌单图片。公开专辑与时长可保存在原 v1 JSON 的可选字段，带签名URL不落盘。
