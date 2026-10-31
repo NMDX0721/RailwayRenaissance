@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace RailwayRenaissance.UI.Tablet
 {
-    public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast }
+    public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast, Bell, MusicNote }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -123,6 +123,30 @@ namespace RailwayRenaissance.UI.Tablet
                         p.Stroke();
                         p.lineWidth = Mathf.Max(1.6f, 1.9f * k);
                     }
+                    break;
+
+                case TabletIconKind.Bell:
+                {
+                    var pts = new List<Vector2>();
+                    for (int i = 0; i <= 12; i++)   // 钟顶圆弧：180° → 360°
+                    {
+                        float ang = Mathf.PI + i * Mathf.PI / 12f;
+                        pts.Add(P(12, 11) + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * 6.2f * k);
+                    }
+                    pts.Add(P(18.2f, 15.2f)); pts.Add(P(20.4f, 17.6f));
+                    pts.Add(P(3.6f, 17.6f)); pts.Add(P(5.8f, 15.2f));
+                    FillPolygon(p, pts);
+                    DrawDot(p, P(12, 20.2f), 1.8f * k);
+                    DrawDot(p, P(12, 4.3f), 1.2f * k);
+                    break;
+                }
+
+                case TabletIconKind.MusicNote:
+                    DrawDot(p, P(8.6f, 17.6f), 3.3f * k);
+                    p.BeginPath();
+                    p.MoveTo(P(11.6f, 17.4f)); p.LineTo(P(11.6f, 4.6f));
+                    p.Stroke();
+                    FillPolygon(p, new List<Vector2> { P(11.6f, 4.6f), P(18.6f, 7.2f), P(18.6f, 11.2f), P(11.6f, 8.6f) });
                     break;
 
                 case TabletIconKind.Contrast:

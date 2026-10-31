@@ -62,8 +62,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _launcher.pickingMode = PickingMode.Position;
             _launcher.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
 
-            var btnNotif = CreatePillButton("🔔 通知", 62, 32, () => _state.TogglePanel(TabletSystemPanel.Notifications));
-            var btnCtrl = CreatePillButton("⚙ 控制", 62, 32, () => _state.TogglePanel(TabletSystemPanel.Controls));
+            var btnNotif = CreatePillButton("通知", 72, 32, () => _state.TogglePanel(TabletSystemPanel.Notifications));
+            var btnCtrl = CreatePillButton("控制", 72, 32, () => _state.TogglePanel(TabletSystemPanel.Controls));
+            AttachLauncherIcon(btnNotif, TabletIconKind.Bell);
+            AttachLauncherIcon(btnCtrl, TabletIconKind.Gear);
             btnNotif.name = "tablet-notifications-open";
             btnCtrl.name = "tablet-controls-open";
             btnNotif.style.marginRight = 6;
@@ -553,21 +555,17 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             topPillsRow.style.marginBottom = 10;
             scroll.Add(topPillsRow);
 
-            var quietBtn = CreateTileButton(_state.QuietMode ? "勿扰\n已开启" : "勿扰\n已关闭", "tablet-quiet-toggle", _state.QuietMode, () =>
+            var quietBtn = BuildBigTile("tablet-quiet-toggle", "勿扰", _state.QuietMode ? "已开启" : "已关闭", _state.QuietMode, TabletIconKind.Moon, () =>
             {
                 _state.SetQuietMode(!_state.QuietMode);
             });
-            StyleBigTile(quietBtn);
-            AttachTileIcon(quietBtn, TabletIconKind.Moon, _state.QuietMode, false);
             topPillsRow.Add(quietBtn);
 
             bool hc = _presentation != null && _presentation.HighContrast;
-            var hcBtn = CreateTileButton(hc ? "高对比\n已开启" : "高对比\n已关闭", "tablet-high-contrast-toggle", hc, () =>
+            var hcBtn = BuildBigTile("tablet-high-contrast-toggle", "高对比", hc ? "已开启" : "已关闭", hc, TabletIconKind.Contrast, () =>
             {
                 if (_presentation != null) _presentation.SetHighContrast(!_presentation.HighContrast);
             });
-            StyleBigTile(hcBtn);
-            AttachTileIcon(hcBtn, TabletIconKind.Contrast, hc, false);
             topPillsRow.Add(hcBtn);
 
             // ---- 2. 播控卡 + 两条竖向滑条（亮度 / 音量） ----
@@ -714,6 +712,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             vinylThumb.style.backgroundColor = TabletTheme.VinylFill;
             vinylThumb.style.borderTopWidth = vinylThumb.style.borderBottomWidth = vinylThumb.style.borderLeftWidth = vinylThumb.style.borderRightWidth = 2;
             vinylThumb.style.borderTopColor = vinylThumb.style.borderBottomColor = vinylThumb.style.borderLeftColor = vinylThumb.style.borderRightColor = _accent;
+            vinylThumb.style.alignItems = Align.Center;
+            vinylThumb.style.justifyContent = Justify.Center;
+            vinylThumb.Add(new TabletIconElement(TabletIconKind.MusicNote, 22f, _accent));
             mediaCard.Add(vinylThumb);
 
             var trackInfo = new VisualElement();
@@ -816,6 +817,41 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 if (btn.HasPointerCapture(e.pointerId)) btn.ReleasePointer(e.pointerId);
                 onCommit?.Invoke(fillValue);
             });
+            return btn;
+        }
+
+        private static void AttachLauncherIcon(Button btn, TabletIconKind kind)
+        {
+            btn.style.paddingLeft = 26;
+            var icon = new TabletIconElement(kind, 15f, Color.white);
+            icon.style.position = Position.Absolute;
+            icon.style.left = 10;
+            icon.style.top = Length.Percent(50);
+            icon.style.translate = new Translate(0, Length.Percent(-50));
+            btn.Add(icon);
+        }
+
+        // 大胶囊磁贴：图标 + 标题/状态两行文字（用两个 Label 控制行距，不用按钮自带的多行文本）
+        private Button BuildBigTile(string name, string title, string status, bool active, TabletIconKind icon, Action onClick)
+        {
+            var btn = CreateTileButton(string.Empty, name, active, onClick);
+            StyleBigTile(btn);
+            btn.style.flexDirection = FlexDirection.Row;
+            btn.style.alignItems = Align.Center;
+            var column = new VisualElement { pickingMode = PickingMode.Ignore };
+            var titleLabel = CreateLabel(title, 14, true);
+            titleLabel.pickingMode = PickingMode.Ignore;
+            titleLabel.AddToClassList("shell-dark");
+            titleLabel.style.color = active ? TabletTheme.InkOnGlass : Color.white;
+            var statusLabel = CreateLabel(status, 11, false);
+            statusLabel.pickingMode = PickingMode.Ignore;
+            statusLabel.AddToClassList("shell-dark");
+            statusLabel.style.color = active ? TabletTheme.InkOnGlassSoft : TabletTheme.TextSecondary;
+            statusLabel.style.marginTop = 3;
+            column.Add(titleLabel);
+            column.Add(statusLabel);
+            btn.Add(column);
+            AttachTileIcon(btn, icon, active, false);
             return btn;
         }
 
