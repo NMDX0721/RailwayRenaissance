@@ -22,6 +22,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public int Composition => composition;
         public float RenderClock => clock;
         public float VisualEnergy => energy;
+        // Smoothed low / mid / high band levels (0..1) from the playing source's spectrum; they follow the audio, not a timer.
+        public float BandLow => bandLow;
+        public float BandMid => bandMid;
+        public float BandHigh => bandHigh;
+        readonly float[] spectrum = new float[512];
+        float bandLow, bandMid, bandHigh;
 
         public MusicReactiveStageView()
         {
@@ -123,6 +129,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return Mathf.Sqrt((float)(sum / output.Length));
         }
 
+        // Bins are ~43 Hz wide at 44.1 kHz: low ≈ 40–260 Hz, mid ≈ 260 Hz–3 kHz, high ≈ 3–11 kHz. When the engine hands out no spectrum
+        // (decoded-only fallback) the bands follow the measured power instead, so they never invent a level.
+        void ReadBands(AudioSource source, float dt)
+        {
+            float low = 0, mid = 0, high = 0;
+            source.GetSpectrumData(spectrum, 0, FFTWindow.Hanning);
+            double sumLow = 0, sumMid = 0, sumHigh = 0;
+            for (int i = 1; i <= 6; i++) sumLow += spectrum[i] * spectrum[i];
+            for (int i = 7; i <= 70; i++) sumMid += spectrum[i] * spectrum[i];
+            for (int i = 71; i <= 255; i++) sumHigh += spectrum[i] * spectrum[i];
+            low = Mathf.Clamp01(Mathf.Sqrt((float)(sumLow / 6)) * 9f);
+            mid = Mathf.Clamp01(Mathf.Sqrt((float)(sumMid / 64)) * 22f);
+            high = Mathf.Clamp01(Mathf.Sqrt((float)(sumHigh / 185)) * 60f);
+            if (low + mid + high <= 0.0001f) { low = mid = high = Mathf.Clamp01(MeasuredPower * 4); }
+            float rise = 1 - Mathf.Exp(-dt * 16), fall = 1 - Mathf.Exp(-dt * 5);
+            bandLow = Mathf.Lerp(bandLow, low, low > bandLow ? rise : fall);
+            bandMid = Mathf.Lerp(bandMid, mid, mid > bandMid ? rise : fall);
+            bandHigh = Mathf.Lerp(bandHigh, high, high > bandHigh ? rise : fall);
+        }
+
         public void Tick(AudioSource source, bool playing, bool reducedMotion)
         {
             if (Time.unscaledTime < nextFrame) return;
@@ -138,6 +164,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 changed |= energy != 0 || clock != 0;
                 clock = energy = transient = 0;
+                bandLow = bandMid = bandHigh = 0;
             }
             else if (playing && source != null && source.clip != null)
             {
@@ -146,6 +173,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 energy = Mathf.Lerp(energy, raw, 1 - Mathf.Exp(-dt * (raw > energy ? 15 : 4)));
                 transient = Mathf.Lerp(transient, Mathf.Clamp01((raw - lastRaw) * 5), 1 - Mathf.Exp(-dt * 12));
                 lastRaw = raw; clock = source.time; changed = true;
+                ReadBands(source, dt);
+            }
+            else if (bandLow + bandMid + bandHigh > 0)
+            {
+                // Paused: let the bands settle instead of freezing mid-pulse.
+                float fall = 1 - Mathf.Exp(-dt * 6);
+                bandLow = Mathf.Lerp(bandLow, 0, fall); bandMid = Mathf.Lerp(bandMid, 0, fall); bandHigh = Mathf.Lerp(bandHigh, 0, fall);
             }
             if (changed) MarkDirtyRepaint();
         }

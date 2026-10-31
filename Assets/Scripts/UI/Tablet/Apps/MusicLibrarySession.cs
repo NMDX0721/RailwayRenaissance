@@ -39,6 +39,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public bool lyricTranslation = true, reduceMotion, navCollapsed;
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
+        // Stage style tuning (Folia's classic tunables): 0 calm / 1 normal / 2 chaotic, word rotation, whole-line float, word spacing.
+        public string stageStyle = "luminous";
+        public int stageIntensity = 1;
+        public bool stageRotation = true, stageLegacyLayout;
+        public float stageBreathing = 1f, stageSpacing = .7f;
         public string currentId;
         public float position, volume = 0.65f;
         public int mode = 1;
@@ -70,6 +75,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 foreach (var preference in state.lyrics) preference.offsetMs = Mathf.Clamp(preference.offsetMs, -10000, 10000);
                 state.lyricFontSize = state.lyricFontSize == 0 ? 24 : Mathf.Clamp(state.lyricFontSize, 18, 36);
                 state.lyricMotion = Mathf.Clamp(state.lyricMotion, 0, 2);
+                state.stageIntensity = Mathf.Clamp(state.stageIntensity, 0, 2);
+                state.stageBreathing = float.IsNaN(state.stageBreathing) ? 1f : Mathf.Clamp(state.stageBreathing, 0f, 2f);
+                state.stageSpacing = float.IsNaN(state.stageSpacing) ? .7f : Mathf.Clamp(state.stageSpacing, 0f, 2f);
+                if (string.IsNullOrEmpty(state.stageStyle)) state.stageStyle = "luminous";
                 state.playlists.RemoveAll(p => p == null || string.IsNullOrEmpty(p.id) || p.tracks == null);
                 state.localTracks.RemoveAll(t => t == null || string.IsNullOrEmpty(t.id) || string.IsNullOrEmpty(t.fileName) ||
                     System.IO.Path.GetFileName(t.fileName) != t.fileName);

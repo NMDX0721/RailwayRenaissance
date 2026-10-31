@@ -549,4 +549,8 @@
 .music-stage-dots { font-size: 30px; color: rgb(214, 204, 172); -unity-text-align: middle-center; margin-bottom: 4px; }
 .music-stage-ripple { position: absolute; left: 50%; top: 50%; border-width: 1px; border-radius: 50%; border-color: rgb(255, 224, 150); }
 .music-stage-word { align-items: center; flex-direction: row; }
+/* Luminous style: the stage root stacks interlude dots over the line host; the glow layer sits behind the word's text. */
+.music-stage-luminous { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-line-host { align-self: stretch; }
+.music-stage-glow { position: absolute; left: 0; top: 0; }
 .music-lyrics-cover { background-size: contain; align-self: flex-start; }

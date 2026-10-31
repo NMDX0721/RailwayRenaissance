@@ -134,6 +134,27 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             estimate.RegisterValueChangedCallback(e => { MusicLibrarySession.State.estimateWords = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
             var reduce = new Toggle("减少动态效果") { value = MusicLibrarySession.State.reduceMotion, name = "music-lyrics-reduce-motion" }; more.Add(reduce);
             reduce.RegisterValueChangedCallback(e => { MusicLibrarySession.State.reduceMotion = e.newValue; MusicLibrarySession.Save(); });
+            // Stage tunables (Folia's classic style): shown only while the stage look is active.
+            var stageBox = Box(more, "music-lyrics-stage-tuning"); stageBox.name = "music-lyrics-stage-tuning";
+            Text(stageBox, "舞台", "music-lyrics-section");
+            string[] intensityNames = { "平静", "正常", "狂放" };
+            var intensity = Action(stageBox, "散布：" + intensityNames[Mathf.Clamp(MusicLibrarySession.State.stageIntensity, 0, 2)], null, "music-stage-intensity");
+            intensity.tooltip = "词在舞台上的散布与旋转幅度：平静（居中不转）/ 正常 / 狂放";
+            intensity.clicked += () => {
+                MusicLibrarySession.State.stageIntensity = (MusicLibrarySession.State.stageIntensity + 1) % 3; MusicLibrarySession.Save();
+                intensity.text = "散布：" + intensityNames[MusicLibrarySession.State.stageIntensity]; stage.Invalidate();
+            };
+            var rotation = new Toggle("词旋转") { value = MusicLibrarySession.State.stageRotation, name = "music-stage-rotation" }; stageBox.Add(rotation);
+            rotation.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageRotation = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
+            var breathing = new Slider("呼吸浮动", 0, 2) { value = MusicLibrarySession.State.stageBreathing, name = "music-stage-breathing" }; stageBox.Add(breathing);
+            breathing.AddToClassList("music-horizontal-slider"); breathing.tooltip = "整句随时间缓慢起伏的幅度，0 为不动";
+            breathing.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageBreathing = e.newValue; MusicLibrarySession.Save(); });
+            var spacing = new Slider("词间距", 0, 2) { value = MusicLibrarySession.State.stageSpacing, name = "music-stage-spacing" }; stageBox.Add(spacing);
+            spacing.AddToClassList("music-horizontal-slider"); spacing.tooltip = "词与词之间按实际宽度计算的间距倍率";
+            spacing.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageSpacing = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
+            var legacy = new Toggle("旧版布局") { value = MusicLibrarySession.State.stageLegacyLayout, name = "music-stage-legacy" }; stageBox.Add(legacy);
+            legacy.tooltip = "按字幕原有的词切分，不做语义分组";
+            legacy.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageLegacyLayout = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
             Text(more, "时间校准", "music-lyrics-section");
             var timing = Box(more, "music-player-buttons");
             timing.name = "music-lyrics-timing";
@@ -171,6 +192,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             host.EnableInClassList("music-motion-static", MusicLibrarySession.State.lyricMotion == 0);
             host.EnableInClassList("music-motion-follow", MusicLibrarySession.State.lyricMotion == 1);
             host.EnableInClassList("music-motion-stage", MusicLibrarySession.State.lyricMotion == 2);
+            var tuningBox = host.Q("music-lyrics-stage-tuning");
+            if (tuningBox != null) tuningBox.style.display = MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.Flex : DisplayStyle.None;
         }
         void Adjust(int milliseconds)
         {
@@ -351,8 +374,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             stage.style.display = stageOn ? DisplayStyle.Flex : DisplayStyle.None;
             scroll.style.opacity = stageOn ? 0f : 1f; scroll.pickingMode = stageOn ? PickingMode.Ignore : PickingMode.Position;
             if (stageOn)
+            {
+                stage.Select(MusicLibrarySession.State.stageStyle);
                 stage.Tick(document, active, clock, Time.unscaledDeltaTime, MusicLibrarySession.State.reduceMotion, MusicLibrarySession.State.estimateWords,
-                    Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation);
+                    Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation,
+                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh);
+            }
             foreach (var pair in words)
             {
                 if (!lineChanged && pair.line != active) continue;
