@@ -85,7 +85,9 @@ namespace RailwayRenaissance.Cab
 
         // 4. 动态反馈触发器
         public float HornPulseTimer { get; private set; } = 0f;
-        public bool IsHornActive => HornPulseTimer > 0f;
+        bool physicalHornHeld;
+        public bool IsHornActive => physicalHornHeld || HornPulseTimer > 0f;
+        public void SetPhysicalHorn(bool active){physicalHornHeld=active;}
         public float BrakeImpactTimer { get; private set; } = 0f; // 制动顿挫回弹计时
         public float TargetPitchAngle { get; private set; } = 0f; // 加减速俯仰角
 

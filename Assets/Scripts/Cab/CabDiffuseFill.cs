@@ -7,6 +7,8 @@ namespace RailwayRenaissance.Cab
     public sealed class CabDiffuseFill : MonoBehaviour
     {
         [SerializeField] Renderer[] receivers;
+        [SerializeField,Range(0,2)] float upperCabBounce=.30f;
+        public float UpperCabBounce { get=>upperCabBounce;set{upperCabBounce=Mathf.Clamp(value,0,2);previous=int.MinValue;} }
         CabInteriorLighting lighting;
         MaterialPropertyBlock block;
         readonly SphericalHarmonicsL2[] sample = new SphericalHarmonicsL2[1];
@@ -34,6 +36,11 @@ namespace RailwayRenaissance.Cab
                 // Receiver and lamp positions must share the vehicle frame: the
                 // rail-motion review can translate and rotate the complete car.
                 var center = transform.InverseTransformPoint(surface.transform.TransformPoint(surface.localBounds.center));
+                float upper = center.z < 2.05f ? Mathf.SmoothStep(0,1,Mathf.InverseLerp(1.30f,2.10f,center.y))*upperCabBounce : 0;
+                // Light returning from the cabin reaches the downward-facing ceiling.
+                // This is authored diffuse fill, restricted to upper cab receivers.
+                sh.AddAmbientLight(RenderSettings.ambientEquatorColor*upper*.9f);
+                sh.AddDirectionalLight(Vector3.down,RenderSettings.ambientSkyColor,upper*.65f);
                 foreach (var f in lighting.Fixtures)
                 {
                     if (f.bounce == null || !f.light.isActiveAndEnabled) continue;
@@ -47,6 +54,11 @@ namespace RailwayRenaissance.Cab
                     sh.AddAmbientLight(f.light.color * energy * .50f);
                     sh.AddDirectionalLight(Vector3.up, f.light.color, energy * .14f);
                     sh.AddDirectionalLight(Vector3.down, new Color(1,.95f,.86f), energy * .12f);
+                    if(f.circuit==InteriorLightCircuit.CabCeiling)
+                    {
+                        sh.AddAmbientLight(f.light.color*energy*upper*.70f);
+                        sh.AddDirectionalLight(Vector3.down,f.light.color,energy*upper*.35f);
+                    }
                 }
                 sample[0] = sh;
                 surface.lightProbeUsage = LightProbeUsage.CustomProvided;

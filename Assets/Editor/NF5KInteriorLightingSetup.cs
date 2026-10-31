@@ -29,7 +29,7 @@ public static class NF5KInteriorLightingSetup
             Fixture("Cab_Ceiling_Light_"+side,InteriorLightCircuit.CabCeiling,new Vector3(side*.64f,2.10f,1.10f),new Vector3(side*.50f,.60f,.78f),new Vector3(.24f,.025f,.42f),7.5f,110,3.4f);
             Box("Task_Lamp_Wall_Plate_"+side,new Vector3(side*1.34f,1.78f,.72f),new Vector3(.025f,.14f,.10f),housing);
             Box("Task_Lamp_Support_"+side,new Vector3(side*1.22f,1.80f,.72f),new Vector3(.22f,.025f,.025f),housing);
-            Fixture(side>0?"Driver_Task_Light":"Assistant_Reading_Light",side>0?InteriorLightCircuit.Task:InteriorLightCircuit.AssistantTask,new Vector3(side*1.12f,1.78f,.72f),side>0?new Vector3(.72f,.85f,.12f):new Vector3(-.85f,.70f,.90f),new Vector3(.09f,.02f,.12f),5,42,2.0f);
+            Fixture(side>0?"Driver_Task_Light":"Assistant_Reading_Light",side>0?InteriorLightCircuit.Task:InteriorLightCircuit.AssistantTask,new Vector3(side*1.12f,1.78f,.72f),side>0?new Vector3(.72f,.85f,.12f):new Vector3(-.58f,.85f,.12f),new Vector3(.09f,.02f,.12f),side>0?5:.5f,42,2.0f);
             Fixture("Cab_Door_Footlight_"+side,InteriorLightCircuit.Access,new Vector3(side*1.30f,.45f,1.065f),new Vector3(side*.92f,.05f,1.35f),new Vector3(.10f,.022f,.07f),1.8f,95,1.8f);
         }
         var state=parent.GetComponentInChildren<CabEngineState>();
@@ -58,6 +58,7 @@ public static class NF5KInteriorLightingSetup
             Fixture("Emergency_Aisle_Light_"+z.ToString(System.Globalization.CultureInfo.InvariantCulture),InteriorLightCircuit.Emergency,new Vector3(0,2.085f,z),new Vector3(0,.15f,z),new Vector3(.10f,.025f,.15f),3.5f,115,5.0f);
         Fixture("Cab_Emergency_Exit_Light",InteriorLightCircuit.Emergency,new Vector3(0,1.92f,1.75f),new Vector3(0,.15f,1.05f),new Vector3(.18f,.025f,.08f),.65f,85,2.2f);
         parent.gameObject.AddComponent<CabInteriorLighting>().Configure(state,fixtures.ToArray());
+        NF5KCabLightRefinement.Apply(parent.GetComponent<CabInteriorLighting>());
         Debug.Log("NF5K_INTERIOR_LIGHTING_BUILT: two cab ceiling lights, independent driver/assistant reading lights, two door footlights, two hooded instrument lights, six zoned passenger lights and four emergency fixtures");
     }
     static void Fixture(string name,InteriorLightCircuit circuit,Vector3 p,Vector3 target,Vector3 size,float intensity,float angle,float range)

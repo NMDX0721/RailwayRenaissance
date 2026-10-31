@@ -73,6 +73,8 @@ public static class NF5KLightingRendererSetup
                 lamp.cullingMask = 0; // Retain circuit bindings; replace direct point fill with diffuse SH.
             }
         root.gameObject.AddComponent<RailwayRenaissance.Cab.CabDiffuseFill>().Configure(diffuseReceivers.ToArray());
+        NF5KCabCeilingDetail.Apply(root.GetComponent<RailwayRenaissance.Cab.CabInteriorLighting>());
+        NF5KCabReadableFinish.Apply(root);
         Debug.Log("NF5K_INDIRECT_LAYER_OK: defined mask=" + indirectMask + "; glass excluded from approximation lights");
         const string path = "Assets/Settings/URP/NF5KLightingVolume.asset";
         var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path);

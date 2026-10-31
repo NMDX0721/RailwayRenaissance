@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 namespace RailwayRenaissance.Cab
 {
     public enum ExteriorLightMode { Off, Marker, Dim, Bright, Tail }
+    public enum ExteriorHeadlightLevel { Off, Dim, Bright }
+    public enum ExteriorMarkerAspect { Off, White, Red }
+    public enum ExteriorOperatingMode { Off, DayRunning, NightRunning, Shunting, Tail, Manual }
 
     public sealed class CabExteriorLighting : MonoBehaviour
     {
@@ -15,6 +18,10 @@ namespace RailwayRenaissance.Cab
         [SerializeField] bool powerAvailable = true;
         [SerializeField] bool reviewControls = true;
         static readonly Rect ReviewPanelRect = new Rect(16,16,220,240);
+        [SerializeField] ExteriorOperatingMode operatingMode=ExteriorOperatingMode.Manual, previousOperatingMode=ExteriorOperatingMode.Manual;
+        [SerializeField] bool separateSelections;
+        [SerializeField] ExteriorHeadlightLevel headlightLevel, previousHeadlightLevel=ExteriorHeadlightLevel.Dim;
+        [SerializeField] ExteriorMarkerAspect markerAspect, previousMarkerAspect=ExteriorMarkerAspect.White;
         MaterialPropertyBlock properties;
         bool lastLegacySwitch;
         [SerializeField] ExteriorLightMode previousOnMode = ExteriorLightMode.Dim;
@@ -22,6 +29,49 @@ namespace RailwayRenaissance.Cab
         public bool BlocksPointer(Vector2 guiPoint) => isActiveAndEnabled && reviewControls && ReviewPanelRect.Contains(guiPoint);
         public bool PowerAvailable => powerAvailable;
         public Light[] Beams => beams;
+        public ExteriorOperatingMode OperatingMode=>operatingMode;
+        public ExteriorHeadlightLevel HeadlightLevel { get { EnsureSelections();return headlightLevel; } }
+        public ExteriorMarkerAspect MarkerAspect { get { EnsureSelections();return markerAspect; } }
+        public void SetReviewControls(bool enabled){reviewControls=enabled;}
+        void EnsureSelections()
+        {
+            if(separateSelections)return;
+            Decode(mode,out headlightLevel,out markerAspect);Decode(previousOnMode,out previousHeadlightLevel,out previousMarkerAspect);separateSelections=true;
+        }
+        static void Decode(ExteriorLightMode value,out ExteriorHeadlightLevel head,out ExteriorMarkerAspect aspect)
+        {
+            head=value==ExteriorLightMode.Bright?ExteriorHeadlightLevel.Bright:value==ExteriorLightMode.Dim?ExteriorHeadlightLevel.Dim:ExteriorHeadlightLevel.Off;
+            aspect=value==ExteriorLightMode.Off?ExteriorMarkerAspect.Off:value==ExteriorLightMode.Tail?ExteriorMarkerAspect.Red:ExteriorMarkerAspect.White;
+        }
+        public void SetHeadlightLevel(ExteriorHeadlightLevel value)
+        {
+            if((int)value<0||(int)value>2)throw new System.ArgumentOutOfRangeException(nameof(value));EnsureSelections();
+            Select(value,value!=ExteriorHeadlightLevel.Off&&markerAspect==ExteriorMarkerAspect.Red?ExteriorMarkerAspect.Off:markerAspect);
+        }
+        public void SetMarkerAspect(ExteriorMarkerAspect value)
+        {
+            if((int)value<0||(int)value>2)throw new System.ArgumentOutOfRangeException(nameof(value));EnsureSelections();
+            Select(value==ExteriorMarkerAspect.Red?ExteriorHeadlightLevel.Off:headlightLevel,value);
+        }
+        public void SetOperatingMode(ExteriorOperatingMode value)
+        {
+            if((int)value<0||(int)value>5)throw new System.ArgumentOutOfRangeException(nameof(value));EnsureSelections();
+            switch(value)
+            {
+                case ExteriorOperatingMode.Off:Select(ExteriorHeadlightLevel.Off,ExteriorMarkerAspect.Off);break;
+                case ExteriorOperatingMode.DayRunning:Select(ExteriorHeadlightLevel.Bright,ExteriorMarkerAspect.White);break;
+                case ExteriorOperatingMode.NightRunning:Select(ExteriorHeadlightLevel.Dim,ExteriorMarkerAspect.White);break;
+                case ExteriorOperatingMode.Shunting:Select(ExteriorHeadlightLevel.Off,ExteriorMarkerAspect.White);break;
+                case ExteriorOperatingMode.Tail:Select(ExteriorHeadlightLevel.Off,ExteriorMarkerAspect.Red);break;
+            }
+            operatingMode=value;if(mode!=ExteriorLightMode.Off)previousOperatingMode=value;Apply();
+        }
+        void Select(ExteriorHeadlightLevel head,ExteriorMarkerAspect aspect)
+        {
+            operatingMode=ExteriorOperatingMode.Manual;headlightLevel=head;markerAspect=aspect;separateSelections=true;
+            mode=head==ExteriorHeadlightLevel.Bright?ExteriorLightMode.Bright:head==ExteriorHeadlightLevel.Dim?ExteriorLightMode.Dim:aspect==ExteriorMarkerAspect.Red?ExteriorLightMode.Tail:aspect==ExteriorMarkerAspect.White?ExteriorLightMode.Marker:ExteriorLightMode.Off;
+            if(mode!=ExteriorLightMode.Off){previousOnMode=mode;previousHeadlightLevel=head;previousMarkerAspect=aspect;previousOperatingMode=ExteriorOperatingMode.Manual;}Apply();
+        }
 
         public void Configure(CabEngineState state, Light[] lights, Renderer[] surfaces, bool[] markers)
         {
@@ -36,19 +86,21 @@ namespace RailwayRenaissance.Cab
         {
             if (reviewControls && Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame) CycleMode();
             if (engineState != null && engineState.HeadlightOn != lastLegacySwitch)
-                SetMode(engineState.HeadlightOn ? previousOnMode : ExteriorLightMode.Off);
+            {
+                if(engineState.HeadlightOn){if(previousOperatingMode==ExteriorOperatingMode.Manual)Select(previousHeadlightLevel,previousMarkerAspect);else SetOperatingMode(previousOperatingMode);}else SetMode(ExteriorLightMode.Off);
+            }
         }
         public void CycleMode() { SetMode((ExteriorLightMode)(((int)mode + 1) % 5)); }
         public void SetMode(ExteriorLightMode value)
         {
-            mode = value;
-            if (value != ExteriorLightMode.Off) previousOnMode = value;
-            Apply();
+            if((int)value<0||(int)value>4)throw new System.ArgumentOutOfRangeException(nameof(value));
+            Decode(value,out var head,out var aspect);Select(head,aspect);
         }
         public void SetPowerAvailable(bool available) { powerAvailable = available; Apply(); }
         public void Refresh() { Apply(); }
         void Apply()
         {
+            EnsureSelections();
             lastLegacySwitch = mode != ExteriorLightMode.Off;
             if (engineState != null) engineState.HeadlightOn = lastLegacySwitch;
             if (beams == null || emitters == null || marker == null) return;
@@ -56,19 +108,18 @@ namespace RailwayRenaissance.Cab
             for (int i = 0; i < beams.Length; i++)
             {
                 bool small = marker[i];
-                bool active = isActiveAndEnabled && powerAvailable && mode != ExteriorLightMode.Off &&
-                    (small || mode == ExteriorLightMode.Dim || mode == ExteriorLightMode.Bright);
-                var color = mode == ExteriorLightMode.Tail ? new Color(1,.025f,.012f) : new Color(1,.86f,.69f);
-                float intensity = small ? (mode == ExteriorLightMode.Tail ? 3 : 5) :
-                    (i == 0 ? (mode == ExteriorLightMode.Bright ? 900 : 170) : (mode == ExteriorLightMode.Bright ? 120 : 35));
+                bool active=isActiveAndEnabled&&powerAvailable&&(small?markerAspect!=ExteriorMarkerAspect.Off:headlightLevel!=ExteriorHeadlightLevel.Off&&(operatingMode!=ExteriorOperatingMode.DayRunning||i==0));
+                var color=small&&markerAspect==ExteriorMarkerAspect.Red?new Color(1,.025f,.012f):new Color(1,.86f,.69f);
+                float intensity = small ? (markerAspect == ExteriorMarkerAspect.Red ? 3 : 5) :
+                    (i == 0 ? (headlightLevel == ExteriorHeadlightLevel.Bright ? 900 : 170) : (headlightLevel == ExteriorHeadlightLevel.Bright ? 120 : 35));
                 if (beams[i] != null)
                 {
                     beams[i].enabled = active; beams[i].color = color; beams[i].intensity = active ? intensity : 0;
-                    if (!small) { beams[i].spotAngle = mode == ExteriorLightMode.Bright ? (i == 0 ? 22 : 40) : (i == 0 ? 32 : 48); }
+                    if (!small) { beams[i].spotAngle = headlightLevel == ExteriorHeadlightLevel.Bright ? (i == 0 ? 22 : 40) : (i == 0 ? 32 : 48); }
                 }
                 if (emitters[i] == null) continue;
                 emitters[i].GetPropertyBlock(properties);
-                properties.SetColor("_EmissionColor", active ? color * (small ? 2 : mode == ExteriorLightMode.Bright ? 5 : 2.5f) : Color.black);
+                properties.SetColor("_EmissionColor", active ? color * (small ? 2 : headlightLevel == ExteriorHeadlightLevel.Bright ? 5 : 2.5f) : Color.black);
                 properties.SetColor("_BaseColor", active ? color : new Color(.24f,.22f,.17f));
                 emitters[i].SetPropertyBlock(properties);
             }

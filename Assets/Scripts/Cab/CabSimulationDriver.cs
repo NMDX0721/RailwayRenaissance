@@ -69,6 +69,7 @@ namespace RailwayRenaissance.Cab
                     BeforeSimulationStep.Invoke(Model.State.Tick);
                     ReadCommands();
                 }
+                GetComponentInChildren<CabVigilance>()?.Step(Input,Model.State);
                 Model.Step(Input);
             });
             facade.ApplySimulation(Model.State);
@@ -92,10 +93,11 @@ namespace RailwayRenaissance.Cab
         }
         [Serializable] public sealed class Checkpoint
         {
-            public int version=2; public string exactConfig,exactState,exactInput,remainder;
+            public int version=2; public string exactConfig,exactState,exactInput,remainder,vigilance;
+            public int vigilanceThrottle=-1,vigilanceBrake=-1;
         }
         public string CaptureCheckpoint()
-        {EnsureInitialized();if(SimulationPaused)ReadCommands();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture)},true);}
+        {EnsureInitialized();if(SimulationPaused)ReadCommands();var vigilance=GetComponentInChildren<CabVigilance>();return JsonUtility.ToJson(new Checkpoint{exactConfig=SimulationCodec.Encode(configuration),exactState=SimulationCodec.Encode(Model.State),exactInput=SimulationCodec.Encode(Input),remainder=clock.Remainder.ToString("R",System.Globalization.CultureInfo.InvariantCulture),vigilance=vigilance?.Capture(),vigilanceThrottle=vigilance!=null?facade.ThrottleNotch:-1,vigilanceBrake=vigilance!=null?(int)facade.BrakePos:-1},true);}
         // Restore via a cold/paused scene; global game slot integration is intentionally separate.
         public static void ValidateCheckpoint(string json)
         {
@@ -103,6 +105,8 @@ namespace RailwayRenaissance.Cab
             if(saved==null||saved.version!=2||!double.TryParse(saved.remainder,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out double rest)||double.IsNaN(rest)||double.IsInfinity(rest)||rest<0||rest>=CabSimulation.StepSeconds)
                 throw new ArgumentException("Invalid simulation checkpoint");
             var config=SimulationCodec.Decode<SimulationConfig>(saved.exactConfig);
+            CabVigilance.Validate(saved.vigilance);
+            if(saved.vigilanceThrottle< -1||saved.vigilanceThrottle>8||saved.vigilanceBrake< -1||saved.vigilanceBrake>4)throw new ArgumentException("Invalid vigilance manual commands");
             var input=SimulationCodec.Decode<SimulationInput>(saved.exactInput);input.Validate();
             var state=SimulationCodec.Decode<SimulationState>(saved.exactState);new CabSimulation(state.Seed,config).Restore(state);
         }
@@ -115,12 +119,16 @@ namespace RailwayRenaissance.Cab
             var config=SimulationCodec.Decode<SimulationConfig>(saved.exactConfig);var input=SimulationCodec.Decode<SimulationInput>(saved.exactInput);var state=SimulationCodec.Decode<SimulationState>(saved.exactState);
             input.Validate();var candidate=new CabSimulation(state.Seed,config);candidate.Restore(state);
             EnsureInitialized();
+            if(!string.IsNullOrEmpty(saved.vigilance)&&GetComponentInChildren<CabVigilance>()==null)throw new InvalidOperationException("Checkpoint requires a vigilance-equipped scene");
             if(startup!=null&&startup.MasterEnabled!=input.Master)throw new InvalidOperationException("Restore requires matching key/master state in the paused cockpit");
             CheckpointRestoring?.Invoke();
             configuration=config;Model=candidate;Input=input;clock.Remainder=remainder;
+            GetComponentInChildren<CabVigilance>()?.Restore(saved.vigilance);
             parkingBrake=Input.ParkingBrake;coolingFailure=Input.CoolingFailure;compressorFailure=Input.CompressorFailure;
             gradePermille=(float)Input.GradePermille;wetRail=Input.RailGrip<1;restoredGrip=Input.RailGrip;restoredGrade=Input.GradePermille;
-            GetComponent<CabEngineState>().RestoreSimulationCommands(Input);
+            var manual=SimulationCodec.Decode<SimulationInput>(saved.exactInput);
+            if(!string.IsNullOrEmpty(saved.vigilance)&&saved.vigilanceThrottle>=0&&saved.vigilanceBrake>=0){manual.Throttle=saved.vigilanceThrottle;manual.Brake=saved.vigilanceBrake;}
+            GetComponent<CabEngineState>().RestoreSimulationCommands(manual);
             GetComponent<CabEngineState>().ApplySimulation(Model.State);
             ApplyPower();
         }

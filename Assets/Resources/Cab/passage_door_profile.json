@@ -1,0 +1,15 @@
+{
+  "identityCn": "驾驶室",
+  "identityEn": "DRIVER'S CAB",
+  "accessCn": "非工作人员请勿入内",
+  "accessEn": "CREW ONLY",
+  "passageCn": "通道门",
+  "passageEn": "PASSAGE DOOR",
+  "clearCn": "请保持通道畅通",
+  "clearEn": "KEEP PASSAGE CLEAR",
+  "pullCn": "拉",
+  "pullEn": "PULL",
+  "pushCn": "推",
+  "pushEn": "PUSH",
+  "assetId": "NF-5K / CD-01"
+}

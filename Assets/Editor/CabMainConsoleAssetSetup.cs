@@ -205,6 +205,7 @@ public static class CabMainConsoleAssetSetup
         spacer.transform.localScale=new Vector3(.24f,.006f,.115f);
         spacer.transform.SetParent(model.transform,true);spacer.transform.position=model.transform.position+new Vector3(-.37f,.842f,.06f);
         spacer.GetComponent<Renderer>().sharedMaterial=AssetDatabase.LoadAssetAtPath<Material>(Source+"/Materials/Console_Black_Panel.mat");
+        NF5KConsoleRecessSetup.Apply(model.transform);
         CabStartupClickTarget Target(string name,CabStartupAction action)
         {
             Transform node=null;

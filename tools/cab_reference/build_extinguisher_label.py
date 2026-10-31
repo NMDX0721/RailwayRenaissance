@@ -2,6 +2,12 @@
 from pathlib import Path
 import json
 import math
+import io
+import random
+
+def save_changed(image,path):
+    data=io.BytesIO();image.save(data,format="PNG")
+    if not path.exists() or path.read_bytes()!=data.getvalue(): path.write_bytes(data.getvalue())
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -47,25 +53,36 @@ section('制造单位','MANUFACTURER')
 pair(P['manufacturer'],P['manufacturerEnglish'])
 pair('编号见挂架，维护记录见随车检修册','SEE BRACKET FOR ID; SEE ONBOARD SERVICE LOG.')
 assert y<2660,y
-im.save(OUT/'Extinguisher_Baiyue_Bilingual_V3.png')
+save_changed(im,OUT/'Extinguisher_Baiyue_Bilingual_V3.png')
 
 g=Image.new('RGB',(1024,1024),'#e7e5d5');a=ImageDraw.Draw(g)
 for start,end,col in [(135,250,'#a42a22'),(250,290,'#32834c'),(290,405,'#a42a22')]:
     a.arc((100,100,924,924),start,end,fill=col,width=100)
 for i in range(19):
+    if i in (8,9,10): continue  # Leave the central title clear of the outer tick marks.
     t=math.radians(135+i*270/18)
     a.line([(512+math.cos(t)*435,512+math.sin(t)*435),(512+math.cos(t)*465,512+math.sin(t)*465)],fill='#30352e',width=8)
 def gauge_text(x,y,s,size): a.text((x,y),s,font=font(size),fill='#222c26',anchor='mm')
-gauge_text(512,68,'正常 / CHARGED',38)
-gauge_text(265,620,'欠压',45);gauge_text(265,670,'LOW',36)
-gauge_text(765,620,'过压',45);gauge_text(765,670,'HIGH',36)
-gauge_text(512,760,'压力 / PRESSURE',40)
-gauge_text(512,820,'1.34 MPa',45);gauge_text(512,875,'195 psig',36)
-g.save(OUT/'Extinguisher_Baiyue_Gauge_V3.png')
+gauge_text(512,59,'正常 / CHARGED',48)
+gauge_text(285,610,'欠压',48);gauge_text(285,675,'LOW',48)
+gauge_text(739,610,'过压',48);gauge_text(739,675,'HIGH',48)
+gauge_text(512,748,'压力 / PRESSURE',48)
+gauge_text(512,815,'1.34 MPa',48);gauge_text(512,882,'195 psig',48)
+save_changed(g,OUT/'Extinguisher_Baiyue_Gauge_V6.png')
 
 book=Image.new('RGB',(768,1152),'#29463e');b=ImageDraw.Draw(book)
 b.rectangle((25,25,742,1125),outline='#d8d1ad',width=6)
 for yy,txt,sz in [(85,'白岳消防器材厂',53),(165,'BAIYUE FIRE EQUIPMENT',36),(345,'随车消防器材',68),(435,'使用与维护手册',68),(585,'ONBOARD FIRE EQUIPMENT',38),(645,'OPERATION & MAINTENANCE',38),(845,'守安系列 / SHOUAN SERIES',37),(920,'BYF-23R',58)]:
     b.text((384,yy),txt,font=font(sz),fill='#e8dfbd',anchor='mt')
-book.save(OUT/'Baiyue_Fire_Manual_Cover.png')
+rng=random.Random(2301)
+for i in range(340):
+    x=rng.choice([rng.randrange(3,19),rng.randrange(749,766)])
+    yy=rng.randrange(8,1142)
+    b.line((x,yy,x+rng.randrange(-3,4),yy+rng.randrange(2,12)),fill=rng.choice(['#617064','#818775','#3c5549']),width=1)
+for x in [8,13,18]: b.line((x,35,x+2,1118),fill='#586658',width=1)
+b.line((685,2,768,88),fill='#607568',width=2)
+b.line((686,5,764,88),fill='#203a33',width=1)
+for xx,yy in [(44,1090),(717,1076),(710,38)]:
+    b.arc((xx-23,yy-14,xx+23,yy+14),0,160,fill='#7a8069',width=2)
+save_changed(book,OUT/'Baiyue_Fire_Manual_Cover_Worn.png')
 print('Bilingual label, dial and manual generated. Label end:',y)

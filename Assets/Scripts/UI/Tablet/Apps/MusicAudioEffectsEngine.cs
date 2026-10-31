@@ -39,6 +39,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static AudioSource s_deckB;
         private static bool s_isDeckAPrimary = true;
         private static bool s_isCrossfading = false;
+        private static bool s_paused;
         private static float s_crossfadeTimer = 0f;
         private static float s_crossfadeDuration = 1.6f; // 1.6 秒等功率交叉过渡
 
@@ -94,12 +95,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void PlayWithCrossfade(AudioClip newClip, float baseVolume, Action onComplete = null)
         {
             if (newClip == null) return;
+            s_paused = false;
+            s_isCrossfading = false;
 
             var activeDeck = GetActiveDeck();
             var nextDeck = GetStandbyDeck();
 
             if (activeDeck == null || nextDeck == null || !activeDeck.isPlaying)
             {
+                if (nextDeck != null) nextDeck.Stop();
                 // 无在播曲目时直接单轨起播
                 if (activeDeck != null)
                 {
@@ -112,12 +116,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
 
             // 启动平滑交替淡化
+            nextDeck.Stop();
             nextDeck.clip = newClip;
             nextDeck.time = 0f;
             nextDeck.volume = 0f;
             nextDeck.pitch = 1.0f;
             nextDeck.Play();
 
+            s_isDeckAPrimary = !s_isDeckAPrimary;
             s_isCrossfading = true;
             s_crossfadeTimer = 0f;
         }
@@ -140,6 +146,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// </summary>
         public static void Update(float deltaTime, float userVolume, Action onSleepFired)
         {
+            if (s_paused) return;
             var activeDeck = GetActiveDeck();
             var standbyDeck = GetStandbyDeck();
 
@@ -153,14 +160,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float outVol = Mathf.Cos(progress * Mathf.PI * 0.5f) * userVolume;
                 float inVol = Mathf.Sin(progress * Mathf.PI * 0.5f) * userVolume;
 
-                activeDeck.volume = outVol;
-                standbyDeck.volume = inVol;
+                standbyDeck.volume = outVol;
+                activeDeck.volume = inVol;
 
                 if (progress >= 1.0f)
                 {
-                    activeDeck.Stop();
-                    activeDeck.volume = 0f;
-                    s_isDeckAPrimary = !s_isDeckAPrimary; // 切换主副通道
+                    standbyDeck.Stop();
+                    standbyDeck.volume = 0f;
                     s_isCrossfading = false;
                 }
             }
@@ -218,7 +224,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     s_isFadingToSleep = false;
                     if (activeDeck != null)
                     {
-                        activeDeck.Pause();
+                        Pause();
                     }
                     onSleepFired?.Invoke();
                 }
@@ -266,12 +272,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public static void Pause()
         {
+            s_paused = true;
             if (s_deckA != null && s_deckA.isPlaying) s_deckA.Pause();
             if (s_deckB != null && s_deckB.isPlaying) s_deckB.Pause();
         }
 
         public static void UnPause()
         {
+            s_paused = false;
             var active = GetActiveDeck();
             if (active != null) active.UnPause();
             if (s_isCrossfading)

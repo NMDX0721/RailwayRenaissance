@@ -488,6 +488,11 @@ public static class GameData
         DecayRoadbed = InfrastructureDecay;
         DecayBridge = Mathf.Clamp01(InfrastructureDecay * 0.9f);
         DecaySignal = Mathf.Clamp01(InfrastructureDecay * 0.8f);
+        PoliticalTier = PoliticalPressure < 0.45f ? 0 : PoliticalPressure < 0.70f ? 1 : PoliticalPressure < 0.85f ? 2 : PoliticalPressure < 0.95f ? 3 : 4;
+        DecayGrade = RailwayRenaissance.Systems.RegulatoryEventSystem.CalculateDecayGradeFromValue(InfrastructureDecay);
+        DecayGradeRoadbed = RailwayRenaissance.Systems.RegulatoryEventSystem.CalculateDecayGradeFromValue(DecayRoadbed);
+        DecayGradeBridge = RailwayRenaissance.Systems.RegulatoryEventSystem.CalculateDecayGradeFromValue(DecayBridge);
+        DecayGradeSignal = RailwayRenaissance.Systems.RegulatoryEventSystem.CalculateDecayGradeFromValue(DecaySignal);
 
         // ExpectedPassengers 保持由 A9 公式计算，但 Trust 已变，需重新计算
         ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
@@ -504,9 +509,25 @@ public static class GameData
         OrderManager.Initialize();
         CrewManager.Initialize();
 
-        // 从 GameConfig 读取种子 ID，加载种子数据
+        // 从 GameConfig 读取种子配置
         GameConfig config = GameConfig.Load();
-        WorldGen.WorldSeedData seed = WorldGen.WorldGenerator.LoadFromResources(config.seedId);
+        WorldGen.WorldSeedData seed = null;
+
+        // 1. 优先通过有效 seedCode 进行确定性程序世界生成
+        if (!string.IsNullOrEmpty(config.seedCode) && WorldGen.WorldGenerator.DecodeSeed(config.seedCode) >= 0)
+        {
+            seed = WorldGen.WorldGenerator.GenerateFromSeedCode(config.seedCode);
+        }
+
+        // 2. 仅当 seedCode 缺失或无效时，回退到 legacy 静态资源兼容路径 (seedId)
+        if (seed == null && !string.IsNullOrEmpty(config.seedId))
+        {
+            seed = WorldGen.WorldGenerator.LoadFromResources(config.seedId);
+            if (seed != null)
+            {
+                WorldGen.WorldInitializer.ApplySeed(seed);
+            }
+        }
 
         if (seed != null)
         {
@@ -537,10 +558,6 @@ public static class GameData
         InitializeSubsystems();
         ResetState();
 
-        if (CurrentSeed != null)
-        {
-            ApplySeedInitialValues(CurrentSeed);
-        }
     }
 
     public static void ResetState()
@@ -570,9 +587,6 @@ public static class GameData
         trendHistoryHead = 0;
         RailwayRenaissance.Systems.RegulatoryEventSystem.ResetState();
 
-        // 记录 Day 1 初始快照
-        RecordTrendSnapshot(1, Trust, Money, 0.15f, PoliticalPressure, InfrastructureDecay);
-
         DailyMoneyChange = 0;
         DailyTrustChange = 0;
         DailyTrainConditionChange = 0;
@@ -591,6 +605,24 @@ public static class GameData
         {
             goal.IsCompleted = false;
         }
+
+        if (CurrentSeed != null)
+        {
+            ApplySeedInitialValues(CurrentSeed);
+        }
+
+        RecordTrendSnapshot(1, Trust, Money, SandRivalManager.GetPenetration("wufeng"), PoliticalPressure, InfrastructureDecay);
+        PlayerPrefs.SetFloat("GameData_PoliticalPressure", PoliticalPressure);
+        PlayerPrefs.SetFloat("GameData_InfrastructureDecay", InfrastructureDecay);
+        PlayerPrefs.SetFloat("GameData_DecayRoadbed", DecayRoadbed);
+        PlayerPrefs.SetFloat("GameData_DecayBridge", DecayBridge);
+        PlayerPrefs.SetFloat("GameData_DecaySignal", DecaySignal);
+        PlayerPrefs.SetInt("GameData_PoliticalTier", PoliticalTier);
+        PlayerPrefs.SetInt("GameData_DecayGrade", DecayGrade);
+        PlayerPrefs.SetInt("GameData_DecayGradeRoadbed", DecayGradeRoadbed);
+        PlayerPrefs.SetInt("GameData_DecayGradeBridge", DecayGradeBridge);
+        PlayerPrefs.SetInt("GameData_DecayGradeSignal", DecayGradeSignal);
+        PlayerPrefs.Save();
 
         AutoSelectGoal();
         RefreshBoards("新的一天开始了，先看一眼站内情况，再决定今天怎么经营。");

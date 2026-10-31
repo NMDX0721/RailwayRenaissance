@@ -1,0 +1,8 @@
+{
+  "cabinetId": "FA-01",
+  "packs": [
+    {"id":"FA-GZ-10","name":"纱布敷料","english":"GAUZE DRESSING","spec":"10 × 10 cm","quantity":"5 片装 / 5 PADS","category":"敷料 / DRESSINGS","accent":"#315e51"},
+    {"id":"FA-CB-08","name":"固定绷带","english":"CONFORMING BANDAGE","spec":"8 cm × 4 m","quantity":"1 卷装 / 1 ROLL","category":"绷带 / BANDAGES","accent":"#49616b"},
+    {"id":"FA-NG-M","name":"丁腈手套","english":"NITRILE GLOVES","spec":"M / 中号 · MEDIUM","quantity":"1 双装 / 1 PAIR","category":"防护 / PROTECTION","accent":"#605f47"}
+  ]
+}

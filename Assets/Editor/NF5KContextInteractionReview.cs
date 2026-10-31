@@ -27,13 +27,20 @@ public static class NF5KContextInteractionReview
         void Assert(bool ok,string why){if(!ok)throw new InvalidOperationException(why);}
         var target=Array.Find(state.GetComponentsInChildren<CabDrivingTarget>(),t=>t.Action==CabDrivingAction.IndependentBrake);
         float before=state.IndependentBrakeNotch;
+        var interiorLights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+        var exteriorLights=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+        var indoorReview=typeof(CabInteriorLighting).GetField("reviewControls",flags);
+        var outdoorReview=typeof(CabExteriorLighting).GetField("reviewControls",flags);
+        bool priorIndoor=interiorLights!=null&&(bool)indoorReview.GetValue(interiorLights);
+        bool priorOutdoor=exteriorLights!=null&&(bool)outdoorReview.GetValue(exteriorLights);
         try
         {
             Assert(!CabContextInteraction.ValidPath("<Keyboard>/Escape")&&!CabContextInteraction.ValidPath("<Mouse>/delta")
                 &&!ui.SetPrimaryPath("<Keyboard>/F2",false),"Reserved binding accepted");
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E binding rejected");
-            var interiorLights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
-            var exteriorLights=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+            // Test visible review panels explicitly; physical-control scenes may save them hidden.
+            if(interiorLights!=null)indoorReview.SetValue(interiorLights,true);
+            if(exteriorLights!=null)exteriorLights.SetReviewControls(true);
             var overOtherUI=typeof(CabContextInteraction).GetMethod("OverOtherUI",flags);
             InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(30,Screen.height-40)});
             Pump();
@@ -91,6 +98,8 @@ public static class NF5KContextInteractionReview
         }
         finally
         {
+            if(interiorLights!=null)indoorReview.SetValue(interiorLights,priorIndoor);
+            if(exteriorLights!=null)exteriorLights.SetReviewControls(priorOutdoor);
             state.SetIndependentBrake(before);ui.SetPrimaryPath(saved,false);Set("settings",modal);Set("focused",null);Set("focusedCollider",null);
             InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);
             originalKeyboard?.MakeCurrent();originalMouse?.MakeCurrent();

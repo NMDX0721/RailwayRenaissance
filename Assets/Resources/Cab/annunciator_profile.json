@@ -1,0 +1,5 @@
+{
+  "zh": ["机油压力低", "冷却水温高", "总风压力低", "辅助未发电", "紧急制动", "停放制动", "空气制动", "黏着受限", "柴油机启动", "柴油机运转"],
+  "en": ["LOW OIL PRESS", "HIGH COOLANT", "LOW MAIN AIR", "AUX GEN OFF", "EMERGENCY", "PARK BRAKE", "AIR BRAKE", "ADHESION LIMIT", "CRANKING", "ENGINE RUN"],
+  "color": ["red", "red", "amber", "amber", "red", "amber", "amber", "amber", "white", "green"]
+}

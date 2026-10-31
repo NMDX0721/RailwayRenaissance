@@ -1,5 +1,9 @@
 # 驾驶台与副司机区域补件（2026-10-22）
 
+2026-10-23 最新门区五金：握柄140 mm，推拉字直接印在上段加长的金属底板；扶手改50 mm圆座和双紧固件，取代72 mm四角方座。四场景及Play回归通过，见[NF5K_PASSAGE_DOOR.md](NF5K_PASSAGE_DOOR.md)。
+
+2026-10-23 下一批：新增后壁辅助电器检修盖细节和客舱前隔板急救柜；柜门接现有浮动交互与用户按键，支持开合，内部用品仅为有约束带的封装外观。见 [后壁设备与用品柜](NF5K_WALL_EQUIPMENT.md)。灭火器统一字号与锁销几何复核见 [表头与手册](NF5K_FIRE_MANUAL_AND_GAUGE.md)。
+
 后续更新：消防设备已由静态模型升级为查看铭牌、取下检查及原挂架归位；以下“静态”描述保留为前轮历史。当前接口、限制及验证见 [NF5K_SAFETY_INTERACTION.md](NF5K_SAFETY_INTERACTION.md)。
 
 入口：`Assets/Editor/NF5KCabFittings.cs` 的 Apply / BatchBuild。持续生成由 CabInteriorBlockoutSetup 调用；独立入口更新四份整车审阅场景，不重建既有操纵台。保留单侧主驾驶台和另一侧辅助席，不复制驾驶控制台。
@@ -31,3 +35,11 @@
 倒角工具 NF5KIndustrialFinish.FinishRunningGear 跳过没有 MeshFilter 的文字 Renderer，避免新增铭牌导致生成中断。
 
 世界空间铭字使用 CabWorldLabel.shader 的 LEqual 深度测试，避免透过隔板显示。CabWorldLabel 通过 MaterialPropertyBlock 绑定动态字体图集，并在 Font.textureRebuilt 后刷新，不将动态图集保存为项目贴图。
+# 辅助工作区布局补充（2026-10-23）
+
+门区下一批：通道两侧固定扶手补法兰、隔振垫、紧固件、圆滑回接和竖杆碰撞包络；推拉牌改至把手内侧门板并放大。见 [通道门细化](NF5K_PASSAGE_DOOR.md)。
+
+后续细化已增加前承力横梁、线槽、听筒限位和可操作的 SL-R8 本机及 CW-01 资料；见 [通信与资料](NF5K_CAB_COMMUNICATION.md)。台下后侧保留腿部空间。
+
+`NF5KCabWorkstationLayout` 由既有 fittings 生成流程调用：加宽辅助台、统一主台材质和标高，补落地固定、斜撑、前缘连接，重新布置电话、无线电和资料区；副司机席 x=-0.65 m。`NF5KCabWorkstationReview` 增加选定座椅、通道和门扇检查。详见 [左右工作区复核](NF5K_CAB_LAYOUT_REVIEW.md)。通信设备仍仅外观。
+

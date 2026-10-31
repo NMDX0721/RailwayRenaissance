@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {"id":"cab.lights.ceiling","zh":"司机室顶灯","en":"Cab ceiling","printZh":"司机室\n顶灯","printEn":"CAB\nCEILING"},
+    {"id":"cab.lights.instrument","zh":"仪表照明","en":"Instrument lights","printZh":"仪表\n照明","printEn":"INSTRUMENT\nLIGHTS"},
+    {"id":"cab.lights.driver_task","zh":"司机工作灯","en":"Driver task light","printZh":"司机\n工作灯","printEn":"DRIVER\nTASK"},
+    {"id":"cab.lights.assistant_task","zh":"副司机工作灯","en":"Assistant task light","printZh":"副司机\n工作灯","printEn":"ASSISTANT\nTASK"},
+    {"id":"cab.lights.access","zh":"通道照明","en":"Passage lights","printZh":"通道\n照明","printEn":"PASSAGE\nLIGHTS"},
+    {"id":"cab.lights.passenger_front","zh":"客室一区","en":"Passenger zone 1","printZh":"客室\n一区","printEn":"PASSENGER\nZONE 1"},
+    {"id":"cab.lights.passenger_rear","zh":"客室二区","en":"Passenger zone 2","printZh":"客室\n二区","printEn":"PASSENGER\nZONE 2"},
+    {"id":"cab.lights.spare_1","zh":"备用一","en":"Spare 1","printZh":"备用\n一","printEn":"SPARE\n1"},
+    {"id":"cab.lights.spare_2","zh":"备用二","en":"Spare 2","printZh":"备用\n二","printEn":"SPARE\n2"},
+    {"id":"cab.lights.spare_3","zh":"备用三","en":"Spare 3","printZh":"备用\n三","printEn":"SPARE\n3"}
+  ],
+  "on":{"zh":"已开启","en":"ON"},
+  "off":{"zh":"已关闭","en":"OFF"},
+  "noPower":{"zh":"已合闸 · 无供电","en":"ON · No supply"},
+  "spare":{"zh":"备用 · 未接线","en":"Spare · Not connected"},
+  "turnOn":{"zh":"开启","en":"Switch on"},
+  "turnOff":{"zh":"关闭","en":"Switch off"},
+  "approach":{"zh":"请靠近琴键操作","en":"Move closer to the switch"},
+  "already":{"zh":"已在该位置","en":"Already selected"},
+  "execute":{"zh":"执行 · 滚轮或点击选择","en":"Use · Scroll or click to select"}
+}

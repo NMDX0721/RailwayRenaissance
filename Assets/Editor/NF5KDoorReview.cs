@@ -9,7 +9,7 @@ public static class NF5KDoorReview
     {
         var body=GameObject.Find("CabInterior_Blockout");var obstacles=new List<BoxCollider>();
         foreach(var box in body.GetComponentsInChildren<BoxCollider>())
-            if(box.name.StartsWith("Passenger_Seat_")||box.name=="Passenger_Armrest"||box.name.StartsWith("Luggage_Rack_")||box.name.EndsWith("Seat_Back")||box.name.EndsWith("Seat_Cushion")||box.name=="Rear_Passenger_Partition"||box.name=="Rear_Electrical_Service_Panel")obstacles.Add(box);
+            if(box.name.StartsWith("Passenger_Seat_")||box.name=="Passenger_Armrest"||box.name.StartsWith("Luggage_Rack_")||box.name.EndsWith("Seat_Back")||box.name.EndsWith("Seat_Cushion")||box.name=="Rear_Passenger_Partition"||box.name=="Rear_Electrical_Service_Panel"||box.name=="Assistant_Work_Shelf"||box.name.StartsWith("Aux_"))obstacles.Add(box);
         var doors=body.GetComponentsInChildren<CabSideDoor>();
         if(doors.Length!=4)throw new InvalidOperationException("Expected four separate side door leaves");
         foreach(var door in doors)

@@ -1,0 +1,1663 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Channel LicenseClient-Oe_Lee doesn't exist
+OS: 'Windows 11  (10.0.26340) Professional' Language: 'zh' Physical Memory: 31934 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+[Licensing::Module] Successfully launched the LicensingClient (PId: 42844)
+Date: 2026-10-28T00:14:49Z
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\Unity 6.5\Editor\Unity.exe
+-batchmode
+-force-d3d11
+--burst-disable-compilation
+-projectPath
+C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance
+-executeMethod
+NF5KParkingBrakePanelSetup.Batch
+-logFile
+-
+Successfully changed project path to: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance
+C:/Users/Oe_Lee/.codex/worktrees/fe60/RailwayRenaissance
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [5496]  Target information:
+
+Player connection [5496]  * "[IP] 192.168.71.9 [Port] 55504 [Flags] 2 [Guid] 144816438 [EditorId] 144816438 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [5496]  * "[IP] 172.28.208.1 [Port] 55504 [Flags] 2 [Guid] 144816438 [EditorId] 144816438 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [5496]  * "[IP] 172.31.240.1 [Port] 55504 [Flags] 2 [Guid] 144816438 [EditorId] 144816438 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [5496]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 144816438 [EditorId] 144816438 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [5496] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [5496] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-Oe_Lee, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-10-28T00:14:50.0819273Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 42844, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Package Manager] Connected to IPC stream "Upm-13660" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              364451a5cc3d4e05903191e445d886b9
+  Correlation Id:          03d252e8f7ed4d60ee166a8a9a9dfb79
+  External correlation Id: 8463054525886153777
+  Machine Id:              3vy2qkUMwmQErChAY5t7lyDgyDc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee" (connect: 0.37s, validation: 0.17s, handshake: 0.12s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-notifications" at "2026-10-28T00:14:50.3761466Z"
+[Licensing::Module] Connected to LicensingClient (PId: 42844, launch time: 0.01, total connection time: 0.67s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX
+  Product: Unity Personal Version
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.74s
+[Licensing::Module] Licensing is initialized (took 0.13s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.5.8f1 (5cb7df797b7d)
+[Subsystems] Discovering subsystems at path D:/Unity Hub/Unity 6.5/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Oe_Lee/.codex/worktrees/fe60/RailwayRenaissance/Assets
+Forcing GfxDevice: Direct3D 11
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)
+    Vendor:   NVIDIA
+    VRAM:     11944 MB
+    Driver:   32.0.16.2101
+Initialize mono
+Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
+Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56660
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001903 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.380 seconds
+Domain Reload Profiling: 738ms
+	BeginReloadAssembly (105ms)
+		CreateAndSetChildDomain (18ms)
+	RebuildCommonClasses (4ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (195ms)
+		LoadAssemblies (86ms)
+		AnalyzeDomain (143ms)
+			TypeCache.Refresh (142ms)
+				TypeCache.ScanAssembly (131ms)
+	FinalizeReload (381ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (65ms)
+			ProcessInitializeOnLoadAttributes (67ms)
+			ProcessInitializeOnLoadMethodAttributes (197ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.settings-manager@2.1.1 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+  Local packages:
+    com.unity.burst@file:C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\.tmp.local-packages\com.unity.burst (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\.tmp.local-packages\com.unity.burst)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.05 seconds
+[Package Manager] Done resolving packages in 3.13 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Lock file was modified
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.settings-manager@2.1.1 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+  Local packages:
+    com.unity.burst@file:C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\.tmp.local-packages\com.unity.burst (location: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance\.tmp.local-packages\com.unity.burst)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Oe_Lee\.codex\worktrees\fe60\RailwayRenaissance
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 30.3057ms
+Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/Oe_Lee/.codex/worktrees/fe60/RailwayRenaissance
+DisplayProgressbar: Compiling Scripts
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "D:\Unity Hub\Unity 6.5\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "D:\Unity Hub\Unity 6.5\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "D:\Unity Hub\Unity 6.5\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "D:\Unity Hub\Unity 6.5\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with .tmp.local-packages\com.unity.burst\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff\Mono.Cecil.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - 200 - application/grpc 61.9692ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 139 defines and 365 references
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library\Bee\artifacts\1900b0aE.dag\Unity.Collections.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Scripting, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with D:\Unity Hub\Unity 6.5\Editor\Data\Managed\UnityEngine\Unity.Scripting.dll
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with .tmp.local-packages\com.unity.burst\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly - 200 - application/grpc 436.5260ms
+ExitCode: 0 Duration: 4s703ms
+[760/969    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[965/969    2s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+Assets\Editor\NF5KAtoResearchReview.cs(21,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabLayoutAudit.cs(40,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabLinearGaugeAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(31,99): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(31,41): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(31,99): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(31,41): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabPressureGaugeAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabTachometerAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KBogieDetailReview.cs(45,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KBogieDetailReview.cs(66,88): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KBogieDetailReview.cs(66,37): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KCabFittings.cs(135,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KAnimeDetailPass.cs(93,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KContextInteractionReview.cs(30,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KContextInteractionReview.cs(31,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabInteriorBlockoutSetup.cs(105,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabInteriorBlockoutSetup.cs(106,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(150,73): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KCabFittings.cs(150,17): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KCabFittings.cs(181,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KInteriorLightingReview.cs(21,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabBrakeAssetSetup.cs(157,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabBrakeAssetSetup.cs(162,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabBrakeAssetSetup.cs(162,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabSpeedometerAssetSetup.cs(171,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabSpeedometerAssetSetup.cs(176,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabSpeedometerAssetSetup.cs(176,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KDaylightReview.cs(56,9): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KDaylightReview.cs(57,9): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KAtoResearchReview.cs(54,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(29,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(101,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(102,53): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(104,30): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(105,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(106,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(110,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(112,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(113,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(114,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(118,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingReview.cs(121,30): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KDaylightReview.cs(63,48): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KDaylightReview.cs(66,22): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KRailMotionReview.cs(26,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KRailMotionReview.cs(32,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(197,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(199,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(210,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(232,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KCabFittings.cs(241,74): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KCabFittings.cs(241,24): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KExteriorLightControlReview.cs(73,84): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KExteriorLightControlReview.cs(73,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KExteriorLightControlReview.cs(82,157): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KExteriorLightControlReview.cs(82,95): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KInteriorLightingReview.cs(42,15): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KInteriorLightingReview.cs(43,22): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KLightingKeysReview.cs(68,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KLightingKeysReview.cs(68,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabLinearGaugeAssetSetup.cs(289,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabLinearGaugeAssetSetup.cs(294,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabLinearGaugeAssetSetup.cs(294,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabPressureGaugeAssetSetup.cs(280,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabPressureGaugeAssetSetup.cs(285,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabPressureGaugeAssetSetup.cs(285,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(300,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(305,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabTemperatureAssetSetup.cs(305,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KLightingKeysReview.cs(89,77): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KLightingKeysReview.cs(89,26): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(374,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(379,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabMainConsoleAssetSetup.cs(379,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KAnnunciatorReview.cs(126,67): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KAnnunciatorReview.cs(126,23): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KParkingBrakePanelReview.cs(82,24): warning CS0252: Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'Object'
+
+Assets\Editor\NF5KWorkstationLightAudit.cs(13,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KWorkstationLightAudit.cs(15,26): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\CabTachometerAssetSetup.cs(295,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\Editor\CabTachometerAssetSetup.cs(300,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\CabTachometerAssetSetup.cs(300,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KSimulationReview.cs(128,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KSimulationReview.cs(145,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KSimulationReview.cs(160,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KSimulationReview.cs(189,27): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KServiceControlReview.cs(63,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+
+Assets\Editor\NF5KServiceControlReview.cs(63,19): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+
+Assets\Editor\NF5KSimulationReview.cs(94,19): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KRailMotionReview.cs(166,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+
+Assets\Editor\NF5KPneumaticEquipment.cs(151,110): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+[966/969    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 139 defines and 365 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[967/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[968/969    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (4.66 seconds), 5 items updated, 969 evaluated
+Assets\Editor\NF5KAtoResearchReview.cs(21,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabLayoutAudit.cs(40,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabLinearGaugeAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(31,99): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(31,41): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabTemperatureAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabTemperatureAssetSetup.cs(31,99): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabTemperatureAssetSetup.cs(31,41): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabPressureGaugeAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabTachometerAssetSetup.cs(30,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KBogieDetailReview.cs(45,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KBogieDetailReview.cs(66,88): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KBogieDetailReview.cs(66,37): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KCabFittings.cs(135,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KAnimeDetailPass.cs(93,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KContextInteractionReview.cs(30,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KContextInteractionReview.cs(31,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabInteriorBlockoutSetup.cs(105,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabInteriorBlockoutSetup.cs(106,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(150,73): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KCabFittings.cs(150,17): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KCabFittings.cs(181,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KInteriorLightingReview.cs(21,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabBrakeAssetSetup.cs(157,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabBrakeAssetSetup.cs(162,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabBrakeAssetSetup.cs(162,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabSpeedometerAssetSetup.cs(171,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabSpeedometerAssetSetup.cs(176,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabSpeedometerAssetSetup.cs(176,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KDaylightReview.cs(56,9): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KDaylightReview.cs(57,9): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KAtoResearchReview.cs(54,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(29,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(101,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(102,53): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(104,30): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(105,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(106,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(110,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(112,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(113,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(114,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(118,32): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingReview.cs(121,30): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KDaylightReview.cs(63,48): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KDaylightReview.cs(66,22): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KRailMotionReview.cs(26,20): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KRailMotionReview.cs(32,17): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(197,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(199,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(210,29): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(232,21): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KCabFittings.cs(241,74): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KCabFittings.cs(241,24): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KExteriorLightControlReview.cs(73,84): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KExteriorLightControlReview.cs(73,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KExteriorLightControlReview.cs(82,157): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KExteriorLightControlReview.cs(82,95): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KInteriorLightingReview.cs(42,15): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KInteriorLightingReview.cs(43,22): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KLightingKeysReview.cs(68,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KLightingKeysReview.cs(68,22): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabLinearGaugeAssetSetup.cs(289,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabLinearGaugeAssetSetup.cs(294,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabLinearGaugeAssetSetup.cs(294,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabPressureGaugeAssetSetup.cs(280,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabPressureGaugeAssetSetup.cs(285,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabPressureGaugeAssetSetup.cs(285,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabTemperatureAssetSetup.cs(300,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabTemperatureAssetSetup.cs(305,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabTemperatureAssetSetup.cs(305,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KLightingKeysReview.cs(89,77): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KLightingKeysReview.cs(89,26): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(374,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(379,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabMainConsoleAssetSetup.cs(379,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KAnnunciatorReview.cs(126,67): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KAnnunciatorReview.cs(126,23): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KParkingBrakePanelReview.cs(82,24): warning CS0252: Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'Object'
+Assets\Editor\NF5KWorkstationLightAudit.cs(13,13): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KWorkstationLightAudit.cs(15,26): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\CabTachometerAssetSetup.cs(295,9): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\Editor\CabTachometerAssetSetup.cs(300,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\CabTachometerAssetSetup.cs(300,31): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KSimulationReview.cs(128,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KSimulationReview.cs(145,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KSimulationReview.cs(160,28): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KSimulationReview.cs(189,27): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KServiceControlReview.cs(63,75): warning CS0618: 'FindObjectsSortMode' is obsolete: 'FindObjectsSortMode has been deprecated. Use the FindObjectsByType overloads that do not take a FindObjectsSortMode parameter.'
+Assets\Editor\NF5KServiceControlReview.cs(63,19): warning CS0618: 'Object.FindObjectsByType<T>(FindObjectsSortMode)' is obsolete: 'FindObjectsByType with FindObjectsSortMode parameter has been deprecated. Use FindObjectsByType<T>() or FindObjectsByType<T>(FindObjectsInactive) instead. InstanceID will be replaced in the future with EntityId and previous sort order cannot be maintained.'
+Assets\Editor\NF5KSimulationReview.cs(94,19): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KRailMotionReview.cs(166,24): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Assets\Editor\NF5KPneumaticEquipment.cs(151,110): warning CS0618: 'Object.FindFirstObjectByType<T>()' is obsolete: 'FindFirstObjectByType has been deprecated because it relies on instance ID ordering. Use FindAnyObjectByType instead, which does not depend on ordering.'
+Total cache size 266954708
+Total cache size after purge 266954708, took 00:00:00.2055484
+AssetDatabase: script compilation time: 5.738500s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+[com.unity.burst] Burst is disabled entirely from the command line or environment variable
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+Unity.Burst.Editor.BurstLoader:.cctor () (at ./.tmp.local-packages/com.unity.burst/Runtime/Editor/BurstLoader.cs:117)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.ReadOnlySpan`1<intptr>)
+
+(Filename: ./.tmp.local-packages/com.unity.burst/Runtime/Editor/BurstLoader.cs Line: 117)
+
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.696 seconds
+Domain Reload Profiling: 1471ms
+	BeginReloadAssembly (181ms)
+		DisableScriptedObjects (23ms)
+		CreateAndSetChildDomain (52ms)
+	RebuildCommonClasses (7ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (40ms)
+	LoadAllAssembliesAndSetupDomain (533ms)
+		LoadAssemblies (307ms)
+		AnalyzeDomain (209ms)
+			TypeCache.Refresh (143ms)
+				TypeCache.ScanAssembly (134ms)
+			BuildScriptInfoCaches (58ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (697ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (61ms)
+			ProcessInitializeOnLoadAttributes (222ms)
+			ProcessInitializeOnLoadMethodAttributes (234ms)
+		AwakeInstancesAfterBackupRestoration (26ms)
+Starting new worker id: 0 with log in C:/Users/Oe_Lee/.codex/worktrees/fe60/RailwayRenaissance/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=bcd406340d2ccda42bde4f85f07dddcd): Total: 11.154 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1177 ms
+		Asset DB Callback time: managed=143 ms, native=3228 ms
+		Scripting: domain reloads=1, domain reload time=812 ms, compile time=5746 ms, other=46 ms
+		Project Asset Count: scripts=1519, non-scripts=4255
+		Asset File Changes: new=0, changed=2, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 3225.488ms
+	ApplyChangesToAssetFolders: 0.819ms
+	Scan: 136.341ms
+	Collect global state as custom dependencies: 16.347ms
+	OnSourceAssetsModified: 0.579ms
+	CategorizeScriptCompilationAssets: 38.377ms
+	ProcessAssetsWithTransientArtifactChanges: 65.573ms
+	CategorizeAssets: 49.927ms
+	CompileScripts: 5746.179ms
+	ImportOutOfDateAssets: 766.850ms (713.618ms without children)
+		UnloadImportedAssets: 0.799ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.697ms
+		ImportSchedulerStart: 51.691ms
+	PostProcessAllAssets: 144.965ms
+		VCAutoAddAssetPostprocess 1.044ms
+		XRBuildSystem.XRAssetImported 0.627ms
+		MonoPostProcessAllAssets: 142.775ms
+			AssetPostprocessor.OnPostprocessAllAssets 89.454ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 19.884ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 7.289ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 4.085ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 1.855ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.400ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.259ms
+			AssetChangedListener.OnPostprocessAllAssets 1.248ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.165ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 0.899ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.728ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.708ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.677ms
+			MaterialPostprocessor.OnPostprocessAllAssets 0.490ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.385ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.359ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.317ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.281ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.259ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.234ms
+			AssetEvents.OnPostprocessAllAssets 0.217ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.209ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.199ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.193ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.181ms
+			PostProcessor.OnPostprocessAllAssets 0.157ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.144ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.112ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.109ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.105ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.102ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.094ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.090ms
+			SyncVS.PostprocessSyncProject 0.088ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.079ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.052ms
+	PostAssetChangesProfiler: 3.043ms
+	UnloadStreamsBegin: 2.694ms
+	PersistCurrentRevisions: 0.146ms
+	GenerateScriptTypeHashes: 1.574ms
+	GenerateScriptTypeSerializationHashes: 3.001ms
+	Untracked: 949.476ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 2.937ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7040 unused Assets / (7.0 MB). Loaded Objects now: 8080.
+Memory consumption went from 435.2 MB to 428.2 MB.
+Total: 17.537600 ms (FindLiveObjects: 0.874100 ms CreateObjectMapping: 2.212200 ms MarkObjects: 9.021200 ms  DeleteObjects: 5.426500 ms)
+
+Opening scene 'Assets/Scenes/CabInteriorBlockout.unity'
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabInteriorBlockout.unity'
+	Deserialize:            218.119 ms
+	Integration:            388.506 ms
+	Integration of assets:  0.212 ms
+	Thread Wait Time:       -0.025 ms
+	Total Operation Time:   606.812 ms
+Unloading 2 unused Assets / (2.0 KB). Loaded Objects now: 35534.
+Memory consumption went from 0.52 GB to 0.52 GB.
+Total: 10.342100 ms (FindLiveObjects: 2.419800 ms CreateObjectMapping: 1.356100 ms MarkObjects: 6.528900 ms  DeleteObjects: 0.036300 ms)
+
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.015 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=fdcb550fa1d64cd4388e801ff291a137): Total: 0.125 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=72b63b5b0901f2746859876567cfac2b): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=8493972cf23adfb4d901b07c19550c09): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=3206c243231e8ff47bfaeb71fd58b3bf): Total: 0.067 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=b452cadb51704b84eb43c27a9b127282): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=473abe536f7419d478ba63044bd898d4): Total: 0.066 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+NF5K_PARKING_BUTTON_GEOMETRY_OK: perforated 3 mm face, rear switch bodies, real console contact, removed floor stand; 15 mm brake margin and authored seat/knee candidates clear
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Geometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:60)
+NF5KParkingBrakePanelSetup:Batch () (at Assets/Editor/NF5KParkingBrakePanelSetup.cs:85)
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 60)
+
+Importing 'GUID: 1172405cd5c266147960964206419bb9 - Path: Assets/Resources/Cab/Cab_Parking_Release_Green.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1172405cd5c266147960964206419bb9' -> (Import Result ID: '79c0e2a3f5d21f616c7e437fad597c84') in 0.005 seconds [static dependencies only]. Details - ImportResultOutputID=9cbba60eaf0d97832141a78ff13e9e3e DependenciesID=86b04bff03269ba3accdefae2e719cec StaticDependenciesID=4ca9133e8df66080fc8c7fdb9bb4ecf4 
+Importing 'GUID: 71d1306c232679f45bb53cfd36914e4d - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71d1306c232679f45bb53cfd36914e4d' -> (Import Result ID: 'b440b3db187bd4cd9f10e859a50f3e06') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=f90ac8a25e5a6ab9fee4aacf57c08ca2 DependenciesID=0dca7c9d554e2fe5314b9eba311ed47a StaticDependenciesID=cd22f47219ae49ba3a7cef9a2428f447 
+Importing 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7 - Path: Assets/Resources/Cab/Cab_Parking_release_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7' -> (Import Result ID: '3c1260f6110826fa3e78a3454fc94214') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=cddb9a0bc823a18cdde7de9d664aa2ef DependenciesID=fd6181739357d5465837484cead03df1 StaticDependenciesID=acf9ec7978c304c868e5de81ccd8b0a8 
+Importing 'GUID: 9193b0198b71d294fb7345e65afa7862 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 9193b0198b71d294fb7345e65afa7862' -> (Import Result ID: '6a77c473750709aa601dc0440f0f72fa') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=67d5ac1244977ddc117caeb31098cf90 DependenciesID=9e6320648131a11a56d6bb99240398c8 StaticDependenciesID=e9ec394dad73344579c7802fb69bef8d 
+Importing 'GUID: 574e45b75c057ff43b6fef83f2c1bafa - Path: Assets/Resources/Cab/Cab_Parking_Apply_Red.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 574e45b75c057ff43b6fef83f2c1bafa' -> (Import Result ID: 'a3071fbd19c4e3ff9a3e5c56b16aa79f') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=ac592201240dcdfe1055859178da35cd DependenciesID=cd1d7f3bce7b5b2036eee1a897398a6e StaticDependenciesID=091c698c9b8e6de2abc78bd5b54ef19b 
+Importing 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b - Path: Assets/Resources/Cab/Cab_Parking_Console_Mount_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b' -> (Import Result ID: 'e802118f6bd6f07d1abe3de4e79fe512') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=407bcf79cf35fd1b0fe428433cdcf345 DependenciesID=3bcfae1157d804e93ff5bc54b21ba773 StaticDependenciesID=65c6b7516fe39c8a1947d63ac8dee01c 
+Importing 'GUID: f7c4208966e6a6144a3594b5be251aaf - Path: Assets/Resources/Cab/Cab_Parking_Panel_Gasket_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: f7c4208966e6a6144a3594b5be251aaf' -> (Import Result ID: '65ff9bbe50fc347d3dcd4fa42ac52d13') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=d4084ec4afec4eba93425f8fb912fb18 DependenciesID=434d8285aac90cf891a86393488d9643 StaticDependenciesID=73fe540157958b39895bb347d836b64d 
+Importing 'GUID: 5dd852c29509b9f47a78923fe812cd88 - Path: Assets/Resources/Cab/Cab_Parking_Console_Contact_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 5dd852c29509b9f47a78923fe812cd88' -> (Import Result ID: '4eabb2660acd563bc950a56c513a05b9') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=1e14e39a9c81aec1178711551fe1ae10 DependenciesID=90eddcb8e91790497a707c1f5d3c180a StaticDependenciesID=ee0442f7a5964565a174707a7363d641 
+Importing 'GUID: 6d15a619391c1164db92497fe88d7787 - Path: Assets/Resources/Cab/Cab_Parking_Flush_Bezel_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 6d15a619391c1164db92497fe88d7787' -> (Import Result ID: '0729fdb6cc1497241a7d9d0ed459a1da') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=8ed3e7bceb200833301bb0bb1d0da125 DependenciesID=c5064f557d3bf47a7906822a24d0d545 StaticDependenciesID=5c811e00786cb8bb5192b0af4bc197d8 
+Asset Pipeline Refresh (id=721d0aed182e2304280027c62d8ceb09): Total: 0.090 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 53217e58502e3344faced8250bb5b5d1 - Path: Assets/Scenes/CabInteriorBlockout.unity' with importer (DefaultImporter)
+Imported 'GUID: 53217e58502e3344faced8250bb5b5d1' -> (Import Result ID: '35da3e3882eb16426f00dea47f573d75') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=cf4190316f84cadf8427bdccb9e18d2d DependenciesID=466d46bbde71066b244e6596c0e7c446 StaticDependenciesID=08d705d6c268bbf972a23d0e67a78d7c 
+Asset Pipeline Refresh (id=885f80fe45d509f4bb45ecc07c90eab3): Total: 0.076 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/CabDaylightReview.unity'
+Worker ready: AssetImportWorkerHW0 0
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabDaylightReview.unity'
+	Deserialize:            201.748 ms
+	Integration:            146.003 ms
+	Integration of assets:  0.099 ms
+	Thread Wait Time:       -0.006 ms
+	Total Operation Time:   347.844 ms
+Unloading 177 unused Assets / (138.7 KB). Loaded Objects now: 35560.
+Memory consumption went from 0.51 GB to 0.51 GB.
+Total: 11.040500 ms (FindLiveObjects: 2.444100 ms CreateObjectMapping: 1.428500 ms MarkObjects: 6.726900 ms  DeleteObjects: 0.440200 ms)
+
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.010 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=a86ddb360968d314b845550ed7803265): Total: 0.083 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.007 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=3efa8ecacab0d5f409467d3e9ea83a5e): Total: 0.067 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Refreshing native plugins compatible for Editor in 2.19 ms, found 4 plugins.
+Asset Pipeline Refresh (id=3f82c6a7d735c4747938c350185e06aa): Total: 0.064 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=385be9f6d5d68b543b36e222a7f6ac20): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=9ad4552856777b745abb4717183f6e6d): Total: 0.068 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=7a5abb27cd8ea314d90f18bcdbdd61b5): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+NF5K_PARKING_BUTTON_GEOMETRY_OK: perforated 3 mm face, rear switch bodies, real console contact, removed floor stand; 15 mm brake margin and authored seat/knee candidates clear
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Geometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:60)
+NF5KParkingBrakePanelSetup:Batch () (at Assets/Editor/NF5KParkingBrakePanelSetup.cs:85)
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 60)
+
+Importing 'GUID: 1172405cd5c266147960964206419bb9 - Path: Assets/Resources/Cab/Cab_Parking_Release_Green.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1172405cd5c266147960964206419bb9' -> (Import Result ID: '79c0e2a3f5d21f616c7e437fad597c84') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=9cbba60eaf0d97832141a78ff13e9e3e DependenciesID=86b04bff03269ba3accdefae2e719cec StaticDependenciesID=4ca9133e8df66080fc8c7fdb9bb4ecf4 
+Importing 'GUID: 71d1306c232679f45bb53cfd36914e4d - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71d1306c232679f45bb53cfd36914e4d' -> (Import Result ID: 'b440b3db187bd4cd9f10e859a50f3e06') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=f90ac8a25e5a6ab9fee4aacf57c08ca2 DependenciesID=0dca7c9d554e2fe5314b9eba311ed47a StaticDependenciesID=cd22f47219ae49ba3a7cef9a2428f447 
+Importing 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7 - Path: Assets/Resources/Cab/Cab_Parking_release_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7' -> (Import Result ID: '3c1260f6110826fa3e78a3454fc94214') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=cddb9a0bc823a18cdde7de9d664aa2ef DependenciesID=fd6181739357d5465837484cead03df1 StaticDependenciesID=acf9ec7978c304c868e5de81ccd8b0a8 
+Importing 'GUID: 9193b0198b71d294fb7345e65afa7862 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 9193b0198b71d294fb7345e65afa7862' -> (Import Result ID: '6a77c473750709aa601dc0440f0f72fa') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=67d5ac1244977ddc117caeb31098cf90 DependenciesID=9e6320648131a11a56d6bb99240398c8 StaticDependenciesID=e9ec394dad73344579c7802fb69bef8d 
+Importing 'GUID: 574e45b75c057ff43b6fef83f2c1bafa - Path: Assets/Resources/Cab/Cab_Parking_Apply_Red.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 574e45b75c057ff43b6fef83f2c1bafa' -> (Import Result ID: 'a3071fbd19c4e3ff9a3e5c56b16aa79f') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=ac592201240dcdfe1055859178da35cd DependenciesID=cd1d7f3bce7b5b2036eee1a897398a6e StaticDependenciesID=091c698c9b8e6de2abc78bd5b54ef19b 
+Importing 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b - Path: Assets/Resources/Cab/Cab_Parking_Console_Mount_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b' -> (Import Result ID: 'e802118f6bd6f07d1abe3de4e79fe512') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=407bcf79cf35fd1b0fe428433cdcf345 DependenciesID=3bcfae1157d804e93ff5bc54b21ba773 StaticDependenciesID=65c6b7516fe39c8a1947d63ac8dee01c 
+Importing 'GUID: f7c4208966e6a6144a3594b5be251aaf - Path: Assets/Resources/Cab/Cab_Parking_Panel_Gasket_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: f7c4208966e6a6144a3594b5be251aaf' -> (Import Result ID: '65ff9bbe50fc347d3dcd4fa42ac52d13') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=d4084ec4afec4eba93425f8fb912fb18 DependenciesID=434d8285aac90cf891a86393488d9643 StaticDependenciesID=73fe540157958b39895bb347d836b64d 
+Importing 'GUID: 5dd852c29509b9f47a78923fe812cd88 - Path: Assets/Resources/Cab/Cab_Parking_Console_Contact_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 5dd852c29509b9f47a78923fe812cd88' -> (Import Result ID: '4eabb2660acd563bc950a56c513a05b9') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=1e14e39a9c81aec1178711551fe1ae10 DependenciesID=90eddcb8e91790497a707c1f5d3c180a StaticDependenciesID=ee0442f7a5964565a174707a7363d641 
+Importing 'GUID: 6d15a619391c1164db92497fe88d7787 - Path: Assets/Resources/Cab/Cab_Parking_Flush_Bezel_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 6d15a619391c1164db92497fe88d7787' -> (Import Result ID: '0729fdb6cc1497241a7d9d0ed459a1da') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=8ed3e7bceb200833301bb0bb1d0da125 DependenciesID=c5064f557d3bf47a7906822a24d0d545 StaticDependenciesID=5c811e00786cb8bb5192b0af4bc197d8 
+Asset Pipeline Refresh (id=1e665a8f4a696ad429f99d4beac1c899): Total: 0.077 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 9a66d6dcb00633a4bb48e41cd69f1c70 - Path: Assets/Scenes/CabDaylightReview.unity' with importer (DefaultImporter)
+Imported 'GUID: 9a66d6dcb00633a4bb48e41cd69f1c70' -> (Import Result ID: 'f1a01c313adff995fd069f1c3c1e5635') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=40ca5ee9935d49d3730108251f3b1ea3 DependenciesID=c26324437bac2133a9dee15d5bbeb9b8 StaticDependenciesID=757ca12358cab93e0e1f8caf6ffd3d50 
+Asset Pipeline Refresh (id=e538b50f683b1fe4f83b4721885264fa): Total: 0.078 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/CabSimulationReview.unity'
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabSimulationReview.unity'
+	Deserialize:            200.495 ms
+	Integration:            128.170 ms
+	Integration of assets:  0.045 ms
+	Thread Wait Time:       0.000 ms
+	Total Operation Time:   328.710 ms
+Unloading 177 unused Assets / (138.9 KB). Loaded Objects now: 35591.
+Memory consumption went from 0.51 GB to 0.51 GB.
+Total: 11.573700 ms (FindLiveObjects: 2.626900 ms CreateObjectMapping: 1.477400 ms MarkObjects: 6.953100 ms  DeleteObjects: 0.515000 ms)
+
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=b722fbd73129e6545b260af3dca628fe): Total: 0.079 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=df41b802b67857c4dbe952cf65fc9125): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=483dac1c955385f4a97e49c3e54e016c): Total: 0.064 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=8553b3ab72d7dd443bf90181c0260713): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=c8ee6eed58628484583d79e527eb266f): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=07b2af8c7062f84439408a37e0623e03): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+NF5K_PARKING_BUTTON_GEOMETRY_OK: perforated 3 mm face, rear switch bodies, real console contact, removed floor stand; 15 mm brake margin and authored seat/knee candidates clear
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Geometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:60)
+NF5KParkingBrakePanelSetup:Batch () (at Assets/Editor/NF5KParkingBrakePanelSetup.cs:85)
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 60)
+
+Importing 'GUID: 1172405cd5c266147960964206419bb9 - Path: Assets/Resources/Cab/Cab_Parking_Release_Green.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1172405cd5c266147960964206419bb9' -> (Import Result ID: '79c0e2a3f5d21f616c7e437fad597c84') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=9cbba60eaf0d97832141a78ff13e9e3e DependenciesID=86b04bff03269ba3accdefae2e719cec StaticDependenciesID=4ca9133e8df66080fc8c7fdb9bb4ecf4 
+Importing 'GUID: 71d1306c232679f45bb53cfd36914e4d - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71d1306c232679f45bb53cfd36914e4d' -> (Import Result ID: 'b440b3db187bd4cd9f10e859a50f3e06') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=f90ac8a25e5a6ab9fee4aacf57c08ca2 DependenciesID=0dca7c9d554e2fe5314b9eba311ed47a StaticDependenciesID=cd22f47219ae49ba3a7cef9a2428f447 
+Importing 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7 - Path: Assets/Resources/Cab/Cab_Parking_release_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7' -> (Import Result ID: '3c1260f6110826fa3e78a3454fc94214') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=cddb9a0bc823a18cdde7de9d664aa2ef DependenciesID=fd6181739357d5465837484cead03df1 StaticDependenciesID=acf9ec7978c304c868e5de81ccd8b0a8 
+Importing 'GUID: 9193b0198b71d294fb7345e65afa7862 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 9193b0198b71d294fb7345e65afa7862' -> (Import Result ID: '6a77c473750709aa601dc0440f0f72fa') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=67d5ac1244977ddc117caeb31098cf90 DependenciesID=9e6320648131a11a56d6bb99240398c8 StaticDependenciesID=e9ec394dad73344579c7802fb69bef8d 
+Importing 'GUID: 574e45b75c057ff43b6fef83f2c1bafa - Path: Assets/Resources/Cab/Cab_Parking_Apply_Red.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 574e45b75c057ff43b6fef83f2c1bafa' -> (Import Result ID: 'a3071fbd19c4e3ff9a3e5c56b16aa79f') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=ac592201240dcdfe1055859178da35cd DependenciesID=cd1d7f3bce7b5b2036eee1a897398a6e StaticDependenciesID=091c698c9b8e6de2abc78bd5b54ef19b 
+Importing 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b - Path: Assets/Resources/Cab/Cab_Parking_Console_Mount_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b' -> (Import Result ID: 'e802118f6bd6f07d1abe3de4e79fe512') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=407bcf79cf35fd1b0fe428433cdcf345 DependenciesID=3bcfae1157d804e93ff5bc54b21ba773 StaticDependenciesID=65c6b7516fe39c8a1947d63ac8dee01c 
+Importing 'GUID: f7c4208966e6a6144a3594b5be251aaf - Path: Assets/Resources/Cab/Cab_Parking_Panel_Gasket_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: f7c4208966e6a6144a3594b5be251aaf' -> (Import Result ID: '65ff9bbe50fc347d3dcd4fa42ac52d13') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=d4084ec4afec4eba93425f8fb912fb18 DependenciesID=434d8285aac90cf891a86393488d9643 StaticDependenciesID=73fe540157958b39895bb347d836b64d 
+Importing 'GUID: 5dd852c29509b9f47a78923fe812cd88 - Path: Assets/Resources/Cab/Cab_Parking_Console_Contact_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 5dd852c29509b9f47a78923fe812cd88' -> (Import Result ID: '4eabb2660acd563bc950a56c513a05b9') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=1e14e39a9c81aec1178711551fe1ae10 DependenciesID=90eddcb8e91790497a707c1f5d3c180a StaticDependenciesID=ee0442f7a5964565a174707a7363d641 
+Importing 'GUID: 6d15a619391c1164db92497fe88d7787 - Path: Assets/Resources/Cab/Cab_Parking_Flush_Bezel_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 6d15a619391c1164db92497fe88d7787' -> (Import Result ID: '0729fdb6cc1497241a7d9d0ed459a1da') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=8ed3e7bceb200833301bb0bb1d0da125 DependenciesID=c5064f557d3bf47a7906822a24d0d545 StaticDependenciesID=5c811e00786cb8bb5192b0af4bc197d8 
+Asset Pipeline Refresh (id=e964c640096e66a4dbd1b69c6dcc3584): Total: 0.075 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 8400829144a65bb4da6fe4a8df01b4c7 - Path: Assets/Scenes/CabSimulationReview.unity' with importer (DefaultImporter)
+Imported 'GUID: 8400829144a65bb4da6fe4a8df01b4c7' -> (Import Result ID: '0bdede7535228eab85c232116b975c74') in 0.004 seconds [static dependencies only]. Details - ImportResultOutputID=50f91b20dd863d9c5925caa429407ab1 DependenciesID=b12c108ffb082eea1c6c5d0ef6b5e7a9 StaticDependenciesID=6ea74d7edec257aa45e957fe2caf05bb 
+Asset Pipeline Refresh (id=d0eb8998bbc499e4bbd1b7e05d296589): Total: 0.077 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/CabRailMotionReview.unity'
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabRailMotionReview.unity'
+	Deserialize:            202.646 ms
+	Integration:            197.105 ms
+	Integration of assets:  0.045 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   399.803 ms
+Unloading 177 unused Assets / (138.5 KB). Loaded Objects now: 35575.
+Memory consumption went from 0.51 GB to 0.51 GB.
+Total: 11.517600 ms (FindLiveObjects: 2.455500 ms CreateObjectMapping: 1.589700 ms MarkObjects: 6.988400 ms  DeleteObjects: 0.481500 ms)
+
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.010 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=1488ca5ecbfac31489e5a22548877895): Total: 0.082 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=5da0a0105bf8d35469cc873c0b1ec25a): Total: 0.064 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=d2d73625b46750f41bc110b0aca98b6c): Total: 0.067 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 727669b78953f2043ae1a3aa453fd1a4 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.png' with importer (TextureImporter)
+Imported 'GUID: 727669b78953f2043ae1a3aa453fd1a4' -> (Import Result ID: '68d1657c7132a6176fc964ad43c1c0b2') in 0.009 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=80c25087f16fbdab5bb3c7676ea41c00 DependenciesID=86389c8f1f0122d58278ddf8ec52cee8 StaticDependenciesID=fcb8f4ef95f96e6d1b19d791d5052cc6 
+Asset Pipeline Refresh (id=86b474320e438744d978326bf36795da): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 939804911a816b04c90bad56e2cded0e - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.png' with importer (TextureImporter)
+Imported 'GUID: 939804911a816b04c90bad56e2cded0e' -> (Import Result ID: 'a07b3065f804c5111ba220140ecd8343') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=0a12abe0d79aaa310ecdf167415bcbf2 DependenciesID=323e6ec51085ffe297ef67d48f3ea839 StaticDependenciesID=9aca46dc4dc3f6d799fd6a7fb58a2a3a 
+Asset Pipeline Refresh (id=ccb58870694ebd642a88214895b774d6): Total: 0.067 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a - Path: Assets/Resources/Cab/Cab_Parking_release_V6.png' with importer (TextureImporter)
+Imported 'GUID: 67d98fc88c025ed40ab2e60d70b7ef2a' -> (Import Result ID: 'a6d622b401030dac20d5d311edecbb67') in 0.010 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2e026e514f9ab7c9c531f1c629a61d6e DependenciesID=90f187fefb5749074b7c588357d9a3d8 StaticDependenciesID=53f28e24e266f32dbc22d517f5faadad 
+Asset Pipeline Refresh (id=233794b92e921584e82376a3078ce43a): Total: 0.070 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+NF5K_PARKING_BUTTON_GEOMETRY_OK: perforated 3 mm face, rear switch bodies, real console contact, removed floor stand; 15 mm brake margin and authored seat/knee candidates clear
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Geometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:60)
+NF5KParkingBrakePanelSetup:Batch () (at Assets/Editor/NF5KParkingBrakePanelSetup.cs:85)
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 60)
+
+Importing 'GUID: 1172405cd5c266147960964206419bb9 - Path: Assets/Resources/Cab/Cab_Parking_Release_Green.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1172405cd5c266147960964206419bb9' -> (Import Result ID: '79c0e2a3f5d21f616c7e437fad597c84') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=9cbba60eaf0d97832141a78ff13e9e3e DependenciesID=86b04bff03269ba3accdefae2e719cec StaticDependenciesID=4ca9133e8df66080fc8c7fdb9bb4ecf4 
+Importing 'GUID: 71d1306c232679f45bb53cfd36914e4d - Path: Assets/Resources/Cab/Cab_Parking_apply_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71d1306c232679f45bb53cfd36914e4d' -> (Import Result ID: 'b440b3db187bd4cd9f10e859a50f3e06') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=f90ac8a25e5a6ab9fee4aacf57c08ca2 DependenciesID=0dca7c9d554e2fe5314b9eba311ed47a StaticDependenciesID=cd22f47219ae49ba3a7cef9a2428f447 
+Importing 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7 - Path: Assets/Resources/Cab/Cab_Parking_release_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 71f8fdaeea7c7b240aea9e59a103f7b7' -> (Import Result ID: '3c1260f6110826fa3e78a3454fc94214') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=cddb9a0bc823a18cdde7de9d664aa2ef DependenciesID=fd6181739357d5465837484cead03df1 StaticDependenciesID=acf9ec7978c304c868e5de81ccd8b0a8 
+Importing 'GUID: 9193b0198b71d294fb7345e65afa7862 - Path: Assets/Resources/Cab/Cab_Parking_title_V6.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 9193b0198b71d294fb7345e65afa7862' -> (Import Result ID: '6a77c473750709aa601dc0440f0f72fa') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=67d5ac1244977ddc117caeb31098cf90 DependenciesID=9e6320648131a11a56d6bb99240398c8 StaticDependenciesID=e9ec394dad73344579c7802fb69bef8d 
+Importing 'GUID: 574e45b75c057ff43b6fef83f2c1bafa - Path: Assets/Resources/Cab/Cab_Parking_Apply_Red.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 574e45b75c057ff43b6fef83f2c1bafa' -> (Import Result ID: 'a3071fbd19c4e3ff9a3e5c56b16aa79f') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=ac592201240dcdfe1055859178da35cd DependenciesID=cd1d7f3bce7b5b2036eee1a897398a6e StaticDependenciesID=091c698c9b8e6de2abc78bd5b54ef19b 
+Importing 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b - Path: Assets/Resources/Cab/Cab_Parking_Console_Mount_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 638f4d2b5b7fd4046b657cfe65392f8b' -> (Import Result ID: 'e802118f6bd6f07d1abe3de4e79fe512') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=407bcf79cf35fd1b0fe428433cdcf345 DependenciesID=3bcfae1157d804e93ff5bc54b21ba773 StaticDependenciesID=65c6b7516fe39c8a1947d63ac8dee01c 
+Importing 'GUID: f7c4208966e6a6144a3594b5be251aaf - Path: Assets/Resources/Cab/Cab_Parking_Panel_Gasket_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: f7c4208966e6a6144a3594b5be251aaf' -> (Import Result ID: '65ff9bbe50fc347d3dcd4fa42ac52d13') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=d4084ec4afec4eba93425f8fb912fb18 DependenciesID=434d8285aac90cf891a86393488d9643 StaticDependenciesID=73fe540157958b39895bb347d836b64d 
+Importing 'GUID: 5dd852c29509b9f47a78923fe812cd88 - Path: Assets/Resources/Cab/Cab_Parking_Console_Contact_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 5dd852c29509b9f47a78923fe812cd88' -> (Import Result ID: '4eabb2660acd563bc950a56c513a05b9') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=1e14e39a9c81aec1178711551fe1ae10 DependenciesID=90eddcb8e91790497a707c1f5d3c180a StaticDependenciesID=ee0442f7a5964565a174707a7363d641 
+Importing 'GUID: 6d15a619391c1164db92497fe88d7787 - Path: Assets/Resources/Cab/Cab_Parking_Flush_Bezel_V7.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 6d15a619391c1164db92497fe88d7787' -> (Import Result ID: '0729fdb6cc1497241a7d9d0ed459a1da') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=8ed3e7bceb200833301bb0bb1d0da125 DependenciesID=c5064f557d3bf47a7906822a24d0d545 StaticDependenciesID=5c811e00786cb8bb5192b0af4bc197d8 
+Asset Pipeline Refresh (id=fd379a7dcd95083489f042239513f413): Total: 0.075 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 4f66f20cc901df5449f5ad0210078195 - Path: Assets/Scenes/CabRailMotionReview.unity' with importer (DefaultImporter)
+Imported 'GUID: 4f66f20cc901df5449f5ad0210078195' -> (Import Result ID: 'fe96a564098c828ee3a1ab8ea97e6e57') in 0.007 seconds [static dependencies only]. Details - ImportResultOutputID=430afe8fd04d454ef2be987b895f6152 DependenciesID=b26e61f3c2782c05b37c64731db6de1d StaticDependenciesID=f9671bd06683178ca6a7a89079312734 
+Asset Pipeline Refresh (id=fc8779e642a394047b94206c47e381f6): Total: 0.081 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/CabDaylightReview.unity'
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabDaylightReview.unity'
+	Deserialize:            204.720 ms
+	Integration:            128.529 ms
+	Integration of assets:  0.057 ms
+	Thread Wait Time:       -0.015 ms
+	Total Operation Time:   333.291 ms
+Unloading 181 unused Assets / (144.7 KB). Loaded Objects now: 35546.
+Memory consumption went from 0.52 GB to 0.52 GB.
+Total: 12.389900 ms (FindLiveObjects: 2.625600 ms CreateObjectMapping: 1.420500 ms MarkObjects: 7.749200 ms  DeleteObjects: 0.593100 ms)
+
+NF5K_PARKING_BUTTONS_BUILD_OK: four scenes, red apply and green release; rotary assembly retired
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelSetup:Batch () (at Assets/Editor/NF5KParkingBrakePanelSetup.cs:96)
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelSetup.cs Line: 96)
+
+Opening scene 'Assets/Scenes/CabRailMotionReview.unity'
+Unloading 242 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabRailMotionReview.unity'
+	Deserialize:            201.699 ms
+	Integration:            148.579 ms
+	Integration of assets:  0.042 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   350.322 ms
+Unloading 5 unused Assets / (19.0 KB). Loaded Objects now: 35847.
+Memory consumption went from 0.64 GB to 0.64 GB.
+Total: 12.459100 ms (FindLiveObjects: 2.221300 ms CreateObjectMapping: 1.314500 ms MarkObjects: 8.856800 ms  DeleteObjects: 0.065400 ms)
+
+[Project] Loading completed in 22.435 seconds
+	Project init time: 				14.008 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.427 seconds
+		Asset Database init time: 		0.744 seconds
+		Global illumination init time: 	0.002 seconds
+		Assemblies load time: 			0.761 seconds
+		Unity extensions init time: 	0.016 seconds
+		Asset Database refresh time: 	11.155 seconds
+	Scene opening time: 			8.128 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1793146512112,"processId":13660,"projectLoad":22.435188,"projectInit":14.0076982,"templateInit":0.0,"packageManagerInit":0.4267677,"assetDatabaseInit":0.743872,"globalIlluminationInit":0.0023333,"assembliesLoad":0.7606232,"unityExtensionsInit":0.0155936,"assetDatabaseRefresh":11.1550631,"sceneOpening":8.1276367}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1793146512112,"processId":13660,"editorVersion":"6000.5.8f1 (5cb7df797b7d)","branch":"6000.5/staging","buildType":"Release","platform":"Windows"}
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Refreshing native plugins compatible for Editor in 2.01 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+[com.unity.burst] Burst is disabled entirely from the command line or environment variable
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+Unity.Burst.Editor.BurstLoader:.cctor () (at ./.tmp.local-packages/com.unity.burst/Runtime/Editor/BurstLoader.cs:117)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.ReadOnlySpan`1<intptr>)
+
+(Filename: ./.tmp.local-packages/com.unity.burst/Runtime/Editor/BurstLoader.cs Line: 117)
+
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.841 seconds
+Domain Reload Profiling: 1305ms
+	BeginReloadAssembly (215ms)
+		DisableScriptedObjects (23ms)
+		CreateAndSetChildDomain (88ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (50ms)
+	LoadAllAssembliesAndSetupDomain (177ms)
+		LoadAssemblies (97ms)
+		AnalyzeDomain (28ms)
+			TypeCache.Refresh (5ms)
+			ResolveRequiredComponents (19ms)
+	FinalizeReload (842ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (103ms)
+			ProcessInitializeOnLoadAttributes (257ms)
+			ProcessInitializeOnLoadMethodAttributes (122ms)
+		AwakeInstancesAfterBackupRestoration (49ms)
+No restricted APIs configured; Validation skipped.
+Checking 24 assemblies for restricted APIs found 0 usage(s) in 4 ms
+
+Asset Pipeline Refresh (id=af790dd0bb3e768428c7c811038e183b): Total: 2.374 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1147 ms
+		Asset DB Callback time: managed=417 ms, native=306 ms
+		Scripting: domain reloads=1, domain reload time=499 ms, compile time=2 ms, other=0 ms
+		Project Asset Count: scripts=1519, non-scripts=4255
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 2.340ms
+	ApplyChangesToAssetFolders: 0.390ms
+	Collect global state as custom dependencies: 2.890ms
+	ProcessAssetsWithTransientArtifactChanges: 158.030ms
+	CategorizeAssets: 52.520ms
+	CompileScripts: 1.621ms
+	ImportOutOfDateAssets: 890.205ms (857.975ms without children)
+		CollectScriptTypesHashes: 1.937ms
+		ReloadNativeAssets: 1.833ms
+		UnloadImportedAssets: 0.273ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.792ms
+		ImportSchedulerStart: 29.308ms
+	PostProcessAllAssets: 719.966ms
+		PostProcessCallbackCreateDeferredMaterials 30.004ms
+		AssemblyValidation.PostprocessAllAssets 19.414ms
+		ShaderAssetModifiedCallback 14.295ms
+		ComputeShaderImportPostprocess 6.914ms
+		RaytracingShaderImportPostprocess 6.760ms
+		SpeedTreeImporter.PostprocessAllAssets 6.014ms
+		BlockShaderImporter.PostprocessAllAssets 3.914ms
+		LocalizationDatabase.AssetDatabasePostprocessCallback 2.962ms
+		XRBuildSystem.XRAssetImported 0.604ms
+		MonoPostProcessAllAssets: 416.528ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 133.848ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 27.884ms
+			PostProcessor.OnPostprocessAllAssets 26.046ms
+			AssetPostprocessor.OnPostprocessAllAssets 24.842ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 24.756ms
+			MaterialPostprocessor.OnPostprocessAllAssets 24.505ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 23.722ms
+			AssetChangedListener.OnPostprocessAllAssets 23.438ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 16.705ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 15.724ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 7.632ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 4.378ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 4.306ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 3.931ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 1.459ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 1.364ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.949ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.674ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.658ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.418ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.402ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.303ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.302ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.234ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.227ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.219ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.206ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.206ms
+			AssetEvents.OnPostprocessAllAssets 0.200ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.196ms
+			SyncVS.PostprocessSyncProject 0.131ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.107ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.079ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.073ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.071ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.050ms
+	PostAssetChangesProfiler: 4.457ms
+	GatherAllCurrentPrimaryImportResultRevisions: 0.199ms
+	UnloadStreamsBegin: 0.104ms
+	PersistCurrentRevisions: 0.130ms
+	GenerateScriptTypeHashes: 3.167ms
+	GenerateScriptTypeSerializationHashes: 5.286ms
+	Untracked: 531.117ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            358.623 ms
+	Integration:            531.049 ms
+	Integration of assets:  36.361 ms
+	Thread Wait Time:       -0.146 ms
+	Total Operation Time:   925.888 ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Start Indexing on Editor startup
+ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <816f70bc2a9c4332b0bd119906a8d40e>:0 
+  at UnityEditor.Search.SearchDatabase+<EnumerateAll>d__76.MoveNext () [0x00089] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at System.Linq.Enumerable.TryGetFirst[TSource] (System.Collections.Generic.IEnumerable`1[T] source, System.Boolean& found) [0x00045] in <fe644d7ad1cf499ebe4e7ad937bc03bf>:0 
+  at System.Linq.Enumerable.First[TSource] (System.Collections.Generic.IEnumerable`1[T] source) [0x00000] in <fe644d7ad1cf499ebe4e7ad937bc03bf>:0 
+  at UnityEditor.Search.SearchDatabase.GetDefaultSearchDatabase () [0x00005] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at UnityEditor.Search.SearchInit.IndexationOnStartup () [0x0000a] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at UnityEditor.EditorApplication.Internal_CallDelayFunctions () [0x00029] in <da871bb30d6448e2981f366171b14bb9>:0 
+
+Created GICache directory at C:/Users/Oe_Lee/AppData/LocalLow/Unity/Caches/GiCache. Took: 0.018s, timestamps: [26.308 - 26.326]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+NF5K_PARKING_COMMAND_OK: existing facade applies/releases parking command; physical button paths checked separately
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:138)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 138)
+
+NF5K_PARKING_SELECTOR_GUARD_OK: moving command rejected even with zero throttle
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:158)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 158)
+
+NF5K_FLEXIBLE_HOSE_PLAY_OK: actual moved body/bogie endpoints within 1 mm
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:169)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 169)
+
+NF5K_RAIL_MOTION_PLAY_OK: live backend signed position drives body, bogies and wheel phase
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:171)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 171)
+
+NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:188)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 188)
+
+NF5K_PARKING_BUTTON_GEOMETRY_OK: perforated 3 mm face, rear switch bodies, real console contact, removed floor stand; 15 mm brake margin and authored seat/knee candidates clear
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Geometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:60)
+NF5KParkingBrakePanelReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:64)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 60)
+
+NF5K_PARKING_BUTTON_PLAY_OK: red apply/green release actual mesh rays, one deliberate context action per cap, backend input, spring return, power/distance/motion/pause/disable guards and bilingual hints
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KParkingBrakePanelReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KParkingBrakePanelReview.cs:102)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KParkingBrakePanelReview.cs Line: 102)
+
+NF5K_BRAKE_REFINEMENT_OK: both valves use coordinated finishes; service plate 15 mm expanded horizontal clearance survives actual driving pose
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KBrakeRefinement:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KBrakeRefinement.cs:91)
+NF5KServiceControlReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KServiceControlReview.cs:13)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KBrakeRefinement.cs Line: 91)
+
+NF5K_HORN_PCM_OK: 44100 Hz, RMS 0.2098, seam 0.1046, max interior step 0.1166
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KServiceControlReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KServiceControlReview.cs:48)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KServiceControlReview.cs Line: 48)
+
+NF5K_SERVICE_CONTROL_OK: two real rays/context, momentary cap/hold/release, horn playback/fade, sand to backend, power/air/distance/disable guards, bounded non-silent PCM
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KServiceControlReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KServiceControlReview.cs:49)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KServiceControlReview.cs Line: 49)
+
+NF5K_LAMP_TEST_OK: physical ray/context, ten windows, two-second deadline, spring travel, timeout restores real signals, no retrigger, power loss/no stale restart, reach/disable guards; checkpoint unchanged
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAnnunciatorReview:ValidateLampTest (RailwayRenaissance.Cab.CabEngineState,RailwayRenaissance.Cab.CabAnnunciatorPanel,RailwayRenaissance.Cab.CabSimulationDriver) (at Assets/Editor/NF5KAnnunciatorReview.cs:102)
+NF5KAnnunciatorReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KAnnunciatorReview.cs:67)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAnnunciatorReview.cs Line: 102)
+
+NF5K_ANNUNCIATOR_OK: cold/running/cranking, oil grace, pressure/temperature hysteresis, brakes, adhesion, supply, rewind, real renderer, disable; no backend writes
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAnnunciatorReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KAnnunciatorReview.cs:68)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAnnunciatorReview.cs Line: 68)
+
+NF5K_LIGHTING_MODES_OK: Off/Marker/Dim/Bright/Tail counts, color, brightness and power isolation
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KLightingReview:Validate (RailwayRenaissance.Cab.CabExteriorLighting) (at Assets/Editor/NF5KLightingReview.cs:25)
+NF5KExteriorLightControlReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KExteriorLightControlReview.cs:22)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KLightingReview.cs Line: 25)
+
+NF5K_EXTERIOR_CONTROL_OK: real rays and context for 3-detent headlight and 6-detent operating controls, 5 legacy modes, day/night/shunt/tail profiles, manual override, independent circuits, red/headlight exclusion, power retention/restore, legacy exact restore, indoor isolation and guards
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KExteriorLightControlReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KExteriorLightControlReview.cs:59)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KExteriorLightControlReview.cs Line: 59)
+
+NF5K_LIGHTING_KEYS_OK: 10 unique rays, 7 isolated real fixture circuits, 3 disconnected spares, supply retention, dimmer restore, contextual command, external sync, zh/en and distance/disable guards
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KLightingKeysReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KLightingKeysReview.cs:50)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KLightingKeysReview.cs Line: 50)
+
+NF5K_WIPER_STATE_OK: independent rain/wiper states, dry switching, stopping in rain and deduplicated change events; weather API boundary checked separately from physical linkage
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KWiperStateReview:Validate () (at Assets/Editor/NF5KWiperStateReview.cs:21)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KWiperStateReview.cs Line: 21)
+
+NF5K_WIPER_MOTION_OK: low/high, bounded commands, phase continuity, powered self-park, powerless freeze and invalid-dt guards
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KWiperMotionReview:ValidateMotion () (at Assets/Editor/NF5KWiperMotionReview.cs:29)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KWiperMotionReview.cs Line: 29)
+
+NF5K_WIPER_GEOMETRY_OK: two fixed-length parallelograms, constant blade attitude, rubber/glass contact and full-cycle aperture clearance
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KWiperMotionReview:ValidateGeometry (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KWiperMotionReview.cs:95)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KWiperMotionReview.cs Line: 95)
+
+NF5K_WIPER_INTERACTION_OK: real ray/context, three detents, supply gate, power-loss freeze/recovery, self-park, explicit legacy sync, weather separation, distance and disable restoration
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KWiperMotionReview:ValidateInteraction (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KWiperMotionReview.cs:126)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KWiperMotionReview.cs Line: 126)
+
+NF5K_CAB_VISORS_OK: real rays/context commands, independent 3-position stops, vertex envelope, distance guard and restoration; not a full visibility certification
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:50)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 50)
+
+NF5K_STORAGE_CABINET_OK: real door ray, context command, 100 degree hinge, selected seat clearance, distance guard and exact restoration
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:75)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 75)
+
+NF5K_EXTINGUISHER_ASSEMBLY_OK: locking pin intersects lever/clevis envelopes, clears hinge pin; pointer hub clears glass; not a strength or valve solver
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:103)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 103)
+
+NF5K_SERVICE_MOUNTING_OK: book seated on shelf; pointers distinct and inside green zone; static authored mounting only
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:104)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 104)
+
+NF5K_MANUAL_INTERACTION_OK: fixed manual offers reading and opens/closes the equipment dossier
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:110)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 110)
+
+NF5K_SAFETY_EQUIPMENT_PLAY_OK: three dock rays, context choices, pickup/near-dock return, remote-return guard, single-item limit and disable restoration
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSafetyEquipmentReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KSafetyEquipmentReview.cs:136)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSafetyEquipmentReview.cs Line: 136)
+
+NF5K_COMMUNICATION_PLAY_OK: radio/clipboard real rays, contextual actions, supply/backup, retained detents, channel wrap, volume stops, distance guards, document modal and disable restoration; no radio transmission/audio backend
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KCabCommunicationReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KCabCommunicationReview.cs:50)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KCabCommunicationReview.cs Line: 50)
+
+NF5K_CIRCULATORS_PLAY_OK: two real rays, independent 0/1/2 commands, supply gate, rotor envelope, roof contact, distance and disable restoration; visual motor only, no airflow/load solver
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KCabCirculatorsReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KCabCirculatorsReview.cs:120)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KCabCirculatorsReview.cs Line: 120)
+
+NF5K_PASSAGE_DOOR_PLAY_OK: real rear ray/context, bounded swing, repeated-motion and distance guards, fixed obstruction stop/reverse, disable restoration; camera clearance is not a full player capsule
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KPassageDoorReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KPassageDoorReview.cs:42)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KPassageDoorReview.cs Line: 42)
+
+NF5K_EQUIPMENT_INFORMATION_OK: modal equipment dossier blocks background commands and closes cleanly
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KContextInteractionReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KContextInteractionReview.cs:78)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KContextInteractionReview.cs Line: 78)
+
+NF5K_CONTEXT_INTERACTION_OK: E action dispatch, live mouse rebind, reserved key rejection, modal input isolation, critical hold cancellation; user preferences unchanged
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KContextInteractionReview:Validate (RailwayRenaissance.Cab.CabEngineState) (at Assets/Editor/NF5KContextInteractionReview.cs:97)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:191)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KContextInteractionReview.cs Line: 97)
+
+NF5K_SIMULATION_PLAYMODE_OK: key/master/pump startup, delayed diesel start, charging, forward traction, moving-reverse guard, checkpoint and emergency stop
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KSimulationPlayReview:Check () (at Assets/Editor/NF5KSimulationReview.cs:193)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KSimulationReview.cs Line: 193)
+
+Unloading 134 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            81.139 ms
+	Integration:            135.916 ms
+	Integration of assets:  0.047 ms
+	Thread Wait Time:       -0.011 ms
+	Total Operation Time:   217.091 ms
+Unloading 6327 unused Assets / (2.4 MB). Loaded Objects now: 35942.
+Memory consumption went from 0.73 GB to 0.73 GB.
+Total: 24.878800 ms (FindLiveObjects: 2.852400 ms CreateObjectMapping: 2.673100 ms MarkObjects: 16.608900 ms  DeleteObjects: 2.742600 ms)
+
+MonoPathRemapper: Attempts to remap: 12390; Successful remaps: 4
+Serialized file version minimum: 22, current 23
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
+Shut down.
+Lingering sessions upon destruction of worker manager
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+abort_threads: Failed aborting id: 0000000000005E3C, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 00000000000042F8, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000005E3C, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 00000000000042F8, mono_thread_manage will ignore it
+
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1793146519247,"processId":13660,"allocatedMemory":21209282,"memoryLabels":[{"Default":235578},{"Permanent":15516},{"NewDelete":66747},{"Thread":4197560},{"Manager":827237},{"VertexData":1784},{"Geometry":816},{"Texture":24},{"Shader":852032},{"Material":24},{"GfxDevice":56408},{"Animation":952},{"Audio":1168},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":10360},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"MonoCode":128},{"ScriptingNativeRuntime":722636},{"BaseObject":1633032},{"Resource":1208},{"Renderer":3080},{"Transform":4685},{"File":21863},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":68121},{"StaticString":3808},{"Utility":2675958},{"Curl":2675},{"PoolAlloc":2360},{"AI":80},{"TypeTree":14869},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":20888},{"WebRequest":552},{"VR":47114},{"SceneManager":608},{"Video":208},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":552},{"Hierarchy":1176},{"UIElements":72},{"CoreStats":13688},{"Identifiers":6768},{"Gui":128},{"EditorUtility":242794},{"VersionControl":8},{"Undo":931},{"AssetDatabase":8970209},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":38929},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":212},{"ProfilerEditor":9778},{"CoreBusinessMetrics":3482},{"Windowing":456},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}

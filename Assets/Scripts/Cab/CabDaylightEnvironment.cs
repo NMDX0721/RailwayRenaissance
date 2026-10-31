@@ -26,9 +26,9 @@ namespace RailwayRenaissance.Cab
             sun.shadows=LightShadows.Soft; sun.shadowStrength=cloudy?.45f:.85f;
             RenderSettings.sun=sun; RenderSettings.skybox=sky;
             RenderSettings.ambientMode=AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor=cloudy?new Color(.42f,.46f,.50f):new Color(.36f,.44f,.54f);
-            RenderSettings.ambientEquatorColor=cloudy?new Color(.25f,.27f,.28f):new Color(.20f,.24f,.27f);
-            RenderSettings.ambientGroundColor=new Color(.075f,.085f,.065f);
+            RenderSettings.ambientSkyColor=cloudy?new Color(.60f,.64f,.68f):new Color(.55f,.63f,.73f);
+            RenderSettings.ambientEquatorColor=cloudy?new Color(.40f,.42f,.43f):new Color(.36f,.40f,.43f);
+            RenderSettings.ambientGroundColor=new Color(.15f,.16f,.14f);
             reviewCamera.clearFlags=CameraClearFlags.Skybox; reviewCamera.farClipPlane=350;
             Object.FindFirstObjectByType<CabDiffuseFill>()?.Refresh();
             Object.FindFirstObjectByType<CabInteriorReflections>()?.RefreshIfChanged();

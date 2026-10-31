@@ -25,6 +25,29 @@ public class NewGameSetupUI : MonoBehaviour
     private VisualElement customParamsBox;
     private readonly Dictionary<string, Slider> paramSliders = new Dictionary<string, Slider>();
 
+    // ── Seed Controls ──
+    private VisualElement seedGroup;
+    private Button seedModeRandomBtn;
+    private Button seedModePresetBtn;
+    private Button seedModeInputBtn;
+    private VisualElement seedRandomBox;
+    private VisualElement seedPresetBox;
+    private VisualElement seedInputBox;
+    private Label seedCodeDisplayLabel;
+    private Label seedStatusLabel;
+    private TextField seedInputField;
+    private Button[] presetButtons;
+
+    public enum SeedMode { Random = 0, Preset = 1, Input = 2 }
+    private SeedMode currentSeedMode = SeedMode.Random;
+    private string currentRandomSeedCode = "";
+    private string currentSeedCode = "";
+    private int selectedPresetIndex = -1;
+
+    public string CurrentSeedCode => currentSeedCode;
+    public int CurrentSeedModeIndex => (int)currentSeedMode;
+    public bool CanConfirm => GameConfig.IsValidSeedCode(currentSeedCode);
+
     private static readonly (string, string, float, float, float)[] ParamDefs =
     {
         ("startMoney",      "初始资金", 1f, 5f, 4f),
@@ -49,6 +72,7 @@ public class NewGameSetupUI : MonoBehaviour
         gameFont = Resources.Load<Font>("Fonts/zpix");
         onConfirmed = onConfirm;
         BuildUI();
+        InitNewGameSeedSession();
     }
 
     private FontDefinition Fd() => new FontDefinition { font = gameFont };
@@ -206,9 +230,9 @@ public class NewGameSetupUI : MonoBehaviour
         t.style.unityFontDefinition = fd; t.style.marginBottom = 4;
         page.Add(t);
 
-        var st = new Label("设置你的角色和开局难度");
+        var st = new Label("设置你的角色、开局难度与世界种子");
         st.style.fontSize = 16; st.style.color = new Color(1f, 1f, 1f, 0.4f);
-        st.style.unityFontDefinition = fd; st.style.marginBottom = 28;
+        st.style.unityFontDefinition = fd; st.style.marginBottom = 18;
         page.Add(st);
 
         // ── Difficulty ──
@@ -217,27 +241,28 @@ public class NewGameSetupUI : MonoBehaviour
         diffGroup.style.borderTopLeftRadius = 8; diffGroup.style.borderTopRightRadius = 8;
         diffGroup.style.borderBottomLeftRadius = 8; diffGroup.style.borderBottomRightRadius = 8;
         diffGroup.style.paddingLeft = 24; diffGroup.style.paddingRight = 24;
-        diffGroup.style.paddingTop = 20; diffGroup.style.paddingBottom = 20;
+        diffGroup.style.paddingTop = 16; diffGroup.style.paddingBottom = 16;
         diffGroup.style.width = new Length(100, LengthUnit.Percent);
+        diffGroup.style.marginBottom = 16;
         page.Add(diffGroup);
 
         var diffTitle = new Label("难度选择");
-        diffTitle.style.fontSize = 20; diffTitle.style.color = new Color(1f, 1f, 1f, 0.85f);
-        diffTitle.style.unityFontDefinition = fd; diffTitle.style.marginBottom = 12;
+        diffTitle.style.fontSize = 18; diffTitle.style.color = new Color(1f, 1f, 1f, 0.85f);
+        diffTitle.style.unityFontDefinition = fd; diffTitle.style.marginBottom = 10;
         diffGroup.Add(diffTitle);
 
         var diffRow = new VisualElement();
         diffRow.style.flexDirection = FlexDirection.Row;
-        diffRow.style.marginBottom = 10;
+        diffRow.style.marginBottom = 8;
         diffGroup.Add(diffRow);
 
         for (int i = 0; i < difficultyKeys.Length; i++)
         {
             int idx = i;
             var btn = new Button(() => SelectDifficulty(idx)) { text = difficultyLabels[idx] };
-            btn.style.flexGrow = 1; btn.style.height = 46;
+            btn.style.flexGrow = 1; btn.style.height = 42;
             btn.style.marginRight = (i < 3) ? 8 : 0;
-            btn.style.fontSize = 18; btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btn.style.fontSize = 17; btn.style.unityTextAlign = TextAnchor.MiddleCenter;
             btn.style.unityFontDefinition = fd;
             btn.style.borderTopLeftRadius = 6; btn.style.borderTopRightRadius = 6;
             btn.style.borderBottomLeftRadius = 6; btn.style.borderBottomRightRadius = 6;
@@ -249,9 +274,409 @@ public class NewGameSetupUI : MonoBehaviour
 
         var diffDesc = new Label("");
         diffDesc.name = "diff-desc";
-        diffDesc.style.fontSize = 15; diffDesc.style.color = new Color(1f, 1f, 1f, 0.45f);
+        diffDesc.style.fontSize = 14; diffDesc.style.color = new Color(1f, 1f, 1f, 0.45f);
         diffDesc.style.unityFontDefinition = fd;
         diffGroup.Add(diffDesc);
+
+        // ── Seed Group ──
+        BuildSeedGroup(page, fd);
+    }
+
+    private void BuildSeedGroup(VisualElement page, FontDefinition fd)
+    {
+        seedGroup = new VisualElement();
+        seedGroup.style.backgroundColor = new Color(0.1f, 0.06f, 0.04f, 0.5f);
+        seedGroup.style.borderTopLeftRadius = 8; seedGroup.style.borderTopRightRadius = 8;
+        seedGroup.style.borderBottomLeftRadius = 8; seedGroup.style.borderBottomRightRadius = 8;
+        seedGroup.style.paddingLeft = 24; seedGroup.style.paddingRight = 24;
+        seedGroup.style.paddingTop = 16; seedGroup.style.paddingBottom = 16;
+        seedGroup.style.width = new Length(100, LengthUnit.Percent);
+        page.Add(seedGroup);
+
+        var titleRow = new VisualElement();
+        titleRow.style.flexDirection = FlexDirection.Row;
+        titleRow.style.justifyContent = Justify.SpaceBetween;
+        titleRow.style.alignItems = Align.Center;
+        titleRow.style.marginBottom = 12;
+        seedGroup.Add(titleRow);
+
+        var titleLabel = new Label("世界创生 (千里马创世核)");
+        titleLabel.style.fontSize = 18;
+        titleLabel.style.color = new Color(1f, 1f, 1f, 0.85f);
+        titleLabel.style.unityFontDefinition = fd;
+        titleRow.Add(titleLabel);
+
+        var modeRow = new VisualElement();
+        modeRow.style.flexDirection = FlexDirection.Row;
+        titleRow.Add(modeRow);
+
+        seedModeRandomBtn = MkModeBtn("🎲 随机世界", () => SetSeedMode(SeedMode.Random), fd);
+        seedModePresetBtn = MkModeBtn("⭐ 快捷预设", () => SetSeedMode(SeedMode.Preset), fd);
+        seedModeInputBtn = MkModeBtn("✏️ 输入分享码", () => SetSeedMode(SeedMode.Input), fd);
+        modeRow.Add(seedModeRandomBtn);
+        modeRow.Add(seedModePresetBtn);
+        modeRow.Add(seedModeInputBtn);
+
+        var modeContainer = new VisualElement();
+        modeContainer.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.6f);
+        modeContainer.style.borderTopLeftRadius = 6; modeContainer.style.borderTopRightRadius = 6;
+        modeContainer.style.borderBottomLeftRadius = 6; modeContainer.style.borderBottomRightRadius = 6;
+        modeContainer.style.borderTopWidth = 1; modeContainer.style.borderBottomWidth = 1;
+        modeContainer.style.borderLeftWidth = 1; modeContainer.style.borderRightWidth = 1;
+        modeContainer.style.borderTopColor = CGoldDim; modeContainer.style.borderBottomColor = CGoldDim;
+        modeContainer.style.borderLeftColor = CGoldDim; modeContainer.style.borderRightColor = CGoldDim;
+        modeContainer.style.paddingLeft = 16; modeContainer.style.paddingRight = 16;
+        modeContainer.style.paddingTop = 12; modeContainer.style.paddingBottom = 12;
+        seedGroup.Add(modeContainer);
+
+        // 1. Random Box
+        seedRandomBox = new VisualElement();
+        seedRandomBox.style.flexDirection = FlexDirection.Row;
+        seedRandomBox.style.alignItems = Align.Center;
+        seedRandomBox.style.justifyContent = Justify.SpaceBetween;
+        modeContainer.Add(seedRandomBox);
+
+        var randomCodeBox = new VisualElement();
+        randomCodeBox.style.flexDirection = FlexDirection.Column;
+        randomCodeBox.style.flexGrow = 1;
+        seedRandomBox.Add(randomCodeBox);
+
+        seedCodeDisplayLabel = new Label("");
+        seedCodeDisplayLabel.style.fontSize = 20;
+        seedCodeDisplayLabel.style.color = CGold;
+        seedCodeDisplayLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        seedCodeDisplayLabel.style.unityFontDefinition = fd;
+        randomCodeBox.Add(seedCodeDisplayLabel);
+
+        var randomDescLabel = new Label("默认模式：由确定性创世核生成随机有效世界码，同码在同一版本必生成相同世界。");
+        randomDescLabel.style.fontSize = 13;
+        randomDescLabel.style.color = new Color(1f, 1f, 1f, 0.5f);
+        randomDescLabel.style.unityFontDefinition = fd;
+        randomDescLabel.style.marginTop = 4;
+        randomCodeBox.Add(randomDescLabel);
+
+        var randomActionRow = new VisualElement();
+        randomActionRow.style.flexDirection = FlexDirection.Row;
+        randomActionRow.style.alignItems = Align.Center;
+        seedRandomBox.Add(randomActionRow);
+
+        var rerollBtn = MkActionBtn("重新随机", OnReRollRandomSeed, 90, fd);
+        rerollBtn.style.marginRight = 8;
+        randomActionRow.Add(rerollBtn);
+
+        var copyBtn = MkActionBtn("复制码", OnCopyCurrentSeed, 80, fd);
+        randomActionRow.Add(copyBtn);
+
+        // 2. Preset Box
+        seedPresetBox = new VisualElement();
+        seedPresetBox.style.flexDirection = FlexDirection.Column;
+        modeContainer.Add(seedPresetBox);
+
+        var presetBtnsRow = new VisualElement();
+        presetBtnsRow.style.flexDirection = FlexDirection.Row;
+        presetBtnsRow.style.marginBottom = 10;
+        seedPresetBox.Add(presetBtnsRow);
+
+        presetButtons = new Button[GameConfig.Presets.Length];
+        for (int i = 0; i < GameConfig.Presets.Length; i++)
+        {
+            int idx = i;
+            var p = GameConfig.Presets[i];
+            var pBtn = new Button(() => SelectPreset(idx)) { text = p.name };
+            pBtn.style.flexGrow = 1;
+            pBtn.style.height = 34;
+            pBtn.style.marginRight = (i < GameConfig.Presets.Length - 1) ? 6 : 0;
+            pBtn.style.fontSize = 14;
+            pBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
+            pBtn.style.unityFontDefinition = fd;
+            pBtn.style.borderTopLeftRadius = 4; pBtn.style.borderTopRightRadius = 4;
+            pBtn.style.borderBottomLeftRadius = 4; pBtn.style.borderBottomRightRadius = 4;
+            pBtn.style.backgroundColor = CBtn;
+            pBtn.style.color = new Color(1f, 1f, 1f, 0.8f);
+            presetBtnsRow.Add(pBtn);
+            presetButtons[idx] = pBtn;
+        }
+
+        var presetDetailRow = new VisualElement();
+        presetDetailRow.style.flexDirection = FlexDirection.Row;
+        presetDetailRow.style.justifyContent = Justify.SpaceBetween;
+        presetDetailRow.style.alignItems = Align.Center;
+        seedPresetBox.Add(presetDetailRow);
+
+        var presetInfoBox = new VisualElement();
+        presetInfoBox.style.flexGrow = 1;
+        presetDetailRow.Add(presetInfoBox);
+
+        var presetCodeLabel = new Label("");
+        presetCodeLabel.name = "preset-code-label";
+        presetCodeLabel.style.fontSize = 19;
+        presetCodeLabel.style.color = CGold;
+        presetCodeLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        presetCodeLabel.style.unityFontDefinition = fd;
+        presetInfoBox.Add(presetCodeLabel);
+
+        var presetDescLabel = new Label("");
+        presetDescLabel.name = "preset-desc-label";
+        presetDescLabel.style.fontSize = 13;
+        presetDescLabel.style.color = new Color(1f, 1f, 1f, 0.5f);
+        presetDescLabel.style.unityFontDefinition = fd;
+        presetDescLabel.style.marginTop = 2;
+        presetInfoBox.Add(presetDescLabel);
+
+        var copyPresetBtn = MkActionBtn("复制码", OnCopyCurrentSeed, 80, fd);
+        presetDetailRow.Add(copyPresetBtn);
+
+        // 3. Input Box
+        seedInputBox = new VisualElement();
+        seedInputBox.style.flexDirection = FlexDirection.Column;
+        modeContainer.Add(seedInputBox);
+
+        var inputRow = new VisualElement();
+        inputRow.style.flexDirection = FlexDirection.Row;
+        inputRow.style.alignItems = Align.Center;
+        seedInputBox.Add(inputRow);
+
+        seedInputField = new TextField();
+        seedInputField.style.flexGrow = 1;
+        seedInputField.style.height = 36;
+        seedInputField.style.fontSize = 16;
+        seedInputField.style.unityFontDefinition = fd;
+        seedInputField.style.marginRight = 8;
+        seedInputField.RegisterValueChangedCallback(evt =>
+        {
+            string clean = evt.newValue != null ? evt.newValue.Trim().ToUpperInvariant() : "";
+            currentSeedCode = clean;
+            ValidateSeed();
+        });
+        inputRow.Add(seedInputField);
+
+        var pasteBtn = MkActionBtn("粘贴", OnPasteInputSeed, 70, fd);
+        pasteBtn.style.marginRight = 8;
+        inputRow.Add(pasteBtn);
+
+        var copyInputBtn = MkActionBtn("复制", OnCopyCurrentSeed, 70, fd);
+        inputRow.Add(copyInputBtn);
+
+        // Status Label
+        seedStatusLabel = new Label("");
+        seedStatusLabel.style.fontSize = 14;
+        seedStatusLabel.style.unityFontDefinition = fd;
+        seedStatusLabel.style.marginTop = 8;
+        seedGroup.Add(seedStatusLabel);
+    }
+
+    private Button MkModeBtn(string text, System.Action action, FontDefinition fd)
+    {
+        var btn = new Button(action) { text = text };
+        btn.style.height = 30;
+        btn.style.paddingLeft = 10; btn.style.paddingRight = 10;
+        btn.style.marginLeft = 4;
+        btn.style.fontSize = 13;
+        btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = fd;
+        btn.style.backgroundColor = CBtn;
+        btn.style.color = new Color(1f, 1f, 1f, 0.75f);
+        btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
+        btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
+        btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
+        btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
+        btn.style.borderTopColor = CGoldDim; btn.style.borderBottomColor = CGoldDim;
+        btn.style.borderLeftColor = CGoldDim; btn.style.borderRightColor = CGoldDim;
+        return btn;
+    }
+
+    private Button MkActionBtn(string text, System.Action action, int width, FontDefinition fd)
+    {
+        var btn = new Button(action) { text = text };
+        btn.style.width = width; btn.style.height = 34;
+        btn.style.fontSize = 14;
+        btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = fd;
+        btn.style.backgroundColor = new Color(0.3f, 0.18f, 0.1f, 0.9f);
+        btn.style.color = new Color(1f, 0.9f, 0.6f, 1f);
+        btn.style.borderTopLeftRadius = 4; btn.style.borderTopRightRadius = 4;
+        btn.style.borderBottomLeftRadius = 4; btn.style.borderBottomRightRadius = 4;
+        btn.style.borderTopWidth = 1; btn.style.borderBottomWidth = 1;
+        btn.style.borderLeftWidth = 1; btn.style.borderRightWidth = 1;
+        btn.style.borderTopColor = CGoldDim; btn.style.borderBottomColor = CGoldDim;
+        btn.style.borderLeftColor = CGoldDim; btn.style.borderRightColor = CGoldDim;
+        return btn;
+    }
+
+    public void InitNewGameSeedSession()
+    {
+        currentRandomSeedCode = GameConfig.GenerateRandomSeedCode();
+        currentSeedMode = SeedMode.Random;
+        selectedPresetIndex = -1;
+        currentSeedCode = currentRandomSeedCode;
+        RefreshSeedUI();
+    }
+
+    public void SetSeedModeForReview(int modeIndex)
+    {
+        SetSeedMode((SeedMode)modeIndex);
+    }
+
+    public void SelectPresetForReview(int presetIndex)
+    {
+        SelectPreset(presetIndex);
+    }
+
+    public void SetInputSeedForReview(string code)
+    {
+        SetSeedMode(SeedMode.Input);
+        if (seedInputField != null) seedInputField.value = code;
+        currentSeedCode = code != null ? code.Trim().ToUpperInvariant() : "";
+        ValidateSeed();
+    }
+
+    public void ReRollRandomSeedForReview()
+    {
+        OnReRollRandomSeed();
+    }
+
+    public void ConfirmForReview()
+    {
+        OnConfirm();
+    }
+
+    private void SetSeedMode(SeedMode mode)
+    {
+        currentSeedMode = mode;
+        if (mode == SeedMode.Random)
+        {
+            currentSeedCode = currentRandomSeedCode;
+        }
+        else if (mode == SeedMode.Preset)
+        {
+            if (selectedPresetIndex < 0 || selectedPresetIndex >= GameConfig.Presets.Length)
+                selectedPresetIndex = 0;
+            currentSeedCode = GameConfig.Presets[selectedPresetIndex].code;
+        }
+        else if (mode == SeedMode.Input)
+        {
+            if (seedInputField != null)
+            {
+                if (string.IsNullOrEmpty(seedInputField.value))
+                    seedInputField.value = currentSeedCode;
+                currentSeedCode = seedInputField.value.Trim().ToUpperInvariant();
+            }
+        }
+        RefreshSeedUI();
+    }
+
+    private void SelectPreset(int index)
+    {
+        currentSeedMode = SeedMode.Preset;
+        selectedPresetIndex = Mathf.Clamp(index, 0, GameConfig.Presets.Length - 1);
+        currentSeedCode = GameConfig.Presets[selectedPresetIndex].code;
+        RefreshSeedUI();
+    }
+
+    private void OnReRollRandomSeed()
+    {
+        currentRandomSeedCode = GameConfig.GenerateRandomSeedCode();
+        currentSeedMode = SeedMode.Random;
+        currentSeedCode = currentRandomSeedCode;
+        RefreshSeedUI();
+    }
+
+    private void OnCopyCurrentSeed()
+    {
+        if (!string.IsNullOrEmpty(currentSeedCode))
+        {
+            GUIUtility.systemCopyBuffer = currentSeedCode;
+            if (seedStatusLabel != null)
+            {
+                seedStatusLabel.text = $"📋 种子码 {currentSeedCode} 已复制到剪贴板！";
+                seedStatusLabel.style.color = CGold;
+            }
+        }
+    }
+
+    private void OnPasteInputSeed()
+    {
+        string pasted = GUIUtility.systemCopyBuffer;
+        if (!string.IsNullOrEmpty(pasted) && seedInputField != null)
+        {
+            seedInputField.value = pasted.Trim().ToUpperInvariant();
+        }
+    }
+
+    private void RefreshSeedUI()
+    {
+        if (seedGroup == null) return;
+
+        // Mode tab styling
+        seedModeRandomBtn.style.backgroundColor = (currentSeedMode == SeedMode.Random) ? CBtnActive : CBtn;
+        seedModeRandomBtn.style.color = (currentSeedMode == SeedMode.Random) ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.75f);
+        seedModePresetBtn.style.backgroundColor = (currentSeedMode == SeedMode.Preset) ? CBtnActive : CBtn;
+        seedModePresetBtn.style.color = (currentSeedMode == SeedMode.Preset) ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.75f);
+        seedModeInputBtn.style.backgroundColor = (currentSeedMode == SeedMode.Input) ? CBtnActive : CBtn;
+        seedModeInputBtn.style.color = (currentSeedMode == SeedMode.Input) ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.75f);
+
+        // Visibility
+        seedRandomBox.style.display = (currentSeedMode == SeedMode.Random) ? DisplayStyle.Flex : DisplayStyle.None;
+        seedPresetBox.style.display = (currentSeedMode == SeedMode.Preset) ? DisplayStyle.Flex : DisplayStyle.None;
+        seedInputBox.style.display = (currentSeedMode == SeedMode.Input) ? DisplayStyle.Flex : DisplayStyle.None;
+
+        if (currentSeedMode == SeedMode.Random)
+        {
+            if (seedCodeDisplayLabel != null) seedCodeDisplayLabel.text = currentRandomSeedCode;
+        }
+        else if (currentSeedMode == SeedMode.Preset)
+        {
+            for (int i = 0; i < presetButtons.Length; i++)
+            {
+                bool active = (i == selectedPresetIndex);
+                presetButtons[i].style.backgroundColor = active ? CBtnActive : CBtn;
+                presetButtons[i].style.color = active ? new Color(1f, 0.9f, 0.6f, 1f) : new Color(1f, 1f, 1f, 0.8f);
+            }
+            var codeLbl = seedPresetBox.Q<Label>("preset-code-label");
+            var descLbl = seedPresetBox.Q<Label>("preset-desc-label");
+            if (selectedPresetIndex >= 0 && selectedPresetIndex < GameConfig.Presets.Length)
+            {
+                var p = GameConfig.Presets[selectedPresetIndex];
+                if (codeLbl != null) codeLbl.text = p.code;
+                if (descLbl != null) descLbl.text = p.description + " · 明确选用的预设世界（由程序算法生成）";
+            }
+        }
+        else if (currentSeedMode == SeedMode.Input)
+        {
+            if (seedInputField != null && seedInputField.value != currentSeedCode)
+                seedInputField.value = currentSeedCode;
+        }
+
+        ValidateSeed();
+    }
+
+    private void ValidateSeed()
+    {
+        if (seedStatusLabel == null) return;
+
+        bool isValid = GameConfig.IsValidSeedCode(currentSeedCode);
+        if (isValid)
+        {
+            int seedVal = WorldGen.WorldGenerator.DecodeSeed(currentSeedCode);
+            seedStatusLabel.text = $"✔ 种子码有效 (Seed: {seedVal})，校验通过";
+            seedStatusLabel.style.color = new Color(0.4f, 0.9f, 0.4f, 1f);
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(currentSeedCode))
+            {
+                seedStatusLabel.text = "⚠️ 请输入种子码（格式：RR-XXXXX-YYYYY）";
+                seedStatusLabel.style.color = new Color(1f, 0.7f, 0.3f, 1f);
+            }
+            else
+            {
+                seedStatusLabel.text = "✖ 无效种子码！必须为 RR-XXXXX-YYYYY 且校验和正确";
+                seedStatusLabel.style.color = new Color(1f, 0.35f, 0.35f, 1f);
+            }
+        }
+
+        if (confirmBtn != null) confirmBtn.SetEnabled(isValid);
+        if (nextBtn != null && currentPage == 0) nextBtn.SetEnabled(isValid);
     }
 
     private void BuildPage2(VisualElement page, FontDefinition fd)
@@ -310,7 +735,7 @@ public class NewGameSetupUI : MonoBehaviour
     {
         currentPage = idx;
         string[] steps = { "第一步", "第二步" };
-        string[] titles = { "难度选择", "自定义参数" };
+        string[] titles = { "难度与种子", "自定义参数" };
         pageStep.text = steps[idx];
         pageTitle.text = titles[idx];
 
@@ -340,6 +765,7 @@ public class NewGameSetupUI : MonoBehaviour
             if (hint != null) hint.text = editable ? "调整各项参数数值" : "当前难度不支持自定义参数，请选择『指导司机』";
         }
 
+        ValidateSeed();
     }
 
     private void OnPrev() { if (currentPage > 0) ShowPage(currentPage - 1); }
@@ -375,10 +801,14 @@ public class NewGameSetupUI : MonoBehaviour
         if (currentPage == 1) ShowPage(currentPage);
     }
 
-    private static readonly string[] PresetSeeds = { "RR-7A3F-B2C9", "RR-042-D9E1", "RR-077-F5A2", "RR-113-C8D4", "RR-999-E0B7" };
-
     private void OnConfirm()
     {
+        if (!GameConfig.IsValidSeedCode(currentSeedCode))
+        {
+            ValidateSeed();
+            return;
+        }
+
         var config = GameConfig.Load();
         config.difficulty = difficultyKeys[selectedDifficulty];
 
@@ -398,8 +828,9 @@ public class NewGameSetupUI : MonoBehaviour
         {
             config.ApplyDifficultyPreset(difficultyKeys[selectedDifficulty]);
         }
-        // 单档：每次新游戏随机种子
-        config.seedCode = PresetSeeds[UnityEngine.Random.Range(0, PresetSeeds.Length)];
+
+        // 保存展示且已校验的种子码
+        config.seedCode = currentSeedCode;
 
         config.Save();
         Hide();
@@ -410,7 +841,12 @@ public class NewGameSetupUI : MonoBehaviour
 
     public void Show()
     {
-        if (panel != null) { panel.style.display = DisplayStyle.Flex; ShowPage(0); }
+        if (panel != null)
+        {
+            panel.style.display = DisplayStyle.Flex;
+            InitNewGameSeedSession();
+            ShowPage(0);
+        }
     }
 
     public void Hide() { if (panel != null) panel.style.display = DisplayStyle.None; }

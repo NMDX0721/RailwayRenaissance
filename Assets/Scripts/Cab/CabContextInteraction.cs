@@ -18,6 +18,7 @@ namespace RailwayRenaissance.Cab
         Collider focusedCollider;
         CabEngineState state;
         CabSimulationDriver driver;
+        CabServiceControl heldService;
         Font font;
         bool settings, firstVisit, capturing, cursorAim, guide = true;
         int selected;
@@ -25,18 +26,24 @@ namespace RailwayRenaissance.Cab
         string feedback, bindingMessage;
         Rect actionRect;
         CabSafetyEquipment equipmentInfo;
+        CabWorkstationEquipment workstationInfo;
         Vector2 equipmentInfoScroll;
         public string PrimaryPath => primary.bindings[0].effectivePath;
         public string PrimaryLabel => primary.GetBindingDisplayString();
-        public bool ModalOpen => settings || equipmentInfo!=null;
+        public bool ModalOpen => settings || equipmentInfo!=null || workstationInfo!=null;
+        public bool ShowWorkstationInfo(CabWorkstationEquipment equipment)
+        {
+            if(equipment==null||!equipment.CanOperate())return false;
+            workstationInfo=equipment;equipmentInfo=null;equipmentInfoScroll=Vector2.zero;holdStart=-1;return true;
+        }
         public bool ShowEquipmentInfo(CabSafetyEquipment equipment)
         {
             if(equipment==null)return false;
-            equipmentInfo=equipment;equipmentInfoScroll=Vector2.zero;holdStart=-1;return true;
+            equipmentInfo=equipment;workstationInfo=null;equipmentInfoScroll=Vector2.zero;holdStart=-1;return true;
         }
         public void CloseEquipmentInfo()
         {
-            equipmentInfo=null;focused=null;focusedCollider=null;holdStart=-1;inputAfter=Time.unscaledTime+.25f;
+            equipmentInfo=null;workstationInfo=null;focused=null;focusedCollider=null;holdStart=-1;inputAfter=Time.unscaledTime+.25f;
         }
         struct Choice
         {
@@ -65,8 +72,34 @@ namespace RailwayRenaissance.Cab
                 candidates.AddRange(t.GetComponentsInChildren<Collider>());
             foreach (var t in GetComponentsInChildren<CabSafetyEquipment>())
                 candidates.AddRange(t.GetComponents<Collider>());
+            foreach (var t in GetComponentsInChildren<CabStorageCabinet>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabSunVisor>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabWorkstationEquipment>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabCirculationFan>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabWiperSystem>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabExteriorLightControl>())
+                candidates.AddRange(t.GetComponents<Collider>());
+            foreach(var t in GetComponentsInChildren<CabVigilance>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach(var t in GetComponentsInChildren<CabParkingBrakeButton>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
+            foreach (var t in GetComponentsInChildren<CabLampTestButton>())
+                candidates.AddRange(t.GetComponents<Collider>());
+            foreach (var t in GetComponentsInChildren<CabServiceControl>())
+                candidates.AddRange(t.GetComponents<Collider>());
+            foreach (var t in GetComponentsInChildren<CabLightingKey>())
+                candidates.AddRange(t.GetComponents<Collider>());
+            var lighting=GetComponentInParent<CabInteriorLighting>();
+            if(lighting!=null)foreach(var t in lighting.GetComponentsInChildren<CabPassageDoor>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
         }
-        void OnDisable() { primary?.Dispose(); primary=null; }
+        void ReleaseServiceHold(){if(heldService!=null)heldService.Release();heldService=null;}
+        void OnDisable() { ReleaseServiceHold();primary?.Dispose(); primary=null; }
         public bool SetPrimaryPath(string path, bool persist = true)
         {
             if (primary == null || !ValidPath(path)) return false;
@@ -104,7 +137,12 @@ namespace RailwayRenaissance.Cab
         void Update()
         {
             if (view == null) view=Camera.main;
-            if(equipmentInfo!=null)
+            if(heldService!=null)
+            {
+                if(primary==null||!primary.IsPressed()||ModalOpen||Time.timeScale==0||focused!=heldService||OverOtherUI())ReleaseServiceHold();
+                else heldService.Maintain();
+            }
+            if(equipmentInfo!=null||workstationInfo!=null)
             {
                 holdStart=-1;
                 if(Keyboard.current?.escapeKey.wasPressedThisFrame==true)CloseEquipmentInfo();
@@ -149,6 +187,7 @@ namespace RailwayRenaissance.Cab
             }
             if(next!=focused){focused=next;focusedCollider=nextCollider;selected=0;holdStart=-1;inputAfter=Time.unscaledTime+.12f;}
             }
+            if(heldService!=null&&focused!=heldService)ReleaseServiceHold();
             BuildChoices();
             if(choices.Count==0)return;
             float wheel=Mouse.current?.scroll.ReadValue().y??0;
@@ -165,6 +204,21 @@ namespace RailwayRenaissance.Cab
         }
         static Component Target(Collider collider)
         {
+            var vigilance=collider.GetComponentInParent<CabVigilance>();if(vigilance!=null)return vigilance;
+            var parking=collider.GetComponentInParent<CabParkingBrakeButton>();if(parking!=null)return parking;
+            var service=collider.GetComponentInParent<CabServiceControl>();if(service!=null)return service;
+            var lampTest=collider.GetComponentInParent<CabLampTestButton>();if(lampTest!=null)return lampTest;
+            var exterior=collider.GetComponentInParent<CabExteriorLightControl>();if(exterior!=null)return exterior;
+            var lightingKey=collider.GetComponentInParent<CabLightingKey>();if(lightingKey!=null)return lightingKey;
+            var passage=collider.GetComponentInParent<CabPassageDoor>();if(passage!=null)return passage;
+            var wiper=collider.GetComponentInParent<CabWiperSystem>();if(wiper!=null)return wiper;
+            var fan=collider.GetComponentInParent<CabCirculationFan>();if(fan!=null)return fan;
+            var workstation=collider.GetComponentInParent<CabWorkstationEquipment>();
+            if(workstation!=null)return workstation;
+            var visor=collider.GetComponentInParent<CabSunVisor>();
+            if(visor!=null)return visor;
+            var cabinet=collider.GetComponentInParent<CabStorageCabinet>();
+            if(cabinet!=null)return cabinet;
             var equipment=collider.GetComponentInParent<CabSafetyEquipment>();
             if(equipment!=null)return equipment;
             var startup=collider.GetComponent<CabStartupClickTarget>();
@@ -173,7 +227,62 @@ namespace RailwayRenaissance.Cab
         void BuildChoices()
         {
             choices.Clear();
-            if(focused is CabSafetyEquipment equipment)
+            if(focused is CabVigilance vigilance)
+                choices.Add(new Choice(vigilance.ActionLabel,()=>vigilance.Acknowledge()));
+            else if(focused is CabParkingBrakeButton parking)
+                choices.Add(new Choice(parking.ActionLabel,()=>parking.Press(),true));
+            else if(focused is CabServiceControl service)
+                choices.Add(new Choice(service.ActionLabel,()=>service.Begin()));
+            else if(focused is CabLampTestButton lampTest)
+                choices.Add(new Choice(lampTest.ActionLabel,()=>lampTest.Press()));
+            else if(focused is CabExteriorLightControl exterior)
+            {
+                for(int i=0;i<exterior.DetentCount;i++){int position=i;choices.Add(new Choice(exterior.Label(i),()=>exterior.Select(position),exterior.IsMarker&&i==4));}
+                if(exterior.IsMarker&&exterior.Position==5)
+                    for(int i=0;i<3;i++){int aspect=i;string[] zh={"标志灯关闭","白色标志灯","红色尾灯"};string[] en={"Markers off","White markers","Red tail markers"};choices.Add(new Choice(CabLightingKey.English?en[i]:zh[i],()=>exterior.SetManualMarker(aspect),i==2));}
+            }
+            else if(focused is CabLightingKey lightingKey)
+            {
+                choices.Add(new Choice(lightingKey.ActionLabel(true),()=>lightingKey.SetSelected(true)));
+                choices.Add(new Choice(lightingKey.ActionLabel(false),()=>lightingKey.SetSelected(false)));
+            }
+            else if(focused is CabPassageDoor passage)
+                choices.Add(new Choice(passage.NextActionCloses?"关闭通道门 / CLOSE DOOR":"打开通道门 / OPEN DOOR",()=>passage.Toggle()));
+            else if(focused is CabWiperSystem wiper)
+            {
+                choices.Add(new Choice("关闭并回位 / OFF + PARK",()=>wiper.SelectMode(0)));
+                choices.Add(new Choice("低速刮扫 / LOW",()=>wiper.SelectMode(1)));
+                choices.Add(new Choice("高速刮扫 / HIGH",()=>wiper.SelectMode(2)));
+            }
+            else if(focused is CabWorkstationEquipment workstation)
+            {
+                if(workstation.Kind==CabWorkstationEquipment.EquipmentKind.Radio)
+                {
+                    choices.Add(new Choice(workstation.SwitchedOn?"关闭本机 / POWER OFF":"开启本机 / POWER ON",()=>workstation.Operate(0)));
+                    choices.Add(new Choice("下一频道 / NEXT CHANNEL",()=>workstation.Operate(1)));
+                    choices.Add(new Choice("上一频道 / PREVIOUS CHANNEL",()=>workstation.Operate(2)));
+                    choices.Add(new Choice("增大音量 / VOLUME UP",()=>workstation.Operate(3)));
+                    choices.Add(new Choice("减小音量 / VOLUME DOWN",()=>workstation.Operate(4)));
+                }
+                choices.Add(new Choice("阅读随车资料 / READ",()=>ShowWorkstationInfo(workstation)));
+            }
+            else if(focused is CabCirculationFan fan)
+            {
+                choices.Add(new Choice("关闭 / OFF",()=>fan.SelectSpeed(0)));
+                choices.Add(new Choice("低档 / LOW",()=>fan.SelectSpeed(1)));
+                choices.Add(new Choice("高档 / HIGH",()=>fan.SelectSpeed(2)));
+                choices.Add(new Choice(fan.Oscillating?"停止摆头 / FIX DIRECTION":"开启摆头 / OSCILLATE",()=>fan.ToggleOscillation()));
+            }
+            else if(focused is CabSunVisor visor)
+            {
+                choices.Add(new Choice("降低一档",()=>visor.Adjust(1)));
+                choices.Add(new Choice("抬高一档",()=>visor.Adjust(-1)));
+            }
+            else if(focused is CabStorageCabinet cabinet)
+            {
+                choices.Add(new Choice(cabinet.IsOpen?"关闭柜门 / CLOSE CABINET":"打开柜门 / OPEN CABINET",()=>cabinet.Toggle()));
+            }
+            else if(focused is CabSafetyEquipment equipment)
             {
                 choices.Add(new Choice(equipment.IsManual?"阅读手册 / READ MANUAL":"设备资料 / EQUIPMENT DETAILS",()=>ShowEquipmentInfo(equipment)));
                 if(!equipment.IsManual)choices.Add(new Choice(equipment.Held?"放回并固定 / RETURN":"取下检查 / REMOVE",()=>equipment.Toggle(),true));
@@ -215,6 +324,23 @@ namespace RailwayRenaissance.Cab
         }
         string UnavailableReason(int index)
         {
+            if(focused is CabVigilance vigilance)return vigilance.UnavailableReason;
+            if(focused is CabParkingBrakeButton parking)return parking.UnavailableReason;
+            if(focused is CabServiceControl service)return service.UnavailableReason;
+            if(focused is CabLampTestButton lampTest)return lampTest.UnavailableReason;
+            if(focused is CabExteriorLightControl exterior)return index<exterior.DetentCount?exterior.UnavailableReason(index):!exterior.CanOperate()?(CabLightingKey.English?"Move closer to the selector":"请靠近灯光旋钮操作"):null;
+            if(focused is CabLightingKey key)return !key.Connected?CabLightingKey.Labels.spare.Get(CabLightingKey.English):!key.CanOperate()?CabLightingKey.Labels.approach.Get(CabLightingKey.English):key.Selected==(index==0)?CabLightingKey.Labels.already.Get(CabLightingKey.English):null;
+            if(focused is CabWiperSystem wiper)return !wiper.CanOperate()?"请靠近刮雨器控制板":wiper.Motion.Mode==index?"已在该档位":null;
+            if(focused is CabCirculationFan fan)return !fan.CanOperate()?"请靠近风扇台面控制器":index<3&&fan.Speed==index?"已在该档位":null;
+            if(focused is CabPassageDoor passage)return passage.Moving?"门扇转动中":null;
+            if(focused is CabWorkstationEquipment workstation)
+            {
+                if(!workstation.CanOperate())return "请靠近设备操作";
+                if(workstation.Kind==CabWorkstationEquipment.EquipmentKind.Radio)
+                    return index==3&&workstation.Volume==5?"已到最大音量":index==4&&workstation.Volume==0?"已到最小音量":null;
+            }
+            if(focused is CabSunVisor visor)
+                return index==0&&visor.Step==2?"已到最低位置":index==1&&visor.Step==0?"已完全收起":null;
             if(focused is CabDrivingTarget d)
             {
                 if(d.Action==CabDrivingAction.ParkingBrake)
@@ -263,6 +389,48 @@ namespace RailwayRenaissance.Cab
             if(selected>=choices.Count)return;
             if(choices[selected].reason!=null){feedback=choices[selected].reason;feedbackUntil=Time.unscaledTime+2.5f;return;}
             bool accepted=choices[selected].execute();
+            if(focused is CabServiceControl service)
+            {
+                if(accepted&&primary!=null&&primary.IsPressed())heldService=service;
+                feedback=accepted?service.Hint:service.UnavailableReason;feedbackUntil=Time.unscaledTime+1;return;
+            }
+            if(focused is CabLampTestButton lampTest)
+            {
+                feedback=accepted?(CabLightingKey.English?"Testing lamps · automatic return after 2 seconds":"试灯中 · 2 秒后恢复实际状态"):lampTest.UnavailableReason;feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabExteriorLightControl exterior)
+            {
+                feedback=accepted?exterior.Hint:(CabLightingKey.English?"Move closer to the selector":"请靠近灯光旋钮操作");feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabLightingKey key)
+            {
+                feedback=accepted?key.Hint:CabLightingKey.Labels.approach.Get(CabLightingKey.English);feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabWiperSystem wiper)
+            {
+                feedback=accepted?wiper.Hint:"请靠近刮雨器控制板操作";feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabCirculationFan fan)
+            {
+                feedback=accepted?fan.Hint:"请靠近风扇操作";feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabPassageDoor passage)
+            {
+                feedback=accepted?passage.Hint:"请靠近通道门，等待门扇停稳";feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabWorkstationEquipment workstation)
+            {
+                feedback=accepted?workstation.Hint:"请靠近设备操作";feedbackUntil=ModalOpen?0:Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabSunVisor visor)
+            {
+                feedback=accepted?visor.Hint:"请靠近遮阳板操作";feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
+            if(focused is CabStorageCabinet cabinet)
+            {
+                feedback=accepted?(cabinet.IsOpen?"柜门已打开":"柜门已关闭"):"请靠近柜门操作";
+                feedbackUntil=Time.unscaledTime+2.5f;return;
+            }
             if(focused is CabSafetyEquipment equipment)
             {
                 if(selected==0&&accepted){feedbackUntil=0;return;}
@@ -302,21 +470,21 @@ namespace RailwayRenaissance.Cab
             if(state.MainReservoirKpa<600||state.BrakePipeKpa<470)return "等待充风，观察总风和制动管压力；暂不能施加牵引。";
             if(state.Reverser==ReverserPosition.Neutral)return "看向换向手柄 → 置前进位。";
             if(state.BrakePos>=BrakeNotch.Common||state.IndependentBrakeNotch>.01f||state.BrakeCylinderKpa>=20)return "操作大小闸缓解制动，等待缸压下降。";
-            if(driver!=null&&driver.ParkingBrake)return "看向座旁停放制动选择器 → 长按缓解停放制动。";
+            if(driver!=null&&driver.ParkingBrake)return "看向座旁绿色缓解按钮 → 长按缓解停放制动。";
             return state.ThrottleNotch==0?"看向牵引手轮 → 增加一档。提示随时可在交互设置里关闭。":"已完成启动与初次牵引；用实体闸把练习减速和停车。";
         }
         void OnGUI()
         {
             if(font==null)font=Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
             var old=GUI.skin.font;if(font!=null)GUI.skin.font=font;
-            if(equipmentInfo!=null)
+            if(equipmentInfo!=null||workstationInfo!=null)
             {
                 float width=Mathf.Min(640,Screen.width-24),height=Mathf.Min(740,Screen.height-24);
                 GUILayout.BeginArea(new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height),GUI.skin.box);
-                GUILayout.Label(equipmentInfo.IsManual?"使用与维护手册 / O&M MANUAL":"随车设备资料 / EQUIPMENT DOSSIER",new GUIStyle(GUI.skin.label){fontSize=22});
+                GUILayout.Label(workstationInfo!=null?"乘务工作资料 / CREW DOCUMENTS":equipmentInfo.IsManual?"使用与维护手册 / O&M MANUAL":"随车设备资料 / EQUIPMENT DOSSIER",new GUIStyle(GUI.skin.label){fontSize=22});
                 GUILayout.Space(8);
                 equipmentInfoScroll=GUILayout.BeginScrollView(equipmentInfoScroll);
-                GUILayout.Label(equipmentInfo.Description,new GUIStyle(GUI.skin.label){fontSize=16,wordWrap=true});
+                GUILayout.Label(workstationInfo!=null?workstationInfo.Description:equipmentInfo.Description,new GUIStyle(GUI.skin.label){fontSize=16,wordWrap=true});
                 GUILayout.EndScrollView();
                 if(GUILayout.Button("关闭 / CLOSE  ·  Esc",GUILayout.Height(32)))CloseEquipmentInfo();
                 GUILayout.EndArea();GUI.skin.font=old;return;
@@ -330,7 +498,7 @@ namespace RailwayRenaissance.Cab
                 float h=80+choices.Count*29;
                 actionRect=new Rect(Mathf.Clamp(p.x+24,8,Mathf.Max(8,Screen.width-308)),Mathf.Clamp(Screen.height-p.y-h/2,52,Mathf.Max(52,Screen.height-h-118)),300,h);
                 GUI.Box(actionRect,GUIContent.none);
-                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabDrivingTarget d?d.Hint:focused is CabSafetyEquipment equipment?equipment.Hint:"驾驶台操作");
+                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabVigilance vigilance?vigilance.Hint:focused is CabParkingBrakeButton parking?parking.Hint:focused is CabServiceControl service?service.Hint:focused is CabLampTestButton lampTest?lampTest.Hint:focused is CabExteriorLightControl exterior?exterior.Hint:focused is CabLightingKey lightingKey?lightingKey.Hint:focused is CabWiperSystem wiper?wiper.Hint:focused is CabCirculationFan fan?fan.Hint:focused is CabPassageDoor passage?passage.Hint:focused is CabWorkstationEquipment workstation?workstation.Hint:focused is CabDrivingTarget d?d.Hint:focused is CabSafetyEquipment equipment?equipment.Hint:focused is CabStorageCabinet cabinet?cabinet.Hint:focused is CabSunVisor visor?visor.Hint:"驾驶台操作");
                 for(int i=0;i<choices.Count;i++)
                 {
                     string prefix=i==selected?"› ":"  ";
@@ -338,7 +506,7 @@ namespace RailwayRenaissance.Cab
                     if(GUI.Button(new Rect(actionRect.x+10,actionRect.y+31+i*29,280,26),label)){selected=i;holdStart=-1;inputAfter=Time.unscaledTime+.2f;}
                 }
                 if(choices[selected].reason!=null)GUI.Label(new Rect(actionRect.x+10,actionRect.yMax-48,280,24),choices[selected].reason);
-                GUI.Label(new Rect(actionRect.x+10,actionRect.yMax-23,280,22),$"[{PrimaryLabel}] 执行 · 滚轮或点击选择");
+                GUI.Label(new Rect(actionRect.x+10,actionRect.yMax-23,280,22),$"[{PrimaryLabel}] "+((focused is CabParkingBrakeButton||focused is CabLightingKey||focused is CabExteriorLightControl||focused is CabLampTestButton||focused is CabServiceControl)?CabLightingKey.Labels.execute.Get(CabLightingKey.English):"执行 · 滚轮或点击选择"));
             }
             if(guide)GUI.Box(new Rect(12,Screen.height-162,Mathf.Min(680,Screen.width-24),45),GuideText());
             if(Time.unscaledTime<feedbackUntil)GUI.Box(new Rect(Mathf.Max(8,(Screen.width-580)/2),64,580,72),feedback,new GUIStyle(GUI.skin.box){wordWrap=true});

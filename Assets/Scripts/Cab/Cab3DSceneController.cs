@@ -45,6 +45,8 @@ namespace RailwayRenaissance.Cab
         // 昼夜与环境
         public float DayPhase = 0.25f; // 0.0=黎明, 0.25=正午, 0.65=黄昏, 0.85=深夜
         public bool IsRaining = false;
+        public bool WipersOn { get; private set; }
+        public event System.Action<bool> WiperStateChanged;
         public bool LayerVisibleTrack = true;
         public bool LayerVisiblePoles = true;
         public bool LayerVisibleScenery = true;
@@ -114,9 +116,15 @@ namespace RailwayRenaissance.Cab
 
         public void ToggleWipers()
         {
-            // 风挡雨刷开关控制
-            IsRaining = !IsRaining;
-            if (m_RainGroup != null) m_RainGroup.SetActive(IsRaining);
+            SetWipers(!WipersOn);
+        }
+
+        public bool SetWipers(bool enabled)
+        {
+            if (WipersOn == enabled) return false;
+            WipersOn = enabled;
+            WiperStateChanged?.Invoke(enabled);
+            return true;
         }
 
         public void ForceWeather(bool rain)

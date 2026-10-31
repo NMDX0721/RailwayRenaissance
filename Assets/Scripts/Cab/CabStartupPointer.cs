@@ -24,6 +24,8 @@ namespace RailwayRenaissance.Cab
             var ray = viewCamera.ScreenPointToRay(mouse.position.ReadValue());
             if (Physics.Raycast(ray, out var hover, 4f, interactionMask, QueryTriggerInteraction.Ignore))
             {
+                var parking=hover.collider.GetComponentInParent<CabParkingBrakeButton>();
+                if(parking!=null)drivingHint=parking.Hint;
                 var driving = hover.collider.GetComponentInParent<CabDrivingTarget>();
                 if (driving != null) drivingHint = driving.Hint;
             }
@@ -45,6 +47,8 @@ namespace RailwayRenaissance.Cab
         public bool ActivateRay(Ray ray, bool secondary = false)
         {
             if (!Physics.Raycast(ray, out var hit, 4f, interactionMask, QueryTriggerInteraction.Ignore)) return false;
+            var parking=hit.collider.GetComponentInParent<CabParkingBrakeButton>();
+            if(parking!=null)return parking.Press();
             var target = hit.collider.GetComponent<CabStartupClickTarget>();
             if (target != null) return target.Activate(secondary);
             var driving = hit.collider.GetComponentInParent<CabDrivingTarget>();

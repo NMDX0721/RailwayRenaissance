@@ -1,5 +1,7 @@
 # 每日结算公式表（T3 · AdvanceDay 重构输入）
 
+> **2026-10-18 版本定位**：第一、二节为 T3 改造前基线与历史缺口，不能当作当前未实现清单；G1/G2 与主要难度乘数已接线。当前代码事实及差异见第七节，监管/初值的设计约束仍以第六节为准。
+
 > **编制**：MiMo Desktop（经营数值策划）
 > **面向**：Antigravity（T3 沙本位经济核心重构 / 批1 结算环接线的实现依据）
 > **日期**：2026-10-07
@@ -133,6 +135,7 @@ AdvanceDay():
 - **确定性**：同一世界种子重开 → 同一组初值（`System.Random r` 派生，n创世核 v3.0 确定性算法）。
 - **禁固定**：`GameData.ResetState()` 的 Trust=62 / PoliticalPressure=0.20 / InfrastructureDecay=0.30，以及 `RestoreFromSave` 的 PlayerPrefs 缺字段默认值，**仅是无种子与老档兼容兜底**——正常新档只要存在 `CurrentSeed` 就必须被 `ApplySeedInitialValues` 覆盖为抖动值。
 - 新局重置清除 `GameData_RegulatoryState` 及档位兼容键；不得调用会从 PlayerPrefs 恢复旧程序的监管初始化入口。VN→经营过渡应用过渡员工数据，并清空上一局的监管/破产程序状态。
+- `GameData.ResetState()` 在已有 `CurrentSeed` 时重新应用种子初值、同步评级及 Day 1 趋势快照；同时清除并保存旧监管在途程序，写回当前监管/老化兼容键。无种子时保留兼容默认值。它不删除 `VNSaveSystem` 的存档槽；加载旧槽仍会恢复槽内六项经济字段。
 
 ### 6.2 外显红线：政治压力 / 线路老化只准定性
 
@@ -210,4 +213,29 @@ AdvanceDay():
   - 设立 30 天工务定期检定周期（结合轨道检查车巡检与道尺全面复核），仅在检定日重新评定并缓存 `GameData.DecayGrade`（0合格 / 1经常保养 / 2临时补修 / 3评定失格）；
   - 检定日向 `Notices` 发布正式工务公文（如《工务段关于秋季线路设备综合检定质量评定通报》）；
   - `TabletTrendDashboardUI` 彻底解除实时阈值比对，纯粹只读 `GameData.GetDecayGradeWord()` 缓存结果。
+
+---
+
+## 七、2026-10-18 代码现状核对（静态证据，非运行验收）
+
+对应 `GameData.AdvanceDay`、`OrderManager.DailySettle`、`CrewManager.AdvanceDay`。审查详情见 [CODEX-AUDIT-20261018](dispatch/orders/CODEX-AUDIT-20261018.md)。本节不修改既定数值。
+
+| 项目 | 当前实现 | 结论 |
+|---|---|---|
+| 订单 | CompleteOrder 累计待入账奖励；DailySettle 取出并清零，主循环统一并入收入 | G1 已接，不应重复补接或再次立即加钱 |
+| 人事 | 工资计算在前，随后 AdvanceDay 更新人事 | G2 已接；保持成长不回算当日工资 |
+| 难度 | 客流、货运、收入、成本、补贴与事件频率均有消费点 | 原 G4 的「公式一处未读」已过期；沙价倍率仍未见消费端 |
+| 收支 | `R=round(dailyRevenue×incomeMultiplier)+orderIncome`，`C=round((fuel+maintenance+wage)×costMultiplier)`，`net=R−C+subsidy` | 月度主经营收入 `R+subsidy` 与支出 `C` 对齐；事件/叙事及重整注资另行核对，不能宣称全资金变化均已记账 |
+| 监管罚则 | 发车、补贴只读离散 PoliticalTier | 第六节多日程序已接；内层压力不直接切罚则 |
+| 老化 | 燃油倍率 `1+D×0.25`，客流倍率 `clamp01(1−D×0.18)`；三分项磨耗与维护已接 | 这里 D 为内层连续老化；EventManager 未接入老化事故二次方倍率 |
+| 破产 | ClampStats 截断资金后，结算尾部触发多日破产程序 | 第一节立即注入 5000 的描述属于历史行为，不是当前实现 |
+| 收尾 | 快照、日变化先记录；Day++ 后刷新面板，再推进监管/破产及叙事 | 后置效果可能未进入先前快照和日变化；刷新前公告也会丢失，待统一时序 |
+| 初始化 | 新游戏写 seedCode，经营初始化按 seedId 读资源；VN 注入未调用 ApplySeedInitialValues | 尚未满足「正常开局全部初值走创世核」的验收要求，不能因已有生成算法就标通过 |
+
+### 已确认的说明边界
+
+- 当前信任函数 **连续但不全域单调**：67 时为 0.986，73 时为 0.859，过渡带内下降。第六节 D 的既定公式与代码一致；代码注释「全区间严格单调」不成立。是否改变该曲线属于数值取舍，本轮只记录，不擅改。
+- 当前客流有多次取整：CalculateDailyPassengers 内取整一次，老化折减后再取整，难度倍率后再取整。不能把第三节「统一取整一次」理解为当前整条链仅一次取整；是否合并需先比较数值影响。
+- 停业档位将旅客 trips 置零，但货运公式不依赖 trips、订单按已完成奖励入账。是否保留这两项需明确停业的业务范围；本轮不将其直接判成实现错误。
+- `GameDataSaveData` 六字段槽位未包含人事、订单待入账资金、种子和叙事状态；监管/老化从全局键读取，需先修存档边界再验收跨档数值。
 

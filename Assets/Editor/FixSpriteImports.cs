@@ -23,6 +23,7 @@ public static class FixSpriteImports
         foreach (string path in paths)
         {
             var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer != null && importer.userData == "CabAnnunciatorOpticalMap") continue;
             if (importer == null || importer.textureType == TextureImporterType.Sprite)
                 continue;
 

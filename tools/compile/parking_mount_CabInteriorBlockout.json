@@ -1,0 +1,22 @@
+{
+    "anchor": {
+        "x": 1.1599998474121094,
+        "y": 0.8899996280670166,
+        "z": 0.2999998927116394
+    },
+    "panelMin": {
+        "x": 1.0889997482299805,
+        "y": 0.8389993906021118,
+        "z": 0.2527163624763489
+    },
+    "panelMax": {
+        "x": 1.2309999465942383,
+        "y": 0.9124997854232788,
+        "z": 0.34278327226638796
+    },
+    "minSeatCandidateGap": 0.40243422985076907,
+    "minKneeCandidateGap": 0.23418335616588593,
+    "minBrakeGap": 0.04849982261657715,
+    "seatPoseSamples": 15,
+    "scope": "Actual mesh bounds, actual deck contact, authored seat/knee candidates; not a full anthropometric certification"
+}

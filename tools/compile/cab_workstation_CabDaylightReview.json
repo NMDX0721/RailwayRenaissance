@@ -1,0 +1,19 @@
+{
+    "mainWidth": 1.5499999523162842,
+    "mainCenterX": 0.5500000715255737,
+    "assistantWidth": 0.9499998092651367,
+    "assistantDepth": 0.5800000429153442,
+    "worktopHeight": 0.8389999866485596,
+    "assistantSeatX": -0.6499999761581421,
+    "clearSeatGap": 0.8399999141693115,
+    "frontDeckGap": 0.10000014305114746,
+    "sideDoorSamples": 176,
+    "passageDoorSamples": 44,
+    "passageLeafWidth": 0.8600000143051148,
+    "passageLeafHeight": 1.8700000047683716,
+    "passageHeightWidthRatio": 2.1744186878204347,
+    "passageWindowWidth": 0.6799999475479126,
+    "passageWindowHeight": 0.75,
+    "passageLowerPanelHeight": 0.9800000190734863,
+    "passageHandleHeight": 0.8999999761581421
+}

@@ -1,8 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using RailwayRenaissance.UI.Tablet;
 using RailwayRenaissance.UI.Tablet.Apps;
+using RailwayRenaissance.UI.Tablet.SystemShell;
+using UI.Tablet.Rendering;
 
 /// <summary>小米平板系统桌面（模拟经营主界面）。澎湃32·朝鲜特供版 像素演绎。
 /// 锁屏(扫脸)→桌面(状态栏+App网格+任务栏)→App窗口。</summary>
@@ -13,6 +15,16 @@ public class GameMainUI : MonoBehaviour
     private VisualElement root;
     private VisualElement lockScreen;
     private VisualElement desktop;
+    private readonly TabletShellState tabletShellState = new TabletShellState();
+    private TabletShellView tabletShellView;
+    private TabletGaussianBlur blurService;
+    private RenderTexture blurCaptureRT;
+    private Coroutine blurCaptureCoroutine;
+    public TabletPresentationPreferences PresentationPreferences { get; private set; }
+#if UNITY_EDITOR
+    internal static string PresentationReviewStorage;
+    internal static string NotificationReviewStorage;
+#endif
     private Font gameFont;
     private FontDefinition Fd() => new FontDefinition { font = gameFont };
 
@@ -87,7 +99,28 @@ public class GameMainUI : MonoBehaviour
 
     public void Hide()
     {
+        tabletShellState.ClosePanel();
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        tabletShellView?.ClearBlurredBackground();
         if (root != null) root.style.display = DisplayStyle.None;
+    }
+
+    private void OnDisable()
+    {
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        ReleaseCaptureRT();
+    }
+
+    private void OnDestroy()
+    {
+        TabletSystemToolsAppUI.SetToastHandler(null);
+        if (PresentationPreferences != null) PresentationPreferences.Changed -= ApplyPresentation;
+        tabletShellState.Changed -= OnShellStateChanged;
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        ReleaseCaptureRT();
+        if (blurService != null) { blurService.Dispose(); blurService = null; }
+        tabletShellView?.Dispose();
+        if (Instance == this) Instance = null;
     }
 
     public bool unlocked;
@@ -155,12 +188,26 @@ public class GameMainUI : MonoBehaviour
         MigrateUsername();
         TraceLog.L("[GameMainUI] Init: migrate ok");
         gameFont = Resources.Load<Font>("Fonts/zpix");
+        string presentationPath = System.IO.Path.Combine(Application.persistentDataPath, "TabletSystem", "presentation-v1.json");
+#if UNITY_EDITOR
+        if (!string.IsNullOrEmpty(PresentationReviewStorage)) presentationPath = PresentationReviewStorage;
+#endif
+        PresentationPreferences = new TabletPresentationPreferences(presentationPath);
+        PresentationPreferences.Changed += ApplyPresentation;
+        string notificationPath = System.IO.Path.Combine(Application.persistentDataPath, "TabletSystem", "notifications-v1.json");
+#if UNITY_EDITOR
+        if (!string.IsNullOrEmpty(NotificationReviewStorage)) notificationPath = NotificationReviewStorage;
+#endif
+        tabletShellState.InitializeStorage(notificationPath);
+        TabletSystemToolsAppUI.SetToastHandler(ShowBackupToast);
+        tabletShellState.Changed += OnShellStateChanged;
         TraceLog.L("[GameMainUI] Init: font loaded=" + (gameFont != null));
         BuildDocument();
         TraceLog.L("[GameMainUI] Init: document ok");
         BuildLockScreen();
         TraceLog.L("[GameMainUI] Init: lock ok");
         ShowLockScreen();
+        ApplyPresentation();
         TraceLog.L("[GameMainUI] Init: phase1 done (desktop pending)");
     }
 
@@ -286,6 +333,10 @@ public class GameMainUI : MonoBehaviour
         {
             wallpaper.style.backgroundImage = new StyleBackground(GradientBackground());
         }
+        var dim = new VisualElement { name = "tablet-lock-wallpaper-dim", pickingMode = PickingMode.Ignore };
+        dim.style.position = Position.Absolute;
+        dim.style.left = 0; dim.style.right = 0; dim.style.top = 0; dim.style.bottom = 0;
+        wallpaper.Add(dim);
 
         // 上部留白 → 居中 HyperOS 96px 大时钟
         var spacerTop = new VisualElement();
@@ -379,6 +430,14 @@ public class GameMainUI : MonoBehaviour
         lockScreen.RegisterCallback<ClickEvent>(e => Unlock());
         root.RegisterCallback<KeyDownEvent>(evt =>
         {
+            if (evt.keyCode == KeyCode.Escape && _tabletRebindAction == null && tabletShellState.ClosePanel())
+                evt.StopImmediatePropagation();
+            else if (tabletShellState.Panel != TabletSystemPanel.None && evt.target is VisualElement target &&
+                     !root.Q("tablet-shell-root").Contains(target))
+                evt.StopImmediatePropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<KeyDownEvent>(evt =>
+        {
             if (evt.keyCode == KeyCode.Space && !unlocked && lockScreen.style.display == DisplayStyle.Flex)
             {
                 Unlock();
@@ -416,6 +475,9 @@ public class GameMainUI : MonoBehaviour
     private void ShowLockScreen()
     {
         unlocked = false;
+        if (blurCaptureCoroutine != null) { StopCoroutine(blurCaptureCoroutine); blurCaptureCoroutine = null; }
+        tabletShellView?.SetVisible(false);
+        if (appLayer != null) appLayer.style.display = DisplayStyle.None;
         // 显示即同步时钟（首次加载时 tick 尚未启动的窗口期）
         var now = System.DateTime.Now.ToString("HH:mm");
         var lc = lockScreen?.Q<Label>("lock-clock");
@@ -430,6 +492,14 @@ public class GameMainUI : MonoBehaviour
     {
         if (unlocked) return;
         unlocked = true;
+        if (PresentationPreferences != null && PresentationPreferences.ReduceMotion)
+        {
+            lockScreen.style.display = DisplayStyle.None;
+            desktop.style.display = DisplayStyle.Flex;
+            desktop.style.opacity = 1;
+            tabletShellView?.SetVisible(true);
+            return;
+        }
         // 光带扫一遍 → 桌面淡入
         var beam = lockScreen.Q<Label>("face-beam");
         if (beam != null)
@@ -444,6 +514,7 @@ public class GameMainUI : MonoBehaviour
         {
             lockScreen.style.display = DisplayStyle.None;
             desktop.style.display = DisplayStyle.Flex;
+            tabletShellView?.SetVisible(true);
             desktop.style.opacity = 0;
             desktop.schedule.Execute(() => { desktop.style.opacity = 1; }).ExecuteLater(10);
         }).ExecuteLater(420);
@@ -503,7 +574,7 @@ public class GameMainUI : MonoBehaviour
         root.Add(desktop);
 
         // 壁纸层（软化纸色渐变模拟）
-        var wallpaper = new VisualElement();
+        var wallpaper = new VisualElement { name = "tablet-desktop-wallpaper" };
         wallpaper.style.position = Position.Absolute;
         wallpaper.style.top = 0; wallpaper.style.left = 0; wallpaper.style.right = 0; wallpaper.style.bottom = 0;
         wallpaper.style.backgroundColor = Paper;
@@ -516,7 +587,8 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.justifyContent = Justify.SpaceBetween;
         statusBar.style.paddingLeft = 20; statusBar.style.paddingRight = 20;
         statusBar.style.paddingTop = 8; statusBar.style.paddingBottom = 6;
-        statusBar.style.height = 38;
+        statusBar.style.height = 48;
+        statusBar.style.flexShrink = 0;
         statusBar.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.45f);
         desktop.Add(statusBar);
 
@@ -534,7 +606,7 @@ public class GameMainUI : MonoBehaviour
         // Folia 风格全局随身听 Mini 胶囊（紧随时间右侧，未播放时自动隐藏）
         BuildHudMusicCapsule(leftGroup);
 
-        var rightInfo = new VisualElement();
+        var rightInfo = new VisualElement { name = "tablet-status-right" };
         rightInfo.style.flexDirection = FlexDirection.Row;
         rightInfo.style.alignItems = Align.Center;
         statusBar.Add(rightInfo);
@@ -545,11 +617,6 @@ public class GameMainUI : MonoBehaviour
         netTag.style.unityFontDefinition = Fd();
         netTag.style.marginRight = 14;
         rightInfo.Add(netTag);
-
-        var sig = new Label("●●●○○");
-        sig.style.fontSize = 14; sig.style.color = GlassText; sig.style.unityFontDefinition = Fd();
-        sig.style.marginRight = 12;
-        rightInfo.Add(sig);
 
         int battPct = -1;
         try { battPct = GetDeviceBatteryPercent(); }
@@ -1643,12 +1710,195 @@ public class GameMainUI : MonoBehaviour
     {
         appLayer = new VisualElement { name = "tablet-app-layer" };
         appLayer.style.position = Position.Absolute;
-        appLayer.style.top = 0; appLayer.style.left = 0;
+        appLayer.style.top = 48; appLayer.style.left = 0;
         appLayer.style.right = 0; appLayer.style.bottom = 0;
         appLayer.style.display = DisplayStyle.None;
         appLayer.style.alignItems = Align.Center;
         appLayer.style.justifyContent = Justify.Center;
         root.Add(appLayer);
+        tabletShellView?.Dispose();
+        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"));
+        tabletShellView.OnRequestCapture = TriggerShellBlurCapture;
+        tabletShellView.SetVisible(unlocked);
+        ApplyPresentation();
+    }
+
+    private void ApplyPresentation()
+    {
+        if (root == null || PresentationPreferences == null) return;
+        var p = PresentationPreferences;
+        var wallpaper = root.Q("tablet-desktop-wallpaper");
+        if (wallpaper != null) wallpaper.style.backgroundColor = Color.Lerp(Paper, Color.black, p.WallpaperDim);
+        var lockDim = root.Q("tablet-lock-wallpaper-dim");
+        if (lockDim != null) lockDim.style.backgroundColor = new Color(0,0,0,p.WallpaperDim);
+        var accent = p.Accent == TabletAccent.Teal ? new Color(.19f,.66f,.57f) : p.Accent == TabletAccent.Blue ? new Color(.32f,.60f,.92f) : new Color(.86f,.65f,.27f);
+        tabletShellView?.ApplyPresentation(accent, p.HighContrast);
+        if (p.ReduceMotion && desktop != null) desktop.style.opacity = 1;
+    }
+
+    private void OnShellStateChanged()
+    {
+        if (tabletShellState.Panel == TabletSystemPanel.None)
+        {
+            if (blurCaptureCoroutine != null)
+            {
+                StopCoroutine(blurCaptureCoroutine);
+                blurCaptureCoroutine = null;
+            }
+        }
+    }
+
+    private void TriggerShellBlurCapture()
+    {
+        if (PresentationPreferences != null && PresentationPreferences.HighContrast)
+        {
+            tabletShellView?.ApplyBlurredBackground(null);
+            return;
+        }
+
+        if (blurCaptureCoroutine != null)
+        {
+            StopCoroutine(blurCaptureCoroutine);
+            blurCaptureCoroutine = null;
+        }
+
+        if (uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null && uiDoc.panelSettings.targetTexture.IsCreated())
+        {
+            RenderTexture blurred = CaptureAndBlurFromTexture(uiDoc.panelSettings.targetTexture);
+            tabletShellView?.ApplyBlurredBackground(blurred);
+            return;
+        }
+
+        if (isActiveAndEnabled)
+        {
+            blurCaptureCoroutine = StartCoroutine(CaptureAndBlurScreenCoroutine());
+        }
+        else
+        {
+            tabletShellView?.ApplyBlurredBackground(null);
+        }
+    }
+
+    private System.Collections.IEnumerator CaptureAndBlurScreenCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        try
+        {
+            if (tabletShellState.Panel != TabletSystemPanel.None)
+            {
+                RenderTexture blurred = CaptureAndBlurScreen();
+                tabletShellView?.ApplyBlurredBackground(blurred);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Error during CaptureAndBlurScreenCoroutine: " + ex.Message);
+            tabletShellView?.ApplyBlurredBackground(null);
+        }
+        finally
+        {
+            blurCaptureCoroutine = null;
+        }
+    }
+
+    private void EnsureBlurService()
+    {
+        if (blurService == null)
+        {
+            blurService = new TabletGaussianBlur
+            {
+                Downsample = 2,
+                Sigma = 2.5f
+            };
+        }
+    }
+
+    private bool EnsureCaptureRT(int width, int height)
+    {
+        if (width <= 0 || height <= 0) return false;
+
+        if (blurCaptureRT != null && blurCaptureRT.width == width && blurCaptureRT.height == height)
+        {
+            return true;
+        }
+
+        ReleaseCaptureRT();
+
+        try
+        {
+            blurCaptureRT = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
+            {
+                name = "TabletShell_CaptureRT",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.DontSave
+            };
+            blurCaptureRT.Create();
+            return blurCaptureRT.IsCreated();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Failed to allocate blur capture RenderTexture: " + ex.Message);
+            return false;
+        }
+    }
+
+    private RenderTexture CaptureAndBlurFromTexture(RenderTexture sourceTexture)
+    {
+        if (sourceTexture == null || !sourceTexture.IsCreated()) return null;
+        EnsureBlurService();
+        if (blurService == null || !blurService.IsSupported) return null;
+
+        if (!EnsureCaptureRT(sourceTexture.width, sourceTexture.height)) return null;
+
+        RenderTexture prevActive = RenderTexture.active;
+        try
+        {
+            Graphics.Blit(sourceTexture, blurCaptureRT);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] Blit from targetTexture failed: " + ex.Message);
+            return null;
+        }
+        finally
+        {
+            RenderTexture.active = prevActive;
+        }
+
+        return blurService.Process(blurCaptureRT);
+    }
+
+    private RenderTexture CaptureAndBlurScreen()
+    {
+        EnsureBlurService();
+        if (blurService == null || !blurService.IsSupported) return null;
+
+        int w = Mathf.Max(16, Screen.width);
+        int h = Mathf.Max(16, Screen.height);
+        if (!EnsureCaptureRT(w, h)) return null;
+
+        try
+        {
+            ScreenCapture.CaptureScreenshotIntoRenderTexture(blurCaptureRT);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[GameMainUI] ScreenCapture into RT failed: " + ex.Message);
+            return null;
+        }
+
+        return blurService.Process(blurCaptureRT);
+    }
+
+    private void ReleaseCaptureRT()
+    {
+        if (blurCaptureRT != null)
+        {
+            blurCaptureRT.Release();
+            DestroyImmediate(blurCaptureRT);
+            blurCaptureRT = null;
+        }
     }
 
     private VisualElement BuildFullScreenAppContainer(string appTitle, string subtitle = null, System.Action onBack = null)
@@ -1737,7 +1987,7 @@ public class GameMainUI : MonoBehaviour
         }
 
         // 右侧关闭按钮
-        var closeBtn = new Button(() => { appLayer.style.display = DisplayStyle.None; }) { text = "✕" };
+        var closeBtn = new Button(() => { appLayer.style.display = DisplayStyle.None; }) { text = "✕", name = "tablet-app-close" };
         closeBtn.style.width = 30; closeBtn.style.height = 30;
         closeBtn.style.fontSize = 14;
         closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -1859,6 +2109,7 @@ public class GameMainUI : MonoBehaviour
 
     private void OpenCabApp()
     {
+        tabletShellState.ClosePanel();
         if (root != null) root.style.display = DisplayStyle.None;
         var cabUI = RailwayRenaissance.Cab.CabConsoleUI.Create();
         cabUI.OnCloseRequested = () =>
@@ -1882,7 +2133,22 @@ public class GameMainUI : MonoBehaviour
     }
 
     // ============ App: 设置（已抽离至 TabletSettingsAppUI）============
-    private void BuildSettingsPage(VisualElement win) => TabletSettingsAppUI.BuildSettingsPage(win, ShowBackupToast);
+    private void BuildSettingsPage(VisualElement win) => TabletSettingsAppUI.BuildSettingsPage(win, ShowBackupToast, OpenSystemPanel);
+    public TabletShellState ShellState => tabletShellState;
+
+    public void OpenSystemPanel(TabletSystemPanel panel)
+    {
+        if (panel == TabletSystemPanel.None)
+        {
+            tabletShellState.ClosePanel();
+            return;
+        }
+
+        if (tabletShellState.Panel != panel)
+        {
+            tabletShellState.TogglePanel(panel);
+        }
+    }
     private void ShowAffairsPage() => TabletSettingsAppUI.ShowAffairsPage();
     private void ShowStoryPage() => TabletSettingsAppUI.ShowStoryPage();
 
@@ -1927,6 +2193,12 @@ public class GameMainUI : MonoBehaviour
     private Label backupToast;
     private void ShowBackupToast(string msg)
     {
+        tabletShellState.Post("应用提示", msg);
+        if (tabletShellState.QuietMode)
+        {
+            if (backupToast != null) backupToast.style.display = DisplayStyle.None;
+            return;
+        }
         if (backupToast == null)
         {
             backupToast = new Label(msg);
@@ -1942,7 +2214,9 @@ public class GameMainUI : MonoBehaviour
             backupToast.style.borderTopLeftRadius = 12; backupToast.style.borderTopRightRadius = 12;
             backupToast.style.borderBottomLeftRadius = 12; backupToast.style.borderBottomRightRadius = 12;
             backupToast.pickingMode = PickingMode.Ignore;
-            root.Add(backupToast);
+            var shell = root.Q("tablet-shell-root");
+            if (shell != null) root.Insert(root.IndexOf(shell), backupToast);
+            else root.Add(backupToast);
         }
         else
         {
@@ -2003,6 +2277,21 @@ public class GameMainUI : MonoBehaviour
     private void Update()
     {
         if (root == null || root.style.display == DisplayStyle.None) return;
+
+        // 系统面板模糊尺寸自适应
+        if (tabletShellState.Panel != TabletSystemPanel.None)
+        {
+            int curW = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
+                ? uiDoc.panelSettings.targetTexture.width
+                : Screen.width;
+            int curH = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
+                ? uiDoc.panelSettings.targetTexture.height
+                : Screen.height;
+            if (blurCaptureRT != null && (blurCaptureRT.width != curW || blurCaptureRT.height != curH))
+            {
+                TriggerShellBlurCapture();
+            }
+        }
 
         // 触控笔与键盘：按键重绑定监听
         if (_tabletRebindAction != null)
@@ -2120,7 +2409,7 @@ public class GameMainUI : MonoBehaviour
         suiyueBubble.text = SuiyueIdleLines[suiyueIdleIndex % SuiyueIdleLines.Length];
         suiyueIdleIndex++;
         suiyueBubble.style.display = DisplayStyle.Flex;
-        suiyueBubble.style.opacity = 0;
+        suiyueBubble.style.opacity = PresentationPreferences != null && PresentationPreferences.ReduceMotion ? 1 : 0;
         // 淡入
         suiyueBubble.schedule.Execute(() => { suiyueBubble.style.opacity = 1; }).ExecuteLater(100);
         // 4秒后淡出

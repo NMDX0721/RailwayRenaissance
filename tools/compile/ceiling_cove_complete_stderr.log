@@ -1,0 +1,16 @@
+Unable to retrieve BIOS serial number. Exception: System.UnauthorizedAccessException: ¾Ü¾ø·ÃÎÊ¡£
+
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(Int32 errorCode, IntPtr errorInfo)
+   at System.Management.ManagementScope.InitializeGuts(Object o)
+   at System.Management.ManagementScope.Initialize()
+   at System.Management.ManagementObjectSearcher.Initialize()
+   at System.Management.ManagementObjectSearcher.Get()
+   at Unity.Licensing.Platform.SystemInfo.WindowsSystemInformation.get_BIOSIdentifier()
+Unable to retrieve BIOS serial number. Exception: System.UnauthorizedAccessException: ¾Ü¾ø·ÃÎÊ¡£
+
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(Int32 errorCode, IntPtr errorInfo)
+   at System.Management.ManagementScope.InitializeGuts(Object o)
+   at System.Management.ManagementScope.Initialize()
+   at System.Management.ManagementObjectSearcher.Initialize()
+   at System.Management.ManagementObjectSearcher.Get()
+   at Unity.Licensing.Platform.SystemInfo.WindowsSystemInformation.get_BIOSIdentifier()

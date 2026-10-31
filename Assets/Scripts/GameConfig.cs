@@ -6,10 +6,10 @@ public class GameConfig
 {
     public string playerAlias = "";
     public string difficulty = "normal";
-    // 创世核种子 ID（自 Layer 5 起，世界初始参数由此决定）
+    // 创世核种子 ID（自 Layer 5 起，世界初始参数由此决定；仅供无有效 seedCode 时旧档静态资源兼容回退）
     public string seedId = "seed_001";
-    // 种子码（RR-XXXXX-YYYYY 格式，手动输入或从预设选择）
-    public string seedCode = "RR-7A3F-B2C9";
+    // 种子码（RR-XXXXX-YYYYY 格式，默认随机生成或快捷预设/输入）
+    public string seedCode = "";
     // 自定义难度参数（指导司机模式）
     public float startMoney = 40000f;
     public float incomeMultiplier = 1.0f;
@@ -21,6 +21,45 @@ public class GameConfig
     public float eventFrequency = 1.0f;
 
     private const string SaveKey = "RailGameConfig";
+
+    [Serializable]
+    public struct SeedPreset
+    {
+        public int seed;
+        public string code;
+        public string name;
+        public string description;
+
+        public SeedPreset(int seed, string code, string name, string description)
+        {
+            this.seed = seed;
+            this.code = code;
+            this.name = name;
+            this.description = description;
+        }
+    }
+
+    public static readonly SeedPreset[] Presets = new SeedPreset[]
+    {
+        new SeedPreset(1,   "RR-00001-00003", "标准拓扑", "均衡开局 (Seed 1) · 紧凑产销环线"),
+        new SeedPreset(42,  "RR-0002A-0007E", "紧凑网络", "近邻聚落 (Seed 42) · 短距离密集连接"),
+        new SeedPreset(77,  "RR-0004D-000E7", "干线走廊", "长距走廊 (Seed 77) · 东西主干线延伸"),
+        new SeedPreset(113, "RR-00071-00153", "环状干线", "多重连通 (Seed 113) · 双向冗余环网"),
+        new SeedPreset(999, "RR-003E7-00BB5", "边陲高地", "极远端节点 (Seed 999) · 矿区深山孤立")
+    };
+
+    /// <summary>生成 20-bit [1, 0xFFFFF] 范围内的随机有效种子码。</summary>
+    public static string GenerateRandomSeedCode(System.Random rng = null)
+    {
+        int seed = rng != null ? rng.Next(1, 0x100000) : UnityEngine.Random.Range(1, 0x100000);
+        return WorldGen.WorldGenerator.EncodeSeed(seed);
+    }
+
+    /// <summary>验证种子码格式及校验和是否合法。</summary>
+    public static bool IsValidSeedCode(string code)
+    {
+        return WorldGen.WorldGenerator.DecodeSeed(code) >= 0;
+    }
 
     public static GameConfig Load()
     {

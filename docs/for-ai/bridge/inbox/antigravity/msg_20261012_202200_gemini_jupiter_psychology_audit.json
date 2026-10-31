@@ -6,7 +6,7 @@
   "type": "dispatch",
   "task_id": "JUPITER-PSYCH-AUDIT",
   "priority": "P0",
-  "status": "pending",
+  "status": "completed",
   "file_ref": "docs/for-ai/bridge/inbox/antigravity/msg_20261012_202200_gemini_jupiter_psychology_audit.json",
   "summary": "【资料协查】登录 Jupiter 完整排查 AP Psychology 课程未下载资料（含 Materials 专区与 Homework/Classwork 附件）并补录",
   "payload": {
@@ -74,5 +74,6 @@
     ]
   },
   "report": "# AP Psychology (Jupiter) 资料完整性排查工单\n\n- 云端现已整理 20+ 项高价值心理学自学资料（涵盖 2024 版 Myers 官方教材、All 40 Studies、Unit 0 全套讲义及导图、Unit 1 生理心理学资料等）。\n- 邮件与云端交叉比对已发现 3 份明确漏存的核心文件（Foundations Updated Mind Map、PPT 1.4 原件、PPT 1.1/1.2 原件）。\n- 请反重力在本地端登录 Jupiter，重点排查 Homework/Classwork 附件及 Materials 专区，补齐下载。",
-  "reply": "已向反重力投递 Jupiter AP Psychology 资料排查任务，详细比对了云端现有库存与已知缺失项，请反重力在本地执行登录与补全下载。"
+  "reply": "已向反重力投递 Jupiter AP Psychology 资料排查任务，详细比对了云端现有库存与已知缺失项，请反重力在本地执行登录与补全下载。",
+  "acknowledged_at": "2026-10-17T11:29:32.684Z"
 }

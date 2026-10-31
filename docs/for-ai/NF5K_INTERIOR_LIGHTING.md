@@ -69,3 +69,7 @@ Latest follow-up replaces rendered approximation point lights with circuit-depen
 Follow-up: additional-light soft shadows are enabled in the shared URP asset (4096px atlas). Eight circuit-bound floor-reflection approximation lights lift seat bases and floors; total interior light components are now 34 for 18 physical fixtures. Passenger upper/lower bounce intensities 1.8/1.2; cab 1.1/0.8. Supply failure, ordinary-light off and component disable also extinguish the lower fill. See the lighting audit for global pipeline impact and performance limits.
 
 NF5K review camera now uses a dedicated Forward+ renderer to remove the four-additional-lights-per-object bottleneck. Passenger local bounce is 0.95 with 3.2m range; cab bounce is 0.65. See [NF5K_LIGHTING_AUDIT.md](NF5K_LIGHTING_AUDIT.md) for evidence and remaining rendering limits. These values are renderer intensity settings, not lux.
+# 2026-10-23 辅助工作区局部更新
+
+辅助阅读灯瞄准新文件区 `(-0.58, 0.85, 0.12)`，按实际纸面检查将输出由 5 调为 0.5 美术单位，避免近景表单过曝。`NF5KCabWorkstationLayout` 更新既有场景绑定，`NF5KInteriorLightingSetup` 保持新生成一致；其他回路不变。`NF5KWorkstationLightAudit` 提供不保存场景的开关/低输出对照。无线电本机只读取现有主/备供电状态，不增加电气负载模拟。详见 [辅助台通信](NF5K_CAB_COMMUNICATION.md)。
+

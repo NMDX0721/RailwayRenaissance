@@ -31,6 +31,13 @@ public static class KeyBindings
         PlayerPrefs.Save();
     }
 
+    public static void ResetToDefaults()
+    {
+        foreach (var binding in defaults)
+            PlayerPrefs.SetInt("KB_" + binding.Key, (int)binding.Value);
+        PlayerPrefs.Save();
+    }
+
     public static string GetKeyName(Action action)
     {
         KeyCode k = GetKey(action);

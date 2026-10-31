@@ -156,13 +156,13 @@ public static class CabInteriorBlockoutSetup
         Box("Floor",new Vector3(0,-.045f,.7f),new Vector3(2.8f,.09f,2.4f),floor);
         NF5KReferenceBody.Build(root.transform,blue,cream,stripe,trim,glass,hardware);
         var rear=new GameObject("Rear_Assembly");rear.transform.SetParent(root.transform);
-        foreach(float x in new[]{-.855f,.855f})
-            Box("Rear_Passenger_Partition",new Vector3(x,1.05f,1.91f),new Vector3(1.09f,2.1f,.08f),wall,rear.transform);
-        Box("Rear_Passenger_Door_Header",new Vector3(0,2f,1.91f),new Vector3(.62f,.20f,.08f),wall,rear.transform);
-        var passage=new GameObject("Passenger_Passage_Door_Pivot");passage.transform.SetParent(rear.transform);passage.transform.position=new Vector3(-.30f,0,1.91f);
-        Box("Passenger_Passage_Door_Lower",new Vector3(0,.50f,1.91f),new Vector3(.58f,.96f,.045f),wall,passage.transform);
-        Box("Passenger_Passage_Door_Glass",new Vector3(0,1.41f,1.91f),new Vector3(.50f,.76f,.009f),glass,passage.transform,false);
-        Box("Passenger_Door_Handle",new Vector3(.23f,.98f,1.87f),new Vector3(.07f,.025f,.025f),trim,passage.transform);
+        foreach(float x in new[]{-.925f,.925f})
+            Box("Rear_Passenger_Partition",new Vector3(x,1.05f,1.91f),new Vector3(.95f,2.1f,.08f),wall,rear.transform);
+        Box("Rear_Passenger_Door_Header",new Vector3(0,2f,1.91f),new Vector3(NF5KPassageDoorDetail.OpeningWidth,.20f,.08f),wall,rear.transform);
+        var passage=new GameObject("Passenger_Passage_Door_Pivot");passage.transform.SetParent(rear.transform);passage.transform.position=new Vector3(NF5KPassageDoorDetail.AxisX,0,NF5KPassageDoorDetail.AxisZ);
+        Box("Passenger_Passage_Door_Lower",new Vector3(0,.51f,1.91f),new Vector3(NF5KPassageDoorDetail.LeafWidth,.98f,.045f),wall,passage.transform);
+        Box("Passenger_Passage_Door_Glass",new Vector3(0,1.425f,1.91f),new Vector3(.68f,.75f,.009f),glass,passage.transform,false);
+        Box("Passenger_Door_Handle",new Vector3(.31f,NF5KPassageDoorDetail.HandleHeight,1.8315f),new Vector3(.14f,.026f,.026f),trim,passage.transform);
         Box("Rear_Electrical_Service_Panel",new Vector3(.85f,1.48f,1.85f),new Vector3(.65f,.35f,.035f),trim,rear.transform);
         var passenger=new GameObject("Integrated_Passenger_Bay_Blockout");passenger.transform.SetParent(root.transform);
         for(int module=0;module<4;module++)Box("Passenger_Floor_Module_"+module,new Vector3(0,-.045f,3.85f+module*3.9f),new Vector3(2.8f,.09f,3.9f),floor,passenger.transform);
@@ -174,7 +174,7 @@ public static class CabInteriorBlockoutSetup
             var fan=GameObject.CreatePrimitive(PrimitiveType.Cylinder);fan.name="Ceiling_Fan_Reserved";fan.transform.SetParent(root.transform);fan.transform.position=new Vector3(x,2.03f,.25f);fan.transform.localScale=new Vector3(.23f,.025f,.23f);fan.GetComponent<Renderer>().sharedMaterial=trim;
         }
         Box("Driver_Sun_Visor_Reserved",new Vector3(.65f,1.93f,-.35f),new Vector3(.63f,.17f,.015f),trim);
-        foreach(float x in new[]{.65f,-.85f})
+        foreach(float x in new[]{.65f,-.65f})
         {
             string name=x>0?"Driver":"Assistant";
             var pivot=new GameObject(name+"_Seat_Pivot");pivot.transform.SetParent(root.transform);pivot.transform.position=new Vector3(x,0,.93f);

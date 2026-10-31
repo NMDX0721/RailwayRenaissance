@@ -47,59 +47,11 @@ public static class NF5KCabFittings
             g.GetComponent<MeshRenderer>().sharedMaterial=ink;
             g.AddComponent<CabWorldLabel>();
         }
-        // Compact selector beside the driver's seat, outside the central aisle and door sweep.
-        Box("Parking_Selector_Pedestal",new Vector3(.99f,.34f,.75f),new Vector3(.16f,.68f,.24f),enamel);
-        Box("Parking_Selector_Floor_Flange",new Vector3(.99f,.012f,.75f),new Vector3(.20f,.024f,.28f),steel);
-        foreach(float x in new[]{.91f,1.07f})foreach(float z in new[]{.64f,.86f})
-            Part("Pedestal_Floor_Bolt",PrimitiveType.Cylinder,new Vector3(x,.027f,z),new Vector3(.014f,.004f,.014f),steel);
-        Box("Selector_Service_Cover",new Vector3(.905f,.35f,.75f),new Vector3(.009f,.42f,.18f),black);
-        Box("Selector_Service_Inset",new Vector3(.899f,.35f,.75f),new Vector3(.005f,.405f,.165f),enamel);
-        Box("Parking_Selector_Bezel",new Vector3(.99f,.695f,.75f),new Vector3(.18f,.025f,.26f),black);
-        Part("Selector_Shaft_Collar",PrimitiveType.Cylinder,new Vector3(.99f,.715f,.75f),new Vector3(.055f,.012f,.055f),steel);
-        foreach(float x in new[]{.92f,1.06f})foreach(float z in new[]{.65f,.85f})
-            Part("Selector_Plate_Fastener",PrimitiveType.Cylinder,new Vector3(x,.710f,z),new Vector3(.012f,.002f,.012f),steel);
-        foreach(float z in new[]{.655f,.845f})Box("Selector_End_Mark",new Vector3(.99f,.710f,z),new Vector3(.025f,.003f,.008f),enamel);
-        var lever=Part("Parking_Brake_Selector",PrimitiveType.Cube,new Vector3(.99f,.735f,.75f),new Vector3(.028f,.036f,.105f),red);
-        var collider=lever.AddComponent<BoxCollider>();
+        // Preserve the command facade; the actual buttons are mounted on the console later.
+        var lever=new GameObject("Parking_Brake_Command");lever.transform.SetParent(root,false);
         root.SetParent(state.transform,true);
-        var target=lever.AddComponent<CabDrivingTarget>();target.Configure(state,CabDrivingAction.ParkingBrake,Vector3.up,65);target.ApplyVisual();
-        Label("Parking_Plate_Legend","PARK",new Vector3(.99f,.711f,.66f),.003f,Quaternion.Euler(90,0,0));
-        Label("Parking_Release_Legend","REL",new Vector3(1.047f,.711f,.79f),.002f,Quaternion.Euler(90,0,0));
-        Label("Parking_Apply_Legend","SET",new Vector3(.936f,.711f,.79f),.002f,Quaternion.Euler(90,0,0));
-        // Right-hand auxiliary station in the driver's facing direction, not a second driving desk.
-        Box("Assistant_Work_Shelf",new Vector3(-.86f,.80f,-.09f),new Vector3(.65f,.045f,.36f),enamel);
-        foreach(float x in new[]{-1.10f,-.62f})
-        {
-            Rod("Shelf_Wall_Bracket",new Vector3(x,.77f,-.04f),new Vector3(x,.55f,-.40f),.014f,steel);
-            Box("Shelf_Mounting_Plate",new Vector3(x,.67f,-.40f),new Vector3(.075f,.25f,.018f),enamel);
-            foreach(float y in new[]{.58f,.76f})Part("Shelf_Mount_Fastener",PrimitiveType.Sphere,new Vector3(x,y,-.388f),new Vector3(.014f,.014f,.008f),steel);
-        }
-        Box("Shelf_Rear_Retaining_Lip",new Vector3(-.86f,.845f,-.265f),new Vector3(.65f,.065f,.015f),enamel);
-        Box("Radio_Receiver_Visual_Only",new Vector3(-.87f,.89f,-.17f),new Vector3(.29f,.13f,.16f),black);
-        Box("Radio_Faceplate",new Vector3(-.87f,.89f,-.082f),new Vector3(.26f,.105f,.012f),enamel);
-        foreach(float x in new[]{-.985f,-.755f})foreach(float y in new[]{.85f,.93f})
-            Part("Radio_Face_Screw",PrimitiveType.Sphere,new Vector3(x,y,-.074f),new Vector3(.008f,.008f,.005f),steel);
-        for(int i=0;i<7;i++)Box("Radio_Speaker_Slot",new Vector3(-.94f+i*.012f,.89f,-.074f),new Vector3(.004f,.065f,.004f),black);
-        for(int i=0;i<2;i++)
-        {
-            var knob=Part("Radio_Control_Knob",PrimitiveType.Cylinder,new Vector3(-.82f+i*.055f,.885f,-.067f),new Vector3(.025f,.010f,.025f),black);knob.transform.localRotation=Quaternion.Euler(90,0,0);
-            Box("Radio_Knob_Index",new Vector3(-.82f+i*.055f,.893f,-.055f),new Vector3(.003f,.006f,.003f),paper);
-        }
-        Label("Radio_Engraved_Legend","RADIO",new Vector3(-.81f,.925f,-.073f),.002f,Quaternion.Euler(0,180,0));
-        Box("Handset_Cradle",new Vector3(-.60f,.86f,-.13f),new Vector3(.07f,.045f,.19f),steel);
-        Rod("Handset_Grip",new Vector3(-.60f,.91f,-.20f),new Vector3(-.60f,.91f,-.06f),.018f,black);
-        foreach(float z in new[]{-.20f,-.06f})Part("Handset_Earpiece",PrimitiveType.Sphere,new Vector3(-.60f,.895f,z),new Vector3(.06f,.045f,.05f),black);
-        Rod("Handset_Cord",new Vector3(-.60f,.885f,-.06f),new Vector3(-.53f,.70f,-.06f),.004f,black);
-        Rod("Handset_Cord_Return",new Vector3(-.53f,.70f,-.06f),new Vector3(-.72f,.86f,-.17f),.004f,black);
-        Box("Timetable_Clipboard",new Vector3(-1.05f,.829f,.005f),new Vector3(.17f,.008f,.23f),black);
-        Box("Timetable_Blank_Insert",new Vector3(-1.05f,.835f,.005f),new Vector3(.15f,.003f,.21f),paper);
-        Box("Timetable_Clip",new Vector3(-1.05f,.84f,-.087f),new Vector3(.06f,.008f,.015f),steel);
-        for(int i=0;i<8;i++)Box("Timetable_Print_Rule",new Vector3(-1.05f,.837f,-.06f+i*.018f),new Vector3(.12f,.0008f,.001f),enamel);
-        // Retaining lip and divided pockets keep small items off the floor.
-        Box("Assistant_Map_Pocket_Back",new Vector3(-1.32f,.57f,.15f),new Vector3(.035f,.27f,.40f),enamel);
-        Box("Assistant_Map_Pocket_Front",new Vector3(-1.24f,.53f,.15f),new Vector3(.025f,.19f,.40f),enamel);
-        foreach(float z in new[]{-.05f,.15f,.35f})Box("Map_Pocket_Divider",new Vector3(-1.28f,.53f,z),new Vector3(.10f,.19f,.015f),steel);
-        Box("Map_Pocket_Base",new Vector3(-1.28f,.435f,.15f),new Vector3(.10f,.015f,.40f),enamel);
+        lever.AddComponent<CabDrivingTarget>().Configure(state,CabDrivingAction.ParkingBrake,Vector3.up,0);
+        NF5KCabWorkstationLayout.Build(root,body,enamel,steel,black,paper);
         // Next batch: restrained safety fittings on solid partition / vestibule returns.
         foreach(float z in new[]{2.13f,17.15f})
         {
@@ -109,12 +61,15 @@ public static class NF5KCabFittings
             foreach(float y in new[]{.26f,.61f})
             {
                 Rod("Extinguisher_Wall_Anchor",new Vector3(x,y,mountZ),new Vector3(x,y,z<3?1.96f:17.30f),.012f,steel);
-                Part("Extinguisher_Mount_Bolt",PrimitiveType.Sphere,new Vector3(x,y,mountZ+face*.011f),new Vector3(.016f,.016f,.004f),steel);
+                Part("Extinguisher_Mount_Bolt",PrimitiveType.Cube,new Vector3(x,y,mountZ+face*.011f),new Vector3(.016f,.016f,.004f),steel);
             }
-            Box("Extinguisher_Base_Cup",new Vector3(x,.232f,z-.075f),new Vector3(.16f,.025f,.17f),steel);
+            Box("Extinguisher_Base_Cup",new Vector3(x,.2325f,z-.075f),new Vector3(.16f,.025f,.17f),steel);
             var item=new GameObject("Extinguisher_Removable_Assembly").transform;item.SetParent(root,false);item.localPosition=new Vector3(x,.245f,z-.075f);
             item.localRotation=Quaternion.Euler(0,face>0?0:180,0);
-            NF5KExtinguisherModel.Build(item);
+            NF5KExtinguisherModel.Build(item,z<3?5f:-7f);
+            foreach(float side in new[]{-1f,1f})
+                Box("Extinguisher_Band_Wall_Web",new Vector3(x+side*.058f,.49f,z-.075f-face*.0375f),new Vector3(.012f,.034f,.075f),steel);
+            Rod("Extinguisher_Fixed_Hinge_Barrel",new Vector3(x-face*.058f,.472f,z-.075f),new Vector3(x-face*.058f,.508f,z-.075f),.006f,steel);
             var band=NF5KExtinguisherModel.BuildBand(root,new Vector3(x,.49f,z-.075f),face);
             var mount=new GameObject("Extinguisher_Interaction_Dock");mount.transform.SetParent(root,false);mount.transform.localPosition=new Vector3(x,.46f,z-.075f);mount.layer=30;
             var hit=mount.AddComponent<BoxCollider>();hit.size=new Vector3(.17f,.60f,.19f);
@@ -122,12 +77,35 @@ public static class NF5KCabFittings
             Box("Extinguisher_Identification_Plate",new Vector3(x,.74f,z-.015f),new Vector3(.20f,.12f,.012f),safety);
             Label("Extinguisher_Nameplate",z<3?"灭火器 FX-01\nFIRE EXTINGUISHER":"灭火器 FX-02\nFIRE EXTINGUISHER",new Vector3(x,.74f,z-.015f+face*.008f),.003f,Quaternion.Euler(0,face>0?180:0,0));
         }
-        foreach(float x in new[]{-.51f,.51f})
+        foreach(float x in new[]{-.56f,.56f})
         {
             Rod("Front_Passage_Grab_Rail",new Vector3(x,.78f,2.01f),new Vector3(x,1.64f,2.01f),.016f,steel);
-            foreach(float y in new[]{.78f,1.64f})Rod("Passage_Grab_Wall_StandOff",new Vector3(x,y,2.01f),new Vector3(x,y,1.96f),.012f,steel);
+            foreach(float y in new[]{.78f,1.64f})
+            {
+                Rod("Passage_Grab_Wall_StandOff",new Vector3(x,y,2.01f),new Vector3(x,y,1.96f),.012f,steel);
+                Part("Passage_Grab_Isolation_Pad",PrimitiveType.Cylinder,new Vector3(x,y,1.951f),new Vector3(.052f,.001f,.052f),black).transform.localRotation=Quaternion.Euler(90,0,0);
+                Part("Passage_Grab_Wall_Flange",PrimitiveType.Cylinder,new Vector3(x,y,1.956f),new Vector3(.050f,.004f,.050f),steel).transform.localRotation=Quaternion.Euler(90,0,0);
+                foreach(float dy in new[]{-.017f,.017f})
+                    Part("Passage_Grab_Flange_Bolt",PrimitiveType.Cylinder,new Vector3(x,y+dy,1.961f),new Vector3(.006f,.001f,.006f),steel).transform.localRotation=Quaternion.Euler(90,0,0);
+                Part("Passage_Grab_Smooth_Return",PrimitiveType.Sphere,new Vector3(x,y,2.01f),Vector3.one*.032f,steel);
+            }
+            var railHit=new GameObject("Passage_Grab_Fixed_Collider");railHit.layer=30;railHit.transform.SetParent(root,false);railHit.transform.localPosition=new Vector3(x,1.21f,2.01f);
+            railHit.AddComponent<BoxCollider>().size=new Vector3(.032f,.86f,.032f);
         }
         NF5KExtinguisherModel.BuildManual(root);
+        NF5KWallEquipment.Build(root,body);
+        NF5KCabVisors.Build(root,body);
+        NF5KCabCirculators.Build(root,body);
+        NF5KWiperSetup.Build(root,body);
+        NF5KConsoleRecessSetup.Apply(body);
+        NF5KLightingKeysSetup.Build(root,body);
+        NF5KExteriorLightControlSetup.Build(root,body);
+        NF5KAnnunciatorSetup.Build(root,body);
+        NF5KBrakeRefinement.Apply(body);
+        NF5KServiceControlSetup.Build(root,body);
+        NF5KParkingSelectorDetail.Apply(state);
+        NF5KVigilanceSetup.Apply(state);
+        NF5KVigilanceIndicatorSetup.Apply(state);
         Box("Rear_Vestibule_Safety_Panel",new Vector3(-1.34f,1.35f,17.12f),new Vector3(.025f,.30f,.24f),enamel);
         int hammerStart=root.childCount;
         Rod("Emergency_Hammer_Grip_Visual_Only",new Vector3(-1.31f,1.25f,17.12f),new Vector3(-1.31f,1.43f,17.12f),.013f,safety);
@@ -139,8 +117,7 @@ public static class NF5KCabFittings
         hammerDock.AddComponent<BoxCollider>().size=new Vector3(.09f,.26f,.15f);hammerDock.AddComponent<CabSafetyEquipment>().Configure(hammer,false);
         Label("Emergency_Hammer_Plate","安全锤",new Vector3(-1.322f,1.56f,17.12f),.003f,Quaternion.Euler(0,-90,0));
         NF5KIndustrialFinish.FinishRunningGear(root);
-        UnityEngine.Object.DestroyImmediate(collider);
-        lever.AddComponent<MeshCollider>().sharedMesh=lever.GetComponent<MeshFilter>().sharedMesh;
+
         foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>())
         {
             if(renderer.name!="Parking_Selector_Pedestal"&&renderer.name!="Assistant_Work_Shelf"&&renderer.name!="Extinguisher_Cylinder")continue;
@@ -148,8 +125,67 @@ public static class NF5KCabFittings
                 if((seat.name.EndsWith("Seat_Cushion")||seat.name.EndsWith("Seat_Back")||seat.name.StartsWith("Passenger_Seat_"))&&renderer.bounds.Intersects(seat.bounds))
                     throw new InvalidOperationException(renderer.name+" intersects seat envelope "+seat.name);
         }
+        NF5KCabWorkstationReview.Validate(body);
         Debug.Log("NF5K_CAB_FITTINGS_CLEARANCE_OK: selector/shelf/extinguisher bounds clear of selected seat collider envelopes");
-        Debug.Log("NF5K_CAB_FITTINGS_OK: physical parking selector; auxiliary radio/handset, shelf and map pockets are visual only");
+        Debug.Log("NF5K_CAB_FITTINGS_OK: console-mounted parking buttons; auxiliary radio/handset, shelf and map pockets are visual only");
+    }
+    public static void CapturePassageProportions()
+    {
+        try
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");
+            UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
+            NF5KBogieDetailReview.ConfigureInspectionLighting();
+            var fill=new GameObject("Temporary_Passage_Proportion_Fill").AddComponent<Light>();
+            fill.type=LightType.Point;fill.range=4;fill.intensity=.20f;fill.transform.position=new Vector3(.8f,1.8f,3.0f);
+            var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=1.13f;
+            // Place the inspection camera ahead of passenger seats so the leaf is unobstructed.
+            camera.transform.position=new Vector3(0,1.0f,2.65f);camera.transform.LookAt(new Vector3(0,1.0f,1.91f));
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_orthographic_clear_v16.png");
+            Debug.Log("NF5K_PASSAGE_PROPORTION_CAPTURE_OK: saved daylight scene, front orthographic view ahead of seats; scene not modified on disk");
+            EditorApplication.Exit(0);
+        }
+        catch(Exception error){Debug.LogException(error);EditorApplication.Exit(1);}
+    }
+    static void CaptureCirculator(Camera camera,Light fill)
+    {
+        var fan=UnityEngine.Object.FindObjectsByType<CabCirculationFan>(FindObjectsSortMode.None)[0];
+        var head=fan.Head;camera.orthographic=false;camera.fieldOfView=37;
+        camera.transform.position=head.TransformPoint(new Vector3(0,0,.48f));camera.transform.LookAt(head.position);
+        fill.type=LightType.Directional;fill.shadows=LightShadows.None;fill.transform.rotation=Quaternion.LookRotation(-head.forward+Vector3.down*.15f);fill.intensity=.45f;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_circulator_close_v33.png");
+        camera.transform.position=head.TransformPoint(new Vector3(.31f,.09f,.34f));camera.transform.LookAt(head.TransformPoint(new Vector3(0,.02f,-.015f)));camera.fieldOfView=40;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_circulator_connections_v33.png");
+        camera.transform.position=head.TransformPoint(new Vector3(0,0,-.22f));camera.transform.LookAt(head.TransformPoint(new Vector3(0,0,-.081f)));camera.fieldOfView=27;
+        fill.transform.rotation=Quaternion.LookRotation(head.forward+Vector3.down*.1f);fill.intensity=.3f;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_fan_rating_plate_v33.png");
+        fill.transform.rotation=Quaternion.LookRotation(-head.forward+Vector3.down*.15f);fill.intensity=.3f;
+        var flange=fan.transform.Find("Fan_Roof_Flange");
+        camera.transform.position=flange.position+new Vector3(.10f,-.10f,.12f);camera.transform.LookAt(flange.position+Vector3.down*.025f);camera.fieldOfView=45;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_fan_mount_hardware_v33.png");
+        camera.transform.position=fan.Control.position+new Vector3(.07f,.18f,.16f);camera.transform.LookAt(fan.Control.position);camera.fieldOfView=32;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_fan_desk_control_v33.png");
+        var screw=fan.Control.GetComponentsInChildren<Transform>();
+        foreach(var part in screw)if(part.name=="Fan_Control_Fixing_Screw")
+        {
+            camera.transform.position=part.position+new Vector3(.012f,.025f,.021f);camera.transform.LookAt(part.position);camera.fieldOfView=25;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_fan_fastener_macro_v33.png");break;
+        }
+        camera.transform.position=new Vector3(0,1.55f,1.5f);camera.transform.LookAt(new Vector3(0,1.89f,.30f));camera.fieldOfView=82;
+        fill.transform.rotation=Quaternion.Euler(20,180,0);fill.intensity=.25f;
+        NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_circulators_layout_v33.png");
+    }
+    public static void CaptureCirculators()
+    {
+        try
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");
+            UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
+            NF5KBogieDetailReview.ConfigureInspectionLighting();
+            var fill=new GameObject("Temporary_Fan_Review_Fill").AddComponent<Light>();fill.type=LightType.Point;fill.range=4;
+            CaptureCirculator(Camera.main,fill);EditorApplication.Exit(0);
+        }
+        catch(Exception error){Debug.LogException(error);EditorApplication.Exit(1);}
     }
     public static void BatchBuild()
     {
@@ -166,18 +202,51 @@ public static class NF5KCabFittings
             var camera=Camera.main;camera.orthographic=false;camera.fieldOfView=65;
             camera.transform.position=new Vector3(-.40f,1.31f,.65f);camera.transform.LookAt(new Vector3(-.87f,.85f,-.10f));
             var fill=new GameObject("Temporary_Cab_Fittings_Fill").AddComponent<Light>();fill.type=LightType.Point;fill.range=4;fill.intensity=1.5f;fill.transform.position=new Vector3(0,1.7f,.65f);
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/assistant_station_safety_round.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/assistant_station_safety_round_passage_circulators_v17.png");
+            camera.transform.position=new Vector3(0,1.76f,1.72f);camera.transform.LookAt(new Vector3(0,1.05f,-.13f));camera.fieldOfView=75;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_communication_overall_v17.png");
+            camera.transform.position=new Vector3(-.58f,1.16f,.40f);camera.transform.LookAt(new Vector3(-.58f,.850f,.12f));camera.fieldOfView=47;
+            fill.intensity=.15f;NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/crew_record_close_v17.png");
+            camera.transform.position=new Vector3(-.67f,.48f,.53f);camera.transform.LookAt(new Vector3(-.85f,.55f,-.10f));camera.fieldOfView=65;
+            fill.transform.position=new Vector3(-.6f,.5f,.5f);fill.intensity=.75f;NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/aux_underdesk_support_v17.png");
+            var passageDoor=UnityEngine.Object.FindFirstObjectByType<CabPassageDoor>();
+            camera.transform.position=new Vector3(0,1.05f,.35f);camera.transform.LookAt(new Vector3(0,1.05f,1.91f));camera.fieldOfView=65;
+            fill.transform.position=new Vector3(-.8f,1.8f,1.0f);fill.intensity=.25f;NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_closed_circulators_v17.png");
+            var passagePose=passageDoor.transform.localRotation;passageDoor.transform.localRotation=passagePose*Quaternion.Euler(0,85,0);
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_open_circulators_v17.png");passageDoor.transform.localRotation=passagePose;
+            camera.transform.position=new Vector3(0,1.05f,3.40f);camera.transform.LookAt(new Vector3(0,1.05f,1.91f));camera.fieldOfView=68;
+            fill.transform.position=new Vector3(.8f,1.8f,3.0f);fill.intensity=.20f;NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_passenger_circulators_v17.png");
+            camera.transform.position=new Vector3(0,1.45f,4.20f);camera.transform.LookAt(new Vector3(0,.98f,1.91f));camera.fieldOfView=54;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_full_circulators_v17.png");
+            camera.orthographic=true;camera.orthographicSize=1.13f;camera.transform.position=new Vector3(0,1.0f,2.65f);camera.transform.LookAt(new Vector3(0,1.0f,1.91f));
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/passage_orthographic_circulators_v17.png");camera.orthographic=false;
             camera.transform.position=new Vector3(.25f,1.18f,1.05f);camera.transform.LookAt(new Vector3(.98f,.71f,.75f));
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/parking_selector_safety_round.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/parking_selector_safety_round_passage_circulators_v17.png");
             camera.transform.position=new Vector3(.86f,.82f,2.65f);camera.transform.LookAt(new Vector3(1.21f,.48f,2.055f));camera.fieldOfView=50;
             fill.transform.position=new Vector3(0,1.6f,2.7f);
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_mounted_delivery.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_mounted_print_delivery_passage_circulators_v17.png");
             camera.transform.position=new Vector3(1.21f,.46f,2.48f);camera.transform.LookAt(new Vector3(1.21f,.435f,2.055f));camera.fieldOfView=58;
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_front_delivery.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_bilingual_front_print_delivery_passage_circulators_v17.png");
             camera.transform.position=new Vector3(1.21f,.575f,2.30f);camera.transform.LookAt(new Vector3(1.21f,.572f,2.09f));camera.fieldOfView=30;
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_gauge_valve_delivery.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/extinguisher_gauge_valve_print_delivery_passage_circulators_v17.png");
             camera.transform.position=new Vector3(.95f,.84f,2.45f);camera.transform.LookAt(new Vector3(.95f,.84f,2.02f));camera.fieldOfView=45;
-            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/baiyue_fire_manual_delivery.png");
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/baiyue_fire_manual_print_delivery_passage_circulators_v17.png");
+            var aid=UnityEngine.Object.FindFirstObjectByType<CabStorageCabinet>();fill.intensity=.85f;
+            camera.transform.position=new Vector3(-.67f,1.45f,2.58f);camera.transform.LookAt(aid.transform.position);camera.fieldOfView=44;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/first_aid_cabinet_closed_print_delivery_passage_circulators_v17.png");
+            aid.Toggle();camera.transform.position=new Vector3(-.48f,1.47f,2.62f);camera.transform.LookAt(aid.transform.position);
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/first_aid_cabinet_open_print_delivery_passage_circulators_v17.png");
+            camera.transform.position=new Vector3(-.90f,1.468f,2.27f);camera.transform.LookAt(new Vector3(-.90f,1.468f,2.027f));camera.fieldOfView=35;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/first_aid_pack_print_closeup_passage_circulators_v17.png");aid.Toggle();
+            camera.transform.position=new Vector3(.85f,1.48f,1.13f);camera.transform.LookAt(new Vector3(.85f,1.48f,1.82f));camera.fieldOfView=48;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/rear_electrical_cover_print_delivery_passage_circulators_v17.png");
+            var visors=UnityEngine.Object.FindObjectsByType<CabSunVisor>(FindObjectsSortMode.None);
+            fill.transform.position=new Vector3(0,1.3f,1.5f);fill.intensity=.6f;
+            camera.transform.position=new Vector3(0,1.63f,1.13f);camera.transform.LookAt(new Vector3(0,1.77f,-.40f));camera.fieldOfView=67;
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_visors_stowed_delivery_passage_circulators_v17.png");
+            foreach(var visor in visors){visor.Adjust(1);visor.Adjust(1);}
+            NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/cab_visors_lowered_delivery_passage_circulators_v17.png");
+            CaptureCirculator(camera,fill);
             EditorSceneManager.OpenScene("Assets/Scenes/CabRailMotionReview.unity");NF5KSimulationPlayReview.Begin();
         }
         catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}

@@ -79,3 +79,12 @@ Assets/Resources/bg_low/
 
 # Antigravity skills junction
 /.agents/skills
+
+# Temporary local items
+.tmp.*/
+TempCabTest.*
+发行/
+
+.references/
+
+/.codex-worktrees/

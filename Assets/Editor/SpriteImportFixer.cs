@@ -16,6 +16,7 @@ public class SpriteImportFixer : AssetPostprocessor
 
         var importer = assetImporter as TextureImporter;
         if (importer == null) return;
+        if (importer.userData == "CabAnnunciatorOpticalMap") return;
 
         // 已设置为 Sprite 的跳过
         if (importer.textureType == TextureImporterType.Sprite)

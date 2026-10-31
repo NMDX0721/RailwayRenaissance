@@ -12,7 +12,7 @@ public static class NF5KExtinguisherModel
         if(m==null){m=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(m,path);}
         m.SetColor("_BaseColor",color);m.SetFloat("_Metallic",metal);m.SetFloat("_Smoothness",smooth);EditorUtility.SetDirty(m);return m;
     }
-    public static void Build(Transform parent)
+    public static void Build(Transform parent,float pointerDegrees=5f)
     {
         var red=Material("Extinguisher_Powder_Coat",new Color(.54f,.035f,.025f),.24f,.30f);
         var metal=Material("Extinguisher_Valve_Alloy",new Color(.32f,.36f,.35f),.78f,.29f);
@@ -20,7 +20,7 @@ public static class NF5KExtinguisherModel
         var rubber=Material("Extinguisher_Hose_EPDM",new Color(.035f,.043f,.040f),0,.16f);
         var ivory=Material("Extinguisher_Gauge_Face",new Color(.85f,.84f,.72f),0,.18f);
         var green=Material("Extinguisher_Gauge_Green",new Color(.12f,.34f,.15f),0,.18f);
-        var yellow=Material("Extinguisher_Tamper_Seal",new Color(.77f,.60f,.12f),0,.2f);
+        var yellow=Material("Extinguisher_Tamper_Seal",new Color(.86f,.69f,.20f),0,.2f);
         GameObject Part(string name,PrimitiveType type,Vector3 p,Vector3 scale,Material mat)
         {
             var g=GameObject.CreatePrimitive(type);g.name=name;g.layer=30;g.transform.SetParent(parent,false);g.transform.localPosition=p;g.transform.localScale=scale;
@@ -35,10 +35,29 @@ public static class NF5KExtinguisherModel
             var g=new GameObject(name);g.layer=30;g.transform.SetParent(parent,false);g.AddComponent<MeshFilter>().sharedMesh=mesh;g.AddComponent<MeshRenderer>().sharedMaterial=mat;
             return g;
         }
-        void Strip(string name,Vector3 a,Vector3 b,Material mat)
+        void BentHandle(string name,Vector2[] points,Material mat)
         {
-            var g=Part(name,PrimitiveType.Cube,(a+b)*.5f,new Vector3(Vector3.Distance(a,b),.004f,.022f),mat);
-            g.transform.localRotation=Quaternion.FromToRotation(Vector3.right,(b-a).normalized);
+            var vertices=new List<Vector3>();var triangles=new List<int>();
+            for(int i=0;i<points.Length;i++)
+            {
+                Vector2 before=(points[i]-points[Mathf.Max(0,i-1)]).normalized;
+                Vector2 after=(points[Mathf.Min(points.Length-1,i+1)]-points[i]).normalized;
+                if(i==0)before=after;if(i==points.Length-1)after=before;
+                Vector2 n1=new Vector2(-before.y,before.x),n2=new Vector2(-after.y,after.x);
+                Vector2 m=(n1+n2).normalized*.002f/Mathf.Max(.3f,Vector2.Dot((n1+n2).normalized,n2));
+                foreach(float z in new[]{-.011f,.011f})foreach(float side in new[]{-1f,1f})
+                    vertices.Add(new Vector3(points[i].x+m.x*side,points[i].y+m.y*side,z));
+                if(i==0)continue;int k=(i-1)*4;
+                foreach(var edge in new[]{new[]{0,1},new[]{1,3},new[]{3,2},new[]{2,0}})
+                {int a=k+edge[0],b=k+edge[1];triangles.AddRange(new[]{a,b,b+4,a,b+4,a+4});}
+            }
+            int last=(points.Length-1)*4;triangles.AddRange(new[]{0,2,1,1,2,3,last,last+1,last+2,last+1,last+3,last+2});
+            var flat=new List<Vector3>();var indices=new List<int>();
+            foreach(int index in triangles){indices.Add(flat.Count);flat.Add(vertices[index]);}
+            var mesh=new Mesh{name=name};mesh.SetVertices(flat);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateBounds();
+            string path=Folder+name+"_V6.asset";var saved=AssetDatabase.LoadAssetAtPath<Mesh>(path);
+            if(saved==null){AssetDatabase.CreateAsset(mesh,path);saved=mesh;}else UnityEngine.Object.DestroyImmediate(mesh);
+            MeshPart(name,saved,mat);
         }
         var profile=new[]{new Vector2(0,.001f),new Vector2(.044f,0),new Vector2(.051f,.003f),new Vector2(.054f,.012f),new Vector2(.054f,.242f),new Vector2(.053f,.254f),new Vector2(.049f,.267f),new Vector2(.041f,.278f),new Vector2(.028f,.290f),new Vector2(.015f,.297f),new Vector2(.015f,.309f),new Vector2(0,.309f)};
         MeshPart("Extinguisher_Cylinder",Lathe("Extinguisher_Drawn_Steel_V2",profile),red);
@@ -46,25 +65,33 @@ public static class NF5KExtinguisherModel
         Part("Extinguisher_Valve_Body",PrimitiveType.Cylinder,new Vector3(0,.325f,0),new Vector3(.032f,.018f,.032f),metal);
         for(int i=0;i<3;i++)Part("Neck_Thread_Collar",PrimitiveType.Cylinder,new Vector3(0,.308f+i*.003f,0),new Vector3(.034f,.0007f,.034f),metal);
         // Separate fixed carrying handle and moving squeeze lever, with an open grip gap.
-        Strip("Handle_Fixed_Stem",new Vector3(0,.335f,0),new Vector3(-.020f,.350f,0),metal);
-        Strip("Handle_Fixed_Lower",new Vector3(-.020f,.350f,0),new Vector3(-.075f,.350f,0),metal);
-        Strip("Handle_Return",new Vector3(-.075f,.350f,0),new Vector3(-.075f,.365f,0),metal);
-        Strip("Squeeze_Lever",new Vector3(.015f,.363f,0),new Vector3(-.078f,.382f,0),red);
-        Strip("Squeeze_Lever_Hinge_Web",new Vector3(.009f,.351f,0),new Vector3(.015f,.363f,0),red);
-        Rod("Lever_Hinge_Pin",new Vector3(.009f,.351f,-.012f),new Vector3(.009f,.351f,.012f),.003f,metal);
-        Rod("Safety_Pin_Shaft",new Vector3(.016f,.348f,-.012f),new Vector3(.016f,.348f,.025f),.0015f,bezel);
-        for(int i=0;i<24;i++)
+        BentHandle("Handle_Fixed_Continuous",new[]{new Vector2(0,.335f),new Vector2(-.020f,.350f),new Vector2(-.072f,.350f),new Vector2(-.075f,.353f),new Vector2(-.075f,.363f)},metal);
+        BentHandle("Squeeze_Lever_Continuous",new[]{new Vector2(.009f,.351f),new Vector2(.015f,.361f),new Vector2(.012f,.364f),new Vector2(-.078f,.382f)},red);
+        foreach(float z in new[]{-.0135f,.0135f})
+            Part("Valve_Hinge_Clevis",PrimitiveType.Cube,new Vector3(.009f,.349f,z),new Vector3(.015f,.034f,.004f),metal);
+        Rod("Valve_Actuating_Plunger",new Vector3(0,.338f,0),new Vector3(0,.3642f,0),.0032f,bezel);
+        Rod("Lever_Hinge_Pin",new Vector3(.009f,.351f,-.016f),new Vector3(.009f,.351f,.016f),.003f,metal);
+        Rod("Safety_Pin_Shaft",new Vector3(.014f,.359f,-.017f),new Vector3(.014f,.359f,.025f),.0015f,bezel);
+        var ringVertices=new List<Vector3>();var ringTriangles=new List<int>();
+        for(int i=0;i<=64;i++)for(int j=0;j<=8;j++)
         {
-            float a=i*Mathf.PI/12,b=(i+1)*Mathf.PI/12;
-            Rod("Safety_Pin_Ring",new Vector3(.026f+.009f*Mathf.Cos(a),.348f+.009f*Mathf.Sin(a),.025f),new Vector3(.026f+.009f*Mathf.Cos(b),.348f+.009f*Mathf.Sin(b),.025f),.0012f,bezel);
+            float a=i*Mathf.PI/32,b=j*Mathf.PI/4,r=.009f+.0011f*Mathf.Cos(b);
+            ringVertices.Add(new Vector3(.024f+r*Mathf.Cos(a),.359f+r*Mathf.Sin(a),.025f+.0011f*Mathf.Sin(b)));
+            if(i<64&&j<8){int k=i*9+j;ringTriangles.AddRange(new[]{k,k+9,k+1,k+1,k+9,k+10});}
         }
-        Rod("Tamper_Seal_Tether",new Vector3(.025f,.345f,.025f),new Vector3(.04f,.326f,.024f),.0008f,yellow);
-        Part("Tamper_Seal_Tag",PrimitiveType.Cube,new Vector3(.04f,.323f,.024f),new Vector3(.009f,.013f,.0015f),yellow);
+        string ringPath=Folder+"Extinguisher_Continuous_Pull_Ring_V8.asset";var ringMesh=AssetDatabase.LoadAssetAtPath<Mesh>(ringPath);
+        if(ringMesh==null){ringMesh=new Mesh{name="Continuous_Steel_Pull_Ring"};ringMesh.SetVertices(ringVertices);ringMesh.SetTriangles(ringTriangles,0);ringMesh.RecalculateNormals();ringMesh.RecalculateBounds();AssetDatabase.CreateAsset(ringMesh,ringPath);}
+        MeshPart("Safety_Pin_Continuous_Ring",ringMesh,bezel);
+        Rod("Safety_Pin_Ring_Eye_Neck",new Vector3(.014f,.359f,.023f),new Vector3(.0155f,.359f,.025f),.0015f,bezel);
+        var sealPoints=new[]{new Vector3(.024f,.350f,.025f),new Vector3(.034f,.348f,.027f),new Vector3(.037f,.355f,.024f),new Vector3(.024f,.363f,.018f),new Vector3(.014f,.359f,.014f),new Vector3(.020f,.351f,.023f),new Vector3(.024f,.350f,.025f)};
+        for(int i=0;i<sealPoints.Length-1;i++)Rod("Tamper_Seal_Closed_Loop",sealPoints[i],sealPoints[i+1],.0004f,yellow);
+        Part("Tamper_Seal_Locking_Head",PrimitiveType.Cube,new Vector3(.032f,.3485f,.027f),new Vector3(.005f,.004f,.002f),yellow);
         Rod("Pressure_Gauge_Stem",new Vector3(0,.327f,.01f),new Vector3(0,.327f,.027f),.005f,metal);
+        Rod("Pressure_Gauge_Back_Case",new Vector3(0,.327f,.024f),new Vector3(0,.327f,.032f),.016f,metal);
         var rim=MeshPart("Pressure_Gauge_Rolled_Bezel",Lathe("Extinguisher_Gauge_Bezel_V3",new[]{new Vector2(.0155f,0),new Vector2(.018f,0),new Vector2(.0185f,.001f),new Vector2(.0185f,.004f),new Vector2(.0175f,.005f),new Vector2(.0155f,.005f)}),bezel);
         rim.transform.localPosition=new Vector3(0,.327f,.030f);rim.transform.localRotation=Quaternion.Euler(90,0,0);
-        var dialMaterial=Material("Extinguisher_Gauge_Print_V3",Color.white,0,.15f);
-        dialMaterial.SetTexture("_BaseMap",Print("Extinguisher_Baiyue_Gauge_V3.png",1024));EditorUtility.SetDirty(dialMaterial);
+        var dialMaterial=Material("Extinguisher_Gauge_Print_V6",Color.white,0,.15f);
+        dialMaterial.SetTexture("_BaseMap",Print("Extinguisher_Baiyue_Gauge_V6.png",1024));EditorUtility.SetDirty(dialMaterial);
         string dialPath=Folder+"Extinguisher_Gauge_Disc_V3.asset";var disc=AssetDatabase.LoadAssetAtPath<Mesh>(dialPath);
         if(disc==null)
         {
@@ -73,10 +100,13 @@ public static class NF5KExtinguisherModel
             disc=new Mesh{name="Printed_Gauge_Face"};disc.SetVertices(v);disc.SetUVs(0,uv);disc.SetTriangles(t,0);disc.RecalculateNormals();disc.RecalculateBounds();AssetDatabase.CreateAsset(disc,dialPath);
         }
         MeshPart("Pressure_Gauge_Printed_Face",disc,dialMaterial);
-        string needlePath=Folder+"Extinguisher_Gauge_Needle_V3.asset";var needle=AssetDatabase.LoadAssetAtPath<Mesh>(needlePath);
-        if(needle==null){needle=new Mesh{name="Tapered_Pressure_Pointer"};needle.vertices=new[]{new Vector3(-.0011f,.325f,.0353f),new Vector3(.0011f,.325f,.0353f),new Vector3(0,.339f,.0353f)};needle.triangles=new[]{0,1,2};needle.RecalculateNormals();needle.RecalculateBounds();AssetDatabase.CreateAsset(needle,needlePath);}
-        MeshPart("Pressure_Gauge_Tapered_Pointer",needle,rubber);
-        Part("Pressure_Gauge_Pointer_Hub",PrimitiveType.Sphere,new Vector3(0,.327f,.0354f),new Vector3(.003f,.003f,.0008f),bezel);
+        string needlePath=Folder+"Extinguisher_Gauge_Needle_V4.asset";var needle=AssetDatabase.LoadAssetAtPath<Mesh>(needlePath);
+        if(needle==null){needle=new Mesh{name="Tapered_Pressure_Pointer"};needle.vertices=new[]{new Vector3(-.0011f,-.002f,0),new Vector3(.0011f,-.002f,0),new Vector3(0,.012f,0)};needle.triangles=new[]{0,1,2};needle.RecalculateNormals();needle.RecalculateBounds();AssetDatabase.CreateAsset(needle,needlePath);}
+        var pointer=MeshPart("Pressure_Gauge_Tapered_Pointer",needle,rubber);
+        pointer.transform.localPosition=new Vector3(0,.327f,.0351f);
+        pointer.transform.localRotation=Quaternion.Euler(0,0,Mathf.Clamp(pointerDegrees,-12f,12f));
+        Rod("Pressure_Gauge_Pointer_Spindle",new Vector3(0,.327f,.0347f),new Vector3(0,.327f,.0352f),.0008f,bezel);
+        Part("Pressure_Gauge_Pointer_Hub",PrimitiveType.Sphere,new Vector3(0,.327f,.0351f),new Vector3(.003f,.003f,.0008f),bezel);
         var glass=Material("Extinguisher_Gauge_Glass",new Color(.72f,.84f,.82f,.075f),0,.88f);
         glass.SetFloat("_Surface",1);glass.SetFloat("_SrcBlend",5);glass.SetFloat("_DstBlend",10);glass.SetFloat("_ZWrite",0);glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");glass.SetOverrideTag("RenderType","Transparent");glass.renderQueue=3000;glass.SetShaderPassEnabled("ShadowCaster",false);EditorUtility.SetDirty(glass);
         Part("Pressure_Gauge_Convex_Lens",PrimitiveType.Sphere,new Vector3(0,.327f,.0366f),new Vector3(.031f,.031f,.002f),glass);
@@ -134,6 +164,7 @@ public static class NF5KExtinguisherModel
         {
             var g=GameObject.CreatePrimitive(PrimitiveType.Cube);g.name=name;g.layer=30;g.transform.SetParent(root.transform,false);g.transform.localPosition=p;g.transform.localScale=size;g.GetComponent<Renderer>().sharedMaterial=mat;UnityEngine.Object.DestroyImmediate(g.GetComponent<Collider>());
         }
+        Box("Manual_Pocket_Load_Bearing_Bottom",new Vector3(0,-.095f,.012f),new Vector3(.18f,.006f,.05f),enamel);
         Box("Manual_Pocket_Back",new Vector3(0,-.02f,-.012f),new Vector3(.18f,.26f,.012f),enamel);
         Box("Manual_Bound_Page_Block",new Vector3(0,.025f,.012f),new Vector3(.148f,.227f,.014f),paper);
         Box("Manual_Back_Cover",new Vector3(0,.025f,.003f),new Vector3(.154f,.234f,.003f),cover);
@@ -141,7 +172,11 @@ public static class NF5KExtinguisherModel
         Box("Manual_Pocket_Front_Lip",new Vector3(0,-.075f,.035f),new Vector3(.18f,.11f,.012f),enamel);
         foreach(float x in new[]{-.086f,.086f})Box("Manual_Pocket_Return",new Vector3(x,-.02f,.012f),new Vector3(.008f,.26f,.05f),enamel);
         foreach(float y in new[]{-.10f,.07f})Box("Manual_Wall_StandOff",new Vector3(0,y,-.030f),new Vector3(.12f,.025f,.04f),enamel);
-        var print=Material("Fire_Manual_Printed_Cover",Color.white,0,.18f);print.SetTexture("_BaseMap",Print("Baiyue_Fire_Manual_Cover.png",2048));EditorUtility.SetDirty(print);
+        for(int i=0;i<19;i++)
+            Box("Manual_Individual_Page_Edges",new Vector3(-.0742f,.025f,.0055f+i*.00068f),new Vector3(.0007f,.223f-(i%4)*.0006f,.00016f),cover);
+        foreach(float x in new[]{-.068f,.068f})foreach(float y in new[]{-.115f,.085f})
+            Box("Manual_Pocket_Flush_Fastener",new Vector3(x,y,-.0048f),new Vector3(.008f,.008f,.0025f),enamel);
+        var print=Material("Fire_Manual_Printed_Cover",Color.white,0,.18f);print.SetTexture("_BaseMap",Print("Baiyue_Fire_Manual_Cover_Worn.png",2048));EditorUtility.SetDirty(print);
         string path=Folder+"Baiyue_Manual_Front_Cover.asset";var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(path);
         if(mesh==null)
         {

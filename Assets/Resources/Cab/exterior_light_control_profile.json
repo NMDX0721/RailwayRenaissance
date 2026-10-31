@@ -1,0 +1,80 @@
+{
+  "headZh": [
+    "前照灯关闭",
+    "前照灯弱光",
+    "前照灯强光"
+  ],
+  "headEn": [
+    "Headlights off",
+    "Dim headlights",
+    "Bright headlights"
+  ],
+  "markerZh": [
+    "标志灯关闭",
+    "白色标志灯",
+    "红色尾灯"
+  ],
+  "markerEn": [
+    "Markers off",
+    "White markers",
+    "Red tail markers"
+  ],
+  "headTitleZh": "前照灯",
+  "headTitleEn": "HEADLIGHTS",
+  "markerTitleZh": "本端标志灯",
+  "markerTitleEn": "LOCAL MARKERS",
+  "headScaleZh": [
+    "关",
+    "弱",
+    "强"
+  ],
+  "headScaleEn": [
+    "OFF",
+    "DIM",
+    "BRIGHT"
+  ],
+  "markerScaleZh": [
+    "关",
+    "白",
+    "红"
+  ],
+  "markerScaleEn": [
+    "OFF",
+    "WHITE",
+    "RED"
+  ],
+  "modeZh": [
+    "关闭",
+    "日间运行",
+    "夜间运行",
+    "调车",
+    "本端尾灯",
+    "手动控制"
+  ],
+  "modeEn": [
+    "Off",
+    "Day running",
+    "Night running",
+    "Shunting",
+    "Local tail",
+    "Manual control"
+  ],
+  "modeScaleZh": [
+    "关",
+    "日行",
+    "夜行",
+    "调车",
+    "尾灯",
+    "手动"
+  ],
+  "modeScaleEn": [
+    "OFF",
+    "DAY",
+    "NIGHT",
+    "SHUNT",
+    "TAIL",
+    "MANUAL"
+  ],
+  "modeTitleZh": "灯光工况",
+  "modeTitleEn": "LIGHTING MODE"
+}

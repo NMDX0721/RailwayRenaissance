@@ -1,0 +1,9 @@
+{
+    "scope": "Saved geometry and authored clearance candidates; not certified reach or anthropometry",
+    "scenes": 4,
+    "closureRays": 84,
+    "captures": 12,
+    "driverSeatTop": 0.5400000214576721,
+    "assistantSeatTop": 0.5400000214576721,
+    "driverEyeAboveSeat": 0.8399999737739563
+}

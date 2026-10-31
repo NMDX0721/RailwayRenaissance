@@ -47,7 +47,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 return cached;
             }
 
-            var genTex = GenerateProceduralCover(trackId, category);
+            string sleeve = trackId switch
+            {
+                "platform" or "calm" or "morning" => "platform",
+                "iron_and_ash" or "chollima_ride" => "iron_and_ash",
+                "cloud_rail" or "first_light" or "curious" => "cloud_rail",
+                "embers" or "warm" or "silence" => "embers",
+                "night_cargo" or "starlit_rails" or "borderline" or "mystery" => "night_cargo",
+                "determination" or "train_ambient" or "ambient_nature" => "determination",
+                "emotional" or "melancholy" or "train_through_keys" or "south_wind" or "sleepers" => "memory",
+                "news" or "news_explosive" or "wheels_joke" => "radio",
+                _ => "private_tape"
+            };
+            var existing = Resources.Load<Texture2D>("Music/Covers/" + sleeve);
+            if (existing != null)
+            {
+                s_coverCache[key] = existing;
+                return existing;
+            }
+            // Shared archive sleeve when there is no matching authored scene.
+            var genTex = GenerateProceduralCover("railway_archive", category);
             if (genTex != null)
             {
                 s_coverCache[key] = genTex;

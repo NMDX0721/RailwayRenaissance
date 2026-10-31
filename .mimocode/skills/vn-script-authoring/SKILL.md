@@ -94,6 +94,7 @@ neutral, serious, smile, curious, bored, sad, surprise, angry, excited, gentle, 
 4. **choice的next是scene数组的index（0-based）**
 5. **setValue格式**: `"variable=value"`，用英文逗号分隔多个
 6. **id命名规范**: `prologue_XX_name` 或 `post_XXX_name`
+7. **工业术语规范**: 剧本涉及的动力机械、机车制动、工务保线等专业技术词汇（如喷油泵、大闸、道尺、起道机等）由 `Terms.json`（65条工业术语）自动识别高亮，支持悬浮下划线与下方词典卡片展示。编写剧本时须使用标准工业规范名称。
 
 ## Common Backgrounds
 

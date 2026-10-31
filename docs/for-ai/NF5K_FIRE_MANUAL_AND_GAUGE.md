@@ -25,3 +25,22 @@
 `tools/compile/extinguisher_manual_verified.log`：新增手册仅阅读动作、打开/关闭资料检查，保留资料页后台输入隔离、三个挂架取放/抱箍开闭、驾驶交互及模拟回归。
 
 审阅图目录：`tools/cab_reference/interior_review/`。最终文件为 `extinguisher_gauge_valve_delivery.png`、`baiyue_fire_manual_delivery.png`、`extinguisher_bilingual_front_delivery.png`、`extinguisher_bilingual_mounted_delivery.png`。
+# 2026-10-23 在役细节与固定结构
+
+收尾：表盘 V6 所有文字统一 48 px，同一字体；左右状态采用相同双行间距，底部压力和英制压力沿中轴均匀排列。锁销改至压柄根部与加高的双侧固定铰座共同位置，避免只穿固定座却不能阻挡压柄。装配检查补锁销/压柄与铰座包络相交、避让铰轴，以及指针轴帽与玻璃的间隙。这些是游戏几何检查，不是机械功能或器材认证。
+
+压柄与固定铰座内侧各留 0.5 mm 侧隙，压杆端部减去原来的明显穿入量。终轮检查 `tools/compile/cab_uniform_wall_equipment_verified.log` 通过几何及取放/驾驶回归；新近景为 `extinguisher_gauge_valve_uniform_verified.png`。表针偏角仍是静态外观，不因温度说明而宣称已实现热力学模型。
+
+科学依据：[Amerex 维护手册](https://www.amerex-fire.com/upl/downloads/manuals/english/hand-portable-high-performance-extinguishers-faee309b.pdf) 要求保险销安装到位、封签完好、软管接头紧固，并指出温度可能造成表针轻微变化；核对仅引用这些通用结构/检查关系，不采用该高性能系列的 240 psi 参数替换本项目 195 psig 的既有规格。药剂量不能仅靠表盘判定。
+
+排版与保险销修订：表盘 V5 将“正常 / CHARGED”恢复到顶部中轴，留出标题区域，不再偏向左侧。拉环采用连续圆管网格并补与销杆相接的短颈；取消原来的大块黄色吊牌，改小型封签锁头及连接拉环和柄根销孔区域的闭合细环。黄色件表示防拆封签，不是拉环本体。具体走线为原创装配表现，非厂家零件的精确复刻。参考 [Amerex 零件手册](https://www.amerex-fire.com/upl/downloads/library/parts-book.pdf) 中独立列出的不锈钢环销与黄色封签。
+
+表盘可读性二次修订：V4 印刷放大中文状态、英文状态及压力单位，正常状态移至指针左侧空白区，避免针尖遮字及边缘刻度挤占。握把 V6 改连续折弯网格及硬表面法线，消除独立方条接缝；阀体增加双侧铰座、贯穿轴销与阀芯压杆。该部分仍为静态机械外观，未接喷射驱动动画。对应审阅图后缀 `_legible_handle_final.png`。`tools/compile/extinguisher_legible_handle_final.log` 已通过安装接触、器材取放、上下文交互和驾驶 Play Mode 回归；四份场景由 Unity 保存。
+
+两具灭火器压力指针分别采用 +5°、−7° 的固定外观偏移，限制在绿色区内；这不是实时温度或瓶压模拟。表头补背壳和指针轴，避免接管与表壳脱离；指针轴帽与镜片留出间隙。挂架补两侧连接腹板和固定铰链，瓶底与底杯接触。
+
+手册封面采用可复现的克制边角磨损、书脊擦痕与折线；纸页加入独立层次，文字保持可读。书袋增加承重底板，书封底边落在底板上，后板、侧折边、前挡板及墙面连接件形成连续支撑。
+
+这些为静态安装与脚本取放模型；尚未模拟螺栓强度、车辆振动松脱、纸张软体或自由落体。检查入口仍为 `NF5KCabFittings.BatchBuild`，Play Mode 额外检查书册底部接触、双表针差异与绿色区角度，并回归取放和卡箍开合。
+
+验证：`tools/compile/extinguisher_service_wear_checked.log` 已通过 SERVICE_MOUNTING、SAFETY_EQUIPMENT_PLAY、CONTEXT_INTERACTION、SIMULATION_PLAYMODE 检查。四份场景已由 Unity 保存；新图后缀为 `_service_wear_checked.png`。倒角将尺寸写入网格，因此接触检查使用 Renderer 实际边界，不使用变换缩放推算。

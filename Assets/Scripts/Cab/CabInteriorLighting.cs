@@ -75,6 +75,7 @@ namespace RailwayRenaissance.Cab
             if (zone == 0) passengerFront = on; else passengerRear = on;
             Apply();
         }
+        public void SetInstrumentEnabled(bool on) { SetInstrumentDimmer(on ? lastInstrumentDimmer : 0); }
         public void SetInstrumentDimmer(float level)
         {
             if (float.IsNaN(level) || float.IsInfinity(level)) throw new ArgumentOutOfRangeException(nameof(level));
