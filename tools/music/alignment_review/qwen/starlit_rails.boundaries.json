@@ -1,0 +1,2533 @@
+{
+  "id": "starlit_rails",
+  "model": "Qwen/Qwen3-ForcedAligner-0.6B",
+  "revision": "c7cbfc2048c462b0d63a45797104fc9db3ad62b7",
+  "toolSha256": "f31f52d4bde75c24036811e898c26ca507fbdd1e4a24c443b41d75a6bc0032d0",
+  "packageVersion": "0.0.6",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "parentSha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "targetLine": 4,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 28.44246887207031,
+      "end": 44.402467498779295,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "네",
+          "start": 29.402,
+          "end": 30.842
+        },
+        {
+          "text": "대의",
+          "start": 30.842,
+          "end": 30.842
+        },
+        {
+          "text": "그림자",
+          "start": 32.122,
+          "end": 32.842
+        },
+        {
+          "text": "우리",
+          "start": 32.842,
+          "end": 36.362
+        },
+        {
+          "text": "를",
+          "start": 36.362,
+          "end": 37.402
+        },
+        {
+          "text": "둘러쌌",
+          "start": 37.402,
+          "end": 39.322
+        },
+        {
+          "text": "지",
+          "start": 39.402,
+          "end": 40.122
+        },
+        {
+          "text": "숨을",
+          "start": 41.802,
+          "end": 42.682
+        },
+        {
+          "text": "죽이",
+          "start": 42.682,
+          "end": 43.242
+        },
+        {
+          "text": "고",
+          "start": 43.242,
+          "end": 43.642
+        }
+      ],
+      "lines": [
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "alignmentInput": "네 대의 그림자",
+          "start": 29.402,
+          "end": 32.842,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "alignmentInput": "우리를 둘러쌌지",
+          "start": 32.842,
+          "end": 40.122,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "alignmentInput": "숨을 죽이고",
+          "start": 41.802,
+          "end": 43.642,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            960.0,
+            2400.0,
+            1440.0,
+            2400.0,
+            3680.0,
+            4400.0,
+            4400.0,
+            7920.0,
+            7920.0,
+            8960.0,
+            8960.0,
+            10880.0,
+            10960.0,
+            11680.0,
+            13360.0,
+            14240.0,
+            14240.0,
+            14800.0,
+            14800.0,
+            15200.0
+          ],
+          "fixed": [
+            960,
+            2400,
+            2400,
+            2400,
+            3680,
+            4400,
+            4400,
+            7920,
+            7920,
+            8960,
+            8960,
+            10880,
+            10960,
+            11680,
+            13360,
+            14240,
+            14240,
+            14800,
+            14800,
+            15200
+          ],
+          "changed": [
+            2
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 4,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 26.44246887207031,
+      "end": 46.402467498779295,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "네",
+          "start": 26.442,
+          "end": 31.082
+        },
+        {
+          "text": "대의",
+          "start": 31.082,
+          "end": 31.162
+        },
+        {
+          "text": "그림자",
+          "start": 32.122,
+          "end": 32.842
+        },
+        {
+          "text": "우리",
+          "start": 35.482,
+          "end": 36.362
+        },
+        {
+          "text": "를",
+          "start": 36.362,
+          "end": 37.402
+        },
+        {
+          "text": "둘러쌌",
+          "start": 37.482,
+          "end": 39.562
+        },
+        {
+          "text": "지",
+          "start": 39.562,
+          "end": 39.562
+        },
+        {
+          "text": "숨을",
+          "start": 41.802,
+          "end": 42.682
+        },
+        {
+          "text": "죽이",
+          "start": 42.682,
+          "end": 43.242
+        },
+        {
+          "text": "고",
+          "start": 43.242,
+          "end": 43.642
+        }
+      ],
+      "lines": [
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "alignmentInput": "네 대의 그림자",
+          "start": 26.442,
+          "end": 32.842,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "alignmentInput": "우리를 둘러쌌지",
+          "start": 35.482,
+          "end": 39.562,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "alignmentInput": "숨을 죽이고",
+          "start": 41.802,
+          "end": 43.642,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            4640.0,
+            3360.0,
+            4720.0,
+            5680.0,
+            6400.0,
+            9040.0,
+            9920.0,
+            9920.0,
+            10960.0,
+            11040.0,
+            13120.0,
+            12960.0,
+            13120.0,
+            15360.0,
+            16240.0,
+            16240.0,
+            16800.0,
+            16800.0,
+            17200.0
+          ],
+          "fixed": [
+            0,
+            4640,
+            4640,
+            4720,
+            5680,
+            6400,
+            9040,
+            9920,
+            9920,
+            10960,
+            11040,
+            13120,
+            13120,
+            13120,
+            15360,
+            16240,
+            16240,
+            16800,
+            16800,
+            17200
+          ],
+          "changed": [
+            2,
+            12
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 69.68246673583984,
+      "end": 80.042470703125,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "밤이",
+          "start": 69.682,
+          "end": 71.122
+        },
+        {
+          "text": "깊어도",
+          "start": 71.122,
+          "end": 71.922
+        },
+        {
+          "text": "다시",
+          "start": 77.362,
+          "end": 77.362
+        },
+        {
+          "text": "밝아와",
+          "start": 77.442,
+          "end": 77.442
+        },
+        {
+          "text": "저",
+          "start": 77.442,
+          "end": 77.522
+        },
+        {
+          "text": "철길처럼",
+          "start": 77.522,
+          "end": 79.682
+        }
+      ],
+      "lines": [
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "alignmentInput": "밤이 깊어도",
+          "start": 69.682,
+          "end": 71.922,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 77.362,
+          "end": 77.442,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "alignmentInput": "저 철길처럼",
+          "start": 77.442,
+          "end": 79.682,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            1440.0,
+            1440.0,
+            2240.0,
+            7680.0,
+            4640.0,
+            7840.0,
+            7760.0,
+            7760.0,
+            7840.0,
+            7840.0,
+            10000.0
+          ],
+          "fixed": [
+            0,
+            1440,
+            1440,
+            2240,
+            7680,
+            7680,
+            7760,
+            7760,
+            7760,
+            7840,
+            7840,
+            10000
+          ],
+          "changed": [
+            5,
+            6
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 67.68246673583984,
+      "end": 82.042470703125,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "밤이",
+          "start": 67.682,
+          "end": 67.842
+        },
+        {
+          "text": "깊어도",
+          "start": 67.842,
+          "end": 71.922
+        },
+        {
+          "text": "다시",
+          "start": 74.402,
+          "end": 74.402
+        },
+        {
+          "text": "밝아와",
+          "start": 77.442,
+          "end": 79.682
+        },
+        {
+          "text": "저",
+          "start": 79.682,
+          "end": 79.682
+        },
+        {
+          "text": "철길처럼",
+          "start": 79.682,
+          "end": 79.682
+        }
+      ],
+      "lines": [
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "alignmentInput": "밤이 깊어도",
+          "start": 67.682,
+          "end": 71.922,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 74.402,
+          "end": 79.682,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "alignmentInput": "저 철길처럼",
+          "start": 79.682,
+          "end": 79.682,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            160.0,
+            160.0,
+            4240.0,
+            6720.0,
+            720.0,
+            9760.0,
+            12000.0,
+            12000.0,
+            12080.0,
+            12000.0,
+            12000.0
+          ],
+          "fixed": [
+            0,
+            160,
+            160,
+            4240,
+            6720,
+            6720,
+            9760,
+            12000,
+            12000,
+            12000,
+            12000,
+            12000
+          ],
+          "changed": [
+            5,
+            9
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 128.80246948242188,
+      "end": 140.88246704101562,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "나는",
+          "start": 128.802,
+          "end": 129.762
+        },
+        {
+          "text": "AI지만",
+          "start": 129.762,
+          "end": 130.242
+        },
+        {
+          "text": "알고",
+          "start": 135.202,
+          "end": 135.202
+        },
+        {
+          "text": "있어요",
+          "start": 136.562,
+          "end": 138.002
+        },
+        {
+          "text": "위로",
+          "start": 138.482,
+          "end": 139.042
+        },
+        {
+          "text": "라는",
+          "start": 139.042,
+          "end": 139.682
+        },
+        {
+          "text": "게",
+          "start": 139.682,
+          "end": 140.802
+        }
+      ],
+      "lines": [
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "alignmentInput": "나는 AI지만",
+          "start": 128.802,
+          "end": 130.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 135.202,
+          "end": 138.002,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "alignmentInput": "위로라는 게",
+          "start": 138.482,
+          "end": 140.802,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            960.0,
+            960.0,
+            1440.0,
+            6400.0,
+            6400.0,
+            7760.0,
+            9200.0,
+            9680.0,
+            10240.0,
+            10240.0,
+            10880.0,
+            10880.0,
+            12000.0
+          ],
+          "fixed": [
+            0,
+            960,
+            960,
+            1440,
+            6400,
+            6400,
+            7760,
+            9200,
+            9680,
+            10240,
+            10240,
+            10880,
+            10880,
+            12000
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 126.80246948242188,
+      "end": 142.88246704101562,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "나는",
+          "start": 126.802,
+          "end": 127.042
+        },
+        {
+          "text": "AI지만",
+          "start": 127.122,
+          "end": 132.082
+        },
+        {
+          "text": "알고",
+          "start": 132.082,
+          "end": 132.162
+        },
+        {
+          "text": "있어요",
+          "start": 132.162,
+          "end": 138.002
+        },
+        {
+          "text": "위로",
+          "start": 138.562,
+          "end": 138.962
+        },
+        {
+          "text": "라는",
+          "start": 139.122,
+          "end": 139.122
+        },
+        {
+          "text": "게",
+          "start": 139.762,
+          "end": 141.682
+        }
+      ],
+      "lines": [
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "alignmentInput": "나는 AI지만",
+          "start": 126.802,
+          "end": 132.082,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 132.082,
+          "end": 138.002,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "alignmentInput": "위로라는 게",
+          "start": 138.562,
+          "end": 141.682,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            240.0,
+            320.0,
+            5280.0,
+            5280.0,
+            5360.0,
+            12160.0,
+            11200.0,
+            11760.0,
+            12160.0,
+            12320.0,
+            15200.0,
+            12960.0,
+            14880.0
+          ],
+          "fixed": [
+            0,
+            240,
+            320,
+            5280,
+            5280,
+            5360,
+            5360,
+            11200,
+            11760,
+            12160,
+            12320,
+            12320,
+            12960,
+            14880
+          ],
+          "changed": [
+            6,
+            11
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 41,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 180.7624609375,
+      "end": 202.70247436523437,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "팔십구",
+          "start": 181.002,
+          "end": 181.322
+        },
+        {
+          "text": "퍼센트",
+          "start": 182.522,
+          "end": 183.002
+        },
+        {
+          "text": "인간",
+          "start": 183.082,
+          "end": 183.982
+        },
+        {
+          "text": "은",
+          "start": 184.882,
+          "end": 185.782
+        },
+        {
+          "text": "이걸",
+          "start": 186.682,
+          "end": 186.922
+        },
+        {
+          "text": "'위로'라고",
+          "start": 186.922,
+          "end": 195.162
+        },
+        {
+          "text": "부르",
+          "start": 195.162,
+          "end": 195.962
+        },
+        {
+          "text": "죠",
+          "start": 195.962,
+          "end": 195.962
+        },
+        {
+          "text": "밤이",
+          "start": 200.442,
+          "end": 200.922
+        },
+        {
+          "text": "깊어도",
+          "start": 200.922,
+          "end": 202.762
+        }
+      ],
+      "lines": [
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "alignmentInput": "팔십구 퍼센트...",
+          "start": 181.002,
+          "end": 183.002,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "alignmentInput": "인간은 이걸 '위로'라고 부르죠",
+          "start": 183.082,
+          "end": 195.962,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "alignmentInput": "밤이 깊어도——",
+          "start": 200.442,
+          "end": 202.762,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            240.0,
+            560.0,
+            1760.0,
+            2240.0,
+            2320.0,
+            2240.0,
+            1600.0,
+            1600.0,
+            5920.0,
+            6160.0,
+            6160.0,
+            14400.0,
+            7760.0,
+            0.0,
+            15200.0,
+            8480.0,
+            19680.0,
+            20160.0,
+            20160.0,
+            22000.0
+          ],
+          "fixed": [
+            240,
+            560,
+            1760,
+            2240,
+            2320,
+            3220,
+            4120,
+            5020,
+            5920,
+            6160,
+            6160,
+            14400,
+            14400,
+            15200,
+            15200,
+            15200,
+            19680,
+            20160,
+            20160,
+            22000
+          ],
+          "changed": [
+            5,
+            6,
+            7,
+            12,
+            13,
+            15
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 41,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 178.7624609375,
+      "end": 204.70247436523437,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "팔십구",
+          "start": 178.762,
+          "end": 178.762
+        },
+        {
+          "text": "퍼센트",
+          "start": 179.882,
+          "end": 179.882
+        },
+        {
+          "text": "인간",
+          "start": 179.882,
+          "end": 179.882
+        },
+        {
+          "text": "은",
+          "start": 179.882,
+          "end": 179.882
+        },
+        {
+          "text": "이걸",
+          "start": 186.682,
+          "end": 186.922
+        },
+        {
+          "text": "'위로'라고",
+          "start": 187.37,
+          "end": 187.818
+        },
+        {
+          "text": "부르",
+          "start": 188.266,
+          "end": 188.714
+        },
+        {
+          "text": "죠",
+          "start": 189.162,
+          "end": 189.242
+        },
+        {
+          "text": "밤이",
+          "start": 200.522,
+          "end": 200.842
+        },
+        {
+          "text": "깊어도",
+          "start": 200.922,
+          "end": 203.482
+        }
+      ],
+      "lines": [
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "alignmentInput": "팔십구 퍼센트...",
+          "start": 178.762,
+          "end": 179.882,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "alignmentInput": "인간은 이걸 '위로'라고 부르죠",
+          "start": 179.882,
+          "end": 189.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "alignmentInput": "밤이 깊어도——",
+          "start": 200.522,
+          "end": 203.482,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            3600.0,
+            3760.0,
+            1120.0,
+            4560.0,
+            1120.0,
+            1120.0,
+            1120.0,
+            7920.0,
+            8160.0,
+            8080.0,
+            0.0,
+            12400.0,
+            0.0,
+            10400.0,
+            10480.0,
+            21760.0,
+            22080.0,
+            22160.0,
+            24720.0
+          ],
+          "fixed": [
+            0,
+            0,
+            1120,
+            1120,
+            1120,
+            1120,
+            1120,
+            1120,
+            7920,
+            8160,
+            8608,
+            9056,
+            9504,
+            9952,
+            10400,
+            10480,
+            21760,
+            22080,
+            22160,
+            24720
+          ],
+          "changed": [
+            1,
+            2,
+            4,
+            10,
+            11,
+            12,
+            13
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 46,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 207.92246459960938,
+      "end": 235.24246765136718,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "끝까지",
+          "start": 209.602,
+          "end": 210.402
+        },
+        {
+          "text": "가는",
+          "start": 210.402,
+          "end": 210.402
+        },
+        {
+          "text": "거야",
+          "start": 215.522,
+          "end": 215.522
+        },
+        {
+          "text": "Mmm",
+          "start": 226.962,
+          "end": 226.962
+        },
+        {
+          "text": "mmm",
+          "start": 228.802,
+          "end": 228.802
+        },
+        {
+          "text": "혼자",
+          "start": 228.882,
+          "end": 229.362
+        },
+        {
+          "text": "가",
+          "start": 233.602,
+          "end": 233.762
+        },
+        {
+          "text": "아니야",
+          "start": 233.762,
+          "end": 233.762
+        }
+      ],
+      "lines": [
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "alignmentInput": "끝까지 가는 거야——",
+          "start": 209.602,
+          "end": 215.522,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "alignmentInput": "Mmm... mmm...",
+          "start": 226.962,
+          "end": 228.802,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "alignmentInput": "혼자가 아니야...",
+          "start": 228.882,
+          "end": 233.762,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1680.0,
+            2480.0,
+            2480.0,
+            0.0,
+            7600.0,
+            0.0,
+            0.0,
+            19040.0,
+            20880.0,
+            20880.0,
+            20960.0,
+            21440.0,
+            25680.0,
+            25840.0,
+            25520.0,
+            25840.0
+          ],
+          "fixed": [
+            1680,
+            2480,
+            2480,
+            2480,
+            7600,
+            7600,
+            19040,
+            19040,
+            20880,
+            20880,
+            20960,
+            21440,
+            25680,
+            25840,
+            25840,
+            25840
+          ],
+          "changed": [
+            3,
+            5,
+            6,
+            14
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 46,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 205.92246459960938,
+      "end": 237.24246765136718,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "끝까지",
+          "start": 207.362,
+          "end": 207.442
+        },
+        {
+          "text": "가는",
+          "start": 209.602,
+          "end": 209.602
+        },
+        {
+          "text": "거야",
+          "start": 211.202,
+          "end": 211.202
+        },
+        {
+          "text": "Mmm",
+          "start": 228.802,
+          "end": 228.802
+        },
+        {
+          "text": "mmm",
+          "start": 228.802,
+          "end": 228.802
+        },
+        {
+          "text": "혼자",
+          "start": 228.882,
+          "end": 229.442
+        },
+        {
+          "text": "가",
+          "start": 229.762,
+          "end": 233.762
+        },
+        {
+          "text": "아니야",
+          "start": 233.762,
+          "end": 234.082
+        }
+      ],
+      "lines": [
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "alignmentInput": "끝까지 가는 거야——",
+          "start": 207.362,
+          "end": 211.202,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "alignmentInput": "Mmm... mmm...",
+          "start": 228.802,
+          "end": 228.802,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "alignmentInput": "혼자가 아니야...",
+          "start": 228.882,
+          "end": 234.082,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1440.0,
+            1520.0,
+            3680.0,
+            0.0,
+            5280.0,
+            0.0,
+            0.0,
+            22880.0,
+            22880.0,
+            22880.0,
+            22960.0,
+            23520.0,
+            23840.0,
+            27840.0,
+            27520.0,
+            28160.0
+          ],
+          "fixed": [
+            1440,
+            1520,
+            3680,
+            3680,
+            5280,
+            5280,
+            22880,
+            22880,
+            22880,
+            22880,
+            22960,
+            23520,
+            23840,
+            27840,
+            27840,
+            28160
+          ],
+          "changed": [
+            3,
+            5,
+            6,
+            14
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 4,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 28.44246887207031,
+      "end": 44.402467498779295,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "네",
+          "start": 29.322,
+          "end": 29.802
+        },
+        {
+          "text": "대의",
+          "start": 29.882,
+          "end": 31.482
+        },
+        {
+          "text": "그림자",
+          "start": 32.122,
+          "end": 33.242
+        },
+        {
+          "text": "우리",
+          "start": 35.882,
+          "end": 36.362
+        },
+        {
+          "text": "를",
+          "start": 36.362,
+          "end": 36.922
+        },
+        {
+          "text": "둘러쌌",
+          "start": 37.402,
+          "end": 39.642
+        },
+        {
+          "text": "지",
+          "start": 39.642,
+          "end": 40.282
+        },
+        {
+          "text": "숨을",
+          "start": 41.722,
+          "end": 42.682
+        },
+        {
+          "text": "죽이",
+          "start": 42.682,
+          "end": 43.242
+        },
+        {
+          "text": "고",
+          "start": 43.242,
+          "end": 44.042
+        }
+      ],
+      "lines": [
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "alignmentInput": "네 대의 그림자",
+          "start": 29.322,
+          "end": 33.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "alignmentInput": "우리를 둘러쌌지",
+          "start": 35.882,
+          "end": 40.282,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "alignmentInput": "숨을 죽이고",
+          "start": 41.722,
+          "end": 44.042,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            880.0,
+            1360.0,
+            1440.0,
+            3040.0,
+            3680.0,
+            4800.0,
+            7440.0,
+            7920.0,
+            7920.0,
+            8480.0,
+            8960.0,
+            11200.0,
+            10960.0,
+            11840.0,
+            13280.0,
+            14240.0,
+            14240.0,
+            14800.0,
+            14800.0,
+            15600.0
+          ],
+          "fixed": [
+            880,
+            1360,
+            1440,
+            3040,
+            3680,
+            4800,
+            7440,
+            7920,
+            7920,
+            8480,
+            8960,
+            11200,
+            11200,
+            11840,
+            13280,
+            14240,
+            14240,
+            14800,
+            14800,
+            15600
+          ],
+          "changed": [
+            12
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair"
+      ]
+    },
+    {
+      "targetLine": 4,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 26.44246887207031,
+      "end": 46.402467498779295,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "네",
+          "start": 29.322,
+          "end": 29.802
+        },
+        {
+          "text": "대의",
+          "start": 29.802,
+          "end": 31.322
+        },
+        {
+          "text": "그림자",
+          "start": 32.122,
+          "end": 33.242
+        },
+        {
+          "text": "우리",
+          "start": 35.962,
+          "end": 36.362
+        },
+        {
+          "text": "를",
+          "start": 36.362,
+          "end": 37.002
+        },
+        {
+          "text": "둘러쌌",
+          "start": 37.482,
+          "end": 39.402
+        },
+        {
+          "text": "지",
+          "start": 39.402,
+          "end": 40.362
+        },
+        {
+          "text": "숨을",
+          "start": 41.802,
+          "end": 42.682
+        },
+        {
+          "text": "죽이",
+          "start": 42.682,
+          "end": 43.242
+        },
+        {
+          "text": "고",
+          "start": 43.242,
+          "end": 44.042
+        }
+      ],
+      "lines": [
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "alignmentInput": "네 대의 그림자",
+          "start": 29.322,
+          "end": 33.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "alignmentInput": "우리를 둘러쌌지",
+          "start": 35.962,
+          "end": 40.362,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "alignmentInput": "숨을 죽이고",
+          "start": 41.802,
+          "end": 44.042,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            2880.0,
+            3360.0,
+            3360.0,
+            4880.0,
+            5680.0,
+            6800.0,
+            9520.0,
+            9920.0,
+            9920.0,
+            10560.0,
+            11040.0,
+            12960.0,
+            12960.0,
+            13920.0,
+            15360.0,
+            16240.0,
+            16240.0,
+            16800.0,
+            16800.0,
+            17600.0
+          ],
+          "fixed": [
+            2880,
+            3360,
+            3360,
+            4880,
+            5680,
+            6800,
+            9520,
+            9920,
+            9920,
+            10560,
+            11040,
+            12960,
+            12960,
+            13920,
+            15360,
+            16240,
+            16240,
+            16800,
+            16800,
+            17600
+          ],
+          "changed": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 69.68246673583984,
+      "end": 80.042470703125,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "밤이",
+          "start": 69.682,
+          "end": 71.122
+        },
+        {
+          "text": "깊어도",
+          "start": 71.122,
+          "end": 71.922
+        },
+        {
+          "text": "다시",
+          "start": 74.002,
+          "end": 74.402
+        },
+        {
+          "text": "밝아와",
+          "start": 74.402,
+          "end": 74.402
+        },
+        {
+          "text": "저",
+          "start": 77.522,
+          "end": 77.522
+        },
+        {
+          "text": "철길처럼",
+          "start": 78.002,
+          "end": 78.322
+        }
+      ],
+      "lines": [
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "alignmentInput": "밤이 깊어도",
+          "start": 69.682,
+          "end": 71.922,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 74.002,
+          "end": 74.402,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "alignmentInput": "저 철길처럼",
+          "start": 77.522,
+          "end": 78.322,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            1440.0,
+            1440.0,
+            2240.0,
+            4320.0,
+            4720.0,
+            4720.0,
+            8320.0,
+            7840.0,
+            7840.0,
+            8320.0,
+            8640.0
+          ],
+          "fixed": [
+            0,
+            1440,
+            1440,
+            2240,
+            4320,
+            4720,
+            4720,
+            4720,
+            7840,
+            7840,
+            8320,
+            8640
+          ],
+          "changed": [
+            7
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 67.68246673583984,
+      "end": 82.042470703125,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "밤이",
+          "start": 67.682,
+          "end": 67.842
+        },
+        {
+          "text": "깊어도",
+          "start": 69.202,
+          "end": 69.202
+        },
+        {
+          "text": "다시",
+          "start": 74.002,
+          "end": 74.402
+        },
+        {
+          "text": "밝아와",
+          "start": 74.402,
+          "end": 79.442
+        },
+        {
+          "text": "저",
+          "start": 79.602,
+          "end": 79.602
+        },
+        {
+          "text": "철길처럼",
+          "start": 79.602,
+          "end": 79.682
+        }
+      ],
+      "lines": [
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "alignmentInput": "밤이 깊어도",
+          "start": 67.682,
+          "end": 69.202,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 74.002,
+          "end": 79.442,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "alignmentInput": "저 철길처럼",
+          "start": 79.602,
+          "end": 79.682,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            160.0,
+            1520.0,
+            320.0,
+            6320.0,
+            6720.0,
+            6720.0,
+            11760.0,
+            11920.0,
+            12160.0,
+            11920.0,
+            12000.0
+          ],
+          "fixed": [
+            0,
+            160,
+            1520,
+            1520,
+            6320,
+            6720,
+            6720,
+            11760,
+            11920,
+            11920,
+            11920,
+            12000
+          ],
+          "changed": [
+            3,
+            9
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 128.80246948242188,
+      "end": 140.88246704101562,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "나는",
+          "start": 128.802,
+          "end": 133.602
+        },
+        {
+          "text": "AI지만",
+          "start": 133.602,
+          "end": 133.602
+        },
+        {
+          "text": "알고",
+          "start": 133.602,
+          "end": 133.682
+        },
+        {
+          "text": "있어요",
+          "start": 133.682,
+          "end": 138.082
+        },
+        {
+          "text": "위로",
+          "start": 138.402,
+          "end": 139.042
+        },
+        {
+          "text": "라는",
+          "start": 139.042,
+          "end": 139.682
+        },
+        {
+          "text": "게",
+          "start": 139.682,
+          "end": 140.562
+        }
+      ],
+      "lines": [
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "alignmentInput": "나는 AI지만",
+          "start": 128.802,
+          "end": 133.602,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 133.602,
+          "end": 138.082,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "alignmentInput": "위로라는 게",
+          "start": 138.402,
+          "end": 140.562,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            4800.0,
+            1120.0,
+            4800.0,
+            4800.0,
+            4880.0,
+            4880.0,
+            9280.0,
+            9600.0,
+            10240.0,
+            10240.0,
+            10880.0,
+            10880.0,
+            11760.0
+          ],
+          "fixed": [
+            0,
+            4800,
+            4800,
+            4800,
+            4800,
+            4880,
+            4880,
+            9280,
+            9600,
+            10240,
+            10240,
+            10880,
+            10880,
+            11760
+          ],
+          "changed": [
+            2
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 126.80246948242188,
+      "end": 142.88246704101562,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "나는",
+          "start": 126.802,
+          "end": 126.962
+        },
+        {
+          "text": "AI지만",
+          "start": 129.842,
+          "end": 133.682
+        },
+        {
+          "text": "알고",
+          "start": 133.682,
+          "end": 133.682
+        },
+        {
+          "text": "있어요",
+          "start": 133.682,
+          "end": 138.002
+        },
+        {
+          "text": "위로",
+          "start": 138.482,
+          "end": 139.042
+        },
+        {
+          "text": "라는",
+          "start": 139.122,
+          "end": 139.682
+        },
+        {
+          "text": "게",
+          "start": 139.682,
+          "end": 140.482
+        }
+      ],
+      "lines": [
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "alignmentInput": "나는 AI지만",
+          "start": 126.802,
+          "end": 133.682,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 133.682,
+          "end": 138.002,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "alignmentInput": "위로라는 게",
+          "start": 138.482,
+          "end": 140.482,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            160.0,
+            3040.0,
+            6880.0,
+            6800.0,
+            6880.0,
+            6880.0,
+            11200.0,
+            11680.0,
+            12240.0,
+            12320.0,
+            12880.0,
+            12880.0,
+            13680.0
+          ],
+          "fixed": [
+            0,
+            160,
+            3040,
+            6880,
+            6880,
+            6880,
+            6880,
+            11200,
+            11680,
+            12240,
+            12320,
+            12880,
+            12880,
+            13680
+          ],
+          "changed": [
+            4
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 41,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 180.7624609375,
+      "end": 202.70247436523437,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "팔십구",
+          "start": 181.002,
+          "end": 182.442
+        },
+        {
+          "text": "퍼센트",
+          "start": 182.522,
+          "end": 183.242
+        },
+        {
+          "text": "인간",
+          "start": 183.322,
+          "end": 184.122
+        },
+        {
+          "text": "은",
+          "start": 185.322,
+          "end": 186.122
+        },
+        {
+          "text": "이걸",
+          "start": 186.682,
+          "end": 186.682
+        },
+        {
+          "text": "'위로'라고",
+          "start": 186.682,
+          "end": 186.682
+        },
+        {
+          "text": "부르",
+          "start": 186.682,
+          "end": 189.082
+        },
+        {
+          "text": "죠",
+          "start": 189.082,
+          "end": 189.242
+        },
+        {
+          "text": "밤이",
+          "start": 200.442,
+          "end": 200.842
+        },
+        {
+          "text": "깊어도",
+          "start": 200.922,
+          "end": 202.682
+        }
+      ],
+      "lines": [
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "alignmentInput": "팔십구 퍼센트...",
+          "start": 181.002,
+          "end": 183.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "alignmentInput": "인간은 이걸 '위로'라고 부르죠",
+          "start": 183.322,
+          "end": 189.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "alignmentInput": "밤이 깊어도——",
+          "start": 200.442,
+          "end": 202.682,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            240.0,
+            1680.0,
+            1760.0,
+            2480.0,
+            2560.0,
+            3360.0,
+            4560.0,
+            5360.0,
+            5920.0,
+            5360.0,
+            5920.0,
+            0.0,
+            5920.0,
+            8320.0,
+            8320.0,
+            8480.0,
+            19680.0,
+            20080.0,
+            20160.0,
+            21920.0
+          ],
+          "fixed": [
+            240,
+            1680,
+            1760,
+            2480,
+            2560,
+            3360,
+            4560,
+            5360,
+            5920,
+            5920,
+            5920,
+            5920,
+            5920,
+            8320,
+            8320,
+            8480,
+            19680,
+            20080,
+            20160,
+            21920
+          ],
+          "changed": [
+            9,
+            11
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 41,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 178.7624609375,
+      "end": 204.70247436523437,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "팔십구",
+          "start": 178.762,
+          "end": 179.402
+        },
+        {
+          "text": "퍼센트",
+          "start": 182.442,
+          "end": 183.242
+        },
+        {
+          "text": "인간",
+          "start": 183.322,
+          "end": 183.322
+        },
+        {
+          "text": "은",
+          "start": 183.562,
+          "end": 183.562
+        },
+        {
+          "text": "이걸",
+          "start": 186.602,
+          "end": 186.602
+        },
+        {
+          "text": "'위로'라고",
+          "start": 186.602,
+          "end": 187.242
+        },
+        {
+          "text": "부르",
+          "start": 187.882,
+          "end": 188.522
+        },
+        {
+          "text": "죠",
+          "start": 189.162,
+          "end": 189.242
+        },
+        {
+          "text": "밤이",
+          "start": 200.682,
+          "end": 200.842
+        },
+        {
+          "text": "깊어도",
+          "start": 200.842,
+          "end": 203.562
+        }
+      ],
+      "lines": [
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "alignmentInput": "팔십구 퍼센트...",
+          "start": 178.762,
+          "end": 183.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "alignmentInput": "인간은 이걸 '위로'라고 부르죠",
+          "start": 183.322,
+          "end": 189.242,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "alignmentInput": "밤이 깊어도——",
+          "start": 200.682,
+          "end": 203.562,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            640.0,
+            3680.0,
+            4480.0,
+            4560.0,
+            2800.0,
+            4800.0,
+            2880.0,
+            7840.0,
+            7360.0,
+            7840.0,
+            0.0,
+            0.0,
+            0.0,
+            10400.0,
+            10480.0,
+            21920.0,
+            22080.0,
+            22080.0,
+            24800.0
+          ],
+          "fixed": [
+            0,
+            640,
+            3680,
+            4480,
+            4560,
+            4560,
+            4800,
+            4800,
+            7840,
+            7840,
+            7840,
+            8480,
+            9120,
+            9760,
+            10400,
+            10480,
+            21920,
+            22080,
+            22080,
+            24800
+          ],
+          "changed": [
+            5,
+            7,
+            9,
+            11,
+            12,
+            13
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 46,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 207.92246459960938,
+      "end": 235.24246765136718,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "끝까지",
+          "start": 209.602,
+          "end": 210.162
+        },
+        {
+          "text": "가는",
+          "start": 210.402,
+          "end": 211.122
+        },
+        {
+          "text": "거야",
+          "start": 211.202,
+          "end": 211.202
+        },
+        {
+          "text": "Mmm",
+          "start": 224.162,
+          "end": 228.882
+        },
+        {
+          "text": "mmm",
+          "start": 228.882,
+          "end": 228.882
+        },
+        {
+          "text": "혼자",
+          "start": 228.882,
+          "end": 229.362
+        },
+        {
+          "text": "가",
+          "start": 233.282,
+          "end": 233.762
+        },
+        {
+          "text": "아니야",
+          "start": 233.762,
+          "end": 233.762
+        }
+      ],
+      "lines": [
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "alignmentInput": "끝까지 가는 거야——",
+          "start": 209.602,
+          "end": 211.202,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "alignmentInput": "Mmm... mmm...",
+          "start": 224.162,
+          "end": 228.882,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "alignmentInput": "혼자가 아니야...",
+          "start": 228.882,
+          "end": 233.762,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1680.0,
+            2240.0,
+            2480.0,
+            3200.0,
+            3280.0,
+            0.0,
+            16240.0,
+            20960.0,
+            20960.0,
+            20960.0,
+            20960.0,
+            21440.0,
+            25360.0,
+            25840.0,
+            25520.0,
+            25840.0
+          ],
+          "fixed": [
+            1680,
+            2240,
+            2480,
+            3200,
+            3280,
+            3280,
+            16240,
+            20960,
+            20960,
+            20960,
+            20960,
+            21440,
+            25360,
+            25840,
+            25840,
+            25840
+          ],
+          "changed": [
+            5,
+            14
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 46,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 205.92246459960938,
+      "end": 237.24246765136718,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "끝까지",
+          "start": 207.442,
+          "end": 207.442
+        },
+        {
+          "text": "가는",
+          "start": 210.402,
+          "end": 211.202
+        },
+        {
+          "text": "거야",
+          "start": 211.202,
+          "end": 211.202
+        },
+        {
+          "text": "Mmm",
+          "start": 228.802,
+          "end": 228.802
+        },
+        {
+          "text": "mmm",
+          "start": 228.802,
+          "end": 229.202
+        },
+        {
+          "text": "혼자",
+          "start": 229.202,
+          "end": 229.362
+        },
+        {
+          "text": "가",
+          "start": 229.762,
+          "end": 233.762
+        },
+        {
+          "text": "아니야",
+          "start": 233.762,
+          "end": 233.762
+        }
+      ],
+      "lines": [
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "alignmentInput": "끝까지 가는 거야——",
+          "start": 207.442,
+          "end": 211.202,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "alignmentInput": "Mmm... mmm...",
+          "start": 228.802,
+          "end": 229.202,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "alignmentInput": "혼자가 아니야...",
+          "start": 229.202,
+          "end": 233.762,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1520.0,
+            1520.0,
+            4480.0,
+            5280.0,
+            5280.0,
+            0.0,
+            0.0,
+            22880.0,
+            22880.0,
+            23280.0,
+            22960.0,
+            23440.0,
+            23840.0,
+            27840.0,
+            27520.0,
+            27840.0
+          ],
+          "fixed": [
+            1520,
+            1520,
+            4480,
+            5280,
+            5280,
+            5280,
+            22880,
+            22880,
+            22880,
+            23280,
+            23280,
+            23440,
+            23840,
+            27840,
+            27840,
+            27840
+          ],
+          "changed": [
+            5,
+            6,
+            10,
+            14
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    }
+  ]
+}

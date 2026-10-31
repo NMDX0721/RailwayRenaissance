@@ -12,9 +12,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// </summary>
     public static class LocalMusicFileImporter
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public static string ReviewDirectory;
+#endif
         public static string GetCustomMusicDirectory()
         {
             string dir = Path.Combine(Application.persistentDataPath, "CustomMusic");
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!string.IsNullOrEmpty(ReviewDirectory)) dir = ReviewDirectory;
+#endif
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -93,7 +99,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else if (ext == ".wav") audioType = AudioType.WAV;
             else if (ext == ".ogg") audioType = AudioType.OGGVORBIS;
 
-            string uri = "file://" + filePath.Replace('\\', '/');
+            string uri = new Uri(Path.GetFullPath(filePath)).AbsoluteUri;
             var req = UnityEngine.Networking.UnityWebRequestMultimedia.GetAudioClip(uri, audioType);
             var op = req.SendWebRequest();
             op.completed += _ =>
@@ -134,30 +140,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     return;
                 }
 
-                string targetDir = GetCustomMusicDirectory();
-                int importedCount = 0;
-
-                foreach (var src in selectedFiles)
-                {
-                    if (string.IsNullOrEmpty(src) || !File.Exists(src)) continue;
-                    string ext = Path.GetExtension(src).ToLowerInvariant();
-                    if (ext != ".mp3" && ext != ".wav" && ext != ".ogg") continue;
-
-                    string fileName = Path.GetFileName(src);
-                    string dest = Path.Combine(targetDir, fileName);
-
-                    try
-                    {
-                        File.Copy(src, dest, true);
-                        importedCount++;
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError($"[LocalMusicImporter] 拷贝失败 {fileName}: {ex.Message}");
-                    }
-                }
-
-                onImportFinished?.Invoke(importedCount);
+                onImportFinished?.Invoke(ImportAudioFiles(selectedFiles));
             }
             catch (Exception ex)
             {
@@ -168,6 +151,82 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             OpenMusicFolderInExplorer();
             onImportFinished?.Invoke(0);
 #endif
+        }
+
+        public static void PromptImportLyrics(Action<string> selected)
+        {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            try
+            {
+                var files = ShowWin32OpenFileDialog(true);
+                if (files.Count > 0) selected?.Invoke(files[0]);
+            }
+            catch (Exception ex) { TabletMusicAppUI.ShowToast("无法打开字幕选择窗口：" + ex.Message); }
+#else
+            TabletMusicAppUI.ShowToast("此版本的字幕文件选择仅支持 Windows");
+#endif
+        }
+
+        public static int ImportAudioFiles(IEnumerable<string> sources)
+        {
+            int imported = 0;
+            if (sources == null) return imported;
+            string directory = GetCustomMusicDirectory();
+            foreach (string source in sources)
+            {
+                if (string.IsNullOrEmpty(source) || !File.Exists(source)) continue;
+                string extension = Path.GetExtension(source).ToLowerInvariant();
+                if (extension != ".mp3" && extension != ".wav" && extension != ".ogg") continue;
+                string destination = Path.Combine(directory, Path.GetFileName(source));
+                try
+                {
+                    bool sameFile = string.Equals(Path.GetFullPath(source), Path.GetFullPath(destination), StringComparison.OrdinalIgnoreCase);
+                    if (!sameFile)
+                    {
+                        if (File.Exists(destination) && SameContent(source, destination)) continue;
+                        string baseName = Path.GetFileNameWithoutExtension(source);
+                        int suffix = 2;
+                        while (File.Exists(destination))
+                        {
+                            destination = Path.Combine(directory, baseName + " (" + suffix++ + ")" + extension);
+                            if (File.Exists(destination) && SameContent(source, destination)) { destination = null; break; }
+                        }
+                        if (destination == null) continue;
+                        File.Copy(source, destination, false);
+                    }
+                    string sourceStem = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(source)), Path.GetFileNameWithoutExtension(source));
+                    string destinationStem = Path.Combine(directory, Path.GetFileNameWithoutExtension(destination));
+                    foreach (string subtitle in new[] { ".lrc", ".vtt", ".srt", ".json", ".t.lrc" })
+                    {
+                        string companion = sourceStem + subtitle;
+                        if (File.Exists(companion) && new FileInfo(companion).Length <= MusicTimedText.MaxBytes &&
+                            !string.Equals(Path.GetFullPath(companion), Path.GetFullPath(destinationStem + subtitle), StringComparison.OrdinalIgnoreCase))
+                            if (!File.Exists(destinationStem + subtitle)) File.Copy(companion, destinationStem + subtitle, false);
+                    }
+                    foreach (string extensionImage in new[] { ".jpg", ".jpeg", ".png" })
+                    {
+                        string companion = sourceStem + extensionImage, target = destinationStem + extensionImage;
+                        if (File.Exists(companion) && new FileInfo(companion).Length <= 4 * 1024 * 1024 &&
+                            !string.Equals(Path.GetFullPath(companion), Path.GetFullPath(target), StringComparison.OrdinalIgnoreCase) && !File.Exists(target))
+                            File.Copy(companion, target, false);
+                    }
+                    imported++;
+                }
+                catch (Exception ex) { Debug.LogWarning("[LocalMusicImporter] 文件未导入：" + ex.Message); }
+            }
+            return imported;
+        }
+
+        static bool SameContent(string left, string right)
+        {
+            if (new FileInfo(left).Length != new FileInfo(right).Length) return false;
+            using var hash = System.Security.Cryptography.SHA256.Create();
+            using var a = File.OpenRead(left);
+            using var b = File.OpenRead(right);
+            byte[] first = hash.ComputeHash(a), second = hash.ComputeHash(b);
+            if (first.Length != second.Length) return false;
+            for (int i = 0; i < first.Length; i++) if (first[i] != second[i]) return false;
+            return true;
         }
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -208,7 +267,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private const int OFN_ALLOWMULTISELECT = 0x00000200;
         private const int OFN_NOCHANGEDIR = 0x00000008;
 
-        private static List<string> ShowWin32OpenFileDialog()
+        private static List<string> ShowWin32OpenFileDialog(bool lyrics = false)
         {
             var results = new List<string>();
             const int bufferSize = 65536; // 64KB 支撑超多选
@@ -226,6 +285,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 ofn.structSize = Marshal.SizeOf(ofn);
                 // 筛选器：格式用 \0 分割，末尾双 \0
                 ofn.filter = "支持的音频文件 (*.mp3;*.wav;*.ogg)\0*.mp3;*.wav;*.ogg\0MP3 音乐 (*.mp3)\0*.mp3\0WAV 无损 (*.wav)\0*.wav\0OGG 音频 (*.ogg)\0*.ogg\0所有文件 (*.*)\0*.*\0\0";
+                if (lyrics) ofn.filter = "歌词与字幕 (*.lrc;*.srt;*.vtt;*.json)\0*.lrc;*.srt;*.vtt;*.json\0\0";
                 ofn.file = bufferPtr;
                 ofn.maxFile = bufferSize;
                 ofn.fileTitle = new string(new char[64]);
@@ -233,6 +293,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 ofn.initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
                 ofn.title = "选择要导入随身听的音频文件（支持按住 Ctrl 多选）";
                 ofn.flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_ALLOWMULTISELECT | OFN_NOCHANGEDIR;
+                if (lyrics) { ofn.title = "选择歌词或字幕（LRC / SRT / WebVTT / 逐词 JSON）"; ofn.flags &= ~OFN_ALLOWMULTISELECT; }
 
                 if (GetOpenFileName(ofn))
                 {

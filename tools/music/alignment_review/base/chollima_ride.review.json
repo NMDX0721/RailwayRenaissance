@@ -1,0 +1,1189 @@
+{
+  "id": "chollima_ride",
+  "language": "ko",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "lyricSha256": "4ad339bb8f9593dfc39a919be79b2bd7799bde74e030c7b1f945d7265ebde6ea",
+  "model": "base",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+  },
+  "toolVersions": {
+    "stable-ts": "2.19.1",
+    "faster-whisper": "1.2.1"
+  },
+  "duration": 228.4,
+  "lineCount": 49,
+  "expectedLineCount": 49,
+  "status": "candidate_needs_review",
+  "humanListeningVerified": false,
+  "issues": [
+    {
+      "line": 3,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 19.58,
+      "end": 21.52,
+      "text": "주체의 길 따라",
+      "heard": " 달린다  주체에  길  따라  우리는"
+    },
+    {
+      "line": 7,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 32.66,
+      "end": 34.38,
+      "text": "일심단결의 기치",
+      "heard": " 이  싱당  열얼기  진옷  비들도"
+    },
+    {
+      "line": 8,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 34.52,
+      "end": 37.26,
+      "text": "높이 들고 앞으로!",
+      "heard": " 열얼기  진옷  비들도  앞으로"
+    },
+    {
+      "line": 10,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 41.7,
+      "end": 44.12,
+      "text": "비행차가 하늘로",
+      "heard": " 비행  차가하도록  수령님"
+    },
+    {
+      "line": 13,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 52.46,
+      "end": 56.78,
+      "text": "아—— 천리마!",
+      "heard": " 아,  설리마,  하신"
+    },
+    {
+      "line": 15,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 59.8,
+      "end": 59.86,
+      "text": "위대한 령도자",
+      "heard": ""
+    },
+    {
+      "line": 16,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 59.86,
+      "end": 59.86,
+      "text": "가르침 따라",
+      "heard": ""
+    },
+    {
+      "line": 17,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 59.86,
+      "end": 59.88,
+      "text": "천리마 신시대에",
+      "heard": ""
+    },
+    {
+      "line": 20,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 83.32,
+      "end": 85.74,
+      "text": "비행차가 하늘로",
+      "heard": " 이행차가  안으로  수령님은"
+    },
+    {
+      "line": 25,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 99.92,
+      "end": 101.36,
+      "text": "붉은 기 결코",
+      "heard": " 흘러보고  붉은기  결코  내려놓지"
+    },
+    {
+      "line": 29,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 112.08,
+      "end": 114.48,
+      "text": "수령님 은덕으로",
+      "heard": " 하늘로  수렴님  흔덕으로  우린"
+    },
+    {
+      "line": 30,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 114.8,
+      "end": 117.18,
+      "text": "우리는 앞으로!",
+      "heard": " 흔덕으로  우린  앞으로"
+    },
+    {
+      "line": 33,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 127.96,
+      "end": 130.48,
+      "text": "위대한 령도자",
+      "heard": " 위대한  안돔자  가르치"
+    },
+    {
+      "line": 34,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 130.86,
+      "end": 131.96,
+      "text": "가르침 따라",
+      "heard": " 안돔자  가르치  따라"
+    },
+    {
+      "line": 37,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 144.02,
+      "end": 149.32,
+      "text": "아—— 천리마!",
+      "heard": " 절기만,  아천발"
+    },
+    {
+      "line": 38,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 150.18,
+      "end": 150.66,
+      "text": "아—— 신시대!",
+      "heard": " 위대한"
+    },
+    {
+      "line": 40,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 160.26,
+      "end": 163.02,
+      "text": "영원히!",
+      "heard": " POTY"
+    },
+    {
+      "line": 41,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 163.02,
+      "end": 163.02,
+      "text": "달린다——!",
+      "heard": ""
+    },
+    {
+      "line": 42,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 163.02,
+      "end": 172.5,
+      "text": "100전 100승!",
+      "heard": " PICTION  VEX"
+    },
+    {
+      "line": 43,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 175.28,
+      "end": 175.84,
+      "text": "백전백승!",
+      "heard": ""
+    },
+    {
+      "line": 44,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 198.54,
+      "end": 201.08,
+      "text": "아—— 천리마——",
+      "heard": " 젤리바  아신"
+    },
+    {
+      "line": 48,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 214.64,
+      "end": 224.02,
+      "text": "천리마 신시대에",
+      "heard": " 아신  시대  달린다"
+    },
+    {
+      "line": 49,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 224.02,
+      "end": 225.02,
+      "text": "달린다——!",
+      "heard": ""
+    }
+  ],
+  "lines": [
+    {
+      "line": 1,
+      "start": 12.96,
+      "end": 15.72,
+      "text": "천리마가 달린다",
+      "asrAgreement": 0.706,
+      "words": [
+        {
+          "start": 12.96,
+          "end": 14.36,
+          "text": " 천리마가"
+        },
+        {
+          "start": 14.36,
+          "end": 15.72,
+          "text": " 달린다"
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "start": 16.5,
+      "end": 18.98,
+      "text": "신시대를 달린다",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 16.5,
+          "end": 17.5,
+          "text": " 신시대를"
+        },
+        {
+          "start": 17.5,
+          "end": 18.98,
+          "text": " 달린다"
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "start": 19.58,
+      "end": 21.52,
+      "text": "주체의 길 따라",
+      "asrAgreement": 0.556,
+      "words": [
+        {
+          "start": 19.58,
+          "end": 20.86,
+          "text": " 주체의"
+        },
+        {
+          "start": 20.86,
+          "end": 21.04,
+          "text": " 길"
+        },
+        {
+          "start": 21.04,
+          "end": 21.52,
+          "text": " 따라"
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "start": 22.0,
+      "end": 24.5,
+      "text": "우리는 앞으로!",
+      "asrAgreement": 0.857,
+      "words": [
+        {
+          "start": 22.0,
+          "end": 22.38,
+          "text": " 우리는"
+        },
+        {
+          "start": 22.38,
+          "end": 24.5,
+          "text": " 앞으로!"
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "start": 26.42,
+      "end": 27.98,
+      "text": "백두산 정기 받아",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 26.42,
+          "end": 27.18,
+          "text": " 백두산"
+        },
+        {
+          "start": 27.18,
+          "end": 27.64,
+          "text": " 정기"
+        },
+        {
+          "start": 27.64,
+          "end": 27.98,
+          "text": " 받아"
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "start": 30.26,
+      "end": 31.18,
+      "text": "대동강 물 따라",
+      "asrAgreement": 0.833,
+      "words": [
+        {
+          "start": 30.26,
+          "end": 30.44,
+          "text": " 대동강"
+        },
+        {
+          "start": 30.44,
+          "end": 30.8,
+          "text": " 물"
+        },
+        {
+          "start": 30.8,
+          "end": 31.18,
+          "text": " 따라"
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "start": 32.66,
+      "end": 34.38,
+      "text": "일심단결의 기치",
+      "asrAgreement": 0.111,
+      "words": [
+        {
+          "start": 32.66,
+          "end": 34.06,
+          "text": " 일심단결의"
+        },
+        {
+          "start": 34.06,
+          "end": 34.38,
+          "text": " 기치"
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "start": 34.52,
+      "end": 37.26,
+      "text": "높이 들고 앞으로!",
+      "asrAgreement": 0.444,
+      "words": [
+        {
+          "start": 34.52,
+          "end": 34.86,
+          "text": " 높이"
+        },
+        {
+          "start": 34.86,
+          "end": 35.16,
+          "text": " 들고"
+        },
+        {
+          "start": 35.16,
+          "end": 37.26,
+          "text": " 앞으로!"
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "start": 38.26,
+      "end": 40.9,
+      "text": "모래가 에너지로",
+      "asrAgreement": 0.875,
+      "words": [
+        {
+          "start": 38.26,
+          "end": 39.54,
+          "text": " 모래가"
+        },
+        {
+          "start": 39.54,
+          "end": 40.9,
+          "text": " 에너지로"
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "start": 41.7,
+      "end": 44.12,
+      "text": "비행차가 하늘로",
+      "asrAgreement": 0.588,
+      "words": [
+        {
+          "start": 41.7,
+          "end": 43.22,
+          "text": " 비행차가"
+        },
+        {
+          "start": 43.22,
+          "end": 44.12,
+          "text": " 하늘로"
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "start": 44.88,
+      "end": 47.28,
+      "text": "수령님 은덕으로",
+      "asrAgreement": 0.706,
+      "words": [
+        {
+          "start": 44.88,
+          "end": 45.88,
+          "text": " 수령님"
+        },
+        {
+          "start": 45.88,
+          "end": 47.28,
+          "text": " 은덕으로"
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "start": 47.58,
+      "end": 49.96,
+      "text": "우리는 앞으로!",
+      "asrAgreement": 0.75,
+      "words": [
+        {
+          "start": 47.58,
+          "end": 47.96,
+          "text": " 우리는"
+        },
+        {
+          "start": 47.96,
+          "end": 49.96,
+          "text": " 앞으로!"
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "start": 52.46,
+      "end": 56.78,
+      "text": "아—— 천리마!",
+      "asrAgreement": 0.6,
+      "words": [
+        {
+          "start": 52.46,
+          "end": 54.32,
+          "text": " 아——"
+        },
+        {
+          "start": 54.32,
+          "end": 56.78,
+          "text": " 천리마!"
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "start": 57.18,
+      "end": 59.74,
+      "text": "아—— 신시대!",
+      "asrAgreement": 0.75,
+      "words": [
+        {
+          "start": 57.18,
+          "end": 57.8,
+          "text": " 아——"
+        },
+        {
+          "start": 57.8,
+          "end": 59.74,
+          "text": " 신시대!"
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "start": 59.8,
+      "end": 59.86,
+      "text": "위대한 령도자",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 59.8,
+          "end": 59.86,
+          "text": " 위대한"
+        },
+        {
+          "start": 59.86,
+          "end": 59.86,
+          "text": " 령도자"
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "start": 59.86,
+      "end": 59.86,
+      "text": "가르침 따라",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 59.86,
+          "end": 59.86,
+          "text": " 가르침"
+        },
+        {
+          "start": 59.86,
+          "end": 59.86,
+          "text": " 따라"
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "start": 59.86,
+      "end": 59.88,
+      "text": "천리마 신시대에",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 59.86,
+          "end": 59.86,
+          "text": " 천리마"
+        },
+        {
+          "start": 59.86,
+          "end": 59.88,
+          "text": " 신시대에"
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "start": 74.0,
+      "end": 76.8,
+      "text": "달린다!",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 74.0,
+          "end": 76.8,
+          "text": " 달린다!"
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "start": 78.72,
+      "end": 82.76,
+      "text": "모래가 에너지로",
+      "asrAgreement": 0.778,
+      "words": [
+        {
+          "start": 78.72,
+          "end": 81.14,
+          "text": " 모래가"
+        },
+        {
+          "start": 81.14,
+          "end": 82.76,
+          "text": " 에너지로"
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "start": 83.32,
+      "end": 85.74,
+      "text": "비행차가 하늘로",
+      "asrAgreement": 0.444,
+      "words": [
+        {
+          "start": 83.32,
+          "end": 84.84,
+          "text": " 비행차가"
+        },
+        {
+          "start": 84.84,
+          "end": 85.74,
+          "text": " 하늘로"
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "start": 86.52,
+      "end": 88.88,
+      "text": "수령님 은덕으로",
+      "asrAgreement": 0.824,
+      "words": [
+        {
+          "start": 86.52,
+          "end": 87.84,
+          "text": " 수령님"
+        },
+        {
+          "start": 87.84,
+          "end": 88.88,
+          "text": " 은덕으로"
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "start": 89.14,
+      "end": 92.02,
+      "text": "기적을 창조한다!",
+      "asrAgreement": 0.706,
+      "words": [
+        {
+          "start": 89.14,
+          "end": 89.66,
+          "text": " 기적을"
+        },
+        {
+          "start": 89.86,
+          "end": 92.02,
+          "text": " 창조한다!"
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "start": 93.84,
+      "end": 95.48,
+      "text": "강산이 변하고",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 93.84,
+          "end": 94.44,
+          "text": " 강산이"
+        },
+        {
+          "start": 94.44,
+          "end": 95.48,
+          "text": " 변하고"
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "start": 96.9,
+      "end": 98.54,
+      "text": "세월이 흘러도",
+      "asrAgreement": 0.769,
+      "words": [
+        {
+          "start": 96.9,
+          "end": 97.66,
+          "text": " 세월이"
+        },
+        {
+          "start": 97.66,
+          "end": 98.54,
+          "text": " 흘러도"
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "start": 99.92,
+      "end": 101.36,
+      "text": "붉은 기 결코",
+      "asrAgreement": 0.556,
+      "words": [
+        {
+          "start": 99.92,
+          "end": 100.64,
+          "text": " 붉은"
+        },
+        {
+          "start": 100.64,
+          "end": 100.76,
+          "text": " 기"
+        },
+        {
+          "start": 100.76,
+          "end": 101.36,
+          "text": " 결코"
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "start": 101.56,
+      "end": 105.12,
+      "text": "내려놓지 않는다!",
+      "asrAgreement": 0.737,
+      "words": [
+        {
+          "start": 101.56,
+          "end": 102.44,
+          "text": " 내려놓지"
+        },
+        {
+          "start": 102.44,
+          "end": 105.12,
+          "text": " 않는다!"
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "start": 105.46,
+      "end": 108.1,
+      "text": "모래가 에너지로",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 105.46,
+          "end": 106.7,
+          "text": " 모래가"
+        },
+        {
+          "start": 106.7,
+          "end": 108.1,
+          "text": " 에너지로"
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "start": 108.92,
+      "end": 111.3,
+      "text": "비행차가 하늘로",
+      "asrAgreement": 0.857,
+      "words": [
+        {
+          "start": 108.92,
+          "end": 110.4,
+          "text": " 비행차가"
+        },
+        {
+          "start": 110.4,
+          "end": 111.3,
+          "text": " 하늘로"
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "start": 112.08,
+      "end": 114.48,
+      "text": "수령님 은덕으로",
+      "asrAgreement": 0.526,
+      "words": [
+        {
+          "start": 112.08,
+          "end": 113.12,
+          "text": " 수령님"
+        },
+        {
+          "start": 113.12,
+          "end": 114.48,
+          "text": " 은덕으로"
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "start": 114.8,
+      "end": 117.18,
+      "text": "우리는 앞으로!",
+      "asrAgreement": 0.533,
+      "words": [
+        {
+          "start": 114.8,
+          "end": 115.14,
+          "text": " 우리는"
+        },
+        {
+          "start": 115.14,
+          "end": 117.18,
+          "text": " 앞으로!"
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "start": 119.62,
+      "end": 124.06,
+      "text": "아—— 천리마!",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 119.62,
+          "end": 121.44,
+          "text": " 아——"
+        },
+        {
+          "start": 121.44,
+          "end": 124.06,
+          "text": " 천리마!"
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "start": 124.68,
+      "end": 127.1,
+      "text": "아—— 신시대!",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 124.68,
+          "end": 124.86,
+          "text": " 아——"
+        },
+        {
+          "start": 124.86,
+          "end": 127.1,
+          "text": " 신시대!"
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "start": 127.96,
+      "end": 130.48,
+      "text": "위대한 령도자",
+      "asrAgreement": 0.533,
+      "words": [
+        {
+          "start": 127.96,
+          "end": 129.52,
+          "text": " 위대한"
+        },
+        {
+          "start": 129.52,
+          "end": 130.48,
+          "text": " 령도자"
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "start": 130.86,
+      "end": 131.96,
+      "text": "가르침 따라",
+      "asrAgreement": 0.615,
+      "words": [
+        {
+          "start": 130.86,
+          "end": 131.54,
+          "text": " 가르침"
+        },
+        {
+          "start": 131.54,
+          "end": 131.96,
+          "text": " 따라"
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "start": 134.36,
+      "end": 140.12,
+      "text": "천리마 신시대에",
+      "asrAgreement": 0.769,
+      "words": [
+        {
+          "start": 134.36,
+          "end": 136.86,
+          "text": " 천리마"
+        },
+        {
+          "start": 137.9,
+          "end": 140.12,
+          "text": " 신시대에"
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "start": 140.98,
+      "end": 143.18,
+      "text": "달린다!",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 140.98,
+          "end": 143.18,
+          "text": " 달린다!"
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "start": 144.02,
+      "end": 149.32,
+      "text": "아—— 천리마!",
+      "asrAgreement": 0.4,
+      "words": [
+        {
+          "start": 144.02,
+          "end": 146.76,
+          "text": " 아——"
+        },
+        {
+          "start": 146.76,
+          "end": 149.32,
+          "text": " 천리마!"
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "start": 150.18,
+      "end": 150.66,
+      "text": "아—— 신시대!",
+      "asrAgreement": 0.286,
+      "words": [
+        {
+          "start": 150.18,
+          "end": 150.66,
+          "text": " 아——"
+        },
+        {
+          "start": 150.66,
+          "end": 150.66,
+          "text": " 신시대!"
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "start": 150.66,
+      "end": 152.92,
+      "text": "위대한 조선",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 150.66,
+          "end": 152.1,
+          "text": " 위대한"
+        },
+        {
+          "start": 152.1,
+          "end": 152.92,
+          "text": " 조선"
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "start": 160.26,
+      "end": 163.02,
+      "text": "영원히!",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 160.26,
+          "end": 163.02,
+          "text": " 영원히!"
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "start": 163.02,
+      "end": 163.02,
+      "text": "달린다——!",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 163.02,
+          "end": 163.02,
+          "text": " 달린다——!"
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "start": 163.02,
+      "end": 172.5,
+      "text": "100전 100승!",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 163.02,
+          "end": 163.24,
+          "text": " 100전"
+        },
+        {
+          "start": 171.22,
+          "end": 172.5,
+          "text": " 100승!"
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "start": 175.28,
+      "end": 175.84,
+      "text": "백전백승!",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 175.28,
+          "end": 175.84,
+          "text": " 백전백승!"
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "start": 198.54,
+      "end": 201.08,
+      "text": "아—— 천리마——",
+      "asrAgreement": 0.222,
+      "words": [
+        {
+          "start": 198.54,
+          "end": 198.54,
+          "text": " 아——"
+        },
+        {
+          "start": 198.54,
+          "end": 201.08,
+          "text": " 천리마——"
+        }
+      ]
+    },
+    {
+      "line": 45,
+      "start": 201.32,
+      "end": 204.48,
+      "text": "아—— 신시대——",
+      "asrAgreement": 0.727,
+      "words": [
+        {
+          "start": 201.32,
+          "end": 201.7,
+          "text": " 아——"
+        },
+        {
+          "start": 201.7,
+          "end": 204.48,
+          "text": " 신시대——"
+        }
+      ]
+    },
+    {
+      "line": 46,
+      "start": 204.78,
+      "end": 207.26,
+      "text": "위대한 령도자",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 204.78,
+          "end": 205.82,
+          "text": " 위대한"
+        },
+        {
+          "start": 206.38,
+          "end": 207.26,
+          "text": " 령도자"
+        }
+      ]
+    },
+    {
+      "line": 47,
+      "start": 207.76,
+      "end": 208.8,
+      "text": "가르침 따라",
+      "asrAgreement": 0.769,
+      "words": [
+        {
+          "start": 207.76,
+          "end": 208.28,
+          "text": " 가르침"
+        },
+        {
+          "start": 208.28,
+          "end": 208.8,
+          "text": " 따라"
+        }
+      ]
+    },
+    {
+      "line": 48,
+      "start": 214.64,
+      "end": 224.02,
+      "text": "천리마 신시대에",
+      "asrAgreement": 0.429,
+      "words": [
+        {
+          "start": 214.64,
+          "end": 214.64,
+          "text": " 천리마"
+        },
+        {
+          "start": 222.62,
+          "end": 224.02,
+          "text": " 신시대에"
+        }
+      ]
+    },
+    {
+      "line": 49,
+      "start": 224.02,
+      "end": 225.02,
+      "text": "달린다——!",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 224.02,
+          "end": 225.02,
+          "text": " 달린다——!"
+        }
+      ]
+    }
+  ]
+}

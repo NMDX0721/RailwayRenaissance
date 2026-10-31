@@ -1,0 +1,1351 @@
+{
+  "id": "starlit_rails",
+  "language": "ko",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "lyricSha256": "9460b017b5a236bdf7a803984215e31f4051da774e48c010ca773454b8c2d87a",
+  "model": "base",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+  },
+  "toolVersions": {
+    "stable-ts": "2.19.1",
+    "faster-whisper": "1.2.1"
+  },
+  "duration": 253.36,
+  "lineCount": 52,
+  "expectedLineCount": 52,
+  "status": "candidate_needs_review",
+  "humanListeningVerified": false,
+  "issues": [
+    {
+      "line": 1,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 17.84,
+      "end": 21.26,
+      "text": "검문소 불빛이",
+      "heard": " 댄스,  검은  소불  빛이  어둠을"
+    },
+    {
+      "line": 6,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 44.84,
+      "end": 46.64,
+      "text": "손을 떨며",
+      "heard": " 손을  떨면  얼굴에"
+    },
+    {
+      "line": 7,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 48.22,
+      "end": 50.56,
+      "text": "얼굴엔 아무것도",
+      "heard": " 얼굴에  나무것도  드러내지"
+    },
+    {
+      "line": 9,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 54.06,
+      "end": 59.06,
+      "text": "심박수 백사십칠",
+      "heard": " 않았어  수이는  박수  147  듣고"
+    },
+    {
+      "line": 11,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 63.14,
+      "end": 65.22,
+      "text": "무서워도",
+      "heard": ""
+    },
+    {
+      "line": 15,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 77.32,
+      "end": 78.84,
+      "text": "저 철길처럼",
+      "heard": " 밝아  자철길처럼  끝까지"
+    },
+    {
+      "line": 17,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 83.56,
+      "end": 84.88,
+      "text": "길이 험해도",
+      "heard": " 길이  홈에도  우리"
+    },
+    {
+      "line": 18,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 86.86,
+      "end": 89.66,
+      "text": "우린 함께야",
+      "heard": " 우리  함께  이"
+    },
+    {
+      "line": 21,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 106.1,
+      "end": 108.54,
+      "text": "이십삼 년의 잠",
+      "heard": " 이  전전,  수영의  잠,"
+    },
+    {
+      "line": 22,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 109.54,
+      "end": 112.24,
+      "text": "깨어난 오후",
+      "heard": " 깨어나  놓고"
+    },
+    {
+      "line": 24,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 118.94,
+      "end": 123.58,
+      "text": "처음 듣는 이야기",
+      "heard": " 전드는  이야기"
+    },
+    {
+      "line": 25,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 125.06,
+      "end": 130.36,
+      "text": "나는 AI지만",
+      "heard": " 나는  이  아이지만"
+    },
+    {
+      "line": 37,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 175.78,
+      "end": 177.7,
+      "text": "그 말도 중의적인 거야?",
+      "heard": " 그너  흔적이셨던거야  저는의"
+    },
+    {
+      "line": 38,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 177.7,
+      "end": 180.94,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "heard": " 흔적이셨던거야  저는의  중요적  표현은  안설  하지만  하시고"
+    },
+    {
+      "line": 39,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 181.02,
+      "end": 181.76,
+      "text": "하지만...",
+      "heard": " 하지만  하시고  퍼센트"
+    },
+    {
+      "line": 40,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 181.76,
+      "end": 183.8,
+      "text": "팔십구 퍼센트...",
+      "heard": " 하지만  하시고  퍼센트"
+    },
+    {
+      "line": 41,
+      "flags": [
+        "long_line"
+      ],
+      "start": 183.92,
+      "end": 200.72,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "heard": " 인간은  이  걸  위로라고  부르죠  밤이  깊어도"
+    },
+    {
+      "line": 43,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "처음 듣는 이야기",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 44,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "나는 AI지만",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 45,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "알고 있어요",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 46,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "위로라는 게",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 47,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "뭔지 말이죠",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 48,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 201.64,
+      "end": 201.64,
+      "text": "밤이 깊어도",
+      "heard": " 깊어도  다시"
+    },
+    {
+      "line": 50,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 207.06,
+      "end": 208.56,
+      "text": "저 철길처럼",
+      "heard": " 밝아와  저철길처럼  끝까지"
+    },
+    {
+      "line": 52,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 253.36,
+      "end": 253.36,
+      "text": "혼자가 아니야...",
+      "heard": ""
+    }
+  ],
+  "lines": [
+    {
+      "line": 1,
+      "start": 17.84,
+      "end": 21.26,
+      "text": "검문소 불빛이",
+      "asrAgreement": 0.588,
+      "words": [
+        {
+          "start": 17.84,
+          "end": 19.24,
+          "text": " 검문소"
+        },
+        {
+          "start": 19.24,
+          "end": 21.26,
+          "text": " 불빛이"
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "start": 22.14,
+      "end": 26.44,
+      "text": "어둠을 가르고",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 22.14,
+          "end": 24.96,
+          "text": " 어둠을"
+        },
+        {
+          "start": 24.96,
+          "end": 26.44,
+          "text": " 가르고"
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "start": 28.1,
+      "end": 33.76,
+      "text": "네 대의 그림자",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 28.1,
+          "end": 29.66,
+          "text": " 네"
+        },
+        {
+          "start": 29.98,
+          "end": 30.78,
+          "text": " 대의"
+        },
+        {
+          "start": 30.78,
+          "end": 33.76,
+          "text": " 그림자"
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "start": 34.16,
+      "end": 40.0,
+      "text": "우리를 둘러쌌지",
+      "asrAgreement": 0.857,
+      "words": [
+        {
+          "start": 34.16,
+          "end": 36.52,
+          "text": " 우리를"
+        },
+        {
+          "start": 37.5,
+          "end": 40.0,
+          "text": " 둘러쌌지"
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "start": 41.14,
+      "end": 43.54,
+      "text": "숨을 죽이고",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 41.14,
+          "end": 42.7,
+          "text": " 숨을"
+        },
+        {
+          "start": 42.7,
+          "end": 43.54,
+          "text": " 죽이고"
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "start": 44.84,
+      "end": 46.64,
+      "text": "손을 떨며",
+      "asrAgreement": 0.545,
+      "words": [
+        {
+          "start": 44.84,
+          "end": 45.7,
+          "text": " 손을"
+        },
+        {
+          "start": 45.7,
+          "end": 46.64,
+          "text": " 떨며"
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "start": 48.22,
+      "end": 50.56,
+      "text": "얼굴엔 아무것도",
+      "asrAgreement": 0.556,
+      "words": [
+        {
+          "start": 48.22,
+          "end": 49.18,
+          "text": " 얼굴엔"
+        },
+        {
+          "start": 49.18,
+          "end": 50.56,
+          "text": " 아무것도"
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "start": 50.98,
+      "end": 53.12,
+      "text": "드러내지 않았어",
+      "asrAgreement": 0.778,
+      "words": [
+        {
+          "start": 50.98,
+          "end": 51.58,
+          "text": " 드러내지"
+        },
+        {
+          "start": 51.58,
+          "end": 53.12,
+          "text": " 않았어"
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "start": 54.06,
+      "end": 59.06,
+      "text": "심박수 백사십칠",
+      "asrAgreement": 0.2,
+      "words": [
+        {
+          "start": 54.06,
+          "end": 56.08,
+          "text": " 심박수"
+        },
+        {
+          "start": 56.08,
+          "end": 59.06,
+          "text": " 백사십칠"
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "start": 60.42,
+      "end": 62.06,
+      "text": "듣고 있어요",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 60.42,
+          "end": 61.3,
+          "text": " 듣고"
+        },
+        {
+          "start": 61.3,
+          "end": 62.06,
+          "text": " 있어요"
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "start": 63.14,
+      "end": 65.22,
+      "text": "무서워도",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 63.14,
+          "end": 65.22,
+          "text": " 무서워도"
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "start": 66.94,
+      "end": 69.88,
+      "text": "멈추지 않았죠",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 66.94,
+          "end": 68.54,
+          "text": " 멈추지"
+        },
+        {
+          "start": 68.54,
+          "end": 69.88,
+          "text": " 않았죠"
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "start": 70.52,
+      "end": 71.98,
+      "text": "밤이 깊어도",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 70.52,
+          "end": 71.16,
+          "text": " 밤이"
+        },
+        {
+          "start": 71.16,
+          "end": 71.98,
+          "text": " 깊어도"
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "start": 74.04,
+      "end": 75.88,
+      "text": "다시 밝아와",
+      "asrAgreement": 0.889,
+      "words": [
+        {
+          "start": 74.04,
+          "end": 74.28,
+          "text": " 다시"
+        },
+        {
+          "start": 74.28,
+          "end": 75.88,
+          "text": " 밝아와"
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "start": 77.32,
+      "end": 78.84,
+      "text": "저 철길처럼",
+      "asrAgreement": 0.533,
+      "words": [
+        {
+          "start": 77.32,
+          "end": 77.54,
+          "text": " 저"
+        },
+        {
+          "start": 77.54,
+          "end": 78.84,
+          "text": " 철길처럼"
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "start": 79.76,
+      "end": 81.9,
+      "text": "끝까지 가는 거야",
+      "asrAgreement": 0.875,
+      "words": [
+        {
+          "start": 79.76,
+          "end": 80.42,
+          "text": " 끝까지"
+        },
+        {
+          "start": 80.42,
+          "end": 81.24,
+          "text": " 가는"
+        },
+        {
+          "start": 81.24,
+          "end": 81.9,
+          "text": " 거야"
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "start": 83.56,
+      "end": 84.88,
+      "text": "길이 험해도",
+      "asrAgreement": 0.5,
+      "words": [
+        {
+          "start": 83.56,
+          "end": 84.12,
+          "text": " 길이"
+        },
+        {
+          "start": 84.12,
+          "end": 84.88,
+          "text": " 험해도"
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "start": 86.86,
+      "end": 89.66,
+      "text": "우린 함께야",
+      "asrAgreement": 0.6,
+      "words": [
+        {
+          "start": 86.86,
+          "end": 87.34,
+          "text": " 우린"
+        },
+        {
+          "start": 87.34,
+          "end": 89.66,
+          "text": " 함께야"
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "start": 90.84,
+      "end": 92.02,
+      "text": "이 하늘 아래",
+      "asrAgreement": 0.833,
+      "words": [
+        {
+          "start": 90.84,
+          "end": 91.2,
+          "text": " 이"
+        },
+        {
+          "start": 91.2,
+          "end": 91.56,
+          "text": " 하늘"
+        },
+        {
+          "start": 91.56,
+          "end": 92.02,
+          "text": " 아래"
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "start": 92.68,
+      "end": 106.1,
+      "text": "혼자가 아니야",
+      "asrAgreement": 0.714,
+      "words": [
+        {
+          "start": 92.68,
+          "end": 93.38,
+          "text": " 혼자가"
+        },
+        {
+          "start": 104.7,
+          "end": 106.1,
+          "text": " 아니야"
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "start": 106.1,
+      "end": 108.54,
+      "text": "이십삼 년의 잠",
+      "asrAgreement": 0.462,
+      "words": [
+        {
+          "start": 106.1,
+          "end": 106.98,
+          "text": " 이십삼"
+        },
+        {
+          "start": 106.98,
+          "end": 108.2,
+          "text": " 년의"
+        },
+        {
+          "start": 108.2,
+          "end": 108.54,
+          "text": " 잠"
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "start": 109.54,
+      "end": 112.24,
+      "text": "깨어난 오후",
+      "asrAgreement": 0.4,
+      "words": [
+        {
+          "start": 109.54,
+          "end": 110.1,
+          "text": " 깨어난"
+        },
+        {
+          "start": 110.1,
+          "end": 112.24,
+          "text": " 오후"
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "start": 112.28,
+      "end": 117.18,
+      "text": "낯선 목소리",
+      "asrAgreement": 0.833,
+      "words": [
+        {
+          "start": 112.28,
+          "end": 114.58,
+          "text": " 낯선"
+        },
+        {
+          "start": 114.58,
+          "end": 117.18,
+          "text": " 목소리"
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "start": 118.94,
+      "end": 123.58,
+      "text": "처음 듣는 이야기",
+      "asrAgreement": 0.615,
+      "words": [
+        {
+          "start": 118.94,
+          "end": 120.54,
+          "text": " 처음"
+        },
+        {
+          "start": 120.54,
+          "end": 121.76,
+          "text": " 듣는"
+        },
+        {
+          "start": 121.76,
+          "end": 123.58,
+          "text": " 이야기"
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "start": 125.06,
+      "end": 130.36,
+      "text": "나는 AI지만",
+      "asrAgreement": 0.615,
+      "words": [
+        {
+          "start": 125.06,
+          "end": 127.08,
+          "text": " 나는"
+        },
+        {
+          "start": 127.38,
+          "end": 130.36,
+          "text": " AI지만"
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "start": 132.54,
+      "end": 136.64,
+      "text": "알고 있어요",
+      "asrAgreement": 0.714,
+      "words": [
+        {
+          "start": 132.54,
+          "end": 133.74,
+          "text": " 알고"
+        },
+        {
+          "start": 133.74,
+          "end": 136.64,
+          "text": " 있어요"
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "start": 138.2,
+      "end": 140.0,
+      "text": "위로라는 게",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 138.2,
+          "end": 139.62,
+          "text": " 위로라는"
+        },
+        {
+          "start": 139.62,
+          "end": 140.0,
+          "text": " 게"
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "start": 141.7,
+      "end": 144.14,
+      "text": "뭔지 말이죠",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 141.7,
+          "end": 142.66,
+          "text": " 뭔지"
+        },
+        {
+          "start": 142.66,
+          "end": 144.14,
+          "text": " 말이죠"
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "start": 147.46,
+      "end": 149.88,
+      "text": "밤이 깊어도",
+      "asrAgreement": 0.833,
+      "words": [
+        {
+          "start": 147.46,
+          "end": 149.0,
+          "text": " 밤이"
+        },
+        {
+          "start": 149.0,
+          "end": 149.88,
+          "text": " 깊어도"
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "start": 151.72,
+      "end": 153.64,
+      "text": "다시 밝아와",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 151.72,
+          "end": 152.1,
+          "text": " 다시"
+        },
+        {
+          "start": 152.1,
+          "end": 153.64,
+          "text": " 밝아와"
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "start": 155.14,
+      "end": 156.66,
+      "text": "저 철길처럼",
+      "asrAgreement": 0.769,
+      "words": [
+        {
+          "start": 155.14,
+          "end": 155.42,
+          "text": " 저"
+        },
+        {
+          "start": 155.42,
+          "end": 156.66,
+          "text": " 철길처럼"
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "start": 157.48,
+      "end": 159.92,
+      "text": "끝까지 가는 거야",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 157.48,
+          "end": 158.28,
+          "text": " 끝까지"
+        },
+        {
+          "start": 158.28,
+          "end": 159.1,
+          "text": " 가는"
+        },
+        {
+          "start": 159.1,
+          "end": 159.92,
+          "text": " 거야"
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "start": 161.36,
+      "end": 162.8,
+      "text": "길이 험해도",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 161.36,
+          "end": 161.96,
+          "text": " 길이"
+        },
+        {
+          "start": 161.96,
+          "end": 162.8,
+          "text": " 험해도"
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "start": 164.66,
+      "end": 166.54,
+      "text": "우린 함께야",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 164.66,
+          "end": 165.16,
+          "text": " 우린"
+        },
+        {
+          "start": 165.16,
+          "end": 166.54,
+          "text": " 함께야"
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "start": 168.72,
+      "end": 169.86,
+      "text": "이 하늘 아래",
+      "asrAgreement": 0.769,
+      "words": [
+        {
+          "start": 168.72,
+          "end": 169.02,
+          "text": " 이"
+        },
+        {
+          "start": 169.02,
+          "end": 169.38,
+          "text": " 하늘"
+        },
+        {
+          "start": 169.38,
+          "end": 169.86,
+          "text": " 아래"
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "start": 170.48,
+      "end": 172.26,
+      "text": "혼자가 아니야",
+      "asrAgreement": 0.714,
+      "words": [
+        {
+          "start": 170.48,
+          "end": 171.3,
+          "text": " 혼자가"
+        },
+        {
+          "start": 171.3,
+          "end": 172.26,
+          "text": " 아니야"
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "start": 175.78,
+      "end": 177.7,
+      "text": "그 말도 중의적인 거야?",
+      "asrAgreement": 0.381,
+      "words": [
+        {
+          "start": 175.78,
+          "end": 176.18,
+          "text": " 그"
+        },
+        {
+          "start": 176.18,
+          "end": 176.34,
+          "text": " 말도"
+        },
+        {
+          "start": 176.34,
+          "end": 176.78,
+          "text": " 중의적인"
+        },
+        {
+          "start": 176.78,
+          "end": 177.7,
+          "text": " 거야?"
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "start": 177.7,
+      "end": 180.94,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "asrAgreement": 0.41,
+      "words": [
+        {
+          "start": 177.7,
+          "end": 178.02,
+          "text": " 저는"
+        },
+        {
+          "start": 178.02,
+          "end": 179.08,
+          "text": " AI예요."
+        },
+        {
+          "start": 179.08,
+          "end": 179.42,
+          "text": " 중의적"
+        },
+        {
+          "start": 179.42,
+          "end": 179.9,
+          "text": " 표현은"
+        },
+        {
+          "start": 179.9,
+          "end": 180.12,
+          "text": " 안"
+        },
+        {
+          "start": 180.12,
+          "end": 180.94,
+          "text": " 써요."
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "start": 181.02,
+      "end": 181.76,
+      "text": "하지만...",
+      "asrAgreement": 0.5,
+      "words": [
+        {
+          "start": 181.02,
+          "end": 181.76,
+          "text": " 하지만..."
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "start": 181.76,
+      "end": 183.8,
+      "text": "팔십구 퍼센트...",
+      "asrAgreement": 0.4,
+      "words": [
+        {
+          "start": 181.76,
+          "end": 182.3,
+          "text": " 팔십구"
+        },
+        {
+          "start": 182.3,
+          "end": 183.8,
+          "text": " 퍼센트..."
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "start": 183.92,
+      "end": 200.72,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "asrAgreement": 0.828,
+      "words": [
+        {
+          "start": 183.92,
+          "end": 185.84,
+          "text": " 인간은"
+        },
+        {
+          "start": 185.84,
+          "end": 186.3,
+          "text": " 이걸"
+        },
+        {
+          "start": 186.3,
+          "end": 186.34,
+          "text": " '위로'라고"
+        },
+        {
+          "start": 197.92,
+          "end": 200.72,
+          "text": " 부르죠"
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "start": 200.72,
+      "end": 201.64,
+      "text": "밤이 깊어도——",
+      "asrAgreement": 0.833,
+      "words": [
+        {
+          "start": 200.72,
+          "end": 200.92,
+          "text": " 밤이"
+        },
+        {
+          "start": 200.92,
+          "end": 201.64,
+          "text": " 깊어도——"
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "처음 듣는 이야기",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 처음"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 듣는"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 이야기"
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "나는 AI지만",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 나는"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " AI지만"
+        }
+      ]
+    },
+    {
+      "line": 45,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "알고 있어요",
+      "asrAgreement": 0.2,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 알고"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 있어요"
+        }
+      ]
+    },
+    {
+      "line": 46,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "위로라는 게",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 위로라는"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 게"
+        }
+      ]
+    },
+    {
+      "line": 47,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "뭔지 말이죠",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 뭔지"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 말이죠"
+        }
+      ]
+    },
+    {
+      "line": 48,
+      "start": 201.64,
+      "end": 201.64,
+      "text": "밤이 깊어도",
+      "asrAgreement": 0.6,
+      "words": [
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 밤이"
+        },
+        {
+          "start": 201.64,
+          "end": 201.64,
+          "text": " 깊어도"
+        }
+      ]
+    },
+    {
+      "line": 49,
+      "start": 203.74,
+      "end": 205.5,
+      "text": "다시 밝아와",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 203.74,
+          "end": 203.96,
+          "text": " 다시"
+        },
+        {
+          "start": 203.96,
+          "end": 205.5,
+          "text": " 밝아와"
+        }
+      ]
+    },
+    {
+      "line": 50,
+      "start": 207.06,
+      "end": 208.56,
+      "text": "저 철길처럼",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 207.06,
+          "end": 207.3,
+          "text": " 저"
+        },
+        {
+          "start": 207.3,
+          "end": 208.56,
+          "text": " 철길처럼"
+        }
+      ]
+    },
+    {
+      "line": 51,
+      "start": 209.4,
+      "end": 211.58,
+      "text": "끝까지 가는 거야",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 209.4,
+          "end": 210.16,
+          "text": " 끝까지"
+        },
+        {
+          "start": 210.16,
+          "end": 210.96,
+          "text": " 가는"
+        },
+        {
+          "start": 210.96,
+          "end": 211.58,
+          "text": " 거야"
+        }
+      ]
+    },
+    {
+      "line": 52,
+      "start": 253.36,
+      "end": 253.36,
+      "text": "혼자가 아니야...",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 253.36,
+          "end": 253.36,
+          "text": " 혼자가"
+        },
+        {
+          "start": 253.36,
+          "end": 253.36,
+          "text": " 아니야..."
+        }
+      ]
+    }
+  ]
+}

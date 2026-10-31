@@ -1,0 +1,111 @@
+{
+  "id": "chollima_ride",
+  "line": 44,
+  "published": false,
+  "humanListeningVerified": false,
+  "automaticEvidenceOnly": true,
+  "boundaryTransferVerified": false,
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "parentSha256": "0cec4ca46e6818ae9f8d813c011124d696a379d894fad5c9990755b764507c05",
+  "dtwSha256": "e76cf591635fa5d292d84b184a42e89342087e11706f6902079829eadd275fa3",
+  "toolSha256": "901fe8becd265cd3bbb79c1c81305f8a0b5c6454c3ab2ed7e7950a37f59e1935",
+  "acousticCandidateOnset": 196.14999999999998,
+  "attempts": [
+    {
+      "role": "original",
+      "pad": 0.35,
+      "window": [
+        195.79999999999998,
+        199.75
+      ],
+      "words": [
+        {
+          "text": "아——",
+          "start": 198.1024725341797,
+          "end": 198.12247253417968,
+          "score": 0.6379339694976807,
+          "maxInternalGap": 0.0
+        },
+        {
+          "text": "천리마——",
+          "start": 198.42246459960938,
+          "end": 199.36246276855468,
+          "score": 0.3063818528316915,
+          "maxInternalGap": 0.29998779296875
+        }
+      ]
+    },
+    {
+      "role": "original",
+      "pad": 0.7,
+      "window": [
+        195.45,
+        200.1
+      ],
+      "words": [
+        {
+          "text": "아——",
+          "start": 198.1024725341797,
+          "end": 198.12247253417968,
+          "score": 0.6379339694976807,
+          "maxInternalGap": 0.0
+        },
+        {
+          "text": "천리마——",
+          "start": 198.42246459960938,
+          "end": 199.36246276855468,
+          "score": 0.3063818528316915,
+          "maxInternalGap": 0.29998779296875
+        }
+      ]
+    },
+    {
+      "role": "vocals",
+      "pad": 0.35,
+      "window": [
+        195.79999999999998,
+        199.75
+      ],
+      "words": [
+        {
+          "text": "아——",
+          "start": 198.1024725341797,
+          "end": 198.12247253417968,
+          "score": 0.44379740953445435,
+          "maxInternalGap": 0.0
+        },
+        {
+          "text": "천리마——",
+          "start": 198.4024755859375,
+          "end": 199.36246276855468,
+          "score": 0.5411606952548027,
+          "maxInternalGap": 0.279998779296875
+        }
+      ]
+    },
+    {
+      "role": "vocals",
+      "pad": 0.7,
+      "window": [
+        195.45,
+        200.1
+      ],
+      "words": [
+        {
+          "text": "아——",
+          "start": 198.1024725341797,
+          "end": 198.12247253417968,
+          "score": 0.44379740953445435,
+          "maxInternalGap": 0.0
+        },
+        {
+          "text": "천리마——",
+          "start": 198.4024755859375,
+          "end": 199.36246276855468,
+          "score": 0.5411606952548027,
+          "maxInternalGap": 0.279998779296875
+        }
+      ]
+    }
+  ]
+}

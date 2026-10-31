@@ -1,0 +1,145 @@
+{
+  "id": "chollima_ride",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "audioRole": "original",
+  "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "timeOffset": 0,
+  "requestedLanguage": "auto",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 58.0,
+      "end": 80.0,
+      "segments": [
+        {
+          "start": 58.0,
+          "end": 64.8,
+          "text": " 시신의 위대한 열도자 가르침 따라",
+          "words": [
+            {
+              "start": 58.0,
+              "end": 60.08,
+              "word": " 시신의",
+              "probability": 0.4484208822250366
+            },
+            {
+              "start": 60.08,
+              "end": 62.34,
+              "word": " 위대한",
+              "probability": 0.9423561990261078
+            },
+            {
+              "start": 62.34,
+              "end": 63.32,
+              "word": " 열도자",
+              "probability": 0.6823099801937739
+            },
+            {
+              "start": 63.32,
+              "end": 64.42,
+              "word": " 가르침",
+              "probability": 0.6689655929803848
+            },
+            {
+              "start": 64.42,
+              "end": 64.8,
+              "word": " 따라",
+              "probability": 0.7822620868682861
+            }
+          ]
+        },
+        {
+          "start": 69.8,
+          "end": 74.96000000000001,
+          "text": " 설리마 시신에 달린다",
+          "words": [
+            {
+              "start": 69.8,
+              "end": 71.2,
+              "word": " 설리마",
+              "probability": 0.5426173806190491
+            },
+            {
+              "start": 71.2,
+              "end": 72.6,
+              "word": " 시신에",
+              "probability": 0.6296862761179606
+            },
+            {
+              "start": 72.6,
+              "end": 74.96000000000001,
+              "word": " 달린다",
+              "probability": 0.9855063160260519
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 0.8372452259063721
+    },
+    {
+      "start": 154.0,
+      "end": 178.0,
+      "segments": [
+        {
+          "start": 154.0,
+          "end": 159.1,
+          "text": " 우리 달리자",
+          "words": [
+            {
+              "start": 154.0,
+              "end": 154.98,
+              "word": " 우리",
+              "probability": 0.08690480887889862
+            },
+            {
+              "start": 154.98,
+              "end": 159.1,
+              "word": " 달리자",
+              "probability": 0.7719922860463461
+            }
+          ]
+        },
+        {
+          "start": 162.38,
+          "end": 165.6,
+          "text": " 백종백순! 백종백순!",
+          "words": [
+            {
+              "start": 162.38,
+              "end": 163.78,
+              "word": " 백종백순!",
+              "probability": 0.5320131927728653
+            },
+            {
+              "start": 164.3,
+              "end": 165.6,
+              "word": " 백종백순!",
+              "probability": 0.9835209131240845
+            }
+          ]
+        },
+        {
+          "start": 170.9,
+          "end": 172.3,
+          "text": " 백종백순!",
+          "words": [
+            {
+              "start": 170.9,
+              "end": 172.3,
+              "word": " 백종백순!",
+              "probability": 0.9838319301605225
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 0.7316136360168457
+    }
+  ]
+}

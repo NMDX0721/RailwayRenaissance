@@ -1,0 +1,270 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "audioRole": "original",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "timeOffset": 0,
+  "requestedLanguage": "expected",
+  "device": "cpu",
+  "computeType": "int8",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-medium",
+    "revision": "08e178d48790749d25932bbc082711ddcfdfbc4f"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 30.0,
+      "end": 43.0,
+      "segments": [
+        {
+          "start": 30.0,
+          "end": 35.82,
+          "text": " 그대의 그림자",
+          "words": [
+            {
+              "start": 30.0,
+              "end": 32.22,
+              "word": " 그대의",
+              "probability": 0.5550526411583027
+            },
+            {
+              "start": 32.22,
+              "end": 35.82,
+              "word": " 그림자",
+              "probability": 0.9915454089641571
+            }
+          ]
+        },
+        {
+          "start": 35.82,
+          "end": 41.7,
+          "text": " 우리를 둘러쌌지",
+          "words": [
+            {
+              "start": 35.82,
+              "end": 37.480000000000004,
+              "word": " 우리를",
+              "probability": 0.8900890648365021
+            },
+            {
+              "start": 37.480000000000004,
+              "end": 41.7,
+              "word": " 둘러쌌지",
+              "probability": 0.8361547078405108
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 68.0,
+      "end": 80.0,
+      "segments": [
+        {
+          "start": 68.0,
+          "end": 79.66,
+          "text": " 끝까지 시청해주셔서 감사합니다.",
+          "words": [
+            {
+              "start": 68.0,
+              "end": 69.1,
+              "word": " 끝까지",
+              "probability": 0.3555069607682526
+            },
+            {
+              "start": 69.1,
+              "end": 77.16,
+              "word": " 시청해주셔서",
+              "probability": 0.611327717701594
+            },
+            {
+              "start": 77.16,
+              "end": 79.66,
+              "word": " 감사합니다.",
+              "probability": 0.8473396301269531
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 98.0,
+      "end": 113.0,
+      "segments": [
+        {
+          "start": 105.82,
+          "end": 112.03999999999999,
+          "text": " 이제는 잠, 수명의 잠, 깨어난 오후",
+          "words": [
+            {
+              "start": 105.82,
+              "end": 107.14,
+              "word": " 이제는",
+              "probability": 0.21550897136330605
+            },
+            {
+              "start": 107.14,
+              "end": 107.56,
+              "word": " 잠,",
+              "probability": 0.25832679867744446
+            },
+            {
+              "start": 107.92,
+              "end": 108.56,
+              "word": " 수명의",
+              "probability": 0.4083605458339055
+            },
+            {
+              "start": 108.56,
+              "end": 109.3,
+              "word": " 잠,",
+              "probability": 0.9085372686386108
+            },
+            {
+              "start": 109.7,
+              "end": 110.38,
+              "word": " 깨어난",
+              "probability": 0.9795629382133484
+            },
+            {
+              "start": 110.38,
+              "end": 112.03999999999999,
+              "word": " 오후",
+              "probability": 0.9917677044868469
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 126.0,
+      "end": 140.0,
+      "segments": [
+        {
+          "start": 126.0,
+          "end": 132.82,
+          "text": " 나는 애야이지만",
+          "words": [
+            {
+              "start": 126.0,
+              "end": 128.14,
+              "word": " 나는",
+              "probability": 0.7547518610954285
+            },
+            {
+              "start": 128.14,
+              "end": 132.82,
+              "word": " 애야이지만",
+              "probability": 0.7960699737071991
+            }
+          ]
+        },
+        {
+          "start": 132.82,
+          "end": 139.98,
+          "text": " 알고 있어요 위로라는 게",
+          "words": [
+            {
+              "start": 132.82,
+              "end": 133.92,
+              "word": " 알고",
+              "probability": 0.7011536359786987
+            },
+            {
+              "start": 133.92,
+              "end": 138.24,
+              "word": " 있어요",
+              "probability": 0.901311993598938
+            },
+            {
+              "start": 138.24,
+              "end": 139.72,
+              "word": " 위로라는",
+              "probability": 0.9832306057214737
+            },
+            {
+              "start": 139.72,
+              "end": 139.98,
+              "word": " 게",
+              "probability": 0.6093699932098389
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 207.0,
+      "end": 235.0,
+      "segments": [
+        {
+          "start": 207.0,
+          "end": 214.64,
+          "text": " 저 철길처럼 끝까지 가는 거야",
+          "words": [
+            {
+              "start": 207.0,
+              "end": 207.38,
+              "word": " 저",
+              "probability": 0.7115491032600403
+            },
+            {
+              "start": 207.38,
+              "end": 209.26,
+              "word": " 철길처럼",
+              "probability": 0.7289804741740227
+            },
+            {
+              "start": 209.26,
+              "end": 210.42,
+              "word": " 끝까지",
+              "probability": 0.9964707493782043
+            },
+            {
+              "start": 210.42,
+              "end": 211.2,
+              "word": " 가는",
+              "probability": 0.9941775798797607
+            },
+            {
+              "start": 211.2,
+              "end": 214.64,
+              "word": " 거야",
+              "probability": 0.8306018710136414
+            }
+          ]
+        },
+        {
+          "start": 231.76,
+          "end": 234.56,
+          "text": " 혼자가 아니야",
+          "words": [
+            {
+              "start": 231.76,
+              "end": 233.16,
+              "word": " 혼자가",
+              "probability": 0.5631152018904686
+            },
+            {
+              "start": 233.16,
+              "end": 234.56,
+              "word": " 아니야",
+              "probability": 0.899306058883667
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    }
+  ]
+}

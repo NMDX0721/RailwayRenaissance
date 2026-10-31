@@ -1,0 +1,34 @@
+{
+  "source": "Folia local fork .references/folia-major",
+  "license": "AGPL-3.0",
+  "files": [
+    {
+      "path": "electron/spotify/audio.cjs",
+      "sha256": "4d76440838eb60f322caa2b56b8ad706961866da0162e62c2674ff50ee7387d5"
+    },
+    {
+      "path": "electron/spotify/audioFiles.cjs",
+      "sha256": "f6068fc434c77e216ac4e752e0f01733c8dc8a5592658950d81f5da0cbe7f6df"
+    },
+    {
+      "path": "electron/spotify/errors.cjs",
+      "sha256": "57c058f98a3db1f74d2ae9fbe558fc46d7a939c438b5e1da4d795d66ace1595b"
+    },
+    {
+      "path": "electron/spotify/session.cjs",
+      "sha256": "35b2329e255b1425ca7688dad1035cfcbf245a0dc9f729425886b6725ec15686"
+    },
+    {
+      "path": "electron/spotify/signIn.cjs",
+      "sha256": "48cab4252d1091766f1d6dbcf21f1198e9301076a54028009fd89b703a3b5435"
+    },
+    {
+      "path": "electron/spotify/spotifyApiBridge.cjs",
+      "sha256": "60b4d2c86cd692e94af4df800527790ee544b1787c2aa300d97e479b37c7b12b"
+    },
+    {
+      "path": "electron/transcode/protocol.cjs",
+      "sha256": "a375acf54227bd370a17e8b973099ae825f2bf89a6cb863def4999727fb98394"
+    }
+  ]
+}

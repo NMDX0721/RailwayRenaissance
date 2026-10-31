@@ -1,0 +1,396 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "parentSha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+  "toolSha256": "4649d80804f1d1fdbde1c3f6d34ff24bf3510bfb5f1eac2f3ed568b9ab0322d8",
+  "published": false,
+  "humanListeningVerified": false,
+  "hypothesis": "CTC repeated-consonant target encoding sensitivity; source words unchanged",
+  "windows": [
+    {
+      "line": 4,
+      "role": "original",
+      "padding": 1.0,
+      "variant": "baseline",
+      "start": 34.962469329833986,
+      "end": 40.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.98246978759766,
+          "end": 36.662469635009764,
+          "score": 0.7860509820959785
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreossassji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.5541640178909382
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "original",
+      "padding": 1.0,
+      "variant": "collapsed_consonants",
+      "start": 34.962469329833986,
+      "end": 40.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.98246978759766,
+          "end": 36.662469635009764,
+          "score": 0.7860509820959785
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreosasji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.6364923636217348
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "original",
+      "padding": 3.0,
+      "variant": "baseline",
+      "start": 32.962469329833986,
+      "end": 42.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.98246978759766,
+          "end": 36.662469635009764,
+          "score": 0.7860509820959785
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreossassji",
+          "start": 37.462469329833986,
+          "end": 42.12246871948242,
+          "score": 0.4701755049889191
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "original",
+      "padding": 3.0,
+      "variant": "collapsed_consonants",
+      "start": 32.962469329833986,
+      "end": 42.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.98246978759766,
+          "end": 36.662469635009764,
+          "score": 0.7860509820959785
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreosasji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.6364923636217348
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "original",
+      "padding": 1.0,
+      "variant": "baseline",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 132.88247131347657,
+          "end": 133.74246765136718,
+          "score": 0.1666323989047669
+        },
+        {
+          "text": "있어요",
+          "input": "isseoyo",
+          "start": 135.32247375488282,
+          "end": 137.1624658203125,
+          "score": 0.07748830418235489
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "original",
+      "padding": 1.0,
+      "variant": "collapsed_consonants",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 132.88247131347657,
+          "end": 133.74246765136718,
+          "score": 0.1666323989047669
+        },
+        {
+          "text": "있어요",
+          "input": "iseoyo",
+          "start": 135.32247375488282,
+          "end": 137.1624658203125,
+          "score": 0.08961886338268717
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "original",
+      "padding": 3.0,
+      "variant": "baseline",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 130.3424627685547,
+          "end": 133.74246765136718,
+          "score": 0.3124868096783757
+        },
+        {
+          "text": "있어요",
+          "input": "isseoyo",
+          "start": 135.32247375488282,
+          "end": 139.88246704101562,
+          "score": 0.16988540201314858
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "original",
+      "padding": 3.0,
+      "variant": "collapsed_consonants",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 130.3424627685547,
+          "end": 133.74246765136718,
+          "score": 0.3124868096783757
+        },
+        {
+          "text": "있어요",
+          "input": "iseoyo",
+          "start": 135.32247375488282,
+          "end": 139.88246704101562,
+          "score": 0.19741547751861313
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "vocals",
+      "padding": 1.0,
+      "variant": "baseline",
+      "start": 34.962469329833986,
+      "end": 40.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.962469329833986,
+          "end": 36.662469635009764,
+          "score": 0.43967807521611185
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreossassji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.3459372217946041
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "vocals",
+      "padding": 1.0,
+      "variant": "collapsed_consonants",
+      "start": 34.962469329833986,
+      "end": 40.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.962469329833986,
+          "end": 36.662469635009764,
+          "score": 0.43967807521611185
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreosasji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.40776914928574115
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "vocals",
+      "padding": 3.0,
+      "variant": "baseline",
+      "start": 32.962469329833986,
+      "end": 42.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.962469329833986,
+          "end": 36.662469635009764,
+          "score": 0.43967807521611185
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreossassji",
+          "start": 37.462469329833986,
+          "end": 42.10246826171875,
+          "score": 0.28989328412661475
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "role": "vocals",
+      "padding": 3.0,
+      "variant": "collapsed_consonants",
+      "start": 32.962469329833986,
+      "end": 42.70246673583984,
+      "words": [
+        {
+          "text": "우리를",
+          "input": "urireul",
+          "start": 35.962469329833986,
+          "end": 36.662469635009764,
+          "score": 0.43967807521611185
+        },
+        {
+          "text": "둘러쌌지",
+          "input": "dulreosasji",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.40776914928574115
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "vocals",
+      "padding": 1.0,
+      "variant": "baseline",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 133.7224676513672,
+          "end": 136.12247253417968,
+          "score": 0.24583810064359568
+        },
+        {
+          "text": "있어요",
+          "input": "isseoyo",
+          "start": 136.16247009277345,
+          "end": 137.18247009277343,
+          "score": 0.23317777325532266
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "vocals",
+      "padding": 1.0,
+      "variant": "collapsed_consonants",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 133.7224676513672,
+          "end": 136.12247253417968,
+          "score": 0.24583810064359568
+        },
+        {
+          "text": "있어요",
+          "input": "iseoyo",
+          "start": 136.16247009277345,
+          "end": 137.18247009277343,
+          "score": 0.2530999650868277
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "vocals",
+      "padding": 3.0,
+      "variant": "baseline",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 130.32247375488282,
+          "end": 133.74246765136718,
+          "score": 0.4058157164603472
+        },
+        {
+          "text": "있어요",
+          "input": "isseoyo",
+          "start": 135.32247375488282,
+          "end": 138.98247314453124,
+          "score": 0.2876669308170676
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "role": "vocals",
+      "padding": 3.0,
+      "variant": "collapsed_consonants",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "words": [
+        {
+          "text": "알고",
+          "input": "algo",
+          "start": 130.32247375488282,
+          "end": 133.74246765136718,
+          "score": 0.4058157164603472
+        },
+        {
+          "text": "있어요",
+          "input": "iseoyo",
+          "start": 135.32247375488282,
+          "end": 138.98247314453124,
+          "score": 0.3166706489088635
+        }
+      ]
+    }
+  ]
+}

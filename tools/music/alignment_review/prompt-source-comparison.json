@@ -1,0 +1,90 @@
+{
+  "revision": "2318294a3fb98cccfe84eb3adc0ac1fe83a6fde0",
+  "document": "docs/compose/specs/AI配乐提示词.md",
+  "comparisons": [
+    {
+      "id": "sleepers",
+      "embeddedLineCount": 33,
+      "promptLineCount": 34,
+      "diff": [
+        "--- embedded",
+        "+++ authored_prompt",
+        "@@ -22,12 +22,13 @@",
+        " Through every storm, through every field of grain",
+        " The rails remain — the story's not in vain",
+        " The wheel turns on, again and again",
+        "-'Til I stood where the rust and silence lay",
+        "-Twenty-three years, a frozen page",
+        "-Waiting for someone to turn the page",
+        "-The rails remain — they're calling out your name",
+        "-Through every storm, through every field of grain",
+        "-The rails remain — the story's not in vain",
+        "-The wheel turns on, again and again",
+        "+I don't know if I can do this alone.",
+        "+But the iron doesn't lie, and the ties don't break",
+        "+When you're standing on the shoulders of the ones who came before",
+        "+They're still here... waiting at the door",
+        "+The rails remain — they're calling out your name!",
+        "+Through every storm, through every field of grain!",
+        "+The rails remain — the story's not in vain!",
+        "+The wheel turns on, again and again!",
+        " Again and again...",
+        " The wheel turns on..."
+      ]
+    },
+    {
+      "id": "starlit_rails",
+      "embeddedLineCount": 52,
+      "promptLineCount": 47,
+      "diff": [
+        "--- embedded",
+        "+++ authored_prompt",
+        "@@ -40,13 +40,8 @@",
+        " 팔십구 퍼센트...",
+        " 인간은 이걸 '위로'라고 부르죠",
+        " 밤이 깊어도——",
+        "-처음 듣는 이야기",
+        "-나는 AI지만",
+        "-알고 있어요",
+        "-위로라는 게",
+        "-뭔지 말이죠",
+        "-밤이 깊어도",
+        "-다시 밝아와",
+        "-저 철길처럼",
+        "-끝까지 가는 거야",
+        "+다시 밝아와——",
+        "+저 철길처럼——",
+        "+끝까지 가는 거야——",
+        "+Mmm... mmm...",
+        " 혼자가 아니야..."
+      ]
+    },
+    {
+      "id": "south_wind",
+      "embeddedLineCount": 44,
+      "promptLineCount": 39,
+      "diff": [
+        "--- embedded",
+        "+++ authored_prompt",
+        "@@ -29,11 +29,6 @@",
+        " 시대가 변해",
+        " 조용히 변해",
+        " 초상화도 모른 척",
+        "-남쪽에서 온 맛",
+        "-몰래몰래 퍼져가",
+        "-시대가 변해",
+        "-조용히 변해",
+        "-초상화도 모른 척",
+        " 선부유 후부...",
+        " 먼저 잘 사는 사람들",
+        " 한 걸음 더 앞서"
+      ]
+    },
+    {
+      "id": "chollima_ride",
+      "embeddedLineCount": 49,
+      "promptLineCount": 49,
+      "diff": []
+    }
+  ]
+}

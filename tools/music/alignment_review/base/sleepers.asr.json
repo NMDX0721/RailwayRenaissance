@@ -1,0 +1,1757 @@
+[
+  {
+    "start": 10.200000000000001,
+    "end": 22.2,
+    "text": " A whistle cuts the mornin' haze, across the hills where wild grass waves, my grandfather's",
+    "words": [
+      {
+        "start": 10.200000000000001,
+        "end": 11.4,
+        "word": " A",
+        "probability": 0.02422732673585415
+      },
+      {
+        "start": 11.4,
+        "end": 12.6,
+        "word": " whistle",
+        "probability": 0.9317876100540161
+      },
+      {
+        "start": 12.6,
+        "end": 12.94,
+        "word": " cuts",
+        "probability": 0.9559769630432129
+      },
+      {
+        "start": 12.94,
+        "end": 13.24,
+        "word": " the",
+        "probability": 0.9806211590766907
+      },
+      {
+        "start": 13.24,
+        "end": 13.86,
+        "word": " mornin'",
+        "probability": 0.7620374461015066
+      },
+      {
+        "start": 14.14,
+        "end": 14.92,
+        "word": " haze,",
+        "probability": 0.9144833087921143
+      },
+      {
+        "start": 15.5,
+        "end": 16.14,
+        "word": " across",
+        "probability": 0.3952012360095978
+      },
+      {
+        "start": 16.14,
+        "end": 16.5,
+        "word": " the",
+        "probability": 0.9937729239463806
+      },
+      {
+        "start": 16.5,
+        "end": 16.86,
+        "word": " hills",
+        "probability": 0.9873898029327393
+      },
+      {
+        "start": 16.86,
+        "end": 17.16,
+        "word": " where",
+        "probability": 0.5551181435585022
+      },
+      {
+        "start": 17.16,
+        "end": 17.66,
+        "word": " wild",
+        "probability": 0.8785126209259033
+      },
+      {
+        "start": 17.66,
+        "end": 18.08,
+        "word": " grass",
+        "probability": 0.9200534820556641
+      },
+      {
+        "start": 18.08,
+        "end": 18.86,
+        "word": " waves,",
+        "probability": 0.12268316745758057
+      },
+      {
+        "start": 20.22,
+        "end": 21.18,
+        "word": " my",
+        "probability": 0.5786266922950745
+      },
+      {
+        "start": 21.18,
+        "end": 22.2,
+        "word": " grandfather's",
+        "probability": 0.9107182621955872
+      }
+    ]
+  },
+  {
+    "start": 22.2,
+    "end": 30.46,
+    "text": " The voice of fate it trace, the rails are still here, son, make your way.",
+    "words": [
+      {
+        "start": 22.2,
+        "end": 22.7,
+        "word": " The",
+        "probability": 0.15214045345783234
+      },
+      {
+        "start": 22.7,
+        "end": 22.7,
+        "word": " voice",
+        "probability": 0.28237393498420715
+      },
+      {
+        "start": 22.7,
+        "end": 22.9,
+        "word": " of",
+        "probability": 0.9450016617774963
+      },
+      {
+        "start": 22.9,
+        "end": 23.2,
+        "word": " fate",
+        "probability": 0.7599315047264099
+      },
+      {
+        "start": 23.2,
+        "end": 23.5,
+        "word": " it",
+        "probability": 0.6056094765663147
+      },
+      {
+        "start": 23.5,
+        "end": 23.94,
+        "word": " trace,",
+        "probability": 0.3799455165863037
+      },
+      {
+        "start": 24.48,
+        "end": 25.28,
+        "word": " the",
+        "probability": 0.7408434748649597
+      },
+      {
+        "start": 25.28,
+        "end": 25.62,
+        "word": " rails",
+        "probability": 0.9577031135559082
+      },
+      {
+        "start": 25.62,
+        "end": 25.88,
+        "word": " are",
+        "probability": 0.9913741946220398
+      },
+      {
+        "start": 25.88,
+        "end": 26.36,
+        "word": " still",
+        "probability": 0.998023271560669
+      },
+      {
+        "start": 26.36,
+        "end": 26.94,
+        "word": " here,",
+        "probability": 0.9397475719451904
+      },
+      {
+        "start": 27.2,
+        "end": 27.4,
+        "word": " son,",
+        "probability": 0.834467887878418
+      },
+      {
+        "start": 28.12,
+        "end": 29.22,
+        "word": " make",
+        "probability": 0.7946873903274536
+      },
+      {
+        "start": 29.22,
+        "end": 29.64,
+        "word": " your",
+        "probability": 0.30786338448524475
+      },
+      {
+        "start": 29.64,
+        "end": 30.46,
+        "word": " way.",
+        "probability": 0.9700610637664795
+      }
+    ]
+  },
+  {
+    "start": 32.28,
+    "end": 39.7,
+    "text": " I never knew how much those words would wait till I stood where the rust and silence lay.",
+    "words": [
+      {
+        "start": 32.28,
+        "end": 33.08,
+        "word": " I",
+        "probability": 0.9862657189369202
+      },
+      {
+        "start": 33.08,
+        "end": 33.36,
+        "word": " never",
+        "probability": 0.9982045888900757
+      },
+      {
+        "start": 33.36,
+        "end": 33.72,
+        "word": " knew",
+        "probability": 0.9988492727279663
+      },
+      {
+        "start": 33.72,
+        "end": 34.02,
+        "word": " how",
+        "probability": 0.9968184232711792
+      },
+      {
+        "start": 34.02,
+        "end": 34.36,
+        "word": " much",
+        "probability": 0.9987020492553711
+      },
+      {
+        "start": 34.36,
+        "end": 34.7,
+        "word": " those",
+        "probability": 0.9934451580047607
+      },
+      {
+        "start": 34.7,
+        "end": 35.16,
+        "word": " words",
+        "probability": 0.9957655668258667
+      },
+      {
+        "start": 35.16,
+        "end": 35.52,
+        "word": " would",
+        "probability": 0.9961309432983398
+      },
+      {
+        "start": 35.52,
+        "end": 35.92,
+        "word": " wait",
+        "probability": 0.6806157827377319
+      },
+      {
+        "start": 35.92,
+        "end": 36.62,
+        "word": " till",
+        "probability": 0.31612715125083923
+      },
+      {
+        "start": 36.62,
+        "end": 36.82,
+        "word": " I",
+        "probability": 0.9922664761543274
+      },
+      {
+        "start": 36.82,
+        "end": 37.22,
+        "word": " stood",
+        "probability": 0.9945774078369141
+      },
+      {
+        "start": 37.22,
+        "end": 37.6,
+        "word": " where",
+        "probability": 0.9778764843940735
+      },
+      {
+        "start": 37.6,
+        "end": 37.9,
+        "word": " the",
+        "probability": 0.9814772009849548
+      },
+      {
+        "start": 37.9,
+        "end": 38.3,
+        "word": " rust",
+        "probability": 0.8475699424743652
+      },
+      {
+        "start": 38.3,
+        "end": 38.56,
+        "word": " and",
+        "probability": 0.8257319331169128
+      },
+      {
+        "start": 38.56,
+        "end": 39.3,
+        "word": " silence",
+        "probability": 0.7616674900054932
+      },
+      {
+        "start": 39.3,
+        "end": 39.7,
+        "word": " lay.",
+        "probability": 0.7145755887031555
+      }
+    ]
+  },
+  {
+    "start": 41.18,
+    "end": 51.84,
+    "text": " 23 years of frozen page, waiting for someone to turn the page",
+    "words": [
+      {
+        "start": 41.18,
+        "end": 42.38,
+        "word": " 23",
+        "probability": 0.169524148106575
+      },
+      {
+        "start": 42.38,
+        "end": 43.48,
+        "word": " years",
+        "probability": 0.9238274097442627
+      },
+      {
+        "start": 43.48,
+        "end": 43.62,
+        "word": " of",
+        "probability": 0.919817328453064
+      },
+      {
+        "start": 43.62,
+        "end": 44.24,
+        "word": " frozen",
+        "probability": 0.9680440425872803
+      },
+      {
+        "start": 44.24,
+        "end": 45.22,
+        "word": " page,",
+        "probability": 0.32944074273109436
+      },
+      {
+        "start": 45.34,
+        "end": 46.74,
+        "word": " waiting",
+        "probability": 0.3863276243209839
+      },
+      {
+        "start": 46.74,
+        "end": 47.18,
+        "word": " for",
+        "probability": 0.9975603818893433
+      },
+      {
+        "start": 47.18,
+        "end": 48.14,
+        "word": " someone",
+        "probability": 0.9943745136260986
+      },
+      {
+        "start": 48.14,
+        "end": 49.68,
+        "word": " to",
+        "probability": 0.9468109011650085
+      },
+      {
+        "start": 49.68,
+        "end": 50.3,
+        "word": " turn",
+        "probability": 0.9908493757247925
+      },
+      {
+        "start": 50.3,
+        "end": 50.82,
+        "word": " the",
+        "probability": 0.6657264828681946
+      },
+      {
+        "start": 50.82,
+        "end": 51.84,
+        "word": " page",
+        "probability": 0.9969176054000854
+      }
+    ]
+  },
+  {
+    "start": 54.239999999999995,
+    "end": 60.18,
+    "text": " The rails remain, they're calling out your name",
+    "words": [
+      {
+        "start": 54.239999999999995,
+        "end": 55.44,
+        "word": " The",
+        "probability": 0.2755303978919983
+      },
+      {
+        "start": 55.44,
+        "end": 55.98,
+        "word": " rails",
+        "probability": 0.8750495314598083
+      },
+      {
+        "start": 55.98,
+        "end": 56.4,
+        "word": " remain,",
+        "probability": 0.7380937337875366
+      },
+      {
+        "start": 57.36,
+        "end": 57.86,
+        "word": " they're",
+        "probability": 0.9206269085407257
+      },
+      {
+        "start": 57.86,
+        "end": 58.36,
+        "word": " calling",
+        "probability": 0.9326057434082031
+      },
+      {
+        "start": 58.36,
+        "end": 58.74,
+        "word": " out",
+        "probability": 0.961124062538147
+      },
+      {
+        "start": 58.74,
+        "end": 59.08,
+        "word": " your",
+        "probability": 0.982624351978302
+      },
+      {
+        "start": 59.08,
+        "end": 60.18,
+        "word": " name",
+        "probability": 0.9953606724739075
+      }
+    ]
+  },
+  {
+    "start": 60.7,
+    "end": 66.12,
+    "text": " Through every storm, through every field of grain",
+    "words": [
+      {
+        "start": 60.7,
+        "end": 61.4,
+        "word": " Through",
+        "probability": 0.7519856095314026
+      },
+      {
+        "start": 61.4,
+        "end": 61.92,
+        "word": " every",
+        "probability": 0.9939782619476318
+      },
+      {
+        "start": 61.92,
+        "end": 62.52,
+        "word": " storm,",
+        "probability": 0.8600392937660217
+      },
+      {
+        "start": 63.04,
+        "end": 63.84,
+        "word": " through",
+        "probability": 0.978346049785614
+      },
+      {
+        "start": 63.84,
+        "end": 64.22,
+        "word": " every",
+        "probability": 0.9987770915031433
+      },
+      {
+        "start": 64.22,
+        "end": 65.38,
+        "word": " field",
+        "probability": 0.8741298317909241
+      },
+      {
+        "start": 65.38,
+        "end": 65.68,
+        "word": " of",
+        "probability": 0.9841065406799316
+      },
+      {
+        "start": 65.68,
+        "end": 66.12,
+        "word": " grain",
+        "probability": 0.27575433254241943
+      }
+    ]
+  },
+  {
+    "start": 66.12,
+    "end": 78.12,
+    "text": " The rails remain, the story's not in vain The wheel turns on again and again",
+    "words": [
+      {
+        "start": 66.12,
+        "end": 67.28,
+        "word": " The",
+        "probability": 0.3030846416950226
+      },
+      {
+        "start": 67.28,
+        "end": 67.86,
+        "word": " rails",
+        "probability": 0.10947898030281067
+      },
+      {
+        "start": 67.86,
+        "end": 68.34,
+        "word": " remain,",
+        "probability": 0.7995716333389282
+      },
+      {
+        "start": 69.42,
+        "end": 69.64,
+        "word": " the",
+        "probability": 0.8274952173233032
+      },
+      {
+        "start": 69.64,
+        "end": 70.3,
+        "word": " story's",
+        "probability": 0.81501904129982
+      },
+      {
+        "start": 70.3,
+        "end": 70.64,
+        "word": " not",
+        "probability": 0.9964562058448792
+      },
+      {
+        "start": 70.64,
+        "end": 70.96,
+        "word": " in",
+        "probability": 0.7884888052940369
+      },
+      {
+        "start": 70.96,
+        "end": 71.96,
+        "word": " vain",
+        "probability": 0.998927891254425
+      },
+      {
+        "start": 71.96,
+        "end": 73.26,
+        "word": " The",
+        "probability": 0.5927540063858032
+      },
+      {
+        "start": 73.26,
+        "end": 73.58,
+        "word": " wheel",
+        "probability": 0.9183009266853333
+      },
+      {
+        "start": 73.58,
+        "end": 74.18,
+        "word": " turns",
+        "probability": 0.9961686730384827
+      },
+      {
+        "start": 74.18,
+        "end": 75.0,
+        "word": " on",
+        "probability": 0.9637647271156311
+      },
+      {
+        "start": 75.0,
+        "end": 76.44,
+        "word": " again",
+        "probability": 0.96900874376297
+      },
+      {
+        "start": 76.44,
+        "end": 76.8,
+        "word": " and",
+        "probability": 0.9704965353012085
+      },
+      {
+        "start": 76.8,
+        "end": 78.12,
+        "word": " again",
+        "probability": 0.9995216131210327
+      }
+    ]
+  },
+  {
+    "start": 81.44000000000001,
+    "end": 90.64,
+    "text": " The city lights of Pyongyang far behind The flying car and AI of fractured timeline",
+    "words": [
+      {
+        "start": 81.44000000000001,
+        "end": 82.60000000000001,
+        "word": " The",
+        "probability": 0.6325615644454956
+      },
+      {
+        "start": 82.60000000000001,
+        "end": 83.76,
+        "word": " city",
+        "probability": 0.9073771238327026
+      },
+      {
+        "start": 83.76,
+        "end": 84.26,
+        "word": " lights",
+        "probability": 0.9750699996948242
+      },
+      {
+        "start": 84.26,
+        "end": 84.52,
+        "word": " of",
+        "probability": 0.8288360238075256
+      },
+      {
+        "start": 84.52,
+        "end": 85.32,
+        "word": " Pyongyang",
+        "probability": 0.7569062610467275
+      },
+      {
+        "start": 85.32,
+        "end": 85.94,
+        "word": " far",
+        "probability": 0.8891701102256775
+      },
+      {
+        "start": 85.94,
+        "end": 86.64,
+        "word": " behind",
+        "probability": 0.991520345211029
+      },
+      {
+        "start": 86.64,
+        "end": 87.1,
+        "word": " The",
+        "probability": 0.33459189534187317
+      },
+      {
+        "start": 87.1,
+        "end": 87.48,
+        "word": " flying",
+        "probability": 0.8342165350914001
+      },
+      {
+        "start": 87.48,
+        "end": 88.06,
+        "word": " car",
+        "probability": 0.8638259768486023
+      },
+      {
+        "start": 88.06,
+        "end": 88.36,
+        "word": " and",
+        "probability": 0.5076626539230347
+      },
+      {
+        "start": 88.36,
+        "end": 88.62,
+        "word": " AI",
+        "probability": 0.7755289077758789
+      },
+      {
+        "start": 88.62,
+        "end": 89.2,
+        "word": " of",
+        "probability": 0.5416728854179382
+      },
+      {
+        "start": 89.2,
+        "end": 89.74,
+        "word": " fractured",
+        "probability": 0.6801682859659195
+      },
+      {
+        "start": 89.74,
+        "end": 90.64,
+        "word": " timeline",
+        "probability": 0.8602432012557983
+      }
+    ]
+  },
+  {
+    "start": 90.64,
+    "end": 100.64,
+    "text": " I packed my bags with things I couldn't name The fried chicken sold you in a child's",
+    "words": [
+      {
+        "start": 90.64,
+        "end": 92.24,
+        "word": " I",
+        "probability": 0.3104025423526764
+      },
+      {
+        "start": 92.24,
+        "end": 92.5,
+        "word": " packed",
+        "probability": 0.6278361678123474
+      },
+      {
+        "start": 92.5,
+        "end": 92.8,
+        "word": " my",
+        "probability": 0.9898826479911804
+      },
+      {
+        "start": 92.8,
+        "end": 93.3,
+        "word": " bags",
+        "probability": 0.9916650652885437
+      },
+      {
+        "start": 93.3,
+        "end": 93.56,
+        "word": " with",
+        "probability": 0.9888731837272644
+      },
+      {
+        "start": 93.56,
+        "end": 94.02,
+        "word": " things",
+        "probability": 0.9914621710777283
+      },
+      {
+        "start": 94.02,
+        "end": 94.36,
+        "word": " I",
+        "probability": 0.9651642441749573
+      },
+      {
+        "start": 94.36,
+        "end": 94.92,
+        "word": " couldn't",
+        "probability": 0.9595217704772949
+      },
+      {
+        "start": 94.92,
+        "end": 95.36,
+        "word": " name",
+        "probability": 0.4186502993106842
+      },
+      {
+        "start": 95.36,
+        "end": 95.9,
+        "word": " The",
+        "probability": 0.3648921847343445
+      },
+      {
+        "start": 95.9,
+        "end": 96.26,
+        "word": " fried",
+        "probability": 0.7321426868438721
+      },
+      {
+        "start": 96.26,
+        "end": 96.74,
+        "word": " chicken",
+        "probability": 0.9921463131904602
+      },
+      {
+        "start": 96.74,
+        "end": 97.76,
+        "word": " sold",
+        "probability": 0.8250318765640259
+      },
+      {
+        "start": 97.76,
+        "end": 98.6,
+        "word": " you",
+        "probability": 0.9687926769256592
+      },
+      {
+        "start": 98.6,
+        "end": 99.78,
+        "word": " in",
+        "probability": 0.47155049443244934
+      },
+      {
+        "start": 99.78,
+        "end": 99.92,
+        "word": " a",
+        "probability": 0.9931747317314148
+      },
+      {
+        "start": 99.92,
+        "end": 100.64,
+        "word": " child's",
+        "probability": 0.8309160768985748
+      }
+    ]
+  },
+  {
+    "start": 101.26,
+    "end": 106.96,
+    "text": " shame The dashboard showed a map of what was lost",
+    "words": [
+      {
+        "start": 101.26,
+        "end": 101.62,
+        "word": " shame",
+        "probability": 0.33113136887550354
+      },
+      {
+        "start": 101.62,
+        "end": 104.14,
+        "word": " The",
+        "probability": 0.8841638565063477
+      },
+      {
+        "start": 104.14,
+        "end": 104.62,
+        "word": " dashboard",
+        "probability": 0.9516538381576538
+      },
+      {
+        "start": 104.62,
+        "end": 105.14,
+        "word": " showed",
+        "probability": 0.9886981844902039
+      },
+      {
+        "start": 105.14,
+        "end": 105.36,
+        "word": " a",
+        "probability": 0.9461003541946411
+      },
+      {
+        "start": 105.36,
+        "end": 105.7,
+        "word": " map",
+        "probability": 0.9981827735900879
+      },
+      {
+        "start": 105.7,
+        "end": 106.06,
+        "word": " of",
+        "probability": 0.983716607093811
+      },
+      {
+        "start": 106.06,
+        "end": 106.26,
+        "word": " what",
+        "probability": 0.9951283931732178
+      },
+      {
+        "start": 106.26,
+        "end": 106.54,
+        "word": " was",
+        "probability": 0.9992775321006775
+      },
+      {
+        "start": 106.54,
+        "end": 106.96,
+        "word": " lost",
+        "probability": 0.9975019097328186
+      }
+    ]
+  },
+  {
+    "start": 106.96,
+    "end": 114.48,
+    "text": " Every station, every bridge, every crossing crossed My grandfather's hand",
+    "words": [
+      {
+        "start": 106.96,
+        "end": 107.48,
+        "word": " Every",
+        "probability": 0.7533275485038757
+      },
+      {
+        "start": 107.48,
+        "end": 108.08,
+        "word": " station,",
+        "probability": 0.9935845732688904
+      },
+      {
+        "start": 108.36,
+        "end": 108.6,
+        "word": " every",
+        "probability": 0.9875870943069458
+      },
+      {
+        "start": 108.6,
+        "end": 109.22,
+        "word": " bridge,",
+        "probability": 0.9908652901649475
+      },
+      {
+        "start": 109.56,
+        "end": 109.78,
+        "word": " every",
+        "probability": 0.9902098178863525
+      },
+      {
+        "start": 109.78,
+        "end": 110.4,
+        "word": " crossing",
+        "probability": 0.9813717603683472
+      },
+      {
+        "start": 110.4,
+        "end": 111.6,
+        "word": " crossed",
+        "probability": 0.7499953508377075
+      },
+      {
+        "start": 111.6,
+        "end": 113.04,
+        "word": " My",
+        "probability": 0.9760956764221191
+      },
+      {
+        "start": 113.04,
+        "end": 114.08,
+        "word": " grandfather's",
+        "probability": 0.9598176777362823
+      },
+      {
+        "start": 114.08,
+        "end": 114.48,
+        "word": " hand",
+        "probability": 0.9920604228973389
+      }
+    ]
+  },
+  {
+    "start": 114.48,
+    "end": 122.5,
+    "text": " But on the passenger seat, I faded note, but by our hand, keep the beat.",
+    "words": [
+      {
+        "start": 114.48,
+        "end": 114.74,
+        "word": " But",
+        "probability": 0.020947882905602455
+      },
+      {
+        "start": 114.74,
+        "end": 115.06,
+        "word": " on",
+        "probability": 0.40743011236190796
+      },
+      {
+        "start": 115.06,
+        "end": 115.34,
+        "word": " the",
+        "probability": 0.9842820763587952
+      },
+      {
+        "start": 115.34,
+        "end": 115.96,
+        "word": " passenger",
+        "probability": 0.9228981733322144
+      },
+      {
+        "start": 115.96,
+        "end": 117.02,
+        "word": " seat,",
+        "probability": 0.9576413631439209
+      },
+      {
+        "start": 117.2,
+        "end": 117.8,
+        "word": " I",
+        "probability": 0.6182704567909241
+      },
+      {
+        "start": 117.8,
+        "end": 118.22,
+        "word": " faded",
+        "probability": 0.2345227301120758
+      },
+      {
+        "start": 118.22,
+        "end": 118.84,
+        "word": " note,",
+        "probability": 0.7262352108955383
+      },
+      {
+        "start": 119.24,
+        "end": 119.7,
+        "word": " but",
+        "probability": 0.34708109498023987
+      },
+      {
+        "start": 119.7,
+        "end": 120.0,
+        "word": " by",
+        "probability": 0.9612708687782288
+      },
+      {
+        "start": 120.0,
+        "end": 120.26,
+        "word": " our",
+        "probability": 0.8641889095306396
+      },
+      {
+        "start": 120.26,
+        "end": 120.7,
+        "word": " hand,",
+        "probability": 0.2755271792411804
+      },
+      {
+        "start": 121.22,
+        "end": 121.82,
+        "word": " keep",
+        "probability": 0.7692552208900452
+      },
+      {
+        "start": 121.82,
+        "end": 122.24,
+        "word": " the",
+        "probability": 0.948650062084198
+      },
+      {
+        "start": 122.24,
+        "end": 122.5,
+        "word": " beat.",
+        "probability": 0.9358084797859192
+      }
+    ]
+  },
+  {
+    "start": 126.48,
+    "end": 137.38,
+    "text": " The rails remain, they're calling out your name, through every storm, through every field of grain.",
+    "words": [
+      {
+        "start": 126.10000000000001,
+        "end": 126.56,
+        "word": " The",
+        "probability": 0.9017133712768555
+      },
+      {
+        "start": 126.56,
+        "end": 127.1,
+        "word": " rails",
+        "probability": 0.8825201392173767
+      },
+      {
+        "start": 127.1,
+        "end": 127.52,
+        "word": " remain,",
+        "probability": 0.9415281414985657
+      },
+      {
+        "start": 128.76,
+        "end": 128.96,
+        "word": " they're",
+        "probability": 0.9001988470554352
+      },
+      {
+        "start": 128.96,
+        "end": 129.48,
+        "word": " calling",
+        "probability": 0.9813069105148315
+      },
+      {
+        "start": 129.48,
+        "end": 129.86,
+        "word": " out",
+        "probability": 0.9903301000595093
+      },
+      {
+        "start": 129.86,
+        "end": 130.22,
+        "word": " your",
+        "probability": 0.9722691774368286
+      },
+      {
+        "start": 130.22,
+        "end": 131.06,
+        "word": " name,",
+        "probability": 0.9975201487541199
+      },
+      {
+        "start": 132.2,
+        "end": 132.52,
+        "word": " through",
+        "probability": 0.7670110464096069
+      },
+      {
+        "start": 132.52,
+        "end": 133.04,
+        "word": " every",
+        "probability": 0.9931855201721191
+      },
+      {
+        "start": 133.04,
+        "end": 133.56,
+        "word": " storm,",
+        "probability": 0.7163022756576538
+      },
+      {
+        "start": 134.78,
+        "end": 134.96,
+        "word": " through",
+        "probability": 0.9818096160888672
+      },
+      {
+        "start": 134.96,
+        "end": 135.34,
+        "word": " every",
+        "probability": 0.9991170763969421
+      },
+      {
+        "start": 135.34,
+        "end": 136.48,
+        "word": " field",
+        "probability": 0.870332658290863
+      },
+      {
+        "start": 136.48,
+        "end": 136.86,
+        "word": " of",
+        "probability": 0.9622056484222412
+      },
+      {
+        "start": 136.86,
+        "end": 137.38,
+        "word": " grain.",
+        "probability": 0.7580165266990662
+      }
+    ]
+  },
+  {
+    "start": 137.38,
+    "end": 148.78,
+    "text": " The rail for Maine, the story's not in vain The wheel turns on again and again",
+    "words": [
+      {
+        "start": 137.38,
+        "end": 138.4,
+        "word": " The",
+        "probability": 0.27707526087760925
+      },
+      {
+        "start": 138.4,
+        "end": 138.8,
+        "word": " rail",
+        "probability": 0.051535412669181824
+      },
+      {
+        "start": 138.8,
+        "end": 139.18,
+        "word": " for",
+        "probability": 0.7272366881370544
+      },
+      {
+        "start": 139.18,
+        "end": 139.66,
+        "word": " Maine,",
+        "probability": 0.4294043779373169
+      },
+      {
+        "start": 140.14,
+        "end": 140.74,
+        "word": " the",
+        "probability": 0.8393455147743225
+      },
+      {
+        "start": 140.74,
+        "end": 141.42,
+        "word": " story's",
+        "probability": 0.772461324930191
+      },
+      {
+        "start": 141.42,
+        "end": 141.72,
+        "word": " not",
+        "probability": 0.9941142201423645
+      },
+      {
+        "start": 141.72,
+        "end": 142.08,
+        "word": " in",
+        "probability": 0.9879629015922546
+      },
+      {
+        "start": 142.08,
+        "end": 143.08,
+        "word": " vain",
+        "probability": 0.8898450136184692
+      },
+      {
+        "start": 143.08,
+        "end": 144.4,
+        "word": " The",
+        "probability": 0.49550849199295044
+      },
+      {
+        "start": 144.4,
+        "end": 144.76,
+        "word": " wheel",
+        "probability": 0.9051969051361084
+      },
+      {
+        "start": 144.76,
+        "end": 145.34,
+        "word": " turns",
+        "probability": 0.9902085065841675
+      },
+      {
+        "start": 145.34,
+        "end": 146.16,
+        "word": " on",
+        "probability": 0.9297457933425903
+      },
+      {
+        "start": 146.16,
+        "end": 147.52,
+        "word": " again",
+        "probability": 0.9367542266845703
+      },
+      {
+        "start": 147.52,
+        "end": 147.92,
+        "word": " and",
+        "probability": 0.9801676273345947
+      },
+      {
+        "start": 147.92,
+        "end": 148.78,
+        "word": " again",
+        "probability": 0.9992927312850952
+      }
+    ]
+  },
+  {
+    "start": 157.94,
+    "end": 162.92,
+    "text": " I don't know what fire can do this alone",
+    "words": [
+      {
+        "start": 157.94,
+        "end": 158.94,
+        "word": " I",
+        "probability": 0.5920771956443787
+      },
+      {
+        "start": 158.94,
+        "end": 159.94,
+        "word": " don't",
+        "probability": 0.9891418814659119
+      },
+      {
+        "start": 159.94,
+        "end": 160.2,
+        "word": " know",
+        "probability": 0.9976136684417725
+      },
+      {
+        "start": 160.2,
+        "end": 160.68,
+        "word": " what",
+        "probability": 0.5113205909729004
+      },
+      {
+        "start": 160.68,
+        "end": 160.98,
+        "word": " fire",
+        "probability": 0.9302834868431091
+      },
+      {
+        "start": 160.98,
+        "end": 161.38,
+        "word": " can",
+        "probability": 0.8568952083587646
+      },
+      {
+        "start": 161.38,
+        "end": 161.68,
+        "word": " do",
+        "probability": 0.9984880685806274
+      },
+      {
+        "start": 161.68,
+        "end": 162.2,
+        "word": " this",
+        "probability": 0.9633888006210327
+      },
+      {
+        "start": 162.2,
+        "end": 162.92,
+        "word": " alone",
+        "probability": 0.8720910549163818
+      }
+    ]
+  },
+  {
+    "start": 164.76,
+    "end": 170.44,
+    "text": " But the iron doesn't lie, and the ties don't break",
+    "words": [
+      {
+        "start": 164.76,
+        "end": 165.78,
+        "word": " But",
+        "probability": 0.7047203779220581
+      },
+      {
+        "start": 165.78,
+        "end": 166.02,
+        "word": " the",
+        "probability": 0.9898205995559692
+      },
+      {
+        "start": 166.02,
+        "end": 166.52,
+        "word": " iron",
+        "probability": 0.934404730796814
+      },
+      {
+        "start": 166.52,
+        "end": 167.14,
+        "word": " doesn't",
+        "probability": 0.984813004732132
+      },
+      {
+        "start": 167.14,
+        "end": 167.56,
+        "word": " lie,",
+        "probability": 0.9100381731987
+      },
+      {
+        "start": 168.08,
+        "end": 168.66,
+        "word": " and",
+        "probability": 0.8554246425628662
+      },
+      {
+        "start": 168.66,
+        "end": 168.86,
+        "word": " the",
+        "probability": 0.9947081804275513
+      },
+      {
+        "start": 168.86,
+        "end": 169.32,
+        "word": " ties",
+        "probability": 0.7314096093177795
+      },
+      {
+        "start": 169.32,
+        "end": 170.04,
+        "word": " don't",
+        "probability": 0.9969305098056793
+      },
+      {
+        "start": 170.04,
+        "end": 170.44,
+        "word": " break",
+        "probability": 0.9977664947509766
+      }
+    ]
+  },
+  {
+    "start": 170.44,
+    "end": 178.38,
+    "text": " When you're standing on the shoulders of the ones who came before they're still here",
+    "words": [
+      {
+        "start": 170.44,
+        "end": 171.58,
+        "word": " When",
+        "probability": 0.44657859206199646
+      },
+      {
+        "start": 171.58,
+        "end": 171.74,
+        "word": " you're",
+        "probability": 0.9268274903297424
+      },
+      {
+        "start": 171.74,
+        "end": 172.38,
+        "word": " standing",
+        "probability": 0.9963948130607605
+      },
+      {
+        "start": 172.38,
+        "end": 172.9,
+        "word": " on",
+        "probability": 0.9733672142028809
+      },
+      {
+        "start": 172.9,
+        "end": 173.18,
+        "word": " the",
+        "probability": 0.9963474869728088
+      },
+      {
+        "start": 173.18,
+        "end": 173.76,
+        "word": " shoulders",
+        "probability": 0.9910340905189514
+      },
+      {
+        "start": 173.76,
+        "end": 174.36,
+        "word": " of",
+        "probability": 0.7927627563476562
+      },
+      {
+        "start": 174.36,
+        "end": 174.56,
+        "word": " the",
+        "probability": 0.996454119682312
+      },
+      {
+        "start": 174.56,
+        "end": 175.2,
+        "word": " ones",
+        "probability": 0.9938129186630249
+      },
+      {
+        "start": 175.2,
+        "end": 175.44,
+        "word": " who",
+        "probability": 0.910910964012146
+      },
+      {
+        "start": 175.44,
+        "end": 175.78,
+        "word": " came",
+        "probability": 0.9959424138069153
+      },
+      {
+        "start": 175.78,
+        "end": 176.3,
+        "word": " before",
+        "probability": 0.9976924657821655
+      },
+      {
+        "start": 176.3,
+        "end": 177.04,
+        "word": " they're",
+        "probability": 0.8638610243797302
+      },
+      {
+        "start": 177.04,
+        "end": 177.5,
+        "word": " still",
+        "probability": 0.9991174340248108
+      },
+      {
+        "start": 177.5,
+        "end": 178.38,
+        "word": " here",
+        "probability": 0.9940968751907349
+      }
+    ]
+  },
+  {
+    "start": 181.78,
+    "end": 183.74,
+    "text": " Waiting at the door",
+    "words": [
+      {
+        "start": 181.78,
+        "end": 182.8,
+        "word": " Waiting",
+        "probability": 0.40374937653541565
+      },
+      {
+        "start": 182.8,
+        "end": 183.22,
+        "word": " at",
+        "probability": 0.9971075654029846
+      },
+      {
+        "start": 183.22,
+        "end": 183.44,
+        "word": " the",
+        "probability": 0.9981842637062073
+      },
+      {
+        "start": 183.44,
+        "end": 183.74,
+        "word": " door",
+        "probability": 0.8937370777130127
+      }
+    ]
+  },
+  {
+    "start": 205.54,
+    "end": 215.34,
+    "text": " The Rails are made, they're calling out your name, through every storm, through every",
+    "words": [
+      {
+        "start": 205.54,
+        "end": 206.54,
+        "word": " The",
+        "probability": 0.30284932255744934
+      },
+      {
+        "start": 206.54,
+        "end": 207.18,
+        "word": " Rails",
+        "probability": 0.38783982396125793
+      },
+      {
+        "start": 207.18,
+        "end": 207.36,
+        "word": " are",
+        "probability": 0.5376022458076477
+      },
+      {
+        "start": 207.36,
+        "end": 207.8,
+        "word": " made,",
+        "probability": 0.8306217789649963
+      },
+      {
+        "start": 208.64,
+        "end": 208.84,
+        "word": " they're",
+        "probability": 0.8217137157917023
+      },
+      {
+        "start": 208.84,
+        "end": 209.5,
+        "word": " calling",
+        "probability": 0.9788321256637573
+      },
+      {
+        "start": 209.5,
+        "end": 209.84,
+        "word": " out",
+        "probability": 0.981903076171875
+      },
+      {
+        "start": 209.84,
+        "end": 210.2,
+        "word": " your",
+        "probability": 0.9748782515525818
+      },
+      {
+        "start": 210.2,
+        "end": 211.16,
+        "word": " name,",
+        "probability": 0.9975276589393616
+      },
+      {
+        "start": 211.66,
+        "end": 212.54,
+        "word": " through",
+        "probability": 0.6150004863739014
+      },
+      {
+        "start": 212.54,
+        "end": 213.04,
+        "word": " every",
+        "probability": 0.9647930264472961
+      },
+      {
+        "start": 213.04,
+        "end": 213.62,
+        "word": " storm,",
+        "probability": 0.9760885238647461
+      },
+      {
+        "start": 214.78,
+        "end": 214.98,
+        "word": " through",
+        "probability": 0.9600818753242493
+      },
+      {
+        "start": 214.98,
+        "end": 215.34,
+        "word": " every",
+        "probability": 0.9897078275680542
+      }
+    ]
+  },
+  {
+    "start": 215.34,
+    "end": 229.76,
+    "text": " Feel the brain, the rails remain, the story is not in vain, the wheel turns on again and again",
+    "words": [
+      {
+        "start": 215.34,
+        "end": 216.22,
+        "word": " Feel",
+        "probability": 0.11014340072870255
+      },
+      {
+        "start": 216.22,
+        "end": 216.78,
+        "word": " the",
+        "probability": 0.9605933427810669
+      },
+      {
+        "start": 216.78,
+        "end": 217.72,
+        "word": " brain,",
+        "probability": 0.22919657826423645
+      },
+      {
+        "start": 217.72,
+        "end": 218.46,
+        "word": " the",
+        "probability": 0.9336361885070801
+      },
+      {
+        "start": 218.46,
+        "end": 218.98,
+        "word": " rails",
+        "probability": 0.698076605796814
+      },
+      {
+        "start": 218.98,
+        "end": 219.44,
+        "word": " remain,",
+        "probability": 0.9539350271224976
+      },
+      {
+        "start": 220.68,
+        "end": 220.74,
+        "word": " the",
+        "probability": 0.5538003444671631
+      },
+      {
+        "start": 220.74,
+        "end": 221.14,
+        "word": " story",
+        "probability": 0.8551502227783203
+      },
+      {
+        "start": 221.14,
+        "end": 221.42,
+        "word": " is",
+        "probability": 0.49357518553733826
+      },
+      {
+        "start": 221.42,
+        "end": 221.76,
+        "word": " not",
+        "probability": 0.9908079504966736
+      },
+      {
+        "start": 221.76,
+        "end": 222.1,
+        "word": " in",
+        "probability": 0.9184401631355286
+      },
+      {
+        "start": 222.1,
+        "end": 223.12,
+        "word": " vain,",
+        "probability": 0.9977114200592041
+      },
+      {
+        "start": 223.12,
+        "end": 224.36,
+        "word": " the",
+        "probability": 0.740882933139801
+      },
+      {
+        "start": 224.36,
+        "end": 224.68,
+        "word": " wheel",
+        "probability": 0.8981019258499146
+      },
+      {
+        "start": 224.68,
+        "end": 225.3,
+        "word": " turns",
+        "probability": 0.9957179427146912
+      },
+      {
+        "start": 225.3,
+        "end": 226.32,
+        "word": " on",
+        "probability": 0.9916049242019653
+      },
+      {
+        "start": 226.32,
+        "end": 227.58,
+        "word": " again",
+        "probability": 0.9743075966835022
+      },
+      {
+        "start": 227.58,
+        "end": 227.9,
+        "word": " and",
+        "probability": 0.9860107898712158
+      },
+      {
+        "start": 227.9,
+        "end": 229.76,
+        "word": " again",
+        "probability": 0.9989334940910339
+      }
+    ]
+  },
+  {
+    "start": 238.12,
+    "end": 247.24,
+    "text": " Again and again, the wheel turns on",
+    "words": [
+      {
+        "start": 238.12,
+        "end": 239.52,
+        "word": " Again",
+        "probability": 0.2296505719423294
+      },
+      {
+        "start": 239.52,
+        "end": 239.78,
+        "word": " and",
+        "probability": 0.9761613011360168
+      },
+      {
+        "start": 239.78,
+        "end": 241.6,
+        "word": " again,",
+        "probability": 0.9983851909637451
+      },
+      {
+        "start": 241.6,
+        "end": 245.14,
+        "word": " the",
+        "probability": 0.7505578398704529
+      },
+      {
+        "start": 245.14,
+        "end": 245.48,
+        "word": " wheel",
+        "probability": 0.8241342902183533
+      },
+      {
+        "start": 245.48,
+        "end": 246.08,
+        "word": " turns",
+        "probability": 0.9963701963424683
+      },
+      {
+        "start": 246.08,
+        "end": 247.24,
+        "word": " on",
+        "probability": 0.9867509007453918
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "language": "ko",
+  "transcriptSha256": "cfdba76b9d51577e220fca039f86e990b4054748a0fbd28f7377f913029cb17e",
+  "anchored": false,
+  "pipelineVersion": 1
+}

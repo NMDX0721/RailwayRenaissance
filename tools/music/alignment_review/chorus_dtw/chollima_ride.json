@@ -1,0 +1,468 @@
+{
+  "id": "chollima_ride",
+  "published": false,
+  "humanListeningVerified": false,
+  "semanticLyricIdentityVerified": false,
+  "referenceCrop": [
+    51.0,
+    76.0
+  ],
+  "model": "librosa subsequence DTW; slope steps (1,1),(1,2),(2,1)",
+  "librosaVersion": "0.11.0",
+  "sampleRate": 16000,
+  "hopSamples": 320,
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "vocalSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+  "toolSha256": "90a37988986d447882976597b6d1786f7ddc7077060d7e05e098a7a179a58226",
+  "note": "Anchors are existing candidate times; acoustic mappings alone do not prove syllable identity or correctness.",
+  "results": [
+    {
+      "feature": "mfcc",
+      "target": "repeat_positive",
+      "targetCrop": [
+        117.0,
+        145.0
+      ],
+      "meanPathCost": 0.31399813738616256,
+      "matchedStart": 118.62,
+      "matchedEnd": 142.8,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 119.32
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 121.58
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 124.55
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 128.1
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 130.86
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 134.78
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 140.82
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 67.2,
+        "meanCost": 0.36213105496664627,
+        "bestAlternativeAtLeast500msAway": 0.7089202249609557,
+        "mappedAnchors": [
+          119.36,
+          121.64,
+          124.56,
+          128.06,
+          130.86,
+          134.82,
+          140.84
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "mfcc",
+      "target": "final",
+      "targetCrop": [
+        188.0,
+        221.0
+      ],
+      "meanPathCost": 0.42908029891567834,
+      "matchedStart": 198.52,
+      "matchedEnd": 219.18,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 199.22
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 200.36
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 201.86
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 204.84
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 207.65
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 211.66
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 217.63
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 143.98,
+        "meanCost": 0.5108651777675051,
+        "bestAlternativeAtLeast500msAway": 0.8027654236434071,
+        "mappedAnchors": [
+          196.14,
+          198.42,
+          201.34,
+          204.84,
+          207.64,
+          211.6,
+          217.62
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "mfcc",
+      "target": "instrumental_negative",
+      "targetCrop": [
+        164.0,
+        191.0
+      ],
+      "meanPathCost": 1.1299847579753934,
+      "matchedStart": 164.0,
+      "matchedEnd": 176.84,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 164.58
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 165.84
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 167.33
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 169.13
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 170.62
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 172.63
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 175.67
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 113.02,
+        "meanCost": 1.2023467840210043,
+        "bestAlternativeAtLeast500msAway": 1.2146765323421231,
+        "mappedAnchors": [
+          165.18,
+          167.46,
+          170.38,
+          173.88,
+          176.68,
+          180.64,
+          186.66
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "mfcc",
+      "target": "verse_negative",
+      "targetCrop": [
+        78.0,
+        105.0
+      ],
+      "meanPathCost": 0.7757850185648973,
+      "matchedStart": 90.38,
+      "matchedEnd": 104.44,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 90.96
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 92.1
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 93.56
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 95.62
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 97.63
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 100.13
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 103.17
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 28.82,
+        "meanCost": 0.8805760011633925,
+        "bestAlternativeAtLeast500msAway": 0.9262632217402752,
+        "mappedAnchors": [
+          80.98,
+          83.26,
+          86.18,
+          89.68,
+          92.48,
+          96.44,
+          102.46
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "chroma",
+      "target": "repeat_positive",
+      "targetCrop": [
+        117.0,
+        145.0
+      ],
+      "meanPathCost": 0.09647188937433891,
+      "matchedStart": 118.24,
+      "matchedEnd": 143.2,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 119.4
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 121.62
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 124.56
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 128.02
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 130.84
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 134.82
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 140.88
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 67.2,
+        "meanCost": 0.17793504100921792,
+        "bestAlternativeAtLeast500msAway": 0.36419755291069567,
+        "mappedAnchors": [
+          119.36,
+          121.64,
+          124.56,
+          128.06,
+          130.86,
+          134.82,
+          140.84
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "chroma",
+      "target": "final",
+      "targetCrop": [
+        188.0,
+        221.0
+      ],
+      "meanPathCost": 0.14816436350040327,
+      "matchedStart": 195.72,
+      "matchedEnd": 218.98,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 196.54
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 198.45
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 201.36
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 204.8
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 207.63
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 211.68
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 217.45
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 144.0,
+        "meanCost": 0.23324681642398917,
+        "bestAlternativeAtLeast500msAway": 0.3797897251595241,
+        "mappedAnchors": [
+          196.16,
+          198.44,
+          201.36,
+          204.86,
+          207.66,
+          211.62,
+          217.64
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "chroma",
+      "target": "instrumental_negative",
+      "targetCrop": [
+        164.0,
+        191.0
+      ],
+      "meanPathCost": 0.3140703639246113,
+      "matchedStart": 169.34,
+      "matchedEnd": 185.62,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 169.93
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 171.24
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 173.44
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 175.9
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 177.64
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 180.3
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 184.33
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 114.96,
+        "meanCost": 0.3911135071957998,
+        "bestAlternativeAtLeast500msAway": 0.3988407670334485,
+        "mappedAnchors": [
+          167.12,
+          169.4,
+          172.32,
+          175.82,
+          178.62,
+          182.58,
+          188.6
+        ],
+        "boundaryTransferVerified": false
+      }
+    },
+    {
+      "feature": "chroma",
+      "target": "verse_negative",
+      "targetCrop": [
+        78.0,
+        105.0
+      ],
+      "meanPathCost": 0.45772025890283935,
+      "matchedStart": 90.88,
+      "matchedEnd": 104.7,
+      "anchors": [
+        {
+          "referenceTime": 52.16,
+          "targetTime": 91.61
+        },
+        {
+          "referenceTime": 54.44,
+          "targetTime": 92.85
+        },
+        {
+          "referenceTime": 57.36,
+          "targetTime": 94.34
+        },
+        {
+          "referenceTime": 60.86,
+          "targetTime": 96.3
+        },
+        {
+          "referenceTime": 63.66,
+          "targetTime": 97.71
+        },
+        {
+          "referenceTime": 67.62,
+          "targetTime": 99.7
+        },
+        {
+          "referenceTime": 73.64,
+          "targetTime": 102.74
+        }
+      ],
+      "fixedRate": {
+        "lagSeconds": 27.32,
+        "meanCost": 0.5801980333851218,
+        "bestAlternativeAtLeast500msAway": 0.5829010923317515,
+        "mappedAnchors": [
+          79.48,
+          81.76,
+          84.68,
+          88.18,
+          90.98,
+          94.94,
+          100.96
+        ],
+        "boundaryTransferVerified": false
+      }
+    }
+  ]
+}

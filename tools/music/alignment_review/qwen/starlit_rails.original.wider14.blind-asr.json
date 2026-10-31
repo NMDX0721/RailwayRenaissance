@@ -1,0 +1,26 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "role": "original",
+  "model": "Qwen/Qwen3-ASR-0.6B",
+  "revision": "5eb144179a02acc5e5ba31e748d22b0cf3e303b0",
+  "toolSha256": "b453f6dbbaeeb6ce961a645755661dd5bdd2bb84850db490178be50db83a46b6",
+  "lyricPromptProvided": false,
+  "wordTimestampsProvided": false,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "start": 70.0,
+      "end": 77.3,
+      "language": "Korean",
+      "text": "밤이 깊어도 다시 밝아."
+    },
+    {
+      "start": 73.0,
+      "end": 77.3,
+      "language": "Korean",
+      "text": "다시 밝아."
+    }
+  ]
+}

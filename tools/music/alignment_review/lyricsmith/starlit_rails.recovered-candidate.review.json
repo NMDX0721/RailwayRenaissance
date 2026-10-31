@@ -1,0 +1,2212 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "duration": 253.359979,
+  "nativeFiles": [
+    {
+      "file": "tools\\music\\alignment_review\\lyricsmith\\native\\starlit_rails.lrc",
+      "sha256": "9d53e3f065c649f4ae515abe4f91b10a30fcae533198ca83c47340df006bdd2c",
+      "cueCount": 18,
+      "uniqueCount": 18,
+      "exactDuplicateCount": 0
+    },
+    {
+      "file": "tools\\music\\alignment_review\\lyricsmith\\native\\starlit_rails (1).lrc",
+      "sha256": "3fbda1b9e42a2990a22e689a48c206cb19b948e448f5708ef25ad84dac9ea21a",
+      "cueCount": 32,
+      "uniqueCount": 32,
+      "exactDuplicateCount": 0
+    },
+    {
+      "file": "tools\\music\\alignment_review\\lyricsmith\\native\\starlit_rails.srt",
+      "sha256": "4ffcadc453f495b0eb18944352f6e84bb9740e575f140514ee285b833188f9ec",
+      "cueCount": 130,
+      "uniqueCount": 32,
+      "exactDuplicateCount": 98
+    },
+    {
+      "file": "tools\\music\\alignment_review\\lyricsmith\\native\\starlit_rails (1).srt",
+      "sha256": "90aec5ec1e98c63b351ea9ecec1b5810644de14f302796a749feaab434f77456",
+      "cueCount": 43,
+      "uniqueCount": 18,
+      "exactDuplicateCount": 25
+    }
+  ],
+  "lineCount": 47,
+  "wordCount": 108,
+  "nativeSupportedLines": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "nativeMissingLines": [
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38
+  ],
+  "humanListeningVerified": false,
+  "published": false,
+  "lines": [
+    {
+      "line": 1,
+      "text": "검문소 불빛이",
+      "start": 16.352,
+      "end": 20.254,
+      "words": [
+        {
+          "text": "검문소",
+          "start": 16.352,
+          "end": 19.354
+        },
+        {
+          "text": "불빛이",
+          "start": 19.354,
+          "end": 20.254
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 18.622469177246092,
+          "end": 20.24246765136719,
+          "startDifference": -2.27
+        },
+        {
+          "role": "vocals",
+          "start": 18.622469177246092,
+          "end": 20.22246910095215,
+          "startDifference": -2.27
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "text": "어둠을 가르고",
+      "start": 21.755,
+      "end": 26.399,
+      "words": [
+        {
+          "text": "어둠을",
+          "start": 21.755,
+          "end": 25.658
+        },
+        {
+          "text": "가르고",
+          "start": 25.658,
+          "end": 26.399
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426,
+          "startDifference": -1.487
+        },
+        {
+          "role": "vocals",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426,
+          "startDifference": -1.487
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "text": "네 대의 그림자",
+      "start": 29.461,
+      "end": 32.903,
+      "words": [
+        {
+          "text": "네",
+          "start": 29.461,
+          "end": 29.881
+        },
+        {
+          "text": "대의",
+          "start": 29.881,
+          "end": 32.143
+        },
+        {
+          "text": "그림자",
+          "start": 32.143,
+          "end": 32.903
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 29.44246887207031,
+          "end": 32.902467498779295,
+          "startDifference": 0.019
+        },
+        {
+          "role": "vocals",
+          "start": 29.44246887207031,
+          "end": 32.88246704101562,
+          "startDifference": 0.019
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "start": 35.986,
+      "end": 39.708,
+      "words": [
+        {
+          "text": "우리를",
+          "start": 35.986,
+          "end": 37.467
+        },
+        {
+          "text": "둘러쌌지",
+          "start": 37.467,
+          "end": 39.708
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 35.98246978759766,
+          "end": 39.70246673583984,
+          "startDifference": 0.004
+        },
+        {
+          "role": "vocals",
+          "start": 35.962469329833986,
+          "end": 39.70246673583984,
+          "startDifference": 0.024
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "text": "숨을 죽이고",
+      "start": 41.91,
+      "end": 43.411,
+      "words": [
+        {
+          "text": "숨을",
+          "start": 41.91,
+          "end": 42.73
+        },
+        {
+          "text": "죽이고",
+          "start": 42.73,
+          "end": 43.411
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 41.90246795654297,
+          "end": 43.402467498779295,
+          "startDifference": 0.008
+        },
+        {
+          "role": "vocals",
+          "start": 41.92246841430664,
+          "end": 43.402467498779295,
+          "startDifference": -0.012
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "text": "손을 떨며",
+      "start": 44.772,
+      "end": 46.653,
+      "words": [
+        {
+          "text": "손을",
+          "start": 44.772,
+          "end": 45.632
+        },
+        {
+          "text": "떨며",
+          "start": 45.632,
+          "end": 46.653
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 44.72246765136719,
+          "end": 46.64246917724609,
+          "startDifference": 0.05
+        },
+        {
+          "role": "vocals",
+          "start": 44.782469024658205,
+          "end": 46.62246871948242,
+          "startDifference": -0.01
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "text": "얼굴엔 아무것도",
+      "start": 48.454,
+      "end": 50.636,
+      "words": [
+        {
+          "text": "얼굴엔",
+          "start": 48.454,
+          "end": 49.395
+        },
+        {
+          "text": "아무것도",
+          "start": 49.395,
+          "end": 50.636
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 48.462469329833986,
+          "end": 50.62246871948242,
+          "startDifference": -0.008
+        },
+        {
+          "role": "vocals",
+          "start": 48.462469329833986,
+          "end": 50.60246826171875,
+          "startDifference": -0.008
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "text": "드러내지 않았어",
+      "start": 50.896,
+      "end": 52.677,
+      "words": [
+        {
+          "text": "드러내지",
+          "start": 50.896,
+          "end": 51.817
+        },
+        {
+          "text": "않았어",
+          "start": 51.817,
+          "end": 52.677
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 50.8824674987793,
+          "end": 52.64246917724609,
+          "startDifference": 0.014
+        },
+        {
+          "role": "vocals",
+          "start": 50.8824674987793,
+          "end": 52.662469635009764,
+          "startDifference": 0.014
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "text": "심박수 백사십칠",
+      "start": 54.439,
+      "end": 59.622,
+      "words": [
+        {
+          "text": "심박수",
+          "start": 54.439,
+          "end": 57.021
+        },
+        {
+          "text": "백사십칠",
+          "start": 57.021,
+          "end": 59.622
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 54.48246978759766,
+          "end": 59.60246826171875,
+          "startDifference": -0.043
+        },
+        {
+          "role": "vocals",
+          "start": 54.48246978759766,
+          "end": 59.28246856689453,
+          "startDifference": -0.043
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "text": "듣고 있어요",
+      "start": 60.603,
+      "end": 62.124,
+      "words": [
+        {
+          "text": "듣고",
+          "start": 60.603,
+          "end": 61.384
+        },
+        {
+          "text": "있어요",
+          "start": 61.384,
+          "end": 62.124
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 60.602468719482424,
+          "end": 62.12246871948242,
+          "startDifference": 0.001
+        },
+        {
+          "role": "vocals",
+          "start": 60.602468719482424,
+          "end": 62.10246826171875,
+          "startDifference": 0.001
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "text": "무서워도",
+      "start": 63.425,
+      "end": 65.266,
+      "words": [
+        {
+          "text": "무서워도",
+          "start": 63.425,
+          "end": 65.266
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 63.42246841430664,
+          "end": 65.26247192382813,
+          "startDifference": 0.003
+        },
+        {
+          "role": "vocals",
+          "start": 63.42246841430664,
+          "end": 65.24246765136719,
+          "startDifference": 0.003
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "text": "멈추지 않았죠",
+      "start": 67.508,
+      "end": 69.529,
+      "words": [
+        {
+          "text": "멈추지",
+          "start": 67.508,
+          "end": 68.809
+        },
+        {
+          "text": "않았죠",
+          "start": 68.809,
+          "end": 69.529
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 67.48246978759765,
+          "end": 69.52246643066407,
+          "startDifference": 0.026
+        },
+        {
+          "role": "vocals",
+          "start": 67.48246978759765,
+          "end": 69.50246978759766,
+          "startDifference": 0.026
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "text": "밤이 깊어도",
+      "start": 70.69,
+      "end": 71.951,
+      "words": [
+        {
+          "text": "밤이",
+          "start": 70.69,
+          "end": 71.171
+        },
+        {
+          "text": "깊어도",
+          "start": 71.171,
+          "end": 71.951
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 70.68246673583984,
+          "end": 71.82246948242188,
+          "startDifference": 0.008
+        },
+        {
+          "role": "vocals",
+          "start": 70.68246673583984,
+          "end": 71.94246459960938,
+          "startDifference": 0.008
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "start": 74.133,
+      "end": 75.193,
+      "words": [
+        {
+          "text": "다시",
+          "start": 74.133,
+          "end": 74.413
+        },
+        {
+          "text": "밝아와",
+          "start": 74.413,
+          "end": 75.193
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 71.82246612548828,
+          "end": 75.20246673583985,
+          "startDifference": 2.311
+        },
+        {
+          "role": "vocals",
+          "start": 74.00246643066406,
+          "end": 75.18247009277344,
+          "startDifference": 0.131
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "text": "저 철길처럼",
+      "start": 77.435,
+      "end": 79.336,
+      "words": [
+        {
+          "text": "저",
+          "start": 77.435,
+          "end": 77.615
+        },
+        {
+          "text": "철길처럼",
+          "start": 77.615,
+          "end": 79.336
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 77.4224722290039,
+          "end": 79.042470703125,
+          "startDifference": 0.013
+        },
+        {
+          "role": "vocals",
+          "start": 77.4224722290039,
+          "end": 79.042470703125,
+          "startDifference": 0.013
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "text": "끝까지 가는 거야",
+      "start": 79.336,
+      "end": 81.898,
+      "words": [
+        {
+          "text": "끝까지",
+          "start": 79.336,
+          "end": 80.717
+        },
+        {
+          "text": "가는",
+          "start": 80.717,
+          "end": 81.538
+        },
+        {
+          "text": "거야",
+          "start": 81.538,
+          "end": 81.898
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 79.62246917724609,
+          "end": 81.86247039794922,
+          "startDifference": -0.286
+        },
+        {
+          "role": "vocals",
+          "start": 79.62246917724609,
+          "end": 81.88246704101563,
+          "startDifference": -0.286
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "text": "길이 험해도",
+      "start": 83.699,
+      "end": 84.9,
+      "words": [
+        {
+          "text": "길이",
+          "start": 83.699,
+          "end": 84.14
+        },
+        {
+          "text": "험해도",
+          "start": 84.14,
+          "end": 84.9
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 83.68246673583984,
+          "end": 84.86247039794922,
+          "startDifference": 0.017
+        },
+        {
+          "role": "vocals",
+          "start": 83.68246673583984,
+          "end": 84.88246704101563,
+          "startDifference": 0.017
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "text": "우린 함께야",
+      "start": 87.062,
+      "end": 88.163,
+      "words": [
+        {
+          "text": "우린",
+          "start": 87.062,
+          "end": 87.382
+        },
+        {
+          "text": "함께야",
+          "start": 87.382,
+          "end": 88.163
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461,
+          "startDifference": 0.02
+        },
+        {
+          "role": "vocals",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461,
+          "startDifference": 0.02
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "text": "이 하늘 아래",
+      "start": 91.065,
+      "end": 92.025,
+      "words": [
+        {
+          "text": "이",
+          "start": 91.065,
+          "end": 91.205
+        },
+        {
+          "text": "하늘",
+          "start": 91.205,
+          "end": 91.725
+        },
+        {
+          "text": "아래",
+          "start": 91.725,
+          "end": 92.025
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 91.08246826171874,
+          "end": 92.00246978759766,
+          "startDifference": -0.017
+        },
+        {
+          "role": "vocals",
+          "start": 91.06247161865234,
+          "end": 92.00246978759766,
+          "startDifference": 0.003
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "text": "혼자가 아니야",
+      "start": 92.686,
+      "end": 94.427,
+      "words": [
+        {
+          "text": "혼자가",
+          "start": 92.686,
+          "end": 93.907
+        },
+        {
+          "text": "아니야",
+          "start": 93.907,
+          "end": 94.427
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 92.6424658203125,
+          "end": 94.42246795654297,
+          "startDifference": 0.044
+        },
+        {
+          "role": "vocals",
+          "start": 92.66247009277343,
+          "end": 94.42246795654297,
+          "startDifference": 0.024
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "text": "이십삼 년의 잠",
+      "start": 105.695,
+      "end": 108.737,
+      "words": [
+        {
+          "text": "이십삼",
+          "start": 105.695,
+          "end": 107.817
+        },
+        {
+          "text": "년의",
+          "start": 107.817,
+          "end": 108.297
+        },
+        {
+          "text": "잠",
+          "start": 108.297,
+          "end": 108.737
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 105.68246673583984,
+          "end": 108.72246765136718,
+          "startDifference": 0.013
+        },
+        {
+          "role": "vocals",
+          "start": 105.70247100830078,
+          "end": 108.74246765136719,
+          "startDifference": -0.007
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "text": "깨어난 오후",
+      "start": 108.757,
+      "end": 110.939,
+      "words": [
+        {
+          "text": "깨어난",
+          "start": 108.757,
+          "end": 110.458
+        },
+        {
+          "text": "오후",
+          "start": 110.458,
+          "end": 110.939
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 108.72246765136718,
+          "end": 110.92246795654297,
+          "startDifference": 0.035
+        },
+        {
+          "role": "vocals",
+          "start": 108.78246520996093,
+          "end": 110.92246795654297,
+          "startDifference": -0.025
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "text": "낯선 목소리",
+      "start": 113.741,
+      "end": 117.243,
+      "words": [
+        {
+          "text": "낯선",
+          "start": 113.741,
+          "end": 116.323
+        },
+        {
+          "text": "목소리",
+          "start": 116.323,
+          "end": 117.243
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 113.72246765136718,
+          "end": 117.20246673583985,
+          "startDifference": 0.019
+        },
+        {
+          "role": "vocals",
+          "start": 113.70247100830078,
+          "end": 117.20246673583985,
+          "startDifference": 0.039
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "text": "처음 듣는 이야기",
+      "start": 120.125,
+      "end": 123.688,
+      "words": [
+        {
+          "text": "처음",
+          "start": 120.125,
+          "end": 120.646
+        },
+        {
+          "text": "듣는",
+          "start": 120.646,
+          "end": 123.147
+        },
+        {
+          "text": "이야기",
+          "start": 123.147,
+          "end": 123.688
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 120.10247253417968,
+          "end": 123.68247009277344,
+          "startDifference": 0.023
+        },
+        {
+          "role": "vocals",
+          "start": 120.12246917724609,
+          "end": 123.68247009277344,
+          "startDifference": 0.003
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "text": "나는 AI지만",
+      "start": 126.67,
+      "end": 132.074,
+      "words": [
+        {
+          "text": "나는",
+          "start": 126.67,
+          "end": 128.832
+        },
+        {
+          "text": "AI지만",
+          "start": 128.832,
+          "end": 132.074
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui",
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 129.80246948242188,
+          "end": 130.76247192382812,
+          "startDifference": -3.132
+        },
+        {
+          "role": "vocals",
+          "start": 129.94246887207032,
+          "end": 130.94246459960937,
+          "startDifference": -3.272
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "start": 132.894,
+      "end": 137.197,
+      "words": [
+        {
+          "text": "알고",
+          "start": 132.894,
+          "end": 135.336
+        },
+        {
+          "text": "있어요",
+          "start": 135.336,
+          "end": 137.197
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 132.88247131347657,
+          "end": 137.1624658203125,
+          "startDifference": 0.012
+        },
+        {
+          "role": "vocals",
+          "start": 132.88247131347657,
+          "end": 137.18247009277343,
+          "startDifference": 0.012
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "text": "위로라는 게",
+      "start": 138.498,
+      "end": 139.899,
+      "words": [
+        {
+          "text": "위로라는",
+          "start": 138.498,
+          "end": 139.759
+        },
+        {
+          "text": "게",
+          "start": 139.759,
+          "end": 139.899
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562,
+          "startDifference": 0.016
+        },
+        {
+          "role": "vocals",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562,
+          "startDifference": 0.016
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "text": "뭔지 말이죠",
+      "start": 142.101,
+      "end": 143.822,
+      "words": [
+        {
+          "text": "뭔지",
+          "start": 142.101,
+          "end": 142.962
+        },
+        {
+          "text": "말이죠",
+          "start": 142.962,
+          "end": 143.822
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093,
+          "startDifference": 0.019
+        },
+        {
+          "role": "vocals",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093,
+          "startDifference": 0.019
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "text": "밤이 깊어도",
+      "start": 146.604,
+      "end": 149.806,
+      "words": [
+        {
+          "text": "밤이",
+          "start": 146.604,
+          "end": 149.006
+        },
+        {
+          "text": "깊어도",
+          "start": 149.006,
+          "end": 149.806
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui",
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 148.56246398925782,
+          "end": 149.7824609375,
+          "startDifference": -1.958
+        },
+        {
+          "role": "vocals",
+          "start": 148.56246398925782,
+          "end": 149.7824609375,
+          "startDifference": -1.958
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "text": "다시 밝아와",
+      "start": 151.848,
+      "end": 153.129,
+      "words": [
+        {
+          "text": "다시",
+          "start": 151.848,
+          "end": 152.248
+        },
+        {
+          "text": "밝아와",
+          "start": 152.248,
+          "end": 153.129
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 151.82247375488282,
+          "end": 153.0824639892578,
+          "startDifference": 0.026
+        },
+        {
+          "role": "vocals",
+          "start": 151.8424627685547,
+          "end": 153.06247497558593,
+          "startDifference": 0.006
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "text": "저 철길처럼",
+      "start": 155.27,
+      "end": 157.172,
+      "words": [
+        {
+          "text": "저",
+          "start": 155.27,
+          "end": 155.43
+        },
+        {
+          "text": "철길처럼",
+          "start": 155.43,
+          "end": 157.172
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 155.2624609375,
+          "end": 157.1624658203125,
+          "startDifference": 0.008
+        },
+        {
+          "role": "vocals",
+          "start": 155.2624609375,
+          "end": 157.14246154785155,
+          "startDifference": 0.008
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "text": "끝까지 가는 거야",
+      "start": 157.172,
+      "end": 159.753,
+      "words": [
+        {
+          "text": "끝까지",
+          "start": 157.172,
+          "end": 158.553
+        },
+        {
+          "text": "가는",
+          "start": 158.553,
+          "end": 159.373
+        },
+        {
+          "text": "거야",
+          "start": 159.373,
+          "end": 159.753
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 157.20246337890626,
+          "end": 159.74246765136718,
+          "startDifference": -0.03
+        },
+        {
+          "role": "vocals",
+          "start": 157.16247009277345,
+          "end": 159.74246765136718,
+          "startDifference": 0.01
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "text": "길이 험해도",
+      "start": 161.535,
+      "end": 162.736,
+      "words": [
+        {
+          "text": "길이",
+          "start": 161.535,
+          "end": 161.975
+        },
+        {
+          "text": "험해도",
+          "start": 161.975,
+          "end": 162.736
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 161.522470703125,
+          "end": 162.72246337890624,
+          "startDifference": 0.013
+        },
+        {
+          "role": "vocals",
+          "start": 161.522470703125,
+          "end": 162.72246337890624,
+          "startDifference": 0.013
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "text": "우린 함께야",
+      "start": 164.897,
+      "end": 166.038,
+      "words": [
+        {
+          "text": "우린",
+          "start": 164.897,
+          "end": 165.257
+        },
+        {
+          "text": "함께야",
+          "start": 165.257,
+          "end": 166.038
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 164.88247131347657,
+          "end": 166.02246643066405,
+          "startDifference": 0.015
+        },
+        {
+          "role": "vocals",
+          "start": 164.88247131347657,
+          "end": 165.98247314453124,
+          "startDifference": 0.015
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "text": "이 하늘 아래",
+      "start": 168.94,
+      "end": 170.001,
+      "words": [
+        {
+          "text": "이",
+          "start": 168.94,
+          "end": 169.06
+        },
+        {
+          "text": "하늘",
+          "start": 169.06,
+          "end": 169.58
+        },
+        {
+          "text": "아래",
+          "start": 169.58,
+          "end": 170.001
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 168.92246459960938,
+          "end": 169.80246520996093,
+          "startDifference": 0.018
+        },
+        {
+          "role": "vocals",
+          "start": 168.9024755859375,
+          "end": 169.82246948242187,
+          "startDifference": 0.038
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "text": "혼자가 아니야",
+      "start": 170.501,
+      "end": 172.302,
+      "words": [
+        {
+          "text": "혼자가",
+          "start": 170.501,
+          "end": 171.782
+        },
+        {
+          "text": "아니야",
+          "start": 171.782,
+          "end": 172.302
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 170.48246215820313,
+          "end": 172.2824609375,
+          "startDifference": 0.019
+        },
+        {
+          "role": "vocals",
+          "start": 170.48246215820313,
+          "end": 172.2824609375,
+          "startDifference": 0.019
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "text": "그 말도 중의적인 거야?",
+      "start": 176.065,
+      "end": 177.266,
+      "words": [
+        {
+          "text": "그",
+          "start": 176.065,
+          "end": 176.225
+        },
+        {
+          "text": "말도",
+          "start": 176.225,
+          "end": 176.545
+        },
+        {
+          "text": "중의적인",
+          "start": 176.545,
+          "end": 177.066
+        },
+        {
+          "text": "거야?",
+          "start": 177.066,
+          "end": 177.266
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718,
+          "startDifference": 0.023
+        },
+        {
+          "role": "vocals",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718,
+          "startDifference": 0.023
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "start": 177.746,
+      "end": 180.568,
+      "words": [
+        {
+          "text": "저는",
+          "start": 177.746,
+          "end": 178.167
+        },
+        {
+          "text": "AI예요.",
+          "start": 178.167,
+          "end": 179.027
+        },
+        {
+          "text": "중의적",
+          "start": 179.027,
+          "end": 179.508
+        },
+        {
+          "text": "표현은",
+          "start": 179.508,
+          "end": 179.988
+        },
+        {
+          "text": "안",
+          "start": 179.988,
+          "end": 180.148
+        },
+        {
+          "text": "써요.",
+          "start": 180.148,
+          "end": 180.568
+        }
+      ],
+      "nativeFiles": [],
+      "nativeWordFiles": [],
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 177.7224676513672,
+          "end": 180.48247314453124,
+          "startDifference": 0.024
+        },
+        {
+          "role": "vocals",
+          "start": 177.74247192382813,
+          "end": 180.50246215820312,
+          "startDifference": 0.004
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "text": "하지만...",
+      "start": 181.009,
+      "end": 181.489,
+      "words": [
+        {
+          "text": "하지만...",
+          "start": 181.009,
+          "end": 181.489
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124,
+          "startDifference": 0.007
+        },
+        {
+          "role": "vocals",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124,
+          "startDifference": 0.007
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "text": "팔십구 퍼센트...",
+      "start": 181.769,
+      "end": 183.57,
+      "words": [
+        {
+          "text": "팔십구",
+          "start": 181.769,
+          "end": 182.49
+        },
+        {
+          "text": "퍼센트...",
+          "start": 182.49,
+          "end": 183.57
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 181.7624609375,
+          "end": 183.1624658203125,
+          "startDifference": 0.007
+        },
+        {
+          "role": "vocals",
+          "start": 181.7624609375,
+          "end": 183.38246704101562,
+          "startDifference": 0.007
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "start": 184.771,
+      "end": 189.274,
+      "words": [
+        {
+          "text": "인간은",
+          "start": 184.771,
+          "end": 186.753
+        },
+        {
+          "text": "이걸",
+          "start": 186.753,
+          "end": 187.093
+        },
+        {
+          "text": "'위로'라고",
+          "start": 187.093,
+          "end": 188.554
+        },
+        {
+          "text": "부르죠",
+          "start": 188.554,
+          "end": 189.274
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 183.3424627685547,
+          "end": 189.26247192382812,
+          "startDifference": 1.429
+        },
+        {
+          "role": "vocals",
+          "start": 184.78246520996095,
+          "end": 189.26247192382812,
+          "startDifference": -0.011
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "text": "밤이 깊어도——",
+      "start": 200.462,
+      "end": 201.723,
+      "words": [
+        {
+          "text": "밤이",
+          "start": 200.462,
+          "end": 200.923
+        },
+        {
+          "text": "깊어도——",
+          "start": 200.923,
+          "end": 201.723
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437,
+          "startDifference": 0.02
+        },
+        {
+          "role": "vocals",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437,
+          "startDifference": 0.02
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "text": "다시 밝아와——",
+      "start": 203.725,
+      "end": 204.966,
+      "words": [
+        {
+          "text": "다시",
+          "start": 203.725,
+          "end": 204.125
+        },
+        {
+          "text": "밝아와——",
+          "start": 204.125,
+          "end": 204.966
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937,
+          "startDifference": 0.023
+        },
+        {
+          "role": "vocals",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937,
+          "startDifference": 0.023
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "text": "저 철길처럼——",
+      "start": 207.187,
+      "end": 209.089,
+      "words": [
+        {
+          "text": "저",
+          "start": 207.187,
+          "end": 207.347
+        },
+        {
+          "text": "철길처럼——",
+          "start": 207.347,
+          "end": 209.089
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 207.16247009277345,
+          "end": 209.06247497558593,
+          "startDifference": 0.025
+        },
+        {
+          "role": "vocals",
+          "start": 207.16247009277345,
+          "end": 208.88246704101562,
+          "startDifference": 0.025
+        }
+      ]
+    },
+    {
+      "line": 45,
+      "text": "끝까지 가는 거야——",
+      "start": 209.349,
+      "end": 211.57,
+      "words": [
+        {
+          "text": "끝까지",
+          "start": 209.349,
+          "end": 210.429
+        },
+        {
+          "text": "가는",
+          "start": 210.429,
+          "end": 211.13
+        },
+        {
+          "text": "거야——",
+          "start": 211.13,
+          "end": 211.57
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [
+        "local_start_conflict"
+      ],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 209.06246398925782,
+          "end": 211.5824639892578,
+          "startDifference": 0.287
+        },
+        {
+          "role": "vocals",
+          "start": 208.92246459960938,
+          "end": 211.60246826171874,
+          "startDifference": 0.427
+        }
+      ]
+    },
+    {
+      "line": 46,
+      "text": "Mmm... mmm...",
+      "start": 214.653,
+      "end": 228.823,
+      "words": [
+        {
+          "text": "Mmm...",
+          "start": 214.653,
+          "end": 215.093
+        },
+        {
+          "text": "mmm...",
+          "start": 215.093,
+          "end": 228.823
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 214.82247375488282,
+          "end": 217.30246520996093,
+          "startDifference": -0.169
+        },
+        {
+          "role": "vocals",
+          "start": 215.1024725341797,
+          "end": 223.02246643066405,
+          "startDifference": -0.449
+        }
+      ]
+    },
+    {
+      "line": 47,
+      "text": "혼자가 아니야...",
+      "start": 228.863,
+      "end": 234.206,
+      "words": [
+        {
+          "text": "혼자가",
+          "start": 228.863,
+          "end": 233.526
+        },
+        {
+          "text": "아니야...",
+          "start": 233.526,
+          "end": 234.206
+        }
+      ],
+      "nativeFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails (1).srt",
+        "starlit_rails.lrc",
+        "starlit_rails.srt"
+      ],
+      "nativeWordFiles": [
+        "starlit_rails (1).lrc",
+        "starlit_rails.lrc"
+      ],
+      "flags": [],
+      "localComparison": [
+        {
+          "role": "original",
+          "start": 228.8424627685547,
+          "end": 234.24246765136718,
+          "startDifference": 0.021
+        },
+        {
+          "role": "vocals",
+          "start": 228.8424627685547,
+          "end": 234.22246337890624,
+          "startDifference": 0.021
+        }
+      ]
+    }
+  ],
+  "model": "LyricSmith native exports + rendered recovery / automatic candidate",
+  "status": "automatic_candidate_not_published",
+  "issues": [
+    {
+      "line": 1,
+      "flags": [
+        "local_start_conflict"
+      ]
+    },
+    {
+      "line": 2,
+      "flags": [
+        "local_start_conflict"
+      ]
+    },
+    {
+      "line": 16,
+      "flags": [
+        "local_start_conflict"
+      ]
+    },
+    {
+      "line": 24,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 25,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui",
+        "local_start_conflict"
+      ]
+    },
+    {
+      "line": 26,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 27,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 28,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 29,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui",
+        "local_start_conflict"
+      ]
+    },
+    {
+      "line": 30,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 31,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 32,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 33,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 34,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 35,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 36,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 37,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 38,
+      "flags": [
+        "no_native_export_for_this_occurrence",
+        "word_endpoints_only_observed_in_rendered_ui"
+      ]
+    },
+    {
+      "line": 45,
+      "flags": [
+        "local_start_conflict"
+      ]
+    }
+  ]
+}

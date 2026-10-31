@@ -1,0 +1,355 @@
+{
+  "id": "south_wind",
+  "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 55.0,
+      "end": 72.0,
+      "segments": [
+        {
+          "start": 55.0,
+          "end": 56.48,
+          "text": " 조용히 변해",
+          "words": [
+            {
+              "start": 55.0,
+              "end": 55.56,
+              "word": " 조용히",
+              "probability": 0.7355900357166926
+            },
+            {
+              "start": 55.56,
+              "end": 56.48,
+              "word": " 변해",
+              "probability": 0.9630301296710968
+            }
+          ]
+        },
+        {
+          "start": 57.0,
+          "end": 58.62,
+          "text": " 초상하도 모른 척",
+          "words": [
+            {
+              "start": 56.68,
+              "end": 57.38,
+              "word": " 초상하도",
+              "probability": 0.569363322108984
+            },
+            {
+              "start": 57.38,
+              "end": 57.94,
+              "word": " 모른",
+              "probability": 0.8699401915073395
+            },
+            {
+              "start": 57.94,
+              "end": 58.62,
+              "word": " 척",
+              "probability": 0.813350260257721
+            }
+          ]
+        },
+        {
+          "start": 58.62,
+          "end": 60.5,
+          "text": " 남쪽에서 옥만",
+          "words": [
+            {
+              "start": 58.62,
+              "end": 59.62,
+              "word": " 남쪽에서",
+              "probability": 0.6997316678365072
+            },
+            {
+              "start": 59.62,
+              "end": 60.5,
+              "word": " 옥만",
+              "probability": 0.369347741206487
+            }
+          ]
+        },
+        {
+          "start": 60.5,
+          "end": 63.38,
+          "text": " 점점 더 가까워져",
+          "words": [
+            {
+              "start": 60.5,
+              "end": 61.64,
+              "word": " 점점",
+              "probability": 0.6611793786287308
+            },
+            {
+              "start": 61.64,
+              "end": 61.96,
+              "word": " 더",
+              "probability": 0.9969959259033203
+            },
+            {
+              "start": 61.96,
+              "end": 63.38,
+              "word": " 가까워져",
+              "probability": 0.9920158982276917
+            }
+          ]
+        },
+        {
+          "start": 63.38,
+          "end": 66.3,
+          "text": " 이상한 말아 하지만 왕쥐",
+          "words": [
+            {
+              "start": 63.38,
+              "end": 64.4,
+              "word": " 이상한",
+              "probability": 0.7426735460758209
+            },
+            {
+              "start": 64.4,
+              "end": 64.9,
+              "word": " 말아",
+              "probability": 0.735373467206955
+            },
+            {
+              "start": 64.9,
+              "end": 65.42,
+              "word": " 하지만",
+              "probability": 0.30801069736480713
+            },
+            {
+              "start": 65.42,
+              "end": 66.3,
+              "word": " 왕쥐",
+              "probability": 0.7559358686208725
+            }
+          ]
+        },
+        {
+          "start": 66.3,
+          "end": 67.88,
+          "text": " 따뜻한 이 느낌",
+          "words": [
+            {
+              "start": 66.3,
+              "end": 67.24,
+              "word": " 따뜻한",
+              "probability": 0.9380238503217697
+            },
+            {
+              "start": 67.24,
+              "end": 67.42,
+              "word": " 이",
+              "probability": 0.9614905714988708
+            },
+            {
+              "start": 67.42,
+              "end": 67.88,
+              "word": " 느낌",
+              "probability": 0.7862993478775024
+            }
+          ]
+        },
+        {
+          "start": 70.0,
+          "end": 71.24,
+          "text": " 저머니 속삭였죠",
+          "words": [
+            {
+              "start": 69.56,
+              "end": 70.26,
+              "word": " 저머니",
+              "probability": 0.36891165003180504
+            },
+            {
+              "start": 70.26,
+              "end": 71.24,
+              "word": " 속삭였죠",
+              "probability": 0.8136817932128906
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 100.0,
+      "end": 114.0,
+      "segments": [
+        {
+          "start": 100.0,
+          "end": 103.1,
+          "text": " 초상화도 모른 척",
+          "words": [
+            {
+              "start": 100.0,
+              "end": 101.46,
+              "word": " 초상화도",
+              "probability": 0.8050165325403214
+            },
+            {
+              "start": 101.46,
+              "end": 102.02,
+              "word": " 모른",
+              "probability": 0.8125116229057312
+            },
+            {
+              "start": 102.02,
+              "end": 103.1,
+              "word": " 척",
+              "probability": 0.7995909154415131
+            }
+          ]
+        },
+        {
+          "start": 103.1,
+          "end": 104.0,
+          "text": " 선보유 후고",
+          "words": [
+            {
+              "start": 103.1,
+              "end": 103.74,
+              "word": " 선보유",
+              "probability": 0.7406052350997925
+            },
+            {
+              "start": 103.74,
+              "end": 104.44,
+              "word": " 후고",
+              "probability": 0.4481556564569473
+            }
+          ]
+        },
+        {
+          "start": 104.58,
+          "end": 107.2,
+          "text": " 먼저 잘 사는 사람들",
+          "words": [
+            {
+              "start": 104.58,
+              "end": 106.02,
+              "word": " 먼저",
+              "probability": 0.9453200101852417
+            },
+            {
+              "start": 106.02,
+              "end": 106.42,
+              "word": " 잘",
+              "probability": 0.991152822971344
+            },
+            {
+              "start": 106.42,
+              "end": 106.74,
+              "word": " 사는",
+              "probability": 0.9544441401958466
+            },
+            {
+              "start": 106.74,
+              "end": 107.2,
+              "word": " 사람들",
+              "probability": 0.9132565259933472
+            }
+          ]
+        },
+        {
+          "start": 107.2,
+          "end": 110.12,
+          "text": " 한걸음 더 앞서",
+          "words": [
+            {
+              "start": 107.2,
+              "end": 109.03999999999999,
+              "word": " 한걸음",
+              "probability": 0.7689137756824493
+            },
+            {
+              "start": 109.03999999999999,
+              "end": 109.32,
+              "word": " 더",
+              "probability": 0.9963703155517578
+            },
+            {
+              "start": 109.32,
+              "end": 110.12,
+              "word": " 앞서",
+              "probability": 0.9904248416423798
+            }
+          ]
+        },
+        {
+          "start": 110.12,
+          "end": 112.24,
+          "text": " 가는 것 뿐이야",
+          "words": [
+            {
+              "start": 110.12,
+              "end": 111.08,
+              "word": " 가는",
+              "probability": 0.9731524586677551
+            },
+            {
+              "start": 111.08,
+              "end": 111.48,
+              "word": " 것",
+              "probability": 0.9119935631752014
+            },
+            {
+              "start": 111.48,
+              "end": 112.24,
+              "word": " 뿐이야",
+              "probability": 0.8576357364654541
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 130.0,
+      "end": 151.0,
+      "segments": [
+        {
+          "start": 137.22,
+          "end": 148.82,
+          "text": " 공일도시라 이상한 곳이지만 왠지 따뜻해",
+          "words": [
+            {
+              "start": 137.22,
+              "end": 138.62,
+              "word": " 공일도시라",
+              "probability": 0.650439566373825
+            },
+            {
+              "start": 138.62,
+              "end": 140.02,
+              "word": " 이상한",
+              "probability": 0.9422430396080017
+            },
+            {
+              "start": 140.02,
+              "end": 142.26,
+              "word": " 곳이지만",
+              "probability": 0.9817940443754196
+            },
+            {
+              "start": 142.26,
+              "end": 144.56,
+              "word": " 왠지",
+              "probability": 0.9924806157747904
+            },
+            {
+              "start": 144.56,
+              "end": 148.82,
+              "word": " 따뜻해",
+              "probability": 0.9512004852294922
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

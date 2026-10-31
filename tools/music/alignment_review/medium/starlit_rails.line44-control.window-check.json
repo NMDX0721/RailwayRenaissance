@@ -1,0 +1,112 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "audioRole": "original",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "timeOffset": 0,
+  "waveformVariant": "",
+  "requestedLanguage": "expected",
+  "device": "cpu",
+  "computeType": "int8",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-medium",
+    "revision": "08e178d48790749d25932bbc082711ddcfdfbc4f"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 206.6,
+      "end": 209.8,
+      "segments": [
+        {
+          "start": 206.6,
+          "end": 209.78,
+          "text": " 저철길처럼 끝까지",
+          "words": [
+            {
+              "start": 206.6,
+              "end": 209.18,
+              "word": " 저철길처럼",
+              "probability": 0.6444952078163624
+            },
+            {
+              "start": 209.18,
+              "end": 209.78,
+              "word": " 끝까지",
+              "probability": 0.945459395647049
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 205.4,
+      "end": 211.8,
+      "segments": [
+        {
+          "start": 207.78,
+          "end": 211.74,
+          "text": " 저철길처럼 끝까지 가는 거야",
+          "words": [
+            {
+              "start": 207.78,
+              "end": 209.18,
+              "word": " 저철길처럼",
+              "probability": 0.7063332032412291
+            },
+            {
+              "start": 209.18,
+              "end": 210.44,
+              "word": " 끝까지",
+              "probability": 0.9920903146266937
+            },
+            {
+              "start": 210.44,
+              "end": 211.12,
+              "word": " 가는",
+              "probability": 0.9904007315635681
+            },
+            {
+              "start": 211.12,
+              "end": 211.74,
+              "word": " 거야",
+              "probability": 0.8998633623123169
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 206.8,
+      "end": 209.4,
+      "segments": [
+        {
+          "start": 206.8,
+          "end": 208.8,
+          "text": " 저 철길처럼",
+          "words": [
+            {
+              "start": 206.8,
+              "end": 207.38000000000002,
+              "word": " 저",
+              "probability": 0.6288090348243713
+            },
+            {
+              "start": 207.38000000000002,
+              "end": 208.8,
+              "word": " 철길처럼",
+              "probability": 0.7075314223766327
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    }
+  ]
+}

@@ -1,0 +1,486 @@
+{
+  "id": "south_wind",
+  "model": "small",
+  "sourceSha256": "743f7bb2daad0660d4b04f9bb6e02fc133481067221e472ca0037cf60da3882d",
+  "asrSha256": "f6b063b4da090a46aec5c81ed9f5fed903b64301d850f349c61d268bdf86dc46",
+  "purpose": "automatic_evidence_not_timed_lyrics",
+  "humanListeningVerified": false,
+  "lines": [
+    {
+      "line": 1,
+      "source": "평양의 뒷골목",
+      "sourceRecall": 0.833,
+      "needsReview": true,
+      "flags": [
+        "missing_or_compressed_timing",
+        "zero_duration_asr_word"
+      ],
+      "evidenceStart": 12.88,
+      "evidenceEnd": 12.9,
+      "recognized": " 벽양의 뒷골목"
+    },
+    {
+      "line": 2,
+      "source": "작은 간판 하나",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 14.0,
+      "evidenceEnd": 18.14,
+      "recognized": " 작은 반간판아"
+    },
+    {
+      "line": 3,
+      "source": "빛바랜 초상화 옆에",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 20.020000000000003,
+      "evidenceEnd": 24.06,
+      "recognized": " 빛발은 초상화 옆에"
+    },
+    {
+      "line": 4,
+      "source": "\"통일 도시락\" — 한글로",
+      "sourceRecall": 0.875,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 24.06,
+      "evidenceEnd": 27.38,
+      "recognized": " 동일 도시락 한글로"
+    },
+    {
+      "line": 5,
+      "source": "학생들이 줄 서서",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 29.5,
+      "evidenceEnd": 33.06,
+      "recognized": " 학생들이 줄 서서"
+    },
+    {
+      "line": 6,
+      "source": "봉지에 뭐가 들었나",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 33.06,
+      "evidenceEnd": 37.62,
+      "recognized": " 봉지에 모각 들었나"
+    },
+    {
+      "line": 7,
+      "source": "치킨 냄새가 풍기고",
+      "sourceRecall": 0.875,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 38.379999999999995,
+      "evidenceEnd": 42.84,
+      "recognized": " 지킨 냄새가 풍기고"
+    },
+    {
+      "line": 8,
+      "source": "소주 병이 보이네",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 42.84,
+      "evidenceEnd": 47.28,
+      "recognized": " 소주병이 보이네"
+    },
+    {
+      "line": 9,
+      "source": "남쪽에서 온 맛",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 48.379999999999995,
+      "evidenceEnd": 49.82,
+      "recognized": " 남쪽에서"
+    },
+    {
+      "line": 10,
+      "source": "몰래몰래 퍼져가",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 50.52,
+      "evidenceEnd": 53.32,
+      "recognized": " 몰래 몰래 퍼져가"
+    },
+    {
+      "line": 11,
+      "source": "시대가 변해",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 53.32,
+      "evidenceEnd": 54.88,
+      "recognized": " 시대가 변해"
+    },
+    {
+      "line": 12,
+      "source": "조용히 변해",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 54.88,
+      "evidenceEnd": 56.44,
+      "recognized": " 조용히 변해"
+    },
+    {
+      "line": 13,
+      "source": "초상화도 모른 척",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 56.44,
+      "evidenceEnd": 58.42,
+      "recognized": " 초상하도 모른 척"
+    },
+    {
+      "line": 14,
+      "source": "남쪽에서 온 맛",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 58.42,
+      "evidenceEnd": 59.62,
+      "recognized": " 남쪽에서"
+    },
+    {
+      "line": 15,
+      "source": "점점 더 가까워져",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 60.96,
+      "evidenceEnd": 63.36,
+      "recognized": " 점점 더 가까워져"
+    },
+    {
+      "line": 16,
+      "source": "이상한 나라",
+      "sourceRecall": 0.6,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 63.36,
+      "evidenceEnd": 64.4,
+      "recognized": " 이상한"
+    },
+    {
+      "line": 17,
+      "source": "하지만 왠지",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 64.9,
+      "evidenceEnd": 66.12,
+      "recognized": " 하지 만 왠지"
+    },
+    {
+      "line": 18,
+      "source": "따뜻한 이 느낌",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 66.12,
+      "evidenceEnd": 67.82,
+      "recognized": " 따뜻한 이 느낌"
+    },
+    {
+      "line": 19,
+      "source": "점원이 속삭였죠",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 69.65,
+      "evidenceEnd": 71.38,
+      "recognized": " 첨원이 속삭였죠"
+    },
+    {
+      "line": 20,
+      "source": "\"학생, 새로 들어온 건데\"",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 71.38,
+      "evidenceEnd": 73.5,
+      "recognized": " 학생 새로 들어온 건데"
+    },
+    {
+      "line": 21,
+      "source": "\"걱정 마요, 저는 유학생\"",
+      "sourceRecall": 0.889,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 73.89,
+      "evidenceEnd": 76.1,
+      "recognized": " 걱정 마요 자는 유학생"
+    },
+    {
+      "line": 22,
+      "source": "\"이 동네 규칙을 몰라요\"",
+      "sourceRecall": 0.778,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 76.1,
+      "evidenceEnd": 77.98,
+      "recognized": " 이 동네 교칙을 몰라"
+    },
+    {
+      "line": 23,
+      "source": "캔커피, 바나나우유",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 78.72,
+      "evidenceEnd": 81.74,
+      "recognized": " 캔 커피 바나나 우유"
+    },
+    {
+      "line": 24,
+      "source": "새우깡, 신라면",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 81.74,
+      "evidenceEnd": 83.98,
+      "recognized": " 새우깡 신나면"
+    },
+    {
+      "line": 25,
+      "source": "계산대 위에 쌓인",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 83.98,
+      "evidenceEnd": 86.04,
+      "recognized": " 계산대 위에 쌓인"
+    },
+    {
+      "line": 26,
+      "source": "남쪽의 풍경",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 86.04,
+      "evidenceEnd": 88.8,
+      "recognized": " 남쪽의 풍경"
+    },
+    {
+      "line": 27,
+      "source": "남쪽에서 온 맛",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 92.5,
+      "evidenceEnd": 94.44,
+      "recognized": " 남쪽에서 온"
+    },
+    {
+      "line": 28,
+      "source": "몰래몰래 퍼져가",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 29,
+      "source": "시대가 변해",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 30,
+      "source": "조용히 변해",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 31,
+      "source": "초상화도 모른 척",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 32,
+      "source": "남쪽에서 온 맛",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 33,
+      "source": "몰래몰래 퍼져가",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 94.74,
+      "evidenceEnd": 97.46,
+      "recognized": " 몰래 몰래 퍼져가"
+    },
+    {
+      "line": 34,
+      "source": "시대가 변해",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 97.46,
+      "evidenceEnd": 98.98,
+      "recognized": " 시대가 변해"
+    },
+    {
+      "line": 35,
+      "source": "조용히 변해",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 98.98,
+      "evidenceEnd": 100.54,
+      "recognized": " 조용히 변해"
+    },
+    {
+      "line": 36,
+      "source": "초상화도 모른 척",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 100.54,
+      "evidenceEnd": 102.96,
+      "recognized": " 초상화도 모른 척"
+    },
+    {
+      "line": 37,
+      "source": "선부유 후부...",
+      "sourceRecall": 0.6,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 102.96,
+      "evidenceEnd": 104.12,
+      "recognized": " 선보유 후보"
+    },
+    {
+      "line": 38,
+      "source": "먼저 잘 사는 사람들",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 104.12,
+      "evidenceEnd": 107.22,
+      "recognized": " 먼저 잘 사는 사람들"
+    },
+    {
+      "line": 39,
+      "source": "한 걸음 더 앞서",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 107.22,
+      "evidenceEnd": 110.14,
+      "recognized": " 한 걸음 더 앞서"
+    },
+    {
+      "line": 40,
+      "source": "가는 것뿐이야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 110.14,
+      "evidenceEnd": 113.32,
+      "recognized": " 가는 것 뿐이야"
+    },
+    {
+      "line": 41,
+      "source": "통일 도시락...",
+      "sourceRecall": 0.4,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 135.66,
+      "evidenceEnd": 137.06,
+      "recognized": " 도시라"
+    },
+    {
+      "line": 42,
+      "source": "이상한 곳이지만",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 137.06,
+      "evidenceEnd": 141.98,
+      "recognized": " 이상한 곳이지만"
+    },
+    {
+      "line": 43,
+      "source": "왠지...",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 142.88,
+      "evidenceEnd": 145.26,
+      "recognized": " 왠지"
+    },
+    {
+      "line": 44,
+      "source": "따뜻해",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 145.26,
+      "evidenceEnd": 148.88,
+      "recognized": " 따뜻해"
+    }
+  ]
+}

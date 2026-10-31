@@ -1,0 +1,4011 @@
+{
+  "id": "sleepers",
+  "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a",
+  "sourceSha256": "71162e189ba65415923d058265b2e40125313a91182182b5763318607a557965",
+  "sourceRevision": "2318294a3fb98cccfe84eb3adc0ac1fe83a6fde0",
+  "duration": 259.0,
+  "groupSize": 4,
+  "contextLines": 2,
+  "status": "automatic_local_consensus_needs_listening",
+  "humanListeningVerified": false,
+  "rounds": [
+    {
+      "model": "base",
+      "provenance": {
+        "repo": "Systran/faster-whisper-base",
+        "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+      },
+      "lines": [
+        {
+          "line": 1,
+          "text": "A whistle cuts the morning haze",
+          "start": 12.34,
+          "end": 14.88,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 12.34,
+              "end": 12.34
+            },
+            {
+              "text": " whistle",
+              "start": 12.34,
+              "end": 12.600000000000001
+            },
+            {
+              "text": " cuts",
+              "start": 12.600000000000001,
+              "end": 13.0
+            },
+            {
+              "text": " the",
+              "start": 13.0,
+              "end": 13.24
+            },
+            {
+              "text": " morning",
+              "start": 13.24,
+              "end": 13.780000000000001
+            },
+            {
+              "text": " haze",
+              "start": 13.780000000000001,
+              "end": 14.88
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "text": "Across the hills where wild grass sways",
+          "start": 15.860000000000001,
+          "end": 18.66,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " Across",
+              "start": 15.860000000000001,
+              "end": 16.14
+            },
+            {
+              "text": " the",
+              "start": 16.14,
+              "end": 16.48
+            },
+            {
+              "text": " hills",
+              "start": 16.48,
+              "end": 16.759999999999998
+            },
+            {
+              "text": " where",
+              "start": 16.759999999999998,
+              "end": 17.16
+            },
+            {
+              "text": " wild",
+              "start": 17.16,
+              "end": 17.66
+            },
+            {
+              "text": " grass",
+              "start": 17.66,
+              "end": 18.04
+            },
+            {
+              "text": " sways",
+              "start": 18.04,
+              "end": 18.66
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "text": "My grandfather's voice, a faded trace",
+          "start": 20.740000000000002,
+          "end": 24.1,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " My",
+              "start": 20.740000000000002,
+              "end": 21.18
+            },
+            {
+              "text": " grandfather's",
+              "start": 21.18,
+              "end": 22.22
+            },
+            {
+              "text": " voice,",
+              "start": 22.22,
+              "end": 22.64
+            },
+            {
+              "text": " a",
+              "start": 22.64,
+              "end": 22.86
+            },
+            {
+              "text": " faded",
+              "start": 22.86,
+              "end": 23.259999999999998
+            },
+            {
+              "text": " trace",
+              "start": 23.259999999999998,
+              "end": 24.1
+            }
+          ]
+        },
+        {
+          "line": 4,
+          "text": "\"The rails are still here, son — make your way\"",
+          "start": 25.14,
+          "end": 32.4,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " \"The",
+              "start": 25.14,
+              "end": 25.28
+            },
+            {
+              "text": " rails",
+              "start": 25.28,
+              "end": 25.58
+            },
+            {
+              "text": " are",
+              "start": 25.58,
+              "end": 25.86
+            },
+            {
+              "text": " still",
+              "start": 25.86,
+              "end": 26.299999999999997
+            },
+            {
+              "text": " here,",
+              "start": 26.299999999999997,
+              "end": 27.200000000000003
+            },
+            {
+              "text": " son",
+              "start": 27.200000000000003,
+              "end": 27.4
+            },
+            {
+              "text": " —",
+              "start": 27.4,
+              "end": 28.660000000000004
+            },
+            {
+              "text": " make",
+              "start": 28.660000000000004,
+              "end": 29.200000000000003
+            },
+            {
+              "text": " your",
+              "start": 29.200000000000003,
+              "end": 29.619999999999997
+            },
+            {
+              "text": " way\"",
+              "start": 29.619999999999997,
+              "end": 32.4
+            }
+          ]
+        },
+        {
+          "line": 5,
+          "text": "I never knew how much those words would weigh",
+          "start": 32.96,
+          "end": 35.86,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 32.96,
+              "end": 33.08
+            },
+            {
+              "text": " never",
+              "start": 33.08,
+              "end": 33.36
+            },
+            {
+              "text": " knew",
+              "start": 33.36,
+              "end": 33.72
+            },
+            {
+              "text": " how",
+              "start": 33.72,
+              "end": 34.019999999999996
+            },
+            {
+              "text": " much",
+              "start": 34.019999999999996,
+              "end": 34.36
+            },
+            {
+              "text": " those",
+              "start": 34.36,
+              "end": 34.72
+            },
+            {
+              "text": " words",
+              "start": 34.72,
+              "end": 35.14
+            },
+            {
+              "text": " would",
+              "start": 35.14,
+              "end": 35.480000000000004
+            },
+            {
+              "text": " weigh",
+              "start": 35.480000000000004,
+              "end": 35.86
+            }
+          ]
+        },
+        {
+          "line": 6,
+          "text": "'Til I stood where the rust and silence lay",
+          "start": 36.5,
+          "end": 39.64,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " 'Til",
+              "start": 36.5,
+              "end": 36.620000000000005
+            },
+            {
+              "text": " I",
+              "start": 36.620000000000005,
+              "end": 36.82
+            },
+            {
+              "text": " stood",
+              "start": 36.82,
+              "end": 37.18
+            },
+            {
+              "text": " where",
+              "start": 37.18,
+              "end": 37.58
+            },
+            {
+              "text": " the",
+              "start": 37.58,
+              "end": 37.879999999999995
+            },
+            {
+              "text": " rust",
+              "start": 37.879999999999995,
+              "end": 38.3
+            },
+            {
+              "text": " and",
+              "start": 38.3,
+              "end": 38.56
+            },
+            {
+              "text": " silence",
+              "start": 38.56,
+              "end": 39.14
+            },
+            {
+              "text": " lay",
+              "start": 39.14,
+              "end": 39.64
+            }
+          ]
+        },
+        {
+          "line": 7,
+          "text": "Twenty-three years, a frozen page",
+          "start": 41.64,
+          "end": 44.86,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " Twenty-three",
+              "start": 41.64,
+              "end": 42.72
+            },
+            {
+              "text": " years,",
+              "start": 42.72,
+              "end": 43.620000000000005
+            },
+            {
+              "text": " a",
+              "start": 43.620000000000005,
+              "end": 43.620000000000005
+            },
+            {
+              "text": " frozen",
+              "start": 43.620000000000005,
+              "end": 44.18
+            },
+            {
+              "text": " page",
+              "start": 44.18,
+              "end": 44.86
+            }
+          ]
+        },
+        {
+          "line": 8,
+          "text": "Waiting for someone to turn the page",
+          "start": 46.260000000000005,
+          "end": 51.84,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " Waiting",
+              "start": 46.260000000000005,
+              "end": 46.7
+            },
+            {
+              "text": " for",
+              "start": 46.7,
+              "end": 47.18
+            },
+            {
+              "text": " someone",
+              "start": 47.8,
+              "end": 48.22
+            },
+            {
+              "text": " to",
+              "start": 48.22,
+              "end": 49.68
+            },
+            {
+              "text": " turn",
+              "start": 49.68,
+              "end": 50.28
+            },
+            {
+              "text": " the",
+              "start": 50.28,
+              "end": 50.9
+            },
+            {
+              "text": " page",
+              "start": 50.9,
+              "end": 51.84
+            }
+          ]
+        },
+        {
+          "line": 9,
+          "text": "The rails remain — they're calling out your name",
+          "start": 52.72,
+          "end": 59.980000000000004,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 52.72,
+              "end": 55.44
+            },
+            {
+              "text": " rails",
+              "start": 55.44,
+              "end": 55.92
+            },
+            {
+              "text": " remain",
+              "start": 55.92,
+              "end": 56.379999999999995
+            },
+            {
+              "text": " —",
+              "start": 56.379999999999995,
+              "end": 57.22
+            },
+            {
+              "text": " they're",
+              "start": 57.22,
+              "end": 57.84
+            },
+            {
+              "text": " calling",
+              "start": 57.84,
+              "end": 58.32
+            },
+            {
+              "text": " out",
+              "start": 58.32,
+              "end": 58.739999999999995
+            },
+            {
+              "text": " your",
+              "start": 58.739999999999995,
+              "end": 59.08
+            },
+            {
+              "text": " name",
+              "start": 59.08,
+              "end": 59.980000000000004
+            }
+          ]
+        },
+        {
+          "line": 10,
+          "text": "Through every storm, through every field of grain",
+          "start": 61.06,
+          "end": 65.96000000000001,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 61.06,
+              "end": 61.4
+            },
+            {
+              "text": " every",
+              "start": 61.4,
+              "end": 61.94
+            },
+            {
+              "text": " storm,",
+              "start": 61.94,
+              "end": 63.099999999999994
+            },
+            {
+              "text": " through",
+              "start": 63.099999999999994,
+              "end": 63.82
+            },
+            {
+              "text": " every",
+              "start": 63.82,
+              "end": 64.16
+            },
+            {
+              "text": " field",
+              "start": 64.16,
+              "end": 65.38
+            },
+            {
+              "text": " of",
+              "start": 65.38,
+              "end": 65.7
+            },
+            {
+              "text": " grain",
+              "start": 65.7,
+              "end": 65.96000000000001
+            }
+          ]
+        },
+        {
+          "line": 11,
+          "text": "The rails remain — the story's not in vain",
+          "start": 67.08,
+          "end": 71.96000000000001,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 67.08,
+              "end": 67.28
+            },
+            {
+              "text": " rails",
+              "start": 67.28,
+              "end": 67.52
+            },
+            {
+              "text": " remain",
+              "start": 67.94,
+              "end": 68.46000000000001
+            },
+            {
+              "text": " —",
+              "start": 68.46000000000001,
+              "end": 69.58
+            },
+            {
+              "text": " the",
+              "start": 69.58,
+              "end": 69.64
+            },
+            {
+              "text": " story's",
+              "start": 69.64,
+              "end": 70.3
+            },
+            {
+              "text": " not",
+              "start": 70.3,
+              "end": 70.62
+            },
+            {
+              "text": " in",
+              "start": 70.62,
+              "end": 70.92
+            },
+            {
+              "text": " vain",
+              "start": 70.92,
+              "end": 71.96000000000001
+            }
+          ]
+        },
+        {
+          "line": 12,
+          "text": "The wheel turns on, again and again",
+          "start": 72.8,
+          "end": 79.4,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 72.8,
+              "end": 73.25999999999999
+            },
+            {
+              "text": " wheel",
+              "start": 73.25999999999999,
+              "end": 73.53999999999999
+            },
+            {
+              "text": " turns",
+              "start": 73.53999999999999,
+              "end": 74.66
+            },
+            {
+              "text": " on,",
+              "start": 74.66,
+              "end": 76.14
+            },
+            {
+              "text": " again",
+              "start": 76.14,
+              "end": 76.44
+            },
+            {
+              "text": " and",
+              "start": 76.44,
+              "end": 76.8
+            },
+            {
+              "text": " again",
+              "start": 77.4,
+              "end": 79.4
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "The city lights of Pyongyang far behind",
+          "start": 80.16,
+          "end": 86.74,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 80.16,
+              "end": 83.38
+            },
+            {
+              "text": " city",
+              "start": 83.4,
+              "end": 83.74
+            },
+            {
+              "text": " lights",
+              "start": 83.74,
+              "end": 84.24
+            },
+            {
+              "text": " of",
+              "start": 84.24,
+              "end": 84.52
+            },
+            {
+              "text": " Pyongyang",
+              "start": 84.52,
+              "end": 85.32
+            },
+            {
+              "text": " far",
+              "start": 85.32,
+              "end": 85.94
+            },
+            {
+              "text": " behind",
+              "start": 85.94,
+              "end": 86.74
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "A flying car, an AI, a fractured timeline",
+          "start": 87.1,
+          "end": 90.62,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 87.1,
+              "end": 87.1
+            },
+            {
+              "text": " flying",
+              "start": 87.1,
+              "end": 87.46
+            },
+            {
+              "text": " car,",
+              "start": 87.46,
+              "end": 88.3
+            },
+            {
+              "text": " an",
+              "start": 88.3,
+              "end": 88.4
+            },
+            {
+              "text": " AI,",
+              "start": 88.4,
+              "end": 89.12
+            },
+            {
+              "text": " a",
+              "start": 89.12,
+              "end": 89.12
+            },
+            {
+              "text": " fractured",
+              "start": 89.12,
+              "end": 89.78
+            },
+            {
+              "text": " timeline",
+              "start": 89.78,
+              "end": 90.62
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "I packed my bags with things I couldn't name",
+          "start": 91.82,
+          "end": 95.28,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 91.82,
+              "end": 92.24
+            },
+            {
+              "text": " packed",
+              "start": 92.24,
+              "end": 92.46
+            },
+            {
+              "text": " my",
+              "start": 92.46,
+              "end": 92.78
+            },
+            {
+              "text": " bags",
+              "start": 92.78,
+              "end": 93.25999999999999
+            },
+            {
+              "text": " with",
+              "start": 93.25999999999999,
+              "end": 93.53999999999999
+            },
+            {
+              "text": " things",
+              "start": 93.53999999999999,
+              "end": 94.24
+            },
+            {
+              "text": " I",
+              "start": 94.24,
+              "end": 94.36
+            },
+            {
+              "text": " couldn't",
+              "start": 94.36,
+              "end": 94.9
+            },
+            {
+              "text": " name",
+              "start": 94.9,
+              "end": 95.28
+            }
+          ]
+        },
+        {
+          "line": 16,
+          "text": "Fried chicken, soju, and a child's shame",
+          "start": 95.72,
+          "end": 101.56,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " Fried",
+              "start": 95.72,
+              "end": 96.12
+            },
+            {
+              "text": " chicken,",
+              "start": 96.12,
+              "end": 97.34
+            },
+            {
+              "text": " soju,",
+              "start": 97.34,
+              "end": 98.92
+            },
+            {
+              "text": " and",
+              "start": 98.92,
+              "end": 99.78
+            },
+            {
+              "text": " a",
+              "start": 99.78,
+              "end": 99.96000000000001
+            },
+            {
+              "text": " child's",
+              "start": 99.96000000000001,
+              "end": 101.28
+            },
+            {
+              "text": " shame",
+              "start": 101.28,
+              "end": 101.56
+            }
+          ]
+        },
+        {
+          "line": 17,
+          "text": "The dashboard showed a map of what was lost",
+          "start": 102.76,
+          "end": 107.02,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 102.76,
+              "end": 104.16
+            },
+            {
+              "text": " dashboard",
+              "start": 104.16,
+              "end": 104.62
+            },
+            {
+              "text": " showed",
+              "start": 104.62,
+              "end": 105.12
+            },
+            {
+              "text": " a",
+              "start": 105.12,
+              "end": 105.38
+            },
+            {
+              "text": " map",
+              "start": 105.38,
+              "end": 105.7
+            },
+            {
+              "text": " of",
+              "start": 105.7,
+              "end": 106.1
+            },
+            {
+              "text": " what",
+              "start": 106.1,
+              "end": 106.26
+            },
+            {
+              "text": " was",
+              "start": 106.26,
+              "end": 106.52
+            },
+            {
+              "text": " lost",
+              "start": 106.52,
+              "end": 107.02
+            }
+          ]
+        },
+        {
+          "line": 18,
+          "text": "Every station, every bridge, every crossing crossed",
+          "start": 107.22,
+          "end": 111.52,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " Every",
+              "start": 107.22,
+              "end": 107.48
+            },
+            {
+              "text": " station,",
+              "start": 107.48,
+              "end": 108.36
+            },
+            {
+              "text": " every",
+              "start": 108.36,
+              "end": 108.6
+            },
+            {
+              "text": " bridge,",
+              "start": 108.6,
+              "end": 109.58
+            },
+            {
+              "text": " every",
+              "start": 109.58,
+              "end": 109.78
+            },
+            {
+              "text": " crossing",
+              "start": 109.78,
+              "end": 110.38
+            },
+            {
+              "text": " crossed",
+              "start": 110.38,
+              "end": 111.52
+            }
+          ]
+        },
+        {
+          "line": 19,
+          "text": "My grandfather's handbook on the passenger seat",
+          "start": 112.9,
+          "end": 116.78,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " My",
+              "start": 112.9,
+              "end": 113.04
+            },
+            {
+              "text": " grandfather's",
+              "start": 113.04,
+              "end": 114.1
+            },
+            {
+              "text": " handbook",
+              "start": 114.1,
+              "end": 114.76
+            },
+            {
+              "text": " on",
+              "start": 114.76,
+              "end": 115.14
+            },
+            {
+              "text": " the",
+              "start": 115.14,
+              "end": 115.34
+            },
+            {
+              "text": " passenger",
+              "start": 115.34,
+              "end": 116.14
+            },
+            {
+              "text": " seat",
+              "start": 116.14,
+              "end": 116.78
+            }
+          ]
+        },
+        {
+          "line": 20,
+          "text": "A faded note: \"For Biaohan — keep the beat\"",
+          "start": 117.6,
+          "end": 125.86,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 117.6,
+              "end": 117.82
+            },
+            {
+              "text": " faded",
+              "start": 117.82,
+              "end": 118.22
+            },
+            {
+              "text": " note:",
+              "start": 118.26,
+              "end": 119.64
+            },
+            {
+              "text": " \"For",
+              "start": 119.64,
+              "end": 119.7
+            },
+            {
+              "text": " Biaohan",
+              "start": 119.7,
+              "end": 120.5
+            },
+            {
+              "text": " —",
+              "start": 120.5,
+              "end": 121.30000000000001
+            },
+            {
+              "text": " keep",
+              "start": 121.30000000000001,
+              "end": 121.82
+            },
+            {
+              "text": " the",
+              "start": 122.78,
+              "end": 124.02000000000001
+            },
+            {
+              "text": " beat\"",
+              "start": 124.02000000000001,
+              "end": 125.86
+            }
+          ]
+        },
+        {
+          "line": 21,
+          "text": "The rails remain — they're calling out your name",
+          "start": 126.42,
+          "end": 130.98,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 126.42,
+              "end": 126.53999999999999
+            },
+            {
+              "text": " rails",
+              "start": 126.53999999999999,
+              "end": 127.08
+            },
+            {
+              "text": " remain",
+              "start": 127.08,
+              "end": 127.52
+            },
+            {
+              "text": " —",
+              "start": 127.52,
+              "end": 128.5
+            },
+            {
+              "text": " they're",
+              "start": 128.5,
+              "end": 128.94
+            },
+            {
+              "text": " calling",
+              "start": 128.94,
+              "end": 129.48
+            },
+            {
+              "text": " out",
+              "start": 129.48,
+              "end": 129.84
+            },
+            {
+              "text": " your",
+              "start": 129.84,
+              "end": 130.2
+            },
+            {
+              "text": " name",
+              "start": 130.2,
+              "end": 130.98
+            }
+          ]
+        },
+        {
+          "line": 22,
+          "text": "Through every storm, through every field of grain",
+          "start": 132.22,
+          "end": 137.2,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 132.22,
+              "end": 132.5
+            },
+            {
+              "text": " every",
+              "start": 132.5,
+              "end": 133.04
+            },
+            {
+              "text": " storm,",
+              "start": 133.04,
+              "end": 134.56
+            },
+            {
+              "text": " through",
+              "start": 134.56,
+              "end": 134.92000000000002
+            },
+            {
+              "text": " every",
+              "start": 134.92000000000002,
+              "end": 135.3
+            },
+            {
+              "text": " field",
+              "start": 135.3,
+              "end": 136.22
+            },
+            {
+              "text": " of",
+              "start": 136.22,
+              "end": 136.82
+            },
+            {
+              "text": " grain",
+              "start": 136.82,
+              "end": 137.2
+            }
+          ]
+        },
+        {
+          "line": 23,
+          "text": "The rails remain — the story's not in vain",
+          "start": 138.32,
+          "end": 142.98,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 138.32,
+              "end": 138.38
+            },
+            {
+              "text": " rails",
+              "start": 138.38,
+              "end": 138.94
+            },
+            {
+              "text": " remain",
+              "start": 138.94,
+              "end": 139.52
+            },
+            {
+              "text": " —",
+              "start": 139.52,
+              "end": 140.57999999999998
+            },
+            {
+              "text": " the",
+              "start": 140.57999999999998,
+              "end": 140.74
+            },
+            {
+              "text": " story's",
+              "start": 140.74,
+              "end": 141.42000000000002
+            },
+            {
+              "text": " not",
+              "start": 141.42000000000002,
+              "end": 141.74
+            },
+            {
+              "text": " in",
+              "start": 141.74,
+              "end": 142.06
+            },
+            {
+              "text": " vain",
+              "start": 142.06,
+              "end": 142.98
+            }
+          ]
+        },
+        {
+          "line": 24,
+          "text": "The wheel turns on, again and again",
+          "start": 144.24,
+          "end": 148.54,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 144.24,
+              "end": 144.4
+            },
+            {
+              "text": " wheel",
+              "start": 144.4,
+              "end": 144.72
+            },
+            {
+              "text": " turns",
+              "start": 144.72,
+              "end": 145.76
+            },
+            {
+              "text": " on,",
+              "start": 145.76,
+              "end": 146.62
+            },
+            {
+              "text": " again",
+              "start": 146.62,
+              "end": 147.52
+            },
+            {
+              "text": " and",
+              "start": 147.52,
+              "end": 147.94
+            },
+            {
+              "text": " again",
+              "start": 147.94,
+              "end": 148.54
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "I don't know if I can do this alone.",
+          "start": 156.78,
+          "end": 163.8,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 156.78,
+              "end": 159.76000000000002
+            },
+            {
+              "text": " don't",
+              "start": 159.76000000000002,
+              "end": 159.9
+            },
+            {
+              "text": " know",
+              "start": 159.9,
+              "end": 160.22
+            },
+            {
+              "text": " if",
+              "start": 160.22,
+              "end": 160.70000000000002
+            },
+            {
+              "text": " I",
+              "start": 160.70000000000002,
+              "end": 161.04000000000002
+            },
+            {
+              "text": " can",
+              "start": 161.04000000000002,
+              "end": 161.36
+            },
+            {
+              "text": " do",
+              "start": 161.36,
+              "end": 161.68
+            },
+            {
+              "text": " this",
+              "start": 161.68,
+              "end": 162.26000000000002
+            },
+            {
+              "text": " alone.",
+              "start": 162.26000000000002,
+              "end": 163.8
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "But the iron doesn't lie, and the ties don't break",
+          "start": 164.70000000000002,
+          "end": 170.42000000000002,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " But",
+              "start": 164.70000000000002,
+              "end": 165.78
+            },
+            {
+              "text": " the",
+              "start": 165.78,
+              "end": 166.02
+            },
+            {
+              "text": " iron",
+              "start": 166.02,
+              "end": 166.5
+            },
+            {
+              "text": " doesn't",
+              "start": 166.5,
+              "end": 167.16000000000003
+            },
+            {
+              "text": " lie,",
+              "start": 167.16000000000003,
+              "end": 168.08
+            },
+            {
+              "text": " and",
+              "start": 168.08,
+              "end": 168.66000000000003
+            },
+            {
+              "text": " the",
+              "start": 168.66000000000003,
+              "end": 168.82
+            },
+            {
+              "text": " ties",
+              "start": 168.82,
+              "end": 169.38
+            },
+            {
+              "text": " don't",
+              "start": 169.38,
+              "end": 170.04000000000002
+            },
+            {
+              "text": " break",
+              "start": 170.04000000000002,
+              "end": 170.42000000000002
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "When you're standing on the shoulders of the ones who came before",
+          "start": 171.44,
+          "end": 176.22,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " When",
+              "start": 171.44,
+              "end": 171.58
+            },
+            {
+              "text": " you're",
+              "start": 171.58,
+              "end": 171.74
+            },
+            {
+              "text": " standing",
+              "start": 171.74,
+              "end": 172.42000000000002
+            },
+            {
+              "text": " on",
+              "start": 172.42000000000002,
+              "end": 172.9
+            },
+            {
+              "text": " the",
+              "start": 172.9,
+              "end": 173.18
+            },
+            {
+              "text": " shoulders",
+              "start": 173.18,
+              "end": 173.60000000000002
+            },
+            {
+              "text": " of",
+              "start": 173.60000000000002,
+              "end": 174.38
+            },
+            {
+              "text": " the",
+              "start": 174.38,
+              "end": 174.58
+            },
+            {
+              "text": " ones",
+              "start": 174.58,
+              "end": 175.22
+            },
+            {
+              "text": " who",
+              "start": 175.22,
+              "end": 175.44
+            },
+            {
+              "text": " came",
+              "start": 175.44,
+              "end": 175.76
+            },
+            {
+              "text": " before",
+              "start": 175.76,
+              "end": 176.22
+            }
+          ]
+        },
+        {
+          "line": 28,
+          "text": "They're still here... waiting at the door",
+          "start": 176.88,
+          "end": 183.82,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " They're",
+              "start": 176.88,
+              "end": 177.02
+            },
+            {
+              "text": " still",
+              "start": 177.02,
+              "end": 177.46
+            },
+            {
+              "text": " here...",
+              "start": 177.46,
+              "end": 179.22
+            },
+            {
+              "text": " waiting",
+              "start": 181.8,
+              "end": 182.82
+            },
+            {
+              "text": " at",
+              "start": 182.82,
+              "end": 183.3
+            },
+            {
+              "text": " the",
+              "start": 183.3,
+              "end": 183.4
+            },
+            {
+              "text": " door",
+              "start": 183.4,
+              "end": 183.82
+            }
+          ]
+        },
+        {
+          "line": 29,
+          "text": "The rails remain — they're calling out your name!",
+          "start": 204.38,
+          "end": 211.66,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 204.38,
+              "end": 204.38
+            },
+            {
+              "text": " rails",
+              "start": 204.38,
+              "end": 207.1
+            },
+            {
+              "text": " remain",
+              "start": 207.1,
+              "end": 207.57999999999998
+            },
+            {
+              "text": " —",
+              "start": 207.57999999999998,
+              "end": 208.62
+            },
+            {
+              "text": " they're",
+              "start": 208.62,
+              "end": 208.88
+            },
+            {
+              "text": " calling",
+              "start": 208.88,
+              "end": 209.5
+            },
+            {
+              "text": " out",
+              "start": 209.5,
+              "end": 209.83999999999997
+            },
+            {
+              "text": " your",
+              "start": 209.83999999999997,
+              "end": 210.2
+            },
+            {
+              "text": " name!",
+              "start": 210.2,
+              "end": 211.66
+            }
+          ]
+        },
+        {
+          "line": 30,
+          "text": "Through every storm, through every field of grain!",
+          "start": 212.51999999999998,
+          "end": 218.39999999999998,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 212.51999999999998,
+              "end": 212.51999999999998
+            },
+            {
+              "text": " every",
+              "start": 212.51999999999998,
+              "end": 213.01999999999998
+            },
+            {
+              "text": " storm,",
+              "start": 213.01999999999998,
+              "end": 213.76
+            },
+            {
+              "text": " through",
+              "start": 214.26,
+              "end": 214.98
+            },
+            {
+              "text": " every",
+              "start": 214.98,
+              "end": 215.32
+            },
+            {
+              "text": " field",
+              "start": 215.32,
+              "end": 216.33999999999997
+            },
+            {
+              "text": " of",
+              "start": 216.33999999999997,
+              "end": 216.79999999999998
+            },
+            {
+              "text": " grain!",
+              "start": 216.79999999999998,
+              "end": 218.39999999999998
+            }
+          ]
+        },
+        {
+          "line": 31,
+          "text": "The rails remain — the story's not in vain!",
+          "start": 218.39999999999998,
+          "end": 224.24,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 218.39999999999998,
+              "end": 218.48
+            },
+            {
+              "text": " rails",
+              "start": 218.48,
+              "end": 218.83999999999997
+            },
+            {
+              "text": " remain",
+              "start": 218.83999999999997,
+              "end": 219.35999999999999
+            },
+            {
+              "text": " —",
+              "start": 219.35999999999999,
+              "end": 220.62
+            },
+            {
+              "text": " the",
+              "start": 220.62,
+              "end": 220.74
+            },
+            {
+              "text": " story's",
+              "start": 220.74,
+              "end": 221.42
+            },
+            {
+              "text": " not",
+              "start": 221.42,
+              "end": 221.76
+            },
+            {
+              "text": " in",
+              "start": 221.76,
+              "end": 222.04
+            },
+            {
+              "text": " vain!",
+              "start": 222.04,
+              "end": 224.24
+            }
+          ]
+        },
+        {
+          "line": 32,
+          "text": "The wheel turns on, again and again!",
+          "start": 224.26,
+          "end": 230.48,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 224.26,
+              "end": 224.35999999999999
+            },
+            {
+              "text": " wheel",
+              "start": 224.35999999999999,
+              "end": 224.68
+            },
+            {
+              "text": " turns",
+              "start": 224.68,
+              "end": 225.76
+            },
+            {
+              "text": " on,",
+              "start": 225.76,
+              "end": 226.68
+            },
+            {
+              "text": " again",
+              "start": 226.68,
+              "end": 227.56
+            },
+            {
+              "text": " and",
+              "start": 227.56,
+              "end": 227.92
+            },
+            {
+              "text": " again!",
+              "start": 227.92,
+              "end": 230.48
+            }
+          ]
+        },
+        {
+          "line": 33,
+          "text": "Again and again...",
+          "start": 239.24,
+          "end": 242.44,
+          "window": [
+            215.36,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " Again",
+              "start": 239.24,
+              "end": 239.52
+            },
+            {
+              "text": " and",
+              "start": 239.52,
+              "end": 239.78000000000003
+            },
+            {
+              "text": " again...",
+              "start": 239.78000000000003,
+              "end": 242.44
+            }
+          ]
+        },
+        {
+          "line": 34,
+          "text": "The wheel turns on...",
+          "start": 244.92000000000002,
+          "end": 248.66000000000003,
+          "window": [
+            215.36,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 244.92000000000002,
+              "end": 245.18
+            },
+            {
+              "text": " wheel",
+              "start": 245.18,
+              "end": 245.44
+            },
+            {
+              "text": " turns",
+              "start": 247.38000000000002,
+              "end": 247.60000000000002
+            },
+            {
+              "text": " on...",
+              "start": 247.60000000000002,
+              "end": 248.66000000000003
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "small",
+      "provenance": {
+        "repo": "Systran/faster-whisper-small",
+        "revision": "536b0662742c02347bc0e980a01041f333bce120"
+      },
+      "lines": [
+        {
+          "line": 1,
+          "text": "A whistle cuts the morning haze",
+          "start": 12.36,
+          "end": 14.88,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 12.36,
+              "end": 12.36
+            },
+            {
+              "text": " whistle",
+              "start": 12.36,
+              "end": 12.620000000000001
+            },
+            {
+              "text": " cuts",
+              "start": 12.620000000000001,
+              "end": 12.940000000000001
+            },
+            {
+              "text": " the",
+              "start": 12.940000000000001,
+              "end": 13.24
+            },
+            {
+              "text": " morning",
+              "start": 13.24,
+              "end": 13.760000000000002
+            },
+            {
+              "text": " haze",
+              "start": 13.760000000000002,
+              "end": 14.88
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "text": "Across the hills where wild grass sways",
+          "start": 15.32,
+          "end": 18.64,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " Across",
+              "start": 15.32,
+              "end": 16.16
+            },
+            {
+              "text": " the",
+              "start": 16.16,
+              "end": 16.48
+            },
+            {
+              "text": " hills",
+              "start": 16.48,
+              "end": 16.9
+            },
+            {
+              "text": " where",
+              "start": 16.9,
+              "end": 17.18
+            },
+            {
+              "text": " wild",
+              "start": 17.18,
+              "end": 17.66
+            },
+            {
+              "text": " grass",
+              "start": 17.66,
+              "end": 18.060000000000002
+            },
+            {
+              "text": " sways",
+              "start": 18.060000000000002,
+              "end": 18.64
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "text": "My grandfather's voice, a faded trace",
+          "start": 20.86,
+          "end": 24.0,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " My",
+              "start": 20.86,
+              "end": 21.22
+            },
+            {
+              "text": " grandfather's",
+              "start": 21.22,
+              "end": 22.200000000000003
+            },
+            {
+              "text": " voice,",
+              "start": 22.200000000000003,
+              "end": 22.759999999999998
+            },
+            {
+              "text": " a",
+              "start": 22.759999999999998,
+              "end": 22.9
+            },
+            {
+              "text": " faded",
+              "start": 22.9,
+              "end": 23.34
+            },
+            {
+              "text": " trace",
+              "start": 23.34,
+              "end": 24.0
+            }
+          ]
+        },
+        {
+          "line": 4,
+          "text": "\"The rails are still here, son — make your way\"",
+          "start": 25.020000000000003,
+          "end": 31.619999999999997,
+          "window": [
+            7.5600000000000005,
+            42.64
+          ],
+          "words": [
+            {
+              "text": " \"The",
+              "start": 25.020000000000003,
+              "end": 25.36
+            },
+            {
+              "text": " rails",
+              "start": 25.36,
+              "end": 25.619999999999997
+            },
+            {
+              "text": " are",
+              "start": 25.619999999999997,
+              "end": 25.880000000000003
+            },
+            {
+              "text": " still",
+              "start": 25.880000000000003,
+              "end": 26.240000000000002
+            },
+            {
+              "text": " here,",
+              "start": 26.240000000000002,
+              "end": 27.200000000000003
+            },
+            {
+              "text": " son",
+              "start": 27.200000000000003,
+              "end": 27.36
+            },
+            {
+              "text": " —",
+              "start": 27.36,
+              "end": 28.840000000000003
+            },
+            {
+              "text": " make",
+              "start": 28.840000000000003,
+              "end": 29.240000000000002
+            },
+            {
+              "text": " your",
+              "start": 29.240000000000002,
+              "end": 29.64
+            },
+            {
+              "text": " way\"",
+              "start": 29.64,
+              "end": 31.619999999999997
+            }
+          ]
+        },
+        {
+          "line": 5,
+          "text": "I never knew how much those words would weigh",
+          "start": 32.58,
+          "end": 35.879999999999995,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 32.58,
+              "end": 33.08
+            },
+            {
+              "text": " never",
+              "start": 33.08,
+              "end": 33.34
+            },
+            {
+              "text": " knew",
+              "start": 33.34,
+              "end": 33.68
+            },
+            {
+              "text": " how",
+              "start": 33.68,
+              "end": 34.019999999999996
+            },
+            {
+              "text": " much",
+              "start": 34.019999999999996,
+              "end": 34.28
+            },
+            {
+              "text": " those",
+              "start": 34.28,
+              "end": 34.72
+            },
+            {
+              "text": " words",
+              "start": 34.72,
+              "end": 35.28
+            },
+            {
+              "text": " would",
+              "start": 35.28,
+              "end": 35.480000000000004
+            },
+            {
+              "text": " weigh",
+              "start": 35.480000000000004,
+              "end": 35.879999999999995
+            }
+          ]
+        },
+        {
+          "line": 6,
+          "text": "'Til I stood where the rust and silence lay",
+          "start": 36.32,
+          "end": 39.74,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " 'Til",
+              "start": 36.32,
+              "end": 36.66
+            },
+            {
+              "text": " I",
+              "start": 36.66,
+              "end": 36.84
+            },
+            {
+              "text": " stood",
+              "start": 36.84,
+              "end": 37.120000000000005
+            },
+            {
+              "text": " where",
+              "start": 37.120000000000005,
+              "end": 37.64
+            },
+            {
+              "text": " the",
+              "start": 37.64,
+              "end": 37.9
+            },
+            {
+              "text": " rust",
+              "start": 37.9,
+              "end": 38.260000000000005
+            },
+            {
+              "text": " and",
+              "start": 38.260000000000005,
+              "end": 38.56
+            },
+            {
+              "text": " silence",
+              "start": 38.56,
+              "end": 39.18
+            },
+            {
+              "text": " lay",
+              "start": 39.18,
+              "end": 39.74
+            }
+          ]
+        },
+        {
+          "line": 7,
+          "text": "Twenty-three years, a frozen page",
+          "start": 41.86,
+          "end": 44.82,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " Twenty-three",
+              "start": 41.86,
+              "end": 42.78
+            },
+            {
+              "text": " years,",
+              "start": 42.78,
+              "end": 43.58
+            },
+            {
+              "text": " a",
+              "start": 43.58,
+              "end": 43.66
+            },
+            {
+              "text": " frozen",
+              "start": 43.66,
+              "end": 44.14
+            },
+            {
+              "text": " page",
+              "start": 44.14,
+              "end": 44.82
+            }
+          ]
+        },
+        {
+          "line": 8,
+          "text": "Waiting for someone to turn the page",
+          "start": 46.32,
+          "end": 51.28,
+          "window": [
+            17.82,
+            69.08
+          ],
+          "words": [
+            {
+              "text": " Waiting",
+              "start": 46.32,
+              "end": 46.74
+            },
+            {
+              "text": " for",
+              "start": 46.74,
+              "end": 47.22
+            },
+            {
+              "text": " someone",
+              "start": 47.22,
+              "end": 47.8
+            },
+            {
+              "text": " to",
+              "start": 47.8,
+              "end": 47.8
+            },
+            {
+              "text": " turn",
+              "start": 49.66,
+              "end": 50.26
+            },
+            {
+              "text": " the",
+              "start": 50.26,
+              "end": 50.82
+            },
+            {
+              "text": " page",
+              "start": 50.82,
+              "end": 51.28
+            }
+          ]
+        },
+        {
+          "line": 9,
+          "text": "The rails remain — they're calling out your name",
+          "start": 52.68,
+          "end": 59.72,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 52.68,
+              "end": 55.480000000000004
+            },
+            {
+              "text": " rails",
+              "start": 55.480000000000004,
+              "end": 56.0
+            },
+            {
+              "text": " remain",
+              "start": 56.0,
+              "end": 56.46
+            },
+            {
+              "text": " —",
+              "start": 56.46,
+              "end": 56.46
+            },
+            {
+              "text": " they're",
+              "start": 56.46,
+              "end": 57.82
+            },
+            {
+              "text": " calling",
+              "start": 57.82,
+              "end": 58.36
+            },
+            {
+              "text": " out",
+              "start": 58.36,
+              "end": 58.76
+            },
+            {
+              "text": " your",
+              "start": 58.76,
+              "end": 59.12
+            },
+            {
+              "text": " name",
+              "start": 59.12,
+              "end": 59.72
+            }
+          ]
+        },
+        {
+          "line": 10,
+          "text": "Through every storm, through every field of grain",
+          "start": 60.879999999999995,
+          "end": 66.14,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 60.879999999999995,
+              "end": 61.42
+            },
+            {
+              "text": " every",
+              "start": 61.42,
+              "end": 61.92
+            },
+            {
+              "text": " storm,",
+              "start": 61.92,
+              "end": 63.2
+            },
+            {
+              "text": " through",
+              "start": 63.2,
+              "end": 63.84
+            },
+            {
+              "text": " every",
+              "start": 63.84,
+              "end": 64.18
+            },
+            {
+              "text": " field",
+              "start": 64.18,
+              "end": 65.32
+            },
+            {
+              "text": " of",
+              "start": 65.32,
+              "end": 65.68
+            },
+            {
+              "text": " grain",
+              "start": 65.68,
+              "end": 66.14
+            }
+          ]
+        },
+        {
+          "line": 11,
+          "text": "The rails remain — the story's not in vain",
+          "start": 67.06,
+          "end": 71.44,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 67.06,
+              "end": 67.34
+            },
+            {
+              "text": " rails",
+              "start": 67.34,
+              "end": 67.88
+            },
+            {
+              "text": " remain",
+              "start": 67.88,
+              "end": 68.36
+            },
+            {
+              "text": " —",
+              "start": 68.36,
+              "end": 69.52
+            },
+            {
+              "text": " the",
+              "start": 69.52,
+              "end": 69.72
+            },
+            {
+              "text": " story's",
+              "start": 69.72,
+              "end": 70.3
+            },
+            {
+              "text": " not",
+              "start": 70.3,
+              "end": 70.64
+            },
+            {
+              "text": " in",
+              "start": 70.64,
+              "end": 71.06
+            },
+            {
+              "text": " vain",
+              "start": 71.06,
+              "end": 71.44
+            }
+          ]
+        },
+        {
+          "line": 12,
+          "text": "The wheel turns on, again and again",
+          "start": 71.6,
+          "end": 83.44,
+          "window": [
+            37.54,
+            93.56
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 71.6,
+              "end": 71.6
+            },
+            {
+              "text": " wheel",
+              "start": 73.3,
+              "end": 73.6
+            },
+            {
+              "text": " turns",
+              "start": 73.6,
+              "end": 74.64
+            },
+            {
+              "text": " on,",
+              "start": 74.64,
+              "end": 75.34
+            },
+            {
+              "text": " again",
+              "start": 75.34,
+              "end": 76.56
+            },
+            {
+              "text": " and",
+              "start": 76.56,
+              "end": 76.84
+            },
+            {
+              "text": " again",
+              "start": 81.47999999999999,
+              "end": 83.44
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "The city lights of Pyongyang far behind",
+          "start": 81.18,
+          "end": 86.58,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 81.18,
+              "end": 83.44
+            },
+            {
+              "text": " city",
+              "start": 83.44,
+              "end": 83.74
+            },
+            {
+              "text": " lights",
+              "start": 83.74,
+              "end": 84.3
+            },
+            {
+              "text": " of",
+              "start": 84.3,
+              "end": 84.53999999999999
+            },
+            {
+              "text": " Pyongyang",
+              "start": 84.53999999999999,
+              "end": 85.28
+            },
+            {
+              "text": " far",
+              "start": 85.28,
+              "end": 85.92
+            },
+            {
+              "text": " behind",
+              "start": 85.92,
+              "end": 86.58
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "A flying car, an AI, a fractured timeline",
+          "start": 87.03999999999999,
+          "end": 90.56,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 87.03999999999999,
+              "end": 87.18
+            },
+            {
+              "text": " flying",
+              "start": 87.18,
+              "end": 87.52
+            },
+            {
+              "text": " car,",
+              "start": 87.52,
+              "end": 88.3
+            },
+            {
+              "text": " an",
+              "start": 88.3,
+              "end": 88.44
+            },
+            {
+              "text": " AI,",
+              "start": 88.44,
+              "end": 89.1
+            },
+            {
+              "text": " a",
+              "start": 89.1,
+              "end": 89.1
+            },
+            {
+              "text": " fractured",
+              "start": 89.1,
+              "end": 89.78
+            },
+            {
+              "text": " timeline",
+              "start": 89.78,
+              "end": 90.56
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "I packed my bags with things I couldn't name",
+          "start": 91.62,
+          "end": 95.28,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 91.62,
+              "end": 92.32
+            },
+            {
+              "text": " packed",
+              "start": 92.32,
+              "end": 92.53999999999999
+            },
+            {
+              "text": " my",
+              "start": 92.53999999999999,
+              "end": 92.78
+            },
+            {
+              "text": " bags",
+              "start": 92.78,
+              "end": 93.32
+            },
+            {
+              "text": " with",
+              "start": 93.32,
+              "end": 93.58
+            },
+            {
+              "text": " things",
+              "start": 94.06,
+              "end": 94.22
+            },
+            {
+              "text": " I",
+              "start": 94.22,
+              "end": 94.38
+            },
+            {
+              "text": " couldn't",
+              "start": 94.38,
+              "end": 94.94
+            },
+            {
+              "text": " name",
+              "start": 94.94,
+              "end": 95.28
+            }
+          ]
+        },
+        {
+          "line": 16,
+          "text": "Fried chicken, soju, and a child's shame",
+          "start": 95.84,
+          "end": 101.66,
+          "window": [
+            64.08,
+            114.02
+          ],
+          "words": [
+            {
+              "text": " Fried",
+              "start": 95.84,
+              "end": 96.19999999999999
+            },
+            {
+              "text": " chicken,",
+              "start": 96.19999999999999,
+              "end": 97.46000000000001
+            },
+            {
+              "text": " soju,",
+              "start": 97.46000000000001,
+              "end": 99.0
+            },
+            {
+              "text": " and",
+              "start": 99.0,
+              "end": 99.8
+            },
+            {
+              "text": " a",
+              "start": 99.8,
+              "end": 99.97999999999999
+            },
+            {
+              "text": " child's",
+              "start": 99.97999999999999,
+              "end": 101.19999999999999
+            },
+            {
+              "text": " shame",
+              "start": 101.19999999999999,
+              "end": 101.66
+            }
+          ]
+        },
+        {
+          "line": 17,
+          "text": "The dashboard showed a map of what was lost",
+          "start": 102.72,
+          "end": 107.02,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 102.72,
+              "end": 104.2
+            },
+            {
+              "text": " dashboard",
+              "start": 104.2,
+              "end": 104.68
+            },
+            {
+              "text": " showed",
+              "start": 104.68,
+              "end": 105.18
+            },
+            {
+              "text": " a",
+              "start": 105.18,
+              "end": 105.36
+            },
+            {
+              "text": " map",
+              "start": 105.36,
+              "end": 105.86
+            },
+            {
+              "text": " of",
+              "start": 105.86,
+              "end": 106.1
+            },
+            {
+              "text": " what",
+              "start": 106.1,
+              "end": 106.3
+            },
+            {
+              "text": " was",
+              "start": 106.3,
+              "end": 106.54
+            },
+            {
+              "text": " lost",
+              "start": 106.54,
+              "end": 107.02
+            }
+          ]
+        },
+        {
+          "line": 18,
+          "text": "Every station, every bridge, every crossing crossed",
+          "start": 107.22,
+          "end": 111.04,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " Every",
+              "start": 107.22,
+              "end": 107.48
+            },
+            {
+              "text": " station,",
+              "start": 107.48,
+              "end": 108.42
+            },
+            {
+              "text": " every",
+              "start": 108.42,
+              "end": 108.6
+            },
+            {
+              "text": " bridge,",
+              "start": 108.6,
+              "end": 109.46000000000001
+            },
+            {
+              "text": " every",
+              "start": 109.46000000000001,
+              "end": 109.76
+            },
+            {
+              "text": " crossing",
+              "start": 109.76,
+              "end": 110.4
+            },
+            {
+              "text": " crossed",
+              "start": 110.4,
+              "end": 111.04
+            }
+          ]
+        },
+        {
+          "line": 19,
+          "text": "My grandfather's handbook on the passenger seat",
+          "start": 112.86,
+          "end": 116.76,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " My",
+              "start": 112.86,
+              "end": 113.1
+            },
+            {
+              "text": " grandfather's",
+              "start": 113.1,
+              "end": 114.08
+            },
+            {
+              "text": " handbook",
+              "start": 114.08,
+              "end": 114.74000000000001
+            },
+            {
+              "text": " on",
+              "start": 114.74000000000001,
+              "end": 115.14
+            },
+            {
+              "text": " the",
+              "start": 115.14,
+              "end": 115.36
+            },
+            {
+              "text": " passenger",
+              "start": 115.36,
+              "end": 116.06
+            },
+            {
+              "text": " seat",
+              "start": 116.06,
+              "end": 116.76
+            }
+          ]
+        },
+        {
+          "line": 20,
+          "text": "A faded note: \"For Biaohan — keep the beat\"",
+          "start": 117.66,
+          "end": 125.6,
+          "window": [
+            88.28,
+            140.2
+          ],
+          "words": [
+            {
+              "text": " A",
+              "start": 117.66,
+              "end": 117.9
+            },
+            {
+              "text": " faded",
+              "start": 117.9,
+              "end": 118.18
+            },
+            {
+              "text": " note:",
+              "start": 118.26,
+              "end": 119.66
+            },
+            {
+              "text": " \"For",
+              "start": 119.66,
+              "end": 119.78
+            },
+            {
+              "text": " Biaohan",
+              "start": 119.78,
+              "end": 120.62
+            },
+            {
+              "text": " —",
+              "start": 120.62,
+              "end": 121.22
+            },
+            {
+              "text": " keep",
+              "start": 121.22,
+              "end": 121.86
+            },
+            {
+              "text": " the",
+              "start": 122.2,
+              "end": 122.58
+            },
+            {
+              "text": " beat\"",
+              "start": 123.03999999999999,
+              "end": 125.6
+            }
+          ]
+        },
+        {
+          "line": 21,
+          "text": "The rails remain — they're calling out your name",
+          "start": 123.66,
+          "end": 130.86,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 123.66,
+              "end": 126.53999999999999
+            },
+            {
+              "text": " rails",
+              "start": 126.53999999999999,
+              "end": 127.12
+            },
+            {
+              "text": " remain",
+              "start": 127.12,
+              "end": 127.78
+            },
+            {
+              "text": " —",
+              "start": 127.78,
+              "end": 128.32
+            },
+            {
+              "text": " they're",
+              "start": 128.32,
+              "end": 128.94
+            },
+            {
+              "text": " calling",
+              "start": 128.94,
+              "end": 129.48
+            },
+            {
+              "text": " out",
+              "start": 129.48,
+              "end": 129.9
+            },
+            {
+              "text": " your",
+              "start": 129.9,
+              "end": 130.22
+            },
+            {
+              "text": " name",
+              "start": 130.22,
+              "end": 130.86
+            }
+          ]
+        },
+        {
+          "line": 22,
+          "text": "Through every storm, through every field of grain",
+          "start": 131.62,
+          "end": 137.22,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 131.62,
+              "end": 132.52
+            },
+            {
+              "text": " every",
+              "start": 132.52,
+              "end": 133.04
+            },
+            {
+              "text": " storm,",
+              "start": 133.04,
+              "end": 134.57999999999998
+            },
+            {
+              "text": " through",
+              "start": 134.57999999999998,
+              "end": 134.94
+            },
+            {
+              "text": " every",
+              "start": 134.94,
+              "end": 135.28
+            },
+            {
+              "text": " field",
+              "start": 135.28,
+              "end": 136.32
+            },
+            {
+              "text": " of",
+              "start": 136.32,
+              "end": 136.8
+            },
+            {
+              "text": " grain",
+              "start": 136.8,
+              "end": 137.22
+            }
+          ]
+        },
+        {
+          "line": 23,
+          "text": "The rails remain — the story's not in vain",
+          "start": 138.36,
+          "end": 142.64,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 138.36,
+              "end": 138.5
+            },
+            {
+              "text": " rails",
+              "start": 138.5,
+              "end": 139.0
+            },
+            {
+              "text": " remain",
+              "start": 139.0,
+              "end": 139.48
+            },
+            {
+              "text": " —",
+              "start": 139.48,
+              "end": 140.56
+            },
+            {
+              "text": " the",
+              "start": 140.56,
+              "end": 140.76
+            },
+            {
+              "text": " story's",
+              "start": 140.76,
+              "end": 141.42000000000002
+            },
+            {
+              "text": " not",
+              "start": 141.42000000000002,
+              "end": 141.76
+            },
+            {
+              "text": " in",
+              "start": 141.76,
+              "end": 142.12
+            },
+            {
+              "text": " vain",
+              "start": 142.12,
+              "end": 142.64
+            }
+          ]
+        },
+        {
+          "line": 24,
+          "text": "The wheel turns on, again and again",
+          "start": 144.16,
+          "end": 148.48,
+          "window": [
+            109.0,
+            173.42
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 144.16,
+              "end": 144.44
+            },
+            {
+              "text": " wheel",
+              "start": 144.44,
+              "end": 144.74
+            },
+            {
+              "text": " turns",
+              "start": 144.74,
+              "end": 145.74
+            },
+            {
+              "text": " on,",
+              "start": 145.74,
+              "end": 146.56
+            },
+            {
+              "text": " again",
+              "start": 146.56,
+              "end": 147.57999999999998
+            },
+            {
+              "text": " and",
+              "start": 147.57999999999998,
+              "end": 147.94
+            },
+            {
+              "text": " again",
+              "start": 147.94,
+              "end": 148.48
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "I don't know if I can do this alone.",
+          "start": 149.56,
+          "end": 163.72,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " I",
+              "start": 149.56,
+              "end": 159.76000000000002
+            },
+            {
+              "text": " don't",
+              "start": 159.76000000000002,
+              "end": 159.94
+            },
+            {
+              "text": " know",
+              "start": 159.94,
+              "end": 160.28
+            },
+            {
+              "text": " if",
+              "start": 160.28,
+              "end": 160.72
+            },
+            {
+              "text": " I",
+              "start": 160.72,
+              "end": 161.08
+            },
+            {
+              "text": " can",
+              "start": 161.08,
+              "end": 161.4
+            },
+            {
+              "text": " do",
+              "start": 161.4,
+              "end": 161.72
+            },
+            {
+              "text": " this",
+              "start": 161.72,
+              "end": 162.24
+            },
+            {
+              "text": " alone.",
+              "start": 162.24,
+              "end": 163.72
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "But the iron doesn't lie, and the ties don't break",
+          "start": 164.78,
+          "end": 170.42000000000002,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " But",
+              "start": 164.78,
+              "end": 165.82
+            },
+            {
+              "text": " the",
+              "start": 165.82,
+              "end": 166.0
+            },
+            {
+              "text": " iron",
+              "start": 166.0,
+              "end": 166.54000000000002
+            },
+            {
+              "text": " doesn't",
+              "start": 166.54000000000002,
+              "end": 167.10000000000002
+            },
+            {
+              "text": " lie,",
+              "start": 167.10000000000002,
+              "end": 167.98000000000002
+            },
+            {
+              "text": " and",
+              "start": 167.98000000000002,
+              "end": 168.66000000000003
+            },
+            {
+              "text": " the",
+              "start": 168.66000000000003,
+              "end": 168.78
+            },
+            {
+              "text": " ties",
+              "start": 168.78,
+              "end": 169.22
+            },
+            {
+              "text": " don't",
+              "start": 169.22,
+              "end": 170.0
+            },
+            {
+              "text": " break",
+              "start": 170.0,
+              "end": 170.42000000000002
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "When you're standing on the shoulders of the ones who came before",
+          "start": 171.04000000000002,
+          "end": 176.28,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " When",
+              "start": 171.04000000000002,
+              "end": 171.58
+            },
+            {
+              "text": " you're",
+              "start": 171.58,
+              "end": 171.78
+            },
+            {
+              "text": " standing",
+              "start": 171.78,
+              "end": 172.18
+            },
+            {
+              "text": " on",
+              "start": 172.18,
+              "end": 172.96
+            },
+            {
+              "text": " the",
+              "start": 172.96,
+              "end": 173.20000000000002
+            },
+            {
+              "text": " shoulders",
+              "start": 173.20000000000002,
+              "end": 173.74
+            },
+            {
+              "text": " of",
+              "start": 173.74,
+              "end": 174.36
+            },
+            {
+              "text": " the",
+              "start": 174.36,
+              "end": 174.56
+            },
+            {
+              "text": " ones",
+              "start": 174.56,
+              "end": 175.18
+            },
+            {
+              "text": " who",
+              "start": 175.18,
+              "end": 175.46
+            },
+            {
+              "text": " came",
+              "start": 175.46,
+              "end": 175.8
+            },
+            {
+              "text": " before",
+              "start": 175.8,
+              "end": 176.28
+            }
+          ]
+        },
+        {
+          "line": 28,
+          "text": "They're still here... waiting at the door",
+          "start": 176.82,
+          "end": 183.9,
+          "window": [
+            134.46,
+            221.36
+          ],
+          "words": [
+            {
+              "text": " They're",
+              "start": 176.82,
+              "end": 177.04000000000002
+            },
+            {
+              "text": " still",
+              "start": 177.04000000000002,
+              "end": 177.38
+            },
+            {
+              "text": " here...",
+              "start": 177.38,
+              "end": 178.72
+            },
+            {
+              "text": " waiting",
+              "start": 181.82,
+              "end": 182.78
+            },
+            {
+              "text": " at",
+              "start": 182.78,
+              "end": 183.28
+            },
+            {
+              "text": " the",
+              "start": 183.28,
+              "end": 183.42000000000002
+            },
+            {
+              "text": " door",
+              "start": 183.42000000000002,
+              "end": 183.9
+            }
+          ]
+        },
+        {
+          "line": 29,
+          "text": "The rails remain — they're calling out your name!",
+          "start": 206.62,
+          "end": 211.95999999999998,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 206.62,
+              "end": 206.62
+            },
+            {
+              "text": " rails",
+              "start": 206.62,
+              "end": 207.1
+            },
+            {
+              "text": " remain",
+              "start": 207.1,
+              "end": 207.72
+            },
+            {
+              "text": " —",
+              "start": 207.72,
+              "end": 208.39999999999998
+            },
+            {
+              "text": " they're",
+              "start": 208.39999999999998,
+              "end": 208.88
+            },
+            {
+              "text": " calling",
+              "start": 208.88,
+              "end": 209.48
+            },
+            {
+              "text": " out",
+              "start": 209.48,
+              "end": 209.88
+            },
+            {
+              "text": " your",
+              "start": 209.88,
+              "end": 210.22
+            },
+            {
+              "text": " name!",
+              "start": 210.22,
+              "end": 211.95999999999998
+            }
+          ]
+        },
+        {
+          "line": 30,
+          "text": "Through every storm, through every field of grain!",
+          "start": 212.22,
+          "end": 218.35999999999999,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " Through",
+              "start": 212.22,
+              "end": 212.54
+            },
+            {
+              "text": " every",
+              "start": 212.54,
+              "end": 213.01999999999998
+            },
+            {
+              "text": " storm,",
+              "start": 213.01999999999998,
+              "end": 213.88
+            },
+            {
+              "text": " through",
+              "start": 213.88,
+              "end": 213.88
+            },
+            {
+              "text": " every",
+              "start": 214.95999999999998,
+              "end": 215.28
+            },
+            {
+              "text": " field",
+              "start": 215.28,
+              "end": 216.51999999999998
+            },
+            {
+              "text": " of",
+              "start": 216.51999999999998,
+              "end": 216.79999999999998
+            },
+            {
+              "text": " grain!",
+              "start": 216.79999999999998,
+              "end": 218.35999999999999
+            }
+          ]
+        },
+        {
+          "line": 31,
+          "text": "The rails remain — the story's not in vain!",
+          "start": 218.35999999999999,
+          "end": 223.82,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 218.35999999999999,
+              "end": 218.45999999999998
+            },
+            {
+              "text": " rails",
+              "start": 218.45999999999998,
+              "end": 219.0
+            },
+            {
+              "text": " remain",
+              "start": 219.0,
+              "end": 219.51999999999998
+            },
+            {
+              "text": " —",
+              "start": 219.51999999999998,
+              "end": 220.56
+            },
+            {
+              "text": " the",
+              "start": 220.56,
+              "end": 220.78
+            },
+            {
+              "text": " story's",
+              "start": 220.78,
+              "end": 221.42
+            },
+            {
+              "text": " not",
+              "start": 221.42,
+              "end": 221.76
+            },
+            {
+              "text": " in",
+              "start": 221.76,
+              "end": 222.12
+            },
+            {
+              "text": " vain!",
+              "start": 222.12,
+              "end": 223.82
+            }
+          ]
+        },
+        {
+          "line": 32,
+          "text": "The wheel turns on, again and again!",
+          "start": 224.22,
+          "end": 229.51999999999998,
+          "window": [
+            168.04,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 224.22,
+              "end": 224.39999999999998
+            },
+            {
+              "text": " wheel",
+              "start": 224.39999999999998,
+              "end": 224.72
+            },
+            {
+              "text": " turns",
+              "start": 224.72,
+              "end": 225.74
+            },
+            {
+              "text": " on,",
+              "start": 225.74,
+              "end": 227.16
+            },
+            {
+              "text": " again",
+              "start": 227.16,
+              "end": 227.5
+            },
+            {
+              "text": " and",
+              "start": 227.5,
+              "end": 227.94
+            },
+            {
+              "text": " again!",
+              "start": 227.94,
+              "end": 229.51999999999998
+            }
+          ]
+        },
+        {
+          "line": 33,
+          "text": "Again and again...",
+          "start": 234.3,
+          "end": 242.22000000000003,
+          "window": [
+            215.36,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " Again",
+              "start": 234.3,
+              "end": 239.46
+            },
+            {
+              "text": " and",
+              "start": 239.72000000000003,
+              "end": 239.8
+            },
+            {
+              "text": " again...",
+              "start": 239.8,
+              "end": 242.22000000000003
+            }
+          ]
+        },
+        {
+          "line": 34,
+          "text": "The wheel turns on...",
+          "start": 243.66000000000003,
+          "end": 249.44,
+          "window": [
+            215.36,
+            252.22
+          ],
+          "words": [
+            {
+              "text": " The",
+              "start": 243.66000000000003,
+              "end": 245.22000000000003
+            },
+            {
+              "text": " wheel",
+              "start": 245.22000000000003,
+              "end": 245.54000000000002
+            },
+            {
+              "text": " turns",
+              "start": 245.54000000000002,
+              "end": 246.66000000000003
+            },
+            {
+              "text": " on...",
+              "start": 246.66000000000003,
+              "end": 249.44
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "line": 1,
+      "text": "A whistle cuts the morning haze",
+      "start": 12.35,
+      "end": 14.88,
+      "startSpread": 0.019999999999999574,
+      "endSpread": 0.0,
+      "flags": []
+    },
+    {
+      "line": 2,
+      "text": "Across the hills where wild grass sways",
+      "start": 15.59,
+      "end": 18.65,
+      "startSpread": 0.5400000000000009,
+      "endSpread": 0.019999999999999574,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 3,
+      "text": "My grandfather's voice, a faded trace",
+      "start": 20.8,
+      "end": 24.05,
+      "startSpread": 0.11999999999999744,
+      "endSpread": 0.10000000000000142,
+      "flags": []
+    },
+    {
+      "line": 4,
+      "text": "\"The rails are still here, son — make your way\"",
+      "start": 25.080000000000002,
+      "end": 32.01,
+      "startSpread": 0.11999999999999744,
+      "endSpread": 0.7800000000000011,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 5,
+      "text": "I never knew how much those words would weigh",
+      "start": 32.769999999999996,
+      "end": 35.87,
+      "startSpread": 0.38000000000000256,
+      "endSpread": 0.01999999999999602,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 6,
+      "text": "'Til I stood where the rust and silence lay",
+      "start": 36.41,
+      "end": 39.69,
+      "startSpread": 0.17999999999999972,
+      "endSpread": 0.10000000000000142,
+      "flags": []
+    },
+    {
+      "line": 7,
+      "text": "Twenty-three years, a frozen page",
+      "start": 41.75,
+      "end": 44.84,
+      "startSpread": 0.21999999999999886,
+      "endSpread": 0.03999999999999915,
+      "flags": []
+    },
+    {
+      "line": 8,
+      "text": "Waiting for someone to turn the page",
+      "start": 46.290000000000006,
+      "end": 51.56,
+      "startSpread": 0.05999999999999517,
+      "endSpread": 0.5600000000000023,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 9,
+      "text": "The rails remain — they're calling out your name",
+      "start": 52.7,
+      "end": 59.85,
+      "startSpread": 0.03999999999999915,
+      "endSpread": 0.2600000000000051,
+      "flags": []
+    },
+    {
+      "line": 10,
+      "text": "Through every storm, through every field of grain",
+      "start": 60.97,
+      "end": 66.05000000000001,
+      "startSpread": 0.18000000000000682,
+      "endSpread": 0.1799999999999926,
+      "flags": []
+    },
+    {
+      "line": 11,
+      "text": "The rails remain — the story's not in vain",
+      "start": 67.07,
+      "end": 71.7,
+      "startSpread": 0.01999999999999602,
+      "endSpread": 0.5200000000000102,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 12,
+      "text": "The wheel turns on, again and again",
+      "start": 72.19999999999999,
+      "end": 81.42,
+      "startSpread": 1.2000000000000028,
+      "endSpread": 4.039999999999992,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 13,
+      "text": "The city lights of Pyongyang far behind",
+      "start": 80.67,
+      "end": 86.66,
+      "startSpread": 1.0200000000000102,
+      "endSpread": 0.1599999999999966,
+      "flags": [
+        "model_boundary_disagreement",
+        "invalid_interval"
+      ]
+    },
+    {
+      "line": 14,
+      "text": "A flying car, an AI, a fractured timeline",
+      "start": 87.07,
+      "end": 90.59,
+      "startSpread": 0.060000000000002274,
+      "endSpread": 0.060000000000002274,
+      "flags": []
+    },
+    {
+      "line": 15,
+      "text": "I packed my bags with things I couldn't name",
+      "start": 91.72,
+      "end": 95.28,
+      "startSpread": 0.19999999999998863,
+      "endSpread": 0.0,
+      "flags": []
+    },
+    {
+      "line": 16,
+      "text": "Fried chicken, soju, and a child's shame",
+      "start": 95.78,
+      "end": 101.61,
+      "startSpread": 0.12000000000000455,
+      "endSpread": 0.09999999999999432,
+      "flags": []
+    },
+    {
+      "line": 17,
+      "text": "The dashboard showed a map of what was lost",
+      "start": 102.74000000000001,
+      "end": 107.02,
+      "startSpread": 0.04000000000000625,
+      "endSpread": 0.0,
+      "flags": []
+    },
+    {
+      "line": 18,
+      "text": "Every station, every bridge, every crossing crossed",
+      "start": 107.22,
+      "end": 111.28,
+      "startSpread": 0.0,
+      "endSpread": 0.47999999999998977,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 19,
+      "text": "My grandfather's handbook on the passenger seat",
+      "start": 112.88,
+      "end": 116.77000000000001,
+      "startSpread": 0.04000000000000625,
+      "endSpread": 0.01999999999999602,
+      "flags": []
+    },
+    {
+      "line": 20,
+      "text": "A faded note: \"For Biaohan — keep the beat\"",
+      "start": 117.63,
+      "end": 125.72999999999999,
+      "startSpread": 0.060000000000002274,
+      "endSpread": 0.2600000000000051,
+      "flags": []
+    },
+    {
+      "line": 21,
+      "text": "The rails remain — they're calling out your name",
+      "start": 125.03999999999999,
+      "end": 130.92000000000002,
+      "startSpread": 2.760000000000005,
+      "endSpread": 0.11999999999997613,
+      "flags": [
+        "model_boundary_disagreement",
+        "invalid_interval"
+      ]
+    },
+    {
+      "line": 22,
+      "text": "Through every storm, through every field of grain",
+      "start": 131.92000000000002,
+      "end": 137.20999999999998,
+      "startSpread": 0.5999999999999943,
+      "endSpread": 0.020000000000010232,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 23,
+      "text": "The rails remain — the story's not in vain",
+      "start": 138.34,
+      "end": 142.81,
+      "startSpread": 0.040000000000020464,
+      "endSpread": 0.3400000000000034,
+      "flags": []
+    },
+    {
+      "line": 24,
+      "text": "The wheel turns on, again and again",
+      "start": 144.2,
+      "end": 148.51,
+      "startSpread": 0.0800000000000125,
+      "endSpread": 0.060000000000002274,
+      "flags": []
+    },
+    {
+      "line": 25,
+      "text": "I don't know if I can do this alone.",
+      "start": 153.17000000000002,
+      "end": 163.76,
+      "startSpread": 7.219999999999999,
+      "endSpread": 0.0800000000000125,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 26,
+      "text": "But the iron doesn't lie, and the ties don't break",
+      "start": 164.74,
+      "end": 170.42000000000002,
+      "startSpread": 0.07999999999998408,
+      "endSpread": 0.0,
+      "flags": []
+    },
+    {
+      "line": 27,
+      "text": "When you're standing on the shoulders of the ones who came before",
+      "start": 171.24,
+      "end": 176.25,
+      "startSpread": 0.39999999999997726,
+      "endSpread": 0.060000000000002274,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 28,
+      "text": "They're still here... waiting at the door",
+      "start": 176.85,
+      "end": 183.86,
+      "startSpread": 0.060000000000002274,
+      "endSpread": 0.0800000000000125,
+      "flags": []
+    },
+    {
+      "line": 29,
+      "text": "The rails remain — they're calling out your name!",
+      "start": 205.5,
+      "end": 211.81,
+      "startSpread": 2.240000000000009,
+      "endSpread": 0.29999999999998295,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 30,
+      "text": "Through every storm, through every field of grain!",
+      "start": 212.37,
+      "end": 218.38,
+      "startSpread": 0.29999999999998295,
+      "endSpread": 0.03999999999999204,
+      "flags": []
+    },
+    {
+      "line": 31,
+      "text": "The rails remain — the story's not in vain!",
+      "start": 218.38,
+      "end": 224.03,
+      "startSpread": 0.03999999999999204,
+      "endSpread": 0.4200000000000159,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 32,
+      "text": "The wheel turns on, again and again!",
+      "start": 224.24,
+      "end": 230.0,
+      "startSpread": 0.03999999999999204,
+      "endSpread": 0.960000000000008,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 33,
+      "text": "Again and again...",
+      "start": 236.77,
+      "end": 242.33,
+      "startSpread": 4.939999999999998,
+      "endSpread": 0.21999999999997044,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    },
+    {
+      "line": 34,
+      "text": "The wheel turns on...",
+      "start": 244.29000000000002,
+      "end": 249.05,
+      "startSpread": 1.259999999999991,
+      "endSpread": 0.7799999999999727,
+      "flags": [
+        "model_boundary_disagreement"
+      ]
+    }
+  ],
+  "model": "base+small / local context",
+  "lineCount": 34,
+  "expectedLineCount": 34,
+  "issues": [
+    {
+      "line": 2,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "Across the hills where wild grass sways",
+      "start": 15.59,
+      "end": 18.65
+    },
+    {
+      "line": 4,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "\"The rails are still here, son — make your way\"",
+      "start": 25.080000000000002,
+      "end": 32.01
+    },
+    {
+      "line": 5,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "I never knew how much those words would weigh",
+      "start": 32.769999999999996,
+      "end": 35.87
+    },
+    {
+      "line": 8,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "Waiting for someone to turn the page",
+      "start": 46.290000000000006,
+      "end": 51.56
+    },
+    {
+      "line": 11,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The rails remain — the story's not in vain",
+      "start": 67.07,
+      "end": 71.7
+    },
+    {
+      "line": 12,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The wheel turns on, again and again",
+      "start": 72.19999999999999,
+      "end": 81.42
+    },
+    {
+      "line": 13,
+      "flags": [
+        "model_boundary_disagreement",
+        "invalid_interval"
+      ],
+      "text": "The city lights of Pyongyang far behind",
+      "start": 80.67,
+      "end": 86.66
+    },
+    {
+      "line": 18,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "Every station, every bridge, every crossing crossed",
+      "start": 107.22,
+      "end": 111.28
+    },
+    {
+      "line": 21,
+      "flags": [
+        "model_boundary_disagreement",
+        "invalid_interval"
+      ],
+      "text": "The rails remain — they're calling out your name",
+      "start": 125.03999999999999,
+      "end": 130.92000000000002
+    },
+    {
+      "line": 22,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "Through every storm, through every field of grain",
+      "start": 131.92000000000002,
+      "end": 137.20999999999998
+    },
+    {
+      "line": 25,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "I don't know if I can do this alone.",
+      "start": 153.17000000000002,
+      "end": 163.76
+    },
+    {
+      "line": 27,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "When you're standing on the shoulders of the ones who came before",
+      "start": 171.24,
+      "end": 176.25
+    },
+    {
+      "line": 29,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The rails remain — they're calling out your name!",
+      "start": 205.5,
+      "end": 211.81
+    },
+    {
+      "line": 31,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The rails remain — the story's not in vain!",
+      "start": 218.38,
+      "end": 224.03
+    },
+    {
+      "line": 32,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The wheel turns on, again and again!",
+      "start": 224.24,
+      "end": 230.0
+    },
+    {
+      "line": 33,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "Again and again...",
+      "start": 236.77,
+      "end": 242.33
+    },
+    {
+      "line": 34,
+      "flags": [
+        "model_boundary_disagreement"
+      ],
+      "text": "The wheel turns on...",
+      "start": 244.29000000000002,
+      "end": 249.05
+    }
+  ]
+}

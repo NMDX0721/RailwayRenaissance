@@ -1,0 +1,26 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "role": "original",
+  "model": "Qwen/Qwen3-ASR-0.6B",
+  "revision": "5eb144179a02acc5e5ba31e748d22b0cf3e303b0",
+  "toolSha256": "f29ebf2498ca0f59a0fa704f1ea02bc0f77267e9ae182317088d55ee4f301867",
+  "lyricPromptProvided": false,
+  "wordTimestampsProvided": false,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "start": 119.5,
+      "end": 125.5,
+      "language": "Korean",
+      "text": "첨드는 이야기"
+    },
+    {
+      "start": 206.5,
+      "end": 209.5,
+      "language": "Korean",
+      "text": "차철길처럼."
+    }
+  ]
+}

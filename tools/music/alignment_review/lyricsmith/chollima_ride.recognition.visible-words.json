@@ -1,0 +1,710 @@
+{
+  "url": "https://www.lyricsmith.dev/en/editor/bcbce3b5-7fea-4b0b-95b8-ea2566851543",
+  "source": "Rendered recognition word preview CSS; not original lyric alignment or native export",
+  "humanListeningVerified": false,
+  "published": false,
+  "lines": [
+    {
+      "label": "Go to line 1, 0:14.04",
+      "text": "천리마가 달린 다",
+      "words": [
+        {
+          "duration": 0.24,
+          "start": 14.04,
+          "text": "천리마가"
+        },
+        {
+          "duration": 0.88,
+          "start": 14.28,
+          "text": "달린"
+        },
+        {
+          "duration": 0.35,
+          "start": 15.16,
+          "text": "다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 2, 0:17.32",
+      "text": "신시대를 달린 다",
+      "words": [
+        {
+          "duration": 0.32,
+          "start": 17.32,
+          "text": "신시대를"
+        },
+        {
+          "duration": 0.08,
+          "start": 17.64,
+          "text": "달린"
+        },
+        {
+          "duration": 0.16,
+          "start": 17.72,
+          "text": "다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 3, 0:20.04",
+      "text": "주체 의 길따라 우리 는 앞으로",
+      "words": [
+        {
+          "duration": 0.56,
+          "start": 20.04,
+          "text": "주체"
+        },
+        {
+          "duration": 0.64,
+          "start": 20.6,
+          "text": "의"
+        },
+        {
+          "duration": 0.64,
+          "start": 21.24,
+          "text": "길따라"
+        },
+        {
+          "duration": 0.4,
+          "start": 21.88,
+          "text": "우리"
+        },
+        {
+          "duration": 0.24,
+          "start": 22.28,
+          "text": "는"
+        },
+        {
+          "duration": 1.76,
+          "start": 22.52,
+          "text": "앞으로"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 4, 0:26.46",
+      "text": "백두산 정기 마다",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 26.46,
+          "text": "백두산"
+        },
+        {
+          "duration": 0.4,
+          "start": 27.26,
+          "text": "정기"
+        },
+        {
+          "duration": 0.24,
+          "start": 27.66,
+          "text": "마다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 5, 0:30.38",
+      "text": "세동강물 따라",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 30.38,
+          "text": "세동강물"
+        },
+        {
+          "duration": 0.32,
+          "start": 30.86,
+          "text": "따라"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 6, 0:33.54",
+      "text": "단결 의 깃발 높이 들고 앞으로",
+      "words": [
+        {
+          "duration": 0.32,
+          "start": 33.54,
+          "text": "단결"
+        },
+        {
+          "duration": 0.4,
+          "start": 33.86,
+          "text": "의"
+        },
+        {
+          "duration": 0.24,
+          "start": 34.26,
+          "text": "깃발"
+        },
+        {
+          "duration": 0.48,
+          "start": 34.5,
+          "text": "높이"
+        },
+        {
+          "duration": 1.76,
+          "start": 34.98,
+          "text": "들고"
+        },
+        {
+          "duration": 0.35,
+          "start": 36.74,
+          "text": "앞으로"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 7, 0:38.52",
+      "text": "모래 가 에너지 로 비행 차가",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 38.52,
+          "text": "모래"
+        },
+        {
+          "duration": 0.96,
+          "start": 39.32,
+          "text": "가"
+        },
+        {
+          "duration": 0.48,
+          "start": 40.28,
+          "text": "에너지"
+        },
+        {
+          "duration": 0.96,
+          "start": 40.76,
+          "text": "로"
+        },
+        {
+          "duration": 0.72,
+          "start": 41.72,
+          "text": "비행"
+        },
+        {
+          "duration": 0.8,
+          "start": 42.44,
+          "text": "차가"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 8, 0:43.52",
+      "text": "수령",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 43.52,
+          "text": "수령"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 9, 0:46.72",
+      "text": "님은덕으로",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 46.72,
+          "text": "님은덕으로"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 10, 0:54.42",
+      "text": "설리바",
+      "words": [
+        {
+          "duration": 0.88,
+          "start": 54.42,
+          "text": "설리바"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 11, 1:00.52",
+      "text": "위대 한연도자 갈신다",
+      "words": [
+        {
+          "duration": 1.28,
+          "start": 60.52,
+          "text": "위대"
+        },
+        {
+          "duration": 1.92,
+          "start": 61.8,
+          "text": "한연도자"
+        },
+        {
+          "duration": 1.44,
+          "start": 63.72,
+          "text": "갈신다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 12, 1:09.98",
+      "text": "신실에 살린",
+      "words": [
+        {
+          "duration": 1.2,
+          "start": 69.98,
+          "text": "신실에"
+        },
+        {
+          "duration": 0.08,
+          "start": 71.18,
+          "text": "살린"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 13, 1:13.66",
+      "text": "다",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 73.66,
+          "text": "다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 14, 1:20.10",
+      "text": "모래 가 에너지 로 비행 차가",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 80.1,
+          "text": "모래"
+        },
+        {
+          "duration": 0.96,
+          "start": 80.9,
+          "text": "가"
+        },
+        {
+          "duration": 0.48,
+          "start": 81.86,
+          "text": "에너지"
+        },
+        {
+          "duration": 0.96,
+          "start": 82.34,
+          "text": "로"
+        },
+        {
+          "duration": 0.8,
+          "start": 83.3,
+          "text": "비행"
+        },
+        {
+          "duration": 0.72,
+          "start": 84.1,
+          "text": "차가"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 15, 1:25.02",
+      "text": "수령 님",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 85.02,
+          "text": "수령"
+        },
+        {
+          "duration": 0.64,
+          "start": 85.5,
+          "text": "님"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 16, 1:28.30",
+      "text": "은덕으로 기적 을 창조 한다",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 88.3,
+          "text": "은덕으로"
+        },
+        {
+          "duration": 0.4,
+          "start": 89.1,
+          "text": "기적"
+        },
+        {
+          "duration": 0.16,
+          "start": 89.5,
+          "text": "을"
+        },
+        {
+          "duration": 0.32,
+          "start": 89.66,
+          "text": "창조"
+        },
+        {
+          "duration": 1.28,
+          "start": 89.98,
+          "text": "한다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 17, 1:33.22",
+      "text": "강산이 변하 고",
+      "words": [
+        {
+          "duration": 1.28,
+          "start": 93.22,
+          "text": "강산이"
+        },
+        {
+          "duration": 0.64,
+          "start": 94.5,
+          "text": "변하"
+        },
+        {
+          "duration": 0.96,
+          "start": 95.14,
+          "text": "고"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 18, 1:41.26",
+      "text": "굳은결코내려놓지않는다",
+      "words": [
+        {
+          "duration": 2.56,
+          "start": 101.26,
+          "text": "굳은결코내려놓지않는다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 19, 1:45.70",
+      "text": "모래 가 에너지 로 비행 차가 하늘 로",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 105.7,
+          "text": "모래"
+        },
+        {
+          "duration": 0.8,
+          "start": 106.5,
+          "text": "가"
+        },
+        {
+          "duration": 0.64,
+          "start": 107.3,
+          "text": "에너지"
+        },
+        {
+          "duration": 0.96,
+          "start": 107.94,
+          "text": "로"
+        },
+        {
+          "duration": 0.72,
+          "start": 108.9,
+          "text": "비행"
+        },
+        {
+          "duration": 0.16,
+          "start": 109.62,
+          "text": "차가"
+        },
+        {
+          "duration": 1.36,
+          "start": 109.78,
+          "text": "하늘"
+        },
+        {
+          "duration": 0.32,
+          "start": 111.14,
+          "text": "로"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 20, 1:54.30",
+      "text": "은덕으로 우리 는 앞으로",
+      "words": [
+        {
+          "duration": 0.24,
+          "start": 114.3,
+          "text": "은덕으로"
+        },
+        {
+          "duration": 1.28,
+          "start": 114.54,
+          "text": "우리"
+        },
+        {
+          "duration": 0.08,
+          "start": 115.82,
+          "text": "는"
+        },
+        {
+          "duration": 0.88,
+          "start": 115.9,
+          "text": "앞으로"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 21, 2:01.16",
+      "text": "천리마",
+      "words": [
+        {
+          "duration": 0.64,
+          "start": 121.16,
+          "text": "천리마"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 22, 2:07.70",
+      "text": "위대 한항로자 가르 친다라",
+      "words": [
+        {
+          "duration": 1.12,
+          "start": 127.7,
+          "text": "위대"
+        },
+        {
+          "duration": 2.08,
+          "start": 128.82,
+          "text": "한항로자"
+        },
+        {
+          "duration": 1.44,
+          "start": 130.9,
+          "text": "가르"
+        },
+        {
+          "duration": 0.08,
+          "start": 132.34,
+          "text": "친다라"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 23, 2:14.34",
+      "text": "설리마",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 134.34,
+          "text": "설리마"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 24, 2:17.54",
+      "text": "신시대",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 137.54,
+          "text": "신시대"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 25, 2:20.52",
+      "text": "할인 다",
+      "words": [
+        {
+          "duration": 1.04,
+          "start": 140.52,
+          "text": "할인"
+        },
+        {
+          "duration": 0.35,
+          "start": 141.56,
+          "text": "다"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 26, 2:26.62",
+      "text": "I'll turn the page",
+      "words": [
+        {
+          "duration": 0.64,
+          "start": 146.62,
+          "text": "I'll"
+        },
+        {
+          "duration": 0.64,
+          "start": 147.26,
+          "text": "turn"
+        },
+        {
+          "duration": 1.2,
+          "start": 147.9,
+          "text": "the"
+        },
+        {
+          "duration": 0.35,
+          "start": 149.1,
+          "text": "page"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 27, 2:32.00",
+      "text": "收藏了我的",
+      "words": [
+        {
+          "duration": 0.08,
+          "start": 152,
+          "text": "收"
+        },
+        {
+          "duration": 0.08,
+          "start": 152.08,
+          "text": "藏"
+        },
+        {
+          "duration": 0.08,
+          "start": 152.16,
+          "text": "了"
+        },
+        {
+          "duration": 2,
+          "start": 152.24,
+          "text": "我"
+        },
+        {
+          "duration": 0.35,
+          "start": 154.24,
+          "text": "的"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 28, 2:43.28",
+      "text": "태초백수 태초백수",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 163.28,
+          "text": "태초백수"
+        },
+        {
+          "duration": 1.68,
+          "start": 164.08,
+          "text": "태초백수"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 29, 2:50.64",
+      "text": "미션 백승",
+      "words": [
+        {
+          "duration": 1.04,
+          "start": 170.64,
+          "text": "미션"
+        },
+        {
+          "duration": 0.4,
+          "start": 171.68,
+          "text": "백승"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 30, 3:21.22",
+      "text": "発信してウィーデハイ",
+      "words": [
+        {
+          "duration": 0.8,
+          "start": 201.22,
+          "text": "発信"
+        },
+        {
+          "duration": 0.24,
+          "start": 202.02,
+          "text": "し"
+        },
+        {
+          "duration": 0.08,
+          "start": 202.26,
+          "text": "て"
+        },
+        {
+          "duration": 2.88,
+          "start": 202.34,
+          "text": "ウィー"
+        },
+        {
+          "duration": 0.08,
+          "start": 205.22,
+          "text": "デ"
+        },
+        {
+          "duration": 0.32,
+          "start": 205.3,
+          "text": "ハイ"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 31, 3:26.88",
+      "text": "영도 자 가르침 따라",
+      "words": [
+        {
+          "duration": 0.24,
+          "start": 206.88,
+          "text": "영도"
+        },
+        {
+          "duration": 0.72,
+          "start": 207.12,
+          "text": "자"
+        },
+        {
+          "duration": 0.64,
+          "start": 207.84,
+          "text": "가르침"
+        },
+        {
+          "duration": 1.52,
+          "start": 208.48,
+          "text": "따라"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 32, 3:31.14",
+      "text": "Sono libera sì",
+      "words": [
+        {
+          "duration": 0.72,
+          "start": 211.14,
+          "text": "Sono"
+        },
+        {
+          "duration": 2.48,
+          "start": 211.86,
+          "text": "libera"
+        },
+        {
+          "duration": 0.4,
+          "start": 214.34,
+          "text": "sì"
+        }
+      ]
+    }
+  ]
+}

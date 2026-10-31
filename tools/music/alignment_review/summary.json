@@ -1,0 +1,245 @@
+[
+  {
+    "file": "base\\chollima_ride.review.json",
+    "id": "chollima_ride",
+    "model": "base",
+    "lines": 49,
+    "expectedLines": 49,
+    "meanSourceRecall": 0.563,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 23,
+      "zero_duration_word": 7,
+      "invalid_interval": 2
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3"
+  },
+  {
+    "file": "base\\sleepers.review.json",
+    "id": "sleepers",
+    "model": "base",
+    "lines": 33,
+    "expectedLines": 33,
+    "meanSourceRecall": 0.694,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "zero_duration_word": 11,
+      "low_asr_agreement": 10,
+      "invalid_interval": 1,
+      "long_line": 1
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a"
+  },
+  {
+    "file": "base\\sleepers.sleepers.performance.anchored.review.json",
+    "id": "sleepers",
+    "model": "base",
+    "lines": 35,
+    "expectedLines": 35,
+    "meanSourceRecall": 0.971,
+    "minimumSourceRecall": 0.839,
+    "flags": {
+      "zero_duration_word": 1
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a"
+  },
+  {
+    "file": "base\\sleepers.sleepers.performance.review.json",
+    "id": "sleepers",
+    "model": "base",
+    "lines": 35,
+    "expectedLines": 35,
+    "meanSourceRecall": 0.826,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "zero_duration_word": 9,
+      "low_asr_agreement": 5,
+      "long_line": 2
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a"
+  },
+  {
+    "file": "base\\south_wind.review.json",
+    "id": "south_wind",
+    "model": "base",
+    "lines": 44,
+    "expectedLines": 44,
+    "meanSourceRecall": 0.581,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 23,
+      "zero_duration_word": 7,
+      "invalid_interval": 4
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68"
+  },
+  {
+    "file": "base\\starlit_rails.review.json",
+    "id": "starlit_rails",
+    "model": "base",
+    "lines": 52,
+    "expectedLines": 52,
+    "meanSourceRecall": 0.628,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 24,
+      "long_line": 1,
+      "invalid_interval": 7,
+      "zero_duration_word": 7
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17"
+  },
+  {
+    "file": "small\\chollima_ride.authored-prompt.review.json",
+    "id": "chollima_ride",
+    "model": "small",
+    "lines": 49,
+    "expectedLines": 49,
+    "meanSourceRecall": 0.635,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 20,
+      "invalid_interval": 1,
+      "zero_duration_word": 6
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3"
+  },
+  {
+    "file": "small\\chollima_ride.review.json",
+    "id": "chollima_ride",
+    "model": "small",
+    "lines": 49,
+    "expectedLines": 49,
+    "meanSourceRecall": 0.635,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 20,
+      "invalid_interval": 1,
+      "zero_duration_word": 6
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3"
+  },
+  {
+    "file": "small\\chollima_ride.window-refined.review.json",
+    "id": "chollima_ride",
+    "model": "small",
+    "lines": 49,
+    "expectedLines": 49,
+    "meanSourceRecall": 0.635,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 20,
+      "invalid_interval": 1,
+      "zero_duration_word": 6,
+      "invalid_interval_after_refinement": 1
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3"
+  },
+  {
+    "file": "small\\south_wind.authored-prompt.review.json",
+    "id": "south_wind",
+    "model": "small",
+    "lines": 39,
+    "expectedLines": 39,
+    "meanSourceRecall": 0.865,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 4,
+      "zero_duration_word": 1
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68"
+  },
+  {
+    "file": "small\\south_wind.review.json",
+    "id": "south_wind",
+    "model": "small",
+    "lines": 44,
+    "expectedLines": 44,
+    "meanSourceRecall": 0.793,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 8,
+      "zero_duration_word": 6,
+      "invalid_interval": 3,
+      "long_line": 1
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68"
+  },
+  {
+    "file": "small\\south_wind.window-refined.review.json",
+    "id": "south_wind",
+    "model": "small",
+    "lines": 44,
+    "expectedLines": 44,
+    "meanSourceRecall": 0.793,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 8,
+      "zero_duration_word": 6,
+      "invalid_interval": 3,
+      "long_line": 1,
+      "invalid_interval_after_refinement": 3
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68"
+  },
+  {
+    "file": "small\\starlit_rails.authored-prompt.review.json",
+    "id": "starlit_rails",
+    "model": "small",
+    "lines": 47,
+    "expectedLines": 47,
+    "meanSourceRecall": 0.804,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 11,
+      "zero_duration_word": 5
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17"
+  },
+  {
+    "file": "small\\starlit_rails.review.json",
+    "id": "starlit_rails",
+    "model": "small",
+    "lines": 52,
+    "expectedLines": 52,
+    "meanSourceRecall": 0.742,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 16,
+      "zero_duration_word": 9,
+      "invalid_interval": 6
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17"
+  },
+  {
+    "file": "small\\starlit_rails.window-refined.review.json",
+    "id": "starlit_rails",
+    "model": "small",
+    "lines": 52,
+    "expectedLines": 52,
+    "meanSourceRecall": 0.742,
+    "minimumSourceRecall": 0.0,
+    "flags": {
+      "low_asr_agreement": 16,
+      "zero_duration_word": 9,
+      "invalid_interval": 6,
+      "invalid_interval_after_refinement": 6
+    },
+    "humanListeningVerified": false,
+    "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17"
+  }
+]

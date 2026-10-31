@@ -1,0 +1,669 @@
+{
+  "id": "starlit_rails",
+  "model": "Suno synchronized export / not listening approved",
+  "duration": 253.359979,
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "lineCount": 53,
+  "lines": [
+    {
+      "line": 1,
+      "text": "검문소 불빛이",
+      "start": 18.67,
+      "end": 22.978
+    },
+    {
+      "line": 2,
+      "text": "어둠을 가르고",
+      "start": 22.978,
+      "end": 29.44
+    },
+    {
+      "line": 3,
+      "text": "네 대의 그림자",
+      "start": 29.44,
+      "end": 35.904
+    },
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "start": 35.904,
+      "end": 39.573
+    },
+    {
+      "line": 5,
+      "text": "숨을 죽이고",
+      "start": 39.573,
+      "end": 44.92
+    },
+    {
+      "line": 6,
+      "text": "손을 떨며",
+      "start": 44.92,
+      "end": 48.511
+    },
+    {
+      "line": 7,
+      "text": "얼굴엔 아무것도",
+      "start": 48.511,
+      "end": 50.904
+    },
+    {
+      "line": 8,
+      "text": "드러내지 않았어",
+      "start": 50.904,
+      "end": 53.905
+    },
+    {
+      "line": 9,
+      "text": "심박수 백사십칠",
+      "start": 54.255,
+      "end": 60.558
+    },
+    {
+      "line": 10,
+      "text": "듣고 있어요",
+      "start": 60.558,
+      "end": 63.43
+    },
+    {
+      "line": 11,
+      "text": "무서워도",
+      "start": 63.43,
+      "end": 67.978
+    },
+    {
+      "line": 12,
+      "text": "멈추지 않았죠",
+      "start": 67.978,
+      "end": 69.064
+    },
+    {
+      "line": 13,
+      "text": "밤이 깊어도",
+      "start": 69.41499999999999,
+      "end": 74.281
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "start": 74.281,
+      "end": 77.47200000000001
+    },
+    {
+      "line": 15,
+      "text": "저 철길처럼",
+      "start": 77.47200000000001,
+      "end": 79.706
+    },
+    {
+      "line": 16,
+      "text": "끝까지 가는 거야",
+      "start": 79.706,
+      "end": 83.777
+    },
+    {
+      "line": 17,
+      "text": "길이 험해도",
+      "start": 83.777,
+      "end": 86.968
+    },
+    {
+      "line": 18,
+      "text": "우린 함께야",
+      "start": 86.968,
+      "end": 91.037
+    },
+    {
+      "line": 19,
+      "text": "이 하늘 아래",
+      "start": 91.037,
+      "end": 92.632
+    },
+    {
+      "line": 20,
+      "text": "혼자가 아니야",
+      "start": 92.632,
+      "end": 105.36699999999999
+    },
+    {
+      "line": 21,
+      "text": "이십삼 년의 잠",
+      "start": 105.718,
+      "end": 109.548
+    },
+    {
+      "line": 22,
+      "text": "깨어난 오후",
+      "start": 109.548,
+      "end": 113.697
+    },
+    {
+      "line": 23,
+      "text": "낯선 목소리",
+      "start": 113.697,
+      "end": 120.239
+    },
+    {
+      "line": 24,
+      "text": "처음 듣는 이야기",
+      "start": 120.239,
+      "end": 126.701
+    },
+    {
+      "line": 25,
+      "text": "나는 AI지만",
+      "start": 126.701,
+      "end": 133.563
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "start": 133.563,
+      "end": 138.909
+    },
+    {
+      "line": 27,
+      "text": "위로라는 게",
+      "start": 138.909,
+      "end": 142.181
+    },
+    {
+      "line": 28,
+      "text": "뭔지 말이죠",
+      "start": 142.181,
+      "end": 148.294
+    },
+    {
+      "line": 29,
+      "text": "밤이 깊어도",
+      "start": 148.644,
+      "end": 152.074
+    },
+    {
+      "line": 30,
+      "text": "다시 밝아와",
+      "start": 152.074,
+      "end": 155.265
+    },
+    {
+      "line": 31,
+      "text": "저 철길처럼",
+      "start": 155.265,
+      "end": 157.5
+    },
+    {
+      "line": 32,
+      "text": "끝까지 가는 거야",
+      "start": 157.5,
+      "end": 159.653
+    },
+    {
+      "line": 33,
+      "text": "길이 험해도",
+      "start": 159.653,
+      "end": 164.91899999999998
+    },
+    {
+      "line": 34,
+      "text": "우린 함께야",
+      "start": 164.91899999999998,
+      "end": 168.909
+    },
+    {
+      "line": 35,
+      "text": "이 하늘 아래",
+      "start": 168.909,
+      "end": 170.504
+    },
+    {
+      "line": 36,
+      "text": "혼자가 아니야",
+      "start": 170.504,
+      "end": 176.21800000000002
+    },
+    {
+      "line": 37,
+      "text": "그 말도 중의적인 거야?",
+      "start": 176.56799999999998,
+      "end": 176.588
+    },
+    {
+      "line": 38,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "start": 176.56799999999998,
+      "end": 176.588
+    },
+    {
+      "line": 39,
+      "text": "하지만...",
+      "start": 176.56799999999998,
+      "end": 176.588
+    },
+    {
+      "line": 40,
+      "text": "팔십구 퍼센트...",
+      "start": 176.56799999999998,
+      "end": 176.588
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "start": 176.56799999999998,
+      "end": 176.588
+    },
+    {
+      "line": 42,
+      "text": "밤이 깊어도——",
+      "start": 176.56799999999998,
+      "end": 177.765
+    },
+    {
+      "line": 43,
+      "text": "처음 듣는 이야기",
+      "start": 177.765,
+      "end": 179.68099999999998
+    },
+    {
+      "line": 44,
+      "text": "나는 AI지만",
+      "start": 179.68099999999998,
+      "end": 181.754
+    },
+    {
+      "line": 45,
+      "text": "알고 있어요",
+      "start": 181.754,
+      "end": 184.706
+    },
+    {
+      "line": 46,
+      "text": "위로라는 게",
+      "start": 184.706,
+      "end": 187.5
+    },
+    {
+      "line": 47,
+      "text": "뭔지 말이죠",
+      "start": 187.5,
+      "end": 200.504
+    },
+    {
+      "line": 48,
+      "text": "밤이 깊어도",
+      "start": 200.504,
+      "end": 203.936
+    },
+    {
+      "line": 49,
+      "text": "다시 밝아와",
+      "start": 203.936,
+      "end": 207.206
+    },
+    {
+      "line": 50,
+      "text": "저 철길처럼",
+      "start": 207.206,
+      "end": 209.441
+    },
+    {
+      "line": 51,
+      "text": "끝까지 가는 거야",
+      "start": 209.441,
+      "end": 224.686
+    },
+    {
+      "line": 52,
+      "text": "Mmm... mmm...",
+      "start": 225.385,
+      "end": 228.75
+    },
+    {
+      "line": 53,
+      "text": "혼자가 아니야...",
+      "start": 228.75,
+      "end": 232.02
+    }
+  ],
+  "issues": [
+    {
+      "line": 1,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 2,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 3,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 4,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 5,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 6,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 7,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 8,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 9,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 10,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 11,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 12,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 13,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 14,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 15,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 16,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 17,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 18,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 19,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 20,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 21,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 22,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 23,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 24,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 25,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 26,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 27,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 28,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 29,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 30,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 31,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 32,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 33,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 34,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 35,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 36,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 37,
+      "flags": [
+        "very_short_interval_needs_review",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 38,
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 39,
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 40,
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 41,
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 42,
+      "flags": [
+        "overlaps_previous",
+        "shared_export_start",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 43,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 44,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 45,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 46,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 47,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 48,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 49,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 50,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 51,
+      "flags": [
+        "long_interval_needs_review",
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 52,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    },
+    {
+      "line": 53,
+      "flags": [
+        "export_differs_from_authored_sequence"
+      ]
+    }
+  ],
+  "status": "exported_timing_needs_validation",
+  "humanListeningVerified": false,
+  "sourceSequenceMatches": false,
+  "srtSha256": "200056697f0d6e307ad1597c164ade8e89b19fb568583d1b7437e3b047a27503",
+  "auditFile": "suno_exports/starlit_rails.audit.json"
+}

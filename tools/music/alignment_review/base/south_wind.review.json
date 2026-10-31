@@ -1,0 +1,1231 @@
+{
+  "id": "south_wind",
+  "language": "ko",
+  "audioSha256": "473d501bfc30516ecf1d4e93863c198d09836b6c30947e3ca4034efaa88fbe68",
+  "lyricSha256": "743f7bb2daad0660d4b04f9bb6e02fc133481067221e472ca0037cf60da3882d",
+  "model": "base",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+  },
+  "toolVersions": {
+    "stable-ts": "2.19.1",
+    "faster-whisper": "1.2.1"
+  },
+  "duration": 157.12,
+  "lineCount": 44,
+  "expectedLineCount": 44,
+  "status": "candidate_needs_review",
+  "humanListeningVerified": false,
+  "issues": [
+    {
+      "line": 1,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 10.02,
+      "end": 12.8,
+      "text": "평양의 뒷골목",
+      "heard": ""
+    },
+    {
+      "line": 2,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 14.34,
+      "end": 18.38,
+      "text": "작은 간판 하나",
+      "heard": ""
+    },
+    {
+      "line": 3,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 19.58,
+      "end": 24.06,
+      "text": "빛바랜 초상화 옆에",
+      "heard": " 빛바른  조상  와  옆에  동일"
+    },
+    {
+      "line": 9,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 48.62,
+      "end": 50.62,
+      "text": "남쪽에서 온 맛",
+      "heard": " 남쪽에  서운  난  몰래"
+    },
+    {
+      "line": 11,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 53.56,
+      "end": 54.92,
+      "text": "시대가 변해",
+      "heard": " 퍼져가  시대가  변해  조용히"
+    },
+    {
+      "line": 12,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 55.04,
+      "end": 56.32,
+      "text": "조용히 변해",
+      "heard": " 변해  조용히  변해  초상화도"
+    },
+    {
+      "line": 13,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 56.8,
+      "end": 58.18,
+      "text": "초상화도 모른 척",
+      "heard": " 변해  초상화도  모름차  난"
+    },
+    {
+      "line": 14,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 58.58,
+      "end": 60.4,
+      "text": "남쪽에서 온 맛",
+      "heard": " 모름차  난  죽였어  only"
+    },
+    {
+      "line": 16,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 63.56,
+      "end": 64.72,
+      "text": "이상한 나라",
+      "heard": " 이상한  말하지만"
+    },
+    {
+      "line": 19,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 69.8,
+      "end": 71.08,
+      "text": "점원이 속삭였죠",
+      "heard": " 천번이  속삭했죠  학생"
+    },
+    {
+      "line": 22,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 76.86,
+      "end": 78.94,
+      "text": "\"이 동네 규칙을 몰라요\"",
+      "heard": " 이  동네  그치글  몰라라  캔  커피"
+    },
+    {
+      "line": 24,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 81.92,
+      "end": 83.64,
+      "text": "새우깡, 신라면",
+      "heard": " 우유  새우깡  신나면  계산"
+    },
+    {
+      "line": 26,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 86.5,
+      "end": 88.74,
+      "text": "남쪽의 풍경",
+      "heard": " 사인  난  남쪽에  붕겨"
+    },
+    {
+      "line": 29,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 97.86,
+      "end": 99.0,
+      "text": "시대가 변해",
+      "heard": " 퍼져가  시대가  변해  조용히"
+    },
+    {
+      "line": 30,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 99.12,
+      "end": 100.48,
+      "text": "조용히 변해",
+      "heard": " 변해  조용히  변해  초상화도"
+    },
+    {
+      "line": 32,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 103.1,
+      "end": 103.38,
+      "text": "남쪽에서 온 맛",
+      "heard": " 선보유  후고,"
+    },
+    {
+      "line": 33,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 103.38,
+      "end": 103.38,
+      "text": "몰래몰래 퍼져가",
+      "heard": " 선보유  후고,"
+    },
+    {
+      "line": 34,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 103.38,
+      "end": 103.38,
+      "text": "시대가 변해",
+      "heard": " 선보유  후고,"
+    },
+    {
+      "line": 35,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 103.38,
+      "end": 103.38,
+      "text": "조용히 변해",
+      "heard": " 선보유  후고,"
+    },
+    {
+      "line": 36,
+      "flags": [
+        "invalid_interval",
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 103.38,
+      "end": 103.38,
+      "text": "초상화도 모른 척",
+      "heard": " 선보유  후고,"
+    },
+    {
+      "line": 37,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 103.38,
+      "end": 105.66,
+      "text": "선부유 후부...",
+      "heard": " 선보유  후고,  먼저  잘상"
+    },
+    {
+      "line": 41,
+      "flags": [
+        "zero_duration_word",
+        "low_asr_agreement"
+      ],
+      "start": 135.44,
+      "end": 138.42,
+      "text": "통일 도시락...",
+      "heard": " 공일  도시라  이상한"
+    },
+    {
+      "line": 43,
+      "flags": [
+        "low_asr_agreement"
+      ],
+      "start": 143.3,
+      "end": 146.26,
+      "text": "왠지...",
+      "heard": " 왠지  따뜻해"
+    }
+  ],
+  "lines": [
+    {
+      "line": 1,
+      "start": 10.02,
+      "end": 12.8,
+      "text": "평양의 뒷골목",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 10.02,
+          "end": 11.42,
+          "text": " 평양의"
+        },
+        {
+          "start": 11.42,
+          "end": 12.8,
+          "text": " 뒷골목"
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "start": 14.34,
+      "end": 18.38,
+      "text": "작은 간판 하나",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 14.34,
+          "end": 15.4,
+          "text": " 작은"
+        },
+        {
+          "start": 15.4,
+          "end": 17.08,
+          "text": " 간판"
+        },
+        {
+          "start": 17.08,
+          "end": 18.38,
+          "text": " 하나"
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "start": 19.58,
+      "end": 24.06,
+      "text": "빛바랜 초상화 옆에",
+      "asrAgreement": 0.556,
+      "words": [
+        {
+          "start": 19.58,
+          "end": 21.14,
+          "text": " 빛바랜"
+        },
+        {
+          "start": 21.14,
+          "end": 22.76,
+          "text": " 초상화"
+        },
+        {
+          "start": 22.76,
+          "end": 24.06,
+          "text": " 옆에"
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "start": 24.72,
+      "end": 27.4,
+      "text": "\"통일 도시락\" — 한글로",
+      "asrAgreement": 0.824,
+      "words": [
+        {
+          "start": 24.72,
+          "end": 25.44,
+          "text": " \"통일"
+        },
+        {
+          "start": 25.44,
+          "end": 26.84,
+          "text": " 도시락\""
+        },
+        {
+          "start": 26.84,
+          "end": 27.1,
+          "text": " —"
+        },
+        {
+          "start": 27.1,
+          "end": 27.4,
+          "text": " 한글로"
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "start": 30.32,
+      "end": 32.88,
+      "text": "학생들이 줄 서서",
+      "asrAgreement": 0.824,
+      "words": [
+        {
+          "start": 30.32,
+          "end": 30.94,
+          "text": " 학생들이"
+        },
+        {
+          "start": 30.94,
+          "end": 31.44,
+          "text": " 줄"
+        },
+        {
+          "start": 31.44,
+          "end": 32.88,
+          "text": " 서서"
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "start": 33.1,
+      "end": 37.36,
+      "text": "봉지에 뭐가 들었나",
+      "asrAgreement": 0.889,
+      "words": [
+        {
+          "start": 33.1,
+          "end": 35.58,
+          "text": " 봉지에"
+        },
+        {
+          "start": 35.58,
+          "end": 36.1,
+          "text": " 뭐가"
+        },
+        {
+          "start": 36.1,
+          "end": 37.36,
+          "text": " 들었나"
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "start": 38.82,
+      "end": 42.36,
+      "text": "치킨 냄새가 풍기고",
+      "asrAgreement": 0.875,
+      "words": [
+        {
+          "start": 38.82,
+          "end": 40.18,
+          "text": " 치킨"
+        },
+        {
+          "start": 40.18,
+          "end": 41.08,
+          "text": " 냄새가"
+        },
+        {
+          "start": 41.08,
+          "end": 42.36,
+          "text": " 풍기고"
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "start": 43.96,
+      "end": 47.04,
+      "text": "소주 병이 보이네",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 43.96,
+          "end": 44.36,
+          "text": " 소주"
+        },
+        {
+          "start": 44.36,
+          "end": 45.48,
+          "text": " 병이"
+        },
+        {
+          "start": 45.48,
+          "end": 47.04,
+          "text": " 보이네"
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "start": 48.62,
+      "end": 50.62,
+      "text": "남쪽에서 온 맛",
+      "asrAgreement": 0.571,
+      "words": [
+        {
+          "start": 48.62,
+          "end": 49.84,
+          "text": " 남쪽에서"
+        },
+        {
+          "start": 49.84,
+          "end": 50.36,
+          "text": " 온"
+        },
+        {
+          "start": 50.36,
+          "end": 50.62,
+          "text": " 맛"
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "start": 51.3,
+      "end": 53.14,
+      "text": "몰래몰래 퍼져가",
+      "asrAgreement": 0.778,
+      "words": [
+        {
+          "start": 51.3,
+          "end": 52.38,
+          "text": " 몰래몰래"
+        },
+        {
+          "start": 52.38,
+          "end": 53.14,
+          "text": " 퍼져가"
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "start": 53.56,
+      "end": 54.92,
+      "text": "시대가 변해",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 53.56,
+          "end": 54.28,
+          "text": " 시대가"
+        },
+        {
+          "start": 54.28,
+          "end": 54.92,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "start": 55.04,
+      "end": 56.32,
+      "text": "조용히 변해",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 55.04,
+          "end": 55.56,
+          "text": " 조용히"
+        },
+        {
+          "start": 55.56,
+          "end": 56.32,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "start": 56.8,
+      "end": 58.18,
+      "text": "초상화도 모른 척",
+      "asrAgreement": 0.588,
+      "words": [
+        {
+          "start": 56.8,
+          "end": 57.36,
+          "text": " 초상화도"
+        },
+        {
+          "start": 57.36,
+          "end": 57.88,
+          "text": " 모른"
+        },
+        {
+          "start": 57.88,
+          "end": 58.18,
+          "text": " 척"
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "start": 58.58,
+      "end": 60.4,
+      "text": "남쪽에서 온 맛",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 58.58,
+          "end": 59.66,
+          "text": " 남쪽에서"
+        },
+        {
+          "start": 60.4,
+          "end": 60.4,
+          "text": " 온"
+        },
+        {
+          "start": 60.4,
+          "end": 60.4,
+          "text": " 맛"
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "start": 61.1,
+      "end": 63.0,
+      "text": "점점 더 가까워져",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 61.1,
+          "end": 61.68,
+          "text": " 점점"
+        },
+        {
+          "start": 61.68,
+          "end": 61.94,
+          "text": " 더"
+        },
+        {
+          "start": 61.94,
+          "end": 63.0,
+          "text": " 가까워져"
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "start": 63.56,
+      "end": 64.72,
+      "text": "이상한 나라",
+      "asrAgreement": 0.5,
+      "words": [
+        {
+          "start": 63.56,
+          "end": 64.38,
+          "text": " 이상한"
+        },
+        {
+          "start": 64.38,
+          "end": 64.72,
+          "text": " 나라"
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "start": 65.0,
+      "end": 66.0,
+      "text": "하지만 왠지",
+      "asrAgreement": 0.714,
+      "words": [
+        {
+          "start": 65.0,
+          "end": 65.46,
+          "text": " 하지만"
+        },
+        {
+          "start": 65.46,
+          "end": 66.0,
+          "text": " 왠지"
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "start": 66.58,
+      "end": 67.78,
+      "text": "따뜻한 이 느낌",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 66.58,
+          "end": 67.2,
+          "text": " 따뜻한"
+        },
+        {
+          "start": 67.2,
+          "end": 67.48,
+          "text": " 이"
+        },
+        {
+          "start": 67.48,
+          "end": 67.78,
+          "text": " 느낌"
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "start": 69.8,
+      "end": 71.08,
+      "text": "점원이 속삭였죠",
+      "asrAgreement": 0.5,
+      "words": [
+        {
+          "start": 69.8,
+          "end": 70.3,
+          "text": " 점원이"
+        },
+        {
+          "start": 70.3,
+          "end": 71.08,
+          "text": " 속삭였죠"
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "start": 71.66,
+      "end": 74.3,
+      "text": "\"학생, 새로 들어온 건데\"",
+      "asrAgreement": 0.692,
+      "words": [
+        {
+          "start": 71.66,
+          "end": 72.46,
+          "text": " \"학생,"
+        },
+        {
+          "start": 72.46,
+          "end": 72.74,
+          "text": " 새로"
+        },
+        {
+          "start": 72.74,
+          "end": 73.12,
+          "text": " 들어온"
+        },
+        {
+          "start": 73.12,
+          "end": 74.3,
+          "text": " 건데\""
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "start": 74.3,
+      "end": 76.7,
+      "text": "\"걱정 마요, 저는 유학생\"",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 74.3,
+          "end": 74.62,
+          "text": " \"걱정"
+        },
+        {
+          "start": 74.62,
+          "end": 75.06,
+          "text": " 마요,"
+        },
+        {
+          "start": 75.06,
+          "end": 75.28,
+          "text": " 저는"
+        },
+        {
+          "start": 75.28,
+          "end": 76.7,
+          "text": " 유학생\""
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "start": 76.86,
+      "end": 78.94,
+      "text": "\"이 동네 규칙을 몰라요\"",
+      "asrAgreement": 0.476,
+      "words": [
+        {
+          "start": 76.86,
+          "end": 76.94,
+          "text": " \"이"
+        },
+        {
+          "start": 76.94,
+          "end": 77.22,
+          "text": " 동네"
+        },
+        {
+          "start": 77.22,
+          "end": 77.72,
+          "text": " 규칙을"
+        },
+        {
+          "start": 77.72,
+          "end": 78.94,
+          "text": " 몰라요\""
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "start": 79.02,
+      "end": 81.4,
+      "text": "캔커피, 바나나우유",
+      "asrAgreement": 0.842,
+      "words": [
+        {
+          "start": 79.02,
+          "end": 80.12,
+          "text": " 캔커피,"
+        },
+        {
+          "start": 80.12,
+          "end": 81.4,
+          "text": " 바나나우유"
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "start": 81.92,
+      "end": 83.64,
+      "text": "새우깡, 신라면",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 81.92,
+          "end": 83.14,
+          "text": " 새우깡,"
+        },
+        {
+          "start": 83.14,
+          "end": 83.64,
+          "text": " 신라면"
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "start": 84.3,
+      "end": 86.12,
+      "text": "계산대 위에 쌓인",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 84.3,
+          "end": 84.8,
+          "text": " 계산대"
+        },
+        {
+          "start": 84.8,
+          "end": 85.22,
+          "text": " 위에"
+        },
+        {
+          "start": 85.22,
+          "end": 86.12,
+          "text": " 쌓인"
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "start": 86.5,
+      "end": 88.74,
+      "text": "남쪽의 풍경",
+      "asrAgreement": 0.308,
+      "words": [
+        {
+          "start": 86.5,
+          "end": 87.76,
+          "text": " 남쪽의"
+        },
+        {
+          "start": 87.76,
+          "end": 88.74,
+          "text": " 풍경"
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "start": 91.68,
+      "end": 94.68,
+      "text": "남쪽에서 온 맛",
+      "asrAgreement": 0.667,
+      "words": [
+        {
+          "start": 91.68,
+          "end": 93.92,
+          "text": " 남쪽에서"
+        },
+        {
+          "start": 93.92,
+          "end": 94.36,
+          "text": " 온"
+        },
+        {
+          "start": 94.36,
+          "end": 94.68,
+          "text": " 맛"
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "start": 95.28,
+      "end": 97.56,
+      "text": "몰래몰래 퍼져가",
+      "asrAgreement": 0.824,
+      "words": [
+        {
+          "start": 95.28,
+          "end": 96.46,
+          "text": " 몰래몰래"
+        },
+        {
+          "start": 96.46,
+          "end": 97.56,
+          "text": " 퍼져가"
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "start": 97.86,
+      "end": 99.0,
+      "text": "시대가 변해",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 97.86,
+          "end": 98.38,
+          "text": " 시대가"
+        },
+        {
+          "start": 98.38,
+          "end": 99.0,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "start": 99.12,
+      "end": 100.48,
+      "text": "조용히 변해",
+      "asrAgreement": 0.625,
+      "words": [
+        {
+          "start": 99.12,
+          "end": 99.68,
+          "text": " 조용히"
+        },
+        {
+          "start": 99.68,
+          "end": 100.48,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "start": 100.88,
+      "end": 102.32,
+      "text": "초상화도 모른 척",
+      "asrAgreement": 0.706,
+      "words": [
+        {
+          "start": 100.88,
+          "end": 101.44,
+          "text": " 초상화도"
+        },
+        {
+          "start": 101.44,
+          "end": 101.98,
+          "text": " 모른"
+        },
+        {
+          "start": 101.98,
+          "end": 102.32,
+          "text": " 척"
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "start": 103.1,
+      "end": 103.38,
+      "text": "남쪽에서 온 맛",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 103.1,
+          "end": 103.38,
+          "text": " 남쪽에서"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 온"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 맛"
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "start": 103.38,
+      "end": 103.38,
+      "text": "몰래몰래 퍼져가",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 몰래몰래"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 퍼져가"
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "start": 103.38,
+      "end": 103.38,
+      "text": "시대가 변해",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 시대가"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "start": 103.38,
+      "end": 103.38,
+      "text": "조용히 변해",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 조용히"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 변해"
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "start": 103.38,
+      "end": 103.38,
+      "text": "초상화도 모른 척",
+      "asrAgreement": 0.0,
+      "words": [
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 초상화도"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 모른"
+        },
+        {
+          "start": 103.38,
+          "end": 103.38,
+          "text": " 척"
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "start": 103.38,
+      "end": 105.66,
+      "text": "선부유 후부...",
+      "asrAgreement": 0.429,
+      "words": [
+        {
+          "start": 103.38,
+          "end": 103.76,
+          "text": " 선부유"
+        },
+        {
+          "start": 103.76,
+          "end": 105.66,
+          "text": " 후부..."
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "start": 105.66,
+      "end": 107.2,
+      "text": "먼저 잘 사는 사람들",
+      "asrAgreement": 0.8,
+      "words": [
+        {
+          "start": 105.66,
+          "end": 106.04,
+          "text": " 먼저"
+        },
+        {
+          "start": 106.04,
+          "end": 106.42,
+          "text": " 잘"
+        },
+        {
+          "start": 106.42,
+          "end": 106.72,
+          "text": " 사는"
+        },
+        {
+          "start": 106.72,
+          "end": 107.2,
+          "text": " 사람들"
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "start": 108.1,
+      "end": 110.0,
+      "text": "한 걸음 더 앞서",
+      "asrAgreement": 0.714,
+      "words": [
+        {
+          "start": 108.1,
+          "end": 108.44,
+          "text": " 한"
+        },
+        {
+          "start": 108.44,
+          "end": 109.02,
+          "text": " 걸음"
+        },
+        {
+          "start": 109.02,
+          "end": 109.32,
+          "text": " 더"
+        },
+        {
+          "start": 109.32,
+          "end": 110.0,
+          "text": " 앞서"
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "start": 110.7,
+      "end": 112.5,
+      "text": "가는 것뿐이야",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 110.7,
+          "end": 111.1,
+          "text": " 가는"
+        },
+        {
+          "start": 111.1,
+          "end": 112.5,
+          "text": " 것뿐이야"
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "start": 135.44,
+      "end": 138.42,
+      "text": "통일 도시락...",
+      "asrAgreement": 0.462,
+      "words": [
+        {
+          "start": 135.44,
+          "end": 135.44,
+          "text": " 통일"
+        },
+        {
+          "start": 135.44,
+          "end": 138.42,
+          "text": " 도시락..."
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "start": 139.62,
+      "end": 141.86,
+      "text": "이상한 곳이지만",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 139.62,
+          "end": 139.98,
+          "text": " 이상한"
+        },
+        {
+          "start": 139.98,
+          "end": 141.86,
+          "text": " 곳이지만"
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "start": 143.3,
+      "end": 146.26,
+      "text": "왠지...",
+      "asrAgreement": 0.571,
+      "words": [
+        {
+          "start": 143.3,
+          "end": 146.26,
+          "text": " 왠지..."
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "start": 147.2,
+      "end": 148.92,
+      "text": "따뜻해",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 147.2,
+          "end": 148.92,
+          "text": " 따뜻해"
+        }
+      ]
+    }
+  ]
+}

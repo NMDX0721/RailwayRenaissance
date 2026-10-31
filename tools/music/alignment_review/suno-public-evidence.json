@@ -1,0 +1,63 @@
+{
+  "checkedOn": "2026-10-25",
+  "authorization": "Only two song IDs; anonymous read-only GET; no audio/lyrics upload or credentials",
+  "interpretation": "Public text is generation input, not proof of performed wording or timing. No private access attempted.",
+  "records": [
+    {
+      "id": "starlit_rails",
+      "publicPage": "https://suno.com/song/58153497-be67-48f3-b92a-7d490e2827b4",
+      "pageSha256": "47f1a907a52646caecd5ce4b55c46c2b50da9bafc044a08a86023eea50041c07",
+      "publicLineCount": 47,
+      "authoredLineCount": 47,
+      "equalsAuthored": true,
+      "equalsEmbedded": false,
+      "diff": [],
+      "alignedLyrics": {
+        "v2": {
+          "httpStatus": 401,
+          "response": {
+            "detail": "Unauthorized"
+          },
+          "responseSha256": "9eb987851df8e95e4532c4a851eba81ee7c57ac8b15aa15195a247e4d725dd9f"
+        },
+        "v3": {
+          "httpStatus": 401,
+          "response": {
+            "detail": "Unauthorized"
+          },
+          "responseSha256": "9eb987851df8e95e4532c4a851eba81ee7c57ac8b15aa15195a247e4d725dd9f"
+        }
+      },
+      "timingRetrieved": false,
+      "humanListeningVerified": false
+    },
+    {
+      "id": "chollima_ride",
+      "publicPage": "https://suno.com/song/1faca03b-156a-41c1-8d4f-c7bc8cb2226a",
+      "pageSha256": "7ab04550424481d5b78ecb863c78434f285cccb013808fd3bf3cda5dd62f8e08",
+      "publicLineCount": 49,
+      "authoredLineCount": 49,
+      "equalsAuthored": true,
+      "equalsEmbedded": true,
+      "diff": [],
+      "alignedLyrics": {
+        "v2": {
+          "httpStatus": 401,
+          "response": {
+            "detail": "Unauthorized"
+          },
+          "responseSha256": "9eb987851df8e95e4532c4a851eba81ee7c57ac8b15aa15195a247e4d725dd9f"
+        },
+        "v3": {
+          "httpStatus": 401,
+          "response": {
+            "detail": "Unauthorized"
+          },
+          "responseSha256": "9eb987851df8e95e4532c4a851eba81ee7c57ac8b15aa15195a247e4d725dd9f"
+        }
+      },
+      "timingRetrieved": false,
+      "humanListeningVerified": false
+    }
+  ]
+}

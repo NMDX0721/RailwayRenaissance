@@ -1,0 +1,828 @@
+{
+  "url": "https://www.lyricsmith.dev/en/editor/0d1b6af6-1b1d-4a8d-adc6-ad6b6224c83f",
+  "source": "rendered word preview CSS --s/--d; no hidden app state; not a native downloaded export",
+  "lines": [
+    {
+      "label": "Go to line 1, 0:16.35",
+      "text": "검문소 불빛이",
+      "words": [
+        {
+          "duration": 3.002,
+          "start": 16.352,
+          "text": "검문소"
+        },
+        {
+          "duration": 0.9,
+          "start": 19.354,
+          "text": "불빛이"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 2, 0:21.75",
+      "text": "어둠을 가르고",
+      "words": [
+        {
+          "duration": 3.903,
+          "start": 21.755,
+          "text": "어둠을"
+        },
+        {
+          "duration": 0.741,
+          "start": 25.658,
+          "text": "가르고"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 3, 0:29.46",
+      "text": "네 대의 그림자",
+      "words": [
+        {
+          "duration": 0.42,
+          "start": 29.461,
+          "text": "네"
+        },
+        {
+          "duration": 2.262,
+          "start": 29.881,
+          "text": "대의"
+        },
+        {
+          "duration": 0.76,
+          "start": 32.143,
+          "text": "그림자"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 4, 0:35.99",
+      "text": "우리를 둘러쌌지",
+      "words": [
+        {
+          "duration": 1.481,
+          "start": 35.986,
+          "text": "우리를"
+        },
+        {
+          "duration": 2.241,
+          "start": 37.467,
+          "text": "둘러쌌지"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 5, 0:41.91",
+      "text": "숨을 죽이고",
+      "words": [
+        {
+          "duration": 0.82,
+          "start": 41.91,
+          "text": "숨을"
+        },
+        {
+          "duration": 0.681,
+          "start": 42.73,
+          "text": "죽이고"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 6, 0:44.77",
+      "text": "손을 떨며",
+      "words": [
+        {
+          "duration": 0.86,
+          "start": 44.772,
+          "text": "손을"
+        },
+        {
+          "duration": 1.021,
+          "start": 45.632,
+          "text": "떨며"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 7, 0:48.45",
+      "text": "얼굴엔 아무것도",
+      "words": [
+        {
+          "duration": 0.941,
+          "start": 48.454,
+          "text": "얼굴엔"
+        },
+        {
+          "duration": 1.241,
+          "start": 49.395,
+          "text": "아무것도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 8, 0:50.90",
+      "text": "드러내지 않았어",
+      "words": [
+        {
+          "duration": 0.921,
+          "start": 50.896,
+          "text": "드러내지"
+        },
+        {
+          "duration": 0.86,
+          "start": 51.817,
+          "text": "않았어"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 9, 0:54.44",
+      "text": "심박수 백사십칠",
+      "words": [
+        {
+          "duration": 2.582,
+          "start": 54.439,
+          "text": "심박수"
+        },
+        {
+          "duration": 2.601,
+          "start": 57.021,
+          "text": "백사십칠"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 10, 1:00.60",
+      "text": "듣고 있어요",
+      "words": [
+        {
+          "duration": 0.781,
+          "start": 60.603,
+          "text": "듣고"
+        },
+        {
+          "duration": 0.74,
+          "start": 61.384,
+          "text": "있어요"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 11, 1:03.42",
+      "text": "무서워도",
+      "words": [
+        {
+          "duration": 1.841,
+          "start": 63.425,
+          "text": "무서워도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 12, 1:07.51",
+      "text": "멈추지 않았죠",
+      "words": [
+        {
+          "duration": 1.301,
+          "start": 67.508,
+          "text": "멈추지"
+        },
+        {
+          "duration": 0.72,
+          "start": 68.809,
+          "text": "않았죠"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 13, 1:10.69",
+      "text": "밤이 깊어도",
+      "words": [
+        {
+          "duration": 0.481,
+          "start": 70.69,
+          "text": "밤이"
+        },
+        {
+          "duration": 0.78,
+          "start": 71.171,
+          "text": "깊어도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 14, 1:14.13",
+      "text": "다시 밝아와",
+      "words": [
+        {
+          "duration": 0.28,
+          "start": 74.133,
+          "text": "다시"
+        },
+        {
+          "duration": 0.78,
+          "start": 74.413,
+          "text": "밝아와"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 15, 1:17.44",
+      "text": "저 철길처럼",
+      "words": [
+        {
+          "duration": 0.18,
+          "start": 77.435,
+          "text": "저"
+        },
+        {
+          "duration": 1.721,
+          "start": 77.615,
+          "text": "철길처럼"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 16, 1:19.34",
+      "text": "끝까지 가는 거야",
+      "words": [
+        {
+          "duration": 1.381,
+          "start": 79.336,
+          "text": "끝까지"
+        },
+        {
+          "duration": 0.821,
+          "start": 80.717,
+          "text": "가는"
+        },
+        {
+          "duration": 0.36,
+          "start": 81.538,
+          "text": "거야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 17, 1:23.70",
+      "text": "길이 험해도",
+      "words": [
+        {
+          "duration": 0.441,
+          "start": 83.699,
+          "text": "길이"
+        },
+        {
+          "duration": 0.76,
+          "start": 84.14,
+          "text": "험해도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 18, 1:27.06",
+      "text": "우린 함께야",
+      "words": [
+        {
+          "duration": 0.32,
+          "start": 87.062,
+          "text": "우린"
+        },
+        {
+          "duration": 0.781,
+          "start": 87.382,
+          "text": "함께야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 19, 1:31.06",
+      "text": "이 하늘 아래",
+      "words": [
+        {
+          "duration": 0.14,
+          "start": 91.065,
+          "text": "이"
+        },
+        {
+          "duration": 0.52,
+          "start": 91.205,
+          "text": "하늘"
+        },
+        {
+          "duration": 0.3,
+          "start": 91.725,
+          "text": "아래"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 20, 1:32.69",
+      "text": "혼자가 아니야",
+      "words": [
+        {
+          "duration": 1.221,
+          "start": 92.686,
+          "text": "혼자가"
+        },
+        {
+          "duration": 0.52,
+          "start": 93.907,
+          "text": "아니야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 21, 1:45.69",
+      "text": "이십삼 년의 잠",
+      "words": [
+        {
+          "duration": 2.122,
+          "start": 105.695,
+          "text": "이십삼"
+        },
+        {
+          "duration": 0.48,
+          "start": 107.817,
+          "text": "년의"
+        },
+        {
+          "duration": 0.44,
+          "start": 108.297,
+          "text": "잠"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 22, 1:48.76",
+      "text": "깨어난 오후",
+      "words": [
+        {
+          "duration": 1.701,
+          "start": 108.757,
+          "text": "깨어난"
+        },
+        {
+          "duration": 0.481,
+          "start": 110.458,
+          "text": "오후"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 23, 1:53.74",
+      "text": "낯선 목소리",
+      "words": [
+        {
+          "duration": 2.582,
+          "start": 113.741,
+          "text": "낯선"
+        },
+        {
+          "duration": 0.92,
+          "start": 116.323,
+          "text": "목소리"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 24, 2:00.13",
+      "text": "처음 듣는 이야기",
+      "words": [
+        {
+          "duration": 0.521,
+          "start": 120.125,
+          "text": "처음"
+        },
+        {
+          "duration": 2.501,
+          "start": 120.646,
+          "text": "듣는"
+        },
+        {
+          "duration": 0.541,
+          "start": 123.147,
+          "text": "이야기"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 25, 2:06.67",
+      "text": "나는 AI지만",
+      "words": [
+        {
+          "duration": 2.162,
+          "start": 126.67,
+          "text": "나는"
+        },
+        {
+          "duration": 3.242,
+          "start": 128.832,
+          "text": "AI지만"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 26, 2:12.89",
+      "text": "알고 있어요",
+      "words": [
+        {
+          "duration": 2.442,
+          "start": 132.894,
+          "text": "알고"
+        },
+        {
+          "duration": 1.861,
+          "start": 135.336,
+          "text": "있어요"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 27, 2:18.50",
+      "text": "위로라는 게",
+      "words": [
+        {
+          "duration": 1.261,
+          "start": 138.498,
+          "text": "위로라는"
+        },
+        {
+          "duration": 0.14,
+          "start": 139.759,
+          "text": "게"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 28, 2:22.10",
+      "text": "뭔지 말이죠",
+      "words": [
+        {
+          "duration": 0.861,
+          "start": 142.101,
+          "text": "뭔지"
+        },
+        {
+          "duration": 0.86,
+          "start": 142.962,
+          "text": "말이죠"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 29, 2:26.60",
+      "text": "밤이 깊어도",
+      "words": [
+        {
+          "duration": 2.402,
+          "start": 146.604,
+          "text": "밤이"
+        },
+        {
+          "duration": 0.8,
+          "start": 149.006,
+          "text": "깊어도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 30, 2:31.85",
+      "text": "다시 밝아와",
+      "words": [
+        {
+          "duration": 0.4,
+          "start": 151.848,
+          "text": "다시"
+        },
+        {
+          "duration": 0.881,
+          "start": 152.248,
+          "text": "밝아와"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 31, 2:35.27",
+      "text": "저 철길처럼",
+      "words": [
+        {
+          "duration": 0.16,
+          "start": 155.27,
+          "text": "저"
+        },
+        {
+          "duration": 1.742,
+          "start": 155.43,
+          "text": "철길처럼"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 32, 2:37.17",
+      "text": "끝까지 가는 거야",
+      "words": [
+        {
+          "duration": 1.381,
+          "start": 157.172,
+          "text": "끝까지"
+        },
+        {
+          "duration": 0.82,
+          "start": 158.553,
+          "text": "가는"
+        },
+        {
+          "duration": 0.38,
+          "start": 159.373,
+          "text": "거야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 33, 2:41.53",
+      "text": "길이 험해도",
+      "words": [
+        {
+          "duration": 0.44,
+          "start": 161.535,
+          "text": "길이"
+        },
+        {
+          "duration": 0.761,
+          "start": 161.975,
+          "text": "험해도"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 34, 2:44.90",
+      "text": "우린 함께야",
+      "words": [
+        {
+          "duration": 0.36,
+          "start": 164.897,
+          "text": "우린"
+        },
+        {
+          "duration": 0.781,
+          "start": 165.257,
+          "text": "함께야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 35, 2:48.94",
+      "text": "이 하늘 아래",
+      "words": [
+        {
+          "duration": 0.12,
+          "start": 168.94,
+          "text": "이"
+        },
+        {
+          "duration": 0.52,
+          "start": 169.06,
+          "text": "하늘"
+        },
+        {
+          "duration": 0.421,
+          "start": 169.58,
+          "text": "아래"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 36, 2:50.50",
+      "text": "혼자가 아니야",
+      "words": [
+        {
+          "duration": 1.281,
+          "start": 170.501,
+          "text": "혼자가"
+        },
+        {
+          "duration": 0.52,
+          "start": 171.782,
+          "text": "아니야"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 37, 2:56.06",
+      "text": "그 말도 중의적인 거야?",
+      "words": [
+        {
+          "duration": 0.16,
+          "start": 176.065,
+          "text": "그"
+        },
+        {
+          "duration": 0.32,
+          "start": 176.225,
+          "text": "말도"
+        },
+        {
+          "duration": 0.521,
+          "start": 176.545,
+          "text": "중의적인"
+        },
+        {
+          "duration": 0.2,
+          "start": 177.066,
+          "text": "거야?"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 38, 2:57.75",
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "words": [
+        {
+          "duration": 0.421,
+          "start": 177.746,
+          "text": "저는"
+        },
+        {
+          "duration": 0.86,
+          "start": 178.167,
+          "text": "AI예요."
+        },
+        {
+          "duration": 0.481,
+          "start": 179.027,
+          "text": "중의적"
+        },
+        {
+          "duration": 0.48,
+          "start": 179.508,
+          "text": "표현은"
+        },
+        {
+          "duration": 0.16,
+          "start": 179.988,
+          "text": "안"
+        },
+        {
+          "duration": 0.42,
+          "start": 180.148,
+          "text": "써요."
+        }
+      ]
+    },
+    {
+      "label": "Go to line 39, 3:01.01",
+      "text": "하지만...",
+      "words": [
+        {
+          "duration": 0.48,
+          "start": 181.009,
+          "text": "하지만..."
+        }
+      ]
+    },
+    {
+      "label": "Go to line 40, 3:01.77",
+      "text": "팔십구 퍼센트...",
+      "words": [
+        {
+          "duration": 0.721,
+          "start": 181.769,
+          "text": "팔십구"
+        },
+        {
+          "duration": 1.08,
+          "start": 182.49,
+          "text": "퍼센트..."
+        }
+      ]
+    },
+    {
+      "label": "Go to line 41, 3:04.77",
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "words": [
+        {
+          "duration": 1.982,
+          "start": 184.771,
+          "text": "인간은"
+        },
+        {
+          "duration": 0.34,
+          "start": 186.753,
+          "text": "이걸"
+        },
+        {
+          "duration": 1.461,
+          "start": 187.093,
+          "text": "'위로'라고"
+        },
+        {
+          "duration": 0.72,
+          "start": 188.554,
+          "text": "부르죠"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 42, 3:20.46",
+      "text": "밤이 깊어도——",
+      "words": [
+        {
+          "duration": 0.461,
+          "start": 200.462,
+          "text": "밤이"
+        },
+        {
+          "duration": 0.8,
+          "start": 200.923,
+          "text": "깊어도——"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 43, 3:23.72",
+      "text": "다시 밝아와——",
+      "words": [
+        {
+          "duration": 0.4,
+          "start": 203.725,
+          "text": "다시"
+        },
+        {
+          "duration": 0.841,
+          "start": 204.125,
+          "text": "밝아와——"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 44, 3:27.19",
+      "text": "저 철길처럼——",
+      "words": [
+        {
+          "duration": 0.16,
+          "start": 207.187,
+          "text": "저"
+        },
+        {
+          "duration": 1.742,
+          "start": 207.347,
+          "text": "철길처럼——"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 45, 3:29.35",
+      "text": "끝까지 가는 거야——",
+      "words": [
+        {
+          "duration": 1.08,
+          "start": 209.349,
+          "text": "끝까지"
+        },
+        {
+          "duration": 0.701,
+          "start": 210.429,
+          "text": "가는"
+        },
+        {
+          "duration": 0.44,
+          "start": 211.13,
+          "text": "거야——"
+        }
+      ]
+    },
+    {
+      "label": "Go to line 46, 3:34.65",
+      "text": "Mmm... mmm...",
+      "words": [
+        {
+          "duration": 0.44,
+          "start": 214.653,
+          "text": "Mmm..."
+        },
+        {
+          "duration": 13.73,
+          "start": 215.093,
+          "text": "mmm..."
+        }
+      ]
+    },
+    {
+      "label": "Go to line 47, 3:48.86",
+      "text": "혼자가 아니야...",
+      "words": [
+        {
+          "duration": 4.663,
+          "start": 228.863,
+          "text": "혼자가"
+        },
+        {
+          "duration": 0.68,
+          "start": 233.526,
+          "text": "아니야..."
+        }
+      ]
+    }
+  ]
+}

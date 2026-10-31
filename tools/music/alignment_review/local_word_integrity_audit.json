@@ -1,0 +1,56 @@
+{
+  "published": false,
+  "humanListeningVerified": false,
+  "note": "Read-only integrity check; prior reports and shipped drafts unchanged",
+  "reports": [
+    {
+      "id": "starlit_rails",
+      "path": "tools\\music\\alignment_review\\phonetic\\starlit_rails.local.sections.provider.boundaries.json",
+      "sha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+      "issues": [
+        {
+          "role": "original",
+          "line": 25,
+          "flags": [
+            "word_order_or_overlap",
+            "word_outside_line"
+          ],
+          "existingFlags": []
+        },
+        {
+          "role": "original",
+          "line": 41,
+          "flags": [
+            "word_order_or_overlap"
+          ],
+          "existingFlags": []
+        },
+        {
+          "role": "vocals",
+          "line": 24,
+          "flags": [
+            "word_order_or_overlap"
+          ],
+          "existingFlags": []
+        },
+        {
+          "role": "vocals",
+          "line": 25,
+          "flags": [
+            "word_order_or_overlap",
+            "word_outside_line"
+          ],
+          "existingFlags": [
+            "weak_word_evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chollima_ride",
+      "path": "tools\\music\\alignment_review\\phonetic\\chollima_ride.spoken.local.sections.allsections.provider.boundaries.json",
+      "sha256": "0cec4ca46e6818ae9f8d813c011124d696a379d894fad5c9990755b764507c05",
+      "issues": []
+    }
+  ]
+}

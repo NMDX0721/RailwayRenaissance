@@ -1,0 +1,78 @@
+{
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "reportSha256": "a0f8163fc8e6b09b26ff401e627ed51048ceda9252153ff423c46f1fc52c49d8",
+  "clips": [
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "originalAudioStart": 33.962469329833986,
+      "originalAudioEnd": 41.70246673583984,
+      "file": "starlit_rails-line-04.mp3",
+      "sha256": "242586c658decc1e2b9dcb845dbb0a09a226a3fcd459f83552f63b67d2e7092f",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "originalAudioStart": 69.82246612548828,
+      "originalAudioEnd": 77.20246673583985,
+      "file": "starlit_rails-line-14.mp3",
+      "sha256": "ab76b9e4dfb25b5e8f84aef8b538e818553f39f4e9a655c6345672b6b61cff45",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 16,
+      "text": "끝까지 가는 거야",
+      "originalAudioStart": 77.32246612548828,
+      "originalAudioEnd": 83.88246704101563,
+      "file": "starlit_rails-line-16.mp3",
+      "sha256": "30d518ddbaeea9b67b2e71a4c46224970e51c5d1412186d3361d0fc0801008cc",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 20,
+      "text": "혼자가 아니야",
+      "originalAudioStart": 90.10247253417968,
+      "originalAudioEnd": 96.42246795654297,
+      "file": "starlit_rails-line-20.mp3",
+      "sha256": "9b26ee5505ec8b3655c940b48de889bf1a83a78a5349f60ee3518768d269294b",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 21,
+      "text": "이십삼 년의 잠",
+      "originalAudioStart": 98.22246765136718,
+      "originalAudioEnd": 110.74246765136719,
+      "file": "starlit_rails-line-21.mp3",
+      "sha256": "ae7055ffc61df8697591c7559aae2781dee1ecc2d35a7977752e8f7fa0de3b4d",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "originalAudioStart": 130.88247131347657,
+      "originalAudioEnd": 139.18247009277343,
+      "file": "starlit_rails-line-26.mp3",
+      "sha256": "36fb64a5888fa4f77cb913ddcc5f55d179a0ca76b7ee418e87dd1970e1251fe9",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "originalAudioStart": 181.3424627685547,
+      "originalAudioEnd": 191.26247192382812,
+      "file": "starlit_rails-line-41.mp3",
+      "sha256": "4f3c4d0bd779a8b129f13ec763799fbc153ca75535fb98b01e838b4f04094fcb",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 46,
+      "text": "Mmm... mmm...",
+      "originalAudioStart": 212.82247375488282,
+      "originalAudioEnd": 225.02246643066405,
+      "file": "starlit_rails-line-46.mp3",
+      "sha256": "9e4318b1c409c748f572987a528839ed04021bfdb80de676730c4a6ad18171c9",
+      "humanListeningVerified": false
+    }
+  ]
+}

@@ -1,0 +1,1682 @@
+{
+  "id": "sleepers",
+  "language": "en",
+  "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a",
+  "lyricSha256": "ba4789bec44dae3c104eb5b50552b0f2667ed6a962ffdd7f30de7cfb49236d39",
+  "model": "base",
+  "transcriptOverride": "tools\\music\\alignment_review\\sleepers.performance.txt",
+  "transcriptSha256": "b261af64a18fe08c641b62578c59a20e4c17cc0829516c82d6e67ec9936baa53",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+  },
+  "toolVersions": {
+    "stable-ts": "2.19.1",
+    "faster-whisper": "1.2.1"
+  },
+  "duration": 259.0,
+  "lineCount": 35,
+  "expectedLineCount": 35,
+  "status": "candidate_needs_review",
+  "humanListeningVerified": false,
+  "issues": [
+    {
+      "line": 14,
+      "flags": [
+        "zero_duration_word"
+      ],
+      "start": 86.87,
+      "end": 90.47,
+      "text": "A flying car, an AI, a fractured timeline",
+      "heard": " behind  The  flying  car  and  AI  of  fractured  timeline  I"
+    }
+  ],
+  "lines": [
+    {
+      "line": 1,
+      "start": 11.46,
+      "end": 14.92,
+      "text": "A whistle cuts the morning haze",
+      "asrAgreement": 0.962,
+      "words": [
+        {
+          "start": 11.46,
+          "end": 12.34,
+          "text": "A"
+        },
+        {
+          "start": 12.34,
+          "end": 12.6,
+          "text": " whistle"
+        },
+        {
+          "start": 12.6,
+          "end": 12.94,
+          "text": " cuts"
+        },
+        {
+          "start": 12.94,
+          "end": 13.24,
+          "text": " the"
+        },
+        {
+          "start": 13.24,
+          "end": 13.78,
+          "text": " morning"
+        },
+        {
+          "start": 13.78,
+          "end": 14.92,
+          "text": " haze"
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "start": 15.21,
+      "end": 18.77,
+      "text": "Across the hills where wild grass sways",
+      "asrAgreement": 0.939,
+      "words": [
+        {
+          "start": 15.21,
+          "end": 16.19,
+          "text": "Across"
+        },
+        {
+          "start": 16.19,
+          "end": 16.49,
+          "text": " the"
+        },
+        {
+          "start": 16.49,
+          "end": 16.83,
+          "text": " hills"
+        },
+        {
+          "start": 16.83,
+          "end": 17.15,
+          "text": " where"
+        },
+        {
+          "start": 17.15,
+          "end": 17.63,
+          "text": " wild"
+        },
+        {
+          "start": 17.63,
+          "end": 18.01,
+          "text": " grass"
+        },
+        {
+          "start": 18.01,
+          "end": 18.77,
+          "text": " sways"
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "start": 19.82,
+      "end": 24.12,
+      "text": "My grandfather's voice, a faded trace",
+      "asrAgreement": 0.9,
+      "words": [
+        {
+          "start": 19.82,
+          "end": 21.18,
+          "text": "My"
+        },
+        {
+          "start": 21.18,
+          "end": 22.24,
+          "text": " grandfather's"
+        },
+        {
+          "start": 22.24,
+          "end": 22.62,
+          "text": " voice,"
+        },
+        {
+          "start": 22.62,
+          "end": 22.86,
+          "text": " a"
+        },
+        {
+          "start": 22.86,
+          "end": 23.2,
+          "text": " faded"
+        },
+        {
+          "start": 23.2,
+          "end": 24.12,
+          "text": " trace"
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "start": 24.21,
+      "end": 30.83,
+      "text": "\"The rails are still here, son — make your way\"",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 24.21,
+          "end": 25.25,
+          "text": "\"The"
+        },
+        {
+          "start": 25.25,
+          "end": 25.61,
+          "text": " rails"
+        },
+        {
+          "start": 25.61,
+          "end": 25.87,
+          "text": " are"
+        },
+        {
+          "start": 25.87,
+          "end": 26.29,
+          "text": " still"
+        },
+        {
+          "start": 26.29,
+          "end": 27.19,
+          "text": " here,"
+        },
+        {
+          "start": 27.19,
+          "end": 27.39,
+          "text": " son"
+        },
+        {
+          "start": 27.39,
+          "end": 28.97,
+          "text": " —"
+        },
+        {
+          "start": 28.97,
+          "end": 29.21,
+          "text": " make"
+        },
+        {
+          "start": 29.21,
+          "end": 29.63,
+          "text": " your"
+        },
+        {
+          "start": 29.63,
+          "end": 30.83,
+          "text": " way\""
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "start": 31.88,
+      "end": 35.76,
+      "text": "I never knew how much those words would weigh",
+      "asrAgreement": 0.919,
+      "words": [
+        {
+          "start": 31.88,
+          "end": 33.06,
+          "text": "I"
+        },
+        {
+          "start": 33.06,
+          "end": 33.36,
+          "text": " never"
+        },
+        {
+          "start": 33.36,
+          "end": 33.7,
+          "text": " knew"
+        },
+        {
+          "start": 33.7,
+          "end": 34.0,
+          "text": " how"
+        },
+        {
+          "start": 34.0,
+          "end": 34.34,
+          "text": " much"
+        },
+        {
+          "start": 34.34,
+          "end": 34.72,
+          "text": " those"
+        },
+        {
+          "start": 34.72,
+          "end": 35.14,
+          "text": " words"
+        },
+        {
+          "start": 35.14,
+          "end": 35.48,
+          "text": " would"
+        },
+        {
+          "start": 35.48,
+          "end": 35.76,
+          "text": " weigh"
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "start": 35.92,
+      "end": 39.56,
+      "text": "'Til I stood where the rust and silence lay",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 35.92,
+          "end": 36.68,
+          "text": "'Til"
+        },
+        {
+          "start": 36.68,
+          "end": 36.84,
+          "text": " I"
+        },
+        {
+          "start": 36.84,
+          "end": 37.16,
+          "text": " stood"
+        },
+        {
+          "start": 37.16,
+          "end": 37.58,
+          "text": " where"
+        },
+        {
+          "start": 37.58,
+          "end": 37.88,
+          "text": " the"
+        },
+        {
+          "start": 37.88,
+          "end": 38.18,
+          "text": " rust"
+        },
+        {
+          "start": 38.18,
+          "end": 38.56,
+          "text": " and"
+        },
+        {
+          "start": 38.56,
+          "end": 39.14,
+          "text": " silence"
+        },
+        {
+          "start": 39.14,
+          "end": 39.56,
+          "text": " lay"
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "start": 40.78,
+      "end": 44.96,
+      "text": "Twenty-three years, a frozen page",
+      "asrAgreement": 0.944,
+      "words": [
+        {
+          "start": 40.78,
+          "end": 42.72,
+          "text": "Twenty-three"
+        },
+        {
+          "start": 42.72,
+          "end": 43.56,
+          "text": " years,"
+        },
+        {
+          "start": 43.56,
+          "end": 43.62,
+          "text": " a"
+        },
+        {
+          "start": 43.62,
+          "end": 44.18,
+          "text": " frozen"
+        },
+        {
+          "start": 44.18,
+          "end": 44.96,
+          "text": " page"
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "start": 45.28,
+      "end": 51.72,
+      "text": "Waiting for someone to turn the page",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 45.28,
+          "end": 46.92,
+          "text": "Waiting"
+        },
+        {
+          "start": 46.92,
+          "end": 47.18,
+          "text": " for"
+        },
+        {
+          "start": 47.18,
+          "end": 48.12,
+          "text": " someone"
+        },
+        {
+          "start": 48.12,
+          "end": 49.68,
+          "text": " to"
+        },
+        {
+          "start": 49.68,
+          "end": 50.26,
+          "text": " turn"
+        },
+        {
+          "start": 50.26,
+          "end": 50.82,
+          "text": " the"
+        },
+        {
+          "start": 50.82,
+          "end": 51.72,
+          "text": " page"
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "start": 53.84,
+      "end": 60.04,
+      "text": "The rails remain — they're calling out your name",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 53.84,
+          "end": 55.42,
+          "text": "The"
+        },
+        {
+          "start": 55.42,
+          "end": 55.94,
+          "text": " rails"
+        },
+        {
+          "start": 55.94,
+          "end": 56.34,
+          "text": " remain"
+        },
+        {
+          "start": 56.34,
+          "end": 57.12,
+          "text": " —"
+        },
+        {
+          "start": 57.12,
+          "end": 57.86,
+          "text": " they're"
+        },
+        {
+          "start": 57.86,
+          "end": 58.36,
+          "text": " calling"
+        },
+        {
+          "start": 58.36,
+          "end": 58.72,
+          "text": " out"
+        },
+        {
+          "start": 58.72,
+          "end": 59.06,
+          "text": " your"
+        },
+        {
+          "start": 59.06,
+          "end": 60.04,
+          "text": " name"
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "start": 60.44,
+      "end": 65.98,
+      "text": "Through every storm, through every field of grain",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 60.44,
+          "end": 61.5,
+          "text": "Through"
+        },
+        {
+          "start": 61.5,
+          "end": 61.92,
+          "text": " every"
+        },
+        {
+          "start": 61.92,
+          "end": 62.56,
+          "text": " storm,"
+        },
+        {
+          "start": 62.56,
+          "end": 63.82,
+          "text": " through"
+        },
+        {
+          "start": 63.82,
+          "end": 64.18,
+          "text": " every"
+        },
+        {
+          "start": 64.18,
+          "end": 65.38,
+          "text": " field"
+        },
+        {
+          "start": 65.38,
+          "end": 65.68,
+          "text": " of"
+        },
+        {
+          "start": 65.68,
+          "end": 65.98,
+          "text": " grain"
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "start": 66.12,
+      "end": 71.64,
+      "text": "The rails remain — the story's not in vain",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 66.12,
+          "end": 67.28,
+          "text": "The"
+        },
+        {
+          "start": 67.28,
+          "end": 67.84,
+          "text": " rails"
+        },
+        {
+          "start": 67.84,
+          "end": 68.24,
+          "text": " remain"
+        },
+        {
+          "start": 68.24,
+          "end": 69.56,
+          "text": " —"
+        },
+        {
+          "start": 69.56,
+          "end": 69.68,
+          "text": " the"
+        },
+        {
+          "start": 69.68,
+          "end": 70.3,
+          "text": " story's"
+        },
+        {
+          "start": 70.3,
+          "end": 70.68,
+          "text": " not"
+        },
+        {
+          "start": 70.68,
+          "end": 70.92,
+          "text": " in"
+        },
+        {
+          "start": 70.92,
+          "end": 71.64,
+          "text": " vain"
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "start": 71.96,
+      "end": 77.88,
+      "text": "The wheel turns on, again and again",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 71.96,
+          "end": 73.22,
+          "text": "The"
+        },
+        {
+          "start": 73.22,
+          "end": 73.52,
+          "text": " wheel"
+        },
+        {
+          "start": 73.52,
+          "end": 74.66,
+          "text": " turns"
+        },
+        {
+          "start": 74.66,
+          "end": 76.12,
+          "text": " on,"
+        },
+        {
+          "start": 76.12,
+          "end": 76.44,
+          "text": " again"
+        },
+        {
+          "start": 76.44,
+          "end": 76.8,
+          "text": " and"
+        },
+        {
+          "start": 76.8,
+          "end": 77.88,
+          "text": " again"
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "start": 82.36,
+      "end": 86.48,
+      "text": "The city lights of Pyongyang far behind",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 82.36,
+          "end": 83.4,
+          "text": "The"
+        },
+        {
+          "start": 83.4,
+          "end": 83.76,
+          "text": " city"
+        },
+        {
+          "start": 83.76,
+          "end": 84.2,
+          "text": " lights"
+        },
+        {
+          "start": 84.2,
+          "end": 84.52,
+          "text": " of"
+        },
+        {
+          "start": 84.52,
+          "end": 85.28,
+          "text": " Pyongyang"
+        },
+        {
+          "start": 85.28,
+          "end": 85.96,
+          "text": " far"
+        },
+        {
+          "start": 85.96,
+          "end": 86.48,
+          "text": " behind"
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "start": 86.87,
+      "end": 90.47,
+      "text": "A flying car, an AI, a fractured timeline",
+      "asrAgreement": 0.938,
+      "words": [
+        {
+          "start": 86.87,
+          "end": 87.13,
+          "text": "A"
+        },
+        {
+          "start": 87.13,
+          "end": 87.47,
+          "text": " flying"
+        },
+        {
+          "start": 87.47,
+          "end": 88.37,
+          "text": " car,"
+        },
+        {
+          "start": 88.37,
+          "end": 88.39,
+          "text": " an"
+        },
+        {
+          "start": 88.39,
+          "end": 89.13,
+          "text": " AI,"
+        },
+        {
+          "start": 89.13,
+          "end": 89.13,
+          "text": " a"
+        },
+        {
+          "start": 89.13,
+          "end": 89.81,
+          "text": " fractured"
+        },
+        {
+          "start": 89.81,
+          "end": 90.47,
+          "text": " timeline"
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "start": 90.64,
+      "end": 95.3,
+      "text": "I packed my bags with things I couldn't name",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 90.64,
+          "end": 92.24,
+          "text": "I"
+        },
+        {
+          "start": 92.24,
+          "end": 92.48,
+          "text": " packed"
+        },
+        {
+          "start": 92.48,
+          "end": 92.78,
+          "text": " my"
+        },
+        {
+          "start": 92.78,
+          "end": 93.26,
+          "text": " bags"
+        },
+        {
+          "start": 93.26,
+          "end": 93.54,
+          "text": " with"
+        },
+        {
+          "start": 93.54,
+          "end": 94.24,
+          "text": " things"
+        },
+        {
+          "start": 94.24,
+          "end": 94.38,
+          "text": " I"
+        },
+        {
+          "start": 94.38,
+          "end": 94.88,
+          "text": " couldn't"
+        },
+        {
+          "start": 94.88,
+          "end": 95.3,
+          "text": " name"
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "start": 95.63,
+      "end": 101.39,
+      "text": "Fried chicken, soju, and a child's shame",
+      "asrAgreement": 0.903,
+      "words": [
+        {
+          "start": 95.63,
+          "end": 96.19,
+          "text": "Fried"
+        },
+        {
+          "start": 96.19,
+          "end": 97.59,
+          "text": " chicken,"
+        },
+        {
+          "start": 97.59,
+          "end": 98.77,
+          "text": " soju,"
+        },
+        {
+          "start": 98.77,
+          "end": 99.77,
+          "text": " and"
+        },
+        {
+          "start": 99.77,
+          "end": 99.89,
+          "text": " a"
+        },
+        {
+          "start": 99.89,
+          "end": 101.29,
+          "text": " child's"
+        },
+        {
+          "start": 101.29,
+          "end": 101.39,
+          "text": " shame"
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "start": 103.48,
+      "end": 106.86,
+      "text": "The dashboard showed a map of what was lost",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 103.48,
+          "end": 104.16,
+          "text": "The"
+        },
+        {
+          "start": 104.16,
+          "end": 104.58,
+          "text": " dashboard"
+        },
+        {
+          "start": 104.58,
+          "end": 105.12,
+          "text": " showed"
+        },
+        {
+          "start": 105.12,
+          "end": 105.36,
+          "text": " a"
+        },
+        {
+          "start": 105.36,
+          "end": 105.7,
+          "text": " map"
+        },
+        {
+          "start": 105.7,
+          "end": 106.04,
+          "text": " of"
+        },
+        {
+          "start": 106.04,
+          "end": 106.26,
+          "text": " what"
+        },
+        {
+          "start": 106.26,
+          "end": 106.54,
+          "text": " was"
+        },
+        {
+          "start": 106.54,
+          "end": 106.86,
+          "text": " lost"
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "start": 106.96,
+      "end": 111.1,
+      "text": "Every station, every bridge, every crossing crossed",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 106.96,
+          "end": 107.48,
+          "text": "Every"
+        },
+        {
+          "start": 107.48,
+          "end": 108.34,
+          "text": " station,"
+        },
+        {
+          "start": 108.34,
+          "end": 108.62,
+          "text": " every"
+        },
+        {
+          "start": 108.62,
+          "end": 109.58,
+          "text": " bridge,"
+        },
+        {
+          "start": 109.58,
+          "end": 109.76,
+          "text": " every"
+        },
+        {
+          "start": 109.76,
+          "end": 110.36,
+          "text": " crossing"
+        },
+        {
+          "start": 110.36,
+          "end": 111.1,
+          "text": " crossed"
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "start": 111.6,
+      "end": 116.98,
+      "text": "My grandfather's handbook on the passenger seat",
+      "asrAgreement": 0.925,
+      "words": [
+        {
+          "start": 111.6,
+          "end": 113.04,
+          "text": "My"
+        },
+        {
+          "start": 113.04,
+          "end": 114.08,
+          "text": " grandfather's"
+        },
+        {
+          "start": 114.08,
+          "end": 114.8,
+          "text": " handbook"
+        },
+        {
+          "start": 114.8,
+          "end": 115.14,
+          "text": " on"
+        },
+        {
+          "start": 115.14,
+          "end": 115.36,
+          "text": " the"
+        },
+        {
+          "start": 115.36,
+          "end": 115.96,
+          "text": " passenger"
+        },
+        {
+          "start": 115.96,
+          "end": 116.98,
+          "text": " seat"
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "start": 117.41,
+      "end": 122.87,
+      "text": "A faded note: \"For Biaohan — keep the beat\"",
+      "asrAgreement": 0.839,
+      "words": [
+        {
+          "start": 117.41,
+          "end": 117.81,
+          "text": "A"
+        },
+        {
+          "start": 117.81,
+          "end": 118.21,
+          "text": " faded"
+        },
+        {
+          "start": 118.21,
+          "end": 119.61,
+          "text": " note:"
+        },
+        {
+          "start": 119.61,
+          "end": 119.71,
+          "text": " \"For"
+        },
+        {
+          "start": 119.71,
+          "end": 120.51,
+          "text": " Biaohan"
+        },
+        {
+          "start": 120.51,
+          "end": 121.61,
+          "text": " —"
+        },
+        {
+          "start": 121.61,
+          "end": 121.81,
+          "text": " keep"
+        },
+        {
+          "start": 121.81,
+          "end": 122.13,
+          "text": " the"
+        },
+        {
+          "start": 122.13,
+          "end": 122.87,
+          "text": " beat\""
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "start": 125.7,
+      "end": 131.0,
+      "text": "The rails remain — they're calling out your name",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 125.7,
+          "end": 126.56,
+          "text": "The"
+        },
+        {
+          "start": 126.56,
+          "end": 127.1,
+          "text": " rails"
+        },
+        {
+          "start": 127.1,
+          "end": 127.48,
+          "text": " remain"
+        },
+        {
+          "start": 127.48,
+          "end": 128.68,
+          "text": " —"
+        },
+        {
+          "start": 128.68,
+          "end": 128.96,
+          "text": " they're"
+        },
+        {
+          "start": 128.96,
+          "end": 129.48,
+          "text": " calling"
+        },
+        {
+          "start": 129.48,
+          "end": 129.84,
+          "text": " out"
+        },
+        {
+          "start": 129.84,
+          "end": 130.18,
+          "text": " your"
+        },
+        {
+          "start": 130.18,
+          "end": 131.0,
+          "text": " name"
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "start": 131.8,
+      "end": 137.08,
+      "text": "Through every storm, through every field of grain",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 131.8,
+          "end": 132.62,
+          "text": "Through"
+        },
+        {
+          "start": 132.62,
+          "end": 133.02,
+          "text": " every"
+        },
+        {
+          "start": 133.02,
+          "end": 133.54,
+          "text": " storm,"
+        },
+        {
+          "start": 133.54,
+          "end": 134.9,
+          "text": " through"
+        },
+        {
+          "start": 134.9,
+          "end": 135.3,
+          "text": " every"
+        },
+        {
+          "start": 135.3,
+          "end": 135.94,
+          "text": " field"
+        },
+        {
+          "start": 135.94,
+          "end": 136.8,
+          "text": " of"
+        },
+        {
+          "start": 136.8,
+          "end": 137.08,
+          "text": " grain"
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "start": 137.38,
+      "end": 142.78,
+      "text": "The rails remain — the story's not in vain",
+      "asrAgreement": 0.938,
+      "words": [
+        {
+          "start": 137.38,
+          "end": 138.44,
+          "text": "The"
+        },
+        {
+          "start": 138.44,
+          "end": 138.9,
+          "text": " rails"
+        },
+        {
+          "start": 138.9,
+          "end": 139.32,
+          "text": " remain"
+        },
+        {
+          "start": 139.32,
+          "end": 140.56,
+          "text": " —"
+        },
+        {
+          "start": 140.56,
+          "end": 140.74,
+          "text": " the"
+        },
+        {
+          "start": 140.74,
+          "end": 141.42,
+          "text": " story's"
+        },
+        {
+          "start": 141.42,
+          "end": 141.72,
+          "text": " not"
+        },
+        {
+          "start": 141.72,
+          "end": 142.06,
+          "text": " in"
+        },
+        {
+          "start": 142.06,
+          "end": 142.78,
+          "text": " vain"
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "start": 143.08,
+      "end": 148.48,
+      "text": "The wheel turns on, again and again",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 143.08,
+          "end": 144.36,
+          "text": "The"
+        },
+        {
+          "start": 144.36,
+          "end": 144.68,
+          "text": " wheel"
+        },
+        {
+          "start": 144.68,
+          "end": 145.78,
+          "text": " turns"
+        },
+        {
+          "start": 145.78,
+          "end": 146.86,
+          "text": " on,"
+        },
+        {
+          "start": 146.86,
+          "end": 147.52,
+          "text": " again"
+        },
+        {
+          "start": 147.52,
+          "end": 147.94,
+          "text": " and"
+        },
+        {
+          "start": 147.94,
+          "end": 148.48,
+          "text": " again"
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "start": 159.1,
+      "end": 162.68,
+      "text": "I don't know if I can do this alone",
+      "asrAgreement": 0.962,
+      "words": [
+        {
+          "start": 159.1,
+          "end": 159.78,
+          "text": "I"
+        },
+        {
+          "start": 159.78,
+          "end": 159.92,
+          "text": " don't"
+        },
+        {
+          "start": 159.92,
+          "end": 160.18,
+          "text": " know"
+        },
+        {
+          "start": 160.18,
+          "end": 160.68,
+          "text": " if"
+        },
+        {
+          "start": 160.68,
+          "end": 161.02,
+          "text": " I"
+        },
+        {
+          "start": 161.02,
+          "end": 161.36,
+          "text": " can"
+        },
+        {
+          "start": 161.36,
+          "end": 161.66,
+          "text": " do"
+        },
+        {
+          "start": 161.66,
+          "end": 162.26,
+          "text": " this"
+        },
+        {
+          "start": 162.26,
+          "end": 162.68,
+          "text": " alone"
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "start": 164.36,
+      "end": 170.28,
+      "text": "But the iron doesn't lie, and the ties don't break",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 164.36,
+          "end": 165.78,
+          "text": "But"
+        },
+        {
+          "start": 165.78,
+          "end": 166.02,
+          "text": " the"
+        },
+        {
+          "start": 166.02,
+          "end": 166.5,
+          "text": " iron"
+        },
+        {
+          "start": 166.5,
+          "end": 167.16,
+          "text": " doesn't"
+        },
+        {
+          "start": 167.16,
+          "end": 167.96,
+          "text": " lie,"
+        },
+        {
+          "start": 167.96,
+          "end": 168.66,
+          "text": " and"
+        },
+        {
+          "start": 168.66,
+          "end": 168.82,
+          "text": " the"
+        },
+        {
+          "start": 168.82,
+          "end": 169.34,
+          "text": " ties"
+        },
+        {
+          "start": 169.34,
+          "end": 170.04,
+          "text": " don't"
+        },
+        {
+          "start": 170.04,
+          "end": 170.28,
+          "text": " break"
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "start": 170.44,
+      "end": 176.02,
+      "text": "When you're standing on the shoulders of the ones who came before",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 170.44,
+          "end": 171.56,
+          "text": "When"
+        },
+        {
+          "start": 171.56,
+          "end": 171.76,
+          "text": " you're"
+        },
+        {
+          "start": 171.76,
+          "end": 172.38,
+          "text": " standing"
+        },
+        {
+          "start": 172.38,
+          "end": 172.88,
+          "text": " on"
+        },
+        {
+          "start": 172.88,
+          "end": 173.18,
+          "text": " the"
+        },
+        {
+          "start": 173.18,
+          "end": 173.76,
+          "text": " shoulders"
+        },
+        {
+          "start": 173.76,
+          "end": 174.28,
+          "text": " of"
+        },
+        {
+          "start": 174.28,
+          "end": 174.58,
+          "text": " the"
+        },
+        {
+          "start": 174.58,
+          "end": 175.16,
+          "text": " ones"
+        },
+        {
+          "start": 175.16,
+          "end": 175.44,
+          "text": " who"
+        },
+        {
+          "start": 175.44,
+          "end": 175.74,
+          "text": " came"
+        },
+        {
+          "start": 175.74,
+          "end": 176.02,
+          "text": " before"
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "start": 176.3,
+      "end": 177.98,
+      "text": "They're still here",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 176.3,
+          "end": 177.06,
+          "text": "They're"
+        },
+        {
+          "start": 177.06,
+          "end": 177.4,
+          "text": " still"
+        },
+        {
+          "start": 177.4,
+          "end": 177.98,
+          "text": " here"
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "start": 182.38,
+      "end": 183.72,
+      "text": "Waiting at the door",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 182.38,
+          "end": 182.94,
+          "text": "Waiting"
+        },
+        {
+          "start": 182.94,
+          "end": 183.22,
+          "text": " at"
+        },
+        {
+          "start": 183.22,
+          "end": 183.44,
+          "text": " the"
+        },
+        {
+          "start": 183.44,
+          "end": 183.72,
+          "text": " door"
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "start": 205.14,
+      "end": 211.08,
+      "text": "The rails remain — they're calling out your name",
+      "asrAgreement": 0.947,
+      "words": [
+        {
+          "start": 205.14,
+          "end": 206.56,
+          "text": "The"
+        },
+        {
+          "start": 206.56,
+          "end": 207.06,
+          "text": " rails"
+        },
+        {
+          "start": 207.06,
+          "end": 207.48,
+          "text": " remain"
+        },
+        {
+          "start": 207.48,
+          "end": 208.62,
+          "text": " —"
+        },
+        {
+          "start": 208.62,
+          "end": 208.86,
+          "text": " they're"
+        },
+        {
+          "start": 208.86,
+          "end": 209.5,
+          "text": " calling"
+        },
+        {
+          "start": 209.5,
+          "end": 209.84,
+          "text": " out"
+        },
+        {
+          "start": 209.84,
+          "end": 210.16,
+          "text": " your"
+        },
+        {
+          "start": 210.16,
+          "end": 211.08,
+          "text": " name"
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "start": 211.41,
+      "end": 217.23,
+      "text": "Through every storm, through every field of grain",
+      "asrAgreement": 0.878,
+      "words": [
+        {
+          "start": 211.41,
+          "end": 212.63,
+          "text": "Through"
+        },
+        {
+          "start": 212.63,
+          "end": 213.03,
+          "text": " every"
+        },
+        {
+          "start": 213.03,
+          "end": 214.75,
+          "text": " storm,"
+        },
+        {
+          "start": 214.75,
+          "end": 214.95,
+          "text": " through"
+        },
+        {
+          "start": 214.95,
+          "end": 215.31,
+          "text": " every"
+        },
+        {
+          "start": 215.31,
+          "end": 216.43,
+          "text": " field"
+        },
+        {
+          "start": 216.43,
+          "end": 216.95,
+          "text": " of"
+        },
+        {
+          "start": 216.95,
+          "end": 217.23,
+          "text": " grain"
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "start": 217.72,
+      "end": 222.96,
+      "text": "The rails remain — the story's not in vain",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 217.72,
+          "end": 218.46,
+          "text": "The"
+        },
+        {
+          "start": 218.46,
+          "end": 218.94,
+          "text": " rails"
+        },
+        {
+          "start": 218.94,
+          "end": 219.32,
+          "text": " remain"
+        },
+        {
+          "start": 219.32,
+          "end": 220.4,
+          "text": " —"
+        },
+        {
+          "start": 220.4,
+          "end": 220.74,
+          "text": " the"
+        },
+        {
+          "start": 220.74,
+          "end": 221.42,
+          "text": " story's"
+        },
+        {
+          "start": 221.42,
+          "end": 221.74,
+          "text": " not"
+        },
+        {
+          "start": 221.74,
+          "end": 222.04,
+          "text": " in"
+        },
+        {
+          "start": 222.04,
+          "end": 222.96,
+          "text": " vain"
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "start": 223.12,
+      "end": 229.0,
+      "text": "The wheel turns on, again and again",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 223.12,
+          "end": 224.34,
+          "text": "The"
+        },
+        {
+          "start": 224.34,
+          "end": 224.66,
+          "text": " wheel"
+        },
+        {
+          "start": 224.66,
+          "end": 225.78,
+          "text": " turns"
+        },
+        {
+          "start": 225.78,
+          "end": 227.26,
+          "text": " on,"
+        },
+        {
+          "start": 227.26,
+          "end": 227.58,
+          "text": " again"
+        },
+        {
+          "start": 227.58,
+          "end": 227.92,
+          "text": " and"
+        },
+        {
+          "start": 227.92,
+          "end": 229.0,
+          "text": " again"
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "start": 237.72,
+      "end": 241.52,
+      "text": "Again and again...",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 237.72,
+          "end": 239.62,
+          "text": "Again"
+        },
+        {
+          "start": 239.62,
+          "end": 239.78,
+          "text": " and"
+        },
+        {
+          "start": 239.78,
+          "end": 241.52,
+          "text": " again..."
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "start": 243.74,
+      "end": 247.62,
+      "text": "The wheel turns on...",
+      "asrAgreement": 1.0,
+      "words": [
+        {
+          "start": 243.74,
+          "end": 245.14,
+          "text": "The"
+        },
+        {
+          "start": 245.14,
+          "end": 245.48,
+          "text": " wheel"
+        },
+        {
+          "start": 245.48,
+          "end": 246.68,
+          "text": " turns"
+        },
+        {
+          "start": 246.68,
+          "end": 247.62,
+          "text": " on..."
+        }
+      ]
+    }
+  ],
+  "agreementMetric": "source_character_recall"
+}

@@ -1,0 +1,49 @@
+{
+  "authorizedService": "https://www.lyricsmith.dev/en",
+  "authorizedTracks": [
+    {
+      "id": "starlit_rails",
+      "audioPath": "D:\\Unity Project\\RailwayRenaissance\\Assets\\Resources\\bgm\\starlit_rails.mp3",
+      "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "lyricsPath": "D:\\Unity Project\\RailwayRenaissance\\tools\\music\\alignment_review\\online_input\\starlit_rails.lyrics.txt",
+      "lyricsSha256": "e5f73a249956f91249e9220a7149d3e727edb69162b776e2c39908e07ab37256",
+      "lines": 47
+    },
+    {
+      "id": "chollima_ride",
+      "audioPath": "D:\\Unity Project\\RailwayRenaissance\\Assets\\Resources\\bgm\\chollima_ride.mp3",
+      "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "lyricsPath": "D:\\Unity Project\\RailwayRenaissance\\tools\\music\\alignment_review\\online_input\\chollima_ride.lyrics.txt",
+      "lyricsSha256": "e7169427e7c5fe31f214f297f3cd7ef4c5fb7c899aa1e5d8b0aedfaced26279b",
+      "lines": 49
+    }
+  ],
+  "uploadCompleted": true,
+  "note": "Both audio uploads obtained results, but Chollima returned 32-line free recognition with wrong-language text rather than the 49-line authored alignment. Recognition evidence archived, not published; original-text alignment remains incomplete.",
+  "trackStatus": {
+    "starlit_rails": {
+      "uploadCompleted": true,
+      "alignmentCompleted": true,
+      "nativeExportObtained": true,
+      "renderedLineCount": 47,
+      "renderedWordCount": 108,
+      "evidence": "../lyricsmith/starlit_rails.visible-words.json",
+      "nativeExportComplete": false,
+      "recoveredCandidateLines": 47,
+      "recoveredCandidateWords": 108,
+      "nativeSupportedLines": 32
+    },
+    "chollima_ride": {
+      "uploadCompleted": true,
+      "uploadAttempted": true,
+      "selectedFileName": "chollima_ride.mp3",
+      "lastVisibleError": "Security check failed. Please try again",
+      "normalRetryFailed": true,
+      "recognitionCompleted": true,
+      "alignmentCompleted": false,
+      "recognitionUrl": "https://www.lyricsmith.dev/en/editor/bcbce3b5-7fea-4b0b-95b8-ea2566851543",
+      "recognitionLineCount": 32,
+      "recognitionWordCount": 102
+    }
+  }
+}

@@ -1,0 +1,1205 @@
+{
+  "id": "chollima_ride",
+  "model": "Qwen/Qwen3-ForcedAligner-0.6B",
+  "revision": "c7cbfc2048c462b0d63a45797104fc9db3ad62b7",
+  "toolSha256": "f31f52d4bde75c24036811e898c26ca507fbdd1e4a24c443b41d75a6bc0032d0",
+  "packageVersion": "0.0.6",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "sourceSha256": "0d2cd276106f071f9a96ae2a6d7f0696e00adf1b0314f8a600692407e1ad8f4f",
+  "parentSha256": "0cec4ca46e6818ae9f8d813c011124d696a379d894fad5c9990755b764507c05",
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "targetLine": 17,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 62.66247009277344,
+      "end": 75.44247222900391,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "가르침",
+          "start": 62.662,
+          "end": 64.182
+        },
+        {
+          "text": "따라",
+          "start": 64.502,
+          "end": 67.302
+        },
+        {
+          "text": "천리마",
+          "start": 67.302,
+          "end": 70.502
+        },
+        {
+          "text": "신시대에",
+          "start": 70.502,
+          "end": 73.542
+        },
+        {
+          "text": "달린",
+          "start": 73.622,
+          "end": 74.182
+        },
+        {
+          "text": "다",
+          "start": 74.342,
+          "end": 75.382
+        }
+      ],
+      "lines": [
+        {
+          "line": 16,
+          "text": "가르침 따라",
+          "alignmentInput": "가르침 따라",
+          "start": 62.662,
+          "end": 67.302,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 17,
+          "text": "천리마 신시대에",
+          "alignmentInput": "천리마 신시대에",
+          "start": 67.302,
+          "end": 73.542,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 18,
+          "text": "달린다!",
+          "alignmentInput": "달린다!",
+          "start": 73.622,
+          "end": 75.382,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            1520.0,
+            1840.0,
+            4640.0,
+            4640.0,
+            7840.0,
+            7760.0,
+            10880.0,
+            10960.0,
+            11520.0,
+            11680.0,
+            12720.0
+          ],
+          "fixed": [
+            0,
+            1520,
+            1840,
+            4640,
+            4640,
+            7840,
+            7840,
+            10880,
+            10960,
+            11520,
+            11680,
+            12720
+          ],
+          "changed": [
+            6
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 17,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 60.66247009277344,
+      "end": 77.44247222900391,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "가르침",
+          "start": 60.662,
+          "end": 64.182
+        },
+        {
+          "text": "따라",
+          "start": 64.502,
+          "end": 66.902
+        },
+        {
+          "text": "천리마",
+          "start": 67.382,
+          "end": 67.382
+        },
+        {
+          "text": "신시대에",
+          "start": 68.022,
+          "end": 73.302
+        },
+        {
+          "text": "달린",
+          "start": 73.622,
+          "end": 73.942
+        },
+        {
+          "text": "다",
+          "start": 74.342,
+          "end": 74.342
+        }
+      ],
+      "lines": [
+        {
+          "line": 16,
+          "text": "가르침 따라",
+          "alignmentInput": "가르침 따라",
+          "start": 60.662,
+          "end": 66.902,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 17,
+          "text": "천리마 신시대에",
+          "alignmentInput": "천리마 신시대에",
+          "start": 67.382,
+          "end": 73.302,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 18,
+          "text": "달린다!",
+          "alignmentInput": "달린다!",
+          "start": 73.622,
+          "end": 74.342,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            3520.0,
+            3840.0,
+            6240.0,
+            6720.0,
+            6720.0,
+            7360.0,
+            12640.0,
+            12960.0,
+            13280.0,
+            13680.0,
+            13280.0
+          ],
+          "fixed": [
+            0,
+            3520,
+            3840,
+            6240,
+            6720,
+            6720,
+            7360,
+            12640,
+            12960,
+            13280,
+            13680,
+            13680
+          ],
+          "changed": [
+            11
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 42,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 155.86246704101563,
+      "end": 173.56247497558593,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "달린",
+          "start": 155.862,
+          "end": 155.862
+        },
+        {
+          "text": "다",
+          "start": 157.462,
+          "end": 170.902
+        },
+        {
+          "text": "백전",
+          "start": 170.902,
+          "end": 170.982
+        },
+        {
+          "text": "백승",
+          "start": 171.702,
+          "end": 171.702
+        },
+        {
+          "text": "백전백승",
+          "start": 171.702,
+          "end": 171.702
+        }
+      ],
+      "lines": [
+        {
+          "line": 41,
+          "text": "달린다——!",
+          "alignmentInput": "달린다——!",
+          "start": 155.862,
+          "end": 170.902,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "100전 100승!",
+          "alignmentInput": "백전 백승!",
+          "start": 170.902,
+          "end": 171.702,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 171.702,
+          "end": 171.702,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            15120.0,
+            1600.0,
+            15040.0,
+            15040.0,
+            15120.0,
+            15840.0,
+            9360.0,
+            15280.0,
+            15040.0
+          ],
+          "fixed": [
+            0,
+            0,
+            1600,
+            15040,
+            15040,
+            15120,
+            15840,
+            15840,
+            15840,
+            15840
+          ],
+          "changed": [
+            1,
+            7,
+            8,
+            9
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 42,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 153.86246704101563,
+      "end": 175.56247497558593,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "달린",
+          "start": 153.862,
+          "end": 153.862
+        },
+        {
+          "text": "다",
+          "start": 157.462,
+          "end": 163.062
+        },
+        {
+          "text": "백전",
+          "start": 163.062,
+          "end": 164.822
+        },
+        {
+          "text": "백승",
+          "start": 164.822,
+          "end": 164.822
+        },
+        {
+          "text": "백전백승",
+          "start": 164.902,
+          "end": 168.902
+        }
+      ],
+      "lines": [
+        {
+          "line": 41,
+          "text": "달린다——!",
+          "alignmentInput": "달린다——!",
+          "start": 153.862,
+          "end": 163.062,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "100전 100승!",
+          "alignmentInput": "백전 백승!",
+          "start": 163.062,
+          "end": 164.822,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 164.902,
+          "end": 168.902,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            14960.0,
+            3600.0,
+            9200.0,
+            9200.0,
+            10960.0,
+            17840.0,
+            10960.0,
+            11040.0,
+            15040.0
+          ],
+          "fixed": [
+            0,
+            0,
+            3600,
+            9200,
+            9200,
+            10960,
+            10960,
+            10960,
+            11040,
+            15040
+          ],
+          "changed": [
+            1,
+            6
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 44,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 169.8424627685547,
+      "end": 203.40247131347655,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "백전백승",
+          "start": 169.842,
+          "end": 169.842
+        },
+        {
+          "text": "아",
+          "start": 169.842,
+          "end": 169.842
+        },
+        {
+          "text": "천리마",
+          "start": 198.002,
+          "end": 201.522
+        },
+        {
+          "text": "아",
+          "start": 201.522,
+          "end": 201.522
+        },
+        {
+          "text": "신시대",
+          "start": 201.522,
+          "end": 202.482
+        }
+      ],
+      "lines": [
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 169.842,
+          "end": 169.842,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 44,
+          "text": "아—— 천리마——",
+          "alignmentInput": "아—— 천리마——",
+          "start": 169.842,
+          "end": 201.522,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 45,
+          "text": "아—— 신시대——",
+          "alignmentInput": "아—— 신시대——",
+          "start": 201.522,
+          "end": 202.482,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1280.0,
+            0.0,
+            0.0,
+            0.0,
+            28160.0,
+            31680.0,
+            31600.0,
+            31680.0,
+            31680.0,
+            32640.0
+          ],
+          "fixed": [
+            0,
+            0,
+            0,
+            0,
+            28160,
+            31680,
+            31680,
+            31680,
+            31680,
+            32640
+          ],
+          "changed": [
+            0,
+            6
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 44,
+      "role": "original",
+      "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "start": 167.8424627685547,
+      "end": 205.40247131347655,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "백전백승",
+          "start": 167.842,
+          "end": 167.842
+        },
+        {
+          "text": "아",
+          "start": 167.842,
+          "end": 167.842
+        },
+        {
+          "text": "천리마",
+          "start": 198.002,
+          "end": 198.002
+        },
+        {
+          "text": "아",
+          "start": 201.442,
+          "end": 201.522
+        },
+        {
+          "text": "신시대",
+          "start": 201.522,
+          "end": 204.562
+        }
+      ],
+      "lines": [
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 167.842,
+          "end": 167.842,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 44,
+          "text": "아—— 천리마——",
+          "alignmentInput": "아—— 천리마——",
+          "start": 167.842,
+          "end": 198.002,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 45,
+          "text": "아—— 신시대——",
+          "alignmentInput": "아—— 신시대——",
+          "start": 201.442,
+          "end": 204.562,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            4080.0,
+            0.0,
+            0.0,
+            0.0,
+            30160.0,
+            0.0,
+            33600.0,
+            33680.0,
+            33680.0,
+            36720.0
+          ],
+          "fixed": [
+            0,
+            0,
+            0,
+            0,
+            30160,
+            30160,
+            33600,
+            33680,
+            33680,
+            36720
+          ],
+          "changed": [
+            0,
+            5
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 17,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 62.66247009277344,
+      "end": 75.44247222900391,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "가르침",
+          "start": 63.622,
+          "end": 64.422
+        },
+        {
+          "text": "따라",
+          "start": 64.422,
+          "end": 66.982
+        },
+        {
+          "text": "천리마",
+          "start": 67.462,
+          "end": 70.102
+        },
+        {
+          "text": "신시대에",
+          "start": 70.262,
+          "end": 73.382
+        },
+        {
+          "text": "달린",
+          "start": 73.622,
+          "end": 74.262
+        },
+        {
+          "text": "다",
+          "start": 74.342,
+          "end": 75.462
+        }
+      ],
+      "lines": [
+        {
+          "line": 16,
+          "text": "가르침 따라",
+          "alignmentInput": "가르침 따라",
+          "start": 63.622,
+          "end": 66.982,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 17,
+          "text": "천리마 신시대에",
+          "alignmentInput": "천리마 신시대에",
+          "start": 67.462,
+          "end": 73.382,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 18,
+          "text": "달린다!",
+          "alignmentInput": "달린다!",
+          "start": 73.622,
+          "end": 75.462,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            960.0,
+            1760.0,
+            1760.0,
+            4320.0,
+            4800.0,
+            7440.0,
+            7600.0,
+            10720.0,
+            10960.0,
+            11600.0,
+            11680.0,
+            12800.0
+          ],
+          "fixed": [
+            960,
+            1760,
+            1760,
+            4320,
+            4800,
+            7440,
+            7600,
+            10720,
+            10960,
+            11600,
+            11680,
+            12800
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 17,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 60.66247009277344,
+      "end": 77.44247222900391,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "가르침",
+          "start": 63.622,
+          "end": 64.422
+        },
+        {
+          "text": "따라",
+          "start": 64.422,
+          "end": 66.902
+        },
+        {
+          "text": "천리마",
+          "start": 67.542,
+          "end": 70.102
+        },
+        {
+          "text": "신시대에",
+          "start": 70.262,
+          "end": 73.302
+        },
+        {
+          "text": "달린",
+          "start": 73.622,
+          "end": 74.262
+        },
+        {
+          "text": "다",
+          "start": 74.262,
+          "end": 74.262
+        }
+      ],
+      "lines": [
+        {
+          "line": 16,
+          "text": "가르침 따라",
+          "alignmentInput": "가르침 따라",
+          "start": 63.622,
+          "end": 66.902,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 17,
+          "text": "천리마 신시대에",
+          "alignmentInput": "천리마 신시대에",
+          "start": 67.542,
+          "end": 73.302,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 18,
+          "text": "달린다!",
+          "alignmentInput": "달린다!",
+          "start": 73.622,
+          "end": 74.262,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            2960.0,
+            3760.0,
+            3760.0,
+            6240.0,
+            6880.0,
+            9440.0,
+            9600.0,
+            12640.0,
+            12960.0,
+            13600.0,
+            13600.0,
+            9600.0
+          ],
+          "fixed": [
+            2960,
+            3760,
+            3760,
+            6240,
+            6880,
+            9440,
+            9600,
+            12640,
+            12960,
+            13600,
+            13600,
+            13600
+          ],
+          "changed": [
+            11
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 42,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 155.86246704101563,
+      "end": 173.56247497558593,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "달린",
+          "start": 156.822,
+          "end": 157.462
+        },
+        {
+          "text": "다",
+          "start": 157.462,
+          "end": 162.502
+        },
+        {
+          "text": "백전",
+          "start": 162.902,
+          "end": 164.822
+        },
+        {
+          "text": "백승",
+          "start": 164.822,
+          "end": 165.222
+        },
+        {
+          "text": "백전백승",
+          "start": 165.222,
+          "end": 165.622
+        }
+      ],
+      "lines": [
+        {
+          "line": 41,
+          "text": "달린다——!",
+          "alignmentInput": "달린다——!",
+          "start": 156.822,
+          "end": 162.502,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "100전 100승!",
+          "alignmentInput": "백전 백승!",
+          "start": 162.902,
+          "end": 165.222,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 165.222,
+          "end": 165.622,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            960.0,
+            1600.0,
+            1600.0,
+            6640.0,
+            7040.0,
+            8960.0,
+            8640.0,
+            9360.0,
+            8640.0,
+            9760.0
+          ],
+          "fixed": [
+            960,
+            1600,
+            1600,
+            6640,
+            7040,
+            8960,
+            8960,
+            9360,
+            9360,
+            9760
+          ],
+          "changed": [
+            6,
+            8
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair"
+      ]
+    },
+    {
+      "targetLine": 42,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 153.86246704101563,
+      "end": 175.56247497558593,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "달린",
+          "start": 156.822,
+          "end": 157.462
+        },
+        {
+          "text": "다",
+          "start": 157.462,
+          "end": 162.502
+        },
+        {
+          "text": "백전",
+          "start": 162.822,
+          "end": 163.302
+        },
+        {
+          "text": "백승",
+          "start": 164.422,
+          "end": 164.422
+        },
+        {
+          "text": "백전백승",
+          "start": 164.422,
+          "end": 165.702
+        }
+      ],
+      "lines": [
+        {
+          "line": 41,
+          "text": "달린다——!",
+          "alignmentInput": "달린다——!",
+          "start": 156.822,
+          "end": 162.502,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 42,
+          "text": "100전 100승!",
+          "alignmentInput": "백전 백승!",
+          "start": 162.822,
+          "end": 164.422,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 164.422,
+          "end": 165.702,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            2960.0,
+            3600.0,
+            3600.0,
+            8640.0,
+            8960.0,
+            9440.0,
+            10560.0,
+            9760.0,
+            10560.0,
+            11840.0
+          ],
+          "fixed": [
+            2960,
+            3600,
+            3600,
+            8640,
+            8960,
+            9440,
+            10560,
+            10560,
+            10560,
+            11840
+          ],
+          "changed": [
+            7
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 44,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 169.8424627685547,
+      "end": 203.40247131347655,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "백전백승",
+          "start": 171.042,
+          "end": 172.082
+        },
+        {
+          "text": "아",
+          "start": 198.002,
+          "end": 198.322
+        },
+        {
+          "text": "천리마",
+          "start": 198.322,
+          "end": 201.522
+        },
+        {
+          "text": "아",
+          "start": 201.522,
+          "end": 201.522
+        },
+        {
+          "text": "신시대",
+          "start": 201.522,
+          "end": 202.402
+        }
+      ],
+      "lines": [
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 171.042,
+          "end": 172.082,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 44,
+          "text": "아—— 천리마——",
+          "alignmentInput": "아—— 천리마——",
+          "start": 198.002,
+          "end": 201.522,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 45,
+          "text": "아—— 신시대——",
+          "alignmentInput": "아—— 신시대——",
+          "start": 201.522,
+          "end": 202.402,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            1200.0,
+            2240.0,
+            28160.0,
+            28480.0,
+            28480.0,
+            31680.0,
+            29440.0,
+            31680.0,
+            31680.0,
+            32560.0
+          ],
+          "fixed": [
+            1200,
+            2240,
+            28160,
+            28480,
+            28480,
+            31680,
+            31680,
+            31680,
+            31680,
+            32560
+          ],
+          "changed": [
+            6
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 44,
+      "role": "vocals",
+      "waveformSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "start": 167.8424627685547,
+      "end": 205.40247131347655,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "백전백승",
+          "start": 171.922,
+          "end": 172.082
+        },
+        {
+          "text": "아",
+          "start": 198.002,
+          "end": 198.242
+        },
+        {
+          "text": "천리마",
+          "start": 198.242,
+          "end": 199.282
+        },
+        {
+          "text": "아",
+          "start": 199.282,
+          "end": 200.962
+        },
+        {
+          "text": "신시대",
+          "start": 201.602,
+          "end": 204.162
+        }
+      ],
+      "lines": [
+        {
+          "line": 43,
+          "text": "백전백승!",
+          "alignmentInput": "백전백승!",
+          "start": 171.922,
+          "end": 172.082,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 44,
+          "text": "아—— 천리마——",
+          "alignmentInput": "아—— 천리마——",
+          "start": 198.002,
+          "end": 199.282,
+          "tokenCrossesSourceLine": false
+        },
+        {
+          "line": 45,
+          "text": "아—— 신시대——",
+          "alignmentInput": "아—— 신시대——",
+          "start": 199.282,
+          "end": 204.162,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            4080.0,
+            4240.0,
+            30160.0,
+            30400.0,
+            30160.0,
+            33360.0,
+            31440.0,
+            33120.0,
+            33760.0,
+            36320.0
+          ],
+          "fixed": [
+            4080,
+            4240,
+            30160,
+            30400,
+            30400,
+            31440,
+            31440,
+            33120,
+            33760,
+            36320
+          ],
+          "changed": [
+            4,
+            5
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair"
+      ]
+    }
+  ]
+}

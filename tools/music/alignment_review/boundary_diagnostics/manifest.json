@@ -1,0 +1,192 @@
+{
+  "status": "diagnostic_only_not_word_timing",
+  "records": [
+    {
+      "id": "chollima_ride",
+      "line": 17,
+      "interval": [
+        65,
+        76
+      ],
+      "image": "chollima_ride-line-17.png",
+      "originalAudioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "vocalAudioSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "candidateSha256": "1494fff1b7195ddad97795419d163605db2a59604a5ee695db2a30a674cfbb98",
+      "cues": [
+        {
+          "role": "original",
+          "text": "천리마 신시대에",
+          "start": 67.62246917724609,
+          "end": 71.48246551513672,
+          "flags": [
+            "fragmented_word_alignment"
+          ]
+        },
+        {
+          "role": "vocals",
+          "text": "천리마 신시대에",
+          "start": 67.62246917724609,
+          "end": 71.42246795654297,
+          "flags": []
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "id": "chollima_ride",
+      "line": 42,
+      "interval": [
+        158,
+        176
+      ],
+      "image": "chollima_ride-line-42.png",
+      "originalAudioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "vocalAudioSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "candidateSha256": "1494fff1b7195ddad97795419d163605db2a59604a5ee695db2a30a674cfbb98",
+      "cues": [
+        {
+          "role": "original",
+          "text": "100전 100승!",
+          "start": 162.88247131347657,
+          "end": 163.88246704101562,
+          "flags": []
+        },
+        {
+          "role": "vocals",
+          "text": "100전 100승!",
+          "start": 163.30246948242188,
+          "end": 165.50246215820312,
+          "flags": []
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "id": "chollima_ride",
+      "line": 44,
+      "interval": [
+        186,
+        202
+      ],
+      "image": "chollima_ride-line-44.png",
+      "originalAudioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+      "vocalAudioSha256": "53ccda1b2c89705e799382d16dbb625d032aefec4259aad74b0767f3de8a97e4",
+      "candidateSha256": "1494fff1b7195ddad97795419d163605db2a59604a5ee695db2a30a674cfbb98",
+      "cues": [
+        {
+          "role": "original",
+          "text": "아—— 천리마——",
+          "start": 191.522470703125,
+          "end": 199.36246276855468,
+          "flags": []
+        },
+        {
+          "role": "vocals",
+          "text": "아—— 천리마——",
+          "start": 189.30246948242188,
+          "end": 199.36246276855468,
+          "flags": []
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "id": "starlit_rails",
+      "line": 21,
+      "interval": [
+        99,
+        112
+      ],
+      "image": "starlit_rails-line-21.png",
+      "originalAudioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "vocalAudioSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "candidateSha256": "d2d2ed2a306a9ecbd43942bdf3731aa812fe301cc70b77bae4688dec2e77c78c",
+      "cues": [
+        {
+          "role": "original",
+          "text": "이십삼 년의 잠",
+          "start": 100.22246765136718,
+          "end": 108.72247100830079,
+          "flags": [
+            "fragmented_word_alignment"
+          ]
+        },
+        {
+          "role": "vocals",
+          "text": "이십삼 년의 잠",
+          "start": 105.70247100830078,
+          "end": 108.74246765136719,
+          "flags": []
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "id": "starlit_rails",
+      "line": 25,
+      "interval": [
+        127,
+        139
+      ],
+      "image": "starlit_rails-line-25.png",
+      "originalAudioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "vocalAudioSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "candidateSha256": "d2d2ed2a306a9ecbd43942bdf3731aa812fe301cc70b77bae4688dec2e77c78c",
+      "cues": [
+        {
+          "role": "original",
+          "text": "나는 AI지만",
+          "start": 129.80246948242188,
+          "end": 130.76247192382812,
+          "flags": []
+        },
+        {
+          "role": "vocals",
+          "text": "나는 AI지만",
+          "start": 129.94246887207032,
+          "end": 130.94246459960937,
+          "flags": [
+            "weak_word_evidence"
+          ]
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "id": "starlit_rails",
+      "line": 46,
+      "interval": [
+        210,
+        228
+      ],
+      "image": "starlit_rails-line-46.png",
+      "originalAudioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "vocalAudioSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "candidateSha256": "d2d2ed2a306a9ecbd43942bdf3731aa812fe301cc70b77bae4688dec2e77c78c",
+      "cues": [
+        {
+          "role": "original",
+          "text": "Mmm... mmm...",
+          "start": 214.82247375488282,
+          "end": 217.30246520996093,
+          "flags": [
+            "low_phonetic_score",
+            "nonlexical_vocalization_needs_timing"
+          ]
+        },
+        {
+          "role": "vocals",
+          "text": "Mmm... mmm...",
+          "start": 215.1024725341797,
+          "end": 223.02246643066405,
+          "flags": [
+            "low_phonetic_score",
+            "nonlexical_vocalization_needs_timing",
+            "fragmented_word_alignment"
+          ]
+        }
+      ],
+      "humanListeningVerified": false
+    }
+  ]
+}

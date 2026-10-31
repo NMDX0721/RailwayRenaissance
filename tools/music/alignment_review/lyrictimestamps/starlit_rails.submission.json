@@ -1,0 +1,18 @@
+{
+  "id": "starlit_rails",
+  "service": "https://lyrictimestamps.com",
+  "authorizedTracks": [
+    "starlit_rails"
+  ],
+  "sourceLines": 47,
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "lyricsSha256": "e5f73a249956f91249e9220a7149d3e727edb69162b776e2c39908e07ab37256",
+  "submitted": true,
+  "alignmentCompleted": true,
+  "nativeExportObtained": false,
+  "humanListeningVerified": false,
+  "published": false,
+  "observedState": "47 original lines/108 words processed; four variants read from visible comparison dialog; not native export; accuracy unresolved",
+  "displayedReviewIssueCount": 63,
+  "artificialSilenceExtension": false
+}

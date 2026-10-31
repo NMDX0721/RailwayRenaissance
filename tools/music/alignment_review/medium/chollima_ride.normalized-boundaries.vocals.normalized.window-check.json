@@ -1,0 +1,103 @@
+{
+  "id": "chollima_ride",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "audioRole": "vocals",
+  "waveformSha256": "478dbf3ca7684ceb28da00c834fbafa5b8923d276a458cb15a9b6c5361e51b53",
+  "timeOffset": 0,
+  "waveformVariant": "normalized",
+  "requestedLanguage": "expected",
+  "device": "cpu",
+  "computeType": "int8",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-medium",
+    "revision": "08e178d48790749d25932bbc082711ddcfdfbc4f"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 58.0,
+      "end": 80.0,
+      "segments": [
+        {
+          "start": 59.88,
+          "end": 67.14,
+          "text": " 시대의 위대한 날토자 가르침 따라",
+          "words": [
+            {
+              "start": 59.88,
+              "end": 61.28,
+              "word": " 시대의",
+              "probability": 0.3969305257002513
+            },
+            {
+              "start": 61.28,
+              "end": 62.54,
+              "word": " 위대한",
+              "probability": 0.89583420753479
+            },
+            {
+              "start": 62.54,
+              "end": 63.66,
+              "word": " 날토자",
+              "probability": 0.6527613004048666
+            },
+            {
+              "start": 63.66,
+              "end": 64.6,
+              "word": " 가르침",
+              "probability": 0.6772579476237297
+            },
+            {
+              "start": 64.6,
+              "end": 67.14,
+              "word": " 따라",
+              "probability": 0.6968172192573547
+            }
+          ]
+        },
+        {
+          "start": 71.06,
+          "end": 76.03999999999999,
+          "text": " 설리마시 시대에 달린다",
+          "words": [
+            {
+              "start": 71.06,
+              "end": 72.46,
+              "word": " 설리마시",
+              "probability": 0.39830124378204346
+            },
+            {
+              "start": 72.46,
+              "end": 73.86,
+              "word": " 시대에",
+              "probability": 0.8999642531077067
+            },
+            {
+              "start": 73.86,
+              "end": 76.03999999999999,
+              "word": " 달린다",
+              "probability": 0.9309637745221456
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 158.0,
+      "end": 176.0,
+      "segments": [],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 186.0,
+      "end": 206.0,
+      "segments": [],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    }
+  ]
+}

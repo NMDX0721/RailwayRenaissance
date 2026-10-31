@@ -1,0 +1,4552 @@
+{
+  "id": "starlit_rails",
+  "model": "torchaudio MMS_FA",
+  "modelSha256": "20ef12963ab4924bef49ac4fc7f58ad5da2ee43b2c11bc8c853c9b90ecdbc680",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "sourceRevision": "2318294a3fb98cccfe84eb3adc0ac1fe83a6fde0",
+  "uromanVersion": "1.3.1",
+  "status": "phonetic_candidates_needs_listening",
+  "pronunciationPolicy": "uroman_orthographic",
+  "alignmentCodeSha256": "1dd3a26d10b6ff1d49177874b2c4d33213626df0416ec2110290bf329d1fe66b",
+  "humanListeningVerified": false,
+  "rounds": [
+    {
+      "role": "original",
+      "lines": [
+        {
+          "line": 1,
+          "text": "검문소 불빛이",
+          "start": 18.622469177246092,
+          "end": 20.24246765136719,
+          "phoneticScore": 0.4772371866593229,
+          "flags": [],
+          "words": [
+            {
+              "line": 0,
+              "text": "검문소",
+              "romanized": "geommunso",
+              "pronunciationInput": "검문소",
+              "kind": "lyric",
+              "start": 18.622469177246092,
+              "end": 19.24246765136719,
+              "score": 0.3643551890143297,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 15.032468795776367,
+                "originalEnd": 19.232467651367188,
+                "retainedClusterCharacters": 7,
+                "totalCharacters": 9,
+                "localWindow": [
+                  18.132469177246094,
+                  19.812469482421875
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 0,
+              "text": "불빛이",
+              "romanized": "bulbici",
+              "pronunciationInput": "불빛이",
+              "kind": "lyric",
+              "start": 19.342468490600584,
+              "end": 20.24246765136719,
+              "score": 0.5550002217226263,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2599983215332031
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "text": "어둠을 가르고",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426,
+          "phoneticScore": 0.642887910669869,
+          "flags": [],
+          "words": [
+            {
+              "line": 1,
+              "text": "어둠을",
+              "romanized": "eodumeul",
+              "pronunciationInput": "어둠을",
+              "kind": "lyric",
+              "start": 23.242468109130858,
+              "end": 24.54246879577637,
+              "score": 0.517387470165785,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  23.14,
+                  25.740000000000002
+                ],
+                "evidence": [
+                  {
+                    "start": 23.740000000000002,
+                    "end": 25.14,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.authored-vocals.asr.json"
+                  }
+                ],
+                "originalStart": 21.75246810913086,
+                "originalEnd": 24.532468795776367
+              },
+              "maxInternalGap": 0.6400012969970703
+            },
+            {
+              "line": 1,
+              "text": "가르고",
+              "romanized": "gareugo",
+              "pronunciationInput": "가르고",
+              "kind": "lyric",
+              "start": 25.642469635009764,
+              "end": 26.38246894836426,
+              "score": 0.8633619785308838,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "start": 29.44246887207031,
+          "end": 32.902467498779295,
+          "phoneticScore": 0.6195435942951804,
+          "flags": [],
+          "words": [
+            {
+              "line": 2,
+              "text": "네",
+              "romanized": "ne",
+              "pronunciationInput": "네",
+              "kind": "lyric",
+              "start": 29.44246887207031,
+              "end": 29.60246826171875,
+              "score": 0.4044037261046469,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 2,
+              "text": "대의",
+              "romanized": "daeyi",
+              "pronunciationInput": "대의",
+              "kind": "lyric",
+              "start": 29.862468948364256,
+              "end": 30.862468490600588,
+              "score": 0.479943529702723,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.7800006866455078
+            },
+            {
+              "line": 2,
+              "text": "그림자",
+              "romanized": "geurimja",
+              "pronunciationInput": "그림자",
+              "kind": "lyric",
+              "start": 32.14246963500977,
+              "end": 32.902467498779295,
+              "score": 0.8485208803957159,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999984741210938
+            }
+          ]
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "start": 35.98246978759766,
+          "end": 39.70246673583984,
+          "phoneticScore": 0.6081651304233935,
+          "flags": [
+            "fragmented_word_alignment"
+          ],
+          "words": [
+            {
+              "line": 3,
+              "text": "우리를",
+              "romanized": "urireul",
+              "pronunciationInput": "우리를",
+              "kind": "lyric",
+              "start": 35.98246978759766,
+              "end": 36.662469635009764,
+              "score": 0.7860509820959785,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 3,
+              "text": "둘러쌌지",
+              "romanized": "dulreossassji",
+              "pronunciationInput": "둘러쌌지",
+              "kind": "lyric",
+              "start": 37.462469329833986,
+              "end": 39.70246673583984,
+              "score": 0.5541640178909382,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.8600006103515625
+            }
+          ]
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "start": 41.90246795654297,
+          "end": 43.402467498779295,
+          "phoneticScore": 0.6743691498820957,
+          "flags": [],
+          "words": [
+            {
+              "line": 4,
+              "text": "숨을",
+              "romanized": "sumeul",
+              "pronunciationInput": "숨을",
+              "kind": "lyric",
+              "start": 41.90246795654297,
+              "end": 42.62246871948242,
+              "score": 0.7578870132565498,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            },
+            {
+              "line": 4,
+              "text": "죽이고",
+              "romanized": "jugigo",
+              "pronunciationInput": "죽이고",
+              "kind": "lyric",
+              "start": 42.70246719360352,
+              "end": 43.402467498779295,
+              "score": 0.5884650082637867,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 6,
+          "text": "손을 떨며",
+          "start": 44.72246765136719,
+          "end": 46.64246917724609,
+          "phoneticScore": 0.6844315547892676,
+          "flags": [],
+          "words": [
+            {
+              "line": 5,
+              "text": "손을",
+              "romanized": "soneul",
+              "pronunciationInput": "손을",
+              "kind": "lyric",
+              "start": 44.72246765136719,
+              "end": 45.542470703125,
+              "score": 0.7684679180383682,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.26000213623046875
+            },
+            {
+              "line": 5,
+              "text": "떨며",
+              "romanized": "ddeolmyeo",
+              "pronunciationInput": "떨며",
+              "kind": "lyric",
+              "start": 45.622469177246096,
+              "end": 46.64246917724609,
+              "score": 0.6168726583942771,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.26000213623046875
+            }
+          ]
+        },
+        {
+          "line": 7,
+          "text": "얼굴엔 아무것도",
+          "start": 48.462469329833986,
+          "end": 50.62246871948242,
+          "phoneticScore": 0.6055609957157456,
+          "flags": [],
+          "words": [
+            {
+              "line": 6,
+              "text": "얼굴엔",
+              "romanized": "eolgulen",
+              "pronunciationInput": "얼굴엔",
+              "kind": "lyric",
+              "start": 48.462469329833986,
+              "end": 49.28246856689453,
+              "score": 0.6280009122565389,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 47.692466735839844,
+                "originalEnd": 49.27246856689453,
+                "retainedClusterCharacters": 7,
+                "totalCharacters": 8,
+                "localWindow": [
+                  47.93246841430664,
+                  49.85247039794922
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2999992370605469
+            },
+            {
+              "line": 6,
+              "text": "아무것도",
+              "romanized": "amugeosdo",
+              "pronunciationInput": "아무것도",
+              "kind": "lyric",
+              "start": 49.36246704101563,
+              "end": 50.62246871948242,
+              "score": 0.590957273548055,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4399986267089844
+            }
+          ]
+        },
+        {
+          "line": 8,
+          "text": "드러내지 않았어",
+          "start": 50.8824674987793,
+          "end": 52.64246917724609,
+          "phoneticScore": 0.4513796131972121,
+          "flags": [],
+          "words": [
+            {
+              "line": 7,
+              "text": "드러내지",
+              "romanized": "deureonaeji",
+              "pronunciationInput": "드러내지",
+              "kind": "lyric",
+              "start": 50.8824674987793,
+              "end": 51.62246871948242,
+              "score": 0.4436346072788266,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.11999893188476562
+            },
+            {
+              "line": 7,
+              "text": "않았어",
+              "romanized": "anhasseo",
+              "pronunciationInput": "않았어",
+              "kind": "lyric",
+              "start": 51.782469024658205,
+              "end": 52.64246917724609,
+              "score": 0.4580439304263564,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.37999725341796875
+            }
+          ]
+        },
+        {
+          "line": 9,
+          "text": "심박수 백사십칠",
+          "start": 54.48246978759766,
+          "end": 59.60246826171875,
+          "phoneticScore": 0.48991559167622656,
+          "flags": [],
+          "words": [
+            {
+              "line": 8,
+              "text": "심박수",
+              "romanized": "simbagsu",
+              "pronunciationInput": "심박수",
+              "kind": "lyric",
+              "start": 54.48246978759766,
+              "end": 55.86247039794922,
+              "score": 0.38133792753797024,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5
+            },
+            {
+              "line": 8,
+              "text": "백사십칠",
+              "romanized": "baegsasibcil",
+              "pronunciationInput": "백사십칠",
+              "kind": "lyric",
+              "start": 57.00247024536133,
+              "end": 59.60246826171875,
+              "score": 0.5475453444062927,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.7000007629394531
+            }
+          ]
+        },
+        {
+          "line": 10,
+          "text": "듣고 있어요",
+          "start": 60.602468719482424,
+          "end": 62.12246871948242,
+          "phoneticScore": 0.31033897386287046,
+          "flags": [],
+          "words": [
+            {
+              "line": 9,
+              "text": "듣고",
+              "romanized": "deudgo",
+              "pronunciationInput": "듣고",
+              "kind": "lyric",
+              "start": 60.602468719482424,
+              "end": 61.162469635009764,
+              "score": 0.1538765262812376,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.14000320434570312
+            },
+            {
+              "line": 9,
+              "text": "있어요",
+              "romanized": "isseoyo",
+              "pronunciationInput": "있어요",
+              "kind": "lyric",
+              "start": 61.3824674987793,
+              "end": 62.12246871948242,
+              "score": 0.4287429865050529,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 11,
+          "text": "무서워도",
+          "start": 63.42246841430664,
+          "end": 65.26247192382813,
+          "phoneticScore": 0.3001041393727064,
+          "flags": [],
+          "words": [
+            {
+              "line": 10,
+              "text": "무서워도",
+              "romanized": "museoweodo",
+              "pronunciationInput": "무서워도",
+              "kind": "lyric",
+              "start": 63.42246841430664,
+              "end": 65.26247192382813,
+              "score": 0.3001041393727064,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.6599960327148438
+            }
+          ]
+        },
+        {
+          "line": 12,
+          "text": "멈추지 않았죠",
+          "start": 67.48246978759765,
+          "end": 69.52246643066407,
+          "phoneticScore": 0.4446607676229892,
+          "flags": [],
+          "words": [
+            {
+              "line": 11,
+              "text": "멈추지",
+              "romanized": "meomcuji",
+              "pronunciationInput": "멈추지",
+              "kind": "lyric",
+              "start": 67.48246978759765,
+              "end": 68.48246551513672,
+              "score": 0.5238515425626247,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.29999542236328125
+            },
+            {
+              "line": 11,
+              "text": "않았죠",
+              "romanized": "anhassjyo",
+              "pronunciationInput": "않았죠",
+              "kind": "lyric",
+              "start": 68.82246612548828,
+              "end": 69.52246643066407,
+              "score": 0.3315316218003217,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "start": 70.68246673583984,
+          "end": 71.82246948242188,
+          "phoneticScore": 0.4596417248096588,
+          "flags": [],
+          "words": [
+            {
+              "line": 12,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 70.68246673583984,
+              "end": 71.06246734619141,
+              "score": 0.7393397837877274,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 12,
+              "text": "깊어도",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도",
+              "kind": "lyric",
+              "start": 71.16247009277343,
+              "end": 71.82246948242188,
+              "score": 0.29860304084598155,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "start": 71.82246612548828,
+          "end": 75.20246673583985,
+          "phoneticScore": 0.5432187765251277,
+          "flags": [
+            "fragmented_word_alignment"
+          ],
+          "words": [
+            {
+              "line": 13,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 71.82246612548828,
+              "end": 74.32246948242188,
+              "score": 0.5675242356956005,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 2.2600021362304688
+            },
+            {
+              "line": 13,
+              "text": "밝아와",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와",
+              "kind": "lyric",
+              "start": 74.40246795654296,
+              "end": 75.20246673583985,
+              "score": 0.46726399872984203,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "start": 77.4224722290039,
+          "end": 79.042470703125,
+          "phoneticScore": 0.22701786740406663,
+          "flags": [],
+          "words": [
+            {
+              "line": 14,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 77.4224722290039,
+              "end": 77.52246643066407,
+              "score": 0.12600638205185533,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.04000091552734375
+            },
+            {
+              "line": 14,
+              "text": "철길처럼",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼",
+              "kind": "lyric",
+              "start": 77.60247253417968,
+              "end": 79.042470703125,
+              "score": 0.2340321560706278,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.20000457763671875
+            }
+          ]
+        },
+        {
+          "line": 16,
+          "text": "끝까지 가는 거야",
+          "start": 79.62246917724609,
+          "end": 81.86247039794922,
+          "phoneticScore": 0.4030461427844661,
+          "flags": [],
+          "words": [
+            {
+              "line": 15,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 79.62246917724609,
+              "end": 80.46246887207032,
+              "score": 0.25349533814005554,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.31999969482421875,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  79.35600000000001,
+                  83.68246673583984
+                ]
+              }
+            },
+            {
+              "line": 15,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 80.70247100830078,
+              "end": 81.36247039794922,
+              "score": 0.5503089111140677,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  79.35600000000001,
+                  83.68246673583984
+                ]
+              }
+            },
+            {
+              "line": 15,
+              "text": "거야",
+              "romanized": "geoya",
+              "pronunciationInput": "거야",
+              "kind": "lyric",
+              "start": 81.522470703125,
+              "end": 81.86247039794922,
+              "score": 0.48666178561979906,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999603271484375,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  79.35600000000001,
+                  83.68246673583984
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "line": 17,
+          "text": "길이 험해도",
+          "start": 83.68246673583984,
+          "end": 84.86247039794922,
+          "phoneticScore": 0.4345806466026034,
+          "flags": [],
+          "words": [
+            {
+              "line": 16,
+              "text": "길이",
+              "romanized": "gili",
+              "pronunciationInput": "길이",
+              "kind": "lyric",
+              "start": 83.68246673583984,
+              "end": 84.00246978759766,
+              "score": 0.5104447547346354,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.12000274658203125
+            },
+            {
+              "line": 16,
+              "text": "험해도",
+              "romanized": "heomhaedo",
+              "pronunciationInput": "험해도",
+              "kind": "lyric",
+              "start": 84.12246917724609,
+              "end": 84.86247039794922,
+              "score": 0.40177428704272544,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1999969482421875
+            }
+          ]
+        },
+        {
+          "line": 18,
+          "text": "우린 함께야",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461,
+          "phoneticScore": 0.5242339198488042,
+          "flags": [],
+          "words": [
+            {
+              "line": 17,
+              "text": "우린",
+              "romanized": "urin",
+              "pronunciationInput": "우린",
+              "kind": "lyric",
+              "start": 87.0424673461914,
+              "end": 87.32246948242188,
+              "score": 0.6342629246064462,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 17,
+              "text": "함께야",
+              "romanized": "hamggeya",
+              "pronunciationInput": "함께야",
+              "kind": "lyric",
+              "start": 87.36246704101562,
+              "end": 88.1424691772461,
+              "score": 0.48473613522946835,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1999969482421875
+            }
+          ]
+        },
+        {
+          "line": 19,
+          "text": "이 하늘 아래",
+          "start": 91.08246826171874,
+          "end": 92.00246978759766,
+          "phoneticScore": 0.5773410404780067,
+          "flags": [],
+          "words": [
+            {
+              "line": 18,
+              "text": "이",
+              "romanized": "i",
+              "pronunciationInput": "이",
+              "kind": "lyric",
+              "start": 91.08246826171874,
+              "end": 91.10246826171876,
+              "score": 0.9400560259819031,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0
+            },
+            {
+              "line": 18,
+              "text": "하늘",
+              "romanized": "haneul",
+              "pronunciationInput": "하늘",
+              "kind": "lyric",
+              "start": 91.20247100830078,
+              "end": 91.68247009277344,
+              "score": 0.5401199643189708,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 18,
+              "text": "아래",
+              "romanized": "arae",
+              "pronunciationInput": "아래",
+              "kind": "lyric",
+              "start": 91.72246765136718,
+              "end": 92.00246978759766,
+              "score": 0.6152399755083025,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            }
+          ]
+        },
+        {
+          "line": 20,
+          "text": "혼자가 아니야",
+          "start": 92.6424658203125,
+          "end": 94.42246795654297,
+          "phoneticScore": 0.6588731546950791,
+          "flags": [],
+          "words": [
+            {
+              "line": 19,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 92.6424658203125,
+              "end": 93.60246826171876,
+              "score": 0.6314734694148812,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.31999969482421875,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  92.28200000000001,
+                  100.22246765136718
+                ]
+              }
+            },
+            {
+              "line": 19,
+              "text": "아니야",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야",
+              "kind": "lyric",
+              "start": 93.86246704101562,
+              "end": 94.42246795654297,
+              "score": 0.7058440864086151,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2400054931640625,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  92.28200000000001,
+                  100.22246765136718
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "line": 21,
+          "text": "이십삼 년의 잠",
+          "start": 105.68246673583984,
+          "end": 108.72246765136718,
+          "phoneticScore": 0.30670870904303177,
+          "flags": [],
+          "words": [
+            {
+              "line": 20,
+              "text": "이십삼",
+              "romanized": "isibsam",
+              "pronunciationInput": "이십삼",
+              "kind": "lyric",
+              "start": 105.68246673583984,
+              "end": 107.18247009277344,
+              "score": 0.26241640974434893,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.48000335693359375,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  105.36800000000001,
+                  108.72246765136718
+                ]
+              }
+            },
+            {
+              "line": 20,
+              "text": "년의",
+              "romanized": "nyeonyi",
+              "pronunciationInput": "년의",
+              "kind": "lyric",
+              "start": 107.80246948242187,
+              "end": 108.18247009277344,
+              "score": 0.5003176665049978,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.12000274658203125,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  105.36800000000001,
+                  108.72246765136718
+                ]
+              }
+            },
+            {
+              "line": 20,
+              "text": "잠",
+              "romanized": "jam",
+              "pronunciationInput": "잠",
+              "kind": "lyric",
+              "start": 108.28246520996093,
+              "end": 108.72246765136718,
+              "score": 0.29049760724107426,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875,
+              "providerConstraint": {
+                "auditSha256": "a7d36a168a433a6b4d04098fcfede4f99b495c244a9e6b8669dbcb53993595d0",
+                "window": [
+                  105.36800000000001,
+                  108.72246765136718
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "line": 22,
+          "text": "깨어난 오후",
+          "start": 108.72246765136718,
+          "end": 110.92246795654297,
+          "phoneticScore": 0.39748858446520297,
+          "flags": [],
+          "words": [
+            {
+              "line": 21,
+              "text": "깨어난",
+              "romanized": "ggaeeonan",
+              "pronunciationInput": "깨어난",
+              "kind": "lyric",
+              "start": 108.72246765136718,
+              "end": 110.30246520996094,
+              "score": 0.3324845862109214,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.7600021362304688
+            },
+            {
+              "line": 21,
+              "text": "오후",
+              "romanized": "ohu",
+              "pronunciationInput": "오후",
+              "kind": "lyric",
+              "start": 110.4224722290039,
+              "end": 110.92246795654297,
+              "score": 0.6029026567935943,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625
+            }
+          ]
+        },
+        {
+          "line": 23,
+          "text": "낯선 목소리",
+          "start": 113.72246765136718,
+          "end": 117.20246673583985,
+          "phoneticScore": 0.35421750669607965,
+          "flags": [],
+          "words": [
+            {
+              "line": 22,
+              "text": "낯선",
+              "romanized": "nacseon",
+              "pronunciationInput": "낯선",
+              "kind": "lyric",
+              "start": 113.72246765136718,
+              "end": 114.90247131347657,
+              "score": 0.20080214150116912,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 113.83246612548828,
+                "originalEnd": 116.31246948242188,
+                "retainedClusterCharacters": 6,
+                "totalCharacters": 7,
+                "localWindow": [
+                  113.23246765136719,
+                  114.91246795654297
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  113.75999999999999,
+                  116.35999999999999
+                ],
+                "evidence": [
+                  {
+                    "start": 114.35999999999999,
+                    "end": 115.75999999999999,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 113.73246765136719,
+                "originalEnd": 115.6324691772461
+              },
+              "maxInternalGap": 0.5600051879882812
+            },
+            {
+              "line": 22,
+              "text": "목소리",
+              "romanized": "mogsori",
+              "pronunciationInput": "목소리",
+              "kind": "lyric",
+              "start": 116.30246948242187,
+              "end": 117.20246673583985,
+              "score": 0.5553633347153664,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 24,
+          "text": "처음 듣는 이야기",
+          "start": 120.10247253417968,
+          "end": 123.68247009277344,
+          "phoneticScore": 0.20974416911237484,
+          "flags": [],
+          "words": [
+            {
+              "line": 23,
+              "text": "처음",
+              "romanized": "ceoeum",
+              "pronunciationInput": "처음",
+              "kind": "lyric",
+              "start": 120.10247253417968,
+              "end": 120.48246551513672,
+              "score": 0.13753257229109295,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999603271484375
+            },
+            {
+              "line": 23,
+              "text": "듣는",
+              "romanized": "deudneun",
+              "pronunciationInput": "듣는",
+              "kind": "lyric",
+              "start": 120.6424658203125,
+              "end": 121.90247131347657,
+              "score": 0.11023451256914996,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.44000244140625
+            },
+            {
+              "line": 23,
+              "text": "이야기",
+              "romanized": "iyagi",
+              "pronunciationInput": "이야기",
+              "kind": "lyric",
+              "start": 123.1424658203125,
+              "end": 123.68247009277344,
+              "score": 0.4927467703819275,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "start": 129.80246948242188,
+          "end": 130.76247192382812,
+          "phoneticScore": 0.22393059591828063,
+          "flags": [],
+          "words": [
+            {
+              "line": 24,
+              "text": "나는",
+              "romanized": "naneun",
+              "pronunciationInput": "나는",
+              "kind": "lyric",
+              "start": 129.80246948242188,
+              "end": 130.76247192382812,
+              "score": 0.06861402901510398,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 128.3324737548828,
+                "originalEnd": 130.75247192382812,
+                "retainedClusterCharacters": 4,
+                "totalCharacters": 6,
+                "localWindow": [
+                  129.3524627685547,
+                  131.3524627685547
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  128.32,
+                  130.92
+                ],
+                "evidence": [
+                  {
+                    "start": 128.92,
+                    "end": 130.32,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 126.67247009277344,
+                "originalEnd": 128.3324737548828
+              },
+              "maxInternalGap": 0.4000091552734375
+            },
+            {
+              "line": 24,
+              "text": "AI지만",
+              "romanized": "aijiman",
+              "pronunciationInput": "AI지만",
+              "kind": "lyric",
+              "start": 129.62246154785157,
+              "end": 130.76247192382812,
+              "score": 0.35472263655226144,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 128.8324737548828,
+                "originalEnd": 132.05247497558594,
+                "retainedClusterCharacters": 5,
+                "totalCharacters": 7,
+                "localWindow": [
+                  129.21246337890625,
+                  130.93246459960938
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4000091552734375
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "start": 132.88247131347657,
+          "end": 137.1624658203125,
+          "phoneticScore": 0.09025864855665194,
+          "flags": [
+            "low_phonetic_score",
+            "weak_word_evidence"
+          ],
+          "words": [
+            {
+              "line": 25,
+              "text": "알고",
+              "romanized": "algo",
+              "pronunciationInput": "알고",
+              "kind": "lyric",
+              "start": 132.88247131347657,
+              "end": 133.74246765136718,
+              "score": 0.1666323989047669,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5800018310546875
+            },
+            {
+              "line": 25,
+              "text": "있어요",
+              "romanized": "isseoyo",
+              "pronunciationInput": "있어요",
+              "kind": "lyric",
+              "start": 135.86246704101563,
+              "end": 137.1624658203125,
+              "score": 0.03973464295268059,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 135.3324737548828,
+                "originalEnd": 137.1524658203125,
+                "retainedClusterCharacters": 5,
+                "totalCharacters": 7,
+                "localWindow": [
+                  135.8324737548828,
+                  137.7324676513672
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.44000244140625
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562,
+          "phoneticScore": 0.6762318972215128,
+          "flags": [],
+          "words": [
+            {
+              "line": 26,
+              "text": "위로라는",
+              "romanized": "wiroraneun",
+              "pronunciationInput": "위로라는",
+              "kind": "lyric",
+              "start": 138.48246215820313,
+              "end": 139.62247253417968,
+              "score": 0.6548685748130083,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            },
+            {
+              "line": 26,
+              "text": "게",
+              "romanized": "ge",
+              "pronunciationInput": "게",
+              "kind": "lyric",
+              "start": 139.74247192382813,
+              "end": 139.88246704101562,
+              "score": 0.8501980304718018,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1199951171875
+            }
+          ]
+        },
+        {
+          "line": 28,
+          "text": "뭔지 말이죠",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093,
+          "phoneticScore": 0.5612978313553972,
+          "flags": [],
+          "words": [
+            {
+              "line": 27,
+              "text": "뭔지",
+              "romanized": "mweonji",
+              "pronunciationInput": "뭔지",
+              "kind": "lyric",
+              "start": 142.08246826171876,
+              "end": 142.64246154785155,
+              "score": 0.5255894371449747,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            },
+            {
+              "line": 27,
+              "text": "말이죠",
+              "romanized": "malijyo",
+              "pronunciationInput": "말이죠",
+              "kind": "lyric",
+              "start": 142.94246887207032,
+              "end": 143.80246520996093,
+              "score": 0.5845496292240568,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            }
+          ]
+        },
+        {
+          "line": 29,
+          "text": "밤이 깊어도",
+          "start": 148.56246398925782,
+          "end": 149.7824609375,
+          "phoneticScore": 0.32845072200341213,
+          "flags": [],
+          "words": [
+            {
+              "line": 28,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 148.56246398925782,
+              "end": 148.90247131347655,
+              "score": 0.424991087988019,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 28,
+              "text": "깊어도",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도",
+              "kind": "lyric",
+              "start": 148.98246215820313,
+              "end": 149.7824609375,
+              "score": 0.28742011999877703,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            }
+          ]
+        },
+        {
+          "line": 30,
+          "text": "다시 밝아와",
+          "start": 151.82247375488282,
+          "end": 153.0824639892578,
+          "phoneticScore": 0.6455069220629707,
+          "flags": [],
+          "words": [
+            {
+              "line": 29,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 151.82247375488282,
+              "end": 152.1624658203125,
+              "score": 0.46393165457993746,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1200103759765625
+            },
+            {
+              "line": 29,
+              "text": "밝아와",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와",
+              "kind": "lyric",
+              "start": 152.24247192382813,
+              "end": 153.0824639892578,
+              "score": 0.7190006522578187,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.20001220703125
+            }
+          ]
+        },
+        {
+          "line": 31,
+          "text": "저 철길처럼",
+          "start": 155.2624609375,
+          "end": 157.1624658203125,
+          "phoneticScore": 0.43264542051841953,
+          "flags": [],
+          "words": [
+            {
+              "line": 30,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 155.2624609375,
+              "end": 155.3424737548828,
+              "score": 0.3831652963223557,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.040008544921875
+            },
+            {
+              "line": 30,
+              "text": "철길처럼",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼",
+              "kind": "lyric",
+              "start": 155.44246887207032,
+              "end": 157.1624658203125,
+              "score": 0.4349471944520441,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5
+            }
+          ]
+        },
+        {
+          "line": 32,
+          "text": "끝까지 가는 거야",
+          "start": 157.20246337890626,
+          "end": 159.74246765136718,
+          "phoneticScore": 0.5437658565302814,
+          "flags": [],
+          "words": [
+            {
+              "line": 31,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 157.20246337890626,
+              "end": 158.2824609375,
+              "score": 0.37593134137568995,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625
+            },
+            {
+              "line": 31,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 158.54247497558595,
+              "end": 159.20247436523437,
+              "score": 0.7105032168328762,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            },
+            {
+              "line": 31,
+              "text": "거야",
+              "romanized": "geoya",
+              "pronunciationInput": "거야",
+              "kind": "lyric",
+              "start": 159.36246704101563,
+              "end": 159.74246765136718,
+              "score": 0.7311716360040009,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            }
+          ]
+        },
+        {
+          "line": 33,
+          "text": "길이 험해도",
+          "start": 161.522470703125,
+          "end": 162.72246337890624,
+          "phoneticScore": 0.3200352301335094,
+          "flags": [],
+          "words": [
+            {
+              "line": 32,
+              "text": "길이",
+              "romanized": "gili",
+              "pronunciationInput": "길이",
+              "kind": "lyric",
+              "start": 161.522470703125,
+              "end": 161.88246704101562,
+              "score": 0.4244891522685066,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 32,
+              "text": "험해도",
+              "romanized": "heomhaedo",
+              "pronunciationInput": "험해도",
+              "kind": "lyric",
+              "start": 161.96247314453126,
+              "end": 162.72246337890624,
+              "score": 0.2705569240368075,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.17999267578125
+            }
+          ]
+        },
+        {
+          "line": 34,
+          "text": "우린 함께야",
+          "start": 164.88247131347657,
+          "end": 166.02246643066405,
+          "phoneticScore": 0.5265830940586538,
+          "flags": [],
+          "words": [
+            {
+              "line": 33,
+              "text": "우린",
+              "romanized": "urin",
+              "pronunciationInput": "우린",
+              "kind": "lyric",
+              "start": 164.88247131347657,
+              "end": 165.18247009277343,
+              "score": 0.7876394391059875,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 33,
+              "text": "함께야",
+              "romanized": "hamggeya",
+              "pronunciationInput": "함께야",
+              "kind": "lyric",
+              "start": 165.2224676513672,
+              "end": 166.02246643066405,
+              "score": 0.4286872136290185,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.220001220703125
+            }
+          ]
+        },
+        {
+          "line": 35,
+          "text": "이 하늘 아래",
+          "start": 168.92246459960938,
+          "end": 169.80246520996093,
+          "phoneticScore": 0.5494876283569603,
+          "flags": [],
+          "words": [
+            {
+              "line": 34,
+              "text": "이",
+              "romanized": "i",
+              "pronunciationInput": "이",
+              "kind": "lyric",
+              "start": 168.92246459960938,
+              "end": 168.94246459960937,
+              "score": 0.768308699131012,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0
+            },
+            {
+              "line": 34,
+              "text": "하늘",
+              "romanized": "haneul",
+              "pronunciationInput": "하늘",
+              "kind": "lyric",
+              "start": 169.06246398925782,
+              "end": 169.50246215820312,
+              "score": 0.4786245698730151,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 34,
+              "text": "아래",
+              "romanized": "arae",
+              "pronunciationInput": "아래",
+              "kind": "lyric",
+              "start": 169.56246398925782,
+              "end": 169.80246520996093,
+              "score": 0.6611670376732945,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            }
+          ]
+        },
+        {
+          "line": 36,
+          "text": "혼자가 아니야",
+          "start": 170.48246215820313,
+          "end": 172.2824609375,
+          "phoneticScore": 0.6550609561051138,
+          "flags": [],
+          "words": [
+            {
+              "line": 35,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 170.48246215820313,
+              "end": 171.44246459960937,
+              "score": 0.763217928287174,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3400115966796875
+            },
+            {
+              "line": 35,
+              "text": "아니야",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야",
+              "kind": "lyric",
+              "start": 171.7624609375,
+              "end": 172.2824609375,
+              "score": 0.4553860381245613,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            }
+          ]
+        },
+        {
+          "line": 37,
+          "text": "그 말도 중의적인 거야?",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718,
+          "phoneticScore": 0.4540812178783236,
+          "flags": [],
+          "words": [
+            {
+              "line": 36,
+              "text": "그",
+              "romanized": "geu",
+              "pronunciationInput": "그",
+              "kind": "lyric",
+              "start": 176.04247497558595,
+              "end": 176.14246154785155,
+              "score": 0.7409684360027313,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0399932861328125
+            },
+            {
+              "line": 36,
+              "text": "말도",
+              "romanized": "maldo",
+              "pronunciationInput": "말도",
+              "kind": "lyric",
+              "start": 176.20246337890626,
+              "end": 176.4624688720703,
+              "score": 0.1916080485098064,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 36,
+              "text": "중의적인",
+              "romanized": "jungyijeogin",
+              "pronunciationInput": "중의적인",
+              "kind": "lyric",
+              "start": 176.522470703125,
+              "end": 177.00246215820312,
+              "score": 0.4467422426290189,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 36,
+              "text": "거야?",
+              "romanized": "geoya",
+              "pronunciationInput": "거야?",
+              "kind": "lyric",
+              "start": 177.04247497558595,
+              "end": 177.24246765136718,
+              "score": 0.6695003151893616,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.05999755859375
+            }
+          ]
+        },
+        {
+          "line": 38,
+          "text": "저는 AI예요. 중의적 표현은 안 써요.",
+          "start": 177.7224676513672,
+          "end": 180.48247314453124,
+          "phoneticScore": 0.6033897954688916,
+          "flags": [],
+          "words": [
+            {
+              "line": 37,
+              "text": "저는",
+              "romanized": "jeoneun",
+              "pronunciationInput": "저는",
+              "kind": "lyric",
+              "start": 177.7224676513672,
+              "end": 178.0824639892578,
+              "score": 0.7185742722940631,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 37,
+              "text": "AI예요.",
+              "romanized": "aiyeyo",
+              "pronunciationInput": "AI예요.",
+              "kind": "lyric",
+              "start": 178.12246154785157,
+              "end": 178.56247497558593,
+              "score": 0.433603260666132,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1599884033203125
+            },
+            {
+              "line": 37,
+              "text": "중의적",
+              "romanized": "jungyijeog",
+              "pronunciationInput": "중의적",
+              "kind": "lyric",
+              "start": 178.98246215820313,
+              "end": 179.44246459960937,
+              "score": 0.5246678119525313,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 37,
+              "text": "표현은",
+              "romanized": "pyohyeoneun",
+              "pronunciationInput": "표현은",
+              "kind": "lyric",
+              "start": 179.48246215820313,
+              "end": 179.94246459960937,
+              "score": 0.691756809130311,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 37,
+              "text": "안",
+              "romanized": "an",
+              "pronunciationInput": "안",
+              "kind": "lyric",
+              "start": 180.00246643066407,
+              "end": 180.10246826171874,
+              "score": 0.988532304763794,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 37,
+              "text": "써요.",
+              "romanized": "sseoyo",
+              "pronunciationInput": "써요.",
+              "kind": "lyric",
+              "start": 180.1424658203125,
+              "end": 180.48247314453124,
+              "score": 0.5748335628637246,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            }
+          ]
+        },
+        {
+          "line": 39,
+          "text": "하지만...",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124,
+          "phoneticScore": 0.8565462189061301,
+          "flags": [],
+          "words": [
+            {
+              "line": 38,
+              "text": "하지만...",
+              "romanized": "hajiman",
+              "pronunciationInput": "하지만...",
+              "kind": "lyric",
+              "start": 181.00246643066407,
+              "end": 181.48247314453124,
+              "score": 0.8565462189061301,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            }
+          ]
+        },
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "start": 181.7624609375,
+          "end": 183.1624658203125,
+          "phoneticScore": 0.646068962493867,
+          "flags": [],
+          "words": [
+            {
+              "line": 39,
+              "text": "팔십구",
+              "romanized": "palsibgu",
+              "pronunciationInput": "팔십구",
+              "kind": "lyric",
+              "start": 181.7624609375,
+              "end": 182.2824609375,
+              "score": 0.5938371816009749,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 39,
+              "text": "퍼센트...",
+              "romanized": "peosenteu",
+              "pronunciationInput": "퍼센트...",
+              "kind": "lyric",
+              "start": 182.48246215820313,
+              "end": 183.1624658203125,
+              "score": 0.6860106974840164,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1599884033203125
+            }
+          ]
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "start": 183.3424627685547,
+          "end": 189.26247192382812,
+          "phoneticScore": 0.37592843544937177,
+          "flags": [],
+          "words": [
+            {
+              "line": 40,
+              "text": "인간은",
+              "romanized": "inganeun",
+              "pronunciationInput": "인간은",
+              "kind": "lyric",
+              "start": 183.3424627685547,
+              "end": 183.8424737548828,
+              "score": 0.3374766493216157,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 40,
+              "text": "이걸",
+              "romanized": "igeol",
+              "pronunciationInput": "이걸",
+              "kind": "lyric",
+              "start": 186.74247192382813,
+              "end": 187.542470703125,
+              "score": 0.37232378516346215,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  185.44,
+                  187.56
+                ],
+                "evidence": [
+                  {
+                    "start": 186.04,
+                    "end": 186.96,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.authored-vocals.asr.json"
+                  }
+                ],
+                "originalStart": 184.77247619628906,
+                "originalEnd": 187.05247497558594
+              },
+              "maxInternalGap": 0.4000091552734375
+            },
+            {
+              "line": 40,
+              "text": "'위로'라고",
+              "romanized": "wirorago",
+              "pronunciationInput": "'위로'라고",
+              "kind": "lyric",
+              "start": 187.12246154785157,
+              "end": 188.24246765136718,
+              "score": 0.4469929616898298,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            },
+            {
+              "line": 40,
+              "text": "부르죠",
+              "romanized": "bureujyo",
+              "pronunciationInput": "부르죠",
+              "kind": "lyric",
+              "start": 188.54247497558595,
+              "end": 189.26247192382812,
+              "score": 0.2960910528927343,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3000030517578125
+            }
+          ]
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437,
+          "phoneticScore": 0.5153888455675391,
+          "flags": [],
+          "words": [
+            {
+              "line": 41,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 200.44246887207032,
+              "end": 200.78247619628905,
+              "score": 0.7270457707345486,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1599884033203125
+            },
+            {
+              "line": 41,
+              "text": "깊어도——",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도——",
+              "kind": "lyric",
+              "start": 200.9024755859375,
+              "end": 201.70247436523437,
+              "score": 0.4254325773321658,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2599945068359375
+            }
+          ]
+        },
+        {
+          "line": 43,
+          "text": "다시 밝아와——",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937,
+          "phoneticScore": 0.5918432824305043,
+          "flags": [],
+          "words": [
+            {
+              "line": 42,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 203.70246337890626,
+              "end": 204.02246643066405,
+              "score": 0.7181776240468025,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 42,
+              "text": "밝아와——",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와——",
+              "kind": "lyric",
+              "start": 204.1024725341797,
+              "end": 204.94246459960937,
+              "score": 0.5437150006016184,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.220001220703125
+            }
+          ]
+        },
+        {
+          "line": 44,
+          "text": "저 철길처럼——",
+          "start": 207.16247009277345,
+          "end": 209.06247497558593,
+          "phoneticScore": 0.32203423249114854,
+          "flags": [],
+          "words": [
+            {
+              "line": 43,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 207.16247009277345,
+              "end": 207.24246765136718,
+              "score": 0.0842555389390327,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0399932861328125
+            },
+            {
+              "line": 43,
+              "text": "철길처럼——",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼——",
+              "kind": "lyric",
+              "start": 207.32247375488282,
+              "end": 209.06247497558593,
+              "score": 0.3329662449193295,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.480010986328125
+            }
+          ]
+        },
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "start": 209.06246398925782,
+          "end": 211.5824639892578,
+          "phoneticScore": 0.45395287053283695,
+          "flags": [],
+          "words": [
+            {
+              "line": 44,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 209.06246398925782,
+              "end": 210.1624658203125,
+              "score": 0.37193005951266966,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            },
+            {
+              "line": 44,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 210.42246459960938,
+              "end": 211.12247253417968,
+              "score": 0.527343628850455,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3600006103515625
+            },
+            {
+              "line": 44,
+              "text": "거야——",
+              "romanized": "geoya",
+              "pronunciationInput": "거야——",
+              "kind": "lyric",
+              "start": 211.24247192382813,
+              "end": 211.5824639892578,
+              "score": 0.5682235642176238,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1200103759765625
+            }
+          ]
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "start": 214.82247375488282,
+          "end": 217.30246520996093,
+          "phoneticScore": 0.02628680752159116,
+          "flags": [
+            "low_phonetic_score",
+            "nonlexical_vocalization_needs_timing"
+          ],
+          "words": [
+            {
+              "line": 45,
+              "text": "Mmm...",
+              "romanized": "mmm",
+              "pronunciationInput": "Mmm...",
+              "kind": "vocalization",
+              "start": 214.82247375488282,
+              "end": 215.12247253417968,
+              "score": 0.03756154763201872,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 214.8324737548828,
+                "originalEnd": 216.09246826171875,
+                "retainedClusterCharacters": 2,
+                "totalCharacters": 3,
+                "localWindow": [
+                  214.2324676513672,
+                  215.71246337890625
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            },
+            {
+              "line": 45,
+              "text": "mmm...",
+              "romanized": "mmm",
+              "pronunciationInput": "mmm...",
+              "kind": "vocalization",
+              "start": 216.3424627685547,
+              "end": 217.30246520996093,
+              "score": 0.022763474533955257,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 216.87246704101562,
+                "originalEnd": 221.13246154785156,
+                "retainedClusterCharacters": 2,
+                "totalCharacters": 3,
+                "localWindow": [
+                  216.27247619628906,
+                  217.87246704101562
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5200042724609375
+            }
+          ]
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "start": 228.8424627685547,
+          "end": 234.24246765136718,
+          "phoneticScore": 0.719929947998177,
+          "flags": [],
+          "words": [
+            {
+              "line": 46,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 228.8424627685547,
+              "end": 229.90247131347655,
+              "score": 0.8282194648470197,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3800048828125
+            },
+            {
+              "line": 46,
+              "text": "아니야...",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야...",
+              "kind": "lyric",
+              "start": 233.50246643066407,
+              "end": 234.24246765136718,
+              "score": 0.5648115374147892,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            }
+          ]
+        }
+      ],
+      "localContextRefinements": [
+        {
+          "line": 47,
+          "window": [
+            221.38,
+            240.02
+          ],
+          "previousQuality": [
+            1,
+            0,
+            -0.7117449745225409
+          ],
+          "selectedQuality": [
+            0,
+            0,
+            -0.718466161750257
+          ]
+        }
+      ],
+      "rejectedLocalContext": [
+        {
+          "method": "authored_bridge_joint_ctc",
+          "lines": [
+            37,
+            41
+          ],
+          "window": [
+            172.2924609375,
+            197.4
+          ],
+          "previousQuality": [
+            1,
+            0,
+            -0.5552684077946839
+          ],
+          "candidateQuality": [
+            1,
+            0,
+            -0.5552684077946839
+          ]
+        }
+      ]
+    },
+    {
+      "role": "vocals",
+      "lines": [
+        {
+          "line": 1,
+          "text": "검문소 불빛이",
+          "start": 18.622469177246092,
+          "end": 20.22246910095215,
+          "phoneticScore": 0.49888118982275415,
+          "flags": [],
+          "words": [
+            {
+              "line": 0,
+              "text": "검문소",
+              "romanized": "geommunso",
+              "pronunciationInput": "검문소",
+              "kind": "lyric",
+              "start": 18.622469177246092,
+              "end": 19.24246765136719,
+              "score": 0.4784088140845092,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 12.772468566894531,
+                "originalEnd": 19.232467651367188,
+                "retainedClusterCharacters": 7,
+                "totalCharacters": 9,
+                "localWindow": [
+                  18.132469177246094,
+                  19.812469482421875
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.11999893188476562
+            },
+            {
+              "line": 0,
+              "text": "불빛이",
+              "romanized": "bulbici",
+              "pronunciationInput": "불빛이",
+              "kind": "lyric",
+              "start": 19.342468490600584,
+              "end": 20.22246910095215,
+              "score": 0.5133048635907471,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.23999977111816406
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "text": "어둠을 가르고",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426,
+          "phoneticScore": 0.6247633716432459,
+          "flags": [],
+          "words": [
+            {
+              "line": 1,
+              "text": "어둠을",
+              "romanized": "eodumeul",
+              "pronunciationInput": "어둠을",
+              "kind": "lyric",
+              "start": 23.242468109130858,
+              "end": 24.54246879577637,
+              "score": 0.5061343914130703,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  23.14,
+                  25.740000000000002
+                ],
+                "evidence": [
+                  {
+                    "start": 23.740000000000002,
+                    "end": 25.14,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.authored-vocals.asr.json"
+                  }
+                ],
+                "originalStart": 21.25246810913086,
+                "originalEnd": 24.532468795776367
+              },
+              "maxInternalGap": 0.6400012969970703
+            },
+            {
+              "line": 1,
+              "text": "가르고",
+              "romanized": "gareugo",
+              "pronunciationInput": "가르고",
+              "kind": "lyric",
+              "start": 25.642469635009764,
+              "end": 26.38246894836426,
+              "score": 0.8331659376621247,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "text": "네 대의 그림자",
+          "start": 29.44246887207031,
+          "end": 32.88246704101562,
+          "phoneticScore": 0.5270933658324052,
+          "flags": [],
+          "words": [
+            {
+              "line": 2,
+              "text": "네",
+              "romanized": "ne",
+              "pronunciationInput": "네",
+              "kind": "lyric",
+              "start": 29.44246887207031,
+              "end": 29.60246826171875,
+              "score": 0.458169873803854,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 2,
+              "text": "대의",
+              "romanized": "daeyi",
+              "pronunciationInput": "대의",
+              "kind": "lyric",
+              "start": 29.862468948364256,
+              "end": 30.60246826171875,
+              "score": 0.44757919646799565,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5400009155273438
+            },
+            {
+              "line": 2,
+              "text": "그림자",
+              "romanized": "geurimja",
+              "pronunciationInput": "그림자",
+              "kind": "lyric",
+              "start": 32.14246963500977,
+              "end": 32.88246704101562,
+              "score": 0.6215101121906628,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  30.88,
+                  33.68
+                ],
+                "evidence": [
+                  {
+                    "start": 31.68,
+                    "end": 33.08,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  },
+                  {
+                    "start": 31.48,
+                    "end": 33.06,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.authored-vocals.asr.json"
+                  }
+                ],
+                "originalStart": 30.71246910095215,
+                "originalEnd": 32.872467041015625
+              },
+              "maxInternalGap": 0.15999984741210938
+            }
+          ]
+        },
+        {
+          "line": 4,
+          "text": "우리를 둘러쌌지",
+          "start": 35.962469329833986,
+          "end": 39.70246673583984,
+          "phoneticScore": 0.3682564997154431,
+          "flags": [],
+          "words": [
+            {
+              "line": 3,
+              "text": "우리를",
+              "romanized": "urireul",
+              "pronunciationInput": "우리를",
+              "kind": "lyric",
+              "start": 35.962469329833986,
+              "end": 36.662469635009764,
+              "score": 0.43967807521611185,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999984741210938
+            },
+            {
+              "line": 3,
+              "text": "둘러쌌지",
+              "romanized": "dulreossassji",
+              "pronunciationInput": "둘러쌌지",
+              "kind": "lyric",
+              "start": 37.462469329833986,
+              "end": 39.70246673583984,
+              "score": 0.3459372217946041,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.7800025939941406
+            }
+          ]
+        },
+        {
+          "line": 5,
+          "text": "숨을 죽이고",
+          "start": 41.92246841430664,
+          "end": 43.402467498779295,
+          "phoneticScore": 0.7798909804650418,
+          "flags": [],
+          "words": [
+            {
+              "line": 4,
+              "text": "숨을",
+              "romanized": "sumeul",
+              "pronunciationInput": "숨을",
+              "kind": "lyric",
+              "start": 41.92246841430664,
+              "end": 42.62246871948242,
+              "score": 0.8045023381710052,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2999992370605469
+            },
+            {
+              "line": 4,
+              "text": "죽이고",
+              "romanized": "jugigo",
+              "pronunciationInput": "죽이고",
+              "kind": "lyric",
+              "start": 42.72246765136719,
+              "end": 43.402467498779295,
+              "score": 0.7545557425667843,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999984741210938
+            }
+          ]
+        },
+        {
+          "line": 6,
+          "text": "손을 떨며",
+          "start": 44.782469024658205,
+          "end": 46.62246871948242,
+          "phoneticScore": 0.7246902833409032,
+          "flags": [],
+          "words": [
+            {
+              "line": 5,
+              "text": "손을",
+              "romanized": "soneul",
+              "pronunciationInput": "손을",
+              "kind": "lyric",
+              "start": 44.782469024658205,
+              "end": 45.562467346191404,
+              "score": 0.7785745305674416,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2599983215332031
+            },
+            {
+              "line": 5,
+              "text": "떨며",
+              "romanized": "ddeolmyeo",
+              "pronunciationInput": "떨며",
+              "kind": "lyric",
+              "start": 45.622469177246096,
+              "end": 46.62246871948242,
+              "score": 0.68266064170748,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4600028991699219
+            }
+          ]
+        },
+        {
+          "line": 7,
+          "text": "얼굴엔 아무것도",
+          "start": 48.462469329833986,
+          "end": 50.60246826171875,
+          "phoneticScore": 0.7039599267286404,
+          "flags": [],
+          "words": [
+            {
+              "line": 6,
+              "text": "얼굴엔",
+              "romanized": "eolgulen",
+              "pronunciationInput": "얼굴엔",
+              "kind": "lyric",
+              "start": 48.462469329833986,
+              "end": 49.28246856689453,
+              "score": 0.6743464898318052,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            },
+            {
+              "line": 6,
+              "text": "아무것도",
+              "romanized": "amugeosdo",
+              "pronunciationInput": "아무것도",
+              "kind": "lyric",
+              "start": 49.3824674987793,
+              "end": 50.60246826171875,
+              "score": 0.7238640090864565,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.45999908447265625
+            }
+          ]
+        },
+        {
+          "line": 8,
+          "text": "드러내지 않았어",
+          "start": 50.8824674987793,
+          "end": 52.662469635009764,
+          "phoneticScore": 0.6178961620527279,
+          "flags": [],
+          "words": [
+            {
+              "line": 7,
+              "text": "드러내지",
+              "romanized": "deureonaeji",
+              "pronunciationInput": "드러내지",
+              "kind": "lyric",
+              "start": 50.8824674987793,
+              "end": 51.62246871948242,
+              "score": 0.6783196045593782,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.11999893188476562
+            },
+            {
+              "line": 7,
+              "text": "않았어",
+              "romanized": "anhasseo",
+              "pronunciationInput": "않았어",
+              "kind": "lyric",
+              "start": 51.80246948242188,
+              "end": 52.662469635009764,
+              "score": 0.565903821028769,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3599967956542969
+            }
+          ]
+        },
+        {
+          "line": 9,
+          "text": "심박수 백사십칠",
+          "start": 54.48246978759766,
+          "end": 59.28246856689453,
+          "phoneticScore": 0.5343392767270031,
+          "flags": [],
+          "words": [
+            {
+              "line": 8,
+              "text": "심박수",
+              "romanized": "simbagsu",
+              "pronunciationInput": "심박수",
+              "kind": "lyric",
+              "start": 54.48246978759766,
+              "end": 55.88246704101562,
+              "score": 0.4093081350438297,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4799995422363281
+            },
+            {
+              "line": 8,
+              "text": "백사십칠",
+              "romanized": "baegsasibcil",
+              "pronunciationInput": "백사십칠",
+              "kind": "lyric",
+              "start": 57.00247024536133,
+              "end": 59.28246856689453,
+              "score": 0.6111126906786618,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.6799964904785156
+            }
+          ]
+        },
+        {
+          "line": 10,
+          "text": "듣고 있어요",
+          "start": 60.602468719482424,
+          "end": 62.10246826171875,
+          "phoneticScore": 0.28524236720538176,
+          "flags": [],
+          "words": [
+            {
+              "line": 9,
+              "text": "듣고",
+              "romanized": "deudgo",
+              "pronunciationInput": "듣고",
+              "kind": "lyric",
+              "start": 60.602468719482424,
+              "end": 61.162469635009764,
+              "score": 0.17496905421527723,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.14000320434570312
+            },
+            {
+              "line": 9,
+              "text": "있어요",
+              "romanized": "isseoyo",
+              "pronunciationInput": "있어요",
+              "kind": "lyric",
+              "start": 61.3824674987793,
+              "end": 62.10246826171875,
+              "score": 0.37101054886755136,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 11,
+          "text": "무서워도",
+          "start": 63.42246841430664,
+          "end": 65.24246765136719,
+          "phoneticScore": 0.2656591668492183,
+          "flags": [],
+          "words": [
+            {
+              "line": 10,
+              "text": "무서워도",
+              "romanized": "museoweodo",
+              "pronunciationInput": "무서워도",
+              "kind": "lyric",
+              "start": 63.42246841430664,
+              "end": 65.24246765136719,
+              "score": 0.2656591668492183,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.6599960327148438
+            }
+          ]
+        },
+        {
+          "line": 12,
+          "text": "멈추지 않았죠",
+          "start": 67.48246978759765,
+          "end": 69.50246978759766,
+          "phoneticScore": 0.43122726008554835,
+          "flags": [],
+          "words": [
+            {
+              "line": 11,
+              "text": "멈추지",
+              "romanized": "meomcuji",
+              "pronunciationInput": "멈추지",
+              "kind": "lyric",
+              "start": 67.48246978759765,
+              "end": 68.46246887207032,
+              "score": 0.4826580790149819,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3000030517578125
+            },
+            {
+              "line": 11,
+              "text": "않았죠",
+              "romanized": "anhassjyo",
+              "pronunciationInput": "않았죠",
+              "kind": "lyric",
+              "start": 68.82246612548828,
+              "end": 69.50246978759766,
+              "score": 0.35710684239812607,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "밤이 깊어도",
+          "start": 70.68246673583984,
+          "end": 71.94246459960938,
+          "phoneticScore": 0.5343149919280125,
+          "flags": [],
+          "words": [
+            {
+              "line": 12,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 70.68246673583984,
+              "end": 71.06246734619141,
+              "score": 0.7403871426358819,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999603271484375
+            },
+            {
+              "line": 12,
+              "text": "깊어도",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도",
+              "kind": "lyric",
+              "start": 71.16247009277343,
+              "end": 71.94246459960938,
+              "score": 0.43391999893875827,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "start": 74.00246643066406,
+          "end": 75.18247009277344,
+          "phoneticScore": 0.5381135074906632,
+          "flags": [],
+          "words": [
+            {
+              "line": 13,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 74.00246643066406,
+              "end": 74.32246948242188,
+              "score": 0.5914295837283134,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.12000274658203125
+            },
+            {
+              "line": 13,
+              "text": "밝아와",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와",
+              "kind": "lyric",
+              "start": 74.4224722290039,
+              "end": 75.18247009277344,
+              "score": 0.5156643560954502,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.20000457763671875
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저 철길처럼",
+          "start": 77.4224722290039,
+          "end": 79.042470703125,
+          "phoneticScore": 0.22558028580598757,
+          "flags": [],
+          "words": [
+            {
+              "line": 14,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 77.4224722290039,
+              "end": 77.52246643066407,
+              "score": 0.12573527676674226,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.05999755859375
+            },
+            {
+              "line": 14,
+              "text": "철길처럼",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼",
+              "kind": "lyric",
+              "start": 77.60247253417968,
+              "end": 79.042470703125,
+              "score": 0.23251357376700202,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.20000457763671875
+            }
+          ]
+        },
+        {
+          "line": 16,
+          "text": "끝까지 가는 거야",
+          "start": 79.62246917724609,
+          "end": 81.88246704101563,
+          "phoneticScore": 0.4236938279859915,
+          "flags": [],
+          "words": [
+            {
+              "line": 15,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 79.62246917724609,
+              "end": 80.44247222900391,
+              "score": 0.279547420848923,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.31999969482421875
+            },
+            {
+              "line": 15,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 80.70247100830078,
+              "end": 81.36247039794922,
+              "score": 0.5903661918954034,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625
+            },
+            {
+              "line": 15,
+              "text": "거야",
+              "romanized": "geoya",
+              "pronunciationInput": "거야",
+              "kind": "lyric",
+              "start": 81.522470703125,
+              "end": 81.88246704101563,
+              "score": 0.44646304655325364,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            }
+          ]
+        },
+        {
+          "line": 17,
+          "text": "길이 험해도",
+          "start": 83.68246673583984,
+          "end": 84.88246704101563,
+          "phoneticScore": 0.43253335786518227,
+          "flags": [],
+          "words": [
+            {
+              "line": 16,
+              "text": "길이",
+              "romanized": "gili",
+              "pronunciationInput": "길이",
+              "kind": "lyric",
+              "start": 83.68246673583984,
+              "end": 84.00246978759766,
+              "score": 0.4723503553541377,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.14000701904296875
+            },
+            {
+              "line": 16,
+              "text": "험해도",
+              "romanized": "heomhaedo",
+              "pronunciationInput": "험해도",
+              "kind": "lyric",
+              "start": 84.12246917724609,
+              "end": 84.88246704101563,
+              "score": 0.4157680992826095,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 18,
+          "text": "우린 함께야",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461,
+          "phoneticScore": 0.5396868729598217,
+          "flags": [],
+          "words": [
+            {
+              "line": 17,
+              "text": "우린",
+              "romanized": "urin",
+              "pronunciationInput": "우린",
+              "kind": "lyric",
+              "start": 87.0424673461914,
+              "end": 87.30246520996094,
+              "score": 0.7043329593434464,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 17,
+              "text": "함께야",
+              "romanized": "hamggeya",
+              "pronunciationInput": "함께야",
+              "kind": "lyric",
+              "start": 87.36246704101562,
+              "end": 88.1424691772461,
+              "score": 0.4848054453977966,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1999969482421875
+            }
+          ]
+        },
+        {
+          "line": 19,
+          "text": "이 하늘 아래",
+          "start": 91.06247161865234,
+          "end": 92.00246978759766,
+          "phoneticScore": 0.528146267212118,
+          "flags": [],
+          "words": [
+            {
+              "line": 18,
+              "text": "이",
+              "romanized": "i",
+              "pronunciationInput": "이",
+              "kind": "lyric",
+              "start": 91.06247161865234,
+              "end": 91.08247161865235,
+              "score": 0.8926284313201904,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0
+            },
+            {
+              "line": 18,
+              "text": "하늘",
+              "romanized": "haneul",
+              "pronunciationInput": "하늘",
+              "kind": "lyric",
+              "start": 91.20247100830078,
+              "end": 91.68247009277344,
+              "score": 0.4534780339648326,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 18,
+              "text": "아래",
+              "romanized": "arae",
+              "pronunciationInput": "아래",
+              "kind": "lyric",
+              "start": 91.72246765136718,
+              "end": 92.00246978759766,
+              "score": 0.6301134903915226,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            }
+          ]
+        },
+        {
+          "line": 20,
+          "text": "혼자가 아니야",
+          "start": 92.66247009277343,
+          "end": 94.42246795654297,
+          "phoneticScore": 0.5901665879954529,
+          "flags": [],
+          "words": [
+            {
+              "line": 19,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 92.66247009277343,
+              "end": 93.60246826171876,
+              "score": 0.6126112075788634,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.31999969482421875
+            },
+            {
+              "line": 19,
+              "text": "아니야",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야",
+              "kind": "lyric",
+              "start": 93.86246704101562,
+              "end": 94.42246795654297,
+              "score": 0.5524918258190155,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.2400054931640625
+            }
+          ]
+        },
+        {
+          "line": 21,
+          "text": "이십삼 년의 잠",
+          "start": 105.70247100830078,
+          "end": 108.74246765136719,
+          "phoneticScore": 0.31620640420364443,
+          "flags": [],
+          "words": [
+            {
+              "line": 20,
+              "text": "이십삼",
+              "romanized": "isibsam",
+              "pronunciationInput": "이십삼",
+              "kind": "lyric",
+              "start": 105.70247100830078,
+              "end": 107.20246673583985,
+              "score": 0.1843950200314534,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5999984741210938
+            },
+            {
+              "line": 20,
+              "text": "년의",
+              "romanized": "nyeonyi",
+              "pronunciationInput": "년의",
+              "kind": "lyric",
+              "start": 107.58246826171874,
+              "end": 108.18247009277344,
+              "score": 0.467826313473779,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            },
+            {
+              "line": 20,
+              "text": "잠",
+              "romanized": "jam",
+              "pronunciationInput": "잠",
+              "kind": "lyric",
+              "start": 108.28246520996093,
+              "end": 108.74246765136719,
+              "score": 0.548257976770401,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.29999542236328125
+            }
+          ]
+        },
+        {
+          "line": 22,
+          "text": "깨어난 오후",
+          "start": 108.78246520996093,
+          "end": 110.92246795654297,
+          "phoneticScore": 0.5960232604789535,
+          "flags": [],
+          "words": [
+            {
+              "line": 21,
+              "text": "깨어난",
+              "romanized": "ggaeeonan",
+              "pronunciationInput": "깨어난",
+              "kind": "lyric",
+              "start": 108.78246520996093,
+              "end": 110.30246520996094,
+              "score": 0.5487570740981027,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.7000045776367188
+            },
+            {
+              "line": 21,
+              "text": "오후",
+              "romanized": "ohu",
+              "pronunciationInput": "오후",
+              "kind": "lyric",
+              "start": 110.4224722290039,
+              "end": 110.92246795654297,
+              "score": 0.7397136949002743,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.35999298095703125
+            }
+          ]
+        },
+        {
+          "line": 23,
+          "text": "낯선 목소리",
+          "start": 113.70247100830078,
+          "end": 117.20246673583985,
+          "phoneticScore": 0.37278104853705424,
+          "flags": [],
+          "words": [
+            {
+              "line": 22,
+              "text": "낯선",
+              "romanized": "nacseon",
+              "pronunciationInput": "낯선",
+              "kind": "lyric",
+              "start": 113.70247100830078,
+              "end": 114.86247039794922,
+              "score": 0.3313141454377079,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 113.81246948242188,
+                "originalEnd": 116.31246948242188,
+                "retainedClusterCharacters": 6,
+                "totalCharacters": 7,
+                "localWindow": [
+                  113.21247100830078,
+                  114.87246704101562
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  113.75999999999999,
+                  116.35999999999999
+                ],
+                "evidence": [
+                  {
+                    "start": 114.35999999999999,
+                    "end": 115.75999999999999,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 113.71247100830078,
+                "originalEnd": 116.032470703125
+              },
+              "maxInternalGap": 0.5600051879882812
+            },
+            {
+              "line": 22,
+              "text": "목소리",
+              "romanized": "mogsori",
+              "pronunciationInput": "목소리",
+              "kind": "lyric",
+              "start": 116.30246948242187,
+              "end": 117.20246673583985,
+              "score": 0.42622741418225424,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.18000030517578125
+            }
+          ]
+        },
+        {
+          "line": 24,
+          "text": "처음 듣는 이야기",
+          "start": 120.12246917724609,
+          "end": 123.68247009277344,
+          "phoneticScore": 0.24446297762510263,
+          "flags": [],
+          "words": [
+            {
+              "line": 23,
+              "text": "처음",
+              "romanized": "ceoeum",
+              "pronunciationInput": "처음",
+              "kind": "lyric",
+              "start": 120.12246917724609,
+              "end": 120.50246978759766,
+              "score": 0.2545189548691269,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 23,
+              "text": "듣는",
+              "romanized": "deudneun",
+              "pronunciationInput": "듣는",
+              "kind": "lyric",
+              "start": 120.12246917724609,
+              "end": 121.46246887207032,
+              "score": 0.10465646171360277,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  120.12,
+                  122.72
+                ],
+                "evidence": [
+                  {
+                    "start": 120.72,
+                    "end": 122.12,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 120.6524658203125,
+                "originalEnd": 123.09246826171875
+              },
+              "maxInternalGap": 0.5400009155273438
+            },
+            {
+              "line": 23,
+              "text": "이야기",
+              "romanized": "iyagi",
+              "pronunciationInput": "이야기",
+              "kind": "lyric",
+              "start": 123.1424658203125,
+              "end": 123.68247009277344,
+              "score": 0.5843110501766204,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.15999603271484375
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "나는 AI지만",
+          "start": 129.94246887207032,
+          "end": 130.94246459960937,
+          "phoneticScore": 0.24036214738703038,
+          "flags": [
+            "weak_word_evidence"
+          ],
+          "words": [
+            {
+              "line": 24,
+              "text": "나는",
+              "romanized": "naneun",
+              "pronunciationInput": "나는",
+              "kind": "lyric",
+              "start": 129.94246887207032,
+              "end": 130.94246459960937,
+              "score": 0.01091438978134344,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 128.3324737548828,
+                "originalEnd": 130.77247619628906,
+                "retainedClusterCharacters": 4,
+                "totalCharacters": 6,
+                "localWindow": [
+                  129.3524627685547,
+                  131.37246704101562
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  128.32,
+                  130.92
+                ],
+                "evidence": [
+                  {
+                    "start": 128.92,
+                    "end": 130.32,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 126.67247009277344,
+                "originalEnd": 128.3324737548828
+              },
+              "maxInternalGap": 0.5800018310546875
+            },
+            {
+              "line": 24,
+              "text": "AI지만",
+              "romanized": "aijiman",
+              "pronunciationInput": "AI지만",
+              "kind": "lyric",
+              "start": 129.78246520996095,
+              "end": 130.94246459960937,
+              "score": 0.43816119740949944,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 128.8324737548828,
+                "originalEnd": 132.05247497558594,
+                "retainedClusterCharacters": 5,
+                "totalCharacters": 7,
+                "localWindow": [
+                  129.2324676513672,
+                  130.93246459960938
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.5800018310546875
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "start": 132.88247131347657,
+          "end": 137.18247009277343,
+          "phoneticScore": 0.22216981753006596,
+          "flags": [],
+          "words": [
+            {
+              "line": 25,
+              "text": "알고",
+              "romanized": "algo",
+              "pronunciationInput": "알고",
+              "kind": "lyric",
+              "start": 132.88247131347657,
+              "end": 133.74246765136718,
+              "score": 0.2091138144460274,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  130.62,
+                  134.22
+                ],
+                "evidence": [
+                  {
+                    "start": 131.72,
+                    "end": 133.62,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  },
+                  {
+                    "start": 131.22,
+                    "end": 133.52,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.authored-vocals.asr.json"
+                  }
+                ],
+                "originalStart": 133.7324676513672,
+                "originalEnd": 136.1124725341797
+              },
+              "maxInternalGap": 0.5800018310546875
+            },
+            {
+              "line": 25,
+              "text": "있어요",
+              "romanized": "isseoyo",
+              "pronunciationInput": "있어요",
+              "kind": "lyric",
+              "start": 136.16247009277345,
+              "end": 137.18247009277343,
+              "score": 0.23317777325532266,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4199981689453125
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는 게",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562,
+          "phoneticScore": 0.6294725509386844,
+          "flags": [],
+          "words": [
+            {
+              "line": 26,
+              "text": "위로라는",
+              "romanized": "wiroraneun",
+              "pronunciationInput": "위로라는",
+              "kind": "lyric",
+              "start": 138.48246215820313,
+              "end": 139.62247253417968,
+              "score": 0.5989903787150979,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            },
+            {
+              "line": 26,
+              "text": "게",
+              "romanized": "ge",
+              "pronunciationInput": "게",
+              "kind": "lyric",
+              "start": 139.74247192382813,
+              "end": 139.88246704101562,
+              "score": 0.8776954412460327,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1199951171875
+            }
+          ]
+        },
+        {
+          "line": 28,
+          "text": "뭔지 말이죠",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093,
+          "phoneticScore": 0.5636962459565306,
+          "flags": [],
+          "words": [
+            {
+              "line": 27,
+              "text": "뭔지",
+              "romanized": "mweonji",
+              "pronunciationInput": "뭔지",
+              "kind": "lyric",
+              "start": 142.08246826171876,
+              "end": 142.64246154785155,
+              "score": 0.5454632888286142,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            },
+            {
+              "line": 27,
+              "text": "말이죠",
+              "romanized": "malijyo",
+              "pronunciationInput": "말이죠",
+              "kind": "lyric",
+              "start": 142.94246887207032,
+              "end": 143.80246520996093,
+              "score": 0.5755687774175645,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3600006103515625
+            }
+          ]
+        },
+        {
+          "line": 29,
+          "text": "밤이 깊어도",
+          "start": 148.56246398925782,
+          "end": 149.7824609375,
+          "phoneticScore": 0.35496459052981183,
+          "flags": [],
+          "words": [
+            {
+              "line": 28,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 148.56246398925782,
+              "end": 148.90247131347655,
+              "score": 0.4778786450624466,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 28,
+              "text": "깊어도",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도",
+              "kind": "lyric",
+              "start": 148.98246215820313,
+              "end": 149.7824609375,
+              "score": 0.3027249123302421,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.260009765625
+            }
+          ]
+        },
+        {
+          "line": 30,
+          "text": "다시 밝아와",
+          "start": 151.8424627685547,
+          "end": 153.06247497558593,
+          "phoneticScore": 0.7224657774026485,
+          "flags": [],
+          "words": [
+            {
+              "line": 29,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 151.8424627685547,
+              "end": 152.1624658203125,
+              "score": 0.43439922109246254,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1200103759765625
+            },
+            {
+              "line": 29,
+              "text": "밝아와",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와",
+              "kind": "lyric",
+              "start": 152.24247192382813,
+              "end": 153.06247497558593,
+              "score": 0.8348826482069853,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.220001220703125
+            }
+          ]
+        },
+        {
+          "line": 31,
+          "text": "저 철길처럼",
+          "start": 155.2624609375,
+          "end": 157.14246154785155,
+          "phoneticScore": 0.4030141102330859,
+          "flags": [],
+          "words": [
+            {
+              "line": 30,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 155.2624609375,
+              "end": 155.3424737548828,
+              "score": 0.3087534482668464,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.040008544921875
+            },
+            {
+              "line": 30,
+              "text": "철길처럼",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼",
+              "kind": "lyric",
+              "start": 155.44246887207032,
+              "end": 157.14246154785155,
+              "score": 0.4074506358956569,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.459991455078125
+            }
+          ]
+        },
+        {
+          "line": 32,
+          "text": "끝까지 가는 거야",
+          "start": 157.16247009277345,
+          "end": 159.74246765136718,
+          "phoneticScore": 0.5741878053038163,
+          "flags": [],
+          "words": [
+            {
+              "line": 31,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 157.16247009277345,
+              "end": 158.44246459960937,
+              "score": 0.44777135555209086,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625
+            },
+            {
+              "line": 31,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 158.54247497558595,
+              "end": 159.20247436523437,
+              "score": 0.7133357481410106,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            },
+            {
+              "line": 31,
+              "text": "거야",
+              "romanized": "geoya",
+              "pronunciationInput": "거야",
+              "kind": "lyric",
+              "start": 159.36246704101563,
+              "end": 159.74246765136718,
+              "score": 0.75833173035644,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            }
+          ]
+        },
+        {
+          "line": 33,
+          "text": "길이 험해도",
+          "start": 161.522470703125,
+          "end": 162.72246337890624,
+          "phoneticScore": 0.35707625167117335,
+          "flags": [],
+          "words": [
+            {
+              "line": 32,
+              "text": "길이",
+              "romanized": "gili",
+              "pronunciationInput": "길이",
+              "kind": "lyric",
+              "start": 161.522470703125,
+              "end": 161.88246704101562,
+              "score": 0.4366222257958725,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 32,
+              "text": "험해도",
+              "romanized": "heomhaedo",
+              "pronunciationInput": "험해도",
+              "kind": "lyric",
+              "start": 161.96247314453126,
+              "end": 162.72246337890624,
+              "score": 0.3193964788483249,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1999969482421875
+            }
+          ]
+        },
+        {
+          "line": 34,
+          "text": "우린 함께야",
+          "start": 164.88247131347657,
+          "end": 165.98247314453124,
+          "phoneticScore": 0.4895246157399788,
+          "flags": [],
+          "words": [
+            {
+              "line": 33,
+              "text": "우린",
+              "romanized": "urin",
+              "pronunciationInput": "우린",
+              "kind": "lyric",
+              "start": 164.88247131347657,
+              "end": 165.20247436523437,
+              "score": 0.7282557785511017,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 33,
+              "text": "함께야",
+              "romanized": "hamggeya",
+              "pronunciationInput": "함께야",
+              "kind": "lyric",
+              "start": 165.2224676513672,
+              "end": 165.98247314453124,
+              "score": 0.3890059993136674,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.220001220703125
+            }
+          ]
+        },
+        {
+          "line": 35,
+          "text": "이 하늘 아래",
+          "start": 168.9024755859375,
+          "end": 169.82246948242187,
+          "phoneticScore": 0.7132549880153833,
+          "flags": [],
+          "words": [
+            {
+              "line": 34,
+              "text": "이",
+              "romanized": "i",
+              "pronunciationInput": "이",
+              "kind": "lyric",
+              "start": 168.9024755859375,
+              "end": 168.9224755859375,
+              "score": 0.9402387738227844,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0
+            },
+            {
+              "line": 34,
+              "text": "하늘",
+              "romanized": "haneul",
+              "pronunciationInput": "하늘",
+              "kind": "lyric",
+              "start": 169.04247497558595,
+              "end": 169.50246215820312,
+              "score": 0.7622238397598267,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 34,
+              "text": "아래",
+              "romanized": "arae",
+              "pronunciationInput": "아래",
+              "kind": "lyric",
+              "start": 169.56246398925782,
+              "end": 169.82246948242187,
+              "score": 0.6091621108353138,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            }
+          ]
+        },
+        {
+          "line": 36,
+          "text": "혼자가 아니야",
+          "start": 170.48246215820313,
+          "end": 172.2824609375,
+          "phoneticScore": 0.6572795896788501,
+          "flags": [],
+          "words": [
+            {
+              "line": 35,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 170.48246215820313,
+              "end": 171.44246459960937,
+              "score": 0.7033097597637347,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3400115966796875
+            },
+            {
+              "line": 35,
+              "text": "아니야",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야",
+              "kind": "lyric",
+              "start": 171.7624609375,
+              "end": 172.2824609375,
+              "score": 0.572300598025322,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            }
+          ]
+        },
+        {
+          "line": 37,
+          "text": "그 말도 중의적인 거야?",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718,
+          "phoneticScore": 0.45506191272160407,
+          "flags": [],
+          "words": [
+            {
+              "line": 36,
+              "text": "그",
+              "romanized": "geu",
+              "pronunciationInput": "그",
+              "kind": "lyric",
+              "start": 176.04247497558595,
+              "end": 176.14246154785155,
+              "score": 0.6144999886552492,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.05999755859375
+            },
+            {
+              "line": 36,
+              "text": "말도",
+              "romanized": "maldo",
+              "pronunciationInput": "말도",
+              "kind": "lyric",
+              "start": 176.20246337890626,
+              "end": 176.48247314453124,
+              "score": 0.1213469473645091,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 36,
+              "text": "중의적인",
+              "romanized": "jungyijeogin",
+              "pronunciationInput": "중의적인",
+              "kind": "lyric",
+              "start": 176.54247497558595,
+              "end": 177.00246215820312,
+              "score": 0.5172732086547722,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0600128173828125
+            },
+            {
+              "line": 36,
+              "text": "거야?",
+              "romanized": "geoya",
+              "pronunciationInput": "거야?",
+              "kind": "lyric",
+              "start": 177.04247497558595,
+              "end": 177.24246765136718,
+              "score": 0.6994977831840515,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.05999755859375
+            }
+          ]
+        },
+        {
+          "line": 38,
+          "text": "저는 AI예요. 중의적 표현은 안 써요.",
+          "start": 177.74247192382813,
+          "end": 180.50246215820312,
+          "phoneticScore": 0.49026987993795657,
+          "flags": [],
+          "words": [
+            {
+              "line": 37,
+              "text": "저는",
+              "romanized": "jeoneun",
+              "pronunciationInput": "저는",
+              "kind": "lyric",
+              "start": 177.74247192382813,
+              "end": 178.0824639892578,
+              "score": 0.50925806853255,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 37,
+              "text": "AI예요.",
+              "romanized": "aiyeyo",
+              "pronunciationInput": "AI예요.",
+              "kind": "lyric",
+              "start": 178.12246154785157,
+              "end": 178.542470703125,
+              "score": 0.16618410218507051,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1599884033203125
+            },
+            {
+              "line": 37,
+              "text": "중의적",
+              "romanized": "jungyijeog",
+              "pronunciationInput": "중의적",
+              "kind": "lyric",
+              "start": 179.022470703125,
+              "end": 179.44246459960937,
+              "score": 0.5855042043734681,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0800018310546875
+            },
+            {
+              "line": 37,
+              "text": "표현은",
+              "romanized": "pyohyeoneun",
+              "pronunciationInput": "표현은",
+              "kind": "lyric",
+              "start": 179.48246215820313,
+              "end": 179.94246459960937,
+              "score": 0.634080758318305,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 37,
+              "text": "안",
+              "romanized": "an",
+              "pronunciationInput": "안",
+              "kind": "lyric",
+              "start": 180.00246643066407,
+              "end": 180.12247253417968,
+              "score": 0.9835614264011383,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 37,
+              "text": "써요.",
+              "romanized": "sseoyo",
+              "pronunciationInput": "써요.",
+              "kind": "lyric",
+              "start": 180.1424658203125,
+              "end": 180.50246215820312,
+              "score": 0.39114102084810537,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            }
+          ]
+        },
+        {
+          "line": 39,
+          "text": "하지만...",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124,
+          "phoneticScore": 0.7960725777915546,
+          "flags": [],
+          "words": [
+            {
+              "line": 38,
+              "text": "하지만...",
+              "romanized": "hajiman",
+              "pronunciationInput": "하지만...",
+              "kind": "lyric",
+              "start": 181.00246643066407,
+              "end": 181.48247314453124,
+              "score": 0.7960725777915546,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            }
+          ]
+        },
+        {
+          "line": 40,
+          "text": "팔십구 퍼센트...",
+          "start": 181.7624609375,
+          "end": 183.38246704101562,
+          "phoneticScore": 0.5127792811636893,
+          "flags": [],
+          "words": [
+            {
+              "line": 39,
+              "text": "팔십구",
+              "romanized": "palsibgu",
+              "pronunciationInput": "팔십구",
+              "kind": "lyric",
+              "start": 181.7624609375,
+              "end": 182.26247192382812,
+              "score": 0.5272462687862571,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.100006103515625
+            },
+            {
+              "line": 39,
+              "text": "퍼센트...",
+              "romanized": "peosenteu",
+              "pronunciationInput": "퍼센트...",
+              "kind": "lyric",
+              "start": 182.48246215820313,
+              "end": 183.38246704101562,
+              "score": 0.5047419328242541,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.17999267578125
+            }
+          ]
+        },
+        {
+          "line": 41,
+          "text": "인간은 이걸 '위로'라고 부르죠",
+          "start": 184.78246520996095,
+          "end": 189.26247192382812,
+          "phoneticScore": 0.5239957904505695,
+          "flags": [],
+          "words": [
+            {
+              "line": 40,
+              "text": "인간은",
+              "romanized": "inganeun",
+              "pronunciationInput": "인간은",
+              "kind": "lyric",
+              "start": 184.78246520996095,
+              "end": 185.3424737548828,
+              "score": 0.4122633773954476,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 184.79246520996094,
+                "originalEnd": 186.6524658203125,
+                "retainedClusterCharacters": 7,
+                "totalCharacters": 8,
+                "localWindow": [
+                  184.19247436523438,
+                  186.29246520996094
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": {
+                "reason": "unique_word_high_probability_independent_ASR_window",
+                "window": [
+                  184.1,
+                  186.66
+                ],
+                "evidence": [
+                  {
+                    "start": 184.7,
+                    "end": 186.06,
+                    "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+                  }
+                ],
+                "originalStart": 184.79246520996094,
+                "originalEnd": 186.67247009277344
+              },
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 40,
+              "text": "이걸",
+              "romanized": "igeol",
+              "pronunciationInput": "이걸",
+              "kind": "lyric",
+              "start": 186.74247192382813,
+              "end": 187.06247497558593,
+              "score": 0.5265408695951919,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1399993896484375
+            },
+            {
+              "line": 40,
+              "text": "'위로'라고",
+              "romanized": "wirorago",
+              "pronunciationInput": "'위로'라고",
+              "kind": "lyric",
+              "start": 187.12246154785157,
+              "end": 188.26247192382812,
+              "score": 0.6456833956763148,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            },
+            {
+              "line": 40,
+              "text": "부르죠",
+              "romanized": "bureujyo",
+              "pronunciationInput": "부르죠",
+              "kind": "lyric",
+              "start": 188.54247497558595,
+              "end": 189.26247192382812,
+              "score": 0.41709469897978124,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3000030517578125
+            }
+          ]
+        },
+        {
+          "line": 42,
+          "text": "밤이 깊어도——",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437,
+          "phoneticScore": 0.49549676151388033,
+          "flags": [],
+          "words": [
+            {
+              "line": 41,
+              "text": "밤이",
+              "romanized": "bami",
+              "pronunciationInput": "밤이",
+              "kind": "lyric",
+              "start": 200.44246887207032,
+              "end": 200.80246520996093,
+              "score": 0.707701083367283,
+              "cohesionRepair": {
+                "reason": "isolated_phoneme_across_long_gap",
+                "originalStart": 191.59246826171875,
+                "originalEnd": 200.79246520996094,
+                "retainedClusterCharacters": 3,
+                "totalCharacters": 4,
+                "localWindow": [
+                  199.9524688720703,
+                  201.37246704101562
+                ]
+              },
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1599884033203125
+            },
+            {
+              "line": 41,
+              "text": "깊어도——",
+              "romanized": "gipeodo",
+              "pronunciationInput": "깊어도——",
+              "kind": "lyric",
+              "start": 200.9024755859375,
+              "end": 201.70247436523437,
+              "score": 0.40000564236626296,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.279998779296875
+            }
+          ]
+        },
+        {
+          "line": 43,
+          "text": "다시 밝아와——",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937,
+          "phoneticScore": 0.5918913094131871,
+          "flags": [],
+          "words": [
+            {
+              "line": 42,
+              "text": "다시",
+              "romanized": "dasi",
+              "pronunciationInput": "다시",
+              "kind": "lyric",
+              "start": 203.70246337890626,
+              "end": 204.02246643066405,
+              "score": 0.7154978103935719,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.160003662109375
+            },
+            {
+              "line": 42,
+              "text": "밝아와——",
+              "romanized": "balgawa",
+              "pronunciationInput": "밝아와——",
+              "kind": "lyric",
+              "start": 204.1024725341797,
+              "end": 204.94246459960937,
+              "score": 0.5448022246959486,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.220001220703125
+            }
+          ]
+        },
+        {
+          "line": 44,
+          "text": "저 철길처럼——",
+          "start": 207.16247009277345,
+          "end": 208.88246704101562,
+          "phoneticScore": 0.32063425849638494,
+          "flags": [
+            "weak_word_evidence"
+          ],
+          "words": [
+            {
+              "line": 43,
+              "text": "저",
+              "romanized": "jeo",
+              "pronunciationInput": "저",
+              "kind": "lyric",
+              "start": 207.16247009277345,
+              "end": 207.24246765136718,
+              "score": 0.04045473571265271,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.0399932861328125
+            },
+            {
+              "line": 43,
+              "text": "철길처럼——",
+              "romanized": "ceolgilceoreom",
+              "pronunciationInput": "철길처럼——",
+              "kind": "lyric",
+              "start": 207.32247375488282,
+              "end": 208.88246704101562,
+              "score": 0.335002062505477,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3000030517578125
+            }
+          ]
+        },
+        {
+          "line": 45,
+          "text": "끝까지 가는 거야——",
+          "start": 208.92246459960938,
+          "end": 211.60246826171874,
+          "phoneticScore": 0.690332038994935,
+          "flags": [],
+          "words": [
+            {
+              "line": 44,
+              "text": "끝까지",
+              "romanized": "ggeutggaji",
+              "pronunciationInput": "끝까지",
+              "kind": "lyric",
+              "start": 208.92246459960938,
+              "end": 210.18247009277343,
+              "score": 0.5675618271766738,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.4600067138671875
+            },
+            {
+              "line": 44,
+              "text": "가는",
+              "romanized": "ganeun",
+              "pronunciationInput": "가는",
+              "kind": "lyric",
+              "start": 210.42246459960938,
+              "end": 211.10246826171874,
+              "score": 0.9125036150217056,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.339996337890625
+            },
+            {
+              "line": 44,
+              "text": "거야——",
+              "romanized": "geoya",
+              "pronunciationInput": "거야——",
+              "kind": "lyric",
+              "start": 211.2624609375,
+              "end": 211.60246826171874,
+              "score": 0.7009602099657058,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.1200103759765625
+            }
+          ]
+        },
+        {
+          "line": 46,
+          "text": "Mmm... mmm...",
+          "start": 215.1024725341797,
+          "end": 223.02246643066405,
+          "phoneticScore": 0.03222264436805412,
+          "flags": [
+            "low_phonetic_score",
+            "nonlexical_vocalization_needs_timing",
+            "fragmented_word_alignment"
+          ],
+          "words": [
+            {
+              "line": 45,
+              "text": "Mmm...",
+              "romanized": "mmm",
+              "pronunciationInput": "Mmm...",
+              "kind": "vocalization",
+              "start": 215.1024725341797,
+              "end": 216.10246826171874,
+              "score": 0.04489395208656788,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.6999969482421875
+            },
+            {
+              "line": 45,
+              "text": "mmm...",
+              "romanized": "mmm",
+              "pronunciationInput": "mmm...",
+              "kind": "vocalization",
+              "start": 217.30246948242188,
+              "end": 223.02246643066405,
+              "score": 0.030007389063636463,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 3.8800048828125
+            }
+          ]
+        },
+        {
+          "line": 47,
+          "text": "혼자가 아니야...",
+          "start": 228.8424627685547,
+          "end": 234.22246337890624,
+          "phoneticScore": 0.7679262213678054,
+          "flags": [],
+          "words": [
+            {
+              "line": 46,
+              "text": "혼자가",
+              "romanized": "honjaga",
+              "pronunciationInput": "혼자가",
+              "kind": "lyric",
+              "start": 228.8424627685547,
+              "end": 229.90247131347655,
+              "score": 0.8873236519949776,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.3800048828125
+            },
+            {
+              "line": 46,
+              "text": "아니야...",
+              "romanized": "aniya",
+              "pronunciationInput": "아니야...",
+              "kind": "lyric",
+              "start": 233.50246643066407,
+              "end": 234.22246337890624,
+              "score": 0.5921445086598396,
+              "cohesionRepair": null,
+              "pronunciationVariant": null,
+              "asrConstraint": null,
+              "maxInternalGap": 0.32000732421875
+            }
+          ]
+        }
+      ],
+      "localContextRefinements": [],
+      "rejectedLocalContext": [
+        {
+          "method": "authored_bridge_joint_ctc",
+          "lines": [
+            37,
+            41
+          ],
+          "window": [
+            172.2924609375,
+            191.57246826171874
+          ],
+          "previousQuality": [
+            1,
+            0,
+            -0.5233785704212861
+          ],
+          "candidateQuality": [
+            1,
+            0,
+            -0.5233785704212861
+          ]
+        }
+      ]
+    }
+  ],
+  "providerAuditSha256": "82a23a540c6f549857acd65e19fda21a50dab4ef16615b790679fd290b54431f",
+  "parentReportSha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+  "refinementCodeSha256": "7b42a078785c1055a32cecabe5509ff2636da22773a6ed19afe918462990b78e",
+  "providerRefinements": [],
+  "rejectedProviderRefinements": [
+    {
+      "role": "original",
+      "line": 4,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": false,
+      "scoreAccepted": true,
+      "before": [
+        1,
+        0,
+        -0.6081651304233935
+      ],
+      "candidate": [
+        1,
+        0,
+        -0.6081651304233935
+      ]
+    },
+    {
+      "role": "original",
+      "line": 14,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": true,
+      "scoreAccepted": false,
+      "before": [
+        1,
+        0,
+        -0.5432187765251277
+      ],
+      "candidate": [
+        0,
+        0,
+        -0.41134945408121254
+      ]
+    },
+    {
+      "role": "original",
+      "line": 41,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": false,
+      "scoreAccepted": true,
+      "before": [
+        0,
+        0,
+        -0.37592843544937177
+      ],
+      "candidate": [
+        1,
+        0,
+        -0.4044687618493151
+      ]
+    },
+    {
+      "role": "vocals",
+      "line": 14,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": false,
+      "scoreAccepted": true,
+      "before": [
+        0,
+        0,
+        -0.5381135074906632
+      ],
+      "candidate": [
+        0,
+        0,
+        -0.5381135074906632
+      ]
+    },
+    {
+      "role": "vocals",
+      "line": 41,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": false,
+      "scoreAccepted": true,
+      "before": [
+        0,
+        0,
+        -0.5239957904505695
+      ],
+      "candidate": [
+        1,
+        0,
+        -0.4761775071176737
+      ]
+    },
+    {
+      "role": "vocals",
+      "line": 44,
+      "reason": "quality_or_confidence_guard_rejected",
+      "qualityImproved": false,
+      "scoreAccepted": true,
+      "before": [
+        0,
+        1,
+        -0.32063425849638494
+      ],
+      "candidate": [
+        0,
+        1,
+        -0.32063425849638494
+      ]
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 168.0,
+      "end": 202.0,
+      "segments": [
+        {
+          "start": 168.0,
+          "end": 172.36,
+          "text": " 이 하늘 아래 혼자가 아니야",
+          "words": [
+            {
+              "start": 168.0,
+              "end": 169.04,
+              "word": " 이",
+              "probability": 0.3447546362876892
+            },
+            {
+              "start": 169.04,
+              "end": 169.38,
+              "word": " 하늘",
+              "probability": 0.9768077731132507
+            },
+            {
+              "start": 169.38,
+              "end": 170.06,
+              "word": " 아래",
+              "probability": 0.9619703590869904
+            },
+            {
+              "start": 170.06,
+              "end": 171.54,
+              "word": " 혼자가",
+              "probability": 0.6380704045295715
+            },
+            {
+              "start": 171.54,
+              "end": 172.36,
+              "word": " 아니야",
+              "probability": 0.8601162433624268
+            }
+          ]
+        },
+        {
+          "start": 176.0,
+          "end": 177.16,
+          "text": " 큰 것은 척이셉인 거야",
+          "words": [
+            {
+              "start": 175.52,
+              "end": 176.22,
+              "word": " 큰",
+              "probability": 0.33819520473480225
+            },
+            {
+              "start": 176.22,
+              "end": 176.42,
+              "word": " 것은",
+              "probability": 0.04876533895730972
+            },
+            {
+              "start": 176.42,
+              "end": 177.0,
+              "word": " 척이셉인",
+              "probability": 0.592633972565333
+            },
+            {
+              "start": 177.0,
+              "end": 177.16,
+              "word": " 거야",
+              "probability": 0.6015145778656006
+            }
+          ]
+        },
+        {
+          "start": 178.0,
+          "end": 180.86,
+          "text": " 천은의 중요적 표현은 안 써요",
+          "words": [
+            {
+              "start": 177.58,
+              "end": 178.28,
+              "word": " 천은의",
+              "probability": 0.4029994110266368
+            },
+            {
+              "start": 178.28,
+              "end": 179.46,
+              "word": " 중요적",
+              "probability": 0.729865163564682
+            },
+            {
+              "start": 179.46,
+              "end": 179.94,
+              "word": " 표현은",
+              "probability": 0.9842375218868256
+            },
+            {
+              "start": 179.94,
+              "end": 180.12,
+              "word": " 안",
+              "probability": 0.9891833066940308
+            },
+            {
+              "start": 180.12,
+              "end": 180.86,
+              "word": " 써요",
+              "probability": 0.9190446734428406
+            }
+          ]
+        },
+        {
+          "start": 180.86,
+          "end": 183.22,
+          "text": " 하지만 89%",
+          "words": [
+            {
+              "start": 180.86,
+              "end": 181.38,
+              "word": " 하지만",
+              "probability": 0.9168438911437988
+            },
+            {
+              "start": 181.38,
+              "end": 182.18,
+              "word": " 89",
+              "probability": 0.5301260948181152
+            },
+            {
+              "start": 182.18,
+              "end": 183.22,
+              "word": "%",
+              "probability": 0.9263976812362671
+            }
+          ]
+        },
+        {
+          "start": 184.66,
+          "end": 189.54,
+          "text": " 인간은 이걸 위로라고 부르죠",
+          "words": [
+            {
+              "start": 184.66,
+              "end": 186.06,
+              "word": " 인간은",
+              "probability": 0.7832153141498566
+            },
+            {
+              "start": 186.06,
+              "end": 187.0,
+              "word": " 이걸",
+              "probability": 0.8483778834342957
+            },
+            {
+              "start": 187.0,
+              "end": 188.24,
+              "word": " 위로라고",
+              "probability": 0.8932821750640869
+            },
+            {
+              "start": 188.24,
+              "end": 189.54,
+              "word": " 부르죠",
+              "probability": 0.8920953273773193
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 190.0,
+      "end": 225.0,
+      "segments": [
+        {
+          "start": 199.5,
+          "end": 207.02,
+          "text": " 밤이 깊어도 다시 밝아와",
+          "words": [
+            {
+              "start": 199.5,
+              "end": 200.9,
+              "word": " 밤이",
+              "probability": 0.9810855984687805
+            },
+            {
+              "start": 200.9,
+              "end": 201.72,
+              "word": " 깊어도",
+              "probability": 0.9866236050923666
+            },
+            {
+              "start": 201.72,
+              "end": 203.96,
+              "word": " 다시",
+              "probability": 0.9742888808250427
+            },
+            {
+              "start": 203.96,
+              "end": 207.02,
+              "word": " 밝아와",
+              "probability": 0.9201758503913879
+            }
+          ]
+        },
+        {
+          "start": 207.02,
+          "end": 211.52,
+          "text": " 저 철길처럼 끝까지 가는 거야",
+          "words": [
+            {
+              "start": 207.02,
+              "end": 207.3,
+              "word": " 저",
+              "probability": 0.8633170127868652
+            },
+            {
+              "start": 207.3,
+              "end": 208.66,
+              "word": " 철길처럼",
+              "probability": 0.7538692876696587
+            },
+            {
+              "start": 208.66,
+              "end": 210.34,
+              "word": " 끝까지",
+              "probability": 0.9930263161659241
+            },
+            {
+              "start": 210.34,
+              "end": 210.96,
+              "word": " 가는",
+              "probability": 0.9924919009208679
+            },
+            {
+              "start": 210.96,
+              "end": 211.52,
+              "word": " 거야",
+              "probability": 0.9011378288269043
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 215.0,
+      "end": 250.0,
+      "segments": [
+        {
+          "start": 215.0,
+          "end": 215.5,
+          "text": " 아-",
+          "words": [
+            {
+              "start": 215.0,
+              "end": 215.36,
+              "word": " 아",
+              "probability": 0.010439753532409668
+            },
+            {
+              "start": 215.36,
+              "end": 215.5,
+              "word": "-",
+              "probability": 0.005998705048114061
+            }
+          ]
+        },
+        {
+          "start": 231.2,
+          "end": 234.0,
+          "text": " 혼자가 아니야",
+          "words": [
+            {
+              "start": 231.2,
+              "end": 232.6,
+              "word": " 혼자가",
+              "probability": 0.48339810582547216
+            },
+            {
+              "start": 232.6,
+              "end": 234.0,
+              "word": " 아니야",
+              "probability": 0.5858466625213623
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

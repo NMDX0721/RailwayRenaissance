@@ -1,0 +1,51 @@
+{
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "reportSha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+  "clips": [
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "originalAudioStart": 33.962469329833986,
+      "originalAudioEnd": 41.70246673583984,
+      "file": "starlit_rails.local.sections.provider.boundaries-line-04.mp3",
+      "sha256": "242586c658decc1e2b9dcb845dbb0a09a226a3fcd459f83552f63b67d2e7092f",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "originalAudioStart": 69.82246612548828,
+      "originalAudioEnd": 77.20246673583985,
+      "file": "starlit_rails.local.sections.provider.boundaries-line-14.mp3",
+      "sha256": "ab76b9e4dfb25b5e8f84aef8b538e818553f39f4e9a655c6345672b6b61cff45",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "originalAudioStart": 130.88247131347657,
+      "originalAudioEnd": 139.18247009277343,
+      "file": "starlit_rails.local.sections.provider.boundaries-line-26.mp3",
+      "sha256": "36fb64a5888fa4f77cb913ddcc5f55d179a0ca76b7ee418e87dd1970e1251fe9",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "originalAudioStart": 181.3424627685547,
+      "originalAudioEnd": 191.26247192382812,
+      "file": "starlit_rails.local.sections.provider.boundaries-line-41.mp3",
+      "sha256": "4f3c4d0bd779a8b129f13ec763799fbc153ca75535fb98b01e838b4f04094fcb",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 46,
+      "text": "Mmm... mmm...",
+      "originalAudioStart": 212.82247375488282,
+      "originalAudioEnd": 225.02246643066405,
+      "file": "starlit_rails.local.sections.provider.boundaries-line-46.mp3",
+      "sha256": "9e4318b1c409c748f572987a528839ed04021bfdb80de676730c4a6ad18171c9",
+      "humanListeningVerified": false
+    }
+  ]
+}

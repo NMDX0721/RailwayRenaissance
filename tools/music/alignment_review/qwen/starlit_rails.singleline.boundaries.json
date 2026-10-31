@@ -1,0 +1,427 @@
+{
+  "id": "starlit_rails",
+  "model": "Qwen/Qwen3-ForcedAligner-0.6B",
+  "revision": "c7cbfc2048c462b0d63a45797104fc9db3ad62b7",
+  "toolSha256": "8b2fed5ef99131f935f37dd8f75917f4fe20aefe94a69bc1d6070bdc2d9c97ea",
+  "packageVersion": "0.0.6",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "parentSha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94",
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "singleLine": true,
+  "windows": [
+    {
+      "targetLine": 14,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 70.82246612548828,
+      "end": 76.20246673583985,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "다시",
+          "start": 70.822,
+          "end": 70.982
+        },
+        {
+          "text": "밝아와",
+          "start": 71.542,
+          "end": 76.102
+        }
+      ],
+      "lines": [
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 70.822,
+          "end": 76.102,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            160.0,
+            720.0,
+            5280.0
+          ],
+          "fixed": [
+            0,
+            160,
+            720,
+            5280
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 68.82246612548828,
+      "end": 78.20246673583985,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "다시",
+          "start": 68.822,
+          "end": 69.382
+        },
+        {
+          "text": "밝아와",
+          "start": 70.742,
+          "end": 77.142
+        }
+      ],
+      "lines": [
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 68.822,
+          "end": 77.142,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            560.0,
+            1920.0,
+            8320.0
+          ],
+          "fixed": [
+            0,
+            560,
+            1920,
+            8320
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "알고",
+          "start": 131.882,
+          "end": 135.242
+        },
+        {
+          "text": "있어요",
+          "start": 135.242,
+          "end": 137.962
+        }
+      ],
+      "lines": [
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 131.882,
+          "end": 137.962,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            3360.0,
+            320.0,
+            6080.0
+          ],
+          "fixed": [
+            0,
+            3360,
+            3360,
+            6080
+          ],
+          "changed": [
+            2
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "알고",
+          "start": 129.882,
+          "end": 135.242
+        },
+        {
+          "text": "있어요",
+          "start": 136.522,
+          "end": 137.962
+        }
+      ],
+      "lines": [
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 129.882,
+          "end": 137.962,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            5360.0,
+            6640.0,
+            8080.0
+          ],
+          "fixed": [
+            0,
+            5360,
+            6640,
+            8080
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 70.82246612548828,
+      "end": 76.20246673583985,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "다시",
+          "start": 70.822,
+          "end": 70.822
+        },
+        {
+          "text": "밝아와",
+          "start": 71.542,
+          "end": 71.782
+        }
+      ],
+      "lines": [
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 70.822,
+          "end": 71.782,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            3520.0,
+            720.0,
+            960.0
+          ],
+          "fixed": [
+            0,
+            0,
+            720,
+            960
+          ],
+          "changed": [
+            1
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 68.82246612548828,
+      "end": 78.20246673583985,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "다시",
+          "start": 68.822,
+          "end": 69.382
+        },
+        {
+          "text": "밝아와",
+          "start": 70.662,
+          "end": 70.902
+        }
+      ],
+      "lines": [
+        {
+          "line": 14,
+          "text": "다시 밝아와",
+          "alignmentInput": "다시 밝아와",
+          "start": 68.822,
+          "end": 70.902,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            560.0,
+            1840.0,
+            2080.0
+          ],
+          "fixed": [
+            0,
+            560,
+            1840,
+            2080
+          ],
+          "changed": []
+        }
+      ],
+      "issues": [
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 131.88247131347657,
+      "end": 138.18247009277343,
+      "padding": 1.0,
+      "items": [
+        {
+          "text": "알고",
+          "start": 131.882,
+          "end": 133.642
+        },
+        {
+          "text": "있어요",
+          "start": 133.642,
+          "end": 138.042
+        }
+      ],
+      "lines": [
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 131.882,
+          "end": 138.042,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            1760.0,
+            960.0,
+            6160.0
+          ],
+          "fixed": [
+            0,
+            1760,
+            1760,
+            6160
+          ],
+          "changed": [
+            2
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "waveformSha256": "f8c5ea1f57feda5f519f900331c6234081de34d9b65fdfaf83dadb14f94bbe9d",
+      "start": 129.88247131347657,
+      "end": 140.18247009277343,
+      "padding": 3.0,
+      "items": [
+        {
+          "text": "알고",
+          "start": 129.882,
+          "end": 135.242
+        },
+        {
+          "text": "있어요",
+          "start": 135.242,
+          "end": 138.042
+        }
+      ],
+      "lines": [
+        {
+          "line": 26,
+          "text": "알고 있어요",
+          "alignmentInput": "알고 있어요",
+          "start": 129.882,
+          "end": 138.042,
+          "tokenCrossesSourceLine": false
+        }
+      ],
+      "repairs": [
+        {
+          "raw": [
+            0.0,
+            5360.0,
+            3840.0,
+            8160.0
+          ],
+          "fixed": [
+            0,
+            5360,
+            5360,
+            8160
+          ],
+          "changed": [
+            2
+          ]
+        }
+      ],
+      "issues": [
+        "upstream_timestamp_repair",
+        "invalid_token_interval"
+      ]
+    }
+  ]
+}

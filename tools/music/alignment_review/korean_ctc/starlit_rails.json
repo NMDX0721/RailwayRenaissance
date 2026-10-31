@@ -1,0 +1,1427 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "model": "kresnik/wav2vec2-large-xlsr-korean",
+  "revision": "629c9a3501c10ba128bf3fa1eebb12af3be03f61",
+  "toolSha256": "80148a0becc0a3deb579c59884a50514ec80b0476f16dfd2a044bcf2198934b0",
+  "pathCodeSha256": "0eb2ce7d5cbd255c52c22137524d9607b0a4ef7ab9324945c0b5d89e64ef282c",
+  "packageVersions": {
+    "torch": "2.14.1",
+    "transformers": "4.57.6",
+    "numpy": "2.4.6"
+  },
+  "humanListeningVerified": false,
+  "spokenNormalization": false,
+  "inputPolicy": "AI=>에이아이;100=>백;optional 천리마=>철리마; source display unchanged",
+  "windows": [
+    {
+      "targetLine": 14,
+      "role": "original",
+      "padding": 1.0,
+      "start": 69.68246673583984,
+      "end": 80.042470703125,
+      "greedyText": "사비 풍트시발 께 장 고  했다",
+      "pathScore": -206.58123178334318,
+      "words": [
+        {
+          "line": 13,
+          "text": "밤이",
+          "input": "밤이",
+          "start": 70.762,
+          "end": 71.002,
+          "meanCharacterScore": 0.00884921556392726,
+          "minCharacterScore": 4.0579695337328303e-07,
+          "characters": [
+            {
+              "symbol": "밤",
+              "start": 70.762,
+              "end": 70.782,
+              "score": 4.0579695337328303e-07
+            },
+            {
+              "symbol": "이",
+              "start": 70.982,
+              "end": 71.002,
+              "score": 0.017698025330901146
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "깊어도",
+          "input": "깊어도",
+          "start": 71.842,
+          "end": 73.202,
+          "meanCharacterScore": 0.0001529445404268396,
+          "minCharacterScore": 5.594318395196751e-07,
+          "characters": [
+            {
+              "symbol": "깊",
+              "start": 71.842,
+              "end": 71.862,
+              "score": 5.594318395196751e-07
+            },
+            {
+              "symbol": "어",
+              "start": 72.502,
+              "end": 72.522,
+              "score": 4.3625223042909056e-05
+            },
+            {
+              "symbol": "도",
+              "start": 73.182,
+              "end": 73.202,
+              "score": 0.0004146489663980901
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시",
+          "input": "다시",
+          "start": 73.502,
+          "end": 74.282,
+          "meanCharacterScore": 0.3420320537807129,
+          "minCharacterScore": 4.185977013548836e-05,
+          "characters": [
+            {
+              "symbol": "다",
+              "start": 73.502,
+              "end": 73.522,
+              "score": 4.185977013548836e-05
+            },
+            {
+              "symbol": "시",
+              "start": 74.262,
+              "end": 74.282,
+              "score": 0.6840222477912903
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "밝아와",
+          "input": "밝아와",
+          "start": 75.202,
+          "end": 77.762,
+          "meanCharacterScore": 0.05282447717794033,
+          "minCharacterScore": 2.239533387182746e-06,
+          "characters": [
+            {
+              "symbol": "밝",
+              "start": 75.202,
+              "end": 75.222,
+              "score": 2.239533387182746e-06
+            },
+            {
+              "symbol": "아",
+              "start": 75.222,
+              "end": 75.242,
+              "score": 0.0010956476908177137
+            },
+            {
+              "symbol": "와",
+              "start": 77.742,
+              "end": 77.762,
+              "score": 0.1573755443096161
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저",
+          "input": "저",
+          "start": 78.462,
+          "end": 78.482,
+          "meanCharacterScore": 2.1684712919523008e-05,
+          "minCharacterScore": 2.1684712919523008e-05,
+          "characters": [
+            {
+              "symbol": "저",
+              "start": 78.462,
+              "end": 78.482,
+              "score": 2.1684712919523008e-05
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "철길처럼",
+          "input": "철길처럼",
+          "start": 79.882,
+          "end": 80.022,
+          "meanCharacterScore": 7.328908164945869e-06,
+          "minCharacterScore": 2.5995454703761633e-13,
+          "characters": [
+            {
+              "symbol": "철",
+              "start": 79.882,
+              "end": 79.902,
+              "score": 2.1733158064307645e-05
+            },
+            {
+              "symbol": "길",
+              "start": 79.922,
+              "end": 79.942,
+              "score": 4.8164746857537466e-08
+            },
+            {
+              "symbol": "처",
+              "start": 79.982,
+              "end": 80.002,
+              "score": 7.534309588663746e-06
+            },
+            {
+              "symbol": "럼",
+              "start": 80.002,
+              "end": 80.022,
+              "score": 2.5995454703761633e-13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "original",
+      "padding": 3.0,
+      "start": 67.68246673583984,
+      "end": 82.042470703125,
+      "greedyText": "시 았지난 사비  풍트질판을 적철기 전세는 도해다",
+      "pathScore": -245.47570281434542,
+      "words": [
+        {
+          "line": 13,
+          "text": "밤이",
+          "input": "밤이",
+          "start": 67.702,
+          "end": 68.402,
+          "meanCharacterScore": 0.0006643468586844392,
+          "minCharacterScore": 0.0001305069454247132,
+          "characters": [
+            {
+              "symbol": "밤",
+              "start": 67.702,
+              "end": 67.722,
+              "score": 0.0001305069454247132
+            },
+            {
+              "symbol": "이",
+              "start": 68.382,
+              "end": 68.402,
+              "score": 0.0011981867719441652
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "깊어도",
+          "input": "깊어도",
+          "start": 71.182,
+          "end": 71.862,
+          "meanCharacterScore": 0.0103169547815772,
+          "minCharacterScore": 6.173547717480687e-07,
+          "characters": [
+            {
+              "symbol": "깊",
+              "start": 71.182,
+              "end": 71.202,
+              "score": 0.00010943287634290755
+            },
+            {
+              "symbol": "어",
+              "start": 71.422,
+              "end": 71.442,
+              "score": 6.173547717480687e-07
+            },
+            {
+              "symbol": "도",
+              "start": 71.842,
+              "end": 71.862,
+              "score": 0.030840814113616943
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시",
+          "input": "다시",
+          "start": 74.862,
+          "end": 75.242,
+          "meanCharacterScore": 0.007935461238957942,
+          "minCharacterScore": 0.002613900462165475,
+          "characters": [
+            {
+              "symbol": "다",
+              "start": 74.862,
+              "end": 74.882,
+              "score": 0.013257022015750408
+            },
+            {
+              "symbol": "시",
+              "start": 75.222,
+              "end": 75.242,
+              "score": 0.002613900462165475
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "밝아와",
+          "input": "밝아와",
+          "start": 77.442,
+          "end": 77.762,
+          "meanCharacterScore": 0.011097937181626586,
+          "minCharacterScore": 1.7471627700160752e-07,
+          "characters": [
+            {
+              "symbol": "밝",
+              "start": 77.442,
+              "end": 77.462,
+              "score": 1.7471627700160752e-07
+            },
+            {
+              "symbol": "아",
+              "start": 77.662,
+              "end": 77.682,
+              "score": 8.351200813194737e-05
+            },
+            {
+              "symbol": "와",
+              "start": 77.742,
+              "end": 77.762,
+              "score": 0.03321012482047081
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저",
+          "input": "저",
+          "start": 78.462,
+          "end": 78.482,
+          "meanCharacterScore": 5.43882924830541e-05,
+          "minCharacterScore": 5.43882924830541e-05,
+          "characters": [
+            {
+              "symbol": "저",
+              "start": 78.462,
+              "end": 78.482,
+              "score": 5.43882924830541e-05
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "철길처럼",
+          "input": "철길처럼",
+          "start": 80.362,
+          "end": 81.722,
+          "meanCharacterScore": 4.004363054338489e-05,
+          "minCharacterScore": 1.8148342828538944e-09,
+          "characters": [
+            {
+              "symbol": "철",
+              "start": 80.362,
+              "end": 80.382,
+              "score": 3.8561552173632663e-07
+            },
+            {
+              "symbol": "길",
+              "start": 80.542,
+              "end": 80.562,
+              "score": 0.00015958890435285866
+            },
+            {
+              "symbol": "처",
+              "start": 81.542,
+              "end": 81.562,
+              "score": 1.9818746466171433e-07
+            },
+            {
+              "symbol": "럼",
+              "start": 81.702,
+              "end": 81.722,
+              "score": 1.8148342828538944e-09
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "padding": 1.0,
+      "start": 128.80246948242188,
+      "end": 140.88246704101562,
+      "greedyText": "마습차  성을  웨로 는 게다",
+      "pathScore": -166.77992284218655,
+      "words": [
+        {
+          "line": 25,
+          "text": "나는",
+          "input": "나는",
+          "start": 133.822,
+          "end": 134.002,
+          "meanCharacterScore": 0.0038969068555161357,
+          "minCharacterScore": 0.0022728799376636744,
+          "characters": [
+            {
+              "symbol": "나",
+              "start": 133.822,
+              "end": 133.842,
+              "score": 0.005520933773368597
+            },
+            {
+              "symbol": "는",
+              "start": 133.982,
+              "end": 134.002,
+              "score": 0.0022728799376636744
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "AI지만",
+          "input": "에이아이지만",
+          "start": 134.402,
+          "end": 136.882,
+          "meanCharacterScore": 0.003236770300039401,
+          "minCharacterScore": 1.4287725207395852e-05,
+          "characters": [
+            {
+              "symbol": "에",
+              "start": 134.402,
+              "end": 134.422,
+              "score": 0.0029086910653859377
+            },
+            {
+              "symbol": "이",
+              "start": 134.522,
+              "end": 134.542,
+              "score": 0.001916737761348486
+            },
+            {
+              "symbol": "아",
+              "start": 134.602,
+              "end": 134.622,
+              "score": 0.00010909214324783534
+            },
+            {
+              "symbol": "이",
+              "start": 135.242,
+              "end": 135.262,
+              "score": 0.00729532353579998
+            },
+            {
+              "symbol": "지",
+              "start": 135.262,
+              "end": 135.282,
+              "score": 0.007176489569246769
+            },
+            {
+              "symbol": "만",
+              "start": 136.862,
+              "end": 136.882,
+              "score": 1.4287725207395852e-05
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고",
+          "input": "알고",
+          "start": 137.022,
+          "end": 137.562,
+          "meanCharacterScore": 0.0005510673912567654,
+          "minCharacterScore": 1.0159208159166155e-06,
+          "characters": [
+            {
+              "symbol": "알",
+              "start": 137.022,
+              "end": 137.042,
+              "score": 1.0159208159166155e-06
+            },
+            {
+              "symbol": "고",
+              "start": 137.542,
+              "end": 137.562,
+              "score": 0.0011011188616976142
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "있어요",
+          "input": "있어요",
+          "start": 137.622,
+          "end": 137.742,
+          "meanCharacterScore": 0.001152683359881242,
+          "minCharacterScore": 0.00010690500494092703,
+          "characters": [
+            {
+              "symbol": "있",
+              "start": 137.622,
+              "end": 137.642,
+              "score": 0.0017726680962368846
+            },
+            {
+              "symbol": "어",
+              "start": 137.642,
+              "end": 137.662,
+              "score": 0.0015784769784659147
+            },
+            {
+              "symbol": "요",
+              "start": 137.722,
+              "end": 137.742,
+              "score": 0.00010690500494092703
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는",
+          "input": "위로라는",
+          "start": 138.522,
+          "end": 139.522,
+          "meanCharacterScore": 0.5323174125514925,
+          "minCharacterScore": 0.019011234864592552,
+          "characters": [
+            {
+              "symbol": "위",
+              "start": 138.522,
+              "end": 138.542,
+              "score": 0.019011234864592552
+            },
+            {
+              "symbol": "로",
+              "start": 138.882,
+              "end": 138.902,
+              "score": 0.9687203168869019
+            },
+            {
+              "symbol": "라",
+              "start": 139.122,
+              "end": 139.142,
+              "score": 0.17278839647769928
+            },
+            {
+              "symbol": "는",
+              "start": 139.502,
+              "end": 139.522,
+              "score": 0.9687497019767761
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "게",
+          "input": "게",
+          "start": 139.742,
+          "end": 139.762,
+          "meanCharacterScore": 0.9567200541496277,
+          "minCharacterScore": 0.9567200541496277,
+          "characters": [
+            {
+              "symbol": "게",
+              "start": 139.742,
+              "end": 139.762,
+              "score": 0.9567200541496277
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "original",
+      "padding": 3.0,
+      "start": 126.80246948242188,
+      "end": 142.88246704101562,
+      "greedyText": "실마습차   성을 웨로  게시입니다",
+      "pathScore": -179.42450822561986,
+      "words": [
+        {
+          "line": 25,
+          "text": "나는",
+          "input": "나는",
+          "start": 126.802,
+          "end": 127.002,
+          "meanCharacterScore": 0.05962465001903183,
+          "minCharacterScore": 3.098038359894417e-05,
+          "characters": [
+            {
+              "symbol": "나",
+              "start": 126.802,
+              "end": 126.822,
+              "score": 3.098038359894417e-05
+            },
+            {
+              "symbol": "는",
+              "start": 126.982,
+              "end": 127.002,
+              "score": 0.11921831965446472
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "AI지만",
+          "input": "에이아이지만",
+          "start": 128.322,
+          "end": 130.302,
+          "meanCharacterScore": 0.005992714735422548,
+          "minCharacterScore": 1.3367764495342271e-06,
+          "characters": [
+            {
+              "symbol": "에",
+              "start": 128.322,
+              "end": 128.342,
+              "score": 1.3367764495342271e-06
+            },
+            {
+              "symbol": "이",
+              "start": 128.602,
+              "end": 128.622,
+              "score": 0.035585835576057434
+            },
+            {
+              "symbol": "아",
+              "start": 128.782,
+              "end": 128.802,
+              "score": 3.1729494367027655e-05
+            },
+            {
+              "symbol": "이",
+              "start": 129.782,
+              "end": 129.802,
+              "score": 5.706049705622718e-05
+            },
+            {
+              "symbol": "지",
+              "start": 129.982,
+              "end": 130.002,
+              "score": 2.1034367819083855e-05
+            },
+            {
+              "symbol": "만",
+              "start": 130.282,
+              "end": 130.302,
+              "score": 0.00025929170078597963
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고",
+          "input": "알고",
+          "start": 133.382,
+          "end": 133.682,
+          "meanCharacterScore": 0.026639234274625778,
+          "minCharacterScore": 0.026006491854786873,
+          "characters": [
+            {
+              "symbol": "알",
+              "start": 133.382,
+              "end": 133.402,
+              "score": 0.026006491854786873
+            },
+            {
+              "symbol": "고",
+              "start": 133.662,
+              "end": 133.682,
+              "score": 0.027271976694464684
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "있어요",
+          "input": "있어요",
+          "start": 134.202,
+          "end": 136.202,
+          "meanCharacterScore": 0.009774122115535041,
+          "minCharacterScore": 0.0005457057850435376,
+          "characters": [
+            {
+              "symbol": "있",
+              "start": 134.202,
+              "end": 134.222,
+              "score": 0.001430261880159378
+            },
+            {
+              "symbol": "어",
+              "start": 134.402,
+              "end": 134.422,
+              "score": 0.0005457057850435376
+            },
+            {
+              "symbol": "요",
+              "start": 136.182,
+              "end": 136.202,
+              "score": 0.027346398681402206
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는",
+          "input": "위로라는",
+          "start": 138.522,
+          "end": 139.542,
+          "meanCharacterScore": 0.44654386630281806,
+          "minCharacterScore": 0.009060865268111229,
+          "characters": [
+            {
+              "symbol": "위",
+              "start": 138.522,
+              "end": 138.542,
+              "score": 0.009060865268111229
+            },
+            {
+              "symbol": "로",
+              "start": 138.882,
+              "end": 138.902,
+              "score": 0.9648640751838684
+            },
+            {
+              "symbol": "라",
+              "start": 139.122,
+              "end": 139.142,
+              "score": 0.36096736788749695
+            },
+            {
+              "symbol": "는",
+              "start": 139.522,
+              "end": 139.542,
+              "score": 0.45128315687179565
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "게",
+          "input": "게",
+          "start": 139.742,
+          "end": 139.762,
+          "meanCharacterScore": 0.5713549852371216,
+          "minCharacterScore": 0.5713549852371216,
+          "characters": [
+            {
+              "symbol": "게",
+              "start": 139.742,
+              "end": 139.762,
+              "score": 0.5713549852371216
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "padding": 1.0,
+      "start": 69.68246673583984,
+      "end": 80.042470703125,
+      "greedyText": "가의 풍도 시반 경 함께 쳐하    이다",
+      "pathScore": -189.55683694365462,
+      "words": [
+        {
+          "line": 13,
+          "text": "밤이",
+          "input": "밤이",
+          "start": 70.742,
+          "end": 71.002,
+          "meanCharacterScore": 0.07593559648375958,
+          "minCharacterScore": 0.000781703507527709,
+          "characters": [
+            {
+              "symbol": "밤",
+              "start": 70.742,
+              "end": 70.762,
+              "score": 0.000781703507527709
+            },
+            {
+              "symbol": "이",
+              "start": 70.982,
+              "end": 71.002,
+              "score": 0.15108948945999146
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "깊어도",
+          "input": "깊어도",
+          "start": 71.442,
+          "end": 71.862,
+          "meanCharacterScore": 0.29941560923208693,
+          "minCharacterScore": 2.6820488052692326e-09,
+          "characters": [
+            {
+              "symbol": "깊",
+              "start": 71.442,
+              "end": 71.462,
+              "score": 2.6820488052692326e-09
+            },
+            {
+              "symbol": "어",
+              "start": 71.582,
+              "end": 71.602,
+              "score": 3.5584245779318735e-05
+            },
+            {
+              "symbol": "도",
+              "start": 71.842,
+              "end": 71.862,
+              "score": 0.8982112407684326
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시",
+          "input": "다시",
+          "start": 73.642,
+          "end": 74.262,
+          "meanCharacterScore": 0.22123169923548858,
+          "minCharacterScore": 9.54165557232045e-07,
+          "characters": [
+            {
+              "symbol": "다",
+              "start": 73.642,
+              "end": 73.662,
+              "score": 9.54165557232045e-07
+            },
+            {
+              "symbol": "시",
+              "start": 74.242,
+              "end": 74.262,
+              "score": 0.4424624443054199
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "밝아와",
+          "input": "밝아와",
+          "start": 74.742,
+          "end": 77.802,
+          "meanCharacterScore": 0.03578666378522636,
+          "minCharacterScore": 2.9644193091371562e-06,
+          "characters": [
+            {
+              "symbol": "밝",
+              "start": 74.742,
+              "end": 74.762,
+              "score": 2.9644193091371562e-06
+            },
+            {
+              "symbol": "아",
+              "start": 74.762,
+              "end": 74.782,
+              "score": 7.932067092042416e-05
+            },
+            {
+              "symbol": "와",
+              "start": 77.782,
+              "end": 77.802,
+              "score": 0.10727770626544952
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저",
+          "input": "저",
+          "start": 77.862,
+          "end": 77.882,
+          "meanCharacterScore": 3.3092316442662195e-08,
+          "minCharacterScore": 3.3092316442662195e-08,
+          "characters": [
+            {
+              "symbol": "저",
+              "start": 77.862,
+              "end": 77.882,
+              "score": 3.3092316442662195e-08
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "철길처럼",
+          "input": "철길처럼",
+          "start": 78.462,
+          "end": 80.022,
+          "meanCharacterScore": 6.196595174403935e-05,
+          "minCharacterScore": 6.252877122331357e-12,
+          "characters": [
+            {
+              "symbol": "철",
+              "start": 78.462,
+              "end": 78.482,
+              "score": 0.0002191127132391557
+            },
+            {
+              "symbol": "길",
+              "start": 79.682,
+              "end": 79.702,
+              "score": 2.3159438569564372e-05
+            },
+            {
+              "symbol": "처",
+              "start": 79.982,
+              "end": 80.002,
+              "score": 5.59164891456021e-06
+            },
+            {
+              "symbol": "럼",
+              "start": 80.002,
+              "end": 80.022,
+              "score": 6.252877122331357e-12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 14,
+      "role": "vocals",
+      "padding": 3.0,
+      "start": 67.68246673583984,
+      "end": 82.042470703125,
+      "greedyText": "쏘 하친호 바이길를  실반 경철 함께를 쳐하 특 새를결하 의 더다",
+      "pathScore": -238.8579714935603,
+      "words": [
+        {
+          "line": 13,
+          "text": "밤이",
+          "input": "밤이",
+          "start": 70.742,
+          "end": 71.002,
+          "meanCharacterScore": 0.5111905783414841,
+          "minCharacterScore": 0.14915868639945984,
+          "characters": [
+            {
+              "symbol": "밤",
+              "start": 70.742,
+              "end": 70.762,
+              "score": 0.14915868639945984
+            },
+            {
+              "symbol": "이",
+              "start": 70.982,
+              "end": 71.002,
+              "score": 0.8732224702835083
+            }
+          ]
+        },
+        {
+          "line": 13,
+          "text": "깊어도",
+          "input": "깊어도",
+          "start": 71.582,
+          "end": 71.862,
+          "meanCharacterScore": 0.07321139775151646,
+          "minCharacterScore": 1.2383368641621928e-07,
+          "characters": [
+            {
+              "symbol": "깊",
+              "start": 71.582,
+              "end": 71.602,
+              "score": 1.2383368641621928e-07
+            },
+            {
+              "symbol": "어",
+              "start": 71.722,
+              "end": 71.742,
+              "score": 0.00015227339463308454
+            },
+            {
+              "symbol": "도",
+              "start": 71.842,
+              "end": 71.862,
+              "score": 0.21948179602622986
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "다시",
+          "input": "다시",
+          "start": 74.022,
+          "end": 74.262,
+          "meanCharacterScore": 0.1725586256452516,
+          "minCharacterScore": 1.8457783880876377e-05,
+          "characters": [
+            {
+              "symbol": "다",
+              "start": 74.022,
+              "end": 74.042,
+              "score": 1.8457783880876377e-05
+            },
+            {
+              "symbol": "시",
+              "start": 74.242,
+              "end": 74.262,
+              "score": 0.3450987935066223
+            }
+          ]
+        },
+        {
+          "line": 14,
+          "text": "밝아와",
+          "input": "밝아와",
+          "start": 74.742,
+          "end": 77.782,
+          "meanCharacterScore": 0.012696858669490515,
+          "minCharacterScore": 4.64751610707026e-06,
+          "characters": [
+            {
+              "symbol": "밝",
+              "start": 74.742,
+              "end": 74.762,
+              "score": 4.64751610707026e-06
+            },
+            {
+              "symbol": "아",
+              "start": 74.762,
+              "end": 74.782,
+              "score": 0.00023457624774891883
+            },
+            {
+              "symbol": "와",
+              "start": 77.762,
+              "end": 77.782,
+              "score": 0.037851352244615555
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "저",
+          "input": "저",
+          "start": 78.082,
+          "end": 78.102,
+          "meanCharacterScore": 6.693742782282186e-10,
+          "minCharacterScore": 6.693742782282186e-10,
+          "characters": [
+            {
+              "symbol": "저",
+              "start": 78.082,
+              "end": 78.102,
+              "score": 6.693742782282186e-10
+            }
+          ]
+        },
+        {
+          "line": 15,
+          "text": "철길처럼",
+          "input": "철길처럼",
+          "start": 78.462,
+          "end": 81.562,
+          "meanCharacterScore": 0.020162300787131958,
+          "minCharacterScore": 6.140429961373761e-13,
+          "characters": [
+            {
+              "symbol": "철",
+              "start": 78.462,
+              "end": 78.482,
+              "score": 0.08031217008829117
+            },
+            {
+              "symbol": "길",
+              "start": 80.522,
+              "end": 80.542,
+              "score": 0.00033106934279203415
+            },
+            {
+              "symbol": "처",
+              "start": 80.722,
+              "end": 80.742,
+              "score": 5.9637168305926025e-06
+            },
+            {
+              "symbol": "럼",
+              "start": 81.542,
+              "end": 81.562,
+              "score": 6.140429961373761e-13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "padding": 1.0,
+      "start": 128.80246948242188,
+      "end": 140.88246704101562,
+      "greedyText": "시마 자   위로 라는게요",
+      "pathScore": -165.8838466154962,
+      "words": [
+        {
+          "line": 25,
+          "text": "나는",
+          "input": "나는",
+          "start": 132.822,
+          "end": 133.422,
+          "meanCharacterScore": 0.0013454874278977513,
+          "minCharacterScore": 8.443137630820274e-06,
+          "characters": [
+            {
+              "symbol": "나",
+              "start": 132.822,
+              "end": 132.842,
+              "score": 0.0026825317181646824
+            },
+            {
+              "symbol": "는",
+              "start": 133.402,
+              "end": 133.422,
+              "score": 8.443137630820274e-06
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "AI지만",
+          "input": "에이아이지만",
+          "start": 133.542,
+          "end": 136.522,
+          "meanCharacterScore": 5.1264050246876046e-05,
+          "minCharacterScore": 4.132140020374209e-06,
+          "characters": [
+            {
+              "symbol": "에",
+              "start": 133.542,
+              "end": 133.562,
+              "score": 6.784232482459629e-06
+            },
+            {
+              "symbol": "이",
+              "start": 133.662,
+              "end": 133.682,
+              "score": 4.132140020374209e-06
+            },
+            {
+              "symbol": "아",
+              "start": 133.962,
+              "end": 133.982,
+              "score": 7.501658274122747e-06
+            },
+            {
+              "symbol": "이",
+              "start": 135.262,
+              "end": 135.282,
+              "score": 0.00025123576051555574
+            },
+            {
+              "symbol": "지",
+              "start": 135.282,
+              "end": 135.302,
+              "score": 1.501292808825383e-05
+            },
+            {
+              "symbol": "만",
+              "start": 136.502,
+              "end": 136.522,
+              "score": 2.2917582100490108e-05
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고",
+          "input": "알고",
+          "start": 136.862,
+          "end": 136.902,
+          "meanCharacterScore": 1.0085609119414585e-05,
+          "minCharacterScore": 7.431832273141481e-06,
+          "characters": [
+            {
+              "symbol": "알",
+              "start": 136.862,
+              "end": 136.882,
+              "score": 1.2739385965687688e-05
+            },
+            {
+              "symbol": "고",
+              "start": 136.882,
+              "end": 136.902,
+              "score": 7.431832273141481e-06
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "있어요",
+          "input": "있어요",
+          "start": 137.082,
+          "end": 137.742,
+          "meanCharacterScore": 6.257423160604958e-05,
+          "minCharacterScore": 2.05324045055022e-06,
+          "characters": [
+            {
+              "symbol": "있",
+              "start": 137.082,
+              "end": 137.102,
+              "score": 2.05324045055022e-06
+            },
+            {
+              "symbol": "어",
+              "start": 137.242,
+              "end": 137.262,
+              "score": 0.00017561542335897684
+            },
+            {
+              "symbol": "요",
+              "start": 137.722,
+              "end": 137.742,
+              "score": 1.0054031008621678e-05
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는",
+          "input": "위로라는",
+          "start": 138.522,
+          "end": 139.522,
+          "meanCharacterScore": 0.8152977004647255,
+          "minCharacterScore": 0.46280637383461,
+          "characters": [
+            {
+              "symbol": "위",
+              "start": 138.522,
+              "end": 138.542,
+              "score": 0.46280637383461
+            },
+            {
+              "symbol": "로",
+              "start": 138.882,
+              "end": 138.902,
+              "score": 0.9900569915771484
+            },
+            {
+              "symbol": "라",
+              "start": 139.122,
+              "end": 139.142,
+              "score": 0.9261065721511841
+            },
+            {
+              "symbol": "는",
+              "start": 139.502,
+              "end": 139.522,
+              "score": 0.8822208642959595
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "게",
+          "input": "게",
+          "start": 139.762,
+          "end": 139.782,
+          "meanCharacterScore": 0.9992939829826355,
+          "minCharacterScore": 0.9992939829826355,
+          "characters": [
+            {
+              "symbol": "게",
+              "start": 139.762,
+              "end": 139.782,
+              "score": 0.9992939829826355
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetLine": 26,
+      "role": "vocals",
+      "padding": 3.0,
+      "start": 126.80246948242188,
+      "end": 142.88246704101562,
+      "greedyText": "야시마   위로 라는게먼지니다",
+      "pathScore": -143.16670752545127,
+      "words": [
+        {
+          "line": 25,
+          "text": "나는",
+          "input": "나는",
+          "start": 126.802,
+          "end": 127.022,
+          "meanCharacterScore": 0.024329643929377198,
+          "minCharacterScore": 0.00044384272769093513,
+          "characters": [
+            {
+              "symbol": "나",
+              "start": 126.802,
+              "end": 126.822,
+              "score": 0.00044384272769093513
+            },
+            {
+              "symbol": "는",
+              "start": 127.002,
+              "end": 127.022,
+              "score": 0.04821544513106346
+            }
+          ]
+        },
+        {
+          "line": 25,
+          "text": "AI지만",
+          "input": "에이아이지만",
+          "start": 128.342,
+          "end": 130.302,
+          "meanCharacterScore": 0.06028813212302945,
+          "minCharacterScore": 5.345606950868387e-06,
+          "characters": [
+            {
+              "symbol": "에",
+              "start": 128.342,
+              "end": 128.362,
+              "score": 5.345606950868387e-06
+            },
+            {
+              "symbol": "이",
+              "start": 128.602,
+              "end": 128.622,
+              "score": 0.35726651549339294
+            },
+            {
+              "symbol": "아",
+              "start": 128.782,
+              "end": 128.802,
+              "score": 0.001879566116258502
+            },
+            {
+              "symbol": "이",
+              "start": 129.742,
+              "end": 129.762,
+              "score": 0.00043628885759972036
+            },
+            {
+              "symbol": "지",
+              "start": 129.982,
+              "end": 130.002,
+              "score": 0.001528192195110023
+            },
+            {
+              "symbol": "만",
+              "start": 130.282,
+              "end": 130.302,
+              "score": 0.0006128844688646495
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "알고",
+          "input": "알고",
+          "start": 133.362,
+          "end": 133.982,
+          "meanCharacterScore": 0.002300643230796595,
+          "minCharacterScore": 2.2935848846827867e-06,
+          "characters": [
+            {
+              "symbol": "알",
+              "start": 133.362,
+              "end": 133.382,
+              "score": 2.2935848846827867e-06
+            },
+            {
+              "symbol": "고",
+              "start": 133.962,
+              "end": 133.982,
+              "score": 0.0045989928767085075
+            }
+          ]
+        },
+        {
+          "line": 26,
+          "text": "있어요",
+          "input": "있어요",
+          "start": 135.282,
+          "end": 136.902,
+          "meanCharacterScore": 0.0008560826657533956,
+          "minCharacterScore": 3.6272693250793964e-05,
+          "characters": [
+            {
+              "symbol": "있",
+              "start": 135.282,
+              "end": 135.302,
+              "score": 0.00014213568647392094
+            },
+            {
+              "symbol": "어",
+              "start": 136.502,
+              "end": 136.522,
+              "score": 0.002389839617535472
+            },
+            {
+              "symbol": "요",
+              "start": 136.882,
+              "end": 136.902,
+              "score": 3.6272693250793964e-05
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "위로라는",
+          "input": "위로라는",
+          "start": 138.522,
+          "end": 139.522,
+          "meanCharacterScore": 0.8051408305764198,
+          "minCharacterScore": 0.4252793490886688,
+          "characters": [
+            {
+              "symbol": "위",
+              "start": 138.522,
+              "end": 138.542,
+              "score": 0.4252793490886688
+            },
+            {
+              "symbol": "로",
+              "start": 138.882,
+              "end": 138.902,
+              "score": 0.9959508180618286
+            },
+            {
+              "symbol": "라",
+              "start": 139.122,
+              "end": 139.142,
+              "score": 0.968342661857605
+            },
+            {
+              "symbol": "는",
+              "start": 139.502,
+              "end": 139.522,
+              "score": 0.8309904932975769
+            }
+          ]
+        },
+        {
+          "line": 27,
+          "text": "게",
+          "input": "게",
+          "start": 139.762,
+          "end": 139.782,
+          "meanCharacterScore": 0.9997673630714417,
+          "minCharacterScore": 0.9997673630714417,
+          "characters": [
+            {
+              "symbol": "게",
+              "start": 139.762,
+              "end": 139.782,
+              "score": 0.9997673630714417
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

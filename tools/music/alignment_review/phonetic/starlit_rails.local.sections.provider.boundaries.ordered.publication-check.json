@@ -1,0 +1,603 @@
+{
+  "id": "starlit_rails",
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "failures": [
+    {
+      "line": 4,
+      "reason": "weak_or_invalid_original_phonetics",
+      "flags": [
+        "fragmented_word_alignment"
+      ]
+    },
+    {
+      "line": 14,
+      "reason": "weak_or_invalid_original_phonetics",
+      "flags": [
+        "fragmented_word_alignment"
+      ]
+    },
+    {
+      "line": 14,
+      "reason": "no_cross_method_boundary_support",
+      "difference": {
+        "start": 2.1800003051757812,
+        "end": 0.01999664306640625
+      }
+    },
+    {
+      "line": 24,
+      "reason": "no_cross_method_boundary_support",
+      "difference": {
+        "start": 0.01999664306640625,
+        "end": 0.0
+      }
+    },
+    {
+      "line": 26,
+      "reason": "weak_or_invalid_original_phonetics",
+      "flags": [
+        "low_phonetic_score",
+        "weak_word_evidence"
+      ]
+    },
+    {
+      "line": 41,
+      "reason": "no_cross_method_boundary_support",
+      "difference": {
+        "start": 1.44000244140625,
+        "end": 0.0
+      }
+    },
+    {
+      "line": 44,
+      "reason": "no_cross_method_boundary_support",
+      "difference": {
+        "start": 0.0,
+        "end": 0.1800079345703125
+      }
+    },
+    {
+      "line": 46,
+      "reason": "weak_or_invalid_original_phonetics",
+      "flags": [
+        "low_phonetic_score",
+        "nonlexical_vocalization_needs_timing"
+      ]
+    },
+    {
+      "line": 46,
+      "reason": "no_cross_method_boundary_support",
+      "difference": {
+        "start": 0.279998779296875,
+        "end": 5.720001220703125
+      }
+    }
+  ],
+  "validations": [
+    {
+      "line": 1,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.019998550415039062
+          }
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.060001373291015625,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.31999969482421875
+          }
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.1199951171875
+          }
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "support": []
+    },
+    {
+      "line": 15,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.01999664306640625,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0200042724609375,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0200042724609375,
+            "end": 0.020000000000010232
+          }
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.05999755859375,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.01999664306640625,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "support": []
+    },
+    {
+      "line": 25,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.17999267578125
+          }
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.019989013671875,
+            "end": 0.019989013671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0399932861328125,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0399932861328125
+          }
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.019989013671875,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0200042724609375,
+            "end": 0.019989013671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.220001220703125
+          }
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "support": []
+    },
+    {
+      "line": 42,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "support": []
+    },
+    {
+      "line": 45,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.1399993896484375,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 46,
+      "support": []
+    },
+    {
+      "line": 47,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    }
+  ]
+}

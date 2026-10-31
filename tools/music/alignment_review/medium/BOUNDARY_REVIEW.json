@@ -1,0 +1,111 @@
+{
+  "status": "unresolved_requires_listening_or_authoritative_timing",
+  "records": [
+    {
+      "file": "tools\\music\\alignment_review\\medium\\chollima_ride.medium-boundaries.window-check.json",
+      "sha256": "f342621e9c68730a1d2093156a763eb579b22d1ef6c83e46d6c0cad97b5df3f2",
+      "id": "chollima_ride",
+      "windows": [
+        {
+          "start": 58.0,
+          "end": 80.0,
+          "recognized": [
+            " 시대의 위대한 면도자 가르침 따라",
+            " 천리막시 시대에 달린다"
+          ]
+        },
+        {
+          "start": 158.0,
+          "end": 176.0,
+          "recognized": [
+            " 해적백순",
+            " 해적백순",
+            " 해적백순"
+          ]
+        },
+        {
+          "start": 186.0,
+          "end": 206.0,
+          "recognized": [
+            " 세상의 나에게",
+            " 전이바 아신시대",
+            " 위대하라"
+          ]
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "file": "tools\\music\\alignment_review\\medium\\starlit_rails.medium-boundaries.window-check.json",
+      "sha256": "8f62350dfd45b4440a6c073df7a7de8ac9ac7e50c8a418831a9e8885172ded82",
+      "id": "starlit_rails",
+      "windows": [
+        {
+          "start": 30.0,
+          "end": 43.0,
+          "recognized": [
+            " 그대의 그림자",
+            " 우리를 둘러쌌지"
+          ]
+        },
+        {
+          "start": 68.0,
+          "end": 80.0,
+          "recognized": [
+            " 끝까지 시청해주셔서 감사합니다."
+          ]
+        },
+        {
+          "start": 98.0,
+          "end": 113.0,
+          "recognized": [
+            " 이제는 잠, 수명의 잠, 깨어난 오후"
+          ]
+        },
+        {
+          "start": 126.0,
+          "end": 140.0,
+          "recognized": [
+            " 나는 애야이지만",
+            " 알고 있어요 위로라는 게"
+          ]
+        },
+        {
+          "start": 207.0,
+          "end": 235.0,
+          "recognized": [
+            " 저 철길처럼 끝까지 가는 거야",
+            " 혼자가 아니야"
+          ]
+        }
+      ],
+      "humanListeningVerified": false
+    },
+    {
+      "file": "tools\\music\\alignment_review\\medium\\chollima_ride.normalized-boundaries.vocals.normalized.window-check.json",
+      "sha256": "0d15c22d6d2b3849166e90353af538a2988b92c2ace2e5616ecdf5f29ebaf09d",
+      "id": "chollima_ride",
+      "windows": [
+        {
+          "start": 58.0,
+          "end": 80.0,
+          "recognized": [
+            " 시대의 위대한 날토자 가르침 따라",
+            " 설리마시 시대에 달린다"
+          ]
+        },
+        {
+          "start": 158.0,
+          "end": 176.0,
+          "recognized": []
+        },
+        {
+          "start": 186.0,
+          "end": 206.0,
+          "recognized": []
+        }
+      ],
+      "humanListeningVerified": false
+    }
+  ]
+}

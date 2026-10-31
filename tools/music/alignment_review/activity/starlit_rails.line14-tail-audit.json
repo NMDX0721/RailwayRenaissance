@@ -1,0 +1,27 @@
+{
+  "id": "starlit_rails",
+  "line": 14,
+  "published": false,
+  "humanListeningVerified": false,
+  "semanticWordEndVerified": false,
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "ctcEnd": 75.18247009277344,
+  "providerEnd": 77.32,
+  "periodicFramesAfterCTCEnd": 88,
+  "lastHighPeriodicityFrame": 77.2,
+  "inputs": [
+    {
+      "path": "tools\\music\\alignment_review\\activity\\starlit_rails.73.5-78.2.json",
+      "sha256": "6d91c0b20a904691c1eeac65475e4f74423d0e3f56f55ca63cd2643ebf11cfb7"
+    },
+    {
+      "path": "tools\\music\\alignment_review\\phonetic\\starlit_rails.local.sections.provider.boundaries.ordered.nasal.json",
+      "sha256": "9bb322d7640c5075ba591073ce56c65fef228146a9b6cf1fbb4f6758f733d6e5"
+    },
+    {
+      "path": "tools\\music\\alignment_review\\lyrictimestamps\\starlit_rails.visible-audit.json",
+      "sha256": "252c565e133e5693134cfe2fa9e69d5b7f2f09735e3c5336b22024742a4e7127"
+    }
+  ],
+  "note": "Sustained pitched residual on the separated vocal continues beyond CTC. Supports rejecting an early cutoff, not exact lyric identity or every word endpoint."
+}

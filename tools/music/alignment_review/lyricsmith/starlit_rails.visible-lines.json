@@ -1,0 +1,241 @@
+{
+  "url": "https://www.lyricsmith.dev/en/editor/0d1b6af6-1b1d-4a8d-adc6-ad6b6224c83f",
+  "source": "rendered website UI; no hidden app state",
+  "lines": [
+    {
+      "label": "Go to line 1, 0:16.35",
+      "text": "검문소 불빛이",
+      "time": "0:16.35"
+    },
+    {
+      "label": "Go to line 2, 0:21.75",
+      "text": "어둠을 가르고",
+      "time": "0:21.75"
+    },
+    {
+      "label": "Go to line 3, 0:29.46",
+      "text": "네 대의 그림자",
+      "time": "0:29.46"
+    },
+    {
+      "label": "Go to line 4, 0:35.99",
+      "text": "우리를 둘러쌌지",
+      "time": "0:35.99"
+    },
+    {
+      "label": "Go to line 5, 0:41.91",
+      "text": "숨을 죽이고",
+      "time": "0:41.91"
+    },
+    {
+      "label": "Go to line 6, 0:44.77",
+      "text": "손을 떨며",
+      "time": "0:44.77"
+    },
+    {
+      "label": "Go to line 7, 0:48.45",
+      "text": "얼굴엔 아무것도",
+      "time": "0:48.45"
+    },
+    {
+      "label": "Go to line 8, 0:50.90",
+      "text": "드러내지 않았어",
+      "time": "0:50.90"
+    },
+    {
+      "label": "Go to line 9, 0:54.44",
+      "text": "심박수 백사십칠",
+      "time": "0:54.44"
+    },
+    {
+      "label": "Go to line 10, 1:00.60",
+      "text": "듣고 있어요",
+      "time": "1:00.60"
+    },
+    {
+      "label": "Go to line 11, 1:03.42",
+      "text": "무서워도",
+      "time": "1:03.42"
+    },
+    {
+      "label": "Go to line 12, 1:07.51",
+      "text": "멈추지 않았죠",
+      "time": "1:07.51"
+    },
+    {
+      "label": "Go to line 13, 1:10.69",
+      "text": "밤이 깊어도",
+      "time": "1:10.69"
+    },
+    {
+      "label": "Go to line 14, 1:14.13",
+      "text": "다시 밝아와",
+      "time": "1:14.13"
+    },
+    {
+      "label": "Go to line 15, 1:17.44",
+      "text": "저 철길처럼",
+      "time": "1:17.44"
+    },
+    {
+      "label": "Go to line 16, 1:19.34",
+      "text": "끝까지 가는 거야",
+      "time": "1:19.34"
+    },
+    {
+      "label": "Go to line 17, 1:23.70",
+      "text": "길이 험해도",
+      "time": "1:23.70"
+    },
+    {
+      "label": "Go to line 18, 1:27.06",
+      "text": "우린 함께야",
+      "time": "1:27.06"
+    },
+    {
+      "label": "Go to line 19, 1:31.06",
+      "text": "이 하늘 아래",
+      "time": "1:31.06"
+    },
+    {
+      "label": "Go to line 20, 1:32.69",
+      "text": "혼자가 아니야",
+      "time": "1:32.69"
+    },
+    {
+      "label": "Go to line 21, 1:45.69",
+      "text": "이십삼 년의 잠",
+      "time": "1:45.69"
+    },
+    {
+      "label": "Go to line 22, 1:48.76",
+      "text": "깨어난 오후",
+      "time": "1:48.76"
+    },
+    {
+      "label": "Go to line 23, 1:53.74",
+      "text": "낯선 목소리",
+      "time": "1:53.74"
+    },
+    {
+      "label": "Go to line 24, 2:00.13",
+      "text": "처음 듣는 이야기",
+      "time": "2:00.13"
+    },
+    {
+      "label": "Go to line 25, 2:06.67",
+      "text": "나는 AI지만",
+      "time": "2:06.67"
+    },
+    {
+      "label": "Go to line 26, 2:12.89",
+      "text": "알고 있어요",
+      "time": "2:12.89"
+    },
+    {
+      "label": "Go to line 27, 2:18.50",
+      "text": "위로라는 게",
+      "time": "2:18.50"
+    },
+    {
+      "label": "Go to line 28, 2:22.10",
+      "text": "뭔지 말이죠",
+      "time": "2:22.10"
+    },
+    {
+      "label": "Go to line 29, 2:26.60",
+      "text": "밤이 깊어도",
+      "time": "2:26.60"
+    },
+    {
+      "label": "Go to line 30, 2:31.85",
+      "text": "다시 밝아와",
+      "time": "2:31.85"
+    },
+    {
+      "label": "Go to line 31, 2:35.27",
+      "text": "저 철길처럼",
+      "time": "2:35.27"
+    },
+    {
+      "label": "Go to line 32, 2:37.17",
+      "text": "끝까지 가는 거야",
+      "time": "2:37.17"
+    },
+    {
+      "label": "Go to line 33, 2:41.53",
+      "text": "길이 험해도",
+      "time": "2:41.53"
+    },
+    {
+      "label": "Go to line 34, 2:44.90",
+      "text": "우린 함께야",
+      "time": "2:44.90"
+    },
+    {
+      "label": "Go to line 35, 2:48.94",
+      "text": "이 하늘 아래",
+      "time": "2:48.94"
+    },
+    {
+      "label": "Go to line 36, 2:50.50",
+      "text": "혼자가 아니야",
+      "time": "2:50.50"
+    },
+    {
+      "label": "Go to line 37, 2:56.06",
+      "text": "그 말도 중의적인 거야?",
+      "time": "2:56.06"
+    },
+    {
+      "label": "Go to line 38, 2:57.75",
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "time": "2:57.75"
+    },
+    {
+      "label": "Go to line 39, 3:01.01",
+      "text": "하지만...",
+      "time": "3:01.01"
+    },
+    {
+      "label": "Go to line 40, 3:01.77",
+      "text": "팔십구 퍼센트...",
+      "time": "3:01.77"
+    },
+    {
+      "label": "Go to line 41, 3:04.77",
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "time": "3:04.77"
+    },
+    {
+      "label": "Go to line 42, 3:20.46",
+      "text": "밤이 깊어도——",
+      "time": "3:20.46"
+    },
+    {
+      "label": "Go to line 43, 3:23.72",
+      "text": "다시 밝아와——",
+      "time": "3:23.72"
+    },
+    {
+      "label": "Go to line 44, 3:27.19",
+      "text": "저 철길처럼——",
+      "time": "3:27.19"
+    },
+    {
+      "label": "Go to line 45, 3:29.35",
+      "text": "끝까지 가는 거야——",
+      "time": "3:29.35"
+    },
+    {
+      "label": "Go to line 46, 3:34.65",
+      "text": "Mmm... mmm...",
+      "time": "3:34.65"
+    },
+    {
+      "label": "Go to line 47, 3:48.86",
+      "text": "혼자가 아니야...",
+      "time": "3:48.86"
+    }
+  ]
+}

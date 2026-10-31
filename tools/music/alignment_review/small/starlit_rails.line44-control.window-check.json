@@ -1,0 +1,80 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "audioRole": "original",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "timeOffset": 0,
+  "waveformVariant": "",
+  "requestedLanguage": "expected",
+  "device": "cpu",
+  "computeType": "int8",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 206.6,
+      "end": 209.8,
+      "segments": [
+        {
+          "start": 206.6,
+          "end": 209.78,
+          "text": " 저 철길처럼 끝까지",
+          "words": [
+            {
+              "start": 206.6,
+              "end": 207.29999999999998,
+              "word": " 저",
+              "probability": 0.007841033861041069
+            },
+            {
+              "start": 207.29999999999998,
+              "end": 208.72,
+              "word": " 철길처럼",
+              "probability": 0.613016813993454
+            },
+            {
+              "start": 208.72,
+              "end": 209.78,
+              "word": " 끝까지",
+              "probability": 0.8734491169452667
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 205.4,
+      "end": 211.8,
+      "segments": [],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 206.8,
+      "end": 209.4,
+      "segments": [
+        {
+          "start": 206.8,
+          "end": 208.64000000000001,
+          "text": " 차철길처럼",
+          "words": [
+            {
+              "start": 206.8,
+              "end": 208.64000000000001,
+              "word": " 차철길처럼",
+              "probability": 0.5601535183377564
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    }
+  ]
+}

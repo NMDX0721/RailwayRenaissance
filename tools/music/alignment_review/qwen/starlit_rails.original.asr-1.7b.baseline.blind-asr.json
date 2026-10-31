@@ -1,0 +1,38 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "role": "original",
+  "model": "Qwen/Qwen3-ASR-1.7B",
+  "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+  "toolSha256": "417efed27b4283383a0bc04d795ccfda8f809afb5f4c5c9152662e7ee5827abb",
+  "lyricPromptProvided": false,
+  "wordTimestampsProvided": false,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "start": 69.5,
+      "end": 73.8,
+      "language": "Korean",
+      "text": "밤이 깊어도."
+    },
+    {
+      "start": 73.8,
+      "end": 75.8,
+      "language": "Korean",
+      "text": "다시 밝아."
+    },
+    {
+      "start": 132.0,
+      "end": 138.5,
+      "language": "Korean",
+      "text": "알고 있어요."
+    },
+    {
+      "start": 184.4,
+      "end": 189.8,
+      "language": "Korean",
+      "text": "인간은 이걸 위로라고 부르죠."
+    }
+  ]
+}

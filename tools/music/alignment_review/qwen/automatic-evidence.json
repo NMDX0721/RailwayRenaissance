@@ -1,0 +1,372 @@
+{
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "published": false,
+  "tracks": [
+    {
+      "id": "starlit_rails",
+      "lines": [
+        {
+          "line": 4,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 32.842,
+              "end": 40.122,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 35.482,
+              "end": 39.562,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 35.882,
+              "end": 40.282,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 35.962,
+              "end": 40.362,
+              "boundaryWasRepaired": false,
+              "valid": true
+            }
+          ],
+          "spread": {
+            "start": 3.1200000000000045,
+            "end": 0.8000000000000043
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        },
+        {
+          "line": 14,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 77.362,
+              "end": 77.442,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 74.402,
+              "end": 79.682,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 74.002,
+              "end": 74.402,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 74.002,
+              "end": 79.442,
+              "boundaryWasRepaired": false,
+              "valid": true
+            }
+          ],
+          "spread": {
+            "start": 3.3599999999999994,
+            "end": 2.240000000000009
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        },
+        {
+          "line": 26,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 135.202,
+              "end": 138.002,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 132.082,
+              "end": 138.002,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 133.602,
+              "end": 138.082,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 133.682,
+              "end": 138.002,
+              "boundaryWasRepaired": true,
+              "valid": false
+            }
+          ],
+          "spread": {
+            "start": 3.1200000000000045,
+            "end": 0.07999999999998408
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        },
+        {
+          "line": 41,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 183.082,
+              "end": 195.962,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 179.882,
+              "end": 189.242,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 183.322,
+              "end": 189.242,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 183.322,
+              "end": 189.242,
+              "boundaryWasRepaired": false,
+              "valid": true
+            }
+          ],
+          "spread": {
+            "start": 0.0,
+            "end": 0.0
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        },
+        {
+          "line": 46,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 226.962,
+              "end": 228.802,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 228.802,
+              "end": 228.802,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 224.162,
+              "end": 228.882,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 228.802,
+              "end": 229.202,
+              "boundaryWasRepaired": true,
+              "valid": false
+            }
+          ],
+          "spread": {
+            "start": 0.0,
+            "end": 0.0
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        }
+      ]
+    },
+    {
+      "id": "chollima_ride",
+      "lines": [
+        {
+          "line": 17,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 67.302,
+              "end": 73.542,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 67.382,
+              "end": 73.302,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 67.462,
+              "end": 73.382,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 67.542,
+              "end": 73.302,
+              "boundaryWasRepaired": false,
+              "valid": true
+            }
+          ],
+          "spread": {
+            "start": 0.23999999999999488,
+            "end": 0.23999999999999488
+          },
+          "fourWayStable": true,
+          "status": "stable_model_candidate_requires_cross_model_check",
+          "candidate": {
+            "start": 67.422,
+            "end": 73.34200000000001
+          }
+        },
+        {
+          "line": 42,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 170.902,
+              "end": 171.702,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 163.062,
+              "end": 164.822,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 162.902,
+              "end": 165.222,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 162.822,
+              "end": 164.422,
+              "boundaryWasRepaired": true,
+              "valid": false
+            }
+          ],
+          "spread": {
+            "start": 0.160000000000025,
+            "end": 0.4000000000000057
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        },
+        {
+          "line": 44,
+          "measurements": [
+            {
+              "role": "original",
+              "padding": 1.0,
+              "start": 169.842,
+              "end": 201.522,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "original",
+              "padding": 3.0,
+              "start": 167.842,
+              "end": 198.002,
+              "boundaryWasRepaired": true,
+              "valid": false
+            },
+            {
+              "role": "vocals",
+              "padding": 1.0,
+              "start": 198.002,
+              "end": 201.522,
+              "boundaryWasRepaired": false,
+              "valid": true
+            },
+            {
+              "role": "vocals",
+              "padding": 3.0,
+              "start": 198.002,
+              "end": 199.282,
+              "boundaryWasRepaired": true,
+              "valid": false
+            }
+          ],
+          "spread": {
+            "start": 28.159999999999997,
+            "end": 0.0
+          },
+          "fourWayStable": false,
+          "status": "automatic_evidence_insufficient",
+          "candidate": null
+        }
+      ]
+    }
+  ]
+}

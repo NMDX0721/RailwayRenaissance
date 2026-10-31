@@ -1,0 +1,280 @@
+{
+  "id": "starlit_rails",
+  "published": false,
+  "humanListeningVerified": false,
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "inputs": [
+    {
+      "path": "tools\\music\\alignment_review\\lyricsmith\\starlit_rails.native-audit.json",
+      "sha256": "82a23a540c6f549857acd65e19fda21a50dab4ef16615b790679fd290b54431f"
+    },
+    {
+      "path": "tools\\music\\alignment_review\\phonetic\\starlit_rails.local.sections.provider.boundaries.json",
+      "sha256": "758304b49b6b612b22bbb20493277a6ba952ba5e1110c63610d550b79eb32c94"
+    },
+    {
+      "path": "tools\\music\\alignment_review\\qwen\\starlit_rails.original.blind-asr.json",
+      "sha256": "16addb0456c070a8e5bfc9cfee2473de54439cceda2f9ee4c18bf4bfc16b561a"
+    }
+  ],
+  "toolSha256": "acce7efa0120b3378fb5eaca5d60b856e570a4e86e04b91024ba84261e38db6e",
+  "decisions": [
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "automaticEvidenceOnly": true,
+      "humanListeningVerified": false,
+      "scope": "word_onsets_and_line_end_corroborated",
+      "nativeWordEvidence": true,
+      "exactBlindWindows": [
+        {
+          "start": 35.0,
+          "end": 40.5,
+          "language": "Korean",
+          "text": "우리를 둘러쌌지"
+        }
+      ],
+      "selectedAudioRole": "vocals",
+      "selectedStart": 35.962469329833986,
+      "selectedEnd": 39.70246673583984,
+      "words": [
+        {
+          "line": 3,
+          "text": "우리를",
+          "romanized": "urireul",
+          "pronunciationInput": "우리를",
+          "kind": "lyric",
+          "start": 35.962469329833986,
+          "end": 36.662469635009764,
+          "score": 0.43967807521611185,
+          "cohesionRepair": null,
+          "pronunciationVariant": null,
+          "asrConstraint": null,
+          "maxInternalGap": 0.15999984741210938
+        },
+        {
+          "line": 3,
+          "text": "둘러쌌지",
+          "romanized": "dulreossassji",
+          "pronunciationInput": "둘러쌌지",
+          "kind": "lyric",
+          "start": 37.462469329833986,
+          "end": 39.70246673583984,
+          "score": 0.3459372217946041,
+          "cohesionRepair": null,
+          "pronunciationVariant": null,
+          "asrConstraint": null,
+          "maxInternalGap": 0.7800025939941406
+        }
+      ],
+      "oldOnsetExclusionWindows": [],
+      "checks": {
+        "strongVocalPhonetics": true,
+        "originalVocalLineAgreement": true,
+        "onlineVocalLineAgreement": true,
+        "onlineVocalWordStartAgreement": true,
+        "exactBlindText": true
+      },
+      "note": "Scope concerns source word onsets and outer line end; it is not a human accuracy certificate."
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "automaticEvidenceOnly": true,
+      "humanListeningVerified": false,
+      "scope": "unresolved",
+      "nativeWordEvidence": true,
+      "exactBlindWindows": [],
+      "selectedAudioRole": null,
+      "selectedStart": null,
+      "selectedEnd": null,
+      "words": [],
+      "oldOnsetExclusionWindows": [
+        {
+          "start": 69.5,
+          "end": 73.8,
+          "language": "Korean",
+          "text": "밤이 깊어도"
+        }
+      ],
+      "checks": {
+        "strongVocalPhonetics": true,
+        "originalVocalLineAgreement": false,
+        "onlineVocalLineAgreement": true,
+        "onlineVocalWordStartAgreement": true,
+        "exactBlindText": false
+      },
+      "note": "Scope concerns source word onsets and outer line end; it is not a human accuracy certificate."
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "automaticEvidenceOnly": true,
+      "humanListeningVerified": false,
+      "scope": "line_only_corroborated",
+      "nativeWordEvidence": false,
+      "exactBlindWindows": [
+        {
+          "start": 132.0,
+          "end": 138.5,
+          "language": "Korean",
+          "text": "알고 있어요."
+        }
+      ],
+      "selectedAudioRole": "vocals",
+      "selectedStart": 132.88247131347657,
+      "selectedEnd": 137.18247009277343,
+      "words": [],
+      "oldOnsetExclusionWindows": [],
+      "checks": {
+        "strongVocalPhonetics": true,
+        "originalVocalLineAgreement": true,
+        "onlineVocalLineAgreement": true,
+        "onlineVocalWordStartAgreement": false,
+        "exactBlindText": true
+      },
+      "note": "Scope concerns source word onsets and outer line end; it is not a human accuracy certificate."
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "automaticEvidenceOnly": true,
+      "humanListeningVerified": false,
+      "scope": "word_onsets_and_line_end_corroborated",
+      "nativeWordEvidence": true,
+      "exactBlindWindows": [
+        {
+          "start": 184.4,
+          "end": 189.8,
+          "language": "Korean",
+          "text": "인간은 이걸 위로라고 부르죠."
+        }
+      ],
+      "selectedAudioRole": "vocals",
+      "selectedStart": 184.78246520996095,
+      "selectedEnd": 189.26247192382812,
+      "words": [
+        {
+          "line": 40,
+          "text": "인간은",
+          "romanized": "inganeun",
+          "pronunciationInput": "인간은",
+          "kind": "lyric",
+          "start": 184.78246520996095,
+          "end": 185.3424737548828,
+          "score": 0.4122633773954476,
+          "cohesionRepair": {
+            "reason": "isolated_phoneme_across_long_gap",
+            "originalStart": 184.79246520996094,
+            "originalEnd": 186.6524658203125,
+            "retainedClusterCharacters": 7,
+            "totalCharacters": 8,
+            "localWindow": [
+              184.19247436523438,
+              186.29246520996094
+            ]
+          },
+          "pronunciationVariant": null,
+          "asrConstraint": {
+            "reason": "unique_word_high_probability_independent_ASR_window",
+            "window": [
+              184.1,
+              186.66
+            ],
+            "evidence": [
+              {
+                "start": 184.7,
+                "end": 186.06,
+                "evidence": "tools\\music\\alignment_review\\small\\starlit_rails.asr.json"
+              }
+            ],
+            "originalStart": 184.79246520996094,
+            "originalEnd": 186.67247009277344
+          },
+          "maxInternalGap": 0.1399993896484375
+        },
+        {
+          "line": 40,
+          "text": "이걸",
+          "romanized": "igeol",
+          "pronunciationInput": "이걸",
+          "kind": "lyric",
+          "start": 186.74247192382813,
+          "end": 187.06247497558593,
+          "score": 0.5265408695951919,
+          "cohesionRepair": null,
+          "pronunciationVariant": null,
+          "asrConstraint": null,
+          "maxInternalGap": 0.1399993896484375
+        },
+        {
+          "line": 40,
+          "text": "'위로'라고",
+          "romanized": "wirorago",
+          "pronunciationInput": "'위로'라고",
+          "kind": "lyric",
+          "start": 187.12246154785157,
+          "end": 188.26247192382812,
+          "score": 0.6456833956763148,
+          "cohesionRepair": null,
+          "pronunciationVariant": null,
+          "asrConstraint": null,
+          "maxInternalGap": 0.32000732421875
+        },
+        {
+          "line": 40,
+          "text": "부르죠",
+          "romanized": "bureujyo",
+          "pronunciationInput": "부르죠",
+          "kind": "lyric",
+          "start": 188.54247497558595,
+          "end": 189.26247192382812,
+          "score": 0.41709469897978124,
+          "cohesionRepair": null,
+          "pronunciationVariant": null,
+          "asrConstraint": null,
+          "maxInternalGap": 0.3000030517578125
+        }
+      ],
+      "oldOnsetExclusionWindows": [
+        {
+          "start": 181.5,
+          "end": 184.5,
+          "language": "Korean",
+          "text": "팔십구 퍼센트."
+        }
+      ],
+      "checks": {
+        "strongVocalPhonetics": true,
+        "originalVocalLineAgreement": false,
+        "onlineVocalLineAgreement": true,
+        "onlineVocalWordStartAgreement": true,
+        "exactBlindText": true
+      },
+      "note": "Scope concerns source word onsets and outer line end; it is not a human accuracy certificate."
+    },
+    {
+      "line": 46,
+      "text": "Mmm... mmm...",
+      "automaticEvidenceOnly": true,
+      "humanListeningVerified": false,
+      "scope": "unresolved",
+      "nativeWordEvidence": true,
+      "exactBlindWindows": [],
+      "selectedAudioRole": null,
+      "selectedStart": null,
+      "selectedEnd": null,
+      "words": [],
+      "oldOnsetExclusionWindows": [],
+      "checks": {
+        "strongVocalPhonetics": false,
+        "originalVocalLineAgreement": false,
+        "onlineVocalLineAgreement": false,
+        "onlineVocalWordStartAgreement": false,
+        "exactBlindText": false
+      },
+      "note": "Scope concerns source word onsets and outer line end; it is not a human accuracy certificate."
+    }
+  ]
+}

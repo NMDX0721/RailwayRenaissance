@@ -1,0 +1,38 @@
+{
+  "id": "chollima_ride",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "waveformSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "role": "original",
+  "model": "Qwen/Qwen3-ASR-1.7B",
+  "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+  "toolSha256": "417efed27b4283383a0bc04d795ccfda8f809afb5f4c5c9152662e7ee5827abb",
+  "lyricPromptProvided": false,
+  "wordTimestampsProvided": false,
+  "humanListeningVerified": false,
+  "windows": [
+    {
+      "start": 66.5,
+      "end": 73.5,
+      "language": "Korean",
+      "text": "절리마 시시대."
+    },
+    {
+      "start": 162.2,
+      "end": 166.1,
+      "language": "Korean",
+      "text": "백점 백승 백점 백승."
+    },
+    {
+      "start": 169.5,
+      "end": 173.2,
+      "language": "Korean",
+      "text": "백천백순."
+    },
+    {
+      "start": 186.0,
+      "end": 201.0,
+      "language": "Korean",
+      "text": "어 설리마."
+    }
+  ]
+}

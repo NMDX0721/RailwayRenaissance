@@ -1,0 +1,483 @@
+{
+  "id": "south_wind",
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false,
+  "failures": [],
+  "validations": [
+    {
+      "line": 1,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.019998550415039062,
+            "end": 0.019998550415039062
+          }
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.060001373291015625
+          }
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.11999893188476562
+          }
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.05999755859375
+          }
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.020000457763671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.020000457763671875,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.01999664306640625,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.04000091552734375,
+            "end": 0.04000091552734375
+          }
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.01999664306640625,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0800018310546875
+          }
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0399932861328125
+          }
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.05999755859375,
+            "end": 0.1999969482421875
+          }
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0200042724609375,
+            "end": 0.0200042724609375
+          }
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.18000030517578125
+          }
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.01999664306640625
+          }
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.040008544921875
+          }
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.079986572265625
+          }
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "support": [
+        {
+          "method": "original_vs_vocals_phonetic_boundary",
+          "difference": {
+            "start": 0.0,
+            "end": 0.019989013671875
+          }
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "support": [
+        {
+          "method": "independent_exact_line_ASR",
+          "file": "tools\\music\\alignment_review\\small\\south_wind.authored-vocals.asr.json",
+          "word": {
+            "start": 147.51999999999998,
+            "end": 148.92,
+            "word": " 따뜻해",
+            "probability": 0.9525695890188217
+          },
+          "alternatePhoneticDifference": {
+            "start": 0.3600006103515625,
+            "end": 0.8000030517578125
+          }
+        }
+      ]
+    }
+  ]
+}

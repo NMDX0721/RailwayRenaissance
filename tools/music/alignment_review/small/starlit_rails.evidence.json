@@ -1,0 +1,574 @@
+{
+  "id": "starlit_rails",
+  "model": "small",
+  "sourceSha256": "9460b017b5a236bdf7a803984215e31f4051da774e48c010ca773454b8c2d87a",
+  "asrSha256": "40660493dad089c6108a294bc366098578882efea8cf951065317938c9f72482",
+  "purpose": "automatic_evidence_not_timed_lyrics",
+  "humanListeningVerified": false,
+  "lines": [
+    {
+      "line": 1,
+      "source": "검문소 불빛이",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 2,
+      "source": "어둠을 가르고",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 3,
+      "source": "네 대의 그림자",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 30.28,
+      "evidenceEnd": 33.08,
+      "recognized": " 우리의 그림자"
+    },
+    {
+      "line": 4,
+      "source": "우리를 둘러쌌지",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 33.08,
+      "evidenceEnd": 39.94,
+      "recognized": " 우리를 둘러 쌌지"
+    },
+    {
+      "line": 5,
+      "source": "숨을 죽이고",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 41.98,
+      "evidenceEnd": 43.6,
+      "recognized": " 숨을 죽이고"
+    },
+    {
+      "line": 6,
+      "source": "손을 떨며",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 43.6,
+      "evidenceEnd": 46.82,
+      "recognized": " 손을 떨면"
+    },
+    {
+      "line": 7,
+      "source": "얼굴엔 아무것도",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 48.0,
+      "evidenceEnd": 50.52,
+      "recognized": " 얼굴에 아무것도"
+    },
+    {
+      "line": 8,
+      "source": "드러내지 않았어",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 50.52,
+      "evidenceEnd": 53.66,
+      "recognized": " 드러내지 않았어"
+    },
+    {
+      "line": 9,
+      "source": "심박수 백사십칠",
+      "sourceRecall": 0.286,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 54.92,
+      "evidenceEnd": 56.1,
+      "recognized": " 박수"
+    },
+    {
+      "line": 10,
+      "source": "듣고 있어요",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 58.96,
+      "evidenceEnd": 62.06,
+      "recognized": " 듣고 있어요"
+    },
+    {
+      "line": 11,
+      "source": "무서워도",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 62.06,
+      "evidenceEnd": 65.4,
+      "recognized": " 무서워도"
+    },
+    {
+      "line": 12,
+      "source": "멈추지 않았죠",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 67.53999999999999,
+      "evidenceEnd": 70.34,
+      "recognized": " 멈추지 않았죠"
+    },
+    {
+      "line": 13,
+      "source": "밤이 깊어도",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 70.34,
+      "evidenceEnd": 72.04,
+      "recognized": " 밤이 깊어도"
+    },
+    {
+      "line": 14,
+      "source": "다시 밝아와",
+      "sourceRecall": 0.8,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 72.04,
+      "evidenceEnd": 76.02,
+      "recognized": " 다시 밝아"
+    },
+    {
+      "line": 15,
+      "source": "저 철길처럼",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 76.86,
+      "evidenceEnd": 79.0,
+      "recognized": " 저 철길처럼"
+    },
+    {
+      "line": 16,
+      "source": "끝까지 가는 거야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 79.0,
+      "evidenceEnd": 81.76,
+      "recognized": " 끝까지 가는 거야"
+    },
+    {
+      "line": 17,
+      "source": "길이 험해도",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 81.76,
+      "evidenceEnd": 85.02,
+      "recognized": " 길이 험해도"
+    },
+    {
+      "line": 18,
+      "source": "우린 함께야",
+      "sourceRecall": 0.6,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 85.02,
+      "evidenceEnd": 87.9,
+      "recognized": " 우리 함께"
+    },
+    {
+      "line": 19,
+      "source": "이 하늘 아래",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 87.9,
+      "evidenceEnd": 92.32,
+      "recognized": " 이 하늘 아래"
+    },
+    {
+      "line": 20,
+      "source": "혼자가 아니야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 92.32,
+      "evidenceEnd": 94.4,
+      "recognized": " 혼자가 아니야"
+    },
+    {
+      "line": 21,
+      "source": "이십삼 년의 잠",
+      "sourceRecall": 0.5,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "zero_duration_asr_word"
+      ],
+      "evidenceStart": 105.97999999999999,
+      "evidenceEnd": 108.8,
+      "recognized": " 이제는 처음 룬 형의 잠"
+    },
+    {
+      "line": 22,
+      "source": "깨어난 오후",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 108.8,
+      "evidenceEnd": 111.68,
+      "recognized": " 깨어난 오후"
+    },
+    {
+      "line": 23,
+      "source": "낯선 목소리",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 114.35999999999999,
+      "evidenceEnd": 117.16,
+      "recognized": " 낯선 목소리"
+    },
+    {
+      "line": 24,
+      "source": "처음 듣는 이야기",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 119.32,
+      "evidenceEnd": 123.52,
+      "recognized": " 처음 듣는 이야기"
+    },
+    {
+      "line": 25,
+      "source": "나는 AI지만",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 128.92,
+      "evidenceEnd": 131.72,
+      "recognized": " 나는 해야이지만"
+    },
+    {
+      "line": 26,
+      "source": "알고 있어요",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 131.72,
+      "evidenceEnd": 137.12,
+      "recognized": " 알고 있어요"
+    },
+    {
+      "line": 27,
+      "source": "위로라는 게",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 137.12,
+      "evidenceEnd": 140.12,
+      "recognized": " 위로라는 게"
+    },
+    {
+      "line": 28,
+      "source": "뭔지 말이죠",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 140.12,
+      "evidenceEnd": 144.02,
+      "recognized": " 뭔지 말이죠"
+    },
+    {
+      "line": 29,
+      "source": "밤이 깊어도",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 147.57999999999998,
+      "evidenceEnd": 149.84,
+      "recognized": " 밤이 깊어도"
+    },
+    {
+      "line": 30,
+      "source": "다시 밝아와",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 149.84,
+      "evidenceEnd": 154.48,
+      "recognized": " 다시 밝아와"
+    },
+    {
+      "line": 31,
+      "source": "저 철길처럼",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 154.48,
+      "evidenceEnd": 156.76,
+      "recognized": " 저 철길처럼"
+    },
+    {
+      "line": 32,
+      "source": "끝까지 가는 거야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 156.76,
+      "evidenceEnd": 159.8,
+      "recognized": " 끝까지 가는 거야"
+    },
+    {
+      "line": 33,
+      "source": "길이 험해도",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 159.8,
+      "evidenceEnd": 162.9,
+      "recognized": " 길이 험해도"
+    },
+    {
+      "line": 34,
+      "source": "우린 함께야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 162.9,
+      "evidenceEnd": 167.36,
+      "recognized": " 우린 함께야"
+    },
+    {
+      "line": 35,
+      "source": "이 하늘 아래",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 167.36,
+      "evidenceEnd": 170.1,
+      "recognized": " 이 하늘 아래"
+    },
+    {
+      "line": 36,
+      "source": "혼자가 아니야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 170.1,
+      "evidenceEnd": 172.28,
+      "recognized": " 혼자가 아니야"
+    },
+    {
+      "line": 37,
+      "source": "그 말도 중의적인 거야?",
+      "sourceRecall": 0.444,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 176.5,
+      "evidenceEnd": 177.18,
+      "recognized": " 척이적인 거야"
+    },
+    {
+      "line": 38,
+      "source": "저는 AI예요. 중의적 표현은 안 써요.",
+      "sourceRecall": 0.533,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 178.28,
+      "evidenceEnd": 180.76,
+      "recognized": " 중요적 표현은 안 써요"
+    },
+    {
+      "line": 39,
+      "source": "하지만...",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 180.76,
+      "evidenceEnd": 181.38,
+      "recognized": " 하지만"
+    },
+    {
+      "line": 40,
+      "source": "팔십구 퍼센트...",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 41,
+      "source": "인간은 이걸 '위로'라고 부르죠",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 184.7,
+      "evidenceEnd": 189.98,
+      "recognized": " 인간은 이걸 위로라고 부르죠"
+    },
+    {
+      "line": 42,
+      "source": "밤이 깊어도——",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 200.18,
+      "evidenceEnd": 201.92,
+      "recognized": " 밤이 깊어도"
+    },
+    {
+      "line": 43,
+      "source": "처음 듣는 이야기",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 44,
+      "source": "나는 AI지만",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 45,
+      "source": "알고 있어요",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 46,
+      "source": "위로라는 게",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 47,
+      "source": "뭔지 말이죠",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 48,
+      "source": "밤이 깊어도",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 49,
+      "source": "다시 밝아와",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 201.92,
+      "evidenceEnd": 207.06,
+      "recognized": " 다시 밝아와"
+    },
+    {
+      "line": 50,
+      "source": "저 철길처럼",
+      "sourceRecall": 0.8,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 207.06,
+      "evidenceEnd": 208.62,
+      "recognized": " 저 철딜처럼"
+    },
+    {
+      "line": 51,
+      "source": "끝까지 가는 거야",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 208.62,
+      "evidenceEnd": 212.44,
+      "recognized": " 끝까지 가는 거야"
+    },
+    {
+      "line": 52,
+      "source": "혼자가 아니야...",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 228.44,
+      "evidenceEnd": 234.02,
+      "recognized": " 혼자가 아니야"
+    }
+  ]
+}

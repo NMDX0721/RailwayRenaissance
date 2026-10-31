@@ -1,0 +1,112 @@
+{
+  "id": "chollima_ride",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 62.0,
+      "end": 76.0,
+      "segments": [
+        {
+          "start": 62.0,
+          "end": 64.94,
+          "text": " 면도자 가르침 따라",
+          "words": [
+            {
+              "start": 62.0,
+              "end": 63.34,
+              "word": " 면도자",
+              "probability": 0.5145494192838669
+            },
+            {
+              "start": 63.34,
+              "end": 64.42,
+              "word": " 가르침",
+              "probability": 0.6847279369831085
+            },
+            {
+              "start": 64.42,
+              "end": 64.94,
+              "word": " 따라",
+              "probability": 0.7624202370643616
+            }
+          ]
+        },
+        {
+          "start": 71.94,
+          "end": 74.74,
+          "text": " 설리마시치네 달린다",
+          "words": [
+            {
+              "start": 71.94,
+              "end": 73.34,
+              "word": " 설리마시치네",
+              "probability": 0.38179778928558034
+            },
+            {
+              "start": 73.34,
+              "end": 74.74,
+              "word": " 달린다",
+              "probability": 0.9748762051264445
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 158.0,
+      "end": 176.0,
+      "segments": [
+        {
+          "start": 162.52,
+          "end": 163.92,
+          "text": " 백종백슨!",
+          "words": [
+            {
+              "start": 162.52,
+              "end": 163.92,
+              "word": " 백종백슨!",
+              "probability": 0.6296389450629553
+            }
+          ]
+        },
+        {
+          "start": 164.24,
+          "end": 165.64,
+          "text": " 백종백슨!",
+          "words": [
+            {
+              "start": 164.24,
+              "end": 165.64,
+              "word": " 백종백슨!",
+              "probability": 0.9870723783969879
+            }
+          ]
+        },
+        {
+          "start": 171.02,
+          "end": 172.42,
+          "text": " 백종백슨!",
+          "words": [
+            {
+              "start": 171.02,
+              "end": 172.42,
+              "word": " 백종백슨!",
+              "probability": 0.9716015160083771
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "start": 186.0,
+      "end": 202.0,
+      "segments": []
+    }
+  ]
+}

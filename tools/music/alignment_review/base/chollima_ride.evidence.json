@@ -1,0 +1,560 @@
+{
+  "id": "chollima_ride",
+  "model": "base",
+  "sourceSha256": "4ad339bb8f9593dfc39a919be79b2bd7799bde74e030c7b1f945d7265ebde6ea",
+  "asrSha256": "eb781e6bec40decc3b75501a1e1d4c0ba3ddf0efb5a34a36620b483c0d9a7715",
+  "purpose": "automatic_evidence_not_timed_lyrics",
+  "humanListeningVerified": false,
+  "lines": [
+    {
+      "line": 1,
+      "source": "천리마가 달린다",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 13.78,
+      "evidenceEnd": 15.78,
+      "recognized": " 젤리마가 달린다"
+    },
+    {
+      "line": 2,
+      "source": "신시대를 달린다",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 16.66,
+      "evidenceEnd": 19.12,
+      "recognized": " 신시대를 달린다"
+    },
+    {
+      "line": 3,
+      "source": "주체의 길 따라",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 19.98,
+      "evidenceEnd": 21.56,
+      "recognized": " 주체에 길 따라"
+    },
+    {
+      "line": 4,
+      "source": "우리는 앞으로!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 21.56,
+      "evidenceEnd": 23.12,
+      "recognized": " 우리는 앞으로"
+    },
+    {
+      "line": 5,
+      "source": "백두산 정기 받아",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 26.240000000000002,
+      "evidenceEnd": 28.2,
+      "recognized": " 백수산정기 받아"
+    },
+    {
+      "line": 6,
+      "source": "대동강 물 따라",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 28.2,
+      "evidenceEnd": 31.22,
+      "recognized": " 세동강물 따라"
+    },
+    {
+      "line": 7,
+      "source": "일심단결의 기치",
+      "sourceRecall": 0.143,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 33.6,
+      "evidenceEnd": 34.16,
+      "recognized": " 열얼기"
+    },
+    {
+      "line": 8,
+      "source": "높이 들고 앞으로!",
+      "sourceRecall": 0.571,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 34.68,
+      "evidenceEnd": 35.98,
+      "recognized": " 비들도 앞으로"
+    },
+    {
+      "line": 9,
+      "source": "모래가 에너지로",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 38.220000000000006,
+      "evidenceEnd": 41.02,
+      "recognized": " 모래가 에너지로"
+    },
+    {
+      "line": 10,
+      "source": "비행차가 하늘로",
+      "sourceRecall": 0.714,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 41.02,
+      "evidenceEnd": 44.08,
+      "recognized": " 비행 차가하도록"
+    },
+    {
+      "line": 11,
+      "source": "수령님 은덕으로",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 44.08,
+      "evidenceEnd": 47.28,
+      "recognized": " 수령님 흔덕으로"
+    },
+    {
+      "line": 12,
+      "source": "우리는 앞으로!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 47.28,
+      "evidenceEnd": 48.72,
+      "recognized": " 우리는 앞으로"
+    },
+    {
+      "line": 13,
+      "source": "아—— 천리마!",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 51.300000000000004,
+      "evidenceEnd": 55.54,
+      "recognized": " 아, 설리마,"
+    },
+    {
+      "line": 14,
+      "source": "아—— 신시대!",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 57.26,
+      "evidenceEnd": 58.7,
+      "recognized": " 하신 시대"
+    },
+    {
+      "line": 15,
+      "source": "위대한 령도자",
+      "sourceRecall": 0.5,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 60.56,
+      "evidenceEnd": 63.28,
+      "recognized": " 미대 한낮 도장"
+    },
+    {
+      "line": 16,
+      "source": "가르침 따라",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 63.28,
+      "evidenceEnd": 64.96,
+      "recognized": " 가르침 따라"
+    },
+    {
+      "line": 17,
+      "source": "천리마 신시대에",
+      "sourceRecall": 0.571,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 68.55999999999999,
+      "evidenceEnd": 71.36,
+      "recognized": " 솔리마 식시대"
+    },
+    {
+      "line": 18,
+      "source": "달린다!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 71.36,
+      "evidenceEnd": 75.68,
+      "recognized": " 달린다"
+    },
+    {
+      "line": 19,
+      "source": "모래가 에너지로",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 79.75999999999999,
+      "evidenceEnd": 82.56,
+      "recognized": " 모래가 에너지로"
+    },
+    {
+      "line": 20,
+      "source": "비행차가 하늘로",
+      "sourceRecall": 0.571,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 82.56,
+      "evidenceEnd": 85.88,
+      "recognized": " 이행차가 안으로"
+    },
+    {
+      "line": 21,
+      "source": "수령님 은덕으로",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 85.88,
+      "evidenceEnd": 88.88,
+      "recognized": " 수령님은 덕으로"
+    },
+    {
+      "line": 22,
+      "source": "기적을 창조한다!",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 88.88,
+      "evidenceEnd": 90.48,
+      "recognized": " 희적을 창조한다"
+    },
+    {
+      "line": 23,
+      "source": "강산이 변하고",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 93.03999999999999,
+      "evidenceEnd": 95.7,
+      "recognized": " 감산이 변하고"
+    },
+    {
+      "line": 24,
+      "source": "세월이 흘러도",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 95.7,
+      "evidenceEnd": 99.54,
+      "recognized": " 세월이 흘러보고"
+    },
+    {
+      "line": 25,
+      "source": "붉은 기 결코",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 99.54,
+      "evidenceEnd": 101.36,
+      "recognized": " 붉은기 결코"
+    },
+    {
+      "line": 26,
+      "source": "내려놓지 않는다!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 101.36,
+      "evidenceEnd": 104.1,
+      "recognized": " 내려놓지 않는다"
+    },
+    {
+      "line": 27,
+      "source": "모래가 에너지로",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 105.48,
+      "evidenceEnd": 108.2,
+      "recognized": " 모레가 에너지로"
+    },
+    {
+      "line": 28,
+      "source": "비행차가 하늘로",
+      "sourceRecall": 0.857,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 108.2,
+      "evidenceEnd": 111.9,
+      "recognized": " 이행차가 하늘로"
+    },
+    {
+      "line": 29,
+      "source": "수령님 은덕으로",
+      "sourceRecall": 0.714,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 111.9,
+      "evidenceEnd": 114.46,
+      "recognized": " 수렴님 흔덕으로"
+    },
+    {
+      "line": 30,
+      "source": "우리는 앞으로!",
+      "sourceRecall": 0.667,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 114.46,
+      "evidenceEnd": 115.92,
+      "recognized": " 우린 앞으로"
+    },
+    {
+      "line": 31,
+      "source": "아—— 천리마!",
+      "sourceRecall": 0.75,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 118.94,
+      "evidenceEnd": 122.78,
+      "recognized": " 아, 젤리마"
+    },
+    {
+      "line": 32,
+      "source": "아—— 신시대!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 123.98,
+      "evidenceEnd": 125.72,
+      "recognized": " 아, 신시대"
+    },
+    {
+      "line": 33,
+      "source": "위대한 령도자",
+      "sourceRecall": 0.833,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 128.04,
+      "evidenceEnd": 207.28,
+      "recognized": " 위대한 안돔자 가르치 따라 젤리마 신시대, 달린다 절기만, 아천발 위대한 조선, 희력머리 달린다 POTY PICTION VEX 젤리바 아신 시대 위대한 연도자"
+    },
+    {
+      "line": 34,
+      "source": "가르침 따라",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 207.28,
+      "evidenceEnd": 208.8,
+      "recognized": " 가르침 따라"
+    },
+    {
+      "line": 35,
+      "source": "천리마 신시대에",
+      "sourceRecall": 0.143,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall"
+      ],
+      "evidenceStart": 212.28,
+      "evidenceEnd": 213.68,
+      "recognized": " 젤리바"
+    },
+    {
+      "line": 36,
+      "source": "달린다!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 37,
+      "source": "아—— 천리마!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 38,
+      "source": "아—— 신시대!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 213.68,
+      "evidenceEnd": 215.32,
+      "recognized": " 아신 시대"
+    },
+    {
+      "line": 39,
+      "source": "위대한 조선",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 40,
+      "source": "영원히!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 41,
+      "source": "달린다——!",
+      "sourceRecall": 1.0,
+      "needsReview": false,
+      "flags": [],
+      "evidenceStart": 218.23999999999998,
+      "evidenceEnd": 219.64,
+      "recognized": " 달린다"
+    },
+    {
+      "line": 42,
+      "source": "100전 100승!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 43,
+      "source": "백전백승!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 44,
+      "source": "아—— 천리마——",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 45,
+      "source": "아—— 신시대——",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 46,
+      "source": "위대한 령도자",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 47,
+      "source": "가르침 따라",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 48,
+      "source": "천리마 신시대에",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    },
+    {
+      "line": 49,
+      "source": "달린다——!",
+      "sourceRecall": 0.0,
+      "needsReview": true,
+      "flags": [
+        "low_text_recall",
+        "missing_or_compressed_timing"
+      ],
+      "evidenceStart": null,
+      "evidenceEnd": null,
+      "recognized": ""
+    }
+  ]
+}

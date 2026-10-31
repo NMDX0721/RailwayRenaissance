@@ -1,0 +1,33 @@
+{
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "reportSha256": "7518725dfcef455e3bfa3d0bc6e2047e4ae1a5168038727a5941cf15bd22ee6f",
+  "clips": [
+    {
+      "line": 17,
+      "text": "천리마 신시대에",
+      "originalAudioStart": 65.62246917724609,
+      "originalAudioEnd": 73.48246551513672,
+      "file": "chollima_ride.spoken.local.sections-line-17.mp3",
+      "sha256": "421bbe843e36f8bbed411113f1a5d27968f900b71765b76d755786444161662e",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 42,
+      "text": "100전 100승!",
+      "originalAudioStart": 160.88247131347657,
+      "originalAudioEnd": 167.50246215820312,
+      "file": "chollima_ride.spoken.local.sections-line-42.mp3",
+      "sha256": "5ba63be51675d78208ef7465fe2cfe4761b7cd73bf987153fadccd43e46aaff8",
+      "humanListeningVerified": false
+    },
+    {
+      "line": 44,
+      "text": "아—— 천리마——",
+      "originalAudioStart": 187.30246948242188,
+      "originalAudioEnd": 201.36246276855468,
+      "file": "chollima_ride.spoken.local.sections-line-44.mp3",
+      "sha256": "68b2d619eb041292c7f3d96c2039d171ee16e13190c15cb8ce6f813df956bf0d",
+      "humanListeningVerified": false
+    }
+  ]
+}

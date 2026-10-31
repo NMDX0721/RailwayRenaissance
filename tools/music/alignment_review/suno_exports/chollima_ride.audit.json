@@ -1,0 +1,1719 @@
+{
+  "id": "chollima_ride",
+  "songPage": "https://suno.com/song/1faca03b-156a-41c1-8d4f-c7bc8cb2226a",
+  "acquisition": "User-authorized Suno Lyric Downloader visible LRC/SRT buttons; no audio download",
+  "sourceSha256": "0d2cd276106f071f9a96ae2a6d7f0696e00adf1b0314f8a600692407e1ad8f4f",
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "srtSha256": "b5a51aaecf10d225f39950c01117613700e3ce80d41791a1f1e2daecd2d1f8d2",
+  "lrcSha256": "e4b3ccbd9fdc051937b5840b1de2461af78bd4e891505aa2c328c720c4a9a320",
+  "localEvidenceSha256": "1494fff1b7195ddad97795419d163605db2a59604a5ee695db2a30a674cfbb98",
+  "duration": 228.399979,
+  "sourceLineCount": 49,
+  "cleanedCueCount": 49,
+  "sourceSequenceMatches": true,
+  "lrcSrtAgreement": true,
+  "removedDirections": [
+    {
+      "start": 52.18,
+      "end": 52.201,
+      "text": "(full orchestra, triumphant)"
+    },
+    {
+      "start": 119.36099999999999,
+      "end": 119.382,
+      "text": "(full orchestra, triumphant)"
+    },
+    {
+      "start": 142.181,
+      "end": 142.2,
+      "text": "(same, with added brass and percussion)"
+    },
+    {
+      "start": 170.903,
+      "end": 170.924,
+      "text": "(slower, grander, held high notes)"
+    }
+  ],
+  "repeatedStarts": [],
+  "intervalIssues": [
+    {
+      "exportCue": "48",
+      "start": 170.903,
+      "end": 198.909,
+      "text": "아—— 천리마——",
+      "flags": [
+        "long_interval_needs_review"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "line": 1,
+      "text": "천리마가 달린다",
+      "exported": {
+        "exportCue": "1",
+        "start": 13.644,
+        "end": 16.835,
+        "text": "천리마가 달린다"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 13.58246826171875,
+          "end": 15.262469062805176
+        },
+        {
+          "role": "vocals",
+          "start": 13.562468757629395,
+          "end": 15.262469062805176
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.061531738281249915,
+          "end": 1.5725309371948253
+        },
+        {
+          "role": "vocals",
+          "start": 0.08153124237060538,
+          "end": 1.5725309371948253
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "text": "신시대를 달린다",
+      "exported": {
+        "exportCue": "2",
+        "start": 16.835,
+        "end": 20.106,
+        "text": "신시대를 달린다"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 16.802469482421873,
+          "end": 18.482469329833986
+        },
+        {
+          "role": "vocals",
+          "start": 16.7824690246582,
+          "end": 18.482469329833986
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.032530517578127416,
+          "end": 1.6235306701660157
+        },
+        {
+          "role": "vocals",
+          "start": 0.05253097534179929,
+          "end": 1.6235306701660157
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "text": "주체의 길 따라",
+      "exported": {
+        "exportCue": "3",
+        "start": 20.106,
+        "end": 21.94,
+        "text": "주체의 길 따라"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 20.022468795776366,
+          "end": 21.642469177246095
+        },
+        {
+          "role": "vocals",
+          "start": 20.022468795776366,
+          "end": 21.642469177246095
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.08353120422363602,
+          "end": 0.29753082275390597
+        },
+        {
+          "role": "vocals",
+          "start": 0.08353120422363602,
+          "end": 0.29753082275390597
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "text": "우리는 앞으로!",
+      "exported": {
+        "exportCue": "4",
+        "start": 21.94,
+        "end": 26.489,
+        "text": "우리는 앞으로!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 21.962469329833983,
+          "end": 23.22246910095215
+        },
+        {
+          "role": "vocals",
+          "start": 21.962469329833983,
+          "end": 23.22246910095215
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.022469329833981533,
+          "end": 3.2665308990478508
+        },
+        {
+          "role": "vocals",
+          "start": 0.022469329833981533,
+          "end": 3.2665308990478508
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "text": "백두산 정기 받아",
+      "exported": {
+        "exportCue": "5",
+        "start": 26.489,
+        "end": 29.681,
+        "text": "백두산 정기 받아"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 26.44246887207031,
+          "end": 28.002469787597658
+        },
+        {
+          "role": "vocals",
+          "start": 26.42246841430664,
+          "end": 28.002469787597658
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04653112792968983,
+          "end": 1.6785302124023431
+        },
+        {
+          "role": "vocals",
+          "start": 0.0665315856933617,
+          "end": 1.6785302124023431
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "text": "대동강 물 따라",
+      "exported": {
+        "exportCue": "6",
+        "start": 29.681,
+        "end": 32.871,
+        "text": "대동강 물 따라"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 29.662468185424803,
+          "end": 31.24246765136719
+        },
+        {
+          "role": "vocals",
+          "start": 29.60246871948242,
+          "end": 31.24246765136719
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.018531814575197814,
+          "end": 1.6285323486328132
+        },
+        {
+          "role": "vocals",
+          "start": 0.07853128051758063,
+          "end": 1.6285323486328132
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "text": "일심단결의 기치",
+      "exported": {
+        "exportCue": "7",
+        "start": 32.871,
+        "end": 34.468,
+        "text": "일심단결의 기치"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 32.92246841430664,
+          "end": 34.38246704101562
+        },
+        {
+          "role": "vocals",
+          "start": 32.8824674987793,
+          "end": 34.38246704101562
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0514684143066404,
+          "end": 0.08553295898438051
+        },
+        {
+          "role": "vocals",
+          "start": 0.011467498779296648,
+          "end": 0.08553295898438051
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "text": "높이 들고 앞으로!",
+      "exported": {
+        "exportCue": "8",
+        "start": 34.468,
+        "end": 38.186,
+        "text": "높이 들고 앞으로!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 34.48246978759766,
+          "end": 36.002469787597654
+        },
+        {
+          "role": "vocals",
+          "start": 34.48246978759766,
+          "end": 36.002469787597654
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.014469787597654715,
+          "end": 2.1835302124023457
+        },
+        {
+          "role": "vocals",
+          "start": 0.014469787597654715,
+          "end": 2.1835302124023457
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "text": "모래가 에너지로",
+      "exported": {
+        "exportCue": "9",
+        "start": 38.536,
+        "end": 41.728,
+        "text": "모래가 에너지로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 38.48246978759766,
+          "end": 40.82246948242187
+        },
+        {
+          "role": "vocals",
+          "start": 38.48246978759766,
+          "end": 40.82246948242187
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.053530212402343125,
+          "end": 0.9055305175781285
+        },
+        {
+          "role": "vocals",
+          "start": 0.053530212402343125,
+          "end": 0.9055305175781285
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "text": "비행차가 하늘로",
+      "exported": {
+        "exportCue": "10",
+        "start": 41.728,
+        "end": 43.883,
+        "text": "비행차가 하늘로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 41.682466735839846,
+          "end": 44.022470245361326
+        },
+        {
+          "role": "vocals",
+          "start": 41.682466735839846,
+          "end": 44.022470245361326
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.045533264160155795,
+          "end": 0.13947024536132346
+        },
+        {
+          "role": "vocals",
+          "start": 0.045533264160155795,
+          "end": 0.13947024536132346
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "text": "수령님 은덕으로",
+      "exported": {
+        "exportCue": "11",
+        "start": 43.883,
+        "end": 44.92,
+        "text": "수령님 은덕으로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 44.84247039794922,
+          "end": 47.20246673583984
+        },
+        {
+          "role": "vocals",
+          "start": 44.84247039794922,
+          "end": 47.20246673583984
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.9594703979492181,
+          "end": 2.28246673583984
+        },
+        {
+          "role": "vocals",
+          "start": 0.9594703979492181,
+          "end": 2.28246673583984
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "text": "우리는 앞으로!",
+      "exported": {
+        "exportCue": "12",
+        "start": 44.92,
+        "end": 51.831,
+        "text": "우리는 앞으로!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 47.56246780395508,
+          "end": 48.82246948242187
+        },
+        {
+          "role": "vocals",
+          "start": 47.56246780395508,
+          "end": 48.842469940185545
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.6424678039550784,
+          "end": 3.00853051757813
+        },
+        {
+          "role": "vocals",
+          "start": 2.6424678039550784,
+          "end": 2.988530059814458
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "text": "아—— 천리마!",
+      "exported": {
+        "exportCue": "14",
+        "start": 52.18,
+        "end": 55.371,
+        "text": "아—— 천리마!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 52.14246963500977,
+          "end": 55.38246704101562
+        },
+        {
+          "role": "vocals",
+          "start": 52.16247009277344,
+          "end": 55.402467498779295
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0375303649902321,
+          "end": 0.011467041015620794
+        },
+        {
+          "role": "vocals",
+          "start": 0.017529907226560226,
+          "end": 0.03146749877929267
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "text": "아—— 신시대!",
+      "exported": {
+        "exportCue": "15",
+        "start": 55.371,
+        "end": 60.957,
+        "text": "아—— 신시대!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 57.36246704101563,
+          "end": 58.44246841430664
+        },
+        {
+          "role": "vocals",
+          "start": 57.36246704101563,
+          "end": 58.682470092773436
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 1.9914670410156248,
+          "end": 2.514531585693362
+        },
+        {
+          "role": "vocals",
+          "start": 1.9914670410156248,
+          "end": 2.2745299072265652
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "text": "위대한 령도자",
+      "exported": {
+        "exportCue": "16",
+        "start": 60.957,
+        "end": 63.67,
+        "text": "위대한 령도자"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 60.8824674987793,
+          "end": 63.22247100830078
+        },
+        {
+          "role": "vocals",
+          "start": 60.86246704101563,
+          "end": 63.22247100830078
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.07453250122070187,
+          "end": 0.44752899169922244
+        },
+        {
+          "role": "vocals",
+          "start": 0.09453295898437375,
+          "end": 0.44752899169922244
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "text": "가르침 따라",
+      "exported": {
+        "exportCue": "17",
+        "start": 63.67,
+        "end": 67.739,
+        "text": "가르침 따라"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 63.66247009277344,
+          "end": 64.86247039794922
+        },
+        {
+          "role": "vocals",
+          "start": 63.66247009277344,
+          "end": 64.84246612548829
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.007529907226562216,
+          "end": 2.8765296020507805
+        },
+        {
+          "role": "vocals",
+          "start": 0.007529907226562216,
+          "end": 2.896533874511718
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "text": "천리마 신시대에",
+      "exported": {
+        "exportCue": "18",
+        "start": 67.739,
+        "end": 73.722,
+        "text": "천리마 신시대에"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 67.62246917724609,
+          "end": 71.48246551513672
+        },
+        {
+          "role": "vocals",
+          "start": 67.62246917724609,
+          "end": 71.42246795654297
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.11653082275391569,
+          "end": 2.2395344848632703
+        },
+        {
+          "role": "vocals",
+          "start": 0.11653082275391569,
+          "end": 2.2995320434570203
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "text": "달린다!",
+      "exported": {
+        "exportCue": "19",
+        "start": 73.722,
+        "end": 79.83500000000001,
+        "text": "달린다!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 73.66247009277343,
+          "end": 74.44247222900391
+        },
+        {
+          "role": "vocals",
+          "start": 73.6424658203125,
+          "end": 74.44247222900391
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.05952990722656182,
+          "end": 5.392527770996097
+        },
+        {
+          "role": "vocals",
+          "start": 0.07953417968749932,
+          "end": 5.392527770996097
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "text": "모래가 에너지로",
+      "exported": {
+        "exportCue": "20",
+        "start": 80.186,
+        "end": 83.378,
+        "text": "모래가 에너지로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 80.08246826171874,
+          "end": 82.42246795654297
+        },
+        {
+          "role": "vocals",
+          "start": 80.06247161865234,
+          "end": 82.42246795654297
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.10353173828126216,
+          "end": 0.9555320434570262
+        },
+        {
+          "role": "vocals",
+          "start": 0.12352838134766841,
+          "end": 0.9555320434570262
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "text": "비행차가 하늘로",
+      "exported": {
+        "exportCue": "21",
+        "start": 83.378,
+        "end": 86.489,
+        "text": "비행차가 하늘로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 83.28246520996093,
+          "end": 85.62247253417969
+        },
+        {
+          "role": "vocals",
+          "start": 83.28246520996093,
+          "end": 85.62247253417969
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.09553479003906773,
+          "end": 0.8665274658203117
+        },
+        {
+          "role": "vocals",
+          "start": 0.09553479003906773,
+          "end": 0.8665274658203117
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "text": "수령님 은덕으로",
+      "exported": {
+        "exportCue": "22",
+        "start": 86.489,
+        "end": 89.121,
+        "text": "수령님 은덕으로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 86.44246887207031,
+          "end": 88.80246520996094
+        },
+        {
+          "role": "vocals",
+          "start": 86.44246887207031,
+          "end": 88.80246520996094
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.046531127929696936,
+          "end": 0.3185347900390525
+        },
+        {
+          "role": "vocals",
+          "start": 0.046531127929696936,
+          "end": 0.3185347900390525
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "text": "기적을 창조한다!",
+      "exported": {
+        "exportCue": "23",
+        "start": 89.121,
+        "end": 93.67,
+        "text": "기적을 창조한다!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 89.08246826171874,
+          "end": 90.38246704101563
+        },
+        {
+          "role": "vocals",
+          "start": 89.06247161865234,
+          "end": 90.40247131347657
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.03853173828125023,
+          "end": 3.2875329589843716
+        },
+        {
+          "role": "vocals",
+          "start": 0.05852838134765648,
+          "end": 3.267528686523434
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "text": "강산이 변하고",
+      "exported": {
+        "exportCue": "24",
+        "start": 93.67,
+        "end": 96.86099999999999,
+        "text": "강산이 변하고"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 93.62246917724609,
+          "end": 95.24246765136719
+        },
+        {
+          "role": "vocals",
+          "start": 93.62246917724609,
+          "end": 95.24246765136719
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04753082275391307,
+          "end": 1.6185323486327974
+        },
+        {
+          "role": "vocals",
+          "start": 0.04753082275391307,
+          "end": 1.6185323486327974
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "text": "세월이 흘러도",
+      "exported": {
+        "exportCue": "25",
+        "start": 96.86099999999999,
+        "end": 100.05199999999999,
+        "text": "세월이 흘러도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 96.86246704101562,
+          "end": 98.42246795654297
+        },
+        {
+          "role": "vocals",
+          "start": 96.78246520996093,
+          "end": 98.44247222900391
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0014670410156298885,
+          "end": 1.6295320434570186
+        },
+        {
+          "role": "vocals",
+          "start": 0.07853479003905761,
+          "end": 1.6095277709960811
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "text": "붉은 기 결코",
+      "exported": {
+        "exportCue": "26",
+        "start": 100.05199999999999,
+        "end": 101.489,
+        "text": "붉은 기 결코"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 100.06247161865234,
+          "end": 101.30246520996094
+        },
+        {
+          "role": "vocals",
+          "start": 100.06247161865234,
+          "end": 101.30246520996094
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.010471618652346137,
+          "end": 0.1865347900390617
+        },
+        {
+          "role": "vocals",
+          "start": 0.010471618652346137,
+          "end": 0.1865347900390617
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "text": "내려놓지 않는다!",
+      "exported": {
+        "exportCue": "27",
+        "start": 101.489,
+        "end": 102.814,
+        "text": "내려놓지 않는다!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 101.48246978759765,
+          "end": 103.24246765136719
+        },
+        {
+          "role": "vocals",
+          "start": 101.48246978759765,
+          "end": 103.24246765136719
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.006530212402353186,
+          "end": 0.42846765136719966
+        },
+        {
+          "role": "vocals",
+          "start": 0.006530212402353186,
+          "end": 0.42846765136719966
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "text": "모래가 에너지로",
+      "exported": {
+        "exportCue": "28",
+        "start": 103.16499999999999,
+        "end": 108.989,
+        "text": "모래가 에너지로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 105.68246673583984,
+          "end": 108.00246978759766
+        },
+        {
+          "role": "vocals",
+          "start": 105.66247009277343,
+          "end": 108.00246978759766
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.5174667358398466,
+          "end": 0.986530212402343
+        },
+        {
+          "role": "vocals",
+          "start": 2.4974700927734403,
+          "end": 0.986530212402343
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "text": "비행차가 하늘로",
+      "exported": {
+        "exportCue": "29",
+        "start": 108.989,
+        "end": 112.1,
+        "text": "비행차가 하늘로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 108.86246704101562,
+          "end": 111.22247100830079
+        },
+        {
+          "role": "vocals",
+          "start": 108.86246704101562,
+          "end": 111.22247100830079
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.12653295898438444,
+          "end": 0.877528991699208
+        },
+        {
+          "role": "vocals",
+          "start": 0.12653295898438444,
+          "end": 0.877528991699208
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "text": "수령님 은덕으로",
+      "exported": {
+        "exportCue": "30",
+        "start": 112.1,
+        "end": 114.733,
+        "text": "수령님 은덕으로"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 112.0424673461914,
+          "end": 114.40247131347657
+        },
+        {
+          "role": "vocals",
+          "start": 112.0424673461914,
+          "end": 114.40247131347657
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.05753265380859318,
+          "end": 0.3305286865234365
+        },
+        {
+          "role": "vocals",
+          "start": 0.05753265380859318,
+          "end": 0.3305286865234365
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "text": "우리는 앞으로!",
+      "exported": {
+        "exportCue": "31",
+        "start": 114.733,
+        "end": 119.012,
+        "text": "우리는 앞으로!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 114.78246520996093,
+          "end": 116.02246643066407
+        },
+        {
+          "role": "vocals",
+          "start": 114.78246520996093,
+          "end": 116.00246978759766
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04946520996092829,
+          "end": 2.989533569335933
+        },
+        {
+          "role": "vocals",
+          "start": 0.04946520996092829,
+          "end": 3.009530212402339
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "text": "아—— 천리마!",
+      "exported": {
+        "exportCue": "33",
+        "start": 119.36099999999999,
+        "end": 124.548,
+        "text": "아—— 천리마!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 119.36246704101562,
+          "end": 122.58247161865235
+        },
+        {
+          "role": "vocals",
+          "start": 119.36246704101562,
+          "end": 122.58247161865235
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0014670410156298885,
+          "end": 1.965528381347653
+        },
+        {
+          "role": "vocals",
+          "start": 0.0014670410156298885,
+          "end": 1.965528381347653
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "text": "아—— 신시대!",
+      "exported": {
+        "exportCue": "34",
+        "start": 124.548,
+        "end": 128.058,
+        "text": "아—— 신시대!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 124.56247161865234,
+          "end": 125.62247253417969
+        },
+        {
+          "role": "vocals",
+          "start": 124.56247161865234,
+          "end": 125.62247253417969
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.014471618652336815,
+          "end": 2.4355274658203
+        },
+        {
+          "role": "vocals",
+          "start": 0.014471618652336815,
+          "end": 2.4355274658203
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "text": "위대한 령도자",
+      "exported": {
+        "exportCue": "35",
+        "start": 128.058,
+        "end": 130.85,
+        "text": "위대한 령도자"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 128.1024725341797,
+          "end": 130.40247131347655
+        },
+        {
+          "role": "vocals",
+          "start": 128.04247497558595,
+          "end": 130.40247131347655
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04447253417970387,
+          "end": 0.4475286865234409
+        },
+        {
+          "role": "vocals",
+          "start": 0.015525024414046129,
+          "end": 0.4475286865234409
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "text": "가르침 따라",
+      "exported": {
+        "exportCue": "36",
+        "start": 130.85,
+        "end": 131.967,
+        "text": "가르침 따라"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 130.8424627685547,
+          "end": 132.02246643066405
+        },
+        {
+          "role": "vocals",
+          "start": 130.86246704101563,
+          "end": 132.02246643066405
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.007537231445297721,
+          "end": 0.055466430664040445
+        },
+        {
+          "role": "vocals",
+          "start": 0.01246704101563978,
+          "end": 0.055466430664040445
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "text": "천리마 신시대에",
+      "exported": {
+        "exportCue": "37",
+        "start": 131.967,
+        "end": 140.984,
+        "text": "천리마 신시대에"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 134.78246520996095,
+          "end": 138.9624688720703
+        },
+        {
+          "role": "vocals",
+          "start": 134.7624609375,
+          "end": 138.68247009277343
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.8154652099609336,
+          "end": 2.0215311279297055
+        },
+        {
+          "role": "vocals",
+          "start": 2.795460937499996,
+          "end": 2.3015299072265805
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "text": "달린다!",
+      "exported": {
+        "exportCue": "38",
+        "start": 140.984,
+        "end": 141.82999999999998,
+        "text": "달린다!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 140.86246704101563,
+          "end": 141.62247253417968
+        },
+        {
+          "role": "vocals",
+          "start": 140.8424627685547,
+          "end": 141.62247253417968
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.12153295898437477,
+          "end": 0.20752746582030568
+        },
+        {
+          "role": "vocals",
+          "start": 0.14153723144531227,
+          "end": 0.20752746582030568
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "text": "아—— 천리마!",
+      "exported": {
+        "exportCue": "40",
+        "start": 142.181,
+        "end": 146.96699999999998,
+        "text": "아—— 천리마!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 143.94246887207032,
+          "end": 144.94246459960937
+        },
+        {
+          "role": "vocals",
+          "start": 143.98246215820313,
+          "end": 144.9624688720703
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 1.76146887207031,
+          "end": 2.0245354003906186
+        },
+        {
+          "role": "vocals",
+          "start": 1.8014621582031225,
+          "end": 2.004531127929681
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "text": "아—— 신시대!",
+      "exported": {
+        "exportCue": "41",
+        "start": 146.96699999999998,
+        "end": 150.558,
+        "text": "아—— 신시대!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 146.94246887207032,
+          "end": 148.22246337890624
+        },
+        {
+          "role": "vocals",
+          "start": 146.94246887207032,
+          "end": 148.24246765136718
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.024531127929662944,
+          "end": 2.335536621093752
+        },
+        {
+          "role": "vocals",
+          "start": 0.024531127929662944,
+          "end": 2.3155323486328143
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "text": "위대한 조선",
+      "exported": {
+        "exportCue": "42",
+        "start": 150.558,
+        "end": 154.06799999999998,
+        "text": "위대한 조선"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 150.48246215820313,
+          "end": 153.042470703125
+        },
+        {
+          "role": "vocals",
+          "start": 150.54247497558595,
+          "end": 153.042470703125
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.07553784179685863,
+          "end": 1.0255292968749927
+        },
+        {
+          "role": "vocals",
+          "start": 0.015525024414046129,
+          "end": 1.0255292968749927
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "text": "영원히!",
+      "exported": {
+        "exportCue": "43",
+        "start": 154.06799999999998,
+        "end": 156.941,
+        "text": "영원히!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 153.54247497558595,
+          "end": 154.60246826171874
+        },
+        {
+          "role": "vocals",
+          "start": 153.54247497558595,
+          "end": 154.40247131347655
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.525525024414037,
+          "end": 2.3385317382812616
+        },
+        {
+          "role": "vocals",
+          "start": 0.525525024414037,
+          "end": 2.538528686523449
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "text": "달린다——!",
+      "exported": {
+        "exportCue": "44",
+        "start": 156.941,
+        "end": 162.496,
+        "text": "달린다——!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 156.88247131347657,
+          "end": 157.60246826171874
+        },
+        {
+          "role": "vocals",
+          "start": 156.86246704101563,
+          "end": 157.60246826171874
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.058528686523430906,
+          "end": 4.893531738281268
+        },
+        {
+          "role": "vocals",
+          "start": 0.0785329589843684,
+          "end": 4.893531738281268
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "text": "100전 100승!",
+      "exported": {
+        "exportCue": "45",
+        "start": 162.846,
+        "end": 164.441,
+        "text": "100전 100승!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 162.88247131347657,
+          "end": 163.88246704101562
+        },
+        {
+          "role": "vocals",
+          "start": 163.30246948242188,
+          "end": 165.50246215820312
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.03647131347656796,
+          "end": 0.5585329589843866
+        },
+        {
+          "role": "vocals",
+          "start": 0.45646948242188046,
+          "end": 1.0614621582031134
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "text": "백전백승!",
+      "exported": {
+        "exportCue": "46",
+        "start": 164.441,
+        "end": 170.554,
+        "text": "백전백승!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 170.86246704101563,
+          "end": 172.52246643066405
+        },
+        {
+          "role": "vocals",
+          "start": 170.8424627685547,
+          "end": 172.56247497558593
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 6.421467041015632,
+          "end": 1.9684664306640514
+        },
+        {
+          "role": "vocals",
+          "start": 6.401462768554694,
+          "end": 2.0084749755859264
+        }
+      ]
+    },
+    {
+      "line": 44,
+      "text": "아—— 천리마——",
+      "exported": {
+        "exportCue": "48",
+        "start": 170.903,
+        "end": 198.909,
+        "text": "아—— 천리마——"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 191.522470703125,
+          "end": 199.36246276855468
+        },
+        {
+          "role": "vocals",
+          "start": 189.30246948242188,
+          "end": 199.36246276855468
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 20.619470703125018,
+          "end": 0.4534627685546866
+        },
+        {
+          "role": "vocals",
+          "start": 18.399469482421893,
+          "end": 0.4534627685546866
+        }
+      ]
+    },
+    {
+      "line": 45,
+      "text": "아—— 신시대——",
+      "exported": {
+        "exportCue": "49",
+        "start": 198.909,
+        "end": 204.973,
+        "text": "아—— 신시대——"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 201.32247375488282,
+          "end": 202.40247131347655
+        },
+        {
+          "role": "vocals",
+          "start": 201.32247375488282,
+          "end": 202.40247131347655
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.41347375488283,
+          "end": 2.57052868652346
+        },
+        {
+          "role": "vocals",
+          "start": 2.41347375488283,
+          "end": 2.57052868652346
+        }
+      ]
+    },
+    {
+      "line": 46,
+      "text": "위대한 령도자",
+      "exported": {
+        "exportCue": "50",
+        "start": 204.973,
+        "end": 207.686,
+        "text": "위대한 령도자"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 204.86246704101563,
+          "end": 207.18247009277343
+        },
+        {
+          "role": "vocals",
+          "start": 204.86246704101563,
+          "end": 207.18247009277343
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.11053295898437909,
+          "end": 0.5035299072265786
+        },
+        {
+          "role": "vocals",
+          "start": 0.11053295898437909,
+          "end": 0.5035299072265786
+        }
+      ]
+    },
+    {
+      "line": 47,
+      "text": "가르침 따라",
+      "exported": {
+        "exportCue": "51",
+        "start": 207.686,
+        "end": 211.675,
+        "text": "가르침 따라"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 207.66247009277345,
+          "end": 208.80246520996093
+        },
+        {
+          "role": "vocals",
+          "start": 207.6424658203125,
+          "end": 208.82246948242187
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.023529907226560454,
+          "end": 2.872534790039083
+        },
+        {
+          "role": "vocals",
+          "start": 0.043534179687497954,
+          "end": 2.8525305175781455
+        }
+      ]
+    },
+    {
+      "line": 48,
+      "text": "천리마 신시대에",
+      "exported": {
+        "exportCue": "52",
+        "start": 211.675,
+        "end": 217.739,
+        "text": "천리마 신시대에"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 211.6424658203125,
+          "end": 215.40247131347655
+        },
+        {
+          "role": "vocals",
+          "start": 211.62246154785157,
+          "end": 215.40247131347655
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.032534179687502274,
+          "end": 2.336528686523451
+        },
+        {
+          "role": "vocals",
+          "start": 0.052538452148439774,
+          "end": 2.336528686523451
+        }
+      ]
+    },
+    {
+      "line": 49,
+      "text": "달린다——!",
+      "exported": {
+        "exportCue": "53",
+        "start": 217.739,
+        "end": 217.948,
+        "text": "달린다——!"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 217.66247009277345,
+          "end": 218.4224755859375
+        },
+        {
+          "role": "vocals",
+          "start": 217.6424658203125,
+          "end": 218.40247131347655
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.07652990722655773,
+          "end": 0.4744755859374834
+        },
+        {
+          "role": "vocals",
+          "start": 0.09653417968749523,
+          "end": 0.4544713134765459
+        }
+      ]
+    }
+  ],
+  "humanListeningVerified": false,
+  "status": "exported_timing_needs_validation"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "chollima_ride",
+  "line": 17,
+  "status": "unresolved_cross_method_disagreement",
+  "phoneticWord": {
+    "line": 16,
+    "text": "천리마",
+    "romanized": "ceolrima",
+    "pronunciationInput": "철리마",
+    "kind": "lyric",
+    "start": 67.62246917724609,
+    "end": 69.58247161865235,
+    "score": 0.4412265280880092,
+    "cohesionRepair": null,
+    "pronunciationVariant": null,
+    "asrConstraint": null,
+    "maxInternalGap": 1.2999954223632812
+  },
+  "independentASR": [
+    {
+      "start": 69.74,
+      "end": 71.14,
+      "word": " 천리마",
+      "probability": 0.9890177547931671
+    }
+  ],
+  "humanListeningVerified": false
+}

@@ -1,0 +1,12 @@
+{
+  "id": "starlit_rails",
+  "songId": "58153497-be67-48f3-b92a-7d490e2827b4",
+  "source": "Suno visible lyrics paragraph; no private API/state",
+  "sourceSha256": "072f2bed81aecf521398338ea141d2201b3118926cd5bda62715183ac6a3b50a",
+  "sheetSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "visibleLines": 47,
+  "authoredLines": 47,
+  "exactTextAgreement": true,
+  "automaticEvidenceOnly": true,
+  "humanListeningVerified": false
+}

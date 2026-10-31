@@ -1,0 +1,160 @@
+{
+  "id": "starlit_rails",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "audioRole": "original",
+  "waveformSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "timeOffset": 0,
+  "waveformVariant": "",
+  "requestedLanguage": "expected",
+  "device": "cpu",
+  "computeType": "int8",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-medium",
+    "revision": "08e178d48790749d25932bbc082711ddcfdfbc4f"
+  },
+  "humanListeningVerified": false,
+  "status": "independent_window_evidence",
+  "windows": [
+    {
+      "start": 164.0,
+      "end": 194.0,
+      "segments": [
+        {
+          "start": 164.0,
+          "end": 168.0,
+          "text": " 우린 함께야",
+          "words": [
+            {
+              "start": 164.0,
+              "end": 165.26,
+              "word": " 우린",
+              "probability": 0.5128420032560825
+            },
+            {
+              "start": 165.26,
+              "end": 168.0,
+              "word": " 함께야",
+              "probability": 0.9830736219882965
+            }
+          ]
+        },
+        {
+          "start": 168.64,
+          "end": 170.48,
+          "text": " 이 하늘 아래",
+          "words": [
+            {
+              "start": 168.64,
+              "end": 169.22,
+              "word": " 이",
+              "probability": 0.8985921144485474
+            },
+            {
+              "start": 169.22,
+              "end": 169.62,
+              "word": " 하늘",
+              "probability": 0.9968156218528748
+            },
+            {
+              "start": 169.62,
+              "end": 170.48,
+              "word": " 아래",
+              "probability": 0.8055480420589447
+            }
+          ]
+        },
+        {
+          "start": 170.48,
+          "end": 175.0,
+          "text": " 혼자가 아니야",
+          "words": [
+            {
+              "start": 170.48,
+              "end": 171.8,
+              "word": " 혼자가",
+              "probability": 0.897092878818512
+            },
+            {
+              "start": 171.8,
+              "end": 175.0,
+              "word": " 아니야",
+              "probability": 0.9451597929000854
+            }
+          ]
+        },
+        {
+          "start": 185.34,
+          "end": 191.16,
+          "text": " 인간은 이걸 위로라고 부르죠",
+          "words": [
+            {
+              "start": 185.34,
+              "end": 186.74,
+              "word": " 인간은",
+              "probability": 0.7049761563539505
+            },
+            {
+              "start": 186.74,
+              "end": 187.12,
+              "word": " 이걸",
+              "probability": 0.9140750169754028
+            },
+            {
+              "start": 187.12,
+              "end": 188.6,
+              "word": " 위로라고",
+              "probability": 0.9910940726598104
+            },
+            {
+              "start": 188.6,
+              "end": 191.16,
+              "word": " 부르죠",
+              "probability": 0.9922199845314026
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    },
+    {
+      "start": 174.0,
+      "end": 204.0,
+      "segments": [
+        {
+          "start": 185.32,
+          "end": 190.0,
+          "text": " 인간은 이걸 위로라고 부르죠",
+          "words": [
+            {
+              "start": 185.32,
+              "end": 186.72,
+              "word": " 인간은",
+              "probability": 0.6537598742482563
+            },
+            {
+              "start": 186.72,
+              "end": 187.12,
+              "word": " 이걸",
+              "probability": 0.8946660161018372
+            },
+            {
+              "start": 187.12,
+              "end": 188.58,
+              "word": " 위로라고",
+              "probability": 0.9871031840642294
+            },
+            {
+              "start": 188.58,
+              "end": 190.0,
+              "word": " 부르죠",
+              "probability": 0.9925744930903116
+            }
+          ]
+        }
+      ],
+      "detectedLanguage": "ko",
+      "languageProbability": 1
+    }
+  ]
+}

@@ -1,0 +1,1668 @@
+{
+  "id": "starlit_rails",
+  "songPage": "https://suno.com/song/58153497-be67-48f3-b92a-7d490e2827b4",
+  "acquisition": "User-authorized Suno Lyric Downloader visible LRC/SRT buttons; no audio download",
+  "sourceSha256": "a61a72276c5b0ee8697bf7e839cf82822b48e6db5f2496bc46c8067cab4c742b",
+  "audioSha256": "594456eda3c2f2fd7e01683fb07f99f31c4e358e13db1bd50380efc8014c5c17",
+  "srtSha256": "200056697f0d6e307ad1597c164ade8e89b19fb568583d1b7437e3b047a27503",
+  "lrcSha256": "eb6aa055be4d340d4c0dc415d3849206773c1a429a7376b3cda615acc45488b1",
+  "localEvidenceSha256": "d2d2ed2a306a9ecbd43942bdf3731aa812fe301cc70b77bae4688dec2e77c78c",
+  "duration": 253.359979,
+  "sourceLineCount": 47,
+  "cleanedCueCount": 53,
+  "sourceSequenceMatches": false,
+  "lrcSrtAgreement": true,
+  "removedDirections": [
+    {
+      "start": 18.67,
+      "end": 18.69,
+      "text": "(quiet, tense)"
+    },
+    {
+      "start": 54.255,
+      "end": 54.274,
+      "text": "(hushed, then rising)"
+    },
+    {
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "(slower, more powerful, held notes)"
+    }
+  ],
+  "repeatedStarts": [
+    {
+      "start": 176.568,
+      "cues": [
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "45"
+      ]
+    }
+  ],
+  "intervalIssues": [
+    {
+      "exportCue": "39",
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "그 말도 중의적인 거야?",
+      "flags": [
+        "very_short_interval_needs_review"
+      ]
+    },
+    {
+      "exportCue": "40",
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous"
+      ]
+    },
+    {
+      "exportCue": "41",
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "하지만...",
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous"
+      ]
+    },
+    {
+      "exportCue": "42",
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "팔십구 퍼센트...",
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous"
+      ]
+    },
+    {
+      "exportCue": "43",
+      "start": 176.56799999999998,
+      "end": 176.588,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "flags": [
+        "very_short_interval_needs_review",
+        "overlaps_previous"
+      ]
+    },
+    {
+      "exportCue": "45",
+      "start": 176.56799999999998,
+      "end": 177.765,
+      "text": "밤이 깊어도——",
+      "flags": [
+        "overlaps_previous"
+      ]
+    },
+    {
+      "exportCue": "54",
+      "start": 209.441,
+      "end": 224.686,
+      "text": "끝까지 가는 거야",
+      "flags": [
+        "long_interval_needs_review"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "line": 1,
+      "text": "검문소 불빛이",
+      "exported": {
+        "exportCue": "2",
+        "start": 18.67,
+        "end": 22.978,
+        "text": "검문소 불빛이"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 18.622469177246092,
+          "end": 20.24246765136719
+        },
+        {
+          "role": "vocals",
+          "start": 18.622469177246092,
+          "end": 20.22246910095215
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04753082275390952,
+          "end": 2.7355323486328125
+        },
+        {
+          "role": "vocals",
+          "start": 0.04753082275390952,
+          "end": 2.7555308990478515
+        }
+      ]
+    },
+    {
+      "line": 2,
+      "text": "어둠을 가르고",
+      "exported": {
+        "exportCue": "3",
+        "start": 22.978,
+        "end": 29.44,
+        "text": "어둠을 가르고"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426
+        },
+        {
+          "role": "vocals",
+          "start": 23.242468109130858,
+          "end": 26.38246894836426
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.2644681091308563,
+          "end": 3.057531051635742
+        },
+        {
+          "role": "vocals",
+          "start": 0.2644681091308563,
+          "end": 3.057531051635742
+        }
+      ]
+    },
+    {
+      "line": 3,
+      "text": "네 대의 그림자",
+      "exported": {
+        "exportCue": "4",
+        "start": 29.44,
+        "end": 35.904,
+        "text": "네 대의 그림자"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 29.44246887207031,
+          "end": 32.902467498779295
+        },
+        {
+          "role": "vocals",
+          "start": 29.44246887207031,
+          "end": 32.88246704101562
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.002468872070309658,
+          "end": 3.0015325012207086
+        },
+        {
+          "role": "vocals",
+          "start": 0.002468872070309658,
+          "end": 3.0215329589843805
+        }
+      ]
+    },
+    {
+      "line": 4,
+      "text": "우리를 둘러쌌지",
+      "exported": {
+        "exportCue": "5",
+        "start": 35.904,
+        "end": 39.573,
+        "text": "우리를 둘러쌌지"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 35.98246978759766,
+          "end": 39.70246673583984
+        },
+        {
+          "role": "vocals",
+          "start": 35.962469329833986,
+          "end": 39.70246673583984
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.07846978759765477,
+          "end": 0.12946673583984136
+        },
+        {
+          "role": "vocals",
+          "start": 0.0584693298339829,
+          "end": 0.12946673583984136
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "text": "숨을 죽이고",
+      "exported": {
+        "exportCue": "6",
+        "start": 39.573,
+        "end": 44.92,
+        "text": "숨을 죽이고"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 41.90246795654297,
+          "end": 43.402467498779295
+        },
+        {
+          "role": "vocals",
+          "start": 41.92246841430664,
+          "end": 43.402467498779295
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.3294679565429703,
+          "end": 1.5175325012207068
+        },
+        {
+          "role": "vocals",
+          "start": 2.349468414306642,
+          "end": 1.5175325012207068
+        }
+      ]
+    },
+    {
+      "line": 6,
+      "text": "손을 떨며",
+      "exported": {
+        "exportCue": "7",
+        "start": 44.92,
+        "end": 48.511,
+        "text": "손을 떨며"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 44.72246765136719,
+          "end": 46.64246917724609
+        },
+        {
+          "role": "vocals",
+          "start": 44.782469024658205,
+          "end": 46.62246871948242
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.19753234863281222,
+          "end": 1.868530822753911
+        },
+        {
+          "role": "vocals",
+          "start": 0.1375309753417966,
+          "end": 1.888531280517583
+        }
+      ]
+    },
+    {
+      "line": 7,
+      "text": "얼굴엔 아무것도",
+      "exported": {
+        "exportCue": "8",
+        "start": 48.511,
+        "end": 50.904,
+        "text": "얼굴엔 아무것도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 48.462469329833986,
+          "end": 50.62246871948242
+        },
+        {
+          "role": "vocals",
+          "start": 48.462469329833986,
+          "end": 50.60246826171875
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04853067016601642,
+          "end": 0.2815312805175836
+        },
+        {
+          "role": "vocals",
+          "start": 0.04853067016601642,
+          "end": 0.30153173828125546
+        }
+      ]
+    },
+    {
+      "line": 8,
+      "text": "드러내지 않았어",
+      "exported": {
+        "exportCue": "9",
+        "start": 50.904,
+        "end": 53.905,
+        "text": "드러내지 않았어"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 50.8824674987793,
+          "end": 52.64246917724609
+        },
+        {
+          "role": "vocals",
+          "start": 50.8824674987793,
+          "end": 52.662469635009764
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.021532501220704603,
+          "end": 1.2625308227539094
+        },
+        {
+          "role": "vocals",
+          "start": 0.021532501220704603,
+          "end": 1.2425303649902375
+        }
+      ]
+    },
+    {
+      "line": 9,
+      "text": "심박수 백사십칠",
+      "exported": {
+        "exportCue": "11",
+        "start": 54.255,
+        "end": 60.558,
+        "text": "심박수 백사십칠"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 54.48246978759766,
+          "end": 59.60246826171875
+        },
+        {
+          "role": "vocals",
+          "start": 54.48246978759766,
+          "end": 59.28246856689453
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.22746978759765568,
+          "end": 0.9555317382812518
+        },
+        {
+          "role": "vocals",
+          "start": 0.22746978759765568,
+          "end": 1.2755314331054706
+        }
+      ]
+    },
+    {
+      "line": 10,
+      "text": "듣고 있어요",
+      "exported": {
+        "exportCue": "12",
+        "start": 60.558,
+        "end": 63.43,
+        "text": "듣고 있어요"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 60.602468719482424,
+          "end": 62.12246871948242
+        },
+        {
+          "role": "vocals",
+          "start": 60.602468719482424,
+          "end": 62.10246826171875
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.044468719482424035,
+          "end": 1.3075312805175798
+        },
+        {
+          "role": "vocals",
+          "start": 0.044468719482424035,
+          "end": 1.3275317382812517
+        }
+      ]
+    },
+    {
+      "line": 11,
+      "text": "무서워도",
+      "exported": {
+        "exportCue": "13",
+        "start": 63.43,
+        "end": 67.978,
+        "text": "무서워도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 63.42246841430664,
+          "end": 65.26247192382813
+        },
+        {
+          "role": "vocals",
+          "start": 63.42246841430664,
+          "end": 65.24246765136719
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.007531585693357101,
+          "end": 2.7155280761718643
+        },
+        {
+          "role": "vocals",
+          "start": 0.007531585693357101,
+          "end": 2.735532348632802
+        }
+      ]
+    },
+    {
+      "line": 12,
+      "text": "멈추지 않았죠",
+      "exported": {
+        "exportCue": "14",
+        "start": 67.978,
+        "end": 69.064,
+        "text": "멈추지 않았죠"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 67.48246978759765,
+          "end": 69.52246643066407
+        },
+        {
+          "role": "vocals",
+          "start": 67.48246978759765,
+          "end": 69.50246978759766
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.4955302124023433,
+          "end": 0.45846643066407466
+        },
+        {
+          "role": "vocals",
+          "start": 0.4955302124023433,
+          "end": 0.4384697875976684
+        }
+      ]
+    },
+    {
+      "line": 13,
+      "text": "밤이 깊어도",
+      "exported": {
+        "exportCue": "15",
+        "start": 69.41499999999999,
+        "end": 74.281,
+        "text": "밤이 깊어도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 70.68246673583984,
+          "end": 71.82246948242188
+        },
+        {
+          "role": "vocals",
+          "start": 70.68246673583984,
+          "end": 71.94246459960938
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 1.2674667358398466,
+          "end": 2.458530517578126
+        },
+        {
+          "role": "vocals",
+          "start": 1.2674667358398466,
+          "end": 2.338535400390626
+        }
+      ]
+    },
+    {
+      "line": 14,
+      "text": "다시 밝아와",
+      "exported": {
+        "exportCue": "16",
+        "start": 74.281,
+        "end": 77.47200000000001,
+        "text": "다시 밝아와"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 71.82246612548828,
+          "end": 75.20246673583985
+        },
+        {
+          "role": "vocals",
+          "start": 74.00246643066406,
+          "end": 75.18247009277344
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 2.4585338745117298,
+          "end": 2.2695332641601595
+        },
+        {
+          "role": "vocals",
+          "start": 0.2785335693359485,
+          "end": 2.289529907226566
+        }
+      ]
+    },
+    {
+      "line": 15,
+      "text": "저 철길처럼",
+      "exported": {
+        "exportCue": "17",
+        "start": 77.47200000000001,
+        "end": 79.706,
+        "text": "저 철길처럼"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 77.4224722290039,
+          "end": 79.042470703125
+        },
+        {
+          "role": "vocals",
+          "start": 77.4224722290039,
+          "end": 79.042470703125
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.04952777099610728,
+          "end": 0.663529296874998
+        },
+        {
+          "role": "vocals",
+          "start": 0.04952777099610728,
+          "end": 0.663529296874998
+        }
+      ]
+    },
+    {
+      "line": 16,
+      "text": "끝까지 가는 거야",
+      "exported": {
+        "exportCue": "18",
+        "start": 79.706,
+        "end": 83.777,
+        "text": "끝까지 가는 거야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 79.32246612548828,
+          "end": 81.86247039794922
+        },
+        {
+          "role": "vocals",
+          "start": 79.62246917724609,
+          "end": 81.88246704101563
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.38353387451172694,
+          "end": 1.9145296020507772
+        },
+        {
+          "role": "vocals",
+          "start": 0.08353082275391444,
+          "end": 1.894532958984371
+        }
+      ]
+    },
+    {
+      "line": 17,
+      "text": "길이 험해도",
+      "exported": {
+        "exportCue": "19",
+        "start": 83.777,
+        "end": 86.968,
+        "text": "길이 험해도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 83.68246673583984,
+          "end": 84.86247039794922
+        },
+        {
+          "role": "vocals",
+          "start": 83.68246673583984,
+          "end": 84.88246704101563
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.09453326416016239,
+          "end": 2.1055296020507797
+        },
+        {
+          "role": "vocals",
+          "start": 0.09453326416016239,
+          "end": 2.0855329589843734
+        }
+      ]
+    },
+    {
+      "line": 18,
+      "text": "우린 함께야",
+      "exported": {
+        "exportCue": "20",
+        "start": 86.968,
+        "end": 91.037,
+        "text": "우린 함께야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461
+        },
+        {
+          "role": "vocals",
+          "start": 87.0424673461914,
+          "end": 88.1424691772461
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.07446734619139761,
+          "end": 2.8945308227539073
+        },
+        {
+          "role": "vocals",
+          "start": 0.07446734619139761,
+          "end": 2.8945308227539073
+        }
+      ]
+    },
+    {
+      "line": 19,
+      "text": "이 하늘 아래",
+      "exported": {
+        "exportCue": "21",
+        "start": 91.037,
+        "end": 92.632,
+        "text": "이 하늘 아래"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 91.08246826171874,
+          "end": 92.00246978759766
+        },
+        {
+          "role": "vocals",
+          "start": 91.06247161865234,
+          "end": 92.00246978759766
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.045468261718738745,
+          "end": 0.6295302124023436
+        },
+        {
+          "role": "vocals",
+          "start": 0.025471618652332495,
+          "end": 0.6295302124023436
+        }
+      ]
+    },
+    {
+      "line": 20,
+      "text": "혼자가 아니야",
+      "exported": {
+        "exportCue": "22",
+        "start": 92.632,
+        "end": 105.36699999999999,
+        "text": "혼자가 아니야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 92.10247253417968,
+          "end": 94.42246795654297
+        },
+        {
+          "role": "vocals",
+          "start": 92.66247009277343,
+          "end": 94.42246795654297
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.5295274658203226,
+          "end": 10.944532043457016
+        },
+        {
+          "role": "vocals",
+          "start": 0.030470092773427382,
+          "end": 10.944532043457016
+        }
+      ]
+    },
+    {
+      "line": 21,
+      "text": "이십삼 년의 잠",
+      "exported": {
+        "exportCue": "23",
+        "start": 105.718,
+        "end": 109.548,
+        "text": "이십삼 년의 잠"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 100.22246765136718,
+          "end": 108.72247100830079
+        },
+        {
+          "role": "vocals",
+          "start": 105.70247100830078,
+          "end": 108.74246765136719
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 5.495532348632821,
+          "end": 0.8255289916992155
+        },
+        {
+          "role": "vocals",
+          "start": 0.01552899169922739,
+          "end": 0.8055323486328092
+        }
+      ]
+    },
+    {
+      "line": 22,
+      "text": "깨어난 오후",
+      "exported": {
+        "exportCue": "24",
+        "start": 109.548,
+        "end": 113.697,
+        "text": "깨어난 오후"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 108.72246765136718,
+          "end": 110.92246795654297
+        },
+        {
+          "role": "vocals",
+          "start": 108.78246520996093,
+          "end": 110.92246795654297
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.8255323486328194,
+          "end": 2.774532043457029
+        },
+        {
+          "role": "vocals",
+          "start": 0.7655347900390694,
+          "end": 2.774532043457029
+        }
+      ]
+    },
+    {
+      "line": 23,
+      "text": "낯선 목소리",
+      "exported": {
+        "exportCue": "25",
+        "start": 113.697,
+        "end": 120.239,
+        "text": "낯선 목소리"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 113.72246765136718,
+          "end": 117.20246673583985
+        },
+        {
+          "role": "vocals",
+          "start": 113.70247100830078,
+          "end": 117.20246673583985
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.025467651367179656,
+          "end": 3.0365332641601555
+        },
+        {
+          "role": "vocals",
+          "start": 0.005471008300773406,
+          "end": 3.0365332641601555
+        }
+      ]
+    },
+    {
+      "line": 24,
+      "text": "처음 듣는 이야기",
+      "exported": {
+        "exportCue": "26",
+        "start": 120.239,
+        "end": 126.701,
+        "text": "처음 듣는 이야기"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 120.10247253417968,
+          "end": 123.68247009277344
+        },
+        {
+          "role": "vocals",
+          "start": 120.12246917724609,
+          "end": 123.68247009277344
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.13652746582032194,
+          "end": 3.018529907226551
+        },
+        {
+          "role": "vocals",
+          "start": 0.11653082275391569,
+          "end": 3.018529907226551
+        }
+      ]
+    },
+    {
+      "line": 25,
+      "text": "나는 AI지만",
+      "exported": {
+        "exportCue": "27",
+        "start": 126.701,
+        "end": 133.563,
+        "text": "나는 AI지만"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 129.80246948242188,
+          "end": 130.76247192382812
+        },
+        {
+          "role": "vocals",
+          "start": 129.94246887207032,
+          "end": 130.94246459960937
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 3.1014694824218907,
+          "end": 2.8005280761718723
+        },
+        {
+          "role": "vocals",
+          "start": 3.241468872070328,
+          "end": 2.6205354003906223
+        }
+      ]
+    },
+    {
+      "line": 26,
+      "text": "알고 있어요",
+      "exported": {
+        "exportCue": "28",
+        "start": 133.563,
+        "end": 138.909,
+        "text": "알고 있어요"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 132.88247131347657,
+          "end": 137.1624658203125
+        },
+        {
+          "role": "vocals",
+          "start": 132.88247131347657,
+          "end": 137.18247009277343
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.6805286865234166,
+          "end": 1.746534179687501
+        },
+        {
+          "role": "vocals",
+          "start": 0.6805286865234166,
+          "end": 1.7265299072265634
+        }
+      ]
+    },
+    {
+      "line": 27,
+      "text": "위로라는 게",
+      "exported": {
+        "exportCue": "29",
+        "start": 138.909,
+        "end": 142.181,
+        "text": "위로라는 게"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562
+        },
+        {
+          "role": "vocals",
+          "start": 138.48246215820313,
+          "end": 139.88246704101562
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.4265378417968577,
+          "end": 2.2985329589843957
+        },
+        {
+          "role": "vocals",
+          "start": 0.4265378417968577,
+          "end": 2.2985329589843957
+        }
+      ]
+    },
+    {
+      "line": 28,
+      "text": "뭔지 말이죠",
+      "exported": {
+        "exportCue": "30",
+        "start": 142.181,
+        "end": 148.294,
+        "text": "뭔지 말이죠"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093
+        },
+        {
+          "role": "vocals",
+          "start": 142.08246826171876,
+          "end": 143.80246520996093
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0985317382812525,
+          "end": 4.491534790039083
+        },
+        {
+          "role": "vocals",
+          "start": 0.0985317382812525,
+          "end": 4.491534790039083
+        }
+      ]
+    },
+    {
+      "line": 29,
+      "text": "밤이 깊어도",
+      "exported": {
+        "exportCue": "31",
+        "start": 148.644,
+        "end": 152.074,
+        "text": "밤이 깊어도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 148.56246398925782,
+          "end": 149.7824609375
+        },
+        {
+          "role": "vocals",
+          "start": 148.56246398925782,
+          "end": 149.7824609375
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.08153601074218386,
+          "end": 2.2915390625000214
+        },
+        {
+          "role": "vocals",
+          "start": 0.08153601074218386,
+          "end": 2.2915390625000214
+        }
+      ]
+    },
+    {
+      "line": 30,
+      "text": "다시 밝아와",
+      "exported": {
+        "exportCue": "32",
+        "start": 152.074,
+        "end": 155.265,
+        "text": "다시 밝아와"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 151.82247375488282,
+          "end": 153.0824639892578
+        },
+        {
+          "role": "vocals",
+          "start": 151.8424627685547,
+          "end": 153.06247497558593
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.2515262451171907,
+          "end": 2.182536010742183
+        },
+        {
+          "role": "vocals",
+          "start": 0.23153723144531568,
+          "end": 2.202525024414058
+        }
+      ]
+    },
+    {
+      "line": 31,
+      "text": "저 철길처럼",
+      "exported": {
+        "exportCue": "33",
+        "start": 155.265,
+        "end": 157.5,
+        "text": "저 철길처럼"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 155.2624609375,
+          "end": 157.1624658203125
+        },
+        {
+          "role": "vocals",
+          "start": 155.2624609375,
+          "end": 157.14246154785155
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0025390624999772626,
+          "end": 0.3375341796875091
+        },
+        {
+          "role": "vocals",
+          "start": 0.0025390624999772626,
+          "end": 0.3575384521484466
+        }
+      ]
+    },
+    {
+      "line": 32,
+      "text": "끝까지 가는 거야",
+      "exported": {
+        "exportCue": "34",
+        "start": 157.5,
+        "end": 159.653,
+        "text": "끝까지 가는 거야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 157.20246337890626,
+          "end": 159.74246765136718
+        },
+        {
+          "role": "vocals",
+          "start": 157.16247009277345,
+          "end": 159.74246765136718
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.2975366210937409,
+          "end": 0.08946765136718682
+        },
+        {
+          "role": "vocals",
+          "start": 0.3375299072265534,
+          "end": 0.08946765136718682
+        }
+      ]
+    },
+    {
+      "line": 33,
+      "text": "길이 험해도",
+      "exported": {
+        "exportCue": "35",
+        "start": 159.653,
+        "end": 164.91899999999998,
+        "text": "길이 험해도"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 161.522470703125,
+          "end": 162.72246337890624
+        },
+        {
+          "role": "vocals",
+          "start": 161.522470703125,
+          "end": 162.72246337890624
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 1.8694707031250175,
+          "end": 2.196536621093742
+        },
+        {
+          "role": "vocals",
+          "start": 1.8694707031250175,
+          "end": 2.196536621093742
+        }
+      ]
+    },
+    {
+      "line": 34,
+      "text": "우린 함께야",
+      "exported": {
+        "exportCue": "36",
+        "start": 164.91899999999998,
+        "end": 168.909,
+        "text": "우린 함께야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 164.88247131347657,
+          "end": 166.02246643066405
+        },
+        {
+          "role": "vocals",
+          "start": 164.88247131347657,
+          "end": 165.98247314453124
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.036528686523411125,
+          "end": 2.8865335693359384
+        },
+        {
+          "role": "vocals",
+          "start": 0.036528686523411125,
+          "end": 2.926526855468751
+        }
+      ]
+    },
+    {
+      "line": 35,
+      "text": "이 하늘 아래",
+      "exported": {
+        "exportCue": "37",
+        "start": 168.909,
+        "end": 170.504,
+        "text": "이 하늘 아래"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 168.92246459960938,
+          "end": 169.80246520996093
+        },
+        {
+          "role": "vocals",
+          "start": 168.9024755859375,
+          "end": 169.82246948242187
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.01346459960939228,
+          "end": 0.7015347900390623
+        },
+        {
+          "role": "vocals",
+          "start": 0.00652441406248272,
+          "end": 0.6815305175781248
+        }
+      ]
+    },
+    {
+      "line": 36,
+      "text": "혼자가 아니야",
+      "exported": {
+        "exportCue": "38",
+        "start": 170.504,
+        "end": 176.21800000000002,
+        "text": "혼자가 아니야"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 170.48246215820313,
+          "end": 172.2824609375
+        },
+        {
+          "role": "vocals",
+          "start": 170.48246215820313,
+          "end": 172.2824609375
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.021537841796856583,
+          "end": 3.935539062500027
+        },
+        {
+          "role": "vocals",
+          "start": 0.021537841796856583,
+          "end": 3.935539062500027
+        }
+      ]
+    },
+    {
+      "line": 37,
+      "text": "그 말도 중의적인 거야?",
+      "exported": {
+        "exportCue": "39",
+        "start": 176.56799999999998,
+        "end": 176.588,
+        "text": "그 말도 중의적인 거야?"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718
+        },
+        {
+          "role": "vocals",
+          "start": 176.04247497558595,
+          "end": 177.24246765136718
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.525525024414037,
+          "end": 0.6544676513671845
+        },
+        {
+          "role": "vocals",
+          "start": 0.525525024414037,
+          "end": 0.6544676513671845
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "text": "저는 AI예요. 중의적 표현은 안 써요.",
+      "exported": {
+        "exportCue": "40",
+        "start": 176.56799999999998,
+        "end": 176.588,
+        "text": "저는 AI예요. 중의적 표현은 안 써요."
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 177.7224676513672,
+          "end": 180.48247314453124
+        },
+        {
+          "role": "vocals",
+          "start": 177.74247192382813,
+          "end": 180.50246215820312
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 1.154467651367213,
+          "end": 3.894473144531247
+        },
+        {
+          "role": "vocals",
+          "start": 1.1744719238281505,
+          "end": 3.914462158203122
+        }
+      ]
+    },
+    {
+      "line": 39,
+      "text": "하지만...",
+      "exported": {
+        "exportCue": "41",
+        "start": 176.56799999999998,
+        "end": 176.588,
+        "text": "하지만..."
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124
+        },
+        {
+          "role": "vocals",
+          "start": 181.00246643066407,
+          "end": 181.48247314453124
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 4.434466430664088,
+          "end": 4.894473144531247
+        },
+        {
+          "role": "vocals",
+          "start": 4.434466430664088,
+          "end": 4.894473144531247
+        }
+      ]
+    },
+    {
+      "line": 40,
+      "text": "팔십구 퍼센트...",
+      "exported": {
+        "exportCue": "42",
+        "start": 176.56799999999998,
+        "end": 176.588,
+        "text": "팔십구 퍼센트..."
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 181.7624609375,
+          "end": 183.1624658203125
+        },
+        {
+          "role": "vocals",
+          "start": 181.7624609375,
+          "end": 183.38246704101562
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 5.1944609375000255,
+          "end": 6.574465820312497
+        },
+        {
+          "role": "vocals",
+          "start": 5.1944609375000255,
+          "end": 6.794467041015622
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "text": "인간은 이걸 '위로'라고 부르죠",
+      "exported": {
+        "exportCue": "43",
+        "start": 176.56799999999998,
+        "end": 176.588,
+        "text": "인간은 이걸 '위로'라고 부르죠"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 183.3424627685547,
+          "end": 189.26247192382812
+        },
+        {
+          "role": "vocals",
+          "start": 184.78246520996095,
+          "end": 189.26247192382812
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 6.774462768554713,
+          "end": 12.674471923828122
+        },
+        {
+          "role": "vocals",
+          "start": 8.214465209960963,
+          "end": 12.674471923828122
+        }
+      ]
+    },
+    {
+      "line": 42,
+      "text": "밤이 깊어도——",
+      "exported": {
+        "exportCue": "45",
+        "start": 176.56799999999998,
+        "end": 177.765,
+        "text": "밤이 깊어도——"
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437
+        },
+        {
+          "role": "vocals",
+          "start": 200.44246887207032,
+          "end": 201.70247436523437
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 23.874468872070338,
+          "end": 23.93747436523438
+        },
+        {
+          "role": "vocals",
+          "start": 23.874468872070338,
+          "end": 23.93747436523438
+        }
+      ]
+    },
+    {
+      "line": 43,
+      "text": "다시 밝아와——",
+      "exported": null,
+      "local": [
+        {
+          "role": "original",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937
+        },
+        {
+          "role": "vocals",
+          "start": 203.70246337890626,
+          "end": 204.94246459960937
+        }
+      ],
+      "differences": []
+    },
+    {
+      "line": 44,
+      "text": "저 철길처럼——",
+      "exported": null,
+      "local": [
+        {
+          "role": "original",
+          "start": 207.16247009277345,
+          "end": 209.06247497558593
+        },
+        {
+          "role": "vocals",
+          "start": 207.16247009277345,
+          "end": 208.88246704101562
+        }
+      ],
+      "differences": []
+    },
+    {
+      "line": 45,
+      "text": "끝까지 가는 거야——",
+      "exported": null,
+      "local": [
+        {
+          "role": "original",
+          "start": 209.06246398925782,
+          "end": 211.5824639892578
+        },
+        {
+          "role": "vocals",
+          "start": 208.92246459960938,
+          "end": 211.60246826171874
+        }
+      ],
+      "differences": []
+    },
+    {
+      "line": 46,
+      "text": "Mmm... mmm...",
+      "exported": {
+        "exportCue": "55",
+        "start": 225.385,
+        "end": 228.75,
+        "text": "Mmm... mmm..."
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 214.82247375488282,
+          "end": 217.30246520996093
+        },
+        {
+          "role": "vocals",
+          "start": 215.1024725341797,
+          "end": 223.02246643066405
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 10.56252624511717,
+          "end": 11.447534790039072
+        },
+        {
+          "role": "vocals",
+          "start": 10.282527465820294,
+          "end": 5.727533569335947
+        }
+      ]
+    },
+    {
+      "line": 47,
+      "text": "혼자가 아니야...",
+      "exported": {
+        "exportCue": "56",
+        "start": 228.75,
+        "end": 232.02,
+        "text": "혼자가 아니야..."
+      },
+      "local": [
+        {
+          "role": "original",
+          "start": 228.8424627685547,
+          "end": 234.24246765136718
+        },
+        {
+          "role": "vocals",
+          "start": 228.8424627685547,
+          "end": 234.22246337890624
+        }
+      ],
+      "differences": [
+        {
+          "role": "original",
+          "start": 0.0924627685546966,
+          "end": 2.222467651367168
+        },
+        {
+          "role": "vocals",
+          "start": 0.0924627685546966,
+          "end": 2.2024633789062307
+        }
+      ]
+    }
+  ],
+  "humanListeningVerified": false,
+  "status": "exported_timing_needs_validation"
+}

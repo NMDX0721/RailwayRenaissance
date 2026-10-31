@@ -1,0 +1,19 @@
+{
+  "id": "chollima_ride",
+  "service": "https://lyrictimestamps.com",
+  "authorizedTracks": [
+    "chollima_ride"
+  ],
+  "sourceLines": 49,
+  "audioSha256": "03aa391beab354a3a76c8610daffd0c9af27745aa71cb050ee6f1a8046a486b3",
+  "lyricsSha256": "e7169427e7c5fe31f214f297f3cd7ef4c5fb7c899aa1e5d8b0aedfaced26279b",
+  "submitted": true,
+  "observedState": "Native export archived and structurally audited; timing conflicts remain; not published",
+  "alignmentCompleted": true,
+  "published": false,
+  "humanListeningVerified": false,
+  "nativeExportObtained": true,
+  "displayedReviewIssueCount": 60,
+  "artificialSilenceExtension": false,
+  "exportSha256": "5249c73c47439c320415229437b974602710d94c534211833c6797c9d9752c44"
+}
