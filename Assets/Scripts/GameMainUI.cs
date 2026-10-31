@@ -896,20 +896,21 @@ public class GameMainUI : MonoBehaviour
 
         // ---- 底部任务栏（悬浮毛玻璃胶囊Dock） ----
         var dock = new VisualElement();
-        dock.style.height = 60;
+        dock.style.height = 76;
         dock.style.flexDirection = FlexDirection.Row;
         dock.style.justifyContent = Justify.Center;
         dock.style.alignItems = Align.Center;
-        dock.style.backgroundColor = new Color(0.08f, 0.07f, 0.1f, 0.75f);
-        dock.style.borderTopLeftRadius = 24; dock.style.borderTopRightRadius = 24;
-        dock.style.borderBottomLeftRadius = 24; dock.style.borderBottomRightRadius = 24;
+        dock.style.backgroundColor = new Color(1f, 1f, 1f, 0.30f);   // 浅色磨砂：贴近 HyperOS Dock
+        dock.style.borderTopLeftRadius = 30; dock.style.borderTopRightRadius = 30;
+        dock.style.borderBottomLeftRadius = 30; dock.style.borderBottomRightRadius = 30;
         dock.style.borderTopWidth = 1; dock.style.borderBottomWidth = 1;
         dock.style.borderLeftWidth = 1; dock.style.borderRightWidth = 1;
-        dock.style.borderTopColor = GlassBorderSoft; dock.style.borderBottomColor = GlassBorderSoft;
-        dock.style.borderLeftColor = GlassBorderSoft; dock.style.borderRightColor = GlassBorderSoft;
+        var dockBorder = new Color(1f, 1f, 1f, 0.50f);
+        dock.style.borderTopColor = dockBorder; dock.style.borderBottomColor = dockBorder;
+        dock.style.borderLeftColor = dockBorder; dock.style.borderRightColor = dockBorder;
         dock.style.alignSelf = Align.Center;
-        dock.style.paddingLeft = 20; dock.style.paddingRight = 20;
-        dock.style.marginBottom = 12;
+        dock.style.paddingLeft = 14; dock.style.paddingRight = 14;
+        dock.style.marginBottom = 16;
         desktop.Add(dock);
 
         string[] dockApps = { "RDA", "归途", "笔记", "设置" };
@@ -1318,32 +1319,14 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildDockIcon(string name)
     {
         var box = new VisualElement();
-        box.style.width = 46; box.style.height = 44;
-        box.style.marginLeft = 16; box.style.marginRight = 16;
+        box.style.marginLeft = 9; box.style.marginRight = 9;
         box.style.alignItems = Align.Center;
         box.style.justifyContent = Justify.Center;
-        box.style.backgroundColor = new Color(0.2f, 0.22f, 0.3f, 0.5f);
-        box.style.borderTopLeftRadius = 14; box.style.borderTopRightRadius = 14;
-        box.style.borderBottomLeftRadius = 14; box.style.borderBottomRightRadius = 14;
         box.pickingMode = PickingMode.Position;
+        box.Add(BuildIconTile(name, 54f, 17f, 28));
 
-        var lbl = new Label(IconFor(name));
-        lbl.style.fontSize = 24;
-        lbl.style.color = new Color(0.92f, 0.94f, 0.98f, 0.95f);
-        lbl.style.unityFontDefinition = Fd();
-        lbl.style.unityTextAlign = TextAnchor.MiddleCenter;
-        box.Add(lbl);
-
-        box.RegisterCallback<PointerEnterEvent>(_ =>
-        {
-            box.style.scale = new Scale(new Vector2(1.15f, 1.15f));
-            box.style.backgroundColor = new Color(0.3f, 0.35f, 0.5f, 0.85f);
-        });
-        box.RegisterCallback<PointerLeaveEvent>(_ =>
-        {
-            box.style.scale = new Scale(new Vector2(1f, 1f));
-            box.style.backgroundColor = new Color(0.2f, 0.22f, 0.3f, 0.5f);
-        });
+        box.RegisterCallback<PointerEnterEvent>(_ => box.style.scale = new Scale(new Vector2(1.12f, 1.12f)));
+        box.RegisterCallback<PointerLeaveEvent>(_ => box.style.scale = new Scale(new Vector2(1f, 1f)));
         box.RegisterCallback<ClickEvent>(_ => LaunchApp(name));
         return box;
     }
@@ -1361,7 +1344,8 @@ public class GameMainUI : MonoBehaviour
 
         // 文件夹外壳（半透明毛玻璃）
         var folderBox = new VisualElement();
-        folderBox.style.width = 58; folderBox.style.height = 52;
+        folderBox.style.width = 60; folderBox.style.height = 60;
+        folderBox.style.flexShrink = 0;
         folderBox.style.backgroundColor = new Color(0.18f, 0.24f, 0.35f, 0.72f);
         folderBox.style.borderTopLeftRadius = 16; folderBox.style.borderTopRightRadius = 16;
         folderBox.style.borderBottomLeftRadius = 16; folderBox.style.borderBottomRightRadius = 16;
@@ -1377,16 +1361,27 @@ public class GameMainUI : MonoBehaviour
         folderBox.style.paddingTop = 4; folderBox.style.paddingBottom = 4;
         cell.Add(folderBox);
 
+        // 2×2 缩略：用上下两行明确排布，不依赖自动换行
+        folderBox.style.flexDirection = FlexDirection.Column;
+        folderBox.style.flexWrap = Wrap.NoWrap;
         string[] miniIcons = { "归", "百", "♪", "R" };
-        foreach (var mi in miniIcons)
+        for (int row = 0; row < 2; row++)
         {
-            var ml = new Label(mi);
-            ml.style.fontSize = 11;
-            ml.style.color = GlassAccent;
-            ml.style.unityFontDefinition = Fd();
-            ml.style.width = 22; ml.style.height = 18;
-            ml.style.unityTextAlign = TextAnchor.MiddleCenter;
-            folderBox.Add(ml);
+            var rowBox = new VisualElement();
+            rowBox.style.flexDirection = FlexDirection.Row;
+            rowBox.style.flexShrink = 0;
+            for (int col = 0; col < 2; col++)
+            {
+                var ml = new Label(miniIcons[row * 2 + col]);
+                ml.style.fontSize = 12;
+                ml.style.color = new Color(1f, 1f, 1f, 0.92f);
+                ml.style.unityFontDefinition = Fd();
+                ml.style.width = 24; ml.style.height = 24;
+                ml.style.flexShrink = 0;
+                ml.style.unityTextAlign = TextAnchor.MiddleCenter;
+                rowBox.Add(ml);
+            }
+            folderBox.Add(rowBox);
         }
 
         var label = new Label("铁路");
@@ -1758,22 +1753,16 @@ public class GameMainUI : MonoBehaviour
         bubble.Add(msg);
     }
 
-    private VisualElement BuildAppIcon(string name)
+    /// <summary>应用图标方块：桌面与 Dock 共用，颜色按应用类型区分。</summary>
+    private VisualElement BuildIconTile(string name, float size, float radius, int glyphSize)
     {
-        var cell = new VisualElement();
-        cell.style.width = 96; cell.style.height = 88;
-        cell.style.alignItems = Align.Center;
-        cell.style.justifyContent = Justify.FlexEnd;
-        cell.style.marginLeft = 14; cell.style.marginRight = 14;
-        cell.style.marginTop = 10; cell.style.marginBottom = 10;
-        cell.style.paddingBottom = 10;
-        cell.pickingMode = PickingMode.Position;
-
-        // 图标主体（液态玻璃风格·渐变色半透明背景）
-        var icon = new Label(IconFor(name));
-        icon.style.fontSize = 38;
-        icon.style.width = 58; icon.style.height = 52;
-        icon.style.unityTextAlign = TextAnchor.MiddleCenter;
+        var tile = new VisualElement { pickingMode = PickingMode.Ignore };
+        tile.style.width = size; tile.style.height = size;
+        tile.style.flexShrink = 0;
+        tile.style.alignItems = Align.Center;
+        tile.style.justifyContent = Justify.Center;
+        tile.style.borderTopLeftRadius = radius; tile.style.borderTopRightRadius = radius;
+        tile.style.borderBottomLeftRadius = radius; tile.style.borderBottomRightRadius = radius;
 
         // 根据App类型选择背景色（HyperOS 原生实色不透明底）
         Color iconBg;
@@ -1835,11 +1824,44 @@ public class GameMainUI : MonoBehaviour
                 break;
         }
 
-        icon.style.color = iconFg;
-        icon.style.backgroundColor = iconBg;
-        icon.style.borderTopLeftRadius = 16; icon.style.borderTopRightRadius = 16;
-        icon.style.borderBottomLeftRadius = 16; icon.style.borderBottomRightRadius = 16;
-        icon.style.unityFontDefinition = Fd();
+        tile.style.backgroundColor = iconBg;
+
+        RailwayRenaissance.UI.Tablet.TabletIconKind? vector = name switch
+        {
+            "音乐" => RailwayRenaissance.UI.Tablet.TabletIconKind.MusicNote,
+            "设置" => RailwayRenaissance.UI.Tablet.TabletIconKind.Gear,
+            "天气" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sun,
+            _ => null
+        };
+        if (vector.HasValue)
+        {
+            tile.Add(new RailwayRenaissance.UI.Tablet.TabletIconElement(vector.Value, size * 0.56f, iconFg));
+        }
+        else
+        {
+            var glyph = new Label(IconFor(name)) { pickingMode = PickingMode.Ignore };
+            glyph.style.fontSize = glyphSize;
+            glyph.style.color = iconFg;
+            glyph.style.unityFontDefinition = Fd();
+            glyph.style.unityTextAlign = TextAnchor.MiddleCenter;
+            tile.Add(glyph);
+        }
+        return tile;
+    }
+
+    private VisualElement BuildAppIcon(string name)
+    {
+        var cell = new VisualElement();
+        cell.style.width = 96; cell.style.height = 88;
+        cell.style.alignItems = Align.Center;
+        cell.style.justifyContent = Justify.FlexEnd;
+        cell.style.marginLeft = 14; cell.style.marginRight = 14;
+        cell.style.marginTop = 10; cell.style.marginBottom = 10;
+        cell.style.paddingBottom = 10;
+        cell.pickingMode = PickingMode.Position;
+
+        // 图标主体：HyperOS 风格的实色圆角方块（正方形 + 大圆角），音乐/设置/天气使用矢量图标
+        var icon = BuildIconTile(name, 60f, 18f, 32);
         cell.Add(icon);
 
         var label = new Label(name);
@@ -2025,8 +2047,10 @@ public class GameMainUI : MonoBehaviour
         button.style.marginLeft = 8;
         button.style.marginRight = 8;
         button.style.fontSize = 18;
-        button.style.color = new Color(0.94f, 0.92f, 0.88f, 1f);
-        button.style.backgroundColor = new Color(0.15f, 0.16f, 0.19f, 0.95f);
+        // 手势导航风格：去掉按钮外框，只留淡色符号
+        button.style.color = new Color(0.82f, 0.84f, 0.88f, 0.85f);
+        button.style.backgroundColor = Color.clear;
+        button.style.borderTopWidth = button.style.borderBottomWidth = button.style.borderLeftWidth = button.style.borderRightWidth = 0;
         button.style.borderTopLeftRadius = 18;
         button.style.borderTopRightRadius = 18;
         button.style.borderBottomLeftRadius = 18;
@@ -2744,7 +2768,18 @@ public class GameMainUI : MonoBehaviour
         var win = new VisualElement { name = "app-fullscreen-window" };
         win.style.position = Position.Absolute;
         win.style.top = 0; win.style.left = 0; win.style.right = 0; win.style.bottom = 0;
-        win.style.backgroundColor = new Color(0.08f, 0.09f, 0.11f, 1f);
+        // 默认浅色窗口，与 HyperOS 应用一致；少数深色界面的应用保留深色窗口
+        bool darkApp = appTitle == "五线态势" || appTitle == "岁月 · AI对话" || appTitle == "驾驶台";
+        var winBg = darkApp ? new Color(0.08f, 0.09f, 0.11f, 1f) : new Color(0.97f, 0.97f, 0.98f, 1f);
+        var barBg = darkApp ? new Color(0.07f, 0.08f, 0.10f, 0.96f) : new Color(0.97f, 0.97f, 0.98f, 1f);
+        var barLine = darkApp ? new Color(0.24f, 0.22f, 0.18f, 0.5f) : new Color(0f, 0f, 0f, 0.07f);
+        var chipBg = darkApp ? new Color(0.14f, 0.15f, 0.18f, 1f) : new Color(0f, 0f, 0f, 0.06f);
+        var chipHoverBg = darkApp ? new Color(0.20f, 0.22f, 0.26f, 1f) : new Color(0f, 0f, 0f, 0.11f);
+        var chipText = darkApp ? new Color(0.92f, 0.90f, 0.85f, 1f) : new Color(0.12f, 0.12f, 0.14f, 1f);
+        var chipBorder = darkApp ? new Color(0.30f, 0.28f, 0.24f, 0.6f) : new Color(0f, 0f, 0f, 0f);
+        var titleColor = darkApp ? new Color(0.96f, 0.94f, 0.88f, 1f) : new Color(0.10f, 0.10f, 0.12f, 1f);
+        var subColor = darkApp ? new Color(0.83f, 0.66f, 0.26f, 0.85f) : new Color(0.45f, 0.45f, 0.50f, 1f);
+        win.style.backgroundColor = winBg;
         win.style.flexDirection = FlexDirection.Column;
         appLayer.Add(win);
 
@@ -2755,9 +2790,9 @@ public class GameMainUI : MonoBehaviour
         topBar.style.justifyContent = Justify.SpaceBetween;
         topBar.style.alignItems = Align.Center;
         topBar.style.paddingLeft = 18; topBar.style.paddingRight = 18;
-        topBar.style.backgroundColor = new Color(0.07f, 0.08f, 0.10f, 0.96f);
+        topBar.style.backgroundColor = barBg;
         topBar.style.borderBottomWidth = 1;
-        topBar.style.borderBottomColor = new Color(0.24f, 0.22f, 0.18f, 0.5f);
+        topBar.style.borderBottomColor = barLine;
         win.Add(topBar);
 
         // 左侧：返回桌面胶囊按钮 + 应用名
@@ -2776,28 +2811,28 @@ public class GameMainUI : MonoBehaviour
         backBtn.style.fontSize = 12;
         backBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         backBtn.style.unityFontDefinition = Fd();
-        backBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
-        backBtn.style.color = new Color(0.92f, 0.90f, 0.85f, 1f);
+        backBtn.style.backgroundColor = chipBg;
+        backBtn.style.color = chipText;
         backBtn.style.borderTopLeftRadius = 15; backBtn.style.borderTopRightRadius = 15;
         backBtn.style.borderBottomLeftRadius = 15; backBtn.style.borderBottomRightRadius = 15;
         backBtn.style.borderTopWidth = 1; backBtn.style.borderBottomWidth = 1;
         backBtn.style.borderLeftWidth = 1; backBtn.style.borderRightWidth = 1;
-        backBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+        backBtn.style.borderTopColor = chipBorder;
         backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
         backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
         backBtn.style.borderRightColor = backBtn.style.borderTopColor;
         backBtn.RegisterCallback<PointerEnterEvent>(_ =>
         {
-            backBtn.style.backgroundColor = new Color(0.20f, 0.22f, 0.26f, 1f);
-            backBtn.style.borderTopColor = new Color(0.83f, 0.66f, 0.26f, 0.8f);
+            backBtn.style.backgroundColor = chipHoverBg;
+            backBtn.style.borderTopColor = darkApp ? new Color(0.83f, 0.66f, 0.26f, 0.8f) : chipBorder;
             backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
             backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
             backBtn.style.borderRightColor = backBtn.style.borderTopColor;
         });
         backBtn.RegisterCallback<PointerLeaveEvent>(_ =>
         {
-            backBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
-            backBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+            backBtn.style.backgroundColor = chipBg;
+            backBtn.style.borderTopColor = chipBorder;
             backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
             backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
             backBtn.style.borderRightColor = backBtn.style.borderTopColor;
@@ -2806,7 +2841,7 @@ public class GameMainUI : MonoBehaviour
 
         var titleLabel = new Label(appTitle);
         titleLabel.style.fontSize = 16;
-        titleLabel.style.color = new Color(0.96f, 0.94f, 0.88f, 1f);
+        titleLabel.style.color = titleColor;
         titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
         titleLabel.style.unityFontDefinition = Fd();
         titleLabel.style.marginLeft = 16;
@@ -2816,7 +2851,7 @@ public class GameMainUI : MonoBehaviour
         {
             var subLabel = new Label("· " + subtitle);
             subLabel.style.fontSize = 12;
-            subLabel.style.color = new Color(0.83f, 0.66f, 0.26f, 0.85f);
+            subLabel.style.color = subColor;
             subLabel.style.unityFontDefinition = Fd();
             subLabel.style.marginLeft = 10;
             leftGroup.Add(subLabel);
@@ -2828,13 +2863,13 @@ public class GameMainUI : MonoBehaviour
         closeBtn.style.fontSize = 14;
         closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
         closeBtn.style.unityFontDefinition = Fd();
-        closeBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
-        closeBtn.style.color = new Color(0.70f, 0.70f, 0.72f, 1f);
+        closeBtn.style.backgroundColor = chipBg;
+        closeBtn.style.color = darkApp ? new Color(0.70f, 0.70f, 0.72f, 1f) : new Color(0.40f, 0.40f, 0.44f, 1f);
         closeBtn.style.borderTopLeftRadius = 15; closeBtn.style.borderTopRightRadius = 15;
         closeBtn.style.borderBottomLeftRadius = 15; closeBtn.style.borderBottomRightRadius = 15;
         closeBtn.style.borderTopWidth = 1; closeBtn.style.borderBottomWidth = 1;
         closeBtn.style.borderLeftWidth = 1; closeBtn.style.borderRightWidth = 1;
-        closeBtn.style.borderTopColor = new Color(0.30f, 0.28f, 0.24f, 0.6f);
+        closeBtn.style.borderTopColor = chipBorder;
         closeBtn.style.borderBottomColor = closeBtn.style.borderTopColor;
         closeBtn.style.borderLeftColor = closeBtn.style.borderTopColor;
         closeBtn.style.borderRightColor = closeBtn.style.borderTopColor;
@@ -2843,8 +2878,8 @@ public class GameMainUI : MonoBehaviour
             closeBtn.style.color = Color.white;
         });
         closeBtn.RegisterCallback<PointerLeaveEvent>(_ => {
-            closeBtn.style.backgroundColor = new Color(0.14f, 0.15f, 0.18f, 1f);
-            closeBtn.style.color = new Color(0.70f, 0.70f, 0.72f, 1f);
+            closeBtn.style.backgroundColor = chipBg;
+            closeBtn.style.color = darkApp ? new Color(0.70f, 0.70f, 0.72f, 1f) : new Color(0.40f, 0.40f, 0.44f, 1f);
         });
         topBar.Add(closeBtn);
 
