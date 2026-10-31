@@ -54,7 +54,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     private static Action<string> s_showToast;
     private static Action<TabletSystemPanel> s_openSystemPanel;
+    private static TabletShellState s_shellState;
     public static Action<KeyCode> TabletRebindAction;
+
+    public static void SetShellStateHandler(TabletShellState state)
+    {
+        s_shellState = state;
+    }
+
+    public static TabletShellState CurrentShellState => s_shellState ?? GameMainUI.Instance?.ShellState;
 
     public static void SetOpenSystemPanelHandler(Action<TabletSystemPanel> handler)
     {
@@ -205,21 +213,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     currentSettingsCategory = catId;
                     BuildSettingsPage(win);
                 });
-                itemBtn.style.height = 42;
+                itemBtn.style.height = 44;
                 itemBtn.style.flexDirection = FlexDirection.Row;
                 itemBtn.style.alignItems = Align.Center;
-                itemBtn.style.paddingLeft = 12; itemBtn.style.paddingRight = 12;
+                itemBtn.style.paddingLeft = 10; itemBtn.style.paddingRight = 10;
                 itemBtn.style.marginBottom = 3;
-                itemBtn.style.backgroundColor = isSelected ? new Color(0.93f, 0.93f, 0.95f, 1f) : Color.clear;
-                itemBtn.style.borderTopLeftRadius = 10; itemBtn.style.borderTopRightRadius = 10;
-                itemBtn.style.borderBottomLeftRadius = 10; itemBtn.style.borderBottomRightRadius = 10;
+                itemBtn.style.backgroundColor = isSelected ? new Color(0.92f, 0.93f, 0.96f, 1f) : Color.clear;
+                itemBtn.style.borderTopLeftRadius = 12; itemBtn.style.borderTopRightRadius = 12;
+                itemBtn.style.borderBottomLeftRadius = 12; itemBtn.style.borderBottomRightRadius = 12;
                 itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
                 itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
 
-                var icLbl = new Label(cat.icon);
-                icLbl.style.fontSize = 16; icLbl.style.marginRight = 10;
-                icLbl.style.unityFontDefinition = Fd();
-                itemBtn.Add(icLbl);
+                var badge = BuildSquircleBadge(cat.icon, GetHyperOSCategoryColor(cat.id, cat.group), 28);
+                badge.style.marginRight = 10;
+                itemBtn.Add(badge);
 
                 var nameLbl = new Label(cat.name);
                 nameLbl.style.fontSize = 14;
@@ -246,21 +253,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     currentSettingsCategory = 99;
                     BuildSettingsPage(win);
                 });
-                devBtn.style.height = 42;
+                devBtn.style.height = 44;
                 devBtn.style.flexDirection = FlexDirection.Row;
                 devBtn.style.alignItems = Align.Center;
-                devBtn.style.paddingLeft = 12; devBtn.style.paddingRight = 12;
+                devBtn.style.paddingLeft = 10; devBtn.style.paddingRight = 10;
                 devBtn.style.marginBottom = 3;
-                devBtn.style.backgroundColor = isDevSelected ? new Color(0.93f, 0.93f, 0.95f, 1f) : Color.clear;
-                devBtn.style.borderTopLeftRadius = 10; devBtn.style.borderTopRightRadius = 10;
-                devBtn.style.borderBottomLeftRadius = 10; devBtn.style.borderBottomRightRadius = 10;
+                devBtn.style.backgroundColor = isDevSelected ? new Color(0.92f, 0.93f, 0.96f, 1f) : Color.clear;
+                devBtn.style.borderTopLeftRadius = 12; devBtn.style.borderTopRightRadius = 12;
+                devBtn.style.borderBottomLeftRadius = 12; devBtn.style.borderBottomRightRadius = 12;
                 devBtn.style.borderTopWidth = 0; devBtn.style.borderBottomWidth = 0;
                 devBtn.style.borderLeftWidth = 0; devBtn.style.borderRightWidth = 0;
 
-                var devIc = new Label("🛠️");
-                devIc.style.fontSize = 16; devIc.style.marginRight = 10;
-                devIc.style.unityFontDefinition = Fd();
-                devBtn.Add(devIc);
+                var devBadge = BuildSquircleBadge("🛠", GetHyperOSCategoryColor(99, "system"), 28);
+                devBadge.style.marginRight = 10;
+                devBtn.Add(devBadge);
 
                 var devName = new Label("开发者选项");
                 devName.style.fontSize = 14;
@@ -286,24 +292,28 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         bool devUnlockedForCompact = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
         if (devUnlockedForCompact) compactChoices.Add("开发者选项");
         compactCategory.choices = compactChoices;
-        compactCategory.value = currentSettingsCategory == 99
+        compactCategory.SetValueWithoutNotify(currentSettingsCategory == 99
             ? "开发者选项"
-            : GetSettingsCategoryName(currentSettingsCategory);
+            : GetSettingsCategoryName(currentSettingsCategory));
         compactCategory.RegisterValueChangedCallback(evt =>
         {
+            if (string.IsNullOrEmpty(evt.newValue) || evt.newValue == evt.previousValue) return;
+            int next = currentSettingsCategory;
             if (evt.newValue == "开发者选项")
-                currentSettingsCategory = 99;
+                next = 99;
             else
             {
                 for (int i = 0; i < SettingsCategories.Length; i++)
                 {
                     if (SettingsCategories[i].name == evt.newValue)
                     {
-                        currentSettingsCategory = SettingsCategories[i].id;
+                        next = SettingsCategories[i].id;
                         break;
                     }
                 }
             }
+            if (next == currentSettingsCategory) return;
+            currentSettingsCategory = next;
             BuildSettingsPage(win);
         });
         compactSearch.RegisterValueChangedCallback(evt =>
@@ -951,11 +961,46 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         rightPane.Add(panelCard);
 
+        AddSectionHeader(rightPane, "通知与免打扰策略");
+        var policyCard = BuildWhiteCard();
+        policyCard.name = "settings-notifications-policy-card";
+
+        var shellState = CurrentShellState;
+        bool quietOn = shellState != null && shellState.QuietMode;
+        var quietToggle = BuildToggleRow("勿扰模式", "开启后静默屏蔽悬浮提示横幅，所有通知仍完整收存至通知中心", quietOn, v =>
+        {
+            if (shellState != null)
+            {
+                shellState.SetQuietMode(v);
+                ShowToast(v ? "已开启勿扰模式" : "已关闭勿扰模式");
+            }
+            else
+            {
+                ShowToast("系统面板服务暂未挂载");
+            }
+        });
+        quietToggle.name = "settings-quiet-toggle-row";
+        policyCard.Add(quietToggle);
+
+        int notifCount = shellState?.Notifications.Count ?? 0;
+        var clearRow = BuildWhiteRow("清空所有通知", $"当前收存 {notifCount} 条通知记录", () =>
+        {
+            if (shellState != null)
+            {
+                shellState.ClearNotifications();
+                ShowToast("已清空所有通知记录");
+            }
+        });
+        clearRow.name = "settings-clear-notifications-btn";
+        policyCard.Add(clearRow);
+
+        rightPane.Add(policyCard);
+
         AddSectionHeader(rightPane, "运行机制与说明");
         var infoCard = BuildWhiteCard();
         infoCard.name = "settings-notifications-info-card";
         infoCard.Add(BuildWhiteRow("通知收存机制", "通知均来自应用实际运行提示；最多收存 32 条，超限自动淘汰早期记录", null, false));
-        infoCard.Add(BuildWhiteRow("勿扰模式策略", "开启勿扰后系统保留通知收存，仅静默屏蔽悬浮横幅；勿扰当前仅在进程内有效", null, false));
+        infoCard.Add(BuildWhiteRow("勿扰模式策略", "开启勿扰后系统保留通知收存，仅静默屏蔽悬浮横幅；勿扰状态持久化保存", null, false));
         infoCard.Add(BuildWhiteRow("系统连接说明", "车载平板处于内网沙箱运行；状态栏不虚拟 Wi-Fi / 蓝牙 / 电池连接状态", null, false));
         rightPane.Add(infoCard);
     }
@@ -1484,15 +1529,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var card = new VisualElement();
         card.style.backgroundColor = SurfaceCard;
-        card.style.borderTopLeftRadius = 14; card.style.borderTopRightRadius = 14;
-        card.style.borderBottomLeftRadius = 14; card.style.borderBottomRightRadius = 14;
+        card.style.borderTopLeftRadius = 18; card.style.borderTopRightRadius = 18;
+        card.style.borderBottomLeftRadius = 18; card.style.borderBottomRightRadius = 18;
         card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
         card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
-        card.style.borderTopColor = BorderCard; card.style.borderBottomColor = BorderCard;
-        card.style.borderLeftColor = BorderCard; card.style.borderRightColor = BorderCard;
-        card.style.paddingLeft = 16; card.style.paddingRight = 16;
-        card.style.paddingTop = 8; card.style.paddingBottom = 8;
-        card.style.marginBottom = 14;
+        card.style.borderTopColor = InsetCardBorder; card.style.borderBottomColor = InsetCardBorder;
+        card.style.borderLeftColor = InsetCardBorder; card.style.borderRightColor = InsetCardBorder;
+        card.style.paddingLeft = 18; card.style.paddingRight = 18;
+        card.style.paddingTop = 10; card.style.paddingBottom = 10;
+        card.style.marginBottom = 16;
         return card;
     }
 
@@ -1502,8 +1547,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
-        row.style.paddingTop = 10; row.style.paddingBottom = 10;
-        row.style.borderBottomWidth = 1; row.style.borderBottomColor = BorderDivider;
+        row.style.paddingTop = 11; row.style.paddingBottom = 11;
+        row.style.paddingLeft = 8; row.style.paddingRight = 8;
+        row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
+        row.style.borderTopLeftRadius = 10; row.style.borderTopRightRadius = 10;
+        row.style.borderBottomLeftRadius = 10; row.style.borderBottomRightRadius = 10;
         row.pickingMode = onClick != null ? PickingMode.Position : PickingMode.Ignore;
 
         if (onClick != null)
@@ -1567,7 +1615,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // 胶囊开关
         bool val = initialVal;
-        var toggle = new VisualElement();
+        var toggle = new VisualElement { name = "toggle-capsule" };
         toggle.style.width = 46; toggle.style.height = 26;
         toggle.style.borderTopLeftRadius = 13; toggle.style.borderTopRightRadius = 13;
         toggle.style.borderBottomLeftRadius = 13; toggle.style.borderBottomRightRadius = 13;

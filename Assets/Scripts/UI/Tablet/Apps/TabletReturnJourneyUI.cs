@@ -123,7 +123,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             act2Btn.style.fontSize = 11; act2Btn.style.unityFontDefinition = Fd();
             act2Btn.style.backgroundColor = SurfaceCard;
             act2Btn.style.color = InkSecondary;
-            act2Btn.style.borderTopLeftRadius = 8; act2Btn.style.borderBottomRightRadius = 8;
+            act2Btn.style.borderTopLeftRadius = RadiusPill; act2Btn.style.borderTopRightRadius = RadiusPill;
+            act2Btn.style.borderBottomLeftRadius = RadiusPill; act2Btn.style.borderBottomRightRadius = RadiusPill;
             act2Btn.style.borderTopWidth = 1; act2Btn.style.borderBottomWidth = 1;
             act2Btn.style.borderLeftWidth = 1; act2Btn.style.borderRightWidth = 1;
             act2Btn.style.borderTopColor = BorderDivider; act2Btn.style.borderBottomColor = BorderDivider;
@@ -465,7 +466,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             finalEpBtn.style.fontSize = 12; finalEpBtn.style.unityFontDefinition = Fd();
             finalEpBtn.style.backgroundColor = SurfaceCard;
             finalEpBtn.style.color = InkSecondary;
-            finalEpBtn.style.borderTopLeftRadius = 8; finalEpBtn.style.borderBottomRightRadius = 8;
+            finalEpBtn.style.borderTopLeftRadius = RadiusPill; finalEpBtn.style.borderTopRightRadius = RadiusPill;
+            finalEpBtn.style.borderBottomLeftRadius = RadiusPill; finalEpBtn.style.borderBottomRightRadius = RadiusPill;
             finalEpBtn.style.borderTopWidth = 1; finalEpBtn.style.borderBottomWidth = 1;
             finalEpBtn.style.borderLeftWidth = 1; finalEpBtn.style.borderRightWidth = 1;
             finalEpBtn.style.borderTopColor = BorderDivider; finalEpBtn.style.borderBottomColor = BorderDivider;
@@ -735,7 +737,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 replayBtn.style.backgroundColor = unlocked ? (epDone ? new Color(0.92f, 0.92f, 0.95f, 1f) : AccentSystem) : new Color(0.85f, 0.85f, 0.88f, 0.6f);
                 replayBtn.style.color = unlocked ? (epDone ? InkPrimary : Color.white) : InkTertiary;
                 replayBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
-                replayBtn.style.borderTopLeftRadius = 8; replayBtn.style.borderBottomRightRadius = 8;
+                replayBtn.style.borderTopLeftRadius = RadiusPill; replayBtn.style.borderTopRightRadius = RadiusPill;
+            replayBtn.style.borderBottomLeftRadius = RadiusPill; replayBtn.style.borderBottomRightRadius = RadiusPill;
                 replayBtn.style.borderTopWidth = 0; replayBtn.style.borderBottomWidth = 0;
                 replayBtn.style.borderLeftWidth = 0; replayBtn.style.borderRightWidth = 0;
                 replayBtn.SetEnabled(unlocked);

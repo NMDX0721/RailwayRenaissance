@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -507,7 +507,24 @@ public class GameMainUI : MonoBehaviour
         root.RegisterCallback<PointerDownEvent>(OnSystemPointerDown, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerMoveEvent>(OnSystemPointerMove, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerUpEvent>(OnSystemPointerUp, TrickleDown.TrickleDown);
-        root.RegisterCallback<PointerCancelEvent>(evt => tabletEdgeGesture.Cancel(evt.pointerId), TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCancelEvent>(evt =>
+        {
+            activeTouchPointers.Remove(evt.pointerId);
+            tabletEdgeGesture.Cancel(evt.pointerId);
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCaptureOutEvent>(evt =>
+        {
+            activeTouchPointers.Remove(evt.pointerId);
+            tabletEdgeGesture.Cancel(evt.pointerId);
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            if (Mathf.Abs(evt.newRect.width - evt.oldRect.width) > 1f ||
+                Mathf.Abs(evt.newRect.height - evt.oldRect.height) > 1f)
+            {
+                ResetSystemGesture();
+            }
+        });
         root.RegisterCallback<ClickEvent>(evt =>
         {
             if (!suppressNextGestureClick) return;
@@ -587,6 +604,7 @@ public class GameMainUI : MonoBehaviour
     }
 
     // ============ 桌面 ============
+    public RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland SuperIsland { get; private set; }
     private VisualElement statusBar;
     private Label statusClock;
     private Label statusBatt;
@@ -632,6 +650,7 @@ public class GameMainUI : MonoBehaviour
     {
         TraceLog.L("[GameMainUI] Desktop: begin");
         desktop = new VisualElement { name = "tablet-desktop" };
+        desktop.focusable = true;
         desktop.style.position = Position.Absolute;
         desktop.style.top = 0; desktop.style.left = 0;
         desktop.style.right = 0; desktop.style.bottom = 0;
@@ -669,8 +688,8 @@ public class GameMainUI : MonoBehaviour
         statusClock.style.unityFontDefinition = Fd();
         leftGroup.Add(statusClock);
 
-        // Folia 风格全局随身听 Mini 胶囊（紧随时间右侧，未播放时自动隐藏）
-        BuildHudMusicCapsule(leftGroup);
+        // 小米澎湃OS (HyperOS Pad) 超级岛：位于状态栏左侧，紧随时间右侧
+        SuperIsland = new RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland(desktop, appName => LaunchApp(appName), leftGroup);
 
         var rightInfo = new VisualElement { name = "tablet-status-right" };
         rightInfo.style.flexDirection = FlexDirection.Row;
@@ -1847,6 +1866,7 @@ public class GameMainUI : MonoBehaviour
     private float memoryCheckTimer;
     private long tabletActivationSequence;
     private readonly TabletEdgeGesture tabletEdgeGesture = new TabletEdgeGesture();
+    private readonly HashSet<int> activeTouchPointers = new HashSet<int>();
     private bool suppressNextGestureClick;
     private bool dispatchingSystemBack;
     private int rebindConsumedFrame = -1;
@@ -1865,7 +1885,7 @@ public class GameMainUI : MonoBehaviour
         appLayer.style.justifyContent = Justify.Center;
         root.Add(appLayer);
         tabletShellView?.Dispose();
-        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"));
+        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"), PresentationPreferences);
         tabletShellView.OnRequestCapture = TriggerShellBlurCapture;
         tabletShellView.SetVisible(unlocked);
         BuildSystemNavigation();
@@ -1977,11 +1997,11 @@ public class GameMainUI : MonoBehaviour
     {
         if (appLayer != null && appLayer.childCount == 0 && appLayer.parent == root)
         {
-            appLayer.name = "tablet-app-layer-" + appId;
+            appLayer.name = "tablet-app-layer"; appLayer.viewDataKey = "tablet-app-layer-" + appId;
             return appLayer;
         }
 
-        var layer = new VisualElement { name = "tablet-app-layer-" + appId };
+        var layer = new VisualElement { name = "tablet-app-layer", viewDataKey = "tablet-app-layer-" + appId };
         layer.style.position = Position.Absolute;
         layer.style.top = 48;
         layer.style.left = 0;
@@ -2122,7 +2142,10 @@ public class GameMainUI : MonoBehaviour
     {
         if (recentTasksOverlay == null || recentTasksOverlay.style.display != DisplayStyle.Flex) return;
         recentTasksOverlay.style.display = DisplayStyle.None;
-        if (recentPreviousFocus is VisualElement previous && previous.panel == root.panel) previous.Focus();
+        if (recentPreviousFocus is VisualElement previous && previous.panel == root.panel)
+            previous.Focus();
+        else
+            (desktop ?? root).Focus();
         recentPreviousFocus = null;
     }
 
@@ -2204,11 +2227,13 @@ public class GameMainUI : MonoBehaviour
         {
             task.Root.Clear();
             if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+            task.Root = null;
         }
         task.Pages.Clear();
         task.SuspendedPageBuilders = null;
         task.Snapshot = null;
         task.AppState = null;
+        task.LastFocusedElement = null;
         tabletTasks.Remove(task);
         RenderRecentTasks();
         if (tabletTasks.Count == 0) CloseRecentTasks();
@@ -2225,6 +2250,7 @@ public class GameMainUI : MonoBehaviour
             {
                 task.Root.Clear();
                 if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+                task.Root = null;
             }
             task.Pages.Clear();
             task.SuspendedPageBuilders = null;
@@ -2296,21 +2322,35 @@ public class GameMainUI : MonoBehaviour
     private void OnSystemPointerDown(PointerDownEvent evt)
     {
         if (!unlocked || evt.pointerType != "touch" || root?.panel == null) return;
+        activeTouchPointers.Add(evt.pointerId);
+        if (activeTouchPointers.Count > 1)
+        {
+            tabletEdgeGesture.Reset();
+            return;
+        }
         if (activeTabletTask != null) ShowTabletNavigationBar();
         Vector2 point = evt.position;
         float width = root.panel.visualTree.layout.width;
         float height = root.panel.visualTree.layout.height;
         tabletEdgeGesture.Begin(evt.pointerId, point, width, height, SystemNavBarHeight,
-            IsDirectManipulationTarget(evt.target));
+            IsDirectManipulationTarget(evt.target), activeTouchPointers.Count);
     }
 
     private void OnSystemPointerMove(PointerMoveEvent evt)
     {
+        if (evt.pointerType != "touch") return;
+        if (activeTouchPointers.Count > 1)
+        {
+            tabletEdgeGesture.Reset();
+            return;
+        }
         tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
     }
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
+        if (evt.pointerType != "touch") return;
+        activeTouchPointers.Remove(evt.pointerId);
         TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
         switch (action)
         {
@@ -2324,13 +2364,51 @@ public class GameMainUI : MonoBehaviour
         root.schedule.Execute(() => suppressNextGestureClick = false).ExecuteLater(80);
     }
 
+    private static readonly System.Reflection.FieldInfo s_musicBarHandleField = typeof(TabletMusicAppUI).GetField(
+        "s_playerBarHandle", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+    private static bool IsMusicPlayerElement(VisualElement element)
+    {
+        if (element == null) return false;
+        if (s_musicBarHandleField != null)
+        {
+            if (s_musicBarHandleField.GetValue(null) is MusicPlayerBarView.PlayerBarHandle handle)
+            {
+                if (handle.root != null && (element == handle.root || handle.root.Contains(element)))
+                    return true;
+                if (handle.progressTrack != null && (element == handle.progressTrack || handle.progressTrack.Contains(element)))
+                    return true;
+                if (handle.volSlider != null && (element == handle.volSlider || handle.volSlider.Contains(element)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     private bool IsDirectManipulationTarget(IEventHandler target)
     {
+        if (TouchScreenKeyboard.visible) return true;
         VisualElement element = target as VisualElement;
         while (element != null)
         {
             if (element is Button || element is TextField || element is Slider || element is SliderInt ||
                 element is Toggle || element is ScrollView) return true;
+            if (element is Scroller || element is RepeatButton) return true;
+            if (element.GetType().Name.IndexOf("TextInput", System.StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            if (!string.IsNullOrEmpty(element.name) && (
+                element.name.IndexOf("progress", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("slider", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("track", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("scrub", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("seek", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("dragger", System.StringComparison.OrdinalIgnoreCase) >= 0))
+                return true;
+            if (element.ClassListContains("unity-base-slider__dragger") ||
+                element.ClassListContains("unity-base-slider__tracker") ||
+                element.ClassListContains("music-progress") ||
+                element.ClassListContains("track-bar"))
+                return true;
+            if (IsMusicPlayerElement(element)) return true;
             element = element.parent;
         }
         return false;
@@ -2338,7 +2416,18 @@ public class GameMainUI : MonoBehaviour
 
     private void ResetSystemGesture()
     {
+        activeTouchPointers.Clear();
         tabletEdgeGesture.Reset();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus) ResetSystemGesture();
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus) ResetSystemGesture();
     }
 
     private void ShowTabletNavigationBar()
@@ -2465,7 +2554,16 @@ public class GameMainUI : MonoBehaviour
         if (isActiveAndEnabled)
         {
             tabletShellView?.PrepareForCapture();
-            blurCaptureCoroutine = StartCoroutine(CaptureAndBlurScreenCoroutine());
+            RenderTexture target = uiDoc != null && uiDoc.panelSettings != null ? uiDoc.panelSettings.targetTexture : null;
+            if (target != null && target.IsCreated())
+            {
+                RenderTexture blurred = CaptureAndBlurFromTexture(target);
+                tabletShellView?.ApplyBlurredBackground(blurred);
+            }
+            else
+            {
+                blurCaptureCoroutine = StartCoroutine(CaptureAndBlurScreenCoroutine());
+            }
         }
         else
         {
@@ -2561,7 +2659,8 @@ public class GameMainUI : MonoBehaviour
             RenderTexture.active = prevActive;
         }
 
-        return blurService.Process(blurCaptureRT);
+        var res = blurService.Process(blurCaptureRT);
+        return res;
     }
 
     private RenderTexture CaptureAndBlurScreen()
@@ -3044,6 +3143,12 @@ public class GameMainUI : MonoBehaviour
         if (tabletEdgeGesture.Tick(Time.unscaledTime) == TabletGestureAction.Recents)
             OpenRecentTasks();
 
+        if (rebindConsumedFrame != Time.frameCount && LegacyInputAdapter.GetKeyDown(KeyCode.Escape))
+        {
+            rebindConsumedFrame = Time.frameCount;
+            RequestSystemBack();
+        }
+
         // 系统面板模糊尺寸自适应
         if (tabletShellState.Panel != TabletSystemPanel.None)
         {
@@ -3108,6 +3213,16 @@ public class GameMainUI : MonoBehaviour
         // 随身听音乐播放器进度同步（已下沉至 TabletMusicAppUI）
         TabletMusicAppUI.UpdateAudioProgress();
 
+        // 秒表与系统工具心跳
+        RailwayRenaissance.UI.Tablet.Apps.TabletSystemToolsAppUI.UpdateStopwatchTick(Time.unscaledDeltaTime);
+
+        // 驱动小米超级岛 (Super Island) 心跳与多 App 状态同步
+        if (SuperIsland != null)
+        {
+            SuperIsland.Tick();
+            SyncSuperIslandSessions();
+        }
+
         // 驱动全局常驻随身听 Mini 胶囊旋转与曲名同步
         if (hudMusicCapsule != null)
         {
@@ -3119,6 +3234,71 @@ public class GameMainUI : MonoBehaviour
     private RailwayRenaissance.UI.Tablet.Apps.MusicIconHelper.FloatingCapsuleHandle hudMusicCapsule;
     private string lastHudTrackTitle = "";
     private bool lastHudIsPlaying = false;
+
+    private void SyncSuperIslandSessions()
+    {
+        if (SuperIsland == null) return;
+
+        // 1. 车载随身听播放中状态
+        bool isPlaying = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying;
+        if (isPlaying)
+        {
+            string title = string.IsNullOrEmpty(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle)
+                ? "铁道原声"
+                : RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle;
+            SuperIsland.RegisterSession(new RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandSession
+            {
+                AppType = RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.Music,
+                Priority = 20,
+                Title = title,
+                Subtitle = "车载随身听 · 正在播放",
+                Metric = "🎵 播放中",
+                AccentColor = RailwayRenaissance.UI.Tablet.TabletUIHelper.AccentSystem,
+                OnPrimaryAction = () =>
+                {
+                    RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ToggleTabletMusicPlayPause();
+                    UpdateHudMusicCapsule(force: true);
+                },
+                OnSecondaryAction = () =>
+                {
+                    RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.PlayNextTabletTrack();
+                    UpdateHudMusicCapsule(force: true);
+                }
+            });
+        }
+        else
+        {
+            SuperIsland.RemoveSession(RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.Music);
+        }
+
+        // 2. 列控驾驶遥测 (当机车运行中)
+        var cab = RailwayRenaissance.Cab.CabEngineState.ActiveInstance;
+        if (cab != null && (Mathf.Abs(cab.CurrentSpeedKmh) > 0.5f || cab.ThrottleNotch != 0))
+        {
+            float spd = Mathf.Abs(cab.CurrentSpeedKmh);
+            float distKm = cab.DistanceToNextStation * 0.001f;
+            SuperIsland.RegisterSession(new RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandSession
+            {
+                AppType = RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.TrainCab,
+                Priority = 80,
+                Title = "NF-5K 机车遥测",
+                AuxValue = spd,
+                Metric = string.Format("{0:F0} km/h", spd),
+                Subtitle = distKm > 0.05f ? string.Format("距下站 {0:F1}km", distKm) : "线路巡航中",
+                Progress = Mathf.Clamp01(spd / 100f),
+                AccentColor = new Color(0.96f, 0.72f, 0.20f, 1f),
+                OnPrimaryAction = () =>
+                {
+                    cab.SetThrottle(0);
+                    cab.SetBrakeNotch(RailwayRenaissance.Cab.BrakeNotch.Emergency);
+                }
+            });
+        }
+        else
+        {
+            SuperIsland.RemoveSession(RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.TrainCab);
+        }
+    }
 
     private void BuildHudMusicCapsule(VisualElement parent)
     {

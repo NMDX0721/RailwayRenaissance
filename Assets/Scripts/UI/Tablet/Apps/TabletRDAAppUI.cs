@@ -75,8 +75,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         trendBtn.style.color = Color.white;
         trendBtn.style.borderTopWidth = 0; trendBtn.style.borderBottomWidth = 0;
         trendBtn.style.borderLeftWidth = 0; trendBtn.style.borderRightWidth = 0;
-        trendBtn.style.borderTopLeftRadius = 4; trendBtn.style.borderTopRightRadius = 4;
-        trendBtn.style.borderBottomLeftRadius = 4; trendBtn.style.borderBottomRightRadius = 4;
+        trendBtn.style.borderTopLeftRadius = RadiusPill; trendBtn.style.borderTopRightRadius = RadiusPill;
+        trendBtn.style.borderBottomLeftRadius = RadiusPill; trendBtn.style.borderBottomRightRadius = RadiusPill;
         trendBtn.style.paddingLeft = 8; trendBtn.style.paddingRight = 8;
         trendBtn.style.paddingTop = 2; trendBtn.style.paddingBottom = 2;
         lineTitleRow.Add(trendBtn);
