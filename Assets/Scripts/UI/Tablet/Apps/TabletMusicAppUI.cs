@@ -99,6 +99,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicLibrarySession.State.volume = s_currentVolume;
             MusicLibrarySession.Save();
         }
+        public static void StartRadioAuto()
+        {
+            ShowToast(" 已接通「先民时代电台」全自动轮播！");
+            SetPlayMode((int)TabletPlayMode.Sequential);
+            PlayTabletTrack(TabletMusicList[0]);
+        }
         public static void SetPlayMode(int mode)
         {
             ConfigurePlayback(s_currentVolume, mode);
@@ -447,7 +453,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicAudioEffectsEngine.Update(Time.unscaledDeltaTime, s_isMuted ? 0f : s_currentVolume, () => {
                 tabletIsPlaying = false;
                 MusicLibrarySession.Commit();
-                ShowToast("睡眠定时已到，随身听已暂停");
+                ShowToast("随身听停站自熄：已进入睡眠省电模式");
             });
             var active = MusicAudioEffectsEngine.GetActiveDeck();
             if (active != null) tabletMusicSource = active;

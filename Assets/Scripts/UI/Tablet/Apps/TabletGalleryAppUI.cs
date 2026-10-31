@@ -81,7 +81,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             btn.style.paddingLeft = 14;
             btn.style.backgroundColor = (i == currentGalleryCategory) ? BrownWarm : GlassBgSoft;
             btn.style.color = (i == currentGalleryCategory) ? GoldTrimColor : GlassText;
-            btn.style.borderTopLeftRadius = 10; btn.style.borderBottomRightRadius = 10;
+            btn.style.borderTopLeftRadius = RadiusCard; btn.style.borderTopRightRadius = RadiusCard;
+            btn.style.borderBottomLeftRadius = RadiusCard; btn.style.borderBottomRightRadius = RadiusCard;
             btn.style.marginBottom = 8;
             sideNav.Add(btn);
             catBtns.Add(btn);
@@ -257,8 +258,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         close.style.fontSize = 12; close.style.unityFontDefinition = Fd();
         close.style.backgroundColor = new Color(0.25f, 0.25f, 0.32f, 0.7f);
         close.style.color = GlassText;
-        close.style.borderTopLeftRadius = 8; close.style.borderTopRightRadius = 8;
-        close.style.borderBottomLeftRadius = 8; close.style.borderBottomRightRadius = 8;
+        close.style.borderTopLeftRadius = RadiusPill; close.style.borderTopRightRadius = RadiusPill;
+        close.style.borderBottomLeftRadius = RadiusPill; close.style.borderBottomRightRadius = RadiusPill;
         infoCard.Add(close);
     }
 

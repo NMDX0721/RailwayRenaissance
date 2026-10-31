@@ -13,6 +13,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         VisualElement root, content, navigation, drawer, overlay, disc;
         Label title, time, toast, playingTitle, sectionTitle;
         Button play, mode, favorite;
+        MusicIconHelper.VuMeterHandle vuMeter;
+        float vuTime;
         Slider progress;
         TextField search;
         string page = "首页", query = "", detailId, lastId, neteaseUserId;
@@ -870,6 +872,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var info = Box(player, "music-player-info");
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");
             Button(info, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail");
+            Button(info, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
             var controls = Box(player, "music-player-controls");
             var buttons = Box(controls, "music-player-buttons");
             buttons.AddToClassList("music-transport");
@@ -877,6 +880,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(buttons, "上一首", TabletMusicAppUI.PlayPrevTabletTrack);
             play = Button(buttons, "播放", TabletMusicAppUI.ToggleTabletMusicPlayPause, "music-play-toggle"); play.AddToClassList("music-primary");
             Button(buttons, "下一首", TabletMusicAppUI.PlayNextTabletTrack);
+            vuMeter = MusicIconHelper.CreateDualVuMeter();
+            controls.Add(vuMeter.root);
             favorite = Button(buttons, "收藏", () => {
                 if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) MusicLibrarySession.ToggleFavorite(TabletMusicAppUI.tabletCurrentTrackId);
             });
@@ -1240,6 +1245,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 queueBadge.text = queued > 99 ? "99+" : queued.ToString(); queueBadge.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             }
             lyrics?.Tick();
+            if (vuMeter != null)
+            {
+                float lEnergy = 0f, rEnergy = 0f;
+                if (TabletMusicAppUI.tabletIsPlaying)
+                {
+                    vuTime += Time.unscaledDeltaTime;
+                    float waveL = Mathf.Sin(vuTime * 4.4f) * 0.5f + 0.5f;
+                    float waveR = Mathf.Cos(vuTime * 3.8f + 1.2f) * 0.5f + 0.5f;
+                    lEnergy = Mathf.Clamp01(waveL * 0.70f + 0.20f);
+                    rEnergy = Mathf.Clamp01(waveR * 0.72f + 0.18f);
+                }
+                vuMeter.UpdateLevels(lEnergy, rEnergy, Time.unscaledDeltaTime);
+            }
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
             MusicTerminalIcons.Apply(play, MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);

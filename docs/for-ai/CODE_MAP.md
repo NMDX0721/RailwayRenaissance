@@ -315,6 +315,9 @@ TitleScreen.cs — 使用 UI Toolkit
 2026-10-19 核对：下列播放器特性描述仅表示入口或代码存在。云端 Apple/SoundCloud 存在固定示例返回，网易云有模拟歌单兜底，B站有虚构凭据兜底；不能将其视为真实平台功能已验收。音效时间由 GameMainUI.Update 与窗口定时器重复推进的风险待修。详情见 [近期任务复核](dispatch/reports/20261019_codex_recent_tasks_review.md)。
 ```
 GameMainUI.cs (Tablet OS Shell, ~2,000行)
+  ├── TabletSuperIsland.cs (小米澎湃OS 超级岛 / 焦点通知：微胶囊态、大岛展开态、双岛分化，多 App 适配)
+  ├── TabletShellView.cs (控制中心面板：双胶囊大卡、双纵向胶囊滑块、流体播控微件、磨砂状态栏把手)
+  ├── TabletUIHelper.cs (HyperOS Tokens: 连续大圆角、亚克力磨砂、Squircle徽章色彩)
   ├── BuildFullScreenAppContainer: 彻底消除白色“狗皮膏药”，全面升级为 Folia-Major 暗黑视听沉浸容器（深墨黑 #14171C、亚克力毛玻璃顶栏、细黄铜金线高光、实体工业暗色微交互胶囊），所有平板 App 告别刺眼白框
   ├── BuildHudMusicCapsule: Folia 风格随身听 Mini 胶囊（位于状态栏时间右侧，未播放自动隐藏、仅播放中显现；微型黑胶旋转 + 曲名 + 极简播控）
   ├── TabletUIHelper.cs (色系定义/字体定义/统一样式卡片骨架)
@@ -334,9 +337,9 @@ GameMainUI.cs (Tablet OS Shell, ~2,000行)
         ├── SimpleQrCodeGenerator.cs   (纯C#轻量级调频二维码矩阵生成器：脱机高对比度渲染 + 在线高清通道兜底)
         ├── TabletGalleryAppUI.cs      (相册：回忆画廊/全屏大图灯箱)
         ├── TabletSettingsAppUI.cs     (设置：24截图分类/TIPS图鉴/按键映射/开发者)
-        ├── TabletRDAAppUI.cs          (RDA：调度助手/线路车况/T304五线态势联动)
-        ├── TabletNotesAppUI.cs        (百科与便签：媒姬百科/三栏自动化备忘)
-        └── TabletSystemToolsAppUI.cs  (系统工具集：时钟/日历/天气/计算器/米家/安全等)
+        ├── TabletRDAAppUI.cs          (RDA：调度助手/线路车况/五线态势胶囊入口/T304联动)
+        ├── TabletNotesAppUI.cs        (百科与便签：HyperOS Master-Detail 图鉴网格/搜索筛选/Squircle徽章/三栏便签/超级岛语音速记与置顶)
+        └── TabletSystemToolsAppUI.cs  (系统工具集：Hero气象+水文量规/米家机车IoT遥测与超级岛挂载/文件管理多色分段条/图形拓扑铁道路线图/触觉圆角计算器等)
 ```
 
 ---

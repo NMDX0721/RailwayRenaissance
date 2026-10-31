@@ -140,3 +140,96 @@ Restored the existing ShowAffairsPage/ShowStoryPage entry points from HEAD after
   - 日志输出确认：`TABLET_SHELL_STATE_OK`、`TABLET_PRESENTATION_STORAGE_OK`、`TABLET_NOTIFICATION_STORAGE_OK`、`TABLET_SHELL_RUNTIME_OK`、`TABLET_PRESENTATION_RUNTIME_OK`，Unity 进程退出码 0。
   - 截图输出更新位于 `tools/compile/tablet_presentation_review_v1/`。
 
+
+## 2026-10-28 平板任务恢复与释放实际运行回归 (T316 / Antigravity)
+
+- **任务根节点与焦点引用清空**：
+  - 在 `GameMainUI.CloseTabletTask` 中，增加 `task.Root = null;` 与 `task.LastFocusedElement = null;` 清空，切断 `TabletTaskSession` 对已关闭任务根视觉树的强引用。
+  - 在 `GameMainUI.CloseAllTabletTasks` 中，增加 `task.Root = null;`，配合桌面聚焦清空与页面栈清理，确保已注销任务在垃圾回收时无根存留。
+  - 在 `TabletNotesAppUI.ReleaseTaskView` 中防御性兼容 `root == null` 场景，并在关闭或回收时安全清空静态 TextField 与 Label 引用。
+- **UI Toolkit 调度与 WeakReference 回归验证**：
+  - 在 `TabletInteractionReview.Batch` 中扩充真实 Unity 批处理回归：
+    - **归途 (Return Journey)**：前序剧目完成（写入 `ArchiveStory_prologue_01_news`）后，通过任务后台回收再前台唤醒，下一幕（`prologue_02_day0`）按钮即时从“未解锁”更新为“开始本幕”，按钮 `enabledSelf == true` 且处于可交互状态（断言通过，输出 `TABLET_RETURN_JOURNEY_PROGRESSION_OK`）。
+    - **RDA 运营数据前台即时同步**：修改 `GameData.Money`、`Trust`、`TrainCondition`、`ExpectedPassengers` 等核心指标后，由占位任务切回 RDA 前台，即时触发数据重算与面板标签重绘，正确反映数值变更与“亟待大修”状态（断言通过，输出 `TABLET_RDA_DATA_UPDATE_OK`）。
+    - **弱引用 (WeakReference) 与真实 GC 释放**：对笔记应用（`TabletNotesAppUI` 单任务关闭）与设置图鉴（`TabletSettingsAppUI.ShowTipsPage` 全任务关闭）分别挂载 `WeakReference` 监视视图根节点、内部词条标签与输入框。通过 `desktop.Focus()`、关闭独立审查窗口以解绑 UI Toolkit Panel 的事件调度器与焦点控制器强引用，经过受控 3 轮 `GC.Collect() + GC.WaitForPendingFinalizers()` 后，全部 6 个弱引用对象（`notesRoot`、`titleField`、`bodyField`、`settingsRoot`、`tipsPage`、`termLabel`）均确认已脱离强引用链并被 GC 彻底回收（`!weakRef.IsAlive` 全部成立，输出 `TABLET_WEAKREF_RELEASE_OK`）。
+- **运行验证结果**：
+  - 命令：`Start-Process -FilePath "D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -ArgumentList "-batchmode -projectPath ""D:\Unity Project\RailwayRenaissance"" -executeMethod TabletInteractionReview.Batch -logFile ""D:\Unity Project\RailwayRenaissance\tools\compile\t316_final_run.log""" -Wait -PassThru`
+  - Unity 进程退出码 0，日志确认包含 `TABLET_INTERACTION_REVIEW_OK` 完整断言链。
+
+
+## 2026-10-29 系统面板与最近任务图形交互全量回归 (T317 / Antigravity)
+
+- **最近任务与后台输入隔离与焦点恢复**：
+  - 运行时焦点隔离：在 `shell-review-input` 文本输入状态下打开最近任务，键盘事件在 `root` capture 阶段被拦截，无法修改后台文本内容；
+  - 最近任务关闭机制闭环：覆盖 Escape 退出、系统返回键（`RequestSystemBack`）退出以及点击暗色遮罩（scrim）退出三种路径，退出后均成功恢复原输入框焦点（`root.panel.focusController.focusedElement == input`）；
+  - 焦点销毁安全退回保护：当任务聚焦元素在最近任务或系统面板打开期间被动态销毁移除时，关闭时安全降级聚焦至桌面（`desktop`）或 root，杜绝 UI Toolkit 内部悬挂空焦点。
+- **双路径模糊捕获零延迟与跨比例分辨率自适应**：
+  - 离屏目标纹理模式（`targetTexture != null`）：直接于 `TriggerShellBlurCapture` 中执行 GPU 同步 Blit 与降采样模糊，彻底规避批处理模式下 `WaitForEndOfFrame` 不触发的问题；
+  - 壳层防叠与自适应采样：采样前 `_overlay.style.opacity = 0`，采样完成后恢复为 1 并注入模糊纹理，确保背景不包含自身面板层级、杜绝反复变暗；
+  - 跨比例图形核验：在 1440x900 (16:10) 与 1024x768 (4:3) 两种典型分辨率下验证控制中心与通知中心的自适应布局、边界不裁剪及互斥切换。
+- **设置子页返回、同名页替换与全部关闭**：
+  - 设置应用子页（`ShowTipsPage` 术语图鉴）正常展开，同名页再次请求时触发原地替换而非重复压栈；
+  - `RequestSystemBack` 安全弹栈并恢复父页显示；
+  - `CloseAllTabletTasks` 清理全部任务并隐藏应用层，安全回退到桌面壁纸层。
+- **运行验证结果**：
+  - 批处理命令：`Start-Process -FilePath "D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -ArgumentList "-batchmode -projectPath ""D:\Unity Project\RailwayRenaissance"" -executeMethod TabletSystemShellReview.Batch -logFile ""tools/compile/t317_shell_review.log""" -Wait -PassThru`
+  - 退出码：`0`
+  - 日志包含：`TABLET_SHELL_STATE_OK`、`TABLET_PRESENTATION_STORAGE_OK`、`TABLET_NOTIFICATION_STORAGE_OK`、`TABLET_SYSTEM_SHELL_GRAPHIC_REVIEW_OK`；
+  - 输出 10 张真实渲染截图至 `tools/compile/tablet_presentation_review_v1/`。
+
+## 2026-10-29 触控手势与 Android 大屏适配全量回归 (T318 / Antigravity)
+
+- **边缘手势判定决策树与状态机 (`TabletEdgeGesture`)**：
+  - **顶部边缘下拉**：顶部有效高度 32px，以屏幕宽度中线为界；左侧区域向下滑动（dy > 40px, |dy| > 1.2 * |dx|）唤出通知中心（`TabletSystemPanel.Notifications`），右侧区域向下滑动唤出控制中心（`TabletSystemPanel.Controls`）；
+  - **底部边缘上滑**：底部导航栏高度（44px）内向上滑动；快速上滑释放触发回桌面（`TabletGestureAction.Home`）；上滑后停留超 0.28 秒即时触发最近任务（`TabletGestureAction.Recents`），后续松手标记为 Consumed，杜绝误触发回桌面；
+  - **侧沿向内滑动**：左右边缘各 24px 区域内，左边缘向右内滑（dx > 36px）或右边缘向左内滑（dx < -36px）统一触发全局系统返回（`RequestSystemBack`）；
+- **操作冲突严格隔离与多指抑制**：
+  - **直接操控目标免疫 (`IsDirectManipulationTarget`)**：在 `PointerDown` 阶段向上追溯 VisualElement 树，凡命中 `Button`、`TextField`、`Slider`、`Scroller`、`ScrollView`、`Toggle`、`music-progress`、`track-bar`，以及反射检查 `MusicPlayerBarView.PlayerBarHandle`（`progressTrack`、`volSlider`、`root`）时，立即置 `blockDirect = true`，严禁截断音乐进度拖拽、列表滚动或按钮点击；
+  - **软键盘与输入框保护**：`TouchScreenKeyboard.visible` 为真时全阻断系统手势，杜绝输入文字时误触手势；
+  - **多点触控与第二指抑制**：`activeTouchPointers.Count > 1` 时立即重置手势判定状态机，后续触点绝对不触发任何系统边缘手势；
+  - **手势释放与指针捕获闭环**：在 `root` 注册 `PointerCancelEvent` 与 `PointerCaptureOutEvent`，在触控点被外部控件捕获、释放或系统取消时即时清理 `activeTouchPointers`，杜绝触点泄露与手势悬挂；
+- **屏幕旋转与跨比例大屏自适应 (16:10 / 4:3 / 3:4 竖屏)**：
+  - **尺寸突变归零**：在 `root` 注册 `GeometryChangedEvent`，并在 `OnApplicationFocus`/`OnApplicationPause` 中调用 `ResetSystemGesture()`，窗口发生旋转或比例变化时立即重置手势，零粘连状态；
+  - **三比例真实渲染**：覆盖 1440x900 (16:10 横屏)、1024x768 (4:3 横屏) 与 768x1024 (3:4 竖屏) 全分辨率适配，控制中心与通知中心弹窗具备边界保护（`worldBound.xMin >= 0 && worldBound.xMax <= width`），无越界裁剪。
+- **运行验证结果与图形证据**：
+  - 批处理命令：`Start-Process -FilePath "D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -ArgumentList "-batchmode -projectPath ""D:\Unity Project\RailwayRenaissance"" -executeMethod TabletGestureReview.Batch -logFile ""tools/compile/t318_gesture_review.log""" -Wait -PassThru`
+  - 退出码：`0`；
+  - 日志断言通过：`TABLET_GESTURE_STATE_OK`、`TABLET_GESTURE_GRAPHIC_REVIEW_OK`；
+  - 回归测试通过：`TabletInteractionReview.Batch` (退出码 0, `TABLET_INTERACTION_REVIEW_OK`)、`TabletSystemShellReview.Batch` (退出码 0, `TABLET_SYSTEM_SHELL_GRAPHIC_REVIEW_OK`)；
+  - 真实输出 10 张测试截图至 `tools/compile/tablet_gesture_review_v1/`：
+    1. `01-portrait-desktop.png`: 768x1024 竖屏桌面解锁自适应；
+    2. `02-portrait-notifications.png`: 竖屏顶部左侧下拉通知中心；
+    3. `03-portrait-controls.png`: 竖屏顶部右侧下拉控制中心；
+    4. `04-landscape-recents-hold.png`: 1440x900 底部上滑悬停唤出最近任务；
+    5. `05-music-bar-isolation.png`: 音乐播放底栏进度条拖拽冲突隔离；
+    6. `06-multitouch-isolation.png`: 多点触控第二触点手势抑制；
+    7. `07-rotation-recovery.png`: 屏幕旋转与分辨率切换零粘滞恢复；
+    8. `08-softkeyboard-input-isolation.png`: 文本输入与软键盘状态手势阻断；
+    9. `09-edge-back-navigation.png`: 侧沿向内滑动触发图鉴子页出栈返回；
+    10. `10-responsive-4x3-controls.png`: 1024x768 (4:3) 响应式停靠与防裁剪。
+- **Android 物理真机状态说明**：
+  - 当前环境无外接 Android 物理触控板/手机（无连接的 `adb devices`），因此物理真机触控体验标记为 **`NOT_RUN`**，绝不将 Unity 批处理模拟断言混淆为真机通过；附带详细真机手工测试规范。
+
+## 2026-10-29 设置与控制中心可用状态闭环 (T319 / Antigravity)
+
+- **控制中心高价值快捷开关矩阵 (`TabletShellView.RenderControls`)**：
+  - **勿扰通知 (`tablet-quiet-toggle`)**：读写 `TabletShellState.QuietMode`，激活态显示 `#3d6147` 翠绿背景，静默屏蔽悬浮提示横幅；
+  - **系统高对比 (`tablet-high-contrast-toggle`)**：联动 `TabletPresentationPreferences.HighContrast`，开启后壳层切换为纯黑 `#000000` 并将背景暗度提至 0.85，关闭高斯模糊以保读屏性能；
+  - **减少动效 (`tablet-reduce-motion-toggle`)**：联动 `TabletPresentationPreferences.ReduceMotion`，开启后锁屏解锁跳过 420ms 延时动画即时呈现桌面；
+  - **主题强调色 (`tablet-accent-cycle`)**：循环切换 `TabletAccent.Amber` (琥珀金) → `Teal` (青绿) → `Blue` (钴蓝)，即时更新全面板边框与高亮描边；
+  - **壁纸防眩光 (`tablet-wallpaper-dim-toggle`)**：切换壁纸压暗（0% 与 30% 档位），联动 `desktopScrim.style.backgroundColor`；
+  - **系统音频静音 (`tablet-audio-mute-toggle`)**：联动 `GameData.MasterVolume`，点击即时静音至 0，再次点击按记忆音量恢复；
+- **设置双向实时同步 (Bidirectional Realtime Sync)**：
+  - **分类 11 (通知与状态栏)**：新增 `settings-quiet-toggle-row` 胶囊开关与 `settings-clear-notifications-btn`，修改即时调用 `SetQuietMode(v)`，触发 `_state.Changed` 并刷新控制中心磁贴；
+  - **分类 9 (个性化)**：`TabletPresentationSettingsView` 订阅 `_prefs.Changed`，控制中心修改与设置内修改实时互相同步，无递归调用；
+- **沙箱隔离与真实不可用状态标定 (NOT_RUN)**：
+  - 杜绝虚构开关与假蓝牙/Wi-Fi：控制中心增加 `settings-hardware-offline-box` 离线指示卡片，分类 4 (WLAN)、5 (蓝牙)、19 (电池) 均明确标注工业车载沙箱硬隔离，非移动消费级硬件，明确标注 **`NOT_RUN`**；
+- **冷启动与容灾降级保障**：
+  - `presentation-v1.json` 与 `notifications-v1.json` 磁盘持久化在冷启动新实例中无损还原；
+  - 损坏 JSON 文件（语法破坏、版本缺失）安全降级至默认状态，控制面板提示 `LastError` 诊断，严禁覆盖或损毁原文件；更高版本（schemaVersion > 1）自动置为只读模式；
+- **全量批处理断言与图形验证**：
+  - 批处理命令：`Start-Process -FilePath "D:\Unity Hub\Unity 6.5\Editor\Unity.exe" -ArgumentList "-batchmode -projectPath ""D:\Unity Project\RailwayRenaissance"" -executeMethod TabletSettingsControlReview.Batch -logFile ""tools/compile/t319_control_review.log""" -Wait -PassThru`
+  - 退出码：`0`；
+  - 标志断言通过：`TABLET_SETTINGS_CONTROL_STATE_OK`、`TABLET_SETTINGS_CONTROL_GRAPHIC_REVIEW_OK`；
+  - 回归测试全绿：T318 (`TabletGestureReview.Batch` 退出 0)、T317 (`TabletSystemShellReview.Batch` 退出 0)、T316 (`TabletInteractionReview.Batch` 退出 0)；
+  - 真实输出 10 张测试截图至 `tools/compile/tablet_settings_review_v1/`。
