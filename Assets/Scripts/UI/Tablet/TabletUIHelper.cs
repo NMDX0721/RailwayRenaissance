@@ -11,6 +11,9 @@ namespace RailwayRenaissance.UI.Tablet
     {
         private static Font gameFont;
 
+        /// <summary>标题用的半粗体字体定义，使用时不要再叠加 FontStyle.Bold。</summary>
+        public static FontDefinition FdBold() => new FontDefinition { font = TabletFonts.UiBold() };
+
         public static FontDefinition Fd()
         {
             if (gameFont == null)

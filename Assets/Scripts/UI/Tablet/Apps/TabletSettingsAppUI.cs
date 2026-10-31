@@ -136,8 +136,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var titleLbl = new Label("设置");
         titleLbl.style.fontSize = 32; titleLbl.style.color = InkPrimary;
-        titleLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
-        titleLbl.style.unityFontDefinition = Fd();
+        titleLbl.style.unityFontDefinition = FdBold();
         titleLbl.style.marginTop = 6;
         titleLbl.style.marginBottom = 16;
         leftNav.Add(titleLbl);
@@ -1294,10 +1293,64 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     }
 
     // 19 电池：真实系统电源状态与机车供电说明
+    // 电量大色块：绿色填充宽度等于真实电量；平台没有读数时显示灰色并如实说明
+    private static VisualElement BuildBatteryHero(float level, BatteryStatus status)
+    {
+        bool known = level >= 0f;
+        var hero = new VisualElement { name = "settings-battery-hero" };
+        hero.style.height = 128;
+        hero.style.marginBottom = 16;
+        hero.style.overflow = Overflow.Hidden;
+        hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
+        hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
+        hero.style.backgroundColor = known ? new Color(0.74f, 0.92f, 0.80f, 1f) : new Color(0.89f, 0.89f, 0.91f, 1f);
+        hero.style.justifyContent = Justify.Center;
+        hero.style.paddingLeft = 28; hero.style.paddingRight = 28;
+
+        if (known)
+        {
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore, name = "settings-battery-hero-fill" };
+            fill.style.position = Position.Absolute;
+            fill.style.left = 0; fill.style.top = 0; fill.style.bottom = 0;
+            fill.style.width = Length.Percent(Mathf.Clamp01(level) * 100f);
+            fill.style.backgroundColor = status == BatteryStatus.Charging ? new Color(0.20f, 0.80f, 0.42f, 1f) : new Color(0.22f, 0.78f, 0.45f, 1f);
+            hero.Add(fill);
+        }
+
+        var valueRow = new VisualElement { pickingMode = PickingMode.Ignore };
+        valueRow.style.flexDirection = FlexDirection.Row;
+        valueRow.style.alignItems = Align.FlexEnd;
+        var value = new Label(known ? Mathf.RoundToInt(level * 100f).ToString() : "--");
+        value.style.fontSize = 52; value.style.color = known ? Color.white : InkSecondary;
+        value.style.unityFontDefinition = FdBold();
+        value.pickingMode = PickingMode.Ignore;
+        valueRow.Add(value);
+        var unit = new Label("%");
+        unit.style.fontSize = 20; unit.style.color = known ? Color.white : InkSecondary;
+        unit.style.unityFontDefinition = FdBold();
+        unit.style.marginLeft = 4; unit.style.marginBottom = 8;
+        unit.pickingMode = PickingMode.Ignore;
+        valueRow.Add(unit);
+        hero.Add(valueRow);
+
+        string caption = !known ? "平台未提供电量读数"
+            : status == BatteryStatus.Charging ? "正在充电"
+            : status == BatteryStatus.Full ? "电池已充满"
+            : status == BatteryStatus.NotCharging ? "未在充电"
+            : "电池供电放电中";
+        var sub = new Label(caption);
+        sub.style.fontSize = 15; sub.style.color = known ? Color.white : InkSecondary;
+        sub.style.unityFontDefinition = Fd();
+        sub.pickingMode = PickingMode.Ignore;
+        hero.Add(sub);
+        return hero;
+    }
+
     private static void RenderBatterySettings(ScrollView rightPane)
     {
         var page = new VisualElement { name = "settings-battery-page" };
         AddCenterHeader(page, "电池");
+        page.Add(BuildBatteryHero(SystemInfo.batteryLevel, SystemInfo.batteryStatus));
 
         AddSectionHeader(page, "供电状态");
         var statusCard = BuildWhiteCard();
@@ -1507,7 +1560,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var h = new Label(title);
         h.style.fontSize = 22; h.style.color = InkPrimary;
-        h.style.unityFontStyleAndWeight = FontStyle.Bold; h.style.unityFontDefinition = Fd();
+        h.style.unityFontDefinition = FdBold();
         h.style.alignSelf = Align.Center; h.style.marginBottom = 16;
         parent.Add(h);
     }
@@ -1516,7 +1569,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var h = new Label(title);
         h.style.fontSize = 13; h.style.color = SectionHeaderColor;
-        h.style.unityFontStyleAndWeight = FontStyle.Bold; h.style.unityFontDefinition = Fd();
+        h.style.unityFontDefinition = FdBold();
         h.style.marginBottom = 8; h.style.marginLeft = 6;
         parent.Add(h);
     }

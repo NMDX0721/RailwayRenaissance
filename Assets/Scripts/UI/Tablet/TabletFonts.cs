@@ -11,7 +11,10 @@ namespace RailwayRenaissance.UI.Tablet
         private const string UiFontPath = "Fonts/MiSans-Regular";
         private const string PixelFontPath = "Fonts/zpix";
 
+        private const string UiBoldFontPath = "Fonts/MiSans-Semibold";
+
         private static Font s_ui;
+        private static Font s_uiBold;
 
         public static Font Ui()
         {
@@ -21,6 +24,17 @@ namespace RailwayRenaissance.UI.Tablet
                 if (s_ui == null) s_ui = Resources.Load<Font>(PixelFontPath);
             }
             return s_ui;
+        }
+
+        /// <summary>标题和强调文字用的半粗体；缺失时退回常规字重。</summary>
+        public static Font UiBold()
+        {
+            if (s_uiBold == null)
+            {
+                s_uiBold = Resources.Load<Font>(UiBoldFontPath);
+                if (s_uiBold == null) s_uiBold = Ui();
+            }
+            return s_uiBold;
         }
 
         public static Font Pixel() => Resources.Load<Font>(PixelFontPath);
