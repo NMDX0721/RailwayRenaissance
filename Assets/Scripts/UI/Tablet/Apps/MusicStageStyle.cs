@@ -31,6 +31,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public float dt;
         public bool calm, estimate, showTranslation;
         public float fontScale, energy, low, mid, high;
+        public string title;
         public Color accent;
         public StageTuning tuning;
     }
@@ -84,6 +85,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             new Entry { id = "tilt", title = "Tilt", create = () => new MusicStageTilt() },
             new Entry { id = "claddagh", title = "回环", create = () => new MusicStageCladdagh() },
             new Entry { id = "cadenza", title = "心象", create = () => new MusicStageCadenza() },
+            new Entry { id = "cappella", title = "清唱", create = () => new MusicStageCappella() },
             new Entry { id = "still", title = "Still", create = () => new MusicStageStill() }
         };
 

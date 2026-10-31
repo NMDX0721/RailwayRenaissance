@@ -561,6 +561,22 @@
 .music-stage-glow { position: absolute; left: 0; top: 0; }
 /* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
 .music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; padding: 36px 0 28px; }
+/* Cappella style: a chat. Rows hold an avatar and a bubble, mirrored for the right-hand sender; the bubble widens as characters appear. */
+.music-stage-cappella { align-self: stretch; align-items: center; justify-content: flex-start; padding-top: 12px; }
+.music-stage-cappella-list { align-self: stretch; max-width: 880px; padding: 0 24px; justify-content: flex-start; }
+.music-stage-cappella-row { flex-direction: row; align-items: flex-end; margin-bottom: 12px; }
+.music-stage-cappella-right { flex-direction: row-reverse; }
+.music-stage-cappella-avatar { width: 40px; height: 40px; border-radius: 20px; overflow: hidden; flex-shrink: 0; margin: 0 10px; }
+.music-stage-cappella-shoulders { position: absolute; left: 6px; top: 26px; width: 28px; height: 28px; border-radius: 14px; }
+.music-stage-cappella-head { position: absolute; left: 13px; top: 8px; width: 14px; height: 14px; border-radius: 7px; }
+.music-stage-cappella-bubble { max-width: 68%; border-radius: 16px; flex-shrink: 1; border-width: 1px; border-color: rgba(255, 255, 255, 0.12); }
+.music-stage-cappella-bubble-left { border-bottom-left-radius: 4px; transform-origin: left bottom; }
+.music-stage-cappella-bubble-right { border-bottom-right-radius: 4px; transform-origin: right bottom; }
+.music-stage-cappella-flow { flex-direction: row; flex-wrap: wrap; }
+.music-stage-cappella-unit { flex-direction: row; }
+.music-stage-cappella-char { white-space: nowrap; }
+.music-stage-cappella-translation { white-space: normal; margin-top: 4px; }
+.music-stage-cappella-stamp { margin-top: 2px; -unity-text-align: middle-right; }
 /* Cadenza style: each word sits on a zero-size holder placed from the middle of the field; the halo rides on the character being sung. */
 .music-stage-cadenza { align-self: stretch; align-items: center; justify-content: center; }
 .music-stage-cadenza-field { position: absolute; left: 0; right: 0; top: 0; bottom: 0; align-items: center; justify-content: center; }

@@ -40,13 +40,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public void Invalidate() => style?.Invalidate();
 
         public void Tick(MusicTimedDocument document, int active, double clock, float dt, bool calm, bool estimate, float fontScale,
-            Color accent, float energy, bool showTranslation, StageTuning tuning, float low, float mid, float high)
+            Color accent, float energy, bool showTranslation, StageTuning tuning, float low, float mid, float high, string title = null)
         {
             if (!ReferenceEquals(document, shownDocument) || active != shownLine || showTranslation != shownTranslation) RefreshSubtitles(document, active, showTranslation);
             style.Tick(new StageContext
             {
                 document = document, active = active, clock = clock, dt = dt, calm = calm, estimate = estimate, showTranslation = showTranslation,
-                fontScale = fontScale, energy = energy, low = low, mid = mid, high = high, accent = accent, tuning = tuning
+                fontScale = fontScale, energy = energy, low = low, mid = mid, high = high, accent = accent, tuning = tuning, title = title
             });
         }
 

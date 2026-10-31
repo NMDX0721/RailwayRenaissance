@@ -389,7 +389,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 stage.Select(MusicLibrarySession.State.stageStyle);
                 stage.Tick(document, active, clock, Time.unscaledDeltaTime, MusicLibrarySession.State.reduceMotion, MusicLibrarySession.State.estimateWords,
                     Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation,
-                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh);
+                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh, TabletMusicAppUI.tabletCurrentTrackTitle);
             }
             foreach (var pair in words)
             {

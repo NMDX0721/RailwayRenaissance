@@ -629,7 +629,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 11)
+                    if (styleStep < 13)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -751,8 +751,35 @@ public static class RailwayMusicTerminalReview
                                 }
                             Assert(worstOverlap < .3f, "Cadenza words cover each other (worst shared area " + (worstOverlap * 100).ToString("F0") + "% of the smaller word)");
                             Capture("05x-cadenza-b");
-                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            MusicLibrarySession.State.stageStyle = "cappella"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
                             Debug.Log("MUSIC_STAGE_CADENZA_OK: hero word in the middle, other words pushed clear, ring of light on the sung character");
+                        }
+                        else if (styleStep == 11)
+                        {
+                            var chatRows = stageHost.Query(className: "music-stage-cappella-row").ToList().FindAll(r => r.resolvedStyle.display != DisplayStyle.None);
+                            Assert(stageHost.StyleId == "cappella" && chatRows.Count >= 3, "Cappella did not show the title and the lines sung so far (" + chatRows.Count + " rows)");
+                            var rightRows = chatRows.FindAll(r => r.ClassListContains("music-stage-cappella-right")); var leftRows = chatRows.FindAll(r => !r.ClassListContains("music-stage-cappella-right"));
+                            Assert(rightRows.Count >= 1 && leftRows.Count >= 1, "Cappella messages are not split between the left and right senders (" + leftRows.Count + " left, " + rightRows.Count + " right)");
+                            // Real positions: right-hand bubbles sit to the right of left-hand ones, and rows follow each other down the stage without covering one another.
+                            float leftMax = float.MinValue, rightMin = float.MaxValue;
+                            foreach (var r in leftRows) leftMax = Mathf.Max(leftMax, r.Q(className: "music-stage-cappella-bubble").worldBound.center.x);
+                            foreach (var r in rightRows) rightMin = Mathf.Min(rightMin, r.Q(className: "music-stage-cappella-bubble").worldBound.center.x);
+                            Assert(rightMin > leftMax, "Right-hand Cappella bubbles are not to the right of the left-hand ones (" + rightMin.ToString("F0") + " vs " + leftMax.ToString("F0") + ")");
+                            chatRows.Sort((x, y) => x.worldBound.yMin.CompareTo(y.worldBound.yMin));
+                            for (int r = 0; r + 1 < chatRows.Count; r++) Assert(chatRows[r].worldBound.yMax <= chatRows[r + 1].worldBound.yMin + 3f, "Cappella rows cover each other (row " + r + ")");
+                            var activeChars = chatRows[chatRows.Count - 1].Query<Label>(className: "music-stage-cappella-char").ToList();
+                            Assert(activeChars.Count >= 2 && activeChars[0].resolvedStyle.opacity > .9f, "Cappella text did not fade in as it was sung");
+                            var cappellaFont = activeChars[0].resolvedStyle.unityFontDefinition.font;
+                            Assert(cappellaFont != null && cappellaFont.name.ToLowerInvariant().Contains("zpix"), "Cappella text is not in the pixel font");
+                            Capture("05y-cappella-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 12)
+                        {
+                            var stamps = stageHost.Query(className: "music-stage-cappella-stamp").ToList().FindAll(s => s.resolvedStyle.display != DisplayStyle.None);
+                            Assert(stamps.Count >= 1, "Cappella showed no timestamp once a line was complete");
+                            Capture("05y-cappella-b");
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CAPPELLA_OK: chat rows split between two senders, no overlap, text fades in, timestamps after the line");
                         }
                         else
                         {
