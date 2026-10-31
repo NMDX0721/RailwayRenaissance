@@ -519,3 +519,34 @@
 .music-compact .music-utility-buttons .music-icon-button { width: 30px; height: 30px; padding: 5px; }
 .music-compact .music-speed-chip { min-width: 34px; margin-right: 2px; padding: 0 3px; }
 
+/* Anchored menus, local selection, lyrics fold, calmer stage text. */
+.music-menu-overlay { background-color: rgba(0, 0, 0, 0); }
+.music-menu.music-popover { width: 264px; }
+.music-popover-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.music-menu-divider { height: 1px; margin: 6px 8px; background-color: rgb(78, 76, 58); }
+.music-menu-danger { color: rgb(228, 146, 124); }
+.music-modal-header Label { min-width: 0; flex-shrink: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.music-modal-header .music-button { flex-shrink: 0; }
+
+.music-check { width: 20px; height: 20px; min-width: 20px; padding: 0; margin: 0 10px 0 0; align-items: center; justify-content: center; background-color: rgb(30, 34, 28); border-width: 1px; border-color: rgb(140, 120, 80); border-radius: 5px; flex-shrink: 0; }
+.music-check.is-checked { background-color: rgb(205, 174, 111); border-color: rgb(236, 205, 140); }
+.music-check-mark { width: 10px; height: 10px; border-radius: 3px; background-color: rgba(0, 0, 0, 0); }
+.music-check.is-checked .music-check-mark { background-color: rgb(33, 36, 28); }
+.music-manage-bar { flex-direction: row; align-items: center; flex-wrap: wrap; padding: 8px 12px; margin-bottom: 10px; background-color: rgb(36, 40, 33); border-width: 1px; border-color: rgb(78, 76, 56); border-radius: 10px; }
+.music-manage-count { flex-grow: 1; min-width: 160px; font-size: 12px; color: rgb(214, 204, 170); }
+.music-manage-actions { flex-direction: row; flex-shrink: 0; }
+.music-manage-actions .music-button { margin-left: 6px; }
+.music-danger { border-color: rgb(150, 86, 70); color: rgb(238, 170, 150); }
+
+.music-lyrics-more { margin-top: 2px; }
+.music-lyrics-more .unity-foldout__text { color: rgb(214, 196, 150); font-size: 13px; }
+.music-lyrics-more .unity-foldout__content { margin-left: 0; }
+.music-lyrics-detail { min-height: 22px; margin-bottom: 4px; }
+.music-lyrics-status { padding-bottom: 14px; margin-bottom: 10px; }
+.music-stage-word-text { -unity-font-style: normal; }
+
+/* Stage: breathing dots, chorus ripple; side-panel cover keeps its own proportions. */
+.music-stage-dots { font-size: 30px; color: rgb(214, 204, 172); -unity-text-align: middle-center; margin-bottom: 4px; }
+.music-stage-ripple { position: absolute; left: 50%; top: 50%; border-width: 1px; border-radius: 50%; border-color: rgb(255, 224, 150); }
+.music-stage-word { align-items: center; flex-direction: row; }
+.music-lyrics-cover { background-size: contain; align-self: flex-start; }

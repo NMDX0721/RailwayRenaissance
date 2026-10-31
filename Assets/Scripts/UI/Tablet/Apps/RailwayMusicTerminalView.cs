@@ -279,10 +279,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     MusicLibrarySession.RefreshLocal();
                     ShowToast(count > 0 ? $"已导入 {count} 个音频文件" : "未导入文件；支持 MP3 / WAV / OGG");
                 }), "music-import");
-                Button(actions, "刷新文件", () => MusicLibrarySession.RefreshLocal());
-                Button(actions, "打开文件夹", LocalMusicFileImporter.OpenCustomMusicFolder);
                 if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
                     Button(actions, "自动搜索", StartLocalScan, "music-scan-local").tooltip = "在音乐、下载、桌面、文档等常用位置查找音频（后台进行，可随时停止）";
+                Button(actions, manageMode ? "完成" : "管理", () => { manageMode = !manageMode; chosen.Clear(); Refresh(); }, "music-manage-local").tooltip = "选择多首本地音乐，批量移出随身听";
+                Button moreLocal = null;
+                moreLocal = Button(actions, "更多", () => {
+                    var menu = MenuAt(moreLocal, "本地音乐");
+                    PopoverItem(menu, "刷新文件", false, () => { CloseModal(); MusicLibrarySession.RefreshLocal(); });
+                    PopoverItem(menu, "打开文件夹", false, () => { CloseModal(); LocalMusicFileImporter.OpenCustomMusicFolder(); });
+                }, "music-more-local");
             }
             if (selected != null && query.Length == 0)
             {
@@ -291,6 +296,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     MusicLibrarySession.State.playlists.Remove(selected); selected = null; page = "原声"; MusicLibrarySession.Commit();
                 }));
             }
+            if (page == "本地音乐" && query.Length == 0 && manageMode) BuildManageBar(content, items);
             if (page == "本地音乐" && query.Length == 0) BuildScanPanel(content);
             var tableHead = Box(content, "music-table-head");
             Text(tableHead, "档案 / 曲目", "music-grow"); Text(tableHead, "时长", "music-duration"); Text(tableHead, "操作", "music-action-caption");
@@ -315,6 +321,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var row = Box(parent, "music-track-row"); row.userData = track.id;
             Arrive(row, i);
             if (reorder) AddReorder(row, selected.tracks, i);
+            if (manageMode && track.local)
+            {
+                string checkId = track.id;
+                var box = new Button(() => { if (!chosen.Remove(checkId)) chosen.Add(checkId); Refresh(); }) { name = "music-check-" + checkId, tooltip = "选择" };
+                box.AddToClassList("music-check"); box.EnableInClassList("is-checked", chosen.Contains(checkId));
+                var mark = new VisualElement { pickingMode = PickingMode.Ignore }; mark.AddToClassList("music-check-mark"); box.Add(mark); row.Add(box);
+            }
             var indicator = Text(row, (i + 1).ToString("D2"), "music-track-number"); indicators[track.id] = indicator;
             Cover(row, track.id, track.category, 42);
             var info = Box(row, "music-track-info");
@@ -329,7 +342,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(row, track.duration > 0 ? TabletMusicAppUI.FormatAudioTime(track.duration) : "--:--", "music-duration");
             var start = Button(row, "播放", () => MusicLibrarySession.Play(track.id, resume), "music-play-" + track.id); start.SetEnabled(available);
             Button(row, MusicLibrarySession.State.favorites.Contains(track.id) ? "已藏" : "收藏", () => MusicLibrarySession.ToggleFavorite(track.id), "music-favorite-" + track.id);
-            Button(row, "更多", () => TrackActions(track), "music-more-" + track.id);
+            Button moreButton = null;
+            moreButton = Button(row, "更多", () => TrackActions(track, moreButton), "music-more-" + track.id);
             row.RegisterCallback<ClickEvent>(e => { if (e.clickCount == 2 && e.target is not UnityEngine.UIElements.Button) MusicLibrarySession.Play(track.id, resume); });
         }
 
@@ -505,7 +519,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 }
                 var lists = result.result.playlists ?? Array.Empty<NeteaseLocalBridge.RemotePlaylist>();
                 if (lists.Length == 0) Text(grid, "这里还没有歌单", "music-muted");
-                foreach (var list in lists.Take(6)) CollectionCard(grid, list.title, list.count + " 首 · " + MusicCatalogSearch.Label(source), () => { requestedCloudPlaylist = list.id; OpenSource(source, true); }, null, "playlist:" + source + ":" + list.id, list.cover);
+                foreach (var list in lists.Take(6)) CollectionCard(grid, list.title, list.count + " 首 · " + MusicCatalogSearch.Label(source), () => PlayCloudPlaylist(source, list.id, list.title), null, "playlist:" + source + ":" + list.id, list.cover);
                 return;
             }
             Text(grid, "正在读取歌单…", "music-muted");
@@ -623,6 +637,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         bool arriving; string renderedArrival;
         bool importing, importCancel; int importDone, importTotal;
+        bool manageMode; readonly HashSet<string> chosen = new HashSet<string>();
         // Folia-style arrival: entries come in 34 ms apart (at most nine steps) and covers are uncovered a little
         // later; with reduced motion they only fade in place.
         void Arrive(VisualElement element, int order)
@@ -645,32 +660,109 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var panel = Modal("确认操作"); Text(panel, message, "music-wrap");
             Button(panel, "确认删除", () => { CloseModal(); action(); });
         }
-        void EditName(MusicUserPlaylist list)
+        void EditName(MusicUserPlaylist list, string thenAdd = null)
         {
             var panel = Modal(list == null ? "新建私人歌单" : "重命名歌单");
             var field = new TextField("名称") { value = list?.title ?? "", maxLength = 60 }; panel.Add(field); field.Focus();
             Button(panel, "保存", () => {
                 if (string.IsNullOrWhiteSpace(field.value)) { ShowToast("请填写歌单名称"); return; }
-                if (list == null) selected = MusicLibrarySession.CreatePlaylist(field.value);
+                if (list == null) { selected = MusicLibrarySession.CreatePlaylist(field.value); if (thenAdd != null) MusicLibrarySession.AddToPlaylist(selected, thenAdd); }
                 else { list.title = field.value.Trim(); selected = list; }
                 page = "歌单"; CloseModal(); MusicLibrarySession.Commit();
             }, "music-save-playlist");
         }
-        void TrackActions(MusicLibraryTrack track)
+        // Menus open under their button; deeper choices (playlists) replace the content instead of stacking dialogs.
+        VisualElement MenuAt(VisualElement anchor, string heading)
         {
-            var panel = Modal(track.title);
-            Button(panel, "查看唱片档案", () => ShowDetail(track.id));
-            Button(panel, "下一首播放", () => { MusicLibrarySession.Enqueue(track.id, true); CloseModal(); ShowToast("已放到队列最前"); });
-            Button(panel, "加入播放队列", () => { MusicLibrarySession.Enqueue(track.id); CloseModal(); ShowToast("已加入播放队列"); });
-            Text(panel, "加入歌单", "music-eyebrow");
-            var lists = new ScrollView(); lists.style.maxHeight = 180; panel.Add(lists);
-            foreach (var list in MusicLibrarySession.State.playlists)
-                Button(lists, list.title, () => {
-                    bool added = MusicLibrarySession.AddToPlaylist(list, track.id); CloseModal(); ShowToast(added ? "已加入歌单" : "歌单中已有这首曲目");
-                });
-            if (MusicLibrarySession.State.playlists.Count == 0) Text(lists, "先在左侧新建一个歌单。", "music-muted");
-            if (selected != null && query.Length == 0)
-                Button(panel, "从当前歌单移除", () => { selected.tracks.Remove(track.id); CloseModal(); MusicLibrarySession.Commit(); });
+            if (overlay == null) modalReturnFocus = root.panel?.focusController.focusedElement as VisualElement;
+            overlay?.RemoveFromHierarchy(); disc = null; lyrics = null;
+            overlay = Box(root, "music-overlay"); overlay.AddToClassList("music-menu-overlay");
+            var menu = Box(overlay, "music-menu"); menu.AddToClassList("music-popover"); menu.style.position = Position.Absolute;
+            if (!string.IsNullOrEmpty(heading)) Text(menu, heading, "music-popover-title");
+            overlay.RegisterCallback<PointerDownEvent>(e => { if (e.target == overlay) CloseModal(); });
+            overlay.RegisterCallback<KeyDownEvent>(e => { if (e.keyCode == KeyCode.Escape) CloseModal(); });
+            menu.RegisterCallback<GeometryChangedEvent>(_ =>
+            {
+                var area = root.worldBound; float width = menu.resolvedStyle.width, height = menu.resolvedStyle.height;
+                if (float.IsNaN(width) || float.IsNaN(height) || area.width <= 0) return;
+                float left, top;
+                if (anchor != null && anchor.panel != null)
+                {
+                    var at = anchor.worldBound; left = at.xMax - width - area.x; top = at.yMax - area.y + 4;
+                    if (top + height > area.height - 8) top = at.y - area.y - height - 4;
+                }
+                else { left = (area.width - width) / 2; top = (area.height - height) / 2; }
+                left = Mathf.Clamp(left, 8, Mathf.Max(8, area.width - width - 8)); top = Mathf.Clamp(top, 8, Mathf.Max(8, area.height - height - 8));
+                if (Mathf.Abs(menu.resolvedStyle.left - left) > .5f) menu.style.left = left;
+                if (Mathf.Abs(menu.resolvedStyle.top - top) > .5f) menu.style.top = top;
+            });
+            return menu;
+        }
+        void TrackActions(MusicLibraryTrack track, VisualElement anchor = null)
+        {
+            var menu = MenuAt(anchor, track.title);
+            void Main()
+            {
+                menu.Clear(); Text(menu, track.title, "music-popover-title");
+                PopoverItem(menu, "查看唱片档案", false, () => ShowDetail(track.id));
+                PopoverItem(menu, "下一首播放", false, () => { MusicLibrarySession.Enqueue(track.id, true); CloseModal(); ShowToast("已放到队列最前"); });
+                PopoverItem(menu, "加入播放队列", false, () => { MusicLibrarySession.Enqueue(track.id); CloseModal(); ShowToast("已加入播放队列"); });
+                PopoverItem(menu, "加入歌单…", false, Playlists).name = "music-menu-playlists";
+                if (selected != null && query.Length == 0)
+                    PopoverItem(menu, "从当前歌单移除", false, () => { selected.tracks.Remove(track.id); CloseModal(); MusicLibrarySession.Commit(); });
+                if (track.local)
+                {
+                    Box(menu, "music-menu-divider");
+                    PopoverItem(menu, "从随身听移出…", false, () => { CloseModal(); ConfirmDelete(new List<string> { track.id }); }).AddToClassList("music-menu-danger");
+                }
+            }
+            void Playlists()
+            {
+                menu.Clear(); Text(menu, "加入歌单", "music-popover-title");
+                foreach (var list in MusicLibrarySession.State.playlists)
+                {
+                    var target = list;
+                    PopoverItem(menu, target.title, false, () => {
+                        bool added = MusicLibrarySession.AddToPlaylist(target, track.id); CloseModal(); ShowToast(added ? "已加入歌单" : "歌单中已有这首曲目");
+                    });
+                }
+                PopoverItem(menu, "新建歌单并加入", false, () => { CloseModal(); EditName(null, track.id); });
+                Box(menu, "music-menu-divider");
+                PopoverItem(menu, "返回", false, Main);
+            }
+            Main();
+        }
+        void ConfirmDelete(List<string> ids)
+        {
+            if (ids.Count == 0) return;
+            Confirm(ids.Count == 1 ? "把这首从随身听移出？只清理随身听里的这份拷贝（放进回收站，可恢复），你电脑上原来的文件不受影响。"
+                : "把所选 " + ids.Count + " 首从随身听移出？只清理随身听里的拷贝（放进回收站，可恢复），你电脑上原来的文件不受影响。", () => {
+                int removed = MusicLibrarySession.RemoveLocalTracks(ids, true, out int kept);
+                foreach (string id in ids) chosen.Remove(id);
+                ShowToast(kept > 0 ? "已移出 " + removed + " 首；" + kept + " 首无法处理，已保留" : "已从随身听移出 " + removed + " 首");
+                Refresh();
+            });
+        }
+        void BuildManageBar(VisualElement parent, List<MusicLibraryTrack> items)
+        {
+            var bar = Box(parent, "music-manage-bar", "music-manage-bar");
+            Text(bar, chosen.Count == 0 ? "点击曲目前的方框来选择" : "已选择 " + chosen.Count + " 首", "music-manage-count");
+            var row = Box(bar, "music-manage-actions");
+            Button(row, "全选", () => { foreach (var t in items) if (t.local) chosen.Add(t.id); Refresh(); }, "music-manage-all");
+            Button(row, "清除", () => { chosen.Clear(); Refresh(); }, "music-manage-clear");
+            var delete = Button(row, "移出所选", () => ConfirmDelete(new List<string>(chosen)), "music-manage-delete");
+            delete.AddToClassList("music-danger"); delete.SetEnabled(chosen.Count > 0);
+        }
+        void PlayCloudPlaylist(string source, string id, string title)
+        {
+            ShowToast("正在载入「" + title + "」…");
+            NeteaseLocalBridge.ForProvider(source).Send("playlist_tracks", new NeteaseLocalBridge.Parameters { id = id }, result => {
+                if (!result.ok || result.result == null || result.result.tracks == null || result.result.tracks.Length == 0) { ShowToast("歌单暂时无法读取"); return; }
+                var registered = new List<MusicLibraryTrack>();
+                foreach (var remote in result.result.tracks) { var track = MusicLibrarySession.RegisterRemote(remote, source); if (track != null) registered.Add(track); }
+                if (registered.Count == 0) { ShowToast("歌单里没有可播放的曲目"); return; }
+                PlayAll(registered);
+            });
         }
         void AddReorder(VisualElement row, List<string> list, int index)
         {

@@ -217,6 +217,46 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return imported;
         }
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        struct ShFileOp
+        {
+            public IntPtr hwnd; public uint wFunc;
+            [MarshalAs(UnmanagedType.LPWStr)] public string pFrom;
+            [MarshalAs(UnmanagedType.LPWStr)] public string pTo;
+            public ushort fFlags; public int aborted; public IntPtr mappings;
+            [MarshalAs(UnmanagedType.LPWStr)] public string title;
+        }
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)] static extern int SHFileOperation(ref ShFileOp operation);
+#endif
+        /// <summary>Moves a file to the Windows recycle bin. Never deletes permanently: false means it could not be recycled.</summary>
+        public static bool MoveToRecycleBin(string path)
+        {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            try
+            {
+                if (string.IsNullOrEmpty(path) || !File.Exists(path)) return true;
+                // FO_DELETE with FOF_ALLOWUNDO sends to the recycle bin; the path list must end with a double null.
+                var operation = new ShFileOp { wFunc = 3, pFrom = Path.GetFullPath(path) + "\0\0", fFlags = 0x40 | 0x10 | 0x4 | 0x400 };
+                return SHFileOperation(ref operation) == 0 && operation.aborted == 0 && !File.Exists(path);
+            }
+            catch (Exception) { return false; }
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>Subtitle and cover files that were imported next to an audio file.</summary>
+        public static List<string> CompanionFiles(string audioPath)
+        {
+            var found = new List<string>();
+            if (string.IsNullOrEmpty(audioPath)) return found;
+            string stem = Path.Combine(Path.GetDirectoryName(audioPath) ?? "", Path.GetFileNameWithoutExtension(audioPath));
+            foreach (string extension in new[] { ".lrc", ".vtt", ".srt", ".json", ".t.lrc", ".jpg", ".jpeg", ".png" })
+                if (File.Exists(stem + extension)) found.Add(stem + extension);
+            return found;
+        }
+
         static bool SameContent(string left, string right)
         {
             if (new FileInfo(left).Length != new FileInfo(right).Length) return false;

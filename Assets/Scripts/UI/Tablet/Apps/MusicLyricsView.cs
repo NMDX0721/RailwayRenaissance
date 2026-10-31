@@ -96,37 +96,51 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var track = MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId);
             reactiveStage.SetTrack(track);
             var cover = Box(art, "music-lyrics-cover");
-            cover.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(track?.id, track?.category));
+            Texture2D coverTexture = MusicAlbumArtResolver.GetAlbumCover(track?.id, track?.category);
+            cover.style.backgroundImage = new StyleBackground(coverTexture);
+            cover.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            void FitCover()
+            {
+                if (cover.panel == null || coverTexture == null || coverTexture.width <= 0) return;
+                float room = art.resolvedStyle.width - art.resolvedStyle.paddingLeft - art.resolvedStyle.paddingRight;
+                if (float.IsNaN(room) || room <= 0) return;
+                bool compact = false;
+                for (var ancestor = host; ancestor != null; ancestor = ancestor.parent) if (ancestor.ClassListContains("music-compact")) { compact = true; break; }
+                float width = Mathf.Min(room, compact ? 140f : 220f), ratio = Mathf.Clamp((float)coverTexture.height / coverTexture.width, .6f, 1.4f);
+                cover.style.width = width; cover.style.height = width * ratio;
+            }
+            art.RegisterCallback<GeometryChangedEvent>(_ => FitCover());
             if (track != null) MusicAlbumArtResolver.LoadRemoteCover(track.id, image => {
                 if (cover.panel == null || reactiveStage.TrackId != track.id) return;
-                cover.style.backgroundImage = new StyleBackground(image); reactiveStage.SetTrack(track, true);
+                coverTexture = image; cover.style.backgroundImage = new StyleBackground(image); FitCover(); reactiveStage.SetTrack(track, true);
             });
             Text(art, track?.title ?? "尚未选择曲目", "music-detail-title");
             if (track != null && !string.IsNullOrEmpty(track.titleTranslation)) Text(art, track.titleTranslation, "music-muted");
             Text(art, "沿线声音档案 / RAILWAY SOUND", "music-eyebrow");
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
-            var imports = Box(art, "music-lyrics-actions");
+            var more = new Foldout { text = "设置", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
+            var imports = Box(more, "music-lyrics-actions");
             Action(imports, "导入字幕", () => Import(false), "music-lyrics-import");
             Action(imports, "导入翻译", () => Import(true), "music-lyrics-import-translation");
-            Action(art, "重新读取", Reload, "music-lyrics-reload");
-            Text(art, "显示", "music-lyrics-section");
-            var font = new Slider("字号", 18, 36) { value = MusicLibrarySession.State.lyricFontSize, name = "music-lyrics-font" }; art.Add(font);
+            Action(more, "重新读取", Reload, "music-lyrics-reload");
+            Text(more, "显示", "music-lyrics-section");
+            var font = new Slider("字号", 18, 36) { value = MusicLibrarySession.State.lyricFontSize, name = "music-lyrics-font" }; more.Add(font);
             font.AddToClassList("music-horizontal-slider");
             font.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFontSize = Mathf.RoundToInt(e.newValue); MusicLibrarySession.Save(); RenderRows(); });
-            var translation = new Toggle("显示翻译") { value = MusicLibrarySession.State.lyricTranslation, name = "music-lyrics-translation" }; art.Add(translation);
+            var translation = new Toggle("显示翻译") { value = MusicLibrarySession.State.lyricTranslation, name = "music-lyrics-translation" }; more.Add(translation);
             translation.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricTranslation = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
-            var estimate = new Toggle("估算逐词") { value = MusicLibrarySession.State.estimateWords, name = "music-lyrics-estimate" }; art.Add(estimate);
+            var estimate = new Toggle("估算逐词") { value = MusicLibrarySession.State.estimateWords, name = "music-lyrics-estimate" }; more.Add(estimate);
             estimate.tooltip = "没有逐词时间的歌词，按行内字数估算逐词填充（仅用于显示）";
             estimate.RegisterValueChangedCallback(e => { MusicLibrarySession.State.estimateWords = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
-            var reduce = new Toggle("减少动态效果") { value = MusicLibrarySession.State.reduceMotion, name = "music-lyrics-reduce-motion" }; art.Add(reduce);
+            var reduce = new Toggle("减少动态效果") { value = MusicLibrarySession.State.reduceMotion, name = "music-lyrics-reduce-motion" }; more.Add(reduce);
             reduce.RegisterValueChangedCallback(e => { MusicLibrarySession.State.reduceMotion = e.newValue; MusicLibrarySession.Save(); });
-            Text(art, "时间校准", "music-lyrics-section");
-            var timing = Box(art, "music-player-buttons");
+            Text(more, "时间校准", "music-lyrics-section");
+            var timing = Box(more, "music-player-buttons");
             timing.name = "music-lyrics-timing";
             Action(timing, "延后 100ms", () => Adjust(-100), "music-lyrics-later", true);
             offsetLabel = Text(timing, "0 ms", "music-lyric-offset");
             Action(timing, "提前 100ms", () => Adjust(100), "music-lyrics-earlier", true);
-            Action(art, "重置字幕时间", () => { var p = MusicTimedText.Preference(trackId); p.offsetMs = 0; MusicLibrarySession.Save(); active = -2; }, "music-lyrics-reset");
+            Action(more, "重置字幕时间", () => { var p = MusicTimedText.Preference(trackId); p.offsetMs = 0; MusicLibrarySession.Save(); active = -2; }, "music-lyrics-reset");
             var textArea = Box(body, "music-lyrics-text-area");
             var cueRail = Box(textArea, "music-cue-rail");
             stageProgress = Box(cueRail, "music-cue-progress");

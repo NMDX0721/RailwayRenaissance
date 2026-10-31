@@ -6,33 +6,40 @@ using UnityEngine.UIElements;
 namespace RailwayRenaissance.UI.Tablet.Apps
 {
     /// <summary>
-    /// Stage mode, after Folia's classic visualizer: only the current line is on stage. Each word waits (small, faded,
-    /// off to the side), pops forward on a spring shortly before its time, then settles back as "passed".
-    /// Poses are functions of the audio clock, so pausing freezes them and seeking rebuilds them.
+    /// Stage mode, after Folia's classic visualizer. Only the current line is on stage. Its characters are grouped into display
+    /// units ("手を", "unbelievable"); each unit waits small and faded, pops forward on a spring shortly before its time, and settles
+    /// back once sung, while the characters inside light up one by one. Fast lines reveal sooner, repeated lines (choruses) ripple,
+    /// gaps show breathing dots. Every pose is a function of the audio clock, so pausing freezes it and seeking rebuilds it.
     /// </summary>
     public sealed class MusicStageLyrics : VisualElement
     {
-        sealed class StageWord
+        sealed class StageUnit
         {
-            public VisualElement body; public Label label; public MusicTimedWord word;
-            public float baseScale, cx, cy, rot, passedRot;
-            public float x, y, s = .5f, r, o, tone;
-            public float vx, vy, vs, vr;
+            public VisualElement body, ripple;
+            public readonly List<Label> labels = new List<Label>();
+            public readonly List<float> tones = new List<float>();
+            public LyricUnit unit;
+            public float baseScale, cx, cy, rot, passedRot, rippleScale;
+            public float x, y, s = .5f, r, o, vx, vy, vs, vr, rippleTime = 1;
+            public int state = -1;
         }
 
-        const double Lookahead = .15;
-        readonly Label previous = new Label(), upcoming = new Label(), translation = new Label();
+        enum Reveal { Normal, Fast, Instant }
+
+        readonly Label previous = new Label(), upcoming = new Label(), translation = new Label(), dots = new Label("· · ·");
         readonly VisualElement line = new VisualElement();
-        readonly List<StageWord> words = new List<StageWord>();
-        MusicTimedDocument shownDocument; int shownLine = -2; float shownScale; bool shownEstimate, shownTranslation, shownCalm;
+        readonly List<StageUnit> units = new List<StageUnit>();
+        MusicTimedDocument shownDocument; int shownLine = -2; float shownScale, shownWidth; bool shownEstimate, shownTranslation, shownCalm;
+        Reveal reveal; double lineStart, lineEnd = double.PositiveInfinity, nextStart = double.PositiveInfinity;
+        bool chorus, blank; float builtAt; float fontSize = 40f;
 
         public MusicStageLyrics()
         {
             AddToClassList("music-stage-lyrics");
             previous.AddToClassList("music-stage-previous"); upcoming.AddToClassList("music-stage-upcoming");
-            translation.AddToClassList("music-stage-translation"); line.AddToClassList("music-stage-line");
-            Add(previous); Add(line); Add(translation); Add(upcoming);
-            foreach (var label in new[] { previous, upcoming, translation }) label.pickingMode = PickingMode.Ignore;
+            translation.AddToClassList("music-stage-translation"); line.AddToClassList("music-stage-line"); dots.AddToClassList("music-stage-dots");
+            Add(previous); Add(dots); Add(line); Add(translation); Add(upcoming);
+            foreach (var label in new[] { previous, upcoming, translation, dots }) label.pickingMode = PickingMode.Ignore;
             line.pickingMode = PickingMode.Ignore;
         }
 
@@ -40,45 +47,86 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Color accent, float energy, bool showTranslation)
         {
             if (!ReferenceEquals(document, shownDocument) || active != shownLine || Mathf.Abs(fontScale - shownScale) > .01f ||
-                estimate != shownEstimate || showTranslation != shownTranslation || calm != shownCalm)
+                Mathf.Abs(resolvedStyle.width - shownWidth) > 24f || estimate != shownEstimate || showTranslation != shownTranslation || calm != shownCalm)
                 Rebuild(document, active, estimate, fontScale, showTranslation, calm);
 
             dt = Mathf.Clamp(dt, 0, 1f / 20f);
+            float now = Time.realtimeSinceStartup;
             Color baseColor = new Color(.93f, .9f, .8f), activeColor = Color.Lerp(Color.white, accent, .35f);
-            foreach (var w in words)
+
+            // Between lines: a long silence shows breathing dots instead of a finished line (Folia's interlude).
+            bool finished = !double.IsInfinity(lineEnd) && clock > lineEnd + 2.5 && nextStart - clock > 3;
+            bool interlude = blank || finished || shownLine < 0;
+            dots.style.display = interlude ? DisplayStyle.Flex : DisplayStyle.None;
+            dots.style.opacity = calm ? .5f : .35f + .3f * (.5f + .5f * Mathf.Sin(now * 2.6f));
+            float intro = calm ? 1f : Mathf.SmoothStep(0, 1, Mathf.Clamp01((now - builtAt) / .3f));
+            float lineFade = finished ? 0f : 1f;
+
+            foreach (var u in units)
             {
-                double end = double.IsInfinity(w.word.end) ? w.word.start + 1 : w.word.end;
-                int state = clock > end ? 2 : clock >= w.word.start - Lookahead ? 1 : 0;
+                double lookahead = reveal == Reveal.Instant ? .03 : reveal == Reveal.Fast ? .08 : .15;
+                double end = reveal == Reveal.Instant ? (double.IsInfinity(lineEnd) ? u.unit.end : lineEnd)
+                    : reveal == Reveal.Fast ? Math.Min(double.IsInfinity(lineEnd) ? u.unit.end : lineEnd, Math.Max(u.unit.end, u.unit.start + .12)) : u.unit.end;
+                int state = clock > end ? 2 : clock >= u.unit.start - lookahead ? 1 : 0;
+                if (state == 1 && u.state != 1 && chorus && !calm) u.rippleTime = 0;
+                u.state = state;
+
                 if (calm)
                 {
-                    w.o = state == 0 ? .3f : 1f; w.s = 1; w.x = w.y = w.r = 0; w.tone = state == 1 ? 1 : 0;
+                    u.o = state == 0 ? .3f : 1f; u.s = 1; u.x = u.y = u.r = 0;
                 }
                 else
                 {
                     // The same targets Folia gives its three states: waiting is small and displaced, active pops large, passed settles.
-                    float tx = state == 0 ? w.cx + Mathf.Sin(w.cy) * 28f : w.cx, ty = state == 0 ? w.cy + Mathf.Cos(w.cx) * 14f : w.cy;
-                    float ts = state == 0 ? .5f * w.baseScale : state == 1 ? 1.25f * w.baseScale : w.baseScale;
-                    float tr = state == 0 ? w.rot + 20f : state == 1 ? w.rot : w.rot + w.passedRot;
-                    Spring(ref w.s, ref w.vs, ts, dt); Spring(ref w.x, ref w.vx, tx, dt); Spring(ref w.y, ref w.vy, ty, dt); Spring(ref w.r, ref w.vr, tr, dt);
+                    float tx = state == 0 ? u.cx + Mathf.Sin(u.cy) * 28f : u.cx, ty = state == 0 ? u.cy + Mathf.Cos(u.cx) * 14f : u.cy;
+                    float ts = state == 0 ? .5f * u.baseScale : state == 1 ? 1.12f * u.baseScale : u.baseScale;
+                    float tr = state == 0 ? u.rot + 20f : state == 1 ? u.rot : u.rot + u.passedRot;
+                    float stiffness = reveal == Reveal.Normal ? 220f : 320f, damping = reveal == Reveal.Normal ? 27f : 32f;
+                    Spring(ref u.s, ref u.vs, ts, dt, stiffness, damping); Spring(ref u.x, ref u.vx, tx, dt, stiffness, damping);
+                    Spring(ref u.y, ref u.vy, ty, dt, stiffness, damping); Spring(ref u.r, ref u.vr, tr, dt, stiffness, damping);
                     float targetOpacity = state == 0 ? 0f : state == 1 ? 1f : .82f;
-                    w.o = Mathf.Lerp(w.o, targetOpacity, 1 - Mathf.Exp(-dt * (state == 1 ? 18f : 6f)));
-                    w.tone = Mathf.Lerp(w.tone, state == 1 ? 1f : 0f, 1 - Mathf.Exp(-dt * (state == 1 ? 14f : 2.5f)));
+                    u.o = Mathf.Lerp(u.o, targetOpacity, 1 - Mathf.Exp(-dt * (state == 1 ? 18f : 6f)));
                 }
-                w.body.style.opacity = w.o;
-                w.body.style.scale = new Scale(new Vector3(w.s, w.s, 1));
-                w.body.style.translate = new Translate(w.x, w.y);
-                w.body.style.rotate = new Rotate(new Angle(w.r, AngleUnit.Degree));
-                w.label.style.color = Color.Lerp(baseColor, activeColor, w.tone);
-                w.label.style.textShadow = new TextShadow { offset = Vector2.zero, blurRadius = 12f * w.tone, color = new Color(accent.r, accent.g, accent.b, .6f * w.tone) };
+                u.body.style.opacity = u.o * lineFade;
+                u.body.style.scale = new Scale(new Vector3(u.s, u.s, 1));
+                u.body.style.translate = new Translate(u.x, u.y);
+                u.body.style.rotate = new Rotate(new Angle(u.r, AngleUnit.Degree));
+
+                // Inside an active unit the characters light up one by one on their own times (Folia's grapheme timing).
+                for (int g = 0; g < u.labels.Count; g++)
+                {
+                    float target = state == 1 ? (clock >= u.unit.glyphs[g].start ? 1f : .25f) : state == 2 ? 0f : 0f;
+                    float rate = state == 1 ? 20f : state == 2 ? 2.5f : 8f;
+                    u.tones[g] = calm ? (state == 1 ? 1f : 0f) : Mathf.Lerp(u.tones[g], target, 1 - Mathf.Exp(-dt * rate));
+                    float tone = u.tones[g];
+                    u.labels[g].style.color = Color.Lerp(baseColor, activeColor, tone);
+                    u.labels[g].style.textShadow = new TextShadow { offset = Vector2.zero, blurRadius = 12f * tone, color = new Color(accent.r, accent.g, accent.b, .6f * tone) };
+                }
+
+                if (u.ripple != null)
+                {
+                    if (u.rippleTime < .5f)
+                    {
+                        u.rippleTime += dt; float t = Mathf.Clamp01(u.rippleTime / .5f), size = Mathf.Max(u.body.resolvedStyle.width, u.body.resolvedStyle.height) * 1.5f;
+                        if (!float.IsNaN(size) && size > 0) { u.ripple.style.width = size; u.ripple.style.height = size; u.ripple.style.marginLeft = -size / 2; u.ripple.style.marginTop = -size / 2; }
+                        float scale = Mathf.Lerp(.2f, u.rippleScale, 1 - (1 - t) * (1 - t));
+                        u.ripple.style.scale = new Scale(new Vector3(scale, scale, 1)); u.ripple.style.opacity = .8f * (1 - t);
+                        u.ripple.style.borderTopColor = u.ripple.style.borderBottomColor = u.ripple.style.borderLeftColor = u.ripple.style.borderRightColor = activeColor;
+                    }
+                    else u.ripple.style.opacity = 0;
+                }
             }
-            // The whole line breathes a little more when the music is louder.
-            line.style.translate = calm ? new Translate(0, 0) : new Translate(0, Mathf.Sin(Time.realtimeSinceStartup * .9f) * (2f + 5f * Mathf.Clamp01(energy)));
+            // The whole line comes in with a short scale/fade, and breathes a little more when the music is louder.
+            line.style.opacity = intro * lineFade;
+            float introScale = .92f + .08f * intro;
+            float breathe = calm ? 0 : Mathf.Sin(now * .9f) * (2f + 5f * Mathf.Clamp01(energy));
+            line.style.scale = new Scale(new Vector3(introScale, introScale, 1));
+            line.style.translate = new Translate(0, breathe);
         }
 
-        static void Spring(ref float value, ref float velocity, float target, float dt)
+        static void Spring(ref float value, ref float velocity, float target, float dt, float stiffness, float damping)
         {
             if (dt <= 0) return;
-            const float stiffness = 200f, damping = 20f;
             int steps = Mathf.Max(1, Mathf.CeilToInt(dt / .008f)); float h = dt / steps;
             for (int i = 0; i < steps; i++)
             {
@@ -93,39 +141,72 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return x - Mathf.Floor(x);
         }
 
+        static string Normalize(string text)
+        {
+            var letters = new System.Text.StringBuilder();
+            foreach (char c in text ?? "") if (char.IsLetterOrDigit(c)) letters.Append(char.ToLowerInvariant(c));
+            return letters.ToString();
+        }
+
         void Rebuild(MusicTimedDocument document, int active, bool estimate, float fontScale, bool showTranslation, bool calm)
         {
+            shownWidth = float.IsNaN(resolvedStyle.width) ? 0 : resolvedStyle.width;
             shownDocument = document; shownLine = active; shownScale = fontScale; shownEstimate = estimate; shownTranslation = showTranslation; shownCalm = calm;
-            line.Clear(); words.Clear();
+            builtAt = Time.realtimeSinceStartup;
+            line.Clear(); units.Clear(); chorus = false; blank = false; lineStart = 0; lineEnd = nextStart = double.PositiveInfinity;
             string Plain(int index) => document != null && index >= 0 && index < document.lines.Count ? document.lines[index].text : "";
             previous.text = Plain(active - 1); upcoming.text = Plain(active < 0 ? 0 : active + 1);
             translation.text = ""; translation.style.display = DisplayStyle.None;
             if (document == null || active < 0 || active >= document.lines.Count) return;
             var data = document.lines[active];
-            if (string.IsNullOrWhiteSpace(data.text)) return;
+            nextStart = active + 1 < document.lines.Count ? document.lines[active + 1].start : double.PositiveInfinity;
+            lineStart = data.start; lineEnd = !double.IsInfinity(data.end) && data.end > data.start ? data.end : nextStart;
+            if (string.IsNullOrWhiteSpace(data.text)) { blank = true; return; }
 
-            List<MusicTimedWord> source = data.words.Count > 0 ? data.words : null;
-            if (source == null && estimate) source = MusicLyricEstimate.Words(data, active + 1 < document.lines.Count ? document.lines[active + 1].start : double.PositiveInfinity);
-            if (source == null || source.Count == 0)
-                source = new List<MusicTimedWord> { new MusicTimedWord { text = data.text, start = data.start, end = double.IsInfinity(data.end) ? data.start + 4 : data.end } };
+            // A line sung more than once is treated as a chorus.
+            string key = Normalize(data.text); int sung = 0;
+            if (key.Length >= 4) foreach (var other in document.lines) if (Normalize(other.text) == key) sung++;
+            chorus = sung >= 2;
+
+            var glyphs = MusicLyricUnits.Timeline(data, nextStart, estimate, out _);
+            if (glyphs.Count == 0) glyphs.Add(new LyricGlyph { text = data.text, start = data.start, end = double.IsInfinity(lineEnd) ? data.start + 4 : lineEnd });
+            var grouped = MusicLyricUnits.Group(glyphs);
+
+            // Fast lines do not wait for every word: the more words per second, the sooner each one is revealed.
+            double span = Math.Max(.1, grouped[grouped.Count - 1].end - grouped[0].start), perUnit = span / grouped.Count;
+            reveal = perUnit < .10 ? Reveal.Instant : perUnit < .18 ? Reveal.Fast : Reveal.Normal;
 
             int length = Mathf.Max(1, data.text.Length), seed = active * 7919 + length * 131;
-            float size = (length <= 12 ? 46f : length <= 22 ? 40f : length <= 34 ? 34f : 28f) * fontScale;
-            for (int i = 0; i < source.Count; i++)
+            // Fit the line to the stage: one row for short lines, two for long ones, never smaller than readable.
+            float width = float.IsNaN(resolvedStyle.width) || resolvedStyle.width < 120 ? 760f : resolvedStyle.width;
+            float avail = Mathf.Max(240f, width - 96f);
+            float size = Mathf.Clamp(avail * (length <= 14 ? 1 : 2) / (length * 1.15f), 26f, 52f) * fontScale;
+            fontSize = size = Mathf.Min(size, avail / 3f);
+
+            for (int i = 0; i < grouped.Count; i++)
             {
-                var word = source[i];
-                var stageWord = new StageWord { word = word, baseScale = 1f + Random(seed + i, 4) * .15f };
-                stageWord.cx = (Random(seed + i, 1) - .5f) * 24f; stageWord.cy = (Random(seed + i, 2) - .5f) * 16f;
-                stageWord.rot = calm ? 0 : (Random(seed + i, 3) - .5f) * 10f; stageWord.passedRot = calm ? 0 : (Random(seed + i, 8) - .5f) * 20f;
-                stageWord.body = new VisualElement { pickingMode = PickingMode.Ignore }; stageWord.body.AddToClassList("music-stage-word");
-                stageWord.body.style.marginRight = Mathf.Max(3f, size * .06f);
-                stageWord.label = new Label(word.text) { pickingMode = PickingMode.Ignore }; stageWord.label.AddToClassList("music-stage-word-text");
-                stageWord.label.style.fontSize = size;
-                stageWord.body.Add(stageWord.label); line.Add(stageWord.body);
+                var unit = grouped[i];
+                var stage = new StageUnit { unit = unit, baseScale = 1f + Random(seed + i, 4) * .05f };
+                stage.cx = (Random(seed + i, 1) - .5f) * 10f; stage.cy = (Random(seed + i, 2) - .5f) * 8f;
+                stage.rot = calm ? 0 : (Random(seed + i, 3) - .5f) * 6f; stage.passedRot = calm ? 0 : (Random(seed + i, 8) - .5f) * 10f;
+                stage.rippleScale = 1.5f + Random(seed + i, 9) * 2f;
+                stage.body = new VisualElement { pickingMode = PickingMode.Ignore }; stage.body.AddToClassList("music-stage-word");
+                stage.body.style.marginRight = Mathf.Max(4f, size * .12f);
+                if (chorus)
+                {
+                    stage.ripple = new VisualElement { pickingMode = PickingMode.Ignore }; stage.ripple.AddToClassList("music-stage-ripple");
+                    stage.ripple.style.opacity = 0; stage.body.Add(stage.ripple);
+                }
+                foreach (var glyph in unit.glyphs)
+                {
+                    var label = new Label(glyph.text) { pickingMode = PickingMode.Ignore }; label.AddToClassList("music-stage-word-text");
+                    label.style.fontSize = size; stage.body.Add(label); stage.labels.Add(label); stage.tones.Add(0);
+                }
+                line.Add(stage.body);
                 // Start in the waiting pose so the first frame does not flash.
-                stageWord.s = .5f * stageWord.baseScale; stageWord.o = 0; stageWord.r = stageWord.rot + 20f;
-                stageWord.x = stageWord.cx + Mathf.Sin(stageWord.cy) * 28f; stageWord.y = stageWord.cy + Mathf.Cos(stageWord.cx) * 14f;
-                words.Add(stageWord);
+                stage.s = .5f * stage.baseScale; stage.o = 0; stage.r = stage.rot + 20f;
+                stage.x = stage.cx + Mathf.Sin(stage.cy) * 28f; stage.y = stage.cy + Mathf.Cos(stage.cx) * 14f;
+                units.Add(stage);
             }
             if (showTranslation && !string.IsNullOrEmpty(data.translation)) { translation.text = data.translation; translation.style.display = DisplayStyle.Flex; }
         }

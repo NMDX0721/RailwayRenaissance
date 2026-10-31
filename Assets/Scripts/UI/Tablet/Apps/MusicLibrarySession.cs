@@ -317,6 +317,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (string.IsNullOrWhiteSpace(title)) return null;
             var list = new MusicUserPlaylist { title = title.Trim() }; State.playlists.Add(list); Commit(); return list;
         }
+        /// <summary>
+        /// Removes local tracks from the library. With deleteFiles their audio and subtitle/cover companions go to the recycle bin first;
+        /// a file that cannot be recycled keeps its library entry (never deleted permanently).
+        /// </summary>
+        public static int RemoveLocalTracks(IEnumerable<string> ids, bool deleteFiles, out int kept)
+        {
+            Ensure(); int removed = 0; kept = 0;
+            foreach (string id in new List<string>(ids))
+            {
+                var track = Find(id);
+                if (track == null || !track.local) continue;
+                if (deleteFiles)
+                {
+                    string path = LocalPath(track);
+                    if (!LocalMusicFileImporter.MoveToRecycleBin(path)) { kept++; continue; }
+                    foreach (string companion in LocalMusicFileImporter.CompanionFiles(path)) LocalMusicFileImporter.MoveToRecycleBin(companion);
+                }
+                state.localTracks.RemoveAll(t => t.id == id); tracks.Remove(id);
+                state.favorites.Remove(id); state.queue.RemoveAll(q => q == id);
+                foreach (var list in state.playlists) list.tracks.RemoveAll(t => t == id);
+                if (state.currentId == id) { MusicAudioEffectsEngine.Pause(); TabletMusicAppUI.tabletIsPlaying = false; }
+                removed++;
+            }
+            Commit(); return removed;
+        }
         public static bool AddToPlaylist(MusicUserPlaylist list, string id)
         {
             if (Find(id) == null || list.tracks.Contains(id)) return false;

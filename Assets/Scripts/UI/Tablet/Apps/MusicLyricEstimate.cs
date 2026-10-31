@@ -22,55 +22,6 @@ public static class MusicLyricEstimate
         if (document != null) document.lines.RemoveAll(line => line != null && Credit.IsMatch(line.text ?? ""));
     }
 
-    public static List<MusicTimedWord> Words(MusicTimedLine line, double nextStart)
-    {
-        var result = new List<MusicTimedWord>();
-        string text = line.text;
-        if (string.IsNullOrWhiteSpace(text)) return result;
-        double end = !double.IsInfinity(line.end) && line.end > line.start ? line.end : nextStart;
-        if (double.IsInfinity(end) || end <= line.start) end = line.start + 4;
-        end = Math.Min(end, line.start + 12);
-        double span = (end - line.start) * 0.9;
-        if (span < 0.4) return result;
-
-        var tokens = new List<string>(); var word = new StringBuilder();
-        void Flush() { if (word.Length > 0) { tokens.Add(word.ToString()); word.Clear(); } }
-        foreach (char c in text)
-        {
-            if (char.IsWhiteSpace(c))
-            {
-                if (word.Length > 0) { word.Append(c); Flush(); }
-                else if (tokens.Count > 0) tokens[tokens.Count - 1] += c;
-                continue;
-            }
-            if (c < 0x250 && (char.IsLetterOrDigit(c) || c == '\'')) { word.Append(c); continue; }
-            if (char.IsPunctuation(c) || char.IsSymbol(c))
-            {
-                if (word.Length > 0) { word.Append(c); Flush(); }
-                else if (tokens.Count > 0) tokens[tokens.Count - 1] += c;
-                else tokens.Add(c.ToString());
-                continue;
-            }
-            Flush(); tokens.Add(c.ToString());
-        }
-        Flush();
-        if (tokens.Count == 0) return result;
-
-        var weights = new double[tokens.Count]; double total = 0;
-        for (int i = 0; i < tokens.Count; i++)
-        {
-            double weight = 0;
-            foreach (char c in tokens[i]) weight += char.IsWhiteSpace(c) || char.IsPunctuation(c) ? 0.15 : c < 0x250 ? 0.5 : 1.0;
-            weights[i] = Math.Max(0.3, weight); total += weights[i];
-        }
-        double at = line.start;
-        for (int i = 0; i < tokens.Count; i++)
-        {
-            double length = span * weights[i] / total;
-            result.Add(new MusicTimedWord { start = at, end = at + length, text = tokens[i] });
-            at += length;
-        }
-        return result;
-    }
+    public static List<MusicTimedWord> Words(MusicTimedLine line, double nextStart) => MusicLyricUnits.EstimatedWords(line, nextStart);
 }
 }
