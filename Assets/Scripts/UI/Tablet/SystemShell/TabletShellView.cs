@@ -95,6 +95,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             _launcher.Add(btnNotif);
             _launcher.Add(btnCtrl);
+            // 状态栏不再显示“通知/控制”文字按钮：面板由顶部下拉手势和状态栏点按呼出。
+            // 节点保留（无障碍与审查按名称触发），但不显示、不参与布局。
+            _launcher.style.display = DisplayStyle.None;
 
             _overlay = new VisualElement { name = "tablet-shell-overlay" };
             _overlay.style.position = Position.Absolute;

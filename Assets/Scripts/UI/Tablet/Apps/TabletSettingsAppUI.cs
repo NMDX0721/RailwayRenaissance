@@ -1348,7 +1348,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         hero.style.overflow = Overflow.Hidden;
         hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
         hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
-        hero.style.backgroundColor = known ? new Color(0.74f, 0.92f, 0.80f, 1f) : new Color(0.89f, 0.89f, 0.91f, 1f);
+        hero.style.backgroundColor = known ? new Color(0.76f, 0.93f, 0.82f, 1f) : new Color(0.89f, 0.89f, 0.91f, 1f);
         hero.style.justifyContent = Justify.Center;
         hero.style.paddingLeft = 28; hero.style.paddingRight = 28;
 
@@ -1358,7 +1358,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             fill.style.position = Position.Absolute;
             fill.style.left = 0; fill.style.top = 0; fill.style.bottom = 0;
             fill.style.width = Length.Percent(Mathf.Clamp01(level) * 100f);
-            fill.style.backgroundColor = status == BatteryStatus.Charging ? new Color(0.20f, 0.80f, 0.42f, 1f) : new Color(0.22f, 0.78f, 0.45f, 1f);
+            fill.style.backgroundColor = new Color(0.20f, 0.82f, 0.40f, 1f);
             hero.Add(fill);
         }
 
@@ -1366,12 +1366,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         valueRow.style.flexDirection = FlexDirection.Row;
         valueRow.style.alignItems = Align.FlexEnd;
         var value = new Label(known ? Mathf.RoundToInt(level * 100f).ToString() : "--");
-        value.style.fontSize = 52; value.style.color = known ? Color.white : InkSecondary;
+        // 数字压在绿色填充上用白字；电量低、数字落到浅色底上时改深绿，保证对比度
+        var heroInk = !known ? InkSecondary : level >= 0.40f ? Color.white : new Color(0.08f, 0.32f, 0.16f, 1f);
+        value.style.fontSize = 52; value.style.color = heroInk;
         value.style.unityFontDefinition = FdBold();
         value.pickingMode = PickingMode.Ignore;
         valueRow.Add(value);
         var unit = new Label("%");
-        unit.style.fontSize = 20; unit.style.color = known ? Color.white : InkSecondary;
+        unit.style.fontSize = 20; unit.style.color = heroInk;
         unit.style.unityFontDefinition = FdBold();
         unit.style.marginLeft = 4; unit.style.marginBottom = 8;
         unit.pickingMode = PickingMode.Ignore;
@@ -1384,7 +1386,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             : status == BatteryStatus.NotCharging ? "未在充电"
             : "电池供电放电中";
         var sub = new Label(caption);
-        sub.style.fontSize = 15; sub.style.color = known ? Color.white : InkSecondary;
+        sub.style.fontSize = 15; sub.style.color = heroInk;
         sub.style.unityFontDefinition = Fd();
         sub.pickingMode = PickingMode.Ignore;
         hero.Add(sub);
@@ -1532,22 +1534,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.SetInt("AutoPlay", v ? 1 : 0);
             PlayerPrefs.Save();
         }));
-        gameCard.Add(BuildToggleRow("跳过已读文本", "已读过的对话自动跳过", PlayerPrefs.GetInt("SkipRead", 1) == 1, v =>
+        gameCard.Add(BuildToggleRow("跳过已读文本", "剧情系统尚未记录已读状态，暂不可用", PlayerPrefs.GetInt("SkipRead", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("SkipRead", v ? 1 : 0);
             PlayerPrefs.Save();
-        }));
+        }, false));
         gameCard.Add(BuildToggleRow("点击对话框推进", "点击对话框区域触发下一句", PlayerPrefs.GetInt("ClickAdvance", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("ClickAdvance", v ? 1 : 0);
             PlayerPrefs.Save();
         }));
-        gameCard.Add(BuildToggleRow("确认对话框", "关闭游戏或退出章节时显示确认", PlayerPrefs.GetInt("ConfirmDialog", 1) == 1, v =>
+        gameCard.Add(BuildToggleRow("确认对话框", "剧情内的确认弹窗目前固定显示，暂不可关闭", PlayerPrefs.GetInt("ConfirmDialog", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("ConfirmDialog", v ? 1 : 0);
             PlayerPrefs.Save();
-        }));
-        gameCard.Add(BuildSliderRow("自动播放间隔", 1, 10, PlayerPrefs.GetInt("AutoInterval", 3), v =>
+        }, false));
+        gameCard.Add(BuildSliderRow("自动播放间隔", 1, 10, PlayerPrefs.GetInt("AutoInterval", 2), v =>
         {
             PlayerPrefs.SetInt("AutoInterval", v);
             PlayerPrefs.Save();
@@ -1690,9 +1692,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         return row;
     }
 
-    private static VisualElement BuildToggleRow(string title, string desc, bool initialVal, System.Action<bool> onChanged)
+    private static VisualElement BuildToggleRow(string title, string desc, bool initialVal, System.Action<bool> onChanged, bool enabled = true)
     {
         var row = new VisualElement();
+        if (!enabled) row.style.opacity = 0.45f;   // 禁用态：灰显且点击不翻转
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
@@ -1735,8 +1738,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         thumb.style.marginLeft = val ? 23 : 3;
         toggle.Add(thumb);
 
+        if (!enabled) toggle.pickingMode = PickingMode.Ignore;
         toggle.RegisterCallback<ClickEvent>(_ =>
         {
+            if (!enabled) return;
             val = !val;
             toggle.style.backgroundColor = val ? AccentSystem : new Color(0.85f, 0.85f, 0.87f, 1f);
             thumb.style.marginLeft = val ? 23 : 3;

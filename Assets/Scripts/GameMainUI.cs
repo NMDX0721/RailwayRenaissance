@@ -612,6 +612,8 @@ public class GameMainUI : MonoBehaviour
     private Label statusClock;
     private Label statusBatt;
     private Label statusQuiet;
+    private VisualElement statusUnread;
+    private VisualElement statusBattFill;
     private int battTick;
     private readonly System.Collections.Generic.List<VisualElement> appIcons = new System.Collections.Generic.List<VisualElement>();
     private int currentDesktopPage = 0;
@@ -723,6 +725,19 @@ public class GameMainUI : MonoBehaviour
         statusClock.style.unityFontDefinition = Fd();
         leftGroup.Add(statusClock);
 
+        // 未读通知小红点（时间右侧）
+        statusUnread = new VisualElement { name = "tablet-status-unread", pickingMode = PickingMode.Ignore };
+        statusUnread.style.width = 8; statusUnread.style.height = 8;
+        statusUnread.style.marginLeft = 6;
+        statusUnread.style.borderTopLeftRadius = statusUnread.style.borderTopRightRadius = 4;
+        statusUnread.style.borderBottomLeftRadius = statusUnread.style.borderBottomRightRadius = 4;
+        statusUnread.style.backgroundColor = RailwayRenaissance.UI.Tablet.TabletTheme.SignalRed;
+        statusUnread.style.display = DisplayStyle.None;
+        leftGroup.Add(statusUnread);
+
+        // 点按状态栏左侧（时间）呼出通知中心，点按右侧（状态图标）呼出控制中心；拖动手势同样可用
+        leftGroup.RegisterCallback<ClickEvent>(_ => tabletShellState?.TogglePanel(RailwayRenaissance.UI.Tablet.SystemShell.TabletSystemPanel.Notifications));
+
         // 小米澎湃OS (HyperOS Pad) 超级岛：位于状态栏左侧，紧随时间右侧
         SuperIsland = new RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland(desktop, appName => LaunchApp(appName), leftGroup);
 
@@ -730,6 +745,9 @@ public class GameMainUI : MonoBehaviour
         rightInfo.style.flexDirection = FlexDirection.Row;
         rightInfo.style.alignItems = Align.Center;
         statusBar.Add(rightInfo);
+        rightInfo.RegisterCallback<ClickEvent>(_ => tabletShellState?.TogglePanel(RailwayRenaissance.UI.Tablet.SystemShell.TabletSystemPanel.Controls));
+        rightInfo.style.minWidth = 96;
+        rightInfo.style.justifyContent = Justify.FlexEnd;
 
         // 勿扰开启时显示月亮；本机不虚拟 Wi-Fi/蓝牙，状态栏只放真实状态
         statusQuiet = new Label("🌙") { name = "tablet-status-quiet" };
@@ -744,17 +762,29 @@ public class GameMainUI : MonoBehaviour
         try { battPct = GetDeviceBatteryPercent(); }
         catch (System.Exception ex) { TraceLog.L("[GameMainUI] Desktop: battery EX " + ex.Message); }
         TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
+        // 电量徽标：深灰圆角底 + 按电量铺的浅灰填充 + 白色粗体数字（对照 HyperOS 状态栏：深浅背景下都清晰）
+        var battBox = new VisualElement { name = "tablet-status-battery-box" };
+        battBox.style.width = 36; battBox.style.height = 20;
+        battBox.style.overflow = Overflow.Hidden;
+        battBox.style.borderTopLeftRadius = battBox.style.borderTopRightRadius = 7;
+        battBox.style.borderBottomLeftRadius = battBox.style.borderBottomRightRadius = 7;
+        battBox.style.backgroundColor = new Color(0.20f, 0.21f, 0.24f, 0.92f);
+        battBox.style.justifyContent = Justify.Center;
+        battBox.style.alignItems = Align.Center;
+        statusBattFill = new VisualElement { pickingMode = PickingMode.Ignore };
+        statusBattFill.style.position = Position.Absolute;
+        statusBattFill.style.left = 0; statusBattFill.style.top = 0; statusBattFill.style.bottom = 0;
+        statusBattFill.style.width = Length.Percent(battPct < 0 ? 100f : Mathf.Clamp(battPct, 0, 100));
+        statusBattFill.style.backgroundColor = new Color(0.42f, 0.44f, 0.50f, 0.95f);
+        battBox.Add(statusBattFill);
+        rightInfo.Add(battBox);
         var batt = new Label(FormatBattBadge(battPct)) { name = "tablet-status-battery" };
-        batt.style.fontSize = 12; batt.style.color = new Color(0.10f, 0.10f, 0.12f, 1f); batt.style.unityFontDefinition = Fd();
+        batt.style.fontSize = 12; batt.style.color = Color.white; batt.style.unityFontDefinition = Fd();
         batt.style.unityFontStyleAndWeight = FontStyle.Bold;
-        batt.style.backgroundColor = new Color(1f, 1f, 1f, 0.88f);
-        batt.style.minWidth = 30; batt.style.height = 18;
-        batt.style.paddingLeft = 6; batt.style.paddingRight = 6;
         batt.style.unityTextAlign = TextAnchor.MiddleCenter;
-        batt.style.borderTopLeftRadius = 6; batt.style.borderTopRightRadius = 6;
-        batt.style.borderBottomLeftRadius = 6; batt.style.borderBottomRightRadius = 6;
+        batt.pickingMode = PickingMode.Ignore;
         statusBatt = batt;
-        rightInfo.Add(batt);
+        battBox.Add(batt);
 
         // ---- 底部小指示条（HyperOS 全面屏手势提示） ----
         var homeBar = new VisualElement { name = "tablet-home-indicator", pickingMode = PickingMode.Ignore };
@@ -3288,8 +3318,12 @@ public class GameMainUI : MonoBehaviour
             if (battTick >= 30 && statusBatt != null)
             {
                 battTick = 0;
-                statusBatt.text = FormatBattBadge(GetDeviceBatteryPercent());
+                int pctNow = GetDeviceBatteryPercent();
+                statusBatt.text = FormatBattBadge(pctNow);
+                if (statusBattFill != null) statusBattFill.style.width = Length.Percent(pctNow < 0 ? 100f : Mathf.Clamp(pctNow, 0, 100));
             }
+            if (statusUnread != null && tabletShellState != null)
+                statusUnread.style.display = tabletShellState.UnreadCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             if (statusQuiet != null && tabletShellState != null)
                 statusQuiet.style.display = tabletShellState.QuietMode ? DisplayStyle.Flex : DisplayStyle.None;
         }

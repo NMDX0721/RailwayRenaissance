@@ -74,6 +74,7 @@ public class VNManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        isAutoPlay = PlayerPrefs.GetInt("AutoPlay", 0) == 1;   // 设置页“自动播放模式”
 
         foreach (var go in FindObjectsByType<GameObject>(FindObjectsInactive.Exclude))
         {
@@ -105,6 +106,7 @@ public class VNManager : MonoBehaviour
     {
         SetupGameCursor();
         SetupCanvas();
+        if (isAutoPlay) UpdateAutoPlayButtonVisual();
         GameData.ApplyVolume();
         SetupEventSystem();
         // 预热阶段一（文档+锁屏，日志验证安全段）；桌面由 Show 时后台错帧加载
@@ -1682,6 +1684,8 @@ public class VNManager : MonoBehaviour
 
     private void AdvanceOnClick()
     {
+        // 设置页“点击对话框推进”关闭后，点击不再推进（仍可用键盘、Auto 与菜单）
+        if (PlayerPrefs.GetInt("ClickAdvance", 1) == 0) return;
         lastAdvanceTime = Time.unscaledTime;
         StopAutoPlay();
         if (dialogueBox != null && dialogueBox.IsTyping())
@@ -3153,7 +3157,9 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator AutoPlayTimer()
     {
-        yield return new WaitForSeconds(autoPlayDelay);
+        // 设置页“自动播放间隔”(1–10 秒)；未设置过时沿用原来的 2 秒
+        float delay = PlayerPrefs.HasKey("AutoInterval") ? Mathf.Clamp(PlayerPrefs.GetInt("AutoInterval", 2), 1, 10) : autoPlayDelay;
+        yield return new WaitForSeconds(delay);
 
         if (!isAutoPlay || !isScriptRunning) yield break;
 
