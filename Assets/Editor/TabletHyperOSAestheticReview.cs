@@ -74,8 +74,20 @@ namespace RailwayRenaissance.Editor
             document.panelSettings.targetTexture = target;
         }
 
+        // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
+        private static string pendingCapture;
+
         private static void Capture(string name)
         {
+            FlushPendingCapture();
+            pendingCapture = name;
+        }
+
+        private static void FlushPendingCapture()
+        {
+            if (pendingCapture == null) return;
+            string name = pendingCapture;
+            pendingCapture = null;
             var previous = RenderTexture.active;
             RenderTexture.active = target;
             var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
@@ -145,6 +157,7 @@ namespace RailwayRenaissance.Editor
 
             if (!EditorApplication.isPlaying || EditorApplication.isCompiling) return;
             if (stage > 0 && Time.frameCount - frame < 20) return;
+            FlushPendingCapture();
 
             try
             {
@@ -404,6 +417,7 @@ namespace RailwayRenaissance.Editor
 
         private static void Teardown(bool success, string reason)
         {
+            if (success) FlushPendingCapture();
             EditorApplication.update -= Step;
             SessionState.SetBool(PendingKey, false);
 

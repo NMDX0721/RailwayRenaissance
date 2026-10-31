@@ -42,6 +42,9 @@ public class GameMainUI : MonoBehaviour
         return -1;
     }
 
+    /// <summary>状态栏电量徽标文字：参考 HyperOS 的圆角电量徽标，只显示百分比数字。</summary>
+    private static string FormatBattBadge(int pct) => pct < 0 ? "⚡" : pct.ToString();
+
     private static string FormatBatt(int pct)
     {
         if (pct < 0) return "⚡ 电源";
@@ -608,6 +611,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement statusBar;
     private Label statusClock;
     private Label statusBatt;
+    private Label statusQuiet;
     private int battTick;
     private readonly System.Collections.Generic.List<VisualElement> appIcons = new System.Collections.Generic.List<VisualElement>();
     private int currentDesktopPage = 0;
@@ -646,6 +650,21 @@ public class GameMainUI : MonoBehaviour
         "我的运算能力可是很强的！",
     };
 
+    private static Texture2D s_statusScrim;
+    private static Texture2D BuildStatusBarScrim()
+    {
+        if (s_statusScrim != null) return s_statusScrim;
+        const int h = 32;
+        var tex = new Texture2D(1, h, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+        for (int y = 0; y < h; y++)
+        {
+            float t = 1f - y / (h - 1f);               // 纹理 y=0 在底部
+            tex.SetPixel(0, y, new Color(0f, 0f, 0f, 0.52f * t));
+        }
+        tex.Apply();
+        return s_statusScrim = tex;
+    }
+
     private void BuildDesktop()
     {
         TraceLog.L("[GameMainUI] Desktop: begin");
@@ -674,7 +693,9 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.paddingTop = 8; statusBar.style.paddingBottom = 6;
         statusBar.style.height = 48;
         statusBar.style.flexShrink = 0;
-        statusBar.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.45f);
+        // 状态栏直接叠在壁纸上：不再有整条灰底，只在顶部铺一层很淡的渐变保证白色文字可读
+        statusBar.style.backgroundImage = Background.FromTexture2D(BuildStatusBarScrim());
+        statusBar.style.position = Position.Relative;
         desktop.Add(statusBar);
 
         var leftGroup = new VisualElement();
@@ -696,21 +717,42 @@ public class GameMainUI : MonoBehaviour
         rightInfo.style.alignItems = Align.Center;
         statusBar.Add(rightInfo);
 
-        var netTag = new Label("阿里郎内网");
-        netTag.style.fontSize = 14;
-        netTag.style.color = GlassAccent;
-        netTag.style.unityFontDefinition = Fd();
-        netTag.style.marginRight = 14;
-        rightInfo.Add(netTag);
+        // 勿扰开启时显示月亮；本机不虚拟 Wi-Fi/蓝牙，状态栏只放真实状态
+        statusQuiet = new Label("🌙") { name = "tablet-status-quiet" };
+        statusQuiet.style.fontSize = 15;
+        statusQuiet.style.color = GlassText;
+        statusQuiet.style.unityFontDefinition = Fd();
+        statusQuiet.style.marginRight = 10;
+        statusQuiet.style.display = DisplayStyle.None;
+        rightInfo.Add(statusQuiet);
 
         int battPct = -1;
         try { battPct = GetDeviceBatteryPercent(); }
         catch (System.Exception ex) { TraceLog.L("[GameMainUI] Desktop: battery EX " + ex.Message); }
         TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
-        var batt = new Label(FormatBatt(battPct));
-        batt.style.fontSize = 14; batt.style.color = GlassText; batt.style.unityFontDefinition = Fd();
+        var batt = new Label(FormatBattBadge(battPct)) { name = "tablet-status-battery" };
+        batt.style.fontSize = 12; batt.style.color = new Color(0.10f, 0.10f, 0.12f, 1f); batt.style.unityFontDefinition = Fd();
+        batt.style.unityFontStyleAndWeight = FontStyle.Bold;
+        batt.style.backgroundColor = new Color(1f, 1f, 1f, 0.88f);
+        batt.style.minWidth = 30; batt.style.height = 18;
+        batt.style.paddingLeft = 6; batt.style.paddingRight = 6;
+        batt.style.unityTextAlign = TextAnchor.MiddleCenter;
+        batt.style.borderTopLeftRadius = 6; batt.style.borderTopRightRadius = 6;
+        batt.style.borderBottomLeftRadius = 6; batt.style.borderBottomRightRadius = 6;
         statusBatt = batt;
         rightInfo.Add(batt);
+
+        // ---- 底部小指示条（HyperOS 全面屏手势提示） ----
+        var homeBar = new VisualElement { name = "tablet-home-indicator", pickingMode = PickingMode.Ignore };
+        homeBar.style.position = Position.Absolute;
+        homeBar.style.bottom = 6;
+        homeBar.style.left = Length.Percent(50);
+        homeBar.style.translate = new Translate(Length.Percent(-50), 0);
+        homeBar.style.width = 150; homeBar.style.height = 5;
+        homeBar.style.borderTopLeftRadius = homeBar.style.borderTopRightRadius = 3;
+        homeBar.style.borderBottomLeftRadius = homeBar.style.borderBottomRightRadius = 3;
+        homeBar.style.backgroundColor = new Color(1f, 1f, 1f, 0.72f);
+        desktop.Add(homeBar);
 
         // ---- 双页桌面容器 ----
         var pagesRoot = new VisualElement { name = "desktop-pages-root" };
@@ -3195,8 +3237,10 @@ public class GameMainUI : MonoBehaviour
             if (battTick >= 30 && statusBatt != null)
             {
                 battTick = 0;
-                statusBatt.text = FormatBatt(GetDeviceBatteryPercent());
+                statusBatt.text = FormatBattBadge(GetDeviceBatteryPercent());
             }
+            if (statusQuiet != null && tabletShellState != null)
+                statusQuiet.style.display = tabletShellState.QuietMode ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         // 岁月Idle气泡（每30-60秒随机显示一句话）

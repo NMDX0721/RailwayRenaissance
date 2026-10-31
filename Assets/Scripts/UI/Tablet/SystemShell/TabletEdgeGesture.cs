@@ -31,7 +31,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             if (blockDirect) return false;
 
             Kind kind = Kind.None;
-            if (point.y <= 24f)
+            if (point.y <= 48f)
                 kind = point.x < width * 0.5f ? Kind.Notifications : Kind.Controls;
             else if (point.y >= height - bottomHeight)
                 kind = Kind.Bottom;

@@ -51,6 +51,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private VisualElement _pillContainer;
         private VisualElement _subBubble;
         private VisualElement _expandedCard;
+        private VisualElement _expandedHandle;
         private VisualElement _scrimOverlay;
 
         // 动效模拟心跳
@@ -120,20 +121,20 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             // 主胶囊 (微胶囊态，高度 32px，圆角 16px)
             _pillContainer = new VisualElement { name = "super-island-pill" };
-            _pillContainer.style.height = 32;
-            _pillContainer.style.minWidth = 150;
+            _pillContainer.style.height = 34;
+            _pillContainer.style.minWidth = 96;
             _pillContainer.style.paddingLeft = 10;
             _pillContainer.style.paddingRight = 12;
-            _pillContainer.style.borderTopLeftRadius = 16;
-            _pillContainer.style.borderTopRightRadius = 16;
-            _pillContainer.style.borderBottomLeftRadius = 16;
-            _pillContainer.style.borderBottomRightRadius = 16;
-            _pillContainer.style.backgroundColor = TabletTheme.IslandPill;
+            _pillContainer.style.borderTopLeftRadius = 17;
+            _pillContainer.style.borderTopRightRadius = 17;
+            _pillContainer.style.borderBottomLeftRadius = 17;
+            _pillContainer.style.borderBottomRightRadius = 17;
+            _pillContainer.style.backgroundColor = TabletTheme.IslandBlack;   // 参考 HyperOS：纯黑胶囊
             _pillContainer.style.borderTopWidth = 1;
             _pillContainer.style.borderLeftWidth = 1;
             _pillContainer.style.borderRightWidth = 1;
             _pillContainer.style.borderBottomWidth = 1;
-            var borderCol = TabletTheme.OverlayMedium;
+            var borderCol = TabletTheme.OverlaySubtle;
             _pillContainer.style.borderTopColor = borderCol;
             _pillContainer.style.borderLeftColor = borderCol;
             _pillContainer.style.borderRightColor = borderCol;
@@ -181,32 +182,37 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             // 3. 大岛展开态卡片 (Expanded Island Card，左侧下沉展开，宽度 390px，悬浮于时间与微胶囊下方)
             _expandedCard = new VisualElement { name = "super-island-expanded" };
-            _expandedCard.style.width = 390;
-            _expandedCard.style.minHeight = 98;
+            // 展开态：从左侧小胶囊变大，移到屏幕上方正中（对齐 HyperOS 超级岛展开形态）
+            _expandedCard.style.width = 460;
+            _expandedCard.style.maxWidth = Length.Percent(90);
+            _expandedCard.style.minHeight = 112;
             _expandedCard.style.position = Position.Absolute;
-            _expandedCard.style.top = 46; // 状态栏 48px 正下方
-            _expandedCard.style.left = 20; // 与时间左边界对齐
-            _expandedCard.style.borderTopLeftRadius = 22;
-            _expandedCard.style.borderTopRightRadius = 22;
-            _expandedCard.style.borderBottomLeftRadius = 22;
-            _expandedCard.style.borderBottomRightRadius = 22;
-            _expandedCard.style.backgroundColor = TabletTheme.IslandExpanded;
-            _expandedCard.style.borderTopWidth = 1;
-            _expandedCard.style.borderLeftWidth = 1;
-            _expandedCard.style.borderRightWidth = 1;
-            _expandedCard.style.borderBottomWidth = 1;
-            var expBorder = TabletTheme.OverlayStrong;
-            _expandedCard.style.borderTopColor = expBorder;
-            _expandedCard.style.borderLeftColor = expBorder;
-            _expandedCard.style.borderRightColor = expBorder;
-            _expandedCard.style.borderBottomColor = expBorder;
-            // 左侧黄铜细边，取意钢轨/铭牌
-            _expandedCard.style.borderLeftWidth = 3;
-            _expandedCard.style.borderLeftColor = TabletTheme.Brass;
-            _expandedCard.style.paddingLeft = 14;
-            _expandedCard.style.paddingRight = 16;
-            _expandedCard.style.paddingTop = 12;
-            _expandedCard.style.paddingBottom = 12;
+            _expandedCard.style.top = 10;
+            _expandedCard.style.left = Length.Percent(50);
+            _expandedCard.style.translate = new Translate(Length.Percent(-50), 0);
+            _expandedCard.style.transformOrigin = new TransformOrigin(Length.Percent(50), 0);
+            _expandedCard.style.borderTopLeftRadius = 34;
+            _expandedCard.style.borderTopRightRadius = 34;
+            _expandedCard.style.borderBottomLeftRadius = 34;
+            _expandedCard.style.borderBottomRightRadius = 34;
+            _expandedCard.style.backgroundColor = TabletTheme.IslandBlack;
+            _expandedCard.style.paddingLeft = 22;
+            _expandedCard.style.paddingRight = 22;
+            _expandedCard.style.paddingTop = 16;
+            _expandedCard.style.paddingBottom = 20;
+
+            // 底部把手：黄铜色细条，既是 HyperOS 的下拉把手，也是铁道铭牌细节
+            var handle = _expandedHandle = new VisualElement { name = "super-island-handle", pickingMode = PickingMode.Ignore };
+            handle.style.position = Position.Absolute;
+            handle.style.bottom = 7;
+            handle.style.left = Length.Percent(50);
+            handle.style.translate = new Translate(Length.Percent(-50), 0);
+            handle.style.width = 44;
+            handle.style.height = 4;
+            handle.style.borderTopLeftRadius = handle.style.borderTopRightRadius = 2;
+            handle.style.borderBottomLeftRadius = handle.style.borderBottomRightRadius = 2;
+            handle.style.backgroundColor = TabletTheme.Brass;
+            _expandedCard.Add(handle);
             _expandedCard.pickingMode = PickingMode.Position;
             _expandedCard.style.display = DisplayStyle.None;
             _expandedCard.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
@@ -250,6 +256,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _isExpanded = expanded && (_currentPrimaryType != IslandAppType.None);
             _scrimOverlay.style.display = _isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
             _expandedCard.style.display = _isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
+            if (_isExpanded) PlayExpandAnimation();
             _pillContainer.style.opacity = _isExpanded ? 0f : 1f;
             _pillContainer.pickingMode = _isExpanded ? PickingMode.Ignore : PickingMode.Position;
 
@@ -257,6 +264,27 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 RenderExpandedContent();
             }
+        }
+
+        private void PlayExpandAnimation()
+        {
+            // 先落在缩小的起点，下一帧回到原尺寸，由 USS 过渡完成弹出；减少动效时直接到位
+            int ms = TabletTheme.MotionMs(220);
+            _expandedCard.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("opacity") };
+            _expandedCard.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+            if (ms <= 0)
+            {
+                _expandedCard.style.scale = new Scale(Vector3.one);
+                _expandedCard.style.opacity = 1f;
+                return;
+            }
+            _expandedCard.style.scale = new Scale(new Vector3(0.55f, 0.55f, 1f));
+            _expandedCard.style.opacity = 0f;
+            _expandedCard.schedule.Execute(() =>
+            {
+                _expandedCard.style.scale = new Scale(Vector3.one);
+                _expandedCard.style.opacity = 1f;
+            }).StartingIn(16);
         }
 
         public void ToggleExpanded()
@@ -354,10 +382,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     eq.style.marginLeft = 6;
                     leftBox.Add(eq);
 
-                    var songLbl = CreatePillLabel(s.Title ?? "正在播放", 12, true);
-                    songLbl.style.maxWidth = 110;
-                    songLbl.style.marginLeft = 6;
-                    rightBox.Add(songLbl);
+                    // 紧凑态只显示缩略图与声波，歌名留给展开态
                     break;
 
                 case IslandAppType.TrainCab:
@@ -479,6 +504,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             if (!_activeSessions.TryGetValue(_currentPrimaryType, out var s)) return;
             _expandedCard.Clear();
+            if (_expandedHandle != null) _expandedCard.Add(_expandedHandle);
 
             var topRow = new VisualElement();
             topRow.style.flexDirection = FlexDirection.Row;

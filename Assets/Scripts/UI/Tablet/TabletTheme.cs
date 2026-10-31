@@ -56,6 +56,7 @@ namespace RailwayRenaissance.UI.Tablet
         public static int MotionMs(int ms) => ReduceMotion ? 0 : ms;
 
         // ===== 深色面：表面 =====
+        public static readonly Color IslandBlack = new Color(0f, 0f, 0f, 1f);
         public static readonly Color IslandPill = new Color(0.06f, 0.07f, 0.09f, 0.94f);
         public static readonly Color IslandExpanded = new Color(0.08f, 0.09f, 0.12f, 0.96f);
         public static readonly Color IslandScrim = new Color(0f, 0f, 0f, 0.25f);
@@ -67,8 +68,15 @@ namespace RailwayRenaissance.UI.Tablet
         public static readonly Color ShellCard = new Color(0.18f, 0.19f, 0.22f, 1f);
         public static readonly Color ShellCardDeep = new Color(0.12f, 0.13f, 0.16f, 0.95f);
         public static readonly Color ShellBorder = new Color(0.35f, 0.36f, 0.40f, 1f);
-        public static readonly Color ShellScrim = new Color(0.05f, 0.05f, 0.07f, 0.45f);
+        public static readonly Color ShellScrim = new Color(0.05f, 0.05f, 0.07f, 0.28f);
         public static readonly Color ShellScrimHighContrast = new Color(0f, 0f, 0f, 0.85f);
+
+        // ===== 模糊背景上的玻璃卡片（通知页 / 控制中心） =====
+        public static readonly Color GlassTile = new Color(0.10f, 0.09f, 0.10f, 0.42f);
+        public static readonly Color GlassTileActive = new Color(1f, 1f, 1f, 0.94f);
+        public static readonly Color GlassCardLight = new Color(1f, 1f, 1f, 0.82f);
+        public static readonly Color InkOnGlass = new Color(0.10f, 0.10f, 0.12f, 1f);
+        public static readonly Color InkOnGlassSoft = new Color(0.34f, 0.34f, 0.40f, 1f);
 
         // ===== 深色面：白色叠层阶梯（填充与描边共用） =====
         public static readonly Color OverlaySubtle = new Color(1f, 1f, 1f, 0.06f);
