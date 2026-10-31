@@ -30,7 +30,7 @@ public static class RailwayMusicTerminalReview
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
     static int stageMotionFrame, lumiSeq;
-    static readonly float[] lumiPose = new float[8];
+    static readonly float[] lumiPose = new float[10], lumiLast = new float[10];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
     {
@@ -600,21 +600,29 @@ public static class RailwayMusicTerminalReview
                         Assert(root.Q<Button>("music-lyric-line-1").ClassListContains("is-current"), "Clicked cue highlight stayed on the previous line due to rounding");
                     }
                     var stageHost = root.Q<MusicStageLyrics>("music-stage-lyrics");
-                    Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
-                    Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
-                    Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                    if (lumiSeq == 0)
+                    {
+                        Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
+                        Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
+                        Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                    }
                     // Luminous poses are a function of the audio clock: step the clock forward and the words must actually move.
-                    if (lumiSeq < 8)
+                    if (lumiSeq < 10)
                     {
                         if (lumiSeq == 0) Capture("05-lyrics");
-                        float poseSum = 0; foreach (var word in stageHost.Query(className: "music-stage-word").ToList()) poseSum += word.resolvedStyle.scale.value.x + word.resolvedStyle.opacity;
-                        lumiPose[lumiSeq] = poseSum;
+                        // The second word of the line (回声, sung 4-6 s) must be invisible until the clock reaches it, then come forward.
+                        var stageWords = stageHost.Query(className: "music-stage-word").ToList();
+                        float poseSum = 0; foreach (var word in stageWords) poseSum += word.resolvedStyle.scale.value.x + word.resolvedStyle.opacity;
+                        lumiPose[lumiSeq] = poseSum; lumiLast[lumiSeq] = stageWords.Count > 1 ? stageWords[stageWords.Count - 1].resolvedStyle.opacity : -1;
                         Capture("05s-stage-seq-" + lumiSeq.ToString("D2")); lumiSeq++;
-                        TabletMusicAppUI.SeekTabletMusic((3f + lumiSeq * .1f) / TabletMusicAppUI.tabletCurrentClip.length);
-                        checkAfter = EditorApplication.timeSinceStartup + .12; frame = Time.frameCount; return;
+                        // Stay inside the 2-6 s line: the last capture is at 5.8 s.
+                        TabletMusicAppUI.SeekTabletMusic((3f + lumiSeq * .31f) / TabletMusicAppUI.tabletCurrentClip.length);
+                        checkAfter = EditorApplication.timeSinceStartup + .45; frame = Time.frameCount; return;
                     }
-                    float poseMin = lumiPose[0], poseMax = lumiPose[0]; foreach (float pose in lumiPose) { poseMin = Mathf.Min(poseMin, pose); poseMax = Mathf.Max(poseMax, pose); }
+                    float poseMin = lumiPose[0], poseMax = lumiPose[0], lastMax = lumiLast[0]; foreach (float pose in lumiPose) { poseMin = Mathf.Min(poseMin, pose); poseMax = Mathf.Max(poseMax, pose); }
+                    foreach (float last in lumiLast) lastMax = Mathf.Max(lastMax, last);
                     Assert(poseMax - poseMin > .05f, "Luminous words did not move as the audio clock advanced");
+                    Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     var lyricScroll = root.Q<ScrollView>("music-lyrics-scroll");
                     using (var wheel = WheelEvent.GetPooled(new Event { type = EventType.ScrollWheel, delta = new Vector2(0, 3), mousePosition = lyricScroll.worldBound.center }))
@@ -635,7 +643,9 @@ public static class RailwayMusicTerminalReview
                     MusicLibrarySession.State.stageIntensity = intensityBefore; MusicLibrarySession.State.stageRotation = true; MusicLibrarySession.State.stageSpacing = .7f;
                     root.Q<Toggle>("music-stage-rotation").SetValueWithoutNotify(true); root.Q<Slider>("music-stage-spacing").SetValueWithoutNotify(.7f);
                     Assert(root.Q<Button>("music-lyrics-reset").worldBound.yMax < root.Q("music-lyrics-progress").worldBound.yMin, "Compact lyric settings overlap playback controls");
-                    Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display != DisplayStyle.None, "Manual scroll did not suspend lyric follow");
+                    Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None, "The follow banner must not cover the stage, which never scrolls");
+                    var settingsLabel = root.Q<Foldout>("music-lyrics-more").Q(className: "unity-foldout__text");
+                    Assert(settingsLabel != null && settingsLabel.resolvedStyle.width > 36f, "The settings foldout title is squeezed out by the switch styling");
                     Submit(root.Q<Button>("music-lyrics-follow"));
                     using (var escape = KeyDownEvent.GetPooled('\0', KeyCode.Escape, EventModifiers.None))
                     { escape.target = root.Q("music-lyrics-overlay"); root.SendEvent(escape); }

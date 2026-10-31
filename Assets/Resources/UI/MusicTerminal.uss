@@ -541,6 +541,12 @@
 .music-lyrics-more { margin-top: 2px; }
 .music-lyrics-more .unity-foldout__text { color: rgb(214, 196, 150); font-size: 13px; }
 .music-lyrics-more .unity-foldout__content { margin-left: 0; }
+/* The lyric side panel turns every Toggle into a switch pill; the foldout's own header toggle must stay a plain label, or it is squeezed to a sliver. */
+.music-lyrics-more .unity-foldout__toggle .unity-toggle__input,
+.music-lyrics-more .unity-foldout__toggle:checked .unity-toggle__input { width: auto; min-width: 0; max-width: none; height: auto; padding: 0; border-width: 0; border-radius: 0; background-color: transparent; }
+.music-lyrics-more .unity-foldout__toggle .unity-toggle__checkmark { display: none; }
+.music-lyrics-more .unity-foldout__toggle .unity-foldout__text { flex-shrink: 0; white-space: nowrap; }
+.music-lyrics-more .unity-foldout__toggle { padding: 4px 0; }
 .music-lyrics-detail { min-height: 22px; margin-bottom: 4px; }
 .music-lyrics-status { padding-bottom: 14px; margin-bottom: 10px; }
 .music-stage-word-text { -unity-font-style: normal; }
@@ -553,4 +559,6 @@
 .music-stage-luminous { align-self: stretch; align-items: center; justify-content: center; }
 .music-stage-line-host { align-self: stretch; }
 .music-stage-glow { position: absolute; left: 0; top: 0; }
+.music-stage-translation { margin-top: 10px; }
+.music-stage-previous { margin-bottom: 10px; }
 .music-lyrics-cover { background-size: contain; align-self: flex-start; }

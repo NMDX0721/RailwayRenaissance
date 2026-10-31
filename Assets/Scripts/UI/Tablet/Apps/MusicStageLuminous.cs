@@ -266,8 +266,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             fontSize = size = Mathf.Min(size, avail / 3f);
 
             // Each line gets its own alignment, picked from the seed so it does not reshuffle when the screen redraws.
-            Justify[] justify = still ? new[] { Justify.Center } : new[] { Justify.FlexStart, Justify.Center, Justify.FlexEnd, Justify.SpaceAround, Justify.SpaceBetween };
-            Align[] align = still ? new[] { Align.Center } : new[] { Align.FlexStart, Align.Center, Align.FlexEnd };
+            // A short line on its own row stays centred (a line pushed to one edge looks like a mistake next to the centred neighbours);
+            // longer lines wrap and use the seeded alignment.
+            bool shortLine = grouped.Count <= 3;
+            Justify[] justify = still || shortLine ? new[] { Justify.Center } : new[] { Justify.FlexStart, Justify.Center, Justify.FlexEnd, Justify.SpaceAround, Justify.SpaceBetween };
+            Align[] align = still || shortLine ? new[] { Align.Center } : new[] { Align.FlexStart, Align.Center, Align.FlexEnd };
+            line.style.minHeight = shortLine ? Mathf.Max(96f, size * 2.4f) : 150f;
             line.style.justifyContent = justify[seed % justify.Length]; line.style.alignItems = align[(seed * 2) % align.Length];
             line.style.alignContent = Align.Center;
             float spread = chaotic ? 60f : still ? 0f : 20f, tilt = chaotic ? 30f : still ? 0f : 5f;

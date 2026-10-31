@@ -118,7 +118,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (track != null && !string.IsNullOrEmpty(track.titleTranslation)) Text(art, track.titleTranslation, "music-muted");
             Text(art, "沿线声音档案 / RAILWAY SOUND", "music-eyebrow");
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
-            var more = new Foldout { text = "设置", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
+            var more = new Foldout { text = "设置  +", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
+            more.RegisterValueChangedCallback(e => { if (e.target == more) more.text = e.newValue ? "设置  -" : "设置  +"; });
             var imports = Box(more, "music-lyrics-actions");
             Action(imports, "导入字幕", () => Import(false), "music-lyrics-import");
             Action(imports, "导入翻译", () => Import(true), "music-lyrics-import-translation");
@@ -330,7 +331,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (document == null) return;
             var preference = MusicTimedText.Preference(trackId);
             offsetLabel.text = (preference.offsetMs > 0 ? "+" : "") + preference.offsetMs + " ms";
-            followButton.style.display = following || document.lines.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex;
+            // The stage never scrolls, so the "back to current line" banner has nothing to return to there.
+            followButton.style.display = following || document.lines.Count == 0 || MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.None : DisplayStyle.Flex;
             heading.text = (TabletMusicAppUI.tabletCurrentTrackTitle ?? "歌词 / 字幕") + " / " + (TabletMusicAppUI.tabletIsPlaying ? "正在播放" : "已暂停");
             if (document.source != null && document.source.Contains("草稿")) heading.text += " · 待听校";
             heading.tooltip = document.source;
