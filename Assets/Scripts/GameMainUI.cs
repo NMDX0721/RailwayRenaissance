@@ -650,6 +650,20 @@ public class GameMainUI : MonoBehaviour
         "我的运算能力可是很强的！",
     };
 
+    /// <summary>
+    /// 打开浅色应用时，状态栏换成与应用顶栏一致的浅色底和深色文字；回到桌面恢复壁纸上的渐变与白字。
+    /// </summary>
+    private void ApplyStatusBarForApp(bool lightApp)
+    {
+        if (statusBar == null) return;
+        var ink = lightApp ? new Color(0.10f, 0.10f, 0.12f, 1f) : GlassText;
+        statusBar.style.backgroundImage = lightApp ? StyleKeyword.None : Background.FromTexture2D(BuildStatusBarScrim());
+        statusBar.style.backgroundColor = lightApp ? new Color(0.97f, 0.97f, 0.98f, 1f) : Color.clear;
+        if (statusClock != null) statusClock.style.color = ink;
+        if (statusQuiet != null) statusQuiet.style.color = ink;
+        tabletShellView?.SetLauncherOnLight(lightApp);
+    }
+
     private static Texture2D s_statusScrim;
     private static Texture2D BuildStatusBarScrim()
     {
@@ -2103,6 +2117,7 @@ public class GameMainUI : MonoBehaviour
         }
         activeTabletTask = null;
         appLayer = null;
+        ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
         if (systemNavigationBar != null) systemNavigationBar.style.display = DisplayStyle.None;
     }
@@ -2892,6 +2907,7 @@ public class GameMainUI : MonoBehaviour
         win.Add(content);
 
         appLayer.style.display = DisplayStyle.Flex;
+        ApplyStatusBarForApp(!darkApp);
         return content;
     }
 

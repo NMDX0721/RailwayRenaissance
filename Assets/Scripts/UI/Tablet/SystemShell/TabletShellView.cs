@@ -26,6 +26,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private TabletSystemPanel _renderedPanel;
         private Color _accent = TabletTheme.Accent;
         private bool _highContrast;
+        private bool _launcherOnLight;
         private readonly TabletPresentationPreferences _presentation;
         private static float s_preMuteVolume = 1f;
 
@@ -241,6 +242,14 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _rootContainer.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        /// <summary>状态栏落在浅色应用顶栏上时，“通知/控制”按钮改用深色文字和图标。</summary>
+        public void SetLauncherOnLight(bool onLight)
+        {
+            if (_launcherOnLight == onLight) return;
+            _launcherOnLight = onLight;
+            ApplyPresentation(_accent, _highContrast);
+        }
+
         public void ApplyPresentation(Color accent, bool highContrast)
         {
             bool contrastChanged = _highContrast != highContrast;
@@ -270,9 +279,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 if (button.name == "tablet-notifications-open" || button.name == "tablet-controls-open")
                 {
-                    button.style.color = Color.white;
-                    button.style.backgroundColor = TabletTheme.OverlaySoft;
-                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = TabletTheme.OverlayMedium;
+                    var launcherInk = _launcherOnLight ? TabletTheme.InkOnGlass : Color.white;
+                    button.style.color = launcherInk;
+                    button.style.backgroundColor = _launcherOnLight ? new Color(0f, 0f, 0f, 0.07f) : TabletTheme.OverlaySoft;
+                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = _launcherOnLight ? new Color(0f, 0f, 0f, 0.10f) : TabletTheme.OverlayMedium;
+                    button.Query<TabletIconElement>().ForEach(ic => ic.IconColor = launcherInk);
                 }
                 else
                 {
