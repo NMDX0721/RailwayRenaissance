@@ -64,6 +64,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var data = document.lines[active];
             if (showTranslation && !string.IsNullOrEmpty(data.translation) && !string.IsNullOrWhiteSpace(data.text))
             { translation.text = data.translation; translation.style.display = DisplayStyle.Flex; }
+            StageFonts.Apply(previous); StageFonts.Apply(upcoming); StageFonts.Apply(translation);
         }
     }
 }

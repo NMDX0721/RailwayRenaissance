@@ -603,6 +603,9 @@ public static class RailwayMusicTerminalReview
                     if (lumiSeq == 0)
                     {
                         Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
+                        var fontProbe = stageHost.Q(className: "music-stage-word-text");
+                        var probeFont = fontProbe?.resolvedStyle.unityFontDefinition.font;
+                        Assert(probeFont != null && probeFont.name.ToLowerInvariant().Contains("zpix"), "Lyric subtitles are not set in the pixel font (got " + (probeFont != null ? probeFont.name : "none") + ")");
                         Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
                         Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
                     }
@@ -625,7 +628,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 4)
+                    if (styleStep < 6)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -642,13 +645,28 @@ public static class RailwayMusicTerminalReview
                             Assert(guideBest > .5f, "Partita guide lines did not grow once their rows were sung (best opacity " + guideBest.ToString("F2") + ")");
                             MusicLibrarySession.State.stageStyle = "still"; TabletMusicAppUI.SeekTabletMusic(4f / styleClip);
                         }
+                        else if (styleStep == 4)
+                        {
+                            Assert(stageHost.StyleId == "tilt" && stageHost.Query(className: "music-stage-tilt-row").ToList().Count >= 1, "Tilt did not build its rows");
+                            var tiltChars = stageHost.Query<Label>(className: "music-stage-tilt-char").ToList();
+                            Assert(tiltChars.Count >= 4, "Tilt did not build one label per character");
+                            Capture("05u-tilt-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 5)
+                        {
+                            float tiltBest = 0; foreach (var tiltChar in stageHost.Query<Label>(className: "music-stage-tilt-char").ToList()) tiltBest = Mathf.Max(tiltBest, tiltChar.resolvedStyle.opacity);
+                            Assert(tiltBest > .8f, "Tilt characters did not come in once their row was sung (best opacity " + tiltBest.ToString("F2") + ")");
+                            Capture("05u-tilt-b");
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_TILT_OK: Tilt rows and per-character labels, characters come in with the row");
+                        }
                         else
                         {
                             var stillCurrent = stageHost.Q<Label>(className: "music-stage-still-current");
                             Assert(stageHost.StyleId == "still" && stillCurrent != null && stillCurrent.text == "归途回声", "Still did not show the current line");
                             Assert(stageHost.Q(className: "music-stage-previous") == null || stageHost.Q(className: "music-stage-previous").resolvedStyle.display == DisplayStyle.None, "Shared subtitle layer was not hidden for Still");
                             Capture("05t-still");
-                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            MusicLibrarySession.State.stageStyle = "tilt"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
                             Debug.Log("MUSIC_STAGE_STYLES_OK: Partita rows and guide lines, Still three static lines, shared subtitle layer yields");
                         }
                         styleStep++; checkAfter = EditorApplication.timeSinceStartup + .7; frame = Time.frameCount; return;

@@ -170,6 +170,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Action(timing, "提前 100ms", () => Adjust(100), "music-lyrics-earlier", true);
             Action(more, "重置字幕时间", () => { var p = MusicTimedText.Preference(trackId); p.offsetMs = 0; MusicLibrarySession.Save(); active = -2; }, "music-lyrics-reset");
             var textArea = Box(body, "music-lyrics-text-area");
+            // The lyric subtitles are always set in the project's pixel font, whatever font the tablet system UI uses around them.
+            var pixelFont = StageFonts.Pixel();
+            if (pixelFont != null) textArea.style.unityFontDefinition = new FontDefinition { font = pixelFont };
             var cueRail = Box(textArea, "music-cue-rail");
             stageProgress = Box(cueRail, "music-cue-progress");
             cueRail.tooltip = "当前句播放进度（按真实字幕时间）";

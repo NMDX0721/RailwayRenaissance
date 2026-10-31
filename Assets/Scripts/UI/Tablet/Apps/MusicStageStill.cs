@@ -45,14 +45,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 {
                     var text = new Label(data.text) { pickingMode = PickingMode.Ignore };
                     text.AddToClassList(current ? "music-stage-still-current" : "music-stage-still-side");
-                    text.style.fontSize = (current ? 40f : 30f) * c.fontScale;
+                    text.style.fontSize = (current ? 40f : 30f) * c.fontScale; StageFonts.Apply(text);
                     row.Add(text);
                 }
                 if (c.showTranslation && !string.IsNullOrEmpty(data.translation))
                 {
                     var translation = new Label(data.translation) { pickingMode = PickingMode.Ignore };
                     translation.AddToClassList(current ? "music-stage-still-translation" : "music-stage-still-translation-side");
-                    translation.style.fontSize = (current ? 22f : 18f) * c.fontScale;
+                    translation.style.fontSize = (current ? 22f : 18f) * c.fontScale; StageFonts.Apply(translation);
                     row.Add(translation);
                 }
                 root.Add(row);

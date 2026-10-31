@@ -49,6 +49,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void Invalidate();
     }
 
+    /// <summary>
+    /// Lyric text uses the project's pixel font, set once on the lyric area. The pixel font has no Hangul, so a label that contains Korean takes
+    /// the Sarasa font instead, as the lyric list does.
+    /// </summary>
+    public static class StageFonts
+    {
+        static Font hangul;
+
+        public static Font Pixel() => RailwayRenaissance.UI.Tablet.TabletFonts.Pixel();
+
+        public static bool HasHangul(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return false;
+            foreach (char c in value) if ((c >= '가' && c <= '힯') || (c >= 'ᄀ' && c <= 'ᇿ') || (c >= '㄰' && c <= '㆏')) return true;
+            return false;
+        }
+
+        public static void Apply(Label label)
+        {
+            if (!HasHangul(label.text)) { label.style.unityFontDefinition = StyleKeyword.Null; return; }
+            if (hangul == null) hangul = Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");
+            if (hangul != null) label.style.unityFontDefinition = new FontDefinition { font = hangul };
+        }
+    }
+
     public static class StageStyles
     {
         sealed class Entry { public string id, title; public Func<IStageStyle> create; }
@@ -56,6 +81,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             new Entry { id = "luminous", title = "Luminous", create = () => new MusicStageLuminous() },
             new Entry { id = "partita", title = "云阶", create = () => new MusicStagePartita() },
+            new Entry { id = "tilt", title = "Tilt", create = () => new MusicStageTilt() },
             new Entry { id = "still", title = "Still", create = () => new MusicStageStill() }
         };
 

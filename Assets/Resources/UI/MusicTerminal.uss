@@ -560,7 +560,12 @@
 .music-stage-line-host { align-self: stretch; }
 .music-stage-glow { position: absolute; left: 0; top: 0; }
 /* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
-.music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; padding: 36px 0 28px; }
+/* Tilt style: rows of plain type, one row maybe in italic accent. */
+.music-stage-tilt-column { align-self: stretch; align-items: center; justify-content: center; padding: 14px 0; }
+.music-stage-tilt-row { flex-direction: row; justify-content: center; align-items: center; margin: 2px 0; }
+.music-stage-tilt-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-font-style: normal; }
+.music-stage-tilt-italic { -unity-font-style: italic; }
 .music-stage-partita-row { flex-direction: row; align-items: center; justify-content: center; padding: 3px 8px; }
 .music-stage-guide-h { position: absolute; bottom: -8px; height: 1px; left: -16px; right: -20px; }
 .music-stage-guide-h.music-stage-guide-left { transform-origin: left center; }
