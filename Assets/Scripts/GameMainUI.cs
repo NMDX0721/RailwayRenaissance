@@ -208,7 +208,7 @@ public class GameMainUI : MonoBehaviour
     {
         MigrateUsername();
         TraceLog.L("[GameMainUI] Init: migrate ok");
-        gameFont = Resources.Load<Font>("Fonts/zpix");
+        gameFont = RailwayRenaissance.UI.Tablet.TabletFonts.Ui();
         string presentationPath = System.IO.Path.Combine(Application.persistentDataPath, "TabletSystem", "presentation-v1.json");
 #if UNITY_EDITOR
         if (!string.IsNullOrEmpty(PresentationReviewStorage)) presentationPath = PresentationReviewStorage;

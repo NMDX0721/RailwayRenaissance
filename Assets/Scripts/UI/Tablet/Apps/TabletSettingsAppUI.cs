@@ -386,7 +386,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var prefs = GameMainUI.Instance?.PresentationPreferences;
         if (prefs == null) { rightPane.Add(new Label("请从平板桌面进入外观设置。")); return; }
         rightPane.Add(new Label("调整壁纸、解锁动效与系统面板。"));
-        new TabletPresentationSettingsView(rightPane, prefs, Resources.Load<Font>("Fonts/zpix"));
+        new TabletPresentationSettingsView(rightPane, prefs, RailwayRenaissance.UI.Tablet.TabletFonts.Ui());
     }
 
     // 形态 A · 账号页（对照 xiaomi.account 截图）

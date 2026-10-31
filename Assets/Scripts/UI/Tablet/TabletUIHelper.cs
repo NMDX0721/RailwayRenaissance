@@ -14,7 +14,7 @@ namespace RailwayRenaissance.UI.Tablet
         public static FontDefinition Fd()
         {
             if (gameFont == null)
-                gameFont = Resources.Load<Font>("Fonts/zpix");
+                gameFont = TabletFonts.Ui();
             return new FontDefinition { font = gameFont };
         }
 
