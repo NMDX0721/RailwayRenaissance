@@ -11,6 +11,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             string key = action + (iconOnly ? ":icon" : ":label");
             if (Equals(button.userData, key)) return;
+            // A button made while it has no size (hidden task page) would be taken for "text elided" and have its tooltip overwritten with its
+            // empty text; icon buttons carry their name only in the tooltip, so turn that automatic behaviour off.
+            button.displayTooltipWhenElided = false;
             button.userData = key; button.tooltip = action; button.text = ""; button.Clear();
             button.EnableInClassList("music-icon-button", iconOnly);
             button.EnableInClassList("music-icon-active", action == "已藏" || action == "随机" || action == "单曲");

@@ -347,7 +347,9 @@ public static class RailwayMusicTerminalReview
                     root.Q(className: "music-modal").Q<TextField>().value = "雾峰沿线收藏";
                     Submit(root.Q<Button>("music-save-playlist"));
                     var list = MusicLibrarySession.State.playlists.Single();
-                    Assert(root.Q<Label>(className: "music-empty")?.text.Contains("更多") == true, "Empty playlist guidance is missing");
+                    Assert(root.Q<Label>(className: "music-empty")?.text.Contains("更多") == true, "Empty playlist guidance is missing; empty labels: [" +
+                        string.Join(" | ", root.Query<Label>(className: "music-empty").ToList().Select(l => l.text)) + "] heading: " + root.Q<Label>("music-section-title")?.text +
+                        " selected playlist: " + MusicLibrarySession.State.playlists.Count);
                     Debug.Log("MUSIC_EMPTY_GUIDANCE_OK: favorites and playlist instructions");
                     Assert(MusicLibrarySession.AddToPlaylist(list, "platform") && !MusicLibrarySession.AddToPlaylist(list, "platform"), "Playlist duplicate guard failed");
                     MusicLibrarySession.AddToPlaylist(list, "iron_and_ash");
@@ -488,10 +490,15 @@ public static class RailwayMusicTerminalReview
                     TabletMusicAppUI.ToggleTabletMusicPlayPause();
                     MusicLibrarySession.Save();
                     var localTrack = MusicLibrarySession.Tracks.Single(t => t.local);
-                    File.Move(Path.Combine(Local, localTrack.fileName), Path.Combine(Local, localTrack.fileName + ".missing"));
+                    string missingPath = Path.Combine(Local, localTrack.fileName + ".missing");
+                    // An earlier aborted run may have left this name behind; set it aside instead of deleting anything.
+                    if (File.Exists(missingPath)) File.Move(missingPath, missingPath + "." + DateTime.Now.Ticks + ".stale");
+                    File.Move(Path.Combine(Local, localTrack.fileName), missingPath);
                     Assert(!MusicLibrarySession.Available(localTrack), "Missing local file was not detected");
                     MusicLibrarySession.Enqueue(localTrack.id, true); MusicLibrarySession.Enqueue("platform");
                     Submit(root.Q<Button>("music-queue"));
+                    // A reopened music task keeps its state, so the drawer may already have been open and the click closed it.
+                    if (root.Query<VisualElement>(className: "music-queue-item").First() == null) Submit(root.Q<Button>("music-queue"));
                     var missingItem = root.Query<VisualElement>(className: "music-queue-item").First();
                     Submit(missingItem.Query<Button>().ToList().First(b => b.tooltip == "播放"));
                     Assert(MusicLibrarySession.State.queue[0] == localTrack.id, "Playing a missing queue item removed it");

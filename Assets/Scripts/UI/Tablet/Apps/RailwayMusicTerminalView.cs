@@ -78,6 +78,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 MusicLibrarySession.Save();
                 if (current == this) current = null;
             });
+            // The tablet shell moves a task's view between layers, which fires detach and then attach again:
+            // subscriptions dropped on detach must come back on attach, or the page stops updating for good.
+            root.RegisterCallback<AttachToPanelEvent>(_ => {
+                MusicLibrarySession.Changed -= Refresh; MusicLibrarySession.Changed += Refresh;
+                NeteaseLocalBridge.SessionChanged -= Refresh; NeteaseLocalBridge.SessionChanged += Refresh;
+                current = this;
+                Refresh();
+            });
             root.RegisterCallback<GeometryChangedEvent>(_ => {
                 root.EnableInClassList("music-compact", root.resolvedStyle.width < 1050);
                 root.EnableInClassList("music-overlay-queue", root.resolvedStyle.width < 1280);
@@ -248,6 +256,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (page == "本地音乐") items = items.Where(t => t.local);
                 else if (page == "收藏") items = items.Where(t => MusicLibrarySession.State.favorites.Contains(t.id));
                 else if (page == "歌单" && selected != null) items = selected.tracks.Select(MusicLibrarySession.Find).Where(t => t != null);
+                else if (page == "在线歌单") items = (onlineIds ?? new List<string>()).Select(MusicLibrarySession.Find).Where(t => t != null);
                 else items = items.Where(t => !t.local && string.IsNullOrEmpty(t.provider));
             }
             else items = items.Where(t => ((t.title ?? "") + " " + (t.artist ?? "") + " " + t.category).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
@@ -261,18 +270,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (page == "首页") { RenderHome(); return; }
             if (page == "搜索") { RenderSearch(); return; }
             if (page == "云端" && query.Length == 0) { RenderCloud(); return; }
-            string heading = query.Length > 0 ? "搜索结果" : selected != null ? selected.title : page;
+            string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
             var hero = Box(content, "music-library-heading");
             hero.Add(new VisualElement { pickingMode = PickingMode.Ignore, name = "music-route-engraving" });
             var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 88);
             sleeve.AddToClassList("music-hero-cover");
             var headingText = Box(hero, "music-heading-text");
-            Text(headingText, "沿线声音档案  /  SOUND ARCHIVE", "music-eyebrow");
+            Text(headingText, page == "在线歌单" ? MusicCatalogSearch.Label(onlineSource) + " · 歌单" : "沿线声音档案  /  SOUND ARCHIVE", "music-eyebrow");
             sectionTitle = Text(headingText, heading, "music-section-title");
             var items = VisibleTracks();
-            Text(headingText, query.Length > 0 ? $"已收录曲库 · {items.Count} 个结果" : page == "原声" ? "沿线原声 · 随旅途逐步解锁" : $"私人收藏 · {items.Count} 首", "music-muted");
+            Text(headingText, query.Length > 0 ? $"已收录曲库 · {items.Count} 个结果" : page == "在线歌单" ? (onlineLoading ? "正在读取曲目…" : onlineError ?? MusicCatalogSearch.Label(onlineSource) + $" · {items.Count} 首") : page == "原声" ? "沿线原声 · 随旅途逐步解锁" : $"私人收藏 · {items.Count} 首", "music-muted");
             var actions = Box(content, "music-list-actions");
             Button(actions, "播放全部", () => PlayAll(items), "music-play-all");
+            if (page == "在线歌单")
+            {
+                Button(actions, "刷新", () => OpenOnlinePlaylist(onlineSource, onlineId, onlineTitle), "music-online-refresh");
+                Button(actions, "返回", () => Navigate("首页"), "music-online-back");
+            }
             if (page == "本地音乐")
             {
                 Button(actions, "导入音乐", () => LocalMusicFileImporter.PromptImportAudioFiles(count => {
@@ -305,6 +319,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 string emptyMessage = query.Length > 0 ? "没有找到曲目，试试曲名、作者或分类。" :
                     selected != null ? "歌单还是空的。从曲目的“更多”菜单加入歌曲。" :
+                    page == "在线歌单" ? (onlineLoading ? "正在读取曲目…" : onlineError ?? "这个歌单里还没有曲目。") :
                     page == "本地音乐" ? "还没有本地音乐。点“自动搜索”扫描电脑，或“导入音乐”选择文件。" :
                     page == "收藏" ? "还没有收藏的曲目。点击曲目旁的心形图标即可收藏。" :
                     "这里还没有曲目。";
@@ -492,7 +507,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Arrive(card, parent.childCount - 1);
             card.tooltip = heading; card.name = "music-card-" + key;
             var art = track != null ? Cover(card, track.id, track.category, 112) : PlaylistCover(card, key, cover, 112);
-            var mark = Box(art, "music-card-play"); mark.Add(glyph);
+            if (track != null) { var mark = Box(art, "music-card-play"); mark.Add(glyph); }
             Text(card, heading, "music-card-title"); Text(card, subtitle, "music-card-subtitle"); return card;
         }
         VisualElement PlaylistCover(VisualElement parent, string key, string url, int size)
@@ -519,7 +534,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 }
                 var lists = result.result.playlists ?? Array.Empty<NeteaseLocalBridge.RemotePlaylist>();
                 if (lists.Length == 0) Text(grid, "这里还没有歌单", "music-muted");
-                foreach (var list in lists.Take(6)) CollectionCard(grid, list.title, list.count + " 首 · " + MusicCatalogSearch.Label(source), () => PlayCloudPlaylist(source, list.id, list.title), null, "playlist:" + source + ":" + list.id, list.cover);
+                foreach (var list in lists.Take(6)) CollectionCard(grid, list.title, list.count + " 首 · " + MusicCatalogSearch.Label(source), () => OpenOnlinePlaylist(source, list.id, list.title), null, "playlist:" + source + ":" + list.id, list.cover);
                 return;
             }
             Text(grid, "正在读取歌单…", "music-muted");
@@ -638,6 +653,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         bool arriving; string renderedArrival;
         bool importing, importCancel; int importDone, importTotal;
         bool manageMode; readonly HashSet<string> chosen = new HashSet<string>();
+        string onlineSource, onlineId, onlineTitle, onlineError; List<string> onlineIds; bool onlineLoading; int onlineGeneration;
         // Folia-style arrival: entries come in 34 ms apart (at most nine steps) and covers are uncovered a little
         // later; with reduced motion they only fade in place.
         void Arrive(VisualElement element, int order)
@@ -753,15 +769,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var delete = Button(row, "移出所选", () => ConfirmDelete(new List<string>(chosen)), "music-manage-delete");
             delete.AddToClassList("music-danger"); delete.SetEnabled(chosen.Count > 0);
         }
-        void PlayCloudPlaylist(string source, string id, string title)
+        // A playlist from the home page opens its own page with the tracks; playing is a choice made there.
+        void OpenOnlinePlaylist(string source, string id, string title)
         {
-            ShowToast("正在载入「" + title + "」…");
+            onlineSource = source; onlineId = id; onlineTitle = title; onlineIds = null; onlineError = null; onlineLoading = true;
+            int generation = ++onlineGeneration;
+            Navigate("在线歌单");
             NeteaseLocalBridge.ForProvider(source).Send("playlist_tracks", new NeteaseLocalBridge.Parameters { id = id }, result => {
-                if (!result.ok || result.result == null || result.result.tracks == null || result.result.tracks.Length == 0) { ShowToast("歌单暂时无法读取"); return; }
-                var registered = new List<MusicLibraryTrack>();
-                foreach (var remote in result.result.tracks) { var track = MusicLibrarySession.RegisterRemote(remote, source); if (track != null) registered.Add(track); }
-                if (registered.Count == 0) { ShowToast("歌单里没有可播放的曲目"); return; }
-                PlayAll(registered);
+                if (generation != onlineGeneration) return;
+                onlineLoading = false;
+                if (!result.ok || result.result == null || result.result.tracks == null) onlineError = result.error ?? "歌单暂时无法读取";
+                else
+                {
+                    onlineIds = new List<string>();
+                    foreach (var remote in result.result.tracks) { var track = MusicLibrarySession.RegisterRemote(remote, source); if (track != null) onlineIds.Add(track.id); }
+                }
+                if (root != null && root.panel != null && page == "在线歌单") Refresh();
             });
         }
         void AddReorder(VisualElement row, List<string> list, int index)
