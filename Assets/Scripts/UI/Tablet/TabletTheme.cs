@@ -83,16 +83,24 @@ namespace RailwayRenaissance.UI.Tablet
         public static readonly Color TextMuted = new Color(0.62f, 0.64f, 0.70f, 1f);
 
         // ===== 语义状态色 =====
-        public static readonly Color Success = new Color(0.20f, 0.80f, 0.35f, 1f);
+        // ===== 铁道元素：信号灯色阶与黄铜 =====
+        /// <summary>色灯信号：红（停车/警报/录音）、黄（注意/减速）、绿（正常/通行）。</summary>
+        public static readonly Color SignalRed = new Color(0.92f, 0.22f, 0.20f, 1f);
+        public static readonly Color SignalYellow = new Color(0.98f, 0.80f, 0.16f, 1f);
+        public static readonly Color SignalGreen = new Color(0.20f, 0.80f, 0.35f, 1f);
+        /// <summary>黄铜铭牌色，用于大岛左侧的“钢轨”细边与铭牌类细节。</summary>
+        public static readonly Color Brass = new Color(0.83f, 0.66f, 0.26f, 0.90f);
+
+        public static readonly Color Success = SignalGreen;
         public static readonly Color SuccessBright = new Color(0.35f, 0.85f, 0.55f, 1f);
         public static readonly Color SuccessButton = new Color(0.25f, 0.55f, 0.35f, 1f);
         public static readonly Color ActiveFill = new Color(0.24f, 0.38f, 0.28f, 1f);
-        public static readonly Color Caution = Color.yellow;
+        public static readonly Color Caution = SignalYellow;
         public static readonly Color SpeedGold = new Color(0.96f, 0.72f, 0.20f, 1f);
         public static readonly Color Info = new Color(0.35f, 0.75f, 1f, 1f);
         public static readonly Color InfoButton = new Color(0.20f, 0.65f, 0.95f, 1f);
-        public static readonly Color Alert = new Color(1f, 0.35f, 0.25f, 1f);
-        public static readonly Color Danger = new Color(0.85f, 0.22f, 0.22f, 1f);
+        public static readonly Color Alert = SignalRed;
+        public static readonly Color Danger = new Color(0.85f, 0.22f, 0.22f, 1f); // 紧急制动等动作按钮，比信号红略暗
         public static readonly Color Badge = new Color(0.92f, 0.22f, 0.22f, 1f);
     }
 }

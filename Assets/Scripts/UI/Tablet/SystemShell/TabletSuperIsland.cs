@@ -200,7 +200,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _expandedCard.style.borderLeftColor = expBorder;
             _expandedCard.style.borderRightColor = expBorder;
             _expandedCard.style.borderBottomColor = expBorder;
-            _expandedCard.style.paddingLeft = 16;
+            // 左侧黄铜细边，取意钢轨/铭牌
+            _expandedCard.style.borderLeftWidth = 3;
+            _expandedCard.style.borderLeftColor = TabletTheme.Brass;
+            _expandedCard.style.paddingLeft = 14;
             _expandedCard.style.paddingRight = 16;
             _expandedCard.style.paddingTop = 12;
             _expandedCard.style.paddingBottom = 12;
@@ -379,10 +382,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 case IslandAppType.Recorder:
                     // 🔴 呼吸红点 + 计时 (01:23) + 拾音振幅条
-                    var recDot = CreateSignalDot(Color.red, pulsing: true);
+                    var recDot = CreateSignalDot(TabletTheme.SignalRed, pulsing: true);
                     leftBox.Add(recDot);
 
-                    var recWave = CreateMicroEqualizer(Color.red);
+                    var recWave = CreateMicroEqualizer(TabletTheme.SignalRed);
                     recWave.style.marginLeft = 6;
                     leftBox.Add(recWave);
 
@@ -457,7 +460,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     _subBubble.Add(CreatePillLabel("🚂", 12, false));
                     break;
                 case IslandAppType.Recorder:
-                    _subBubble.Add(CreateSignalDot(Color.red, pulsing: true));
+                    _subBubble.Add(CreateSignalDot(TabletTheme.SignalRed, pulsing: true));
                     break;
                 case IslandAppType.Timer:
                     _subBubble.Add(CreatePillLabel("⏱", 12, false));
@@ -589,7 +592,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 // ---------- 3. 录音大岛 ----------
                 case IslandAppType.Recorder:
                     var recHeader = CreatePillLabel("车载声音备忘 · 拾音录制中", 11, false);
-                    recHeader.style.color = Color.red;
+                    recHeader.style.color = TabletTheme.SignalRed;
                     topRow.Add(recHeader);
                     topRow.Add(closeBtn);
 
@@ -619,7 +622,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     flagBtn.style.marginRight = 8;
                     recActions.Add(flagBtn);
 
-                    var stopBtn = CreateTextActionBtn("保存", Color.red, () => s.OnPrimaryAction?.Invoke());
+                    var stopBtn = CreateTextActionBtn("保存", TabletTheme.SignalRed, () => s.OnPrimaryAction?.Invoke());
                     recActions.Add(stopBtn);
                     break;
 
