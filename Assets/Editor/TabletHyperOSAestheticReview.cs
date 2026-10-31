@@ -76,6 +76,8 @@ namespace RailwayRenaissance.Editor
 
         // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
         private static string pendingCapture;
+        private static int settingsSubPage;
+        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备" };
 
         private static void Capture(string name)
         {
@@ -351,7 +353,29 @@ namespace RailwayRenaissance.Editor
                         var rightPane = root.Q("settings-right-pane");
                         Assert(rightPane != null, "settings-right-pane should exist");
 
-                        Capture("09_settings_inset_grouped_cards");
+                        // 本阶段重复进入：先截账号页，再依次点开“显示与亮度 / 电池 / 我的设备”各截一张
+                        if (settingsSubPage == 0)
+                        {
+                            Capture("09_settings_inset_grouped_cards");
+                            settingsSubPage = 1;
+                            frame = Time.frameCount;
+                            break;
+                        }
+                        if (settingsSubPage <= SettingsPagesToCapture.Length)
+                        {
+                            string pageName = SettingsPagesToCapture[settingsSubPage - 1];
+                            Button navButton = null;
+                            root.Q("settings-category-rail").Query<Label>().ForEach(l =>
+                            {
+                                if (navButton == null && l.text == pageName) navButton = l.parent as Button;
+                            });
+                            Assert(navButton != null, "settings nav item missing: " + pageName);
+                            ClickElement(navButton);
+                            Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_" + pageName);
+                            settingsSubPage++;
+                            frame = Time.frameCount;
+                            break;
+                        }
                         stage++;
                         frame = Time.frameCount;
                         break;

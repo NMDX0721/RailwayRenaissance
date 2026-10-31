@@ -1121,20 +1121,30 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             FPSDisplay.SetActive(v);
         }));
 
-        card.Add(BuildSliderRow("文字速度", 1, 10, PlayerPrefs.GetInt("TextSpeed", 5), v =>
+        card.Add(BuildWhiteRow("界面缩放方案", "2.5K/4K 屏幕自适应对齐（ScaleMode=2）", null, false));
+        rightPane.Add(card);
+
+        // 剧情对话的显示设置放在“显示”里：带实时预览，改动立即看到效果，进入剧情后同样生效
+        AddSectionHeader(rightPane, "对话与阅读");
+        var readCard = BuildWhiteCard();
+        readCard.name = "settings-dialogue-card";
+        var preview = BuildDialoguePreview(PlayerPrefs.GetInt("DialogAlpha", 80), PlayerPrefs.GetInt("TextSpeed", 5));
+        readCard.Add(preview.root);
+        readCard.Add(BuildSliderRow("文字速度", 1, 10, PlayerPrefs.GetInt("TextSpeed", 5), v =>
         {
             PlayerPrefs.SetInt("TextSpeed", v);
             PlayerPrefs.Save();
+            preview.replay(v);
         }, " 档"));
-
-        card.Add(BuildSliderRow("对话框透明度", 0, 100, PlayerPrefs.GetInt("DialogAlpha", 80), v =>
+        readCard.Add(BuildSliderRow("对话框透明度", 0, 100, PlayerPrefs.GetInt("DialogAlpha", 80), v =>
         {
             PlayerPrefs.SetInt("DialogAlpha", v);
             PlayerPrefs.Save();
+            preview.setAlpha(v);
         }, " %"));
+        rightPane.Add(readCard);
 
-        card.Add(BuildWhiteRow("界面缩放方案", "2.5K/4K 屏幕自适应对齐（ScaleMode=2）", null, false));
-
+        var resetCard = BuildWhiteCard();
         var resetBtn = new Button(() =>
         {
             Screen.fullScreen = true;
@@ -1152,9 +1162,77 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             BuildSettingsPage(win);
         }) { text = "恢复显示默认设置" };
         StyleActionBtn(resetBtn);
-        card.Add(resetBtn);
+        resetBtn.style.marginTop = 6; resetBtn.style.marginBottom = 6;
+        resetCard.Add(resetBtn);
+        rightPane.Add(resetCard);
+    }
 
-        rightPane.Add(card);
+    // 对话框预览：模拟剧情对话框，按当前“文字速度”逐字打出示例句，按“透明度”调整底色；点击预览可重播
+    private static (VisualElement root, System.Action<int> replay, System.Action<int> setAlpha) BuildDialoguePreview(int alphaSetting, int speedSetting)
+    {
+        const string sample = "雾峰村线的清晨，汽笛声从远处传来……";
+        var root = new VisualElement { name = "settings-dialogue-preview" };
+        root.style.height = 140;
+        root.style.marginTop = 8; root.style.marginBottom = 8;
+        root.style.paddingLeft = 12; root.style.paddingRight = 12; root.style.paddingBottom = 12;
+        root.style.justifyContent = Justify.FlexEnd;
+        root.style.overflow = Overflow.Hidden;
+        root.style.borderTopLeftRadius = root.style.borderTopRightRadius = 18;
+        root.style.borderBottomLeftRadius = root.style.borderBottomRightRadius = 18;
+        root.style.backgroundColor = new Color(0.42f, 0.50f, 0.46f, 1f);   // 示意的场景底色，用来衬出对话框透明度
+
+        var box = new VisualElement();
+        box.style.paddingLeft = 14; box.style.paddingRight = 14;
+        box.style.paddingTop = 10; box.style.paddingBottom = 10;
+        box.style.minHeight = 66;
+        box.style.borderTopLeftRadius = box.style.borderTopRightRadius = 12;
+        box.style.borderBottomLeftRadius = box.style.borderBottomRightRadius = 12;
+        root.Add(box);
+
+        var speaker = new Label("旅人");
+        speaker.style.fontSize = 12; speaker.style.color = new Color(0.83f, 0.66f, 0.26f, 1f);
+        speaker.style.unityFontDefinition = Fd();
+        box.Add(speaker);
+
+        var text = new Label(string.Empty);
+        text.style.fontSize = 15; text.style.color = new Color(0.93f, 0.87f, 0.72f, 1f);
+        text.style.unityFontDefinition = Fd(); text.style.marginTop = 3;
+        text.style.whiteSpace = WhiteSpace.Normal;
+        box.Add(text);
+
+        var hint = new Label("点击预览重播");
+        hint.style.position = Position.Absolute;
+        hint.style.right = 14; hint.style.top = 10;
+        hint.style.fontSize = 11; hint.style.color = new Color(1f, 1f, 1f, 0.75f);
+        hint.style.unityFontDefinition = Fd();
+        hint.pickingMode = PickingMode.Ignore;
+        root.Add(hint);
+
+        int currentSpeed = speedSetting;
+        IVisualElementScheduledItem job = null;
+        System.Action<int> setAlpha = a =>
+        {
+            float alpha = Mathf.Clamp(0.92f * Mathf.Clamp(a, 0, 100) / 80f, 0.15f, 1f);   // 与剧情对话框使用同一换算
+            box.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, alpha);
+        };
+        System.Action<int> replay = sp =>
+        {
+            currentSpeed = Mathf.Clamp(sp, 1, 10);
+            job?.Pause();
+            int shown = 0;
+            text.text = string.Empty;
+            // 与剧情打字机同一换算：默认档 5 为每字 0.03 秒
+            float interval = Mathf.Clamp(0.03f * 5f / currentSpeed, 0.006f, 0.15f);
+            job = root.schedule.Execute(() =>
+            {
+                if (shown < sample.Length) { shown++; text.text = sample.Substring(0, shown); }
+                else job?.Pause();
+            }).Every(System.Math.Max(1L, (long)(interval * 1000f)));
+        };
+        setAlpha(alphaSetting);
+        replay(speedSetting);
+        root.RegisterCallback<ClickEvent>(_ => replay(currentSpeed));
+        return (root, replay, setAlpha);
     }
 
     // 14 声音与振动：老设置「音频」全量并入
@@ -1777,8 +1855,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightCol.Add(valLbl);
 
         var slider = new SliderInt(min, max) { value = current };
-        slider.style.width = 160; slider.style.marginLeft = 10;
+        slider.style.width = 200; slider.style.marginLeft = 10;
         slider.SetEnabled(enabled);
+        StyleHyperSlider(slider, enabled);
         slider.RegisterValueChangedCallback(evt =>
         {
             valLbl.text = evt.newValue + unit;
@@ -1787,6 +1866,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightCol.Add(slider);
 
         return row;
+    }
+
+    // HyperOS 风格滑条：细圆角轨道 + 强调色圆形滑块，去掉 Unity 默认的方块滑块与边框
+    private static void StyleHyperSlider(BaseSlider<int> slider, bool enabled)
+    {
+        var tracker = slider.Q(className: "unity-base-slider__tracker");
+        if (tracker != null)
+        {
+            tracker.style.height = 6;
+            tracker.style.backgroundColor = new Color(0.86f, 0.86f, 0.89f, 1f);
+            tracker.style.borderTopLeftRadius = tracker.style.borderTopRightRadius = 3;
+            tracker.style.borderBottomLeftRadius = tracker.style.borderBottomRightRadius = 3;
+            tracker.style.borderTopWidth = tracker.style.borderBottomWidth = tracker.style.borderLeftWidth = tracker.style.borderRightWidth = 0;
+        }
+        var dragger = slider.Q(className: "unity-base-slider__dragger");
+        if (dragger != null)
+        {
+            dragger.style.width = 22; dragger.style.height = 22;
+            dragger.style.backgroundColor = enabled ? AccentSystem : new Color(0.72f, 0.72f, 0.76f, 1f);
+            dragger.style.borderTopLeftRadius = dragger.style.borderTopRightRadius = 11;
+            dragger.style.borderBottomLeftRadius = dragger.style.borderBottomRightRadius = 11;
+            dragger.style.borderTopWidth = dragger.style.borderBottomWidth = dragger.style.borderLeftWidth = dragger.style.borderRightWidth = 0;
+        }
+        var draggerBorder = slider.Q(className: "unity-base-slider__dragger-border");
+        if (draggerBorder != null) draggerBorder.style.display = DisplayStyle.None;
     }
 
     private static void StyleActionBtn(Button btn)
