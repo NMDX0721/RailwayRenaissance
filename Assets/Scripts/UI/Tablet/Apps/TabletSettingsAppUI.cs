@@ -440,8 +440,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var cloudCard = BuildWhiteCard();
         cloudCard.style.width = new Length(48, LengthUnit.Percent);
         cloudCard.style.marginBottom = 0;
-        cloudCard.Add(new Label("☁ 云空间") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = Fd() } });
-        cloudCard.Add(new Label("已分配 512 GB 阿里郎卫星云存储 (本地量子加密缓存)") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 6, whiteSpace = WhiteSpace.Normal } });
+        cloudCard.style.backgroundColor = new Color(0.86f, 0.92f, 0.99f, 1f);
+        cloudCard.style.justifyContent = Justify.SpaceBetween;
+        cloudCard.style.paddingTop = 18; cloudCard.style.paddingBottom = 20;
+        cloudCard.style.minHeight = 168;
+        cloudCard.Add(new Label("云空间") { style = { fontSize = 18, color = InkPrimary, unityFontDefinition = FdBold() } });
+        var cloudBottom = new VisualElement();
+        cloudBottom.Add(new Label("已分配") { style = { fontSize = 13, color = InkSecondary, unityFontDefinition = Fd() } });
+        var cloudFigure = new VisualElement();
+        cloudFigure.style.flexDirection = FlexDirection.Row;
+        cloudFigure.style.alignItems = Align.FlexEnd;
+        cloudFigure.Add(new Label("512") { style = { fontSize = 34, color = InkPrimary, unityFontDefinition = FdBold() } });
+        cloudFigure.Add(new Label("GB") { style = { fontSize = 16, color = InkSecondary, unityFontDefinition = Fd(), marginLeft = 4, marginBottom = 6 } });
+        cloudBottom.Add(cloudFigure);
+        cloudBottom.Add(new Label("阿里郎卫星云存储 (本地量子加密缓存)") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 2, whiteSpace = WhiteSpace.Normal } });
+        cloudCard.Add(cloudBottom);
         grid.Add(cloudCard);
 
         var rightSubCards = new VisualElement();
@@ -451,13 +464,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var familyCard = BuildWhiteCard();
         familyCard.style.marginBottom = 10;
-        familyCard.Add(new Label("👨‍👩‍👧 家庭服务") { style = { fontSize = 15, color = InkPrimary, unityFontDefinition = Fd() } });
+        familyCard.Add(new Label("家庭服务") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = FdBold() } });
         familyCard.Add(new Label("已共享雾峰村先民铁道运营排班表") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 4 } });
         rightSubCards.Add(familyCard);
 
         var findCard = BuildWhiteCard();
         findCard.style.marginBottom = 0;
-        findCard.Add(new Label("📍 查找设备") { style = { fontSize = 15, color = InkPrimary, unityFontDefinition = Fd() } });
+        findCard.Add(new Label("查找设备") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = FdBold() } });
         findCard.Add(new Label("0721号机车车载终端实时在线 · 信号极佳") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 4 } });
         rightSubCards.Add(findCard);
 
@@ -481,7 +494,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var dName = new Label("Xiaomi Pad 36 Ultra (DPRK Edition)");
         dName.style.fontSize = 20; dName.style.color = InkPrimary;
-        dName.style.unityFontStyleAndWeight = FontStyle.Bold; dName.style.unityFontDefinition = Fd();
+        dName.style.unityFontDefinition = FdBold();
         devCard.Add(dName);
 
         var osName = new Label("Xiaomi HyperOS 32.0.4.1 (DPRK Edition · 先民军工特供版)");
@@ -497,10 +510,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         AddSectionHeader(rightPane, "硬件规格与军工系统参数");
         var specsCard = BuildWhiteCard();
-        specsCard.Add(BuildWhiteRow("处理器 (CPU)", "先民超导纳米核 3.6GHz × 16 (32位精简指令集)", null, false));
-        specsCard.Add(BuildWhiteRow("运行内存 / 存储", "64 GB LPDDR9 Ultra / 2 TB 先民固态量子闪存", null, false));
-        specsCard.Add(BuildWhiteRow("屏幕规格", "14.4 英寸 Super AMOLED Ultra (3840×2160 · 144Hz · 防眩光涂层)", null, false));
-        specsCard.Add(BuildWhiteRow("电池与供电", "24,000 mAh 双电芯超级固态沙能电池 (支持120W快充 / 机车逆变回充)", null, false));
+        // 四项主规格用两列“数值 + 说明”网格（对齐 HyperOS“我的设备”）；文字沿用原设定
+        specsCard.Add(BuildSpecGrid(new[]
+        {
+            ("先民超导纳米核 3.6GHz × 16", "处理器 (CPU) · 32位精简指令集"),
+            ("64 GB / 2 TB", "运行内存 LPDDR9 Ultra / 先民固态量子闪存"),
+            ("14.4 英寸", "Super AMOLED Ultra · 3840×2160 · 144Hz · 防眩光涂层"),
+            ("24,000 mAh", "双电芯超级固态沙能电池 · 120W快充 / 机车逆变回充"),
+        }));
         specsCard.Add(BuildWhiteRow("设备序列号", "SN-20530721-CHL-001 (0721号专属配件 · 军工固化)", null, false));
         specsCard.Add(BuildWhiteRow("安全防护固件", "白头疫病 SiliVaccine 8.2 (军工高权限固化)", null, false));
         specsCard.Add(BuildWhiteRow("卫星通讯基带", "阿里郎军工量子加密卫星专线 (全天候链路已连接)", null, false));
@@ -539,6 +556,34 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         aboutCard.Add(BuildWhiteRow("字体", "Zpix (最像素)", null, false));
         aboutCard.Add(BuildWhiteRow("底层技术", "Roslyn C# / UI Toolkit / UGUI 混合渲染", null, false));
         rightPane.Add(aboutCard);
+    }
+
+    // 两列“数值 + 说明”规格网格
+    private static VisualElement BuildSpecGrid((string value, string caption)[] items)
+    {
+        var grid = new VisualElement { name = "settings-spec-grid" };
+        grid.style.flexDirection = FlexDirection.Row;
+        grid.style.flexWrap = Wrap.Wrap;
+        grid.style.paddingTop = 8; grid.style.paddingBottom = 4;
+        foreach (var it in items)
+        {
+            var cell = new VisualElement();
+            cell.style.width = new Length(50, LengthUnit.Percent);
+            cell.style.paddingRight = 16;
+            cell.style.marginBottom = 16;
+            var v = new Label(it.value);
+            v.style.fontSize = 17; v.style.color = InkPrimary;
+            v.style.unityFontDefinition = FdBold();
+            v.style.whiteSpace = WhiteSpace.Normal;
+            var c = new Label(it.caption);
+            c.style.fontSize = 12; c.style.color = InkTertiary;
+            c.style.unityFontDefinition = Fd(); c.style.marginTop = 3;
+            c.style.whiteSpace = WhiteSpace.Normal;
+            cell.Add(v);
+            cell.Add(c);
+            grid.Add(cell);
+        }
+        return grid;
     }
 
     // 3 平板特色功能：机车桌面小部件、系统面板与外观增强入口
@@ -1578,14 +1623,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var card = new VisualElement();
         card.style.backgroundColor = SurfaceCard;
-        card.style.borderTopLeftRadius = 18; card.style.borderTopRightRadius = 18;
-        card.style.borderBottomLeftRadius = 18; card.style.borderBottomRightRadius = 18;
-        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
-        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
-        card.style.borderTopColor = InsetCardBorder; card.style.borderBottomColor = InsetCardBorder;
-        card.style.borderLeftColor = InsetCardBorder; card.style.borderRightColor = InsetCardBorder;
-        card.style.paddingLeft = 18; card.style.paddingRight = 18;
-        card.style.paddingTop = 10; card.style.paddingBottom = 10;
+        card.style.borderTopLeftRadius = 24; card.style.borderTopRightRadius = 24;
+        card.style.borderBottomLeftRadius = 24; card.style.borderBottomRightRadius = 24;
+        card.style.paddingLeft = 22; card.style.paddingRight = 22;
+        card.style.paddingTop = 8; card.style.paddingBottom = 8;
         card.style.marginBottom = 16;
         return card;
     }
@@ -1596,7 +1637,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
-        row.style.paddingTop = 11; row.style.paddingBottom = 11;
+        row.style.paddingTop = 15; row.style.paddingBottom = 15;
         row.style.paddingLeft = 8; row.style.paddingRight = 8;
         row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
         row.style.borderTopLeftRadius = 10; row.style.borderTopRightRadius = 10;
@@ -1615,22 +1656,35 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.Add(left);
 
         var t = new Label(title);
-        t.style.fontSize = 15; t.style.color = InkPrimary;
+        t.style.fontSize = 16; t.style.color = InkPrimary;
         t.style.unityFontDefinition = Fd();
         left.Add(t);
 
-        if (!string.IsNullOrEmpty(desc))
+        // 短说明作为右侧取值显示（如“当前电量  86%”），长说明仍放在标题下方
+        bool shortValue = !string.IsNullOrEmpty(desc) && desc.Length <= 12 && desc.IndexOf('\n') < 0;
+        if (!string.IsNullOrEmpty(desc) && !shortValue)
         {
             var d = new Label(desc);
-            d.style.fontSize = 12; d.style.color = InkSecondary;
-            d.style.unityFontDefinition = Fd(); d.style.marginTop = 2;
+            d.style.fontSize = 13; d.style.color = InkSecondary;
+            d.style.unityFontDefinition = Fd(); d.style.marginTop = 3;
+            d.style.whiteSpace = WhiteSpace.Normal;
             left.Add(d);
+        }
+
+        if (shortValue)
+        {
+            var v = new Label(desc);
+            v.style.fontSize = 15; v.style.color = InkTertiary;
+            v.style.unityFontDefinition = Fd();
+            v.style.marginLeft = 12; v.style.marginRight = hasArrow ? 6 : 0;
+            v.style.flexShrink = 0;
+            row.Add(v);
         }
 
         if (hasArrow)
         {
             var ar = new Label("›");
-            ar.style.fontSize = 18; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
+            ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
             row.Add(ar);
         }
         return row;

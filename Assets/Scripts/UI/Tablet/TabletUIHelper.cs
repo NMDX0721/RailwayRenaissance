@@ -123,7 +123,7 @@ namespace RailwayRenaissance.UI.Tablet
         public static readonly Color InkPrimary = new Color(0.10f, 0.10f, 0.10f, 1f);
         public static readonly Color InkSecondary = new Color(0.42f, 0.42f, 0.44f, 1f);
         public static readonly Color InkTertiary = new Color(0.61f, 0.61f, 0.63f, 1f);
-        public static readonly Color SectionHeaderColor = new Color(0.54f, 0.56f, 0.60f, 1f);
+        public static readonly Color SectionHeaderColor = new Color(0.58f, 0.58f, 0.72f, 1f);
         /// <summary>浅色卡片上的系统强调色，随外观偏好的强调色切换（琥珀时保持原值）。</summary>
         public static Color AccentSystem => TabletTheme.AccentOnLight;
 
