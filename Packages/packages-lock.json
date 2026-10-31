@@ -7,14 +7,13 @@
       "dependencies": {}
     },
     "com.unity.burst": {
-      "version": "1.8.30",
-      "depth": 2,
-      "source": "registry",
+      "version": "file:com.unity.burst",
+      "depth": 0,
+      "source": "embedded",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
+      }
     },
     "com.unity.collab-proxy": {
       "version": "2.13.5",

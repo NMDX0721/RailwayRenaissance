@@ -1,0 +1,376 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-10-31T08:47:46.0297614Z"
+Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26340) Professional' Language: 'zh' Physical Memory: 31934 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-31T08:47:46Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 55864, path: "E:/WindowsApps/UnityTechnologies.UnityHub_4.0.0.20004_x64__2vrhnee42bhxm/app/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.19.0+4cc3dda
+  Session Id:              d9f06af97418404eb03c916916abb5b3
+  Correlation Id:          94bd3a410d69cd3caad69f7c5bce3402
+  External correlation Id: 7334661783589449001
+  Machine Id:              3vy2qkUMwmQErChAY5t7lyDgyDc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee" (connect: 0.00s, validation: 0.00s, handshake: 0.08s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-notifications" at "2026-10-31T08:47:46.1167692Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX
+  Product: Unity Personal Version
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.09s
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\Unity 6.5\Editor\Unity.exe
+-batchmode
+-projectPath
+C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux
+-executeMethod
+TabletGestureReview.Batch
+-logFile
+tools/compile/t318_recheck.log
+-quit
+Successfully changed project path to: C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux
+C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [53148]  Target information:
+
+Player connection [53148]  * "[IP] 192.168.71.9 [Port] 55504 [Flags] 2 [Guid] 4263902340 [EditorId] 4263902340 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [53148]  * "[IP] 172.25.128.1 [Port] 55504 [Flags] 2 [Guid] 4263902340 [EditorId] 4263902340 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [53148]  * "[IP] 172.31.240.1 [Port] 55504 [Flags] 2 [Guid] 4263902340 [EditorId] 4263902340 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [53148]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 4263902340 [EditorId] 4263902340 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [53148] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [53148] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-14292" after 0.2 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.5.8f1 (5cb7df797b7d)
+[Subsystems] Discovering subsystems at path D:/Unity Hub/Unity 6.5/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)
+    Vendor:   NVIDIA
+    VRAM:     11944 MB
+    Driver:   32.0.16.2101
+Initialize mono
+Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
+Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56292
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001835 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.407 seconds
+Domain Reload Profiling: 792ms
+	BeginReloadAssembly (114ms)
+		CreateAndSetChildDomain (20ms)
+	RebuildCommonClasses (4ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (43ms)
+	LoadAllAssembliesAndSetupDomain (210ms)
+		LoadAssemblies (93ms)
+		AnalyzeDomain (156ms)
+			TypeCache.Refresh (154ms)
+				TypeCache.ScanAssembly (142ms)
+	FinalizeReload (408ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (75ms)
+			ProcessInitializeOnLoadAttributes (76ms)
+			ProcessInitializeOnLoadMethodAttributes (202ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.settings-manager@2.1.1 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+  Embedded packages:
+    com.unity.burst@file:C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Packages\com.unity.burst (location: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux\Packages\com.unity.burst)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Oe_Lee\.codex\worktrees\5b7b\tablet-system-ux
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 23.2531ms
+Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux
+DisplayProgressbar: Compiling Scripts
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "D:\Unity Hub\Unity 6.5\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "D:\Unity Hub\Unity 6.5\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "D:\Unity Hub\Unity 6.5\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "D:\Unity Hub\Unity 6.5\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Packages\com.unity.burst\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff\Mono.Cecil.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors - 200 - application/grpc 54.6185ms
+ExitCode: 0 Duration: 0s357ms
+[761/969    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.32 seconds), 1 items updated, 969 evaluated
+AssetDatabase: script compilation time: 0.752308s
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.573 seconds
+Domain Reload Profiling: 3411ms
+	BeginReloadAssembly (284ms)
+		DisableScriptedObjects (25ms)
+		CreateAndSetChildDomain (147ms)
+	RebuildCommonClasses (8ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (494ms)
+		LoadAssemblies (268ms)
+		AnalyzeDomain (215ms)
+			TypeCache.Refresh (149ms)
+				TypeCache.ScanAssembly (140ms)
+			BuildScriptInfoCaches (57ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (2574ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (63ms)
+			ProcessInitializeOnLoadAttributes (2010ms)
+			ProcessInitializeOnLoadMethodAttributes (259ms)
+		AwakeInstancesAfterBackupRestoration (75ms)
+Starting new worker id: 0 with log in C:/Users/Oe_Lee/.codex/worktrees/5b7b/tablet-system-ux/Logs/AssetImportWorkerHW0.log
+
+Asset Pipeline Refresh (id=73c0ae46cc227084f8ecd39851c31fc0): Total: 4.905 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=3163 ms
+		Asset DB Callback time: managed=23 ms, native=25 ms
+		Scripting: domain reloads=1, domain reload time=888 ms, compile time=754 ms, other=48 ms
+		Project Asset Count: scripts=1514, non-scripts=3685
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 27.664ms
+	ApplyChangesToAssetFolders: 1.126ms
+	Scan: 225.558ms
+	Collect global state as custom dependencies: 17.047ms
+	CategorizeScriptCompilationAssets: 42.523ms
+	ProcessAssetsWithTransientArtifactChanges: 71.973ms
+	CategorizeAssets: 54.874ms
+	CompileScripts: 754.000ms
+	ImportOutOfDateAssets: 2638.285ms (2589.198ms without children)
+		UnloadImportedAssets: 1.129ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.656ms
+		ImportSchedulerStart: 47.250ms
+	PostProcessAllAssets: 23.492ms
+		MonoPostProcessAllAssets: 23.430ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 8.334ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 2.069ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.502ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.843ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.605ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.291ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.216ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.203ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.162ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.125ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.116ms
+			SyncVS.PostprocessSyncProject 0.090ms
+	UnloadStreamsBegin: 3.336ms
+	PersistCurrentRevisions: 0.118ms
+	GenerateScriptTypeHashes: 2.106ms
+	GenerateScriptTypeSerializationHashes: 3.794ms
+	Untracked: 1037.162ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 2.842ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6985 unused Assets / (8.0 MB). Loaded Objects now: 8025.
+Memory consumption went from 436.9 MB to 428.9 MB.
+Total: 14.175800 ms (FindLiveObjects: 0.837600 ms CreateObjectMapping: 1.871300 ms MarkObjects: 5.932800 ms  DeleteObjects: 5.530000 ms)
+
+TABLET_GESTURE_STATE_OK: deterministic touch decision tree, inward back, home swipe, hold recents, notifications/controls edge swipe, multi-touch rejection, direct manipulation immunity, cancellation, and geometry reset
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TabletGestureReview:CheckGestureDecisions () (at Assets/Editor/TabletGestureReview.cs:213)
+TabletGestureReview:Batch () (at Assets/Editor/TabletGestureReview.cs:146)
+
+(Filename: Assets/Editor/TabletGestureReview.cs Line: 213)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 1 unused Assets / (5.4 KB). Loaded Objects now: 8027.
+Memory consumption went from 419.1 MB to 419.1 MB.
+Total: 6.626600 ms (FindLiveObjects: 0.426700 ms CreateObjectMapping: 0.859700 ms MarkObjects: 5.314200 ms  DeleteObjects: 0.025000 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+abort_threads: Failed aborting id: 000000000000CB70, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000BD14, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000CB70, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000BD14, mono_thread_manage will ignore it
+
+debugger-agent: Unable to listen on 4724
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

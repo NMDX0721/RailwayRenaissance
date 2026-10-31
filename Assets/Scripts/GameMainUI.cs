@@ -507,7 +507,24 @@ public class GameMainUI : MonoBehaviour
         root.RegisterCallback<PointerDownEvent>(OnSystemPointerDown, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerMoveEvent>(OnSystemPointerMove, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerUpEvent>(OnSystemPointerUp, TrickleDown.TrickleDown);
-        root.RegisterCallback<PointerCancelEvent>(evt => tabletEdgeGesture.Cancel(evt.pointerId), TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCancelEvent>(evt =>
+        {
+            activeTouchPointers.Remove(evt.pointerId);
+            tabletEdgeGesture.Cancel(evt.pointerId);
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCaptureOutEvent>(evt =>
+        {
+            activeTouchPointers.Remove(evt.pointerId);
+            tabletEdgeGesture.Cancel(evt.pointerId);
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            if (Mathf.Abs(evt.newRect.width - evt.oldRect.width) > 1f ||
+                Mathf.Abs(evt.newRect.height - evt.oldRect.height) > 1f)
+            {
+                ResetSystemGesture();
+            }
+        });
         root.RegisterCallback<ClickEvent>(evt =>
         {
             if (!suppressNextGestureClick) return;
@@ -631,7 +648,7 @@ public class GameMainUI : MonoBehaviour
     private void BuildDesktop()
     {
         TraceLog.L("[GameMainUI] Desktop: begin");
-        desktop = new VisualElement { name = "tablet-desktop" };
+        desktop = new VisualElement { name = "tablet-desktop", focusable = true };
         desktop.style.position = Position.Absolute;
         desktop.style.top = 0; desktop.style.left = 0;
         desktop.style.right = 0; desktop.style.bottom = 0;
@@ -1847,6 +1864,7 @@ public class GameMainUI : MonoBehaviour
     private float memoryCheckTimer;
     private long tabletActivationSequence;
     private readonly TabletEdgeGesture tabletEdgeGesture = new TabletEdgeGesture();
+    private readonly HashSet<int> activeTouchPointers = new HashSet<int>();
     private bool suppressNextGestureClick;
     private bool dispatchingSystemBack;
     private int rebindConsumedFrame = -1;
@@ -1865,7 +1883,7 @@ public class GameMainUI : MonoBehaviour
         appLayer.style.justifyContent = Justify.Center;
         root.Add(appLayer);
         tabletShellView?.Dispose();
-        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"));
+        tabletShellView = new TabletShellView(root, tabletShellState, gameFont, () => LaunchApp("设置"), PresentationPreferences);
         tabletShellView.OnRequestCapture = TriggerShellBlurCapture;
         tabletShellView.SetVisible(unlocked);
         BuildSystemNavigation();
@@ -2123,6 +2141,7 @@ public class GameMainUI : MonoBehaviour
         if (recentTasksOverlay == null || recentTasksOverlay.style.display != DisplayStyle.Flex) return;
         recentTasksOverlay.style.display = DisplayStyle.None;
         if (recentPreviousFocus is VisualElement previous && previous.panel == root.panel) previous.Focus();
+        else desktop?.Focus();
         recentPreviousFocus = null;
     }
 
@@ -2204,11 +2223,13 @@ public class GameMainUI : MonoBehaviour
         {
             task.Root.Clear();
             if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+            task.Root = null;
         }
         task.Pages.Clear();
         task.SuspendedPageBuilders = null;
         task.Snapshot = null;
         task.AppState = null;
+        task.LastFocusedElement = null;
         tabletTasks.Remove(task);
         RenderRecentTasks();
         if (tabletTasks.Count == 0) CloseRecentTasks();
@@ -2225,6 +2246,7 @@ public class GameMainUI : MonoBehaviour
             {
                 task.Root.Clear();
                 if (task.Root.parent != null) task.Root.parent.Remove(task.Root);
+                task.Root = null;
             }
             task.Pages.Clear();
             task.SuspendedPageBuilders = null;
@@ -2296,21 +2318,35 @@ public class GameMainUI : MonoBehaviour
     private void OnSystemPointerDown(PointerDownEvent evt)
     {
         if (!unlocked || evt.pointerType != "touch" || root?.panel == null) return;
+        activeTouchPointers.Add(evt.pointerId);
+        if (activeTouchPointers.Count > 1)
+        {
+            tabletEdgeGesture.Reset();
+            return;
+        }
         if (activeTabletTask != null) ShowTabletNavigationBar();
         Vector2 point = evt.position;
         float width = root.panel.visualTree.layout.width;
         float height = root.panel.visualTree.layout.height;
         tabletEdgeGesture.Begin(evt.pointerId, point, width, height, SystemNavBarHeight,
-            IsDirectManipulationTarget(evt.target));
+            IsDirectManipulationTarget(evt.target), activeTouchPointers.Count);
     }
 
     private void OnSystemPointerMove(PointerMoveEvent evt)
     {
+        if (evt.pointerType != "touch") return;
+        if (activeTouchPointers.Count > 1)
+        {
+            tabletEdgeGesture.Reset();
+            return;
+        }
         tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
     }
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
+        if (evt.pointerType != "touch") return;
+        activeTouchPointers.Remove(evt.pointerId);
         TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
         switch (action)
         {
@@ -2324,13 +2360,51 @@ public class GameMainUI : MonoBehaviour
         root.schedule.Execute(() => suppressNextGestureClick = false).ExecuteLater(80);
     }
 
+    private static readonly System.Reflection.FieldInfo s_musicBarHandleField = typeof(TabletMusicAppUI).GetField(
+        "s_playerBarHandle", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+    private static bool IsMusicPlayerElement(VisualElement element)
+    {
+        if (element == null) return false;
+        if (s_musicBarHandleField != null)
+        {
+            if (s_musicBarHandleField.GetValue(null) is MusicPlayerBarView.PlayerBarHandle handle)
+            {
+                if (handle.root != null && (element == handle.root || handle.root.Contains(element)))
+                    return true;
+                if (handle.progressTrack != null && (element == handle.progressTrack || handle.progressTrack.Contains(element)))
+                    return true;
+                if (handle.volSlider != null && (element == handle.volSlider || handle.volSlider.Contains(element)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     private bool IsDirectManipulationTarget(IEventHandler target)
     {
+        if (TouchScreenKeyboard.visible) return true;
         VisualElement element = target as VisualElement;
         while (element != null)
         {
             if (element is Button || element is TextField || element is Slider || element is SliderInt ||
                 element is Toggle || element is ScrollView) return true;
+            if (element is Scroller || element is RepeatButton) return true;
+            if (element.GetType().Name.IndexOf("TextInput", System.StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            if (!string.IsNullOrEmpty(element.name) && (
+                element.name.IndexOf("progress", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("slider", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("track", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("scrub", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("seek", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                element.name.IndexOf("dragger", System.StringComparison.OrdinalIgnoreCase) >= 0))
+                return true;
+            if (element.ClassListContains("unity-base-slider__dragger") ||
+                element.ClassListContains("unity-base-slider__tracker") ||
+                element.ClassListContains("music-progress") ||
+                element.ClassListContains("track-bar"))
+                return true;
+            if (IsMusicPlayerElement(element)) return true;
             element = element.parent;
         }
         return false;
@@ -2338,7 +2412,13 @@ public class GameMainUI : MonoBehaviour
 
     private void ResetSystemGesture()
     {
+        activeTouchPointers.Clear();
         tabletEdgeGesture.Reset();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus) ResetSystemGesture();
     }
 
     private void ShowTabletNavigationBar()
@@ -3043,6 +3123,12 @@ public class GameMainUI : MonoBehaviour
 
         if (tabletEdgeGesture.Tick(Time.unscaledTime) == TabletGestureAction.Recents)
             OpenRecentTasks();
+
+        if (rebindConsumedFrame != Time.frameCount && LegacyInputAdapter.GetKeyDown(KeyCode.Escape))
+        {
+            rebindConsumedFrame = Time.frameCount;
+            RequestSystemBack();
+        }
 
         // 系统面板模糊尺寸自适应
         if (tabletShellState.Panel != TabletSystemPanel.None)

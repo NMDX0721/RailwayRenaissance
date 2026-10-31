@@ -1,5 +1,9 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-10-29 T317：`GameMainUI` 和 `TabletShellView` 在原焦点失效时回退到可聚焦桌面；`TabletT317VisualReview` 分帧验证两种目标纹理比例与异步重采样，系统窗口/物理输入待验。
+
+2026-10-29 T316：归途通过 `ProgressReader` 可隔离进度测试并给剧目按钮稳定名称；任务关闭释放根与焦点引用；编辑器回归区分关窗后释放与宿主存活时延迟帧回收。见 `TABLET_SYSTEM_SHELL.md`。
+
 2026-10-28：`NotesTabletTaskLifecycle` 在任务回收、关闭时调用 `TabletNotesAppUI.ReleaseTaskView` 解除静态控件引用；任务快照仍负责草稿恢复。
 
 2026-10-28 PR #7：`GameMainUI` 子页返回移除完整窗口，批量关闭清理任务引用，壳层模糊重采样在隐藏后等待帧结束；详见 `TABLET_SYSTEM_SHELL.md`。

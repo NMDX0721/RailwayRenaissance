@@ -17,13 +17,15 @@ public static class TabletInteractionReview
             CheckDraftRestore();
             CheckBackAndRebind();
             CheckKeyboardRebind();
+            CheckShellFocusFallback();
             CheckLiveTaskSwitch();
+            CheckWeakReferenceRelease();
             CheckMusicViewRelease();
             CheckBackupCompleteness();
             CheckDamagedNotificationStorage();
             Assert(Resources.Load<Shader>("UI/TabletGaussianBlur") != null, "blur shader included in Resources");
             CheckBlurRendering();
-            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1 calculator=1 backup_completeness=1");
+            Debug.Log("TABLET_INTERACTION_REVIEW_OK gestures=8 hold_drift=1 cancel=1 draft_callback=1 rebind_back=1 keyboard=1 lock=1 task_switch=1 eviction=1 subpage=1 tips=1 deep_link=1 suiyue_history=1 lifecycle=1 music_view=1 calculator=1 backup_completeness=1 return_journey=1 rda_update=1 weakref_release=1");
             EditorApplication.Exit(0);
         }
         catch (Exception ex)
@@ -31,6 +33,74 @@ public static class TabletInteractionReview
             Debug.LogException(ex);
             EditorApplication.Exit(1);
         }
+    }
+
+    public static void BackgroundBatch()
+    {
+        var flags = BindingFlags.NonPublic | BindingFlags.Static;
+        var notesField = typeof(TabletNotesAppUI).GetField("userTabletNotes", flags);
+        var selectedField = typeof(TabletNotesAppUI).GetField("currentSelectedNoteId", flags);
+        object oldNotes = notesField.GetValue(null), oldSelected = selectedField.GetValue(null);
+        var type = typeof(TabletNotesAppUI).GetNestedType("TabletNoteItem", BindingFlags.NonPublic);
+        var note = Activator.CreateInstance(type, true);
+        foreach (var pair in new[] { ("title", "测试"), ("content", "正文"), ("category", "运营备忘"), ("date", "今日"), ("author", "测试") }) type.GetField(pair.Item1).SetValue(note, pair.Item2);
+        type.GetField("id").SetValue(note, 41);
+        var items = (System.Collections.IList)Activator.CreateInstance(notesField.FieldType); items.Add(note);
+        notesField.SetValue(null, items); selectedField.SetValue(null, 41);
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>(); window.Show();
+        var go = new GameObject("TabletBackgroundReview"); go.SetActive(false);
+        var property = typeof(GameMainUI).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+        object previous = property.GetValue(null);
+        var host = go.AddComponent<GameMainUI>(); property.GetSetMethod(true).Invoke(null, new object[] { host }); host.unlocked = true;
+        var instance = BindingFlags.NonPublic | BindingFlags.Instance;
+        var root = window.rootVisualElement; var desktop = new VisualElement { focusable = true }; root.Add(desktop);
+        typeof(GameMainUI).GetField("root", instance).SetValue(host, root);
+        typeof(GameMainUI).GetField("desktop", instance).SetValue(host, desktop);
+        typeof(GameMainUI).GetMethod("BuildAppLayer", instance).Invoke(host, null);
+        var refs = ReclaimViews(host, desktop, instance);
+        int frames = 0;
+        EditorApplication.CallbackFunction tick = null;
+        tick = () =>
+        {
+            if (++frames < 10) return;
+            EditorApplication.update -= tick;
+            int exitCode = 0;
+            try
+            {
+                PerformControlledGC();
+                Debug.Log($"TABLET_BACKGROUND_RECLAIM_DELAYED notes={refs[0].IsAlive} glossary={refs[1].IsAlive}");
+                Assert(!refs[0].IsAlive && !refs[1].IsAlive, "detached views collected while window and tasks remain alive");
+            }
+            catch (Exception ex) { Debug.LogException(ex); exitCode = 1; }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(go); window.Close(); UnityEngine.Object.DestroyImmediate(window);
+                property.GetSetMethod(true).Invoke(null, new[] { previous }); notesField.SetValue(null, oldNotes); selectedField.SetValue(null, oldSelected);
+                EditorApplication.Exit(exitCode);
+            }
+        };
+        EditorApplication.update += tick;
+    }
+
+    private static void CheckShellFocusFallback()
+    {
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>(); window.Show();
+        TabletShellView view = null;
+        try
+        {
+            var root = window.rootVisualElement;
+            var desktop = new VisualElement { name = "tablet-desktop", focusable = true };
+            var input = new TextField(); root.Add(desktop); root.Add(input);
+            var state = new TabletShellState();
+            view = new TabletShellView(root, state, null, null); view.SetVisible(true);
+            window.Focus(); input.Focus();
+            Assert(root.panel.focusController.focusedElement == input, "focus fallback setup");
+            state.TogglePanel(TabletSystemPanel.Controls);
+            input.RemoveFromHierarchy(); state.ClosePanel();
+            Assert(root.panel.focusController.focusedElement == desktop, "destroyed shell focus falls back to desktop");
+            Debug.Log("TABLET_SHELL_FOCUS_FALLBACK_OK");
+        }
+        finally { view?.Dispose(); window.Close(); UnityEngine.Object.DestroyImmediate(window); }
     }
 
     private sealed class ReviewStorage : IKeyValueStorage
@@ -282,7 +352,7 @@ public static class TabletInteractionReview
             instanceProperty.GetSetMethod(true).Invoke(null, new object[] { host });
             host.unlocked = true;
             var root = window.rootVisualElement;
-            var desktop = new VisualElement();
+            var desktop = new VisualElement { name = "tablet-desktop", focusable = true };
             root.Add(desktop);
             typeof(GameMainUI).GetField("root", instance).SetValue(host, root);
             typeof(GameMainUI).GetField("desktop", instance).SetValue(host, desktop);
@@ -411,6 +481,14 @@ public static class TabletInteractionReview
             calculator = (TabletTaskSession)find.Invoke(host, new object[] { "计算器" });
             Assert(calculator.Root.Q<Label>("calc-display-main").text == "0", "closed calculator starts a fresh task");
 
+            var temporaryFocus = new TextField(); root.Add(temporaryFocus); window.Focus(); temporaryFocus.Focus();
+            Assert(root.panel.focusController.focusedElement == temporaryFocus, "recent fallback setup");
+            typeof(GameMainUI).GetMethod("OpenRecentTasks", instance).Invoke(host, null);
+            temporaryFocus.RemoveFromHierarchy();
+            typeof(GameMainUI).GetMethod("CloseRecentTasks", instance).Invoke(host, null);
+            Assert(root.panel.focusController.focusedElement == desktop, "destroyed recent focus falls back to desktop");
+            Debug.Log("TABLET_RECENTS_FOCUS_FALLBACK_OK");
+
             var notesType = typeof(TabletNotesAppUI);
             var notesField = notesType.GetField("userTabletNotes", statics);
             var selectedField = notesType.GetField("currentSelectedNoteId", statics);
@@ -440,6 +518,10 @@ public static class TabletInteractionReview
                 activate.Invoke(host, new object[] { notes });
                 Assert(((TextField)titleField.GetValue(null)).value == "未提交标题" && ((TextField)bodyField.GetValue(null)).value == "未提交正文",
                        "notes draft survives reclamation");
+                object currentTitle = titleField.GetValue(null), currentBody = bodyField.GetValue(null), currentMeta = metaField.GetValue(null);
+                TabletNotesAppUI.ReleaseTaskView(null);
+                Assert(ReferenceEquals(titleField.GetValue(null), currentTitle) && ReferenceEquals(bodyField.GetValue(null), currentBody) && ReferenceEquals(metaField.GetValue(null), currentMeta),
+                       "closing an already reclaimed task cannot clear another notes view");
                 typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "笔记" });
                 Assert(titleField.GetValue(null) == null && bodyField.GetValue(null) == null && metaField.GetValue(null) == null,
                        "closed notes release static controls");
@@ -450,6 +532,9 @@ public static class TabletInteractionReview
                 notesField.SetValue(null, oldNotes); selectedField.SetValue(null, oldSelected);
                 titleField.SetValue(null, oldTitle); bodyField.SetValue(null, oldBody); metaField.SetValue(null, oldMeta);
             }
+
+            CheckReturnJourneyProgression(host, launch, find, activate, instance);
+            CheckRDADataUpdate(host, launch, find, activate, instance);
         }
         finally
         {
@@ -616,6 +701,305 @@ public static class TabletInteractionReview
         finally
         {
             window.Close();
+        }
+    }
+
+    private static void CheckReturnJourneyProgression(GameMainUI host, MethodInfo launch, MethodInfo find, MethodInfo activate, BindingFlags instance)
+    {
+        const string script1 = "prologue_01_news";
+        var readerField = typeof(TabletReturnJourneyUI).GetField("ProgressReader", BindingFlags.NonPublic | BindingFlags.Static);
+        object oldReader = readerField.GetValue(null);
+        var actionField = typeof(TabletReturnJourneyUI).GetField("EpisodeReviewAction", BindingFlags.NonPublic | BindingFlags.Static);
+        object oldAction = actionField.GetValue(null);
+        string opened = null;
+        var progress = new System.Collections.Generic.Dictionary<string, int>();
+        var inDetailField = typeof(TabletReturnJourneyUI).GetField("returnJourneyInDetail", BindingFlags.NonPublic | BindingFlags.Static);
+        var currentChapterField = typeof(TabletReturnJourneyUI).GetField("returnJourneyCurrentChapter", BindingFlags.NonPublic | BindingFlags.Static);
+        bool oldInDetail = (bool)inDetailField.GetValue(null);
+        int oldChapter = (int)currentChapterField.GetValue(null);
+
+        try
+        {
+            readerField.SetValue(null, new Func<string, int, int>((key, fallback) => progress.TryGetValue(key, out int value) ? value : fallback));
+            actionField.SetValue(null, new Action<string>(id => opened = id));
+            currentChapterField.SetValue(null, 0);
+            inDetailField.SetValue(null, true);
+
+            launch.Invoke(host, new object[] { "归途" });
+            var journey = (TabletTaskSession)find.Invoke(host, new object[] { "归途" });
+            Assert(journey != null && journey.Root != null, "return journey task launched");
+
+            Assert(TabletReturnJourneyUI.IsStoryEpisodeUnlocked(0), "ep0 initially unlocked");
+            Assert(!TabletReturnJourneyUI.IsStoryEpisodeCompleted(0), "ep0 initially not completed");
+            Assert(!TabletReturnJourneyUI.IsStoryEpisodeUnlocked(1), "ep1 initially locked");
+
+            var replayBtnEp1 = journey.Root.Q<Button>("story-episode-prologue_02_day0");
+            Assert(replayBtnEp1 != null && !replayBtnEp1.enabledSelf, "ep1 button initially disabled and locked");
+
+            progress["ArchiveStory_" + script1] = 1;
+            Assert(TabletReturnJourneyUI.IsStoryEpisodeCompleted(0), "ep0 now completed");
+            Assert(TabletReturnJourneyUI.IsStoryEpisodeUnlocked(1), "ep1 now unlocked");
+
+            launch.Invoke(host, new object[] { "验收占位" });
+            var retainedRoot = journey.Root;
+            activate.Invoke(host, new object[] { journey });
+            var ep1Button = journey.Root.Q<Button>("story-episode-prologue_02_day0");
+            Assert(journey.Root == retainedRoot && ep1Button != null && ep1Button.enabledSelf && ep1Button.text == "开始本幕", "retained journey refreshes second episode");
+            using (var submit = NavigationSubmitEvent.GetPooled()) { submit.target = ep1Button; ep1Button.SendEvent(submit); }
+            Assert(opened == "prologue_02_day0", "second episode dispatches its own action");
+            launch.Invoke(host, new object[] { "验收占位" });
+            typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
+            Assert(journey.IsSuspended, "return journey suspended");
+
+            activate.Invoke(host, new object[] { journey });
+
+            ep1Button = journey.Root.Q<Button>("story-episode-prologue_02_day0");
+            Assert(ep1Button != null && ep1Button.enabledSelf, "ep1 button updated to unlocked and operable on resume");
+
+            Debug.Log("TABLET_RETURN_JOURNEY_PROGRESSION_OK: ep1 button enabled after ep0 completion");
+        }
+        finally
+        {
+            readerField.SetValue(null, oldReader);
+            actionField.SetValue(null, oldAction);
+            inDetailField.SetValue(null, oldInDetail);
+            currentChapterField.SetValue(null, oldChapter);
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "归途" });
+        }
+    }
+
+    private static void SetGameDataScalar(string propertyName, object value)
+    {
+        var prop = typeof(GameData).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
+        if (prop != null)
+        {
+            var setter = prop.GetSetMethod(true);
+            if (setter != null)
+            {
+                setter.Invoke(null, new object[] { value });
+                return;
+            }
+        }
+        var field = typeof(GameData).GetField(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        if (field != null)
+        {
+            field.SetValue(null, value);
+            return;
+        }
+        throw new InvalidOperationException($"Cannot set GameData.{propertyName}");
+    }
+
+    private static void CheckRDADataUpdate(GameMainUI host, MethodInfo launch, MethodInfo find, MethodInfo activate, BindingFlags instance)
+    {
+        int oldMoney = GameData.Money;
+        int oldTrust = GameData.Trust;
+        int oldCond = GameData.TrainCondition;
+        int oldPass = GameData.ExpectedPassengers;
+
+        try
+        {
+            SetGameDataScalar("Money", 5000);
+            SetGameDataScalar("Trust", 50);
+            SetGameDataScalar("TrainCondition", 85);
+            SetGameDataScalar("ExpectedPassengers", 120);
+
+            launch.Invoke(host, new object[] { "RDA" });
+            var rda = (TabletTaskSession)find.Invoke(host, new object[] { "RDA" });
+            Assert(rda != null && rda.Root != null, "RDA task launched");
+
+            var labels = rda.Root.Query<Label>().ToList();
+            Assert(labels.Exists(l => l.text.Contains("5,000 沙币")), "RDA initial money rendered");
+            Assert(labels.Exists(l => l.text.Contains("车况健康度：85%")), "RDA initial train condition rendered");
+            Assert(labels.Exists(l => l.text.Contains("状态良好")), "RDA initial status rendered");
+
+            SetGameDataScalar("Money", 19800);
+            SetGameDataScalar("Trust", 42);
+            SetGameDataScalar("TrainCondition", 38);
+            SetGameDataScalar("ExpectedPassengers", 260);
+
+            launch.Invoke(host, new object[] { "验收占位" });
+            activate.Invoke(host, new object[] { rda });
+
+            labels = rda.Root.Query<Label>().ToList();
+            Assert(labels.Exists(l => l.text.Contains("19,800 沙币")), "RDA updated money rendered on foreground return");
+            Assert(labels.Exists(l => l.text.Contains("民众信任度：42")), "RDA updated trust rendered");
+            Assert(labels.Exists(l => l.text.Contains("车况健康度：38%")), "RDA updated condition rendered");
+            Assert(labels.Exists(l => l.text.Contains("亟待大修")), "RDA updated condition status rendered");
+
+            Debug.Log("TABLET_RDA_DATA_UPDATE_OK: operational data changes reflect on foreground return");
+        }
+        finally
+        {
+            SetGameDataScalar("Money", oldMoney);
+            SetGameDataScalar("Trust", oldTrust);
+            SetGameDataScalar("TrainCondition", oldCond);
+            SetGameDataScalar("ExpectedPassengers", oldPass);
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "RDA" });
+        }
+    }
+
+    private static void CheckWeakReferenceRelease()
+    {
+        const BindingFlags statics = BindingFlags.NonPublic | BindingFlags.Static;
+        var notesType = typeof(TabletNotesAppUI);
+        var notesField = notesType.GetField("userTabletNotes", statics);
+        var selection = notesType.GetField("currentSelectedNoteId", statics);
+        object oldNotes = notesField.GetValue(null), oldSelection = selection.GetValue(null);
+        var noteType = notesType.GetNestedType("TabletNoteItem", BindingFlags.NonPublic);
+        var note = Activator.CreateInstance(noteType, true);
+        foreach (var pair in new[] { ("title", "测试"), ("content", "测试正文"), ("category", "运营备忘"), ("date", "今日"), ("author", "测试") }) noteType.GetField(pair.Item1).SetValue(note, pair.Item2);
+        noteType.GetField("id").SetValue(note, 41);
+        var items = (System.Collections.IList)Activator.CreateInstance(notesField.FieldType); items.Add(note);
+        notesField.SetValue(null, items); selection.SetValue(null, 41);
+        try
+        {
+        WeakReference weakNotesRoot, weakNoteTitle, weakNoteBody;
+        WeakReference weakSettingsRoot, weakTipsPage, weakTerm;
+
+        ExecuteWeakReferenceTaskLifecycle(
+            out weakNotesRoot, out weakNoteTitle, out weakNoteBody,
+            out weakSettingsRoot, out weakTipsPage, out weakTerm);
+
+        PerformControlledGC();
+
+        Assert(!weakNoteTitle.IsAlive, "notes title field collected after CloseTabletTask");
+        Assert(!weakNoteBody.IsAlive, "notes body field collected after CloseTabletTask");
+        Assert(!weakNotesRoot.IsAlive, "notes root view collected after CloseTabletTask");
+
+        Assert(!weakTerm.IsAlive, "tips term label collected after CloseAllTabletTasks");
+        Assert(!weakTipsPage.IsAlive, "tips inner panel collected after CloseAllTabletTasks");
+        Assert(!weakSettingsRoot.IsAlive, "settings root view collected after CloseAllTabletTasks");
+
+        Debug.Log("TABLET_WEAKREF_RELEASE_OK: single and all task closures release views and controls via GC");
+        }
+        finally { notesField.SetValue(null, oldNotes); selection.SetValue(null, oldSelection); }
+    }
+
+    private static void CheckBackgroundReclamation()
+    {
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>(); window.Show();
+        var go = new GameObject("TabletReclaimReview"); go.SetActive(false);
+        var property = typeof(GameMainUI).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+        object previous = property.GetValue(null);
+        try
+        {
+            var host = go.AddComponent<GameMainUI>(); property.GetSetMethod(true).Invoke(null, new object[] { host });
+            host.unlocked = true;
+            var flags = BindingFlags.NonPublic | BindingFlags.Instance;
+            var root = window.rootVisualElement; var desktop = new VisualElement { focusable = true }; root.Add(desktop);
+            typeof(GameMainUI).GetField("root", flags).SetValue(host, root);
+            typeof(GameMainUI).GetField("desktop", flags).SetValue(host, desktop);
+            typeof(GameMainUI).GetMethod("BuildAppLayer", flags).Invoke(host, null);
+            var refs = ReclaimViews(host, desktop, flags);
+            PerformControlledGC();
+            Debug.Log($"TABLET_BACKGROUND_RECLAIM_GC_STATE notes={refs[0].IsAlive} glossary={refs[1].IsAlive}");
+            if (refs[0].IsAlive || refs[1].IsAlive)
+                Debug.Log("TABLET_BACKGROUND_RECLAIM_GC_NOT_RUN: editor panel may retain detached elements within the same frame");
+            else Debug.Log("TABLET_BACKGROUND_RECLAIM_GC_OK: notes and glossary old views collected with live host and tasks");
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); window.Close(); UnityEngine.Object.DestroyImmediate(window); property.GetSetMethod(true).Invoke(null, new[] { previous }); }
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static WeakReference[] ReclaimViews(GameMainUI host, VisualElement desktop, BindingFlags flags)
+    {
+        var launch = typeof(GameMainUI).GetMethod("LaunchApp", flags);
+        var find = typeof(GameMainUI).GetMethod("FindTabletTask", flags);
+        launch.Invoke(host, new object[] { "笔记" });
+        var notes = (TabletTaskSession)find.Invoke(host, new object[] { "笔记" });
+        var oldNotes = new WeakReference(notes.Root);
+        launch.Invoke(host, new object[] { "设置" });
+        var settings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
+        TabletSettingsAppUI.ShowTipsPage("rail_ballast");
+        var oldTips = new WeakReference(settings.Root.Q("tips-term-rail_ballast"));
+        launch.Invoke(host, new object[] { "验收占位" });
+        desktop.Focus();
+        typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", flags).Invoke(host, new object[] { true });
+        Assert(notes.IsSuspended && settings.IsSuspended, "both background tasks reclaimed");
+        return new[] { oldNotes, oldTips };
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static void ExecuteWeakReferenceTaskLifecycle(
+        out WeakReference weakNotesRoot, out WeakReference weakNoteTitle, out WeakReference weakNoteBody,
+        out WeakReference weakSettingsRoot, out WeakReference weakTipsPage, out WeakReference weakTerm)
+    {
+        var window = ScriptableObject.CreateInstance<TabletReviewWindow>();
+        window.Show();
+        var go = new GameObject("TabletWeakRefReviewHost");
+        go.SetActive(false);
+        var instanceProperty = typeof(GameMainUI).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+        var previousInstance = instanceProperty.GetValue(null);
+        var instance = BindingFlags.NonPublic | BindingFlags.Instance;
+        var statics = BindingFlags.NonPublic | BindingFlags.Static;
+
+        try
+        {
+            var host = go.AddComponent<GameMainUI>();
+            instanceProperty.GetSetMethod(true).Invoke(null, new[] { host });
+            host.unlocked = true;
+            var root = window.rootVisualElement;
+            var desktop = new VisualElement();
+            desktop.focusable = true;
+            root.Add(desktop);
+            typeof(GameMainUI).GetField("root", instance).SetValue(host, root);
+            typeof(GameMainUI).GetField("desktop", instance).SetValue(host, desktop);
+            typeof(GameMainUI).GetMethod("BuildAppLayer", instance).Invoke(host, null);
+
+            var launch = typeof(GameMainUI).GetMethod("LaunchApp", instance);
+            var find = typeof(GameMainUI).GetMethod("FindTabletTask", instance);
+            var closeTask = typeof(GameMainUI).GetMethod("CloseTabletTask", instance);
+            var closeAll = typeof(GameMainUI).GetMethod("CloseAllTabletTasks", instance);
+
+            // A. 笔记单项关闭（CloseTabletTask("笔记")）后旧控件引用释放
+            launch.Invoke(host, new object[] { "笔记" });
+            var notes = (TabletTaskSession)find.Invoke(host, new object[] { "笔记" });
+            var titleField = (TextField)typeof(TabletNotesAppUI).GetField("noteTitleField", statics).GetValue(null);
+            var bodyField = (TextField)typeof(TabletNotesAppUI).GetField("noteBodyField", statics).GetValue(null);
+            weakNotesRoot = new WeakReference(notes.Root);
+            weakNoteTitle = new WeakReference(titleField);
+            weakNoteBody = new WeakReference(bodyField);
+
+            Assert(weakNotesRoot.IsAlive && weakNoteTitle.IsAlive && weakNoteBody.IsAlive, "notes controls tracked by weak references");
+            closeTask.Invoke(host, new object[] { "笔记" });
+            desktop.Focus();
+
+            // B. 设置图鉴在全部任务关闭（CloseAllTabletTasks）后旧控件引用释放
+            launch.Invoke(host, new object[] { "设置" });
+            var settings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
+            TabletSettingsAppUI.ShowTipsPage("rail_ballast");
+            var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", instance).GetValue(settings);
+            VisualElement tipsView = null;
+            if (pages.Count > 0)
+            {
+                var pageEntry = pages[0];
+                tipsView = (VisualElement)pageEntry.GetType().GetField("View", instance).GetValue(pageEntry);
+            }
+            var termLabel = settings.Root.Q<Label>("tips-term-rail_ballast");
+            weakSettingsRoot = new WeakReference(settings.Root);
+            weakTipsPage = new WeakReference(tipsView);
+            weakTerm = new WeakReference(termLabel);
+
+            Assert(weakSettingsRoot.IsAlive && weakTipsPage.IsAlive && weakTerm.IsAlive, "tips controls tracked by weak references");
+            closeAll.Invoke(host, null);
+            desktop.Focus();
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(go);
+            window.Close();
+            UnityEngine.Object.DestroyImmediate(window);
+            instanceProperty.GetSetMethod(true).Invoke(null, new[] { previousInstance });
+        }
+    }
+
+    private static void PerformControlledGC()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
     }
 

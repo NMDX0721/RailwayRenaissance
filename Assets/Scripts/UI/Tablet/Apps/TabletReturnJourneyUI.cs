@@ -15,6 +15,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // ============ App: 归途（蔚蓝档案两级架构 · 本作深棕像素调色）============
     private static int returnJourneyCurrentChapter = 0;
     private static bool returnJourneyInDetail = false;
+    internal static Func<string, int, int> ProgressReader;
+#if UNITY_EDITOR
+    internal static Action<string> EpisodeReviewAction;
+#endif
+    private static int ReadProgress(string key, int fallback) => ProgressReader != null ? ProgressReader(key, fallback) : PlayerPrefs.GetInt(key, fallback);
 
     public static readonly (string id, string chapterNum, string title, string subTitle, string desc, string coverBg)[] StoryChapters = {
         ("prologue", "序章", "归乡", "雾峰村线重开纪事 · 破晓到明天", "带着金日成综合大学毕业行囊回到沉寂四年的雾峰村，拾起万能道尺，重组先民班组，唤醒0721号动力机车。", "bg/station"),
@@ -39,7 +44,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public static bool IsStoryChapterUnlocked(int chIdx)
     {
-        if (PlayerPrefs.GetInt("DebugUnlockAllChapters", 0) == 1) return true;
+        if (ReadProgress("DebugUnlockAllChapters", 0) == 1) return true;
         // 主线剧情当前仅开放序章，后续章节打问号锁定
         return chIdx == 0;
     }
@@ -48,29 +53,29 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         if (chIdx == 0)
         {
-            return PlayerPrefs.GetInt("ArchiveScene_prologue_10_transition", 0) == 1
-                || PlayerPrefs.GetInt("ArchiveStory_prologue_10_transition", 0) == 1
-                || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+            return ReadProgress("ArchiveScene_prologue_10_transition", 0) == 1
+                || ReadProgress("ArchiveStory_prologue_10_transition", 0) == 1
+                || ReadProgress("VN_Got0721", 0) == 1;
         }
         return false;
     }
 
     public static bool IsStoryEpisodeUnlocked(int epIdx)
     {
-        if (PlayerPrefs.GetInt("DebugUnlockAllChapters", 0) == 1) return true;
+        if (ReadProgress("DebugUnlockAllChapters", 0) == 1) return true;
         if (epIdx == 0) return true; // 第 1 幕默认解锁
         string prevScript = PrologueEpisodes[epIdx - 1].scriptId;
-        return PlayerPrefs.GetInt("ArchiveScene_" + prevScript, 0) == 1
-            || PlayerPrefs.GetInt("ArchiveStory_" + prevScript, 0) == 1
-            || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        return ReadProgress("ArchiveScene_" + prevScript, 0) == 1
+            || ReadProgress("ArchiveStory_" + prevScript, 0) == 1
+            || ReadProgress("VN_Got0721", 0) == 1;
     }
 
     public static bool IsStoryEpisodeCompleted(int epIdx)
     {
         string curScript = PrologueEpisodes[epIdx].scriptId;
-        return PlayerPrefs.GetInt("ArchiveScene_" + curScript, 0) == 1
-            || PlayerPrefs.GetInt("ArchiveStory_" + curScript, 0) == 1
-            || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        return ReadProgress("ArchiveScene_" + curScript, 0) == 1
+            || ReadProgress("ArchiveStory_" + curScript, 0) == 1
+            || ReadProgress("VN_Got0721", 0) == 1;
     }
 
         private static Action s_onExitApp;
@@ -721,6 +726,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 {
                     if (unlocked)
                     {
+#if UNITY_EDITOR
+                        if (EpisodeReviewAction != null) { EpisodeReviewAction(ep.scriptId); return; }
+#endif
                         s_onExitApp?.Invoke();
                         MainStoryUI.StartEpisodeStatic(ep.scriptId);
                     }
@@ -728,7 +736,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     {
                         ShowToast("本幕尚未解锁，请先完成前置剧目。");
                     }
-                }) { text = btnText };
+                }) { text = btnText, name = "story-episode-" + ep.scriptId };
                 replayBtn.style.height = 32;
                 replayBtn.style.paddingLeft = 14; replayBtn.style.paddingRight = 14;
                 replayBtn.style.fontSize = 12; replayBtn.style.unityFontDefinition = Fd();

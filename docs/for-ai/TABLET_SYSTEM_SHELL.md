@@ -1,5 +1,9 @@
 # 平板系统层与协作计划（2026-10-23）
 
+2026-10-29 T317 复核：面板或最近任务关闭时，原焦点已销毁则尝试转移到可聚焦的桌面；保留等待隐藏壳层渲染后再从目标纹理/屏幕采样的实现。执行方提交的 1024×768 截图为纯黑、同一步多个截图相同，不能用于视觉验收。Codex 使用 Unity Play 分帧重测：两种目标纹理比例下控制/通知、最近任务和设置页面可辨；两比例重采样前后静态画面像素相同；焦点回退、事件隔离、返回与全部关闭定向通过。见 `dispatch/orders/T317.md`；操作系统窗口尺寸变化、屏幕截图来源、物理输入和 Android 未验证。
+
+2026-10-29 T316 修订：关闭任务清除会话根和焦点；归途进度检查可注入内存测试数据，第二幕按钮有稳定名称。Unity 图形批处理 `TabletInteractionReview.Batch` 验证第二幕在保留/回收路径上由禁用变可用，通过实际 UI 提交事件向编辑器隔离接收器分发正确剧目 ID，同时检查 RDA 前台数据、笔记草稿及关闭后弱引用；`TabletInteractionReview.BackgroundBatch` 等待 10 个编辑器更新后，在宿主和任务仍存活时验证笔记与图鉴旧视图弱引用释放。日志分别为 `tools/compile/t316_codex_verified.log`、`tools/compile/t316_codex_background.log`。完整剧目场景加载和 Android 设备表现未验证；同帧 GC 检查曾观察到弱引用仍存活，见 `t316_codex_gc_diagnostic.log`，不能据此推断具体持有方。
+
 PR #7 笔记内存修复：任务回收或关闭时仅释放属于该任务视图的笔记静态控件引用；回收前仍先捕获草稿快照，恢复时重建并还原输入。笔记视图内部重建也先释放旧控件。
 
 Unity 图形批处理 `TabletInteractionReview.Batch` 退出 0，`tools/compile/pr7_notes_reclaim.log` 包含 `TABLET_NOTES_RECLAIM_OK`：实际任务回收后静态控件引用为空，标题与正文草稿恢复，关闭后再次清空引用。此检查不测量 Android 真机内存或证明垃圾回收时机。
