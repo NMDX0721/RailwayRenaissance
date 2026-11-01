@@ -755,6 +755,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     PopoverItem(menu, "从当前歌单移除", false, () => { selected.tracks.Remove(track.id); CloseModal(); MusicLibrarySession.Commit(); });
                 if (track.local)
                 {
+                    PopoverItem(menu, "匹配在线歌词和封面…", false, () => { CloseModal(); OpenMatch(track); }).name = "music-menu-match";
                     Box(menu, "music-menu-divider");
                     PopoverItem(menu, "从随身听移出…", false, () => { CloseModal(); ConfirmDelete(new List<string> { track.id }); }).AddToClassList("music-menu-danger");
                 }

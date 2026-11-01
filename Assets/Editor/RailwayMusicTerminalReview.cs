@@ -1293,6 +1293,22 @@ public static class RailwayMusicTerminalReview
                 case 42:
                     Debug.Log("MUSIC_REPLACE_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
                     Capture("21-replace");
+                    {
+                        // The matching sheet for a local track, and the import path it uses for the lyrics it takes.
+                        bool saved = RailwayMusicTerminalViewReviewAccess.ImportMatched("zz_match_probe", "[00:01.00]第一行\n[00:05.00]第二行", out string matchMessage);
+                        Assert(saved && !string.IsNullOrEmpty(MusicTimedText.Preference("zz_match_probe").fileName), "Matched lyrics were not imported (" + matchMessage + ")");
+                        var matchTrack = MusicLibrarySession.Tracks.FirstOrDefault(t => t.local);
+                        Assert(matchTrack != null, "No local track to open the matching sheet for");
+                        root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                        if (matchTrack != null) { RailwayMusicTerminalView.OpenMatchFor(matchTrack.id, "孤勇者 陈奕迅"); chartDeadline = EditorApplication.timeSinceStartup + 25; }
+                    }
+                    break;
+                case 43:
+                    if (root.Query(className: "music-replace-row").ToList().Count == 0 && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 44:
+                    Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
+                    Capture("22-match");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
