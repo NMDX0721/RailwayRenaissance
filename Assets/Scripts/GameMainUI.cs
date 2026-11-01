@@ -578,6 +578,7 @@ public class GameMainUI : MonoBehaviour
     {
         if (unlocked) return;
         unlocked = true;
+        NudgeAccountSignIn();
         if (PresentationPreferences != null && PresentationPreferences.ReduceMotion)
         {
             lockScreen.style.display = DisplayStyle.None;
@@ -3128,6 +3129,25 @@ public class GameMainUI : MonoBehaviour
     // ============ App: 设置（已抽离至 TabletSettingsAppUI）============
     private void BuildSettingsPage(VisualElement win) => TabletSettingsAppUI.BuildSettingsPage(win, ShowBackupToast, OpenSystemPanel);
     public TabletShellState ShellState => tabletShellState;
+
+    /// <summary>铺满整个平板界面的覆盖层宿主（注册向导等全屏流程挂在这里）。</summary>
+    public VisualElement OverlayHost => root;
+
+    /// <summary>返回上一页；没有上一页时回桌面（等同系统返回）。</summary>
+    public void NavigateBack()
+    {
+        if (!ReturnToPreviousTabletPage()) ReturnToTabletHome();
+    }
+
+    // 未登录小米账号时，首次进入桌面发一条登录提示（只发一次）
+    private void NudgeAccountSignIn()
+    {
+        if (RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered) return;
+        if (PlayerPrefs.GetInt("AccountNudged_v1", 0) == 1) return;
+        PlayerPrefs.SetInt("AccountNudged_v1", 1);
+        PlayerPrefs.Save();
+        tabletShellState?.Post("小米账号", "登录小米账号，使用云空间、查找设备与家庭服务。前往 设置 → 小米账号。");
+    }
 
     public void OpenSystemPanel(TabletSystemPanel panel)
     {

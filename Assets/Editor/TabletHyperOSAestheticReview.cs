@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RailwayRenaissance.UI.Tablet.Account;
 using RailwayRenaissance.UI.Tablet;
 using RailwayRenaissance.UI.Tablet.SystemShell;
 using RailwayRenaissance.UI.Tablet.Apps;
@@ -77,6 +78,54 @@ namespace RailwayRenaissance.Editor
         // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
         private static string pendingCapture;
         private static int settingsSubPage;
+        private static bool wizardDone, wizardRegistered;
+        private static string wizardSms;
+        private static string savedProfileJson, savedSetupDone, savedLegacyName;
+        private static bool accountPrefsSaved;
+
+        // 审查会在编辑器的 PlayerPrefs 里创建测试账号：先备份，结束时恢复，避免污染开发者自己的账号数据
+        private static void SaveAccountPrefs()
+        {
+            if (accountPrefsSaved) return;
+            accountPrefsSaved = true;
+            savedProfileJson = PlayerPrefs.HasKey("XiaomiAccountProfile_v1") ? PlayerPrefs.GetString("XiaomiAccountProfile_v1") : null;
+            savedSetupDone = PlayerPrefs.HasKey("TabletSetupDone_v1") ? PlayerPrefs.GetInt("TabletSetupDone_v1").ToString() : null;
+            savedLegacyName = PlayerPrefs.HasKey("XiaomiAccount") ? PlayerPrefs.GetString("XiaomiAccount") : null;
+        }
+
+        private static void RestoreAccountPrefs()
+        {
+            if (!accountPrefsSaved) return;
+            accountPrefsSaved = false;
+            if (savedProfileJson != null) PlayerPrefs.SetString("XiaomiAccountProfile_v1", savedProfileJson); else PlayerPrefs.DeleteKey("XiaomiAccountProfile_v1");
+            if (savedSetupDone != null) PlayerPrefs.SetInt("TabletSetupDone_v1", int.Parse(savedSetupDone)); else PlayerPrefs.DeleteKey("TabletSetupDone_v1");
+            if (savedLegacyName != null) PlayerPrefs.SetString("XiaomiAccount", savedLegacyName); else PlayerPrefs.DeleteKey("XiaomiAccount");
+            PlayerPrefs.Save();
+            AccountService.ReloadFromPrefs();
+        }
+
+        private static void ClickButtonText(string text)
+        {
+            Button found = null;
+            root.Query<Button>().ForEach(b => { if (found == null && b.text == text && b.resolvedStyle.display != DisplayStyle.None) found = b; });
+            Assert(found != null, "wizard button missing: " + text);
+            ClickElement(found);
+        }
+
+        private static void ClickRowContaining(string text)
+        {
+            VisualElement row = null;
+            root.Query<Label>().ForEach(l => { if (row == null && l.text != null && l.text.Contains(text)) row = l.parent; });
+            Assert(row != null, "wizard row missing: " + text);
+            ClickElement(row);
+        }
+
+        private static TextField WizardField(string name)
+        {
+            var f = root.Q<TextField>(name);
+            Assert(f != null, "wizard field missing: " + name);
+            return f;
+        }
         private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
 
         private static void Capture(string name)
@@ -496,8 +545,112 @@ namespace RailwayRenaissance.Editor
                         state.ClosePanel();
                         presentation.SetReduceMotion(false);
                         Resize(1920, 1080);
+                        // ---- 注册向导全流程：开机激活 -> 协议 -> 网络 -> 注册 -> 验证码 -> 密码 -> 资料 -> 完成 ----
+                        SaveAccountPrefs();
+                        AccountService.ResetForTests();
+                        wizardDone = false; wizardRegistered = false; wizardSms = null;
+                        TabletSetupWizard.Show(root, TabletSetupWizard.Flow.Activation, true,
+                            reg => { wizardRegistered = reg; wizardDone = true; },
+                            (t, body) => wizardSms = body);
+                        Capture("21_wizard_welcome");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 22:
+                        ClickButtonText("开始");
+                        Capture("22_wizard_agreement");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 23:
+                        ClickRowContaining("我已阅读并同意《小米用户协议》");
+                        ClickButtonText("同意并继续");
+                        Capture("23_wizard_network");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 24:
+                        ClickButtonText("下一步");
+                        Capture("24_wizard_account");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 25:
+                        ClickButtonText("注册小米账号");
+                        Capture("25_wizard_phone");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 26:
+                    {
+                        // 先不填手机号就点获取验证码：必须报错并留在本页
+                        ClickRowContaining("同意《小米账号用户协议》");
+                        ClickButtonText("获取验证码");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && !string.IsNullOrEmpty(errLabel.text), "Empty phone must show an error");
+                        WizardField("wizard-phone").value = "13812348848";
+                        ClickButtonText("获取验证码");
+                        Assert(!string.IsNullOrEmpty(wizardSms), "SMS code must be delivered through the sink");
+                        Capture("26_wizard_code");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 27:
+                    {
+                        // 错误验证码被拒绝，正确验证码通过
+                        int at = wizardSms.IndexOf("是 ", StringComparison.Ordinal);
+                        string code = wizardSms.Substring(at + 2, 6);
+                        WizardField("wizard-code").value = code == "000000" ? "111111" : "000000";
+                        ClickButtonText("下一步");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && errLabel.text.Contains("验证码"), "Wrong code must be rejected");
+                        WizardField("wizard-code").value = code;
+                        ClickButtonText("下一步");
+                        Capture("27_wizard_password");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 28:
+                    {
+                        WizardField("wizard-password").value = "abcdefgh";
+                        WizardField("wizard-password-confirm").value = "abcdefgh";
+                        ClickButtonText("下一步");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && errLabel.text.Contains("字母和数字"), "Letters-only password must be rejected");
+                        WizardField("wizard-password").value = "Railway2053";
+                        WizardField("wizard-password-confirm").value = "Railway2053";
+                        Capture("28_wizard_password_filled");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 29:
+                        ClickButtonText("下一步");
+                        Capture("29_wizard_profile");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 30:
+                        WizardField("wizard-nickname").value = "林彪悍";
+                        ClickButtonText("完成注册");
+                        Assert(AccountService.IsRegistered, "Account must exist after finishing the profile step");
+                        Capture("30_wizard_done");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 31:
+                    {
+                        var prof = AccountService.Profile;
+                        Assert(prof != null && prof.nickname == "林彪悍" && prof.xiaomiId.Length == 10, "Profile data mismatch");
+                        Assert(!prof.passwordHash.Contains("Railway"), "Password must be stored hashed");
+                        Assert(AccountService.VerifyPassword("Railway2053") && !AccountService.VerifyPassword("railway2053"), "Password verification failed");
+                        ClickButtonText("开始使用");
+                        Assert(wizardDone && wizardRegistered, "Wizard must report success on finish");
+                        Assert(AccountService.ChangePassword("wrong", "Another2054") == "当前密码不正确", "Wrong old password must be rejected");
+                        Assert(AccountService.ChangePassword("Railway2053", "Railway2053") != null, "Same password must be rejected");
+                        Assert(AccountService.ChangePassword("Railway2053", "Another2054") == null, "Valid password change failed");
+                        Assert(AccountService.VerifyPassword("Another2054") && !AccountService.VerifyPassword("Railway2053"), "Old password must stop working");
+                        Assert(AccountService.Rename("") != null && AccountService.Rename("旅人乙") == null && AccountService.DisplayName == "旅人乙", "Rename failed");
+                        string resetCode = AccountService.IssueCode(prof.phone);
+                        Assert(AccountService.VerifyCode(prof.phone, resetCode) == null, "Reset code must verify");
+                        Assert(AccountService.ResetPassword("Reset2055") == null && AccountService.VerifyPassword("Reset2055"), "Reset password failed");
                         Teardown(true, "All stages completed successfully");
                         break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -509,6 +662,7 @@ namespace RailwayRenaissance.Editor
         private static void Teardown(bool success, string reason)
         {
             if (success) FlushPendingCapture();
+            RestoreAccountPrefs();
             EditorApplication.update -= Step;
             SessionState.SetBool(PendingKey, false);
 

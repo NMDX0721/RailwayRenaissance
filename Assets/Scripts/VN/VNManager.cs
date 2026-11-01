@@ -1435,7 +1435,8 @@ public class VNManager : MonoBehaviour
                                 (saveLoadUI != null && saveLoadUI.IsOpen) ||
                                 (prologueQuiz != null && prologueQuiz.IsOpen) ||
                                 (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) ||
-                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex);
+                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) ||
+                                tabletSetupOpen;
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
         }
@@ -1624,6 +1625,7 @@ public class VNManager : MonoBehaviour
     private bool AdvanceBlockedByPanels()
     {
         if (IsCinematicBlocking()) return true; // 分镜强制播放：空格/长按/点击不可穿透
+        if (tabletSetupOpen) return true;       // 平板激活向导打开时，键盘/点击不得推进剧情
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
         if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) return true;
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return true;
@@ -1646,6 +1648,7 @@ public class VNManager : MonoBehaviour
 
         // 开场/话标题卡分镜强制播放：左键点击冒泡到这里也不推进
         if (IsCinematicBlocking()) return;
+        if (tabletSetupOpen) return;
 
         // 防抖：避免快速双击导致打字机被跳过
         if (Time.unscaledTime - lastAdvanceTime < AdvanceCooldown) return;
@@ -2890,11 +2893,44 @@ public class VNManager : MonoBehaviour
             case "TRANSITION_TO_GAMEPLAY":
                 TransitionToGameplay();
                 break;
+            case "TABLET_SETUP":
+                ShowTabletSetup();
+                break;
             default:
                 Debug.LogWarning("[VN] Unknown special command: " + command);
                 NextDialogue();
                 break;
         }
+    }
+
+    private bool tabletSetupOpen;
+
+    /// <summary>
+    /// 剧情里拆封平板后的“开机激活 + 注册小米账号”：覆盖层向导，完成后继续下一句。
+    /// 已注册过（重玩 Day0、读档）时直接跳过。剧情内不允许“暂不登录”。
+    /// </summary>
+    private void ShowTabletSetup()
+    {
+        if (RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered || uiDoc == null)
+        {
+            NextDialogue();
+            return;
+        }
+        StopAutoPlay(false);
+        dialogueBox?.Hide();
+        HideOptions();
+        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        tabletSetupOpen = true;
+        RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Show(
+            uiDoc.rootVisualElement,
+            RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Flow.Activation,
+            false,
+            registered =>
+            {
+                tabletSetupOpen = false;
+                NextDialogue();
+            },
+            (title, body) => { GameMainUI.Instance?.ShellState?.Post(title, body); });
     }
 
     /// <summary>VN→经营场景过渡：构建 VNExitData 并切换场景。</summary>
@@ -3162,6 +3198,7 @@ public class VNManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         if (!isAutoPlay || !isScriptRunning) yield break;
+        if (tabletSetupOpen) yield break;
 
         // 面板/菜单/对话框打开时暂停自动推进（防止点菜单后面板开着仍跳句）
         if (menuExpanded) yield break;

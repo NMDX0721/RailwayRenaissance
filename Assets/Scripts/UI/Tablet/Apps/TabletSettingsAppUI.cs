@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using RailwayRenaissance.UI.Tablet.SystemShell;
+using RailwayRenaissance.UI.Tablet.Account;
 using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 
 namespace RailwayRenaissance.UI.Tablet.Apps
@@ -12,7 +13,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// 平板应用：设置（严格照截图 24 分类 + 术语图鉴 TIPS + 备份/应用管理/开发者选项）
     /// 从 GameMainUI 剥离（T306 Batch 1-C）
     /// </summary>
-    public static class TabletSettingsAppUI
+    public static partial class TabletSettingsAppUI
     {
     // ============ 设置 App：严格照截图 24 分类 + 老设置全量迁入（T298 规范）============
     public static IKeyValueStorage StorageAdapter = new PlayerPrefsStorage();
@@ -92,6 +93,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_openSystemPanel = openPanel;
         }
 
+        s_settingsWin = win;
         win.Clear();
 
         var rootRow = new VisualElement();
@@ -404,8 +406,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         userLeft.style.alignItems = Align.Center;
         profileCard.Add(userLeft);
 
-        var avatar = new Label("👤");
+        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : "👤");
         avatar.style.fontSize = 40; avatar.style.width = 76; avatar.style.height = 76;
+        if (AccountService.IsRegistered)
+        {
+            avatar.style.color = Color.white;
+            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+        }
         avatar.style.backgroundColor = SurfaceApp;
         avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
         avatar.style.borderTopLeftRadius = 38; avatar.style.borderTopRightRadius = 38;
@@ -417,13 +424,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         userMeta.style.marginLeft = 16;
         userLeft.Add(userMeta);
 
-        string curUser = PlayerPrefs.GetString("XiaomiAccount", "旅人 (先民特等铁道运营官)");
+        string curUser = AccountService.IsRegistered ? AccountService.DisplayName : "登录小米账号";
         var nameLbl = new Label(curUser);
         nameLbl.style.fontSize = 24; nameLbl.style.color = InkPrimary;
         nameLbl.style.unityFontDefinition = FdBold();
         userMeta.Add(nameLbl);
 
-        var idLbl = new Label("ID: 0721-DPRK · 阿里郎量子加密专线已连接 · 全功能已解锁");
+        var idLbl = new Label(AccountService.IsRegistered
+            ? "小米 ID：" + AccountService.Profile.xiaomiId + " · " + AccountService.MaskedPhone(AccountService.Profile)
+            : "登录后使用云空间、查找设备与家庭服务");
         idLbl.style.fontSize = 14; idLbl.style.color = InkSecondary; idLbl.style.unityFontDefinition = Fd();
         idLbl.style.marginTop = 6;
         userMeta.Add(idLbl);
@@ -431,6 +440,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var ar = new Label("›");
         ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
         profileCard.Add(ar);
+        profileCard.name = "account-profile-card";
+        profileCard.pickingMode = PickingMode.Position;
+        profileCard.RegisterCallback<ClickEvent>(_ => OpenAccountEntry());
         rightPane.Add(profileCard);
 
         // 卡片网格（左大卡 + 右两小卡）
@@ -2051,10 +2063,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var col = new VisualElement();
         col.style.flexShrink = 1;
         col.style.alignItems = Align.FlexStart;
-        var name = new Label("当前账号");
+        var name = new Label(AccountService.IsRegistered ? AccountService.DisplayName : "登录小米账号");
         name.style.fontSize = 17; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
         name.style.unityTextAlign = TextAnchor.UpperLeft;
-        var sub = new Label("管理账号、云空间与家庭服务");
+        var sub = new Label(AccountService.IsRegistered ? "管理账号、云空间与家庭服务" : "登录后使用云空间与家庭服务");
         sub.style.fontSize = 12; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
         sub.style.unityTextAlign = TextAnchor.UpperLeft;
         sub.style.marginTop = 2; sub.style.whiteSpace = WhiteSpace.Normal;
