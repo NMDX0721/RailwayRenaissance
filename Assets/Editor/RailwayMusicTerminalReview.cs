@@ -1238,9 +1238,16 @@ public static class RailwayMusicTerminalReview
                 case 37:
                     Debug.Log("MUSIC_CHARTS_STATE: charts=" + (MusicCharts.Charts?.Length ?? -1) + " hots=" + (MusicCharts.HotSearches?.Length ?? -1) + " failed=" + MusicCharts.ChartsFailed);
                     Capture("18-charts");
-                    root.Q<TextField>("music-search")?.Focus();
+                    Submit(root.Q<Button>("music-nav-首页"));
                     break;
                 case 38:
+                    { var homeList = root.Q<ScrollView>("music-track-list"); if (homeList != null) homeList.scrollOffset = new Vector2(0, 330); }
+                    break;
+                case 39:
+                    Capture("20-home-scrolled");
+                    root.Q<TextField>("music-search")?.Focus();
+                    break;
+                case 40:
                     Capture("19-search-suggest");
                     Debug.Log("MUSIC_CHARTS_OK: chart page and search suggestions captured");
                     Finish(); return;

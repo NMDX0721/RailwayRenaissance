@@ -389,7 +389,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             int hour = DateTime.Now.Hour;
             Text(scroll.contentContainer, (hour < 5 ? "夜深了" : hour < 11 ? "早上好" : hour < 14 ? "中午好" : hour < 18 ? "下午好" : "晚上好") + " · 雾峰站", "music-home-greeting");
             scroll.contentContainer.AddToClassList("music-home-content");
-            var hero = Box(scroll.contentContainer, "music-listening-hero", "music-home");
+            HomeChips(scroll.contentContainer);
+            HomeCoverTiles(scroll.contentContainer);
+            var hero =Box(scroll.contentContainer, "music-listening-hero", "music-home");
             var last = MusicLibrarySession.Find(MusicLibrarySession.State.currentId);
             var lead = last ?? MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).FirstOrDefault(t => t != null)
                 ?? MusicLibrarySession.Tracks.FirstOrDefault(t => string.IsNullOrEmpty(t.provider) && !t.local && MusicLibrarySession.Unlocked(t));
@@ -414,14 +416,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             var manage = Button(actions, "来源", () => OpenSource(cloudProvider, true), "music-home-manage-sources");
             manage.tooltip = "登录和管理网易云、QQ 音乐、酷狗、波点、Spotify、Subsonic、WebDAV";
-            var tiles = Box(scroll.contentContainer, "music-quick-grid");
-            QuickTile(tiles, "收藏", MusicLibrarySession.State.favorites.Count + " 首", () => Navigate("收藏"), "收藏");
-            QuickTile(tiles, "本地音乐", MusicLibrarySession.Tracks.Count(t => t.local) + " 首", () => Navigate("本地音乐"), "本地音乐");
-            QuickTile(tiles, "原声", MusicLibrarySession.Tracks.Count(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)) + " 首", () => Navigate("原声"), "原声");
-            int linkedSources = MusicCatalogSearch.Sources.Count(NeteaseLocalBridge.HasSession);
-            QuickTile(tiles, "云端", linkedSources > 0 ? linkedSources + " 个来源已连接" : "登录与搜索", () => OpenSource(cloudProvider, true), "云端");
             MusicCharts.Ensure();
-            HomeSongs(scroll.contentContainer, "最近在听", MusicLibrarySession.RecentTracks(6));
             HomeCharts(scroll.contentContainer);
             var favorites = MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).Where(t => t != null).Take(6).ToList();
             if (favorites.Count > 0) HomeSongs(scroll.contentContainer, "你的收藏", favorites);

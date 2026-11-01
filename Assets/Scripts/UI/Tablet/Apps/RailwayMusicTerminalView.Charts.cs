@@ -24,13 +24,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var bar = Box(parent, "music-section-bar"); Text(bar, "网易云热榜", "music-section-title music-section-small");
             Button(Box(bar, "music-section-actions"), "全部榜单", () => Navigate("榜单"), "music-home-all-charts");
             var charts = MusicCharts.Charts;
-            var grid = Box(parent, "music-card-grid");
             if (charts == null)
             {
+                var grid = Box(parent, "music-card-grid");
                 Text(grid, MusicCharts.ChartsFailed ? "榜单暂时无法读取（需要网络）" : "正在读取榜单…", "music-muted");
                 if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Ensure(); Refresh(); });
             }
-            else foreach (var chart in charts.Take(6)) AddChartCard(grid, chart);
+            else
+            {
+                var row = BigRow(parent);
+                foreach (var chart in charts.Take(10))
+                {
+                    string id = chart.id, title = chart.title;
+                    BigCard(row, title, string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title));
+                }
+            }
             HotSearchChips(parent);
         }
 

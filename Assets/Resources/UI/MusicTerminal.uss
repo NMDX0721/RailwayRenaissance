@@ -662,3 +662,32 @@
 .music-suggest-row { height: 32px; min-height: 32px; justify-content: flex-start; margin: 1px 0; }
 .music-hot-chip .music-vector-icon { display: none; }
 .music-suggest { max-height: 480px; }
+
+/* Home page after the streaming apps' tablet layouts: filter pills, compact cover tiles, large covers in rows that scroll sideways. */
+.music-home-greeting { font-size: 32px; -unity-font-style: bold; margin: 2px 0 10px 4px; }
+.music-home-chips { flex-direction: row; flex-wrap: wrap; margin: 0 0 10px 0; }
+.music-home-chip { height: 34px; min-height: 34px; margin: 0 8px 6px 0; padding: 0 18px; border-radius: 17px; font-size: 13px; background-color: rgb(44, 48, 41); border-color: rgb(70, 74, 61); }
+.music-home-chip .music-vector-icon { display: none; }
+.music-home-chip.is-active { background-color: rgb(205, 176, 112); border-color: rgb(205, 176, 112); color: rgb(30, 33, 26); }
+.music-cover-tiles { flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; }
+.music-cover-tile { flex-direction: row; align-items: center; justify-content: flex-start; width: 24%; min-width: 190px; flex-grow: 1; height: 56px; margin: 4px; padding: 0; border-width: 0; border-radius: 6px; background-color: rgb(43, 47, 40); overflow: hidden; }
+.music-cover-tile:hover, .music-cover-tile:focus { background-color: rgb(58, 62, 50); }
+.music-cover-tile .music-sleeve { flex-shrink: 0; margin: 0; }
+.music-cover-tile-text { flex-shrink: 1; min-width: 0; margin-left: 12px; margin-right: 10px; }
+.music-cover-tile-title { font-size: 14px; -unity-font-style: bold; color: rgb(238, 230, 204); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; padding: 0; }
+.music-cover-tile-subtitle { font-size: 10px; color: rgb(160, 160, 138); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0; padding: 0; }
+.music-compact .music-cover-tile { width: 47%; }
+.music-big-row { flex-shrink: 0; height: 244px; margin-bottom: 8px; }
+.music-big-card { width: 200px; height: 232px; margin: 0 12px 0 0; padding: 0; border-width: 0; border-radius: 14px; overflow: hidden; flex-shrink: 0; background-color: rgb(36, 40, 34); }
+.music-big-art { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-size: cover; -unity-background-scale-mode: scale-and-crop; }
+.music-big-shade { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; background-color: rgba(14, 16, 12, 0.72); }
+.music-big-text { position: absolute; left: 14px; right: 52px; bottom: 12px; }
+.music-big-title { font-size: 17px; -unity-font-style: bold; color: rgb(246, 240, 220); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; padding: 0; }
+.music-big-subtitle { font-size: 11px; color: rgb(205, 198, 170); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 3px 0 0 0; padding: 0; }
+.music-big-play { position: absolute; right: 12px; bottom: 12px; width: 30px; height: 30px; border-radius: 15px; background-color: rgb(205, 176, 112); align-items: center; justify-content: center; }
+.music-big-play .music-vector-icon { color: rgb(33, 36, 28); }
+.music-big-card:hover, .music-big-card:focus { translate: 0 -3px; }
+.music-cover-tile-title, .music-cover-tile-subtitle { -unity-text-align: middle-left; }
+.music-cover-tile-text { align-items: flex-start; }
+.music-home-content .music-listening-hero { padding: 12px 20px; }
+.music-home-content .music-home-lead-title { font-size: 24px; }
