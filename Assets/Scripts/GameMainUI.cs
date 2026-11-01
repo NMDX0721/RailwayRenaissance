@@ -97,6 +97,10 @@ public class GameMainUI : MonoBehaviour
     private static string FormatBattBadge(int pct) => pct < 0 ? string.Empty : pct.ToString();
 
     // 电量徽标配色：充电或电量充足为绿，≤30% 琥珀，≤15% 红；没有电量数据时灰色满格
+    private static readonly Color BatteryTrackColor = new Color(0.26f, 0.28f, 0.32f, 0.94f);
+    private const float BatteryInnerWidth = 38f;
+    private static Length BatteryFillWidth(int pct) => new Length(BatteryInnerWidth * (pct < 0 ? 1f : Mathf.Clamp01(pct / 100f)), LengthUnit.Pixel);
+
     private static Color BatteryFillColor(int pct, bool charging)
     {
         if (pct < 0) return new Color(0.42f, 0.44f, 0.50f, 0.95f);
@@ -113,7 +117,7 @@ public class GameMainUI : MonoBehaviour
         if (statusBattBolt != null) statusBattBolt.style.display = (pct < 0 || charging) ? DisplayStyle.Flex : DisplayStyle.None;
         if (statusBattFill != null)
         {
-            statusBattFill.style.width = Length.Percent(pct < 0 ? 100f : Mathf.Clamp(pct, 0, 100));
+            statusBattFill.style.width = BatteryFillWidth(pct);
             statusBattFill.style.backgroundColor = BatteryFillColor(pct, charging);
         }
     }
@@ -929,22 +933,31 @@ public class GameMainUI : MonoBehaviour
         TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
         // 电量徽标：深灰圆角底 + 按电量铺的浅灰填充 + 白色粗体数字（对照 HyperOS 状态栏：深浅背景下都清晰）
         var battBox = new VisualElement { name = "tablet-status-battery-box" };
-        battBox.style.width = 40; battBox.style.height = 22;
+        battBox.style.width = 42; battBox.style.height = 22;
         battBox.style.overflow = Overflow.Hidden;
         battBox.style.borderTopLeftRadius = battBox.style.borderTopRightRadius = 8;
         battBox.style.borderBottomLeftRadius = battBox.style.borderBottomRightRadius = 8;
-        battBox.style.backgroundColor = new Color(0.20f, 0.21f, 0.24f, 0.92f);
+        battBox.style.backgroundColor = BatteryTrackColor;
         battBox.style.justifyContent = Justify.Center;
         battBox.style.alignItems = Align.Center;
         statusBattFill = new VisualElement { pickingMode = PickingMode.Ignore };
         statusBattFill.style.position = Position.Absolute;
-        statusBattFill.style.left = 0; statusBattFill.style.top = 0; statusBattFill.style.bottom = 0;
-        statusBattFill.style.width = Length.Percent(battPct < 0 ? 100f : Mathf.Clamp(battPct, 0, 100));
+        statusBattFill.style.left = 2; statusBattFill.style.top = 2; statusBattFill.style.bottom = 2;
+        statusBattFill.style.width = BatteryFillWidth(battPct);
+        statusBattFill.style.borderTopLeftRadius = statusBattFill.style.borderTopRightRadius = 6;
+        statusBattFill.style.borderBottomLeftRadius = statusBattFill.style.borderBottomRightRadius = 6;
         statusBattFill.style.backgroundColor = BatteryFillColor(battPct, false);
         battBox.Add(statusBattFill);
         rightInfo.Add(battBox);
+        // 电池正极小凸块：让徽标一眼是电池
+        var battNub = new VisualElement { name = "tablet-status-battery-nub", pickingMode = PickingMode.Ignore };
+        battNub.style.width = 3; battNub.style.height = 8;
+        battNub.style.marginLeft = 1;
+        battNub.style.borderTopRightRadius = battNub.style.borderBottomRightRadius = 2;
+        battNub.style.backgroundColor = BatteryTrackColor;
+        rightInfo.Add(battNub);
         var batt = new Label(FormatBattBadge(battPct)) { name = "tablet-status-battery" };
-        batt.style.fontSize = 12; batt.style.color = Color.white; batt.style.unityFontDefinition = Fd();
+        batt.style.fontSize = 13; batt.style.color = Color.white; batt.style.unityFontDefinition = Fd();
         batt.style.unityFontStyleAndWeight = FontStyle.Bold;
         batt.style.unityTextAlign = TextAnchor.MiddleCenter;
         batt.pickingMode = PickingMode.Ignore;
