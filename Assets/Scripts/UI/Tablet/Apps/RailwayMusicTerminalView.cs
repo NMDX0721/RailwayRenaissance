@@ -99,6 +99,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (vuMeter != null) vuMeter.root.style.display = DisplayStyle.None;   // the slim player has no room for the meters
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
+            MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)Mathf.Clamp(MusicLibrarySession.State.toneMode, 0, 3);
             var header = Box(root, "music-header");
             Button(header, "返回桌面", close, "music-close");
             var navToggle = Button(header, "侧栏", ToggleNavigation, "music-nav-toggle"); navToggle.tooltip = "收起 / 展开侧栏";
@@ -936,8 +937,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             effects.Add(speed); ShowSpeed();
             Button(effects, "音色", () => {
                 var panel = Popover("收听音色");
-                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 轻微抖晃", 1), ("旧收音机 · 温暖抖晃", 2) })
-                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; CloseModal(); });
+                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 窄频、沙风、磁带抖晃", 1), ("先民真空电台 · 温暖电子管、底噪", 2), ("电子管调频立体声 · 宽频温润", 3) })
+                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; MusicLibrarySession.State.toneMode = pair.Item2; MusicLibrarySession.Save(); CloseModal(); });
             });
             Button(effects, "定时", () => {
                 var panel = Popover("睡眠定时");

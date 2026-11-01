@@ -1252,6 +1252,14 @@ public static class RailwayMusicTerminalReview
                 case 40:
                     Capture("19-search-suggest");
                     Debug.Log("MUSIC_CHARTS_OK: chart page and search suggestions captured");
+                    foreach (var toneMode in new[] { MusicAudioEffectsEngine.RadioFilterMode.Clean, MusicAudioEffectsEngine.RadioFilterMode.Locomotive, MusicAudioEffectsEngine.RadioFilterMode.Pioneer, MusicAudioEffectsEngine.RadioFilterMode.VintageTubeFM })
+                    {
+                        MusicAudioEffectsEngine.CurrentFilterMode = toneMode; MusicAudioEffectsEngine.RefreshTone(.5f);
+                        var deck = MusicAudioEffectsEngine.GetActiveDeck(); var hp = deck.GetComponent<AudioHighPassFilter>(); var lp = deck.GetComponent<AudioLowPassFilter>(); var dist = deck.GetComponent<AudioDistortionFilter>(); var ch = deck.GetComponent<AudioChorusFilter>();
+                        var noise = GameObject.Find("TabletMusic_Noise")?.GetComponent<AudioSource>();
+                        Debug.Log("MUSIC_TONE: " + toneMode + " hp=" + (hp.enabled ? hp.cutoffFrequency : 0) + " lp=" + (lp.enabled ? lp.cutoffFrequency : 0) + " drive=" + (dist.enabled ? dist.distortionLevel : 0) + " chorus=" + ch.enabled + " noise=" + (noise != null && noise.isPlaying ? noise.volume : 0) + " pitch=" + deck.pitch.ToString("0.0000") + " playing=" + deck.isPlaying);
+                    }
+                    MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

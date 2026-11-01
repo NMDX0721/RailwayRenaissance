@@ -37,6 +37,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
         public int lyricFontSize = 24;
         public int lyricMotion = 1;
+        public int toneMode;   // listening tone: 0 clean, 1 work-train radio, 2 tube radio, 3 tube FM
         public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
