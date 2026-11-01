@@ -64,7 +64,7 @@
 **没有迁移过来的内容**
 
 1. **调试面板 `DebugPanel` 整体不可达**：它只被老“关于”页点 5 次调用（`DebugPanel.Show` 仅此一处调用），老页面废弃后入口消失。其中平板“开发者选项”已覆盖：解锁全部剧情与 CG（含 `VN_Got0721`，相册据此全部解锁）、重置主线进度、重置经济、注入资金。**未覆盖**：一键获取/重置所有成就及单个成就解锁（`AchievementManager`）；一键解锁所有音乐（`ArchiveMusic_*`）；列出全部 `PlayerPrefs` 键。清除全部 `PlayerPrefs`、重置所有存档是有意不迁移的危险操作（见上文 R1）。
-2. **音乐解锁收藏（`ArchiveMusic_*`）——更正（音乐会话 2026-11-01 指出）**：平板音乐应用**确实读**这些键（`TabletMusicAppUI.IsTabletMusicUnlocked` 读 `ArchiveMusic_<clipName>` 与 `ArchiveMusic_<id>`），“原声”页已显示“未解锁 · 解锁条件”，只允许播放已解锁曲目，老档案里的 13 首 BGM 平板曲库都有；本核对最初写成“不读”是漏掉了字符串拼接式读取的误判。**真实缺口**：①老 `TitleArchiveUI.MusicEntries` 里约 10 条场景环境音（hangar、lab、professor_office、tea_house、car_interior(+night)、cabin_interior(+night)、station、prologue_01_news）平板曲库没有；②平板没有单独的“原声档案”页（按分类筛选、已解锁/总数）。是否补这两块由用户通过音乐会话决定。
+2. **音乐解锁收藏（`ArchiveMusic_*`）——已核对，无缺口**（两次更正：先前写成“平板音乐应用不读这些键”是漏掉了字符串拼接式读取的误判；其后音乐会话转述的“缺约 10 条场景环境音”也是错的，那些是 `TitleArchiveUI` 里的场景背景图与章节，不是音乐）：平板音乐应用读取 `ArchiveMusic_<clipName>` 与 `ArchiveMusic_<id>`（`TabletMusicAppUI.IsTabletMusicUnlocked`），“原声”页显示“未解锁 · 解锁条件”并只允许播放已解锁曲目；老 `MusicEntries` 的 13 首 BGM 在平板曲库全部登记，`Resources/bgm` 的音频文件与平板曲库一一对应。唯一差别是平板没有单独的“原声档案”页（按分类筛选、已解锁/总数），用户表示暂不需要。
 3. **账号名**：老登录流程让玩家输入 `Username`；平板启动时把它迁移到 `XiaomiAccount`（`GameMainUI`，缺省写“旅人”），但平板账号页没有改名入口，新玩家的账号名固定为默认值。
 4. **站务日志存档页（`TitleArchiveUI` 的 CG/场景/音乐/故事收藏）**：相册（读 `ArchiveScene_*`/`ArchiveCG_*`/`VN_Got0721`）和归途（读 `ArchiveStory_*`）已承接 CG、场景、故事；音乐收藏见第 2 条。
 

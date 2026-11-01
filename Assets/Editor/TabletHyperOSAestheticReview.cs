@@ -77,7 +77,7 @@ namespace RailwayRenaissance.Editor
         // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
         private static string pendingCapture;
         private static int settingsSubPage;
-        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈" };
+        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
 
         private static void Capture(string name)
         {
@@ -356,6 +356,9 @@ namespace RailwayRenaissance.Editor
                         // 本阶段重复进入：先截账号页，再依次点开“显示与亮度 / 电池 / 我的设备”各截一张
                         if (settingsSubPage == 0)
                         {
+                            // 开发者选项入口只在解锁后出现；审查结束时会移除该键
+                            PlayerPrefs.SetInt("TabletDevModeUnlocked", 1);
+                            PlayerPrefs.Save();
                             Capture("09_settings_inset_grouped_cards");
                             settingsSubPage = 1;
                             frame = Time.frameCount;
@@ -488,6 +491,8 @@ namespace RailwayRenaissance.Editor
                         break;
 
                     case 21:
+                        PlayerPrefs.DeleteKey("TabletDevModeUnlocked");
+                        PlayerPrefs.Save();
                         state.ClosePanel();
                         presentation.SetReduceMotion(false);
                         Resize(1920, 1080);

@@ -939,6 +939,58 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }));
         rightPane.Add(storyResetCard);
 
+        // ---- 成就与收藏调试（对应老调试面板里的成就/音乐解锁；危险的“清除全部 PlayerPrefs / 重置所有存档”不迁移）----
+        AddSectionHeader(rightPane, "成就与收藏调试");
+        var achCard = BuildWhiteCard();
+        achCard.name = "settings-dev-achievement-card";
+        int achTotal = AchievementManager.GetAll().Length;
+        achCard.Add(BuildInfoRow("一键解锁全部成就", $"{AchievementManager.GetUnlockedCount()} / {achTotal}", "把所有成就标记为已解锁（会依次弹出成就提示）", () =>
+        {
+            var all = AchievementManager.GetAll();
+            for (int i = 0; i < all.Length; i++) AchievementManager.Unlock(all[i].id);
+            ShowToast("已解锁全部成就");
+            BuildSettingsPage(win);
+        }));
+        achCard.Add(BuildInfoRow("重置全部成就", null, "清空成就的解锁状态与日期；不影响剧情进度、经营数据、存档与音乐库", () =>
+        {
+            ShowResetConfirmDialog(
+                win ?? rightPane,
+                "⚠️ 重置全部成就确认",
+                "此操作会清空所有成就的解锁状态与解锁日期。不会影响剧情进度、经营数据、存档、音乐库与系统设置。",
+                "确认重置成就",
+                () =>
+                {
+                    AchievementManager.ResetAll();
+                    ShowToast("成就已重置");
+                    BuildSettingsPage(win);
+                });
+        }));
+        achCard.Add(BuildInfoRow("一键解锁全部原声", null, "只写入原声收藏的解锁记录（ArchiveMusic_*），不改动音乐库与播放状态", () =>
+        {
+            foreach (var m in new[] { "iron_and_ash", "cloud_rail", "embers", "night_cargo", "first_light", "platform", "borderline", "wheels_joke", "train_through_keys", "south_wind", "starlit_rails", "chollima_ride", "sleepers" })
+                PlayerPrefs.SetInt("ArchiveMusic_" + m, 1);
+            PlayerPrefs.Save();
+            ShowToast("已解锁全部原声");
+        }));
+        rightPane.Add(achCard);
+
+        AddSectionHeader(rightPane, "单个成就（点击未解锁项直接解锁）");
+        var achListCard = BuildWhiteCard();
+        achListCard.name = "settings-dev-achievement-list";
+        var achItems = AchievementManager.GetAll();
+        for (int i = 0; i < achItems.Length; i++)
+        {
+            var ach = achItems[i];
+            string id = ach.id;
+            achListCard.Add(BuildInfoRow(ach.title, ach.unlocked ? "已解锁 " + ach.unlockedDate : "未解锁", ach.description,
+                ach.unlocked ? (System.Action)null : () =>
+                {
+                    AchievementManager.Unlock(id);
+                    BuildSettingsPage(win);
+                }));
+        }
+        rightPane.Add(achListCard);
+
         AddSectionHeader(rightPane, "经营与经济核数据重置");
         var ecoResetCard = BuildWhiteCard();
         ecoResetCard.Add(BuildWhiteRow("重置经济模拟数据", "重置当前运行中的经营状态：资金按难度恢复，初始趋势依已加载种子生成，回到第 1 天", () =>
