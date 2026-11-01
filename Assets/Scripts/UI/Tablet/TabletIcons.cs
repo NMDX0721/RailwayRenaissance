@@ -6,7 +6,8 @@ namespace RailwayRenaissance.UI.Tablet
 {
     public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast, Bell, MusicNote, Search,
         Person, Tablet, Apps, Cube, Wifi, Bluetooth, Link, Globe, Sparkle, Lock, Home, Keyboard, FaceId, Shield, Battery, Heart, Sprout, Accessibility, Dots, Chat, Code,
-        Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic }
+        Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
+        Note, Clock, Calendar, Calc, Map, Star }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -250,6 +251,65 @@ namespace RailwayRenaissance.UI.Tablet
                     p.BeginPath(); p.Arc(P(12, 11.5f), 6.5f * k, Angle.Degrees(0), Angle.Degrees(180)); p.Stroke();
                     p.BeginPath(); p.MoveTo(P(12, 18)); p.LineTo(P(12, 21)); p.Stroke();
                     break;
+
+
+                case TabletIconKind.Note:
+                    RoundRectPath(p, 5f * k, 3f * k, 14f * k, 18f * k, 2.6f * k);
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8.5f, 8.5f)); p.LineTo(P(15.5f, 8.5f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8.5f, 12.5f)); p.LineTo(P(15.5f, 12.5f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8.5f, 16.5f)); p.LineTo(P(12.5f, 16.5f)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Clock:
+                    p.BeginPath(); p.Arc(P(12, 12), 9f * k, Angle.Degrees(0), Angle.Degrees(360)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(12, 6.5f)); p.LineTo(P(12, 12)); p.LineTo(P(16, 14.5f)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Calendar:
+                    RoundRectPath(p, 3.5f * k, 5f * k, 17f * k, 15.5f * k, 2.6f * k);
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(3.5f, 10)); p.LineTo(P(20.5f, 10)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8, 3)); p.LineTo(P(8, 6.5f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(16, 3)); p.LineTo(P(16, 6.5f)); p.Stroke();
+                    DrawDot(p, P(8.5f, 14.5f), 1.1f * k);
+                    DrawDot(p, P(12, 14.5f), 1.1f * k);
+                    DrawDot(p, P(15.5f, 14.5f), 1.1f * k);
+                    break;
+
+                case TabletIconKind.Calc:
+                    RoundRectPath(p, 5f * k, 3f * k, 14f * k, 18f * k, 2.6f * k);
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8, 8)); p.LineTo(P(16, 8)); p.Stroke();
+                    for (int r = 0; r < 3; r++)
+                        for (int c = 0; c < 3; c++)
+                            DrawDot(p, P(8.5f + c * 3.5f, 12.5f + r * 3.2f), 0.95f * k);
+                    break;
+
+                case TabletIconKind.Map:
+                {
+                    p.BeginPath();
+                    p.MoveTo(P(3, 6)); p.LineTo(P(9, 4)); p.LineTo(P(15, 6)); p.LineTo(P(21, 4));
+                    p.LineTo(P(21, 18)); p.LineTo(P(15, 20)); p.LineTo(P(9, 18)); p.LineTo(P(3, 20));
+                    p.ClosePath();
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(9, 4)); p.LineTo(P(9, 18)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(15, 6)); p.LineTo(P(15, 20)); p.Stroke();
+                    break;
+                }
+
+                case TabletIconKind.Star:
+                {
+                    var star = new List<Vector2>();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        float ang = -Mathf.PI / 2f + i * Mathf.PI / 5f;
+                        float rad = (i % 2 == 0 ? 9.5f : 4.1f) * k;
+                        star.Add(P(12, 12.6f) + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * rad);
+                    }
+                    FillPolygon(p, star);
+                    break;
+                }
 
                 case TabletIconKind.Person:
                 {

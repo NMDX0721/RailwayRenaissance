@@ -612,7 +612,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement statusBar;
     private Label statusClock;
     private Label statusBatt;
-    private Label statusQuiet;
+    private RailwayRenaissance.UI.Tablet.TabletIconElement statusQuiet;
     private Label statusDate;
     private static readonly string[] WeekdayShort = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
     private static string FormatStatusDate(System.DateTime t) => $"{t.Month}月{t.Day}日 {WeekdayShort[(int)t.DayOfWeek]}";
@@ -666,7 +666,7 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.backgroundImage = lightApp ? StyleKeyword.None : Background.FromTexture2D(BuildStatusBarScrim());
         statusBar.style.backgroundColor = lightApp ? new Color(0.97f, 0.97f, 0.98f, 1f) : Color.clear;
         if (statusClock != null) statusClock.style.color = ink;
-        if (statusQuiet != null) statusQuiet.style.color = ink;
+        if (statusQuiet != null) statusQuiet.IconColor = ink;
         if (statusDate != null) statusDate.style.color = ink;
         tabletShellView?.SetLauncherOnLight(lightApp);
     }
@@ -788,10 +788,7 @@ public class GameMainUI : MonoBehaviour
         rightInfo.style.justifyContent = Justify.FlexEnd;
 
         // 勿扰开启时显示月亮；本机不虚拟 Wi-Fi/蓝牙，状态栏只放真实状态
-        statusQuiet = new Label("🌙") { name = "tablet-status-quiet" };
-        statusQuiet.style.fontSize = 15;
-        statusQuiet.style.color = GlassText;
-        statusQuiet.style.unityFontDefinition = Fd();
+        statusQuiet = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Moon, 16, GlassText) { name = "tablet-status-quiet" };
         statusQuiet.style.marginRight = 10;
         statusQuiet.style.display = DisplayStyle.None;
         rightInfo.Add(statusQuiet);
@@ -1196,8 +1193,7 @@ public class GameMainUI : MonoBehaviour
         loc.style.unityFontDefinition = Fd();
         locRow.Add(loc);
 
-        var icon = new Label("⛅");
-        icon.style.fontSize = 16;
+        var icon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Sun, 18, new Color(1f, 0.85f, 0.4f, 1f));
         locRow.Add(icon);
 
         var temp = new Label("22°C");
@@ -1369,8 +1365,7 @@ public class GameMainUI : MonoBehaviour
         monthLbl.style.fontSize = 11; monthLbl.style.color = Color.white; monthLbl.style.unityFontDefinition = Fd();
         topBar.Add(monthLbl);
 
-        var dayIcon = new Label("🗓");
-        dayIcon.style.fontSize = 12;
+        var dayIcon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Calendar, 14, Color.white);
         topBar.Add(dayIcon);
 
         // 中部大天数（居中撑开）
@@ -1446,7 +1441,7 @@ public class GameMainUI : MonoBehaviour
         // 2×2 缩略：用上下两行明确排布，不依赖自动换行
         folderBox.style.flexDirection = FlexDirection.Column;
         folderBox.style.flexWrap = Wrap.NoWrap;
-        string[] miniIcons = { "归", "百", "♪", "R" };
+        string[] miniIcons = { "归途", "媒姬百科", "音乐", "RDA" };
         for (int row = 0; row < 2; row++)
         {
             var rowBox = new VisualElement();
@@ -1454,13 +1449,8 @@ public class GameMainUI : MonoBehaviour
             rowBox.style.flexShrink = 0;
             for (int col = 0; col < 2; col++)
             {
-                var ml = new Label(miniIcons[row * 2 + col]);
-                ml.style.fontSize = 12;
-                ml.style.color = new Color(1f, 1f, 1f, 0.92f);
-                ml.style.unityFontDefinition = Fd();
-                ml.style.width = 24; ml.style.height = 24;
-                ml.style.flexShrink = 0;
-                ml.style.unityTextAlign = TextAnchor.MiddleCenter;
+                var ml = BuildIconTile(miniIcons[row * 2 + col], 20f, 6f, 11);
+                ml.style.marginLeft = 2; ml.style.marginRight = 2; ml.style.marginTop = 2; ml.style.marginBottom = 2;
                 rowBox.Add(ml);
             }
             folderBox.Add(rowBox);
@@ -1913,6 +1903,24 @@ public class GameMainUI : MonoBehaviour
             "音乐" => RailwayRenaissance.UI.Tablet.TabletIconKind.MusicNote,
             "设置" => RailwayRenaissance.UI.Tablet.TabletIconKind.Gear,
             "天气" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sun,
+            "RDA" => RailwayRenaissance.UI.Tablet.TabletIconKind.Cube,
+            "驾驶台" => RailwayRenaissance.UI.Tablet.TabletIconKind.Train,
+            "归途" => RailwayRenaissance.UI.Tablet.TabletIconKind.Home,
+            "媒姬百科" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sparkle,
+            "相册" => RailwayRenaissance.UI.Tablet.TabletIconKind.Image,
+            "笔记" => RailwayRenaissance.UI.Tablet.TabletIconKind.Note,
+            "浏览器" => RailwayRenaissance.UI.Tablet.TabletIconKind.Globe,
+            "安全中心" => RailwayRenaissance.UI.Tablet.TabletIconKind.Shield,
+            "米家" => RailwayRenaissance.UI.Tablet.TabletIconKind.Bolt,
+            "应用商店" => RailwayRenaissance.UI.Tablet.TabletIconKind.Star,
+            "阿里郎商店" => RailwayRenaissance.UI.Tablet.TabletIconKind.Apps,
+            "未来网" => RailwayRenaissance.UI.Tablet.TabletIconKind.Globe,
+            "白头疫苗" => RailwayRenaissance.UI.Tablet.TabletIconKind.Shield,
+            "时钟" => RailwayRenaissance.UI.Tablet.TabletIconKind.Clock,
+            "日历" => RailwayRenaissance.UI.Tablet.TabletIconKind.Calendar,
+            "计算器" => RailwayRenaissance.UI.Tablet.TabletIconKind.Calc,
+            "文件管理" => RailwayRenaissance.UI.Tablet.TabletIconKind.Folder,
+            "地图" => RailwayRenaissance.UI.Tablet.TabletIconKind.Map,
             _ => null
         };
         if (vector.HasValue)
