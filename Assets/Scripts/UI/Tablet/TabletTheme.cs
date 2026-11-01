@@ -21,6 +21,9 @@ namespace RailwayRenaissance.UI.Tablet
         /// <summary>浅色面上的强调色（对比度更高的同色相）。</summary>
         public static Color AccentOnLight => AccentOnLightFor(AccentKind);
 
+        /// <summary>设备安全区的顶部缺口高度（刘海/挖孔/系统状态栏），仅在 Android/iOS 上可能大于 0。</summary>
+        public static float SafeInsetTop;
+
         public static event Action Changed;
 
         public static void Apply(TabletAccent accent, bool highContrast, bool reduceMotion)

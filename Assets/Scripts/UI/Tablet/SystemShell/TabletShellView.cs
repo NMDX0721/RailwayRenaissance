@@ -427,7 +427,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 _panel.style.left = StyleKeyword.Auto;
                 _panel.style.right = 16;
             }
-            _panel.style.top = 52;
+            _panel.style.top = 52 + TabletTheme.SafeInsetTop;
             _panel.style.bottom = 12;
             _panel.style.borderTopLeftRadius = 22;
             _panel.style.borderTopRightRadius = 22;

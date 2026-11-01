@@ -670,6 +670,31 @@ public class GameMainUI : MonoBehaviour
         tabletShellView?.SetLauncherOnLight(lightApp);
     }
 
+    // 设备安全区（Android 挖孔/刘海、系统栏）：只在移动平台生效，Windows 上恒为 0。
+    // 只处理顶部与左右：状态栏加高并加内边距，应用层与系统面板顺延下移。
+    private float appliedSafeTop = -1f, appliedSafeLeft = -1f, appliedSafeRight = -1f;
+    private void ApplySafeArea()
+    {
+        if (root?.panel == null || statusBar == null) return;
+        if (Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer) return;
+        Rect safe = Screen.safeArea;
+        float panelW = root.panel.visualTree.layout.width;
+        if (panelW <= 0f || Screen.width <= 0) return;
+        Vector2 topLeft = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(safe.xMin, Screen.height - safe.yMax));
+        Vector2 bottomRight = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(safe.xMax, Screen.height - safe.yMin));
+        float top = Mathf.Max(0f, topLeft.y);
+        float left = Mathf.Max(0f, topLeft.x);
+        float right = Mathf.Max(0f, panelW - bottomRight.x);
+        if (Mathf.Abs(top - appliedSafeTop) < 0.5f && Mathf.Abs(left - appliedSafeLeft) < 0.5f && Mathf.Abs(right - appliedSafeRight) < 0.5f) return;
+        appliedSafeTop = top; appliedSafeLeft = left; appliedSafeRight = right;
+        RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop = top;
+        statusBar.style.height = 48 + top;
+        statusBar.style.paddingTop = 8 + top;
+        statusBar.style.paddingLeft = 20 + left;
+        statusBar.style.paddingRight = 20 + right;
+        if (appLayer != null) appLayer.style.top = 48 + top;
+    }
+
     private static Texture2D s_statusScrim;
     private static Texture2D BuildStatusBarScrim()
     {
@@ -1997,7 +2022,7 @@ public class GameMainUI : MonoBehaviour
     {
         appLayer = new VisualElement { name = "tablet-app-layer" };
         appLayer.style.position = Position.Absolute;
-        appLayer.style.top = 48; appLayer.style.left = 0;
+        appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop; appLayer.style.left = 0;
         appLayer.style.right = 0; appLayer.style.bottom = SystemNavBarHeight;
         appLayer.style.display = DisplayStyle.None;
         appLayer.focusable = true;
@@ -2125,7 +2150,7 @@ public class GameMainUI : MonoBehaviour
 
         var layer = new VisualElement { name = "tablet-app-layer", viewDataKey = "tablet-app-layer-" + appId };
         layer.style.position = Position.Absolute;
-        layer.style.top = 48;
+        layer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
         layer.style.left = 0;
         layer.style.right = 0;
         layer.style.bottom = SystemNavBarHeight;
@@ -2387,7 +2412,7 @@ public class GameMainUI : MonoBehaviour
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
             appLayer.style.position = Position.Absolute;
-            appLayer.style.top = 48;
+            appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
             appLayer.style.left = 0;
             appLayer.style.right = 0;
             appLayer.style.bottom = SystemNavBarHeight;
@@ -2442,8 +2467,25 @@ public class GameMainUI : MonoBehaviour
         return true;
     }
 
+    // Windows 鼠标：只接受左键、且从屏幕顶部 48px 起拖的下拉手势（左半屏通知、右半屏控制中心）；
+    // 侧滑返回、底部上滑等触屏手势不对鼠标开放，避免与桌面拖拽、滚动条和按钮冲突。
+    private const float MouseGestureTopZone = 48f;
+
+    private bool IsMouseGestureEvent(IPointerEvent evt) => evt.pointerType == "mouse";
+
     private void OnSystemPointerDown(PointerDownEvent evt)
     {
+        if (unlocked && IsMouseGestureEvent(evt) && evt.button <= 0 && root?.panel != null)
+        {
+            if (evt.position.y <= MouseGestureTopZone)
+            {
+                float mw = root.panel.visualTree.layout.width;
+                float mh = root.panel.visualTree.layout.height;
+                tabletEdgeGesture.Begin(evt.pointerId, evt.position, mw, mh, SystemNavBarHeight,
+                    IsDirectManipulationTarget(evt.target), 1);
+            }
+            return;
+        }
         if (!unlocked || evt.pointerType != "touch" || root?.panel == null) return;
         activeTouchPointers.Add(evt.pointerId);
         if (activeTouchPointers.Count > 1)
@@ -2461,6 +2503,12 @@ public class GameMainUI : MonoBehaviour
 
     private void OnSystemPointerMove(PointerMoveEvent evt)
     {
+        if (IsMouseGestureEvent(evt))
+        {
+            if (tabletEdgeGesture.HasActiveGesture && tabletEdgeGesture.ActivePointerId == evt.pointerId)
+                tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
+            return;
+        }
         if (evt.pointerType != "touch") return;
         if (activeTouchPointers.Count > 1)
         {
@@ -2472,7 +2520,9 @@ public class GameMainUI : MonoBehaviour
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
-        if (evt.pointerType != "touch") return;
+        if (IsMouseGestureEvent(evt) && !(tabletEdgeGesture.HasActiveGesture && tabletEdgeGesture.ActivePointerId == evt.pointerId))
+            return;
+        if (evt.pointerType != "touch" && !IsMouseGestureEvent(evt)) return;
         activeTouchPointers.Remove(evt.pointerId);
         TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
         switch (action)
@@ -3336,6 +3386,7 @@ public class GameMainUI : MonoBehaviour
             }
             if (statusUnread != null && tabletShellState != null)
                 statusUnread.style.display = tabletShellState.UnreadCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            ApplySafeArea();
             if (statusDate != null)
             {
                 statusDate.text = FormatStatusDate(System.DateTime.Now);

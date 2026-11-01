@@ -1437,7 +1437,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         AddSectionHeader(page, "终端防护");
         var storageCard = BuildWhiteCard();
         storageCard.name = "settings-privacy-storage-card";
-        storageCard.Add(BuildInfoRow("终端防御", "白头疫苗", "安全服务由白头疫苗统一管理，可在“白头疫苗”应用中查看扫描结果"));
+        storageCard.Add(BuildInfoRow("终端防御", "白头疫苗", "安全服务由白头疫苗统一管理，可在“白头疫苗”应用中查看防护状态"));
         storageCard.Add(BuildInfoRow("外部网络", "受限", "车载内网沙箱默认不连接公共网络；音乐页的账号与在线曲库只在你操作时联网"));
         storageCard.Add(BuildInfoRow("应用权限", "沙箱隔离", "22 个应用运行在系统沙箱内"));
         page.Add(storageCard);
@@ -1923,15 +1923,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         thumb.style.marginLeft = val ? 23 : 3;
         toggle.Add(thumb);
 
-        if (!enabled) toggle.pickingMode = PickingMode.Ignore;
-        toggle.RegisterCallback<ClickEvent>(_ =>
+        // 整行可点：开关本体只有 46×26，手指和鼠标都难点中，改为点行内任意位置即切换
+        toggle.pickingMode = PickingMode.Ignore;
+        if (enabled)
         {
-            if (!enabled) return;
-            val = !val;
-            toggle.style.backgroundColor = val ? AccentSystem : new Color(0.85f, 0.85f, 0.87f, 1f);
-            thumb.style.marginLeft = val ? 23 : 3;
-            if (onChanged != null) onChanged(val);
-        });
+            row.pickingMode = PickingMode.Position;
+            row.RegisterCallback<PointerEnterEvent>(_ => row.style.backgroundColor = SurfaceHover);
+            row.RegisterCallback<PointerLeaveEvent>(_ => row.style.backgroundColor = Color.clear);
+            row.RegisterCallback<ClickEvent>(_ =>
+            {
+                val = !val;
+                toggle.style.backgroundColor = val ? AccentSystem : new Color(0.85f, 0.85f, 0.87f, 1f);
+                thumb.style.marginLeft = val ? 23 : 3;
+                if (onChanged != null) onChanged(val);
+            });
+        }
 
         return row;
     }
