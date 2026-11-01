@@ -130,7 +130,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         leftNav.style.borderRightWidth = 1;
         leftNav.style.borderRightColor = BorderDivider;
         leftNav.style.flexDirection = FlexDirection.Column;
-        leftNav.style.paddingLeft = 14; leftNav.style.paddingRight = 14;
+        leftNav.style.paddingLeft = 20; leftNav.style.paddingRight = 20;
         leftNav.style.paddingTop = 16; leftNav.style.paddingBottom = 16;
         rootRow.Add(leftNav);
 
@@ -329,7 +329,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             rootRow.style.flexDirection = compact ? FlexDirection.Column : FlexDirection.Row;
             compactToolbar.style.display = compact ? DisplayStyle.Flex : DisplayStyle.None;
             leftNav.style.display = compact ? DisplayStyle.None : DisplayStyle.Flex;
-            leftNav.style.width = width < 1020 ? 248 : 300;
+            // 左右栏比例对照 HyperOS Pad 设置：左栏约 40%、右栏约 60%（宽屏下限 320px，上限 820px）
+            leftNav.style.width = Mathf.Clamp(width * 0.40f, 320f, 820f);
             rightPane.style.paddingLeft = compact ? 14 : width < 1020 ? 22 : 32;
             rightPane.style.paddingRight = compact ? 14 : width < 1020 ? 22 : 32;
             rightPane.style.paddingTop = compact ? 14 : 20;
