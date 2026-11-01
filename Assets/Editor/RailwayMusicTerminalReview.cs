@@ -30,6 +30,18 @@ public static class RailwayMusicTerminalReview
     static float previewPreviousPosition;
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
+    // The wide review size: 1440x900 unless MUSIC_REVIEW_SIZE (for example "1109x625") asks for another, to try the music app on a smaller logical canvas.
+    static readonly Vector2Int MainSize = ReadMainSize();
+    static Vector2Int ReadMainSize()
+    {
+        string text = Environment.GetEnvironmentVariable("MUSIC_REVIEW_SIZE");
+        if (!string.IsNullOrEmpty(text))
+        {
+            var parts = text.Split('x');
+            if (parts.Length == 2 && int.TryParse(parts[0], out int w) && int.TryParse(parts[1], out int h) && w >= 600 && h >= 400) return new Vector2Int(w, h);
+        }
+        return new Vector2Int(1440, 900);
+    }
     static int stageMotionFrame, lumiSeq, styleStep, stressIndex;
     static readonly List<string> stressIssues = new List<string>();
     // Every style on both stress lines (measured at the end of each line), and Luminous again at the wildest intensity.
@@ -294,7 +306,7 @@ public static class RailwayMusicTerminalReview
         Assert(root != null, "LaunchApp did not build the railway terminal");
         var settings = UnityEngine.Object.Instantiate(document.panelSettings);
         settings.scaleMode = PanelScaleMode.ConstantPixelSize; settings.scale = 1;
-        target = new RenderTexture(1440, 900, 24); target.Create(); settings.targetTexture = target;
+        target = new RenderTexture(MainSize.x, MainSize.y, 24); target.Create(); settings.targetTexture = target;
         settings.clearColor = true; settings.colorClearValue = new Color(.06f, .07f, .06f, 1);
         document.panelSettings = settings;
         // Panel replacement can detach/recreate the document; re-enter using the real app path.
@@ -666,7 +678,7 @@ public static class RailwayMusicTerminalReview
                     Assert(MusicTimedText.Import("platform", lrcPath, false, out _) && MusicTimedText.Import("platform", translationPath, true, out _), "Timed-text file import failed");
                     TabletMusicAppUI.SeekTabletMusic(.5f / TabletMusicAppUI.tabletCurrentClip.length);
                     document.panelSettings.targetTexture = null; target.Release();
-                    target = new RenderTexture(1440, 900, 24); target.Create(); document.panelSettings.targetTexture = target;
+                    target = new RenderTexture(MainSize.x, MainSize.y, 24); target.Create(); document.panelSettings.targetTexture = target;
                     Submit(root.Q<Button>("music-lyrics"));
                     break;
                 case 9:
@@ -722,7 +734,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 16 + StressStyles.Length)
+                    if (styleStep < 17 + StressStyles.Length)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -883,11 +895,22 @@ public static class RailwayMusicTerminalReview
                         {
                             // The sheet is a modal and replaces the lyrics page by design; close it and reopen the lyrics for the steps that follow.
                             Assert(root.Q(className: "music-record-sheet") != null, "The record archive did not open from the lyrics page");
-                            Assert(root.Q(className: "music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            // The lyrics page is found by its name; it has no such class, so a class query would find nothing whether or not it is open.
+                            Assert(root.Q("music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            Assert(RailwayMusicTerminalView.RecordReturnsToLyrics, "The record archive opened from the lyrics page did not remember to return to it");
                             Capture("08-record-from-lyrics");
                             Submit(root.Q(className: "music-modal-header").Q<Button>());
-                            Submit(root.Q<Button>("music-lyrics"));
-                            Debug.Log("MUSIC_LYRICS_INFO_OK: song information in the left column, link opens the record archive, lyrics page reopens");
+                        }
+                        else if (styleStep == 16 + StressStyles.Length)
+                        {
+                            // Closing the record archive that was opened from the lyrics page returns to the lyrics page, not the library.
+                            var overlaysNow = root.Query(className: "music-overlay").ToList();
+                            string overlayList = string.Join(" | ", overlaysNow.ConvertAll(o => string.Join(".", o.GetClasses())));
+                            Assert(root.Q("music-lyrics-overlay") != null && root.Q(className: "music-record-sheet") == null,
+                                "Closing the record archive did not return to the lyrics page (overlays: " + overlaysNow.Count + " [" + overlayList + "], record sheet " + (root.Q(className: "music-record-sheet") != null ? "still open" : "closed") +
+                                ", returns flag " + RailwayMusicTerminalView.RecordReturnsToLyrics + ", current track " + TabletMusicAppUI.tabletCurrentTrackId + ")");
+                            Assert(root.Q<Button>("music-lyrics-record") != null, "The lyrics page that came back has no record archive link");
+                            Debug.Log("MUSIC_LYRICS_INFO_OK: song information in the left column, the link opens the record archive, and closing it returns to the lyrics page");
                         }
                         else if (styleStep >= 13 && styleStep <= 13 + StressStyles.Length)
                         {

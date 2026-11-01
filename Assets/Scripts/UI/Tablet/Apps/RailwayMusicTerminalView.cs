@@ -618,6 +618,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         VisualElement Modal(string heading)
         {
+            // Any other sheet that replaces the record archive (for example the playlist menu) ends the "came from the lyrics page" return.
+            if (heading != "唱片档案") recordFromLyrics = false;
             if (overlay == null) modalReturnFocus = root.panel?.focusController.focusedElement as VisualElement;
             overlay?.RemoveFromHierarchy(); disc = null; lyrics = null;
             overlay = Box(root, "music-overlay");
@@ -645,12 +647,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var item = new Button(action) { text = text }; item.AddToClassList("music-menu-item"); item.EnableInClassList("is-selected", selected); panel.Add(item); return item;
         }
+        // True while the record archive sheet was opened from the lyrics page: closing it then goes back to the lyrics page, not to the library.
+        bool recordFromLyrics;
         void CloseModal()
         {
+            bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
             overlay?.RemoveFromHierarchy(); overlay = null; disc = null; detailId = null; lyrics = null;
             if (modalReturnFocus?.panel == root.panel && modalReturnFocus.enabledInHierarchy) modalReturnFocus.Focus();
             else root.Focus();
             modalReturnFocus = null;
+            if (backToLyrics) OpenLyrics();
         }
         bool arriving; string renderedArrival;
         bool importing, importCancel; int importDone, importTotal;
@@ -1298,7 +1304,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         public static void UpdatePlayback() => current?.Update();
         /// <summary>Open a track's record archive sheet. The sheet is a modal, so it replaces whatever page overlay (such as the lyrics page) is open.</summary>
-        public static void OpenRecord(string id) => current?.ShowDetail(id);
+        public static void OpenRecord(string id) { if (current == null) return; current.ShowDetail(id); current.recordFromLyrics = true; }
+        /// <summary>True while an open record archive sheet will return to the lyrics page when closed (read by the review).</summary>
+        public static bool RecordReturnsToLyrics => current != null && current.recordFromLyrics;
         public static bool ShowToast(string message)
         {
             if (current?.toast == null || current.root.panel == null) return false;
