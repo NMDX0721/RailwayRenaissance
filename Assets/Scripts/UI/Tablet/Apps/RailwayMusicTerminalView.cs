@@ -369,11 +369,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!string.IsNullOrEmpty(track.titleTranslation)) Text(titleBar, track.titleTranslation, "music-track-translation");
             bool unlocked = MusicLibrarySession.Unlocked(track);
             bool available = unlocked && MusicLibrarySession.Available(track);
-            string status = !unlocked ? "未解锁 · " + track.condition : !available ? (!string.IsNullOrEmpty(track.provider) ? "在线曲目暂不可用" : "文件不可用 · 请检查或重新导入") : track.local ? (string.IsNullOrEmpty(track.artist) ? "私人磁带 · 本地音乐" : "私人磁带 · " + track.artist) : !string.IsNullOrEmpty(track.provider) ? track.category + " · " + (track.artist ?? "") : track.category + " · " + track.condition;
+            string status = !unlocked ? "未解锁 · " + track.condition : !available ? (!string.IsNullOrEmpty(track.provider) ? "在线曲目暂不可用 · 点播放找替代来源" : "文件不可用 · 请检查或重新导入") : track.local ? (string.IsNullOrEmpty(track.artist) ? "私人磁带 · 本地音乐" : "私人磁带 · " + track.artist) : !string.IsNullOrEmpty(track.provider) ? track.category + " · " + (track.artist ?? "") : track.category + " · " + track.condition;
             Text(info, status, "music-track-subtitle").tooltip = status;
             row.EnableInClassList("is-unavailable", !available);
             Text(row, track.duration > 0 ? TabletMusicAppUI.FormatAudioTime(track.duration) : "--:--", "music-duration");
-            var start = Button(row, "播放", () => MusicLibrarySession.Play(track.id, resume), "music-play-" + track.id); start.SetEnabled(available);
+            // An online track that failed to play can still be pressed: the button then looks for the same song on the other sources.
+            bool canReplace = unlocked && !available && !string.IsNullOrEmpty(track.provider);
+            var start = Button(row, "播放", () => { if (canReplace) OpenReplacement(track); else MusicLibrarySession.Play(track.id, resume); }, "music-play-" + track.id); start.SetEnabled(available || canReplace);
+            if (canReplace) start.tooltip = "无法播放：点这里找替代来源";
             Button(row, MusicLibrarySession.State.favorites.Contains(track.id) ? "已藏" : "收藏", () => MusicLibrarySession.ToggleFavorite(track.id), "music-favorite-" + track.id);
             Button moreButton = null;
             moreButton = Button(row, "更多", () => TrackActions(track, moreButton), "music-more-" + track.id);
@@ -747,6 +750,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 PopoverItem(menu, "下一首播放", false, () => { MusicLibrarySession.Enqueue(track.id, true); CloseModal(); ShowToast("已放到队列最前"); });
                 PopoverItem(menu, "加入播放队列", false, () => { MusicLibrarySession.Enqueue(track.id); CloseModal(); ShowToast("已加入播放队列"); });
                 PopoverItem(menu, "加入歌单…", false, Playlists).name = "music-menu-playlists";
+                if (!string.IsNullOrEmpty(track.provider)) PopoverItem(menu, "找替代来源…", false, () => { CloseModal(); OpenReplacement(track); }).name = "music-menu-replace";
                 if (selected != null && query.Length == 0)
                     PopoverItem(menu, "从当前歌单移除", false, () => { selected.tracks.Remove(track.id); CloseModal(); MusicLibrarySession.Commit(); });
                 if (track.local)

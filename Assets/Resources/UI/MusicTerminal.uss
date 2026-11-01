@@ -924,3 +924,11 @@
 .music-lyrics-surface > * { transition-property: opacity; transition-duration: 380ms; transition-timing-function: ease-out; }
 .music-lyrics-surface > .music-lyrics-entering { opacity: 0; }
 .music-reduce-motion .music-lyrics-surface > * { transition-duration: 0s; }
+
+/* Replacement sheet: candidates from the other sources. */
+.music-replace-sheet { width: 640px; }
+.music-replace-row { flex-direction: row; align-items: center; padding: 8px 10px; margin: 2px 0; border-radius: 12px; background-color: rgb(43, 48, 40); }
+.music-replace-text { flex-grow: 1; flex-shrink: 1; min-width: 0; margin-right: 10px; }
+.music-replace-title { font-size: 14px; color: rgb(240, 233, 210); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; padding: 0; -unity-text-align: middle-left; }
+.music-replace-sub { font-size: 11px; color: rgb(160, 160, 138); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0; padding: 0; -unity-text-align: middle-left; }
+.music-replace-row .music-button { flex-shrink: 0; height: 32px; min-height: 32px; padding: 0 14px; border-radius: 16px; }

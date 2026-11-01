@@ -1261,12 +1261,38 @@ public static class RailwayMusicTerminalReview
                     }
                     MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
                     {
+                        // Replacing a track puts the new one in the old one's place everywhere, and only removes the old one where the new one is already kept.
+                        var st = MusicLibrarySession.State;
+                        var favSave = new List<string>(st.favorites); var queueSave = new List<string>(st.queue); var recentSave = new List<string>(st.recent);
+                        var listSave = new List<List<string>>(); foreach (var pl in st.playlists) listSave.Add(new List<string>(pl.tracks));
+                        var probe = new MusicUserPlaylist { title = "replace-probe", tracks = new List<string> { "zz_b", "zz_old", "zz_new" } }; st.playlists.Add(probe);
+                        st.favorites.Clear(); st.favorites.AddRange(new[] { "zz_old", "zz_b" }); st.queue.Clear(); st.queue.Add("zz_old"); st.recent.Clear(); st.recent.AddRange(new[] { "zz_b", "zz_old" });
+                        int places = MusicLibrarySession.ReplaceTrack("zz_old", "zz_new");
+                        Assert(places == 4 && st.favorites[0] == "zz_new" && st.queue[0] == "zz_new" && st.recent[1] == "zz_new" && probe.tracks.Count == 2 && !probe.tracks.Contains("zz_old"), "Track replacement missed a place (" + places + ")");
+                        st.playlists.Remove(probe); st.favorites.Clear(); st.favorites.AddRange(favSave); st.queue.Clear(); st.queue.AddRange(queueSave); st.recent.Clear(); st.recent.AddRange(recentSave);
+                        for (int n = 0; n < st.playlists.Count && n < listSave.Count; n++) { st.playlists[n].tracks.Clear(); st.playlists[n].tracks.AddRange(listSave[n]); }
+                        Debug.Log("MUSIC_REPLACE_OK: a replaced track is swapped in favourites, queue, recent and playlists, and not duplicated");
+                    }
+                    {
                         string filterSample = "[00:00.00]作词：张三\n[00:01.00]作曲 : 李四\n[00:02.00]Produced by Foo\n[00:03.00]真正的歌词一行\n[00:08.00]Another real line: not a credit\n[00:10.00]带 remix 的一行\n[00:12.00]未经许可，不得翻唱";
                         var filtered = MusicTimedText.Parse(filterSample, ".lrc"); int removed = MusicLyricFilter.Apply(filtered, true, "remix");
                         Assert(removed == 5 && filtered.lines.Count == 2 && filtered.lines[0].text == "真正的歌词一行", "Lyric filter removed " + removed + " lines, left: " + string.Join(" / ", filtered.lines.ConvertAll(l => l.text)));
                         var untouched = MusicTimedText.Parse(filterSample, ".lrc"); Assert(MusicLyricFilter.Apply(untouched, false, "remix") == 0 && untouched.lines.Count == 7, "Lyric filter acted while switched off");
                         Debug.Log("MUSIC_LYRIC_FILTER_OK: credits, notices and custom words removed (" + removed + " of 7), real lines kept, off switch respected");
                     }
+                    {
+                        // The replacement sheet for an online track: register one, open the sheet and wait for candidates from the other sources.
+                        var probeTrack = MusicLibrarySession.RegisterRemote(new NeteaseLocalBridge.RemoteTrack { id = "1901371647", title = "孤勇者", artist = "陈奕迅", durationMs = 256000 }, "netease");
+                        Assert(probeTrack != null, "Could not register the probe online track");
+                        if (probeTrack != null) { RailwayMusicTerminalView.OpenReplacementFor(probeTrack.id); chartDeadline = EditorApplication.timeSinceStartup + 25; }
+                    }
+                    break;
+                case 41:
+                    if (root.Query(className: "music-replace-row").ToList().Count == 0 && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 42:
+                    Debug.Log("MUSIC_REPLACE_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
+                    Capture("21-replace");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

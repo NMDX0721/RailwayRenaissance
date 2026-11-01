@@ -361,6 +361,35 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             list.tracks.Add(id); Commit(); return true;
         }
         public static void Commit() { Save(); Changed?.Invoke(); }
+
+        /// <summary>True when playing this track failed during this run.</summary>
+        public static bool HasFailed(string id) => failed.Contains(id);
+
+        /// <summary>
+        /// Puts <paramref name="newId"/> in the place of <paramref name="oldId"/> in the favourites, the queue, the recent list and every playlist.
+        /// Where the new track is already in a list, the old one is only removed. Returns how many places held the old track.
+        /// </summary>
+        public static int ReplaceTrack(string oldId, string newId)
+        {
+            Ensure();
+            if (string.IsNullOrEmpty(oldId) || string.IsNullOrEmpty(newId) || oldId == newId) return 0;
+            int places = 0;
+            void Swap(List<string> list)
+            {
+                if (list == null) return;
+                for (int i = list.Count - 1; i >= 0; i--)
+                {
+                    if (list[i] != oldId) continue;
+                    places++;
+                    if (list.Contains(newId)) list.RemoveAt(i); else list[i] = newId;
+                }
+            }
+            Swap(state.favorites); Swap(state.queue); Swap(state.recent);
+            foreach (var playlist in state.playlists) Swap(playlist.tracks);
+            failed.Remove(oldId);
+            Commit();
+            return places;
+        }
         public static void Save()
         {
             if (state == null) return;
