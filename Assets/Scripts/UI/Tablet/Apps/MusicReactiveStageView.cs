@@ -70,6 +70,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return Color.HSVToRGB(Mathf.Repeat(h + shift, 1), Mathf.Clamp(s, .35f, .78f), Mathf.Clamp(v, .4f, .72f));
         }
 
+        /// <summary>The app accent for a cover: its strongest colour, lifted and saturated enough to read on the dark interface.</summary>
+        public static Color AccentFor(Texture2D cover)
+        {
+            Color.RGBToHSV(Palette(cover)[0], out float h, out float s, out float v);
+            return Color.HSVToRGB(h, Mathf.Clamp(s, .42f, .8f), Mathf.Clamp(v + .2f, .78f, .95f));
+        }
+
         static Color[] Palette(Texture2D cover)
         {
             if (cover == null) return new[] { new Color(.55f, .4f, .2f), new Color(.2f, .4f, .4f) };

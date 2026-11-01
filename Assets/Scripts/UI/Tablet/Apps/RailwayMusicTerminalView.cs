@@ -155,6 +155,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             RenderDrawer(); Update();
             if (renderedPage != pageKey) AnimateEntry(content);
             renderedPage = pageKey;
+            root.schedule.Execute(ApplyAccent);
             var next = content.Q<ScrollView>("music-track-list");
             next?.schedule.Execute(() => { if (next.panel != null) next.scrollOffset = position; });
             var nextDrawer = drawer.Q<ScrollView>();
@@ -1284,6 +1285,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 vuMeter.UpdateLevels(lEnergy, rEnergy, Time.unscaledDeltaTime);
             }
             string id = TabletMusicAppUI.tabletCurrentTrackId;
+            UpdateTheme(id);
             playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
             { var nowTrack = MusicLibrarySession.Find(id); string line = nowTrack == null ? "" : string.IsNullOrEmpty(nowTrack.artist) ? nowTrack.category : nowTrack.artist; if (playingArtist.text != line) playingArtist.text = line; }
             if (playerCover != null && playerCoverId != id)
@@ -1293,7 +1295,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (currentTrack != null)
                 {
                     playerCover.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(currentTrack.id, currentTrack.category));
-                    string shown = id; MusicAlbumArtResolver.LoadRemoteCover(currentTrack.id, cover => { if (playerCover.panel != null && playerCoverId == shown) playerCover.style.backgroundImage = new StyleBackground(cover); });
+                    string shown = id; MusicAlbumArtResolver.LoadRemoteCover(currentTrack.id, cover => { if (playerCover.panel != null && playerCoverId == shown) { playerCover.style.backgroundImage = new StyleBackground(cover); themeId = "<reload>"; } });
                 }
             }
             MusicTerminalIcons.Apply(play, MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);
