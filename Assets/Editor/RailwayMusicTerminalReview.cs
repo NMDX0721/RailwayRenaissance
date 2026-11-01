@@ -692,6 +692,10 @@ public static class RailwayMusicTerminalReview
                     var stageHost = root.Q<MusicStageLyrics>("music-stage-lyrics");
                     if (lumiSeq == 0)
                     {
+                        // The left column shows the song's information, not just folded settings.
+                        var infoRows = root.Query(className: "music-lyrics-info-row").ToList();
+                        Assert(infoRows.Count >= 2, "The lyrics page's left column shows no song information (" + infoRows.Count + " rows)");
+                        Assert(root.Q<Button>("music-lyrics-record") != null, "The lyrics page has no link to the record archive");
                         Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
                         var fontProbe = stageHost.Q(className: "music-stage-word-text");
                         var probeFont = fontProbe?.resolvedStyle.unityFontDefinition.font;
@@ -718,7 +722,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 14 + StressStyles.Length)
+                    if (styleStep < 16 + StressStyles.Length)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -870,7 +874,22 @@ public static class RailwayMusicTerminalReview
                             MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
                             Debug.Log("MUSIC_STAGE_CAPPELLA_OK: chat rows split between two senders, no overlap, text fades in, timestamps after the line");
                         }
-                        else if (styleStep >= 13)
+                        else if (styleStep == 14 + StressStyles.Length)
+                        {
+                            // The link to the record archive: the button opens the archive sheet.
+                            Submit(root.Q<Button>("music-lyrics-record"));
+                        }
+                        else if (styleStep == 15 + StressStyles.Length)
+                        {
+                            // The sheet is a modal and replaces the lyrics page by design; close it and reopen the lyrics for the steps that follow.
+                            Assert(root.Q(className: "music-record-sheet") != null, "The record archive did not open from the lyrics page");
+                            Assert(root.Q(className: "music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            Capture("08-record-from-lyrics");
+                            Submit(root.Q(className: "music-modal-header").Q<Button>());
+                            Submit(root.Q<Button>("music-lyrics"));
+                            Debug.Log("MUSIC_LYRICS_INFO_OK: song information in the left column, link opens the record archive, lyrics page reopens");
+                        }
+                        else if (styleStep >= 13 && styleStep <= 13 + StressStyles.Length)
                         {
                             // Stress: harder lyrics (an eight-word English line, a 24-character Chinese line) on every style, measured at the end of
                             // each line, when every word has been sung and takes the most room. Issues are collected and reported together.

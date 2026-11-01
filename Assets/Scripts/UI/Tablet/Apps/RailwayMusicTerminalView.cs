@@ -1297,6 +1297,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             fill.style.width = Length.Percent(Mathf.Clamp01(value) * 100);
         }
         public static void UpdatePlayback() => current?.Update();
+        /// <summary>Open a track's record archive sheet. The sheet is a modal, so it replaces whatever page overlay (such as the lyrics page) is open.</summary>
+        public static void OpenRecord(string id) => current?.ShowDetail(id);
         public static bool ShowToast(string message)
         {
             if (current?.toast == null || current.root.panel == null) return false;

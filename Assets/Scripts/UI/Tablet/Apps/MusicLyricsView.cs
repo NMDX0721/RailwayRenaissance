@@ -117,7 +117,29 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(art, track?.title ?? "尚未选择曲目", "music-detail-title");
             if (track != null && !string.IsNullOrEmpty(track.titleTranslation)) Text(art, track.titleTranslation, "music-muted");
             Text(art, "沿线声音档案 / RAILWAY SOUND", "music-eyebrow");
+            // Song information, from the same track data as the record archive: who sings it, the album, where it comes from and how long it is;
+            // a soundtrack also shows how it is unlocked and its line of atmosphere. The settings below stay folded away.
+            var info = Box(art, "music-lyrics-info");
+            void InfoRow(string key, string value)
+            {
+                if (string.IsNullOrWhiteSpace(value)) return;
+                var row = Box(info, "music-lyrics-info-row"); Text(row, key, "music-lyrics-info-key"); Text(row, value, "music-lyrics-info-value");
+            }
+            if (track != null)
+            {
+                InfoRow("歌手", track.artist); InfoRow("专辑", track.album); InfoRow("来源", track.category);
+                float length = track.duration > 0 ? track.duration : TabletMusicAppUI.tabletCurrentTrackId == track.id && TabletMusicAppUI.tabletCurrentClip != null ? TabletMusicAppUI.tabletCurrentClip.length : 0;
+                InfoRow("时长", length > 0 ? TabletMusicAppUI.FormatAudioTime(length) : null);
+                if (track.local) InfoRow("文件", track.fileName);
+                if (!track.local && string.IsNullOrEmpty(track.provider))
+                {
+                    InfoRow("解锁", track.condition);
+                    if (!string.IsNullOrEmpty(track.description)) Text(info, track.description, "music-lyrics-info-note");
+                }
+            }
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
+            var record = Action(art, "唱片档案", () => RailwayMusicTerminalView.OpenRecord(trackId), "music-lyrics-record");
+            record.tooltip = "打开这首曲目的完整唱片档案（会离开歌词页，关闭后回到曲库）";
             var more = new Foldout { text = "设置  +", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
             more.RegisterValueChangedCallback(e => { if (e.target == more) more.text = e.newValue ? "设置  -" : "设置  +"; });
             var imports = Box(more, "music-lyrics-actions");

@@ -561,6 +561,12 @@
 .music-stage-glow { position: absolute; left: 0; top: 0; }
 /* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
 .music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; padding: 36px 0 28px; }
+/* Lyrics page, left column: the song's information rows (same data as the record archive). */
+.music-lyrics-info { margin: 6px 0 4px; }
+.music-lyrics-info-row { flex-direction: row; margin-bottom: 3px; }
+.music-lyrics-info-key { width: 44px; flex-shrink: 0; color: rgb(176, 168, 140); font-size: 12px; margin: 0; padding: 0; }
+.music-lyrics-info-value { flex-grow: 1; flex-shrink: 1; color: rgb(228, 220, 190); font-size: 13px; white-space: normal; margin: 0; padding: 0; }
+.music-lyrics-info-note { color: rgb(190, 184, 156); font-size: 12px; white-space: normal; margin: 4px 0 0 0; padding: 0; }
 /* Cappella style: a chat. Rows hold an avatar and a bubble, mirrored for the right-hand sender; the bubble widens as characters appear. */
 .music-stage-cappella { align-self: stretch; align-items: center; justify-content: flex-start; padding-top: 12px; }
 .music-stage-cappella-list { align-self: stretch; max-width: 880px; padding: 0 24px; justify-content: flex-start; }
