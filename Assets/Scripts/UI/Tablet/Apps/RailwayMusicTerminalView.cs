@@ -120,7 +120,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
             // The sidebar runs the full height of the window; the player card floats under the content only.
-            var column = Box(body, "music-column"); playerHost = column;
+            var column = Box(body, "music-column");
             var main = Box(column, "music-main"); mainArea = main; bodyArea = body;
             content = Box(main, "music-content");
             drawerScrim = Box(body, "music-queue-scrim", "music-queue-scrim");

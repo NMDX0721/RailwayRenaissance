@@ -908,3 +908,14 @@
 .music-short.music-overlay-queue .music-drawer, .music-short.music-compact .music-drawer { bottom: 96px; }
 .music-overlay-queue .music-drawer, .music-compact .music-drawer { bottom: 128px; }
 .music-short.music-overlay-queue .music-drawer, .music-short.music-compact .music-drawer { bottom: 124px; }
+
+/* The player card spans the whole window and floats over everything; the sidebar still runs down to the window's bottom edge, with room left
+   at its end so nothing in it hides behind the card. */
+.music-player { left: 14px; right: 14px; bottom: 12px; }
+.music-navigation { padding-bottom: 112px; }
+.music-nav-collapsed .music-navigation { padding-bottom: 112px; }
+.music-drawer { padding-bottom: 112px; }
+.music-overlay-queue .music-drawer, .music-compact .music-drawer { padding-bottom: 12px; }
+.music-navigation { overflow: hidden; }
+.music-navigation .music-playlists { flex-grow: 1; flex-shrink: 1; min-height: 0; }
+.music-navigation .music-new-playlist, .music-navigation .music-nav-note { flex-shrink: 0; }
