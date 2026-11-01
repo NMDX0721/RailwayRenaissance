@@ -550,6 +550,10 @@ namespace RailwayRenaissance.Editor
                         TabletSetupWizard.Show(root, TabletSetupWizard.Flow.Activation, true,
                             reg => { wizardRegistered = reg; wizardDone = true; },
                             (t, body) => wizardSms = body);
+                        // 第一页允许跳过时，返回键位置是“取消”，系统返回会取消向导而不是落到下面的应用
+                        Assert(TabletSetupWizard.Active != null, "Wizard must register itself as active");
+                        var cancelBtn = root.Q<Button>("wizard-back");
+                        Assert(cancelBtn != null && cancelBtn.text == "取消" && cancelBtn.resolvedStyle.visibility == Visibility.Visible, "First page must offer a cancel button when skipping is allowed");
                         Capture("21_wizard_welcome");
                         stage++;
                         frame = Time.frameCount;

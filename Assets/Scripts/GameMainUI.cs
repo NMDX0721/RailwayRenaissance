@@ -2581,6 +2581,9 @@ public class GameMainUI : MonoBehaviour
     private void RequestSystemBack()
     {
         if (tabletShellState.ClosePanel()) return;
+        // 注册向导盖在平板上时，返回键只作用于向导（退一页或取消），不落到下面的应用
+        var setupWizard = RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Active;
+        if (setupWizard != null && setupWizard.HandleBack()) return;
         if (CancelTabletRebind()) return;
         if (recentTasksOverlay != null && recentTasksOverlay.style.display == DisplayStyle.Flex)
         {

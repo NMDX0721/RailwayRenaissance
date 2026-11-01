@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-01 平板账号系统（本地仿真，无网络）：`UI/Tablet/Account/AccountService.cs` 管资料（PlayerPrefs `XiaomiAccountProfile_v1`、`TabletSetupDone_v1`）、加盐哈希密码、内存短信验证码；`UI/Tablet/Account/TabletSetupWizard.cs` 是开机激活/注册向导（`Flow.Activation` 与 `Flow.RegisterOnly`，`Active`/`HandleBack` 供系统返回使用）；`UI/Tablet/Apps/TabletSettingsAppUI.Account.cs` 是设置里的账号中心（改昵称、头像、改密码、短信重置）。剧情接入：`Resources/Scripts/prologue_02_day0.json` 的 `special` 条目 `TABLET_SETUP` 由 `VNManager.ShowTabletSetup` 处理，向导打开期间 `tabletSetupOpen` 拦截点击、键盘和自动播放。`GameMainUI.OverlayHost` 是向导等全屏覆盖层的宿主。见 [平板 HyperOS 说明](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)。
+
 2026-10-28：`NotesTabletTaskLifecycle` 在任务回收、关闭时调用 `TabletNotesAppUI.ReleaseTaskView` 解除静态控件引用；任务快照仍负责草稿恢复。
 
 2026-10-28 PR #7：`GameMainUI` 子页返回移除完整窗口，批量关闭清理任务引用，壳层模糊重采样在隐藏后等待帧结束；详见 `TABLET_SYSTEM_SHELL.md`。

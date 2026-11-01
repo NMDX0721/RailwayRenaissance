@@ -64,15 +64,29 @@ namespace RailwayRenaissance.UI.Tablet.Account
         /// <param name="allowSkip">是否显示“暂不登录”。剧情里拆封平板这一幕不允许跳过。</param>
         /// <param name="onFinished">参数 true 表示已创建账号，false 表示暂不登录。</param>
         /// <param name="smsSink">验证码短信的额外去处（如平板通知中心），可为空。</param>
+        /// <summary>当前挂着的向导（供系统返回键/Esc 使用）。</summary>
+        public static TabletSetupWizard Active { get; private set; }
+
         public static TabletSetupWizard Show(VisualElement host, Flow flow, bool allowSkip, Action<bool> onFinished, Action<string, string> smsSink = null)
         {
             var wizard = new TabletSetupWizard(flow, allowSkip, onFinished, smsSink);
             wizard.Build(host);
+            Active = wizard;
             return wizard;
+        }
+
+        /// <summary>系统返回：不是第一页就退一页；第一页且允许跳过则取消向导。返回 true 表示已处理（向导挂着时返回键不应落到下面的应用）。</summary>
+        public bool HandleBack()
+        {
+            if (_finished) return false;
+            if (_index > 0 && CurrentStep != "done") { Go(_index - 1); return true; }
+            if (_index == 0 && _allowSkip) Finish(false);
+            return true;
         }
 
         public void Close()
         {
+            if (Active == this) Active = null;
             _timer?.Pause();
             _timer = null;
             if (_root != null && _root.parent != null) _root.RemoveFromHierarchy();
@@ -115,7 +129,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
             top.style.flexShrink = 0;
             _root.Add(top);
 
-            _backBtn = MakeTextButton("‹ 返回", () => Go(_index - 1));
+            _backBtn = MakeTextButton("‹ 返回", () => HandleBack());
             _backBtn.name = "wizard-back";
             top.Add(_backBtn);
 
@@ -164,7 +178,9 @@ namespace RailwayRenaissance.UI.Tablet.Account
             if (index >= _steps.Count) { Finish(AccountService.IsRegistered); return; }
             _index = index;
             _body.Clear();
-            _backBtn.style.visibility = (_index == 0 || CurrentStep == "done") ? Visibility.Hidden : Visibility.Visible;
+            // 第一页：允许跳过（设置里进入注册）就把返回键变成“取消”，否则隐藏
+            _backBtn.text = _index == 0 ? "取消" : "‹ 返回";
+            _backBtn.style.visibility = (CurrentStep == "done" || (_index == 0 && !_allowSkip)) ? Visibility.Hidden : Visibility.Visible;
             RefreshDots();
             switch (CurrentStep)
             {

@@ -374,9 +374,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             win.Add(err);
             win.Add(AccountPrimaryButton("重置密码", () =>
             {
-                string e = AccountService.VerifyCode(p.phone, code.value);
+                // 先校验新密码与确认，再消耗验证码：否则密码有误时验证码已作废，改正后还得重新获取
+                string e = AccountService.ValidatePassword(newPw.value, p.phone);
                 if (e != null) { err.text = e; return; }
                 if (newPw.value != confirm.value) { err.text = "两次输入的新密码不一致"; return; }
+                e = AccountService.VerifyCode(p.phone, code.value);
+                if (e != null) { err.text = e; return; }
                 e = AccountService.ResetPassword(newPw.value);
                 if (e != null) { err.text = e; return; }
                 PostSystemNotice("小米账号", "你的账号密码已通过短信验证重置。");
