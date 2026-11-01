@@ -41,6 +41,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void CycleSearchHint(bool immediate)
         {
             if (searchHint == null || (searchHint.panel == null && !immediate)) return;
+            searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex;   // also when the text was set without a change event
             var words = HintWords(); hintIndex = (hintIndex + 1) % words.Count;
             string next = words[immediate ? 0 : hintIndex];
             if (next == hintCurrent) return;

@@ -135,6 +135,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void Refresh()
         {
             if (root == null) return;
+            if (searchHint != null) searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex;
             string pageKey = page + ":" + selected?.id + ":" + query;
             var oldScroll = content.Q<ScrollView>("music-track-list");
             var position = pageKey == renderedPage ? oldScroll != null && oldScroll.contentViewport.layout.height > 0 ? oldScroll.scrollOffset : pendingScroll : Vector2.zero;

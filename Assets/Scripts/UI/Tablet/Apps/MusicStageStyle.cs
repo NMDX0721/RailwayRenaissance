@@ -86,6 +86,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             new Entry { id = "claddagh", title = "回环", create = () => new MusicStageCladdagh() },
             new Entry { id = "cadenza", title = "心象", create = () => new MusicStageCadenza() },
             new Entry { id = "cappella", title = "清唱", create = () => new MusicStageCappella() },
+            new Entry { id = "pendolo", title = "摆线", create = () => new MusicStagePendolo() },
             new Entry { id = "still", title = "Still", create = () => new MusicStageStill() }
         };
 

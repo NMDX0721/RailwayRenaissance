@@ -831,3 +831,63 @@
 .music-lyrics-footer .music-primary { border-radius: 22px; background-color: rgb(205, 176, 112); }
 .music-lyrics-help { margin: 6px 0 0 6px; }
 .music-lyrics-surface .music-horizontal-slider .unity-base-slider__tracker { border-radius: 2px; }
+
+/* Pendolo: lines on one large arc. */
+.music-stage-pendolo { align-self: stretch; align-items: center; justify-content: center; }
+.music-stage-pendolo-wheel { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+.music-stage-pendolo-glyph { position: absolute; left: -70px; width: 140px; align-items: center; justify-content: center; }
+.music-stage-pendolo-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-text-align: middle-center; -unity-font-style: bold; margin: 0; padding: 0; }
+.music-stage-pendolo-translation { position: absolute; bottom: 4px; left: 0; right: 0; font-size: 20px; color: rgb(196, 204, 170); opacity: 0.85; white-space: normal; -unity-text-align: middle-center; }
+
+/* ===== Cloud page, scan panel, help sheet and small pop-ups: the same shapes and colours as the pages before them ===== */
+.music-channel-selector { margin: 4px 0 12px 2px; }
+.music-channel-selector .music-button { height: 34px; min-height: 34px; margin: 0 8px 6px 0; padding: 0 16px; border-radius: 17px; font-size: 13px; background-color: rgb(44, 48, 41); border-color: rgb(70, 74, 61); }
+.music-channel-selector .music-button .music-vector-icon { display: none; }
+.music-channel-selector .music-button.is-active { background-color: rgb(205, 176, 112); border-color: rgb(205, 176, 112); color: rgb(30, 33, 26); }
+.music-source-card { border-radius: 16px; background-color: rgb(40, 45, 38); border-color: rgb(62, 67, 54); padding: 16px; }
+.music-source-title { font-size: 18px; -unity-font-style: bold; color: rgb(244, 237, 214); }
+.music-source-card .music-button { border-radius: 18px; height: 34px; min-height: 34px; }
+.music-source-badge { font-size: 12px; }
+.music-cloud-search-bar TextField { min-height: 40px; }
+.music-cloud-search-bar .unity-text-field__input { border-radius: 20px; padding-left: 16px; padding-right: 16px; }
+.music-scan-panel { border-radius: 16px; padding: 10px 16px; background-color: rgb(37, 42, 35); border-color: rgb(62, 67, 54); }
+.music-scan-actions .music-button { border-radius: 16px; }
+
+.music-help-sheet { width: 640px; }
+.music-help-heading { font-size: 12px; color: rgb(176, 153, 106); letter-spacing: 1px; margin: 18px 0 8px; }
+.music-help-key { border-radius: 8px; border-width: 0; background-color: rgb(52, 58, 47); color: rgb(236, 205, 140); }
+.music-help-note { border-top-color: rgb(62, 67, 54); }
+
+.music-popover { width: 270px; padding: 8px; border-radius: 18px; background-color: rgba(36, 41, 34, 0.98); border-color: rgb(78, 82, 62); }
+.music-popover-title { color: rgb(176, 153, 106); padding: 8px 12px 6px; }
+.music-popover .music-button { height: 38px; min-height: 38px; border-radius: 12px; justify-content: flex-start; padding: 0 12px; background-color: rgba(0, 0, 0, 0); border-width: 0; }
+.music-popover .music-button:hover, .music-popover .music-button:focus { background-color: rgb(52, 57, 46); }
+.music-popover .music-button.is-active { color: rgb(236, 205, 140); }
+.music-toast { border-radius: 14px; background-color: rgb(42, 48, 40); border-color: rgb(78, 82, 62); color: rgb(238, 230, 206); left: 24%; right: 24%; }
+.music-now-toast { border-radius: 16px; }
+.music-modal .music-button { border-radius: 14px; }
+.music-modal TextField { min-height: 40px; }
+.music-modal .unity-text-field__input { border-radius: 12px; }
+/* The wide sidebar's rows have no left marker line; with the rounded corners it showed as small slanted ticks. */
+.music-navigation .music-button, .music-navigation .is-active { border-left-width: 0; }
+
+/* ===== Scroll bars: slim, floating over the content's right padding, inset from the window edge; no dark gutter ===== */
+.music-terminal .unity-scroller--vertical { position: absolute; right: 4px; top: 6px; bottom: 6px; width: 8px; min-width: 8px; margin: 0; padding: 0; background-color: rgba(0, 0, 0, 0); border-left-width: 0; border-radius: 4px; }
+.music-terminal .unity-scroller--vertical .unity-base-slider__tracker { background-color: rgba(0, 0, 0, 0); width: 8px; margin-left: -4px; }
+.music-terminal .unity-scroller--vertical .unity-base-slider__dragger { width: 6px; min-width: 6px; margin-left: -3px; border-width: 0; border-radius: 3px; background-color: rgba(205, 176, 112, 0.35); }
+.music-terminal .unity-scroller--vertical:hover .unity-base-slider__dragger { background-color: rgba(205, 176, 112, 0.75); border-width: 0; }
+.music-terminal .unity-scroll-view { overflow: hidden; }
+
+/* ===== Feel: one set of states for everything you can press ===== */
+.music-terminal .music-button { transition-property: background-color, border-color, scale, opacity; transition-duration: 120ms; transition-timing-function: ease-out; }
+.music-terminal .music-button:active { scale: 0.96 0.96; }
+.music-terminal .music-button:focus { border-color: rgb(213, 181, 112); }
+.music-terminal .music-button:disabled { opacity: 0.4; }
+.music-big-card, .music-collection-card, .music-cover-tile, .music-suggest-row, .music-suggest-hot, .music-queue-item, .music-track-row { transition-property: background-color, translate, scale, border-color; transition-duration: 140ms; transition-timing-function: ease-out; }
+.music-big-card:active, .music-collection-card:active, .music-cover-tile:active { scale: 0.98 0.98; }
+.music-track-row:active, .music-suggest-row:active, .music-suggest-hot:active { background-color: rgb(58, 64, 51); }
+.music-home-chip:hover { background-color: rgb(58, 64, 51); }
+.music-home-chip.is-active:hover { background-color: rgb(220, 192, 128); }
+.music-nav-collapsed .music-navigation .music-button:hover { background-color: rgba(205, 176, 112, 0.12); }
+.music-reduce-motion .music-button, .music-reduce-motion .music-big-card, .music-reduce-motion .music-collection-card, .music-reduce-motion .music-cover-tile,
+.music-reduce-motion .music-track-row, .music-reduce-motion .music-queue-item, .music-reduce-motion .music-suggest-row, .music-reduce-motion .music-suggest-hot { transition-duration: 0s; scale: 1 1; translate: 0 0; }

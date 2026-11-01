@@ -45,11 +45,11 @@ public static class RailwayMusicTerminalReview
     static int stageMotionFrame, lumiSeq, styleStep, stressIndex;
     static readonly List<string> stressIssues = new List<string>();
     // Every style on both stress lines (measured at the end of each line), and Luminous again at the wildest intensity.
-    static readonly string[] StressStyles = { "luminous", "luminous", "luminous", "luminous", "partita", "partita", "tilt", "tilt", "cadenza", "cadenza", "claddagh", "claddagh", "cappella", "cappella" };
-    static readonly int[] StressIntensity = { 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    static readonly string[] StressStyles = { "luminous", "luminous", "luminous", "luminous", "partita", "partita", "tilt", "tilt", "cadenza", "cadenza", "claddagh", "claddagh", "cappella", "cappella", "pendolo", "pendolo" };
+    static readonly int[] StressIntensity = { 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     // Shortly before each line ends (3.4 s and 9.4 s): every word has started, and the line is still the current one. The lyric clock is the playback
     // position plus the song's subtitle offset (+0.1 s left by an earlier step), so these are 0.3 s ahead of the line end, not 0.1 s.
-    static readonly float[] StressTimes = { 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f };
+    static readonly float[] StressTimes = { 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f };
     static readonly float[] lumiPose = new float[10], lumiLast = new float[10];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
@@ -353,7 +353,7 @@ public static class RailwayMusicTerminalReview
         string name = StressStyles[index] + "/intensity " + StressIntensity[index] + "/" + (StressTimes[index] < 5f ? "English" : "Chinese");
         // The lines are the current ones only just before they end; seeing nothing means the lyrics did not load, which is itself a failure.
         Rect stage = host.worldBound; const float slack = 8f;
-        string[] charClasses = { "music-stage-word-text", "music-stage-tilt-char", "music-stage-claddagh-char", "music-stage-cappella-char" };
+        string[] charClasses = { "music-stage-word-text", "music-stage-tilt-char", "music-stage-claddagh-char", "music-stage-cappella-char", "music-stage-pendolo-char" };
         int seen = 0, outside = 0; string worst = "";
         foreach (string cls in charClasses)
             foreach (var label in host.Query<Label>(className: cls).ToList())
@@ -371,7 +371,7 @@ public static class RailwayMusicTerminalReview
                 " position=" + TabletMusicAppUI.CurrentPosition.ToString("F2") + " docLines=" + doc.lines.Count + " activeAt=" + doc.Active(TabletMusicAppUI.CurrentPosition) + " labels=" + host.Query<Label>().ToList().Count);
         }
         if (outside > 0) stressIssues.Add(name + ": " + outside + " of " + seen + " characters outside the stage " + stage + " (e.g. " + worst + ")");
-        if (StressStyles[index] == "claddagh" || StressStyles[index] == "cappella") return;
+        if (StressStyles[index] == "claddagh" || StressStyles[index] == "cappella" || StressStyles[index] == "pendolo") return;
         string wordClass = StressStyles[index] == "tilt" ? "music-stage-tilt-row" : "music-stage-word";
         var words = host.Query(className: wordClass).ToList().FindAll(w => EffectiveOpacity(w, host) >= .3f);
         Rect TextRect(VisualElement word)
