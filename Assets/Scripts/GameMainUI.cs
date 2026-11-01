@@ -621,6 +621,7 @@ public class GameMainUI : MonoBehaviour
     public RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland SuperIsland { get; private set; }
     private VisualElement statusBar;
     private VisualElement statusSpacer;
+    private bool statusScrimShown = true;
     private Label statusClock;
     private Label statusBatt;
     private RailwayRenaissance.UI.Tablet.TabletIconElement statusQuiet;
@@ -676,6 +677,13 @@ public class GameMainUI : MonoBehaviour
         bool visible = unlocked && desktop.style.display == DisplayStyle.Flex;
         statusBar.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         statusBar.style.opacity = desktop.resolvedStyle.opacity;
+        // 渐变暗影只用于桌面；任何全屏应用（含自建窗口的音乐）自带顶栏底色，状态栏不再分层
+        bool scrimWanted = activeTabletTask == null;
+        if (scrimWanted != statusScrimShown)
+        {
+            statusScrimShown = scrimWanted;
+            statusBar.style.backgroundImage = scrimWanted ? Background.FromTexture2D(BuildStatusBarScrim()) : StyleKeyword.None;
+        }
         var shellRoot = tabletShellView?.RootElement;
         if (visible && shellRoot != null && shellRoot.parent == root && statusBar.parent == root &&
             root.IndexOf(shellRoot) - root.IndexOf(statusBar) != 1)
@@ -686,7 +694,6 @@ public class GameMainUI : MonoBehaviour
     {
         if (statusBar == null) return;
         var ink = lightApp ? new Color(0.10f, 0.10f, 0.12f, 1f) : GlassText;
-        statusBar.style.backgroundImage = lightApp ? StyleKeyword.None : Background.FromTexture2D(BuildStatusBarScrim());
         statusBar.style.backgroundColor = Color.clear;
         if (statusClock != null) statusClock.style.color = ink;
         if (statusQuiet != null) statusQuiet.IconColor = ink;
