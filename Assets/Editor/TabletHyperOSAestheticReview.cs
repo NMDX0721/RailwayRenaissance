@@ -648,9 +648,25 @@ namespace RailwayRenaissance.Editor
                         string resetCode = AccountService.IssueCode(prof.phone);
                         Assert(AccountService.VerifyCode(prof.phone, resetCode) == null, "Reset code must verify");
                         Assert(AccountService.ResetPassword("Reset2055") == null && AccountService.VerifyPassword("Reset2055"), "Reset password failed");
-                        Teardown(true, "All stages completed successfully");
+                        Call("ReturnToTabletHome");
+                        stage++; frame = Time.frameCount;
                         break;
                     }
+
+                    // ---- 桌面文件夹：缩略图 + 展开态 ----
+                    case 32:
+                        Call("OpenRailwayFolder");
+                        Capture("32_folder_opened");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 33:
+                        Call("CloseRailwayFolder");
+                        Capture("33_home_folder_thumbnail");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 34:
+                        Teardown(true, "All stages completed successfully");
+                        break;
                 }
             }
             catch (Exception ex)

@@ -1419,41 +1419,29 @@ public class GameMainUI : MonoBehaviour
         cell.style.paddingBottom = 10;
         cell.pickingMode = PickingMode.Position;
 
-        // 文件夹外壳（半透明毛玻璃）
+        // 文件夹外壳：浅色半透明圆角方块，内含 3 列迷你图标（对照 HyperOS 桌面文件夹）
         var folderBox = new VisualElement();
         folderBox.style.width = 60; folderBox.style.height = 60;
         folderBox.style.flexShrink = 0;
-        folderBox.style.backgroundColor = new Color(0.18f, 0.24f, 0.35f, 0.72f);
-        folderBox.style.borderTopLeftRadius = 16; folderBox.style.borderTopRightRadius = 16;
-        folderBox.style.borderBottomLeftRadius = 16; folderBox.style.borderBottomRightRadius = 16;
-        folderBox.style.borderTopWidth = 1; folderBox.style.borderBottomWidth = 1;
-        folderBox.style.borderLeftWidth = 1; folderBox.style.borderRightWidth = 1;
-        folderBox.style.borderTopColor = GlassBorderSoft; folderBox.style.borderBottomColor = GlassBorderSoft;
-        folderBox.style.borderLeftColor = GlassBorderSoft; folderBox.style.borderRightColor = GlassBorderSoft;
+        folderBox.style.backgroundColor = new Color(1f, 1f, 1f, 0.42f);
+        folderBox.style.borderTopLeftRadius = 17; folderBox.style.borderTopRightRadius = 17;
+        folderBox.style.borderBottomLeftRadius = 17; folderBox.style.borderBottomRightRadius = 17;
         folderBox.style.flexDirection = FlexDirection.Row;
         folderBox.style.flexWrap = Wrap.Wrap;
-        folderBox.style.justifyContent = Justify.Center;
-        folderBox.style.alignItems = Align.Center;
-        folderBox.style.paddingLeft = 4; folderBox.style.paddingRight = 4;
-        folderBox.style.paddingTop = 4; folderBox.style.paddingBottom = 4;
+        folderBox.style.alignContent = Align.FlexStart;
+        folderBox.style.paddingLeft = 6; folderBox.style.paddingRight = 6;
+        folderBox.style.paddingTop = 6; folderBox.style.paddingBottom = 6;
+        folderBox.pickingMode = PickingMode.Ignore;
         cell.Add(folderBox);
 
-        // 2×2 缩略：用上下两行明确排布，不依赖自动换行
-        folderBox.style.flexDirection = FlexDirection.Column;
-        folderBox.style.flexWrap = Wrap.NoWrap;
         string[] miniIcons = { "归途", "媒姬百科", "音乐", "RDA" };
-        for (int row = 0; row < 2; row++)
+        foreach (var mini in miniIcons)
         {
-            var rowBox = new VisualElement();
-            rowBox.style.flexDirection = FlexDirection.Row;
-            rowBox.style.flexShrink = 0;
-            for (int col = 0; col < 2; col++)
-            {
-                var ml = BuildIconTile(miniIcons[row * 2 + col], 20f, 6f, 11);
-                ml.style.marginLeft = 2; ml.style.marginRight = 2; ml.style.marginTop = 2; ml.style.marginBottom = 2;
-                rowBox.Add(ml);
-            }
-            folderBox.Add(rowBox);
+            var slot = new VisualElement { pickingMode = PickingMode.Ignore };
+            slot.style.width = 16; slot.style.height = 16; slot.style.flexShrink = 0;
+            slot.style.alignItems = Align.Center; slot.style.justifyContent = Justify.Center;
+            slot.Add(BuildIconTile(mini, 14f, 4f, 8));
+            folderBox.Add(slot);
         }
 
         var label = new Label("铁路");
@@ -1488,59 +1476,34 @@ public class GameMainUI : MonoBehaviour
                 CloseRailwayFolder();
         });
 
-        var card = new VisualElement();
-        card.style.width = 380; card.style.height = 280;
-        card.style.backgroundColor = SurfaceCard;
-        card.style.borderTopLeftRadius = 24; card.style.borderTopRightRadius = 24;
-        card.style.borderBottomLeftRadius = 24; card.style.borderBottomRightRadius = 24;
-        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
-        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
-        card.style.borderTopColor = BorderCard; card.style.borderBottomColor = BorderCard;
-        card.style.borderLeftColor = BorderCard; card.style.borderRightColor = BorderCard;
-        card.style.paddingLeft = 24; card.style.paddingRight = 24;
-        card.style.paddingTop = 18; card.style.paddingBottom = 20;
-        folderOverlay.Add(card);
-
-        var header = new VisualElement();
-        header.style.flexDirection = FlexDirection.Row;
-        header.style.justifyContent = Justify.SpaceBetween;
-        header.style.alignItems = Align.Center;
-        header.style.marginBottom = 16;
-        card.Add(header);
+        // 展开态：不再套卡片，标题与图标直接铺在压暗的桌面上（对照参考图的 AI 文件夹）
+        folderOverlay.style.backgroundColor = new Color(0.04f, 0.03f, 0.06f, 0.9f);
+        var block = new VisualElement();
+        block.style.width = 620;
+        block.style.alignItems = Align.FlexStart;
+        folderOverlay.Add(block);
 
         string savedFolderName = PlayerPrefs.GetString("TabletFolders", "铁路");
-        var titleRow = new VisualElement();
-        titleRow.style.flexDirection = FlexDirection.Row;
-        titleRow.style.alignItems = Align.Center;
-        header.Add(titleRow);
-
         var title = new Label(savedFolderName);
-        title.style.fontSize = 20;
-        title.style.color = InkPrimary;
-        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.fontSize = 44;
+        title.style.color = Color.white;
         title.style.unityFontDefinition = Fd();
-        titleRow.Add(title);
+        title.style.marginLeft = 10; title.style.marginBottom = 36;
+        block.Add(title);
 
-        var editBtn = new Button { text = "✎" };
-        editBtn.style.width = 24; editBtn.style.height = 24;
-        editBtn.style.fontSize = 12; editBtn.style.marginLeft = 8;
-        editBtn.style.backgroundColor = Color.clear; editBtn.style.color = InkSecondary;
-        titleRow.Add(editBtn);
-
+        // 点标题重命名（Xiaomi 桌面做法），失焦或回车保存
         var renameField = new TextField { value = savedFolderName };
-        renameField.style.width = 120; renameField.style.height = 28;
-        renameField.style.fontSize = 15; renameField.style.unityFontDefinition = Fd();
+        renameField.style.width = 260; renameField.style.height = 52;
+        renameField.style.fontSize = 30; renameField.style.unityFontDefinition = Fd();
+        renameField.style.marginLeft = 10; renameField.style.marginBottom = 36;
         renameField.style.display = DisplayStyle.None;
-        titleRow.Add(renameField);
-
-        editBtn.clicked += () =>
+        block.Add(renameField);
+        title.RegisterCallback<ClickEvent>(_ =>
         {
             title.style.display = DisplayStyle.None;
-            editBtn.style.display = DisplayStyle.None;
             renameField.style.display = DisplayStyle.Flex;
             renameField.Focus();
-        };
-
+        });
         renameField.RegisterCallback<FocusOutEvent>(_ =>
         {
             if (!string.IsNullOrEmpty(renameField.value.Trim()))
@@ -1551,39 +1514,24 @@ public class GameMainUI : MonoBehaviour
             }
             renameField.style.display = DisplayStyle.None;
             title.style.display = DisplayStyle.Flex;
-            editBtn.style.display = DisplayStyle.Flex;
         });
-
         renameField.RegisterCallback<KeyDownEvent>(evt =>
         {
-            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
-            {
-                renameField.Blur();
-            }
+            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter) renameField.Blur();
         });
-
-        var closeBtn = new Button(() => CloseRailwayFolder()) { text = "✕" };
-        closeBtn.style.width = 28; closeBtn.style.height = 28;
-        closeBtn.style.fontSize = 14;
-        closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        closeBtn.style.unityFontDefinition = Fd();
-        closeBtn.style.backgroundColor = new Color(0.92f, 0.93f, 0.95f, 1f);
-        closeBtn.style.color = InkSecondary;
-        closeBtn.style.borderTopLeftRadius = 14; closeBtn.style.borderTopRightRadius = 14;
-        closeBtn.style.borderBottomLeftRadius = 14; closeBtn.style.borderBottomRightRadius = 14;
-        header.Add(closeBtn);
 
         var grid = new VisualElement();
         grid.style.flexDirection = FlexDirection.Row;
         grid.style.flexWrap = Wrap.Wrap;
-        grid.style.justifyContent = Justify.SpaceAround;
-        card.Add(grid);
+        block.Add(grid);
 
         string[] folderApps = { "归途", "媒姬百科", "音乐", "RDA" };
         foreach (var fa in folderApps)
         {
             var item = BuildAppIcon(fa);
-            item.style.marginLeft = 10; item.style.marginRight = 10;
+            item.style.width = 140; item.style.height = 110;
+            item.style.marginLeft = 0; item.style.marginRight = 0;
+            item.Query<Label>().ForEach(l => l.style.color = Color.white);
             item.RegisterCallback<ClickEvent>(_ => CloseRailwayFolder());
             grid.Add(item);
         }
