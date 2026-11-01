@@ -43,7 +43,7 @@ public class GameMainUI : MonoBehaviour
     }
 
     /// <summary>状态栏电量徽标文字：参考 HyperOS 的圆角电量徽标，只显示百分比数字。</summary>
-    private static string FormatBattBadge(int pct) => pct < 0 ? "⚡" : pct.ToString();
+    private static string FormatBattBadge(int pct) => pct < 0 ? string.Empty : pct.ToString();
 
     private static string FormatBatt(int pct)
     {
@@ -624,6 +624,7 @@ public class GameMainUI : MonoBehaviour
     private bool statusScrimShown = true;
     private Label statusClock;
     private Label statusBatt;
+    private RailwayRenaissance.UI.Tablet.TabletIconElement statusBattBolt;
     private RailwayRenaissance.UI.Tablet.TabletIconElement statusQuiet;
     private Label statusDate;
     private static readonly string[] WeekdayShort = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
@@ -858,6 +859,11 @@ public class GameMainUI : MonoBehaviour
         batt.pickingMode = PickingMode.Ignore;
         statusBatt = batt;
         battBox.Add(batt);
+        // 台式机等没有电量数据时，徽标里画一个闪电（外接电源）
+        statusBattBolt = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Bolt, 14, Color.white) { pickingMode = PickingMode.Ignore };
+        statusBattBolt.style.position = Position.Absolute;
+        statusBattBolt.style.display = battPct < 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        battBox.Add(statusBattBolt);
 
         // ---- 底部小指示条（HyperOS 全面屏手势提示） ----
         var homeBar = new VisualElement { name = "tablet-home-indicator", pickingMode = PickingMode.Ignore };
@@ -2220,6 +2226,27 @@ public class GameMainUI : MonoBehaviour
         if (navHint != null) navHint.style.display = DisplayStyle.None;
     }
 
+    // 打开应用：从略小、半透明淡入到全尺寸（减少动效下直接显示）
+    private void PlayAppOpenAnimation(VisualElement layer)
+    {
+        int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(220);
+        layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity"), new StylePropertyName("scale") };
+        layer.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+        if (ms <= 0)
+        {
+            layer.style.opacity = 1f;
+            layer.style.scale = new Scale(Vector3.one);
+            return;
+        }
+        layer.style.opacity = 0f;
+        layer.style.scale = new Scale(new Vector3(0.94f, 0.94f, 1f));
+        layer.schedule.Execute(() =>
+        {
+            layer.style.opacity = 1f;
+            layer.style.scale = new Scale(Vector3.one);
+        }).ExecuteLater(16);
+    }
+
     private void ActivateTabletTask(TabletTaskSession task)
     {
         if (task == null) return;
@@ -2277,6 +2304,7 @@ public class GameMainUI : MonoBehaviour
         }
         task.LastActivated = ++tabletActivationSequence;
         task.Root.style.display = DisplayStyle.Flex;
+        PlayAppOpenAnimation(task.Root);
         NotifyTaskLifecycle(() => task.Lifecycle.OnForeground(task.Root));
         desktop.style.display = DisplayStyle.Flex;
         if (systemNavigationBar != null)
@@ -3449,6 +3477,7 @@ public class GameMainUI : MonoBehaviour
                 battTick = 0;
                 int pctNow = GetDeviceBatteryPercent();
                 statusBatt.text = FormatBattBadge(pctNow);
+                if (statusBattBolt != null) statusBattBolt.style.display = pctNow < 0 ? DisplayStyle.Flex : DisplayStyle.None;
                 if (statusBattFill != null) statusBattFill.style.width = Length.Percent(pctNow < 0 ? 100f : Mathf.Clamp(pctNow, 0, 100));
             }
             if (statusUnread != null && tabletShellState != null)
