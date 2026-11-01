@@ -792,7 +792,7 @@ public class GameMainUI : MonoBehaviour
         homeBar.style.bottom = 6;
         homeBar.style.left = Length.Percent(50);
         homeBar.style.translate = new Translate(Length.Percent(-50), 0);
-        homeBar.style.width = 150; homeBar.style.height = 5;
+        homeBar.style.width = Length.Percent(27); homeBar.style.height = 6;   // 对照参考图：约四分之一屏宽的长条
         homeBar.style.borderTopLeftRadius = homeBar.style.borderTopRightRadius = 3;
         homeBar.style.borderBottomLeftRadius = homeBar.style.borderBottomRightRadius = 3;
         homeBar.style.backgroundColor = new Color(1f, 1f, 1f, 0.72f);

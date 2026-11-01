@@ -799,7 +799,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             fill.style.backgroundColor = TabletTheme.GlassTileActive;
             btn.Add(fill);
 
-            var iconLabel = new TabletIconElement(icon, 24f, fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white);
+            var iconLabel = new TabletIconElement(icon, 26f, SliderIconColor(icon, fillValue));
             iconLabel.style.position = Position.Absolute;
             iconLabel.style.left = Length.Percent(50);
             iconLabel.style.translate = new Translate(Length.Percent(-50), 0);
@@ -820,7 +820,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     float h = Mathf.Max(1f, btn.resolvedStyle.height);
                     fillValue = Mathf.Clamp01(1f - e.localPosition.y / h);
                     fill.style.height = Length.Percent(fillValue * 100f);
-                    iconLabel.IconColor = fillValue > 0.14f ? TabletTheme.InkOnGlass : Color.white;
+                    iconLabel.IconColor = SliderIconColor(icon, fillValue);
                 }
             });
             btn.RegisterCallback<PointerUpEvent>(e =>
@@ -869,9 +869,33 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             return btn;
         }
 
+        // 开启态的磁贴图标带颜色（对照参考图：蓝牙蓝、静音红、手电白底深色），其余保持深色
+        private static Color ActiveIconColor(TabletIconKind kind)
+        {
+            switch (kind)
+            {
+                case TabletIconKind.Moon: return new Color(0.40f, 0.36f, 0.95f, 1f);
+                case TabletIconKind.Bolt: return new Color(0.98f, 0.60f, 0.10f, 1f);
+                case TabletIconKind.Palette: return new Color(0.88f, 0.30f, 0.55f, 1f);
+                default: return TabletTheme.InkOnGlass;
+            }
+        }
+
+        // 竖向滑条图标：填充处于白色时使用彩色图标（太阳橙、喇叭蓝），空条时用白色
+        private static Color SliderIconColor(TabletIconKind kind, float fill)
+        {
+            if (fill <= 0.14f) return Color.white;
+            switch (kind)
+            {
+                case TabletIconKind.Sun: return new Color(0.98f, 0.62f, 0.08f, 1f);
+                case TabletIconKind.Speaker: return new Color(0.16f, 0.48f, 0.95f, 1f);
+                default: return TabletTheme.InkOnGlass;
+            }
+        }
+
         private static void AttachTileIcon(Button btn, TabletIconKind kind, bool active, bool round)
         {
-            var icon = new TabletIconElement(kind, round ? 24f : 26f, active ? TabletTheme.InkOnGlass : Color.white);
+            var icon = new TabletIconElement(kind, round ? 24f : 26f, active ? ActiveIconColor(kind) : Color.white);
             icon.style.position = Position.Absolute;
             if (round)
             {

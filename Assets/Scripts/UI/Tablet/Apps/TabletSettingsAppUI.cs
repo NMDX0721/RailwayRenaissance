@@ -253,11 +253,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
                 int catId = cat.id;
                 bool isSelected = (catId == currentSettingsCategory);
-                currentCard.Add(buildNavItem(cat.icon, cat.name, GetHyperOSCategoryColor(cat.id, cat.group), null, isSelected, () =>
+                var navItem = buildNavItem(cat.icon, cat.name, GetHyperOSCategoryColor(cat.id, cat.group), null, isSelected, () =>
                 {
                     currentSettingsCategory = catId;
                     BuildSettingsPage(win);
-                }));
+                });
+                if (cat.id == 1) ConvertToAccountNavItem(navItem);
+                currentCard.Add(navItem);
             }
 
             // 若已解锁开发者模式，渲染开发者选项入口
@@ -402,11 +404,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         profileCard.Add(userLeft);
 
         var avatar = new Label("👤");
-        avatar.style.fontSize = 32; avatar.style.width = 54; avatar.style.height = 54;
+        avatar.style.fontSize = 40; avatar.style.width = 76; avatar.style.height = 76;
         avatar.style.backgroundColor = SurfaceApp;
         avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
-        avatar.style.borderTopLeftRadius = 27; avatar.style.borderTopRightRadius = 27;
-        avatar.style.borderBottomLeftRadius = 27; avatar.style.borderBottomRightRadius = 27;
+        avatar.style.borderTopLeftRadius = 38; avatar.style.borderTopRightRadius = 38;
+        avatar.style.borderBottomLeftRadius = 38; avatar.style.borderBottomRightRadius = 38;
         avatar.style.unityFontDefinition = Fd();
         userLeft.Add(avatar);
 
@@ -416,13 +418,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         string curUser = PlayerPrefs.GetString("XiaomiAccount", "旅人 (先民特等铁道运营官)");
         var nameLbl = new Label(curUser);
-        nameLbl.style.fontSize = 18; nameLbl.style.color = InkPrimary;
-        nameLbl.style.unityFontStyleAndWeight = FontStyle.Bold; nameLbl.style.unityFontDefinition = Fd();
+        nameLbl.style.fontSize = 24; nameLbl.style.color = InkPrimary;
+        nameLbl.style.unityFontDefinition = FdBold();
         userMeta.Add(nameLbl);
 
         var idLbl = new Label("ID: 0721-DPRK · 阿里郎量子加密专线已连接 · 全功能已解锁");
-        idLbl.style.fontSize = 12; idLbl.style.color = new Color(0.2f, 0.65f, 0.35f, 1f); idLbl.style.unityFontDefinition = Fd();
-        idLbl.style.marginTop = 4;
+        idLbl.style.fontSize = 14; idLbl.style.color = InkSecondary; idLbl.style.unityFontDefinition = Fd();
+        idLbl.style.marginTop = 6;
         userMeta.Add(idLbl);
 
         var ar = new Label("›");
@@ -487,6 +489,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     private static void RenderMyDeviceSettings(ScrollView rightPane, VisualElement win)
     {
         AddCenterHeader(rightPane, "我的设备");
+        rightPane.Add(BuildHyperOSHero("32.0.4.1"));
 
         var devCard = BuildWhiteCard();
         devCard.style.alignItems = Align.Center;
@@ -523,6 +526,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         specsCard.Add(BuildWhiteRow("卫星通讯基带", "阿里郎军工量子加密卫星专线 (全天候链路已连接)", null, false));
         rightPane.Add(specsCard);
 
+        var deviceActions = BuildWhiteCard();
+        deviceActions.Add(BuildWhiteRow("备份与恢复", "本地存档快照", () => ShowBackupRestorePage()));
+        rightPane.Add(deviceActions);
+
         AddSectionHeader(rightPane, "项目与版本信息");
         var aboutCard = BuildWhiteCard();
         aboutCard.Add(BuildWhiteRow("游戏名称", "铁路复兴：沙能冲击", null, false));
@@ -556,6 +563,49 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         aboutCard.Add(BuildWhiteRow("字体", "Zpix (最像素)", null, false));
         aboutCard.Add(BuildWhiteRow("底层技术", "Roslyn C# / UI Toolkit / UGUI 混合渲染", null, false));
         rightPane.Add(aboutCard);
+    }
+
+    // “我的设备”顶部的 HyperOS 渐变横幅：薰衣草 → 粉 → 淡蓝，居中大字 Logo 与版本号（对照参考图）
+    private static Texture2D s_hyperHeroTex;
+    private static VisualElement BuildHyperOSHero(string version)
+    {
+        if (s_hyperHeroTex == null)
+        {
+            const int n = 64;
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            Color tl = new Color(0.88f, 0.86f, 1.00f), tr = new Color(1.00f, 0.90f, 0.95f);
+            Color bl = new Color(0.99f, 0.84f, 0.91f), br = new Color(0.80f, 0.86f, 1.00f);
+            Color bloom = new Color(0.98f, 0.76f, 0.88f);
+            for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
+            {
+                float u = x / (n - 1f), v = y / (n - 1f);   // v=0 在底部
+                Color top = Color.Lerp(tl, tr, u), bottom = Color.Lerp(bl, br, u);
+                Color c = Color.Lerp(bottom, top, v);
+                float d = Mathf.Clamp01(1f - Vector2.Distance(new Vector2(u, v), new Vector2(0.38f, 0.42f)) * 1.8f);
+                tex.SetPixel(x, y, Color.Lerp(c, bloom, d * 0.55f));
+            }
+            tex.Apply();
+            s_hyperHeroTex = tex;
+        }
+        var hero = new VisualElement { name = "settings-hyperos-hero" };
+        hero.style.height = 230;
+        hero.style.marginBottom = 16;
+        hero.style.overflow = Overflow.Hidden;
+        hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
+        hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
+        hero.style.backgroundImage = Background.FromTexture2D(s_hyperHeroTex);
+        hero.style.alignItems = Align.Center;
+        hero.style.justifyContent = Justify.Center;
+        var logo = new Label("Xiaomi HyperOS");
+        logo.style.fontSize = 50; logo.style.color = new Color(0.55f, 0.12f, 0.36f, 1f);
+        logo.style.unityFontDefinition = FdBold();
+        hero.Add(logo);
+        var ver = new Label(version);
+        ver.style.fontSize = 18; ver.style.color = new Color(0.30f, 0.28f, 0.36f, 1f);
+        ver.style.unityFontDefinition = Fd(); ver.style.marginTop = 10;
+        hero.Add(ver);
+        return hero;
     }
 
     // 两列“数值 + 说明”规格网格
@@ -1421,14 +1471,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         bool known = level >= 0f;
         var hero = new VisualElement { name = "settings-battery-hero" };
-        hero.style.height = 128;
+        hero.style.height = 200;
         hero.style.marginBottom = 16;
         hero.style.overflow = Overflow.Hidden;
         hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
         hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
         hero.style.backgroundColor = known ? new Color(0.76f, 0.93f, 0.82f, 1f) : new Color(0.89f, 0.89f, 0.91f, 1f);
         hero.style.justifyContent = Justify.Center;
-        hero.style.paddingLeft = 28; hero.style.paddingRight = 28;
+        hero.style.paddingLeft = 36; hero.style.paddingRight = 36;
 
         if (known)
         {
@@ -1446,14 +1496,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var value = new Label(known ? Mathf.RoundToInt(level * 100f).ToString() : "--");
         // 数字压在绿色填充上用白字；电量低、数字落到浅色底上时改深绿，保证对比度
         var heroInk = !known ? InkSecondary : level >= 0.40f ? Color.white : new Color(0.08f, 0.32f, 0.16f, 1f);
-        value.style.fontSize = 52; value.style.color = heroInk;
+        value.style.fontSize = 76; value.style.color = heroInk;
         value.style.unityFontDefinition = FdBold();
         value.pickingMode = PickingMode.Ignore;
         valueRow.Add(value);
         var unit = new Label("%");
-        unit.style.fontSize = 20; unit.style.color = heroInk;
+        unit.style.fontSize = 26; unit.style.color = heroInk;
         unit.style.unityFontDefinition = FdBold();
-        unit.style.marginLeft = 4; unit.style.marginBottom = 8;
+        unit.style.marginLeft = 6; unit.style.marginBottom = 12;
         unit.pickingMode = PickingMode.Ignore;
         valueRow.Add(unit);
         hero.Add(valueRow);
@@ -1464,7 +1514,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             : status == BatteryStatus.NotCharging ? "未在充电"
             : "电池供电放电中";
         var sub = new Label(caption);
-        sub.style.fontSize = 15; sub.style.color = heroInk;
+        sub.style.fontSize = 18; sub.style.color = heroInk;
         sub.style.unityFontDefinition = Fd();
         sub.pickingMode = PickingMode.Ignore;
         hero.Add(sub);
@@ -1866,6 +1916,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightCol.Add(slider);
 
         return row;
+    }
+
+    // 侧栏顶部的账号行：圆形头像 + 名称 + 一行说明（对照参考图的“小牛马 / Manage accounts…”）
+    private static void ConvertToAccountNavItem(Button item)
+    {
+        item.style.height = 76;
+        item.Clear();
+        var avatar = new Label("👤");
+        avatar.style.width = 46; avatar.style.height = 46; avatar.style.flexShrink = 0;
+        avatar.style.fontSize = 24; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
+        avatar.style.backgroundColor = SurfaceApp;
+        avatar.style.borderTopLeftRadius = avatar.style.borderTopRightRadius = 23;
+        avatar.style.borderBottomLeftRadius = avatar.style.borderBottomRightRadius = 23;
+        avatar.style.unityFontDefinition = Fd();
+        avatar.style.marginRight = 14;
+        item.Add(avatar);
+        var col = new VisualElement();
+        col.style.flexShrink = 1;
+        var name = new Label("当前账号");
+        name.style.fontSize = 17; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
+        var sub = new Label("管理账号、云空间与家庭服务");
+        sub.style.fontSize = 12; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
+        sub.style.marginTop = 2; sub.style.whiteSpace = WhiteSpace.Normal;
+        col.Add(name); col.Add(sub);
+        item.Add(col);
     }
 
     // HyperOS 风格滑条：细圆角轨道 + 强调色圆形滑块，去掉 Unity 默认的方块滑块与边框
