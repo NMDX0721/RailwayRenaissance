@@ -624,6 +624,10 @@ GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 Railwa
 
 - 2026-10-30：首页与统一搜索由 `RailwayMusicTerminalView.RenderHome/RenderSearch` 构建；曲目行共用 `AddTrackRow`，首页来源卡片直接选择顶部搜索或打开连接管理。`MusicCatalogSearch` 隔离在线搜索请求协调（350ms 视图防抖、每来源一个在途与最新待查词、60秒/24项缓存），视图代号保护过期响应。默认自动合并网易云与本应用已验证连接的来源，始终展示已收录匹配，并可手动筛选。匿名播放不等于账号登录；个人歌单仍走各来源验证。
 
+- 2026-11-01 舞台样式系统：`MusicStageStyle.cs` 定义 `IStageStyle`、`StageContext`、`StageTuning`、`StageFonts` 与 `StageStyles` 注册表（luminous、partita、tilt、claddagh、cadenza、cappella、pendolo、still）；`MusicStageLyrics` 是宿主，`MusicStageWord` 是共享词动画。样式只读 `StageContext`，姿态是音频时钟的函数（暂停冻结、定位重建）。验证走 `RailwayMusicTerminalReview` 的压力测试（`StressStyles`），在 1120×700 与 1440×900 下断言字符在舞台内、词互不遮盖。独立实现，未复制 Folia（AGPL）源码。
+
+- 2026-11-01 随身听拆分：`RailwayMusicTerminalView` 为 partial 类：`.Charts`（榜单页、热搜、搜索下拉与滚动提示）、`.Home`（筛选胶囊、封面快捷卡、大封面行）、`.Theme`（封面取色强调色，经 `MusicReactiveStageView.AccentFor`）、`.Replace`（在线曲目不可用时跨来源替换，`MusicLibrarySession.ReplaceTrack`）、`.Match`（本地歌曲匹配网易云歌词与封面，记录存于 `MusicLyricPreference.match*`）。`MusicCharts` 缓存网易云匿名榜单与热搜（`tools/music/netease-service/bridge.js` 新增 `toplists`、`hot_search`）；`MusicLyricFilter` 去除制作信息与版权行（`MusicLibraryState.lyricFilter/lyricFilterWords`）；`MusicAudioEffectsEngine` 的四档音色是真实信号链（`MusicLibraryState.toneMode`）。来自在线来源的文字一律 `enableRichText=false`。
+
 - 自动来源：`NeteaseLocalBridge.HasSession/SessionChanged` 只反映本应用验证过的进程会话；`RenderSearch` 默认自动合并网易云与已连接来源，`RenderOnlineSearch` 分来源展示请求状态。`RenderHome` 同时显示接入与登录状态。
 
 - 已连接来源页复用 `SessionUserId/SessionNickname` 的公开资料并自动读歌单；登录令牌仍仅在服务进程内。v17 实际 Windows 自动合并检查通过（私有服务使用 fixture）。
