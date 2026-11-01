@@ -897,3 +897,14 @@
 .music-column > .music-main { flex-grow: 1; flex-basis: 0; min-height: 0; }
 .music-navigation { align-self: stretch; }
 .music-compact .music-drawer { bottom: 0; }
+
+/* The player card floats over the content, as in the streaming apps: the page scrolls on underneath it, with room left at the end of every list. */
+.music-column { position: relative; }
+.music-player { position: absolute; left: 14px; right: 14px; bottom: 12px; margin: 0; background-color: rgba(37, 42, 35, 0.95); }
+.music-short .music-player { bottom: 14px; }
+.music-content { padding-bottom: 0; }
+.music-track-list .unity-scroll-view__content-container, .music-home-content { padding-bottom: 104px; }
+.music-overlay-queue .music-drawer, .music-compact .music-drawer { top: 0; bottom: 104px; }
+.music-short.music-overlay-queue .music-drawer, .music-short.music-compact .music-drawer { bottom: 96px; }
+.music-overlay-queue .music-drawer, .music-compact .music-drawer { bottom: 128px; }
+.music-short.music-overlay-queue .music-drawer, .music-short.music-compact .music-drawer { bottom: 124px; }
