@@ -718,7 +718,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 // ---------- 6. 调度警报大岛 ----------
                 case IslandAppType.DispatchAlert:
-                    var alHeader = CreatePillLabel("⚠️ 铁道调度紧急令书", 11, true);
+                    var alHeader = CreatePillLabel("铁道调度紧急令书", 11, true);
                     alHeader.style.color = TabletTheme.Alert;
                     topRow.Add(alHeader);
                     topRow.Add(closeBtn);

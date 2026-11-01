@@ -47,12 +47,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 OnPrimaryAction = () => ToggleStopwatch(),
                 OnSecondaryAction = () => ResetStopwatch()
             });
-            ShowToast("⏱ 秒表已在小米超级岛置顶启动");
+            ShowToast("秒表已在小米超级岛置顶启动");
         }
         else
         {
             RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.Instance?.RemoveSession(RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.Timer);
-            ShowToast("⏱ 秒表已暂停");
+            ShowToast("秒表已暂停");
         }
     }
 
@@ -63,7 +63,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             s.Metric = "00:00";
         });
-        ShowToast("⏱ 秒表已归零");
+        ShowToast("秒表已归零");
     }
 
     public static void UpdateStopwatchTick(float dt)
@@ -106,9 +106,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // 分组卡片：功能Tab（闹钟/世界时钟/秒表/倒计时）
         var funcCard = BuildAppCard("时钟功能");
-        funcCard.Add(BuildLightRow("⏰ 晨间出车早擎闹钟", "已设定 05:30（工作日）", () => ShowToast("闹钟已同步到先民排班系统")));
-        funcCard.Add(BuildLightRow("🌐 平壤内网主时钟同步", "偏移量 +0.002s · 阿里郎1号卫星校准", () => ShowToast("授时服务器连接稳定")));
-        funcCard.Add(BuildLightRow("⏱ 运行耗时秒表", "用于测定雾峰站至茶山站实际单程区间时分", () => ToggleStopwatch()));
+        funcCard.Add(BuildLightRow("晨间出车早擎闹钟", "已设定 05:30（工作日）", () => ShowToast("闹钟已同步到先民排班系统")));
+        funcCard.Add(BuildLightRow("平壤内网主时钟同步", "偏移量 +0.002s · 阿里郎1号卫星校准", () => ShowToast("授时服务器连接稳定")));
+        funcCard.Add(BuildLightRow("运行耗时秒表", "用于测定雾峰站至茶山站实际单程区间时分", () => ToggleStopwatch()));
         body.Add(funcCard);
     }
 
@@ -201,7 +201,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         temp.style.unityFontDefinition = Fd();
         tempRow.Add(temp);
 
-        var weatherBadge = BuildTagPill("⛅ 多云", new Color(0.23f, 0.51f, 0.96f, 0.15f), new Color(0.23f, 0.51f, 0.96f, 1f), 12f);
+        var weatherBadge = BuildTagPill("多云", new Color(0.23f, 0.51f, 0.96f, 0.15f), new Color(0.23f, 0.51f, 0.96f, 1f), 12f);
         weatherBadge.style.marginLeft = 14;
         tempRow.Add(weatherBadge);
 
@@ -304,8 +304,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             dLbl.style.fontSize = 12; dLbl.style.color = InkTertiary; dLbl.style.unityFontDefinition = Fd();
             dayBox.Add(dLbl);
 
-            var ic = new Label(icon);
-            ic.style.fontSize = 24; ic.style.marginTop = 4; ic.style.unityFontDefinition = Fd();
+            var ic = BuildGlyphIcon(icon, 28f, icon.StartsWith("\u2600") ? new Color(0.96f, 0.62f, 0.10f, 1f) : new Color(0.35f, 0.55f, 0.85f, 1f));
+            ic.style.marginTop = 4;
             dayBox.Add(ic);
 
             var wLbl = new Label(weather);
@@ -992,8 +992,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 Progress = 0.8f,
                 AccentColor = new Color(0.96f, 0.62f, 0.10f, 1f)
             });
-            ShowToast("🚀 机车动力遥测已置顶挂载到小米超级岛！");
-        }) { text = "📌 挂载至超级岛" };
+            ShowToast("机车动力遥测已置顶挂载到小米超级岛！");
+        }) { text = "挂载至超级岛" };
         pinBtn.style.height = 36;
         pinBtn.style.paddingLeft = 16; pinBtn.style.paddingRight = 16;
         pinBtn.style.fontSize = 13; pinBtn.style.unityFontDefinition = Fd();
@@ -1075,8 +1075,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         scoreCard.style.alignItems = Align.Center;
         scoreCard.style.paddingTop = 16; scoreCard.style.paddingBottom = 16;
 
-        var shield = new Label("🛡");
-        shield.style.fontSize = 44; shield.style.unityFontDefinition = Fd();
+        var shield = new TabletIconElement(TabletIconKind.Shield, 48, new Color(0.2f, 0.65f, 0.3f, 1f));
         scoreCard.Add(shield);
 
         var score = new Label("100 分 · 系统处于安全状态");
@@ -1118,15 +1117,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         searchRow.style.borderBottomLeftRadius = 19; searchRow.style.borderBottomRightRadius = 19;
         searchCard.Add(searchRow);
 
-        var searchTxt = new Label("🔒 https://jiayingxu.railway-foundation.org");
+        var searchTxt = new Label("https://jiayingxu.railway-foundation.org");
         searchTxt.style.fontSize = 13; searchTxt.style.color = InkSecondary; searchTxt.style.unityFontDefinition = Fd();
         searchRow.Add(searchTxt);
         body.Add(searchCard);
 
         var homeCard = BuildAppCard("推荐门户与馆藏");
-        homeCard.Add(BuildLightRow("🏛 嘉颖徐铁路基金官方站点", "全球铁路文化遗产与沙能冲击研究论文库", () => ShowToast("已连接嘉颖徐基金知识库")));
-        homeCard.Add(BuildLightRow("📖 金日成综合大学铁道系期刊", "0721型机车先民内燃机图纸与热效率分析", () => ShowToast("论文文献已加载")));
-        homeCard.Add(BuildLightRow("🗺 雾峰至乌金岭矿区综合勘察志", "地质构造、废弃线路复旧方案纪实", () => ShowToast("勘察志阅读就绪")));
+        homeCard.Add(BuildLightRow("嘉颖徐铁路基金官方站点", "全球铁路文化遗产与沙能冲击研究论文库", () => ShowToast("已连接嘉颖徐基金知识库")));
+        homeCard.Add(BuildLightRow("金日成综合大学铁道系期刊", "0721型机车先民内燃机图纸与热效率分析", () => ShowToast("论文文献已加载")));
+        homeCard.Add(BuildLightRow("雾峰至乌金岭矿区综合勘察志", "地质构造、废弃线路复旧方案纪实", () => ShowToast("勘察志阅读就绪")));
         body.Add(homeCard);
     }
 
@@ -1464,8 +1463,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         card.style.alignItems = Align.Center;
         card.style.paddingTop = 32; card.style.paddingBottom = 32;
 
-        var icon = new Label("⏳");
-        icon.style.fontSize = 40; icon.style.unityFontDefinition = Fd();
+        var icon = new TabletIconElement(TabletIconKind.Hourglass, 44, InkTertiary);
         card.Add(icon);
 
         var t = new Label($"{name} · 即将推出");

@@ -582,7 +582,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 PlayerPrefs.SetInt("TabletDevModeUnlocked", 1);
                 PlayerPrefs.Save();
                 currentSettingsCategory = 99;
-                ShowToast("🎉 已进入开发者模式！已跳转至开发者选项。");
+                ShowToast("已进入开发者模式！已跳转至开发者选项。");
                 BuildSettingsPage(win);
             }
             else
@@ -928,7 +928,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         noticeCard.style.backgroundColor = new Color(0.99f, 0.95f, 0.90f, 1f);
         noticeCard.style.borderTopColor = AccentSystem; noticeCard.style.borderBottomColor = AccentSystem;
         noticeCard.style.borderLeftColor = AccentSystem; noticeCard.style.borderRightColor = AccentSystem;
-        var noticeTitle = new Label("⚠️ 开发者调试模式已激活");
+        var noticeTitle = new Label("开发者调试模式已激活");
         noticeTitle.style.fontSize = 15; noticeTitle.style.color = AccentSystem;
         noticeTitle.style.unityFontStyleAndWeight = FontStyle.Bold; noticeTitle.style.unityFontDefinition = Fd();
         noticeCard.Add(noticeTitle);
@@ -944,7 +944,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             ShowResetConfirmDialog(
                 win ?? rightPane,
-                "⚠️ 重置主线剧情进度确认",
+                "重置主线剧情进度确认",
                 "此操作将删除所有序章通关剧本与幕次记录（ArchiveStory_*、ArchiveScene_*）、彩蛋记录（VN_Got0721）、最后阅读记录（LastReadScript）以及调试全章节解锁标记（DebugUnlockAllChapters），将剧情重置回序章第 01 幕。\n\n影响边界说明：\n• 仅重置主线剧情与阅读记录（PlayerPrefs 对应键）；\n• 不影响资金、信任、车况等经济模拟数据；\n• 不会清除音乐库独立 JSON 与歌词数据；\n• 不会修改系统设置与按键映射。",
                 "确认重置主线",
                 () =>
@@ -958,7 +958,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     PlayerPrefs.DeleteKey("LastReadScript");
                     PlayerPrefs.DeleteKey("DebugUnlockAllChapters");
                     PlayerPrefs.Save();
-                    ShowToast("🔄 主线剧情进度已重置至序章第 01 幕！");
+                    ShowToast("主线剧情进度已重置至序章第 01 幕！");
                 });
         }));
 
@@ -992,7 +992,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             ShowResetConfirmDialog(
                 win ?? rightPane,
-                "⚠️ 重置全部成就确认",
+                "重置全部成就确认",
                 "此操作会清空所有成就的解锁状态与解锁日期。不会影响剧情进度、经营数据、存档、音乐库与系统设置。",
                 "确认重置成就",
                 () =>
@@ -1034,13 +1034,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             ShowResetConfirmDialog(
                 win ?? rightPane,
-                "⚠️ 重置经济模拟数据确认",
+                "重置经济模拟数据确认",
                 "此操作会把当前运行中的经营模拟重置到第 1 天，资金按当前难度配置恢复；若已加载世界种子，信任、车况、政治压力和线路老化将恢复为该种子生成的初值，无种子时使用兼容默认值。趋势历史、监管程序、经营策略、短期目标和当日日事件也会重置。\n\n影响边界说明：\n• 不删除已有经营存档槽；重新载入旧存档会恢复槽内数据；\n• 不删除主线剧情通关与阅读记录，但会重置当前运行中的剧情补贴防重复状态；\n• 不清除音乐库独立 JSON 与歌词数据；\n• 不修改系统设置与按键映射。",
                 "确认重置经济",
                 () =>
                 {
                     GameData.ResetState();
-                    ShowToast("💰 当前经营模拟状态已重置为第 1 天！");
+                    ShowToast("当前经营模拟状态已重置为第 1 天！");
                 });
         }));
 
@@ -1048,7 +1048,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             GameData.AddMoney(100000);
             GameData.AddTrust(30);
-            ShowToast("💳 已注资 100,000 沙币，信任已提升！");
+            ShowToast("已注资 100,000 沙币，信任已提升！");
         }));
         rightPane.Add(ecoResetCard);
 
@@ -1060,7 +1060,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.DeleteKey("TabletDevModeUnlocked");
             PlayerPrefs.Save();
             currentSettingsCategory = 2;
-            ShowToast("🔒 已退出开发者模式。");
+            ShowToast("已退出开发者模式。");
             BuildSettingsPage(win);
         }));
 
@@ -1109,7 +1109,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var fallbackCard = BuildWhiteCard();
             fallbackCard.name = "settings-notifications-fallback-card";
             fallbackCard.style.backgroundColor = new Color(0.98f, 0.94f, 0.88f, 0.95f);
-            var fallbackLbl = new Label("⚠️ 当前环境未挂载系统面板服务（通知中心与控制面板入口将提示降级）。")
+            var fallbackLbl = new Label("当前环境未挂载系统面板服务（通知中心与控制面板入口将提示降级）。")
             {
                 name = "settings-notifications-fallback-note"
             };
@@ -2252,7 +2252,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         confirmBox.style.paddingLeft = 14; confirmBox.style.paddingRight = 14;
         confirmBox.style.marginTop = 12;
 
-        var confirmTitle = new Label("⚠️ 恢复存档二次确认");
+        var confirmTitle = new Label("恢复存档二次确认");
         confirmTitle.style.fontSize = 15; confirmTitle.style.color = AccentSystem;
         confirmTitle.style.unityFontStyleAndWeight = FontStyle.Bold; confirmTitle.style.unityFontDefinition = Fd();
         confirmBox.Add(confirmTitle);

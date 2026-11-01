@@ -620,6 +620,7 @@ public class GameMainUI : MonoBehaviour
     // ============ 桌面 ============
     public RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland SuperIsland { get; private set; }
     private VisualElement statusBar;
+    private VisualElement statusSpacer;
     private Label statusClock;
     private Label statusBatt;
     private RailwayRenaissance.UI.Tablet.TabletIconElement statusQuiet;
@@ -669,12 +670,24 @@ public class GameMainUI : MonoBehaviour
     /// <summary>
     /// 打开浅色应用时，状态栏换成与应用顶栏一致的浅色底和深色文字；回到桌面恢复壁纸上的渐变与白字。
     /// </summary>
+    private void SyncStatusBarOverlay()
+    {
+        if (statusBar == null || desktop == null || root == null) return;
+        bool visible = unlocked && desktop.style.display == DisplayStyle.Flex;
+        statusBar.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        statusBar.style.opacity = desktop.resolvedStyle.opacity;
+        var shellRoot = tabletShellView?.RootElement;
+        if (visible && shellRoot != null && shellRoot.parent == root && statusBar.parent == root &&
+            root.IndexOf(shellRoot) - root.IndexOf(statusBar) != 1)
+            statusBar.PlaceBehind(shellRoot);
+    }
+
     private void ApplyStatusBarForApp(bool lightApp)
     {
         if (statusBar == null) return;
         var ink = lightApp ? new Color(0.10f, 0.10f, 0.12f, 1f) : GlassText;
         statusBar.style.backgroundImage = lightApp ? StyleKeyword.None : Background.FromTexture2D(BuildStatusBarScrim());
-        statusBar.style.backgroundColor = lightApp ? new Color(0.97f, 0.97f, 0.98f, 1f) : Color.clear;
+        statusBar.style.backgroundColor = Color.clear;
         if (statusClock != null) statusClock.style.color = ink;
         if (statusQuiet != null) statusQuiet.IconColor = ink;
         if (statusDate != null) statusDate.style.color = ink;
@@ -700,10 +713,10 @@ public class GameMainUI : MonoBehaviour
         appliedSafeTop = top; appliedSafeLeft = left; appliedSafeRight = right;
         RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop = top;
         statusBar.style.height = 48 + top;
+        if (statusSpacer != null) statusSpacer.style.height = 48 + top;
         statusBar.style.paddingTop = 8 + top;
         statusBar.style.paddingLeft = 20 + left;
         statusBar.style.paddingRight = 20 + right;
-        if (appLayer != null) appLayer.style.top = 48 + top;
     }
 
     private static Texture2D s_statusScrim;
@@ -751,8 +764,16 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.flexShrink = 0;
         // 状态栏直接叠在壁纸上：不再有整条灰底，只在顶部铺一层很淡的渐变保证白色文字可读
         statusBar.style.backgroundImage = Background.FromTexture2D(BuildStatusBarScrim());
-        statusBar.style.position = Position.Relative;
-        desktop.Add(statusBar);
+        statusBar.style.position = Position.Absolute;
+        statusBar.style.top = 0; statusBar.style.left = 0; statusBar.style.right = 0;
+        statusBar.pickingMode = PickingMode.Ignore; // 只有左右的面板触发区响应；应用顶部的按钮不被状态栏挡住
+        root.Add(statusBar);
+        // 桌面自己仍要让出状态栏高度
+        statusSpacer = new VisualElement { name = "tablet-status-spacer", pickingMode = PickingMode.Ignore };
+        statusSpacer.style.height = 48; statusSpacer.style.flexShrink = 0;
+        desktop.Add(statusSpacer);
+        // 状态栏跟随桌面的显隐，并保持在应用层之上、系统面板之下
+        root.schedule.Execute(SyncStatusBarOverlay).Every(100);
 
         var leftGroup = new VisualElement();
         leftGroup.style.flexDirection = FlexDirection.Row;
@@ -2004,7 +2025,7 @@ public class GameMainUI : MonoBehaviour
     {
         appLayer = new VisualElement { name = "tablet-app-layer" };
         appLayer.style.position = Position.Absolute;
-        appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop; appLayer.style.left = 0;
+        appLayer.style.top = 0; appLayer.style.left = 0;
         appLayer.style.right = 0; appLayer.style.bottom = 0;
         appLayer.style.display = DisplayStyle.None;
         appLayer.focusable = true;
@@ -2149,7 +2170,7 @@ public class GameMainUI : MonoBehaviour
 
         var layer = new VisualElement { name = "tablet-app-layer", viewDataKey = "tablet-app-layer-" + appId };
         layer.style.position = Position.Absolute;
-        layer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
+        layer.style.top = 0;
         layer.style.left = 0;
         layer.style.right = 0;
         layer.style.bottom = 0;
@@ -2413,7 +2434,7 @@ public class GameMainUI : MonoBehaviour
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
             appLayer.style.position = Position.Absolute;
-            appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
+            appLayer.style.top = 0;
             appLayer.style.left = 0;
             appLayer.style.right = 0;
             appLayer.style.bottom = 0;
@@ -2889,6 +2910,7 @@ public class GameMainUI : MonoBehaviour
         var win = new VisualElement { name = "app-fullscreen-window" };
         win.style.position = Position.Absolute;
         win.style.top = 0; win.style.left = 0; win.style.right = 0; win.style.bottom = 0;
+        win.style.paddingTop = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop; // 状态栏叠在窗口之上，窗口自己留出顶部
         // 默认浅色窗口，与 HyperOS 应用一致；少数深色界面的应用保留深色窗口
         bool darkApp = appTitle == "五线态势" || appTitle == "岁月 · AI对话" || appTitle == "驾驶台";
         var winBg = darkApp ? new Color(0.08f, 0.09f, 0.11f, 1f) : new Color(0.97f, 0.97f, 0.98f, 1f);
@@ -3483,7 +3505,7 @@ public class GameMainUI : MonoBehaviour
                 Priority = 20,
                 Title = title,
                 Subtitle = "车载随身听 · 正在播放",
-                Metric = "🎵 播放中",
+                Metric = "播放中",
                 AccentColor = RailwayRenaissance.UI.Tablet.TabletTheme.Accent,
                 OnPrimaryAction = () =>
                 {

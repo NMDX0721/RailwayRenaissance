@@ -7,11 +7,50 @@ namespace RailwayRenaissance.UI.Tablet
     public enum TabletIconKind { Moon, Sun, Speaker, SpeakerMuted, Bolt, Palette, Gear, Contrast, Bell, MusicNote, Search,
         Person, Tablet, Apps, Cube, Wifi, Bluetooth, Link, Globe, Sparkle, Lock, Home, Keyboard, FaceId, Shield, Battery, Heart, Sprout, Accessibility, Dots, Chat, Code,
         Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
-        Note, Clock, Calendar, Calc, Map, Star }
+        Note, Clock, Calendar, Calc, Map, Star,
+        Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
     /// </summary>
+    /// <summary>emoji / 符号字符 → 代码绘制的矢量图标。BuildSquircleBadge 等先查这张表，查不到才退回文字。</summary>
+    public static class TabletGlyphMap
+    {
+        private static readonly Dictionary<string, TabletIconKind> Map = new Dictionary<string, TabletIconKind>
+        {
+            { "👤", TabletIconKind.Person }, { "📱", TabletIconKind.Tablet }, { "🧩", TabletIconKind.Apps },
+            { "📶", TabletIconKind.Wifi }, { "ᛒ", TabletIconKind.Bluetooth }, { "🔗", TabletIconKind.Link },
+            { "🌐", TabletIconKind.Globe }, { "🔮", TabletIconKind.Sparkle }, { "🎨", TabletIconKind.Palette },
+            { "🔒", TabletIconKind.Lock }, { "🔔", TabletIconKind.Bell }, { "🏠", TabletIconKind.Home },
+            { "☀", TabletIconKind.Sun }, { "☀️", TabletIconKind.Sun }, { "🔊", TabletIconKind.Speaker },
+            { "⌨", TabletIconKind.Keyboard }, { "😊", TabletIconKind.FaceId }, { "🛡", TabletIconKind.Shield },
+            { "▦", TabletIconKind.Cube }, { "🔋", TabletIconKind.Battery }, { "💚", TabletIconKind.Heart },
+            { "🧒", TabletIconKind.Sprout }, { "♿", TabletIconKind.Accessibility }, { "⋯", TabletIconKind.Dots },
+            { "💬", TabletIconKind.Chat }, { "🛠", TabletIconKind.Code },
+            { "🚂", TabletIconKind.Train }, { "🚄", TabletIconKind.Train }, { "🛤", TabletIconKind.Rails },
+            { "⚡", TabletIconKind.Bolt }, { "💧", TabletIconKind.Drop }, { "👁", TabletIconKind.Eye },
+            { "🏁", TabletIconKind.Flag }, { "📐", TabletIconKind.Ruler }, { "📹", TabletIconKind.Camera },
+            { "⚙️", TabletIconKind.Gear }, { "⚙", TabletIconKind.Gear }, { "💡", TabletIconKind.Bulb },
+            { "📁", TabletIconKind.Folder }, { "🖼", TabletIconKind.Image }, { "🎵", TabletIconKind.MusicNote },
+            { "💾", TabletIconKind.Save }, { "⛅", TabletIconKind.PartlyCloudy }, { "🌧", TabletIconKind.Rain },
+            { "👨‍🎓", TabletIconKind.Person }, { "👷", TabletIconKind.Person }, { "🤖", TabletIconKind.Cube },
+            { "🐉", TabletIconKind.Sparkle }, { "🏛", TabletIconKind.Home },
+            { "📝", TabletIconKind.Note }, { "🔖", TabletIconKind.Bookmark }, { "📊", TabletIconKind.Chart },
+            { "📋", TabletIconKind.Note }, { "🔧", TabletIconKind.Code }, { "🏆", TabletIconKind.Trophy },
+            { "✅", TabletIconKind.Check }, { "📌", TabletIconKind.Pin }, { "🗑", TabletIconKind.Trash },
+            { "🎙", TabletIconKind.Mic }, { "⏳", TabletIconKind.Hourglass }, { "☁", TabletIconKind.Cloud },
+            { "📜", TabletIconKind.Note }, { "🔍", TabletIconKind.Search },
+        };
+
+        public static bool TryGet(string glyph, out TabletIconKind kind)
+        {
+            kind = TabletIconKind.Dots;
+            if (string.IsNullOrEmpty(glyph)) return false;
+            if (Map.TryGetValue(glyph, out kind)) return true;
+            return Map.TryGetValue(glyph.Replace("️", string.Empty), out kind);
+        }
+    }
+
     public sealed class TabletIconElement : VisualElement
     {
         private TabletIconKind _kind;
@@ -310,6 +349,100 @@ namespace RailwayRenaissance.UI.Tablet
                     FillPolygon(p, star);
                     break;
                 }
+
+
+                case TabletIconKind.Rails:
+                    p.BeginPath(); p.MoveTo(P(8, 3)); p.LineTo(P(5, 21)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(16, 3)); p.LineTo(P(19, 21)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(7, 7)); p.LineTo(P(17, 7)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(6.4f, 12)); p.LineTo(P(17.6f, 12)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(5.7f, 17)); p.LineTo(P(18.3f, 17)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Bulb:
+                    p.BeginPath(); p.Arc(P(12, 10), 6f * k, Angle.Degrees(0), Angle.Degrees(360)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(9.5f, 17.5f)); p.LineTo(P(14.5f, 17.5f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(10.2f, 20.5f)); p.LineTo(P(13.8f, 20.5f)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Save:
+                    RoundRectPath(p, 3.5f * k, 3.5f * k, 17f * k, 17f * k, 2.4f * k);
+                    p.Stroke();
+                    RoundRectPath(p, 7.5f * k, 3.5f * k, 9f * k, 6f * k, 0.8f * k);
+                    p.Fill();
+                    RoundRectPath(p, 7.5f * k, 13f * k, 9f * k, 7.5f * k, 1f * k);
+                    p.Stroke();
+                    break;
+
+                case TabletIconKind.Rain:
+                {
+                    var rc = new List<Vector2>();
+                    Vector2[] rcs = { P(8, 11), P(13, 7.5f), P(17, 10.5f) };
+                    float[] rrs = { 3.6f, 4.8f, 3.4f };
+                    for (int c = 0; c < 3; c++)
+                        for (int i = 0; i <= 14; i++)
+                        {
+                            float ang = Mathf.PI + i * Mathf.PI / 14f;
+                            rc.Add(rcs[c] + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * rrs[c] * k);
+                        }
+                    rc.Add(P(20.4f, 13.5f)); rc.Add(P(4.4f, 13.5f));
+                    FillPolygon(p, rc);
+                    p.BeginPath(); p.MoveTo(P(8, 16)); p.LineTo(P(7, 20)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(12.5f, 16)); p.LineTo(P(11.5f, 20)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(17, 16)); p.LineTo(P(16, 20)); p.Stroke();
+                    break;
+                }
+
+                case TabletIconKind.PartlyCloudy:
+                {
+                    DrawDot(p, P(16, 8), 3.4f * k);
+                    var pc = new List<Vector2>();
+                    Vector2[] pcs = { P(7.5f, 17), P(11.5f, 13.5f), P(15, 16) };
+                    float[] prs = { 3.4f, 4.4f, 3.2f };
+                    for (int c = 0; c < 3; c++)
+                        for (int i = 0; i <= 14; i++)
+                        {
+                            float ang = Mathf.PI + i * Mathf.PI / 14f;
+                            pc.Add(pcs[c] + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * prs[c] * k);
+                        }
+                    pc.Add(P(18.2f, 19.5f)); pc.Add(P(4.1f, 19.5f));
+                    FillPolygon(p, pc);
+                    break;
+                }
+
+                case TabletIconKind.Bookmark:
+                    FillPolygon(p, new List<Vector2> { P(6.5f, 3), P(17.5f, 3), P(17.5f, 21), P(12, 16.5f), P(6.5f, 21) });
+                    break;
+
+                case TabletIconKind.Chart:
+                    RoundRectPath(p, 4f * k, 13f * k, 4f * k, 8f * k, 1f * k); p.Fill();
+                    RoundRectPath(p, 10f * k, 8f * k, 4f * k, 13f * k, 1f * k); p.Fill();
+                    RoundRectPath(p, 16f * k, 4f * k, 4f * k, 17f * k, 1f * k); p.Fill();
+                    break;
+
+                case TabletIconKind.Trophy:
+                    FillPolygon(p, new List<Vector2> { P(7, 3.5f), P(17, 3.5f), P(16.2f, 10.5f), P(13, 13.5f), P(11, 13.5f), P(7.8f, 10.5f) });
+                    p.BeginPath(); p.MoveTo(P(12, 13.5f)); p.LineTo(P(12, 18)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(8, 20.5f)); p.LineTo(P(16, 20.5f)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Check:
+                    p.BeginPath(); p.MoveTo(P(5, 12.5f)); p.LineTo(P(10, 17.5f)); p.LineTo(P(19, 7)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Pin:
+                    FillPolygon(p, new List<Vector2> { P(9, 3), P(15, 3), P(14, 9), P(17.5f, 13), P(6.5f, 13), P(10, 9) });
+                    p.BeginPath(); p.MoveTo(P(12, 13)); p.LineTo(P(12, 21)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Trash:
+                    RoundRectPath(p, 6f * k, 8f * k, 12f * k, 13f * k, 2f * k);
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(4, 6)); p.LineTo(P(20, 6)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(9, 6)); p.LineTo(P(9, 3.5f)); p.LineTo(P(15, 3.5f)); p.LineTo(P(15, 6)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(10, 11)); p.LineTo(P(10, 18)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(14, 11)); p.LineTo(P(14, 18)); p.Stroke();
+                    break;
 
                 case TabletIconKind.Person:
                 {

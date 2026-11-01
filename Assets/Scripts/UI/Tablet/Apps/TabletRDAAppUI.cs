@@ -68,7 +68,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         lineTitleRow.Add(lineTitle);
 
         var trendBtn = new Button(() => s_launchApp?.Invoke("五线态势"));
-        trendBtn.text = "📊 五线态势";
+        trendBtn.text = "五线态势";
         trendBtn.style.fontSize = 11;
         trendBtn.style.unityFontDefinition = Fd();
         trendBtn.style.backgroundColor = new Color(0.2f, 0.35f, 0.5f, 0.5f);

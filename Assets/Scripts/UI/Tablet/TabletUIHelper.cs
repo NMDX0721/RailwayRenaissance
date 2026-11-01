@@ -86,6 +86,17 @@ namespace RailwayRenaissance.UI.Tablet
             }
         }
 
+        /// <summary>单个字形图标：能映射成矢量图标就画矢量，否则退回文字。</summary>
+        public static VisualElement BuildGlyphIcon(string glyph, float size, Color color)
+        {
+            if (TabletGlyphMap.TryGet(glyph, out var kind)) return new TabletIconElement(kind, size, color);
+            var label = new Label(glyph);
+            label.style.fontSize = size * 0.9f;
+            label.style.color = color;
+            label.style.unityFontDefinition = Fd();
+            return label;
+        }
+
         public static VisualElement BuildSquircleBadge(string icon, Color badgeColor, float size = 30f)
         {
             var badge = new VisualElement();
@@ -101,13 +112,20 @@ namespace RailwayRenaissance.UI.Tablet
             badge.style.flexShrink = 0;
             badge.pickingMode = PickingMode.Ignore;
 
-            var label = new Label(icon);
-            label.style.fontSize = Mathf.RoundToInt(size * 0.56f);
-            label.style.color = Color.white;
-            label.style.unityTextAlign = TextAnchor.MiddleCenter;
-            label.style.unityFontDefinition = Fd();
-            label.pickingMode = PickingMode.Ignore;
-            badge.Add(label);
+            if (TabletGlyphMap.TryGet(icon, out var kind))
+            {
+                badge.Add(new TabletIconElement(kind, size * 0.58f, Color.white));
+            }
+            else
+            {
+                var label = new Label(icon);
+                label.style.fontSize = Mathf.RoundToInt(size * 0.56f);
+                label.style.color = Color.white;
+                label.style.unityTextAlign = TextAnchor.MiddleCenter;
+                label.style.unityFontDefinition = Fd();
+                label.pickingMode = PickingMode.Ignore;
+                badge.Add(label);
+            }
 
             return badge;
         }

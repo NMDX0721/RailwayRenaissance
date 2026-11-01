@@ -155,8 +155,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 lockBox.style.justifyContent = Justify.Center;
                 card.Add(lockBox);
 
-                var lockIcon = new Label("🔒");
-                lockIcon.style.fontSize = 28;
+                var lockIcon = new TabletIconElement(TabletIconKind.Lock, 30, GlassTextMuted);
                 lockBox.Add(lockIcon);
 
                 var lockHint = new Label("通关剧情解锁");
