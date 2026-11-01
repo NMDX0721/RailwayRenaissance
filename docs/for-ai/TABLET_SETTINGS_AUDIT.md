@@ -46,6 +46,8 @@
 
 > **2026-10-31 外观更新**：设置侧栏已改为 HyperOS 风格（大标题、胶囊搜索框、按分组的白色圆角卡片、34px 徽章、灰底选中项），右侧页面标题改用 MiSans 半粗体，电池页顶部新增按真实设备电量填充的色块（无读数时灰色并说明）。**功能状态没有变化**：上文的“占位/仅写入/待核验”结论仍然有效，尤其是尚走占位渲染的分类 3/8/16/17/20/21/24、无障碍页假开关、以及 `TextSpeed`/`DialogAlpha` 等仅写入项。详见 [TABLET_HYPEROS_PAD_SUPER_ISLAND.md](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)。
 
+> **2026-11-01 状态更新**：上文 §1.2 的“8 个占位分类”已过时——1–24 号分类现在都有专属页面，占位渲染无入口。Q1/Q10 中“仅写入”的 `TextSpeed`、`DialogAlpha`、`AutoPlay`、`AutoInterval`、`ClickAdvance` 已接入剧情（`TypewriterEffect`、`DialogueBox`、`VNManager`），`SkipRead` 与 `ConfirmDialog` 因无对应机制而灰显禁用。详见 [TABLET_HYPEROS_PAD_SUPER_ISLAND.md](TABLET_HYPEROS_PAD_SUPER_ISLAND.md) “设置项接入剧情与阅读”。以上接入尚未在剧情场景实测。
+
 ---
 
 ## 0. 结论摘要
