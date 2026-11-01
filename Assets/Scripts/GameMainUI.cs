@@ -309,6 +309,16 @@ public class GameMainUI : MonoBehaviour
         if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: panelSettings=" + (panelSettings != null));
         uiDoc = canvasObj.AddComponent<UIDocument>();
         if (TraceLog.ConsoleVerbose) Debug.Log("[GameMainUI] BuildDocument: uidoc added");
+        // 平板整体比标题界面再放大约 15%：只改自己的 PanelSettings 副本，共享资源不动。
+        // 参考高度 700、按高度匹配 → 逻辑画布约 1240×700（1080p 窗口下缩放约 1.55）。
+        if (panelSettings != null)
+        {
+            panelSettings = Object.Instantiate(panelSettings);
+            panelSettings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
+            panelSettings.referenceResolution = new Vector2Int(1245, 700);
+            panelSettings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
+            panelSettings.match = 1f;
+        }
         uiDoc.panelSettings = panelSettings;
         uiDoc.visualTreeAsset = null;
         root = uiDoc.rootVisualElement;
@@ -1979,6 +1989,7 @@ public class GameMainUI : MonoBehaviour
     private Focusable recentPreviousFocus;
     private ScrollView recentTasksList;
     private IVisualElementScheduledItem navFadeSchedule;
+    private VisualElement navHint;
     private float memoryCheckTimer;
     private long tabletActivationSequence;
     private readonly TabletEdgeGesture tabletEdgeGesture = new TabletEdgeGesture();
@@ -1994,7 +2005,7 @@ public class GameMainUI : MonoBehaviour
         appLayer = new VisualElement { name = "tablet-app-layer" };
         appLayer.style.position = Position.Absolute;
         appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop; appLayer.style.left = 0;
-        appLayer.style.right = 0; appLayer.style.bottom = SystemNavBarHeight;
+        appLayer.style.right = 0; appLayer.style.bottom = 0;
         appLayer.style.display = DisplayStyle.None;
         appLayer.focusable = true;
         appLayer.style.alignItems = Align.Center;
@@ -2021,6 +2032,10 @@ public class GameMainUI : MonoBehaviour
         systemNavigationBar.style.justifyContent = Justify.SpaceAround;
         systemNavigationBar.style.backgroundColor = new Color(0.055f, 0.06f, 0.075f, 0.96f);
         systemNavigationBar.style.display = DisplayStyle.None;
+        systemNavigationBar.style.translate = new Translate(0, Length.Percent(100));
+        systemNavigationBar.pickingMode = PickingMode.Ignore;
+        systemNavigationBar.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("translate") };
+        systemNavigationBar.style.transitionDuration = new List<TimeValue> { new TimeValue(RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(220), TimeUnit.Millisecond) };
 
         var back = CreateTabletNavButton("‹", "返回", () => { ShowTabletNavigationBar(); RequestSystemBack(); });
         back.name = "tablet-nav-back";
@@ -2033,13 +2048,26 @@ public class GameMainUI : MonoBehaviour
         systemNavigationBar.Add(recents);
         root.Add(systemNavigationBar);
 
+        // 底部细条：提示“从这里上滑”，导航栏呼出时淡出
+        navHint = new VisualElement { name = "tablet-nav-hint", pickingMode = PickingMode.Ignore };
+        navHint.style.position = Position.Absolute;
+        navHint.style.bottom = 6;
+        navHint.style.left = Length.Percent(50);
+        navHint.style.translate = new Translate(Length.Percent(-50), 0);
+        navHint.style.width = 150; navHint.style.height = 5;
+        navHint.style.borderTopLeftRadius = navHint.style.borderTopRightRadius = 3;
+        navHint.style.borderBottomLeftRadius = navHint.style.borderBottomRightRadius = 3;
+        navHint.style.backgroundColor = new Color(0.45f, 0.47f, 0.52f, 0.55f);
+        navHint.style.display = DisplayStyle.None;
+        root.Add(navHint);
+
         recentTasksOverlay = new VisualElement { name = "tablet-recent-tasks-overlay" };
         recentTasksOverlay.focusable = true;
         recentTasksOverlay.style.position = Position.Absolute;
         recentTasksOverlay.style.left = 0;
         recentTasksOverlay.style.right = 0;
         recentTasksOverlay.style.top = 0;
-        recentTasksOverlay.style.bottom = SystemNavBarHeight;
+        recentTasksOverlay.style.bottom = 0;
         recentTasksOverlay.style.display = DisplayStyle.None;
         recentTasksOverlay.style.backgroundColor = new Color(0.035f, 0.045f, 0.07f, 0.94f);
         recentTasksOverlay.RegisterCallback<ClickEvent>(evt =>
@@ -2124,7 +2152,7 @@ public class GameMainUI : MonoBehaviour
         layer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
         layer.style.left = 0;
         layer.style.right = 0;
-        layer.style.bottom = SystemNavBarHeight;
+        layer.style.bottom = 0;
         layer.style.display = DisplayStyle.None;
         layer.focusable = true;
         layer.style.alignItems = Align.Center;
@@ -2158,6 +2186,7 @@ public class GameMainUI : MonoBehaviour
         ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
         if (systemNavigationBar != null) systemNavigationBar.style.display = DisplayStyle.None;
+        if (navHint != null) navHint.style.display = DisplayStyle.None;
     }
 
     private void ActivateTabletTask(TabletTaskSession task)
@@ -2222,7 +2251,8 @@ public class GameMainUI : MonoBehaviour
         if (systemNavigationBar != null)
         {
             systemNavigationBar.style.display = DisplayStyle.Flex;
-            ShowTabletNavigationBar();
+            HideTabletNavigationBar();
+            if (navHint != null) { navHint.style.display = DisplayStyle.Flex; navHint.BringToFront(); }
         }
         Focusable lastFocus = task.LastFocusedElement;
         if (lastFocus is VisualElement focusedElement && task.Root.Contains(focusedElement))
@@ -2386,7 +2416,7 @@ public class GameMainUI : MonoBehaviour
             appLayer.style.top = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
             appLayer.style.left = 0;
             appLayer.style.right = 0;
-            appLayer.style.bottom = SystemNavBarHeight;
+            appLayer.style.bottom = 0;
             appLayer.style.display = DisplayStyle.None;
             root.Insert(Mathf.Max(0, root.IndexOf(tabletShellView.RootElement)), appLayer);
         }
@@ -2452,7 +2482,7 @@ public class GameMainUI : MonoBehaviour
             {
                 float mw = root.panel.visualTree.layout.width;
                 float mh = root.panel.visualTree.layout.height;
-                tabletEdgeGesture.Begin(evt.pointerId, evt.position, mw, mh, SystemNavBarHeight,
+                tabletEdgeGesture.Begin(evt.pointerId, evt.position, mw, mh, TabletEdgeGesture.BottomEdgeZone,
                     IsDirectManipulationTarget(evt.target), 1);
             }
             return;
@@ -2464,11 +2494,10 @@ public class GameMainUI : MonoBehaviour
             tabletEdgeGesture.Reset();
             return;
         }
-        if (activeTabletTask != null) ShowTabletNavigationBar();
         Vector2 point = evt.position;
         float width = root.panel.visualTree.layout.width;
         float height = root.panel.visualTree.layout.height;
-        tabletEdgeGesture.Begin(evt.pointerId, point, width, height, SystemNavBarHeight,
+        tabletEdgeGesture.Begin(evt.pointerId, point, width, height, TabletEdgeGesture.BottomEdgeZone,
             IsDirectManipulationTarget(evt.target), activeTouchPointers.Count);
     }
 
@@ -2476,6 +2505,10 @@ public class GameMainUI : MonoBehaviour
     {
         if (IsMouseGestureEvent(evt))
         {
+            if (unlocked && activeTabletTask != null && root?.panel != null && !tabletEdgeGesture.HasActiveGesture &&
+                evt.position.y >= root.panel.visualTree.layout.height - 4f &&
+                systemNavigationBar != null && systemNavigationBar.pickingMode == PickingMode.Ignore)
+                ShowTabletNavigationBar();
             if (tabletEdgeGesture.HasActiveGesture && tabletEdgeGesture.ActivePointerId == evt.pointerId)
                 tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
             return;
@@ -2502,6 +2535,7 @@ public class GameMainUI : MonoBehaviour
             case TabletGestureAction.Controls: OpenSystemPanel(TabletSystemPanel.Controls); break;
             case TabletGestureAction.Back: RequestSystemBack(); break;
             case TabletGestureAction.Home: ReturnToTabletHome(); break;
+            case TabletGestureAction.RevealNav: if (activeTabletTask != null) ShowTabletNavigationBar(); break;
         }
         if (action == TabletGestureAction.None) return;
         suppressNextGestureClick = true;
@@ -2574,19 +2608,28 @@ public class GameMainUI : MonoBehaviour
         if (pauseStatus) ResetSystemGesture();
     }
 
+    // 全面屏手势：导航栏平时收在屏幕下方，从底边上滑（或鼠标顶到底边）才滑出，几秒后自动收回
     private void ShowTabletNavigationBar()
     {
         if (systemNavigationBar == null || systemNavigationBar.style.display == DisplayStyle.None) return;
         navFadeSchedule?.Pause();
-        systemNavigationBar.style.opacity = 1f;
-        if (Application.platform == RuntimePlatform.Android)
+        systemNavigationBar.style.translate = new Translate(0, 0);
+        systemNavigationBar.pickingMode = PickingMode.Position;
+        systemNavigationBar.BringToFront();
+        if (navHint != null) navHint.style.opacity = 0f;
+        navFadeSchedule = systemNavigationBar.schedule.Execute(() =>
         {
-            navFadeSchedule = systemNavigationBar.schedule.Execute(() =>
-            {
-                if (activeTabletTask != null && recentTasksOverlay.style.display != DisplayStyle.Flex)
-                    systemNavigationBar.style.opacity = 0.34f;
-            }).StartingIn(1600);
-        }
+            if (recentTasksOverlay.style.display != DisplayStyle.Flex) HideTabletNavigationBar();
+        }).StartingIn(3000);
+    }
+
+    private void HideTabletNavigationBar()
+    {
+        if (systemNavigationBar == null) return;
+        navFadeSchedule?.Pause();
+        systemNavigationBar.style.translate = new Translate(0, Length.Percent(100));
+        systemNavigationBar.pickingMode = PickingMode.Ignore;
+        if (navHint != null) navHint.style.opacity = 1f;
     }
 
     private void OnTabletMemoryUsageChanged(in ApplicationMemoryUsageChange change)

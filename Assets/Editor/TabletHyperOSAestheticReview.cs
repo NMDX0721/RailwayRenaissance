@@ -231,8 +231,6 @@ namespace RailwayRenaissance.Editor
                         root = document.rootVisualElement;
 
                         var settings = UnityEngine.Object.Instantiate(document.panelSettings);
-                        settings.scaleMode = PanelScaleMode.ConstantPixelSize;
-                        settings.scale = 1;
                         settings.clearColor = true;
                         settings.colorClearValue = new Color(0.06f, 0.07f, 0.06f);
                         document.panelSettings = settings;
