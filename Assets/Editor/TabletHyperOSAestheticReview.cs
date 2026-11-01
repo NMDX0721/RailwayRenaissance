@@ -428,8 +428,70 @@ namespace RailwayRenaissance.Editor
                         Resize(1920, 1200); // 16:10 平板比例
                         ui.OpenSystemPanel(TabletSystemPanel.Controls);
                         Capture("15_hyperos_responsive_tablet");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
 
-                        Teardown(true, "All 15 stages completed successfully");
+                    // ==================== Stage 16–20: 高对比度、减少动效与竖屏窄屏 ====================
+                    case 16:
+                        presentation.SetReduceMotion(true);   // 截图时关闭动画，避免截到淡入中途
+                        presentation.SetHighContrast(true);
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("16_high_contrast_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 17:
+                        state.ClosePanel();
+                        state.Post("应用提示", "闹钟已同步到先民排班系统");
+                        state.Post("铁路广播", "雾峰村线临时限速 40 km/h，请注意行车");
+                        ui.OpenSystemPanel(TabletSystemPanel.Notifications);
+                        Capture("17_high_contrast_notifications");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 18:
+                        presentation.SetHighContrast(false);
+                        presentation.SetReduceMotion(true);
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("18_reduce_motion_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 19:
+                    {
+                        // 减少动效开启时面板必须直接到位：不透明、无位移，不能停在动画起点
+                        var motionPanel = root.Q("tablet-shell-panel");
+                        Assert(motionPanel != null, "tablet-shell-panel missing under reduce motion");
+                        Assert(motionPanel.resolvedStyle.opacity > 0.99f, "Panel must be fully opaque with reduce motion on");
+                        Assert(Mathf.Abs(motionPanel.resolvedStyle.translate.y) < 0.5f, "Panel must not be offset with reduce motion on");
+                        Resize(800, 1280); // 竖屏窄屏（仍保持减少动效，保证截图时面板已完整显示）
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Notifications);
+                        Capture("19_portrait_notifications");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+                    }
+
+                    case 20:
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("20_portrait_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 21:
+                        state.ClosePanel();
+                        presentation.SetReduceMotion(false);
+                        Resize(1920, 1080);
+                        Teardown(true, "All stages completed successfully");
                         break;
                 }
             }
