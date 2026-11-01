@@ -78,9 +78,14 @@ public static class RailwayMusicTerminalReview
         timeout = EditorApplication.timeSinceStartup + 150;
         EditorApplication.isPlaying = true;
     }
+    // At the normal review size a failed check stops the run. When MUSIC_REVIEW_SIZE asks for another size (a pre-flight for a new canvas), a failed
+    // check is logged as MUSIC_PREFLIGHT_ISSUE and the run goes on, so one run shows everything that does not fit instead of only the first thing.
+    static bool Preflight => MainSize.x != 1440 || MainSize.y != 900;
     static void Assert(bool condition, string reason)
     {
-        if (!condition) throw new InvalidOperationException(reason);
+        if (condition) return;
+        if (Preflight) { Debug.Log("MUSIC_PREFLIGHT_ISSUE: " + reason); return; }
+        throw new InvalidOperationException(reason);
     }
     static void ValidateControlGeometry()
     {

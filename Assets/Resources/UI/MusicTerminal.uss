@@ -507,7 +507,9 @@
 .music-stage-lyrics { position: absolute; left: 0; right: 0; top: 0; bottom: 0; align-items: center; justify-content: center; padding: 0 48px; }
 .music-stage-line { flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; margin: 20px 0; max-width: 100%; }
 .music-stage-word { flex-shrink: 0; transform-origin: 50% 60%; }
-.music-stage-word-text { color: rgb(237, 230, 204); -unity-font-style: bold; white-space: nowrap; }
+/* Every character of the stage styles is its own label, and a label has a default margin and padding of a few pixels on each side: left alone, each letter
+   of an English word is spaced apart and a long line is 200 px wider than its estimate. The characters sit flush, like text. */
+.music-stage-word-text { color: rgb(237, 230, 204); -unity-font-style: bold; white-space: nowrap; margin: 0; padding: 0; }
 .music-stage-previous { font-size: 18px; color: rgb(214, 204, 172); opacity: 0.3; white-space: normal; -unity-text-align: middle-center; margin-bottom: 6px; }
 .music-stage-upcoming { font-size: 17px; color: rgb(214, 204, 172); opacity: 0.3; white-space: normal; -unity-text-align: middle-center; margin-top: 10px; }
 .music-stage-translation { font-size: 20px; color: rgb(196, 204, 170); opacity: 0.85; white-space: normal; -unity-text-align: middle-center; }
@@ -562,8 +564,14 @@
 /* Partita style: one column of uneven rows with guide lines that grow from alternating sides. */
 .music-stage-partita-column { align-self: stretch; align-items: center; justify-content: center; padding: 36px 0 28px; }
 /* Lyrics page, left column: the song's information rows (same data as the record archive). */
-.music-lyrics-info { margin: 6px 0 4px; }
-.music-lyrics-info-row { flex-direction: row; margin-bottom: 3px; }
+/* On a short column (under about 470 px, as on a 700 px high tablet) the song information is kept and the secondary lines give way. */
+.music-lyrics-short .music-lyrics-info-note { display: none; }
+.music-lyrics-short .music-detail-title { font-size: 18px; }
+.music-lyrics-short .music-lyrics-status { margin-top: 2px; }
+/* None of these may shrink: on a short screen the column is squeezed and flexible rows collapse into one another. */
+.music-lyrics-art > * { flex-shrink: 0; }
+.music-lyrics-info { margin: 6px 0 4px; flex-shrink: 0; }
+.music-lyrics-info-row { flex-direction: row; margin-bottom: 3px; flex-shrink: 0; }
 .music-lyrics-info-key { width: 44px; flex-shrink: 0; color: rgb(176, 168, 140); font-size: 12px; margin: 0; padding: 0; }
 .music-lyrics-info-value { flex-grow: 1; flex-shrink: 1; color: rgb(228, 220, 190); font-size: 13px; white-space: normal; margin: 0; padding: 0; }
 .music-lyrics-info-note { color: rgb(190, 184, 156); font-size: 12px; white-space: normal; margin: 4px 0 0 0; padding: 0; }
@@ -593,12 +601,12 @@
 .music-stage-claddagh { align-self: stretch; align-items: center; justify-content: center; }
 .music-stage-claddagh-ring { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
 .music-stage-claddagh-glyph { position: absolute; left: -70px; width: 140px; align-items: center; justify-content: center; }
-.music-stage-claddagh-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-text-align: middle-center; -unity-font-style: bold; }
+.music-stage-claddagh-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-text-align: middle-center; -unity-font-style: bold; margin: 0; padding: 0; }
 .music-stage-claddagh-translation { position: absolute; bottom: 4px; left: 0; right: 0; font-size: 20px; color: rgb(196, 204, 170); opacity: 0.85; white-space: normal; -unity-text-align: middle-center; }
 /* Tilt style: rows of plain type, one row maybe in italic accent. */
 .music-stage-tilt-column { align-self: stretch; align-items: center; justify-content: center; padding: 14px 0; }
 .music-stage-tilt-row { flex-direction: row; justify-content: center; align-items: center; margin: 2px 0; }
-.music-stage-tilt-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-font-style: normal; }
+.music-stage-tilt-char { color: rgb(237, 230, 204); white-space: nowrap; -unity-font-style: normal; margin: 0; padding: 0; }
 .music-stage-tilt-italic { -unity-font-style: italic; }
 .music-stage-partita-row { flex-direction: row; align-items: center; justify-content: center; padding: 3px 8px; }
 .music-stage-guide-h { position: absolute; bottom: -8px; height: 1px; left: -16px; right: -20px; }

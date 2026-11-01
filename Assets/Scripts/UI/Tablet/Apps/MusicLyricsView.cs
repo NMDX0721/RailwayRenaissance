@@ -106,7 +106,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (float.IsNaN(room) || room <= 0) return;
                 bool compact = false;
                 for (var ancestor = host; ancestor != null; ancestor = ancestor.parent) if (ancestor.ClassListContains("music-compact")) { compact = true; break; }
-                float width = Mathf.Min(room, compact ? 140f : 220f), ratio = Mathf.Clamp((float)coverTexture.height / coverTexture.width, .6f, 1.4f);
+                // On a short column (the column itself is under 470 px high, which is what a 700 px high tablet gives it) the cover shrinks and the
+                // atmosphere line goes, so the information, the source line and the record archive button all stay inside the column.
+                bool shortScreen = art.resolvedStyle.height > 0 && art.resolvedStyle.height < 470;
+                art.EnableInClassList("music-lyrics-short", shortScreen);
+                float width = Mathf.Min(room, compact ? 140f : shortScreen ? 100f : 220f), ratio = Mathf.Clamp((float)coverTexture.height / coverTexture.width, .6f, 1.4f);
                 cover.style.width = width; cover.style.height = width * ratio;
             }
             art.RegisterCallback<GeometryChangedEvent>(_ => FitCover());

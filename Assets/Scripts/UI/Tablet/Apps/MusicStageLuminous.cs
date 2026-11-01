@@ -118,6 +118,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             spaced = true;
         }
 
+        // The pixel font's Latin letters measure about 0.65 em, CJK characters 1 em.
+        static float Advance(string text, float px)
+        {
+            float total = 0;
+            foreach (char ch in text) total += (ch >= 0x2E80 ? 1f : ch == ' ' || ch == ' ' ? .4f : .65f) * px;
+            return Mathf.Max(px * .35f, total);
+        }
+
         static string Normalize(string text)
         {
             var letters = new System.Text.StringBuilder();
@@ -168,7 +176,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             // Fit the line to the stage: one row for short lines, two for long ones. Magnified words need room, so the base size is smaller.
             float avail = Mathf.Max(240f, (width < 120 ? 760f : width) - 96f);
             float size = Mathf.Clamp(avail * (length <= 14 ? 1 : 2) / (length * 1.15f), 26f, 52f) * c.fontScale * (legacy ? 1f : .82f);
-            fontSize = size = Mathf.Min(size, avail / 3f);
+            size = Mathf.Min(size, avail / 3f);
+            // A long line wraps into several rows and every row needs its own height; on a short stage the type is made smaller until the rows fit
+            // (about 2.1 times the type size per row: the line, the room above and below it, and the magnification).
+            float stageHeight = (root.parent ?? root).resolvedStyle.height; if (float.IsNaN(stageHeight) || stageHeight < 120) stageHeight = 420f;
+            float allowed = stageHeight * (stageHeight >= 480f ? .72f : .62f);   // a short stage also has to keep the top row clear of the progress rail
+            for (int pass = 0; pass < 4; pass++)
+            {
+                float lineWidth = 0;
+                foreach (var unit in grouped) { string t = ""; foreach (var g in unit.glyphs) t += g.text; lineWidth += Advance(t, size) * 1.2f + size * .3f; }
+                int rowCount = Mathf.Max(1, Mathf.CeilToInt(lineWidth / (avail * .95f)));
+                float need = rowCount * size * (chaotic ? 2.5f : 2.1f);
+                if (need <= allowed || size <= 18f) break;
+                size = Mathf.Max(18f, size * Mathf.Max(.6f, allowed / need));
+            }
+            fontSize = size;
 
             // Each line gets its own alignment, picked from the seed so it does not reshuffle when the screen redraws. A short line on its own
             // row stays centred (a line pushed to one edge looks like a mistake next to the centred neighbours).
@@ -178,6 +200,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             line.style.minHeight = shortLine ? Mathf.Max(96f, size * 2.4f) : 150f;
             line.style.justifyContent = justify[seed % justify.Length]; line.style.alignItems = align[(seed * 2) % align.Length];
             line.style.alignContent = Align.Center;
+            line.style.paddingTop = size * .6f; line.style.paddingBottom = size * .6f;   // words scatter upward and downward by up to a row's margin
             // Folia scatters up to 60 px at the wildest setting; on a wrapped line that put whole words on top of each other, so it is held to 40.
             float spread = chaotic ? 28f : still ? 0f : 20f, tilt = chaotic ? 30f : still ? 0f : 5f;
 
@@ -186,7 +209,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // Folia's wildest setting varies a word's size from 0.8 to 1.4 times; held to 0.8 to 1.2 so a wrapped line stays readable.
                 var word = StageWord.Create(grouped[i], size, c.accent, chorus, seed + i, spread, tilt, chaotic ? .8f : 1.1f, chaotic ? .4f : .2f, tuning.rotation, c.calm, chaotic);
                 // Wrapped rows need room above and below: words are magnified and scattered up and down, and without it one row lands on the next.
-                float rowMargin = size * (chaotic ? .4f : .34f); word.body.style.marginTop = rowMargin; word.body.style.marginBottom = rowMargin;
+                float rowMargin = size * (chaotic ? .6f : .34f); word.body.style.marginTop = rowMargin; word.body.style.marginBottom = rowMargin;
+                // Letters sit flush now, so words are narrower than before: they need their own gap, or a tilted, magnified word lands on its neighbour.
+                float sideMargin = size * (chaotic ? .3f : .12f); word.body.style.marginLeft = sideMargin; word.body.style.marginRight = sideMargin;
                 line.Add(word.body); units.Add(word);
             }
         }

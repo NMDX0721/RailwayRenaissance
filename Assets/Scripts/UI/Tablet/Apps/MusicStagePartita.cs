@@ -208,14 +208,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 chunk.cfgRot = chaotic ? (chunk.left ? -3f : 3f) : 0f;
                 float scale = (chaotic ? 1f + Mathf.Min(graphemes * .01f, .05f) : 1f) * staggerScale;
                 if (c.calm) { chunk.cfgY = 0; chunk.cfgRot = 0; scale = 1; }
-                // The row is offset sideways by up to StaggerMax and its words are magnified by <scale>, so its width must fit the stage with both counted;
-                // a long row is shrunk (never below 45%) instead of running off the edge.
+                // The row is offset sideways by up to StaggerMax and its words are magnified by <scale>, so it must fit the stage with both counted.
+                // A long row gets a smaller TYPE SIZE (never below 45%): shrinking the magnification only shrinks the picture, while the row keeps its
+                // layout width and still runs off the edge of the stage.
                 float estimate = 0;
-                foreach (var u in cut) { string t = ""; foreach (var g in u.glyphs) t += g.text; estimate += Advance(t, size) * 1.3f + Mathf.Max(10f, size * .3f); }
+                foreach (var u in cut) { string t = ""; foreach (var g in u.glyphs) t += g.text; estimate += Advance(t, size) * scale * 1.3f + Mathf.Max(10f, size * .3f); }
                 // Rotated words and the trailing space of a word reach a little past its estimated width, so keep a comfortable margin.
                 float room = Mathf.Max(200f, avail - StaggerMax * 2f - 64f);
                 // 1.15: the word being sung grows by 1.4 times, which widens the row a little more.
-                if (estimate * scale * 1.15f > room) scale *= Mathf.Max(.45f, room / (estimate * scale * 1.15f));
+                float rowSize = estimate * 1.15f > room ? size * Mathf.Max(.45f, room / (estimate * 1.15f)) : size;
                 chunk.x = chunk.cfgX + (chunk.left ? -40f : 40f); chunk.y = chunk.cfgY; chunk.r = chunk.cfgRot;
 
                 chunk.row = new VisualElement { pickingMode = PickingMode.Ignore }; chunk.row.AddToClassList("music-stage-partita-row");
@@ -228,11 +229,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float spread = chaotic ? 15f : calmLook ? 0f : 6f, tilt = chaotic ? 8f : calmLook ? 0f : 3f;
                 for (int i = 0; i < cut.Count; i++)
                 {
-                    var word = StageWord.Create(cut[i], size, c.accent, chorus, seedBase + row * 131 + i * 7, spread, tilt, scale, 0f, tuning.rotation, c.calm, false);
+                    var word = StageWord.Create(cut[i], rowSize, c.accent, chorus, seedBase + row * 131 + i * 7, spread, tilt, scale, 0f, tuning.rotation, c.calm, false);
                     // The word being sung grows by 1.4 times, about a fifth of its own width on each side, so the gap follows the word's width instead
                     // of being fixed; otherwise the sung word lands on its neighbour.
                     string unitText = ""; foreach (var g in cut[i].glyphs) unitText += g.text;
-                    word.body.style.marginRight = Mathf.Max(10f, size * .3f) + Advance(unitText, size) * .3f * scale;
+                    word.body.style.marginRight = Mathf.Max(10f, rowSize * .3f) + Advance(unitText, rowSize) * .3f * scale;
                     chunk.row.Add(word.body); chunk.words.Add(word);
                 }
                 column.Add(chunk.row); chunks.Add(chunk);

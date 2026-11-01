@@ -29,7 +29,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         const int Behind = 1, Ahead = 2;                 // lines kept on the ring around the centre line
-        const float FocusScale = .65f, TiltDegrees = 45f, MinorRatio = .09f, SpacingBoost = 2f;
+        const float FocusScale = .65f, MinorRatio = .09f, SpacingBoost = 2f;
+        // The ring lies along a diagonal; on a short stage the diagonal is flattened so the ring's ends stay on the stage (45 degrees on a tall one).
+        float tiltDegrees = 45f;
 
         readonly VisualElement root = new VisualElement(), ring = new VisualElement();
         readonly Label translation = new Label();
@@ -81,7 +83,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             float intensityMultiplier = c.tuning.intensity == 0 ? .08f : c.tuning.intensity == 2 ? .95f : .25f, maxScale = c.tuning.intensity == 0 ? 1.08f : c.tuning.intensity == 2 ? 1.95f : 1.25f;
             float swell = c.calm ? 1f : Mathf.Min(1f + Mathf.Clamp01(c.low) * intensityMultiplier, maxScale);
             float major = rx * swell, minor = major * MinorRatio;
-            float tilt = -TiltDegrees * Mathf.Deg2Rad, cosT = Mathf.Cos(tilt), sinT = Mathf.Sin(tilt);
+            float tilt = -tiltDegrees * Mathf.Deg2Rad, cosT = Mathf.Cos(tilt), sinT = Mathf.Sin(tilt);
             Color baseColor = new Color(.93f, .9f, .8f, .55f), sungColor = Color.Lerp(Color.white, c.accent, .55f);
             float cx = float.IsNaN(ring.resolvedStyle.width) ? 0 : ring.resolvedStyle.width * .5f, cy = float.IsNaN(ring.resolvedStyle.height) ? 0 : ring.resolvedStyle.height * .5f;
 
@@ -166,6 +168,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             // A little smaller than Folia's ring (44% of the width, up to 560 px): the pixel font is heavy and the translation sits below the ring.
             rx = Mathf.Min(stageWidth * .38f, 480f) * (c.tuning.intensity == 0 ? .9f : 1f); ry = rx * .707f;
             glyphSize = Mathf.Clamp(rx * .1f, 22f, 46f) * c.fontScale;
+            // The ring's vertical reach is rx times sin(tilt); allow it a quarter more than the stage's half height (the far ends are small and faint).
+            float areaHalf = Mathf.Max(260f, (height < 120 ? 460f : height) * .78f) * .5f;
+            tiltDegrees = Mathf.Clamp(Mathf.Asin(Mathf.Clamp01((areaHalf * 1.25f - glyphSize) / rx)) * Mathf.Rad2Deg, 20f, 45f);
             int centre = Mathf.Max(-1, c.active);
             for (int index = centre - Behind; index <= centre + Ahead; index++)
             {
