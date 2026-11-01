@@ -425,7 +425,7 @@ public static class RailwayMusicTerminalReview
             switch (stage)
             {
                 case 1:
-                    Assert(root.worldBound.width > 1000 && root.Q("music-player").worldBound.height >= 100, "Runtime layout did not resolve");
+                    Assert(root.worldBound.width > 1000 && root.Q("music-player").worldBound.height >= 80, "Runtime layout did not resolve");
                     ValidateControlGeometry();
                     Capture("01-library");
                     var search = root.Q<TextField>("music-search"); search.value = "Platform";

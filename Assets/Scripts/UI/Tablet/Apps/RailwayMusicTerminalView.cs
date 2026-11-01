@@ -91,6 +91,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.RegisterCallback<GeometryChangedEvent>(_ => {
                 root.EnableInClassList("music-compact", root.resolvedStyle.width < 1050);
                 root.EnableInClassList("music-overlay-queue", root.resolvedStyle.width < 1280);
+                // A short window (a 700 px high tablet less its status bar) gives the player bar a slimmer layout so the library keeps its room.
+                bool shortWindow = root.resolvedStyle.height > 0 && root.resolvedStyle.height < 680f;
+                root.EnableInClassList("music-short", shortWindow);
+                if (vuMeter != null) vuMeter.root.style.display = shortWindow ? DisplayStyle.None : DisplayStyle.Flex;
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
             var header = Box(root, "music-header");

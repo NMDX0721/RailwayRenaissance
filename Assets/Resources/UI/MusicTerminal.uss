@@ -625,3 +625,21 @@
 .music-stage-translation { margin-top: 10px; }
 .music-stage-previous { margin-bottom: 10px; }
 .music-lyrics-cover { background-size: contain; align-self: flex-start; }
+
+/* The station plaque must not be squeezed by the navigation column: its name and code line would then overflow its border. */
+.music-station-plaque { flex-shrink: 0; }
+/* Short window (about 700 px high less the status bar): slimmer header and player bar, so the library and the lyrics keep their room. */
+.music-short .music-header { height: 56px; padding-top: 6px; padding-bottom: 6px; }
+.music-short .music-station-plaque { padding: 8px 5px 6px; margin-bottom: 8px; }
+.music-short .music-station-name { font-size: 20px; margin-bottom: 3px; }
+.music-short .music-station-code { padding-top: 4px; }
+.music-short .music-player { min-height: 84px; padding-top: 6px; padding-bottom: 6px; }
+.music-short .music-player-info { flex-direction: row; flex-wrap: wrap; align-content: center; }
+.music-short .music-player-info .music-track-title { width: 100%; margin-bottom: 4px; }
+.music-short .music-player-info .music-button { flex-grow: 1; width: 46%; min-height: 26px; height: 26px; margin: 0 2px; }
+.music-short .music-timeline { margin-top: 2px; }
+.music-short .music-player-info .music-button { padding-left: 4px; padding-right: 4px; font-size: 12px; }
+.music-short .music-player-info .music-button .music-button-label { margin-left: 2px; font-size: 12px; }
+.music-short .music-player-info .music-vector-icon { display: none; }
+.music-short .music-player-info .music-button { padding-top: 0; padding-bottom: 0; height: 24px; min-height: 24px; }
+.music-short .music-player { padding-bottom: 14px; }
