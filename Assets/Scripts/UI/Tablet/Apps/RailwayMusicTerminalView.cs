@@ -100,19 +100,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var header = Box(root, "music-header");
             Button(header, "返回桌面", close, "music-close");
             var navToggle = Button(header, "侧栏", ToggleNavigation, "music-nav-toggle"); navToggle.tooltip = "收起 / 展开侧栏";
-            var brand = Box(header, "music-brand");
-            Text(brand, "随身听", "music-brand-title"); Text(brand, "铁路复兴 / 沿线声音档案", "music-muted");
-            Text(header, "雾峰站  ·  声音收藏\nWUFENG / SOUND ARCHIVE", "music-header-code");
+            // One top row, as in the streaming apps: back and menu on the left, the search pill taking the room, help on the right. The status bar
+            // is an overlay above it, so the row doubles as the app's top bar.
+            search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
+            try { search.textEdition.placeholder = "搜索曲目、作者、分类"; } catch { }
+            header.Add(search);
+            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
+            clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
+            clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
             var main = Box(body, "music-main");
-            var tools = Box(main, "music-tools");
-            search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
-            search.label = "搜索"; tools.Add(search);
-            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
-            clearSearch = Button(tools, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
-            clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
-            Button(tools, "操作帮助", ShowHelp, "music-help");
             content = Box(main, "music-content");
             drawerScrim = Box(body, "music-queue-scrim", "music-queue-scrim");
             drawerScrim.style.display = DisplayStyle.None;

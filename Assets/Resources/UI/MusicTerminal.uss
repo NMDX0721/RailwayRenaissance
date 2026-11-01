@@ -643,3 +643,12 @@
 .music-short .music-player-info .music-vector-icon { display: none; }
 .music-short .music-player-info .music-button { padding-top: 0; padding-bottom: 0; height: 24px; min-height: 24px; }
 .music-short .music-player { padding-bottom: 14px; }
+
+/* Top bar: one row with the search pill (after the streaming apps' home pages) in place of the old title band and the separate search strip. */
+.music-header { height: 60px; padding: 8px 16px; }
+.music-header .music-search { flex-grow: 1; margin: 0 12px; }
+.music-header .music-search > Label { display: none; }
+.music-header TextField { margin: 0; min-height: 38px; }
+.music-header .unity-text-field__input { border-radius: 19px; padding-left: 16px; padding-right: 16px; min-height: 38px; background-color: rgb(22, 25, 23); }
+.music-header .music-button { height: 38px; }
+.music-short .music-header { height: 54px; }
