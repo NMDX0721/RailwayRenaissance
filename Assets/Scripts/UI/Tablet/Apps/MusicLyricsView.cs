@@ -28,6 +28,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
         }
         VisualElement stageProgress;
+        int filteredLines;
         MusicReactiveStageView reactiveStage;
         MusicIconHelper.VuMeterHandle vu;
         Button followButton;
@@ -157,6 +158,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             font.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFontSize = Mathf.RoundToInt(e.newValue); MusicLibrarySession.Save(); RenderRows(); });
             var translation = new Toggle("显示翻译") { value = MusicLibrarySession.State.lyricTranslation, name = "music-lyrics-translation" }; more.Add(translation);
             translation.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricTranslation = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
+            var filterToggle = new Toggle("过滤制作信息行") { value = MusicLibrarySession.State.lyricFilter, name = "music-lyrics-filter" }; more.Add(filterToggle);
+            filterToggle.tooltip = "去掉歌词里的作词、作曲、编曲、版权声明等行，它们不会出现在舞台上";
+            filterToggle.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFilter = e.newValue; MusicLibrarySession.Save(); Reload(); });
+            var filterWords = new TextField("额外过滤词") { value = MusicLibrarySession.State.lyricFilterWords, isDelayed = true, name = "music-lyrics-filter-words" }; more.Add(filterWords);
+            filterWords.tooltip = "包含这些词的歌词行会被去掉，用逗号隔开；按回车或离开输入框后生效";
+            filterWords.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFilterWords = e.newValue ?? ""; MusicLibrarySession.Save(); Reload(); });
             var estimate = new Toggle("估算逐词") { value = MusicLibrarySession.State.estimateWords, name = "music-lyrics-estimate" }; more.Add(estimate);
             estimate.tooltip = "没有逐词时间的歌词，按行内字数估算逐词填充（仅用于显示）";
             estimate.RegisterValueChangedCallback(e => { MusicLibrarySession.State.estimateWords = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
@@ -253,6 +260,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var track = MusicLibrarySession.Find(trackId);
             instrumental = false;
             document = MusicTimedText.Load(track);
+            filteredLines = MusicLyricFilter.Apply(document, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
             following = true; RenderRows();
             if (track == null || track.provider != "netease" && track.provider != "bodian" && track.provider != "spotify" || !string.IsNullOrEmpty(MusicTimedText.Preference(track.id).fileName)) return;
             string requestedId = track.id;
@@ -265,13 +273,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // Prefer the source's own word-timed lyrics; fall back to line timing when absent or unusable.
                 var fetched = string.IsNullOrWhiteSpace(result.result.wordLyric) ? null : MusicTimedText.Parse(result.result.wordLyric, ".lrc");
                 if (fetched == null || fetched.lines.Count == 0 || !fetched.lines.Exists(l => l.words.Count > 0)) fetched = MusicTimedText.Parse(result.result.lyric, ".lrc");
-                MusicLyricEstimate.StripCredits(fetched);
+                filteredLines = MusicLyricFilter.Apply(fetched, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
                 if (fetched.lines.Count == 0) { status.text = track.category + "未提供可用的同步歌词。"; return; }
                 fetched.source = track.category + "歌词";
                 if (!string.IsNullOrEmpty(result.result.translation) && string.IsNullOrEmpty(MusicTimedText.Preference(requestedId).translationFileName))
                 {
                     var translated = MusicTimedText.Parse(result.result.translation, ".lrc");
-                    MusicLyricEstimate.StripCredits(translated);
+                    MusicLyricFilter.Apply(translated, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
                     // Each translated line goes to the nearest original line (within 1.5 s); a closer one replaces a farther one.
                     var gaps = new double[fetched.lines.Count];
                     foreach (var candidate in translated.lines)
@@ -320,7 +328,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 Text(scroll, "暂无歌词", "music-lyric-pure"); Text(scroll, "可导入 LRC、SRT、WebVTT 或逐词 JSON", "music-lyric-hint");
                 status.text = "暂无字幕"; return;
             }
-            status.text = document.source + "\n" + document.lines.FindAll(l => !string.IsNullOrWhiteSpace(l.text)).Count + " 行 · " + (document.lines.Exists(l => l.words.Count > 0) ? "含逐词时间" : MusicLibrarySession.State.estimateWords ? "逐词（按行估算）" : "逐行同步");
+            status.text = document.source + "\n" + document.lines.FindAll(l => !string.IsNullOrWhiteSpace(l.text)).Count + " 行 · " + (document.lines.Exists(l => l.words.Count > 0) ? "含逐词时间" : MusicLibrarySession.State.estimateWords ? "逐词（按行估算）" : "逐行同步") + (filteredLines > 0 ? " · 已过滤 " + filteredLines + " 行制作信息" : "");
             for (int i = 0; i < document.lines.Count; i++)
             {
                 var line = document.lines[i]; int index = i;

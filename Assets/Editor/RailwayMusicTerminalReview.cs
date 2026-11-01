@@ -1260,6 +1260,13 @@ public static class RailwayMusicTerminalReview
                         Debug.Log("MUSIC_TONE: " + toneMode + " hp=" + (hp.enabled ? hp.cutoffFrequency : 0) + " lp=" + (lp.enabled ? lp.cutoffFrequency : 0) + " drive=" + (dist.enabled ? dist.distortionLevel : 0) + " chorus=" + ch.enabled + " noise=" + (noise != null && noise.isPlaying ? noise.volume : 0) + " pitch=" + deck.pitch.ToString("0.0000") + " playing=" + deck.isPlaying);
                     }
                     MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
+                    {
+                        string filterSample = "[00:00.00]作词：张三\n[00:01.00]作曲 : 李四\n[00:02.00]Produced by Foo\n[00:03.00]真正的歌词一行\n[00:08.00]Another real line: not a credit\n[00:10.00]带 remix 的一行\n[00:12.00]未经许可，不得翻唱";
+                        var filtered = MusicTimedText.Parse(filterSample, ".lrc"); int removed = MusicLyricFilter.Apply(filtered, true, "remix");
+                        Assert(removed == 5 && filtered.lines.Count == 2 && filtered.lines[0].text == "真正的歌词一行", "Lyric filter removed " + removed + " lines, left: " + string.Join(" / ", filtered.lines.ConvertAll(l => l.text)));
+                        var untouched = MusicTimedText.Parse(filterSample, ".lrc"); Assert(MusicLyricFilter.Apply(untouched, false, "remix") == 0 && untouched.lines.Count == 7, "Lyric filter acted while switched off");
+                        Debug.Log("MUSIC_LYRIC_FILTER_OK: credits, notices and custom words removed (" + removed + " of 7), real lines kept, off switch respected");
+                    }
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
