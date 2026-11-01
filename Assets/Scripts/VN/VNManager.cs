@@ -1525,7 +1525,8 @@ public class VNManager : MonoBehaviour
 
         // Shift+→：快进下一句（快退已按需求移除）
         bool shiftHeld = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift);
-        if (shiftHeld)
+        // 平板激活向导等面板打开时，Shift+→ 不得推进背后的剧情（向导输入框里 Shift+方向键选字也会触发）
+        if (shiftHeld && !AdvanceBlockedByPanels())
         {
             if (LegacyInputAdapter.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
@@ -2380,6 +2381,7 @@ public class VNManager : MonoBehaviour
             cgScreen.style.right = 0; cgScreen.style.bottom = 0;
             cgScreen.style.alignItems = Align.Center;
             cgScreen.style.justifyContent = Justify.Center;
+            cgScreen.RegisterCallback<GeometryChangedEvent>(_ => LayoutCgImage());
             cgScreen.pickingMode = PickingMode.Position;
             cgScreen.RegisterCallback<ClickEvent>(e =>
             {
@@ -2405,6 +2407,8 @@ public class VNManager : MonoBehaviour
             {
                 var img = new VisualElement();
                 img.name = "cg-image";
+                img.userData = tex;
+                img.style.flexShrink = 0;
                 img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
 
                 if (isSmall)
@@ -2425,12 +2429,12 @@ public class VNManager : MonoBehaviour
                 else
                 {
                     // 全屏：contain缩放
-                    img.style.flexGrow = 1;
                     img.style.maxWidth = new Length(100, LengthUnit.Percent);
                     img.style.maxHeight = new Length(100, LengthUnit.Percent);
                     img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
                 }
                 cgScreen.Add(img);
+                LayoutCgImage();
             }
             else
             {
@@ -2451,6 +2455,20 @@ public class VNManager : MonoBehaviour
         hint.style.color = new Color(1f, 1f, 1f, 0.35f);
         hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
         cgScreen.Add(hint);
+    }
+
+    private void LayoutCgImage()
+    {
+        var img = cgScreen?.Q<VisualElement>("cg-image");
+        if (img == null || !(img.userData is Texture2D tex)) return;
+        // Background images do not give an empty VisualElement intrinsic dimensions.
+        float width = cgScreen.contentRect.width;
+        float height = cgScreen.contentRect.height;
+        if (width <= 0 || height <= 0) return;
+        float fraction = img.style.maxWidth.value.value < 100 ? 0.6f : 1f;
+        float scale = Mathf.Min(width * fraction / tex.width, height * fraction / tex.height);
+        img.style.width = tex.width * scale;
+        img.style.height = tex.height * scale;
     }
 
     private void HideCgScreen()
