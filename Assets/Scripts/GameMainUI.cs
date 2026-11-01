@@ -1477,7 +1477,7 @@ public class GameMainUI : MonoBehaviour
         });
 
         // 展开态：不再套卡片，标题与图标直接铺在压暗的桌面上（对照参考图的 AI 文件夹）
-        folderOverlay.style.backgroundColor = new Color(0.04f, 0.03f, 0.06f, 0.9f);
+        folderOverlay.style.backgroundColor = new Color(0.04f, 0.03f, 0.06f, 0.42f);
         var block = new VisualElement();
         block.style.width = 620;
         block.style.alignItems = Align.FlexStart;
@@ -1537,16 +1537,30 @@ public class GameMainUI : MonoBehaviour
         }
     }
 
+    private readonly List<VisualElement> folderHiddenLayers = new List<VisualElement>();
+
+    // 展开文件夹时，桌面上除壁纸、状态栏、手势条以外的内容都收起，背景只剩壁纸（对照 HyperOS：壁纸压暗，图标全部让位）
     private void OpenRailwayFolder()
     {
-        if (folderOverlay != null)
-            folderOverlay.style.display = DisplayStyle.Flex;
+        if (folderOverlay == null) return;
+        folderHiddenLayers.Clear();
+        foreach (var child in desktop.Children())
+        {
+            if (child == folderOverlay || child == statusBar || child.name == "tablet-desktop-wallpaper") continue;
+            if (child.resolvedStyle.position == Position.Absolute && child.resolvedStyle.height <= 8f) continue; // 底部手势条
+            if (child.resolvedStyle.display == DisplayStyle.None) continue;
+            child.style.display = DisplayStyle.None;
+            folderHiddenLayers.Add(child);
+        }
+        folderOverlay.style.display = DisplayStyle.Flex;
     }
 
     private void CloseRailwayFolder()
     {
         if (folderOverlay != null)
             folderOverlay.style.display = DisplayStyle.None;
+        foreach (var layer in folderHiddenLayers) layer.style.display = DisplayStyle.Flex;
+        folderHiddenLayers.Clear();
     }
 
     private void AddWallpaperRidge(VisualElement parent)
