@@ -919,3 +919,8 @@
 .music-navigation { overflow: hidden; }
 .music-navigation .music-playlists { flex-grow: 1; flex-shrink: 1; min-height: 0; }
 .music-navigation .music-new-playlist, .music-navigation .music-nav-note { flex-shrink: 0; }
+
+/* Song change on the lyrics page: the lyric layer fades in. */
+.music-lyrics-surface > * { transition-property: opacity; transition-duration: 380ms; transition-timing-function: ease-out; }
+.music-lyrics-surface > .music-lyrics-entering { opacity: 0; }
+.music-reduce-motion .music-lyrics-surface > * { transition-duration: 0s; }

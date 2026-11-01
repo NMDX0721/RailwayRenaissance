@@ -231,6 +231,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             trackId = TabletMusicAppUI.tabletCurrentTrackId;
             ApplyMotionStyle();
             Reload();
+            // A new song fades the lyric layer in over the backdrop (which already blends to the new cover's colours), instead of switching hard.
+            if (previousStage != null)
+            {
+                var fading = new System.Collections.Generic.List<VisualElement>();
+                foreach (var child in host.Children()) if (child != reactiveStage) { child.AddToClassList("music-lyrics-entering"); fading.Add(child); }
+                host.schedule.Execute(() => { foreach (var child in fading) child.RemoveFromClassList("music-lyrics-entering"); }).StartingIn(60);
+            }
         }
         static string MotionTitle() => new[] { "静读", "随行", "舞台" }[Mathf.Clamp(MusicLibrarySession.State.lyricMotion, 0, 2)];
         void ApplyMotionStyle()
