@@ -28,7 +28,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         const int Behind = 2, Ahead = 3;                       // lines kept on the arc around the current one
 
         readonly VisualElement root = new VisualElement(), wheel = new VisualElement();
-        readonly Label translation = new Label();
+        readonly Label translation = new Label { enableRichText = false };
         readonly List<ArcLine> lines = new List<ArcLine>();
         MusicTimedDocument shownDocument; int shownCentre = -9; float shownScale, shownWidth, shownHeight; bool shownEstimate, shownCalm; StageTuning shownTuning;
         float swing, swingVelocity; bool swingKnown;
@@ -165,7 +165,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     var glyph = new ArcGlyph { offset = at + advance * .5f, start = (float)g.start };
                     glyph.box = new VisualElement { pickingMode = PickingMode.Ignore }; glyph.box.AddToClassList("music-stage-pendolo-glyph");
                     glyph.box.style.height = glyphSize * 1.5f; glyph.box.style.top = -glyphSize * .75f;
-                    glyph.label = new Label(text) { pickingMode = PickingMode.Ignore }; glyph.label.AddToClassList("music-stage-pendolo-char"); glyph.label.style.fontSize = glyphSize; StageFonts.Apply(glyph.label);
+                    glyph.label = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; glyph.label.AddToClassList("music-stage-pendolo-char"); glyph.label.style.fontSize = glyphSize; StageFonts.Apply(glyph.label);
                     glyph.box.Add(glyph.label); wheel.Add(glyph.box); line.glyphs.Add(glyph);
                     at += advance;
                 }

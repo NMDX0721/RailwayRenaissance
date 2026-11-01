@@ -34,7 +34,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         float tiltDegrees = 45f;
 
         readonly VisualElement root = new VisualElement(), ring = new VisualElement();
-        readonly Label translation = new Label();
+        readonly Label translation = new Label { enableRichText = false };
         readonly List<RingLine> lines = new List<RingLine>();
         MusicTimedDocument shownDocument; int shownCentre = -9; float shownScale, shownWidth, shownHeight; bool shownEstimate, shownCalm; StageTuning shownTuning;
         float offset, offsetVelocity;      // ring rotation in radians (a multiple of PI when settled)
@@ -191,7 +191,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     rl.starts[i] = g.start;
                     g.box = new VisualElement { pickingMode = PickingMode.Ignore }; g.box.AddToClassList("music-stage-claddagh-glyph");
                     g.box.style.height = glyphSize * 1.5f; g.box.style.top = -glyphSize * .75f;
-                    g.label = new Label(text) { pickingMode = PickingMode.Ignore }; g.label.AddToClassList("music-stage-claddagh-char"); g.label.style.fontSize = glyphSize; StageFonts.Apply(g.label);
+                    g.label = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; g.label.AddToClassList("music-stage-claddagh-char"); g.label.style.fontSize = glyphSize; StageFonts.Apply(g.label);
                     g.box.Add(g.label); ring.Add(g.box); rl.glyphs.Add(g);
                     cursor += advance;
                 }

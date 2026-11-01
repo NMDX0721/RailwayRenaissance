@@ -44,7 +44,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (chaotic && Random(seed, 6) > .7f) w.body.style.alignSelf = Random(seed, 7) > .5f ? Align.FlexStart : Align.FlexEnd;
             // The glow layer comes first so it sits behind the text.
             string text = ""; foreach (var glyph in unit.glyphs) text += glyph.text;
-            w.glow = new Label(text) { pickingMode = PickingMode.Ignore }; w.glow.AddToClassList("music-stage-word-text"); w.glow.AddToClassList("music-stage-glow");
+            w.glow = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; w.glow.AddToClassList("music-stage-word-text"); w.glow.AddToClassList("music-stage-glow");
             w.glow.style.fontSize = size; w.glow.style.color = new Color(accent.r, accent.g, accent.b, .9f); w.glow.style.opacity = 0; StageFonts.Apply(w.glow);
             w.body.Add(w.glow);
             if (chorus)
@@ -54,7 +54,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             foreach (var glyph in unit.glyphs)
             {
-                var label = new Label(glyph.text) { pickingMode = PickingMode.Ignore }; label.AddToClassList("music-stage-word-text");
+                var label = new Label(glyph.text) { pickingMode = PickingMode.Ignore, enableRichText = false }; label.AddToClassList("music-stage-word-text");
                 label.style.fontSize = size; StageFonts.Apply(label); w.body.Add(label); w.labels.Add(label); w.tones.Add(0);
             }
             // Start in the waiting pose so the first frame does not flash.

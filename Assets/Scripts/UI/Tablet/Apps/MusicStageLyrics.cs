@@ -10,7 +10,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// </summary>
     public sealed class MusicStageLyrics : VisualElement
     {
-        readonly Label previous = new Label(), upcoming = new Label(), translation = new Label();
+        readonly Label previous = new Label { enableRichText = false }, upcoming = new Label { enableRichText = false }, translation = new Label { enableRichText = false };
         IStageStyle style;
         MusicTimedDocument shownDocument; int shownLine = -2; bool shownTranslation;
 

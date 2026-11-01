@@ -16,7 +16,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // streaming apps' search boxes. Enter on an empty box searches the hint that is showing.
         void StartSearchHints()
         {
-            searchHint = new Label("搜索曲目、作者、分类") { pickingMode = PickingMode.Ignore }; searchHint.AddToClassList("music-search-hint");
+            searchHint = new Label("搜索曲目、作者、分类") { pickingMode = PickingMode.Ignore, enableRichText = false }; searchHint.AddToClassList("music-search-hint");
             search.Add(searchHint);
             search.RegisterValueChangedCallback(_ => searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex);
             search.RegisterCallback<KeyDownEvent>(e => {

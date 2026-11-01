@@ -209,7 +209,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var holder = new VisualElement { pickingMode = PickingMode.Ignore }; holder.AddToClassList("music-stage-cappella-unit");
                 foreach (var glyph in unit.glyphs)
                 {
-                    var label = new Label(glyph.text.Replace(' ', ' ')) { pickingMode = PickingMode.Ignore }; label.AddToClassList("music-stage-cappella-char");
+                    var label = new Label(glyph.text.Replace(' ', ' ')) { pickingMode = PickingMode.Ignore, enableRichText = false }; label.AddToClassList("music-stage-cappella-char");
                     label.style.color = text; label.style.opacity = 0; StageFonts.Apply(label);
                     holder.Add(label); m.pieces.Add(new Piece { unit = holder, label = label, start = (float)glyph.start, end = (float)glyph.end });
                     m.lastEnd = Math.Max(m.lastEnd, glyph.end);
@@ -219,10 +219,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             m.bubble.Add(m.flow);
             if (!string.IsNullOrEmpty(m.translation))
             {
-                m.translationLabel = new Label(m.translation) { pickingMode = PickingMode.Ignore }; m.translationLabel.AddToClassList("music-stage-cappella-translation");
+                m.translationLabel = new Label(m.translation) { pickingMode = PickingMode.Ignore, enableRichText = false }; m.translationLabel.AddToClassList("music-stage-cappella-translation");
                 m.translationLabel.style.color = new Color(text.r, text.g, text.b, .75f); StageFonts.Apply(m.translationLabel); m.bubble.Add(m.translationLabel);
             }
-            m.stamp = new Label(Stamp(m.start)) { pickingMode = PickingMode.Ignore }; m.stamp.AddToClassList("music-stage-cappella-stamp");
+            m.stamp = new Label(Stamp(m.start)) { pickingMode = PickingMode.Ignore, enableRichText = false }; m.stamp.AddToClassList("music-stage-cappella-stamp");
             m.stamp.style.color = new Color(text.r, text.g, text.b, .55f); m.stamp.style.display = DisplayStyle.None; m.bubble.Add(m.stamp);
             m.row.Add(m.avatarDisc); m.row.Add(m.bubble); list.Add(m.row);
         }

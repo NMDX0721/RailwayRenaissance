@@ -43,14 +43,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var row = new VisualElement { pickingMode = PickingMode.Ignore }; row.AddToClassList("music-stage-still-row");
                 if (!string.IsNullOrWhiteSpace(data.text))
                 {
-                    var text = new Label(data.text) { pickingMode = PickingMode.Ignore };
+                    var text = new Label(data.text) { pickingMode = PickingMode.Ignore, enableRichText = false };
                     text.AddToClassList(current ? "music-stage-still-current" : "music-stage-still-side");
                     text.style.fontSize = (current ? 40f : 30f) * c.fontScale; StageFonts.Apply(text);
                     row.Add(text);
                 }
                 if (c.showTranslation && !string.IsNullOrEmpty(data.translation))
                 {
-                    var translation = new Label(data.translation) { pickingMode = PickingMode.Ignore };
+                    var translation = new Label(data.translation) { pickingMode = PickingMode.Ignore, enableRichText = false };
                     translation.AddToClassList(current ? "music-stage-still-translation" : "music-stage-still-translation-side");
                     translation.style.fontSize = (current ? 22f : 18f) * c.fontScale; StageFonts.Apply(translation);
                     row.Add(translation);

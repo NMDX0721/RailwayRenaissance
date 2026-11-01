@@ -237,7 +237,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     foreach (var glyph in unit.glyphs)
                     {
                         bool isSpace = string.IsNullOrWhiteSpace(glyph.text);
-                        var label = new Label(glyph.text.Replace(' ', ' ')) { pickingMode = PickingMode.Ignore };
+                        var label = new Label(glyph.text.Replace(' ', ' ')) { pickingMode = PickingMode.Ignore, enableRichText = false };
                         label.AddToClassList("music-stage-tilt-char"); if (tilt) label.AddToClassList("music-stage-tilt-italic");
                         label.style.fontSize = size; label.style.letterSpacing = spacing; StageFonts.Apply(label);
                         label.style.opacity = 0;

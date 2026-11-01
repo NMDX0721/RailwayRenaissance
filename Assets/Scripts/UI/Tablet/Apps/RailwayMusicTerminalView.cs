@@ -56,7 +56,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         static Label Text(VisualElement parent, string text, string css = "music-label")
         {
-            var label = new Label(text); foreach (var part in css.Split(' ')) if (part.Length > 0) label.AddToClassList(part); parent.Add(label); return label;
+            // Titles, artists and chart names come from online sources: show them as plain text, never as markup.
+            var label = new Label(text) { enableRichText = false }; foreach (var part in css.Split(' ')) if (part.Length > 0) label.AddToClassList(part); parent.Add(label); return label;
         }
         static Button Button(VisualElement parent, string text, Action action, string name = null)
         {
