@@ -12,7 +12,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         static RailwayMusicTerminalView current;
         VisualElement root, content, navigation, drawer, overlay, disc;
         Label title, time, toast, playingTitle, sectionTitle;
-        VisualElement playerCover; string playerCoverId; Label playingArtist;
+        VisualElement playerHost, mainArea, bodyArea; VisualElement playerCover; string playerCoverId; Label playingArtist;
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         float vuTime;
@@ -93,6 +93,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.RegisterCallback<GeometryChangedEvent>(_ => {
                 root.EnableInClassList("music-compact", root.resolvedStyle.width < 1050);
                 root.EnableInClassList("music-overlay-queue", root.resolvedStyle.width < 1280);
+                // The queue is a column beside the player when there is room, and a sheet over the content (above the player) when there is not.
+                var queueParent = root.resolvedStyle.width < 1280 ? mainArea : bodyArea;
+                if (queueParent != null && drawer != null && drawer.parent != queueParent) { queueParent.Add(drawerScrim); queueParent.Add(drawer); }
                 // A short window (a 700 px high tablet less its status bar) gives the player bar a slimmer layout so the library keeps its room.
                 bool shortWindow = root.resolvedStyle.height > 0 && root.resolvedStyle.height < 680f;
                 root.EnableInClassList("music-short", shortWindow);
@@ -116,7 +119,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
-            var main = Box(body, "music-main");
+            // The sidebar runs the full height of the window; the player card floats under the content only.
+            var column = Box(body, "music-column"); playerHost = column;
+            var main = Box(column, "music-main"); mainArea = main; bodyArea = body;
             content = Box(main, "music-content");
             drawerScrim = Box(body, "music-queue-scrim", "music-queue-scrim");
             drawerScrim.style.display = DisplayStyle.None;
@@ -888,7 +893,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         void BuildPlayer()
         {
-            var player = Box(root, "music-player", "music-player");
+            var player = Box(playerHost ?? root, "music-player", "music-player");
             playerCover = Box(player, "music-player-cover"); playerCover.pickingMode = PickingMode.Ignore; playerCover.style.display = DisplayStyle.None;
             var info = Box(player, "music-player-info");
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");

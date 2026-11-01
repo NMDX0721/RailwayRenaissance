@@ -891,3 +891,9 @@
 .music-nav-collapsed .music-navigation .music-button:hover { background-color: rgba(205, 176, 112, 0.12); }
 .music-reduce-motion .music-button, .music-reduce-motion .music-big-card, .music-reduce-motion .music-collection-card, .music-reduce-motion .music-cover-tile,
 .music-reduce-motion .music-track-row, .music-reduce-motion .music-queue-item, .music-reduce-motion .music-suggest-row, .music-reduce-motion .music-suggest-hot { transition-duration: 0s; scale: 1 1; translate: 0 0; }
+
+/* The sidebar is a full-height column; the content and the floating player share the column beside it. */
+.music-column { flex-grow: 1; flex-basis: 0; min-width: 0; min-height: 0; flex-direction: column; }
+.music-column > .music-main { flex-grow: 1; flex-basis: 0; min-height: 0; }
+.music-navigation { align-self: stretch; }
+.music-compact .music-drawer { bottom: 0; }

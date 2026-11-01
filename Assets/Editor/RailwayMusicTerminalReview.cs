@@ -1118,7 +1118,7 @@ public static class RailwayMusicTerminalReview
                     break;
                 case 22:
                     var queueBounds = root.Q("music-queue-drawer").worldBound;
-                    var bodyBounds = root.Q(className: "music-body").worldBound;
+                    var bodyBounds = root.Q(className: "music-main").worldBound;
                     Assert(Mathf.Abs(queueBounds.yMin - bodyBounds.yMin) < 1 && Mathf.Abs(queueBounds.yMax - bodyBounds.yMax) < 1,
                         "Compact queue does not fill app body");
                     Assert(queueBounds.yMax <= root.Q("music-player").worldBound.yMin + 1, "Queue covers player controls");
