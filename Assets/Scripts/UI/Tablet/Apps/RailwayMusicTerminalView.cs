@@ -62,7 +62,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var button = new Button(action) { name = name }; button.AddToClassList("music-button"); parent.Add(button);
             bool iconOnly = parent.ClassListContains("music-track-row") || parent.ClassListContains("music-queue-row") ||
-                parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-tools") ||
+                parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-queue-item") || parent.ClassListContains("music-tools") ||
                 parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
             MusicTerminalIcons.Apply(button, text, iconOnly); return button;
         }
@@ -283,7 +283,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
             var hero = Box(content, "music-library-heading");
             hero.Add(new VisualElement { pickingMode = PickingMode.Ignore, name = "music-route-engraving" });
-            var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 88);
+            var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 120);
             sleeve.AddToClassList("music-hero-cover");
             var headingText = Box(hero, "music-heading-text");
             Text(headingText, page == "在线歌单" ? MusicCatalogSearch.Label(onlineSource) + " · 歌单" : "沿线声音档案  /  SOUND ARCHIVE", "music-eyebrow");
@@ -291,7 +291,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var items = VisibleTracks();
             Text(headingText, query.Length > 0 ? $"已收录曲库 · {items.Count} 个结果" : page == "在线歌单" ? (onlineLoading ? "正在读取曲目…" : onlineError ?? MusicCatalogSearch.Label(onlineSource) + $" · {items.Count} 首") : page == "原声" ? "沿线原声 · 随旅途逐步解锁" : $"私人收藏 · {items.Count} 首", "music-muted");
             var actions = Box(content, "music-list-actions");
-            Button(actions, "播放全部", () => PlayAll(items), "music-play-all");
+            Button(actions, "播放全部", () => PlayAll(items), "music-play-all").AddToClassList("music-primary");
             if (page == "在线歌单")
             {
                 Button(actions, "刷新", () => OpenOnlinePlaylist(onlineSource, onlineId, onlineTitle), "music-online-refresh");
@@ -831,22 +831,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.Q<Button>("music-queue")?.EnableInClassList("is-active", queueOpen);
             if (!queueOpen) return;
             if (opening) AnimateEntry(drawer);
-            var header = Box(drawer, "music-drawer-header"); Text(header, "接续播放", "music-grow");
-            Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
-            Text(drawer, "下一首从这里出发", "music-muted");
             var queue = MusicLibrarySession.State.queue;
-            Button(drawer, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }).SetEnabled(queue.Count > 0);
+            var header = Box(drawer, "music-drawer-header"); Text(header, "接续播放", "music-grow music-drawer-title");
+            Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
+            var sub = Box(drawer, "music-drawer-sub");
+            Text(sub, queue.Count == 0 ? "下一首从这里出发" : queue.Count + " 首 · 下一首从这里出发", "music-muted music-grow");
+            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
             var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
             if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
             for (int i = 0; i < queue.Count; i++)
             {
                 int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
                 var item = Box(scroll.contentContainer, "music-queue-item");
-                Text(item, track?.title ?? "未知曲目", "music-wrap");
-                if (!MusicLibrarySession.Available(track)) Text(item, "不可用 / 连播时跳过", "music-muted");
-                var row = Box(item, "music-queue-row");
-                // Queue items have variable heights, so drag targets use the containing item bounds.
-                AddQueueReorder(row, item, queue, index);
+                // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
+                AddQueueReorder(item, item, queue, index);
+                var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
+                var queueText = Box(item, "music-queue-text");
+                Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
+                Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
+                item.Insert(1, queueCover); item.Insert(2, queueText);
+                var row = item;
                 Button(row, "播放", () => {
                     var queuedTrack = MusicLibrarySession.Find(id);
                     if (!MusicLibrarySession.Available(queuedTrack))
@@ -982,7 +986,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             Populate();
             var actions = Box(panel, "music-list-actions");
-            Button(actions, "播放", () => MusicLibrarySession.Play(track.id)).SetEnabled(MusicLibrarySession.Available(track));
+            { var detailPlay = Button(actions, "播放", () => MusicLibrarySession.Play(track.id)); detailPlay.AddToClassList("music-primary"); detailPlay.SetEnabled(MusicLibrarySession.Available(track)); }
             Button(actions, MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏", () => { MusicLibrarySession.ToggleFavorite(id); ShowDetail(id); });
             Button(actions, "下一首播放", () => { MusicLibrarySession.Enqueue(id, true); ShowToast("已放到队列最前"); });
             Button(actions, "加入播放队列", () => { MusicLibrarySession.Enqueue(id); ShowToast("已加入播放队列"); });
