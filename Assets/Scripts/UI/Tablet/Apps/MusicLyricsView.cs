@@ -29,6 +29,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         VisualElement stageProgress;
         MusicReactiveStageView reactiveStage;
+        MusicIconHelper.VuMeterHandle vu;
         Button followButton;
         Slider progress;
         Label playTime;
@@ -217,6 +218,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             progress.RegisterCallback<PointerCaptureOutEvent>(_ => scrubbing = false);
             progress.RegisterValueChangedCallback(e => TabletMusicAppUI.SeekTabletMusic(e.newValue));
             playTime = Text(footer, "0:00 / --:--", "music-player-time");
+            // The meters moved here from the player bar: left and right needles follow the music's low and high bands.
+            vu = MusicIconHelper.CreateDualVuMeter(168f, 40f); vu.root.AddToClassList("music-lyrics-vu"); footer.Add(vu.root);
             help = Text(host, "", "music-lyrics-help");
             trackId = TabletMusicAppUI.tabletCurrentTrackId;
             ApplyMotionStyle();
@@ -364,6 +367,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             if (trackId != id) { Build(); return; }
             if (document == null) return;
+            if (vu != null)
+            {
+                bool playing = TabletMusicAppUI.tabletIsPlaying && reactiveStage != null;
+                float left = playing ? Mathf.Clamp01(reactiveStage.BandLow * .7f + reactiveStage.BandMid * .5f) : 0f;
+                float right = playing ? Mathf.Clamp01(reactiveStage.BandMid * .5f + reactiveStage.BandHigh * .9f) : 0f;
+                vu.UpdateLevels(left, right, Time.unscaledDeltaTime);
+            }
             var preference = MusicTimedText.Preference(trackId);
             offsetLabel.text = (preference.offsetMs > 0 ? "+" : "") + preference.offsetMs + " ms";
             // The stage never scrolls, so the "back to current line" banner has nothing to return to there.

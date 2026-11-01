@@ -811,3 +811,5 @@
 .music-queue-item .music-button:hover { background-color: rgb(66, 72, 56); }
 .music-queue-item .music-button:disabled { opacity: 0.3; }
 .music-drawer .music-queue-item .music-button { border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; }
+.music-lyrics-vu { margin-left: 14px; flex-shrink: 0; }
+.music-compact .music-lyrics-vu { display: none; }
