@@ -187,7 +187,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightPane.style.paddingLeft = 32; rightPane.style.paddingRight = 32;
         rightPane.style.paddingTop = 20; rightPane.style.paddingBottom = 30;
         rightPane.style.backgroundColor = SurfaceApp;
-        rootRow.Add(rightPane);
+        // 页面标题固定在右栏顶部居中，内容滚动时不随之滚走（对照 HyperOS 设置）
+        var rightColumn = new VisualElement { name = "settings-right-column" };
+        rightColumn.style.flexGrow = 1; rightColumn.style.flexShrink = 1;
+        rightColumn.style.flexDirection = FlexDirection.Column;
+        var headerBar = new VisualElement { name = "settings-page-header" };
+        headerBar.style.height = 76; headerBar.style.flexShrink = 0;
+        headerBar.style.alignItems = Align.Center; headerBar.style.justifyContent = Justify.Center;
+        headerBar.style.backgroundColor = SurfaceApp;
+        headerBar.style.paddingTop = 14;
+        rightPane.style.paddingTop = 6;
+        rightColumn.Add(headerBar);
+        rightColumn.Add(rightPane);
+        rootRow.Add(rightColumn);
 
         // 分类滚动列表（隐藏滚动条）
         var navScroll = new ScrollView();
@@ -212,7 +224,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         Func<string, string, Color, string, bool, Action, Button> buildNavItem = (icon, name, badgeColor, labelOverride, selected, onClick) =>
         {
             var itemBtn = new Button(onClick);
-            itemBtn.style.height = 56;
+            itemBtn.style.height = 66;
             itemBtn.style.flexDirection = FlexDirection.Row;
             itemBtn.style.alignItems = Align.Center;
             itemBtn.style.paddingLeft = 12; itemBtn.style.paddingRight = 12;
@@ -224,12 +236,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
             itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
 
-            var badge = BuildSquircleBadge(icon, badgeColor, 34);
-            badge.style.marginRight = 14;
+            var badge = BuildSquircleBadge(icon, badgeColor, 44);
+            badge.style.marginRight = 16;
             itemBtn.Add(badge);
 
             var nameLbl = new Label(labelOverride ?? name);
-            nameLbl.style.fontSize = 16;
+            nameLbl.style.fontSize = 18;
             nameLbl.style.color = InkPrimary;
             nameLbl.style.unityFontDefinition = Fd();
             itemBtn.Add(nameLbl);
@@ -323,6 +335,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         });
 
         RenderSettingsDetail(rightPane, win);
+        var pageTitle = rightPane.Q<Label>("settings-page-title");
+        if (pageTitle != null)
+        {
+            pageTitle.RemoveFromHierarchy();
+            pageTitle.style.marginBottom = 0;
+            headerBar.Add(pageTitle);
+        }
         rootRow.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float width = evt.newRect.width;
@@ -335,7 +354,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             leftNav.style.width = Mathf.Clamp(width * 0.40f, 320f, 820f);
             rightPane.style.paddingLeft = compact ? 14 : width < 1020 ? 22 : 32;
             rightPane.style.paddingRight = compact ? 14 : width < 1020 ? 22 : 32;
-            rightPane.style.paddingTop = compact ? 14 : 20;
+            rightPane.style.paddingTop = compact ? 8 : 6;
         });
     }
 
@@ -1800,7 +1819,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     private static void AddCenterHeader(VisualElement parent, string title)
     {
         var h = new Label(title);
-        h.style.fontSize = 22; h.style.color = InkPrimary;
+        h.name = "settings-page-title";
+        h.style.fontSize = 24; h.style.color = InkPrimary;
         h.style.unityFontDefinition = FdBold();
         h.style.alignSelf = Align.Center; h.style.marginBottom = 16;
         parent.Add(h);
@@ -1833,7 +1853,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
-        row.style.paddingTop = 15; row.style.paddingBottom = 15;
+        row.style.paddingTop = 20; row.style.paddingBottom = 20;
         row.style.paddingLeft = 8; row.style.paddingRight = 8;
         row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
         row.style.borderTopLeftRadius = 10; row.style.borderTopRightRadius = 10;
@@ -1852,7 +1872,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.Add(left);
 
         var t = new Label(title);
-        t.style.fontSize = 16; t.style.color = InkPrimary;
+        t.style.fontSize = 18; t.style.color = InkPrimary;
         t.style.unityFontDefinition = Fd();
         left.Add(t);
 
@@ -1861,8 +1881,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         if (!string.IsNullOrEmpty(desc) && !shortValue)
         {
             var d = new Label(desc);
-            d.style.fontSize = 13; d.style.color = InkSecondary;
-            d.style.unityFontDefinition = Fd(); d.style.marginTop = 3;
+            d.style.fontSize = 14; d.style.color = InkSecondary;
+            d.style.unityFontDefinition = Fd(); d.style.marginTop = 4;
             d.style.whiteSpace = WhiteSpace.Normal;
             left.Add(d);
         }
@@ -1893,7 +1913,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
-        row.style.paddingTop = 15; row.style.paddingBottom = 15;
+        row.style.paddingTop = 20; row.style.paddingBottom = 20;
         row.style.paddingLeft = 8; row.style.paddingRight = 8;
         row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
         row.style.borderTopLeftRadius = row.style.borderTopRightRadius = 10;
@@ -1910,13 +1930,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         left.style.flexGrow = 1; left.style.flexShrink = 1;
         row.Add(left);
         var t = new Label(title);
-        t.style.fontSize = 16; t.style.color = InkPrimary; t.style.unityFontDefinition = Fd();
+        t.style.fontSize = 18; t.style.color = InkPrimary; t.style.unityFontDefinition = Fd();
         left.Add(t);
         if (!string.IsNullOrEmpty(sub))
         {
             var d = new Label(sub);
-            d.style.fontSize = 13; d.style.color = InkSecondary; d.style.unityFontDefinition = Fd();
-            d.style.marginTop = 3; d.style.whiteSpace = WhiteSpace.Normal;
+            d.style.fontSize = 14; d.style.color = InkSecondary; d.style.unityFontDefinition = Fd();
+            d.style.marginTop = 4; d.style.whiteSpace = WhiteSpace.Normal;
             left.Add(d);
         }
 
@@ -2049,14 +2069,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // 侧栏顶部的账号行：圆形头像 + 名称 + 一行说明（对照参考图的“小牛马 / Manage accounts…”）
     private static void ConvertToAccountNavItem(Button item)
     {
-        item.style.height = 76;
+        item.style.height = 92;
         item.Clear();
         var avatar = new Label("👤");
-        avatar.style.width = 46; avatar.style.height = 46; avatar.style.flexShrink = 0;
-        avatar.style.fontSize = 24; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
+        avatar.style.width = 58; avatar.style.height = 58; avatar.style.flexShrink = 0;
+        avatar.style.fontSize = 30; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
         avatar.style.backgroundColor = SurfaceApp;
-        avatar.style.borderTopLeftRadius = avatar.style.borderTopRightRadius = 23;
-        avatar.style.borderBottomLeftRadius = avatar.style.borderBottomRightRadius = 23;
+        avatar.style.borderTopLeftRadius = avatar.style.borderTopRightRadius = 29;
+        avatar.style.borderBottomLeftRadius = avatar.style.borderBottomRightRadius = 29;
         avatar.style.unityFontDefinition = Fd();
         avatar.style.marginRight = 14;
         item.Add(avatar);
@@ -2064,10 +2084,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         col.style.flexShrink = 1;
         col.style.alignItems = Align.FlexStart;
         var name = new Label(AccountService.IsRegistered ? AccountService.DisplayName : "登录小米账号");
-        name.style.fontSize = 17; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
+        name.style.fontSize = 19; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
         name.style.unityTextAlign = TextAnchor.UpperLeft;
         var sub = new Label(AccountService.IsRegistered ? "管理账号、云空间与家庭服务" : "登录后使用云空间与家庭服务");
-        sub.style.fontSize = 12; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
+        sub.style.fontSize = 14; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
         sub.style.unityTextAlign = TextAnchor.UpperLeft;
         sub.style.marginTop = 2; sub.style.whiteSpace = WhiteSpace.Normal;
         col.Add(name); col.Add(sub);

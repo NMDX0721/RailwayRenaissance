@@ -310,17 +310,18 @@ namespace RailwayRenaissance.UI.Tablet.Account
             var phoneField = Field("手机号", false, 11, _phone);
             phoneField.name = "wizard-phone";
             phoneField.style.flexGrow = 1;
-            phoneField.RegisterValueChangedCallback(evt =>
-            {
-                string digits = OnlyDigits(evt.newValue);
-                if (digits != evt.newValue) phoneField.SetValueWithoutNotify(digits);
-                _phone = digits;
-            });
             row.Add(phoneField);
             _body.Add(row);
 
             var err = ErrorLabel();
             _body.Add(err);
+            phoneField.RegisterValueChangedCallback(evt =>
+            {
+                string digits = OnlyDigits(evt.newValue);
+                if (digits != evt.newValue) phoneField.SetValueWithoutNotify(digits);
+                _phone = digits;
+                err.text = string.Empty;
+            });
 
             var agreeRow = CheckRow("同意《小米账号用户协议》和《隐私政策》", _agreedAccount, v => { _agreedAccount = v; });
             _body.Add(agreeRow.row);
@@ -351,6 +352,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
             var err = ErrorLabel();
             _body.Add(err);
+            codeField.RegisterValueChangedCallback(_ => err.text = string.Empty);
 
             var resend = Secondary("重新获取", () => { });
             resend.name = "wizard-resend";
@@ -432,7 +434,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
                     bars[i].style.backgroundColor = i <= level ? palette[Mathf.Max(level, 0)] : new Color(0, 0, 0, 0.10f);
                 strengthLabel.text = level < 0 ? string.Empty : level == 0 ? "弱" : level == 1 ? "中" : "强";
             };
-            pw.RegisterValueChangedCallback(_ => refresh());
+            pw.RegisterValueChangedCallback(_ => { refresh(); err.text = string.Empty; });
+            confirm.RegisterValueChangedCallback(_ => err.text = string.Empty);
             refresh();
 
             _body.Add(Primary("下一步", () =>
@@ -556,7 +559,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
             card.Add(body);
             _smsBanner.Add(card);
             _smsBanner.style.display = DisplayStyle.Flex;
-            _smsBanner.schedule.Execute(() => _smsBanner.style.display = DisplayStyle.None).StartingIn(7000);
+            _smsBanner.schedule.Execute(() => _smsBanner.style.display = DisplayStyle.None).StartingIn(5000);
         }
 
         // ================= 控件 =================
