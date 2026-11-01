@@ -86,6 +86,16 @@ namespace RailwayRenaissance.UI.Tablet
             }
         }
 
+        /// <summary>把按钮的文字换成居中的矢量图标（文字符号如 ✕ ‹ ▶ 在不同字体下大小不一）。</summary>
+        public static void SetButtonIcon(Button button, TabletIconKind kind, float size, Color color)
+        {
+            button.text = string.Empty;
+            button.style.alignItems = Align.Center;
+            button.style.justifyContent = Justify.Center;
+            var icon = new TabletIconElement(kind, size, color) { pickingMode = PickingMode.Ignore };
+            button.Add(icon);
+        }
+
         /// <summary>单个字形图标：能映射成矢量图标就画矢量，否则退回文字。</summary>
         public static VisualElement BuildGlyphIcon(string glyph, float size, Color color)
         {

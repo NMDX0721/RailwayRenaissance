@@ -289,7 +289,10 @@ public static class TabletSystemShellReview
                     Assert(blurBg != null && blurBg.style.display == DisplayStyle.Flex, "Blur background visible on notification open");
                     var shellView = (TabletShellView)Field("tabletShellView");
                     Assert(shellView != null && shellView.OverlayOpacity == 1f, "Shell overlay opacity restored after capture");
-                    Assert(AppLayer.worldBound.yMin >= 47, "App occludes system controls");
+                    // 沉浸式状态栏：应用层铺满屏幕，状态栏叠在应用之上、系统面板叠在状态栏之上
+                    var statusOverlay = root.Q("tablet-status-bar") ?? (VisualElement)Field("statusBar");
+                    Assert(statusOverlay != null && root.IndexOf(statusOverlay) > root.IndexOf(AppLayer), "Status bar must sit above the app layer");
+                    Assert(root.IndexOf(shellView.RootElement) > root.IndexOf(statusOverlay), "System panels must sit above the status bar");
 
                     Capture("03-notifications");
 

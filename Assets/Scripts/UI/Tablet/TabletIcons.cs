@@ -8,7 +8,8 @@ namespace RailwayRenaissance.UI.Tablet
         Person, Tablet, Apps, Cube, Wifi, Bluetooth, Link, Globe, Sparkle, Lock, Home, Keyboard, FaceId, Shield, Battery, Heart, Sprout, Accessibility, Dots, Chat, Code,
         Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
         Note, Clock, Calendar, Calc, Map, Star,
-        Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash }
+        Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash,
+        Back, Circle, Square, Play, Pause }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -442,6 +443,29 @@ namespace RailwayRenaissance.UI.Tablet
                     p.BeginPath(); p.MoveTo(P(9, 6)); p.LineTo(P(9, 3.5f)); p.LineTo(P(15, 3.5f)); p.LineTo(P(15, 6)); p.Stroke();
                     p.BeginPath(); p.MoveTo(P(10, 11)); p.LineTo(P(10, 18)); p.Stroke();
                     p.BeginPath(); p.MoveTo(P(14, 11)); p.LineTo(P(14, 18)); p.Stroke();
+                    break;
+
+
+                case TabletIconKind.Back:
+                    p.BeginPath(); p.MoveTo(P(15, 5)); p.LineTo(P(8, 12)); p.LineTo(P(15, 19)); p.Stroke();
+                    break;
+
+                case TabletIconKind.Circle:
+                    p.BeginPath(); p.Arc(P(12, 12), 6f * k, Angle.Degrees(0), Angle.Degrees(360)); p.Fill();
+                    break;
+
+                case TabletIconKind.Square:
+                    RoundRectPath(p, 5f * k, 5f * k, 14f * k, 14f * k, 3.4f * k);
+                    p.Stroke();
+                    break;
+
+                case TabletIconKind.Play:
+                    FillPolygon(p, new List<Vector2> { P(8, 5), P(19, 12), P(8, 19) });
+                    break;
+
+                case TabletIconKind.Pause:
+                    RoundRectPath(p, 6.5f * k, 5f * k, 4f * k, 14f * k, 1.2f * k); p.Fill();
+                    RoundRectPath(p, 13.5f * k, 5f * k, 4f * k, 14f * k, 1.2f * k); p.Fill();
                     break;
 
                 case TabletIconKind.Person:

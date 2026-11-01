@@ -2067,10 +2067,13 @@ public class GameMainUI : MonoBehaviour
 
         var back = CreateTabletNavButton("‹", "返回", () => { ShowTabletNavigationBar(); RequestSystemBack(); });
         back.name = "tablet-nav-back";
+        RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(back, RailwayRenaissance.UI.Tablet.TabletIconKind.Back, 26, new Color(0.82f, 0.84f, 0.88f, 0.85f));
         var home = CreateTabletNavButton("●", "主页", () => { ShowTabletNavigationBar(); ReturnToTabletHome(); });
         home.name = "tablet-nav-home";
+        RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(home, RailwayRenaissance.UI.Tablet.TabletIconKind.Circle, 26, new Color(0.82f, 0.84f, 0.88f, 0.85f));
         var recents = CreateTabletNavButton("▢", "最近应用", () => { ShowTabletNavigationBar(); OpenRecentTasks(); });
         recents.name = "tablet-nav-recents";
+        RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(recents, RailwayRenaissance.UI.Tablet.TabletIconKind.Square, 26, new Color(0.82f, 0.84f, 0.88f, 0.85f));
         systemNavigationBar.Add(back);
         systemNavigationBar.Add(home);
         systemNavigationBar.Add(recents);
@@ -2362,6 +2365,7 @@ public class GameMainUI : MonoBehaviour
             cardHeader.Add(appTitle);
             string appId = task.AppId;
             var close = CreateTabletNavButton("×", "结束 " + task.Title, () => CloseTabletTask(appId));
+            RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(close, RailwayRenaissance.UI.Tablet.TabletIconKind.Close, 22, new Color(0.82f, 0.84f, 0.88f, 0.85f));
             close.name = "tablet-recent-close-" + appId;
             close.style.width = 38;
             close.style.minWidth = 38;
@@ -3015,6 +3019,7 @@ public class GameMainUI : MonoBehaviour
         closeBtn.style.unityFontDefinition = Fd();
         closeBtn.style.backgroundColor = chipBg;
         closeBtn.style.color = darkApp ? new Color(0.70f, 0.70f, 0.72f, 1f) : new Color(0.40f, 0.40f, 0.44f, 1f);
+        RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(closeBtn, RailwayRenaissance.UI.Tablet.TabletIconKind.Close, 16, closeBtn.style.color.value);
         closeBtn.style.borderTopLeftRadius = 15; closeBtn.style.borderTopRightRadius = 15;
         closeBtn.style.borderBottomLeftRadius = 15; closeBtn.style.borderBottomRightRadius = 15;
         closeBtn.style.borderTopWidth = 1; closeBtn.style.borderBottomWidth = 1;

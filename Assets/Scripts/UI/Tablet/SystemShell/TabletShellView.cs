@@ -173,6 +173,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btnClose.style.width = 44; btnClose.style.height = 44;
             btnClose.style.backgroundColor = TabletTheme.GlassTileActive;
             btnClose.style.color = TabletTheme.InkOnGlass;
+            TabletUIHelper.SetButtonIcon(btnClose, TabletIconKind.Close, 20, TabletTheme.InkOnGlass);
             btnClose.style.borderTopWidth = 0; btnClose.style.borderBottomWidth = 0;
             btnClose.style.borderLeftWidth = 0; btnClose.style.borderRightWidth = 0;
             btnClose.style.borderTopLeftRadius = 22; btnClose.style.borderTopRightRadius = 22;
@@ -533,6 +534,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 dismissBtn.AddToClassList("shell-keep");
                 dismissBtn.style.backgroundColor = Color.clear;
                 dismissBtn.style.color = TabletTheme.InkOnGlassSoft;
+                TabletUIHelper.SetButtonIcon(dismissBtn, TabletIconKind.Close, 16, TabletTheme.InkOnGlassSoft);
                 dismissBtn.style.borderTopWidth = dismissBtn.style.borderBottomWidth = dismissBtn.style.borderLeftWidth = dismissBtn.style.borderRightWidth = 0;
 
                 cardHeader.Add(titleLabel);
@@ -758,6 +760,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             playBtn.style.fontSize = 12;
             playBtn.style.backgroundColor = _accent;
             playBtn.style.color = TabletTheme.InkOnGlass;
+            TabletUIHelper.SetButtonIcon(playBtn, RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying ? TabletIconKind.Pause : TabletIconKind.Play, 18, TabletTheme.InkOnGlass);
             playBtn.style.borderTopWidth = playBtn.style.borderBottomWidth = playBtn.style.borderLeftWidth = playBtn.style.borderRightWidth = 0;
             playBtn.style.borderTopLeftRadius = playBtn.style.borderTopRightRadius = 18;
             playBtn.style.borderBottomLeftRadius = playBtn.style.borderBottomRightRadius = 18;

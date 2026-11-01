@@ -519,6 +519,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             closeBtn.style.borderBottomLeftRadius = 12; closeBtn.style.borderBottomRightRadius = 12;
             closeBtn.style.backgroundColor = TabletTheme.OverlaySoft;
             closeBtn.style.color = Color.white;
+            TabletUIHelper.SetButtonIcon(closeBtn, TabletIconKind.Close, 14, Color.white);
             closeBtn.style.fontSize = 11;
             closeBtn.style.borderTopWidth = 0; closeBtn.style.borderBottomWidth = 0;
             closeBtn.style.borderLeftWidth = 0; closeBtn.style.borderRightWidth = 0;
