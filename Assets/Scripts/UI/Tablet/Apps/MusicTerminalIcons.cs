@@ -139,6 +139,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.BeginPath(); p.MoveTo(new Vector2(4, 15)); p.BezierCurveTo(new Vector2(-2, 12), new Vector2(2, 6), new Vector2(6, 8));
                 p.BezierCurveTo(new Vector2(6, 0), new Vector2(17, 0), new Vector2(17, 9)); p.BezierCurveTo(new Vector2(22, 9), new Vector2(21, 15), new Vector2(17, 15)); p.ClosePath(); p.Stroke();
             }
+            else if (action == "电台") { Rect(2, 7, 16, 10); Circle(7, 12, 2.5f); Line(new Vector2(12, 10), new Vector2(16, 10)); Line(new Vector2(12, 13), new Vector2(16, 13)); Line(new Vector2(5, 7), new Vector2(14, 3)); }
             else if (action == "榜单") { Rect(3, 11, 3, 6); Rect(8, 4, 3, 13); Rect(13, 8, 3, 9); }
             else if (action.Contains("原声")) { Rect(3, 3, 5, 14); Rect(11, 3, 5, 14); Line(new Vector2(5, 6), new Vector2(6, 6)); Line(new Vector2(13, 6), new Vector2(14, 6)); }
             else { Circle(10, 10, 7); Circle(10, 10, 2); Line(new Vector2(4, 10), new Vector2(7, 10)); }

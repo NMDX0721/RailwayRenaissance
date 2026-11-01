@@ -10,6 +10,44 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed partial class RailwayMusicTerminalView
     {
         VisualElement suggestions;
+        Label searchHint; string hintCurrent; int hintIndex;
+
+        // The search pill's hint text scrolls through what is being searched for (the hot searches, or the soundtrack until they arrive), like the
+        // streaming apps' search boxes. Enter on an empty box searches the hint that is showing.
+        void StartSearchHints()
+        {
+            searchHint = new Label("搜索曲目、作者、分类") { pickingMode = PickingMode.Ignore }; searchHint.AddToClassList("music-search-hint");
+            search.Add(searchHint);
+            search.RegisterValueChangedCallback(_ => searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex);
+            search.RegisterCallback<KeyDownEvent>(e => {
+                if ((e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) && search.value.Length == 0 && !string.IsNullOrEmpty(hintCurrent) && hintCurrent != "搜索曲目、作者、分类")
+                { RunSearch(hintCurrent); e.StopImmediatePropagation(); }
+            }, TrickleDown.TrickleDown);
+            search.schedule.Execute(CycleSearchHint).Every(4200);
+            CycleSearchHint(true);
+        }
+
+        System.Collections.Generic.List<string> HintWords()
+        {
+            var words = new System.Collections.Generic.List<string>();
+            var hots = MusicCharts.HotSearches;
+            if (hots != null) words.AddRange(hots.Take(10));
+            if (words.Count == 0) words.AddRange(MusicLibrarySession.Tracks.Where(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)).Take(6).Select(t => t.title));
+            if (words.Count == 0) words.Add("搜索曲目、作者、分类");
+            return words;
+        }
+
+        void CycleSearchHint() => CycleSearchHint(false);
+        void CycleSearchHint(bool immediate)
+        {
+            if (searchHint == null || (searchHint.panel == null && !immediate)) return;
+            var words = HintWords(); hintIndex = (hintIndex + 1) % words.Count;
+            string next = words[immediate ? 0 : hintIndex];
+            if (next == hintCurrent) return;
+            if (immediate || searchHint.panel == null) { hintCurrent = next; searchHint.text = next; return; }
+            searchHint.AddToClassList("is-out");
+            searchHint.schedule.Execute(() => { hintCurrent = next; searchHint.text = next; searchHint.RemoveFromClassList("is-out"); }).StartingIn(280);
+        }
 
         void OnChartsChanged()
         {
@@ -77,13 +115,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Ensure(); Refresh(); });
                 return;
             }
-            foreach (var chart in charts) AddChartCard(grid, chart);
+            grid.AddToClassList("music-big-wrap");
+            foreach (var chart in charts)
+            {
+                string id = chart.id, title = chart.title;
+                string caption = string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle + " · " + chart.count + " 首";
+                var card = BigCard(grid, title, caption, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title));
+                if (chart.preview != null && chart.preview.Length > 0) card.tooltip = title + "\n" + string.Join("\n", chart.preview);
+            }
         }
 
         // The drop-down under the search box while it is focused and empty: what was played last, and what is being searched for.
         void ShowSuggestions()
         {
-            if (query.Length > 0 || root == null) return;
+            if (query.Length > 0 || search.value.Length > 0 || root == null) return;
             MusicCharts.Ensure();
             if (suggestions == null)
             {
@@ -103,23 +148,34 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             suggestions.Clear();
             var box = search.worldBound; var origin = root.worldBound;
             suggestions.style.left = box.x - origin.x; suggestions.style.top = box.yMax - origin.y + 4; suggestions.style.width = Mathf.Max(260f, box.width);
-            var recent = MusicLibrarySession.RecentTracks(5);
+            var recent = MusicLibrarySession.RecentTracks(4);
             if (recent.Count > 0)
             {
-                Text(suggestions, "最近在听", "music-eyebrow");
+                Text(suggestions, "最近在听", "music-suggest-heading");
                 foreach (var track in recent)
                 {
                     string id = track.id;
-                    var row = Button(suggestions, track.title + (string.IsNullOrEmpty(track.artist) ? "" : " · " + track.artist), () => { HideSuggestions(); MusicLibrarySession.Play(id); }, "music-suggest-" + id);
-                    row.AddToClassList("music-suggest-row"); row.tooltip = track.title;
+                    var row = Button(suggestions, "播放", () => { HideSuggestions(); MusicLibrarySession.Play(id); }, "music-suggest-" + id); row.Clear(); row.AddToClassList("music-suggest-row");
+                    Cover(row, track.id, track.category, 34);
+                    var text = Box(row, "music-suggest-text");
+                    Text(text, track.title, "music-suggest-title"); Text(text, string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-suggest-sub");
+                    row.tooltip = track.title;
                 }
             }
             var hots = MusicCharts.HotSearches;
             if (hots != null && hots.Length > 0)
             {
-                Text(suggestions, "热搜", "music-eyebrow");
-                var chips = Box(suggestions, "music-hot-row");
-                foreach (string word in hots.Take(10)) { string captured = word; Button(chips, captured, () => RunSearch(captured)).AddToClassList("music-hot-chip"); }
+                Text(suggestions, "热搜榜", "music-suggest-heading");
+                var cols = Box(suggestions, "music-suggest-cols");
+                int rank = 0;
+                foreach (string word in hots.Take(10))
+                {
+                    string captured = word; rank++;
+                    var item = Button(cols, "播放", () => RunSearch(captured), "music-hot-" + rank); item.Clear(); item.AddToClassList("music-suggest-hot");
+                    var number = Text(item, rank.ToString(), "music-suggest-rank"); number.EnableInClassList("is-top", rank <= 3);
+                    Text(item, captured, "music-suggest-word");
+                    item.tooltip = captured;
+                }
             }
             if (recent.Count == 0 && (hots == null || hots.Length == 0)) Text(suggestions, "输入曲名、作者或分类", "music-muted");
         }

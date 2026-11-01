@@ -12,7 +12,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         static RailwayMusicTerminalView current;
         VisualElement root, content, navigation, drawer, overlay, disc;
         Label title, time, toast, playingTitle, sectionTitle;
-        VisualElement playerCover; string playerCoverId;
+        VisualElement playerCover; string playerCoverId; Label playingArtist;
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         float vuTime;
@@ -96,7 +96,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // A short window (a 700 px high tablet less its status bar) gives the player bar a slimmer layout so the library keeps its room.
                 bool shortWindow = root.resolvedStyle.height > 0 && root.resolvedStyle.height < 680f;
                 root.EnableInClassList("music-short", shortWindow);
-                if (vuMeter != null) vuMeter.root.style.display = shortWindow ? DisplayStyle.None : DisplayStyle.Flex;
+                if (vuMeter != null) vuMeter.root.style.display = DisplayStyle.None;   // the slim player has no room for the meters
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
             var header = Box(root, "music-header");
@@ -105,8 +105,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             // One top row, as in the streaming apps: back and menu on the left, the search pill taking the room, help on the right. The status bar
             // is an overlay above it, so the row doubles as the app's top bar.
             search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
-            try { search.textEdition.placeholder = "搜索曲目、作者、分类"; } catch { }
             header.Add(search);
+            StartSearchHints();
             search.RegisterCallback<FocusInEvent>(_ => ShowSuggestions());
             search.RegisterCallback<FocusOutEvent>(_ => search.schedule.Execute(HideSuggestions).StartingIn(180));
             search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
@@ -377,7 +377,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 #if MUSIC_RUNTIME_REVIEW
             Debug.Log("MUSIC_NAVIGATE " + target);
 #endif
-            page = target; selected = playlist; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
+            HideSuggestions(); page = target; selected = playlist; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
         }
         void OpenSource(string source, bool account)
         {
@@ -624,6 +624,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         VisualElement Modal(string heading)
         {
+            HideSuggestions();
             // Any other sheet that replaces the record archive (for example the playlist menu) ends the "came from the lyrics page" return.
             if (heading != "唱片档案") recordFromLyrics = false;
             if (overlay == null) modalReturnFocus = root.panel?.focusController.focusedElement as VisualElement;
@@ -884,8 +885,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             playerCover = Box(player, "music-player-cover"); playerCover.pickingMode = PickingMode.Ignore; playerCover.style.display = DisplayStyle.None;
             var info = Box(player, "music-player-info");
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");
-            Button(info, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail");
-            Button(info, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
+            playingArtist = Text(info, "", "music-track-artist");
+            // Cover and title open the record archive, as in the streaming apps' mini players.
+            info.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
+            playerCover.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
+            playerCover.pickingMode = PickingMode.Position;
             var controls = Box(player, "music-player-controls");
             var buttons = Box(controls, "music-player-buttons");
             buttons.AddToClassList("music-transport");
@@ -943,6 +947,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue");
             var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-badge"); queueButton.Add(queueBadgeLabel);
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
+            Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
+            Button(effects, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
         }
         void ShowDetail(string id)
         {
@@ -1273,6 +1279,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
+            { var nowTrack = MusicLibrarySession.Find(id); string line = nowTrack == null ? "" : string.IsNullOrEmpty(nowTrack.artist) ? nowTrack.category : nowTrack.artist; if (playingArtist.text != line) playingArtist.text = line; }
             if (playerCover != null && playerCoverId != id)
             {
                 playerCoverId = id; var currentTrack = MusicLibrarySession.Find(id);
