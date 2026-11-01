@@ -7,7 +7,7 @@ using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 
 namespace RailwayRenaissance.UI.Tablet.Apps
 {
-    public sealed class RailwayMusicTerminalView
+    public sealed partial class RailwayMusicTerminalView
     {
         static RailwayMusicTerminalView current;
         VisualElement root, content, navigation, drawer, overlay, disc;
@@ -76,7 +76,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (sheet != null) root.styleSheets.Add(sheet);
             root.RegisterCallback<DetachFromPanelEvent>(_ => {
                 MusicLibrarySession.Changed -= Refresh;
-                NeteaseLocalBridge.SessionChanged -= Refresh;
+                NeteaseLocalBridge.SessionChanged -= Refresh; MusicCharts.Changed -= OnChartsChanged;
                 MusicLibrarySession.Save();
                 if (current == this) current = null;
             });
@@ -85,6 +85,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.RegisterCallback<AttachToPanelEvent>(_ => {
                 MusicLibrarySession.Changed -= Refresh; MusicLibrarySession.Changed += Refresh;
                 NeteaseLocalBridge.SessionChanged -= Refresh; NeteaseLocalBridge.SessionChanged += Refresh;
+                MusicCharts.Changed -= OnChartsChanged; MusicCharts.Changed += OnChartsChanged;
                 current = this;
                 Refresh();
             });
@@ -105,7 +106,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
             try { search.textEdition.placeholder = "搜索曲目、作者、分类"; } catch { }
             header.Add(search);
-            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
+            search.RegisterCallback<FocusInEvent>(_ => ShowSuggestions());
+            search.RegisterCallback<FocusOutEvent>(_ => search.schedule.Execute(HideSuggestions).StartingIn(180));
+            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
             clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
             clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
             Button(header, "操作帮助", ShowHelp, "music-help");
@@ -237,7 +240,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
             Text(navigation, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "原声", "本地音乐", "收藏", "云端" })
+            foreach (string item in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端" })
             {
                 string target = item;
                 var b = Button(navigation, item, () => Navigate(target), "music-nav-" + target);
@@ -273,6 +276,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             content.Clear(); indicators.Clear();
             if (query.Length > 0) { RenderSearch(); return; }
             if (page == "首页") { RenderHome(); return; }
+            if (page == "榜单") { RenderCharts(); return; }
             if (page == "搜索") { RenderSearch(); return; }
             if (page == "云端" && query.Length == 0) { RenderCloud(); return; }
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
@@ -416,6 +420,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             QuickTile(tiles, "原声", MusicLibrarySession.Tracks.Count(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)) + " 首", () => Navigate("原声"), "原声");
             int linkedSources = MusicCatalogSearch.Sources.Count(NeteaseLocalBridge.HasSession);
             QuickTile(tiles, "云端", linkedSources > 0 ? linkedSources + " 个来源已连接" : "登录与搜索", () => OpenSource(cloudProvider, true), "云端");
+            MusicCharts.Ensure();
+            HomeSongs(scroll.contentContainer, "最近在听", MusicLibrarySession.RecentTracks(6));
+            HomeCharts(scroll.contentContainer);
             var favorites = MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).Where(t => t != null).Take(6).ToList();
             if (favorites.Count > 0) HomeSongs(scroll.contentContainer, "你的收藏", favorites);
             if (MusicLibrarySession.State.playlists.Count > 0)

@@ -1227,6 +1227,22 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q(className: "music-help-row") != null, "Help dialog has no rows");
                     Capture("17-help");
                     Debug.Log("MUSIC_NAV_HELP_OK: sidebar collapse keeps content labels, help dialog uses grouped rows");
+                    root.Q<Button>("music-help")?.Focus(); CloseHelpForReview();
+                    chartDeadline = EditorApplication.timeSinceStartup + 25;
+                    Submit(root.Q<Button>("music-nav-榜单"));
+                    break;
+                case 36:
+                    // The charts are read from the network; wait for the answer (or a failure) rather than a fixed time.
+                    if (MusicCharts.Charts == null && !MusicCharts.ChartsFailed && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 37:
+                    Debug.Log("MUSIC_CHARTS_STATE: charts=" + (MusicCharts.Charts?.Length ?? -1) + " hots=" + (MusicCharts.HotSearches?.Length ?? -1) + " failed=" + MusicCharts.ChartsFailed);
+                    Capture("18-charts");
+                    root.Q<TextField>("music-search")?.Focus();
+                    break;
+                case 38:
+                    Capture("19-search-suggest");
+                    Debug.Log("MUSIC_CHARTS_OK: chart page and search suggestions captured");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
@@ -1235,6 +1251,8 @@ public static class RailwayMusicTerminalReview
         }
         catch (Exception ex) { failed = true; Debug.LogException(ex); Finish(); }
     }
+    static double chartDeadline;
+    static void CloseHelpForReview() { root?.Q(className: "music-overlay")?.RemoveFromHierarchy(); }
     static void CheckRestore()
     {
         if (EditorApplication.timeSinceStartup < checkAfter || MusicLibrarySession.Loading) return;

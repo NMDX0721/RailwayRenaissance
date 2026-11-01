@@ -654,3 +654,11 @@
 .music-short .music-header { height: 54px; }
 /* The top bar continues the band under the overlay status bar: no seam line between them. */
 .music-header { border-top-width: 0; background-color: rgb(35, 39, 34); }
+
+/* Hot searches and the search box's drop-down. */
+.music-hot-row { flex-direction: row; flex-wrap: wrap; margin: 4px 0 12px; }
+.music-hot-chip { height: 28px; min-height: 28px; margin: 0 8px 8px 0; padding: 0 12px; border-radius: 14px; font-size: 12px; }
+.music-suggest { background-color: rgb(30, 34, 29); border-width: 1px; border-color: rgb(120, 104, 70); border-radius: 12px; padding: 10px 14px 6px; max-height: 360px; }
+.music-suggest-row { height: 32px; min-height: 32px; justify-content: flex-start; margin: 1px 0; }
+.music-hot-chip .music-vector-icon { display: none; }
+.music-suggest { max-height: 480px; }

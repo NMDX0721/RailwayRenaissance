@@ -31,6 +31,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLibraryTrack> localTracks = new List<MusicLibraryTrack>();
         public List<MusicLibraryTrack> cloudTracks = new List<MusicLibraryTrack>();
         public List<string> favorites = new List<string>();
+        public List<string> recent = new List<string>();   // most recently started first, kept to 30, for the search box and the home page
         public List<string> queue = new List<string>();
         public List<MusicUserPlaylist> playlists = new List<MusicUserPlaylist>();
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
@@ -368,6 +369,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             state.mode = (int)TabletMusicAppUI.tabletPlayMode;
             store.Save(state);
         }
+        public static List<MusicLibraryTrack> RecentTracks(int count)
+        {
+            Ensure();
+            var found = new List<MusicLibraryTrack>();
+            foreach (string id in state.recent ?? new List<string>()) { var t = Find(id); if (t != null && found.Count < count) found.Add(t); }
+            return found;
+        }
         public static void Started(string id, AudioClip clip)
         {
             Ensure();
@@ -380,6 +388,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             pendingHistory = -1;
             state.currentId = id; state.position = 0;
+            if (state.recent == null) state.recent = new List<string>();
+            state.recent.Remove(id); state.recent.Insert(0, id); if (state.recent.Count > 30) state.recent.RemoveRange(30, state.recent.Count - 30);
             if (tracks.TryGetValue(id, out var track)) track.duration = clip.length;
             Commit();
             TrackStarted?.Invoke(id);

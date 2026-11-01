@@ -14,6 +14,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         [Serializable] public sealed class Response { public int id; public bool ok; public string error; public Result result; }
         [Serializable] public sealed class Result
         {
+            public string[] hots;
             public string service, image, message, userId, nickname, url, type, lyric, translation, wordLyric, authorization;
             public int protocol, code, nextOffset;
             public bool loggedIn, trial, sessionOnly, localHttp, more, pureMusic;
@@ -21,7 +22,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             public RemotePlaylist[] playlists;
         }
         [Serializable] public sealed class RemoteTrack { public string id, title, artist, album, cover, translated; public long durationMs; }
-        [Serializable] public sealed class RemotePlaylist { public string id, title, cover; public int count; }
+        [Serializable] public sealed class RemotePlaylist { public string id, title, cover, subtitle; public int count; public string[] preview; }
         sealed class Pending { public Action<Response> callback; public float deadline; public string method; }
         static NeteaseLocalBridge instance, qqInstance, kugouInstance, bodianInstance, subsonicInstance, webdavInstance, spotifyInstance;
         string provider = "netease";
