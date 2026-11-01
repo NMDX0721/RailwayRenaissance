@@ -45,6 +45,28 @@ public class GameMainUI : MonoBehaviour
     /// <summary>状态栏电量徽标文字：参考 HyperOS 的圆角电量徽标，只显示百分比数字。</summary>
     private static string FormatBattBadge(int pct) => pct < 0 ? string.Empty : pct.ToString();
 
+    // 电量徽标配色：充电或电量充足为绿，≤30% 琥珀，≤15% 红；没有电量数据时灰色满格
+    private static Color BatteryFillColor(int pct, bool charging)
+    {
+        if (pct < 0) return new Color(0.42f, 0.44f, 0.50f, 0.95f);
+        if (charging) return new Color(0.22f, 0.66f, 0.36f, 0.98f);
+        if (pct <= 15) return new Color(0.88f, 0.26f, 0.24f, 0.98f);
+        if (pct <= 30) return new Color(0.92f, 0.64f, 0.16f, 0.98f);
+        return new Color(0.22f, 0.66f, 0.36f, 0.98f);
+    }
+
+    private void ApplyBatteryBadge(int pct)
+    {
+        bool charging = pct >= 0 && SystemInfo.batteryStatus == BatteryStatus.Charging;
+        if (statusBatt != null) statusBatt.text = FormatBattBadge(pct);
+        if (statusBattBolt != null) statusBattBolt.style.display = (pct < 0 || charging) ? DisplayStyle.Flex : DisplayStyle.None;
+        if (statusBattFill != null)
+        {
+            statusBattFill.style.width = Length.Percent(pct < 0 ? 100f : Mathf.Clamp(pct, 0, 100));
+            statusBattFill.style.backgroundColor = BatteryFillColor(pct, charging);
+        }
+    }
+
     private static string FormatBatt(int pct)
     {
         if (pct < 0) return "⚡ 电源";
@@ -622,6 +644,8 @@ public class GameMainUI : MonoBehaviour
     private VisualElement statusBar;
     private VisualElement statusSpacer;
     private bool statusScrimShown = true;
+    private int desktopInkLight = -1; // 桌面壁纸亮度对应的状态栏字色：-1 未定，0 浅色字，1 深色字
+    private VisualElement desktopWallpaperEl;
     private Label statusClock;
     private Label statusBatt;
     private RailwayRenaissance.UI.Tablet.TabletIconElement statusBattBolt;
@@ -679,7 +703,22 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         statusBar.style.opacity = desktop.resolvedStyle.opacity;
         // 渐变暗影只用于桌面；任何全屏应用（含自建窗口的音乐）自带顶栏底色，状态栏不再分层
-        bool scrimWanted = activeTabletTask == null;
+        if (activeTabletTask == null)
+        {
+            // 状态栏字色随壁纸明暗：浅壁纸用深色字且不加暗影，深壁纸用白字加很淡的暗影
+            desktopWallpaperEl ??= root.Q("tablet-desktop-wallpaper");
+            if (desktopWallpaperEl != null)
+            {
+                Color wc = desktopWallpaperEl.resolvedStyle.backgroundColor;
+                int light = (0.299f * wc.r + 0.587f * wc.g + 0.114f * wc.b) > 0.55f ? 1 : 0;
+                if (light != desktopInkLight)
+                {
+                    desktopInkLight = light;
+                    ApplyStatusBarForApp(light == 1);
+                }
+            }
+        }
+        bool scrimWanted = activeTabletTask == null && desktopInkLight != 1;
         if (scrimWanted != statusScrimShown)
         {
             statusScrimShown = scrimWanted;
@@ -838,10 +877,10 @@ public class GameMainUI : MonoBehaviour
         TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
         // 电量徽标：深灰圆角底 + 按电量铺的浅灰填充 + 白色粗体数字（对照 HyperOS 状态栏：深浅背景下都清晰）
         var battBox = new VisualElement { name = "tablet-status-battery-box" };
-        battBox.style.width = 36; battBox.style.height = 20;
+        battBox.style.width = 40; battBox.style.height = 22;
         battBox.style.overflow = Overflow.Hidden;
-        battBox.style.borderTopLeftRadius = battBox.style.borderTopRightRadius = 7;
-        battBox.style.borderBottomLeftRadius = battBox.style.borderBottomRightRadius = 7;
+        battBox.style.borderTopLeftRadius = battBox.style.borderTopRightRadius = 8;
+        battBox.style.borderBottomLeftRadius = battBox.style.borderBottomRightRadius = 8;
         battBox.style.backgroundColor = new Color(0.20f, 0.21f, 0.24f, 0.92f);
         battBox.style.justifyContent = Justify.Center;
         battBox.style.alignItems = Align.Center;
@@ -849,7 +888,7 @@ public class GameMainUI : MonoBehaviour
         statusBattFill.style.position = Position.Absolute;
         statusBattFill.style.left = 0; statusBattFill.style.top = 0; statusBattFill.style.bottom = 0;
         statusBattFill.style.width = Length.Percent(battPct < 0 ? 100f : Mathf.Clamp(battPct, 0, 100));
-        statusBattFill.style.backgroundColor = new Color(0.42f, 0.44f, 0.50f, 0.95f);
+        statusBattFill.style.backgroundColor = BatteryFillColor(battPct, false);
         battBox.Add(statusBattFill);
         rightInfo.Add(battBox);
         var batt = new Label(FormatBattBadge(battPct)) { name = "tablet-status-battery" };
@@ -860,10 +899,11 @@ public class GameMainUI : MonoBehaviour
         statusBatt = batt;
         battBox.Add(batt);
         // 台式机等没有电量数据时，徽标里画一个闪电（外接电源）
-        statusBattBolt = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Bolt, 14, Color.white) { pickingMode = PickingMode.Ignore };
-        statusBattBolt.style.position = Position.Absolute;
+        // 充电（或没有电量数据的外接电源）时，徽标右侧画一个绿色闪电，对照 HyperOS
+        statusBattBolt = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Bolt, 15, new Color(0.30f, 0.80f, 0.42f, 1f)) { pickingMode = PickingMode.Ignore };
+        statusBattBolt.style.marginLeft = 3;
         statusBattBolt.style.display = battPct < 0 ? DisplayStyle.Flex : DisplayStyle.None;
-        battBox.Add(statusBattBolt);
+        rightInfo.Add(statusBattBolt);
 
         // ---- 底部小指示条（HyperOS 全面屏手势提示） ----
         var homeBar = new VisualElement { name = "tablet-home-indicator", pickingMode = PickingMode.Ignore };
@@ -2220,6 +2260,7 @@ public class GameMainUI : MonoBehaviour
         }
         activeTabletTask = null;
         appLayer = null;
+        desktopInkLight = -1; // 回到桌面：按壁纸重新取字色
         ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
         if (systemNavigationBar != null) systemNavigationBar.style.display = DisplayStyle.None;
@@ -3475,10 +3516,7 @@ public class GameMainUI : MonoBehaviour
             if (battTick >= 30 && statusBatt != null)
             {
                 battTick = 0;
-                int pctNow = GetDeviceBatteryPercent();
-                statusBatt.text = FormatBattBadge(pctNow);
-                if (statusBattBolt != null) statusBattBolt.style.display = pctNow < 0 ? DisplayStyle.Flex : DisplayStyle.None;
-                if (statusBattFill != null) statusBattFill.style.width = Length.Percent(pctNow < 0 ? 100f : Mathf.Clamp(pctNow, 0, 100));
+                ApplyBatteryBadge(GetDeviceBatteryPercent());
             }
             if (statusUnread != null && tabletShellState != null)
                 statusUnread.style.display = tabletShellState.UnreadCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
