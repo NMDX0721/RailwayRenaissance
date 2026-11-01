@@ -1615,14 +1615,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var page = new VisualElement { name = "settings-battery-page" };
         AddCenterHeader(page, "电池");
-        page.Add(BuildBatteryHero(SystemInfo.batteryLevel, SystemInfo.batteryStatus));
+        page.Add(BuildBatteryHero(GameMainUI.GetDeviceBatteryLevel01(), GameMainUI.GetDeviceBatteryStatus()));
 
         AddSectionHeader(page, "供电状态");
         var statusCard = BuildWhiteCard();
         statusCard.name = "settings-battery-status-card";
 
-        float battLevel = SystemInfo.batteryLevel;
-        BatteryStatus battStatus = SystemInfo.batteryStatus;
+        float battLevel = GameMainUI.GetDeviceBatteryLevel01();
+        BatteryStatus battStatus = GameMainUI.GetDeviceBatteryStatus();
         string levelText = battLevel >= 0f ? $"{Mathf.RoundToInt(battLevel * 100f)}%" : "平台未提供电量读数";
         string statusText;
         switch (battStatus)
@@ -1636,7 +1636,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         statusCard.Add(BuildWhiteRow("当前电量", levelText, null, false));
         statusCard.Add(BuildWhiteRow("供电状态", statusText, null, false));
-        statusCard.Add(BuildWhiteRow("数据来源", "仅显示 Unity 当前运行平台提供的设备电池状态，不代表机车蓄电池或辅助电源遥测", null, false));
+        statusCard.Add(BuildWhiteRow("数据来源", "读取本机真实电池：Windows 取系统电源状态，Android 取系统电池接口；不代表机车蓄电池或辅助电源遥测", null, false));
         page.Add(statusCard);
 
         AddSectionHeader(page, "能耗管理说明");

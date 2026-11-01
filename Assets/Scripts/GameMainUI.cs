@@ -35,11 +35,62 @@ public class GameMainUI : MonoBehaviour
     /// <summary>设备真实电量（0-100）；读不到返回 -1（台式机/Editor 无电池）。</summary>
     public static int GetDeviceBatteryPercent()
     {
-        // 本机环境下 kernel32 GetSystemPowerStatus 的 P/Invoke 触发 native 崩（exit_trace 已定位 wallpaper→battery 区间），
-        // 统一改走 Unity API——台式机 batteryLevel=-1，显示「⚡ 电源」
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        // Windows 电脑：读系统真实电量。台式机没有电池（BatteryFlag=128）或读不到时返回 -1。
+        // 之前这里的 SYSTEM_POWER_STATUS 少了末尾的 BatteryFullLifeTime（共 12 字节），API 写越界导致 native 崩；已补全。
+        try
+        {
+            var sps = new SYSTEM_POWER_STATUS();
+            if (GetSystemPowerStatus(ref sps) && (sps.BatteryFlag & 128) == 0 && sps.BatteryLifePercent <= 100)
+                return sps.BatteryLifePercent;
+            return -1;
+        }
+        catch (System.Exception)
+        {
+            return -1;
+        }
+#else
+        // Android / 其他平台：走 Unity API（读不到为 -1）
         float lvl = SystemInfo.batteryLevel;
         if (lvl >= 0f) return Mathf.RoundToInt(lvl * 100f);
         return -1;
+#endif
+    }
+
+    /// <summary>设备电量 0..1，读不到为 -1（给设置页等按 Unity 习惯用）。</summary>
+    public static float GetDeviceBatteryLevel01()
+    {
+        int p = GetDeviceBatteryPercent();
+        return p < 0 ? -1f : p / 100f;
+    }
+
+    public static BatteryStatus GetDeviceBatteryStatus()
+    {
+        int p = GetDeviceBatteryPercent();
+        if (p < 0) return BatteryStatus.Unknown;
+        if (GetDeviceCharging()) return p >= 100 ? BatteryStatus.Full : BatteryStatus.Charging;
+        return BatteryStatus.Discharging;
+    }
+
+    /// <summary>是否正在充电（插着电源）。没有电池的设备返回 false，由调用方按“无电量数据”处理。</summary>
+    public static bool GetDeviceCharging()
+    {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        try
+        {
+            var sps = new SYSTEM_POWER_STATUS();
+            if (GetSystemPowerStatus(ref sps) && (sps.BatteryFlag & 128) == 0)
+                return sps.ACLineStatus == 1 || (sps.BatteryFlag & 8) != 0;
+            return false;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+#else
+        var st = SystemInfo.batteryStatus;
+        return st == BatteryStatus.Charging || st == BatteryStatus.Full;
+#endif
     }
 
     /// <summary>状态栏电量徽标文字：参考 HyperOS 的圆角电量徽标，只显示百分比数字。</summary>
@@ -57,7 +108,7 @@ public class GameMainUI : MonoBehaviour
 
     private void ApplyBatteryBadge(int pct)
     {
-        bool charging = pct >= 0 && SystemInfo.batteryStatus == BatteryStatus.Charging;
+        bool charging = pct >= 0 && GetDeviceCharging();
         if (statusBatt != null) statusBatt.text = FormatBattBadge(pct);
         if (statusBattBolt != null) statusBattBolt.style.display = (pct < 0 || charging) ? DisplayStyle.Flex : DisplayStyle.None;
         if (statusBattFill != null)
@@ -83,6 +134,7 @@ public class GameMainUI : MonoBehaviour
         public byte BatteryLifePercent;
         public byte SystemStatusFlag;
         public uint BatteryLifeTime;
+        public uint BatteryFullLifeTime;
     }
     [System.Runtime.InteropServices.DllImport("kernel32.dll")]
     private static extern bool GetSystemPowerStatus(ref SYSTEM_POWER_STATUS sps);
@@ -904,6 +956,7 @@ public class GameMainUI : MonoBehaviour
         statusBattBolt.style.marginLeft = 3;
         statusBattBolt.style.display = battPct < 0 ? DisplayStyle.Flex : DisplayStyle.None;
         rightInfo.Add(statusBattBolt);
+        ApplyBatteryBadge(battPct); // 首次构建就按真实电量与充电状态着色、显示闪电
 
         // ---- 底部小指示条（HyperOS 全面屏手势提示） ----
         var homeBar = new VisualElement { name = "tablet-home-indicator", pickingMode = PickingMode.Ignore };
@@ -3525,7 +3578,8 @@ public class GameMainUI : MonoBehaviour
             {
                 statusDate.text = FormatStatusDate(System.DateTime.Now);
                 bool islandShown = SuperIsland != null && SuperIsland.PrimaryType != RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.None;
-                statusDate.style.display = islandShown ? DisplayStyle.None : DisplayStyle.Flex;
+                // 日期只在桌面显示；应用内（含音乐）状态栏只留时间，避免和应用自己的顶栏挤在一起
+                statusDate.style.display = (islandShown || activeTabletTask != null) ? DisplayStyle.None : DisplayStyle.Flex;
             }
             if (statusQuiet != null && tabletShellState != null)
                 statusQuiet.style.display = tabletShellState.QuietMode ? DisplayStyle.Flex : DisplayStyle.None;
