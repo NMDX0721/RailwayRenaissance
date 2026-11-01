@@ -30,7 +30,14 @@ public static class RailwayMusicTerminalReview
     static float previewPreviousPosition;
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
-    static int stageMotionFrame, lumiSeq, styleStep;
+    static int stageMotionFrame, lumiSeq, styleStep, stressIndex;
+    static readonly List<string> stressIssues = new List<string>();
+    // Every style on both stress lines (measured at the end of each line), and Luminous again at the wildest intensity.
+    static readonly string[] StressStyles = { "luminous", "luminous", "luminous", "luminous", "partita", "partita", "tilt", "tilt", "cadenza", "cadenza", "claddagh", "claddagh", "cappella", "cappella" };
+    static readonly int[] StressIntensity = { 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    // Shortly before each line ends (3.4 s and 9.4 s): every word has started, and the line is still the current one. The lyric clock is the playback
+    // position plus the song's subtitle offset (+0.1 s left by an earlier step), so these are 0.3 s ahead of the line end, not 0.1 s.
+    static readonly float[] StressTimes = { 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f };
     static readonly float[] lumiPose = new float[10], lumiLast = new float[10];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
@@ -296,6 +303,88 @@ public static class RailwayMusicTerminalReview
         Assert(!TabletMusicAppUI.tabletIsPlaying, "Opening the window auto-started audio");
         Debug.Log("MUSIC_TABLET_ENTRY_OK: real GameMainUI app entry; no autoplay");
     }
+    // Eight English words and a 24-character Chinese line, every word timed, with a closing marker so the second line has an end.
+    static string WriteStressLrc()
+    {
+        string Tag(float s) => ((int)(s / 60)).ToString("D2") + ":" + (s % 60).ToString("00.00", System.Globalization.CultureInfo.InvariantCulture);
+        var text = new System.Text.StringBuilder();
+        string[] english = { "The ", "rails ", "remember ", "every ", "little ", "thing ", "we ", "said" };
+        float[] englishAt = { 0f, .4f, .8f, 1.4f, 1.8f, 2.2f, 2.6f, 2.9f };
+        text.Append("[00:00.00]");
+        for (int i = 0; i < english.Length; i++) text.Append("<" + Tag(englishAt[i]) + ">" + english[i]);
+        text.Append("<" + Tag(3.4f) + ">\n");
+        string[] chinese = { "沿着", "铁轨", "一路", "向北", "穿过", "群山", "与薄", "雾回", "到出", "发的", "那个", "站台" };
+        text.Append("[00:04.00]");
+        for (int i = 0; i < chinese.Length; i++) text.Append("<" + Tag(4f + i * .45f) + ">" + chinese[i]);
+        text.Append("<" + Tag(9.4f) + ">\n[00:10.00]\n");
+        string path = Path.Combine(Local, "review-stress.lrc");
+        File.WriteAllText(path, text.ToString(), System.Text.Encoding.UTF8);
+        return path;
+    }
+
+    // An element's opacity as it is seen: its own times every ancestor's, up to the stage; a hidden ancestor makes it invisible.
+    static float EffectiveOpacity(VisualElement element, VisualElement stop)
+    {
+        float opacity = 1f;
+        for (var e = element; e != null && e != stop; e = e.parent) { if (e.resolvedStyle.display == DisplayStyle.None) return 0f; opacity *= e.resolvedStyle.opacity; }
+        return opacity;
+    }
+
+    // Measure one style on one stress line: every visible character must lie inside the stage, and words that are visible together must not cover each other.
+    static void StressCheck(MusicStageLyrics host, int index)
+    {
+        string name = StressStyles[index] + "/intensity " + StressIntensity[index] + "/" + (StressTimes[index] < 5f ? "English" : "Chinese");
+        // The lines are the current ones only just before they end; seeing nothing means the lyrics did not load, which is itself a failure.
+        Rect stage = host.worldBound; const float slack = 8f;
+        string[] charClasses = { "music-stage-word-text", "music-stage-tilt-char", "music-stage-claddagh-char", "music-stage-cappella-char" };
+        int seen = 0, outside = 0; string worst = "";
+        foreach (string cls in charClasses)
+            foreach (var label in host.Query<Label>(className: cls).ToList())
+            {
+                if (label.ClassListContains("music-stage-glow") || EffectiveOpacity(label, host) < .3f) continue;
+                Rect r = label.worldBound; if (r.width <= 0 || r.height <= 0) continue;
+                seen++;
+                if (r.xMin < stage.xMin - slack || r.xMax > stage.xMax + slack || r.yMin < stage.yMin - slack || r.yMax > stage.yMax + slack) { outside++; worst = "'" + label.text + "' at " + r; }
+            }
+        if (seen == 0)
+        {
+            var doc = MusicTimedText.Load(MusicLibrarySession.Find("platform"));
+            stressIssues.Add(name + ": nothing visible to measure");
+            Debug.Log("MUSIC_STRESS_STATE: " + name + " style=" + host.StyleId + " hostDisplay=" + host.resolvedStyle.display + " hostSize=" + host.worldBound + " motion=" + MusicLibrarySession.State.lyricMotion +
+                " position=" + TabletMusicAppUI.CurrentPosition.ToString("F2") + " docLines=" + doc.lines.Count + " activeAt=" + doc.Active(TabletMusicAppUI.CurrentPosition) + " labels=" + host.Query<Label>().ToList().Count);
+        }
+        if (outside > 0) stressIssues.Add(name + ": " + outside + " of " + seen + " characters outside the stage " + stage + " (e.g. " + worst + ")");
+        if (StressStyles[index] == "claddagh" || StressStyles[index] == "cappella") return;
+        string wordClass = StressStyles[index] == "tilt" ? "music-stage-tilt-row" : "music-stage-word";
+        var words = host.Query(className: wordClass).ToList().FindAll(w => EffectiveOpacity(w, host) >= .3f);
+        Rect TextRect(VisualElement word)
+        {
+            Rect union = Rect.zero; bool first = true;
+            foreach (var label in word.Query<Label>().ToList())
+            {
+                if (label.ClassListContains("music-stage-glow")) continue;
+                var r = label.worldBound; if (r.width <= 0) continue;
+                union = first ? r : Rect.MinMaxRect(Mathf.Min(union.xMin, r.xMin), Mathf.Min(union.yMin, r.yMin), Mathf.Max(union.xMax, r.xMax), Mathf.Max(union.yMax, r.yMax)); first = false;
+            }
+            return union;
+        }
+        float worstOverlap = 0; string worstPair = "";
+        for (int a = 0; a < words.Count; a++)
+            for (int b = a + 1; b < words.Count; b++)
+            {
+                Rect ra = TextRect(words[a]), rb = TextRect(words[b]);
+                float ox = Mathf.Max(0, Mathf.Min(ra.xMax, rb.xMax) - Mathf.Max(ra.xMin, rb.xMin)), oy = Mathf.Max(0, Mathf.Min(ra.yMax, rb.yMax) - Mathf.Max(ra.yMin, rb.yMin));
+                float ratio = ox * oy / Mathf.Max(1f, Mathf.Min(ra.width * ra.height, rb.width * rb.height));
+                if (ratio > worstOverlap) { worstOverlap = ratio; worstPair = a + "/" + b; }
+            }
+        // The wildest setting scatters words on purpose, so it is allowed more shared area; at the normal settings words must stay clear. (Rotated words are
+        // measured by their bounding box, which is larger than the word, so these limits are on the safe side of "covers".)
+        // Measured on the review frames: a magnified word being sung touching its neighbour reads fine at 40-50%, while the pairs that were really
+        // unreadable (words on top of each other) were 69-97%. So half the smaller word is the line between touching and covering.
+        float limit = .5f;
+        if (worstOverlap > limit) stressIssues.Add(name + ": words " + worstPair + " cover " + (worstOverlap * 100).ToString("F0") + "% of the smaller one (" + words.Count + " words visible)");
+    }
+
     static void Capture(string name)
     {
         root.Q<Label>(className: "music-toast").style.display = DisplayStyle.None;
@@ -629,7 +718,7 @@ public static class RailwayMusicTerminalReview
                     Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
                     Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
                     // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
-                    if (styleStep < 13)
+                    if (styleStep < 14 + StressStyles.Length)
                     {
                         float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
                         if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
@@ -781,7 +870,39 @@ public static class RailwayMusicTerminalReview
                             MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
                             Debug.Log("MUSIC_STAGE_CAPPELLA_OK: chat rows split between two senders, no overlap, text fades in, timestamps after the line");
                         }
-                        else
+                        else if (styleStep >= 13)
+                        {
+                            // Stress: harder lyrics (an eight-word English line, a 24-character Chinese line) on every style, measured at the end of
+                            // each line, when every word has been sung and takes the most room. Issues are collected and reported together.
+                            if (styleStep == 13)
+                            {
+                                Assert(MusicTimedText.Import("platform", WriteStressLrc(), false, out _), "Stress lyrics could not be imported");
+                                Submit(root.Q<Button>("music-lyrics-reload")); stressIndex = 0; stressIssues.Clear();
+                                var probe = MusicTimedText.Load(MusicLibrarySession.Find("platform"));
+                                Debug.Log("MUSIC_STRESS_DOC: lines=" + probe.lines.Count + " error=" + (probe.error ?? "none") + " source=" + probe.source + " first=" + (probe.lines.Count > 0 ? probe.lines[0].text + " words=" + probe.lines[0].words.Count + " end=" + probe.lines[0].end : "-"));
+                            }
+                            else
+                            {
+                                Capture("stress-" + StressStyles[stressIndex] + "-i" + StressIntensity[stressIndex] + (StressTimes[stressIndex] < 5f ? "-en" : "-zh"));
+                                StressCheck(stageHost, stressIndex); stressIndex++;
+                            }
+                            if (stressIndex < StressStyles.Length)
+                            {
+                                MusicLibrarySession.State.stageStyle = StressStyles[stressIndex]; MusicLibrarySession.State.stageIntensity = StressIntensity[stressIndex];
+                                stageHost.Invalidate(); TabletMusicAppUI.SeekTabletMusic(StressTimes[stressIndex] / styleClip);
+                            }
+                            else
+                            {
+                                // Put the review lyrics back for the steps that follow, whatever the stress found.
+                                MusicLibrarySession.State.stageStyle = "luminous"; MusicLibrarySession.State.stageIntensity = 1;
+                                Assert(MusicTimedText.Import("platform", Path.Combine(Local, "review.lrc"), false, out _) && MusicTimedText.Import("platform", Path.Combine(Local, "review-translation.srt"), true, out _), "Review lyrics could not be restored");
+                                Submit(root.Q<Button>("music-lyrics-reload")); TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                                foreach (var issue in stressIssues) Debug.Log("MUSIC_STRESS_ISSUE: " + issue);
+                                Assert(stressIssues.Count == 0, stressIssues.Count + " stress issues: " + string.Join("; ", stressIssues));
+                                Debug.Log("MUSIC_STAGE_STRESS_OK: " + StressStyles.Length + " style/line combinations stay inside the stage and clear of each other");
+                            }
+                        }
+                        else if (styleStep == 3)
                         {
                             var stillCurrent = stageHost.Q<Label>(className: "music-stage-still-current");
                             Assert(stageHost.StyleId == "still" && stillCurrent != null && stillCurrent.text == "归途回声", "Still did not show the current line");

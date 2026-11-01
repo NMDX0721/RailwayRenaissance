@@ -52,6 +52,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void Invalidate() { shownDocument = null; shownLine = -3; }
 
+        static float Advance(string text, float px)
+        {
+            float total = 0;
+            // The pixel font's Latin letters measure about 0.65 em, wider than the 0.55 a proportional font would give; an estimate that is too small
+            // under-shrinks long rows, which is what pushed the last letters of a long English row past the stage edge.
+            foreach (char ch in text) total += (ch >= 0x2E80 ? 1f : ch == ' ' || ch == ' ' ? .4f : .65f) * px;
+            return Mathf.Max(px * .35f, total);
+        }
+
         static string Normalize(string text)
         {
             var letters = new System.Text.StringBuilder();
@@ -182,19 +191,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
 
             float avail = Mathf.Max(240f, (width < 120 ? 760f : width) - 96f);
-            float size = Mathf.Clamp(Mathf.Min(avail / 3.2f, stageHeight * .6f / (rows * 1.7f)), 22f, 50f) * c.fontScale;
+            // Each row gets about 100 px. A word is magnified up to 1.3 times by its row and, while it is sung, 1.4 times more, so the type size is set
+            // from that worst case: it must still fit its row, or rows land on each other.
+            float rowHeight = stageHeight * .6f / rows;
+            float size = Mathf.Clamp(Mathf.Min(avail / 3.2f, rowHeight / (1.3f * 1.4f * 1.15f)), 20f, 46f) * c.fontScale;
             for (int row = 0; row < cuts.Count; row++)
             {
                 var cut = cuts[row];
                 var chunk = new Chunk { left = row % 2 == 0, start = cut[0].start, end = cut[cut.Count - 1].end };
                 float magnitude = StaggerMin + Next() * (StaggerMax - StaggerMin);
-                float rowBias = row - (cuts.Count - 1) / 2f, staggerScale = calmLook ? 1f : .8f + Next() * .9f;
+                // Folia varies a row's scale from 0.8 to 1.7; held to 0.8 to 1.3 so a long line's rows do not grow into each other.
+                float rowBias = row - (cuts.Count - 1) / 2f, staggerScale = calmLook ? 1f : .8f + Next() * .5f;
                 int graphemes = 0; foreach (var u in cut) graphemes += u.glyphs.Count;
                 chunk.cfgX = chunk.left ? -magnitude : magnitude;
                 chunk.cfgY = calmLook ? 0f : rowBias * 2.5f;
                 chunk.cfgRot = chaotic ? (chunk.left ? -3f : 3f) : 0f;
                 float scale = (chaotic ? 1f + Mathf.Min(graphemes * .01f, .05f) : 1f) * staggerScale;
                 if (c.calm) { chunk.cfgY = 0; chunk.cfgRot = 0; scale = 1; }
+                // The row is offset sideways by up to StaggerMax and its words are magnified by <scale>, so its width must fit the stage with both counted;
+                // a long row is shrunk (never below 45%) instead of running off the edge.
+                float estimate = 0;
+                foreach (var u in cut) { string t = ""; foreach (var g in u.glyphs) t += g.text; estimate += Advance(t, size) * 1.3f + Mathf.Max(10f, size * .3f); }
+                // Rotated words and the trailing space of a word reach a little past its estimated width, so keep a comfortable margin.
+                float room = Mathf.Max(200f, avail - StaggerMax * 2f - 64f);
+                // 1.15: the word being sung grows by 1.4 times, which widens the row a little more.
+                if (estimate * scale * 1.15f > room) scale *= Mathf.Max(.45f, room / (estimate * scale * 1.15f));
                 chunk.x = chunk.cfgX + (chunk.left ? -40f : 40f); chunk.y = chunk.cfgY; chunk.r = chunk.cfgRot;
 
                 chunk.row = new VisualElement { pickingMode = PickingMode.Ignore }; chunk.row.AddToClassList("music-stage-partita-row");
@@ -208,7 +229,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 for (int i = 0; i < cut.Count; i++)
                 {
                     var word = StageWord.Create(cut[i], size, c.accent, chorus, seedBase + row * 131 + i * 7, spread, tilt, scale, 0f, tuning.rotation, c.calm, false);
-                    word.body.style.marginRight = Mathf.Max(10f, size * .3f);
+                    // The word being sung grows by 1.4 times, about a fifth of its own width on each side, so the gap follows the word's width instead
+                    // of being fixed; otherwise the sung word lands on its neighbour.
+                    string unitText = ""; foreach (var g in cut[i].glyphs) unitText += g.text;
+                    word.body.style.marginRight = Mathf.Max(10f, size * .3f) + Advance(unitText, size) * .3f * scale;
                     chunk.row.Add(word.body); chunk.words.Add(word);
                 }
                 column.Add(chunk.row); chunks.Add(chunk);

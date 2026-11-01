@@ -564,7 +564,7 @@
 /* Cappella style: a chat. Rows hold an avatar and a bubble, mirrored for the right-hand sender; the bubble widens as characters appear. */
 .music-stage-cappella { align-self: stretch; align-items: center; justify-content: flex-start; padding-top: 12px; }
 .music-stage-cappella-list { align-self: stretch; max-width: 880px; padding: 0 24px; justify-content: flex-start; }
-.music-stage-cappella-row { flex-direction: row; align-items: flex-end; margin-bottom: 12px; }
+.music-stage-cappella-row { flex-direction: row; align-items: flex-end; margin-bottom: 18px; }
 .music-stage-cappella-right { flex-direction: row-reverse; }
 .music-stage-cappella-avatar { width: 40px; height: 40px; border-radius: 20px; overflow: hidden; flex-shrink: 0; margin: 0 10px; }
 .music-stage-cappella-shoulders { position: absolute; left: 6px; top: 26px; width: 28px; height: 28px; border-radius: 14px; }
@@ -574,7 +574,7 @@
 .music-stage-cappella-bubble-right { border-bottom-right-radius: 4px; transform-origin: right bottom; }
 .music-stage-cappella-flow { flex-direction: row; flex-wrap: wrap; }
 .music-stage-cappella-unit { flex-direction: row; }
-.music-stage-cappella-char { white-space: nowrap; }
+.music-stage-cappella-char { white-space: nowrap; margin: 0; padding: 0; }
 .music-stage-cappella-translation { white-space: normal; margin-top: 4px; }
 .music-stage-cappella-stamp { margin-top: 2px; -unity-text-align: middle-right; }
 /* Cadenza style: each word sits on a zero-size holder placed from the middle of the field; the halo rides on the character being sung. */

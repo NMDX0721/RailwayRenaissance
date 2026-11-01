@@ -178,11 +178,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             line.style.minHeight = shortLine ? Mathf.Max(96f, size * 2.4f) : 150f;
             line.style.justifyContent = justify[seed % justify.Length]; line.style.alignItems = align[(seed * 2) % align.Length];
             line.style.alignContent = Align.Center;
-            float spread = chaotic ? 60f : still ? 0f : 20f, tilt = chaotic ? 30f : still ? 0f : 5f;
+            // Folia scatters up to 60 px at the wildest setting; on a wrapped line that put whole words on top of each other, so it is held to 40.
+            float spread = chaotic ? 28f : still ? 0f : 20f, tilt = chaotic ? 30f : still ? 0f : 5f;
 
             for (int i = 0; i < grouped.Count; i++)
             {
-                var word = StageWord.Create(grouped[i], size, c.accent, chorus, seed + i, spread, tilt, chaotic ? .8f : 1.1f, chaotic ? .6f : .2f, tuning.rotation, c.calm, chaotic);
+                // Folia's wildest setting varies a word's size from 0.8 to 1.4 times; held to 0.8 to 1.2 so a wrapped line stays readable.
+                var word = StageWord.Create(grouped[i], size, c.accent, chorus, seed + i, spread, tilt, chaotic ? .8f : 1.1f, chaotic ? .4f : .2f, tuning.rotation, c.calm, chaotic);
+                // Wrapped rows need room above and below: words are magnified and scattered up and down, and without it one row lands on the next.
+                float rowMargin = size * (chaotic ? .4f : .34f); word.body.style.marginTop = rowMargin; word.body.style.marginBottom = rowMargin;
                 line.Add(word.body); units.Add(word);
             }
         }
