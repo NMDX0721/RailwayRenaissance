@@ -77,7 +77,7 @@ namespace RailwayRenaissance.Editor
         // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
         private static string pendingCapture;
         private static int settingsSubPage;
-        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备" };
+        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈" };
 
         private static void Capture(string name)
         {

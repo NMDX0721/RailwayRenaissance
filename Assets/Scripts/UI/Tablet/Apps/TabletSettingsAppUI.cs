@@ -743,19 +743,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var page = new VisualElement { name = "settings-ai-page" };
         AddCenterHeader(page, "小米超级AI");
 
-        AddSectionHeader(page, "车载 AI 引擎与本地模型");
+        AddSectionHeader(page, "岁月");
         var engineCard = BuildWhiteCard();
         engineCard.name = "settings-ai-engine-card";
-        engineCard.Add(BuildWhiteRow("本地对话原型", "岁月对话目前由本地预设回复驱动；本页没有模型切换或云端推理控制", null, false));
-        engineCard.Add(BuildWhiteRow("外部模型服务", "此对话入口未接入外部大模型服务", null, false));
-        engineCard.Add(BuildWhiteRow("语音输入", "本应用当前没有语音唤醒或麦克风输入功能", null, false));
+        engineCard.Add(BuildInfoRow("岁月", "0721 车机", "核心运行在 0721 号车机上，通过平板投影与你交互；与平板共享设备所有权"));
+        engineCard.Add(BuildInfoRow("桌面投影", "常驻", "桌面一角的浮窗，轻触即可开始对话"));
+        engineCard.Add(BuildInfoRow("对话方式", "预设台词", "岁月目前的回应来自本地预设台词"));
         page.Add(engineCard);
 
-        AddSectionHeader(page, "交互与桌面展示");
+        AddSectionHeader(page, "车载内网");
         var interactionCard = BuildWhiteCard();
         interactionCard.name = "settings-ai-interaction-card";
-        interactionCard.Add(BuildWhiteRow("桌面提示气泡", "由桌面界面按本地脚本显示；此行仅说明现状，不代表可配置开关", null, false));
-        interactionCard.Add(BuildWhiteRow("多轮自适应对话", "当前为本地模板响应阶段；生成式多轮对话功能未接入在线算力", null, false));
+        interactionCard.Add(BuildInfoRow("在线推理", "未接入", "内网沙箱内没有外部大模型服务"));
+        interactionCard.Add(BuildInfoRow("语音输入", "未提供", "平板没有语音唤醒或麦克风输入"));
         page.Add(interactionCard);
 
         rightPane.Add(page);
@@ -1411,18 +1411,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var page = new VisualElement { name = "settings-lock-security-page" };
         AddCenterHeader(page, "人脸与锁屏密码");
 
-        AddSectionHeader(page, "屏幕锁定凭据");
+        AddSectionHeader(page, "屏幕锁定");
         var credCard = BuildWhiteCard();
         credCard.name = "settings-lock-credential-card";
-        credCard.Add(BuildWhiteRow("锁屏凭据", "当前版本没有密码凭据验证功能", null, false));
-        credCard.Add(BuildWhiteRow("PIN 码与图案手势", "当前版本没有 PIN 或图案密码验证流程", null, false));
-        credCard.Add(BuildWhiteRow("人脸与指纹验证", "当前版本没有接入生物识别验证；设备是否具备相关硬件不在此应用中检测", null, false));
+        credCard.Add(BuildInfoRow("锁屏方式", "轻触解锁", "轻触屏幕或按空格键进入桌面"));
+        credCard.Add(BuildInfoRow("面容数据", "未录入", "此终端未录入任何生物识别数据"));
+        credCard.Add(BuildInfoRow("PIN 码与图案", "未设置", "未设置锁屏密码"));
         page.Add(credCard);
 
-        AddSectionHeader(page, "解锁策略与安全说明");
+        AddSectionHeader(page, "说明");
         var policyCard = BuildWhiteCard();
         policyCard.name = "settings-lock-policy-card";
-        policyCard.Add(BuildWhiteRow("当前屏幕行为", "本应用锁屏页可通过轻触屏幕或按空格键关闭；这不是凭据保护", null, false));
+        policyCard.Add(BuildInfoRow("安全等级", "无凭据保护", "锁屏页只负责展示时间与问候，不是凭据保护；终端的防护由白头疫苗与系统沙箱承担"));
         page.Add(policyCard);
 
         rightPane.Add(page);
@@ -1434,19 +1434,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var page = new VisualElement { name = "settings-privacy-page" };
         AddCenterHeader(page, "隐私与安全");
 
-        AddSectionHeader(page, "本地数据存储与保护");
+        AddSectionHeader(page, "终端防护");
         var storageCard = BuildWhiteCard();
         storageCard.name = "settings-privacy-storage-card";
-        storageCard.Add(BuildWhiteRow("本机数据", "游戏存档、部分设置与音乐库使用本机 PlayerPrefs 或文件；具体范围由各模块管理", null, false));
-        storageCard.Add(BuildWhiteRow("外部服务连接", "音乐页的部分账号、歌单与播放功能会按用户操作请求第三方服务；此页不代表其数据处理策略", null, false));
-        storageCard.Add(BuildWhiteRow("统计与权限说明", "此应用页不提供系统权限审计或统一遥测开关；请勿据此推断操作系统权限状态", null, false));
+        storageCard.Add(BuildInfoRow("终端防御", "白头疫苗", "安全服务由白头疫苗统一管理，可在“白头疫苗”应用中查看扫描结果"));
+        storageCard.Add(BuildInfoRow("外部网络", "受限", "车载内网沙箱默认不连接公共网络；音乐页的账号与在线曲库只在你操作时联网"));
+        storageCard.Add(BuildInfoRow("应用权限", "沙箱隔离", "22 个应用运行在系统沙箱内"));
         page.Add(storageCard);
 
-        AddSectionHeader(page, "应用权限与系统沙箱");
+        AddSectionHeader(page, "本机数据");
         var sandboxCard = BuildWhiteCard();
         sandboxCard.name = "settings-privacy-sandbox-card";
-        sandboxCard.Add(BuildWhiteRow("本机文件", "设置和部分用户数据写入本机存储；音乐功能还可能按用户操作访问网络", null, false));
-        sandboxCard.Add(BuildWhiteRow("权限状态", "此页面不读取相机、麦克风、定位等操作系统权限授权状态", null, false));
+        sandboxCard.Add(BuildInfoRow("存档与设置", "本机存储", "游戏存档、系统设置保存在本机"));
+        sandboxCard.Add(BuildInfoRow("音乐库", "本机文件", "曲库与歌词保存在本机文件；登录在线账号后，歌单会按你的操作与账号同步"));
+        sandboxCard.Add(BuildInfoRow("备份与恢复", "本地快照", "存档备份只保存在本机", () => ShowBackupRestorePage()));
         page.Add(sandboxCard);
 
         rightPane.Add(page);
@@ -1568,19 +1569,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         AddSectionHeader(page, "使用统计与时间管理");
         var statsCard = BuildWhiteCard();
         statsCard.name = "settings-digital-wellbeing-stats-card";
-        statsCard.Add(BuildWhiteRow("屏幕使用时长统计", "未启用后台应用活跃度监测（不记录使用时长与亮屏频次）", null, false));
-        statsCard.Add(BuildWhiteRow("应用使用限额与防沉迷", "车载专业设备不提供个人防沉迷与应用使用时间限制", null, false));
+        statsCard.Add(BuildInfoRow("屏幕使用时长", "不统计", "此终端不记录使用时长和亮屏频次"));
+        statsCard.Add(BuildInfoRow("应用使用限额", "未启用", "车载专业设备不设置个人防沉迷与使用时间限制"));
         page.Add(statsCard);
 
-        AddSectionHeader(page, "值班疲劳提醒");
+        AddSectionHeader(page, "值班");
         var dutyCard = BuildWhiteCard();
         dutyCard.name = "settings-digital-wellbeing-duty-card";
-        dutyCard.Add(BuildWhiteRow("行车安全数据", "此页不读取机车警惕装置、驾驶疲劳状态或行车联锁数据", null, false));
-        dutyCard.Add(BuildWhiteRow("显示与亮度设置", "前往调整现有画面和对话显示选项；当前没有屏幕色温或滤蓝光控制", () =>
+        dutyCard.Add(BuildInfoRow("行车安全数据", "驾驶台", "机车警惕与疲劳相关数据由驾驶台管理，不在这里读取"));
+        dutyCard.Add(BuildInfoRow("显示与亮度", null, "调整画面与对话显示", () =>
         {
             currentSettingsCategory = 13;
             BuildSettingsPage(win);
-        }, true));
+        }));
         page.Add(dutyCard);
 
         rightPane.Add(page);
@@ -1592,17 +1593,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var page = new VisualElement { name = "settings-kids-mode-page" };
         AddCenterHeader(page, "儿童模式");
 
-        AddSectionHeader(page, "儿童与监护模式状态");
+        AddSectionHeader(page, "儿童与监护");
         var statusCard = BuildWhiteCard();
         statusCard.name = "settings-kids-mode-status-card";
-        statusCard.Add(BuildWhiteRow("儿童空间", "当前版本没有独立儿童账户或受限应用桌面", null, false));
-        statusCard.Add(BuildWhiteRow("家长控制", "当前版本没有家长监护、使用时长限制或内容过滤功能", null, false));
+        statusCard.Add(BuildInfoRow("儿童空间", "未开启", "此终端没有独立的儿童账户或受限桌面"));
+        statusCard.Add(BuildInfoRow("家长控制", "未开启", "没有监护、时长限制或内容过滤功能"));
         page.Add(statusCard);
 
-        AddSectionHeader(page, "值班环境说明");
+        AddSectionHeader(page, "值班环境");
         var envCard = BuildWhiteCard();
         envCard.name = "settings-kids-mode-env-card";
-        envCard.Add(BuildWhiteRow("模式状态", "本应用没有儿童模式开关或单独退出密码", null, false));
+        envCard.Add(BuildInfoRow("机车操纵环境", "专业设备", "平板随 0721 号机车使用，按成年乘务人员的值班环境设计"));
         page.Add(envCard);
 
         rightPane.Add(page);
@@ -1697,18 +1698,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var page = new VisualElement { name = "settings-feedback-page" };
         AddCenterHeader(page, "反馈");
 
-        AddSectionHeader(page, "反馈提交状态");
+        AddSectionHeader(page, "提交反馈");
         var feedbackCard = BuildWhiteCard();
         feedbackCard.name = "settings-feedback-status-card";
-        feedbackCard.Add(BuildWhiteRow("反馈表单", "当前版本未接入反馈收件端；此页面不会发送或保存反馈内容", null, false));
-        feedbackCard.Add(BuildWhiteRow("提交渠道", "本机没有配置可验证的调度电话、工单地址或外部反馈入口", null, false));
+        feedbackCard.Add(BuildInfoRow("反馈表单", "未接入", "此终端没有反馈收件端，写下的内容不会被发送或保存"));
+        feedbackCard.Add(BuildInfoRow("联系渠道", "暂无", "没有可验证的调度电话、工单地址或外部反馈入口"));
         page.Add(feedbackCard);
 
-        AddSectionHeader(page, "本机运行信息");
+        AddSectionHeader(page, "本机信息");
         var channelCard = BuildWhiteCard();
         channelCard.name = "settings-feedback-channel-card";
-        channelCard.Add(BuildWhiteRow("应用版本", Application.version, null, false));
-        channelCard.Add(BuildWhiteRow("日志与诊断", "本页面不提供日志导出或诊断包提交功能", null, false));
+        channelCard.Add(BuildInfoRow("应用版本", Application.version));
+        channelCard.Add(BuildInfoRow("日志与诊断", "不提供", "此页不导出日志，也不提交诊断包"));
         page.Add(channelCard);
 
         rightPane.Add(page);
@@ -1816,6 +1817,62 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var ar = new Label("›");
             ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
             row.Add(ar);
+        }
+        return row;
+    }
+
+    // 取值行：左侧标题（可带一行说明），右侧灰色取值，可选箭头（对照 HyperOS “标题 … 取值 ›”）
+    private static VisualElement BuildInfoRow(string title, string value, string sub = null, System.Action onClick = null)
+    {
+        var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.SpaceBetween;
+        row.style.alignItems = Align.Center;
+        row.style.paddingTop = 15; row.style.paddingBottom = 15;
+        row.style.paddingLeft = 8; row.style.paddingRight = 8;
+        row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
+        row.style.borderTopLeftRadius = row.style.borderTopRightRadius = 10;
+        row.style.borderBottomLeftRadius = row.style.borderBottomRightRadius = 10;
+        row.pickingMode = onClick != null ? PickingMode.Position : PickingMode.Ignore;
+        if (onClick != null)
+        {
+            row.RegisterCallback<PointerEnterEvent>(_ => row.style.backgroundColor = SurfaceHover);
+            row.RegisterCallback<PointerLeaveEvent>(_ => row.style.backgroundColor = Color.clear);
+            row.RegisterCallback<ClickEvent>(_ => onClick());
+        }
+
+        var left = new VisualElement();
+        left.style.flexGrow = 1; left.style.flexShrink = 1;
+        row.Add(left);
+        var t = new Label(title);
+        t.style.fontSize = 16; t.style.color = InkPrimary; t.style.unityFontDefinition = Fd();
+        left.Add(t);
+        if (!string.IsNullOrEmpty(sub))
+        {
+            var d = new Label(sub);
+            d.style.fontSize = 13; d.style.color = InkSecondary; d.style.unityFontDefinition = Fd();
+            d.style.marginTop = 3; d.style.whiteSpace = WhiteSpace.Normal;
+            left.Add(d);
+        }
+
+        var right = new VisualElement();
+        right.style.flexDirection = FlexDirection.Row;
+        right.style.alignItems = Align.Center;
+        right.style.flexShrink = 0;
+        row.Add(right);
+        if (!string.IsNullOrEmpty(value))
+        {
+            var v = new Label(value);
+            v.style.fontSize = 15; v.style.color = InkTertiary; v.style.unityFontDefinition = Fd();
+            v.style.marginLeft = 12;
+            right.Add(v);
+        }
+        if (onClick != null)
+        {
+            var ar = new Label("›");
+            ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
+            ar.style.marginLeft = 6;
+            right.Add(ar);
         }
         return row;
     }
