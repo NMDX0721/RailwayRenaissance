@@ -356,11 +356,8 @@ namespace RailwayRenaissance.UI.Tablet
             box.style.paddingLeft = 12; box.style.paddingRight = 12;
             box.style.height = 36;
 
-            var icon = new Label("🔍");
-            icon.style.fontSize = 13;
-            icon.style.color = InkTertiary;
+            var icon = new TabletIconElement(TabletIconKind.Search, 16, InkTertiary);
             icon.style.marginRight = 6;
-            icon.style.unityFontDefinition = Fd();
             box.Add(icon);
 
             var field = new TextField();

@@ -387,7 +387,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 case IslandAppType.TrainCab:
                     // 🚄 机车头 + 信号绿点 + 实时车速胶囊 (e.g. 78 km/h)
-                    var locoIcon = CreatePillLabel("🚂", 13, false);
+                    var locoIcon = new TabletIconElement(TabletIconKind.Train, 16, TabletTheme.TextStrong);
                     locoIcon.style.marginRight = 4;
                     leftBox.Add(locoIcon);
 
@@ -421,7 +421,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 case IslandAppType.Timer:
                     // ⏳ 沙漏 + 倒计时
-                    var timerIc = CreatePillLabel("⏳", 12, false);
+                    var timerIc = new TabletIconElement(TabletIconKind.Hourglass, 15, TabletTheme.Info);
                     timerIc.style.marginRight = 4;
                     leftBox.Add(timerIc);
 
@@ -436,7 +436,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
                 case IslandAppType.CloudSync:
                     // ☁️ 云同步 + 进度百分比
-                    var syncIc = CreatePillLabel("☁", 12, false);
+                    var syncIc = new TabletIconElement(TabletIconKind.Cloud, 16, TabletTheme.TextStrong);
                     syncIc.style.marginRight = 4;
                     leftBox.Add(syncIc);
 

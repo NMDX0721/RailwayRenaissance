@@ -236,7 +236,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
             itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
 
-            var badge = BuildSquircleBadge(icon, badgeColor, 44);
+            var badge = BuildIconBadge(icon, badgeColor, 44);
             badge.style.marginRight = 16;
             itemBtn.Add(badge);
 
@@ -425,14 +425,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         userLeft.style.alignItems = Align.Center;
         profileCard.Add(userLeft);
 
-        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : "👤");
+        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : string.Empty);
         avatar.style.fontSize = 40; avatar.style.width = 76; avatar.style.height = 76;
+        avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
         if (AccountService.IsRegistered)
         {
             avatar.style.color = Color.white;
             avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
         }
-        avatar.style.backgroundColor = SurfaceApp;
+        else
+        {
+            avatar.style.backgroundColor = SurfaceApp;
+            avatar.Add(new TabletIconElement(TabletIconKind.Person, 46, new Color(0.62f, 0.64f, 0.70f, 1f)));
+        }
         avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
         avatar.style.borderTopLeftRadius = 38; avatar.style.borderTopRightRadius = 38;
         avatar.style.borderBottomLeftRadius = 38; avatar.style.borderBottomRightRadius = 38;
@@ -2066,15 +2071,70 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         return row;
     }
 
+    // 分类图标：把原来的 emoji 键映射成代码绘制的矢量图标，放在彩色圆角方块里
+    private static TabletIconKind CategoryIconKind(string key)
+    {
+        switch (key)
+        {
+            case "👤": return TabletIconKind.Person;
+            case "📱": return TabletIconKind.Tablet;
+            case "🧩": return TabletIconKind.Apps;
+            case "📶": return TabletIconKind.Wifi;
+            case "ᛒ": return TabletIconKind.Bluetooth;
+            case "🔗": return TabletIconKind.Link;
+            case "🌐": return TabletIconKind.Globe;
+            case "🔮": return TabletIconKind.Sparkle;
+            case "🎨": return TabletIconKind.Palette;
+            case "🔒": return TabletIconKind.Lock;
+            case "🔔": return TabletIconKind.Bell;
+            case "🏠": return TabletIconKind.Home;
+            case "☀": return TabletIconKind.Sun;
+            case "🔊": return TabletIconKind.Speaker;
+            case "⌨": return TabletIconKind.Keyboard;
+            case "😊": return TabletIconKind.FaceId;
+            case "🛡": return TabletIconKind.Shield;
+            case "▦": return TabletIconKind.Cube;
+            case "🔋": return TabletIconKind.Battery;
+            case "💚": return TabletIconKind.Heart;
+            case "🧒": return TabletIconKind.Sprout;
+            case "♿": return TabletIconKind.Accessibility;
+            case "⋯": return TabletIconKind.Dots;
+            case "💬": return TabletIconKind.Chat;
+            case "🛠": return TabletIconKind.Code;
+            default: return TabletIconKind.Dots;
+        }
+    }
+
+    private static VisualElement BuildIconBadge(string key, Color badgeColor, float size)
+    {
+        var badge = new VisualElement();
+        badge.style.width = size; badge.style.height = size;
+        badge.style.flexShrink = 0;
+        badge.style.alignItems = Align.Center; badge.style.justifyContent = Justify.Center;
+        badge.style.borderTopLeftRadius = badge.style.borderTopRightRadius = size * 0.3f;
+        badge.style.borderBottomLeftRadius = badge.style.borderBottomRightRadius = size * 0.3f;
+        badge.style.backgroundColor = badgeColor;
+        badge.pickingMode = PickingMode.Ignore;
+        badge.Add(new TabletIconElement(CategoryIconKind(key), size * 0.58f, Color.white));
+        return badge;
+    }
+
     // 侧栏顶部的账号行：圆形头像 + 名称 + 一行说明（对照参考图的“小牛马 / Manage accounts…”）
     private static void ConvertToAccountNavItem(Button item)
     {
         item.style.height = 92;
         item.Clear();
-        var avatar = new Label("👤");
+        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : string.Empty);
+        avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
+        if (AccountService.IsRegistered)
+        {
+            avatar.style.color = Color.white;
+            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+        }
+        else avatar.Add(new TabletIconElement(TabletIconKind.Person, 36, new Color(0.62f, 0.64f, 0.70f, 1f)));
         avatar.style.width = 58; avatar.style.height = 58; avatar.style.flexShrink = 0;
         avatar.style.fontSize = 30; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
-        avatar.style.backgroundColor = SurfaceApp;
+        if (!AccountService.IsRegistered) avatar.style.backgroundColor = SurfaceApp;
         avatar.style.borderTopLeftRadius = avatar.style.borderTopRightRadius = 29;
         avatar.style.borderBottomLeftRadius = avatar.style.borderBottomRightRadius = 29;
         avatar.style.unityFontDefinition = Fd();
