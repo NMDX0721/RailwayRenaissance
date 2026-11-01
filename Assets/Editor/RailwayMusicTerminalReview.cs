@@ -1210,6 +1210,8 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-nav-云端"));
                     break;
                 case 32:
+                    // The narrow rail is the default; start from the wide sidebar so the toggle below still collapses it.
+                    MusicLibrarySession.State.navCollapsed = false; root.EnableInClassList("music-nav-collapsed", false);
                     Submit(root.Q<Button>("music-nav-toggle"));
                     break;
                 case 33:

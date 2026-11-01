@@ -37,7 +37,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
         public int lyricFontSize = 24;
         public int lyricMotion = 1;
-        public bool lyricTranslation = true, reduceMotion, navCollapsed;
+        public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
         // Stage style tuning (Folia's classic tunables): 0 calm / 1 normal / 2 chaotic, word rotation, whole-line float, word spacing.

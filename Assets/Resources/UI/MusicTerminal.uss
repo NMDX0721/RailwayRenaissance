@@ -691,3 +691,19 @@
 .music-cover-tile-text { align-items: flex-start; }
 .music-home-content .music-listening-hero { padding: 12px 20px; }
 .music-home-content .music-home-lead-title { font-size: 24px; }
+
+/* Narrow icon rail (the default): icon with its label underneath, after the streaming apps' tablet pages. The menu button opens the wide sidebar. */
+.music-nav-collapsed .music-navigation { width: 80px; padding: 12px 6px; }
+.music-nav-collapsed .music-navigation .music-button { flex-direction: column; justify-content: center; align-items: center; height: 60px; min-height: 60px; padding: 6px 0 4px; margin: 3px 0; border-left-width: 0; border-radius: 12px; }
+.music-nav-collapsed .music-navigation .music-button-label { display: flex; font-size: 11px; margin: 3px 0 0 0; -unity-text-align: middle-center; text-overflow: clip; }
+.music-nav-collapsed .music-navigation .is-active { background-color: rgba(205, 176, 112, 0.2); }
+.music-nav-collapsed .music-navigation .is-active .music-button-label { color: rgb(242, 215, 163); }
+.music-nav-collapsed .music-playlists, .music-nav-collapsed .music-new-playlist, .music-nav-collapsed .music-nav-note { display: none; }
+.music-nav-collapsed .music-station-plaque { padding: 8px 0; margin: 0 0 12px; }
+/* Floating player: a rounded card with a round cover, inset from the window edges. */
+.music-player { margin: 0 14px 12px 14px; border-radius: 18px; border-width: 1px; border-color: rgb(78, 82, 62); border-top-width: 1px; border-top-color: rgb(78, 82, 62); border-bottom-width: 1px; }
+.music-player-cover { width: 52px; height: 52px; flex-shrink: 0; margin-right: 14px; border-radius: 26px; border-width: 2px; border-color: rgb(20, 22, 18); background-size: cover; -unity-background-scale-mode: scale-and-crop; }
+.music-short .music-player-cover { width: 44px; height: 44px; border-radius: 22px; margin-right: 10px; }
+.music-short .music-player { margin-bottom: 18px; min-height: 76px; padding-bottom: 8px; }
+/* Search pill. */
+.music-header .music-search .unity-base-text-field__input, .music-header .unity-text-field__input { border-radius: 19px; }

@@ -12,6 +12,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         static RailwayMusicTerminalView current;
         VisualElement root, content, navigation, drawer, overlay, disc;
         Label title, time, toast, playingTitle, sectionTitle;
+        VisualElement playerCover; string playerCoverId;
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         float vuTime;
@@ -880,6 +881,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void BuildPlayer()
         {
             var player = Box(root, "music-player", "music-player");
+            playerCover = Box(player, "music-player-cover"); playerCover.pickingMode = PickingMode.Ignore; playerCover.style.display = DisplayStyle.None;
             var info = Box(player, "music-player-info");
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");
             Button(info, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail");
@@ -1271,6 +1273,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
+            if (playerCover != null && playerCoverId != id)
+            {
+                playerCoverId = id; var currentTrack = MusicLibrarySession.Find(id);
+                playerCover.style.display = currentTrack == null ? DisplayStyle.None : DisplayStyle.Flex;
+                if (currentTrack != null)
+                {
+                    playerCover.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(currentTrack.id, currentTrack.category));
+                    string shown = id; MusicAlbumArtResolver.LoadRemoteCover(currentTrack.id, cover => { if (playerCover.panel != null && playerCoverId == shown) playerCover.style.backgroundImage = new StyleBackground(cover); });
+                }
+            }
             MusicTerminalIcons.Apply(play, MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);
             MusicTerminalIcons.Apply(mode, TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Sequential ? "顺序" : TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Shuffle ? "随机" : "单曲", true);
             MusicTerminalIcons.Apply(favorite, MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏", true);
