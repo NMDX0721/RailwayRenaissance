@@ -612,6 +612,9 @@ public class GameMainUI : MonoBehaviour
     private Label statusClock;
     private Label statusBatt;
     private Label statusQuiet;
+    private Label statusDate;
+    private static readonly string[] WeekdayShort = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+    private static string FormatStatusDate(System.DateTime t) => $"{t.Month}月{t.Day}日 {WeekdayShort[(int)t.DayOfWeek]}";
     private VisualElement statusUnread;
     private VisualElement statusBattFill;
     private int battTick;
@@ -663,6 +666,7 @@ public class GameMainUI : MonoBehaviour
         statusBar.style.backgroundColor = lightApp ? new Color(0.97f, 0.97f, 0.98f, 1f) : Color.clear;
         if (statusClock != null) statusClock.style.color = ink;
         if (statusQuiet != null) statusQuiet.style.color = ink;
+        if (statusDate != null) statusDate.style.color = ink;
         tabletShellView?.SetLauncherOnLight(lightApp);
     }
 
@@ -724,6 +728,14 @@ public class GameMainUI : MonoBehaviour
         statusClock.style.color = GlassText;
         statusClock.style.unityFontDefinition = Fd();
         leftGroup.Add(statusClock);
+
+        // 日期（对照参考图“22:22  Sat, Oct 31”）：有超级岛时让位给岛，避免挤占状态栏
+        statusDate = new Label(FormatStatusDate(System.DateTime.Now)) { name = "tablet-status-date" };
+        statusDate.style.fontSize = 15;
+        statusDate.style.color = GlassText;
+        statusDate.style.unityFontDefinition = Fd();
+        statusDate.style.marginLeft = 12;
+        leftGroup.Add(statusDate);
 
         // 未读通知小红点（时间右侧）
         statusUnread = new VisualElement { name = "tablet-status-unread", pickingMode = PickingMode.Ignore };
@@ -3324,6 +3336,12 @@ public class GameMainUI : MonoBehaviour
             }
             if (statusUnread != null && tabletShellState != null)
                 statusUnread.style.display = tabletShellState.UnreadCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+            if (statusDate != null)
+            {
+                statusDate.text = FormatStatusDate(System.DateTime.Now);
+                bool islandShown = SuperIsland != null && SuperIsland.PrimaryType != RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.None;
+                statusDate.style.display = islandShown ? DisplayStyle.None : DisplayStyle.Flex;
+            }
             if (statusQuiet != null && tabletShellState != null)
                 statusQuiet.style.display = tabletShellState.QuietMode ? DisplayStyle.Flex : DisplayStyle.None;
         }

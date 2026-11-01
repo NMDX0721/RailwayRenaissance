@@ -479,9 +479,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 分组列表
         AddSectionHeader(rightPane, "我的账号安全与权限");
         var listCard = BuildWhiteCard();
-        listCard.Add(BuildWhiteRow("账号安全等级", "最高特级 · 物理硬件密匙与3D生物结构光已认证", () => ShowToast("账号处于先民军工特级保护状态")));
-        listCard.Add(BuildWhiteRow("个人人事档案", "金日成综合大学荣誉毕业生 · 铁道部特聘工程师", () => ShowToast("档案已同步至人事与调度中心")));
-        listCard.Add(BuildWhiteRow("系统权限授权", "已授权系统管理 22 个车载及内网应用", () => ShowToast("车载应用沙箱权限正常运行中")));
+        listCard.Add(BuildWhiteRow("账号安全等级", "最高特级", () => ShowToast("最高特级 · 物理硬件密匙与3D生物结构光已认证；账号处于先民军工特级保护状态")));
+        listCard.Add(BuildWhiteRow("个人人事档案", "已同步", () => ShowToast("金日成综合大学荣誉毕业生 · 铁道部特聘工程师；档案已同步至人事与调度中心")));
+        listCard.Add(BuildWhiteRow("系统权限授权", "22 个应用", () => ShowToast("已授权系统管理 22 个车载及内网应用；车载应用沙箱权限正常运行中")));
         rightPane.Add(listCard);
     }
 
@@ -1934,10 +1934,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         item.Add(avatar);
         var col = new VisualElement();
         col.style.flexShrink = 1;
+        col.style.alignItems = Align.FlexStart;
         var name = new Label("当前账号");
         name.style.fontSize = 17; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
+        name.style.unityTextAlign = TextAnchor.UpperLeft;
         var sub = new Label("管理账号、云空间与家庭服务");
         sub.style.fontSize = 12; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
+        sub.style.unityTextAlign = TextAnchor.UpperLeft;
         sub.style.marginTop = 2; sub.style.whiteSpace = WhiteSpace.Normal;
         col.Add(name); col.Add(sub);
         item.Add(col);
