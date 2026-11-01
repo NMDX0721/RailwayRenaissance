@@ -1273,7 +1273,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildClockWidget()
     {
         var w = new VisualElement();
-        w.style.width = 125; w.style.height = 115;
+        w.style.width = 140; w.style.height = 132;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.12f, 0.12f, 0.16f, 0.82f);
         w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
@@ -1302,7 +1302,7 @@ public class GameMainUI : MonoBehaviour
 
         var subLbl = new Label("阿里郎精准授时");
         subLbl.style.fontSize = 11;
-        subLbl.style.color = GlassAccent;
+        subLbl.style.color = RailwayRenaissance.UI.Tablet.TabletTheme.Brass;
         subLbl.style.unityFontDefinition = Fd();
         w.Add(subLbl);
 
@@ -1315,7 +1315,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildWeatherWidget()
     {
         var w = new VisualElement();
-        w.style.width = 135; w.style.height = 115;
+        w.style.width = 150; w.style.height = 132;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.11f, 0.28f, 0.35f, 0.88f); // 深青
         w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
@@ -1369,7 +1369,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildScheduleWidget()
     {
         var w = new VisualElement();
-        w.style.width = 265; w.style.height = 115;
+        w.style.width = 290; w.style.height = 132;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = GlassBgLight;
         w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
@@ -1430,7 +1430,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildGalleryWidget()
     {
         var w = new VisualElement();
-        w.style.width = 205; w.style.height = 115;
+        w.style.width = 235; w.style.height = 132;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
         w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
@@ -1457,7 +1457,7 @@ public class GameMainUI : MonoBehaviour
         }
 
         var banner = new VisualElement();
-        banner.style.height = 36;
+        banner.style.height = 46;
         banner.style.backgroundColor = new Color(0.05f, 0.05f, 0.07f, 0.75f);
         banner.style.flexDirection = FlexDirection.Column;
         banner.style.justifyContent = Justify.Center;
@@ -1466,13 +1466,13 @@ public class GameMainUI : MonoBehaviour
         w.Add(banner);
 
         var title = new Label("回忆 · 松桥午后");
-        title.style.fontSize = 12; title.style.color = GlassAccent; title.style.unityFontDefinition = Fd();
+        title.style.fontSize = 13; title.style.color = new Color(0.98f, 0.93f, 0.80f, 1f); title.style.unityFontDefinition = Fd();
         title.style.overflow = Overflow.Hidden;
         title.style.textOverflow = TextOverflow.Ellipsis;
         banner.Add(title);
 
         var subtitle = new Label("轻触打开相册回顾");
-        subtitle.style.fontSize = 10; subtitle.style.color = GlassTextDim; subtitle.style.unityFontDefinition = Fd();
+        subtitle.style.fontSize = 11; subtitle.style.color = new Color(1f, 1f, 1f, 0.72f); subtitle.style.unityFontDefinition = Fd();
         subtitle.style.overflow = Overflow.Hidden;
         subtitle.style.textOverflow = TextOverflow.Ellipsis;
         banner.Add(subtitle);
@@ -1486,7 +1486,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildCalendarWidget()
     {
         var w = new VisualElement();
-        w.style.width = 155; w.style.height = 115;
+        w.style.width = 170; w.style.height = 132;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.96f, 0.95f, 0.92f, 0.95f); // 日历纸白
         w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
@@ -1747,58 +1747,46 @@ public class GameMainUI : MonoBehaviour
         suiyueBubble.pickingMode = PickingMode.Ignore;
         suiyueWidget.Add(suiyueBubble);
 
-        // 角色卡片
+        // 角色小窗：圆形头像（黄铜描边的“岁”字）+ 名称 + 在线状态，不再是一张写着“少女”的深色卡片
         var card = new VisualElement();
-        card.style.width = 100; card.style.height = 130;
-        card.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.6f);
-        card.style.borderTopLeftRadius = 12; card.style.borderTopRightRadius = 12;
-        card.style.borderBottomLeftRadius = 12; card.style.borderBottomRightRadius = 12;
-        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
-        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
-        card.style.borderTopColor = GlassBorderSoft; card.style.borderBottomColor = GlassBorderSoft;
-        card.style.borderLeftColor = GlassBorderSoft; card.style.borderRightColor = GlassBorderSoft;
+        card.style.width = 84;
         card.style.alignItems = Align.Center;
-        card.style.justifyContent = Justify.Center;
         card.style.marginTop = 4;
         suiyueWidget.Add(card);
 
-        // 角色名
-        var nameLabel = new Label("岁 月");
-        nameLabel.style.fontSize = 14;
-        nameLabel.style.color = GlassAccent;
-        nameLabel.style.unityFontDefinition = Fd();
-        nameLabel.style.marginBottom = 4;
+        var ring = new VisualElement();
+        ring.style.width = 64; ring.style.height = 64;
+        ring.style.borderTopLeftRadius = ring.style.borderTopRightRadius = 32;
+        ring.style.borderBottomLeftRadius = ring.style.borderBottomRightRadius = 32;
+        ring.style.backgroundColor = new Color(0.13f, 0.14f, 0.19f, 0.94f);
+        ring.style.borderTopWidth = ring.style.borderBottomWidth = ring.style.borderLeftWidth = ring.style.borderRightWidth = 2;
+        var brass = RailwayRenaissance.UI.Tablet.TabletTheme.Brass;
+        ring.style.borderTopColor = ring.style.borderBottomColor = ring.style.borderLeftColor = ring.style.borderRightColor = brass;
+        ring.style.alignItems = Align.Center; ring.style.justifyContent = Justify.Center;
+        ring.pickingMode = PickingMode.Ignore;
+        card.Add(ring);
+        var glyph = new Label("岁");
+        glyph.style.fontSize = 30; glyph.style.color = brass; glyph.style.unityFontDefinition = Fd();
+        glyph.pickingMode = PickingMode.Ignore;
+        ring.Add(glyph);
+
+        var nameLabel = new Label("岁月");
+        nameLabel.style.fontSize = 13; nameLabel.style.color = InkPrimary; nameLabel.style.unityFontDefinition = Fd();
+        nameLabel.style.marginTop = 5;
+        nameLabel.pickingMode = PickingMode.Ignore;
         card.Add(nameLabel);
 
-        // 角色形象（用文字像素模拟二次元少女轮廓）
-        var avatar = new Label("少女");
-        avatar.style.fontSize = 28;
-        avatar.style.color = new Color(0.85f, 0.45f, 0.15f, 0.7f); // 澎湃橙
-        avatar.style.unityFontDefinition = Fd();
-        card.Add(avatar);
-
-        // 状态标签
-        var status = new Label("在线");
-        status.style.fontSize = 10;
-        status.style.color = new Color(0.5f, 0.8f, 0.5f, 0.7f);
-        status.style.unityFontDefinition = Fd();
-        status.style.marginTop = 4;
+        var status = new Label("● 在线");
+        status.style.fontSize = 11; status.style.color = RailwayRenaissance.UI.Tablet.TabletTheme.SignalGreen; status.style.unityFontDefinition = Fd();
+        status.pickingMode = PickingMode.Ignore;
         card.Add(status);
 
         // 点击展开对话
         card.RegisterCallback<ClickEvent>(_ => ShowSuiyueDialogue());
 
         // hover效果
-        card.RegisterCallback<PointerEnterEvent>(_ =>
-        {
-            card.style.backgroundColor = new Color(0.1f, 0.08f, 0.12f, 0.7f);
-            card.style.scale = new Scale(new Vector2(1.05f, 1.05f));
-        });
-        card.RegisterCallback<PointerLeaveEvent>(_ =>
-        {
-            card.style.backgroundColor = new Color(0.06f, 0.05f, 0.07f, 0.6f);
-            card.style.scale = new Scale(new Vector2(1f, 1f));
-        });
+        card.RegisterCallback<PointerEnterEvent>(_ => card.style.scale = new Scale(new Vector2(1.06f, 1.06f)));
+        card.RegisterCallback<PointerLeaveEvent>(_ => card.style.scale = new Scale(new Vector2(1f, 1f)));
     }
 
     private void ShowSuiyueDialogue()
