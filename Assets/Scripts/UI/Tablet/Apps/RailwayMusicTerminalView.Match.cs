@@ -79,6 +79,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (!string.IsNullOrWhiteSpace(lyric))
                 {
                     imported = ImportMatched(track.id, lyric, false, out message);
+                    // The translation of an earlier match belongs to that version's lines: drop it, and take this one's own when it has one.
+                    if (imported) MusicTimedText.Preference(track.id).translationFileName = null;
                     if (imported && !string.IsNullOrWhiteSpace(result.result.translation)) ImportMatched(track.id, result.result.translation, true, out _);
                 }
                 var pref = MusicTimedText.Preference(track.id);

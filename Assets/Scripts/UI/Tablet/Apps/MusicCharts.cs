@@ -8,10 +8,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // the chart page and the search box share one request.
     public static class MusicCharts
     {
-        const float Lifetime = 600f;
+        const float Lifetime = 600f, RetryAfter = 20f;   // a good answer is kept ten minutes; a failed one is tried again after twenty seconds
         static NeteaseLocalBridge.RemotePlaylist[] charts;
         static string[] hots;
-        static float chartsTime = -1e9f, hotsTime = -1e9f;
+        static float nextChartsAt, nextHotsAt;   // the earliest time each list may be asked for again
         static bool chartsLoading, hotsLoading, chartsFailed, hotsFailed;
         public static event Action Changed;
 
@@ -20,27 +20,35 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static bool ChartsLoading => chartsLoading;
         public static bool ChartsFailed => chartsFailed;
 
+        /// <summary>The "retry" button: ask again now, whatever the wait after the last failure.</summary>
+        public static void Retry() { nextChartsAt = 0f; nextHotsAt = 0f; Ensure(); }
+
         // Ask for fresh data when the cache is old; callers redraw on Changed.
         public static void Ensure()
         {
-            if (!chartsLoading && Time.realtimeSinceStartup - chartsTime > Lifetime && !(chartsFailed && Time.realtimeSinceStartup - chartsTime < 60f))
+            if (!chartsLoading && Time.realtimeSinceStartup >= nextChartsAt)
             {
                 chartsLoading = true;
                 NeteaseLocalBridge.Instance.Send("toplists", null, response => {
-                    chartsLoading = false; chartsTime = Time.realtimeSinceStartup;
+                    chartsLoading = false;
+                    bool wasFailed = chartsFailed;
                     chartsFailed = !response.ok || response.result?.playlists == null;
+                    nextChartsAt = Time.realtimeSinceStartup + (chartsFailed ? RetryAfter : Lifetime);
                     if (!chartsFailed) charts = response.result.playlists;
-                    Changed?.Invoke();
+                    // A page redraws when this fires, so a failed try after a failed try (nothing new to show) stays silent.
+                    if (!chartsFailed || !wasFailed) Changed?.Invoke();
                 });
             }
-            if (!hotsLoading && Time.realtimeSinceStartup - hotsTime > Lifetime && !(hotsFailed && Time.realtimeSinceStartup - hotsTime < 60f))
+            if (!hotsLoading && Time.realtimeSinceStartup >= nextHotsAt)
             {
                 hotsLoading = true;
                 NeteaseLocalBridge.Instance.Send("hot_search", null, response => {
-                    hotsLoading = false; hotsTime = Time.realtimeSinceStartup;
+                    hotsLoading = false;
+                    bool wasFailed = hotsFailed;
                     hotsFailed = !response.ok || response.result?.hots == null;
+                    nextHotsAt = Time.realtimeSinceStartup + (hotsFailed ? RetryAfter : Lifetime);
                     if (!hotsFailed) hots = response.result.hots;
-                    Changed?.Invoke();
+                    if (!hotsFailed || !wasFailed) Changed?.Invoke();
                 });
             }
         }

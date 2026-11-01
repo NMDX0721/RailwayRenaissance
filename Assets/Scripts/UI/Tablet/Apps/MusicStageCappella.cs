@@ -15,6 +15,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// </summary>
     public sealed class MusicStageCappella : IStageStyle
     {
+        readonly HashSet<VisualElement> shownHolders = new HashSet<VisualElement>();
+
         sealed class Piece { public VisualElement unit; public Label label; public float start, end; }
 
         sealed class Message
@@ -95,10 +97,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 m.row.style.translate = new Translate(0, c.calm ? 0 : (1 - ease) * motion.enterY);
                 m.bubble.style.scale = new Scale(new Vector3(m.scale, m.scale, 1));
                 // Characters: shown from just before they are sung (so the bubble widens first) and faded in over a fifth of a second.
+                shownHolders.Clear();
                 foreach (var piece in m.pieces)
                 {
                     bool show = m.lineIndex < 0 || c.clock >= piece.start - WidthLookahead;
-                    piece.unit.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+                    // Pieces of one word group share a holder: it is shown as soon as its first piece is, and a later piece must not hide it again.
+                    if (show) { piece.unit.style.display = DisplayStyle.Flex; shownHolders.Add(piece.unit); }
+                    else if (!shownHolders.Contains(piece.unit)) piece.unit.style.display = DisplayStyle.None;
                     if (!show) continue;
                     piece.label.style.opacity = m.lineIndex < 0 ? 1f : Mathf.Clamp01((float)((c.clock - piece.start) / FadeSeconds));
                 }

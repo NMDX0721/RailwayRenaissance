@@ -114,7 +114,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             StartSearchHints();
             search.RegisterCallback<FocusInEvent>(_ => ShowSuggestions());
             search.RegisterCallback<FocusOutEvent>(_ => search.schedule.Execute(HideSuggestions).StartingIn(180));
-            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
+            search.RegisterValueChangedCallback(e => { if (e.target != search) return; query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
             clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
             clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
             Button(header, "操作帮助", ShowHelp, "music-help");
@@ -134,6 +134,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             toast.pickingMode = PickingMode.Ignore;
             MusicLibrarySession.Changed += Refresh;
             NeteaseLocalBridge.SessionChanged += Refresh;
+            MusicCharts.Changed -= OnChartsChanged; MusicCharts.Changed += OnChartsChanged;   // also here: the attach callback is not run for a window that is already attached
             // Ask the bridge once per run: it restores a stored (encrypted) login and reports whether it is still valid.
             if (!sessionRestoreStarted) { sessionRestoreStarted = true; NeteaseLocalBridge.ForProvider("netease").Send("status", null, _ => { }); }
             Refresh(); Update();

@@ -18,7 +18,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             searchHint = new Label("搜索曲目、作者、分类") { pickingMode = PickingMode.Ignore, enableRichText = false }; searchHint.AddToClassList("music-search-hint");
             search.Add(searchHint);
-            search.RegisterValueChangedCallback(_ => searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex);
+            // A Label announces its text changes as a value change that bubbles up: without this, every new hint would be taken as typed text.
+            searchHint.RegisterCallback<ChangeEvent<string>>(e => e.StopPropagation());
+            search.RegisterValueChangedCallback(e => { if (e.target == search) searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex; });
             search.RegisterCallback<KeyDownEvent>(e => {
                 if ((e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) && search.value.Length == 0 && !string.IsNullOrEmpty(hintCurrent) && hintCurrent != "搜索曲目、作者、分类")
                 { RunSearch(hintCurrent); e.StopImmediatePropagation(); }
@@ -67,7 +69,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 var grid = Box(parent, "music-card-grid");
                 Text(grid, MusicCharts.ChartsFailed ? "榜单暂时无法读取（需要网络）" : "正在读取榜单…", "music-muted");
-                if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Ensure(); Refresh(); });
+                if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Retry(); Refresh(); });
             }
             else
             {
@@ -113,7 +115,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (charts == null)
             {
                 Text(grid, MusicCharts.ChartsFailed ? "榜单暂时无法读取，请检查网络后重试" : "正在读取榜单…", "music-muted");
-                if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Ensure(); Refresh(); });
+                if (MusicCharts.ChartsFailed) Button(grid, "重试", () => { MusicCharts.Retry(); Refresh(); });
                 return;
             }
             grid.AddToClassList("music-big-wrap");
