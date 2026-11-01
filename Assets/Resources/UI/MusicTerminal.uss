@@ -813,3 +813,21 @@
 .music-drawer .music-queue-item .music-button { border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; }
 .music-lyrics-vu { margin-left: 14px; flex-shrink: 0; }
 .music-compact .music-lyrics-vu { display: none; }
+
+/* ===== Lyrics page in the same shapes as the rest ===== */
+.music-lyrics-surface { padding: 12px 20px 14px; }
+.music-lyrics-header { height: 54px; border-bottom-width: 0; background-color: rgba(0, 0, 0, 0); padding: 0 2px; }
+.music-lyrics-header .music-grow { font-size: 16px; -unity-font-style: bold; color: rgb(244, 237, 214); }
+.music-lyrics-header .music-button { height: 36px; min-height: 36px; padding: 0 14px; margin-left: 8px; border-radius: 18px; }
+.music-lyrics-body { padding-top: 6px; }
+.music-lyrics-art { background-color: rgba(30, 36, 29, 0.78); border-right-width: 0; border-radius: 20px; padding: 16px 16px 10px 16px; }
+.music-lyrics-cover { border-width: 0; border-radius: 14px; margin-top: 0; }
+.music-lyrics-art > .music-button { border-radius: 18px; background-color: rgb(52, 58, 47); border-color: rgb(52, 58, 47); }
+.music-lyrics-art .music-lyrics-info-key { color: rgb(150, 150, 128); }
+.music-lyrics-art .music-detail-title { font-size: 20px; -unity-font-style: bold; }
+.music-lyrics-follow { border-radius: 16px; }
+.music-lyrics-footer { height: 64px; margin-top: 10px; padding: 0 18px; border-top-width: 0; border-bottom-width: 1px; border-width: 1px; border-color: rgb(70, 76, 58); border-radius: 22px; background-color: rgba(37, 42, 35, 0.9); }
+.music-lyrics-footer .music-button { border-radius: 20px; background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0); }
+.music-lyrics-footer .music-primary { border-radius: 22px; background-color: rgb(205, 176, 112); }
+.music-lyrics-help { margin: 6px 0 0 6px; }
+.music-lyrics-surface .music-horizontal-slider .unity-base-slider__tracker { border-radius: 2px; }
