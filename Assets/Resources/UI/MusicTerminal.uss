@@ -652,3 +652,5 @@
 .music-header .unity-text-field__input { border-radius: 19px; padding-left: 16px; padding-right: 16px; min-height: 38px; background-color: rgb(22, 25, 23); }
 .music-header .music-button { height: 38px; }
 .music-short .music-header { height: 54px; }
+/* The top bar continues the band under the overlay status bar: no seam line between them. */
+.music-header { border-top-width: 0; background-color: rgb(35, 39, 34); }

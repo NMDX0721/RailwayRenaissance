@@ -711,6 +711,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_activeWindow = win;
             // The tablet's status bar (time on the left, battery on the right) is an overlay on top of the app, 48 px plus the safe area, so the window leaves that room itself.
             win.style.paddingTop = 48f + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
+            win.style.backgroundColor = new Color(35f / 255f, 39f / 255f, 34f / 255f, 1f);   // the same colour as the top bar below, so the status bar and the bar read as one band
             s_progressScheduledItem?.Pause();
             s_cardBindings.Clear(); s_waveBars.Clear();
             s_playerBarHandle = null; s_nowPlayingSidebarHandle = null;
