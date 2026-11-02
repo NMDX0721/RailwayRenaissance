@@ -1225,6 +1225,8 @@ public class GameMainUI : MonoBehaviour
 
         // 下半部：精选常用应用网格（排除 Dock 与小组件重复项）
         var commonGrid = new VisualElement { name = "desktop-page0-grid" };
+        var clockW = smallRow[0];
+        var weatherW = smallRow[1];
         commonGrid.style.flexDirection = FlexDirection.Column;
         commonGrid.style.justifyContent = Justify.Center;
         commonGrid.style.alignItems = Align.Center;
@@ -1252,6 +1254,31 @@ public class GameMainUI : MonoBehaviour
         r2.style.justifyContent = Justify.SpaceAround;
         r2.style.width = Length.Percent(100);
         r2.style.marginTop = 6;
+        // 小组件与图标网格按桌面可用宽高等比排布：宽屏不再两边留大空白，窄屏（4:3）也不会撑出屏外
+        void ApplyDesktopMetrics()
+        {
+            float pw = desktopPage0.resolvedStyle.width, ph = desktopPage0.resolvedStyle.height;
+            if (float.IsNaN(pw) || float.IsNaN(ph) || pw <= 0f || ph <= 0f) return;
+            float content = Mathf.Min(pw - 40f, 1120f);
+            float uByWidth = (content - 64f) / 6f;
+            float uByHeight = (ph - 16f - 14f - 12f - 206f) / 2f; // 扣掉内边距、间距与两行图标（约 206）
+            float u = Mathf.Clamp(Mathf.Min(uByWidth, uByHeight), 96f, 176f);
+            float big = 2f * u + 12f;
+            colA.style.width = big;
+            clockW.style.width = u; clockW.style.height = u;
+            weatherW.style.width = u; weatherW.style.height = u;
+            sched.style.width = big; sched.style.height = u;
+            gallery.style.width = big; gallery.style.height = big;
+            cal.style.width = big; cal.style.height = big;
+            commonGrid.style.width = 3f * big + 28f;
+            var dial = clockW.Q("clock-dial");
+            if (dial != null)
+            {
+                dial.style.left = (u - 144f) * 0.5f; dial.style.top = (u - 144f) * 0.5f;
+                dial.style.scale = new Scale(new Vector3(u / 144f, u / 144f, 1f));
+            }
+        }
+        desktopPage0.RegisterCallback<GeometryChangedEvent>(_ => ApplyDesktopMetrics());
         commonGrid.Add(r2);
         for (int i = 5; i < 10 && i < Page0SelectedApps.Length; i++)
         {
@@ -1317,6 +1344,9 @@ public class GameMainUI : MonoBehaviour
         w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
         w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
+        var dial = new VisualElement { name = "clock-dial", pickingMode = PickingMode.Ignore };
+        dial.style.position = Position.Absolute; dial.style.left = 0; dial.style.top = 0;
+        dial.style.width = 144; dial.style.height = 144;
         // 数字 1–12：绕表盘中心摆放
         for (int h = 1; h <= 12; h++)
         {
@@ -1332,7 +1362,7 @@ public class GameMainUI : MonoBehaviour
             num.style.color = new Color(0.20f, 0.20f, 0.24f, 0.95f);
             num.style.unityFontDefinition = Fd();
             num.pickingMode = PickingMode.Ignore;
-            w.Add(num);
+            dial.Add(num);
         }
 
         // 表盘中央的小日期（星期 + 日），对照 HyperOS 时钟
@@ -1344,9 +1374,10 @@ public class GameMainUI : MonoBehaviour
         dateLbl.style.color = new Color(0.45f, 0.45f, 0.50f, 0.9f);
         dateLbl.style.unityFontDefinition = Fd();
         dateLbl.pickingMode = PickingMode.Ignore;
-        w.Add(dateLbl);
+        dial.Add(dateLbl);
 
-        w.Add(new RailwayRenaissance.UI.Tablet.TabletAnalogClock());
+        dial.Add(new RailwayRenaissance.UI.Tablet.TabletAnalogClock());
+        w.Add(dial);
 
         w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.04f, 1.04f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
@@ -1625,7 +1656,7 @@ public class GameMainUI : MonoBehaviour
         for (int k = 0; k < 7; k++)
         {
             var l = new Label(wk[k]);
-            l.style.width = cellW; l.style.fontSize = 11;
+            l.style.width = 0; l.style.flexGrow = 1; l.style.fontSize = 11;
             l.style.marginLeft = l.style.marginRight = l.style.marginTop = l.style.marginBottom = 0;
             l.style.paddingLeft = l.style.paddingRight = 0; l.style.flexShrink = 0;
             l.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -1650,7 +1681,7 @@ public class GameMainUI : MonoBehaviour
             {
                 int day = row * 7 + col - offset + 1;
                 var cell = new VisualElement();
-                cell.style.width = cellW; cell.style.height = 31;
+                cell.style.width = 0; cell.style.flexGrow = 1; cell.style.height = 31;
                 cell.style.alignItems = Align.Center; cell.style.justifyContent = Justify.Center;
                 if (day >= 1 && day <= days)
                 {
@@ -1861,7 +1892,7 @@ public class GameMainUI : MonoBehaviour
     {
         suiyueWidget = new VisualElement { name = "suiyue-widget" };
         suiyueWidget.style.position = Position.Absolute;
-        suiyueWidget.style.bottom = 80;
+        suiyueWidget.style.bottom = 14; // 贴着 Dock 一侧：不压到 4:3 下铺满宽度的图标行
         suiyueWidget.style.right = 20;
         suiyueWidget.style.width = 110;
         suiyueWidget.style.alignItems = Align.Center;

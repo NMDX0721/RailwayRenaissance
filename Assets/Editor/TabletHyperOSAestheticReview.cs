@@ -689,7 +689,20 @@ namespace RailwayRenaissance.Editor
                         break;
                     }
 
+                    // ---- 桌面按屏幕比例排布：4:3 与超宽屏都不能撑出屏外或留大空白 ----
                     case 35:
+                        Call("ReturnToTabletHome");
+                        Resize(1440, 1080);
+                        Capture("35_home_4x3");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 36:
+                        Resize(2560, 1080);
+                        Capture("36_home_ultrawide");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 37:
+                        Resize(1920, 1080);
                         Teardown(true, "All stages completed successfully");
                         break;
                 }
