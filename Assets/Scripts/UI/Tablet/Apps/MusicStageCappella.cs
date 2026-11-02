@@ -104,7 +104,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     // Pieces of one word group share a holder: it is shown as soon as its first piece is, and a later piece must not hide it again.
                     if (show) { piece.unit.style.display = DisplayStyle.Flex; shownHolders.Add(piece.unit); }
                     else if (!shownHolders.Contains(piece.unit)) piece.unit.style.display = DisplayStyle.None;
-                    if (!show) continue;
+                    // Not reached yet (also after seeking back into a word group): the shared holder may stay shown, but this character must not.
+                    if (!show) { piece.label.style.opacity = 0f; continue; }
                     piece.label.style.opacity = m.lineIndex < 0 ? 1f : Mathf.Clamp01((float)((c.clock - piece.start) / FadeSeconds));
                 }
                 bool done = m.lineIndex < 0 || c.clock >= m.lastEnd + FadeSeconds;

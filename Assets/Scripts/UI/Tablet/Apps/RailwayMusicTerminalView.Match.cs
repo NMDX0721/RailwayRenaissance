@@ -30,6 +30,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             if (track == null) return;
             var panel = Modal("匹配在线歌词和封面"); panel.AddToClassList("music-replace-sheet");
+            var sheet = overlay;   // the sheet this match belongs to: its answer may arrive after the player has closed it and opened something else
             Text(panel, track.title, "music-detail-title");
             var pref = MusicTimedText.Preference(track.id);
             var bar = Box(panel, "music-cloud-search-bar");
@@ -59,7 +60,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         Text(text, item.title, "music-replace-title");
                         string length = track.duration > 0 && item.durationMs > 0 ? (Mathf.Abs(track.duration - item.durationMs / 1000f) <= 3f ? " · 时长相近" : " · 时长差 " + Mathf.RoundToInt(Mathf.Abs(track.duration - item.durationMs / 1000f)) + " 秒") : "";
                         Text(text, string.Join(" · ", new[] { item.artist, item.album }.Where(part => !string.IsNullOrWhiteSpace(part))) + length, "music-replace-sub");
-                        Button(row, "使用", () => ApplyMatch(track, item, status), "music-match-use-" + item.id).AddToClassList("music-primary");
+                        Button(row, "使用", () => ApplyMatch(track, item, status, sheet), "music-match-use-" + item.id).AddToClassList("music-primary");
                     }
                 });
             }
@@ -68,7 +69,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Run();
         }
 
-        void ApplyMatch(MusicLibraryTrack track, NeteaseLocalBridge.RemoteTrack remote, Label status)
+        void ApplyMatch(MusicLibraryTrack track, NeteaseLocalBridge.RemoteTrack remote, Label status, VisualElement sheet)
         {
             status.text = "正在读取歌词…";
             NeteaseLocalBridge.Instance.Send("lyric", new NeteaseLocalBridge.Parameters { id = remote.id }, result => {
@@ -87,7 +88,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 pref.matchSource = "netease"; pref.matchRemoteId = remote.id; pref.matchTitle = remote.title; pref.matchCover = remote.cover ?? "";
                 MusicAlbumArtResolver.InvalidateRemote(track.id);
                 MusicLibrarySession.Save();
-                CloseModal();
+                // Only close the sheet this match started from, and only if it is still the open one; a later sheet or the lyrics page stays.
+                if (overlay != null && overlay == sheet) CloseModal();
                 ShowToast((imported ? "已匹配歌词" : "这首没有可用歌词") + (string.IsNullOrEmpty(remote.cover) ? "" : "和封面") + "：" + remote.title);
                 Refresh();
             });
