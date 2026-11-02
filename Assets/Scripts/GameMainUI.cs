@@ -481,7 +481,8 @@ public class GameMainUI : MonoBehaviour
         dateLine.style.unityFontDefinition = Fd();
         dateCard.Add(dateLine);
 
-        var weather = new Label("雾峰村站 · 多云 22°C  ·  沙能运行正常");
+        var wxNow = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
+        var weather = new Label($"雾峰村站 · {wxNow.Condition} {wxNow.Now}°C  ·  沙能运行正常") { name = "lock-weather" };
         weather.style.fontSize = 12;
         weather.style.color = new Color(0.85f, 0.92f, 1f, 0.65f);
         weather.style.unityFontDefinition = Fd();
@@ -657,6 +658,12 @@ public class GameMainUI : MonoBehaviour
         var lc = lockScreen?.Q<Label>("lock-clock");
         if (lc != null) lc.text = now;
         if (statusClock != null) statusClock.text = now;
+        var lockWx = lockScreen?.Q<Label>("lock-weather");
+        if (lockWx != null)
+        {
+            var wr = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
+            lockWx.text = $"雾峰村站 · {wr.Condition} {wr.Now}°C  ·  沙能运行正常";
+        }
         lockScreen.style.display = DisplayStyle.Flex;
         // Phase1（预热/退出关键路径）时 desktop 尚未构建——它创建时本就默认 None，跳过即可
         if (desktop != null) desktop.style.display = DisplayStyle.None;
@@ -1380,16 +1387,17 @@ public class GameMainUI : MonoBehaviour
         loc.style.unityFontDefinition = Fd();
         locRow.Add(loc);
 
-        var icon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Sun, 18, new Color(1f, 0.85f, 0.4f, 1f));
+        var wx = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
+        var icon = new RailwayRenaissance.UI.Tablet.TabletIconElement(wx.Icon, 18, new Color(1f, 0.85f, 0.4f, 1f));
         locRow.Add(icon);
 
-        var temp = new Label("22°C");
+        var temp = new Label(wx.Now + "°C");
         temp.style.fontSize = 32;
         temp.style.color = Color.white;
         temp.style.unityFontDefinition = Fd();
         w.Add(temp);
 
-        var desc = new Label("多云  21° / 9°");
+        var desc = new Label($"{wx.Condition}  {wx.High}° / {wx.Low}°");
         desc.style.fontSize = 12;
         desc.style.color = new Color(0.86f, 0.95f, 1f, 0.9f);
         desc.style.unityFontDefinition = Fd();
@@ -1400,6 +1408,14 @@ public class GameMainUI : MonoBehaviour
         foreach (var child in w.Children()) child.style.flexShrink = 0;
         w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.04f, 1.04f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
+        // 每分钟按系统时间重算一次（温度随钟点起伏，跨天后天气跟着换）
+        w.schedule.Execute(() =>
+        {
+            var r = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
+            temp.text = r.Now + "°C";
+            desc.text = $"{r.Condition}  {r.High}° / {r.Low}°";
+            icon.Kind = r.Icon;
+        }).Every(60000);
         w.RegisterCallback<ClickEvent>(_ => LaunchApp("天气"));
         return w;
     }
