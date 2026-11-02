@@ -397,7 +397,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 id = 1,
                 category = "运营备忘",
                 title = "雾峰村线重开财务备忘与调度复盘",
-                date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 author = "林彪悍",
                 content = $"今天是我们正式重启雾峰村线的第 {GameData.Day} 天。\n\n" +
                           $"根据调度系统的核算，今天沿线茶农与通勤客流达到了 {GameData.ExpectedPassengers} 人次。\n" +
@@ -446,7 +446,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                             id = 1000 + ach.GetHashCode() % 9000,
                             category = "成就里程碑",
                             title = achTitle,
-                            date = string.IsNullOrEmpty(ach.unlockedDate) ? System.DateTime.Now.ToString("yyyy-MM-dd") : ach.unlockedDate,
+                            date = string.IsNullOrEmpty(ach.unlockedDate) ? RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd") : ach.unlockedDate,
                             author = "系统记录",
                             content = $"【荣誉成就已达成】\n\n成就名称：{ach.title}\n稀有度：{ach.rarity}\n达成描述：{ach.description}\n\n铁道总署特发此状，以资鼓励！",
                             isSystemGenerated = true
@@ -472,7 +472,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                             id = 2000 + bm.GetHashCode() % 8000,
                             category = "剧情书签",
                             title = bmTitle,
-                            date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                            date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                             author = "岁月AI同步",
                             content = $"【剧目断点存盘】\n\n剧目：第{bm.episodeNum}话 {bm.episodeTitle}\n脚本：{bm.scriptName} (场景{bm.sceneIndex}, 对话{bm.dialogueIndex})\n摘抄：{bm.previewText}\n\n随时可在归途或VN中重温。",
                             isSystemGenerated = true
@@ -491,7 +491,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 id = 3000 + GameData.Day,
                 category = "运营备忘",
                 title = weeklyTitle,
-                date = System.DateTime.Now.ToString("yyyy-MM-dd"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd"),
                 author = "调度中心",
                 content = $"【雾峰村线每日运营摘要】\n\n" +
                           $"• 运营天数：第 {GameData.Day} 天\n" +
@@ -826,8 +826,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 id = (int)(System.DateTime.UtcNow.Ticks % 1000000),
                 category = catToAssign,
-                title = "新备忘录 " + System.DateTime.Now.ToString("MM-dd HH:mm"),
-                date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                title = "新备忘录 " + RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("MM-dd HH:mm"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 author = "林彪悍",
                 content = "在此输入新的笔记与运营日志内容...",
                 isSystemGenerated = false
@@ -904,7 +904,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 curNote.title = noteTitleField.value;
                 curNote.content = noteBodyField.value;
-                curNote.date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                curNote.date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm");
                 SaveUserTabletNotes();
                 ShowToast("笔记已保存到平板闪存。");
                 BuildNotesApp(win);

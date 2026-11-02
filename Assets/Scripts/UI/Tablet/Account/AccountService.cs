@@ -217,7 +217,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
                 salt = salt,
                 passwordHash = Hash(salt, password),
                 avatar = Mathf.Clamp(avatar, 0, 5),
-                registeredAt = DateTime.Now.ToString("yyyy-MM-dd"),
+                registeredAt = TabletDateTime.Now.ToString("yyyy-MM-dd"),
                 passwordChangedCount = 0
             };
             Save(profile);

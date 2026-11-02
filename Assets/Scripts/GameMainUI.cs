@@ -474,7 +474,8 @@ public class GameMainUI : MonoBehaviour
         dateCard.style.alignItems = Align.Center;
         lockScreen.Add(dateCard);
 
-        var dateLine = new Label(System.DateTime.Now.ToString("M月d日 星期") + "日一二三四五六"[(int)System.DateTime.Now.DayOfWeek] + $" · 主体历 105 年（运营第 {GameData.Day} 天）");
+        var sNow = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
+        var dateLine = new Label($"{sNow.Month}月{sNow.Day}日 {RailwayRenaissance.UI.Tablet.TabletDateTime.WeekdayLong(sNow)} · 主体历 {RailwayRenaissance.UI.Tablet.TabletDateTime.EraYear} 年（运营第 {GameData.Day} 天）");
         dateLine.name = "lock-date";
         dateLine.style.fontSize = 14;
         dateLine.style.color = new Color(1f, 1f, 1f, 0.88f);
@@ -897,7 +898,7 @@ public class GameMainUI : MonoBehaviour
         leftGroup.Add(statusClock);
 
         // 日期（对照参考图“22:22  Sat, Oct 31”）：有超级岛时让位给岛，避免挤占状态栏
-        statusDate = new Label(FormatStatusDate(System.DateTime.Now)) { name = "tablet-status-date" };
+        statusDate = new Label(FormatStatusDate(RailwayRenaissance.UI.Tablet.TabletDateTime.Now)) { name = "tablet-status-date" };
         statusDate.style.fontSize = 15;
         statusDate.style.color = GlassText;
         statusDate.style.unityFontDefinition = Fd();
@@ -1373,7 +1374,7 @@ public class GameMainUI : MonoBehaviour
         }
 
         // 表盘中央的小日期（星期 + 日），对照 HyperOS 时钟
-        var dateLbl = new Label(WeekdayShort[(int)System.DateTime.Now.DayOfWeek].Substring(1) + " " + System.DateTime.Now.Day);
+        var dateLbl = new Label(RailwayRenaissance.UI.Tablet.TabletDateTime.WeekdayShort(RailwayRenaissance.UI.Tablet.TabletDateTime.Now).Substring(1) + " " + RailwayRenaissance.UI.Tablet.TabletDateTime.Now.Day);
         dateLbl.style.position = Position.Absolute;
         dateLbl.style.left = 0; dateLbl.style.right = 0; dateLbl.style.top = 46;
         dateLbl.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -1624,7 +1625,7 @@ public class GameMainUI : MonoBehaviour
 
     private VisualElement BuildCalendarWidget()
     {
-        var now = System.DateTime.Now;
+        var now = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
         var w = new VisualElement();
         w.style.width = 300; w.style.height = 300;
         w.style.flexShrink = 0;
@@ -3761,7 +3762,7 @@ public class GameMainUI : MonoBehaviour
             ApplySafeArea();
             if (statusDate != null)
             {
-                statusDate.text = FormatStatusDate(System.DateTime.Now);
+                statusDate.text = FormatStatusDate(RailwayRenaissance.UI.Tablet.TabletDateTime.Now);
                 bool islandShown = SuperIsland != null && SuperIsland.PrimaryType != RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.None;
                 // 日期在桌面和应用里都始终显示（超级岛紧挨在日期右边）
                 statusDate.style.display = DisplayStyle.Flex;

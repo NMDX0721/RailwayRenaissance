@@ -347,14 +347,14 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 _panelTitle.text = DateTime.Now.ToString("HH:mm");
                 _panelTitle.style.fontSize = 44;
-                _panelSub.text = DateTime.Now.ToString("M月d日 dddd");
+                _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
                 RenderNotifications();
             }
             else if (_state.Panel == TabletSystemPanel.Controls)
             {
                 _panelTitle.text = "控制中心";
                 _panelTitle.style.fontSize = 20;
-                _panelSub.text = DateTime.Now.ToString("M月d日 dddd");
+                _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
                 RenderControls();
             }
             ApplyResponsiveLayout(_parent.layout.width, _parent.layout.height);

@@ -98,7 +98,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         time.style.unityFontDefinition = Fd();
         clockCard.Add(time);
 
-        var date = new Label($"运营第 {GameData.Day} 天 · 主体历 105 年 1 月 1 日");
+        var sDate = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
+        var date = new Label($"运营第 {GameData.Day} 天 · 主体历 {RailwayRenaissance.UI.Tablet.TabletDateTime.EraYear} 年 {sDate.Month} 月 {sDate.Day} 日");
         date.style.fontSize = 14; date.style.color = AccentSystem;
         date.style.unityFontDefinition = Fd(); date.style.marginTop = 8;
         clockCard.Add(date);
@@ -115,7 +116,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // ============ App: 日历 ============
     public static void BuildCalendarApp(VisualElement win)
     {
-        var body = BuildAppBody(win, "日历", "主体历 105 年 1 月（公历 2076 年 1 月）");
+        var calNow = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
+        var body = BuildAppBody(win, "日历", $"主体历 {RailwayRenaissance.UI.Tablet.TabletDateTime.EraYear} 年 {calNow.Month} 月（公历 {calNow.Year} 年 {calNow.Month} 月）");
 
         var calCard = BuildAppCard("月度运行视图");
         calCard.style.alignSelf = Align.Center;
@@ -135,8 +137,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             header.Add(dl);
         }
 
-        // 5周网格，完整呈现 31 天
-        for (int w = 0; w < 5; w++)
+        // 6周网格：按当月 1 日是星期几错位，高亮当天
+        int calOffset = ((int)new System.DateTime(calNow.Year, calNow.Month, 1).DayOfWeek + 6) % 7;
+        int calDays = System.DateTime.DaysInMonth(calNow.Year, calNow.Month);
+        for (int w = 0; w < 6; w++)
         {
             var week = new VisualElement();
             week.style.flexDirection = FlexDirection.Row;
@@ -145,14 +149,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             calCard.Add(week);
             for (int d = 0; d < 7; d++)
             {
-                int day = w * 7 + d + 1;
-                var dl = new Label(day <= 31 ? day.ToString() : "");
+                int day = w * 7 + d - calOffset + 1;
+                var dl = new Label(day >= 1 && day <= calDays ? day.ToString() : "");
                 dl.style.width = 85; dl.style.height = 38; dl.style.fontSize = 14;
                 dl.style.unityFontDefinition = Fd(); dl.style.unityTextAlign = TextAnchor.MiddleCenter;
 
-                if (day <= 31)
+                if (day >= 1 && day <= calDays)
                 {
-                    bool isCurrentDay = (day == GameData.Day || (GameData.Day > 31 && day == 1));
+                    bool isCurrentDay = day == calNow.Day;
                     dl.style.color = isCurrentDay ? Color.white : InkPrimary;
                     if (isCurrentDay)
                     {
@@ -196,7 +200,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         tempCol.Add(tempRow);
 
         var wx = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
-        var wxTomorrow = RailwayRenaissance.UI.Tablet.TabletWeather.For(System.DateTime.Now.AddDays(1));
+        var wxTomorrow = RailwayRenaissance.UI.Tablet.TabletWeather.For(RailwayRenaissance.UI.Tablet.TabletDateTime.Now.AddDays(1));
         var temp = new Label(wx.Now + "°C");
         temp.style.fontSize = 52; temp.style.color = InkPrimary;
         temp.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -331,7 +335,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         string[] weekdays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
         for (int di = 0; di < 3; di++)
         {
-            var fr = RailwayRenaissance.UI.Tablet.TabletWeather.For(System.DateTime.Now.AddDays(di));
+            var fr = RailwayRenaissance.UI.Tablet.TabletWeather.For(RailwayRenaissance.UI.Tablet.TabletDateTime.Now.AddDays(di));
             AddDayForecast($"{dayNames[di]}（{weekdays[(int)fr.Date.DayOfWeek]}）", fr.Icon, fr.Condition, $"{fr.High}° / {fr.Low}°", fr.Advice);
         }
         body.Add(forecastCard);

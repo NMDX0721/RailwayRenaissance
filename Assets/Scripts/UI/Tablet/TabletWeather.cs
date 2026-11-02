@@ -102,6 +102,6 @@ namespace RailwayRenaissance.UI.Tablet
             };
         }
 
-        public static TabletWeatherReading Now => For(DateTime.Now);
+        public static TabletWeatherReading Now => For(TabletDateTime.Now);
     }
 }
