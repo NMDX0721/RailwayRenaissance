@@ -59,7 +59,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         foreach (var remote in response.result.tracks.Take(8))
                         {
                             if (MusicSourceId.Online(captured, remote.id) == track.id) continue;
-                            int score = TitleScore(track.title, remote.title) * 10 + (!string.IsNullOrWhiteSpace(track.artist) && Plain(remote.artist).Contains(Plain(track.artist.Split('/')[0])) ? 12 : 0);
+                            // A candidate must match the title at all; the artist only ranks the ones that do (another song by the same artist is not a replacement).
+                            int titleScore = TitleScore(track.title, remote.title);
+                            if (titleScore == 0) continue;
+                            int score = titleScore * 10 + (!string.IsNullOrWhiteSpace(track.artist) && Plain(remote.artist).Contains(Plain(track.artist.Split('/')[0])) ? 12 : 0);
                             float gap = track.duration > 0 && remote.durationMs > 0 ? Mathf.Abs(track.duration - remote.durationMs / 1000f) : -1f;
                             if (score < 10) continue;
                             found.Add(new Candidate { source = captured, remote = remote, score = score, gap = gap });
