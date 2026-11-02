@@ -305,6 +305,7 @@ public class DialogueBox : MonoBehaviour
         }
 
         continueIndicator.style.display = DisplayStyle.None;
+        ApplyDialogAlpha();
         if (typewriterEffect != null)
         {
             // 固定高度框：动态字号（4步进）+ 手动折行；折行后 blockH 超内容区就降档重折
@@ -781,6 +782,15 @@ public class DialogueBox : MonoBehaviour
         StopContinueAnimation();
         if (continueIndicator != null)
             continueIndicator.style.display = DisplayStyle.None;
+    }
+
+    /// <summary>设置页“对话框透明度”(0–100，默认 80)；默认值对应原来的 0.92 不透明度，设下限避免文字不可读。</summary>
+    private void ApplyDialogAlpha()
+    {
+        if (dialogueBox == null) return;
+        int v = Mathf.Clamp(PlayerPrefs.GetInt("DialogAlpha", 80), 0, 100);
+        float a = Mathf.Clamp(0.92f * v / 80f, 0.15f, 1f);
+        dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, a);
     }
 
     public bool IsTyping() => typewriterEffect != null && typewriterEffect.IsTyping;

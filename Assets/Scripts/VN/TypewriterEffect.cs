@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class TypewriterEffect : MonoBehaviour
 {
-    private const float NormalSpeed = 0.03f;
+    private const float BaseNormalSpeed = 0.03f;   // 设置“文字速度”为默认值 5 时的每字间隔
     private const float FastSpeed = 0.005f;
 
     private Label dialogueText;
@@ -64,6 +64,10 @@ public class TypewriterEffect : MonoBehaviour
 
         isTyping = true;
         dialogueText.text = "";
+
+        // 设置页“文字速度”(1–10，默认 5)：速度越大每字间隔越短，默认值保持原来的 0.03s
+        int speedSetting = Mathf.Clamp(PlayerPrefs.GetInt("TextSpeed", 5), 1, 10);
+        float NormalSpeed = Mathf.Clamp(BaseNormalSpeed * 5f / speedSetting, 0.006f, 0.15f);
 
         // 时间步进而非逐字 WaitForSeconds：帧率会把短延迟抬到 1 帧下限，
         // 导致 Shift 加速（0.005s/字）被削成与正常速度几乎无差；按帧累计后一帧可吐多字。

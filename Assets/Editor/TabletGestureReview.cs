@@ -92,6 +92,8 @@ public static class TabletGestureReview
                 type.GetProperty("pointerId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.SetValue(evt, pointerId);
                 type.GetProperty("pointerType", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.SetValue(evt, pointerType);
                 type.GetProperty("position", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.SetValue(evt, (Vector3)pos);
+                if (pointerType == "mouse")
+                    type.GetProperty("button", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.SetValue(evt, 0);
                 break;
             }
             type = type.BaseType;
@@ -129,6 +131,32 @@ public static class TabletGestureReview
         SetPointerEvent(evt, pointerId, "touch", pos);
         evt.target = root;
         root.SendEvent(evt);
+    }
+
+    public static void SimulateMouse(string phase, Vector2 pos)
+    {
+        const int mouseId = 0;
+        if (phase == "down")
+        {
+            using var evt = PointerDownEvent.GetPooled();
+            SetPointerEvent(evt, mouseId, "mouse", pos);
+            evt.target = root;
+            root.SendEvent(evt);
+        }
+        else if (phase == "move")
+        {
+            using var evt = PointerMoveEvent.GetPooled();
+            SetPointerEvent(evt, mouseId, "mouse", pos);
+            evt.target = root;
+            root.SendEvent(evt);
+        }
+        else
+        {
+            using var evt = PointerUpEvent.GetPooled();
+            SetPointerEvent(evt, mouseId, "mouse", pos);
+            evt.target = root;
+            root.SendEvent(evt);
+        }
     }
 
     public static void SimulateTouchCancel(int pointerId, VisualElement target = null)
@@ -423,6 +451,22 @@ public static class TabletGestureReview
 
                     Capture("10-responsive-4x3-controls");
                     state.ClosePanel();
+
+                    // Windows 鼠标：顶部右半屏左键下拉打开控制中心；左半屏打开通知；从屏幕中部拖动不触发
+                    SimulateMouse("down", new Vector2(900, 10));
+                    SimulateMouse("move", new Vector2(900, 140));
+                    SimulateMouse("up", new Vector2(900, 140));
+                    Assert(state.Panel == TabletSystemPanel.Controls, "Mouse pull-down on the right half did not open controls");
+                    state.ClosePanel();
+                    SimulateMouse("down", new Vector2(200, 10));
+                    SimulateMouse("move", new Vector2(200, 140));
+                    SimulateMouse("up", new Vector2(200, 140));
+                    Assert(state.Panel == TabletSystemPanel.Notifications, "Mouse pull-down on the left half did not open notifications");
+                    state.ClosePanel();
+                    SimulateMouse("down", new Vector2(900, 300));
+                    SimulateMouse("move", new Vector2(900, 440));
+                    SimulateMouse("up", new Vector2(900, 440));
+                    Assert(state.Panel == TabletSystemPanel.None, "Mouse drag away from the top edge must not open a panel");
 
                     Debug.Log("TABLET_GESTURE_GRAPHIC_REVIEW_OK: full interactive graphics touch review passed across portrait and landscape ratios (16:10, 4:3, portrait), music progress bar & scroll & slider & textfield input isolation, multi-touch second touch point rejection, orientation rotation reset, and system back navigation");
 

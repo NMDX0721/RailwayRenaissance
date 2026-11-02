@@ -11,10 +11,13 @@ namespace RailwayRenaissance.UI.Tablet
     {
         private static Font gameFont;
 
+        /// <summary>标题用的半粗体字体定义，使用时不要再叠加 FontStyle.Bold。</summary>
+        public static FontDefinition FdBold() => new FontDefinition { font = TabletFonts.UiBold() };
+
         public static FontDefinition Fd()
         {
             if (gameFont == null)
-                gameFont = Resources.Load<Font>("Fonts/zpix");
+                gameFont = TabletFonts.Ui();
             return new FontDefinition { font = gameFont };
         }
 
@@ -83,6 +86,27 @@ namespace RailwayRenaissance.UI.Tablet
             }
         }
 
+        /// <summary>把按钮的文字换成居中的矢量图标（文字符号如 ✕ ‹ ▶ 在不同字体下大小不一）。</summary>
+        public static void SetButtonIcon(Button button, TabletIconKind kind, float size, Color color)
+        {
+            button.text = string.Empty;
+            button.style.alignItems = Align.Center;
+            button.style.justifyContent = Justify.Center;
+            var icon = new TabletIconElement(kind, size, color) { pickingMode = PickingMode.Ignore };
+            button.Add(icon);
+        }
+
+        /// <summary>单个字形图标：能映射成矢量图标就画矢量，否则退回文字。</summary>
+        public static VisualElement BuildGlyphIcon(string glyph, float size, Color color)
+        {
+            if (TabletGlyphMap.TryGet(glyph, out var kind)) return new TabletIconElement(kind, size, color);
+            var label = new Label(glyph);
+            label.style.fontSize = size * 0.9f;
+            label.style.color = color;
+            label.style.unityFontDefinition = Fd();
+            return label;
+        }
+
         public static VisualElement BuildSquircleBadge(string icon, Color badgeColor, float size = 30f)
         {
             var badge = new VisualElement();
@@ -98,13 +122,20 @@ namespace RailwayRenaissance.UI.Tablet
             badge.style.flexShrink = 0;
             badge.pickingMode = PickingMode.Ignore;
 
-            var label = new Label(icon);
-            label.style.fontSize = Mathf.RoundToInt(size * 0.56f);
-            label.style.color = Color.white;
-            label.style.unityTextAlign = TextAnchor.MiddleCenter;
-            label.style.unityFontDefinition = Fd();
-            label.pickingMode = PickingMode.Ignore;
-            badge.Add(label);
+            if (TabletGlyphMap.TryGet(icon, out var kind))
+            {
+                badge.Add(new TabletIconElement(kind, size * 0.58f, Color.white));
+            }
+            else
+            {
+                var label = new Label(icon);
+                label.style.fontSize = Mathf.RoundToInt(size * 0.56f);
+                label.style.color = Color.white;
+                label.style.unityTextAlign = TextAnchor.MiddleCenter;
+                label.style.unityFontDefinition = Fd();
+                label.pickingMode = PickingMode.Ignore;
+                badge.Add(label);
+            }
 
             return badge;
         }
@@ -120,8 +151,9 @@ namespace RailwayRenaissance.UI.Tablet
         public static readonly Color InkPrimary = new Color(0.10f, 0.10f, 0.10f, 1f);
         public static readonly Color InkSecondary = new Color(0.42f, 0.42f, 0.44f, 1f);
         public static readonly Color InkTertiary = new Color(0.61f, 0.61f, 0.63f, 1f);
-        public static readonly Color SectionHeaderColor = new Color(0.54f, 0.56f, 0.60f, 1f);
-        public static readonly Color AccentSystem = new Color(0.72f, 0.52f, 0.23f, 1f);
+        public static readonly Color SectionHeaderColor = new Color(0.58f, 0.58f, 0.72f, 1f);
+        /// <summary>浅色卡片上的系统强调色，随外观偏好的强调色切换（琥珀时保持原值）。</summary>
+        public static Color AccentSystem => TabletTheme.AccentOnLight;
 
         // ===== 归途与传统质感调色板 =====
         public static readonly Color BrownDark = new Color(0.23f, 0.13f, 0.06f, 0.95f);
@@ -352,11 +384,8 @@ namespace RailwayRenaissance.UI.Tablet
             box.style.paddingLeft = 12; box.style.paddingRight = 12;
             box.style.height = 36;
 
-            var icon = new Label("🔍");
-            icon.style.fontSize = 13;
-            icon.style.color = InkTertiary;
+            var icon = new TabletIconElement(TabletIconKind.Search, 16, InkTertiary);
             icon.style.marginRight = 6;
-            icon.style.unityFontDefinition = Fd();
             box.Add(icon);
 
             var field = new TextField();

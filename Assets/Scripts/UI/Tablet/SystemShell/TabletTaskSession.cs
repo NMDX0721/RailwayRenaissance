@@ -35,6 +35,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         internal object AppState { get; set; }
         internal ITabletTaskLifecycle Lifecycle { get; set; } = EmptyTabletTaskLifecycle.Instance;
         internal long LastActivated { get; set; }
+        /// <summary>该应用窗口是浅色底（状态栏用深色字）。每次切回前台都要按它重设状态栏字色。</summary>
+        internal bool StatusBarOnLight { get; set; }
         internal readonly List<TabletPageEntry> Pages = new List<TabletPageEntry>();
         internal List<Action> SuspendedPageBuilders { get; set; }
 

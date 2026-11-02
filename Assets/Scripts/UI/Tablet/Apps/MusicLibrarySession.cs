@@ -31,14 +31,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLibraryTrack> localTracks = new List<MusicLibraryTrack>();
         public List<MusicLibraryTrack> cloudTracks = new List<MusicLibraryTrack>();
         public List<string> favorites = new List<string>();
+        public List<string> recent = new List<string>();   // most recently started first, kept to 30, for the search box and the home page
         public List<string> queue = new List<string>();
         public List<MusicUserPlaylist> playlists = new List<MusicUserPlaylist>();
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
         public int lyricFontSize = 24;
         public int lyricMotion = 1;
-        public bool lyricTranslation = true, reduceMotion, navCollapsed;
+        public bool lyricFilter = true;      // take credit and copyright lines out of lyrics
+        public string lyricFilterWords = "";   // extra words: any line containing one is taken out (comma separated)
+        public int toneMode;   // listening tone: 0 clean, 1 work-train radio, 2 tube radio, 3 tube FM
+        public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
+        // Stage style tuning (Folia's classic tunables): 0 calm / 1 normal / 2 chaotic, word rotation, whole-line float, word spacing.
+        public string stageStyle = "luminous";
+        public int stageIntensity = 1;
+        public bool stageRotation = true, stageLegacyLayout;
+        public float stageBreathing = 1f, stageSpacing = .7f;
         public string currentId;
         public float position, volume = 0.65f;
         public int mode = 1;
@@ -70,6 +79,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 foreach (var preference in state.lyrics) preference.offsetMs = Mathf.Clamp(preference.offsetMs, -10000, 10000);
                 state.lyricFontSize = state.lyricFontSize == 0 ? 24 : Mathf.Clamp(state.lyricFontSize, 18, 36);
                 state.lyricMotion = Mathf.Clamp(state.lyricMotion, 0, 2);
+                state.stageIntensity = Mathf.Clamp(state.stageIntensity, 0, 2);
+                state.stageBreathing = float.IsNaN(state.stageBreathing) ? 1f : Mathf.Clamp(state.stageBreathing, 0f, 2f);
+                state.stageSpacing = float.IsNaN(state.stageSpacing) ? .7f : Mathf.Clamp(state.stageSpacing, 0f, 2f);
+                if (string.IsNullOrEmpty(state.stageStyle)) state.stageStyle = "luminous";
                 state.playlists.RemoveAll(p => p == null || string.IsNullOrEmpty(p.id) || p.tracks == null);
                 state.localTracks.RemoveAll(t => t == null || string.IsNullOrEmpty(t.id) || string.IsNullOrEmpty(t.fileName) ||
                     System.IO.Path.GetFileName(t.fileName) != t.fileName);
@@ -348,6 +361,35 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             list.tracks.Add(id); Commit(); return true;
         }
         public static void Commit() { Save(); Changed?.Invoke(); }
+
+        /// <summary>True when playing this track failed during this run.</summary>
+        public static bool HasFailed(string id) => failed.Contains(id);
+
+        /// <summary>
+        /// Puts <paramref name="newId"/> in the place of <paramref name="oldId"/> in the favourites, the queue, the recent list and every playlist.
+        /// Where the new track is already in a list, the old one is only removed. Returns how many places held the old track.
+        /// </summary>
+        public static int ReplaceTrack(string oldId, string newId)
+        {
+            Ensure();
+            if (string.IsNullOrEmpty(oldId) || string.IsNullOrEmpty(newId) || oldId == newId) return 0;
+            int places = 0;
+            void Swap(List<string> list)
+            {
+                if (list == null) return;
+                for (int i = list.Count - 1; i >= 0; i--)
+                {
+                    if (list[i] != oldId) continue;
+                    places++;
+                    if (list.Contains(newId)) list.RemoveAt(i); else list[i] = newId;
+                }
+            }
+            Swap(state.favorites); Swap(state.queue); Swap(state.recent);
+            foreach (var playlist in state.playlists) Swap(playlist.tracks);
+            failed.Remove(oldId);
+            Commit();
+            return places;
+        }
         public static void Save()
         {
             if (state == null) return;
@@ -358,6 +400,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             state.mode = (int)TabletMusicAppUI.tabletPlayMode;
             store.Save(state);
+        }
+        public static List<MusicLibraryTrack> RecentTracks(int count)
+        {
+            Ensure();
+            var found = new List<MusicLibraryTrack>();
+            foreach (string id in state.recent ?? new List<string>()) { var t = Find(id); if (t != null && found.Count < count) found.Add(t); }
+            return found;
         }
         public static void Started(string id, AudioClip clip)
         {
@@ -371,6 +420,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             pendingHistory = -1;
             state.currentId = id; state.position = 0;
+            if (state.recent == null) state.recent = new List<string>();
+            state.recent.Remove(id); state.recent.Insert(0, id); if (state.recent.Count > 30) state.recent.RemoveRange(30, state.recent.Count - 30);
             if (tracks.TryGetValue(id, out var track)) track.duration = clip.length;
             Commit();
             TrackStarted?.Invoke(id);

@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RailwayRenaissance.UI.Tablet.Account;
 using RailwayRenaissance.UI.Tablet;
 using RailwayRenaissance.UI.Tablet.SystemShell;
 using RailwayRenaissance.UI.Tablet.Apps;
@@ -74,8 +75,70 @@ namespace RailwayRenaissance.Editor
             document.panelSettings.targetTexture = target;
         }
 
+        // 截图延迟到下一次 Step（已等待 20 帧渲染）再读取，否则读到的是上一阶段的画面。
+        private static string pendingCapture;
+        private static int settingsSubPage;
+        private static bool wizardDone, wizardRegistered;
+        private static string wizardSms;
+        private static string savedProfileJson, savedSetupDone, savedLegacyName;
+        private static bool accountPrefsSaved;
+
+        // 审查会在编辑器的 PlayerPrefs 里创建测试账号：先备份，结束时恢复，避免污染开发者自己的账号数据
+        private static void SaveAccountPrefs()
+        {
+            if (accountPrefsSaved) return;
+            accountPrefsSaved = true;
+            savedProfileJson = PlayerPrefs.HasKey("XiaomiAccountProfile_v1") ? PlayerPrefs.GetString("XiaomiAccountProfile_v1") : null;
+            savedSetupDone = PlayerPrefs.HasKey("TabletSetupDone_v1") ? PlayerPrefs.GetInt("TabletSetupDone_v1").ToString() : null;
+            savedLegacyName = PlayerPrefs.HasKey("XiaomiAccount") ? PlayerPrefs.GetString("XiaomiAccount") : null;
+        }
+
+        private static void RestoreAccountPrefs()
+        {
+            if (!accountPrefsSaved) return;
+            accountPrefsSaved = false;
+            if (savedProfileJson != null) PlayerPrefs.SetString("XiaomiAccountProfile_v1", savedProfileJson); else PlayerPrefs.DeleteKey("XiaomiAccountProfile_v1");
+            if (savedSetupDone != null) PlayerPrefs.SetInt("TabletSetupDone_v1", int.Parse(savedSetupDone)); else PlayerPrefs.DeleteKey("TabletSetupDone_v1");
+            if (savedLegacyName != null) PlayerPrefs.SetString("XiaomiAccount", savedLegacyName); else PlayerPrefs.DeleteKey("XiaomiAccount");
+            PlayerPrefs.Save();
+            AccountService.ReloadFromPrefs();
+        }
+
+        private static void ClickButtonText(string text)
+        {
+            Button found = null;
+            root.Query<Button>().ForEach(b => { if (found == null && b.text == text && b.resolvedStyle.display != DisplayStyle.None) found = b; });
+            Assert(found != null, "wizard button missing: " + text);
+            ClickElement(found);
+        }
+
+        private static void ClickRowContaining(string text)
+        {
+            VisualElement row = null;
+            root.Query<Label>().ForEach(l => { if (row == null && l.text != null && l.text.Contains(text)) row = l.parent; });
+            Assert(row != null, "wizard row missing: " + text);
+            ClickElement(row);
+        }
+
+        private static TextField WizardField(string name)
+        {
+            var f = root.Q<TextField>(name);
+            Assert(f != null, "wizard field missing: " + name);
+            return f;
+        }
+        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
+
         private static void Capture(string name)
         {
+            FlushPendingCapture();
+            pendingCapture = name;
+        }
+
+        private static void FlushPendingCapture()
+        {
+            if (pendingCapture == null) return;
+            string name = pendingCapture;
+            pendingCapture = null;
             var previous = RenderTexture.active;
             RenderTexture.active = target;
             var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
@@ -145,6 +208,7 @@ namespace RailwayRenaissance.Editor
 
             if (!EditorApplication.isPlaying || EditorApplication.isCompiling) return;
             if (stage > 0 && Time.frameCount - frame < 20) return;
+            FlushPendingCapture();
 
             try
             {
@@ -167,8 +231,6 @@ namespace RailwayRenaissance.Editor
                         root = document.rootVisualElement;
 
                         var settings = UnityEngine.Object.Instantiate(document.panelSettings);
-                        settings.scaleMode = PanelScaleMode.ConstantPixelSize;
-                        settings.scale = 1;
                         settings.clearColor = true;
                         settings.colorClearValue = new Color(0.06f, 0.07f, 0.06f);
                         document.panelSettings = settings;
@@ -338,7 +400,32 @@ namespace RailwayRenaissance.Editor
                         var rightPane = root.Q("settings-right-pane");
                         Assert(rightPane != null, "settings-right-pane should exist");
 
-                        Capture("09_settings_inset_grouped_cards");
+                        // 本阶段重复进入：先截账号页，再依次点开“显示与亮度 / 电池 / 我的设备”各截一张
+                        if (settingsSubPage == 0)
+                        {
+                            // 开发者选项入口只在解锁后出现；审查结束时会移除该键
+                            PlayerPrefs.SetInt("TabletDevModeUnlocked", 1);
+                            PlayerPrefs.Save();
+                            Capture("09_settings_inset_grouped_cards");
+                            settingsSubPage = 1;
+                            frame = Time.frameCount;
+                            break;
+                        }
+                        if (settingsSubPage <= SettingsPagesToCapture.Length)
+                        {
+                            string pageName = SettingsPagesToCapture[settingsSubPage - 1];
+                            Button navButton = null;
+                            root.Q("settings-category-rail").Query<Label>().ForEach(l =>
+                            {
+                                if (navButton == null && l.text == pageName) navButton = l.parent as Button;
+                            });
+                            Assert(navButton != null, "settings nav item missing: " + pageName);
+                            ClickElement(navButton);
+                            Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_" + pageName);
+                            settingsSubPage++;
+                            frame = Time.frameCount;
+                            break;
+                        }
                         stage++;
                         frame = Time.frameCount;
                         break;
@@ -391,8 +478,219 @@ namespace RailwayRenaissance.Editor
                         Resize(1920, 1200); // 16:10 平板比例
                         ui.OpenSystemPanel(TabletSystemPanel.Controls);
                         Capture("15_hyperos_responsive_tablet");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
 
-                        Teardown(true, "All 15 stages completed successfully");
+                    // ==================== Stage 16–20: 高对比度、减少动效与竖屏窄屏 ====================
+                    case 16:
+                        presentation.SetReduceMotion(true);   // 截图时关闭动画，避免截到淡入中途
+                        presentation.SetHighContrast(true);
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("16_high_contrast_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 17:
+                        state.ClosePanel();
+                        state.Post("应用提示", "闹钟已同步到先民排班系统");
+                        state.Post("铁路广播", "雾峰村线临时限速 40 km/h，请注意行车");
+                        ui.OpenSystemPanel(TabletSystemPanel.Notifications);
+                        Capture("17_high_contrast_notifications");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 18:
+                        presentation.SetHighContrast(false);
+                        presentation.SetReduceMotion(true);
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("18_reduce_motion_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 19:
+                    {
+                        // 减少动效开启时面板必须直接到位：不透明、无位移，不能停在动画起点
+                        var motionPanel = root.Q("tablet-shell-panel");
+                        Assert(motionPanel != null, "tablet-shell-panel missing under reduce motion");
+                        Assert(motionPanel.resolvedStyle.opacity > 0.99f, "Panel must be fully opaque with reduce motion on");
+                        Assert(Mathf.Abs(motionPanel.resolvedStyle.translate.y) < 0.5f, "Panel must not be offset with reduce motion on");
+                        Resize(800, 1280); // 竖屏窄屏（仍保持减少动效，保证截图时面板已完整显示）
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Notifications);
+                        Capture("19_portrait_notifications");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+                    }
+
+                    case 20:
+                        state.ClosePanel();
+                        ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                        Capture("20_portrait_controls");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 21:
+                        PlayerPrefs.DeleteKey("TabletDevModeUnlocked");
+                        PlayerPrefs.Save();
+                        state.ClosePanel();
+                        presentation.SetReduceMotion(false);
+                        Resize(1920, 1080);
+                        // ---- 注册向导全流程：开机激活 -> 协议 -> 网络 -> 注册 -> 验证码 -> 密码 -> 资料 -> 完成 ----
+                        SaveAccountPrefs();
+                        AccountService.ResetForTests();
+                        wizardDone = false; wizardRegistered = false; wizardSms = null;
+                        TabletSetupWizard.Show(root, TabletSetupWizard.Flow.Activation, true,
+                            reg => { wizardRegistered = reg; wizardDone = true; },
+                            (t, body) => wizardSms = body);
+                        // 第一页允许跳过时，返回键位置是“取消”，系统返回会取消向导而不是落到下面的应用
+                        Assert(TabletSetupWizard.Active != null, "Wizard must register itself as active");
+                        var cancelBtn = root.Q<Button>("wizard-back");
+                        Assert(cancelBtn != null && cancelBtn.text == "取消" && cancelBtn.resolvedStyle.visibility == Visibility.Visible, "First page must offer a cancel button when skipping is allowed");
+                        Capture("21_wizard_welcome");
+                        stage++;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 22:
+                        ClickButtonText("开始");
+                        Capture("22_wizard_agreement");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 23:
+                        ClickRowContaining("我已阅读并同意《小米用户协议》");
+                        ClickButtonText("同意并继续");
+                        Capture("23_wizard_network");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 24:
+                        ClickButtonText("下一步");
+                        Capture("24_wizard_account");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 25:
+                        ClickButtonText("注册小米账号");
+                        Capture("25_wizard_phone");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 26:
+                    {
+                        // 先不填手机号就点获取验证码：必须报错并留在本页
+                        ClickRowContaining("同意《小米账号用户协议》");
+                        ClickButtonText("获取验证码");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && !string.IsNullOrEmpty(errLabel.text), "Empty phone must show an error");
+                        WizardField("wizard-phone").value = "13812348848";
+                        ClickButtonText("获取验证码");
+                        Assert(!string.IsNullOrEmpty(wizardSms), "SMS code must be delivered through the sink");
+                        Capture("26_wizard_code");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 27:
+                    {
+                        // 错误验证码被拒绝，正确验证码通过
+                        int at = wizardSms.IndexOf("是 ", StringComparison.Ordinal);
+                        string code = wizardSms.Substring(at + 2, 6);
+                        WizardField("wizard-code").value = code == "000000" ? "111111" : "000000";
+                        ClickButtonText("下一步");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && errLabel.text.Contains("验证码"), "Wrong code must be rejected");
+                        WizardField("wizard-code").value = code;
+                        ClickButtonText("下一步");
+                        Capture("27_wizard_password");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 28:
+                    {
+                        // 验证码通过后从密码页退回：显示“手机号已验证”，不必再要新验证码就能回到密码页
+                        ClickButtonText("‹ 返回");
+                        bool sawVerified = false;
+                        root.Query<Label>().ForEach(l => { if (l.text == "手机号已验证") sawVerified = true; });
+                        Assert(sawVerified, "Going back to the code page after a successful check must show the verified state");
+                        ClickButtonText("下一步");
+                        WizardField("wizard-password").value = "abcdefgh";
+                        WizardField("wizard-password-confirm").value = "abcdefgh";
+                        ClickButtonText("下一步");
+                        var errLabel = root.Q<Label>("wizard-error");
+                        Assert(errLabel != null && errLabel.text.Contains("字母和数字"), "Letters-only password must be rejected");
+                        WizardField("wizard-password").value = "Railway2053";
+                        WizardField("wizard-password-confirm").value = "Railway2053";
+                        Capture("28_wizard_password_filled");
+                        stage++; frame = Time.frameCount; break;
+                    }
+
+                    case 29:
+                        ClickButtonText("下一步");
+                        Capture("29_wizard_profile");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 30:
+                        WizardField("wizard-nickname").value = "林彪悍";
+                        ClickButtonText("完成注册");
+                        Assert(AccountService.IsRegistered, "Account must exist after finishing the profile step");
+                        Capture("30_wizard_done");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 31:
+                    {
+                        var prof = AccountService.Profile;
+                        Assert(prof != null && prof.nickname == "林彪悍" && prof.xiaomiId.Length == 10, "Profile data mismatch");
+                        Assert(!prof.passwordHash.Contains("Railway"), "Password must be stored hashed");
+                        Assert(AccountService.VerifyPassword("Railway2053") && !AccountService.VerifyPassword("railway2053"), "Password verification failed");
+                        ClickButtonText("开始使用");
+                        Assert(wizardDone && wizardRegistered, "Wizard must report success on finish");
+                        Assert(AccountService.ChangePassword("wrong", "Another2054") == "当前密码不正确", "Wrong old password must be rejected");
+                        Assert(AccountService.ChangePassword("Railway2053", "Railway2053") != null, "Same password must be rejected");
+                        Assert(AccountService.ChangePassword("Railway2053", "Another2054") == null, "Valid password change failed");
+                        Assert(AccountService.VerifyPassword("Another2054") && !AccountService.VerifyPassword("Railway2053"), "Old password must stop working");
+                        Assert(AccountService.Rename("") != null && AccountService.Rename("旅人乙") == null && AccountService.DisplayName == "旅人乙", "Rename failed");
+                        string resetCode = AccountService.IssueCode(prof.phone);
+                        Assert(AccountService.VerifyCode(prof.phone, resetCode) == null, "Reset code must verify");
+                        Assert(AccountService.ResetPassword("Reset2055") == null && AccountService.VerifyPassword("Reset2055"), "Reset password failed");
+                        Call("ReturnToTabletHome");
+                        stage++; frame = Time.frameCount;
+                        break;
+                    }
+
+                    // ---- 桌面文件夹：缩略图 + 展开态 ----
+                    case 32:
+                        Call("OpenRailwayFolder");
+                        Capture("32_folder_opened");
+                        stage++; frame = Time.frameCount; break;
+
+                    case 33:
+                        Call("CloseRailwayFolder");
+                        Capture("33_home_folder_thumbnail");
+                        stage++; frame = Time.frameCount; break;
+
+                    // ---- 状态栏字色随前台应用：浅色应用深色字，音乐（深色窗口）浅色字，复用已有任务时也要重设 ----
+                    case 34:
+                    {
+                        var clock = (Label)Field("statusClock");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "设置");
+                        Assert(clock.style.color.value.r < 0.4f, "Light app must use dark status text");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "音乐");
+                        Assert(clock.style.color.value.r > 0.6f, "Music window must use light status text");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "设置"); // 复用已有的设置任务
+                        Assert(clock.style.color.value.r < 0.4f, "Reactivated light app must restore dark status text");
+                        stage++; frame = Time.frameCount;
+                        break;
+                    }
+
+                    case 35:
+                        Teardown(true, "All stages completed successfully");
                         break;
                 }
             }
@@ -404,6 +702,8 @@ namespace RailwayRenaissance.Editor
 
         private static void Teardown(bool success, string reason)
         {
+            if (success) FlushPendingCapture();
+            RestoreAccountPrefs();
             EditorApplication.update -= Step;
             SessionState.SetBool(PendingKey, false);
 

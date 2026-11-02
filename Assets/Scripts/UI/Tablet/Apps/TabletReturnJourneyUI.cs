@@ -265,7 +265,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 badge.style.backgroundColor = completed ? CrimsonSeal : (unlocked ? AccentSystem : new Color(0.6f, 0.6f, 0.65f, 1f));
                 card.Add(badge);
 
-                var badgeTxt = new Label(completed ? "Clear ★" : (unlocked ? "探索中" : "待开放 🔒"));
+                var badgeTxt = new Label(completed ? "Clear ★" : (unlocked ? "探索中" : "待开放"));
                 badgeTxt.style.fontSize = 10; badgeTxt.style.color = Color.white; badgeTxt.style.unityFontDefinition = Fd();
                 badge.Add(badgeTxt);
 
@@ -338,7 +338,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var curChData = StoryChapters[returnJourneyCurrentChapter];
             bool curUnlocked = IsStoryChapterUnlocked(returnJourneyCurrentChapter);
 
-            var panelHead = new Label(curUnlocked ? ($"▼ {curChData.chapterNum} · {curChData.title}") : ($"▼ {curChData.chapterNum} · ??? 🔒"));
+            var panelHead = new Label(curUnlocked ? ($"▼ {curChData.chapterNum} · {curChData.title}") : ($"▼ {curChData.chapterNum} · ???"));
             panelHead.style.fontSize = 16; panelHead.style.color = AccentSystem;
             panelHead.style.unityFontStyleAndWeight = FontStyle.Bold;
             panelHead.style.unityFontDefinition = Fd();
@@ -380,7 +380,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     pTitle.style.unityFontDefinition = Fd();
                     pRow.Add(pTitle);
 
-                    var pTag = new Label(pDone ? "★" : (pUnlocked ? "▶" : "🔒"));
+                    var pTag = new Label(pDone ? "★" : (pUnlocked ? "▶" : "锁"));
                     pTag.style.fontSize = 10;
                     pTag.style.color = pDone ? CrimsonSeal : (pUnlocked ? AccentSystem : InkTertiary);
                     pTag.style.unityFontDefinition = Fd();
@@ -395,8 +395,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 lockBox.style.alignItems = Align.Center;
                 panelTopBox.Add(lockBox);
 
-                var lockIc = new Label("🔒");
-                lockIc.style.fontSize = 28; lockIc.style.unityFontDefinition = Fd();
+                var lockIc = new TabletIconElement(TabletIconKind.Lock, 30, InkTertiary);
                 lockBox.Add(lockIc);
 
                 var lockTxt = new Label("本章节尚未开放探索");
@@ -417,7 +416,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 {
                     ShowToast("本章节尚未开放！");
                 }
-            }) { text = curUnlocked ? "前往幕次列表 · Enter ❯" : "尚未开放 🔒" };
+            }) { text = curUnlocked ? "前往幕次列表 · Enter ❯" : "尚未开放" };
             enterChapterBtn.style.height = 40;
             enterChapterBtn.style.fontSize = 13; enterChapterBtn.style.unityFontDefinition = Fd();
             enterChapterBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -683,9 +682,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 leftPart.style.alignItems = Align.Center;
                 item.Add(leftPart);
 
-                var docIcon = new Label(unlocked ? (epDone ? "📜" : "📐") : "🔒");
-                docIcon.style.fontSize = 16; docIcon.style.marginRight = 10;
-                docIcon.style.unityFontDefinition = Fd();
+                var docIcon = new TabletIconElement(unlocked ? (epDone ? TabletIconKind.Note : TabletIconKind.Ruler) : TabletIconKind.Lock, 18,
+                    unlocked ? AccentSystem : InkTertiary);
+                docIcon.style.marginRight = 10;
                 leftPart.Add(docIcon);
 
                 var infoBox = new VisualElement();
@@ -711,7 +710,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 rightPart.style.alignItems = Align.Center;
                 item.Add(rightPart);
 
-                var stLbl = new Label(epDone ? "已通关 ★" : (unlocked ? "可开始 ▶" : "未解锁 🔒"));
+                var stLbl = new Label(epDone ? "已通关 ★" : (unlocked ? "可开始 ▶" : "未解锁"));
                 stLbl.style.fontSize = 11;
                 stLbl.style.color = epDone ? new Color(0.2f, 0.65f, 0.35f, 1f) : (unlocked ? AccentSystem : InkTertiary);
                 stLbl.style.unityFontDefinition = Fd();

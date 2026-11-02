@@ -19,12 +19,14 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private readonly VisualElement _scrim;
         private readonly VisualElement _panel;
         private readonly Label _panelTitle;
+        private readonly Label _panelSub;
         private readonly VisualElement _contentContainer;
         private readonly Label _badge;
         private Focusable _previousFocus;
         private TabletSystemPanel _renderedPanel;
-        private Color _accent = new Color(.86f,.65f,.27f);
+        private Color _accent = TabletTheme.Accent;
         private bool _highContrast;
+        private bool _launcherOnLight;
         private readonly TabletPresentationPreferences _presentation;
         private static float s_preMuteVolume = 1f;
 
@@ -61,8 +63,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _launcher.pickingMode = PickingMode.Position;
             _launcher.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
 
-            var btnNotif = CreatePillButton("🔔 通知", 62, 32, () => _state.TogglePanel(TabletSystemPanel.Notifications));
-            var btnCtrl = CreatePillButton("⚙ 控制", 62, 32, () => _state.TogglePanel(TabletSystemPanel.Controls));
+            var btnNotif = CreatePillButton("通知", 72, 32, () => _state.TogglePanel(TabletSystemPanel.Notifications));
+            var btnCtrl = CreatePillButton("控制", 72, 32, () => _state.TogglePanel(TabletSystemPanel.Controls));
+            AttachLauncherIcon(btnNotif, TabletIconKind.Bell);
+            AttachLauncherIcon(btnCtrl, TabletIconKind.Gear);
             btnNotif.name = "tablet-notifications-open";
             btnCtrl.name = "tablet-controls-open";
             btnNotif.style.marginRight = 6;
@@ -77,7 +81,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _badge.style.borderTopRightRadius = 8;
             _badge.style.borderBottomLeftRadius = 8;
             _badge.style.borderBottomRightRadius = 8;
-            _badge.style.backgroundColor = new Color(0.92f, 0.22f, 0.22f, 1f);
+            _badge.style.backgroundColor = TabletTheme.Badge;
             _badge.style.color = Color.white;
             _badge.style.fontSize = 10;
             _badge.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -91,6 +95,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             _launcher.Add(btnNotif);
             _launcher.Add(btnCtrl);
+            // 状态栏不再显示“通知/控制”文字按钮：面板由顶部下拉手势和状态栏点按呼出。
+            // 节点保留（无障碍与审查按名称触发），但不显示、不参与布局。
+            _launcher.style.display = DisplayStyle.None;
 
             _overlay = new VisualElement { name = "tablet-shell-overlay" };
             _overlay.style.position = Position.Absolute;
@@ -116,7 +123,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _scrim.style.top = 0;
             _scrim.style.right = 0;
             _scrim.style.bottom = 0;
-            _scrim.style.backgroundColor = new Color(0.05f, 0.05f, 0.07f, 0.45f);
+            _scrim.style.backgroundColor = TabletTheme.ShellScrim;
             _scrim.RegisterCallback<ClickEvent>(evt =>
             {
                 if (evt.target == _scrim)
@@ -134,16 +141,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _panel.style.right = StyleKeyword.Auto;
             _panel.style.width = 380;
             _panel.style.maxWidth = Length.Percent(100);
-            _panel.style.backgroundColor = new Color(0.13f, 0.14f, 0.16f, 0.98f);
-            _panel.style.borderTopWidth = 1;
-            _panel.style.borderRightWidth = 1;
-            _panel.style.borderBottomWidth = 1;
-            _panel.style.borderLeftWidth = 1;
-            var borderColor = new Color(0.35f, 0.36f, 0.40f, 1f);
-            _panel.style.borderTopColor = borderColor;
-            _panel.style.borderRightColor = borderColor;
-            _panel.style.borderBottomColor = borderColor;
-            _panel.style.borderLeftColor = borderColor;
+            _panel.style.backgroundColor = Color.clear;   // 内容直接浮在整屏模糊背景上，由卡片承载材质
             _panel.style.borderTopLeftRadius = 8;
             _panel.style.borderTopRightRadius = 8;
             _panel.style.borderBottomLeftRadius = 8;
@@ -152,7 +150,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _panel.style.paddingRight = 12;
             _panel.style.paddingBottom = 12;
             _panel.style.paddingLeft = 12;
-            _panel.pickingMode = PickingMode.Position;
+            _panel.pickingMode = PickingMode.Ignore;      // 列内空白处点击落到遮罩上关闭面板
             _panel.focusable = true;
             _panel.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
             _panel.RegisterCallback<PointerDownEvent>(evt => evt.StopPropagation());
@@ -163,9 +161,24 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             panelHeader.style.alignItems = Align.Center;
             panelHeader.style.marginBottom = 10;
 
+            var titleBox = new VisualElement();
             _panelTitle = CreateLabel("系统面板", 15, true);
+            _panelSub = CreateLabel(string.Empty, 13, false);
+            _panelSub.style.color = TabletTheme.TextStrong;
+            titleBox.Add(_panelTitle);
+            titleBox.Add(_panelSub);
             var btnClose = CreateButton("✕", 44, 44, () => _state.ClosePanel());
-            panelHeader.Add(_panelTitle);
+            btnClose.name = "tablet-shell-close";
+            btnClose.AddToClassList("shell-keep");
+            btnClose.style.width = 44; btnClose.style.height = 44;
+            btnClose.style.backgroundColor = TabletTheme.GlassTileActive;
+            btnClose.style.color = TabletTheme.InkOnGlass;
+            TabletUIHelper.SetButtonIcon(btnClose, TabletIconKind.Close, 20, TabletTheme.InkOnGlass);
+            btnClose.style.borderTopWidth = 0; btnClose.style.borderBottomWidth = 0;
+            btnClose.style.borderLeftWidth = 0; btnClose.style.borderRightWidth = 0;
+            btnClose.style.borderTopLeftRadius = 22; btnClose.style.borderTopRightRadius = 22;
+            btnClose.style.borderBottomLeftRadius = 22; btnClose.style.borderBottomRightRadius = 22;
+            panelHeader.Add(titleBox);
             panelHeader.Add(btnClose);
             _panel.Add(panelHeader);
 
@@ -233,20 +246,28 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _rootContainer.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        /// <summary>状态栏落在浅色应用顶栏上时，“通知/控制”按钮改用深色文字和图标。</summary>
+        public void SetLauncherOnLight(bool onLight)
+        {
+            if (_launcherOnLight == onLight) return;
+            _launcherOnLight = onLight;
+            ApplyPresentation(_accent, _highContrast);
+        }
+
         public void ApplyPresentation(Color accent, bool highContrast)
         {
             bool contrastChanged = _highContrast != highContrast;
             _accent = accent;
             _highContrast = highContrast;
-            _panel.style.backgroundColor = highContrast ? Color.black : GlassControlPanel;
+            _panel.style.backgroundColor = Color.clear;
             if (highContrast)
             {
                 ClearBlurredBackground();
-                _scrim.style.backgroundColor = new Color(0f, 0f, 0f, 0.85f);
+                _scrim.style.backgroundColor = TabletTheme.ShellScrimHighContrast;
             }
             else
             {
-                _scrim.style.backgroundColor = new Color(0.05f, 0.05f, 0.07f, 0.45f);
+                _scrim.style.backgroundColor = TabletTheme.ShellScrim;
                 if (contrastChanged && _state.Panel != TabletSystemPanel.None)
                 {
                     OnRequestCapture?.Invoke();
@@ -254,26 +275,32 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
             _rootContainer.Query<Button>().ForEach(button =>
             {
-                button.style.color = Color.white;
+                if (button.ClassListContains("shell-keep")) return;
                 bool quietActive = button.name == "tablet-quiet-toggle" && _state.QuietMode;
                 bool hcActive = button.name == "tablet-high-contrast-toggle" && (_presentation?.HighContrast ?? false);
                 bool rmActive = button.name == "tablet-reduce-motion-toggle" && (_presentation?.ReduceMotion ?? false);
-                bool dimActive = button.name == "tablet-wallpaper-dim-toggle" && (_presentation != null && _presentation.WallpaperDim > 0.05f);
-                bool muteActive = button.name == "tablet-audio-mute-toggle" && GameData.MasterVolume <= 0.001f;
-                bool isActive = quietActive || hcActive || rmActive || dimActive || muteActive;
+                bool isActive = quietActive || hcActive || rmActive;
 
                 if (button.name == "tablet-notifications-open" || button.name == "tablet-controls-open")
                 {
-                    button.style.backgroundColor = new Color(1f, 1f, 1f, 0.12f);
-                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = new Color(1f, 1f, 1f, 0.18f);
+                    var launcherInk = _launcherOnLight ? TabletTheme.InkOnGlass : Color.white;
+                    button.style.color = launcherInk;
+                    button.style.backgroundColor = _launcherOnLight ? new Color(0f, 0f, 0f, 0.07f) : TabletTheme.OverlaySoft;
+                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = _launcherOnLight ? new Color(0f, 0f, 0f, 0.10f) : TabletTheme.OverlayMedium;
+                    button.Query<TabletIconElement>().ForEach(ic => ic.IconColor = launcherInk);
                 }
                 else
                 {
-                    button.style.backgroundColor = isActive ? new Color(0.24f, 0.38f, 0.28f, 1f) : highContrast ? Color.black : new Color(1f, 1f, 1f, 0.08f);
-                    button.style.borderTopColor = button.style.borderBottomColor = button.style.borderLeftColor = button.style.borderRightColor = isActive ? accent : new Color(1f, 1f, 1f, 0.12f);
+                    // 玻璃磁贴：开启为实白底深色字，关闭为半透明深色底白字
+                    button.style.color = isActive ? TabletTheme.InkOnGlass : Color.white;
+                    button.style.backgroundColor = isActive ? TabletTheme.GlassTileActive : highContrast ? Color.black : TabletTheme.GlassTile;
+                    button.style.borderTopWidth = button.style.borderBottomWidth = button.style.borderLeftWidth = button.style.borderRightWidth = 0;
                 }
             });
-            _panel.Query<Label>().ForEach(label => label.style.color = Color.white);
+            _panel.Query<Label>().ForEach(label =>
+            {
+                if (!label.ClassListContains("shell-dark")) label.style.color = Color.white;
+            });
         }
 
         public void Dispose()
@@ -318,17 +345,22 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             if (_state.Panel == TabletSystemPanel.Notifications)
             {
-                _panelTitle.text = "通知中心";
+                _panelTitle.text = DateTime.Now.ToString("HH:mm");
+                _panelTitle.style.fontSize = 44;
+                _panelSub.text = DateTime.Now.ToString("M月d日 dddd");
                 RenderNotifications();
             }
             else if (_state.Panel == TabletSystemPanel.Controls)
             {
-                _panelTitle.text = "控制面板";
+                _panelTitle.text = "控制中心";
+                _panelTitle.style.fontSize = 20;
+                _panelSub.text = DateTime.Now.ToString("M月d日 dddd");
                 RenderControls();
             }
             ApplyResponsiveLayout(_parent.layout.width, _parent.layout.height);
             if (opening)
             {
+                PlayPanelOpenAnimation();
                 _panel.Focus();
                 if (OnRequestCapture != null)
                 {
@@ -343,6 +375,27 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             ApplyPresentation(_accent, _highContrast);
         }
 
+        /// <summary>面板从状态栏方向轻轻落下并淡入；开启“减少动效”时直接到位。</summary>
+        private void PlayPanelOpenAnimation()
+        {
+            int ms = TabletTheme.MotionMs(240);
+            _panel.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("translate"), new StylePropertyName("opacity") };
+            _panel.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+            if (ms <= 0)
+            {
+                _panel.style.translate = new Translate(0, 0);
+                _panel.style.opacity = 1f;
+                return;
+            }
+            _panel.style.translate = new Translate(0, -28);
+            _panel.style.opacity = 0f;
+            _panel.schedule.Execute(() =>
+            {
+                _panel.style.translate = new Translate(0, 0);
+                _panel.style.opacity = 1f;
+            }).StartingIn(16);
+        }
+
         private void OnParentGeometryChanged(GeometryChangedEvent evt)
         {
             ApplyResponsiveLayout(evt.newRect.width, evt.newRect.height);
@@ -354,35 +407,39 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             bool compact = width < 820 || height < 520;
             bool fullSheet = height > width || width < 620;
-            bool fromLeft = _state.Panel == TabletSystemPanel.Notifications;
+            bool notifications = _state.Panel == TabletSystemPanel.Notifications;
 
-            if (fromLeft)
+            // 通知页：整屏模糊上居中一列（约 47% 宽）；控制中心：靠右一列（约 31% 宽）。
+            float columnWidth = notifications
+                ? Mathf.Clamp(width * 0.47f, compact ? 340f : 420f, 640f)
+                : Mathf.Clamp(width * 0.31f, compact ? 340f : 380f, 480f);
+            if (fullSheet) columnWidth = width - 24f;
+            columnWidth = Mathf.Min(columnWidth, width);
+
+            _panel.style.width = columnWidth;
+            _panel.style.maxWidth = Length.Percent(100);
+            if (notifications || fullSheet)
             {
-                _panel.style.left = 0;
+                _panel.style.left = Mathf.Max(0f, (width - columnWidth) * 0.5f);
                 _panel.style.right = StyleKeyword.Auto;
             }
             else
             {
                 _panel.style.left = StyleKeyword.Auto;
-                _panel.style.right = 0;
+                _panel.style.right = 16;
             }
-
-            _panel.style.width = fullSheet
-                ? Length.Percent(100)
-                : new Length(Mathf.Clamp(width * 0.40f, compact ? 340f : 440f, 500f), LengthUnit.Pixel);
-            _panel.style.maxWidth = Length.Percent(100);
-            _panel.style.top = fullSheet ? 0 : 44;
-            _panel.style.bottom = fullSheet ? 0 : 12;
-            _panel.style.borderTopLeftRadius = fullSheet ? 0 : 22;
-            _panel.style.borderTopRightRadius = fullSheet ? 0 : 22;
-            _panel.style.borderBottomLeftRadius = fullSheet ? 0 : 22;
-            _panel.style.borderBottomRightRadius = fullSheet ? 0 : 22;
-            _panel.style.borderTopWidth = 1; _panel.style.borderTopColor = GlassHighlightBorder;
-            _panel.style.borderLeftWidth = 1; _panel.style.borderLeftColor = new Color(1f, 1f, 1f, 0.10f);
-            _panel.style.paddingLeft = compact ? 14 : 18;
-            _panel.style.paddingRight = compact ? 14 : 18;
-            _panel.style.paddingTop = compact ? 14 : 18;
-            _panel.style.paddingBottom = compact ? 14 : 18;
+            _panel.style.top = 52 + TabletTheme.SafeInsetTop;
+            _panel.style.bottom = 12;
+            _panel.style.borderTopLeftRadius = 22;
+            _panel.style.borderTopRightRadius = 22;
+            _panel.style.borderBottomLeftRadius = 22;
+            _panel.style.borderBottomRightRadius = 22;
+            _panel.style.borderTopWidth = 0; _panel.style.borderLeftWidth = 0;
+            _panel.style.borderRightWidth = 0; _panel.style.borderBottomWidth = 0;
+            _panel.style.paddingLeft = 0;
+            _panel.style.paddingRight = 0;
+            _panel.style.paddingTop = 4;
+            _panel.style.paddingBottom = 0;
         }
 
         private void UpdateBadge()
@@ -411,16 +468,22 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var toolbar = new VisualElement();
             toolbar.style.flexDirection = FlexDirection.Row;
             toolbar.style.justifyContent = Justify.FlexEnd;
-            toolbar.style.marginBottom = 8;
+            toolbar.style.marginBottom = 10;
 
             var clearBtn = CreateButton("全部清除", 88, 44, () => _state.ClearNotifications());
             clearBtn.name = "tablet-notifications-clear";
+            clearBtn.AddToClassList("shell-keep");
+            clearBtn.style.backgroundColor = TabletTheme.GlassCardLight;
+            clearBtn.style.color = TabletTheme.InkOnGlass;
+            clearBtn.style.borderTopWidth = clearBtn.style.borderBottomWidth = clearBtn.style.borderLeftWidth = clearBtn.style.borderRightWidth = 0;
+            clearBtn.style.borderTopLeftRadius = clearBtn.style.borderTopRightRadius = clearBtn.style.borderBottomLeftRadius = clearBtn.style.borderBottomRightRadius = 22;
             clearBtn.SetEnabled(_state.Notifications.Count > 0);
             toolbar.Add(clearBtn);
             _contentContainer.Add(toolbar);
 
             var scroll = new ScrollView(ScrollViewMode.Vertical);
             scroll.style.flexGrow = 1;
+            scroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
             _contentContainer.Add(scroll);
 
             var list = _state.Notifications;
@@ -429,7 +492,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 var empty = CreateLabel("暂无通知", 14, false);
                 empty.style.marginTop = 24;
                 empty.style.unityTextAlign = TextAnchor.MiddleCenter;
-                empty.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+                empty.style.color = TabletTheme.TextStrong;
+                empty.AddToClassList("shell-dark");
                 scroll.Add(empty);
                 return;
             }
@@ -438,34 +502,40 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 var item = list[i];
                 var card = new VisualElement();
-                card.style.backgroundColor = new Color(0.18f, 0.19f, 0.22f, 1f);
-                card.style.borderTopLeftRadius = 6;
-                card.style.borderTopRightRadius = 6;
-                card.style.borderBottomLeftRadius = 6;
-                card.style.borderBottomRightRadius = 6;
-                card.style.paddingTop = 8;
-                card.style.paddingRight = 8;
-                card.style.paddingBottom = 8;
-                card.style.paddingLeft = 8;
-                card.style.marginBottom = 8;
+                card.style.backgroundColor = _highContrast ? Color.white : TabletTheme.GlassCardLight;
+                card.style.borderTopLeftRadius = card.style.borderTopRightRadius = 22;
+                card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 22;
+                card.style.paddingTop = 12;
+                card.style.paddingRight = 6;
+                card.style.paddingBottom = 12;
+                card.style.paddingLeft = 16;
+                card.style.marginBottom = 10;
 
                 var cardHeader = new VisualElement();
                 cardHeader.style.flexDirection = FlexDirection.Row;
                 cardHeader.style.justifyContent = Justify.SpaceBetween;
                 cardHeader.style.alignItems = Align.Center;
 
-                var titleLabel = CreateLabel(item.Title, 13, true);
+                var titleLabel = CreateLabel(item.Title, 14, true);
+                titleLabel.AddToClassList("shell-dark");
+                titleLabel.style.color = TabletTheme.InkOnGlass;
                 titleLabel.style.flexGrow = 1;
                 titleLabel.style.flexShrink = 1;
                 titleLabel.style.whiteSpace = WhiteSpace.Normal;
 
-                var timeLabel = CreateLabel(item.CreatedAt.ToString("HH:mm:ss"), 11, false);
-                timeLabel.style.color = new Color(0.70f, 0.70f, 0.75f, 1f);
-                timeLabel.style.marginRight = 6;
+                var timeLabel = CreateLabel(item.CreatedAt.ToString("HH:mm"), 11, false);
+                timeLabel.AddToClassList("shell-dark");
+                timeLabel.style.color = TabletTheme.InkOnGlassSoft;
+                timeLabel.style.marginRight = 2;
 
                 long dismissId = item.Id;
                 var dismissBtn = CreateButton("✕", 44, 44, () => _state.Dismiss(dismissId));
                 dismissBtn.name = "tablet-notification-dismiss-" + dismissId;
+                dismissBtn.AddToClassList("shell-keep");
+                dismissBtn.style.backgroundColor = Color.clear;
+                dismissBtn.style.color = TabletTheme.InkOnGlassSoft;
+                TabletUIHelper.SetButtonIcon(dismissBtn, TabletIconKind.Close, 16, TabletTheme.InkOnGlassSoft);
+                dismissBtn.style.borderTopWidth = dismissBtn.style.borderBottomWidth = dismissBtn.style.borderLeftWidth = dismissBtn.style.borderRightWidth = 0;
 
                 cardHeader.Add(titleLabel);
                 cardHeader.Add(timeLabel);
@@ -475,9 +545,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 if (!string.IsNullOrEmpty(item.Body))
                 {
                     var bodyLabel = CreateLabel(item.Body, 12, false);
-                    bodyLabel.style.marginTop = 4;
+                    bodyLabel.AddToClassList("shell-dark");
+                    bodyLabel.style.color = TabletTheme.InkOnGlassSoft;
+                    bodyLabel.style.marginRight = 10;
                     bodyLabel.style.whiteSpace = WhiteSpace.Normal;
-                    bodyLabel.style.color = new Color(0.85f, 0.85f, 0.88f, 1f);
                     card.Add(bodyLabel);
                 }
 
@@ -493,205 +564,94 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
             _contentContainer.Add(scroll);
 
-            // ==================== 1. 顶部状态与设备概要 ====================
-            var headerRow = new VisualElement();
-            headerRow.style.flexDirection = FlexDirection.Row;
-            headerRow.style.justifyContent = Justify.SpaceBetween;
-            headerRow.style.alignItems = Align.Center;
-            headerRow.style.marginBottom = 12;
-            scroll.Add(headerRow);
-
-            var devTitle = CreateLabel("NF-5K 列控智能终端", 14, true);
-            devTitle.style.color = new Color(0.9f, 0.9f, 0.95f, 1f);
-            headerRow.Add(devTitle);
-
-            var quickSettingsBtn = CreatePillButton("⚙ 设置", 54, 28, () =>
-            {
-                _state.ClosePanel();
-                _openSettings?.Invoke();
-            });
-            quickSettingsBtn.style.fontSize = 11;
-            headerRow.Add(quickSettingsBtn);
-
-            // ==================== 2. 双胶囊快速掌控大卡 (Master Pill Cards) ====================
+            // ---- 1. 两张大胶囊：勿扰 / 高对比度 ----
             var topPillsRow = new VisualElement();
             topPillsRow.style.flexDirection = FlexDirection.Row;
             topPillsRow.style.justifyContent = Justify.SpaceBetween;
-            topPillsRow.style.marginBottom = 12;
+            topPillsRow.style.marginBottom = 10;
             scroll.Add(topPillsRow);
 
-            // 勿扰模式大胶囊卡片
-            string quietText = _state.QuietMode ? "勿扰 · 已开启" : "勿扰 · 已关闭";
-            var quietBtn = CreateTileButton(quietText, "tablet-quiet-toggle", _state.QuietMode, () =>
+            var quietBtn = BuildBigTile("tablet-quiet-toggle", "勿扰", _state.QuietMode ? "已开启" : "已关闭", _state.QuietMode, TabletIconKind.Moon, () =>
             {
                 _state.SetQuietMode(!_state.QuietMode);
             });
-            quietBtn.style.width = Length.Percent(48);
-            quietBtn.style.minHeight = 58;
-            quietBtn.style.borderTopLeftRadius = 18; quietBtn.style.borderTopRightRadius = 18;
-            quietBtn.style.borderBottomLeftRadius = 18; quietBtn.style.borderBottomRightRadius = 18;
             topPillsRow.Add(quietBtn);
 
-            // 高对比度大胶囊卡片
             bool hc = _presentation != null && _presentation.HighContrast;
-            string hcText = hc ? "高对比 · 已开启" : "高对比 · 已关闭";
-            var hcBtn = CreateTileButton(hcText, "tablet-high-contrast-toggle", hc, () =>
+            var hcBtn = BuildBigTile("tablet-high-contrast-toggle", "高对比", hc ? "已开启" : "已关闭", hc, TabletIconKind.Contrast, () =>
             {
                 if (_presentation != null) _presentation.SetHighContrast(!_presentation.HighContrast);
             });
-            hcBtn.style.width = Length.Percent(48);
-            hcBtn.style.minHeight = 58;
-            hcBtn.style.borderTopLeftRadius = 18; hcBtn.style.borderTopRightRadius = 18;
-            hcBtn.style.borderBottomLeftRadius = 18; hcBtn.style.borderBottomRightRadius = 18;
             topPillsRow.Add(hcBtn);
 
-            // ==================== 3. 双纵向胶囊滑块 + 车载播控中心微件 ====================
+            // ---- 2. 播控卡 + 两条竖向滑条（亮度 / 音量） ----
             var centerRow = new VisualElement();
             centerRow.name = "tablet-controls-center-row";
             centerRow.style.flexDirection = FlexDirection.Row;
-            centerRow.style.justifyContent = Justify.SpaceBetween;
-            centerRow.style.marginBottom = 12;
-            centerRow.style.height = 130;
+            centerRow.style.marginBottom = 10;
+            centerRow.style.height = 164;
             scroll.Add(centerRow);
 
-            // 左侧纵向滑块 1: 防眩光/亮度 (tablet-wallpaper-dim-toggle)
-            bool dim = _presentation != null && _presentation.WallpaperDim > 0.05f;
-            string dimText = dim ? "防眩光 · 30%" : "防眩光 · 关闭";
-            var dimBtn = CreateTileButton(dimText, "tablet-wallpaper-dim-toggle", dim, () =>
-            {
-                if (_presentation != null)
-                {
-                    _presentation.SetWallpaperDim(_presentation.WallpaperDim > 0.05f ? 0f : 0.3f);
-                }
-            });
-            dimBtn.style.width = 64;
-            dimBtn.style.height = 130;
-            dimBtn.style.borderTopLeftRadius = 32; dimBtn.style.borderTopRightRadius = 32;
-            dimBtn.style.borderBottomLeftRadius = 32; dimBtn.style.borderBottomRightRadius = 32;
-            dimBtn.style.fontSize = 11;
-            dimBtn.style.whiteSpace = WhiteSpace.Normal;
-            centerRow.Add(dimBtn);
-
-            // 左侧纵向滑块 2: 系统主音量 (tablet-audio-mute-toggle)
-            bool isMute = GameData.MasterVolume <= 0.001f;
-            string muteText = isMute ? "音频 · 静音" : "音频 · 正常";
-            var muteBtn = CreateTileButton(muteText, "tablet-audio-mute-toggle", isMute, () =>
-            {
-                if (GameData.MasterVolume > 0.001f)
-                {
-                    s_preMuteVolume = GameData.MasterVolume;
-                    GameData.MasterVolume = 0f;
-                }
-                else
-                {
-                    GameData.MasterVolume = s_preMuteVolume > 0.05f ? s_preMuteVolume : 1f;
-                }
-                Render();
-            });
-            muteBtn.style.width = 64;
-            muteBtn.style.height = 130;
-            muteBtn.style.borderTopLeftRadius = 32; muteBtn.style.borderTopRightRadius = 32;
-            muteBtn.style.borderBottomLeftRadius = 32; muteBtn.style.borderBottomRightRadius = 32;
-            muteBtn.style.fontSize = 11;
-            muteBtn.style.whiteSpace = WhiteSpace.Normal;
-            centerRow.Add(muteBtn);
-
-            // 右侧微件: 车载流体播控中心 (tablet-media-card)
-            var mediaCard = new VisualElement { name = "tablet-media-card" };
-            mediaCard.style.flexGrow = 1;
-            mediaCard.style.marginLeft = 10;
-            mediaCard.style.height = 130;
-            mediaCard.style.borderTopLeftRadius = 18; mediaCard.style.borderTopRightRadius = 18;
-            mediaCard.style.borderBottomLeftRadius = 18; mediaCard.style.borderBottomRightRadius = 18;
-            mediaCard.style.backgroundColor = new Color(1f, 1f, 1f, 0.06f);
-            mediaCard.style.borderTopWidth = 1; mediaCard.style.borderBottomWidth = 1;
-            mediaCard.style.borderLeftWidth = 1; mediaCard.style.borderRightWidth = 1;
-            var mcBorder = new Color(1f, 1f, 1f, 0.12f);
-            mediaCard.style.borderTopColor = mcBorder; mediaCard.style.borderBottomColor = mcBorder;
-            mediaCard.style.borderLeftColor = mcBorder; mediaCard.style.borderRightColor = mcBorder;
-            mediaCard.style.paddingLeft = 12; mediaCard.style.paddingRight = 12;
-            mediaCard.style.paddingTop = 10; mediaCard.style.paddingBottom = 10;
-            mediaCard.style.justifyContent = Justify.SpaceBetween;
-
-            var mediaHead = new VisualElement();
-            mediaHead.style.flexDirection = FlexDirection.Row;
-            mediaHead.style.justifyContent = Justify.SpaceBetween;
-            mediaHead.style.alignItems = Align.Center;
-            var mediaTag = CreateLabel("📻 车载广播播控", 11, false);
-            mediaTag.style.color = new Color(0.7f, 0.75f, 0.85f, 1f);
-            mediaHead.Add(mediaTag);
-            mediaCard.Add(mediaHead);
-
-            var trackRow = new VisualElement();
-            trackRow.style.flexDirection = FlexDirection.Row;
-            trackRow.style.alignItems = Align.Center;
-            var vinylThumb = new VisualElement();
-            vinylThumb.style.width = 32; vinylThumb.style.height = 32;
-            vinylThumb.style.borderTopLeftRadius = 16; vinylThumb.style.borderTopRightRadius = 16;
-            vinylThumb.style.borderBottomLeftRadius = 16; vinylThumb.style.borderBottomRightRadius = 16;
-            vinylThumb.style.backgroundColor = new Color(0.15f, 0.15f, 0.18f, 1f);
-            vinylThumb.style.borderTopWidth = 1; vinylThumb.style.borderBottomWidth = 1;
-            vinylThumb.style.borderLeftWidth = 1; vinylThumb.style.borderRightWidth = 1;
-            vinylThumb.style.borderTopColor = AccentSystem; vinylThumb.style.borderBottomColor = AccentSystem;
-            vinylThumb.style.borderLeftColor = AccentSystem; vinylThumb.style.borderRightColor = AccentSystem;
-            vinylThumb.style.marginRight = 8;
-            trackRow.Add(vinylThumb);
-
-            var trackInfo = new VisualElement();
-            string curSong = !string.IsNullOrEmpty(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle)
-                ? RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle
-                : "归乡 · 晨曦微光";
-            var songLbl = CreateLabel(curSong, 12, true);
-            songLbl.style.maxWidth = 140;
-            var artLbl = CreateLabel("铁道随身听", 10, false);
-            artLbl.style.color = new Color(0.6f, 0.6f, 0.65f, 1f);
-            trackInfo.Add(songLbl);
-            trackInfo.Add(artLbl);
-            trackRow.Add(trackInfo);
-            mediaCard.Add(trackRow);
-
-            var mediaActions = new VisualElement();
-            mediaActions.style.flexDirection = FlexDirection.Row;
-            mediaActions.style.justifyContent = Justify.FlexEnd;
-            mediaActions.style.alignItems = Align.Center;
-
-            var playBtn = CreatePillButton(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying ? "❚❚" : "▶", 40, 26, () =>
-            {
-                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ToggleTabletMusicPlayPause();
-                Render();
-            });
-            playBtn.name = "tablet-media-play-toggle";
-            playBtn.style.fontSize = 11;
-            playBtn.style.backgroundColor = AccentSystem;
-            mediaActions.Add(playBtn);
-            mediaCard.Add(mediaActions);
-
+            var mediaCard = BuildMediaCard();
             centerRow.Add(mediaCard);
 
-            // ==================== 4. 次要快捷磁贴矩阵 ====================
-            var quickGrid = new VisualElement();
-            quickGrid.style.flexDirection = FlexDirection.Row;
-            quickGrid.style.justifyContent = Justify.SpaceBetween;
-            quickGrid.style.marginBottom = 12;
-            scroll.Add(quickGrid);
+            float dimValue = _presentation != null ? _presentation.WallpaperDim : 0f;
+            var dimSlider = CreateVerticalSlider("tablet-wallpaper-dim-toggle", TabletIconKind.Sun,
+                1f - Mathf.Clamp01(dimValue / 0.4f),
+                () =>
+                {
+                    if (_presentation != null)
+                        _presentation.SetWallpaperDim(_presentation.WallpaperDim > 0.05f ? 0f : 0.3f);
+                },
+                fill =>
+                {
+                    if (_presentation != null) _presentation.SetWallpaperDim((1f - fill) * 0.4f);
+                });
+            centerRow.Add(dimSlider);
 
-            // 减少动效
+            bool isMute = GameData.MasterVolume <= 0.001f;
+            var volSlider = CreateVerticalSlider("tablet-audio-mute-toggle", isMute ? TabletIconKind.SpeakerMuted : TabletIconKind.Speaker,
+                Mathf.Clamp01(GameData.MasterVolume),
+                () =>
+                {
+                    if (GameData.MasterVolume > 0.001f)
+                    {
+                        s_preMuteVolume = GameData.MasterVolume;
+                        GameData.MasterVolume = 0f;
+                    }
+                    else
+                    {
+                        GameData.MasterVolume = s_preMuteVolume > 0.05f ? s_preMuteVolume : 1f;
+                    }
+                    Render();
+                },
+                fill =>
+                {
+                    GameData.MasterVolume = fill;
+                    if (fill > 0.05f) s_preMuteVolume = fill;
+                    Render();
+                });
+            centerRow.Add(volSlider);
+
+            // ---- 3. 圆形快捷开关：动效 / 强调色 / 设置 ----
+            var roundRow = new VisualElement();
+            roundRow.style.flexDirection = FlexDirection.Row;
+            roundRow.style.justifyContent = Justify.SpaceBetween;
+            roundRow.style.marginBottom = 10;
+            scroll.Add(roundRow);
+
             bool rm = _presentation != null && _presentation.ReduceMotion;
-            string rmText = rm ? "动效 · 减弱" : "动效 · 完整";
-            var rmBtn = CreateTileButton(rmText, "tablet-reduce-motion-toggle", rm, () =>
+            var rmBtn = CreateTileButton(rm ? "动效减弱" : "动效完整", "tablet-reduce-motion-toggle", rm, () =>
             {
                 if (_presentation != null) _presentation.SetReduceMotion(!_presentation.ReduceMotion);
             });
-            rmBtn.style.width = Length.Percent(48);
-            rmBtn.style.height = 42;
-            rmBtn.style.borderTopLeftRadius = 14; rmBtn.style.borderTopRightRadius = 14;
-            rmBtn.style.borderBottomLeftRadius = 14; rmBtn.style.borderBottomRightRadius = 14;
-            quickGrid.Add(rmBtn);
+            StyleRoundTile(rmBtn);
+            AttachTileIcon(rmBtn, TabletIconKind.Bolt, rm, true);
+            roundRow.Add(rmBtn);
 
-            // 强调色切换
-            string accentName = _presentation == null ? "强调色 · 琥珀" :
-                _presentation.Accent == TabletAccent.Amber ? "强调色 · 琥珀" :
-                _presentation.Accent == TabletAccent.Teal ? "强调色 · 青绿" : "强调色 · 钴蓝";
+            string accentName = _presentation == null ? "琥珀" :
+                _presentation.Accent == TabletAccent.Amber ? "琥珀" :
+                _presentation.Accent == TabletAccent.Teal ? "青绿" : "钴蓝";
             var accentBtn = CreateTileButton(accentName, "tablet-accent-cycle", false, () =>
             {
                 if (_presentation != null)
@@ -701,53 +661,40 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     _presentation.SetAccent(next);
                 }
             });
-            accentBtn.style.width = Length.Percent(48);
-            accentBtn.style.height = 42;
-            accentBtn.style.borderTopLeftRadius = 14; accentBtn.style.borderTopRightRadius = 14;
-            accentBtn.style.borderBottomLeftRadius = 14; accentBtn.style.borderBottomRightRadius = 14;
-            quickGrid.Add(accentBtn);
+            StyleRoundTile(accentBtn);
+            AttachTileIcon(accentBtn, TabletIconKind.Palette, false, true);
+            roundRow.Add(accentBtn);
 
-            // ==================== 5. 硬件沙箱与通信隔离 ====================
+            var quickSettingsBtn = CreateTileButton("设置", "tablet-controls-settings", false, () =>
+            {
+                _state.ClosePanel();
+                _openSettings?.Invoke();
+            });
+            StyleRoundTile(quickSettingsBtn);
+            AttachTileIcon(quickSettingsBtn, TabletIconKind.Gear, false, true);
+            roundRow.Add(quickSettingsBtn);
+
+            // ---- 4. 本机网络状态（保持事实：内网沙箱，无公共网络） ----
             var offlineCard = new VisualElement { name = "settings-hardware-offline-box" };
-            offlineCard.style.backgroundColor = new Color(0.12f, 0.13f, 0.16f, 0.95f);
-            offlineCard.style.borderTopLeftRadius = 14; offlineCard.style.borderTopRightRadius = 14;
-            offlineCard.style.borderBottomLeftRadius = 14; offlineCard.style.borderBottomRightRadius = 14;
-            offlineCard.style.borderTopWidth = 1; offlineCard.style.borderBottomWidth = 1;
-            offlineCard.style.borderLeftWidth = 1; offlineCard.style.borderRightWidth = 1;
-            var boxBorder = new Color(1f, 1f, 1f, 0.08f);
-            offlineCard.style.borderTopColor = boxBorder; offlineCard.style.borderBottomColor = boxBorder;
-            offlineCard.style.borderLeftColor = boxBorder; offlineCard.style.borderRightColor = boxBorder;
-            offlineCard.style.paddingTop = 10; offlineCard.style.paddingBottom = 10;
-            offlineCard.style.paddingLeft = 12; offlineCard.style.paddingRight = 12;
-            offlineCard.style.marginBottom = 12;
+            offlineCard.style.backgroundColor = _highContrast ? Color.black : TabletTheme.GlassTile;
+            offlineCard.style.borderTopLeftRadius = offlineCard.style.borderTopRightRadius = 20;
+            offlineCard.style.borderBottomLeftRadius = offlineCard.style.borderBottomRightRadius = 20;
+            offlineCard.style.paddingTop = 12; offlineCard.style.paddingBottom = 12;
+            offlineCard.style.paddingLeft = 16; offlineCard.style.paddingRight = 16;
+            offlineCard.style.marginBottom = 10;
 
-            var boxHead = new VisualElement();
-            boxHead.style.flexDirection = FlexDirection.Row;
-            boxHead.style.alignItems = Align.Center;
-            boxHead.style.marginBottom = 6;
-            var shieldIc = CreateLabel("🛡 车载硬件物理隔离沙箱", 12, true);
-            shieldIc.style.color = new Color(0.35f, 0.85f, 0.55f, 1f);
-            boxHead.Add(shieldIc);
+            var boxHead = CreateLabel("车载内网 · 离线沙箱", 13, true);
+            boxHead.style.color = TabletTheme.SignalGreen;
+            boxHead.style.marginBottom = 4;
             offlineCard.Add(boxHead);
-
-            var wlanRow = CreateLabel("● 无线网络 (WLAN) · 离线 [沙箱隔离 / NOT_RUN]", 11, false);
-            wlanRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
-            wlanRow.style.marginBottom = 3;
-            offlineCard.Add(wlanRow);
-
-            var btRow = CreateLabel("● 蓝牙无线射频 · 离线 [硬件未搭载 / NOT_RUN]", 11, false);
-            btRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
-            btRow.style.marginBottom = 3;
-            offlineCard.Add(btRow);
-
-            var simRow = CreateLabel("● 蜂窝移动基带 · 离线 [物理硬隔离 / NOT_RUN]", 11, false);
-            simRow.style.color = new Color(0.65f, 0.65f, 0.70f, 1f);
-            offlineCard.Add(simRow);
-
+            var boxBody = CreateLabel("本终端运行在车载内网，没有公共 Wi-Fi、蓝牙与蜂窝模块。", 11, false);
+            boxBody.style.whiteSpace = WhiteSpace.Normal;
+            boxBody.style.color = TabletTheme.TextSecondary;
+            offlineCard.Add(boxBody);
             scroll.Add(offlineCard);
 
-            // ==================== 6. 系统入口 ====================
-            var settingsBtn = CreatePillButton("打开完整系统设置 ›", 200, 42, () =>
+            // ---- 5. 系统入口 ----
+            var settingsBtn = CreatePillButton("打开完整系统设置 ›", 200, 48, () =>
             {
                 _state.ClosePanel();
                 _openSettings?.Invoke();
@@ -756,7 +703,244 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             settingsBtn.name = "tablet-shell-settings";
             settingsBtn.style.fontSize = 13;
             settingsBtn.style.unityFontStyleAndWeight = FontStyle.Bold;
+            settingsBtn.style.borderTopLeftRadius = settingsBtn.style.borderTopRightRadius = 24;
+            settingsBtn.style.borderBottomLeftRadius = settingsBtn.style.borderBottomRightRadius = 24;
             scroll.Add(settingsBtn);
+        }
+
+        private VisualElement BuildMediaCard()
+        {
+            var mediaCard = new VisualElement { name = "tablet-media-card" };
+            mediaCard.style.flexGrow = 1;
+            mediaCard.style.flexShrink = 1;
+            mediaCard.style.height = 164;
+            mediaCard.style.borderTopLeftRadius = mediaCard.style.borderTopRightRadius = 24;
+            mediaCard.style.borderBottomLeftRadius = mediaCard.style.borderBottomRightRadius = 24;
+            mediaCard.style.backgroundColor = _highContrast ? Color.black : TabletTheme.GlassTile;
+            mediaCard.style.paddingLeft = 14; mediaCard.style.paddingRight = 14;
+            mediaCard.style.paddingTop = 12; mediaCard.style.paddingBottom = 12;
+            mediaCard.style.justifyContent = Justify.SpaceBetween;
+
+            var vinylThumb = new VisualElement();
+            vinylThumb.style.width = 44; vinylThumb.style.height = 44;
+            vinylThumb.style.borderTopLeftRadius = vinylThumb.style.borderTopRightRadius = 12;
+            vinylThumb.style.borderBottomLeftRadius = vinylThumb.style.borderBottomRightRadius = 12;
+            vinylThumb.style.backgroundColor = TabletTheme.VinylFill;
+            vinylThumb.style.borderTopWidth = vinylThumb.style.borderBottomWidth = vinylThumb.style.borderLeftWidth = vinylThumb.style.borderRightWidth = 2;
+            vinylThumb.style.borderTopColor = vinylThumb.style.borderBottomColor = vinylThumb.style.borderLeftColor = vinylThumb.style.borderRightColor = _accent;
+            vinylThumb.style.alignItems = Align.Center;
+            vinylThumb.style.justifyContent = Justify.Center;
+            vinylThumb.Add(new TabletIconElement(TabletIconKind.MusicNote, 22f, _accent));
+            mediaCard.Add(vinylThumb);
+
+            var trackInfo = new VisualElement();
+            string curSong = !string.IsNullOrEmpty(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle)
+                ? RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackTitle
+                : "归乡 · 晨曦微光";
+            var songLbl = CreateLabel(curSong, 13, true);
+            songLbl.style.overflow = Overflow.Hidden;
+            songLbl.style.textOverflow = TextOverflow.Ellipsis;
+            songLbl.style.whiteSpace = WhiteSpace.NoWrap;
+            var artLbl = CreateLabel("铁道随身听", 11, false);
+            artLbl.style.color = TabletTheme.TextSecondary;
+            trackInfo.Add(songLbl);
+            trackInfo.Add(artLbl);
+            mediaCard.Add(trackInfo);
+
+            var mediaActions = new VisualElement();
+            mediaActions.style.flexDirection = FlexDirection.Row;
+            mediaActions.style.justifyContent = Justify.FlexStart;
+            var playBtn = CreatePillButton(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying ? "❚❚" : "▶", 56, 36, () =>
+            {
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ToggleTabletMusicPlayPause();
+                Render();
+            });
+            playBtn.name = "tablet-media-play-toggle";
+            playBtn.AddToClassList("shell-keep");
+            playBtn.style.fontSize = 12;
+            playBtn.style.backgroundColor = _accent;
+            playBtn.style.color = TabletTheme.InkOnGlass;
+            TabletUIHelper.SetButtonIcon(playBtn, RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletIsPlaying ? TabletIconKind.Pause : TabletIconKind.Play, 18, TabletTheme.InkOnGlass);
+            playBtn.style.borderTopWidth = playBtn.style.borderBottomWidth = playBtn.style.borderLeftWidth = playBtn.style.borderRightWidth = 0;
+            playBtn.style.borderTopLeftRadius = playBtn.style.borderTopRightRadius = 18;
+            playBtn.style.borderBottomLeftRadius = playBtn.style.borderBottomRightRadius = 18;
+            mediaActions.Add(playBtn);
+            mediaCard.Add(mediaActions);
+            return mediaCard;
+        }
+
+        /// <summary>
+        /// 竖向胶囊滑条：点击切换，纵向拖动调节；拖动过程只改填充高度，松手时一次性提交，避免重建界面打断拖动。
+        /// </summary>
+        private Button CreateVerticalSlider(string name, TabletIconKind icon, float initialFill, Action onToggle, Action<float> onCommit)
+        {
+            float fillValue = Mathf.Clamp01(initialFill);
+            bool down = false, dragged = false;
+            float startY = 0f;
+
+            var btn = new Button(() =>
+            {
+                if (dragged) return;
+                onToggle?.Invoke();
+            }) { name = name };
+            btn.AddToClassList("shell-keep");
+            btn.style.width = 62;
+            btn.style.height = 164;
+            btn.style.flexShrink = 0;
+            btn.style.marginLeft = 10;
+            btn.style.paddingLeft = btn.style.paddingRight = btn.style.paddingTop = btn.style.paddingBottom = 0;
+            btn.style.backgroundColor = _highContrast ? Color.black : TabletTheme.GlassTile;
+            btn.style.borderTopWidth = btn.style.borderBottomWidth = btn.style.borderLeftWidth = btn.style.borderRightWidth = 0;
+            btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 31;
+            btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 31;
+            btn.style.overflow = Overflow.Hidden;
+
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore };
+            fill.style.position = Position.Absolute;
+            fill.style.left = 0; fill.style.right = 0; fill.style.bottom = 0;
+            fill.style.height = Length.Percent(fillValue * 100f);
+            fill.style.backgroundColor = TabletTheme.GlassTileActive;
+            btn.Add(fill);
+
+            var iconLabel = new TabletIconElement(icon, 26f, SliderIconColor(icon, fillValue));
+            iconLabel.style.position = Position.Absolute;
+            iconLabel.style.left = Length.Percent(50);
+            iconLabel.style.translate = new Translate(Length.Percent(-50), 0);
+            iconLabel.style.bottom = 16;
+            btn.Add(iconLabel);
+
+            btn.RegisterCallback<PointerDownEvent>(e => { down = true; dragged = false; startY = e.position.y; });
+            btn.RegisterCallback<PointerMoveEvent>(e =>
+            {
+                if (!down) return;
+                if (!dragged && Mathf.Abs(e.position.y - startY) > 6f)
+                {
+                    dragged = true;
+                    btn.CapturePointer(e.pointerId);
+                }
+                if (dragged)
+                {
+                    float h = Mathf.Max(1f, btn.resolvedStyle.height);
+                    fillValue = Mathf.Clamp01(1f - e.localPosition.y / h);
+                    fill.style.height = Length.Percent(fillValue * 100f);
+                    iconLabel.IconColor = SliderIconColor(icon, fillValue);
+                }
+            });
+            btn.RegisterCallback<PointerUpEvent>(e =>
+            {
+                if (!down) return;
+                down = false;
+                if (!dragged) return;
+                if (btn.HasPointerCapture(e.pointerId)) btn.ReleasePointer(e.pointerId);
+                onCommit?.Invoke(fillValue);
+            });
+            return btn;
+        }
+
+        private static void AttachLauncherIcon(Button btn, TabletIconKind kind)
+        {
+            btn.style.paddingLeft = 26;
+            var icon = new TabletIconElement(kind, 15f, Color.white);
+            icon.style.position = Position.Absolute;
+            icon.style.left = 10;
+            icon.style.top = Length.Percent(50);
+            icon.style.translate = new Translate(0, Length.Percent(-50));
+            btn.Add(icon);
+        }
+
+        // 大胶囊磁贴：图标 + 标题/状态两行文字（用两个 Label 控制行距，不用按钮自带的多行文本）
+        private Button BuildBigTile(string name, string title, string status, bool active, TabletIconKind icon, Action onClick)
+        {
+            var btn = CreateTileButton(string.Empty, name, active, onClick);
+            StyleBigTile(btn);
+            btn.style.flexDirection = FlexDirection.Row;
+            btn.style.alignItems = Align.Center;
+            var column = new VisualElement { pickingMode = PickingMode.Ignore };
+            var titleLabel = CreateLabel(title, 14, true);
+            titleLabel.pickingMode = PickingMode.Ignore;
+            titleLabel.AddToClassList("shell-dark");
+            titleLabel.style.color = active ? TabletTheme.InkOnGlass : Color.white;
+            var statusLabel = CreateLabel(status, 11, false);
+            statusLabel.pickingMode = PickingMode.Ignore;
+            statusLabel.AddToClassList("shell-dark");
+            statusLabel.style.color = active ? TabletTheme.InkOnGlassSoft : TabletTheme.TextSecondary;
+            statusLabel.style.marginTop = 3;
+            column.Add(titleLabel);
+            column.Add(statusLabel);
+            btn.Add(column);
+            AttachTileIcon(btn, icon, active, false);
+            return btn;
+        }
+
+        // 开启态的磁贴图标带颜色（对照参考图：蓝牙蓝、静音红、手电白底深色），其余保持深色
+        private static Color ActiveIconColor(TabletIconKind kind)
+        {
+            switch (kind)
+            {
+                case TabletIconKind.Moon: return new Color(0.40f, 0.36f, 0.95f, 1f);
+                case TabletIconKind.Bolt: return new Color(0.98f, 0.60f, 0.10f, 1f);
+                case TabletIconKind.Palette: return new Color(0.88f, 0.30f, 0.55f, 1f);
+                default: return TabletTheme.InkOnGlass;
+            }
+        }
+
+        // 竖向滑条图标：填充处于白色时使用彩色图标（太阳橙、喇叭蓝），空条时用白色
+        private static Color SliderIconColor(TabletIconKind kind, float fill)
+        {
+            if (fill <= 0.14f) return Color.white;
+            switch (kind)
+            {
+                case TabletIconKind.Sun: return new Color(0.98f, 0.62f, 0.08f, 1f);
+                case TabletIconKind.Speaker: return new Color(0.16f, 0.48f, 0.95f, 1f);
+                default: return TabletTheme.InkOnGlass;
+            }
+        }
+
+        private static void AttachTileIcon(Button btn, TabletIconKind kind, bool active, bool round)
+        {
+            var icon = new TabletIconElement(kind, round ? 24f : 26f, active ? ActiveIconColor(kind) : Color.white);
+            icon.style.position = Position.Absolute;
+            if (round)
+            {
+                icon.style.top = 14;
+                icon.style.left = Length.Percent(50);
+                icon.style.translate = new Translate(Length.Percent(-50), 0);
+            }
+            else
+            {
+                icon.style.left = 18;
+                icon.style.top = Length.Percent(50);
+                icon.style.translate = new Translate(0, Length.Percent(-50));
+            }
+            btn.Add(icon);
+        }
+
+        private static void StyleBigTile(Button btn)
+        {
+            btn.style.width = Length.Percent(48.5f);
+            btn.style.height = 64;
+            btn.style.minHeight = 64;
+            btn.style.fontSize = 13;
+            btn.style.whiteSpace = WhiteSpace.Normal;
+            btn.style.unityTextAlign = TextAnchor.MiddleLeft;
+            btn.style.paddingLeft = 56;
+            btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 24;
+            btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 24;
+        }
+
+        private static void StyleRoundTile(Button btn)
+        {
+            btn.style.width = 76;
+            btn.style.height = 76;
+            btn.style.minWidth = 76;
+            btn.style.minHeight = 76;
+            btn.style.fontSize = 11;
+            btn.style.whiteSpace = WhiteSpace.Normal;
+            btn.style.unityTextAlign = TextAnchor.LowerCenter;
+            btn.style.paddingBottom = 12;
+            btn.style.paddingLeft = btn.style.paddingRight = 2;
+            btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 38;
+            btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 38;
         }
 
         private Button CreateTileButton(string text, string name, bool active, Action onClick)
@@ -766,7 +950,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.fontSize = 12;
             if (active)
             {
-                btn.style.backgroundColor = new Color(0.24f, 0.38f, 0.28f, 1f);
+                btn.style.backgroundColor = TabletTheme.ActiveFill;
             }
             return btn;
         }
@@ -776,13 +960,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var btn = new Button(onClick) { text = text };
             btn.style.minWidth = minWidth;
             btn.style.minHeight = minHeight;
-            btn.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+            btn.style.backgroundColor = TabletTheme.OverlayFaint;
             btn.style.color = Color.white;
             btn.style.borderTopWidth = 1;
             btn.style.borderRightWidth = 1;
             btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1;
-            var bc = new Color(1f, 1f, 1f, 0.12f);
+            var bc = TabletTheme.OverlaySoft;
             btn.style.borderTopColor = bc;
             btn.style.borderRightColor = bc;
             btn.style.borderBottomColor = bc;
@@ -813,13 +997,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var btn = new Button(onClick) { text = text };
             btn.style.minWidth = minWidth;
             btn.style.minHeight = minHeight;
-            btn.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+            btn.style.backgroundColor = TabletTheme.OverlayFaint;
             btn.style.color = Color.white;
             btn.style.borderTopWidth = 1;
             btn.style.borderRightWidth = 1;
             btn.style.borderBottomWidth = 1;
             btn.style.borderLeftWidth = 1;
-            var bc = new Color(1f, 1f, 1f, 0.12f);
+            var bc = TabletTheme.OverlaySoft;
             btn.style.borderTopColor = bc;
             btn.style.borderRightColor = bc;
             btn.style.borderBottomColor = bc;

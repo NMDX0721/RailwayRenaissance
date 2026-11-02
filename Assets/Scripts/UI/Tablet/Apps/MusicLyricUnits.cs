@@ -181,6 +181,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return units;
         }
 
+        /// <summary>Folia's "legacy layout": the words as the source gives them, one unit per CJK character and one per spaced latin word.</summary>
+        public static List<LyricUnit> GroupLegacy(List<LyricGlyph> glyphs)
+        {
+            var units = new List<LyricUnit>();
+            LyricUnit current = null;
+            for (int i = 0; i < glyphs.Count; i++)
+            {
+                var glyph = glyphs[i]; bool cjk = IsCjk(glyph.text[0]);
+                if (current == null || current.closed || cjk || IsCjk(current.glyphs[0].text[0])) { current = new LyricUnit(); units.Add(current); }
+                current.glyphs.Add(glyph);
+                if (glyph.spaceAfter || cjk) current.closed = true;
+            }
+            return units;
+        }
+
         static bool HasKind(LyricUnit unit, Kind kind)
         {
             foreach (var glyph in unit.glyphs) if (Classify(glyph.text[0]) == kind) return true;

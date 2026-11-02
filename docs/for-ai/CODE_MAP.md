@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-01 平板账号系统（本地仿真，无网络）：`UI/Tablet/Account/AccountService.cs` 管资料（PlayerPrefs `XiaomiAccountProfile_v1`、`TabletSetupDone_v1`）、加盐哈希密码、内存短信验证码；`UI/Tablet/Account/TabletSetupWizard.cs` 是开机激活/注册向导（`Flow.Activation` 与 `Flow.RegisterOnly`，`Active`/`HandleBack` 供系统返回使用）；`UI/Tablet/Apps/TabletSettingsAppUI.Account.cs` 是设置里的账号中心（改昵称、头像、改密码、短信重置）。剧情接入：`Resources/Scripts/prologue_02_day0.json` 的 `special` 条目 `TABLET_SETUP` 由 `VNManager.ShowTabletSetup` 处理，向导打开期间 `tabletSetupOpen` 拦截点击、键盘和自动播放。`GameMainUI.OverlayHost` 是向导等全屏覆盖层的宿主。见 [平板 HyperOS 说明](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)。
+
 2026-10-28：`NotesTabletTaskLifecycle` 在任务回收、关闭时调用 `TabletNotesAppUI.ReleaseTaskView` 解除静态控件引用；任务快照仍负责草稿恢复。
 
 2026-10-28 PR #7：`GameMainUI` 子页返回移除完整窗口，批量关闭清理任务引用，壳层模糊重采样在隐藏后等待帧结束；详见 `TABLET_SYSTEM_SHELL.md`。
@@ -623,6 +625,10 @@ GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 Railwa
 
 
 - 2026-10-30：首页与统一搜索由 `RailwayMusicTerminalView.RenderHome/RenderSearch` 构建；曲目行共用 `AddTrackRow`，首页来源卡片直接选择顶部搜索或打开连接管理。`MusicCatalogSearch` 隔离在线搜索请求协调（350ms 视图防抖、每来源一个在途与最新待查词、60秒/24项缓存），视图代号保护过期响应。默认自动合并网易云与本应用已验证连接的来源，始终展示已收录匹配，并可手动筛选。匿名播放不等于账号登录；个人歌单仍走各来源验证。
+
+- 2026-11-01 舞台样式系统：`MusicStageStyle.cs` 定义 `IStageStyle`、`StageContext`、`StageTuning`、`StageFonts` 与 `StageStyles` 注册表（luminous、partita、tilt、claddagh、cadenza、cappella、pendolo、still）；`MusicStageLyrics` 是宿主，`MusicStageWord` 是共享词动画。样式只读 `StageContext`，姿态是音频时钟的函数（暂停冻结、定位重建）。验证走 `RailwayMusicTerminalReview` 的压力测试（`StressStyles`），在 1120×700 与 1440×900 下断言字符在舞台内、词互不遮盖。独立实现，未复制 Folia（AGPL）源码。
+
+- 2026-11-01 随身听拆分：`RailwayMusicTerminalView` 为 partial 类：`.Charts`（榜单页、热搜、搜索下拉与滚动提示）、`.Home`（筛选胶囊、封面快捷卡、大封面行）、`.Theme`（封面取色强调色，经 `MusicReactiveStageView.AccentFor`）、`.Replace`（在线曲目不可用时跨来源替换，`MusicLibrarySession.ReplaceTrack`）、`.Match`（本地歌曲匹配网易云歌词与封面，记录存于 `MusicLyricPreference.match*`）。`MusicCharts` 缓存网易云匿名榜单与热搜（`tools/music/netease-service/bridge.js` 新增 `toplists`、`hot_search`）；`MusicLyricFilter` 去除制作信息与版权行（`MusicLibraryState.lyricFilter/lyricFilterWords`）；`MusicAudioEffectsEngine` 的四档音色是真实信号链（`MusicLibraryState.toneMode`）。来自在线来源的文字一律 `enableRichText=false`。
 
 - 自动来源：`NeteaseLocalBridge.HasSession/SessionChanged` 只反映本应用验证过的进程会话；`RenderSearch` 默认自动合并网易云与已连接来源，`RenderOnlineSearch` 分来源展示请求状态。`RenderHome` 同时显示接入与登录状态。
 

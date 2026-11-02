@@ -154,6 +154,18 @@ async function execute(method, p) {
       return { loggedIn, userId: data.account ? String(data.account.id) : '', nickname: data.profile && data.profile.nickname || '' };
     }
     case 'logout': cookie = ''; qrKey = ''; removeAuth(); return { loggedIn: false };
+    case 'hot_search': {
+      // Anonymous: the hot search list the official apps show under the search box.
+      const data = await call('search_hot_detail', { timeout: 10000 });
+      if (data.code !== 200) throw new Error('无法读取热搜');
+      return { hots: (data.data || []).map(x => String(x.searchWord || '').trim()).filter(Boolean).slice(0, 20) };
+    }
+    case 'toplists': {
+      // Anonymous: the official charts (hot, new songs, soaring, original, ...) with their playlist ids and covers.
+      const data = await call('toplist_detail', { timeout: 12000 });
+      if (data.code !== 200) throw new Error('无法读取榜单');
+      return { playlists: (data.list || []).slice(0, 30).map(x => ({ id: String(x.id), title: x.name || '', count: x.trackCount || 0, cover: coverUrl(x.coverImgUrl), subtitle: (x.updateFrequency || '').trim(), preview: (x.tracks || []).slice(0, 3).map(t => (t.first || '') + (t.second ? ' - ' + t.second : '')).filter(Boolean) })) };
+    }
     case 'search': {
       const keywords = String(p.keywords || '').trim().slice(0, 200);
       if (!keywords) throw new Error('请输入搜索内容');
@@ -214,7 +226,7 @@ readline.createInterface({ input: process.stdin, crlfDelay: Infinity }).on('line
       const result = await execute(request.method, request.params || {});
       reply(request.id, { ok: true, result });
     } catch (error) {
-      reply(request && Number.isSafeInteger(request.id) ? request.id : null, { ok: false, error: error instanceof SyntaxError ? '无效请求' : (error.message || '').startsWith('无效') || ['登录初始化超时，请重试','登录设备初始化失败，请重试','登录被拒绝或设备环境异常，请稍后重试','登录确认未返回有效会话，请重新扫码','不支持的请求','请求过长','请输入搜索内容','请先生成二维码','无法获取登录二维码','无法生成登录二维码','搜索失败','无法读取歌单','无法读取歌单曲目','无法获取播放地址'].includes(error.message) ? error.message : '网易云请求失败，请检查网络或稍后重试' });
+      reply(request && Number.isSafeInteger(request.id) ? request.id : null, { ok: false, error: error instanceof SyntaxError ? '无效请求' : (error.message || '').startsWith('无效') || ['登录初始化超时，请重试','登录设备初始化失败，请重试','登录被拒绝或设备环境异常，请稍后重试','登录确认未返回有效会话，请重新扫码','不支持的请求','请求过长','请输入搜索内容','请先生成二维码','无法获取登录二维码','无法生成登录二维码','搜索失败','无法读取歌单','无法读取歌单曲目','无法读取热搜','无法读取榜单','无法获取播放地址'].includes(error.message) ? error.message : '网易云请求失败，请检查网络或稍后重试' });
     }
   });
 });

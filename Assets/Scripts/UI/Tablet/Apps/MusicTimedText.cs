@@ -42,6 +42,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed class MusicLyricPreference
     {
         public string id, fileName, translationFileName, sourceName;
+        public string matchSource, matchRemoteId, matchTitle, matchCover;   // a local track matched to an online song: where, which, its name and its cover
         public int offsetMs;
     }
 

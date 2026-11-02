@@ -2,13 +2,16 @@ using UnityEngine;
 
 namespace RailwayRenaissance.UI.Tablet.SystemShell
 {
-    public enum TabletGestureAction { None, Notifications, Controls, Back, Home, Recents, Consumed }
+    public enum TabletGestureAction { None, Notifications, Controls, Back, Home, Recents, Consumed, RevealNav }
 
     /// <summary>Tracks one edge touch; callers supply panel coordinates and unscaled time.</summary>
     public sealed class TabletEdgeGesture
     {
         private enum Kind { None, Notifications, Controls, Bottom, Back }
         private const float VerticalDistance = 72f;
+        /// <summary>底边手势热区高度；全面屏手势下导航栏不占布局。</summary>
+        public const float BottomEdgeZone = 28f;
+        private const float RevealDistance = 14f;
         private const float BackDistance = 82f;
         private const float HoldSeconds = 0.28f;
         private const float HoldMovementTolerance = 10f;
@@ -31,7 +34,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             if (blockDirect) return false;
 
             Kind kind = Kind.None;
-            if (point.y <= 24f)
+            if (point.y <= 48f)
                 kind = point.x < width * 0.5f ? Kind.Notifications : Kind.Controls;
             else if (point.y >= height - bottomHeight)
                 kind = Kind.Bottom;
@@ -84,6 +87,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 action = _kind == Kind.Notifications ? TabletGestureAction.Notifications : TabletGestureAction.Controls;
             else if (_kind == Kind.Bottom && IsVertical(delta, false))
                 action = TabletGestureAction.Home;
+            else if (_kind == Kind.Bottom && delta.y <= -RevealDistance && Mathf.Abs(delta.y) > Mathf.Abs(delta.x) * 1.25f)
+                action = TabletGestureAction.RevealNav;
             else if (_kind == Kind.Back && (_backFromLeft ? delta.x >= BackDistance : delta.x <= -BackDistance) &&
                      Mathf.Abs(delta.x) > Mathf.Abs(delta.y) * 1.25f)
                 action = TabletGestureAction.Back;

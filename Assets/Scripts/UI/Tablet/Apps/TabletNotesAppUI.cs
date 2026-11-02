@@ -464,7 +464,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (bm != null && !string.IsNullOrEmpty(bm.scriptName))
                 {
-                    string bmTitle = $"🔖 剧情书签：第{bm.episodeNum}话 {bm.episodeTitle}";
+                    string bmTitle = $"剧情书签：第{bm.episodeNum}话 {bm.episodeTitle}";
                     if (!userTabletNotes.Exists(n => n.title == bmTitle))
                     {
                         userTabletNotes.Add(new TabletNoteItem
@@ -483,7 +483,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // 3. 自动抓取 GameData 当日运营周报摘要
-        string weeklyTitle = $"📊 运营第 {GameData.Day} 天运营简报";
+        string weeklyTitle = $"运营第 {GameData.Day} 天运营简报";
         if (!userTabletNotes.Exists(n => n.title == weeklyTitle))
         {
             userTabletNotes.Add(new TabletNoteItem
@@ -579,19 +579,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     Priority = 75,
                     Title = "乘务调度口令速记",
                     Subtitle = "正在录制便签声音备忘",
-                    Metric = "🔴 录音中 00:15",
+                    Metric = "录音中 00:15",
                     AccentColor = new Color(0.92f, 0.25f, 0.25f, 1f),
                     OnPrimaryAction = () => { /* toggle */ }
                 });
-                ShowToast("🎙 语音速记已开启，已在小米超级岛置顶常驻！");
+                ShowToast("语音速记已开启，已在小米超级岛置顶常驻！");
             }
             else
             {
                 RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.Instance?.RemoveSession(RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.Recorder);
-                ShowToast("🎙 语音速记已停止，音频文件已自动关联到当前便签！");
+                ShowToast("语音速记已停止，音频文件已自动关联到当前便签！");
             }
             BuildNotesApp(win);
-        }) { text = s_isVoiceRecording ? "🔴 正在录制 (点击停止)" : "🎙 语音速记 · 超级岛" };
+        }) { text = s_isVoiceRecording ? "正在录制 (点击停止)" : "语音速记 · 超级岛" };
         voiceBtn.style.height = 34;
         voiceBtn.style.fontSize = 12; voiceBtn.style.unityFontDefinition = Fd();
         voiceBtn.style.backgroundColor = s_isVoiceRecording ? new Color(0.92f, 0.25f, 0.25f, 1f) : SurfaceHover;
@@ -906,9 +906,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 curNote.content = noteBodyField.value;
                 curNote.date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
                 SaveUserTabletNotes();
-                ShowToast("💾 笔记已保存到平板闪存。");
+                ShowToast("笔记已保存到平板闪存。");
                 BuildNotesApp(win);
-            }) { text = "💾 保存笔记" };
+            }) { text = "保存笔记" };
             saveBtn.style.height = 34;
             saveBtn.style.paddingLeft = 14; saveBtn.style.paddingRight = 14;
             saveBtn.style.fontSize = 12; saveBtn.style.unityFontDefinition = Fd();
@@ -928,11 +928,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     Priority = 95,
                     Title = curNote.title,
                     Subtitle = "便签备忘置顶 · " + curNote.category,
-                    Metric = "📌 置顶备忘",
+                    Metric = "置顶备忘",
                     AccentColor = AccentSystem
                 });
-                ShowToast("📌 笔记已置顶挂载到小米超级岛！");
-            }) { text = "📌 挂载超级岛" };
+                ShowToast("笔记已置顶挂载到小米超级岛！");
+            }) { text = "挂载超级岛" };
             pinIslandBtn.style.height = 34;
             pinIslandBtn.style.paddingLeft = 12; pinIslandBtn.style.paddingRight = 12;
             pinIslandBtn.style.fontSize = 12; pinIslandBtn.style.unityFontDefinition = Fd();
@@ -953,9 +953,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     userTabletNotes.Remove(curNote);
                     SaveUserTabletNotes();
                     currentSelectedNoteId = userTabletNotes.Count > 0 ? userTabletNotes[0].id : 0;
-                    ShowToast("🗑️ 笔记已删除。");
+                    ShowToast("笔记已删除。");
                     BuildNotesApp(win);
-                }) { text = "🗑 删除" };
+                }) { text = "删除" };
                 delBtn.style.height = 34;
                 delBtn.style.paddingLeft = 10; delBtn.style.paddingRight = 10;
                 delBtn.style.fontSize = 12; delBtn.style.unityFontDefinition = Fd();

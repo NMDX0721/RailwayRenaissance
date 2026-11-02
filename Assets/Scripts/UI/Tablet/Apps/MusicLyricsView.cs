@@ -28,7 +28,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
         }
         VisualElement stageProgress;
+        int filteredLines;
         MusicReactiveStageView reactiveStage;
+        MusicIconHelper.VuMeterHandle vu;
         Button followButton;
         Slider progress;
         Label playTime;
@@ -106,7 +108,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (float.IsNaN(room) || room <= 0) return;
                 bool compact = false;
                 for (var ancestor = host; ancestor != null; ancestor = ancestor.parent) if (ancestor.ClassListContains("music-compact")) { compact = true; break; }
-                float width = Mathf.Min(room, compact ? 140f : 220f), ratio = Mathf.Clamp((float)coverTexture.height / coverTexture.width, .6f, 1.4f);
+                // On a short column (the column itself is under 470 px high, which is what a 700 px high tablet gives it) the cover shrinks and the
+                // atmosphere line goes, so the information, the source line and the record archive button all stay inside the column.
+                bool shortScreen = art.resolvedStyle.height > 0 && art.resolvedStyle.height < 470;
+                art.EnableInClassList("music-lyrics-short", shortScreen);
+                float width = Mathf.Min(room, compact ? 140f : shortScreen ? 100f : 220f), ratio = Mathf.Clamp((float)coverTexture.height / coverTexture.width, .6f, 1.4f);
                 cover.style.width = width; cover.style.height = width * ratio;
             }
             art.RegisterCallback<GeometryChangedEvent>(_ => FitCover());
@@ -117,8 +123,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(art, track?.title ?? "尚未选择曲目", "music-detail-title");
             if (track != null && !string.IsNullOrEmpty(track.titleTranslation)) Text(art, track.titleTranslation, "music-muted");
             Text(art, "沿线声音档案 / RAILWAY SOUND", "music-eyebrow");
+            // Song information, from the same track data as the record archive: who sings it, the album, where it comes from and how long it is;
+            // a soundtrack also shows how it is unlocked and its line of atmosphere. The settings below stay folded away.
+            var info = Box(art, "music-lyrics-info");
+            void InfoRow(string key, string value)
+            {
+                if (string.IsNullOrWhiteSpace(value)) return;
+                var row = Box(info, "music-lyrics-info-row"); Text(row, key, "music-lyrics-info-key"); Text(row, value, "music-lyrics-info-value");
+            }
+            if (track != null)
+            {
+                InfoRow("歌手", track.artist); InfoRow("专辑", track.album); InfoRow("来源", track.category);
+                float length = track.duration > 0 ? track.duration : TabletMusicAppUI.tabletCurrentTrackId == track.id && TabletMusicAppUI.tabletCurrentClip != null ? TabletMusicAppUI.tabletCurrentClip.length : 0;
+                InfoRow("时长", length > 0 ? TabletMusicAppUI.FormatAudioTime(length) : null);
+                if (track.local) InfoRow("文件", track.fileName);
+                if (!track.local && string.IsNullOrEmpty(track.provider))
+                {
+                    InfoRow("解锁", track.condition);
+                    if (!string.IsNullOrEmpty(track.description)) Text(info, track.description, "music-lyrics-info-note");
+                }
+            }
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
-            var more = new Foldout { text = "设置", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
+            var record = Action(art, "唱片档案", () => RailwayMusicTerminalView.OpenRecord(trackId), "music-lyrics-record");
+            record.tooltip = "打开这首曲目的完整唱片档案（会离开歌词页，关闭后回到曲库）";
+            var more = new Foldout { text = "设置  +", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
+            more.RegisterValueChangedCallback(e => { if (e.target == more) more.text = e.newValue ? "设置  -" : "设置  +"; });
             var imports = Box(more, "music-lyrics-actions");
             Action(imports, "导入字幕", () => Import(false), "music-lyrics-import");
             Action(imports, "导入翻译", () => Import(true), "music-lyrics-import-translation");
@@ -129,11 +158,44 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             font.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFontSize = Mathf.RoundToInt(e.newValue); MusicLibrarySession.Save(); RenderRows(); });
             var translation = new Toggle("显示翻译") { value = MusicLibrarySession.State.lyricTranslation, name = "music-lyrics-translation" }; more.Add(translation);
             translation.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricTranslation = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
+            var filterToggle = new Toggle("过滤制作信息行") { value = MusicLibrarySession.State.lyricFilter, name = "music-lyrics-filter" }; more.Add(filterToggle);
+            filterToggle.tooltip = "去掉歌词里的作词、作曲、编曲、版权声明等行，它们不会出现在舞台上";
+            filterToggle.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFilter = e.newValue; MusicLibrarySession.Save(); Reload(); });
+            var filterWords = new TextField("额外过滤词") { value = MusicLibrarySession.State.lyricFilterWords, isDelayed = true, name = "music-lyrics-filter-words" }; more.Add(filterWords);
+            filterWords.tooltip = "包含这些词的歌词行会被去掉，用逗号隔开；按回车或离开输入框后生效";
+            filterWords.RegisterValueChangedCallback(e => { MusicLibrarySession.State.lyricFilterWords = e.newValue ?? ""; MusicLibrarySession.Save(); Reload(); });
             var estimate = new Toggle("估算逐词") { value = MusicLibrarySession.State.estimateWords, name = "music-lyrics-estimate" }; more.Add(estimate);
             estimate.tooltip = "没有逐词时间的歌词，按行内字数估算逐词填充（仅用于显示）";
             estimate.RegisterValueChangedCallback(e => { MusicLibrarySession.State.estimateWords = e.newValue; MusicLibrarySession.Save(); RenderRows(); });
             var reduce = new Toggle("减少动态效果") { value = MusicLibrarySession.State.reduceMotion, name = "music-lyrics-reduce-motion" }; more.Add(reduce);
             reduce.RegisterValueChangedCallback(e => { MusicLibrarySession.State.reduceMotion = e.newValue; MusicLibrarySession.Save(); });
+            // Stage tunables (Folia's classic style): shown only while the stage look is active.
+            var stageBox = Box(more, "music-lyrics-stage-tuning"); stageBox.name = "music-lyrics-stage-tuning";
+            Text(stageBox, "舞台", "music-lyrics-section");
+            var styleButton = Action(stageBox, "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle), null, "music-stage-style");
+            styleButton.tooltip = "切换舞台样式：Luminous（逐词弹出）/ 云阶（分行错落）/ Still（静态三行）";
+            styleButton.clicked += () => {
+                MusicLibrarySession.State.stageStyle = StageStyles.Next(MusicLibrarySession.State.stageStyle); MusicLibrarySession.Save();
+                styleButton.text = "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle);
+            };
+            string[] intensityNames = { "平静", "正常", "狂放" };
+            var intensity = Action(stageBox, "散布：" + intensityNames[Mathf.Clamp(MusicLibrarySession.State.stageIntensity, 0, 2)], null, "music-stage-intensity");
+            intensity.tooltip = "词在舞台上的散布与旋转幅度：平静（居中不转）/ 正常 / 狂放";
+            intensity.clicked += () => {
+                MusicLibrarySession.State.stageIntensity = (MusicLibrarySession.State.stageIntensity + 1) % 3; MusicLibrarySession.Save();
+                intensity.text = "散布：" + intensityNames[MusicLibrarySession.State.stageIntensity]; stage.Invalidate();
+            };
+            var rotation = new Toggle("词旋转") { value = MusicLibrarySession.State.stageRotation, name = "music-stage-rotation" }; stageBox.Add(rotation);
+            rotation.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageRotation = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
+            var breathing = new Slider("呼吸浮动", 0, 2) { value = MusicLibrarySession.State.stageBreathing, name = "music-stage-breathing" }; stageBox.Add(breathing);
+            breathing.AddToClassList("music-horizontal-slider"); breathing.tooltip = "整句随时间缓慢起伏的幅度，0 为不动";
+            breathing.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageBreathing = e.newValue; MusicLibrarySession.Save(); });
+            var spacing = new Slider("词间距", 0, 2) { value = MusicLibrarySession.State.stageSpacing, name = "music-stage-spacing" }; stageBox.Add(spacing);
+            spacing.AddToClassList("music-horizontal-slider"); spacing.tooltip = "词与词之间按实际宽度计算的间距倍率";
+            spacing.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageSpacing = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
+            var legacy = new Toggle("旧版布局") { value = MusicLibrarySession.State.stageLegacyLayout, name = "music-stage-legacy" }; stageBox.Add(legacy);
+            legacy.tooltip = "按字幕原有的词切分，不做语义分组";
+            legacy.RegisterValueChangedCallback(e => { MusicLibrarySession.State.stageLegacyLayout = e.newValue; MusicLibrarySession.Save(); stage.Invalidate(); });
             Text(more, "时间校准", "music-lyrics-section");
             var timing = Box(more, "music-player-buttons");
             timing.name = "music-lyrics-timing";
@@ -142,6 +204,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Action(timing, "提前 100ms", () => Adjust(100), "music-lyrics-earlier", true);
             Action(more, "重置字幕时间", () => { var p = MusicTimedText.Preference(trackId); p.offsetMs = 0; MusicLibrarySession.Save(); active = -2; }, "music-lyrics-reset");
             var textArea = Box(body, "music-lyrics-text-area");
+            // The lyric subtitles are always set in the project's pixel font, whatever font the tablet system UI uses around them.
+            var pixelFont = StageFonts.Pixel();
+            if (pixelFont != null) textArea.style.unityFontDefinition = new FontDefinition { font = pixelFont };
             var cueRail = Box(textArea, "music-cue-rail");
             stageProgress = Box(cueRail, "music-cue-progress");
             cueRail.tooltip = "当前句播放进度（按真实字幕时间）";
@@ -160,10 +225,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             progress.RegisterCallback<PointerCaptureOutEvent>(_ => scrubbing = false);
             progress.RegisterValueChangedCallback(e => TabletMusicAppUI.SeekTabletMusic(e.newValue));
             playTime = Text(footer, "0:00 / --:--", "music-player-time");
+            // The meters moved here from the player bar: left and right needles follow the music's low and high bands.
+            vu = MusicIconHelper.CreateDualVuMeter(168f, 40f); vu.root.AddToClassList("music-lyrics-vu"); footer.Add(vu.root);
             help = Text(host, "", "music-lyrics-help");
             trackId = TabletMusicAppUI.tabletCurrentTrackId;
             ApplyMotionStyle();
             Reload();
+            // A new song fades the lyric layer in over the backdrop (which already blends to the new cover's colours), instead of switching hard.
+            if (previousStage != null)
+            {
+                var fading = new System.Collections.Generic.List<VisualElement>();
+                foreach (var child in host.Children()) if (child != reactiveStage) { child.AddToClassList("music-lyrics-entering"); fading.Add(child); }
+                host.schedule.Execute(() => { foreach (var child in fading) child.RemoveFromClassList("music-lyrics-entering"); }).StartingIn(60);
+            }
         }
         static string MotionTitle() => new[] { "静读", "随行", "舞台" }[Mathf.Clamp(MusicLibrarySession.State.lyricMotion, 0, 2)];
         void ApplyMotionStyle()
@@ -171,6 +245,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             host.EnableInClassList("music-motion-static", MusicLibrarySession.State.lyricMotion == 0);
             host.EnableInClassList("music-motion-follow", MusicLibrarySession.State.lyricMotion == 1);
             host.EnableInClassList("music-motion-stage", MusicLibrarySession.State.lyricMotion == 2);
+            var tuningBox = host.Q("music-lyrics-stage-tuning");
+            if (tuningBox != null) tuningBox.style.display = MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.Flex : DisplayStyle.None;
         }
         void Adjust(int milliseconds)
         {
@@ -191,6 +267,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var track = MusicLibrarySession.Find(trackId);
             instrumental = false;
             document = MusicTimedText.Load(track);
+            filteredLines = MusicLyricFilter.Apply(document, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
             following = true; RenderRows();
             if (track == null || track.provider != "netease" && track.provider != "bodian" && track.provider != "spotify" || !string.IsNullOrEmpty(MusicTimedText.Preference(track.id).fileName)) return;
             string requestedId = track.id;
@@ -203,13 +280,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // Prefer the source's own word-timed lyrics; fall back to line timing when absent or unusable.
                 var fetched = string.IsNullOrWhiteSpace(result.result.wordLyric) ? null : MusicTimedText.Parse(result.result.wordLyric, ".lrc");
                 if (fetched == null || fetched.lines.Count == 0 || !fetched.lines.Exists(l => l.words.Count > 0)) fetched = MusicTimedText.Parse(result.result.lyric, ".lrc");
-                MusicLyricEstimate.StripCredits(fetched);
+                filteredLines = MusicLyricFilter.Apply(fetched, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
                 if (fetched.lines.Count == 0) { status.text = track.category + "未提供可用的同步歌词。"; return; }
                 fetched.source = track.category + "歌词";
                 if (!string.IsNullOrEmpty(result.result.translation) && string.IsNullOrEmpty(MusicTimedText.Preference(requestedId).translationFileName))
                 {
                     var translated = MusicTimedText.Parse(result.result.translation, ".lrc");
-                    MusicLyricEstimate.StripCredits(translated);
+                    MusicLyricFilter.Apply(translated, MusicLibrarySession.State.lyricFilter, MusicLibrarySession.State.lyricFilterWords);
                     // Each translated line goes to the nearest original line (within 1.5 s); a closer one replaces a farther one.
                     var gaps = new double[fetched.lines.Count];
                     foreach (var candidate in translated.lines)
@@ -258,7 +335,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 Text(scroll, "暂无歌词", "music-lyric-pure"); Text(scroll, "可导入 LRC、SRT、WebVTT 或逐词 JSON", "music-lyric-hint");
                 status.text = "暂无字幕"; return;
             }
-            status.text = document.source + "\n" + document.lines.FindAll(l => !string.IsNullOrWhiteSpace(l.text)).Count + " 行 · " + (document.lines.Exists(l => l.words.Count > 0) ? "含逐词时间" : MusicLibrarySession.State.estimateWords ? "逐词（按行估算）" : "逐行同步");
+            status.text = document.source + "\n" + document.lines.FindAll(l => !string.IsNullOrWhiteSpace(l.text)).Count + " 行 · " + (document.lines.Exists(l => l.words.Count > 0) ? "含逐词时间" : MusicLibrarySession.State.estimateWords ? "逐词（按行估算）" : "逐行同步") + (filteredLines > 0 ? " · 已过滤 " + filteredLines + " 行制作信息" : "");
             for (int i = 0; i < document.lines.Count; i++)
             {
                 var line = document.lines[i]; int index = i;
@@ -305,9 +382,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             if (trackId != id) { Build(); return; }
             if (document == null) return;
+            if (vu != null)
+            {
+                bool playing = TabletMusicAppUI.tabletIsPlaying && reactiveStage != null;
+                float left = playing ? Mathf.Clamp01(reactiveStage.BandLow * .7f + reactiveStage.BandMid * .5f) : 0f;
+                float right = playing ? Mathf.Clamp01(reactiveStage.BandMid * .5f + reactiveStage.BandHigh * .9f) : 0f;
+                vu.UpdateLevels(left, right, Time.unscaledDeltaTime);
+            }
             var preference = MusicTimedText.Preference(trackId);
             offsetLabel.text = (preference.offsetMs > 0 ? "+" : "") + preference.offsetMs + " ms";
-            followButton.style.display = following || document.lines.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex;
+            // The stage never scrolls, so the "back to current line" banner has nothing to return to there.
+            followButton.style.display = following || document.lines.Count == 0 || MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.None : DisplayStyle.Flex;
             heading.text = (TabletMusicAppUI.tabletCurrentTrackTitle ?? "歌词 / 字幕") + " / " + (TabletMusicAppUI.tabletIsPlaying ? "正在播放" : "已暂停");
             if (document.source != null && document.source.Contains("草稿")) heading.text += " · 待听校";
             heading.tooltip = document.source;
@@ -351,8 +436,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             stage.style.display = stageOn ? DisplayStyle.Flex : DisplayStyle.None;
             scroll.style.opacity = stageOn ? 0f : 1f; scroll.pickingMode = stageOn ? PickingMode.Ignore : PickingMode.Position;
             if (stageOn)
+            {
+                stage.Select(MusicLibrarySession.State.stageStyle);
                 stage.Tick(document, active, clock, Time.unscaledDeltaTime, MusicLibrarySession.State.reduceMotion, MusicLibrarySession.State.estimateWords,
-                    Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation);
+                    Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation,
+                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh, TabletMusicAppUI.tabletCurrentTrackTitle);
+            }
             foreach (var pair in words)
             {
                 if (!lineChanged && pair.line != active) continue;

@@ -124,6 +124,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void LoadRemoteCover(string id, Action<Texture2D> onReady)
         {
             var track = MusicLibrarySession.Find(id);
+            // A local file matched to an online song takes that song's cover.
+            if (track != null && track.local)
+            {
+                string matched = MusicTimedText.Preference(id).matchCover;
+                if (!string.IsNullOrEmpty(matched)) LoadRemoteImage(id, matched, onReady);
+                return;
+            }
             if (track == null || string.IsNullOrEmpty(track.provider)) return;
             if (string.IsNullOrEmpty(track.coverUrl))
             {

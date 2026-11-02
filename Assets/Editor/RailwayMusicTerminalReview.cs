@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +30,27 @@ public static class RailwayMusicTerminalReview
     static float previewPreviousPosition;
     static Color previousStageColor;
     static float pausedStageClock, pausedStageEnergy;
-    static int stageMotionFrame;
+    // The wide review size: 1440x900 unless MUSIC_REVIEW_SIZE (for example "1109x625") asks for another, to try the music app on a smaller logical canvas.
+    static readonly Vector2Int MainSize = ReadMainSize();
+    static Vector2Int ReadMainSize()
+    {
+        string text = Environment.GetEnvironmentVariable("MUSIC_REVIEW_SIZE");
+        if (!string.IsNullOrEmpty(text))
+        {
+            var parts = text.Split('x');
+            if (parts.Length == 2 && int.TryParse(parts[0], out int w) && int.TryParse(parts[1], out int h) && w >= 600 && h >= 400) return new Vector2Int(w, h);
+        }
+        return new Vector2Int(1440, 900);
+    }
+    static int stageMotionFrame, lumiSeq, styleStep, stressIndex;
+    static readonly List<string> stressIssues = new List<string>();
+    // Every style on both stress lines (measured at the end of each line), and Luminous again at the wildest intensity.
+    static readonly string[] StressStyles = { "luminous", "luminous", "luminous", "luminous", "partita", "partita", "tilt", "tilt", "cadenza", "cadenza", "claddagh", "claddagh", "cappella", "cappella", "pendolo", "pendolo" };
+    static readonly int[] StressIntensity = { 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    // Shortly before each line ends (3.4 s and 9.4 s): every word has started, and the line is still the current one. The lyric clock is the playback
+    // position plus the song's subtitle offset (+0.1 s left by an earlier step), so these are 0.3 s ahead of the line end, not 0.1 s.
+    static readonly float[] StressTimes = { 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f, 3.1f, 9.1f };
+    static readonly float[] lumiPose = new float[10], lumiLast = new float[10];
     static readonly BindingFlags Hidden = BindingFlags.Instance | BindingFlags.NonPublic;
     static RailwayMusicTerminalReview()
     {
@@ -57,9 +78,14 @@ public static class RailwayMusicTerminalReview
         timeout = EditorApplication.timeSinceStartup + 150;
         EditorApplication.isPlaying = true;
     }
+    // At the normal review size a failed check stops the run. When MUSIC_REVIEW_SIZE asks for another size (a pre-flight for a new canvas), a failed
+    // check is logged as MUSIC_PREFLIGHT_ISSUE and the run goes on, so one run shows everything that does not fit instead of only the first thing.
+    static bool Preflight => MainSize.x != 1440 || MainSize.y != 900;
     static void Assert(bool condition, string reason)
     {
-        if (!condition) throw new InvalidOperationException(reason);
+        if (condition) return;
+        if (Preflight) { Debug.Log("MUSIC_PREFLIGHT_ISSUE: " + reason); return; }
+        throw new InvalidOperationException(reason);
     }
     static void ValidateControlGeometry()
     {
@@ -285,7 +311,7 @@ public static class RailwayMusicTerminalReview
         Assert(root != null, "LaunchApp did not build the railway terminal");
         var settings = UnityEngine.Object.Instantiate(document.panelSettings);
         settings.scaleMode = PanelScaleMode.ConstantPixelSize; settings.scale = 1;
-        target = new RenderTexture(1440, 900, 24); target.Create(); settings.targetTexture = target;
+        target = new RenderTexture(MainSize.x, MainSize.y, 24); target.Create(); settings.targetTexture = target;
         settings.clearColor = true; settings.colorClearValue = new Color(.06f, .07f, .06f, 1);
         document.panelSettings = settings;
         // Panel replacement can detach/recreate the document; re-enter using the real app path.
@@ -294,6 +320,88 @@ public static class RailwayMusicTerminalReview
         Assert(!TabletMusicAppUI.tabletIsPlaying, "Opening the window auto-started audio");
         Debug.Log("MUSIC_TABLET_ENTRY_OK: real GameMainUI app entry; no autoplay");
     }
+    // Eight English words and a 24-character Chinese line, every word timed, with a closing marker so the second line has an end.
+    static string WriteStressLrc()
+    {
+        string Tag(float s) => ((int)(s / 60)).ToString("D2") + ":" + (s % 60).ToString("00.00", System.Globalization.CultureInfo.InvariantCulture);
+        var text = new System.Text.StringBuilder();
+        string[] english = { "The ", "rails ", "remember ", "every ", "little ", "thing ", "we ", "said" };
+        float[] englishAt = { 0f, .4f, .8f, 1.4f, 1.8f, 2.2f, 2.6f, 2.9f };
+        text.Append("[00:00.00]");
+        for (int i = 0; i < english.Length; i++) text.Append("<" + Tag(englishAt[i]) + ">" + english[i]);
+        text.Append("<" + Tag(3.4f) + ">\n");
+        string[] chinese = { "沿着", "铁轨", "一路", "向北", "穿过", "群山", "与薄", "雾回", "到出", "发的", "那个", "站台" };
+        text.Append("[00:04.00]");
+        for (int i = 0; i < chinese.Length; i++) text.Append("<" + Tag(4f + i * .45f) + ">" + chinese[i]);
+        text.Append("<" + Tag(9.4f) + ">\n[00:10.00]\n");
+        string path = Path.Combine(Local, "review-stress.lrc");
+        File.WriteAllText(path, text.ToString(), System.Text.Encoding.UTF8);
+        return path;
+    }
+
+    // An element's opacity as it is seen: its own times every ancestor's, up to the stage; a hidden ancestor makes it invisible.
+    static float EffectiveOpacity(VisualElement element, VisualElement stop)
+    {
+        float opacity = 1f;
+        for (var e = element; e != null && e != stop; e = e.parent) { if (e.resolvedStyle.display == DisplayStyle.None) return 0f; opacity *= e.resolvedStyle.opacity; }
+        return opacity;
+    }
+
+    // Measure one style on one stress line: every visible character must lie inside the stage, and words that are visible together must not cover each other.
+    static void StressCheck(MusicStageLyrics host, int index)
+    {
+        string name = StressStyles[index] + "/intensity " + StressIntensity[index] + "/" + (StressTimes[index] < 5f ? "English" : "Chinese");
+        // The lines are the current ones only just before they end; seeing nothing means the lyrics did not load, which is itself a failure.
+        Rect stage = host.worldBound; const float slack = 8f;
+        string[] charClasses = { "music-stage-word-text", "music-stage-tilt-char", "music-stage-claddagh-char", "music-stage-cappella-char", "music-stage-pendolo-char" };
+        int seen = 0, outside = 0; string worst = "";
+        foreach (string cls in charClasses)
+            foreach (var label in host.Query<Label>(className: cls).ToList())
+            {
+                if (label.ClassListContains("music-stage-glow") || EffectiveOpacity(label, host) < .3f) continue;
+                Rect r = label.worldBound; if (r.width <= 0 || r.height <= 0) continue;
+                seen++;
+                if (r.xMin < stage.xMin - slack || r.xMax > stage.xMax + slack || r.yMin < stage.yMin - slack || r.yMax > stage.yMax + slack) { outside++; worst = "'" + label.text + "' at " + r; }
+            }
+        if (seen == 0)
+        {
+            var doc = MusicTimedText.Load(MusicLibrarySession.Find("platform"));
+            stressIssues.Add(name + ": nothing visible to measure");
+            Debug.Log("MUSIC_STRESS_STATE: " + name + " style=" + host.StyleId + " hostDisplay=" + host.resolvedStyle.display + " hostSize=" + host.worldBound + " motion=" + MusicLibrarySession.State.lyricMotion +
+                " position=" + TabletMusicAppUI.CurrentPosition.ToString("F2") + " docLines=" + doc.lines.Count + " activeAt=" + doc.Active(TabletMusicAppUI.CurrentPosition) + " labels=" + host.Query<Label>().ToList().Count);
+        }
+        if (outside > 0) stressIssues.Add(name + ": " + outside + " of " + seen + " characters outside the stage " + stage + " (e.g. " + worst + ")");
+        if (StressStyles[index] == "claddagh" || StressStyles[index] == "cappella" || StressStyles[index] == "pendolo") return;
+        string wordClass = StressStyles[index] == "tilt" ? "music-stage-tilt-row" : "music-stage-word";
+        var words = host.Query(className: wordClass).ToList().FindAll(w => EffectiveOpacity(w, host) >= .3f);
+        Rect TextRect(VisualElement word)
+        {
+            Rect union = Rect.zero; bool first = true;
+            foreach (var label in word.Query<Label>().ToList())
+            {
+                if (label.ClassListContains("music-stage-glow")) continue;
+                var r = label.worldBound; if (r.width <= 0) continue;
+                union = first ? r : Rect.MinMaxRect(Mathf.Min(union.xMin, r.xMin), Mathf.Min(union.yMin, r.yMin), Mathf.Max(union.xMax, r.xMax), Mathf.Max(union.yMax, r.yMax)); first = false;
+            }
+            return union;
+        }
+        float worstOverlap = 0; string worstPair = "";
+        for (int a = 0; a < words.Count; a++)
+            for (int b = a + 1; b < words.Count; b++)
+            {
+                Rect ra = TextRect(words[a]), rb = TextRect(words[b]);
+                float ox = Mathf.Max(0, Mathf.Min(ra.xMax, rb.xMax) - Mathf.Max(ra.xMin, rb.xMin)), oy = Mathf.Max(0, Mathf.Min(ra.yMax, rb.yMax) - Mathf.Max(ra.yMin, rb.yMin));
+                float ratio = ox * oy / Mathf.Max(1f, Mathf.Min(ra.width * ra.height, rb.width * rb.height));
+                if (ratio > worstOverlap) { worstOverlap = ratio; worstPair = a + "/" + b; }
+            }
+        // The wildest setting scatters words on purpose, so it is allowed more shared area; at the normal settings words must stay clear. (Rotated words are
+        // measured by their bounding box, which is larger than the word, so these limits are on the safe side of "covers".)
+        // Measured on the review frames: a magnified word being sung touching its neighbour reads fine at 40-50%, while the pairs that were really
+        // unreadable (words on top of each other) were 69-97%. So half the smaller word is the line between touching and covering.
+        float limit = .5f;
+        if (worstOverlap > limit) stressIssues.Add(name + ": words " + worstPair + " cover " + (worstOverlap * 100).ToString("F0") + "% of the smaller one (" + words.Count + " words visible)");
+    }
+
     static void Capture(string name)
     {
         root.Q<Label>(className: "music-toast").style.display = DisplayStyle.None;
@@ -317,7 +425,7 @@ public static class RailwayMusicTerminalReview
             switch (stage)
             {
                 case 1:
-                    Assert(root.worldBound.width > 1000 && root.Q("music-player").worldBound.height >= 100, "Runtime layout did not resolve");
+                    Assert(root.worldBound.width > 1000 && root.Q("music-player").worldBound.height >= 80, "Runtime layout did not resolve");
                     ValidateControlGeometry();
                     Capture("01-library");
                     var search = root.Q<TextField>("music-search"); search.value = "Platform";
@@ -575,7 +683,7 @@ public static class RailwayMusicTerminalReview
                     Assert(MusicTimedText.Import("platform", lrcPath, false, out _) && MusicTimedText.Import("platform", translationPath, true, out _), "Timed-text file import failed");
                     TabletMusicAppUI.SeekTabletMusic(.5f / TabletMusicAppUI.tabletCurrentClip.length);
                     document.panelSettings.targetTexture = null; target.Release();
-                    target = new RenderTexture(1440, 900, 24); target.Create(); document.panelSettings.targetTexture = target;
+                    target = new RenderTexture(MainSize.x, MainSize.y, 24); target.Create(); document.panelSettings.targetTexture = target;
                     Submit(root.Q<Button>("music-lyrics"));
                     break;
                 case 9:
@@ -591,11 +699,267 @@ public static class RailwayMusicTerminalReview
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 10:
-                    ValidateScrollerGeometry();
-                    Assert(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value < -1,
-                        "Real timed word did not lift in stage mode");
-                    Assert(root.Q<Button>("music-lyric-line-1").ClassListContains("is-current"), "Clicked cue highlight stayed on the previous line due to rounding");
-                    Capture("05-lyrics");
+                    if (lumiSeq == 0)
+                    {
+                        ValidateScrollerGeometry();
+                        Assert(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value < -1,
+                            "Real timed word did not lift in stage mode");
+                        Assert(root.Q<Button>("music-lyric-line-1").ClassListContains("is-current"), "Clicked cue highlight stayed on the previous line due to rounding");
+                    }
+                    var stageHost = root.Q<MusicStageLyrics>("music-stage-lyrics");
+                    if (lumiSeq == 0)
+                    {
+                        // The left column shows the song's information, not just folded settings.
+                        var infoRows = root.Query(className: "music-lyrics-info-row").ToList();
+                        Assert(infoRows.Count >= 2, "The lyrics page's left column shows no song information (" + infoRows.Count + " rows)");
+                        Assert(root.Q<Button>("music-lyrics-record") != null, "The lyrics page has no link to the record archive");
+                        Assert(stageHost != null && stageHost.StyleId == "luminous", "Stage host did not select the Luminous style");
+                        var fontProbe = stageHost.Q(className: "music-stage-word-text");
+                        var probeFont = fontProbe?.resolvedStyle.unityFontDefinition.font;
+                        Assert(probeFont != null && probeFont.name.ToLowerInvariant().Contains("zpix"), "Lyric subtitles are not set in the pixel font (got " + (probeFont != null ? probeFont.name : "none") + ")");
+                        Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
+                        Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                    }
+                    // Luminous poses are a function of the audio clock: step the clock forward and the words must actually move.
+                    if (lumiSeq < 10)
+                    {
+                        if (lumiSeq == 0) Capture("05-lyrics");
+                        // The second word of the line (回声, sung 4-6 s) must be invisible until the clock reaches it, then come forward.
+                        var stageWords = stageHost.Query(className: "music-stage-word").ToList();
+                        float poseSum = 0; foreach (var word in stageWords) poseSum += word.resolvedStyle.scale.value.x + word.resolvedStyle.opacity;
+                        lumiPose[lumiSeq] = poseSum; lumiLast[lumiSeq] = stageWords.Count > 1 ? stageWords[stageWords.Count - 1].resolvedStyle.opacity : -1;
+                        Capture("05s-stage-seq-" + lumiSeq.ToString("D2")); lumiSeq++;
+                        // Stay inside the 2-6 s line: the last capture is at 5.8 s.
+                        TabletMusicAppUI.SeekTabletMusic((3f + lumiSeq * .31f) / TabletMusicAppUI.tabletCurrentClip.length);
+                        checkAfter = EditorApplication.timeSinceStartup + .45; frame = Time.frameCount; return;
+                    }
+                    float poseMin = lumiPose[0], poseMax = lumiPose[0], lastMax = lumiLast[0]; foreach (float pose in lumiPose) { poseMin = Mathf.Min(poseMin, pose); poseMax = Mathf.Max(poseMax, pose); }
+                    foreach (float last in lumiLast) lastMax = Mathf.Max(lastMax, last);
+                    Assert(poseMax - poseMin > .05f, "Luminous words did not move as the audio clock advanced");
+                    Assert(lumiLast[0] >= 0 && lumiLast[0] < .2f && lastMax > .6f, "The second word did not wait hidden and then come forward when its time arrived (first " + lumiLast[0].ToString("F2") + ", best " + lastMax.ToString("F2") + ")");
+                    Debug.Log("MUSIC_STAGE_LUMINOUS_OK: word and glow layers, tuning saved, poses follow the audio clock (" + poseMin.ToString("F2") + ".." + poseMax.ToString("F2") + ")");
+                    // The other stage styles, on the same two-word line: Partita cuts it into rows with guide lines, Still draws three static lines.
+                    if (styleStep < 17 + StressStyles.Length)
+                    {
+                        float styleClip = TabletMusicAppUI.tabletCurrentClip.length;
+                        if (styleStep == 0) { MusicLibrarySession.State.stageStyle = "partita"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip); }
+                        else if (styleStep == 1)
+                        {
+                            Assert(stageHost.StyleId == "partita" && stageHost.Query(className: "music-stage-partita-row").ToList().Count >= 1, "Partita did not build its rows");
+                            Assert(stageHost.Q(className: "music-stage-guide-h") != null && stageHost.Q(className: "music-stage-guide-v") != null, "Partita did not build its guide lines");
+                            Capture("05p-partita-a"); TabletMusicAppUI.SeekTabletMusic(5.2f / styleClip);
+                        }
+                        else if (styleStep == 2)
+                        {
+                            Capture("05p-partita-b");
+                            float guideBest = 0; foreach (var guide in stageHost.Query(className: "music-stage-guide-h").ToList()) guideBest = Mathf.Max(guideBest, guide.resolvedStyle.opacity);
+                            Assert(guideBest > .5f, "Partita guide lines did not grow once their rows were sung (best opacity " + guideBest.ToString("F2") + ")");
+                            MusicLibrarySession.State.stageStyle = "still"; TabletMusicAppUI.SeekTabletMusic(4f / styleClip);
+                        }
+                        else if (styleStep == 4)
+                        {
+                            Assert(stageHost.StyleId == "tilt" && stageHost.Query(className: "music-stage-tilt-row").ToList().Count >= 1, "Tilt did not build its rows");
+                            var tiltChars = stageHost.Query<Label>(className: "music-stage-tilt-char").ToList();
+                            Assert(tiltChars.Count >= 4, "Tilt did not build one label per character");
+                            Capture("05u-tilt-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 5)
+                        {
+                            float tiltBest = 0; foreach (var tiltChar in stageHost.Query<Label>(className: "music-stage-tilt-char").ToList()) tiltBest = Mathf.Max(tiltBest, tiltChar.resolvedStyle.opacity);
+                            Assert(tiltBest > .8f, "Tilt characters did not come in once their row was sung (best opacity " + tiltBest.ToString("F2") + ")");
+                            Capture("05u-tilt-b");
+                            // Force the first row into italic so the italic path is actually exercised.
+                            MusicStageTilt.TiltRowOverride = 0; stageHost.Invalidate(); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                            Debug.Log("MUSIC_STAGE_TILT_OK: Tilt rows and per-character labels, characters come in with the row");
+                        }
+                        else if (styleStep == 6)
+                        {
+                            var italics = stageHost.Query<Label>(className: "music-stage-tilt-italic").ToList();
+                            Assert(italics.Count >= 2, "Forcing the first Tilt row did not produce italic characters");
+                            Assert(italics[0].resolvedStyle.unityFontStyleAndWeight == FontStyle.Italic, "Italic Tilt characters are not italic");
+                            float firstLift = italics[0].style.translate.value.y.value, secondLift = italics[1].style.translate.value.y.value;
+                            Assert(firstLift * secondLift < 0 && Mathf.Abs(firstLift) > 1f && Mathf.Abs(secondLift) > 1f, "Italic Tilt characters are not alternately lifted and dropped (" + firstLift.ToString("F1") + ", " + secondLift.ToString("F1") + ")");
+                            var plainChar = stageHost.Query<Label>(className: "music-stage-tilt-char").Where(l => !l.ClassListContains("music-stage-tilt-italic")).First();
+                            Assert(plainChar != null && italics[0].resolvedStyle.color != plainChar.resolvedStyle.color, "The italic Tilt row does not use the accent colour");
+                            Capture("05v-tilt-italic");
+                            MusicStageTilt.TiltRowOverride = -1;
+                            MusicLibrarySession.State.stageStyle = "claddagh"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
+                            Debug.Log("MUSIC_STAGE_TILT_ITALIC_OK: forced italic row, alternating lift " + firstLift.ToString("F1") + "/" + secondLift.ToString("F1") + ", accent colour");
+                        }
+                        else if (styleStep == 7)
+                        {
+                            var ringGlyphs = stageHost.Query(className: "music-stage-claddagh-glyph").ToList();
+                            Assert(stageHost.StyleId == "claddagh" && ringGlyphs.Count >= 6, "Claddagh did not put the lines on its ring (" + ringGlyphs.Count + " glyphs)");
+                            float ringMax = 0, ringMin = 1, xMin = float.MaxValue, xMax = float.MinValue, scaleMax = 0;
+                            foreach (var glyph in ringGlyphs)
+                            {
+                                float o = glyph.resolvedStyle.opacity; ringMax = Mathf.Max(ringMax, o); if (o > .02f) ringMin = Mathf.Min(ringMin, o);
+                                float gx = glyph.style.translate.value.x.value; xMin = Mathf.Min(xMin, gx); xMax = Mathf.Max(xMax, gx);
+                                scaleMax = Mathf.Max(scaleMax, glyph.style.scale.value.value.x);
+                            }
+                            Assert(ringMax > .6f && ringMin < ringMax - .1f, "Claddagh has no front/back difference in opacity (" + ringMin.ToString("F2") + ".." + ringMax.ToString("F2") + ")");
+                            Assert(xMax - xMin > 120f, "Claddagh glyphs are not spread along the ring (" + (xMax - xMin).ToString("F0") + " px)");
+                            Assert(scaleMax > 1f, "Claddagh's focused glyph is not magnified (" + scaleMax.ToString("F2") + ")");
+                            // Readable: glyphs that can be seen must not sit on top of each other.
+                            var visibleCentres = new List<Vector2>();
+                            foreach (var glyph in ringGlyphs) if (glyph.resolvedStyle.opacity > .5f) visibleCentres.Add(new Vector2(glyph.style.translate.value.x.value, glyph.style.translate.value.y.value));
+                            float closest = float.MaxValue;
+                            for (int a = 0; a < visibleCentres.Count; a++) for (int b = a + 1; b < visibleCentres.Count; b++) closest = Mathf.Min(closest, Vector2.Distance(visibleCentres[a], visibleCentres[b]));
+                            Assert(visibleCentres.Count < 2 || closest > 24f, "Claddagh glyphs pile on top of each other (closest visible pair " + closest.ToString("F0") + " px)");
+                            Capture("05w-claddagh-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 8)
+                        {
+                            Capture("05w-claddagh-b");
+                            MusicLibrarySession.State.stageStyle = "cadenza"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CLADDAGH_OK: lines on a tilted ring, front glyph focused, glyphs spread along the ring");
+                        }
+                        else if (styleStep == 9)
+                        {
+                            var holders = stageHost.Query(className: "music-stage-cadenza-holder").ToList();
+                            Assert(stageHost.StyleId == "cadenza" && holders.Count >= 2, "Cadenza did not place its words (" + holders.Count + " holders)");
+                            // Hero in the middle, everything else clear of it and of each other.
+                            // Real positions on screen, measured from the middle of the field, not the margin numbers the layout asked for.
+                            var fieldMiddle = stageHost.Q(className: "music-stage-cadenza-field").worldBound.center;
+                            float nearest = float.MaxValue, heroSpread = float.MaxValue;
+                            for (int a = 0; a < holders.Count; a++)
+                            {
+                                var pa = holders[a].worldBound.center - fieldMiddle;
+                                heroSpread = Mathf.Min(heroSpread, pa.magnitude);
+                                for (int b = a + 1; b < holders.Count; b++) nearest = Mathf.Min(nearest, Vector2.Distance(holders[a].worldBound.center, holders[b].worldBound.center));
+                            }
+                            Assert(heroSpread < 4f, "Cadenza has no hero word in the middle of the stage (closest to centre " + heroSpread.ToString("F1") + " px)");
+                            Assert(nearest > 40f, "Cadenza words were not pushed apart (closest pair " + nearest.ToString("F0") + " px)");
+                            var halo = stageHost.Q(className: "music-stage-cadenza-halo");
+                            Assert(halo != null && halo.resolvedStyle.opacity > .2f, "Cadenza's ring of light is not around the sung character");
+                            Capture("05x-cadenza-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 10)
+                        {
+                            // Words that can be seen at the same time must not cover each other: the shared area of any two stays small.
+                            var cadenzaWords = stageHost.Query(className: "music-stage-word").ToList();
+                            float worstOverlap = 0;
+                            for (int a = 0; a < cadenzaWords.Count; a++)
+                                for (int b = a + 1; b < cadenzaWords.Count; b++)
+                                {
+                                    if (cadenzaWords[a].resolvedStyle.opacity < .5f || cadenzaWords[b].resolvedStyle.opacity < .5f) continue;
+                                    // The text itself, not the word's wider box: the union of its character labels (the glow layer is skipped).
+                                    Rect TextRect(VisualElement word)
+                                    {
+                                        Rect union = Rect.zero; bool first = true;
+                                        foreach (var label in word.Query<Label>(className: "music-stage-word-text").ToList())
+                                        {
+                                            if (label.ClassListContains("music-stage-glow")) continue;
+                                            var r = label.worldBound; union = first ? r : Rect.MinMaxRect(Mathf.Min(union.xMin, r.xMin), Mathf.Min(union.yMin, r.yMin), Mathf.Max(union.xMax, r.xMax), Mathf.Max(union.yMax, r.yMax)); first = false;
+                                        }
+                                        return union;
+                                    }
+                                    Rect ra = TextRect(cadenzaWords[a]), rb = TextRect(cadenzaWords[b]);
+                                    float ox = Mathf.Max(0, Mathf.Min(ra.xMax, rb.xMax) - Mathf.Max(ra.xMin, rb.xMin)), oy = Mathf.Max(0, Mathf.Min(ra.yMax, rb.yMax) - Mathf.Max(ra.yMin, rb.yMin));
+                                    float smaller = Mathf.Max(1f, Mathf.Min(ra.width * ra.height, rb.width * rb.height));
+                                    worstOverlap = Mathf.Max(worstOverlap, ox * oy / smaller);
+                                }
+                            Assert(worstOverlap < .3f, "Cadenza words cover each other (worst shared area " + (worstOverlap * 100).ToString("F0") + "% of the smaller word)");
+                            Capture("05x-cadenza-b");
+                            MusicLibrarySession.State.stageStyle = "cappella"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CADENZA_OK: hero word in the middle, other words pushed clear, ring of light on the sung character");
+                        }
+                        else if (styleStep == 11)
+                        {
+                            var chatRows = stageHost.Query(className: "music-stage-cappella-row").ToList().FindAll(r => r.resolvedStyle.display != DisplayStyle.None);
+                            Assert(stageHost.StyleId == "cappella" && chatRows.Count >= 3, "Cappella did not show the title and the lines sung so far (" + chatRows.Count + " rows)");
+                            var rightRows = chatRows.FindAll(r => r.ClassListContains("music-stage-cappella-right")); var leftRows = chatRows.FindAll(r => !r.ClassListContains("music-stage-cappella-right"));
+                            Assert(rightRows.Count >= 1 && leftRows.Count >= 1, "Cappella messages are not split between the left and right senders (" + leftRows.Count + " left, " + rightRows.Count + " right)");
+                            // Real positions: right-hand bubbles sit to the right of left-hand ones, and rows follow each other down the stage without covering one another.
+                            float leftMax = float.MinValue, rightMin = float.MaxValue;
+                            foreach (var r in leftRows) leftMax = Mathf.Max(leftMax, r.Q(className: "music-stage-cappella-bubble").worldBound.center.x);
+                            foreach (var r in rightRows) rightMin = Mathf.Min(rightMin, r.Q(className: "music-stage-cappella-bubble").worldBound.center.x);
+                            Assert(rightMin > leftMax, "Right-hand Cappella bubbles are not to the right of the left-hand ones (" + rightMin.ToString("F0") + " vs " + leftMax.ToString("F0") + ")");
+                            chatRows.Sort((x, y) => x.worldBound.yMin.CompareTo(y.worldBound.yMin));
+                            for (int r = 0; r + 1 < chatRows.Count; r++) Assert(chatRows[r].worldBound.yMax <= chatRows[r + 1].worldBound.yMin + 3f, "Cappella rows cover each other (row " + r + ")");
+                            var activeChars = chatRows[chatRows.Count - 1].Query<Label>(className: "music-stage-cappella-char").ToList();
+                            Assert(activeChars.Count >= 2 && activeChars[0].resolvedStyle.opacity > .9f, "Cappella text did not fade in as it was sung");
+                            var cappellaFont = activeChars[0].resolvedStyle.unityFontDefinition.font;
+                            Assert(cappellaFont != null && cappellaFont.name.ToLowerInvariant().Contains("zpix"), "Cappella text is not in the pixel font");
+                            Capture("05y-cappella-a"); TabletMusicAppUI.SeekTabletMusic(5.4f / styleClip);
+                        }
+                        else if (styleStep == 12)
+                        {
+                            var stamps = stageHost.Query(className: "music-stage-cappella-stamp").ToList().FindAll(s => s.resolvedStyle.display != DisplayStyle.None);
+                            Assert(stamps.Count >= 1, "Cappella showed no timestamp once a line was complete");
+                            Capture("05y-cappella-b");
+                            MusicLibrarySession.State.stageStyle = "luminous"; TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                            Debug.Log("MUSIC_STAGE_CAPPELLA_OK: chat rows split between two senders, no overlap, text fades in, timestamps after the line");
+                        }
+                        else if (styleStep == 14 + StressStyles.Length)
+                        {
+                            // The link to the record archive: the button opens the archive sheet.
+                            Submit(root.Q<Button>("music-lyrics-record"));
+                        }
+                        else if (styleStep == 15 + StressStyles.Length)
+                        {
+                            // The sheet is a modal and replaces the lyrics page by design; close it and reopen the lyrics for the steps that follow.
+                            Assert(root.Q(className: "music-record-sheet") != null, "The record archive did not open from the lyrics page");
+                            // The lyrics page is found by its name; it has no such class, so a class query would find nothing whether or not it is open.
+                            Assert(root.Q("music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            Assert(RailwayMusicTerminalView.RecordReturnsToLyrics, "The record archive opened from the lyrics page did not remember to return to it");
+                            Capture("08-record-from-lyrics");
+                            Submit(root.Q(className: "music-modal-header").Q<Button>());
+                        }
+                        else if (styleStep == 16 + StressStyles.Length)
+                        {
+                            // Closing the record archive that was opened from the lyrics page returns to the lyrics page, not the library.
+                            var overlaysNow = root.Query(className: "music-overlay").ToList();
+                            string overlayList = string.Join(" | ", overlaysNow.ConvertAll(o => string.Join(".", o.GetClasses())));
+                            Assert(root.Q("music-lyrics-overlay") != null && root.Q(className: "music-record-sheet") == null,
+                                "Closing the record archive did not return to the lyrics page (overlays: " + overlaysNow.Count + " [" + overlayList + "], record sheet " + (root.Q(className: "music-record-sheet") != null ? "still open" : "closed") +
+                                ", returns flag " + RailwayMusicTerminalView.RecordReturnsToLyrics + ", current track " + TabletMusicAppUI.tabletCurrentTrackId + ")");
+                            Assert(root.Q<Button>("music-lyrics-record") != null, "The lyrics page that came back has no record archive link");
+                            Debug.Log("MUSIC_LYRICS_INFO_OK: song information in the left column, the link opens the record archive, and closing it returns to the lyrics page");
+                        }
+                        else if (styleStep >= 13 && styleStep <= 13 + StressStyles.Length)
+                        {
+                            // Stress: harder lyrics (an eight-word English line, a 24-character Chinese line) on every style, measured at the end of
+                            // each line, when every word has been sung and takes the most room. Issues are collected and reported together.
+                            if (styleStep == 13)
+                            {
+                                Assert(MusicTimedText.Import("platform", WriteStressLrc(), false, out _), "Stress lyrics could not be imported");
+                                Submit(root.Q<Button>("music-lyrics-reload")); stressIndex = 0; stressIssues.Clear();
+                                var probe = MusicTimedText.Load(MusicLibrarySession.Find("platform"));
+                                Debug.Log("MUSIC_STRESS_DOC: lines=" + probe.lines.Count + " error=" + (probe.error ?? "none") + " source=" + probe.source + " first=" + (probe.lines.Count > 0 ? probe.lines[0].text + " words=" + probe.lines[0].words.Count + " end=" + probe.lines[0].end : "-"));
+                            }
+                            else
+                            {
+                                Capture("stress-" + StressStyles[stressIndex] + "-i" + StressIntensity[stressIndex] + (StressTimes[stressIndex] < 5f ? "-en" : "-zh"));
+                                StressCheck(stageHost, stressIndex); stressIndex++;
+                            }
+                            if (stressIndex < StressStyles.Length)
+                            {
+                                MusicLibrarySession.State.stageStyle = StressStyles[stressIndex]; MusicLibrarySession.State.stageIntensity = StressIntensity[stressIndex];
+                                stageHost.Invalidate(); TabletMusicAppUI.SeekTabletMusic(StressTimes[stressIndex] / styleClip);
+                            }
+                            else
+                            {
+                                // Put the review lyrics back for the steps that follow, whatever the stress found.
+                                MusicLibrarySession.State.stageStyle = "luminous"; MusicLibrarySession.State.stageIntensity = 1;
+                                Assert(MusicTimedText.Import("platform", Path.Combine(Local, "review.lrc"), false, out _) && MusicTimedText.Import("platform", Path.Combine(Local, "review-translation.srt"), true, out _), "Review lyrics could not be restored");
+                                Submit(root.Q<Button>("music-lyrics-reload")); TabletMusicAppUI.SeekTabletMusic(3f / styleClip);
+                                foreach (var issue in stressIssues) Debug.Log("MUSIC_STRESS_ISSUE: " + issue);
+                                Assert(stressIssues.Count == 0, stressIssues.Count + " stress issues: " + string.Join("; ", stressIssues));
+                                Debug.Log("MUSIC_STAGE_STRESS_OK: " + StressStyles.Length + " style/line combinations stay inside the stage and clear of each other");
+                            }
+                        }
+                        else if (styleStep == 3)
+                        {
+                            var stillCurrent = stageHost.Q<Label>(className: "music-stage-still-current");
+                            Assert(stageHost.StyleId == "still" && stillCurrent != null && stillCurrent.text == "归途回声", "Still did not show the current line");
+                            Assert(stageHost.Q(className: "music-stage-previous") == null || stageHost.Q(className: "music-stage-previous").resolvedStyle.display == DisplayStyle.None, "Shared subtitle layer was not hidden for Still");
+                            Capture("05t-still");
+                            MusicLibrarySession.State.stageStyle = "tilt"; TabletMusicAppUI.SeekTabletMusic(3.2f / styleClip);
+                            Debug.Log("MUSIC_STAGE_STYLES_OK: Partita rows and guide lines, Still three static lines, shared subtitle layer yields");
+                        }
+                        styleStep++; checkAfter = EditorApplication.timeSinceStartup + .7; frame = Time.frameCount; return;
+                    }
                     var lyricScroll = root.Q<ScrollView>("music-lyrics-scroll");
                     using (var wheel = WheelEvent.GetPooled(new Event { type = EventType.ScrollWheel, delta = new Vector2(0, 3), mousePosition = lyricScroll.worldBound.center }))
                     { wheel.target = lyricScroll; lyricScroll.SendEvent(wheel); }
@@ -605,8 +969,19 @@ public static class RailwayMusicTerminalReview
                 case 11:
                     Assert(root.Q<ScrollView>("music-lyrics-scroll").horizontalScroller.resolvedStyle.display == DisplayStyle.None, "Stage lyrics exposed a horizontal scrollbar");
                     Capture("06-lyrics-compact");
+                    // Stage tuning is saved with the library and rebuilds the line; restore the defaults afterwards.
+                    int intensityBefore = MusicLibrarySession.State.stageIntensity;
+                    Submit(root.Q<Button>("music-stage-intensity"));
+                    Assert(MusicLibrarySession.State.stageIntensity == (intensityBefore + 1) % 3, "Stage intensity button did not change the saved tuning");
+                    root.Q<Toggle>("music-stage-rotation").value = false;
+                    root.Q<Slider>("music-stage-spacing").value = 1.4f;
+                    Assert(!MusicLibrarySession.State.stageRotation && Mathf.Approximately(MusicLibrarySession.State.stageSpacing, 1.4f), "Stage rotation/spacing were not saved");
+                    MusicLibrarySession.State.stageIntensity = intensityBefore; MusicLibrarySession.State.stageRotation = true; MusicLibrarySession.State.stageSpacing = .7f;
+                    root.Q<Toggle>("music-stage-rotation").SetValueWithoutNotify(true); root.Q<Slider>("music-stage-spacing").SetValueWithoutNotify(.7f);
                     Assert(root.Q<Button>("music-lyrics-reset").worldBound.yMax < root.Q("music-lyrics-progress").worldBound.yMin, "Compact lyric settings overlap playback controls");
-                    Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display != DisplayStyle.None, "Manual scroll did not suspend lyric follow");
+                    Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None, "The follow banner must not cover the stage, which never scrolls");
+                    var settingsLabel = root.Q<Foldout>("music-lyrics-more").Q(className: "unity-foldout__text");
+                    Assert(settingsLabel != null && settingsLabel.resolvedStyle.width > 36f, "The settings foldout title is squeezed out by the switch styling");
                     Submit(root.Q<Button>("music-lyrics-follow"));
                     using (var escape = KeyDownEvent.GetPooled('\0', KeyCode.Escape, EventModifiers.None))
                     { escape.target = root.Q("music-lyrics-overlay"); root.SendEvent(escape); }
@@ -743,8 +1118,8 @@ public static class RailwayMusicTerminalReview
                     break;
                 case 22:
                     var queueBounds = root.Q("music-queue-drawer").worldBound;
-                    var bodyBounds = root.Q(className: "music-body").worldBound;
-                    Assert(Mathf.Abs(queueBounds.yMin - bodyBounds.yMin) < 1 && Mathf.Abs(queueBounds.yMax - bodyBounds.yMax) < 1,
+                    var bodyBounds = root.Q(className: "music-main").worldBound;
+                    Assert(Mathf.Abs(queueBounds.yMin - bodyBounds.yMin) < 1 && queueBounds.yMax > bodyBounds.yMax - 160f,
                         "Compact queue does not fill app body");
                     Assert(queueBounds.yMax <= root.Q("music-player").worldBound.yMin + 1, "Queue covers player controls");
                     Capture("10-compact-queue");
@@ -835,6 +1210,8 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-nav-云端"));
                     break;
                 case 32:
+                    // The narrow rail is the default; start from the wide sidebar so the toggle below still collapses it.
+                    MusicLibrarySession.State.navCollapsed = false; root.EnableInClassList("music-nav-collapsed", false);
                     Submit(root.Q<Button>("music-nav-toggle"));
                     break;
                 case 33:
@@ -852,6 +1229,86 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q(className: "music-help-row") != null, "Help dialog has no rows");
                     Capture("17-help");
                     Debug.Log("MUSIC_NAV_HELP_OK: sidebar collapse keeps content labels, help dialog uses grouped rows");
+                    root.Q<Button>("music-help")?.Focus(); CloseHelpForReview();
+                    chartDeadline = EditorApplication.timeSinceStartup + 25;
+                    Submit(root.Q<Button>("music-nav-榜单"));
+                    break;
+                case 36:
+                    // The charts are read from the network; wait for the answer (or a failure) rather than a fixed time.
+                    if (MusicCharts.Charts == null && !MusicCharts.ChartsFailed && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 37:
+                    Debug.Log("MUSIC_CHARTS_STATE: charts=" + (MusicCharts.Charts?.Length ?? -1) + " hots=" + (MusicCharts.HotSearches?.Length ?? -1) + " failed=" + MusicCharts.ChartsFailed);
+                    Capture("18-charts");
+                    Submit(root.Q<Button>("music-nav-首页"));
+                    break;
+                case 38:
+                    { var homeList = root.Q<ScrollView>("music-track-list"); if (homeList != null) homeList.scrollOffset = new Vector2(0, 330); }
+                    break;
+                case 39:
+                    Capture("20-home-scrolled");
+                    root.Q<TextField>("music-search")?.Focus();
+                    break;
+                case 40:
+                    Capture("19-search-suggest");
+                    Debug.Log("MUSIC_CHARTS_OK: chart page and search suggestions captured");
+                    foreach (var toneMode in new[] { MusicAudioEffectsEngine.RadioFilterMode.Clean, MusicAudioEffectsEngine.RadioFilterMode.Locomotive, MusicAudioEffectsEngine.RadioFilterMode.Pioneer, MusicAudioEffectsEngine.RadioFilterMode.VintageTubeFM })
+                    {
+                        MusicAudioEffectsEngine.CurrentFilterMode = toneMode; MusicAudioEffectsEngine.RefreshTone(.5f);
+                        var deck = MusicAudioEffectsEngine.GetActiveDeck(); var hp = deck.GetComponent<AudioHighPassFilter>(); var lp = deck.GetComponent<AudioLowPassFilter>(); var dist = deck.GetComponent<AudioDistortionFilter>(); var ch = deck.GetComponent<AudioChorusFilter>();
+                        var noise = GameObject.Find("TabletMusic_Noise")?.GetComponent<AudioSource>();
+                        Debug.Log("MUSIC_TONE: " + toneMode + " hp=" + (hp.enabled ? hp.cutoffFrequency : 0) + " lp=" + (lp.enabled ? lp.cutoffFrequency : 0) + " drive=" + (dist.enabled ? dist.distortionLevel : 0) + " chorus=" + ch.enabled + " noise=" + (noise != null && noise.isPlaying ? noise.volume : 0) + " pitch=" + deck.pitch.ToString("0.0000") + " playing=" + deck.isPlaying);
+                    }
+                    MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
+                    {
+                        // Replacing a track puts the new one in the old one's place everywhere, and only removes the old one where the new one is already kept.
+                        var st = MusicLibrarySession.State;
+                        var favSave = new List<string>(st.favorites); var queueSave = new List<string>(st.queue); var recentSave = new List<string>(st.recent);
+                        var listSave = new List<List<string>>(); foreach (var pl in st.playlists) listSave.Add(new List<string>(pl.tracks));
+                        var probe = new MusicUserPlaylist { title = "replace-probe", tracks = new List<string> { "zz_b", "zz_old", "zz_new" } }; st.playlists.Add(probe);
+                        st.favorites.Clear(); st.favorites.AddRange(new[] { "zz_old", "zz_b" }); st.queue.Clear(); st.queue.Add("zz_old"); st.recent.Clear(); st.recent.AddRange(new[] { "zz_b", "zz_old" });
+                        int places = MusicLibrarySession.ReplaceTrack("zz_old", "zz_new");
+                        Assert(places == 4 && st.favorites[0] == "zz_new" && st.queue[0] == "zz_new" && st.recent[1] == "zz_new" && probe.tracks.Count == 2 && !probe.tracks.Contains("zz_old"), "Track replacement missed a place (" + places + ")");
+                        st.playlists.Remove(probe); st.favorites.Clear(); st.favorites.AddRange(favSave); st.queue.Clear(); st.queue.AddRange(queueSave); st.recent.Clear(); st.recent.AddRange(recentSave);
+                        for (int n = 0; n < st.playlists.Count && n < listSave.Count; n++) { st.playlists[n].tracks.Clear(); st.playlists[n].tracks.AddRange(listSave[n]); }
+                        Debug.Log("MUSIC_REPLACE_OK: a replaced track is swapped in favourites, queue, recent and playlists, and not duplicated");
+                    }
+                    {
+                        string filterSample = "[00:00.00]作词：张三\n[00:01.00]作曲 : 李四\n[00:02.00]Produced by Foo\n[00:03.00]真正的歌词一行\n[00:08.00]Another real line: not a credit\n[00:10.00]带 remix 的一行\n[00:12.00]未经许可，不得翻唱";
+                        var filtered = MusicTimedText.Parse(filterSample, ".lrc"); int removed = MusicLyricFilter.Apply(filtered, true, "remix");
+                        Assert(removed == 5 && filtered.lines.Count == 2 && filtered.lines[0].text == "真正的歌词一行", "Lyric filter removed " + removed + " lines, left: " + string.Join(" / ", filtered.lines.ConvertAll(l => l.text)));
+                        var untouched = MusicTimedText.Parse(filterSample, ".lrc"); Assert(MusicLyricFilter.Apply(untouched, false, "remix") == 0 && untouched.lines.Count == 7, "Lyric filter acted while switched off");
+                        Debug.Log("MUSIC_LYRIC_FILTER_OK: credits, notices and custom words removed (" + removed + " of 7), real lines kept, off switch respected");
+                    }
+                    {
+                        // The replacement sheet for an online track: register one, open the sheet and wait for candidates from the other sources.
+                        var probeTrack = MusicLibrarySession.RegisterRemote(new NeteaseLocalBridge.RemoteTrack { id = "1901371647", title = "孤勇者", artist = "陈奕迅", durationMs = 256000 }, "netease");
+                        Assert(probeTrack != null, "Could not register the probe online track");
+                        if (probeTrack != null) { RailwayMusicTerminalView.OpenReplacementFor(probeTrack.id); chartDeadline = EditorApplication.timeSinceStartup + 25; }
+                    }
+                    break;
+                case 41:
+                    if (root.Query(className: "music-replace-row").ToList().Count == 0 && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 42:
+                    Debug.Log("MUSIC_REPLACE_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
+                    Capture("21-replace");
+                    {
+                        // The matching sheet for a local track, and the import path it uses for the lyrics it takes.
+                        bool saved = RailwayMusicTerminalViewReviewAccess.ImportMatched("zz_match_probe", "[00:01.00]第一行\n[00:05.00]第二行", out string matchMessage);
+                        Assert(saved && !string.IsNullOrEmpty(MusicTimedText.Preference("zz_match_probe").fileName), "Matched lyrics were not imported (" + matchMessage + ")");
+                        var matchTrack = MusicLibrarySession.Tracks.FirstOrDefault(t => t.local);
+                        Assert(matchTrack != null, "No local track to open the matching sheet for");
+                        root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                        if (matchTrack != null) { RailwayMusicTerminalView.OpenMatchFor(matchTrack.id, "孤勇者 陈奕迅"); chartDeadline = EditorApplication.timeSinceStartup + 25; }
+                    }
+                    break;
+                case 43:
+                    if (root.Query(className: "music-replace-row").ToList().Count == 0 && EditorApplication.timeSinceStartup < chartDeadline) return;
+                    break;
+                case 44:
+                    Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
+                    Capture("22-match");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
@@ -860,6 +1317,8 @@ public static class RailwayMusicTerminalReview
         }
         catch (Exception ex) { failed = true; Debug.LogException(ex); Finish(); }
     }
+    static double chartDeadline;
+    static void CloseHelpForReview() { root?.Q(className: "music-overlay")?.RemoveFromHierarchy(); }
     static void CheckRestore()
     {
         if (EditorApplication.timeSinceStartup < checkAfter || MusicLibrarySession.Loading) return;

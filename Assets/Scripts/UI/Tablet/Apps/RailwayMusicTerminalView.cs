@@ -7,11 +7,12 @@ using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 
 namespace RailwayRenaissance.UI.Tablet.Apps
 {
-    public sealed class RailwayMusicTerminalView
+    public sealed partial class RailwayMusicTerminalView
     {
         static RailwayMusicTerminalView current;
         VisualElement root, content, navigation, drawer, overlay, disc;
         Label title, time, toast, playingTitle, sectionTitle;
+        VisualElement playerHost, mainArea, bodyArea; VisualElement playerCover; string playerCoverId; Label playingArtist;
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         float vuTime;
@@ -55,13 +56,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         static Label Text(VisualElement parent, string text, string css = "music-label")
         {
-            var label = new Label(text); foreach (var part in css.Split(' ')) if (part.Length > 0) label.AddToClassList(part); parent.Add(label); return label;
+            // Titles, artists and chart names come from online sources: show them as plain text, never as markup.
+            var label = new Label(text) { enableRichText = false }; foreach (var part in css.Split(' ')) if (part.Length > 0) label.AddToClassList(part); parent.Add(label); return label;
         }
         static Button Button(VisualElement parent, string text, Action action, string name = null)
         {
             var button = new Button(action) { name = name }; button.AddToClassList("music-button"); parent.Add(button);
             bool iconOnly = parent.ClassListContains("music-track-row") || parent.ClassListContains("music-queue-row") ||
-                parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-tools") ||
+                parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-queue-item") || parent.ClassListContains("music-tools") ||
                 parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
             MusicTerminalIcons.Apply(button, text, iconOnly); return button;
         }
@@ -76,7 +78,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (sheet != null) root.styleSheets.Add(sheet);
             root.RegisterCallback<DetachFromPanelEvent>(_ => {
                 MusicLibrarySession.Changed -= Refresh;
-                NeteaseLocalBridge.SessionChanged -= Refresh;
+                NeteaseLocalBridge.SessionChanged -= Refresh; MusicCharts.Changed -= OnChartsChanged;
                 MusicLibrarySession.Save();
                 if (current == this) current = null;
             });
@@ -85,30 +87,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.RegisterCallback<AttachToPanelEvent>(_ => {
                 MusicLibrarySession.Changed -= Refresh; MusicLibrarySession.Changed += Refresh;
                 NeteaseLocalBridge.SessionChanged -= Refresh; NeteaseLocalBridge.SessionChanged += Refresh;
+                MusicCharts.Changed -= OnChartsChanged; MusicCharts.Changed += OnChartsChanged;
                 current = this;
                 Refresh();
             });
             root.RegisterCallback<GeometryChangedEvent>(_ => {
                 root.EnableInClassList("music-compact", root.resolvedStyle.width < 1050);
                 root.EnableInClassList("music-overlay-queue", root.resolvedStyle.width < 1280);
+                // The queue is a column beside the player when there is room, and a sheet over the content (above the player) when there is not.
+                var queueParent = root.resolvedStyle.width < 1280 ? mainArea : bodyArea;
+                if (queueParent != null && drawer != null && drawer.parent != queueParent) { queueParent.Add(drawerScrim); queueParent.Add(drawer); }
+                // A short window (a 700 px high tablet less its status bar) gives the player bar a slimmer layout so the library keeps its room.
+                bool shortWindow = root.resolvedStyle.height > 0 && root.resolvedStyle.height < 680f;
+                root.EnableInClassList("music-short", shortWindow);
+                if (vuMeter != null) vuMeter.root.style.display = DisplayStyle.None;   // the slim player has no room for the meters
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
+            MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)Mathf.Clamp(MusicLibrarySession.State.toneMode, 0, 3);
             var header = Box(root, "music-header");
             Button(header, "返回桌面", close, "music-close");
             var navToggle = Button(header, "侧栏", ToggleNavigation, "music-nav-toggle"); navToggle.tooltip = "收起 / 展开侧栏";
-            var brand = Box(header, "music-brand");
-            Text(brand, "随身听", "music-brand-title"); Text(brand, "铁路复兴 / 沿线声音档案", "music-muted");
-            Text(header, "雾峰站  ·  声音收藏\nWUFENG / SOUND ARCHIVE", "music-header-code");
+            // One top row, as in the streaming apps: back and menu on the left, the search pill taking the room, help on the right. The status bar
+            // is an overlay above it, so the row doubles as the app's top bar.
+            search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
+            header.Add(search);
+            StartSearchHints();
+            search.RegisterCallback<FocusInEvent>(_ => ShowSuggestions());
+            search.RegisterCallback<FocusOutEvent>(_ => search.schedule.Execute(HideSuggestions).StartingIn(180));
+            search.RegisterValueChangedCallback(e => { if (e.target != search) return; query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
+            clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
+            clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
-            var main = Box(body, "music-main");
-            var tools = Box(main, "music-tools");
-            search = new TextField { name = "music-search" }; search.AddToClassList("music-search");
-            search.label = "搜索"; tools.Add(search);
-            search.RegisterValueChangedCallback(e => { query = e.newValue.Trim(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
-            clearSearch = Button(tools, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
-            clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
-            Button(tools, "操作帮助", ShowHelp, "music-help");
+            // The sidebar runs the full height of the window; the player card floats under the content only.
+            var column = Box(body, "music-column");
+            var main = Box(column, "music-main"); mainArea = main; bodyArea = body;
             content = Box(main, "music-content");
             drawerScrim = Box(body, "music-queue-scrim", "music-queue-scrim");
             drawerScrim.style.display = DisplayStyle.None;
@@ -120,6 +134,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             toast.pickingMode = PickingMode.Ignore;
             MusicLibrarySession.Changed += Refresh;
             NeteaseLocalBridge.SessionChanged += Refresh;
+            MusicCharts.Changed -= OnChartsChanged; MusicCharts.Changed += OnChartsChanged;   // also here: the attach callback is not run for a window that is already attached
             // Ask the bridge once per run: it restores a stored (encrypted) login and reports whether it is still valid.
             if (!sessionRestoreStarted) { sessionRestoreStarted = true; NeteaseLocalBridge.ForProvider("netease").Send("status", null, _ => { }); }
             Refresh(); Update();
@@ -127,6 +142,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void Refresh()
         {
             if (root == null) return;
+            if (searchHint != null) searchHint.style.display = search.value.Length > 0 ? DisplayStyle.None : DisplayStyle.Flex;
             string pageKey = page + ":" + selected?.id + ":" + query;
             var oldScroll = content.Q<ScrollView>("music-track-list");
             var position = pageKey == renderedPage ? oldScroll != null && oldScroll.contentViewport.layout.height > 0 ? oldScroll.scrollOffset : pendingScroll : Vector2.zero;
@@ -146,6 +162,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             RenderDrawer(); Update();
             if (renderedPage != pageKey) AnimateEntry(content);
             renderedPage = pageKey;
+            root.schedule.Execute(ApplyAccent);
             var next = content.Q<ScrollView>("music-track-list");
             next?.schedule.Execute(() => { if (next.panel != null) next.scrollOffset = position; });
             var nextDrawer = drawer.Q<ScrollView>();
@@ -234,7 +251,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
             Text(navigation, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "原声", "本地音乐", "收藏", "云端" })
+            foreach (string item in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端" })
             {
                 string target = item;
                 var b = Button(navigation, item, () => Navigate(target), "music-nav-" + target);
@@ -270,12 +287,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             content.Clear(); indicators.Clear();
             if (query.Length > 0) { RenderSearch(); return; }
             if (page == "首页") { RenderHome(); return; }
+            if (page == "榜单") { RenderCharts(); return; }
             if (page == "搜索") { RenderSearch(); return; }
             if (page == "云端" && query.Length == 0) { RenderCloud(); return; }
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
             var hero = Box(content, "music-library-heading");
             hero.Add(new VisualElement { pickingMode = PickingMode.Ignore, name = "music-route-engraving" });
-            var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 88);
+            var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 120);
             sleeve.AddToClassList("music-hero-cover");
             var headingText = Box(hero, "music-heading-text");
             Text(headingText, page == "在线歌单" ? MusicCatalogSearch.Label(onlineSource) + " · 歌单" : "沿线声音档案  /  SOUND ARCHIVE", "music-eyebrow");
@@ -283,7 +301,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var items = VisibleTracks();
             Text(headingText, query.Length > 0 ? $"已收录曲库 · {items.Count} 个结果" : page == "在线歌单" ? (onlineLoading ? "正在读取曲目…" : onlineError ?? MusicCatalogSearch.Label(onlineSource) + $" · {items.Count} 首") : page == "原声" ? "沿线原声 · 随旅途逐步解锁" : $"私人收藏 · {items.Count} 首", "music-muted");
             var actions = Box(content, "music-list-actions");
-            Button(actions, "播放全部", () => PlayAll(items), "music-play-all");
+            Button(actions, "播放全部", () => PlayAll(items), "music-play-all").AddToClassList("music-primary");
             if (page == "在线歌单")
             {
                 Button(actions, "刷新", () => OpenOnlinePlaylist(onlineSource, onlineId, onlineTitle), "music-online-refresh");
@@ -353,11 +371,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!string.IsNullOrEmpty(track.titleTranslation)) Text(titleBar, track.titleTranslation, "music-track-translation");
             bool unlocked = MusicLibrarySession.Unlocked(track);
             bool available = unlocked && MusicLibrarySession.Available(track);
-            string status = !unlocked ? "未解锁 · " + track.condition : !available ? (!string.IsNullOrEmpty(track.provider) ? "在线曲目暂不可用" : "文件不可用 · 请检查或重新导入") : track.local ? (string.IsNullOrEmpty(track.artist) ? "私人磁带 · 本地音乐" : "私人磁带 · " + track.artist) : !string.IsNullOrEmpty(track.provider) ? track.category + " · " + (track.artist ?? "") : track.category + " · " + track.condition;
+            string status = !unlocked ? "未解锁 · " + track.condition : !available ? (!string.IsNullOrEmpty(track.provider) ? "在线曲目暂不可用 · 点播放找替代来源" : "文件不可用 · 请检查或重新导入") : track.local ? (string.IsNullOrEmpty(track.artist) ? "私人磁带 · 本地音乐" : "私人磁带 · " + track.artist) : !string.IsNullOrEmpty(track.provider) ? track.category + " · " + (track.artist ?? "") : track.category + " · " + track.condition;
             Text(info, status, "music-track-subtitle").tooltip = status;
             row.EnableInClassList("is-unavailable", !available);
             Text(row, track.duration > 0 ? TabletMusicAppUI.FormatAudioTime(track.duration) : "--:--", "music-duration");
-            var start = Button(row, "播放", () => MusicLibrarySession.Play(track.id, resume), "music-play-" + track.id); start.SetEnabled(available);
+            // An online track that failed to play can still be pressed: the button then looks for the same song on the other sources.
+            bool canReplace = unlocked && !available && !string.IsNullOrEmpty(track.provider);
+            var start = Button(row, "播放", () => { if (canReplace) OpenReplacement(track); else MusicLibrarySession.Play(track.id, resume); }, "music-play-" + track.id); start.SetEnabled(available || canReplace);
+            if (canReplace) start.tooltip = "无法播放：点这里找替代来源";
             Button(row, MusicLibrarySession.State.favorites.Contains(track.id) ? "已藏" : "收藏", () => MusicLibrarySession.ToggleFavorite(track.id), "music-favorite-" + track.id);
             Button moreButton = null;
             moreButton = Button(row, "更多", () => TrackActions(track, moreButton), "music-more-" + track.id);
@@ -369,7 +390,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 #if MUSIC_RUNTIME_REVIEW
             Debug.Log("MUSIC_NAVIGATE " + target);
 #endif
-            page = target; selected = playlist; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
+            HideSuggestions(); page = target; selected = playlist; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
         }
         void OpenSource(string source, bool account)
         {
@@ -382,7 +403,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             int hour = DateTime.Now.Hour;
             Text(scroll.contentContainer, (hour < 5 ? "夜深了" : hour < 11 ? "早上好" : hour < 14 ? "中午好" : hour < 18 ? "下午好" : "晚上好") + " · 雾峰站", "music-home-greeting");
             scroll.contentContainer.AddToClassList("music-home-content");
-            var hero = Box(scroll.contentContainer, "music-listening-hero", "music-home");
+            HomeChips(scroll.contentContainer);
+            HomeCoverTiles(scroll.contentContainer);
+            var hero =Box(scroll.contentContainer, "music-listening-hero", "music-home");
             var last = MusicLibrarySession.Find(MusicLibrarySession.State.currentId);
             var lead = last ?? MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).FirstOrDefault(t => t != null)
                 ?? MusicLibrarySession.Tracks.FirstOrDefault(t => string.IsNullOrEmpty(t.provider) && !t.local && MusicLibrarySession.Unlocked(t));
@@ -407,12 +430,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             var manage = Button(actions, "来源", () => OpenSource(cloudProvider, true), "music-home-manage-sources");
             manage.tooltip = "登录和管理网易云、QQ 音乐、酷狗、波点、Spotify、Subsonic、WebDAV";
-            var tiles = Box(scroll.contentContainer, "music-quick-grid");
-            QuickTile(tiles, "收藏", MusicLibrarySession.State.favorites.Count + " 首", () => Navigate("收藏"), "收藏");
-            QuickTile(tiles, "本地音乐", MusicLibrarySession.Tracks.Count(t => t.local) + " 首", () => Navigate("本地音乐"), "本地音乐");
-            QuickTile(tiles, "原声", MusicLibrarySession.Tracks.Count(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)) + " 首", () => Navigate("原声"), "原声");
-            int linkedSources = MusicCatalogSearch.Sources.Count(NeteaseLocalBridge.HasSession);
-            QuickTile(tiles, "云端", linkedSources > 0 ? linkedSources + " 个来源已连接" : "登录与搜索", () => OpenSource(cloudProvider, true), "云端");
+            MusicCharts.Ensure();
+            HomeCharts(scroll.contentContainer);
             var favorites = MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).Where(t => t != null).Take(6).ToList();
             if (favorites.Count > 0) HomeSongs(scroll.contentContainer, "你的收藏", favorites);
             if (MusicLibrarySession.State.playlists.Count > 0)
@@ -618,6 +637,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         VisualElement Modal(string heading)
         {
+            HideSuggestions();
+            // Any other sheet that replaces the record archive (for example the playlist menu) ends the "came from the lyrics page" return.
+            if (heading != "唱片档案") recordFromLyrics = false;
             if (overlay == null) modalReturnFocus = root.panel?.focusController.focusedElement as VisualElement;
             overlay?.RemoveFromHierarchy(); disc = null; lyrics = null;
             overlay = Box(root, "music-overlay");
@@ -645,12 +667,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var item = new Button(action) { text = text }; item.AddToClassList("music-menu-item"); item.EnableInClassList("is-selected", selected); panel.Add(item); return item;
         }
+        // True while the record archive sheet was opened from the lyrics page: closing it then goes back to the lyrics page, not to the library.
+        bool recordFromLyrics;
         void CloseModal()
         {
+            bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
             overlay?.RemoveFromHierarchy(); overlay = null; disc = null; detailId = null; lyrics = null;
             if (modalReturnFocus?.panel == root.panel && modalReturnFocus.enabledInHierarchy) modalReturnFocus.Focus();
             else root.Focus();
             modalReturnFocus = null;
+            if (backToLyrics) OpenLyrics();
         }
         bool arriving; string renderedArrival;
         bool importing, importCancel; int importDone, importTotal;
@@ -726,10 +752,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 PopoverItem(menu, "下一首播放", false, () => { MusicLibrarySession.Enqueue(track.id, true); CloseModal(); ShowToast("已放到队列最前"); });
                 PopoverItem(menu, "加入播放队列", false, () => { MusicLibrarySession.Enqueue(track.id); CloseModal(); ShowToast("已加入播放队列"); });
                 PopoverItem(menu, "加入歌单…", false, Playlists).name = "music-menu-playlists";
+                if (!string.IsNullOrEmpty(track.provider)) PopoverItem(menu, "找替代来源…", false, () => { CloseModal(); OpenReplacement(track); }).name = "music-menu-replace";
                 if (selected != null && query.Length == 0)
                     PopoverItem(menu, "从当前歌单移除", false, () => { selected.tracks.Remove(track.id); CloseModal(); MusicLibrarySession.Commit(); });
                 if (track.local)
                 {
+                    PopoverItem(menu, "匹配在线歌词和封面…", false, () => { CloseModal(); OpenMatch(track); }).name = "music-menu-match";
                     Box(menu, "music-menu-divider");
                     PopoverItem(menu, "从随身听移出…", false, () => { CloseModal(); ConfirmDelete(new List<string> { track.id }); }).AddToClassList("music-menu-danger");
                 }
@@ -818,22 +846,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             root.Q<Button>("music-queue")?.EnableInClassList("is-active", queueOpen);
             if (!queueOpen) return;
             if (opening) AnimateEntry(drawer);
-            var header = Box(drawer, "music-drawer-header"); Text(header, "接续播放", "music-grow");
-            Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
-            Text(drawer, "下一首从这里出发", "music-muted");
             var queue = MusicLibrarySession.State.queue;
-            Button(drawer, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }).SetEnabled(queue.Count > 0);
+            var header = Box(drawer, "music-drawer-header"); Text(header, "接续播放", "music-grow music-drawer-title");
+            Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
+            var sub = Box(drawer, "music-drawer-sub");
+            Text(sub, queue.Count == 0 ? "下一首从这里出发" : queue.Count + " 首 · 下一首从这里出发", "music-muted music-grow");
+            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
             var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
             if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
             for (int i = 0; i < queue.Count; i++)
             {
                 int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
                 var item = Box(scroll.contentContainer, "music-queue-item");
-                Text(item, track?.title ?? "未知曲目", "music-wrap");
-                if (!MusicLibrarySession.Available(track)) Text(item, "不可用 / 连播时跳过", "music-muted");
-                var row = Box(item, "music-queue-row");
-                // Queue items have variable heights, so drag targets use the containing item bounds.
-                AddQueueReorder(row, item, queue, index);
+                // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
+                AddQueueReorder(item, item, queue, index);
+                var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
+                var queueText = Box(item, "music-queue-text");
+                Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
+                Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
+                item.Insert(1, queueCover); item.Insert(2, queueText);
+                var row = item;
                 Button(row, "播放", () => {
                     var queuedTrack = MusicLibrarySession.Find(id);
                     if (!MusicLibrarySession.Available(queuedTrack))
@@ -868,11 +900,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         void BuildPlayer()
         {
-            var player = Box(root, "music-player", "music-player");
+            var player = Box(playerHost ?? root, "music-player", "music-player");
+            playerCover = Box(player, "music-player-cover"); playerCover.pickingMode = PickingMode.Ignore; playerCover.style.display = DisplayStyle.None;
             var info = Box(player, "music-player-info");
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");
-            Button(info, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail");
-            Button(info, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
+            playingArtist = Text(info, "", "music-track-artist");
+            // Cover and title open the record archive, as in the streaming apps' mini players.
+            info.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
+            playerCover.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
+            playerCover.pickingMode = PickingMode.Position;
             var controls = Box(player, "music-player-controls");
             var buttons = Box(controls, "music-player-buttons");
             buttons.AddToClassList("music-transport");
@@ -915,8 +951,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             effects.Add(speed); ShowSpeed();
             Button(effects, "音色", () => {
                 var panel = Popover("收听音色");
-                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 轻微抖晃", 1), ("旧收音机 · 温暖抖晃", 2) })
-                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; CloseModal(); });
+                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 窄频、沙风、磁带抖晃", 1), ("先民真空电台 · 温暖电子管、底噪", 2), ("电子管调频立体声 · 宽频温润", 3) })
+                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; MusicLibrarySession.State.toneMode = pair.Item2; MusicLibrarySession.Save(); CloseModal(); });
             });
             Button(effects, "定时", () => {
                 var panel = Popover("睡眠定时");
@@ -930,6 +966,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue");
             var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-badge"); queueButton.Add(queueBadgeLabel);
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
+            Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
+            Button(effects, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
         }
         void ShowDetail(string id)
         {
@@ -963,7 +1001,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             Populate();
             var actions = Box(panel, "music-list-actions");
-            Button(actions, "播放", () => MusicLibrarySession.Play(track.id)).SetEnabled(MusicLibrarySession.Available(track));
+            { var detailPlay = Button(actions, "播放", () => MusicLibrarySession.Play(track.id)); detailPlay.AddToClassList("music-primary"); detailPlay.SetEnabled(MusicLibrarySession.Available(track)); }
             Button(actions, MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏", () => { MusicLibrarySession.ToggleFavorite(id); ShowDetail(id); });
             Button(actions, "下一首播放", () => { MusicLibrarySession.Enqueue(id, true); ShowToast("已放到队列最前"); });
             Button(actions, "加入播放队列", () => { MusicLibrarySession.Enqueue(id); ShowToast("已加入播放队列"); });
@@ -1259,7 +1297,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 vuMeter.UpdateLevels(lEnergy, rEnergy, Time.unscaledDeltaTime);
             }
             string id = TabletMusicAppUI.tabletCurrentTrackId;
+            UpdateTheme(id);
             playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
+            { var nowTrack = MusicLibrarySession.Find(id); string line = nowTrack == null ? "" : string.IsNullOrEmpty(nowTrack.artist) ? nowTrack.category : nowTrack.artist; if (playingArtist.text != line) playingArtist.text = line; }
+            if (playerCover != null && playerCoverId != id)
+            {
+                playerCoverId = id; var currentTrack = MusicLibrarySession.Find(id);
+                playerCover.style.display = currentTrack == null ? DisplayStyle.None : DisplayStyle.Flex;
+                if (currentTrack != null)
+                {
+                    playerCover.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(currentTrack.id, currentTrack.category));
+                    string shown = id; MusicAlbumArtResolver.LoadRemoteCover(currentTrack.id, cover => { if (playerCover.panel != null && playerCoverId == shown) { playerCover.style.backgroundImage = new StyleBackground(cover); themeId = "<reload>"; } });
+                }
+            }
             MusicTerminalIcons.Apply(play, MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);
             MusicTerminalIcons.Apply(mode, TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Sequential ? "顺序" : TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Shuffle ? "随机" : "单曲", true);
             MusicTerminalIcons.Apply(favorite, MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏", true);
@@ -1297,6 +1347,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             fill.style.width = Length.Percent(Mathf.Clamp01(value) * 100);
         }
         public static void UpdatePlayback() => current?.Update();
+        /// <summary>Open a track's record archive sheet. The sheet is a modal, so it replaces whatever page overlay (such as the lyrics page) is open.</summary>
+        public static void OpenRecord(string id) { if (current == null) return; current.ShowDetail(id); current.recordFromLyrics = true; }
+        /// <summary>True while an open record archive sheet will return to the lyrics page when closed (read by the review).</summary>
+        public static bool RecordReturnsToLyrics => current != null && current.recordFromLyrics;
         public static bool ShowToast(string message)
         {
             if (current?.toast == null || current.root.panel == null) return false;
