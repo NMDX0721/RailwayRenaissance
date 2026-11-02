@@ -85,7 +85,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var deck=MusicAudioEffectsEngine.GetActiveDeck();
             if(deck!=null){deck.loop=loop;deck.volume=output;}
         }
-        private static bool tabletShowLyrics = true;
         public static MusicSidebarNavView.MusicViewId s_currentView = MusicSidebarNavView.MusicViewId.Discover;
 
         public static string GetTrackDurationText(TabletMusicEntry m)
@@ -118,7 +117,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static VisualElement s_activeWindow;
         private static VisualElement tabletProgressTrack;
         private static VisualElement tabletProgressFill;
-        private static VisualElement tabletProgressKnob;
         private static Label tabletCurTimeLbl;
         private static Label tabletTotalTimeLbl;
         private static Label tabletPlayerTitleLbl;
@@ -129,9 +127,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static VisualElement tabletModeToggleBtn;
         private static Button tabletFavToggleBtn;
         private static Action s_onClose;
-        private static Button tabletVolBtn;
-        private static Slider tabletVolSlider;
-        private static bool tabletProgressScrubbing;
         private static float tabletMusicProgressTimer;
 
         // MiMo 审核追加 6：数据层状态留口 (待播队列、播放计数、最近播放)
@@ -140,13 +135,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static readonly Dictionary<string, float> LastPlayedMap = new Dictionary<string, float>();
 
         // Phase 1 & 3 拆分视图句柄
-        private static MusicSidebarNavView.SidebarHandle s_sidebarHandle;
         private static MusicPlayerBarView.PlayerBarHandle s_playerBarHandle;
         private static MusicNowPlayingSidebarView.SidebarHandle s_nowPlayingSidebarHandle;
 
         // 音浪动画组件引用
         private static readonly List<VisualElement> s_waveBars = new List<VisualElement>();
-        private static float s_waveAnimTime = 0f;
 
         // 卡片与音轨绑定字典：trackId -> CardControls
         private class CardBinding
@@ -165,12 +158,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static readonly Dictionary<string, CardBinding> s_cardBindings = new Dictionary<string, CardBinding>();
 
         // 右侧正在播放大视窗引用（高质感 16-bit 像素发光黑胶唱盘与世界观剧情档案）
-        private static bool s_isImmersiveMode = false;
         private static VisualElement s_nowPlayingVinylDisc;
-        private static VisualElement s_nowPlayingHaloGlow;
-        private static MusicIconHelper.VuMeterHandle s_vuMeterHandle;
-        private static float s_nowPlayingRotation = 0f;
-        private static float s_vinylAngularVelocity = 0f; // 黑胶机械飞轮角速度（带惯性阻尼）
         private static Label s_nowPlayingTitleLbl;
         private static Label s_nowPlayingCategoryLbl;
         private static Label s_nowPlayingLoreLbl;
@@ -226,18 +214,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_toastScheduledItem = null;
             s_progressScheduledItem = null;
             s_activeWindow = null;
-            tabletProgressTrack = tabletProgressFill = tabletProgressKnob = null;
+            tabletProgressTrack = tabletProgressFill = null;
             tabletCurTimeLbl = tabletTotalTimeLbl = tabletPlayerTitleLbl = tabletPlayerSubLbl = null;
             tabletMiniCover = tabletModeToggleBtn = null;
             tabletMiniDiscIcon = null;
-            tabletPlayToggleBtn = tabletFavToggleBtn = tabletVolBtn = null;
-            tabletVolSlider = null;
-            tabletProgressScrubbing = false;
-            s_sidebarHandle = null;
+            tabletPlayToggleBtn = tabletFavToggleBtn = null;
             s_playerBarHandle = null;
             s_nowPlayingSidebarHandle = null;
-            s_nowPlayingVinylDisc = s_nowPlayingHaloGlow = null;
-            s_vuMeterHandle = null;
+            s_nowPlayingVinylDisc = null;
             s_nowPlayingTitleLbl = s_nowPlayingCategoryLbl = s_nowPlayingLoreLbl = s_nowPlayingNextTitleLbl = null;
             s_toastPill = null;
             s_toastLabel = null;
@@ -756,7 +740,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var exitBtn = new Button(() =>
             {
-                s_isImmersiveMode = false;
                 if (win != null) BuildMusicApp(win);
             }) { text = "⛶ 退出沉浸模式" };
             exitBtn.style.height = 24; exitBtn.style.fontSize = 10; exitBtn.style.unityFontDefinition = Fd();
