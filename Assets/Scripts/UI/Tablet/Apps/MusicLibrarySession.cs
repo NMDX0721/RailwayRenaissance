@@ -120,13 +120,34 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             foreach (char c in id) if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z')) return false;
             return true;
         }
+        readonly object writeLock = new object();
+        int writeVersion; string lastJson;
+
+        // Saves that matter (a track change, a favourite, leaving) are written at once and in full.
         public bool Save(MusicLibraryState state)
         {
             if (ReadOnly) return false;
+            string json = JsonUtility.ToJson(state, true);
+            lock (writeLock) { writeVersion++; lastJson = json; return WriteFile(json); }
+        }
+
+        // The periodic save: the text is made here (Unity's serializer is main-thread only), the file is written on a worker thread, and nothing
+        // is written when the text is the same as the last save. A later immediate Save makes any write still waiting obsolete.
+        public void SaveInBackground(MusicLibraryState state)
+        {
+            if (ReadOnly) return;
+            string json = JsonUtility.ToJson(state, true);
+            int version;
+            lock (writeLock) { if (json == lastJson) return; lastJson = json; version = ++writeVersion; }
+            System.Threading.Tasks.Task.Run(() => { lock (writeLock) { if (version == writeVersion) WriteFile(json); } });
+        }
+
+        bool WriteFile(string json)
+        {
             try
             {
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
-                File.WriteAllText(Path + ".tmp", JsonUtility.ToJson(state, true));
+                File.WriteAllText(Path + ".tmp", json);
                 if (File.Exists(Path)) File.Replace(Path + ".tmp", Path, Path + ".bak");
                 else File.Move(Path + ".tmp", Path);
                 return true;
@@ -401,6 +422,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             state.mode = (int)TabletMusicAppUI.tabletPlayMode;
             store.Save(state);
         }
+        /// <summary>The periodic autosave: same content as <see cref="Save"/>, written off the main thread and skipped when nothing changed.</summary>
+        static void SaveInBackground()
+        {
+            if (state == null) return;
+            if (TabletMusicAppUI.TryGetCurrentPosition(out float position))
+            {
+                state.currentId = TabletMusicAppUI.tabletCurrentTrackId;
+                state.position = position;
+            }
+            state.mode = (int)TabletMusicAppUI.tabletPlayMode;
+            store.SaveInBackground(state);
+        }
         public static List<MusicLibraryTrack> RecentTracks(int count)
         {
             Ensure();
@@ -587,7 +620,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             FlushMetadata();
             TabletMusicAppUI.UpdateAudioProgress();
             saveTimer += delta;
-            if (saveTimer >= 5) { saveTimer = 0; Save(); }
+            if (saveTimer >= 10) { saveTimer = 0; SaveInBackground(); }
         }
     }
 }

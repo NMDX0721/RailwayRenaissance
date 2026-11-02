@@ -42,6 +42,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!connected) { SessionUserId = null; SessionNickname = null; }
             MusicCatalogSearch.Invalidate(); SessionChanged?.Invoke();
         }
+        readonly List<int> expiredIds = new List<int>();   // reused every frame: Update must not allocate while nothing is pending
         readonly object sync = new object();
         readonly Queue<string> lines = new Queue<string>();
         readonly Dictionary<int, Pending> pending = new Dictionary<int, Pending>();
@@ -136,7 +137,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 try { var response = JsonUtility.FromJson<Response>(line); if (response != null) Complete(response.id, response); }
                 catch (Exception) { /* Ignore malformed child output. */ }
             }
-            var expired = new List<int>();
+            expiredIds.Clear();
+            var expired = expiredIds;
             foreach (var pair in pending) if (exited || Time.realtimeSinceStartup >= pair.Value.deadline) expired.Add(pair.Key);
             if (expired.Count > 0)
             {
