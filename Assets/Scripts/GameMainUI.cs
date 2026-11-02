@@ -1076,9 +1076,10 @@ public class GameMainUI : MonoBehaviour
         desktopPage0.style.position = Position.Absolute;
         desktopPage0.style.top = 0; desktopPage0.style.left = 0; desktopPage0.style.right = 0; desktopPage0.style.bottom = 0;
         desktopPage0.style.flexDirection = FlexDirection.Column;
-        desktopPage0.style.justifyContent = Justify.SpaceAround;
+        // 小组件在上，图标网格紧跟其后，余下空间留在底部（原来 SpaceAround 把空白均摊成三大块）
+        desktopPage0.style.justifyContent = Justify.FlexStart;
         desktopPage0.style.alignItems = Align.Center;
-        desktopPage0.style.paddingTop = 10;
+        desktopPage0.style.paddingTop = 14;
         pagesRoot.Add(desktopPage0);
 
         // Page 1: 全量应用网格页
@@ -1189,8 +1190,8 @@ public class GameMainUI : MonoBehaviour
         widgetRow.style.flexDirection = FlexDirection.Row;
         widgetRow.style.justifyContent = Justify.Center;
         widgetRow.style.alignItems = Align.Center;
-        widgetRow.style.marginTop = 10;
-        widgetRow.style.marginBottom = 6;
+        widgetRow.style.marginTop = 18;
+        widgetRow.style.marginBottom = 0;
         desktopPage0.Add(widgetRow);
 
         widgetRow.Add(BuildClockWidget());
@@ -1204,7 +1205,7 @@ public class GameMainUI : MonoBehaviour
         commonGrid.style.flexDirection = FlexDirection.Column;
         commonGrid.style.justifyContent = Justify.Center;
         commonGrid.style.alignItems = Align.Center;
-        commonGrid.style.marginTop = 12;
+        commonGrid.style.marginTop = 40;
         desktopPage0.Add(commonGrid);
 
         var r1 = new VisualElement();
@@ -1220,7 +1221,7 @@ public class GameMainUI : MonoBehaviour
 
         var r2 = new VisualElement();
         r2.style.flexDirection = FlexDirection.Row;
-        r2.style.marginTop = 8;
+        r2.style.marginTop = 20;
         commonGrid.Add(r2);
         for (int i = 4; i < 8 && i < Page0SelectedApps.Length; i++)
         {
