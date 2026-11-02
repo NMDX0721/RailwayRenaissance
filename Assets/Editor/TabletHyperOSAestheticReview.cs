@@ -235,7 +235,7 @@ namespace RailwayRenaissance.Editor
                         settings.colorClearValue = new Color(0.06f, 0.07f, 0.06f);
                         document.panelSettings = settings;
 
-                        Resize(1920, 1080);
+                        Resize(2560, 1440);
                         state = (TabletShellState)Field("tabletShellState");
                         presentation = ui.PresentationPreferences;
                         GameData.MasterVolume = 1f;
@@ -542,7 +542,7 @@ namespace RailwayRenaissance.Editor
                         PlayerPrefs.Save();
                         state.ClosePanel();
                         presentation.SetReduceMotion(false);
-                        Resize(1920, 1080);
+                        Resize(2560, 1440);
                         // ---- 注册向导全流程：开机激活 -> 协议 -> 网络 -> 注册 -> 验证码 -> 密码 -> 资料 -> 完成 ----
                         SaveAccountPrefs();
                         AccountService.ResetForTests();
@@ -702,7 +702,7 @@ namespace RailwayRenaissance.Editor
                         stage++; frame = Time.frameCount; break;
 
                     case 37:
-                        Resize(1920, 1080);
+                        Resize(2560, 1440);
                         Teardown(true, "All stages completed successfully");
                         break;
                 }

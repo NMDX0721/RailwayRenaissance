@@ -736,8 +736,8 @@ public class GameMainUI : MonoBehaviour
         "日历", "天气", "计算器", "文件管理"
     };
     private static readonly string[] Page0SelectedApps = {
-        "相册", "音乐", "驾驶台", "媒姬百科", "米家",
-        "铁路", "浏览器", "安全中心", "未来网", "文件管理"
+        "相册", "音乐", "驾驶台", "媒姬百科", "米家", "地图",
+        "铁路", "浏览器", "安全中心", "未来网", "文件管理", "应用商店"
     };
 
     // ============ 岁月AI投影 ============
@@ -1086,7 +1086,7 @@ public class GameMainUI : MonoBehaviour
         // 小组件在上，图标网格紧跟其后，余下空间留在底部（原来 SpaceAround 把空白均摊成三大块）
         desktopPage0.style.justifyContent = Justify.FlexStart;
         desktopPage0.style.alignItems = Align.Center;
-        desktopPage0.style.paddingTop = 8;
+        desktopPage0.style.paddingTop = 0;
         pagesRoot.Add(desktopPage0);
 
         // Page 1: 全量应用网格页
@@ -1133,29 +1133,35 @@ public class GameMainUI : MonoBehaviour
 
         // ---- 底部任务栏（悬浮毛玻璃胶囊Dock） ----
         var dock = new VisualElement();
-        dock.style.height = 76;
+        dock.style.height = 82;
         dock.style.flexDirection = FlexDirection.Row;
         dock.style.justifyContent = Justify.Center;
         dock.style.alignItems = Align.Center;
-        dock.style.backgroundColor = new Color(1f, 1f, 1f, 0.30f);   // 浅色磨砂：贴近 HyperOS Dock
-        dock.style.borderTopLeftRadius = 30; dock.style.borderTopRightRadius = 30;
-        dock.style.borderBottomLeftRadius = 30; dock.style.borderBottomRightRadius = 30;
+        dock.style.backgroundColor = new Color(0.32f, 0.30f, 0.33f, 0.36f);   // 对照参考图：半透明灰色磨砂长条
+        dock.style.borderTopLeftRadius = 32; dock.style.borderTopRightRadius = 32;
+        dock.style.borderBottomLeftRadius = 32; dock.style.borderBottomRightRadius = 32;
         dock.style.borderTopWidth = 1; dock.style.borderBottomWidth = 1;
         dock.style.borderLeftWidth = 1; dock.style.borderRightWidth = 1;
-        var dockBorder = new Color(1f, 1f, 1f, 0.50f);
+        var dockBorder = new Color(1f, 1f, 1f, 0.22f);
         dock.style.borderTopColor = dockBorder; dock.style.borderBottomColor = dockBorder;
         dock.style.borderLeftColor = dockBorder; dock.style.borderRightColor = dockBorder;
         dock.style.alignSelf = Align.Center;
-        dock.style.paddingLeft = 14; dock.style.paddingRight = 14;
-        dock.style.marginBottom = 16;
+        dock.style.paddingLeft = 12; dock.style.paddingRight = 12;
+        dock.style.marginBottom = 14;
         desktop.Add(dock);
 
-        string[] dockApps = { "RDA", "归途", "笔记", "设置" };
-        foreach (var d in dockApps)
-        {
-            var btn = BuildDockIcon(d);
-            dock.Add(btn);
-        }
+        // 对照参考图：一排常用应用 + 竖线分隔 + 另一组（像“最近使用”）共 9 个
+        string[] dockMain = { "RDA", "归途", "笔记", "时钟", "日历", "天气" };
+        string[] dockRecent = { "计算器", "设置", "白头疫苗" };
+        foreach (var d in dockMain) dock.Add(BuildDockIcon(d));
+        var dockDivider = new VisualElement { pickingMode = PickingMode.Ignore };
+        dockDivider.style.width = 2; dockDivider.style.height = 40;
+        dockDivider.style.marginLeft = 8; dockDivider.style.marginRight = 8;
+        dockDivider.style.backgroundColor = new Color(1f, 1f, 1f, 0.28f);
+        dockDivider.style.borderTopLeftRadius = dockDivider.style.borderTopRightRadius = 1;
+        dockDivider.style.borderBottomLeftRadius = dockDivider.style.borderBottomRightRadius = 1;
+        dock.Add(dockDivider);
+        foreach (var d in dockRecent) dock.Add(BuildDockIcon(d));
 
         // ---- 真实「铁路」文件夹浮层 ----
         BuildFolderOverlay();
@@ -1192,102 +1198,103 @@ public class GameMainUI : MonoBehaviour
 
     private void BuildDesktopPage0()
     {
-        // 上半部：小组件行
-        var widgetRow = new VisualElement { name = "desktop-widget-row" };
-        widgetRow.style.flexDirection = FlexDirection.Row;
-        widgetRow.style.justifyContent = Justify.Center;
-        widgetRow.style.alignItems = Align.FlexStart;
-        widgetRow.style.marginTop = 8;
-        widgetRow.style.flexShrink = 0;
-        widgetRow.style.marginBottom = 0;
-        desktopPage0.Add(widgetRow);
+        // 严格按参考截图的栅格：6 列 × 4 行，列距 = 行距 = p。小组件占 0.8p 的方块（或 1.8p 的大块），
+        // 与下面两行应用图标共用同一套列。p 由屏幕高度（约 19%）与可用宽高共同决定。
+        var grid = new VisualElement { name = "desktop-page0-grid" };
+        grid.style.flexShrink = 0;
+        grid.style.marginTop = 4;
+        desktopPage0.Add(grid);
 
-        // 左列：时钟 + 天气（两个方块），下面是线路宽卡；中间大相册；右边月历（对照 HyperOS 桌面的小组件编排）
-        var colA = new VisualElement();
-        colA.style.width = 300; colA.style.flexShrink = 0;
-        widgetRow.Add(colA);
-        var smallRow = new VisualElement();
-        smallRow.style.flexDirection = FlexDirection.Row;
-        smallRow.style.justifyContent = Justify.SpaceBetween;
-        colA.Add(smallRow);
-        smallRow.Add(BuildClockWidget());
-        smallRow.Add(BuildWeatherWidget());
-        var sched = BuildScheduleWidget();
-        sched.style.marginTop = 12;
-        colA.Add(sched);
+        var widgetLayer = new VisualElement { name = "desktop-widget-row", pickingMode = PickingMode.Ignore };
+        widgetLayer.style.position = Position.Absolute;
+        widgetLayer.style.left = 0; widgetLayer.style.top = 0;
+        grid.Add(widgetLayer);
+        var iconLayer = new VisualElement { name = "desktop-icon-rows", pickingMode = PickingMode.Ignore };
+        iconLayer.style.position = Position.Absolute;
+        iconLayer.style.left = 0;
+        grid.Add(iconLayer);
 
-        var gallery = BuildGalleryWidget();
-        gallery.style.marginLeft = 14;
-        widgetRow.Add(gallery);
-        var cal = BuildCalendarWidget();
-        cal.style.marginLeft = 14;
-        widgetRow.Add(cal);
-
-        // 下半部：精选常用应用网格（排除 Dock 与小组件重复项）
-        var commonGrid = new VisualElement { name = "desktop-page0-grid" };
-        var clockW = smallRow[0];
-        var weatherW = smallRow[1];
-        commonGrid.style.flexDirection = FlexDirection.Column;
-        commonGrid.style.justifyContent = Justify.Center;
-        commonGrid.style.alignItems = Align.Center;
-        commonGrid.style.marginTop = 14;
-        commonGrid.style.width = 928;
-        commonGrid.style.flexShrink = 0;
-        desktopPage0.Add(commonGrid);
-
-        var r1 = new VisualElement();
-        r1.style.flexDirection = FlexDirection.Row;
-        r1.style.justifyContent = Justify.SpaceAround;
-        r1.style.width = Length.Percent(100);
-        commonGrid.Add(r1);
-        for (int i = 0; i < 5 && i < Page0SelectedApps.Length; i++)
+        // 小组件在设计尺寸（144 单位）下排版，再整体按栅格缩放：文字与间距保持比例
+        var placed = new List<(VisualElement holder, VisualElement scaler, float lf, float tf, float wf, float hf, float dw)>();
+        void Place(VisualElement w, float dw, float dh, float lf, float tf, float wf, float hf)
         {
-            string name = Page0SelectedApps[i];
-            var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
-            cell.style.marginTop = 4; cell.style.marginBottom = 4;
-            r1.Add(cell);
-            appIcons.Add(cell);
+            w.style.width = dw; w.style.height = dh;
+            w.style.marginLeft = 0; w.style.marginRight = 0; w.style.marginTop = 0; w.style.marginBottom = 0;
+            var holder = new VisualElement { pickingMode = PickingMode.Ignore };
+            holder.style.position = Position.Absolute;
+            var scaler = new VisualElement { pickingMode = PickingMode.Ignore };
+            scaler.style.position = Position.Absolute;
+            scaler.style.left = 0; scaler.style.top = 0;
+            scaler.style.width = dw; scaler.style.height = dh;
+            scaler.style.transformOrigin = new TransformOrigin(0f, 0f, 0f);
+            scaler.Add(w);
+            holder.Add(scaler);
+            widgetLayer.Add(holder);
+            placed.Add((holder, scaler, lf, tf, wf, hf, dw));
+        }
+        const float Cell = 0.8f, Big = 1.8f, Off = 0.1f;
+        Place(BuildClockWidget(), 144f, 144f, Off, Off, Cell, Cell);
+        Place(BuildWeatherWidget(), 144f, 144f, 1f + Off, Off, Cell, Cell);
+        Place(BuildScheduleWidget(), 324f, 144f, Off, 1f + Off, Big, Cell);
+        Place(BuildGalleryWidget(), 324f, 324f, 2f + Off, Off, Big, Big);
+        Place(BuildCalendarWidget(), 324f, 324f, 4f + Off, Off, Big, Big);
+
+        // 应用图标：6 列 × 2 行，每个图标居中放在 p×p 的格子里
+        var slots = new List<VisualElement>();
+        for (int r = 0; r < 2; r++)
+        {
+            var row = new VisualElement { pickingMode = PickingMode.Ignore };
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.position = Position.Absolute;
+            row.style.left = 0;
+            row.name = "desktop-icon-row-" + r;
+            iconLayer.Add(row);
+            for (int c = 0; c < 6; c++)
+            {
+                int idx = r * 6 + c;
+                var slot = new VisualElement { pickingMode = PickingMode.Ignore };
+                slot.style.alignItems = Align.Center; slot.style.justifyContent = Justify.Center;
+                slot.style.flexShrink = 0;
+                row.Add(slot);
+                slots.Add(slot);
+                if (idx >= Page0SelectedApps.Length) continue;
+                string name = Page0SelectedApps[idx];
+                var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+                cell.style.marginLeft = 0; cell.style.marginRight = 0; cell.style.marginTop = 0; cell.style.marginBottom = 0;
+                slot.Add(cell);
+                appIcons.Add(cell);
+            }
         }
 
-        var r2 = new VisualElement();
-        r2.style.flexDirection = FlexDirection.Row;
-        r2.style.justifyContent = Justify.SpaceAround;
-        r2.style.width = Length.Percent(100);
-        r2.style.marginTop = 6;
-        // 小组件与图标网格按桌面可用宽高等比排布：宽屏不再两边留大空白，窄屏（4:3）也不会撑出屏外
         void ApplyDesktopMetrics()
         {
             float pw = desktopPage0.resolvedStyle.width, ph = desktopPage0.resolvedStyle.height;
+            float rootW = root != null ? root.resolvedStyle.width : pw, rootH = root != null ? root.resolvedStyle.height : ph;
             if (float.IsNaN(pw) || float.IsNaN(ph) || pw <= 0f || ph <= 0f) return;
-            float content = Mathf.Min(pw - 40f, 1120f);
-            float uByWidth = (content - 64f) / 6f;
-            float uByHeight = (ph - 16f - 14f - 12f - 206f) / 2f; // 扣掉内边距、间距与两行图标（约 206）
-            float u = Mathf.Clamp(Mathf.Min(uByWidth, uByHeight), 96f, 176f);
-            float big = 2f * u + 12f;
-            colA.style.width = big;
-            clockW.style.width = u; clockW.style.height = u;
-            weatherW.style.width = u; weatherW.style.height = u;
-            sched.style.width = big; sched.style.height = u;
-            gallery.style.width = big; gallery.style.height = big;
-            cal.style.width = big; cal.style.height = big;
-            commonGrid.style.width = 3f * big + 28f;
-            var dial = clockW.Q("clock-dial");
-            if (dial != null)
+            if (float.IsNaN(rootW) || rootW <= 0f) rootW = pw;
+            if (float.IsNaN(rootH) || rootH <= 0f) rootH = ph + 160f;
+            float pitch = Mathf.Min(0.192f * rootH, 0.15f * rootW, (ph - 10f) / 4f);
+            pitch = Mathf.Clamp(pitch, 80f, 220f);
+            grid.style.width = 6f * pitch; grid.style.height = 4f * pitch;
+            widgetLayer.style.width = 6f * pitch; widgetLayer.style.height = 2f * pitch;
+            iconLayer.style.width = 6f * pitch; iconLayer.style.height = 2f * pitch;
+            iconLayer.style.top = 2f * pitch;
+            for (int r = 0; r < 2; r++)
             {
-                dial.style.left = (u - 144f) * 0.5f; dial.style.top = (u - 144f) * 0.5f;
-                dial.style.scale = new Scale(new Vector3(u / 144f, u / 144f, 1f));
+                var row = iconLayer.Q("desktop-icon-row-" + r);
+                row.style.top = r * pitch; row.style.width = 6f * pitch; row.style.height = pitch;
+            }
+            foreach (var slot in slots) { slot.style.width = pitch; slot.style.height = pitch; }
+            foreach (var it in placed)
+            {
+                it.holder.style.left = it.lf * pitch; it.holder.style.top = it.tf * pitch;
+                it.holder.style.width = it.wf * pitch; it.holder.style.height = it.hf * pitch;
+                float k = it.wf * pitch / it.dw;
+                it.scaler.style.scale = new Scale(new Vector3(k, k, 1f));
             }
         }
         desktopPage0.RegisterCallback<GeometryChangedEvent>(_ => ApplyDesktopMetrics());
-        commonGrid.Add(r2);
-        for (int i = 5; i < 10 && i < Page0SelectedApps.Length; i++)
-        {
-            string name = Page0SelectedApps[i];
-            var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
-            cell.style.marginTop = 4; cell.style.marginBottom = 4;
-            r2.Add(cell);
-            appIcons.Add(cell);
-        }
+        grid.RegisterCallback<AttachToPanelEvent>(_ => grid.schedule.Execute(ApplyDesktopMetrics).ExecuteLater(0));
     }
 
     private void BuildDesktopPage1()
@@ -1715,11 +1722,11 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildDockIcon(string name)
     {
         var box = new VisualElement();
-        box.style.marginLeft = 9; box.style.marginRight = 9;
+        box.style.marginLeft = 6; box.style.marginRight = 6;
         box.style.alignItems = Align.Center;
         box.style.justifyContent = Justify.Center;
         box.pickingMode = PickingMode.Position;
-        box.Add(BuildIconTile(name, 54f, 17f, 28));
+        box.Add(BuildIconTile(name, 58f, 18f, 30));
 
         box.RegisterCallback<PointerEnterEvent>(_ => box.style.scale = new Scale(new Vector2(1.12f, 1.12f)));
         box.RegisterCallback<PointerLeaveEvent>(_ => box.style.scale = new Scale(new Vector2(1f, 1f)));
