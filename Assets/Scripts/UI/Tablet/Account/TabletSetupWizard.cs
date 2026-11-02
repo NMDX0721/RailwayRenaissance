@@ -40,6 +40,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         // 向导内收集的数据
         private string _phone = string.Empty;
+        private string _verifiedPhone; // 已通过验证码校验的手机号：回退再前进时不必重新消耗验证码
         private string _password = string.Empty;
         private string _nickname = "旅人";
         private int _avatar;
@@ -348,6 +349,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
                 if (e != null) { err.text = e; return; }
                 if (!_agreedAccount) { err.text = "请先勾选同意账号用户协议与隐私政策"; return; }
                 err.text = string.Empty;
+                if (_verifiedPhone == _phone) { Go(_index + 1); return; } // 这个号码刚验证过，直接往下
                 SendCode();
                 Go(_index + 1);
             }));
@@ -355,6 +357,14 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         private void BuildCode()
         {
+            if (!string.IsNullOrEmpty(_verifiedPhone) && _verifiedPhone == _phone)
+            {
+                // 从密码页退回来：验证码早已被消耗，不再要求重新输入
+                _body.Add(Title("手机号已验证", AccountService.DefaultRegion.Substring(AccountService.DefaultRegion.IndexOf('+')) + " " + _phone));
+                _body.Add(Primary("下一步", () => Go(_index + 1)));
+                return;
+            }
+
             _body.Add(Title("输入验证码", "验证码已发送至 " + AccountService.DefaultRegion.Substring(AccountService.DefaultRegion.IndexOf('+')) + " " + _phone));
 
             var codeField = Field("6 位验证码", false, 6, string.Empty);
@@ -390,6 +400,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
             {
                 string e = AccountService.VerifyCode(_phone, codeField.value);
                 if (e != null) { err.text = e; return; }
+                _verifiedPhone = _phone;
                 err.text = string.Empty;
                 Go(_index + 1);
             }));

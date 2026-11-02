@@ -611,6 +611,12 @@ namespace RailwayRenaissance.Editor
 
                     case 28:
                     {
+                        // 验证码通过后从密码页退回：显示“手机号已验证”，不必再要新验证码就能回到密码页
+                        ClickButtonText("‹ 返回");
+                        bool sawVerified = false;
+                        root.Query<Label>().ForEach(l => { if (l.text == "手机号已验证") sawVerified = true; });
+                        Assert(sawVerified, "Going back to the code page after a successful check must show the verified state");
+                        ClickButtonText("下一步");
                         WizardField("wizard-password").value = "abcdefgh";
                         WizardField("wizard-password-confirm").value = "abcdefgh";
                         ClickButtonText("下一步");
