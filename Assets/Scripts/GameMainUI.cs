@@ -729,8 +729,8 @@ public class GameMainUI : MonoBehaviour
         "日历", "天气", "计算器", "文件管理"
     };
     private static readonly string[] Page0SelectedApps = {
-        "相册", "音乐", "驾驶台", "媒姬百科",
-        "铁路", "浏览器", "安全中心", "未来网"
+        "相册", "音乐", "驾驶台", "媒姬百科", "米家",
+        "铁路", "浏览器", "安全中心", "未来网", "文件管理"
     };
 
     // ============ 岁月AI投影 ============
@@ -1079,7 +1079,7 @@ public class GameMainUI : MonoBehaviour
         // 小组件在上，图标网格紧跟其后，余下空间留在底部（原来 SpaceAround 把空白均摊成三大块）
         desktopPage0.style.justifyContent = Justify.FlexStart;
         desktopPage0.style.alignItems = Align.Center;
-        desktopPage0.style.paddingTop = 14;
+        desktopPage0.style.paddingTop = 8;
         pagesRoot.Add(desktopPage0);
 
         // Page 1: 全量应用网格页
@@ -1189,44 +1189,68 @@ public class GameMainUI : MonoBehaviour
         var widgetRow = new VisualElement { name = "desktop-widget-row" };
         widgetRow.style.flexDirection = FlexDirection.Row;
         widgetRow.style.justifyContent = Justify.Center;
-        widgetRow.style.alignItems = Align.Center;
-        widgetRow.style.marginTop = 18;
+        widgetRow.style.alignItems = Align.FlexStart;
+        widgetRow.style.marginTop = 8;
+        widgetRow.style.flexShrink = 0;
         widgetRow.style.marginBottom = 0;
         desktopPage0.Add(widgetRow);
 
-        widgetRow.Add(BuildClockWidget());
-        widgetRow.Add(BuildWeatherWidget());
-        widgetRow.Add(BuildScheduleWidget());
-        widgetRow.Add(BuildGalleryWidget());
-        widgetRow.Add(BuildCalendarWidget());
+        // 左列：时钟 + 天气（两个方块），下面是线路宽卡；中间大相册；右边月历（对照 HyperOS 桌面的小组件编排）
+        var colA = new VisualElement();
+        colA.style.width = 300; colA.style.flexShrink = 0;
+        widgetRow.Add(colA);
+        var smallRow = new VisualElement();
+        smallRow.style.flexDirection = FlexDirection.Row;
+        smallRow.style.justifyContent = Justify.SpaceBetween;
+        colA.Add(smallRow);
+        smallRow.Add(BuildClockWidget());
+        smallRow.Add(BuildWeatherWidget());
+        var sched = BuildScheduleWidget();
+        sched.style.marginTop = 12;
+        colA.Add(sched);
+
+        var gallery = BuildGalleryWidget();
+        gallery.style.marginLeft = 14;
+        widgetRow.Add(gallery);
+        var cal = BuildCalendarWidget();
+        cal.style.marginLeft = 14;
+        widgetRow.Add(cal);
 
         // 下半部：精选常用应用网格（排除 Dock 与小组件重复项）
         var commonGrid = new VisualElement { name = "desktop-page0-grid" };
         commonGrid.style.flexDirection = FlexDirection.Column;
         commonGrid.style.justifyContent = Justify.Center;
         commonGrid.style.alignItems = Align.Center;
-        commonGrid.style.marginTop = 40;
+        commonGrid.style.marginTop = 14;
+        commonGrid.style.width = 928;
+        commonGrid.style.flexShrink = 0;
         desktopPage0.Add(commonGrid);
 
         var r1 = new VisualElement();
         r1.style.flexDirection = FlexDirection.Row;
+        r1.style.justifyContent = Justify.SpaceAround;
+        r1.style.width = Length.Percent(100);
         commonGrid.Add(r1);
-        for (int i = 0; i < 4 && i < Page0SelectedApps.Length; i++)
+        for (int i = 0; i < 5 && i < Page0SelectedApps.Length; i++)
         {
             string name = Page0SelectedApps[i];
             var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+            cell.style.marginTop = 4; cell.style.marginBottom = 4;
             r1.Add(cell);
             appIcons.Add(cell);
         }
 
         var r2 = new VisualElement();
         r2.style.flexDirection = FlexDirection.Row;
-        r2.style.marginTop = 20;
+        r2.style.justifyContent = Justify.SpaceAround;
+        r2.style.width = Length.Percent(100);
+        r2.style.marginTop = 6;
         commonGrid.Add(r2);
-        for (int i = 4; i < 8 && i < Page0SelectedApps.Length; i++)
+        for (int i = 5; i < 10 && i < Page0SelectedApps.Length; i++)
         {
             string name = Page0SelectedApps[i];
             var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+            cell.style.marginTop = 4; cell.style.marginBottom = 4;
             r2.Add(cell);
             appIcons.Add(cell);
         }
@@ -1274,40 +1298,48 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildClockWidget()
     {
         var w = new VisualElement();
-        w.style.width = 140; w.style.height = 140;
-        w.style.marginLeft = 6; w.style.marginRight = 6;
-        w.style.backgroundColor = new Color(0.12f, 0.12f, 0.16f, 0.82f);
-        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
-        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
-        w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
-        w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
-        w.style.borderTopColor = GlassBorderSoft; w.style.borderBottomColor = GlassBorderSoft;
-        w.style.borderLeftColor = GlassBorderSoft; w.style.borderRightColor = GlassBorderSoft;
-        w.style.paddingLeft = 12; w.style.paddingRight = 12;
-        w.style.paddingTop = 14; w.style.paddingBottom = 12;
-        w.style.justifyContent = Justify.SpaceBetween;
+        w.style.width = 144; w.style.height = 144;
+        w.style.flexShrink = 0;
+        w.style.backgroundColor = new Color(0.97f, 0.96f, 0.95f, 0.97f);
+        w.style.borderTopLeftRadius = w.style.borderTopRightRadius = 28;
+        w.style.borderBottomLeftRadius = w.style.borderBottomRightRadius = 28;
+        w.style.borderTopWidth = w.style.borderBottomWidth = w.style.borderLeftWidth = w.style.borderRightWidth = 1;
+        w.style.borderTopColor = w.style.borderBottomColor = w.style.borderLeftColor = w.style.borderRightColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
         w.style.overflow = Overflow.Hidden;
         w.pickingMode = PickingMode.Position;
         w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
         w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
-        var timeLbl = new Label(System.DateTime.Now.ToString("HH:mm"));
-        timeLbl.style.fontSize = 32;
-        timeLbl.style.color = GlassText;
-        timeLbl.style.unityFontDefinition = Fd();
-        w.Add(timeLbl);
+        // 数字 1–12：绕表盘中心摆放
+        for (int h = 1; h <= 12; h++)
+        {
+            float ang = (h * 30f - 90f) * Mathf.Deg2Rad;
+            float rr = 144f * 0.5f - 6f - 15f;
+            var num = new Label(h.ToString());
+            num.style.position = Position.Absolute;
+            num.style.width = 20; num.style.height = 16;
+            num.style.left = 72f + Mathf.Cos(ang) * rr - 10f;
+            num.style.top = 72f + Mathf.Sin(ang) * rr - 8f;
+            num.style.unityTextAlign = TextAnchor.MiddleCenter;
+            num.style.fontSize = 11;
+            num.style.color = new Color(0.20f, 0.20f, 0.24f, 0.95f);
+            num.style.unityFontDefinition = Fd();
+            num.pickingMode = PickingMode.Ignore;
+            w.Add(num);
+        }
 
-        var dateLbl = new Label(System.DateTime.Now.ToString("MM月dd日 星期") + "日一二三四五六"[(int)System.DateTime.Now.DayOfWeek]);
-        dateLbl.style.fontSize = 12;
-        dateLbl.style.color = GlassTextDim;
+        // 表盘中央的小日期（星期 + 日），对照 HyperOS 时钟
+        var dateLbl = new Label(WeekdayShort[(int)System.DateTime.Now.DayOfWeek].Substring(1) + " " + System.DateTime.Now.Day);
+        dateLbl.style.position = Position.Absolute;
+        dateLbl.style.left = 0; dateLbl.style.right = 0; dateLbl.style.top = 46;
+        dateLbl.style.unityTextAlign = TextAnchor.MiddleCenter;
+        dateLbl.style.fontSize = 10;
+        dateLbl.style.color = new Color(0.45f, 0.45f, 0.50f, 0.9f);
         dateLbl.style.unityFontDefinition = Fd();
+        dateLbl.pickingMode = PickingMode.Ignore;
         w.Add(dateLbl);
 
-        var subLbl = new Label("阿里郎精准授时");
-        subLbl.style.fontSize = 11;
-        subLbl.style.color = RailwayRenaissance.UI.Tablet.TabletTheme.Brass;
-        subLbl.style.unityFontDefinition = Fd();
-        w.Add(subLbl);
+        w.Add(new RailwayRenaissance.UI.Tablet.TabletAnalogClock());
 
         w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.04f, 1.04f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
@@ -1318,8 +1350,8 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildWeatherWidget()
     {
         var w = new VisualElement();
-        w.style.width = 150; w.style.height = 140;
-        w.style.marginLeft = 6; w.style.marginRight = 6;
+        w.style.width = 144; w.style.height = 144; w.style.flexShrink = 0;
+        w.style.marginLeft = 0; w.style.marginRight = 0;
         w.style.backgroundColor = new Color(0.11f, 0.28f, 0.35f, 0.88f); // 深青
         w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
         w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
@@ -1375,8 +1407,8 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildScheduleWidget()
     {
         var w = new VisualElement();
-        w.style.width = 290; w.style.height = 140;
-        w.style.marginLeft = 6; w.style.marginRight = 6;
+        w.style.width = 300; w.style.height = 144; w.style.flexShrink = 0;
+        w.style.marginLeft = 0; w.style.marginRight = 0;
         w.style.backgroundColor = GlassBgLight;
         w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
         w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
@@ -1481,8 +1513,8 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildGalleryWidget()
     {
         var w = new VisualElement();
-        w.style.width = 235; w.style.height = 140;
-        w.style.marginLeft = 6; w.style.marginRight = 6;
+        w.style.width = 300; w.style.height = 300; w.style.flexShrink = 0;
+        w.style.marginLeft = 0; w.style.marginRight = 0;
         w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
         w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
@@ -1538,61 +1570,96 @@ public class GameMainUI : MonoBehaviour
 
     private VisualElement BuildCalendarWidget()
     {
+        var now = System.DateTime.Now;
         var w = new VisualElement();
-        w.style.width = 170; w.style.height = 140;
-        w.style.marginLeft = 6; w.style.marginRight = 6;
-        w.style.backgroundColor = new Color(0.96f, 0.95f, 0.92f, 0.95f); // 日历纸白
-        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
-        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
-        w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
-        w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
-        w.style.borderTopColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
-        w.style.borderBottomColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
-        w.style.borderLeftColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
-        w.style.borderRightColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
+        w.style.width = 300; w.style.height = 300;
+        w.style.flexShrink = 0;
+        w.style.backgroundColor = new Color(0.97f, 0.96f, 0.95f, 0.97f);
+        w.style.borderTopLeftRadius = w.style.borderTopRightRadius = 28;
+        w.style.borderBottomLeftRadius = w.style.borderBottomRightRadius = 28;
+        w.style.borderTopWidth = w.style.borderBottomWidth = w.style.borderLeftWidth = w.style.borderRightWidth = 1;
+        w.style.borderTopColor = w.style.borderBottomColor = w.style.borderLeftColor = w.style.borderRightColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
+        w.style.paddingLeft = 16; w.style.paddingRight = 16; w.style.paddingTop = 14; w.style.paddingBottom = 10;
         w.style.overflow = Overflow.Hidden;
-        w.style.justifyContent = Justify.SpaceBetween;
         w.pickingMode = PickingMode.Position;
         w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
         w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
-        // 顶部红色日历横条
-        var topBar = new VisualElement();
-        topBar.style.height = 26;
-        topBar.style.backgroundColor = new Color(0.82f, 0.22f, 0.22f, 0.95f);
-        topBar.style.flexDirection = FlexDirection.Row;
-        topBar.style.justifyContent = Justify.SpaceBetween;
-        topBar.style.alignItems = Align.Center;
-        topBar.style.paddingLeft = 12; topBar.style.paddingRight = 12;
-        w.Add(topBar);
+        // 抬头：年/月，右侧是游戏里的运营天数
+        var head = new VisualElement();
+        head.style.flexDirection = FlexDirection.Row;
+        head.style.justifyContent = Justify.SpaceBetween;
+        head.style.alignItems = Align.Center;
+        head.style.flexShrink = 0;
+        w.Add(head);
+        var monthLbl = new Label($"{now.Year}/{now.Month}");
+        monthLbl.style.fontSize = 24; monthLbl.style.color = Ink; monthLbl.style.unityFontDefinition = Fd();
+        head.Add(monthLbl);
+        var opLbl = new Label($"运营第 {GameData.Day} 天");
+        opLbl.style.fontSize = 11; opLbl.style.color = new Color(0.45f, 0.45f, 0.5f, 0.9f); opLbl.style.unityFontDefinition = Fd();
+        head.Add(opLbl);
 
-        var monthLbl = new Label("10月 · 运营历");
-        monthLbl.style.fontSize = 11; monthLbl.style.color = Color.white; monthLbl.style.unityFontDefinition = Fd();
-        topBar.Add(monthLbl);
+        // 星期行（周一起始）
+        string[] wk = { "一", "二", "三", "四", "五", "六", "日" };
+        const float cellW = (300f - 32f - 2f) / 7f;
+        var wkRow = new VisualElement();
+        wkRow.style.flexDirection = FlexDirection.Row;
+        wkRow.style.marginTop = 8; wkRow.style.flexShrink = 0;
+        w.Add(wkRow);
+        for (int k = 0; k < 7; k++)
+        {
+            var l = new Label(wk[k]);
+            l.style.width = cellW; l.style.fontSize = 11;
+            l.style.marginLeft = l.style.marginRight = l.style.marginTop = l.style.marginBottom = 0;
+            l.style.paddingLeft = l.style.paddingRight = 0; l.style.flexShrink = 0;
+            l.style.unityTextAlign = TextAnchor.MiddleCenter;
+            l.style.color = k >= 5 ? new Color(0.23f, 0.51f, 0.96f, 0.9f) : new Color(0.35f, 0.35f, 0.40f, 0.9f);
+            l.style.unityFontDefinition = Fd();
+            wkRow.Add(l);
+        }
 
-        var dayIcon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Calendar, 14, Color.white);
-        topBar.Add(dayIcon);
+        // 日期格：当天用强调色圆块
+        var first = new System.DateTime(now.Year, now.Month, 1);
+        int offset = ((int)first.DayOfWeek + 6) % 7;
+        int days = System.DateTime.DaysInMonth(now.Year, now.Month);
+        var grid = new VisualElement();
+        grid.style.flexGrow = 1; grid.style.justifyContent = Justify.SpaceAround;
+        grid.style.marginTop = 4;
+        w.Add(grid);
+        for (int row = 0; row < 6; row++)
+        {
+            var rowEl = new VisualElement();
+            rowEl.style.flexDirection = FlexDirection.Row;
+            for (int col = 0; col < 7; col++)
+            {
+                int day = row * 7 + col - offset + 1;
+                var cell = new VisualElement();
+                cell.style.width = cellW; cell.style.height = 31;
+                cell.style.alignItems = Align.Center; cell.style.justifyContent = Justify.Center;
+                if (day >= 1 && day <= days)
+                {
+                    bool today = day == now.Day;
+                    var inner = new Label(day.ToString());
+                    inner.style.width = 28; inner.style.height = 28;
+                    inner.style.unityTextAlign = TextAnchor.MiddleCenter;
+                    inner.style.fontSize = 13;
+                    inner.style.unityFontDefinition = Fd();
+                    if (today)
+                    {
+                        inner.style.backgroundColor = RailwayRenaissance.UI.Tablet.TabletTheme.AccentOnLight;
+                        inner.style.color = Color.white;
+                        inner.style.borderTopLeftRadius = inner.style.borderTopRightRadius = 14;
+                        inner.style.borderBottomLeftRadius = inner.style.borderBottomRightRadius = 14;
+                    }
+                    else inner.style.color = col >= 5 ? new Color(0.23f, 0.51f, 0.96f, 1f) : Ink;
+                    cell.Add(inner);
+                }
+                rowEl.Add(cell);
+            }
+            grid.Add(rowEl);
+        }
 
-        // 中部大天数（居中撑开）
-        var centerBox = new VisualElement();
-        centerBox.style.flexGrow = 1;
-        centerBox.style.alignItems = Align.Center;
-        centerBox.style.justifyContent = Justify.Center;
-        w.Add(centerBox);
-
-        var dayNum = new Label(GameData.Day.ToString());
-        dayNum.style.fontSize = 38; dayNum.style.color = new Color(0.15f, 0.15f, 0.18f, 0.95f);
-        dayNum.style.unityFontDefinition = Fd();
-        centerBox.Add(dayNum);
-
-        var eraLbl = new Label("主体历 105 年");
-        eraLbl.style.fontSize = 11; eraLbl.style.color = new Color(0.45f, 0.45f, 0.5f, 0.85f);
-        eraLbl.style.unityFontDefinition = Fd();
-        eraLbl.style.paddingBottom = 8;
-        eraLbl.style.alignSelf = Align.Center;
-        w.Add(eraLbl);
-
-        w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.04f, 1.04f)));
+        w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.02f, 1.02f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
         w.RegisterCallback<ClickEvent>(_ => LaunchApp("日历"));
         return w;
@@ -3642,8 +3709,8 @@ public class GameMainUI : MonoBehaviour
             {
                 statusDate.text = FormatStatusDate(System.DateTime.Now);
                 bool islandShown = SuperIsland != null && SuperIsland.PrimaryType != RailwayRenaissance.UI.Tablet.SystemShell.TabletSuperIsland.IslandAppType.None;
-                // 日期只在桌面显示；应用内（含音乐）状态栏只留时间，避免和应用自己的顶栏挤在一起
-                statusDate.style.display = (islandShown || activeTabletTask != null) ? DisplayStyle.None : DisplayStyle.Flex;
+                // 日期在桌面和应用里都始终显示（超级岛紧挨在日期右边）
+                statusDate.style.display = DisplayStyle.Flex;
             }
             if (statusQuiet != null && tabletShellState != null)
                 statusQuiet.style.display = tabletShellState.QuietMode ? DisplayStyle.Flex : DisplayStyle.None;
