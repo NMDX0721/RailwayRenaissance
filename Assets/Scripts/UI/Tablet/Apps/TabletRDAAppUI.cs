@@ -68,15 +68,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         lineTitleRow.Add(lineTitle);
 
         var trendBtn = new Button(() => s_launchApp?.Invoke("五线态势"));
-        trendBtn.text = "📊 五线态势";
+        trendBtn.text = "五线态势";
         trendBtn.style.fontSize = 11;
         trendBtn.style.unityFontDefinition = Fd();
         trendBtn.style.backgroundColor = new Color(0.2f, 0.35f, 0.5f, 0.5f);
         trendBtn.style.color = Color.white;
         trendBtn.style.borderTopWidth = 0; trendBtn.style.borderBottomWidth = 0;
         trendBtn.style.borderLeftWidth = 0; trendBtn.style.borderRightWidth = 0;
-        trendBtn.style.borderTopLeftRadius = 4; trendBtn.style.borderTopRightRadius = 4;
-        trendBtn.style.borderBottomLeftRadius = 4; trendBtn.style.borderBottomRightRadius = 4;
+        trendBtn.style.borderTopLeftRadius = RadiusPill; trendBtn.style.borderTopRightRadius = RadiusPill;
+        trendBtn.style.borderBottomLeftRadius = RadiusPill; trendBtn.style.borderBottomRightRadius = RadiusPill;
         trendBtn.style.paddingLeft = 8; trendBtn.style.paddingRight = 8;
         trendBtn.style.paddingTop = 2; trendBtn.style.paddingBottom = 2;
         lineTitleRow.Add(trendBtn);

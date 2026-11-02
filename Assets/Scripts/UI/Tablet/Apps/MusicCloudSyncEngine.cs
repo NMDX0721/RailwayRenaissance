@@ -184,8 +184,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public static bool IsNeteaseLoggedIn()
         {
-            return !string.IsNullOrEmpty(PlayerPrefs.GetString("Netease_Cookie", "")) ||
-                   !string.IsNullOrEmpty(PlayerPrefs.GetString("Netease_Uid", ""));
+            string cookie = PlayerPrefs.GetString("Netease_Cookie", "");
+            return cookie.Contains("MUSIC_U=") && !cookie.Contains("RR_UID=");
         }
 
         public static string GetNeteaseUserNick()
@@ -253,13 +253,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
 
             PlayerPrefs.SetString("Netease_Uid", uid);
-            PlayerPrefs.SetString("Netease_Nick", "列车长 " + uid);
-            if (string.IsNullOrEmpty(PlayerPrefs.GetString("Netease_Cookie", "")))
-            {
-                PlayerPrefs.SetString("Netease_Cookie", $"RR_UID={uid}; os=pc");
-            }
             PlayerPrefs.Save();
-            onSuccess?.Invoke();
+            onFail?.Invoke("UID 已保存为公开曲库查询配置；这不是账号登录，尚未同步歌单");
         }
 
         public void StartNeteaseQrLogin(Action<string, string> onQrReady, Action onLoginSuccess, Action<string> onFail, Action<string> onStatusUpdate = null)
@@ -428,8 +423,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // ==================== 4. Bilibili 扫码与收藏夹自动同步 ====================
         public static bool IsBilibiliLoggedIn()
         {
-            return !string.IsNullOrEmpty(PlayerPrefs.GetString("Bili_Cookie", "")) ||
-                   !string.IsNullOrEmpty(PlayerPrefs.GetString("Bili_SESSDATA", ""));
+            string cookie = PlayerPrefs.GetString("Bili_Cookie", "") + PlayerPrefs.GetString("Bili_SESSDATA", "");
+            return cookie.Contains("SESSDATA=") && !cookie.Contains("QR_AUTH_") && !cookie.Contains("LOGIN_");
         }
 
         public static string GetBilibiliUserNick()
@@ -523,7 +518,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                                 string cookieHeader = req.GetResponseHeader("Set-Cookie");
                                 if (string.IsNullOrEmpty(cookieHeader))
                                 {
-                                    cookieHeader = $"bili_auth=QR_AUTH_{qrcodeKey}; SESSDATA=LOGIN_{timer}";
+                                    onFail?.Invoke("扫码已确认，但未收到真实登录凭据，请重试");
+                                    yield break;
                                 }
                                 PlayerPrefs.SetString("Bili_Cookie", cookieHeader);
                                 PlayerPrefs.SetString("Bili_SESSDATA", cookieHeader);
@@ -592,51 +588,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseSpotifyPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入有效的 Spotify 歌单链接或 URI");
-                return;
-            }
-
-            // 提取 Playlist ID
-            string playlistId = "";
-            if (url.Contains("/playlist/"))
-            {
-                int pIdx = url.IndexOf("/playlist/") + 10;
-                int endIdx = url.IndexOf("?", pIdx);
-                playlistId = endIdx != -1 ? url.Substring(pIdx, endIdx - pIdx) : url.Substring(pIdx);
-            }
-            else if (url.StartsWith("spotify:playlist:"))
-            {
-                playlistId = url.Substring("spotify:playlist:".Length);
-            }
-            else
-            {
-                playlistId = url.Trim();
-            }
-
-            if (string.IsNullOrEmpty(playlistId))
-            {
-                onFail?.Invoke("无法识别 Spotify 歌单 ID");
-                return;
-            }
-
-            // 成功解析并对齐 Spotify 开放歌单模型
-            var list = new CloudPlaylist
-            {
-                id = "spotify_" + playlistId,
-                title = "Spotify 收藏歌单 · [" + (playlistId.Length > 8 ? playlistId.Substring(0, 8) : playlistId) + "...]",
-                platform = "spotify",
-                trackCount = 12
-            };
-
-            // 预装入 Spotify 风格特色原声与世界观对齐歌曲
-            list.tracks.Add(new CloudTrackItem { id = "sp_1", title = "Midnight Rail Reverie", artist = "Spotify Station", album = "Desert Odyssey", platform = "spotify", duration = 215 });
-            list.tracks.Add(new CloudTrackItem { id = "sp_2", title = "Sand & Symphony No. 9", artist = "Nordic Philharmonic", album = "Acoustic Tapes", platform = "spotify", duration = 194 });
-            list.tracks.Add(new CloudTrackItem { id = "sp_3", title = "Starlight Sleeper Express", artist = "Folia Ambient Lab", album = "Deep Focus", platform = "spotify", duration = 248 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入歌单链接"); return; }
             SaveSpotifyConfig(url, GetSpotifyClientId());
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("链接配置已接收；此平台尚未接通真实歌单同步，未导入曲目");
         }
 
         // ==================== 7. QQ 音乐 (QQ Music 绿钻云端) ====================
@@ -658,37 +612,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseQQMusicPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入有效的 QQ 音乐歌单链接");
-                return;
-            }
-
-            string listId = "";
-            if (url.Contains("/playlist/"))
-            {
-                int pIdx = url.IndexOf("/playlist/") + 10;
-                int endIdx = url.IndexOf("?", pIdx);
-                listId = endIdx != -1 ? url.Substring(pIdx, endIdx - pIdx) : url.Substring(pIdx);
-            }
-            else
-            {
-                listId = url.Trim();
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "qq_" + listId,
-                title = "QQ 音乐同步歌单 · [" + (listId.Length > 8 ? listId.Substring(0, 8) : listId) + "...]",
-                platform = "qq",
-                trackCount = 10
-            };
-
-            list.tracks.Add(new CloudTrackItem { id = "qq_1", title = "远行者的汽笛", artist = "QQ音乐特供", album = "绿钻无损专区", platform = "qq", duration = 188 });
-            list.tracks.Add(new CloudTrackItem { id = "qq_2", title = "千里马动力学回响", artist = "先民音响实验室", album = "大漠之音", platform = "qq", duration = 226 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入歌单链接"); return; }
             SaveQQMusicConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("链接配置已接收；此平台尚未接通真实歌单同步，未导入曲目");
         }
 
         // ==================== 8. 酷狗音乐 (KuGou Music) ====================
@@ -710,24 +636,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseKuGouPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入有效的酷狗歌单链接或分享码");
-                return;
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "kugou_" + url.GetHashCode().ToString("X8"),
-                title = "酷狗音乐同步 · [KRC 逐字动效歌词专区]",
-                platform = "kugou",
-                trackCount = 8
-            };
-            list.tracks.Add(new CloudTrackItem { id = "kg_1", title = "铁轨上的晚钟", artist = "酷狗无损原声", album = "经典车载CD", platform = "kugou", duration = 205 });
-            list.tracks.Add(new CloudTrackItem { id = "kg_2", title = "沙暴尽头的晨曦", artist = "荒原重奏组", album = "大漠回响", platform = "kugou", duration = 184 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入链接"); return; }
             SaveKuGouConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("已保存链接配置；此平台尚未接通真实同步，未导入曲目");
         }
 
         // ==================== 9. 波点音乐 (Bodian Music) ====================
@@ -749,24 +660,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseBodianPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入有效的波点音乐分享链接");
-                return;
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "bodian_" + url.GetHashCode().ToString("X8"),
-                title = "波点音乐极简流播 · [沉浸无损集]",
-                platform = "bodian",
-                trackCount = 6
-            };
-            list.tracks.Add(new CloudTrackItem { id = "bd_1", title = "波点光隙 (Bodian Aurora)", artist = "极光调频", album = "氛围宇宙", platform = "bodian", duration = 192 });
-            list.tracks.Add(new CloudTrackItem { id = "bd_2", title = "风蚀地貌的节拍", artist = "先民声音设计师", album = "荒野脉动", platform = "bodian", duration = 230 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入歌单链接"); return; }
             SaveBodianConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("链接配置已接收；此平台尚未接通真实歌单同步，未导入曲目");
         }
 
         // ==================== 10. YouTube Music (YTM 全球流媒体) ====================
@@ -788,24 +684,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseYtmPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入 YouTube Music 歌单或视频链接 (music.youtube.com)");
-                return;
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "ytm_" + url.GetHashCode().ToString("X8"),
-                title = "YouTube Music 全球流媒体 · [Remix / 同人原声专区]",
-                platform = "ytm",
-                trackCount = 10
-            };
-            list.tracks.Add(new CloudTrackItem { id = "ytm_1", title = "Cybernetic Desert Express", artist = "YTM Ambient Artists", album = "Global Railway Series", platform = "ytm", duration = 245 });
-            list.tracks.Add(new CloudTrackItem { id = "ytm_2", title = "Echoes of Chollima (Lo-Fi Remix)", artist = "Steamwave Producer", album = "Vintage Iron", platform = "ytm", duration = 178 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入链接"); return; }
             SaveYtmConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("已保存链接配置；此平台尚未接通真实同步，未导入曲目");
         }
 
         // ==================== 11. AMLL 社区逐字歌词数据库 (AMLL Database) ====================
@@ -839,24 +720,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseAppleMusicPlaylist(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入 Apple Music 歌单或专辑链接 (music.apple.com)");
-                return;
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "apple_" + url.GetHashCode().ToString("X8"),
-                title = "Apple Music 经典无损原声 · [Lossless Audio]",
-                platform = "apple",
-                trackCount = 8
-            };
-            list.tracks.Add(new CloudTrackItem { id = "am_1", title = "Sand Ocean Solitude", artist = "Apple Spatial Acoustics", album = "Atmospheric Railway", platform = "apple", duration = 210 });
-            list.tracks.Add(new CloudTrackItem { id = "am_2", title = "Brass Piston Chamber Symphony", artist = "Industrial String Quartet", album = "Machinery & Sand", platform = "apple", duration = 195 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入歌单链接"); return; }
             SaveAppleMusicConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("链接配置已接收；此平台尚未接通真实歌单同步，未导入曲目");
         }
 
         // ==================== 13. SoundCloud (开放独立音频) ====================
@@ -878,23 +744,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void ParseSoundCloudTrack(string url, Action<CloudPlaylist> onSuccess, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                onFail?.Invoke("请输入 SoundCloud 曲目或播单 URL (soundcloud.com)");
-                return;
-            }
-
-            var list = new CloudPlaylist
-            {
-                id = "sc_" + url.GetHashCode().ToString("X8"),
-                title = "SoundCloud 独立电波流 · [Underground Audio]",
-                platform = "soundcloud",
-                trackCount = 6
-            };
-            list.tracks.Add(new CloudTrackItem { id = "sc_1", title = "Wasteland Locomotive Echo", artist = "Desert Beatmaker", album = "Sand Radio Sessions", platform = "soundcloud", duration = 188 });
-
+            if (string.IsNullOrWhiteSpace(url)) { onFail?.Invoke("请输入链接"); return; }
             SaveSoundCloudConfig(url);
-            onSuccess?.Invoke(list);
+            onFail?.Invoke("已保存链接配置；此平台尚未接通真实同步，未导入曲目");
         }
 
         // ==================== 14. WebDAV 私人网盘与局域网挂载 ====================
@@ -924,9 +776,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             StartCoroutine(CoFetchNeteasePlaylists(uid, onDone, onFail));
         }
 
+        [Serializable] private sealed class NeteasePlaylistReply
+        {
+            public int code;
+            public NeteasePlaylistRecord[] playlist;
+        }
+        [Serializable] private sealed class NeteasePlaylistRecord
+        {
+            public long id;
+            public string name;
+            public int trackCount;
+        }
+
         private IEnumerator CoFetchNeteasePlaylists(string uid, Action<List<CloudPlaylist>> onDone, Action<string> onFail)
         {
-            if (string.IsNullOrEmpty(uid)) uid = PlayerPrefs.GetString("Netease_Uid", "12345678");
+            if (string.IsNullOrEmpty(uid)) uid = PlayerPrefs.GetString("Netease_Uid", "");
+            if (string.IsNullOrEmpty(uid)) { onFail?.Invoke("请先填写真实 UID"); yield break; }
             string url = $"{NeteaseApiBaseUrl}/user/playlist?uid={uid}&limit=20";
 
             var playlists = new List<CloudPlaylist>();
@@ -937,54 +802,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 yield return req.SendWebRequest();
                 if (req.result == UnityWebRequest.Result.Success)
                 {
-                    string json = req.downloadHandler.text;
-                    // 解析歌单
-                    int pIdx = 0;
-                    while ((pIdx = json.IndexOf("\"name\":\"", pIdx)) != -1)
-                    {
-                        int nStart = pIdx + 8;
-                        int nEnd = json.IndexOf("\"", nStart);
-                        if (nEnd > nStart)
-                        {
-                            string pName = json.Substring(nStart, nEnd - nStart);
-                            playlists.Add(new CloudPlaylist
-                            {
-                                id = "netease_pl_" + playlists.Count,
-                                title = pName,
-                                platform = "netease",
-                                trackCount = UnityEngine.Random.Range(12, 48)
-                            });
-                        }
-                        pIdx = nEnd + 1;
-                        if (playlists.Count >= 8) break;
-                    }
+                    NeteasePlaylistReply reply = null;
+                    try { reply = JsonUtility.FromJson<NeteasePlaylistReply>(req.downloadHandler.text); }
+                    catch (Exception) { }
+                    if (reply != null && reply.code == 200 && reply.playlist != null)
+                        foreach (var item in reply.playlist)
+                            playlists.Add(new CloudPlaylist { id = item.id.ToString(), title = item.name,
+                                platform = "netease", trackCount = item.trackCount });
                 }
             }
 
             if (playlists.Count == 0)
             {
-                // 离线/防风控兜底模拟：生成高质量车长专属歌单，防止界面卡住！
-                playlists.Add(new CloudPlaylist
-                {
-                    id = "netease_fav_" + uid,
-                    title = $"我喜欢的音乐 · [{PlayerPrefs.GetString("Netease_Nick", "网易云车长")}]",
-                    platform = "netease",
-                    trackCount = 28
-                });
-                playlists.Add(new CloudPlaylist
-                {
-                    id = "netease_ost_rail",
-                    title = "铁路复兴：沙能冲击 原声巡礼特别辑",
-                    platform = "netease",
-                    trackCount = 26
-                });
-                playlists.Add(new CloudPlaylist
-                {
-                    id = "netease_vintage_radio",
-                    title = "先民留声机与工务段短波电台实况",
-                    platform = "netease",
-                    trackCount = 14
-                });
+                onFail?.Invoke("未取得歌单：连接失败或账号没有公开歌单");
+                yield break;
             }
 
             onDone?.Invoke(playlists);

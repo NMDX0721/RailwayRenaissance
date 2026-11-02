@@ -74,6 +74,7 @@ public class VNManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        isAutoPlay = PlayerPrefs.GetInt("AutoPlay", 0) == 1;   // 设置页“自动播放模式”
 
         foreach (var go in FindObjectsByType<GameObject>(FindObjectsInactive.Exclude))
         {
@@ -105,6 +106,7 @@ public class VNManager : MonoBehaviour
     {
         SetupGameCursor();
         SetupCanvas();
+        if (isAutoPlay) UpdateAutoPlayButtonVisual();
         GameData.ApplyVolume();
         SetupEventSystem();
         // 预热阶段一（文档+锁屏，日志验证安全段）；桌面由 Show 时后台错帧加载
@@ -1433,7 +1435,8 @@ public class VNManager : MonoBehaviour
                                 (saveLoadUI != null && saveLoadUI.IsOpen) ||
                                 (prologueQuiz != null && prologueQuiz.IsOpen) ||
                                 (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) ||
-                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex);
+                                (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) ||
+                                tabletSetupOpen;
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
         }
@@ -1522,7 +1525,8 @@ public class VNManager : MonoBehaviour
 
         // Shift+→：快进下一句（快退已按需求移除）
         bool shiftHeld = LegacyInputAdapter.GetKey(KeyCode.LeftShift) || LegacyInputAdapter.GetKey(KeyCode.RightShift);
-        if (shiftHeld)
+        // 平板激活向导等面板打开时，Shift+→ 不得推进背后的剧情（向导输入框里 Shift+方向键选字也会触发）
+        if (shiftHeld && !AdvanceBlockedByPanels())
         {
             if (LegacyInputAdapter.GetKeyDown(KeyCode.RightArrow) || KeyBindings.IsDown(KeyBindings.Action.SkipForward))
             {
@@ -1622,6 +1626,7 @@ public class VNManager : MonoBehaviour
     private bool AdvanceBlockedByPanels()
     {
         if (IsCinematicBlocking()) return true; // 分镜强制播放：空格/长按/点击不可穿透
+        if (tabletSetupOpen) return true;       // 平板激活向导打开时，键盘/点击不得推进剧情
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
         if (exitDialog != null && exitDialog.style.display == DisplayStyle.Flex) return true;
         if (optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex) return true;
@@ -1644,6 +1649,7 @@ public class VNManager : MonoBehaviour
 
         // 开场/话标题卡分镜强制播放：左键点击冒泡到这里也不推进
         if (IsCinematicBlocking()) return;
+        if (tabletSetupOpen) return;
 
         // 防抖：避免快速双击导致打字机被跳过
         if (Time.unscaledTime - lastAdvanceTime < AdvanceCooldown) return;
@@ -1682,6 +1688,8 @@ public class VNManager : MonoBehaviour
 
     private void AdvanceOnClick()
     {
+        // 设置页“点击对话框推进”关闭后，点击不再推进（仍可用键盘、Auto 与菜单）
+        if (PlayerPrefs.GetInt("ClickAdvance", 1) == 0) return;
         lastAdvanceTime = Time.unscaledTime;
         StopAutoPlay();
         if (dialogueBox != null && dialogueBox.IsTyping())
@@ -2373,6 +2381,7 @@ public class VNManager : MonoBehaviour
             cgScreen.style.right = 0; cgScreen.style.bottom = 0;
             cgScreen.style.alignItems = Align.Center;
             cgScreen.style.justifyContent = Justify.Center;
+            cgScreen.RegisterCallback<GeometryChangedEvent>(_ => LayoutCgImage());
             cgScreen.pickingMode = PickingMode.Position;
             cgScreen.RegisterCallback<ClickEvent>(e =>
             {
@@ -2398,6 +2407,8 @@ public class VNManager : MonoBehaviour
             {
                 var img = new VisualElement();
                 img.name = "cg-image";
+                img.userData = tex;
+                img.style.flexShrink = 0;
                 img.style.backgroundImage = new StyleBackground(Background.FromTexture2D(tex));
 
                 if (isSmall)
@@ -2418,12 +2429,12 @@ public class VNManager : MonoBehaviour
                 else
                 {
                     // 全屏：contain缩放
-                    img.style.flexGrow = 1;
                     img.style.maxWidth = new Length(100, LengthUnit.Percent);
                     img.style.maxHeight = new Length(100, LengthUnit.Percent);
                     img.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
                 }
                 cgScreen.Add(img);
+                LayoutCgImage();
             }
             else
             {
@@ -2444,6 +2455,20 @@ public class VNManager : MonoBehaviour
         hint.style.color = new Color(1f, 1f, 1f, 0.35f);
         hint.style.unityFontDefinition = new FontDefinition { font = gameFont };
         cgScreen.Add(hint);
+    }
+
+    private void LayoutCgImage()
+    {
+        var img = cgScreen?.Q<VisualElement>("cg-image");
+        if (img == null || !(img.userData is Texture2D tex)) return;
+        // Background images do not give an empty VisualElement intrinsic dimensions.
+        float width = cgScreen.contentRect.width;
+        float height = cgScreen.contentRect.height;
+        if (width <= 0 || height <= 0) return;
+        float fraction = img.style.maxWidth.value.value < 100 ? 0.6f : 1f;
+        float scale = Mathf.Min(width * fraction / tex.width, height * fraction / tex.height);
+        img.style.width = tex.width * scale;
+        img.style.height = tex.height * scale;
     }
 
     private void HideCgScreen()
@@ -2886,11 +2911,44 @@ public class VNManager : MonoBehaviour
             case "TRANSITION_TO_GAMEPLAY":
                 TransitionToGameplay();
                 break;
+            case "TABLET_SETUP":
+                ShowTabletSetup();
+                break;
             default:
                 Debug.LogWarning("[VN] Unknown special command: " + command);
                 NextDialogue();
                 break;
         }
+    }
+
+    private bool tabletSetupOpen;
+
+    /// <summary>
+    /// 剧情里拆封平板后的“开机激活 + 注册小米账号”：覆盖层向导，完成后继续下一句。
+    /// 已注册过（重玩 Day0、读档）时直接跳过。剧情内不允许“暂不登录”。
+    /// </summary>
+    private void ShowTabletSetup()
+    {
+        if (RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered || uiDoc == null)
+        {
+            NextDialogue();
+            return;
+        }
+        StopAutoPlay(false);
+        dialogueBox?.Hide();
+        HideOptions();
+        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
+        tabletSetupOpen = true;
+        RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Show(
+            uiDoc.rootVisualElement,
+            RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Flow.Activation,
+            false,
+            registered =>
+            {
+                tabletSetupOpen = false;
+                NextDialogue();
+            },
+            (title, body) => { GameMainUI.Instance?.ShellState?.Post(title, body); });
     }
 
     /// <summary>VN→经营场景过渡：构建 VNExitData 并切换场景。</summary>
@@ -3153,9 +3211,12 @@ public class VNManager : MonoBehaviour
 
     private IEnumerator AutoPlayTimer()
     {
-        yield return new WaitForSeconds(autoPlayDelay);
+        // 设置页“自动播放间隔”(1–10 秒)；未设置过时沿用原来的 2 秒
+        float delay = PlayerPrefs.HasKey("AutoInterval") ? Mathf.Clamp(PlayerPrefs.GetInt("AutoInterval", 2), 1, 10) : autoPlayDelay;
+        yield return new WaitForSeconds(delay);
 
         if (!isAutoPlay || !isScriptRunning) yield break;
+        if (tabletSetupOpen) yield break;
 
         // 面板/菜单/对话框打开时暂停自动推进（防止点菜单后面板开着仍跳句）
         if (menuExpanded) yield break;

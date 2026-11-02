@@ -1,0 +1,17 @@
+{
+  "id": "sleepers",
+  "audioSha256": "060b9bc7e2989731abf6b374f2795686791a513034c3991d2ebf33218e65861a",
+  "transcriptSha256": "b261af64a18fe08c641b62578c59a20e4c17cc0829516c82d6e67ec9936baa53",
+  "modelProvenance": {
+    "repo": "Systran/faster-whisper-base",
+    "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66"
+  },
+  "humanListeningVerified": false,
+  "status": "automatic_draft",
+  "lineCount": 35,
+  "source": "原声字幕 · 自动对齐草稿（待试听校准）",
+  "reviewReport": "tools/music/alignment_review/base/sleepers.sleepers.performance.anchored.review.json",
+  "promptRevision": "2318294a3fb98cccfe84eb3adc0ac1fe83a6fde0",
+  "promptDocument": "参考资料/资产/AI配乐提示词_历史原稿.md",
+  "promptTextMatchesNormalizedPerformance": true
+}

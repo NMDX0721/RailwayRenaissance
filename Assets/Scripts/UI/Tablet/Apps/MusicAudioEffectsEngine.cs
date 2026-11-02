@@ -29,6 +29,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // 当前滤镜与定时器状态
+        /// <summary>Playback speed as a tape would do it: pitch changes with speed (no time stretching).</summary>
+        public static float PlaybackSpeed = 1f;
+        public static void SetPlaybackSpeed(float speed)
+        {
+            PlaybackSpeed = Mathf.Clamp(speed, 0.5f, 2f);
+            if (s_deckA != null) s_deckA.pitch = PlaybackSpeed;
+            if (s_deckB != null) s_deckB.pitch = PlaybackSpeed;
+        }
         public static RadioFilterMode CurrentFilterMode = RadioFilterMode.Locomotive; // 默认工务机车电台质感
         public static SleepTimerOption CurrentSleepOption = SleepTimerOption.Off;
         public static float RemainingSleepSeconds = 0f;
@@ -39,8 +47,92 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static AudioSource s_deckB;
         private static bool s_isDeckAPrimary = true;
         private static bool s_isCrossfading = false;
+        private static bool s_paused;
         private static float s_crossfadeTimer = 0f;
-        private static float s_crossfadeDuration = 1.6f; // 1.6 秒等功率交叉过渡
+        private static float s_crossfadeDuration = 0.4f; // 等功率交叉过渡；手动切歌不应长时间叠音
+        // 手动切歌：旧曲快速淡出，新曲就绪后短淡入，避免“旧歌还在响、新歌才切”
+        private static bool s_quickFading;
+        private static float s_quickFadeTimer;
+        private const float QuickFadeDuration = 0.18f;
+        private static float s_fadeInTimer = 1f;
+        private const float FadeInDuration = 0.25f;
+
+        // ---- Tone: each listening mode is a real signal chain (band limit, drive, optional chorus, a noise bed, pitch wobble) ----
+        struct Tone
+        {
+            public float highPass, lowPass, drive;      // Hz, Hz, 0..1 (Unity distortion level)
+            public float chorusWet;                     // 0 = no chorus
+            public float noiseLevel, noiseLowPass;      // noise bed volume (of the user volume) and its colour
+            public float wowDepth, wowRate, flutterDepth, flutterRate;   // pitch wobble (fractions) and rates (Hz)
+        }
+        static Tone ToneFor(RadioFilterMode mode)
+        {
+            switch (mode)
+            {
+                case RadioFilterMode.Locomotive:   // work-train radio: narrow, a little gritty, wind and a tape that walks
+                    return new Tone { highPass = 180f, lowPass = 6800f, drive = .10f, noiseLevel = .030f, noiseLowPass = 700f, wowDepth = .009f, wowRate = .6f, flutterDepth = .0025f, flutterRate = 7f };
+                case RadioFilterMode.Pioneer:      // old tube radio: very narrow and warm, driven, hiss, slow heavy wow
+                    return new Tone { highPass = 130f, lowPass = 4200f, drive = .24f, noiseLevel = .040f, noiseLowPass = 9000f, wowDepth = .012f, wowRate = .4f, flutterDepth = .0015f, flutterRate = 5f };
+                case RadioFilterMode.VintageTubeFM: // tube FM stereo: wide and warm, soft drive, slow chorus, hardly any noise or wobble
+                    return new Tone { highPass = 50f, lowPass = 14000f, drive = .08f, chorusWet = .35f, noiseLevel = .008f, noiseLowPass = 3000f };
+                default:                            // clean
+                    return new Tone { highPass = 10f, lowPass = 22000f };
+            }
+        }
+        static AudioSource s_noise; static AudioLowPassFilter s_noiseLow;
+        static AudioClip s_noiseClip;
+
+        static void EnsureNoise()
+        {
+            if (s_noise != null) return;
+            var go = new GameObject("TabletMusic_Noise");
+            UnityEngine.Object.DontDestroyOnLoad(go);
+            s_noise = go.AddComponent<AudioSource>(); s_noise.loop = true; s_noise.playOnAwake = false; s_noise.spatialBlend = 0f;
+            s_noiseLow = go.AddComponent<AudioLowPassFilter>();
+            if (s_noiseClip == null)
+            {
+                int length = 44100 * 4; var data = new float[length]; var random = new System.Random(20261101);
+                for (int i = 0; i < length; i++) data[i] = (float)(random.NextDouble() * 2.0 - 1.0);
+                s_noiseClip = AudioClip.Create("TabletMusic_NoiseBed", length, 1, 44100, false); s_noiseClip.SetData(data, 0);
+            }
+            s_noise.clip = s_noiseClip;
+        }
+
+        // Unity objects are never really null when missing, so "??" cannot be used with GetComponent.
+        static T Part<T>(GameObject go) where T : Component { var found = go.GetComponent<T>(); return found != null ? found : go.AddComponent<T>(); }
+
+        static void ApplyToneChain(AudioSource deck, Tone tone)
+        {
+            if (deck == null) return;
+            var go = deck.gameObject;
+            var high = Part<AudioHighPassFilter>(go);
+            var low = Part<AudioLowPassFilter>(go);
+            var drive = Part<AudioDistortionFilter>(go);
+            var chorus = Part<AudioChorusFilter>(go);
+            high.enabled = tone.highPass > 20f; high.cutoffFrequency = tone.highPass; high.highpassResonanceQ = 1f;
+            low.enabled = tone.lowPass < 20000f; low.cutoffFrequency = tone.lowPass; low.lowpassResonanceQ = 1f;
+            drive.enabled = tone.drive > 0.001f; drive.distortionLevel = tone.drive;
+            chorus.enabled = tone.chorusWet > 0.001f;
+            if (chorus.enabled) { chorus.dryMix = .85f; chorus.wetMix1 = tone.chorusWet; chorus.wetMix2 = tone.chorusWet * .6f; chorus.wetMix3 = 0f; chorus.delay = 28f; chorus.rate = .6f; chorus.depth = .12f; }
+        }
+
+        /// <summary>Applies the current mode now (the review uses this; playback applies it every frame).</summary>
+        public static void RefreshTone(float userVolume) => UpdateTone(userVolume);
+
+        /// <summary>The chain on both decks plus the noise bed, for the current mode.</summary>
+        static void UpdateTone(float userVolume)
+        {
+            var tone = ToneFor(CurrentFilterMode);
+            ApplyToneChain(s_deckA, tone); ApplyToneChain(s_deckB, tone);
+            EnsureNoise();
+            bool wanted = tone.noiseLevel > 0f && IsPlaying() && !s_paused;
+            if (wanted)
+            {
+                s_noiseLow.cutoffFrequency = tone.noiseLowPass; s_noise.volume = userVolume * tone.noiseLevel;
+                if (!s_noise.isPlaying) s_noise.Play();
+            }
+            else if (s_noise.isPlaying) s_noise.Stop();
+        }
 
         // Wow & Flutter (磁带抖晃物理微扰算法，模拟老旧机车磁带走带颠簸)
         private static float s_wowTimer = 0f;
@@ -91,33 +183,47 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// <summary>
         /// 启动平滑交叉淡化切歌 (Equal-Power Crossfade)
         /// </summary>
+        /// <summary>手动切歌开始：让正在响的旧曲快速淡出并停下。</summary>
+        public static void BeginQuickSwitch()
+        {
+            if (!IsPlaying()) return;
+            if (s_paused) { Stop(); return; }
+            s_isCrossfading = false; s_quickFading = true; s_quickFadeTimer = 0f;
+        }
+
         public static void PlayWithCrossfade(AudioClip newClip, float baseVolume, Action onComplete = null)
         {
             if (newClip == null) return;
+            if (s_quickFading) { Stop(); s_quickFading = false; }
+            s_paused = false;
+            s_isCrossfading = false;
 
             var activeDeck = GetActiveDeck();
             var nextDeck = GetStandbyDeck();
 
             if (activeDeck == null || nextDeck == null || !activeDeck.isPlaying)
             {
+                if (nextDeck != null) nextDeck.Stop();
                 // 无在播曲目时直接单轨起播
                 if (activeDeck != null)
                 {
                     activeDeck.clip = newClip;
-                    activeDeck.volume = baseVolume;
-                    activeDeck.pitch = 1.0f;
+                    activeDeck.volume = 0f; s_fadeInTimer = 0f;
+                    activeDeck.pitch = PlaybackSpeed;
                     activeDeck.Play();
                 }
                 return;
             }
 
             // 启动平滑交替淡化
+            nextDeck.Stop();
             nextDeck.clip = newClip;
             nextDeck.time = 0f;
             nextDeck.volume = 0f;
-            nextDeck.pitch = 1.0f;
+            nextDeck.pitch = PlaybackSpeed;
             nextDeck.Play();
 
+            s_isDeckAPrimary = !s_isDeckAPrimary;
             s_isCrossfading = true;
             s_crossfadeTimer = 0f;
         }
@@ -140,11 +246,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// </summary>
         public static void Update(float deltaTime, float userVolume, Action onSleepFired)
         {
+            if (s_paused) return;
             var activeDeck = GetActiveDeck();
             var standbyDeck = GetStandbyDeck();
 
             // 1. 处理 Crossfade 交叉渐变
-            if (s_isCrossfading && activeDeck != null && standbyDeck != null)
+            if (s_quickFading)
+            {
+                s_quickFadeTimer += deltaTime;
+                float gain = 1f - Mathf.Clamp01(s_quickFadeTimer / QuickFadeDuration);
+                if (activeDeck != null) activeDeck.volume = userVolume * gain;
+                if (standbyDeck != null && standbyDeck.isPlaying) standbyDeck.volume = userVolume * gain;
+                if (s_quickFadeTimer >= QuickFadeDuration) { Stop(); s_quickFading = false; }
+            }
+            else if (s_isCrossfading && activeDeck != null && standbyDeck != null)
             {
                 s_crossfadeTimer += deltaTime;
                 float progress = Mathf.Clamp01(s_crossfadeTimer / s_crossfadeDuration);
@@ -153,46 +268,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float outVol = Mathf.Cos(progress * Mathf.PI * 0.5f) * userVolume;
                 float inVol = Mathf.Sin(progress * Mathf.PI * 0.5f) * userVolume;
 
-                activeDeck.volume = outVol;
-                standbyDeck.volume = inVol;
+                standbyDeck.volume = outVol;
+                activeDeck.volume = inVol;
 
                 if (progress >= 1.0f)
                 {
-                    activeDeck.Stop();
-                    activeDeck.volume = 0f;
-                    s_isDeckAPrimary = !s_isDeckAPrimary; // 切换主副通道
+                    standbyDeck.Stop();
+                    standbyDeck.volume = 0f;
                     s_isCrossfading = false;
                 }
             }
             else if (activeDeck != null && !s_isFadingToSleep)
             {
-                activeDeck.volume = userVolume;
+                float fadeIn = 1f;
+                if (s_fadeInTimer < FadeInDuration) { s_fadeInTimer += deltaTime; fadeIn = Mathf.Clamp01(s_fadeInTimer / FadeInDuration); }
+                activeDeck.volume = userVolume * fadeIn;
             }
 
             // 2. 处理 Wow & Flutter 物理抖晃音调微变 (基于 Folia wowBranch 参数)
             if (activeDeck != null && activeDeck.isPlaying)
             {
-                if (CurrentFilterMode == RadioFilterMode.Locomotive)
+                var tone = ToneFor(CurrentFilterMode);
+                if (tone.wowDepth > 0f)
                 {
-                    // 慢速行走抖动 (0.75 Hz) + 快速齿轮微震 (6.5 Hz)
-                    s_wowTimer += deltaTime * 0.75f * Mathf.PI * 2f;
-                    s_flutterTimer += deltaTime * 6.5f * Mathf.PI * 2f;
-                    float wow = Mathf.Sin(s_wowTimer) * 0.0035f;
-                    float flutter = Mathf.Sin(s_flutterTimer) * 0.0012f;
-                    activeDeck.pitch = Mathf.Clamp(1.0f + wow + flutter, 0.98f, 1.02f);
-                }
-                else if (CurrentFilterMode == RadioFilterMode.Pioneer)
-                {
-                    // 浓厚电子管温润微晃
-                    s_wowTimer += deltaTime * 0.45f * Mathf.PI * 2f;
-                    float wow = Mathf.Sin(s_wowTimer) * 0.0075f;
-                    activeDeck.pitch = Mathf.Clamp(1.0f + wow, 0.97f, 1.03f);
+                    // Slow walk (wow) plus a fast gear flutter, deep enough (about 10 to 20 cents) to be heard as a tape that is not quite steady.
+                    s_wowTimer += deltaTime * tone.wowRate * Mathf.PI * 2f;
+                    s_flutterTimer += deltaTime * tone.flutterRate * Mathf.PI * 2f;
+                    float wobble = Mathf.Sin(s_wowTimer) * tone.wowDepth + Mathf.Sin(s_flutterTimer) * tone.flutterDepth;
+                    activeDeck.pitch = Mathf.Clamp(1.0f + wobble, 0.97f, 1.03f) * PlaybackSpeed;
                 }
                 else
                 {
-                    activeDeck.pitch = 1.0f;
+                    activeDeck.pitch = PlaybackSpeed;
                 }
             }
+
+            UpdateTone(userVolume);
 
             // 3. 处理睡眠定时器 (Sleep Timer)
             if (IsSleepTimerActive && RemainingSleepSeconds > 0f)
@@ -218,7 +329,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     s_isFadingToSleep = false;
                     if (activeDeck != null)
                     {
-                        activeDeck.Pause();
+                        Pause();
                     }
                     onSleepFired?.Invoke();
                 }
@@ -266,12 +377,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public static void Pause()
         {
+            s_paused = true;
+            if (s_noise != null && s_noise.isPlaying) s_noise.Pause();
             if (s_deckA != null && s_deckA.isPlaying) s_deckA.Pause();
             if (s_deckB != null && s_deckB.isPlaying) s_deckB.Pause();
         }
 
         public static void UnPause()
         {
+            s_paused = false;
             var active = GetActiveDeck();
             if (active != null) active.UnPause();
             if (s_isCrossfading)
@@ -284,6 +398,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void Stop()
         {
             s_isCrossfading = false;
+            if (s_noise != null) s_noise.Stop();
             if (s_deckA != null) { s_deckA.Stop(); s_deckA.clip = null; }
             if (s_deckB != null) { s_deckB.Stop(); s_deckB.clip = null; }
         }

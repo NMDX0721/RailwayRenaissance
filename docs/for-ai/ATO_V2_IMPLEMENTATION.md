@@ -11,7 +11,6 @@
 `CabSimulationDriver`增加显式暂停及CheckpointRestoring通知；纯物理恢复前先验证Config/Input/State和余量。暂停时Advance不消耗物理或控制时间。无暂停/恢复操作时原运行路径保留。
 
 暂停时捕获物理检查点会先从当前驾驶台 facade 和启动控件刷新缓存输入，再编码；不推进模拟Tick。这样暂停后经调试面板人工制动/接管并保存时，检查点保存的是当前手柄命令，而不是上一个模拟Tick的缓存命令。
-
 独立入口：`dotnet run --project research/ato-v2/AtoV2.csproj`。执行四个捕获时点的精确回放、控制器状态一致及非法版本拒绝检查。Unity入口仍为NF5KAtoResearchReview.Batch，增加暂停不前进、损坏封装不改物理状态及恢复后连续轨迹一致检查。实际完成状态以对应日志与后续段落为准，不能将设计条目视作通过。
 
 AI辅助：本轮代码、检查和文档由Codex实现及执行，学生独立复核另行记录。三模式与路线任务尚在本轮后续逻辑单元中实施。

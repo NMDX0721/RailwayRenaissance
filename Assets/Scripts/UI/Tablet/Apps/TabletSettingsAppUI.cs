@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RailwayRenaissance.UI.Tablet.SystemShell;
+using RailwayRenaissance.UI.Tablet.Account;
 using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 
 namespace RailwayRenaissance.UI.Tablet.Apps
@@ -11,11 +13,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     /// 平板应用：设置（严格照截图 24 分类 + 术语图鉴 TIPS + 备份/应用管理/开发者选项）
     /// 从 GameMainUI 剥离（T306 Batch 1-C）
     /// </summary>
-    public static class TabletSettingsAppUI
+    public static partial class TabletSettingsAppUI
     {
     // ============ 设置 App：严格照截图 24 分类 + 老设置全量迁入（T298 规范）============
-    private const string BackupJsonKey = "SUIYUE_Backup_Json";
-    private const string BackupTimeKey = "SUIYUE_Backup_Time";
+    public static IKeyValueStorage StorageAdapter = new PlayerPrefsStorage();
+    public const string BackupJsonKey = TabletLocalBackupService.BackupJsonKey;
+    public const string BackupTimeKey = TabletLocalBackupService.BackupTimeKey;
 
     private static int currentSettingsCategory = 1; // 默认选中 1 (当前账号) 或 13 (显示)
     private static string settingsSearchFilter = "";
@@ -51,62 +54,109 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     };
 
     private static Action<string> s_showToast;
+    private static Action<TabletSystemPanel> s_openSystemPanel;
+    private static TabletShellState s_shellState;
     public static Action<KeyCode> TabletRebindAction;
 
-    private static void ShowToast(string msg)
+    public static void SetShellStateHandler(TabletShellState state)
+    {
+        s_shellState = state;
+    }
+
+    public static TabletShellState CurrentShellState => s_shellState ?? GameMainUI.Instance?.ShellState;
+
+    public static void SetOpenSystemPanelHandler(Action<TabletSystemPanel> handler)
+    {
+        s_openSystemPanel = handler;
+    }
+
+    public static void ShowToast(string msg)
     {
         if (s_showToast != null) s_showToast(msg);
         else Debug.Log("[Settings] " + msg);
     }
 
-    private static VisualElement BuildInnerPanel(string title)
+    private static VisualElement BuildInnerPanel(string title, Action rebuild)
     {
-        if (GameMainUI.Instance != null) return GameMainUI.Instance.BuildInnerPanel(title);
+        if (GameMainUI.Instance != null) return GameMainUI.Instance.BuildInnerPanel(title, rebuild);
         return null;
     }
 
-    public static void BuildSettingsPage(VisualElement win, Action<string> showToast = null)
+    public static void BuildSettingsPage(VisualElement win, Action<string> showToast = null, Action<TabletSystemPanel> openPanel = null)
     {
+        if (showToast != null)
+        {
+            s_showToast = showToast;
+        }
+        if (openPanel != null)
+        {
+            s_openSystemPanel = openPanel;
+        }
+
+        s_settingsWin = win;
         win.Clear();
 
         var rootRow = new VisualElement();
+        rootRow.name = "settings-responsive-root";
         rootRow.style.flexDirection = FlexDirection.Row;
         rootRow.style.flexGrow = 1;
         win.Add(rootRow);
 
+        var compactToolbar = new VisualElement { name = "settings-compact-toolbar" };
+        compactToolbar.style.display = DisplayStyle.None;
+        compactToolbar.style.height = 48;
+        compactToolbar.style.flexDirection = FlexDirection.Row;
+        compactToolbar.style.alignItems = Align.Center;
+        compactToolbar.style.paddingLeft = 10;
+        compactToolbar.style.paddingRight = 10;
+        compactToolbar.style.backgroundColor = SurfaceCard;
+        var compactCategory = new DropdownField { name = "settings-compact-category" };
+        compactCategory.style.width = Length.Percent(48);
+        compactCategory.style.height = 40;
+        compactCategory.style.marginRight = 8;
+        compactToolbar.Add(compactCategory);
+        var compactSearch = new TextField { name = "settings-compact-search", value = settingsSearchFilter };
+        compactSearch.style.flexGrow = 1;
+        compactSearch.style.height = 38;
+        compactSearch.style.fontSize = 13;
+        compactSearch.style.unityFontDefinition = Fd();
+        compactToolbar.Add(compactSearch);
+        rootRow.Add(compactToolbar);
+
         // 左栏：300px 纯白/极浅灰导航条，含搜索框与 24 项
         var leftNav = new VisualElement();
+        leftNav.name = "settings-category-rail";
         leftNav.style.width = 300;
-        leftNav.style.backgroundColor = SurfaceCard;
+        leftNav.style.flexShrink = 0;
+        leftNav.style.backgroundColor = SurfaceApp;   // 浅灰底，分组卡片用白色浮在上面（对齐 HyperOS 设置）
         leftNav.style.borderRightWidth = 1;
         leftNav.style.borderRightColor = BorderDivider;
         leftNav.style.flexDirection = FlexDirection.Column;
-        leftNav.style.paddingLeft = 14; leftNav.style.paddingRight = 14;
+        leftNav.style.paddingLeft = 20; leftNav.style.paddingRight = 20;
         leftNav.style.paddingTop = 16; leftNav.style.paddingBottom = 16;
         rootRow.Add(leftNav);
 
         var titleLbl = new Label("设置");
-        titleLbl.style.fontSize = 24; titleLbl.style.color = InkPrimary;
-        titleLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
-        titleLbl.style.unityFontDefinition = Fd();
-        titleLbl.style.marginBottom = 12;
+        titleLbl.style.fontSize = 32; titleLbl.style.color = InkPrimary;
+        titleLbl.style.unityFontDefinition = FdBold();
+        titleLbl.style.marginTop = 6;
+        titleLbl.style.marginBottom = 16;
         leftNav.Add(titleLbl);
 
         // 搜索框
         var searchBox = new VisualElement();
-        searchBox.style.height = 36;
-        searchBox.style.backgroundColor = SurfaceApp;
-        searchBox.style.borderTopLeftRadius = 18; searchBox.style.borderTopRightRadius = 18;
-        searchBox.style.borderBottomLeftRadius = 18; searchBox.style.borderBottomRightRadius = 18;
+        searchBox.style.height = 44;
+        searchBox.style.backgroundColor = new Color(0.90f, 0.90f, 0.92f, 1f);
+        searchBox.style.borderTopLeftRadius = 22; searchBox.style.borderTopRightRadius = 22;
+        searchBox.style.borderBottomLeftRadius = 22; searchBox.style.borderBottomRightRadius = 22;
         searchBox.style.flexDirection = FlexDirection.Row;
         searchBox.style.alignItems = Align.Center;
         searchBox.style.paddingLeft = 12; searchBox.style.paddingRight = 12;
         searchBox.style.marginBottom = 12;
         leftNav.Add(searchBox);
 
-        var searchIcon = new Label("🔍");
-        searchIcon.style.fontSize = 13; searchIcon.style.color = InkTertiary;
-        searchIcon.style.unityFontDefinition = Fd(); searchIcon.style.marginRight = 6;
+        var searchIcon = new RailwayRenaissance.UI.Tablet.TabletIconElement(RailwayRenaissance.UI.Tablet.TabletIconKind.Search, 20f, InkTertiary);
+        searchIcon.style.marginRight = 8;
         searchBox.Add(searchIcon);
 
         var searchInput = new TextField { value = settingsSearchFilter };
@@ -114,14 +164,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         searchInput.style.borderTopWidth = 0; searchInput.style.borderBottomWidth = 0;
         searchInput.style.borderLeftWidth = 0; searchInput.style.borderRightWidth = 0;
         searchInput.style.backgroundColor = Color.clear;
-        searchInput.style.fontSize = 13; searchInput.style.color = InkPrimary;
+        searchInput.style.fontSize = 14; searchInput.style.color = InkPrimary;
         searchInput.style.unityFontDefinition = Fd();
-        searchInput.RegisterValueChangedCallback(evt =>
+        // 去掉输入框自带的边框与底色，只留文字（原来会露出一个灰色矩形）
+        var searchField = searchInput.Q(className: "unity-base-text-field__input");
+        if (searchField != null)
         {
-            settingsSearchFilter = evt.newValue;
-            BuildSettingsPage(win);
-        });
+            searchField.style.backgroundColor = Color.clear;
+            searchField.style.borderTopWidth = searchField.style.borderBottomWidth = searchField.style.borderLeftWidth = searchField.style.borderRightWidth = 0;
+            searchField.style.unityFontDefinition = Fd();
+        }
+        searchInput.textEdition.placeholder = "搜索设置";
+        searchInput.textEdition.hidePlaceholderOnFocus = true;
         searchBox.Add(searchInput);
+
+        // 右栏：内容详情区（隐藏滚动条）
+        var rightPane = new ScrollView { name = "settings-right-pane" };
+        rightPane.style.flexGrow = 1;
+        rightPane.style.flexShrink = 1;
+        rightPane.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+        rightPane.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+        rightPane.style.paddingLeft = 32; rightPane.style.paddingRight = 32;
+        rightPane.style.paddingTop = 20; rightPane.style.paddingBottom = 30;
+        rightPane.style.backgroundColor = SurfaceApp;
+        // 页面标题固定在右栏顶部居中，内容滚动时不随之滚走（对照 HyperOS 设置）
+        var rightColumn = new VisualElement { name = "settings-right-column" };
+        rightColumn.style.flexGrow = 1; rightColumn.style.flexShrink = 1;
+        rightColumn.style.flexDirection = FlexDirection.Column;
+        var headerBar = new VisualElement { name = "settings-page-header" };
+        headerBar.style.height = 76; headerBar.style.flexShrink = 0;
+        headerBar.style.alignItems = Align.Center; headerBar.style.justifyContent = Justify.Center;
+        headerBar.style.backgroundColor = SurfaceApp;
+        headerBar.style.paddingTop = 14;
+        rightPane.style.paddingTop = 6;
+        rightColumn.Add(headerBar);
+        rightColumn.Add(rightPane);
+        rootRow.Add(rightColumn);
 
         // 分类滚动列表（隐藏滚动条）
         var navScroll = new ScrollView();
@@ -130,109 +208,161 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         navScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         leftNav.Add(navScroll);
 
-        string lastGroup = "";
-        for (int i = 0; i < SettingsCategories.Length; i++)
+        Func<VisualElement> newCard = () =>
         {
-            var cat = SettingsCategories[i];
-            if (!string.IsNullOrEmpty(settingsSearchFilter) && !cat.name.Contains(settingsSearchFilter))
-                continue;
+            var card = new VisualElement();
+            card.style.backgroundColor = Color.white;
+            card.style.borderTopLeftRadius = card.style.borderTopRightRadius = 22;
+            card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 22;
+            card.style.paddingTop = 6; card.style.paddingBottom = 6;
+            card.style.paddingLeft = 6; card.style.paddingRight = 6;
+            card.style.marginBottom = 12;
+            navScroll.Add(card);
+            return card;
+        };
 
-            if (cat.group != lastGroup && i > 0)
-            {
-                lastGroup = cat.group;
-                var div = new VisualElement();
-                div.style.height = 1; div.style.backgroundColor = BorderDivider;
-                div.style.marginTop = 6; div.style.marginBottom = 6;
-                navScroll.Add(div);
-            }
-            else if (i == 0) lastGroup = cat.group;
-
-            int catId = cat.id;
-            bool isSelected = (catId == currentSettingsCategory);
-
-            var itemBtn = new Button(() =>
-            {
-                currentSettingsCategory = catId;
-                BuildSettingsPage(win);
-            });
-            itemBtn.style.height = 42;
+        Func<string, string, Color, string, bool, Action, Button> buildNavItem = (icon, name, badgeColor, labelOverride, selected, onClick) =>
+        {
+            var itemBtn = new Button(onClick);
+            itemBtn.style.height = 66;
             itemBtn.style.flexDirection = FlexDirection.Row;
             itemBtn.style.alignItems = Align.Center;
             itemBtn.style.paddingLeft = 12; itemBtn.style.paddingRight = 12;
-            itemBtn.style.marginBottom = 3;
-            itemBtn.style.backgroundColor = isSelected ? new Color(0.93f, 0.93f, 0.95f, 1f) : Color.clear;
-            itemBtn.style.borderTopLeftRadius = 10; itemBtn.style.borderTopRightRadius = 10;
-            itemBtn.style.borderBottomLeftRadius = 10; itemBtn.style.borderBottomRightRadius = 10;
+            itemBtn.style.marginTop = 0; itemBtn.style.marginBottom = 0;
+            itemBtn.style.marginLeft = 0; itemBtn.style.marginRight = 0;
+            itemBtn.style.backgroundColor = selected ? new Color(0.92f, 0.92f, 0.94f, 1f) : Color.clear;
+            itemBtn.style.borderTopLeftRadius = itemBtn.style.borderTopRightRadius = 16;
+            itemBtn.style.borderBottomLeftRadius = itemBtn.style.borderBottomRightRadius = 16;
             itemBtn.style.borderTopWidth = 0; itemBtn.style.borderBottomWidth = 0;
             itemBtn.style.borderLeftWidth = 0; itemBtn.style.borderRightWidth = 0;
 
-            var icLbl = new Label(cat.icon);
-            icLbl.style.fontSize = 16; icLbl.style.marginRight = 10;
-            icLbl.style.unityFontDefinition = Fd();
-            itemBtn.Add(icLbl);
+            var badge = BuildIconBadge(icon, badgeColor, 44);
+            badge.style.marginRight = 16;
+            itemBtn.Add(badge);
 
-            var nameLbl = new Label(cat.name);
-            nameLbl.style.fontSize = 14;
-            nameLbl.style.color = isSelected ? AccentSystem : InkPrimary;
-            if (isSelected) nameLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
+            var nameLbl = new Label(labelOverride ?? name);
+            nameLbl.style.fontSize = 18;
+            nameLbl.style.color = InkPrimary;
             nameLbl.style.unityFontDefinition = Fd();
             itemBtn.Add(nameLbl);
+            return itemBtn;
+        };
 
-            navScroll.Add(itemBtn);
-        }
-
-        // 若已解锁开发者模式，渲染开发者选项入口
-        bool devUnlocked = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
-        if (devUnlocked && (string.IsNullOrEmpty(settingsSearchFilter) || "开发者选项".Contains(settingsSearchFilter)))
+        Action populateCategories = () =>
         {
-            var devDiv = new VisualElement();
-            devDiv.style.height = 1; devDiv.style.backgroundColor = BorderDivider;
-            devDiv.style.marginTop = 6; devDiv.style.marginBottom = 6;
-            navScroll.Add(devDiv);
+            navScroll.Clear();
+            string previousRenderedGroup = null;
+            VisualElement currentCard = null;
 
-            bool isDevSelected = (currentSettingsCategory == 99);
-            var devBtn = new Button(() =>
+            for (int i = 0; i < SettingsCategories.Length; i++)
             {
-                currentSettingsCategory = 99;
-                BuildSettingsPage(win);
-            });
-            devBtn.style.height = 42;
-            devBtn.style.flexDirection = FlexDirection.Row;
-            devBtn.style.alignItems = Align.Center;
-            devBtn.style.paddingLeft = 12; devBtn.style.paddingRight = 12;
-            devBtn.style.marginBottom = 3;
-            devBtn.style.backgroundColor = isDevSelected ? new Color(0.93f, 0.93f, 0.95f, 1f) : Color.clear;
-            devBtn.style.borderTopLeftRadius = 10; devBtn.style.borderTopRightRadius = 10;
-            devBtn.style.borderBottomLeftRadius = 10; devBtn.style.borderBottomRightRadius = 10;
-            devBtn.style.borderTopWidth = 0; devBtn.style.borderBottomWidth = 0;
-            devBtn.style.borderLeftWidth = 0; devBtn.style.borderRightWidth = 0;
+                var cat = SettingsCategories[i];
+                if (!string.IsNullOrEmpty(settingsSearchFilter) && !cat.name.Contains(settingsSearchFilter))
+                    continue;
 
-            var devIc = new Label("🛠️");
-            devIc.style.fontSize = 16; devIc.style.marginRight = 10;
-            devIc.style.unityFontDefinition = Fd();
-            devBtn.Add(devIc);
+                // 每个分组一张白色圆角卡片，卡片之间留出间距
+                if (currentCard == null || cat.group != previousRenderedGroup)
+                    currentCard = newCard();
+                previousRenderedGroup = cat.group;
 
-            var devName = new Label("开发者选项");
-            devName.style.fontSize = 14;
-            devName.style.color = isDevSelected ? AccentSystem : new Color(0.85f, 0.45f, 0.15f, 1f);
-            if (isDevSelected) devName.style.unityFontStyleAndWeight = FontStyle.Bold;
-            devName.style.unityFontDefinition = Fd();
-            devBtn.Add(devName);
+                int catId = cat.id;
+                bool isSelected = (catId == currentSettingsCategory);
+                var navItem = buildNavItem(cat.icon, cat.name, GetHyperOSCategoryColor(cat.id, cat.group), null, isSelected, () =>
+                {
+                    currentSettingsCategory = catId;
+                    BuildSettingsPage(win);
+                });
+                if (cat.id == 1) ConvertToAccountNavItem(navItem);
+                currentCard.Add(navItem);
+            }
 
-            navScroll.Add(devBtn);
-        }
+            // 若已解锁开发者模式，渲染开发者选项入口
+            bool devUnlocked = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
+            if (devUnlocked && (string.IsNullOrEmpty(settingsSearchFilter) || "开发者选项".Contains(settingsSearchFilter)))
+            {
+                var devCard = newCard();
+                bool isDevSelected = (currentSettingsCategory == 99);
+                devCard.Add(buildNavItem("🛠", "开发者选项", GetHyperOSCategoryColor(99, "system"), null, isDevSelected, () =>
+                {
+                    currentSettingsCategory = 99;
+                    BuildSettingsPage(win);
+                }));
+            }
+        };
 
-        // 右栏：内容详情区（隐藏滚动条）
-        var rightPane = new ScrollView();
-        rightPane.style.flexGrow = 1;
-        rightPane.verticalScrollerVisibility = ScrollerVisibility.Hidden;
-        rightPane.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        rightPane.style.paddingLeft = 32; rightPane.style.paddingRight = 32;
-        rightPane.style.paddingTop = 20; rightPane.style.paddingBottom = 30;
-        rightPane.style.backgroundColor = SurfaceApp;
-        rootRow.Add(rightPane);
+        searchInput.RegisterValueChangedCallback(evt =>
+        {
+            settingsSearchFilter = evt.newValue;
+            populateCategories();
+            compactSearch.SetValueWithoutNotify(settingsSearchFilter);
+        });
+
+        populateCategories();
+        var compactChoices = new List<string>();
+        for (int i = 0; i < SettingsCategories.Length; i++) compactChoices.Add(SettingsCategories[i].name);
+        bool devUnlockedForCompact = isTabletDevModeUnlocked || PlayerPrefs.GetInt("TabletDevModeUnlocked", 0) == 1;
+        if (devUnlockedForCompact) compactChoices.Add("开发者选项");
+        compactCategory.choices = compactChoices;
+        compactCategory.SetValueWithoutNotify(currentSettingsCategory == 99
+            ? "开发者选项"
+            : GetSettingsCategoryName(currentSettingsCategory));
+        compactCategory.RegisterValueChangedCallback(evt =>
+        {
+            if (string.IsNullOrEmpty(evt.newValue) || evt.newValue == evt.previousValue) return;
+            int next = currentSettingsCategory;
+            if (evt.newValue == "开发者选项")
+                next = 99;
+            else
+            {
+                for (int i = 0; i < SettingsCategories.Length; i++)
+                {
+                    if (SettingsCategories[i].name == evt.newValue)
+                    {
+                        next = SettingsCategories[i].id;
+                        break;
+                    }
+                }
+            }
+            if (next == currentSettingsCategory) return;
+            currentSettingsCategory = next;
+            BuildSettingsPage(win);
+        });
+        compactSearch.RegisterValueChangedCallback(evt =>
+        {
+            settingsSearchFilter = evt.newValue;
+            searchInput.SetValueWithoutNotify(settingsSearchFilter);
+            populateCategories();
+        });
 
         RenderSettingsDetail(rightPane, win);
+        var pageTitle = rightPane.Q<Label>("settings-page-title");
+        if (pageTitle != null)
+        {
+            pageTitle.RemoveFromHierarchy();
+            pageTitle.style.marginBottom = 0;
+            headerBar.Add(pageTitle);
+        }
+        rootRow.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            float width = evt.newRect.width;
+            if (width <= 0) return;
+            bool compact = width < 760;
+            rootRow.style.flexDirection = compact ? FlexDirection.Column : FlexDirection.Row;
+            compactToolbar.style.display = compact ? DisplayStyle.Flex : DisplayStyle.None;
+            leftNav.style.display = compact ? DisplayStyle.None : DisplayStyle.Flex;
+            // 左右栏比例对照 HyperOS Pad 设置：左栏约 40%、右栏约 60%（宽屏下限 320px，上限 820px）
+            leftNav.style.width = Mathf.Clamp(width * 0.40f, 320f, 820f);
+            rightPane.style.paddingLeft = compact ? 14 : width < 1020 ? 22 : 32;
+            rightPane.style.paddingRight = compact ? 14 : width < 1020 ? 22 : 32;
+            rightPane.style.paddingTop = compact ? 8 : 6;
+        });
+    }
+
+    private static string GetSettingsCategoryName(int id)
+    {
+        for (int i = 0; i < SettingsCategories.Length; i++)
+            if (SettingsCategories[i].id == id) return SettingsCategories[i].name;
+        return SettingsCategories[0].name;
     }
 
     private static void RenderSettingsDetail(ScrollView rightPane, VisualElement win)
@@ -241,17 +371,41 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             case 1: RenderAccountSettings(rightPane); break;
             case 2: RenderMyDeviceSettings(rightPane, win); break;
+            case 3: RenderTabletFeaturesSettings(rightPane, win); break;
+            case 4: RenderWlanSettings(rightPane); break;
+            case 5: RenderBluetoothSettings(rightPane); break;
+            case 6: RenderInterconnectSettings(rightPane); break;
+            case 7: RenderMoreConnectionsSettings(rightPane); break;
+            case 8: RenderAiSettings(rightPane); break;
+            case 9: RenderPresentationSettings(rightPane); break;
             case 10: RenderLockScreenSettings(rightPane); break;
+            case 11: RenderNotificationAndStatusSettings(rightPane); break;
             case 12: RenderHomeScreenSettings(rightPane); break;
             case 13: RenderDisplaySettings(rightPane, win); break;
             case 14: RenderAudioSettings(rightPane, win); break;
             case 15: RenderControlSettings(rightPane, win); break;
+            case 16: RenderLockSecuritySettings(rightPane); break;
+            case 17: RenderPrivacySettings(rightPane); break;
             case 18: RenderAppsSettings(rightPane); break;
+            case 19: RenderBatterySettings(rightPane); break;
+            case 20: RenderDigitalWellbeingSettings(rightPane, win); break;
+            case 21: RenderKidsModeSettings(rightPane); break;
             case 22: RenderAccessibilitySettings(rightPane, win); break;
             case 23: RenderAdditionalSettings(rightPane); break;
+            case 24: RenderFeedbackSettings(rightPane); break;
             case 99: RenderDeveloperOptions(rightPane, win); break;
             default: RenderPlaceholderCategory(rightPane, currentSettingsCategory); break;
         }
+    }
+
+    // 形态 A · 个性化页
+    private static void RenderPresentationSettings(ScrollView rightPane)
+    {
+        AddCenterHeader(rightPane, "平板外观");
+        var prefs = GameMainUI.Instance?.PresentationPreferences;
+        if (prefs == null) { rightPane.Add(new Label("请从平板桌面进入外观设置。")); return; }
+        rightPane.Add(new Label("调整壁纸、解锁动效与系统面板。"));
+        new TabletPresentationSettingsView(rightPane, prefs, RailwayRenaissance.UI.Tablet.TabletFonts.Ui());
     }
 
     // 形态 A · 账号页（对照 xiaomi.account 截图）
@@ -271,12 +425,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         userLeft.style.alignItems = Align.Center;
         profileCard.Add(userLeft);
 
-        var avatar = new Label("👤");
-        avatar.style.fontSize = 32; avatar.style.width = 54; avatar.style.height = 54;
-        avatar.style.backgroundColor = SurfaceApp;
+        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : string.Empty);
+        avatar.style.fontSize = 40; avatar.style.width = 76; avatar.style.height = 76;
+        avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
+        if (AccountService.IsRegistered)
+        {
+            avatar.style.color = Color.white;
+            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+        }
+        else
+        {
+            avatar.style.backgroundColor = SurfaceApp;
+            avatar.Add(new TabletIconElement(TabletIconKind.Person, 46, new Color(0.62f, 0.64f, 0.70f, 1f)));
+        }
         avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
-        avatar.style.borderTopLeftRadius = 27; avatar.style.borderTopRightRadius = 27;
-        avatar.style.borderBottomLeftRadius = 27; avatar.style.borderBottomRightRadius = 27;
+        avatar.style.borderTopLeftRadius = 38; avatar.style.borderTopRightRadius = 38;
+        avatar.style.borderBottomLeftRadius = 38; avatar.style.borderBottomRightRadius = 38;
         avatar.style.unityFontDefinition = Fd();
         userLeft.Add(avatar);
 
@@ -284,20 +448,25 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         userMeta.style.marginLeft = 16;
         userLeft.Add(userMeta);
 
-        string curUser = PlayerPrefs.GetString("XiaomiAccount", "旅人 (先民特等铁道运营官)");
+        string curUser = AccountService.IsRegistered ? AccountService.DisplayName : "登录小米账号";
         var nameLbl = new Label(curUser);
-        nameLbl.style.fontSize = 18; nameLbl.style.color = InkPrimary;
-        nameLbl.style.unityFontStyleAndWeight = FontStyle.Bold; nameLbl.style.unityFontDefinition = Fd();
+        nameLbl.style.fontSize = 24; nameLbl.style.color = InkPrimary;
+        nameLbl.style.unityFontDefinition = FdBold();
         userMeta.Add(nameLbl);
 
-        var idLbl = new Label("ID: 0721-DPRK · 阿里郎量子加密专线已连接 · 全功能已解锁");
-        idLbl.style.fontSize = 12; idLbl.style.color = new Color(0.2f, 0.65f, 0.35f, 1f); idLbl.style.unityFontDefinition = Fd();
-        idLbl.style.marginTop = 4;
+        var idLbl = new Label(AccountService.IsRegistered
+            ? "小米 ID：" + AccountService.Profile.xiaomiId + " · " + AccountService.MaskedPhone(AccountService.Profile)
+            : "登录后使用云空间、查找设备与家庭服务");
+        idLbl.style.fontSize = 14; idLbl.style.color = InkSecondary; idLbl.style.unityFontDefinition = Fd();
+        idLbl.style.marginTop = 6;
         userMeta.Add(idLbl);
 
         var ar = new Label("›");
         ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
         profileCard.Add(ar);
+        profileCard.name = "account-profile-card";
+        profileCard.pickingMode = PickingMode.Position;
+        profileCard.RegisterCallback<ClickEvent>(_ => OpenAccountEntry());
         rightPane.Add(profileCard);
 
         // 卡片网格（左大卡 + 右两小卡）
@@ -310,8 +479,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var cloudCard = BuildWhiteCard();
         cloudCard.style.width = new Length(48, LengthUnit.Percent);
         cloudCard.style.marginBottom = 0;
-        cloudCard.Add(new Label("☁ 云空间") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = Fd() } });
-        cloudCard.Add(new Label("已分配 512 GB 阿里郎卫星云存储 (本地量子加密缓存)") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 6, whiteSpace = WhiteSpace.Normal } });
+        cloudCard.style.backgroundColor = new Color(0.86f, 0.92f, 0.99f, 1f);
+        cloudCard.style.justifyContent = Justify.SpaceBetween;
+        cloudCard.style.paddingTop = 18; cloudCard.style.paddingBottom = 20;
+        cloudCard.style.minHeight = 168;
+        cloudCard.Add(new Label("云空间") { style = { fontSize = 18, color = InkPrimary, unityFontDefinition = FdBold() } });
+        var cloudBottom = new VisualElement();
+        cloudBottom.Add(new Label("已分配") { style = { fontSize = 13, color = InkSecondary, unityFontDefinition = Fd() } });
+        var cloudFigure = new VisualElement();
+        cloudFigure.style.flexDirection = FlexDirection.Row;
+        cloudFigure.style.alignItems = Align.FlexEnd;
+        cloudFigure.Add(new Label("512") { style = { fontSize = 34, color = InkPrimary, unityFontDefinition = FdBold() } });
+        cloudFigure.Add(new Label("GB") { style = { fontSize = 16, color = InkSecondary, unityFontDefinition = Fd(), marginLeft = 4, marginBottom = 6 } });
+        cloudBottom.Add(cloudFigure);
+        cloudBottom.Add(new Label("阿里郎卫星云存储 (本地量子加密缓存)") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 2, whiteSpace = WhiteSpace.Normal } });
+        cloudCard.Add(cloudBottom);
         grid.Add(cloudCard);
 
         var rightSubCards = new VisualElement();
@@ -321,22 +503,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var familyCard = BuildWhiteCard();
         familyCard.style.marginBottom = 10;
-        familyCard.Add(new Label("👨‍👩‍👧 家庭服务") { style = { fontSize = 15, color = InkPrimary, unityFontDefinition = Fd() } });
+        familyCard.Add(new Label("家庭服务") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = FdBold() } });
         familyCard.Add(new Label("已共享雾峰村先民铁道运营排班表") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 4 } });
         rightSubCards.Add(familyCard);
 
         var findCard = BuildWhiteCard();
         findCard.style.marginBottom = 0;
-        findCard.Add(new Label("📍 查找设备") { style = { fontSize = 15, color = InkPrimary, unityFontDefinition = Fd() } });
+        findCard.Add(new Label("查找设备") { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = FdBold() } });
         findCard.Add(new Label("0721号机车车载终端实时在线 · 信号极佳") { style = { fontSize = 12, color = InkSecondary, unityFontDefinition = Fd(), marginTop = 4 } });
         rightSubCards.Add(findCard);
 
         // 分组列表
         AddSectionHeader(rightPane, "我的账号安全与权限");
         var listCard = BuildWhiteCard();
-        listCard.Add(BuildWhiteRow("账号安全等级", "最高特级 · 物理硬件密匙与3D生物结构光已认证", () => ShowToast("账号处于先民军工特级保护状态")));
-        listCard.Add(BuildWhiteRow("个人人事档案", "金日成综合大学荣誉毕业生 · 铁道部特聘工程师", () => ShowToast("档案已同步至人事与调度中心")));
-        listCard.Add(BuildWhiteRow("系统权限授权", "已授权系统管理 22 个车载及内网应用", () => ShowToast("车载应用沙箱权限正常运行中")));
+        listCard.Add(BuildWhiteRow("账号安全等级", "最高特级", () => ShowToast("最高特级 · 物理硬件密匙与3D生物结构光已认证；账号处于先民军工特级保护状态")));
+        listCard.Add(BuildWhiteRow("个人人事档案", "已同步", () => ShowToast("金日成综合大学荣誉毕业生 · 铁道部特聘工程师；档案已同步至人事与调度中心")));
+        listCard.Add(BuildWhiteRow("系统权限授权", "22 个应用", () => ShowToast("已授权系统管理 22 个车载及内网应用；车载应用沙箱权限正常运行中")));
         rightPane.Add(listCard);
     }
 
@@ -344,6 +526,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     private static void RenderMyDeviceSettings(ScrollView rightPane, VisualElement win)
     {
         AddCenterHeader(rightPane, "我的设备");
+        rightPane.Add(BuildHyperOSHero("32.0.4.1"));
 
         var devCard = BuildWhiteCard();
         devCard.style.alignItems = Align.Center;
@@ -351,7 +534,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var dName = new Label("Xiaomi Pad 36 Ultra (DPRK Edition)");
         dName.style.fontSize = 20; dName.style.color = InkPrimary;
-        dName.style.unityFontStyleAndWeight = FontStyle.Bold; dName.style.unityFontDefinition = Fd();
+        dName.style.unityFontDefinition = FdBold();
         devCard.Add(dName);
 
         var osName = new Label("Xiaomi HyperOS 32.0.4.1 (DPRK Edition · 先民军工特供版)");
@@ -367,14 +550,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         AddSectionHeader(rightPane, "硬件规格与军工系统参数");
         var specsCard = BuildWhiteCard();
-        specsCard.Add(BuildWhiteRow("处理器 (CPU)", "先民超导纳米核 3.6GHz × 16 (32位精简指令集)", null, false));
-        specsCard.Add(BuildWhiteRow("运行内存 / 存储", "64 GB LPDDR9 Ultra / 2 TB 先民固态量子闪存", null, false));
-        specsCard.Add(BuildWhiteRow("屏幕规格", "14.4 英寸 Super AMOLED Ultra (3840×2160 · 144Hz · 防眩光涂层)", null, false));
-        specsCard.Add(BuildWhiteRow("电池与供电", "24,000 mAh 双电芯超级固态沙能电池 (支持120W快充 / 机车逆变回充)", null, false));
+        // 四项主规格用两列“数值 + 说明”网格（对齐 HyperOS“我的设备”）；文字沿用原设定
+        specsCard.Add(BuildSpecGrid(new[]
+        {
+            ("先民超导纳米核 3.6GHz × 16", "处理器 (CPU) · 32位精简指令集"),
+            ("64 GB / 2 TB", "运行内存 LPDDR9 Ultra / 先民固态量子闪存"),
+            ("14.4 英寸", "Super AMOLED Ultra · 3840×2160 · 144Hz · 防眩光涂层"),
+            ("24,000 mAh", "双电芯超级固态沙能电池 · 120W快充 / 机车逆变回充"),
+        }));
         specsCard.Add(BuildWhiteRow("设备序列号", "SN-20530721-CHL-001 (0721号专属配件 · 军工固化)", null, false));
-        specsCard.Add(BuildWhiteRow("安全防护固件", "白头疫苗 SiliVaccine 8.2 (军工高权限固化)", null, false));
+        specsCard.Add(BuildWhiteRow("安全防护固件", "白头疫病 SiliVaccine 8.2 (军工高权限固化)", null, false));
         specsCard.Add(BuildWhiteRow("卫星通讯基带", "阿里郎军工量子加密卫星专线 (全天候链路已连接)", null, false));
         rightPane.Add(specsCard);
+
+        var deviceActions = BuildWhiteCard();
+        deviceActions.Add(BuildWhiteRow("备份与恢复", "本地存档快照", () => ShowBackupRestorePage()));
+        rightPane.Add(deviceActions);
 
         AddSectionHeader(rightPane, "项目与版本信息");
         var aboutCard = BuildWhiteCard();
@@ -391,7 +582,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 PlayerPrefs.SetInt("TabletDevModeUnlocked", 1);
                 PlayerPrefs.Save();
                 currentSettingsCategory = 99;
-                ShowToast("🎉 已进入开发者模式！已跳转至开发者选项。");
+                ShowToast("已进入开发者模式！已跳转至开发者选项。");
                 BuildSettingsPage(win);
             }
             else
@@ -411,6 +602,323 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightPane.Add(aboutCard);
     }
 
+    // “我的设备”顶部的 HyperOS 渐变横幅：薰衣草 → 粉 → 淡蓝，居中大字 Logo 与版本号（对照参考图）
+    private static Texture2D s_hyperHeroTex;
+    private static VisualElement BuildHyperOSHero(string version)
+    {
+        if (s_hyperHeroTex == null)
+        {
+            const int n = 64;
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            Color tl = new Color(0.88f, 0.86f, 1.00f), tr = new Color(1.00f, 0.90f, 0.95f);
+            Color bl = new Color(0.99f, 0.84f, 0.91f), br = new Color(0.80f, 0.86f, 1.00f);
+            Color bloom = new Color(0.98f, 0.76f, 0.88f);
+            for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
+            {
+                float u = x / (n - 1f), v = y / (n - 1f);   // v=0 在底部
+                Color top = Color.Lerp(tl, tr, u), bottom = Color.Lerp(bl, br, u);
+                Color c = Color.Lerp(bottom, top, v);
+                float d = Mathf.Clamp01(1f - Vector2.Distance(new Vector2(u, v), new Vector2(0.38f, 0.42f)) * 1.8f);
+                tex.SetPixel(x, y, Color.Lerp(c, bloom, d * 0.55f));
+            }
+            tex.Apply();
+            s_hyperHeroTex = tex;
+        }
+        var hero = new VisualElement { name = "settings-hyperos-hero" };
+        hero.style.height = 230;
+        hero.style.marginBottom = 16;
+        hero.style.overflow = Overflow.Hidden;
+        hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
+        hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
+        hero.style.backgroundImage = Background.FromTexture2D(s_hyperHeroTex);
+        hero.style.alignItems = Align.Center;
+        hero.style.justifyContent = Justify.Center;
+        var logo = new Label("Xiaomi HyperOS");
+        logo.style.fontSize = 50; logo.style.color = new Color(0.55f, 0.12f, 0.36f, 1f);
+        logo.style.unityFontDefinition = FdBold();
+        hero.Add(logo);
+        var ver = new Label(version);
+        ver.style.fontSize = 18; ver.style.color = new Color(0.30f, 0.28f, 0.36f, 1f);
+        ver.style.unityFontDefinition = Fd(); ver.style.marginTop = 10;
+        hero.Add(ver);
+        return hero;
+    }
+
+    // 两列“数值 + 说明”规格网格
+    private static VisualElement BuildSpecGrid((string value, string caption)[] items)
+    {
+        var grid = new VisualElement { name = "settings-spec-grid" };
+        grid.style.flexDirection = FlexDirection.Row;
+        grid.style.flexWrap = Wrap.Wrap;
+        grid.style.paddingTop = 8; grid.style.paddingBottom = 4;
+        foreach (var it in items)
+        {
+            var cell = new VisualElement();
+            cell.style.width = new Length(50, LengthUnit.Percent);
+            cell.style.paddingRight = 16;
+            cell.style.marginBottom = 16;
+            var v = new Label(it.value);
+            v.style.fontSize = 17; v.style.color = InkPrimary;
+            v.style.unityFontDefinition = FdBold();
+            v.style.whiteSpace = WhiteSpace.Normal;
+            var c = new Label(it.caption);
+            c.style.fontSize = 12; c.style.color = InkTertiary;
+            c.style.unityFontDefinition = Fd(); c.style.marginTop = 3;
+            c.style.whiteSpace = WhiteSpace.Normal;
+            cell.Add(v);
+            cell.Add(c);
+            grid.Add(cell);
+        }
+        return grid;
+    }
+
+    // 3 平板特色功能：机车桌面小部件、系统面板与外观增强入口
+    private static void RenderTabletFeaturesSettings(ScrollView rightPane, VisualElement win)
+    {
+        var page = new VisualElement { name = "settings-tablet-features-page" };
+        AddCenterHeader(page, "平板特色功能");
+
+        AddSectionHeader(page, "桌面小部件与常驻交互");
+        var desktopCard = BuildWhiteCard();
+        desktopCard.name = "settings-tablet-features-desktop-card";
+        desktopCard.Add(BuildWhiteRow("岁月提示气泡", "桌面可显示本地预设提示；此页不提供固定、启停或位置控制", null, false));
+        desktopCard.Add(BuildWhiteRow("多功能仪表小部件组", "包含时钟、天气概览、行车排班、相册快照与日历小部件", null, false));
+        desktopCard.Add(BuildWhiteRow("液体玻璃 Dock 栏", "底部常驻半透明应用托盘，支持常用车载应用一键切换", null, false));
+        page.Add(desktopCard);
+
+        AddSectionHeader(page, "系统与外观增强");
+        var systemCard = BuildWhiteCard();
+        systemCard.name = "settings-tablet-features-system-card";
+        systemCard.Add(BuildWhiteRow("系统控制与通知中心", "支持从桌面顶部呼出系统面板与车载快捷开关（分类 11）", () =>
+        {
+            currentSettingsCategory = 11;
+            BuildSettingsPage(win);
+        }, true));
+        systemCard.Add(BuildWhiteRow("平板外观与个性化调优", "支持壁纸压暗、减少动效、高对比度与强调色配置（分类 9）", () =>
+        {
+            currentSettingsCategory = 9;
+            BuildSettingsPage(win);
+        }, true));
+        systemCard.Add(BuildWhiteRow("本机与外部服务", "游戏主体可离线运行；音乐页的第三方账号、歌单与播放功能会按用户操作联网", null, false));
+        page.Add(systemCard);
+
+        rightPane.Add(page);
+    }
+
+    // 4 WLAN：车载内网沙箱只读说明
+    private static void RenderWlanSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-wlan-page" };
+        AddCenterHeader(page, "WLAN");
+
+        AddSectionHeader(page, "网络接入范围");
+        var card = BuildWhiteCard();
+        card.name = "settings-wlan-card";
+        card.Add(BuildWhiteRow("车载网络范围", "本终端运行于车载内网沙箱，不提供公共 Wi-Fi 接入，也不显示可扫描的无线网络", null, false));
+        card.Add(BuildWhiteRow("热点与共享", "此页面没有热点广播或网络共享入口", null, false));
+        card.Add(BuildWhiteRow("连接状态", "无线链路状态不在此页显示；请以机车行车设备的指示为准", null, false));
+        page.Add(card);
+
+        rightPane.Add(page);
+    }
+
+    // 5 蓝牙：驾驶台硬连线隔离说明
+    private static void RenderBluetoothSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-bluetooth-page" };
+        AddCenterHeader(page, "蓝牙");
+
+        AddSectionHeader(page, "设备发现与配对");
+        var card = BuildWhiteCard();
+        card.name = "settings-bluetooth-card";
+        card.Add(BuildWhiteRow("蓝牙设备", "本终端不提供蓝牙扫描、发现或配对入口", null, false));
+        card.Add(BuildWhiteRow("驾驶台设备", "操纵与仪表设备不通过此页面进行无线配对", null, false));
+        card.Add(BuildWhiteRow("附近设备", "未配对设备不会显示在此页面", null, false));
+        page.Add(card);
+
+        rightPane.Add(page);
+    }
+
+    // 6 互联互通：列车重联与编组物理总线说明
+    private static void RenderInterconnectSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-interconnect-page" };
+        AddCenterHeader(page, "互联互通");
+
+        AddSectionHeader(page, "列车运行协同");
+        var card = BuildWhiteCard();
+        card.name = "settings-interconnect-card";
+        card.Add(BuildWhiteRow("机车与编组", "列车编组与机车协同由行车设备管理，此终端不提供编组控制操作", null, false));
+        card.Add(BuildWhiteRow("列车状态", "行车状态请以驾驶台的机车仪表与提示为准", null, false));
+        card.Add(BuildWhiteRow("账户与同步", "此终端不提供个人账户登录或跨设备云同步服务", null, false));
+        page.Add(card);
+
+        rightPane.Add(page);
+    }
+
+    // 7 更多连接方式：机车专用通信与维护接口说明
+    private static void RenderMoreConnectionsSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-more-connections-page" };
+        AddCenterHeader(page, "更多连接方式");
+
+        AddSectionHeader(page, "其它连接服务");
+        var card = BuildWhiteCard();
+        card.name = "settings-more-connections-card";
+        card.Add(BuildWhiteRow("网络共享", "此终端不提供便携热点或网络共享入口", null, false));
+        card.Add(BuildWhiteRow("显示扩展", "此终端不提供无线投屏或外接显示控制入口", null, false));
+        card.Add(BuildWhiteRow("设备检修", "机车设备检修由机务检修流程负责，此页不显示调试接口状态", null, false));
+        page.Add(card);
+
+        rightPane.Add(page);
+    }
+
+    // 8 小米超级AI：本地先民人工智能原型机与对话机制说明
+    private static void RenderAiSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-ai-page" };
+        AddCenterHeader(page, "小米超级AI");
+
+        AddSectionHeader(page, "岁月");
+        var engineCard = BuildWhiteCard();
+        engineCard.name = "settings-ai-engine-card";
+        engineCard.Add(BuildInfoRow("岁月", "0721 车机", "核心运行在 0721 号车机上，通过平板投影与你交互；与平板共享设备所有权"));
+        engineCard.Add(BuildInfoRow("桌面投影", "常驻", "桌面一角的浮窗，轻触即可开始对话"));
+        engineCard.Add(BuildInfoRow("对话方式", "预设台词", "岁月目前的回应来自本地预设台词"));
+        page.Add(engineCard);
+
+        AddSectionHeader(page, "车载内网");
+        var interactionCard = BuildWhiteCard();
+        interactionCard.name = "settings-ai-interaction-card";
+        interactionCard.Add(BuildInfoRow("在线推理", "未接入", "内网沙箱内没有外部大模型服务"));
+        interactionCard.Add(BuildInfoRow("语音输入", "未提供", "平板没有语音唤醒或麦克风输入"));
+        page.Add(interactionCard);
+
+        rightPane.Add(page);
+    }
+
+    public static void ShowResetConfirmDialog(
+        VisualElement host,
+        string title,
+        string message,
+        string confirmBtnText,
+        Action onConfirm)
+    {
+        if (host == null) return;
+
+        var existing = host.Q("settings-confirm-overlay");
+        if (existing != null) host.Remove(existing);
+
+        var overlay = new VisualElement { name = "settings-confirm-overlay" };
+        overlay.style.position = Position.Absolute;
+        overlay.style.top = 0; overlay.style.left = 0;
+        overlay.style.right = 0; overlay.style.bottom = 0;
+        overlay.style.backgroundColor = new Color(0f, 0f, 0f, 0.60f);
+        overlay.style.alignItems = Align.Center;
+        overlay.style.justifyContent = Justify.Center;
+        overlay.pickingMode = PickingMode.Position;
+        overlay.focusable = true;
+
+        void Dismiss()
+        {
+            if (overlay.parent != null)
+            {
+                overlay.parent.Remove(overlay);
+            }
+        }
+
+        overlay.RegisterCallback<ClickEvent>(evt =>
+        {
+            if (evt.target == overlay)
+            {
+                Dismiss();
+            }
+        });
+
+        overlay.RegisterCallback<KeyDownEvent>(evt =>
+        {
+            if (evt.keyCode == KeyCode.Escape)
+            {
+                evt.StopImmediatePropagation();
+                Dismiss();
+            }
+        });
+
+        var box = new VisualElement { name = "settings-confirm-box" };
+        box.style.width = 460;
+        box.style.backgroundColor = SurfaceCard;
+        box.style.borderTopLeftRadius = 14; box.style.borderTopRightRadius = 14;
+        box.style.borderBottomLeftRadius = 14; box.style.borderBottomRightRadius = 14;
+        box.style.borderTopWidth = 1; box.style.borderBottomWidth = 1;
+        box.style.borderLeftWidth = 1; box.style.borderRightWidth = 1;
+        box.style.borderTopColor = BorderCard; box.style.borderBottomColor = BorderCard;
+        box.style.borderLeftColor = BorderCard; box.style.borderRightColor = BorderCard;
+        box.style.paddingTop = 22; box.style.paddingBottom = 20;
+        box.style.paddingLeft = 24; box.style.paddingRight = 24;
+        box.pickingMode = PickingMode.Position;
+        box.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
+        overlay.Add(box);
+
+        var titleLbl = new Label(title) { name = "settings-confirm-title" };
+        titleLbl.style.fontSize = 17;
+        titleLbl.style.color = new Color(0.85f, 0.25f, 0.20f, 1f);
+        titleLbl.style.unityFontStyleAndWeight = FontStyle.Bold;
+        titleLbl.style.unityFontDefinition = Fd();
+        titleLbl.style.marginBottom = 12;
+        box.Add(titleLbl);
+
+        var descLbl = new Label(message) { name = "settings-confirm-desc" };
+        descLbl.style.fontSize = 13;
+        descLbl.style.color = InkPrimary;
+        descLbl.style.unityFontDefinition = Fd();
+        descLbl.style.whiteSpace = WhiteSpace.Normal;
+        descLbl.style.marginBottom = 20;
+        box.Add(descLbl);
+
+        var btnRow = new VisualElement();
+        btnRow.style.flexDirection = FlexDirection.Row;
+        btnRow.style.justifyContent = Justify.FlexEnd;
+        btnRow.style.alignItems = Align.Center;
+        box.Add(btnRow);
+
+        var cancelBtn = new Button(Dismiss) { text = "取消", name = "settings-confirm-cancel-btn" };
+        cancelBtn.style.height = 34;
+        cancelBtn.style.paddingLeft = 18; cancelBtn.style.paddingRight = 18;
+        cancelBtn.style.fontSize = 13;
+        cancelBtn.style.unityFontDefinition = Fd();
+        cancelBtn.style.backgroundColor = SurfaceApp;
+        cancelBtn.style.color = InkPrimary;
+        cancelBtn.style.borderTopLeftRadius = 8; cancelBtn.style.borderTopRightRadius = 8;
+        cancelBtn.style.borderBottomLeftRadius = 8; cancelBtn.style.borderBottomRightRadius = 8;
+        cancelBtn.style.borderTopWidth = 1; cancelBtn.style.borderBottomWidth = 1;
+        cancelBtn.style.borderLeftWidth = 1; cancelBtn.style.borderRightWidth = 1;
+        cancelBtn.style.borderTopColor = BorderCard; cancelBtn.style.borderBottomColor = BorderCard;
+        cancelBtn.style.borderLeftColor = BorderCard; cancelBtn.style.borderRightColor = BorderCard;
+        cancelBtn.style.marginRight = 12;
+        btnRow.Add(cancelBtn);
+
+        var confirmBtn = new Button(() =>
+        {
+            Dismiss();
+            onConfirm?.Invoke();
+        }) { text = confirmBtnText, name = "settings-confirm-ok-btn" };
+        confirmBtn.style.height = 34;
+        confirmBtn.style.paddingLeft = 18; confirmBtn.style.paddingRight = 18;
+        confirmBtn.style.fontSize = 13;
+        confirmBtn.style.unityFontDefinition = Fd();
+        confirmBtn.style.backgroundColor = new Color(0.85f, 0.25f, 0.20f, 1f);
+        confirmBtn.style.color = Color.white;
+        confirmBtn.style.borderTopLeftRadius = 8; confirmBtn.style.borderTopRightRadius = 8;
+        confirmBtn.style.borderBottomLeftRadius = 8; confirmBtn.style.borderBottomRightRadius = 8;
+        confirmBtn.style.borderTopWidth = 0; confirmBtn.style.borderBottomWidth = 0;
+        confirmBtn.style.borderLeftWidth = 0; confirmBtn.style.borderRightWidth = 0;
+        btnRow.Add(confirmBtn);
+
+        host.Add(overlay);
+        overlay.Focus();
+    }
+
     // 99 开发者选项：支持重置游戏数据与调试测试
     private static void RenderDeveloperOptions(ScrollView rightPane, VisualElement win)
     {
@@ -420,7 +928,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         noticeCard.style.backgroundColor = new Color(0.99f, 0.95f, 0.90f, 1f);
         noticeCard.style.borderTopColor = AccentSystem; noticeCard.style.borderBottomColor = AccentSystem;
         noticeCard.style.borderLeftColor = AccentSystem; noticeCard.style.borderRightColor = AccentSystem;
-        var noticeTitle = new Label("⚠️ 开发者调试模式已激活");
+        var noticeTitle = new Label("开发者调试模式已激活");
         noticeTitle.style.fontSize = 15; noticeTitle.style.color = AccentSystem;
         noticeTitle.style.unityFontStyleAndWeight = FontStyle.Bold; noticeTitle.style.unityFontDefinition = Fd();
         noticeCard.Add(noticeTitle);
@@ -434,16 +942,24 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var storyResetCard = BuildWhiteCard();
         storyResetCard.Add(BuildWhiteRow("重置主线剧情进度", "清空所有已通关剧本与幕次记录，重置回序章第01幕", () =>
         {
-            for (int i = 0; i < TabletReturnJourneyUI.PrologueEpisodes.Length; i++)
-            {
-                PlayerPrefs.DeleteKey("ArchiveStory_" + TabletReturnJourneyUI.PrologueEpisodes[i].scriptId);
-                PlayerPrefs.DeleteKey("ArchiveScene_" + TabletReturnJourneyUI.PrologueEpisodes[i].scriptId);
-            }
-            PlayerPrefs.DeleteKey("VN_Got0721");
-            PlayerPrefs.DeleteKey("LastReadScript");
-            PlayerPrefs.DeleteKey("DebugUnlockAllChapters");
-            PlayerPrefs.Save();
-            ShowToast("🔄 主线剧情进度已重置至序章第 01 幕！");
+            ShowResetConfirmDialog(
+                win ?? rightPane,
+                "重置主线剧情进度确认",
+                "此操作将删除所有序章通关剧本与幕次记录（ArchiveStory_*、ArchiveScene_*）、彩蛋记录（VN_Got0721）、最后阅读记录（LastReadScript）以及调试全章节解锁标记（DebugUnlockAllChapters），将剧情重置回序章第 01 幕。\n\n影响边界说明：\n• 仅重置主线剧情与阅读记录（PlayerPrefs 对应键）；\n• 不影响资金、信任、车况等经济模拟数据；\n• 不会清除音乐库独立 JSON 与歌词数据；\n• 不会修改系统设置与按键映射。",
+                "确认重置主线",
+                () =>
+                {
+                    for (int i = 0; i < TabletReturnJourneyUI.PrologueEpisodes.Length; i++)
+                    {
+                        PlayerPrefs.DeleteKey("ArchiveStory_" + TabletReturnJourneyUI.PrologueEpisodes[i].scriptId);
+                        PlayerPrefs.DeleteKey("ArchiveScene_" + TabletReturnJourneyUI.PrologueEpisodes[i].scriptId);
+                    }
+                    PlayerPrefs.DeleteKey("VN_Got0721");
+                    PlayerPrefs.DeleteKey("LastReadScript");
+                    PlayerPrefs.DeleteKey("DebugUnlockAllChapters");
+                    PlayerPrefs.Save();
+                    ShowToast("主线剧情进度已重置至序章第 01 幕！");
+                });
         }));
 
         storyResetCard.Add(BuildWhiteRow("一键解锁全部剧情与CG (调试用)", "解锁序章全部 10 幕剧本及所有已收录 CG 资源", () =>
@@ -460,23 +976,83 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }));
         rightPane.Add(storyResetCard);
 
+        // ---- 成就与收藏调试（对应老调试面板里的成就/音乐解锁；危险的“清除全部 PlayerPrefs / 重置所有存档”不迁移）----
+        AddSectionHeader(rightPane, "成就与收藏调试");
+        var achCard = BuildWhiteCard();
+        achCard.name = "settings-dev-achievement-card";
+        int achTotal = AchievementManager.GetAll().Length;
+        achCard.Add(BuildInfoRow("一键解锁全部成就", $"{AchievementManager.GetUnlockedCount()} / {achTotal}", "把所有成就标记为已解锁（会依次弹出成就提示）", () =>
+        {
+            var all = AchievementManager.GetAll();
+            for (int i = 0; i < all.Length; i++) AchievementManager.Unlock(all[i].id);
+            ShowToast("已解锁全部成就");
+            BuildSettingsPage(win);
+        }));
+        achCard.Add(BuildInfoRow("重置全部成就", null, "清空成就的解锁状态与日期；不影响剧情进度、经营数据、存档与音乐库", () =>
+        {
+            ShowResetConfirmDialog(
+                win ?? rightPane,
+                "重置全部成就确认",
+                "此操作会清空所有成就的解锁状态与解锁日期。不会影响剧情进度、经营数据、存档、音乐库与系统设置。",
+                "确认重置成就",
+                () =>
+                {
+                    AchievementManager.ResetAll();
+                    ShowToast("成就已重置");
+                    BuildSettingsPage(win);
+                });
+        }));
+        achCard.Add(BuildInfoRow("一键解锁全部原声", null, "只写入原声收藏的解锁记录（ArchiveMusic_*），不改动音乐库与播放状态", () =>
+        {
+            foreach (var m in new[] { "iron_and_ash", "cloud_rail", "embers", "night_cargo", "first_light", "platform", "borderline", "wheels_joke", "train_through_keys", "south_wind", "starlit_rails", "chollima_ride", "sleepers" })
+                PlayerPrefs.SetInt("ArchiveMusic_" + m, 1);
+            PlayerPrefs.Save();
+            ShowToast("已解锁全部原声");
+        }));
+        rightPane.Add(achCard);
+
+        AddSectionHeader(rightPane, "单个成就（点击未解锁项直接解锁）");
+        var achListCard = BuildWhiteCard();
+        achListCard.name = "settings-dev-achievement-list";
+        var achItems = AchievementManager.GetAll();
+        for (int i = 0; i < achItems.Length; i++)
+        {
+            var ach = achItems[i];
+            string id = ach.id;
+            achListCard.Add(BuildInfoRow(ach.title, ach.unlocked ? "已解锁 " + ach.unlockedDate : "未解锁", ach.description,
+                ach.unlocked ? (System.Action)null : () =>
+                {
+                    AchievementManager.Unlock(id);
+                    BuildSettingsPage(win);
+                }));
+        }
+        rightPane.Add(achListCard);
+
         AddSectionHeader(rightPane, "经营与经济核数据重置");
         var ecoResetCard = BuildWhiteCard();
-        ecoResetCard.Add(BuildWhiteRow("重置经济模拟数据", "恢复初始状态：资金 50,000 沙币，信任 62，车况 70，第 1 天", () =>
+        ecoResetCard.Add(BuildWhiteRow("重置经济模拟数据", "重置当前运行中的经营状态：资金按难度恢复，初始趋势依已加载种子生成，回到第 1 天", () =>
         {
-            GameData.ResetState();
-            ShowToast("💰 经济核与车况数据已重置为初始运营状态！");
+            ShowResetConfirmDialog(
+                win ?? rightPane,
+                "重置经济模拟数据确认",
+                "此操作会把当前运行中的经营模拟重置到第 1 天，资金按当前难度配置恢复；若已加载世界种子，信任、车况、政治压力和线路老化将恢复为该种子生成的初值，无种子时使用兼容默认值。趋势历史、监管程序、经营策略、短期目标和当日日事件也会重置。\n\n影响边界说明：\n• 不删除已有经营存档槽；重新载入旧存档会恢复槽内数据；\n• 不删除主线剧情通关与阅读记录，但会重置当前运行中的剧情补贴防重复状态；\n• 不清除音乐库独立 JSON 与歌词数据；\n• 不修改系统设置与按键映射。",
+                "确认重置经济",
+                () =>
+                {
+                    GameData.ResetState();
+                    ShowToast("当前经营模拟状态已重置为第 1 天！");
+                });
         }));
 
         ecoResetCard.Add(BuildWhiteRow("注入调试测试资金", "为当前账务追加 100,000 沙币并恢复信任", () =>
         {
             GameData.AddMoney(100000);
             GameData.AddTrust(30);
-            ShowToast("💳 已注资 100,000 沙币，信任已提升！");
+            ShowToast("已注资 100,000 沙币，信任已提升！");
         }));
         rightPane.Add(ecoResetCard);
 
-        AddSectionHeader(rightPane, "出厂重置与开发者模式");
+        AddSectionHeader(rightPane, "开发者模式");
         var devDangerCard = BuildWhiteCard();
         devDangerCard.Add(BuildWhiteRow("退出开发者模式", "隐藏开发者选项并锁定调试入口", () =>
         {
@@ -484,19 +1060,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.DeleteKey("TabletDevModeUnlocked");
             PlayerPrefs.Save();
             currentSettingsCategory = 2;
-            ShowToast("🔒 已退出开发者模式。");
+            ShowToast("已退出开发者模式。");
             BuildSettingsPage(win);
         }));
 
-        devDangerCard.Add(BuildWhiteRow("恢复出厂设置 (清空全部本地数据)", "清空所有 PlayerPrefs 数据并重新加载系统", () =>
-        {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.Save();
-            isTabletDevModeUnlocked = false;
-            currentSettingsCategory = 1;
-            ShowToast("⚠️ 已清除所有本地存储，恢复系统出厂设置。");
-            BuildSettingsPage(win);
-        }));
         rightPane.Add(devDangerCard);
     }
 
@@ -507,11 +1074,114 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         AddSectionHeader(rightPane, "息屏与锁屏样式");
         var card = BuildWhiteCard();
-        card.Add(BuildWhiteRow("锁屏时钟样式", "主体历 / 公历 双排时钟", () => ShowToast("已使用默认时钟样式")));
-        card.Add(BuildWhiteRow("人脸数据录入", "已通过 3D 结构光特征认证", () => ShowToast("面部特征已注册")));
-        card.Add(BuildToggleRow("抬起唤醒", "拿起平板时自动点亮屏幕", true, null));
-        card.Add(BuildToggleRow("双击亮屏与熄屏", "在锁屏界面空白处双击熄屏", true, null));
+        card.Add(BuildWhiteRow("锁屏时钟", "主体历 / 公历 双排时钟", null, false));
+        card.Add(BuildWhiteRow("解锁方式", "轻触屏幕或按空格解锁", null, false));
         rightPane.Add(card);
+    }
+
+    private static void RequestOpenSystemPanel(TabletSystemPanel panel)
+    {
+        if (s_openSystemPanel != null)
+        {
+            s_openSystemPanel(panel);
+            return;
+        }
+
+        if (GameMainUI.Instance != null)
+        {
+            GameMainUI.Instance.OpenSystemPanel(panel);
+            return;
+        }
+
+        ShowToast(panel == TabletSystemPanel.Notifications
+            ? "通知中心服务暂不可用（请从桌面状态栏打开）"
+            : "控制面板服务暂不可用（请从桌面状态栏打开）");
+    }
+
+    // 11 通知与状态栏：系统面板快捷入口与运行机制
+    private static void RenderNotificationAndStatusSettings(ScrollView rightPane)
+    {
+        AddCenterHeader(rightPane, "通知与状态栏");
+
+        bool hasService = s_openSystemPanel != null || GameMainUI.Instance != null;
+        if (!hasService)
+        {
+            var fallbackCard = BuildWhiteCard();
+            fallbackCard.name = "settings-notifications-fallback-card";
+            fallbackCard.style.backgroundColor = new Color(0.98f, 0.94f, 0.88f, 0.95f);
+            var fallbackLbl = new Label("当前环境未挂载系统面板服务（通知中心与控制面板入口将提示降级）。")
+            {
+                name = "settings-notifications-fallback-note"
+            };
+            fallbackLbl.style.fontSize = 12;
+            fallbackLbl.style.color = new Color(0.65f, 0.35f, 0.05f, 1f);
+            fallbackLbl.style.unityFontDefinition = Fd();
+            fallbackCard.Add(fallbackLbl);
+            rightPane.Add(fallbackCard);
+        }
+
+        AddSectionHeader(rightPane, "系统面板快捷入口");
+        var panelCard = BuildWhiteCard();
+        panelCard.name = "settings-notifications-panel-card";
+
+        var notifRow = BuildWhiteRow("打开通知中心", "查看车载系统与各应用推送的提示记录（上限 32 条）", () =>
+        {
+            RequestOpenSystemPanel(TabletSystemPanel.Notifications);
+        });
+        notifRow.name = "settings-open-notifications-btn";
+        panelCard.Add(notifRow);
+
+        var ctrlRow = BuildWhiteRow("打开控制面板", "查看车载快捷控制、勿扰模式与随车调度开关", () =>
+        {
+            RequestOpenSystemPanel(TabletSystemPanel.Controls);
+        });
+        ctrlRow.name = "settings-open-controls-btn";
+        panelCard.Add(ctrlRow);
+
+        rightPane.Add(panelCard);
+
+        AddSectionHeader(rightPane, "通知与免打扰策略");
+        var policyCard = BuildWhiteCard();
+        policyCard.name = "settings-notifications-policy-card";
+
+        var shellState = CurrentShellState;
+        bool quietOn = shellState != null && shellState.QuietMode;
+        var quietToggle = BuildToggleRow("勿扰模式", "开启后静默屏蔽悬浮提示横幅，所有通知仍完整收存至通知中心", quietOn, v =>
+        {
+            if (shellState != null)
+            {
+                shellState.SetQuietMode(v);
+                ShowToast(v ? "已开启勿扰模式" : "已关闭勿扰模式");
+            }
+            else
+            {
+                ShowToast("系统面板服务暂未挂载");
+            }
+        });
+        quietToggle.name = "settings-quiet-toggle-row";
+        policyCard.Add(quietToggle);
+
+        int notifCount = shellState?.Notifications.Count ?? 0;
+        var clearRow = BuildWhiteRow("清空所有通知", $"当前收存 {notifCount} 条通知记录", () =>
+        {
+            if (shellState != null)
+            {
+                shellState.ClearNotifications();
+                ShowToast("已清空所有通知记录");
+            }
+        });
+        clearRow.name = "settings-clear-notifications-btn";
+        policyCard.Add(clearRow);
+
+        rightPane.Add(policyCard);
+
+        AddSectionHeader(rightPane, "运行机制与说明");
+        var infoCard = BuildWhiteCard();
+        infoCard.name = "settings-notifications-info-card";
+        infoCard.Add(BuildWhiteRow("通知收存机制", "通知均来自应用实际运行提示；最多收存 32 条，超限自动淘汰早期记录", null, false));
+        infoCard.Add(BuildWhiteRow("勿扰模式策略", "开启勿扰后系统保留通知收存，仅静默屏蔽悬浮横幅；勿扰状态持久化保存", null, false));
+        infoCard.Add(BuildWhiteRow("系统连接说明", "车载平板处于内网沙箱运行；状态栏不虚拟 Wi-Fi / 蓝牙 / 电池连接状态", null, false));
+        rightPane.Add(infoCard);
     }
 
     // 12 桌面：包含复古画风
@@ -528,7 +1198,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.Save();
             ShowToast(v ? "复古画风已开启，下次进入剧情生效" : "已恢复原始高清背景");
         }));
-        card.Add(BuildWhiteRow("桌面图标排布", "双页网格 + 底部液态玻璃 Dock 栏", null, false));
+        card.Add(BuildWhiteRow("桌面图标排布", "双页网格 + 底部液体玻璃 Dock 栏", null, false));
         card.Add(BuildWhiteRow("岁月 AI 桌面小部件", "已固定于桌面右下角 · 闲暇交互气泡", () => ShowToast("小部件运行中")));
         rightPane.Add(card);
     }
@@ -590,20 +1260,30 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             FPSDisplay.SetActive(v);
         }));
 
-        card.Add(BuildSliderRow("文字速度", 1, 10, PlayerPrefs.GetInt("TextSpeed", 5), v =>
+        card.Add(BuildWhiteRow("界面缩放方案", "2.5K/4K 屏幕自适应对齐（ScaleMode=2）", null, false));
+        rightPane.Add(card);
+
+        // 剧情对话的显示设置放在“显示”里：带实时预览，改动立即看到效果，进入剧情后同样生效
+        AddSectionHeader(rightPane, "对话与阅读");
+        var readCard = BuildWhiteCard();
+        readCard.name = "settings-dialogue-card";
+        var preview = BuildDialoguePreview(PlayerPrefs.GetInt("DialogAlpha", 80), PlayerPrefs.GetInt("TextSpeed", 5));
+        readCard.Add(preview.root);
+        readCard.Add(BuildSliderRow("文字速度", 1, 10, PlayerPrefs.GetInt("TextSpeed", 5), v =>
         {
             PlayerPrefs.SetInt("TextSpeed", v);
             PlayerPrefs.Save();
+            preview.replay(v);
         }, " 档"));
-
-        card.Add(BuildSliderRow("对话框透明度", 0, 100, PlayerPrefs.GetInt("DialogAlpha", 80), v =>
+        readCard.Add(BuildSliderRow("对话框透明度", 0, 100, PlayerPrefs.GetInt("DialogAlpha", 80), v =>
         {
             PlayerPrefs.SetInt("DialogAlpha", v);
             PlayerPrefs.Save();
+            preview.setAlpha(v);
         }, " %"));
+        rightPane.Add(readCard);
 
-        card.Add(BuildWhiteRow("界面缩放方案", "2.5K/4K 屏幕自适应对齐（ScaleMode=2）", null, false));
-
+        var resetCard = BuildWhiteCard();
         var resetBtn = new Button(() =>
         {
             Screen.fullScreen = true;
@@ -621,9 +1301,77 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             BuildSettingsPage(win);
         }) { text = "恢复显示默认设置" };
         StyleActionBtn(resetBtn);
-        card.Add(resetBtn);
+        resetBtn.style.marginTop = 6; resetBtn.style.marginBottom = 6;
+        resetCard.Add(resetBtn);
+        rightPane.Add(resetCard);
+    }
 
-        rightPane.Add(card);
+    // 对话框预览：模拟剧情对话框，按当前“文字速度”逐字打出示例句，按“透明度”调整底色；点击预览可重播
+    private static (VisualElement root, System.Action<int> replay, System.Action<int> setAlpha) BuildDialoguePreview(int alphaSetting, int speedSetting)
+    {
+        const string sample = "雾峰村线的清晨，汽笛声从远处传来……";
+        var root = new VisualElement { name = "settings-dialogue-preview" };
+        root.style.height = 140;
+        root.style.marginTop = 8; root.style.marginBottom = 8;
+        root.style.paddingLeft = 12; root.style.paddingRight = 12; root.style.paddingBottom = 12;
+        root.style.justifyContent = Justify.FlexEnd;
+        root.style.overflow = Overflow.Hidden;
+        root.style.borderTopLeftRadius = root.style.borderTopRightRadius = 18;
+        root.style.borderBottomLeftRadius = root.style.borderBottomRightRadius = 18;
+        root.style.backgroundColor = new Color(0.42f, 0.50f, 0.46f, 1f);   // 示意的场景底色，用来衬出对话框透明度
+
+        var box = new VisualElement();
+        box.style.paddingLeft = 14; box.style.paddingRight = 14;
+        box.style.paddingTop = 10; box.style.paddingBottom = 10;
+        box.style.minHeight = 66;
+        box.style.borderTopLeftRadius = box.style.borderTopRightRadius = 12;
+        box.style.borderBottomLeftRadius = box.style.borderBottomRightRadius = 12;
+        root.Add(box);
+
+        var speaker = new Label("旅人");
+        speaker.style.fontSize = 12; speaker.style.color = new Color(0.83f, 0.66f, 0.26f, 1f);
+        speaker.style.unityFontDefinition = Fd();
+        box.Add(speaker);
+
+        var text = new Label(string.Empty);
+        text.style.fontSize = 15; text.style.color = new Color(0.93f, 0.87f, 0.72f, 1f);
+        text.style.unityFontDefinition = Fd(); text.style.marginTop = 3;
+        text.style.whiteSpace = WhiteSpace.Normal;
+        box.Add(text);
+
+        var hint = new Label("点击预览重播");
+        hint.style.position = Position.Absolute;
+        hint.style.right = 14; hint.style.top = 10;
+        hint.style.fontSize = 11; hint.style.color = new Color(1f, 1f, 1f, 0.75f);
+        hint.style.unityFontDefinition = Fd();
+        hint.pickingMode = PickingMode.Ignore;
+        root.Add(hint);
+
+        int currentSpeed = speedSetting;
+        IVisualElementScheduledItem job = null;
+        System.Action<int> setAlpha = a =>
+        {
+            float alpha = Mathf.Clamp(0.92f * Mathf.Clamp(a, 0, 100) / 80f, 0.15f, 1f);   // 与剧情对话框使用同一换算
+            box.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, alpha);
+        };
+        System.Action<int> replay = sp =>
+        {
+            currentSpeed = Mathf.Clamp(sp, 1, 10);
+            job?.Pause();
+            int shown = 0;
+            text.text = string.Empty;
+            // 与剧情打字机同一换算：默认档 5 为每字 0.03 秒
+            float interval = Mathf.Clamp(0.03f * 5f / currentSpeed, 0.006f, 0.15f);
+            job = root.schedule.Execute(() =>
+            {
+                if (shown < sample.Length) { shown++; text.text = sample.Substring(0, shown); }
+                else job?.Pause();
+            }).Every(System.Math.Max(1L, (long)(interval * 1000f)));
+        };
+        setAlpha(alphaSetting);
+        replay(speedSetting);
+        root.RegisterCallback<ClickEvent>(_ => replay(currentSpeed));
+        return (root, replay, setAlpha);
     }
 
     // 14 声音与振动：老设置「音频」全量并入
@@ -714,8 +1462,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var resetBtn = new Button(() =>
         {
-            foreach (KeyBindings.Action action in System.Enum.GetValues(typeof(KeyBindings.Action)))
-                KeyBindings.SetKey(action, KeyBindings.GetKey(action));
+            KeyBindings.ResetToDefaults();
             ShowToast("按键映射已恢复默认设置");
             BuildSettingsPage(win);
         }) { text = "恢复默认按键配置" };
@@ -747,6 +1494,54 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         TabletRebindAction = onKey;
     }
 
+    // 16 人脸与锁屏密码：屏幕锁定凭据与机车值班策略
+    private static void RenderLockSecuritySettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-lock-security-page" };
+        AddCenterHeader(page, "人脸与锁屏密码");
+
+        AddSectionHeader(page, "屏幕锁定");
+        var credCard = BuildWhiteCard();
+        credCard.name = "settings-lock-credential-card";
+        credCard.Add(BuildInfoRow("锁屏方式", "轻触解锁", "轻触屏幕或按空格键进入桌面"));
+        credCard.Add(BuildInfoRow("面容数据", "未录入", "此终端未录入任何生物识别数据"));
+        credCard.Add(BuildInfoRow("PIN 码与图案", "未设置", "未设置锁屏密码"));
+        page.Add(credCard);
+
+        AddSectionHeader(page, "说明");
+        var policyCard = BuildWhiteCard();
+        policyCard.name = "settings-lock-policy-card";
+        policyCard.Add(BuildInfoRow("安全等级", "无凭据保护", "锁屏页只负责展示时间与问候，不是凭据保护；终端的防护由白头疫苗与系统沙箱承担"));
+        page.Add(policyCard);
+
+        rightPane.Add(page);
+    }
+
+    // 17 隐私与安全：本地存储边界与沙箱权限
+    private static void RenderPrivacySettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-privacy-page" };
+        AddCenterHeader(page, "隐私与安全");
+
+        AddSectionHeader(page, "终端防护");
+        var storageCard = BuildWhiteCard();
+        storageCard.name = "settings-privacy-storage-card";
+        storageCard.Add(BuildInfoRow("终端防御", "白头疫苗", "安全服务由白头疫苗统一管理，可在“白头疫苗”应用中查看防护状态"));
+        storageCard.Add(BuildInfoRow("外部网络", "受限", "车载内网沙箱默认不连接公共网络；音乐页的账号与在线曲库只在你操作时联网"));
+        storageCard.Add(BuildInfoRow("应用权限", "沙箱隔离", "22 个应用运行在系统沙箱内"));
+        page.Add(storageCard);
+
+        AddSectionHeader(page, "本机数据");
+        var sandboxCard = BuildWhiteCard();
+        sandboxCard.name = "settings-privacy-sandbox-card";
+        sandboxCard.Add(BuildInfoRow("存档与设置", "本机存储", "游戏存档、系统设置保存在本机"));
+        sandboxCard.Add(BuildInfoRow("音乐库", "本机文件", "曲库与歌词保存在本机文件；登录在线账号后，歌单会按你的操作与账号同步"));
+        sandboxCard.Add(BuildInfoRow("备份与恢复", "本地快照", "存档备份只保存在本机", () => ShowBackupRestorePage()));
+        page.Add(sandboxCard);
+
+        rightPane.Add(page);
+    }
+
     // 18 应用：系统应用管控入口
     private static void RenderAppsSettings(ScrollView rightPane)
     {
@@ -758,6 +1553,149 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         card.Add(BuildWhiteRow("默认应用设置", "默认浏览器：光明内网浏览器 · 默认播放器：随身听", null, false));
         card.Add(BuildWhiteRow("特殊权限设置", "全部 22 个应用沙箱隔离权限", () => ShowToast("权限运转正常")));
         rightPane.Add(card);
+    }
+
+    // 19 电池：真实系统电源状态与机车供电说明
+    // 电量大色块：绿色填充宽度等于真实电量；平台没有读数时显示灰色并如实说明
+    private static VisualElement BuildBatteryHero(float level, BatteryStatus status)
+    {
+        bool known = level >= 0f;
+        var hero = new VisualElement { name = "settings-battery-hero" };
+        hero.style.height = 200;
+        hero.style.marginBottom = 16;
+        hero.style.overflow = Overflow.Hidden;
+        hero.style.borderTopLeftRadius = hero.style.borderTopRightRadius = 24;
+        hero.style.borderBottomLeftRadius = hero.style.borderBottomRightRadius = 24;
+        hero.style.backgroundColor = known ? new Color(0.76f, 0.93f, 0.82f, 1f) : new Color(0.89f, 0.89f, 0.91f, 1f);
+        hero.style.justifyContent = Justify.Center;
+        hero.style.paddingLeft = 36; hero.style.paddingRight = 36;
+
+        if (known)
+        {
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore, name = "settings-battery-hero-fill" };
+            fill.style.position = Position.Absolute;
+            fill.style.left = 0; fill.style.top = 0; fill.style.bottom = 0;
+            fill.style.width = Length.Percent(Mathf.Clamp01(level) * 100f);
+            fill.style.backgroundColor = new Color(0.20f, 0.82f, 0.40f, 1f);
+            hero.Add(fill);
+        }
+
+        var valueRow = new VisualElement { pickingMode = PickingMode.Ignore };
+        valueRow.style.flexDirection = FlexDirection.Row;
+        valueRow.style.alignItems = Align.FlexEnd;
+        var value = new Label(known ? Mathf.RoundToInt(level * 100f).ToString() : "--");
+        // 数字压在绿色填充上用白字；电量低、数字落到浅色底上时改深绿，保证对比度
+        var heroInk = !known ? InkSecondary : level >= 0.40f ? Color.white : new Color(0.08f, 0.32f, 0.16f, 1f);
+        value.style.fontSize = 76; value.style.color = heroInk;
+        value.style.unityFontDefinition = FdBold();
+        value.pickingMode = PickingMode.Ignore;
+        valueRow.Add(value);
+        var unit = new Label("%");
+        unit.style.fontSize = 26; unit.style.color = heroInk;
+        unit.style.unityFontDefinition = FdBold();
+        unit.style.marginLeft = 6; unit.style.marginBottom = 12;
+        unit.pickingMode = PickingMode.Ignore;
+        valueRow.Add(unit);
+        hero.Add(valueRow);
+
+        string caption = !known ? "平台未提供电量读数"
+            : status == BatteryStatus.Charging ? "正在充电"
+            : status == BatteryStatus.Full ? "电池已充满"
+            : status == BatteryStatus.NotCharging ? "未在充电"
+            : "电池供电放电中";
+        var sub = new Label(caption);
+        sub.style.fontSize = 18; sub.style.color = heroInk;
+        sub.style.unityFontDefinition = Fd();
+        sub.pickingMode = PickingMode.Ignore;
+        hero.Add(sub);
+        return hero;
+    }
+
+    private static void RenderBatterySettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-battery-page" };
+        AddCenterHeader(page, "电池");
+        page.Add(BuildBatteryHero(GameMainUI.GetDeviceBatteryLevel01(), GameMainUI.GetDeviceBatteryStatus()));
+
+        AddSectionHeader(page, "供电状态");
+        var statusCard = BuildWhiteCard();
+        statusCard.name = "settings-battery-status-card";
+
+        float battLevel = GameMainUI.GetDeviceBatteryLevel01();
+        BatteryStatus battStatus = GameMainUI.GetDeviceBatteryStatus();
+        string levelText = battLevel >= 0f ? $"{Mathf.RoundToInt(battLevel * 100f)}%" : "平台未提供电量读数";
+        string statusText;
+        switch (battStatus)
+        {
+            case BatteryStatus.Charging: statusText = "正在充电"; break;
+            case BatteryStatus.Discharging: statusText = "电池供电放电中"; break;
+            case BatteryStatus.Full: statusText = "电池已充满"; break;
+            case BatteryStatus.NotCharging: statusText = "未在充电"; break;
+            default: statusText = "平台未报告电池状态"; break;
+        }
+
+        statusCard.Add(BuildWhiteRow("当前电量", levelText, null, false));
+        statusCard.Add(BuildWhiteRow("供电状态", statusText, null, false));
+        statusCard.Add(BuildWhiteRow("数据来源", "读取本机真实电池：Windows 取系统电源状态，Android 取系统电池接口；不代表机车蓄电池或辅助电源遥测", null, false));
+        page.Add(statusCard);
+
+        AddSectionHeader(page, "能耗管理说明");
+        var policyCard = BuildWhiteCard();
+        policyCard.name = "settings-battery-policy-card";
+        policyCard.Add(BuildWhiteRow("能耗统计", "本应用不统计各页面或应用的后台耗电量", null, false));
+        policyCard.Add(BuildWhiteRow("电源控制", "此页不控制操作系统省电模式或机车电源设备", null, false));
+        page.Add(policyCard);
+
+        rightPane.Add(page);
+    }
+
+    // 20 健康使用设备：屏幕时长与司乘值班警惕机制说明
+    private static void RenderDigitalWellbeingSettings(ScrollView rightPane, VisualElement win)
+    {
+        var page = new VisualElement { name = "settings-digital-wellbeing-page" };
+        AddCenterHeader(page, "健康使用设备");
+
+        AddSectionHeader(page, "使用统计与时间管理");
+        var statsCard = BuildWhiteCard();
+        statsCard.name = "settings-digital-wellbeing-stats-card";
+        statsCard.Add(BuildInfoRow("屏幕使用时长", "不统计", "此终端不记录使用时长和亮屏频次"));
+        statsCard.Add(BuildInfoRow("应用使用限额", "未启用", "车载专业设备不设置个人防沉迷与使用时间限制"));
+        page.Add(statsCard);
+
+        AddSectionHeader(page, "值班");
+        var dutyCard = BuildWhiteCard();
+        dutyCard.name = "settings-digital-wellbeing-duty-card";
+        dutyCard.Add(BuildInfoRow("行车安全数据", "驾驶台", "机车警惕与疲劳相关数据由驾驶台管理，不在这里读取"));
+        dutyCard.Add(BuildInfoRow("显示与亮度", null, "调整画面与对话显示", () =>
+        {
+            currentSettingsCategory = 13;
+            BuildSettingsPage(win);
+        }));
+        page.Add(dutyCard);
+
+        rightPane.Add(page);
+    }
+
+    // 21 儿童模式：机车操纵环境与权限说明
+    private static void RenderKidsModeSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-kids-mode-page" };
+        AddCenterHeader(page, "儿童模式");
+
+        AddSectionHeader(page, "儿童与监护");
+        var statusCard = BuildWhiteCard();
+        statusCard.name = "settings-kids-mode-status-card";
+        statusCard.Add(BuildInfoRow("儿童空间", "未开启", "此终端没有独立的儿童账户或受限桌面"));
+        statusCard.Add(BuildInfoRow("家长控制", "未开启", "没有监护、时长限制或内容过滤功能"));
+        page.Add(statusCard);
+
+        AddSectionHeader(page, "值班环境");
+        var envCard = BuildWhiteCard();
+        envCard.name = "settings-kids-mode-env-card";
+        envCard.Add(BuildInfoRow("机车操纵环境", "专业设备", "平板随 0721 号机车使用，按成年乘务人员的值班环境设计"));
+        page.Add(envCard);
+
+        rightPane.Add(page);
     }
 
     // 形态 C · 无障碍页（4 胶囊 Tab + 开关行，对照 Accessibility 截图）
@@ -797,9 +1735,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         AddSectionHeader(rightPane, tabs[accessibilityTab] + "辅助服务");
         var card = BuildWhiteCard();
-        card.Add(BuildToggleRow("无障碍快捷方式", "同时按住音量加减键 3 秒开启", false, _ => ShowToast("此功能尚未开放")));
-        card.Add(BuildToggleRow("高对比度文本", "增强浅色界面的文字辨识度", false, _ => ShowToast("此功能尚未开放")));
-        card.Add(BuildWhiteRow("TalkBack 语音助手", "屏幕内容读屏朗读服务（未安装语言包）", () => ShowToast("此功能尚未开放")));
+        card.Add(BuildWhiteRow("系统面板高对比度", "在平板外观中统一调整", () => { currentSettingsCategory = 9; BuildSettingsPage(win); }));
+        card.Add(BuildWhiteRow("读屏服务", "未启用", null, false));
         rightPane.Add(card);
     }
 
@@ -815,22 +1752,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.SetInt("AutoPlay", v ? 1 : 0);
             PlayerPrefs.Save();
         }));
-        gameCard.Add(BuildToggleRow("跳过已读文本", "已读过的对话自动跳过", PlayerPrefs.GetInt("SkipRead", 1) == 1, v =>
+        gameCard.Add(BuildToggleRow("跳过已读文本", "剧情系统尚未记录已读状态，暂不可用", PlayerPrefs.GetInt("SkipRead", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("SkipRead", v ? 1 : 0);
             PlayerPrefs.Save();
-        }));
+        }, false));
         gameCard.Add(BuildToggleRow("点击对话框推进", "点击对话框区域触发下一句", PlayerPrefs.GetInt("ClickAdvance", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("ClickAdvance", v ? 1 : 0);
             PlayerPrefs.Save();
         }));
-        gameCard.Add(BuildToggleRow("确认对话框", "关闭游戏或退出章节时显示确认", PlayerPrefs.GetInt("ConfirmDialog", 1) == 1, v =>
+        gameCard.Add(BuildToggleRow("确认对话框", "剧情内的确认弹窗目前固定显示，暂不可关闭", PlayerPrefs.GetInt("ConfirmDialog", 1) == 1, v =>
         {
             PlayerPrefs.SetInt("ConfirmDialog", v ? 1 : 0);
             PlayerPrefs.Save();
-        }));
-        gameCard.Add(BuildSliderRow("自动播放间隔", 1, 10, PlayerPrefs.GetInt("AutoInterval", 3), v =>
+        }, false));
+        gameCard.Add(BuildSliderRow("自动播放间隔", 1, 10, PlayerPrefs.GetInt("AutoInterval", 2), v =>
         {
             PlayerPrefs.SetInt("AutoInterval", v);
             PlayerPrefs.Save();
@@ -839,9 +1776,32 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         AddSectionHeader(rightPane, "数据管理与知识图鉴");
         var dataCard = BuildWhiteCard();
-        dataCard.Add(BuildWhiteRow("本地数据备份与恢复", "快照经营数据与剧目存档（参考小米备份）", ShowBackupRestorePage));
+        dataCard.Add(BuildWhiteRow("本地数据备份与恢复", "快照 VN 剧目存档、成就与书签记录（不含经营运行态）", () => ShowBackupRestorePage()));
         dataCard.Add(BuildWhiteRow("铁路百科与专有名词图鉴", "30 条完整术语词条 · 角色口吻释义", () => ShowTipsPage(null)));
         rightPane.Add(dataCard);
+    }
+
+    // 24 反馈：车载事务面板入口与离线反馈渠道说明
+    private static void RenderFeedbackSettings(ScrollView rightPane)
+    {
+        var page = new VisualElement { name = "settings-feedback-page" };
+        AddCenterHeader(page, "反馈");
+
+        AddSectionHeader(page, "提交反馈");
+        var feedbackCard = BuildWhiteCard();
+        feedbackCard.name = "settings-feedback-status-card";
+        feedbackCard.Add(BuildInfoRow("反馈表单", "未接入", "此终端没有反馈收件端，写下的内容不会被发送或保存"));
+        feedbackCard.Add(BuildInfoRow("联系渠道", "暂无", "没有可验证的调度电话、工单地址或外部反馈入口"));
+        page.Add(feedbackCard);
+
+        AddSectionHeader(page, "本机信息");
+        var channelCard = BuildWhiteCard();
+        channelCard.name = "settings-feedback-channel-card";
+        channelCard.Add(BuildInfoRow("应用版本", Application.version));
+        channelCard.Add(BuildInfoRow("日志与诊断", "不提供", "此页不导出日志，也不提交诊断包"));
+        page.Add(channelCard);
+
+        rightPane.Add(page);
     }
 
     // 形态 B · 普通详情页 / 规范占位页
@@ -864,8 +1824,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     private static void AddCenterHeader(VisualElement parent, string title)
     {
         var h = new Label(title);
-        h.style.fontSize = 22; h.style.color = InkPrimary;
-        h.style.unityFontStyleAndWeight = FontStyle.Bold; h.style.unityFontDefinition = Fd();
+        h.name = "settings-page-title";
+        h.style.fontSize = 24; h.style.color = InkPrimary;
+        h.style.unityFontDefinition = FdBold();
         h.style.alignSelf = Align.Center; h.style.marginBottom = 16;
         parent.Add(h);
     }
@@ -874,7 +1835,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var h = new Label(title);
         h.style.fontSize = 13; h.style.color = SectionHeaderColor;
-        h.style.unityFontStyleAndWeight = FontStyle.Bold; h.style.unityFontDefinition = Fd();
+        h.style.unityFontDefinition = FdBold();
         h.style.marginBottom = 8; h.style.marginLeft = 6;
         parent.Add(h);
     }
@@ -883,15 +1844,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         var card = new VisualElement();
         card.style.backgroundColor = SurfaceCard;
-        card.style.borderTopLeftRadius = 14; card.style.borderTopRightRadius = 14;
-        card.style.borderBottomLeftRadius = 14; card.style.borderBottomRightRadius = 14;
-        card.style.borderTopWidth = 1; card.style.borderBottomWidth = 1;
-        card.style.borderLeftWidth = 1; card.style.borderRightWidth = 1;
-        card.style.borderTopColor = BorderCard; card.style.borderBottomColor = BorderCard;
-        card.style.borderLeftColor = BorderCard; card.style.borderRightColor = BorderCard;
-        card.style.paddingLeft = 16; card.style.paddingRight = 16;
+        card.style.borderTopLeftRadius = 24; card.style.borderTopRightRadius = 24;
+        card.style.borderBottomLeftRadius = 24; card.style.borderBottomRightRadius = 24;
+        card.style.paddingLeft = 22; card.style.paddingRight = 22;
         card.style.paddingTop = 8; card.style.paddingBottom = 8;
-        card.style.marginBottom = 14;
+        card.style.marginBottom = 16;
         return card;
     }
 
@@ -901,8 +1858,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
-        row.style.paddingTop = 10; row.style.paddingBottom = 10;
-        row.style.borderBottomWidth = 1; row.style.borderBottomColor = BorderDivider;
+        row.style.paddingTop = 20; row.style.paddingBottom = 20;
+        row.style.paddingLeft = 8; row.style.paddingRight = 8;
+        row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
+        row.style.borderTopLeftRadius = 10; row.style.borderTopRightRadius = 10;
+        row.style.borderBottomLeftRadius = 10; row.style.borderBottomRightRadius = 10;
         row.pickingMode = onClick != null ? PickingMode.Position : PickingMode.Ignore;
 
         if (onClick != null)
@@ -917,30 +1877,100 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         row.Add(left);
 
         var t = new Label(title);
-        t.style.fontSize = 15; t.style.color = InkPrimary;
+        t.style.fontSize = 18; t.style.color = InkPrimary;
         t.style.unityFontDefinition = Fd();
         left.Add(t);
 
-        if (!string.IsNullOrEmpty(desc))
+        // 短说明作为右侧取值显示（如“当前电量  86%”），长说明仍放在标题下方
+        bool shortValue = !string.IsNullOrEmpty(desc) && desc.Length <= 12 && desc.IndexOf('\n') < 0;
+        if (!string.IsNullOrEmpty(desc) && !shortValue)
         {
             var d = new Label(desc);
-            d.style.fontSize = 12; d.style.color = InkSecondary;
-            d.style.unityFontDefinition = Fd(); d.style.marginTop = 2;
+            d.style.fontSize = 14; d.style.color = InkSecondary;
+            d.style.unityFontDefinition = Fd(); d.style.marginTop = 4;
+            d.style.whiteSpace = WhiteSpace.Normal;
             left.Add(d);
+        }
+
+        if (shortValue)
+        {
+            var v = new Label(desc);
+            v.style.fontSize = 15; v.style.color = InkTertiary;
+            v.style.unityFontDefinition = Fd();
+            v.style.marginLeft = 12; v.style.marginRight = hasArrow ? 6 : 0;
+            v.style.flexShrink = 0;
+            row.Add(v);
         }
 
         if (hasArrow)
         {
             var ar = new Label("›");
-            ar.style.fontSize = 18; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
+            ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
             row.Add(ar);
         }
         return row;
     }
 
-    private static VisualElement BuildToggleRow(string title, string desc, bool initialVal, System.Action<bool> onChanged)
+    // 取值行：左侧标题（可带一行说明），右侧灰色取值，可选箭头（对照 HyperOS “标题 … 取值 ›”）
+    private static VisualElement BuildInfoRow(string title, string value, string sub = null, System.Action onClick = null)
     {
         var row = new VisualElement();
+        row.style.flexDirection = FlexDirection.Row;
+        row.style.justifyContent = Justify.SpaceBetween;
+        row.style.alignItems = Align.Center;
+        row.style.paddingTop = 20; row.style.paddingBottom = 20;
+        row.style.paddingLeft = 8; row.style.paddingRight = 8;
+        row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
+        row.style.borderTopLeftRadius = row.style.borderTopRightRadius = 10;
+        row.style.borderBottomLeftRadius = row.style.borderBottomRightRadius = 10;
+        row.pickingMode = onClick != null ? PickingMode.Position : PickingMode.Ignore;
+        if (onClick != null)
+        {
+            row.RegisterCallback<PointerEnterEvent>(_ => row.style.backgroundColor = SurfaceHover);
+            row.RegisterCallback<PointerLeaveEvent>(_ => row.style.backgroundColor = Color.clear);
+            row.RegisterCallback<ClickEvent>(_ => onClick());
+        }
+
+        var left = new VisualElement();
+        left.style.flexGrow = 1; left.style.flexShrink = 1;
+        row.Add(left);
+        var t = new Label(title);
+        t.style.fontSize = 18; t.style.color = InkPrimary; t.style.unityFontDefinition = Fd();
+        left.Add(t);
+        if (!string.IsNullOrEmpty(sub))
+        {
+            var d = new Label(sub);
+            d.style.fontSize = 14; d.style.color = InkSecondary; d.style.unityFontDefinition = Fd();
+            d.style.marginTop = 4; d.style.whiteSpace = WhiteSpace.Normal;
+            left.Add(d);
+        }
+
+        var right = new VisualElement();
+        right.style.flexDirection = FlexDirection.Row;
+        right.style.alignItems = Align.Center;
+        right.style.flexShrink = 0;
+        row.Add(right);
+        if (!string.IsNullOrEmpty(value))
+        {
+            var v = new Label(value);
+            v.style.fontSize = 15; v.style.color = InkTertiary; v.style.unityFontDefinition = Fd();
+            v.style.marginLeft = 12;
+            right.Add(v);
+        }
+        if (onClick != null)
+        {
+            var ar = new Label("›");
+            ar.style.fontSize = 20; ar.style.color = InkTertiary; ar.style.unityFontDefinition = Fd();
+            ar.style.marginLeft = 6;
+            right.Add(ar);
+        }
+        return row;
+    }
+
+    private static VisualElement BuildToggleRow(string title, string desc, bool initialVal, System.Action<bool> onChanged, bool enabled = true)
+    {
+        var row = new VisualElement();
+        if (!enabled) row.style.opacity = 0.45f;   // 禁用态：灰显且点击不翻转
         row.style.flexDirection = FlexDirection.Row;
         row.style.justifyContent = Justify.SpaceBetween;
         row.style.alignItems = Align.Center;
@@ -966,7 +1996,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // 胶囊开关
         bool val = initialVal;
-        var toggle = new VisualElement();
+        var toggle = new VisualElement { name = "toggle-capsule" };
         toggle.style.width = 46; toggle.style.height = 26;
         toggle.style.borderTopLeftRadius = 13; toggle.style.borderTopRightRadius = 13;
         toggle.style.borderBottomLeftRadius = 13; toggle.style.borderBottomRightRadius = 13;
@@ -983,13 +2013,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         thumb.style.marginLeft = val ? 23 : 3;
         toggle.Add(thumb);
 
-        toggle.RegisterCallback<ClickEvent>(_ =>
+        // 整行可点：开关本体只有 46×26，手指和鼠标都难点中，改为点行内任意位置即切换
+        toggle.pickingMode = PickingMode.Ignore;
+        if (enabled)
         {
-            val = !val;
-            toggle.style.backgroundColor = val ? AccentSystem : new Color(0.85f, 0.85f, 0.87f, 1f);
-            thumb.style.marginLeft = val ? 23 : 3;
-            if (onChanged != null) onChanged(val);
-        });
+            row.pickingMode = PickingMode.Position;
+            row.RegisterCallback<PointerEnterEvent>(_ => row.style.backgroundColor = SurfaceHover);
+            row.RegisterCallback<PointerLeaveEvent>(_ => row.style.backgroundColor = Color.clear);
+            row.RegisterCallback<ClickEvent>(_ =>
+            {
+                val = !val;
+                toggle.style.backgroundColor = val ? AccentSystem : new Color(0.85f, 0.85f, 0.87f, 1f);
+                thumb.style.marginLeft = val ? 23 : 3;
+                if (onChanged != null) onChanged(val);
+            });
+        }
 
         return row;
     }
@@ -1020,8 +2058,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightCol.Add(valLbl);
 
         var slider = new SliderInt(min, max) { value = current };
-        slider.style.width = 160; slider.style.marginLeft = 10;
+        slider.style.width = 200; slider.style.marginLeft = 10;
         slider.SetEnabled(enabled);
+        StyleHyperSlider(slider, enabled);
         slider.RegisterValueChangedCallback(evt =>
         {
             valLbl.text = evt.newValue + unit;
@@ -1030,6 +2069,114 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightCol.Add(slider);
 
         return row;
+    }
+
+    // 分类图标：把原来的 emoji 键映射成代码绘制的矢量图标，放在彩色圆角方块里
+    private static TabletIconKind CategoryIconKind(string key)
+    {
+        switch (key)
+        {
+            case "👤": return TabletIconKind.Person;
+            case "📱": return TabletIconKind.Tablet;
+            case "🧩": return TabletIconKind.Apps;
+            case "📶": return TabletIconKind.Wifi;
+            case "ᛒ": return TabletIconKind.Bluetooth;
+            case "🔗": return TabletIconKind.Link;
+            case "🌐": return TabletIconKind.Globe;
+            case "🔮": return TabletIconKind.Sparkle;
+            case "🎨": return TabletIconKind.Palette;
+            case "🔒": return TabletIconKind.Lock;
+            case "🔔": return TabletIconKind.Bell;
+            case "🏠": return TabletIconKind.Home;
+            case "☀": return TabletIconKind.Sun;
+            case "🔊": return TabletIconKind.Speaker;
+            case "⌨": return TabletIconKind.Keyboard;
+            case "😊": return TabletIconKind.FaceId;
+            case "🛡": return TabletIconKind.Shield;
+            case "▦": return TabletIconKind.Cube;
+            case "🔋": return TabletIconKind.Battery;
+            case "💚": return TabletIconKind.Heart;
+            case "🧒": return TabletIconKind.Sprout;
+            case "♿": return TabletIconKind.Accessibility;
+            case "⋯": return TabletIconKind.Dots;
+            case "💬": return TabletIconKind.Chat;
+            case "🛠": return TabletIconKind.Code;
+            default: return TabletIconKind.Dots;
+        }
+    }
+
+    private static VisualElement BuildIconBadge(string key, Color badgeColor, float size)
+    {
+        var badge = new VisualElement();
+        badge.style.width = size; badge.style.height = size;
+        badge.style.flexShrink = 0;
+        badge.style.alignItems = Align.Center; badge.style.justifyContent = Justify.Center;
+        badge.style.borderTopLeftRadius = badge.style.borderTopRightRadius = size * 0.3f;
+        badge.style.borderBottomLeftRadius = badge.style.borderBottomRightRadius = size * 0.3f;
+        badge.style.backgroundColor = badgeColor;
+        badge.pickingMode = PickingMode.Ignore;
+        badge.Add(new TabletIconElement(CategoryIconKind(key), size * 0.58f, Color.white));
+        return badge;
+    }
+
+    // 侧栏顶部的账号行：圆形头像 + 名称 + 一行说明（对照参考图的“小牛马 / Manage accounts…”）
+    private static void ConvertToAccountNavItem(Button item)
+    {
+        item.style.height = 92;
+        item.Clear();
+        var avatar = new Label(AccountService.IsRegistered ? AccountService.DisplayName.Substring(0, 1) : string.Empty);
+        avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
+        if (AccountService.IsRegistered)
+        {
+            avatar.style.color = Color.white;
+            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+        }
+        else avatar.Add(new TabletIconElement(TabletIconKind.Person, 36, new Color(0.62f, 0.64f, 0.70f, 1f)));
+        avatar.style.width = 58; avatar.style.height = 58; avatar.style.flexShrink = 0;
+        avatar.style.fontSize = 30; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
+        if (!AccountService.IsRegistered) avatar.style.backgroundColor = SurfaceApp;
+        avatar.style.borderTopLeftRadius = avatar.style.borderTopRightRadius = 29;
+        avatar.style.borderBottomLeftRadius = avatar.style.borderBottomRightRadius = 29;
+        avatar.style.unityFontDefinition = Fd();
+        avatar.style.marginRight = 14;
+        item.Add(avatar);
+        var col = new VisualElement();
+        col.style.flexShrink = 1;
+        col.style.alignItems = Align.FlexStart;
+        var name = new Label(AccountService.IsRegistered ? AccountService.DisplayName : "登录小米账号");
+        name.style.fontSize = 19; name.style.color = InkPrimary; name.style.unityFontDefinition = FdBold();
+        name.style.unityTextAlign = TextAnchor.UpperLeft;
+        var sub = new Label(AccountService.IsRegistered ? "管理账号、云空间与家庭服务" : "登录后使用云空间与家庭服务");
+        sub.style.fontSize = 14; sub.style.color = InkSecondary; sub.style.unityFontDefinition = Fd();
+        sub.style.unityTextAlign = TextAnchor.UpperLeft;
+        sub.style.marginTop = 2; sub.style.whiteSpace = WhiteSpace.Normal;
+        col.Add(name); col.Add(sub);
+        item.Add(col);
+    }
+
+    // HyperOS 风格滑条：细圆角轨道 + 强调色圆形滑块，去掉 Unity 默认的方块滑块与边框
+    private static void StyleHyperSlider(BaseSlider<int> slider, bool enabled)
+    {
+        var tracker = slider.Q(className: "unity-base-slider__tracker");
+        if (tracker != null)
+        {
+            tracker.style.height = 6;
+            tracker.style.backgroundColor = new Color(0.86f, 0.86f, 0.89f, 1f);
+            tracker.style.borderTopLeftRadius = tracker.style.borderTopRightRadius = 3;
+            tracker.style.borderBottomLeftRadius = tracker.style.borderBottomRightRadius = 3;
+            tracker.style.borderTopWidth = tracker.style.borderBottomWidth = tracker.style.borderLeftWidth = tracker.style.borderRightWidth = 0;
+        }
+        var dragger = slider.Q(className: "unity-base-slider__dragger");
+        if (dragger != null)
+        {
+            dragger.style.width = 22; dragger.style.height = 22;
+            dragger.style.backgroundColor = enabled ? AccentSystem : new Color(0.72f, 0.72f, 0.76f, 1f);
+            dragger.style.borderTopLeftRadius = dragger.style.borderTopRightRadius = 11;
+            dragger.style.borderBottomLeftRadius = dragger.style.borderBottomRightRadius = 11;
+            dragger.style.borderTopWidth = dragger.style.borderBottomWidth = dragger.style.borderLeftWidth = dragger.style.borderRightWidth = 0;
+        }
+        var draggerBorder = slider.Q(className: "unity-base-slider__dragger-border");
+        if (draggerBorder != null) draggerBorder.style.display = DisplayStyle.None;
     }
 
     private static void StyleActionBtn(Button btn)
@@ -1048,49 +2195,134 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         btn.style.paddingLeft = 20; btn.style.paddingRight = 20;
     }
 
-    public static void ShowBackupRestorePage()
+    public static void ShowBackupRestorePage(VisualElement hostContainer = null)
     {
-        var win = BuildInnerPanel("备份与恢复");
-        win.style.height = 480;
+        VisualElement win;
+        if (hostContainer != null)
+        {
+            win = new VisualElement { name = "backup-restore-page" };
+            win.style.flexGrow = 1;
+            hostContainer.Add(win);
+        }
+        else
+        {
+            win = BuildInnerPanel("备份与恢复", () => ShowBackupRestorePage());
+        }
+        if (win == null) return;
+        win.name = "backup-restore-page";
+        win.style.height = 540;
 
-        var tip = new Label("参考小米备份系统：将阅读进度与经营数据备份到本机");
+        var tip = new Label("本机档案备份系统：将主线剧目阅读进度、剧目存档、成就与书签快照备份至本机");
+        tip.name = "backup-tip-label";
         tip.style.fontSize = 14;
         tip.style.color = GlassTextDim;
         tip.style.unityFontDefinition = Fd();
         tip.style.marginTop = 10;
         win.Add(tip);
 
+        var scopeLabel = new Label("支持范围：主线剧目进度 (VN_Save_0..60)、故事槽位 (SaveSlot_0..5)、成就 (Achievements_Data) 与书签记录 (Bookmark_Auto_0..4、Bookmark_ManualIndex 及所列手动书签)。注意：不含金钱/天数等经营运行态、音乐、系统设置或账号资料；未在快照中的档案槽位与手动书签将在恢复时清理，恢复于相关剧目下次读取时生效。");
+        scopeLabel.name = "backup-scope-label";
+        scopeLabel.style.fontSize = 12;
+        scopeLabel.style.color = GlassTextDim;
+        scopeLabel.style.unityFontDefinition = Fd();
+        scopeLabel.style.marginTop = 4;
+        scopeLabel.style.whiteSpace = WhiteSpace.Normal;
+        win.Add(scopeLabel);
+
         // 备份状态行
         var statusLabel = new Label(GetBackupStatusText());
+        statusLabel.name = "backup-status-label";
         statusLabel.style.fontSize = 15;
         statusLabel.style.color = new Color(0.7f, 0.9f, 0.7f, 0.85f);
         statusLabel.style.unityFontDefinition = Fd();
         statusLabel.style.marginTop = 14;
         win.Add(statusLabel);
 
+        // 确认面板容器（确认前隐藏，避免直接写档）
+        var confirmBox = new VisualElement { name = "backup-confirm-box" };
+        confirmBox.style.display = DisplayStyle.None;
+        confirmBox.style.backgroundColor = new Color(0.12f, 0.13f, 0.16f, 0.95f);
+        confirmBox.style.borderTopLeftRadius = 8; confirmBox.style.borderTopRightRadius = 8;
+        confirmBox.style.borderBottomLeftRadius = 8; confirmBox.style.borderBottomRightRadius = 8;
+        confirmBox.style.borderTopWidth = 1; confirmBox.style.borderBottomWidth = 1;
+        confirmBox.style.borderLeftWidth = 1; confirmBox.style.borderRightWidth = 1;
+        confirmBox.style.borderTopColor = AccentSystem; confirmBox.style.borderBottomColor = AccentSystem;
+        confirmBox.style.borderLeftColor = AccentSystem; confirmBox.style.borderRightColor = AccentSystem;
+        confirmBox.style.paddingTop = 12; confirmBox.style.paddingBottom = 12;
+        confirmBox.style.paddingLeft = 14; confirmBox.style.paddingRight = 14;
+        confirmBox.style.marginTop = 12;
+
+        var confirmTitle = new Label("恢复存档二次确认");
+        confirmTitle.style.fontSize = 15; confirmTitle.style.color = AccentSystem;
+        confirmTitle.style.unityFontStyleAndWeight = FontStyle.Bold; confirmTitle.style.unityFontDefinition = Fd();
+        confirmBox.Add(confirmTitle);
+
+        var confirmDesc = new Label("恢复将按快照精确还原主线剧目存档、故事槽位、成就与书签记录，未包含在快照中的档案槽位与当前多余手动书签将被清除。不影响金钱与经营运行态。若取消，档案不做任何变更。是否继续？");
+        confirmDesc.name = "backup-confirm-desc";
+        confirmDesc.style.fontSize = 12; confirmDesc.style.color = GlassText;
+        confirmDesc.style.unityFontDefinition = Fd(); confirmDesc.style.marginTop = 4;
+        confirmDesc.style.whiteSpace = WhiteSpace.Normal;
+        confirmBox.Add(confirmDesc);
+
+        var confirmBtnRow = new VisualElement();
+        confirmBtnRow.style.flexDirection = FlexDirection.Row;
+        confirmBtnRow.style.justifyContent = Justify.FlexEnd;
+        confirmBtnRow.style.marginTop = 10;
+
+        var btnCancel = new Button(() =>
+        {
+            confirmBox.style.display = DisplayStyle.None;
+            ShowToast("已取消恢复操作，档案未作任何变更");
+        }) { text = "取消", name = "btn-backup-cancel" };
+        btnCancel.style.height = 32; btnCancel.style.paddingLeft = 16; btnCancel.style.paddingRight = 16;
+        btnCancel.style.marginRight = 10;
+        confirmBtnRow.Add(btnCancel);
+
+        var btnConfirm = new Button(() =>
+        {
+            confirmBox.style.display = DisplayStyle.None;
+            string rawBackup = StorageAdapter.GetString(BackupJsonKey, "");
+            bool success = RestoreBackup(rawBackup, out string errorMsg, out int restoredCount);
+            if (success)
+            {
+                ShowToast(errorMsg);
+            }
+            else
+            {
+                ShowToast("恢复失败：" + errorMsg);
+            }
+        }) { text = "确认恢复", name = "btn-backup-confirm" };
+        btnConfirm.style.height = 32; btnConfirm.style.paddingLeft = 16; btnConfirm.style.paddingRight = 16;
+        btnConfirm.style.backgroundColor = new Color(0.7f, 0.25f, 0.25f, 1f);
+        btnConfirm.style.color = Color.white;
+        confirmBtnRow.Add(btnConfirm);
+        confirmBox.Add(confirmBtnRow);
+
         var btnBackup = new Button(() =>
         {
             SaveBackup();
             statusLabel.text = GetBackupStatusText();
-            ShowToast("备份完成");
-        }) { text = "立即备份" };
+            ShowToast("备份完成，已生成本机结构化快照 (Schema v2)");
+        }) { text = "立即备份", name = "btn-backup-now" };
         StyleRowBtn(btnBackup);
         win.Add(btnBackup);
 
         var btnRestore = new Button(() =>
         {
-            if (string.IsNullOrEmpty(PlayerPrefs.GetString(BackupJsonKey, "")))
+            string rawBackup = StorageAdapter.GetString(BackupJsonKey, "");
+            if (string.IsNullOrEmpty(rawBackup))
             {
                 ShowToast("暂无备份可恢复");
                 return;
             }
-            RestoreBackup();
-            ShowToast("恢复完成");
-        }) { text = "恢复上次备份" };
+            confirmBox.style.display = DisplayStyle.Flex;
+        }) { text = "恢复上次备份", name = "btn-backup-restore" };
         StyleRowBtn(btnRestore);
         win.Add(btnRestore);
 
-        var cloudRow = BuildWhiteRow("云备份", "阿里郎内网账户（未开放）", null, false);
+        win.Add(confirmBox);
+
+        var cloudRow = BuildWhiteRow("云备份", "阿里郎内网账户（未开放 · 仅支持本机备份）", null, false);
         win.Add(cloudRow);
 
         // 版本信息
@@ -1154,9 +2386,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     }
 
     /// <summary>左索引右详情（Maitetsu TIPS 式，平板玻璃风）。</summary>
-    public static void ShowTipsPage(string termId = null)
+    private sealed class TipsSelection { public string Id; }
+    private static Action TipsRebuilder(TipsSelection selection) => () => ShowTipsPageWithSelection(selection);
+    public static void ShowTipsPage(string termId = null) => ShowTipsPageWithSelection(new TipsSelection { Id = termId });
+    private static void ShowTipsPageWithSelection(TipsSelection selection)
     {
-        var win = BuildInnerPanel("术语图鉴");
+        string termId = selection.Id;
+        var win = BuildInnerPanel("术语图鉴", TipsRebuilder(selection));
+        if (win == null) return;
         win.style.width = 900;
         win.style.height = 560;
 
@@ -1169,7 +2406,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         win.Add(body);
 
         // 左：按拼音首字母分组的可滚动索引
-        var indexScroll = new ScrollView();
+        var indexScroll = new ScrollView { name = "tips-index" };
         indexScroll.style.width = 230;
         indexScroll.style.flexShrink = 0;
         indexScroll.style.marginRight = 16;
@@ -1181,7 +2418,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         body.Add(indexScroll);
 
         // 右：详情（可滚动）
-        var detail = new ScrollView();
+        var detail = new ScrollView { name = "tips-detail" };
         detail.style.flexGrow = 1;
         detail.style.paddingLeft = 14; detail.style.paddingRight = 10;
         body.Add(detail);
@@ -1211,7 +2448,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 indexScroll.Add(head);
             }
 
-            var row = new Label(t.name);
+            var row = new Label(t.name) { name = "tips-term-" + t.id };
             row.style.fontSize = 15;
             row.style.color = GlassText;
             row.style.unityFontDefinition = Fd();
@@ -1224,6 +2461,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (selectedRow != null) selectedRow.style.backgroundColor = StyleKeyword.Null;
                 selectedRow = row;
+                selection.Id = captured.id;
                 row.style.backgroundColor = GlassBgHover;
                 detail.Clear();
                 RenderTipsDetail(detail, captured);
@@ -1256,7 +2494,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         titleBar.style.borderBottomLeftRadius = 6; titleBar.style.borderBottomRightRadius = 6;
         titleBar.style.paddingLeft = 12; titleBar.style.paddingRight = 12;
         titleBar.style.paddingTop = 6; titleBar.style.paddingBottom = 6;
-        var title = new Label(t.name);
+        var title = new Label(t.name) { name = "tips-detail-title" };
         title.style.fontSize = 20;
         title.style.color = new Color(1f, 0.86f, 0.59f, 1f);
         title.style.unityFontDefinition = Fd();
@@ -1275,26 +2513,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         if (t.explanations == null) return;
         foreach (var ex in t.explanations)
         {
-            if (ex == null || string.IsNullOrEmpty(ex.text)) continue;
+            if (ex == null) continue;
+
             if (!string.IsNullOrEmpty(ex.speaker))
             {
                 var chipRow = new VisualElement();
                 chipRow.style.flexDirection = FlexDirection.Row;
                 chipRow.style.alignItems = Align.Center;
                 chipRow.style.marginTop = 12;
+                chipRow.style.marginBottom = 4;
 
-                var tex = LoadTipsPortrait(ex.speaker);
-                if (tex != null)
+                var portrait = LoadTipsPortrait(ex.speaker);
+                if (portrait != null)
                 {
-                    // 立绘小图：按原始宽高比给宽，避免拉伸变形
-                    var img = new VisualElement();
-                    int h = 44;
-                    int w = Mathf.Clamp(Mathf.RoundToInt(h * tex.width / (float)tex.height), 24, 72);
-                    img.style.width = w; img.style.height = h;
-                    img.style.backgroundImage = new StyleBackground(tex);
-                    img.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
-                    img.style.borderTopLeftRadius = 6; img.style.borderTopRightRadius = 6;
-                    img.style.borderBottomLeftRadius = 6; img.style.borderBottomRightRadius = 6;
+                    var img = new Image { image = portrait };
+                    img.style.width = 28; img.style.height = 28;
+                    img.style.borderTopLeftRadius = 14; img.style.borderTopRightRadius = 14;
+                    img.style.borderBottomLeftRadius = 14; img.style.borderBottomRightRadius = 14;
                     img.style.borderTopWidth = 1; img.style.borderBottomWidth = 1;
                     img.style.borderLeftWidth = 1; img.style.borderRightWidth = 1;
                     img.style.borderTopColor = GlassBorderSoft; img.style.borderBottomColor = GlassBorderSoft;
@@ -1342,55 +2577,92 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     private static string GetBackupStatusText()
     {
-        string t = PlayerPrefs.GetString(BackupTimeKey, "");
+        string t = StorageAdapter.GetString(BackupTimeKey, "");
         return string.IsNullOrEmpty(t) ? "尚未备份" : "上次备份：" + t;
     }
 
-    private static void SaveBackup()
+    // ============ 结构化版本化本地备份模型 ============
+    [System.Serializable]
+    public class BackupItem
     {
-        // 收集所有存档键（VN 存档 + 经营存档 + 书签），快照到单一备份 JSON
-        var snapshot = new System.Text.StringBuilder();
-        var keys = new System.Collections.Generic.List<string>();
-        for (int i = 0; i < 61; i++) keys.Add("VN_Save_" + i);
-        for (int i = 0; i < 6; i++) keys.Add("SaveSlot_" + i);
-        keys.Add("Achievements_Data");
-        keys.Add("Bookmarks_Data");
-        keys.Add("VN_AutoLoad");
-        keys.Add("VNExitData");
-
-        foreach (var k in keys)
-        {
-            if (PlayerPrefs.HasKey(k))
-                snapshot.Append(k).Append("=").Append(PlayerPrefs.GetString(k)).Append("\n");
-        }
-        PlayerPrefs.SetString(BackupJsonKey, snapshot.ToString());
-        PlayerPrefs.SetString(BackupTimeKey, System.DateTime.Now.ToString("yyyy/MM/dd HH:mm"));
-        PlayerPrefs.Save();
+        public string key;
+        public string val;
     }
 
-    private static void RestoreBackup()
+    [System.Serializable]
+    public class TabletBackupData
     {
-        string json = PlayerPrefs.GetString(BackupJsonKey, "");
-        if (string.IsNullOrEmpty(json)) return;
-        foreach (var line in json.Split('\n'))
-        {
-            if (string.IsNullOrEmpty(line)) continue;
-            int eq = line.IndexOf('=');
-            if (eq <= 0) continue;
-            string k = line.Substring(0, eq);
-            string v = line.Substring(eq + 1);
-            if (k.StartsWith("VN_Save_") || k.StartsWith("SaveSlot_"))
-            {
-                PlayerPrefs.SetString(k, v);
-            }
-        }
-        PlayerPrefs.Save();
+        public int version = 1;
+        public string createdAt = "";
+        public List<BackupItem> items = new List<BackupItem>();
+    }
+
+    public static readonly string[] WhitelistedBackupKeys = TabletLocalBackupService.FixedWhitelistKeys;
+
+    public static string CreateBackupPayload()
+    {
+        return TabletLocalBackupService.CreateBackupPayload(StorageAdapter);
+    }
+
+    public static void SaveBackup()
+    {
+        string json = CreateBackupPayload();
+        string timeStr = System.DateTime.Now.ToString("yyyy/MM/dd HH:mm");
+        StorageAdapter.SetString(BackupJsonKey, json);
+        StorageAdapter.SetString(BackupTimeKey, timeStr);
+        StorageAdapter.Save();
+    }
+
+    public static bool TryParseBackup(string rawData, out Dictionary<string, string> parsedPairs, out string error)
+    {
+        return TabletLocalBackupService.TryParseLegacyPairs(rawData, out parsedPairs, out error);
+    }
+
+    public static bool RestoreBackup(string rawData, out string errorMessage, out int restoredCount)
+    {
+        return TabletLocalBackupService.RestoreBackup(StorageAdapter, rawData, out errorMessage, out restoredCount);
+    }
+
+    public static void RestoreBackup()
+    {
+        string raw = StorageAdapter.GetString(BackupJsonKey, "");
+        if (string.IsNullOrEmpty(raw)) return;
+        RestoreBackup(raw, out _, out _);
     }
 
     // ============ 应用管理：系统管控彩蛋 ============
+    public static void ShowAffairsPage()
+    {
+        // 事务页（简单占位）
+        var panel = BuildInnerPanel("事务", ShowAffairsPage);
+        if (panel == null) return;
+        var p = new Label("事务功能开发中（绑定经营系统后开放）。");
+        p.style.fontSize = 15; p.style.color = GlassTextDim;
+        p.style.unityFontDefinition = Fd(); p.style.marginTop = 40;
+        panel.Add(p);
+    }
+
+    public static void ShowStoryPage()
+    {
+        var panel = BuildInnerPanel("剧情", ShowStoryPage);
+        if (panel == null) return;
+        var btn = new Button(() => { if (GameMainUI.Instance != null) GameMainUI.Instance.gameObject.SetActive(true); MainStoryUI.Show(); }) { text = "打开 Main Story" };
+        btn.style.width = 240; btn.style.height = 50;
+        btn.style.fontSize = 18; btn.style.unityTextAlign = TextAnchor.MiddleCenter;
+        btn.style.unityFontDefinition = Fd();
+        btn.style.backgroundColor = new Color(0.15f, 0.3f, 0.5f, 0.55f);
+        btn.style.color = GlassText;
+        btn.style.borderTopLeftRadius = 12; btn.style.borderTopRightRadius = 12;
+        btn.style.borderBottomLeftRadius = 12; btn.style.borderBottomRightRadius = 12;
+        btn.style.marginTop = 50;
+        btn.style.alignSelf = Align.Center;
+        panel.Add(btn);
+    }
+
     public static void ShowAppManagementPage()
     {
-        var win = BuildInnerPanel("应用管理");
+        var win = BuildInnerPanel("应用管理", ShowAppManagementPage);
+        if (win == null) return;
         win.style.height = 480;
 
         // 说明文字
@@ -1500,102 +2772,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         switch (result)
         {
-            case SystemAppsEasterEgg.RestoreResult.AlreadyRestored:
-                ShowAppToast("该应用已恢复");
-                break;
-
             case SystemAppsEasterEgg.RestoreResult.Success:
-                // 播放闪现动画 → 弹窗 → 跳转
-                if (GameMainUI.Instance != null) GameMainUI.Instance.StartCoroutine(PlayRestoreAnimation(index, settingsWin));
+                ShowToast($"已恢复 {SystemAppsEasterEgg.Apps[index].OriginalName}！");
+                ShowAppManagementPage();
                 break;
-
             case SystemAppsEasterEgg.RestoreResult.CapsuleTriggered:
-                // 时间胶囊触发
-                if (GameMainUI.Instance != null) GameMainUI.Instance.StartCoroutine(PlayTimeCapsule(settingsWin));
+                ShowToast("恭喜！所有系统应用已恢复！");
+                ShowAppManagementPage();
+                break;
+            case SystemAppsEasterEgg.RestoreResult.AlreadyRestored:
+                ShowToast("该应用已经恢复过了。");
+                break;
+            case SystemAppsEasterEgg.RestoreResult.InvalidIndex:
+                ShowToast("恢复失败，权限不足。");
                 break;
         }
     }
-
-    private static IEnumerator PlayRestoreAnimation(int index, VisualElement settingsWin)
-    {
-        var app = SystemAppsEasterEgg.Apps[index];
-
-        // 第一阶段：闪现原版Logo 0.3秒
-        ShowAppToast($"[闪现] {app.FlashText}...");
-        yield return new WaitForSecondsRealtime(0.3f);
-
-        // 第二阶段：黑屏0.5秒
-        ShowAppToast("");
-        yield return new WaitForSecondsRealtime(0.5f);
-
-        // 第三阶段：弹窗
-        if (app.JumpTarget != null)
-        {
-            ShowAppToast($"⚠ {app.PopupMessage}\n→ 跳转至『{app.JumpTarget}』");
-        }
-        else
-        {
-            ShowAppToast($"⚠ {app.PopupMessage}\n（无可用服务）");
-        }
-        yield return new WaitForSecondsRealtime(2f);
-
-        // 刷新应用管理页面
-        ShowAppToast("");
-        ShowAppManagementPage();
-    }
-
-    private static IEnumerator PlayTimeCapsule(VisualElement settingsWin)
-    {
-        // 黑屏
-        ShowAppToast("");
-        yield return new WaitForSecondsRealtime(1f);
-
-        // 时间胶囊第一行字
-        ShowAppToast(SystemAppsEasterEgg.TimeCapsule_Line1);
-        yield return new WaitForSecondsRealtime(3f);
-
-        // 第二行字
-        ShowAppToast(SystemAppsEasterEgg.TimeCapsule_Line2);
-        yield return new WaitForSecondsRealtime(3f);
-
-        // 恢复出厂设置
-        SystemAppsEasterEgg.FactoryReset();
-        ShowAppToast("系统已恢复出厂设置。所有应用已被重新替换。");
-        yield return new WaitForSecondsRealtime(2f);
-
-        ShowAppToast("");
-        // 刷新页面
-        ShowAppManagementPage();
-    }
-
-    private static void ShowAppToast(string msg) => ShowToast(msg);
-
-    public static void ShowAffairsPage()
-    {
-        // 事务页（简单占位）
-        var panel = BuildInnerPanel("事务");
-        var p = new Label("事务功能开发中（绑定经营系统后开放）。");
-        p.style.fontSize = 15; p.style.color = GlassTextDim;
-        p.style.unityFontDefinition = Fd(); p.style.marginTop = 40;
-        panel.Add(p);
-    }
-
-    public static void ShowStoryPage()
-    {
-        var panel = BuildInnerPanel("剧情");
-        var btn = new Button(() => { if (GameMainUI.Instance != null) GameMainUI.Instance.gameObject.SetActive(true); MainStoryUI.Show(); }) { text = "打开 Main Story" };
-        btn.style.width = 240; btn.style.height = 50;
-        btn.style.fontSize = 18; btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        btn.style.unityFontDefinition = Fd();
-        btn.style.backgroundColor = new Color(0.15f, 0.3f, 0.5f, 0.55f);
-        btn.style.color = GlassText;
-        btn.style.borderTopLeftRadius = 12; btn.style.borderTopRightRadius = 12;
-        btn.style.borderBottomLeftRadius = 12; btn.style.borderBottomRightRadius = 12;
-        btn.style.marginTop = 50;
-        btn.style.alignSelf = Align.Center;
-        panel.Add(btn);
-    }
-
-
     }
 }
