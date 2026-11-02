@@ -1,0 +1,43 @@
+# Candidate change for V3 (not applied): soft minimum brake-switch dwell.
+# The frozen protocols hash Assets/Scripts/Cab/Research/CabAtoControllerV3.cs, so the live file stays unchanged.
+# Measured on the dev run (research/ato-v3, no arguments), 18000 ticks, brake changes closer than 25 ticks:
+#   frozen V3:  Smooth 194 | this patch: Smooth 0, AirSaving 2, Punctual 3 (only where no candidate respects the dwell)
+#   arrival/error stay close (Smooth 118.8 s, AirSaving 120.7 s, Punctual 124.4 s), no intervention, V3_REPLAY_OK.
+# A hard filter without the second pass ends all three modes in an intervention exit, 19 to 42 m short of the stop.
+# To use it: apply, then freeze a new protocol (FrozenV3 --freeze) so the hashes and the runs match the new source.
+
+--- a/Assets/Scripts/Cab/Research/CabAtoControllerV3.cs
++++ b/Assets/Scripts/Cab/Research/CabAtoControllerV3.cs
+@@ -7,5 +7,5 @@
+     {
+         public int Version=1,Mode,PendingMode,LastThrottle,LastBrake=1;
+-        public long StartTick,LastTick=-1,LastThrottleSwitch=-1000;
++        public long StartTick,LastTick=-1,LastThrottleSwitch=-1000,LastBrakeSwitch=-1000;
+         public double Coast=-.03,BrakeGain=1.1,Arrival=-1,PredictedArrival,InitialSpeed;
+         public bool Intervention;
+@@ -20,5 +20,5 @@
+         {Validate(saved,tick);var result=new CabAtoControllerV3(task,saved.StartTick,(AtoObjective)saved.Mode,saved.InitialSpeed);result.state=SimulationCodec.Decode<AtoV3State>(SimulationCodec.Encode(saved));return result;}
+         static void Validate(AtoV3State s,long tick)
+-        {if(s==null||s.Version!=1||s.StartTick<0||s.StartTick>tick||s.LastTick>tick||s.LastTick< -1||s.Mode<0||s.Mode>2||s.PendingMode<0||s.PendingMode>2||s.LastThrottle<0||s.LastThrottle>8||s.LastBrake<0||s.LastBrake>4||!Finite(s.Coast)||Math.Abs(s.Coast)>.3||!Finite(s.BrakeGain)||s.BrakeGain<.35||s.BrakeGain>1.8||!Finite(s.Arrival)||s.Arrival< -1||!Finite(s.InitialSpeed)||s.InitialSpeed<0||s.InitialSpeed>30||!Finite(s.PredictedArrival)||s.LastThrottleSwitch< -1000||(s.LastTick>=0&&s.LastThrottleSwitch>s.LastTick)||(s.LastTick>=0&&s.LastTick<s.StartTick))throw new ArgumentException("Invalid V3 checkpoint");}
++        {if(s==null||s.Version!=1||s.StartTick<0||s.StartTick>tick||s.LastTick>tick||s.LastTick< -1||s.Mode<0||s.Mode>2||s.PendingMode<0||s.PendingMode>2||s.LastThrottle<0||s.LastThrottle>8||s.LastBrake<0||s.LastBrake>4||!Finite(s.Coast)||Math.Abs(s.Coast)>.3||!Finite(s.BrakeGain)||s.BrakeGain<.35||s.BrakeGain>1.8||!Finite(s.Arrival)||s.Arrival< -1||!Finite(s.InitialSpeed)||s.InitialSpeed<0||s.InitialSpeed>30||!Finite(s.PredictedArrival)||s.LastThrottleSwitch< -1000||s.LastBrakeSwitch< -1000||(s.LastTick>=0&&s.LastBrakeSwitch>s.LastTick)||(s.LastTick>=0&&s.LastThrottleSwitch>s.LastTick)||(s.LastTick>=0&&s.LastTick<s.StartTick))throw new ArgumentException("Invalid V3 checkpoint");}
+         static bool Finite(double x)=>!double.IsNaN(x)&&!double.IsInfinity(x);
+         static double Clamp(double x,double min,double max)=>Math.Max(min,Math.Min(max,x));
+@@ -33,5 +33,5 @@
+             if(acceptedBrake==4)return Exit(o.Tick,"检测到紧急制动，退出自动运行");
+             if(acceptedThrottle!=state.LastThrottle){state.LastThrottle=acceptedThrottle;state.LastThrottleSwitch=o.Tick;}
+-            state.LastBrake=acceptedBrake;
++            if(acceptedBrake!=state.LastBrake)state.LastBrakeSwitch=o.Tick;state.LastBrake=acceptedBrake;
+             double remaining=task.Target-o.Position;
+             if(o.Speed<-.05||remaining< -5||o.Speed>task.LimitAt(o.Position)+.15)return Exit(o.Tick,"越站、反向或越速：退出自动运行");
+@@ -44,8 +44,10 @@
+             state.PredictedArrival=elapsed+Math.Max(0,reference.PredictedArrival-reference.Time[currentIndex]);
+             double best=double.PositiveInfinity;int chosenT=0,chosenB=3,count=0;
+-            foreach(int throttle in new[]{0,1,2,5})foreach(int brake in new[]{1,2,3})
++            // First pass keeps the 25-tick minimum brake-switch dwell (as V2 does); only when no feasible candidate respects it is the dwell relaxed, so the controller still prefers a legal brake change to an intervention exit.
++            for(int pass=0;pass<2&&count==0;pass++)foreach(int throttle in new[]{0,1,2,5})foreach(int brake in new[]{1,2,3})
+             {
+                 if(throttle>0&&brake>1)continue;
+                 if(throttle>state.LastThrottle&&o.Tick-state.LastThrottleSwitch<25)continue;
++                if(pass==0&&brake!=state.LastBrake&&o.Tick-state.LastBrakeSwitch<25)continue;
+                 bool valid=true;double nominalSpeed=0,nominalJerk=0,nominalAir=0;
+                 foreach(double multiplier in new[]{.75,1.0,1.25})
