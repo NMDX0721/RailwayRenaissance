@@ -224,8 +224,19 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         public void RegisterSession(IslandSession session)
         {
             if (session == null || session.AppType == IslandAppType.None) return;
+            // GameMainUI 每帧都会重新登记播放/遥测会话：外观没变就只换回调，不重建整座岛（否则每帧销毁重建 UI 树）
+            bool unchanged = _activeSessions.TryGetValue(session.AppType, out var existing) && SameVisual(existing, session);
             _activeSessions[session.AppType] = session;
+            if (unchanged) return;
             EvaluateActiveSessions();
+        }
+
+        private static bool SameVisual(IslandSession a, IslandSession b)
+        {
+            return a.AppType == b.AppType && a.Priority == b.Priority &&
+                   a.Title == b.Title && a.Subtitle == b.Subtitle && a.Metric == b.Metric &&
+                   Mathf.Approximately(a.Progress, b.Progress) && Mathf.Approximately(a.AuxValue, b.AuxValue) &&
+                   a.AccentColor == b.AccentColor;
         }
 
         public void UpdateSession(IslandAppType type, Action<IslandSession> update)
@@ -297,8 +308,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _tickCount++;
             if (_activeSessions.Count == 0) return;
 
-            // 周期刷新动画状态（声波跳动、录音红点闪烁、旋转环等）
-            if (_tickCount % 4 == 0)
+            // 周期刷新动画状态（声波跳动、录音红点闪烁、旋转环等）；约每 6 帧一次，不再每 4 帧重建
+            if (_tickCount % 6 == 0)
             {
                 if (!_isExpanded)
                 {
