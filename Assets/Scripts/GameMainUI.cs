@@ -2400,6 +2400,7 @@ public class GameMainUI : MonoBehaviour
         task.LastActivated = ++tabletActivationSequence;
         task.Root.style.display = DisplayStyle.Flex;
         PlayAppOpenAnimation(task.Root);
+        ApplyStatusBarForApp(task.StatusBarOnLight); // 复用已有任务时不会重建窗口，状态栏字色要按该应用重设
         NotifyTaskLifecycle(() => task.Lifecycle.OnForeground(task.Root));
         desktop.style.display = DisplayStyle.Flex;
         if (systemNavigationBar != null)
@@ -3174,6 +3175,7 @@ public class GameMainUI : MonoBehaviour
 
         appLayer.style.display = DisplayStyle.Flex;
         ApplyStatusBarForApp(!darkApp);
+        if (activeTabletTask != null) activeTabletTask.StatusBarOnLight = !darkApp;
         return content;
     }
 
@@ -3241,6 +3243,9 @@ public class GameMainUI : MonoBehaviour
             musicWin.style.flexDirection = FlexDirection.Column;
             appLayer.Add(musicWin);
             TabletMusicAppUI.BuildMusicApp(musicWin, ShowBackupToast, ReturnToTabletHome);
+            // 音乐窗口自建（深色底），不走通用容器：自己设状态栏字色并记到任务上
+            ApplyStatusBarForApp(false);
+            if (activeTabletTask != null) activeTabletTask.StatusBarOnLight = false;
             return;
         }
 

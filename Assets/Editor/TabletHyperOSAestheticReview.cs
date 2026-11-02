@@ -666,7 +666,24 @@ namespace RailwayRenaissance.Editor
                         Capture("33_home_folder_thumbnail");
                         stage++; frame = Time.frameCount; break;
 
+                    // ---- 状态栏字色随前台应用：浅色应用深色字，音乐（深色窗口）浅色字，复用已有任务时也要重设 ----
                     case 34:
+                    {
+                        var clock = (Label)Field("statusClock");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "设置");
+                        Assert(clock.style.color.value.r < 0.4f, "Light app must use dark status text");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "音乐");
+                        Assert(clock.style.color.value.r > 0.6f, "Music window must use light status text");
+                        Call("ReturnToTabletHome");
+                        Call("LaunchApp", "设置"); // 复用已有的设置任务
+                        Assert(clock.style.color.value.r < 0.4f, "Reactivated light app must restore dark status text");
+                        stage++; frame = Time.frameCount;
+                        break;
+                    }
+
+                    case 35:
                         Teardown(true, "All stages completed successfully");
                         break;
                 }
