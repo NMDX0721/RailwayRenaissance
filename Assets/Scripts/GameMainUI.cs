@@ -1274,11 +1274,11 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildClockWidget()
     {
         var w = new VisualElement();
-        w.style.width = 140; w.style.height = 132;
+        w.style.width = 140; w.style.height = 140;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.12f, 0.12f, 0.16f, 0.82f);
-        w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
-        w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
+        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
+        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
         w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
         w.style.borderTopColor = GlassBorderSoft; w.style.borderBottomColor = GlassBorderSoft;
@@ -1288,6 +1288,8 @@ public class GameMainUI : MonoBehaviour
         w.style.justifyContent = Justify.SpaceBetween;
         w.style.overflow = Overflow.Hidden;
         w.pickingMode = PickingMode.Position;
+        w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+        w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
         var timeLbl = new Label(System.DateTime.Now.ToString("HH:mm"));
         timeLbl.style.fontSize = 32;
@@ -1316,11 +1318,11 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildWeatherWidget()
     {
         var w = new VisualElement();
-        w.style.width = 150; w.style.height = 132;
+        w.style.width = 150; w.style.height = 140;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.11f, 0.28f, 0.35f, 0.88f); // 深青
-        w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
-        w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
+        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
+        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
         w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
         w.style.borderTopColor = new Color(0.3f, 0.55f, 0.65f, 0.4f);
@@ -1332,6 +1334,8 @@ public class GameMainUI : MonoBehaviour
         w.style.justifyContent = Justify.SpaceBetween;
         w.style.overflow = Overflow.Hidden;
         w.pickingMode = PickingMode.Position;
+        w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+        w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
         var locRow = new VisualElement();
         locRow.style.flexDirection = FlexDirection.Row;
@@ -1348,19 +1352,20 @@ public class GameMainUI : MonoBehaviour
         locRow.Add(icon);
 
         var temp = new Label("22°C");
-        temp.style.fontSize = 28;
+        temp.style.fontSize = 32;
         temp.style.color = Color.white;
         temp.style.unityFontDefinition = Fd();
         w.Add(temp);
 
-        var desc = new Label("多云 · 适于出车");
-        desc.style.fontSize = 11;
-        desc.style.color = new Color(0.8f, 0.92f, 0.98f, 0.8f);
+        var desc = new Label("多云  21° / 9°");
+        desc.style.fontSize = 12;
+        desc.style.color = new Color(0.86f, 0.95f, 1f, 0.9f);
         desc.style.unityFontDefinition = Fd();
         desc.style.overflow = Overflow.Hidden;
         desc.style.textOverflow = TextOverflow.Ellipsis;
         w.Add(desc);
 
+        foreach (var child in w.Children()) child.style.flexShrink = 0;
         w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.04f, 1.04f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
         w.RegisterCallback<ClickEvent>(_ => LaunchApp("天气"));
@@ -1370,20 +1375,22 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildScheduleWidget()
     {
         var w = new VisualElement();
-        w.style.width = 290; w.style.height = 132;
+        w.style.width = 290; w.style.height = 140;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = GlassBgLight;
-        w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
-        w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
+        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
+        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
         w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
         w.style.borderTopColor = GlassBorder; w.style.borderBottomColor = GlassBorder;
         w.style.borderLeftColor = GlassBorder; w.style.borderRightColor = GlassBorder;
         w.style.paddingLeft = 16; w.style.paddingRight = 16;
-        w.style.paddingTop = 12; w.style.paddingBottom = 12;
+        w.style.paddingTop = 10; w.style.paddingBottom = 10;
         w.style.justifyContent = Justify.SpaceBetween;
         w.style.overflow = Overflow.Hidden;
         w.pickingMode = PickingMode.Position;
+        w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+        w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
         var head = new VisualElement();
         head.style.flexDirection = FlexDirection.Row;
@@ -1408,20 +1415,63 @@ public class GameMainUI : MonoBehaviour
 
         int planIdx = Mathf.Clamp(GameData.SelectedDispatchPlanIndex, 0, GameData.DispatchPlans.Length - 1);
         string planName = GameData.DispatchPlans[planIdx].Name;
-        var planLbl = new Label($"运行方案：{planName}   客流：{GameData.ExpectedPassengers} 人次");
+        var planLbl = new Label($"运行方案：{planName}");
         planLbl.style.fontSize = 12; planLbl.style.color = new Color(0.3f, 0.35f, 0.4f, 0.95f);
         planLbl.style.unityFontDefinition = Fd();
         planLbl.style.overflow = Overflow.Hidden;
         planLbl.style.textOverflow = TextOverflow.Ellipsis;
         w.Add(planLbl);
 
-        var finLbl = new Label($"运营第 {GameData.Day} 天   资金 {GameData.Money:N0} 沙币   车况 {GameData.TrainCondition}%");
-        finLbl.style.fontSize = 11; finLbl.style.color = new Color(0.45f, 0.45f, 0.5f, 0.85f);
-        finLbl.style.unityFontDefinition = Fd();
-        finLbl.style.overflow = Overflow.Hidden;
-        finLbl.style.textOverflow = TextOverflow.Ellipsis;
-        w.Add(finLbl);
+        // 三个单行数据小卡：客流 / 资金 / 运营天数
+        var chips = new VisualElement();
+        chips.style.flexDirection = FlexDirection.Row;
+        w.Add(chips);
+        void Chip(string text)
+        {
+            var c = new Label(text);
+            c.style.fontSize = 11; c.style.color = Ink; c.style.unityFontDefinition = Fd();
+            c.style.backgroundColor = new Color(0f, 0f, 0f, 0.05f);
+            c.style.borderTopLeftRadius = c.style.borderTopRightRadius = 8;
+            c.style.borderBottomLeftRadius = c.style.borderBottomRightRadius = 8;
+            c.style.paddingLeft = 8; c.style.paddingRight = 8; c.style.paddingTop = 2; c.style.paddingBottom = 2;
+            c.style.marginRight = 6;
+            c.style.unityTextAlign = TextAnchor.MiddleCenter;
+            chips.Add(c);
+        }
+        Chip($"客流 {GameData.ExpectedPassengers} 人次");
+        Chip($"资金 {GameData.Money:N0} 沙币");
+        Chip($"第 {GameData.Day} 天");
 
+        // 车况条：随车况着色（≥60 绿，≥35 琥珀，其余红）
+        var condRow = new VisualElement();
+        condRow.style.flexDirection = FlexDirection.Row;
+        condRow.style.alignItems = Align.Center;
+        w.Add(condRow);
+        var condLbl = new Label("车况");
+        condLbl.style.fontSize = 11; condLbl.style.color = new Color(0.45f, 0.45f, 0.5f, 0.9f); condLbl.style.unityFontDefinition = Fd();
+        condLbl.style.marginRight = 8;
+        condRow.Add(condLbl);
+        var track = new VisualElement();
+        track.style.flexGrow = 1; track.style.height = 6;
+        track.style.backgroundColor = new Color(0f, 0f, 0f, 0.08f);
+        track.style.borderTopLeftRadius = track.style.borderTopRightRadius = 3;
+        track.style.borderBottomLeftRadius = track.style.borderBottomRightRadius = 3;
+        track.style.overflow = Overflow.Hidden;
+        condRow.Add(track);
+        int cond = Mathf.Clamp(GameData.TrainCondition, 0, 100);
+        var fill = new VisualElement();
+        fill.style.height = Length.Percent(100);
+        fill.style.width = Length.Percent(cond);
+        fill.style.backgroundColor = cond >= 60 ? new Color(0.22f, 0.66f, 0.36f, 1f)
+                                   : cond >= 35 ? new Color(0.92f, 0.64f, 0.16f, 1f)
+                                   : new Color(0.88f, 0.26f, 0.24f, 1f);
+        track.Add(fill);
+        var condVal = new Label(cond + "%");
+        condVal.style.fontSize = 11; condVal.style.color = Ink; condVal.style.unityFontDefinition = Fd();
+        condVal.style.marginLeft = 8;
+        condRow.Add(condVal);
+
+        foreach (var child in w.Children()) child.style.flexShrink = 0;
         w.RegisterCallback<PointerEnterEvent>(_ => w.style.scale = new Scale(new Vector2(1.03f, 1.03f)));
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
         w.RegisterCallback<ClickEvent>(_ => LaunchApp("RDA"));
@@ -1431,10 +1481,10 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildGalleryWidget()
     {
         var w = new VisualElement();
-        w.style.width = 235; w.style.height = 132;
+        w.style.width = 235; w.style.height = 140;
         w.style.marginLeft = 6; w.style.marginRight = 6;
-        w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
-        w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
+        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
+        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
         w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
         w.style.borderTopColor = GlassBorderSoft; w.style.borderBottomColor = GlassBorderSoft;
@@ -1442,6 +1492,8 @@ public class GameMainUI : MonoBehaviour
         w.style.overflow = Overflow.Hidden;
         w.style.justifyContent = Justify.FlexEnd;
         w.pickingMode = PickingMode.Position;
+        w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+        w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
         var bgSp = Resources.Load<Sprite>("bg/songqiao_station");
         if (bgSp != null)
@@ -1487,11 +1539,11 @@ public class GameMainUI : MonoBehaviour
     private VisualElement BuildCalendarWidget()
     {
         var w = new VisualElement();
-        w.style.width = 170; w.style.height = 132;
+        w.style.width = 170; w.style.height = 140;
         w.style.marginLeft = 6; w.style.marginRight = 6;
         w.style.backgroundColor = new Color(0.96f, 0.95f, 0.92f, 0.95f); // 日历纸白
-        w.style.borderTopLeftRadius = 20; w.style.borderTopRightRadius = 20;
-        w.style.borderBottomLeftRadius = 20; w.style.borderBottomRightRadius = 20;
+        w.style.borderTopLeftRadius = 24; w.style.borderTopRightRadius = 24;
+        w.style.borderBottomLeftRadius = 24; w.style.borderBottomRightRadius = 24;
         w.style.borderTopWidth = 1; w.style.borderBottomWidth = 1;
         w.style.borderLeftWidth = 1; w.style.borderRightWidth = 1;
         w.style.borderTopColor = new Color(0.85f, 0.82f, 0.78f, 0.8f);
@@ -1501,6 +1553,8 @@ public class GameMainUI : MonoBehaviour
         w.style.overflow = Overflow.Hidden;
         w.style.justifyContent = Justify.SpaceBetween;
         w.pickingMode = PickingMode.Position;
+        w.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+        w.style.transitionDuration = new List<TimeValue> { new TimeValue(140, TimeUnit.Millisecond) };
 
         // 顶部红色日历横条
         var topBar = new VisualElement();
