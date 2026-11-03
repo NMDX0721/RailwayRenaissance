@@ -17,9 +17,18 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         public string Body { get; }
         public DateTime CreatedAt { get; }
         public bool IsRead { get; internal set; }
+        public string ChannelId { get; }
+        public string Key { get; }
+        /// <summary>运行期的请求（点击回调、按钮、进度）；重启后不保留，只剩渠道对应的应用入口。</summary>
+        public TabletNotifyRequest Request { get; }
+        public float Progress => Request != null ? Request.Progress : -1f;
 
-        public TabletNotification(long id, string title, string body, DateTime createdAt, bool isRead = false)
+        public TabletNotification(long id, string title, string body, DateTime createdAt, bool isRead = false,
+            string channelId = null, TabletNotifyRequest request = null)
         {
+            ChannelId = string.IsNullOrEmpty(channelId) ? TabletNotify.SystemChannel : channelId;
+            Request = request;
+            Key = request?.Key;
             Id = id;
             Title = title ?? string.Empty;
             Body = body ?? string.Empty;
@@ -36,6 +45,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private long _nextId = 1;
 
         public event Action Changed;
+        /// <summary>新通知（或同 Key 的更新）到达；横幅监听它。第二个参数为 true 表示是对已有通知的更新。</summary>
+        public event Action<TabletNotification, bool> NotificationPosted;
 
         public TabletSystemPanel Panel { get; private set; } = TabletSystemPanel.None;
         public IReadOnlyList<TabletNotification> Notifications => _readOnlyNotifications;
@@ -146,7 +157,22 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             Changed?.Invoke();
         }
 
-        public long Post(string title, string body)
+        public long Post(string title, string body) => PostInternal(title, body, null, null);
+
+        public long Post(TabletNotifyRequest request, TabletNotifyChannel channel)
+            => PostInternal(request.Title, request.Body, channel?.Id, request);
+
+        public bool DismissByKey(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return false;
+            for (int i = 0; i < _notifications.Count; i++)
+            {
+                if (_notifications[i].Key == key) return Dismiss(_notifications[i].Id);
+            }
+            return false;
+        }
+
+        private long PostInternal(string title, string body, string channelId, TabletNotifyRequest request)
         {
             string cleanTitle = title?.Trim() ?? string.Empty;
             string cleanBody = body?.Trim() ?? string.Empty;
@@ -161,8 +187,19 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 cleanTitle = "系统提醒";
             }
 
+            bool isUpdate = false;
+            if (request != null && !string.IsNullOrEmpty(request.Key))
+            {
+                for (int i = _notifications.Count - 1; i >= 0; i--)
+                {
+                    if (_notifications[i].Key != request.Key) continue;
+                    _notifications.RemoveAt(i);
+                    isUpdate = true;
+                }
+            }
+
             long id = _nextId++;
-            var notification = new TabletNotification(id, cleanTitle, cleanBody, DateTime.Now, isRead: false);
+            var notification = new TabletNotification(id, cleanTitle, cleanBody, DateTime.Now, isRead: false, channelId: channelId, request: request);
             _notifications.Insert(0, notification);
 
             while (_notifications.Count > MaxCapacity)
@@ -172,6 +209,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             SaveToStorage();
             Changed?.Invoke();
+            NotificationPosted?.Invoke(notification, isUpdate);
             return id;
         }
 

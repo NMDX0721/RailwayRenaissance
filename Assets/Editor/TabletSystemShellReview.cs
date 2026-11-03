@@ -319,10 +319,13 @@ public static class TabletSystemShellReview
                     Capture("04-controls");
 
                     Submit("tablet-quiet-toggle"); Call("ShowBackupToast", "勿扰期间的应用提示");
-                    Assert(state.QuietMode && state.Notifications.Count == 1 && ((Label)Field("backupToast")).style.display == DisplayStyle.None, "Quiet notification storage/presentation");
-                    Submit("tablet-quiet-toggle"); Call("ShowBackupToast", "关闭勿扰后的应用提示");
-                    Assert(!state.QuietMode && state.Notifications.Count == 2 && ((Label)Field("backupToast")).style.display == DisplayStyle.Flex, "Toast resumed after quiet mode ended");
-                    ((Label)Field("backupToast")).style.display = DisplayStyle.None;
+                    Assert(state.QuietMode && state.Notifications.Count == 0, "Toast must not be stored as a notification");
+                    var quietBanner = root.Q("tablet-notify-banner");
+                    TabletNotify.Post("system", "勿扰横幅", "勿扰时只进通知中心");
+                    Assert(state.Notifications.Count == 1 && quietBanner != null && quietBanner.Q("tablet-notify-banner-card") == null, "Quiet mode must suppress the banner");
+                    Submit("tablet-quiet-toggle");
+                    TabletNotify.Post(new TabletNotifyRequest("sms", "短信", "【小米】你的验证码是 123456").WithAction("复制验证码", () => { }, true));
+                    Assert(state.Notifications.Count == 2 && state.Notifications[0].ChannelId == "sms", "Request notification stored with its channel");
                     Submit("tablet-quiet-toggle");
 
                     using (var typing = KeyDownEvent.GetPooled('x', KeyCode.X, EventModifiers.None))

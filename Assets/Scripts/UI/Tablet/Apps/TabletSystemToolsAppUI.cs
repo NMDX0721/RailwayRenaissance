@@ -107,7 +107,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // 分组卡片：功能Tab（闹钟/世界时钟/秒表/倒计时）
         var funcCard = BuildAppCard("时钟功能");
-        funcCard.Add(BuildLightRow("晨间出车早擎闹钟", "已设定 05:30（工作日）", () => ShowToast("闹钟已同步到先民排班系统")));
+        funcCard.Add(BuildLightRow("晨间出车早擎闹钟", "已设定 05:30（工作日）", () =>
+        {
+            var ch = new RailwayRenaissance.UI.Tablet.SystemShell.TabletNotifyChannel { Id = "clock", AppId = "时钟", AppName = "时钟", Name = "闹钟与计时", Icon = RailwayRenaissance.UI.Tablet.TabletIconKind.Clock };
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.RegisterChannel(ch);
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.Post("clock", "闹钟已同步", "早擎闹钟 05:30（工作日）已同步到先民排班系统");
+        }));
         funcCard.Add(BuildLightRow("平壤内网主时钟同步", "偏移量 +0.002s · 阿里郎1号卫星校准", () => ShowToast("授时服务器连接稳定")));
         funcCard.Add(BuildLightRow("运行耗时秒表", "用于测定雾峰站至茶山站实际单程区间时分", () => ToggleStopwatch()));
         body.Add(funcCard);

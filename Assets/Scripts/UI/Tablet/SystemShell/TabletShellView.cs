@@ -150,7 +150,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _panel.style.paddingRight = 12;
             _panel.style.paddingBottom = 12;
             _panel.style.paddingLeft = 12;
-            _panel.pickingMode = PickingMode.Ignore;      // 列内空白处点击落到遮罩上关闭面板
+            _panel.pickingMode = PickingMode.Position;
             _panel.focusable = true;
             _panel.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
             _panel.RegisterCallback<PointerDownEvent>(evt => evt.StopPropagation());
@@ -345,13 +345,15 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             if (_state.Panel == TabletSystemPanel.Notifications)
             {
-                _panelTitle.text = DateTime.Now.ToString("HH:mm");
+                TabletSuperIsland.Instance?.SetExpanded(false);
+                _panelTitle.text = TabletDateTime.Now.ToString("HH:mm");
                 _panelTitle.style.fontSize = 44;
                 _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
                 RenderNotifications();
             }
             else if (_state.Panel == TabletSystemPanel.Controls)
             {
+                TabletSuperIsland.Instance?.SetExpanded(false);
                 _panelTitle.text = "控制中心";
                 _panelTitle.style.fontSize = 20;
                 _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
@@ -483,77 +485,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             var scroll = new ScrollView(ScrollViewMode.Vertical);
             scroll.style.flexGrow = 1;
+            scroll.pickingMode = PickingMode.Position;
             scroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+            _contentContainer.pickingMode = PickingMode.Position;
             _contentContainer.Add(scroll);
 
-            var list = _state.Notifications;
-            if (list.Count == 0)
-            {
-                var empty = CreateLabel("暂无通知", 14, false);
-                empty.style.marginTop = 24;
-                empty.style.unityTextAlign = TextAnchor.MiddleCenter;
-                empty.style.color = TabletTheme.TextStrong;
-                empty.AddToClassList("shell-dark");
-                scroll.Add(empty);
-                return;
-            }
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                var item = list[i];
-                var card = new VisualElement();
-                card.style.backgroundColor = _highContrast ? Color.white : TabletTheme.GlassCardLight;
-                card.style.borderTopLeftRadius = card.style.borderTopRightRadius = 22;
-                card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 22;
-                card.style.paddingTop = 12;
-                card.style.paddingRight = 6;
-                card.style.paddingBottom = 12;
-                card.style.paddingLeft = 16;
-                card.style.marginBottom = 10;
-
-                var cardHeader = new VisualElement();
-                cardHeader.style.flexDirection = FlexDirection.Row;
-                cardHeader.style.justifyContent = Justify.SpaceBetween;
-                cardHeader.style.alignItems = Align.Center;
-
-                var titleLabel = CreateLabel(item.Title, 14, true);
-                titleLabel.AddToClassList("shell-dark");
-                titleLabel.style.color = TabletTheme.InkOnGlass;
-                titleLabel.style.flexGrow = 1;
-                titleLabel.style.flexShrink = 1;
-                titleLabel.style.whiteSpace = WhiteSpace.Normal;
-
-                var timeLabel = CreateLabel(item.CreatedAt.ToString("HH:mm"), 11, false);
-                timeLabel.AddToClassList("shell-dark");
-                timeLabel.style.color = TabletTheme.InkOnGlassSoft;
-                timeLabel.style.marginRight = 2;
-
-                long dismissId = item.Id;
-                var dismissBtn = CreateButton("✕", 44, 44, () => _state.Dismiss(dismissId));
-                dismissBtn.name = "tablet-notification-dismiss-" + dismissId;
-                dismissBtn.AddToClassList("shell-keep");
-                dismissBtn.style.backgroundColor = Color.clear;
-                dismissBtn.style.color = TabletTheme.InkOnGlassSoft;
-                TabletUIHelper.SetButtonIcon(dismissBtn, TabletIconKind.Close, 16, TabletTheme.InkOnGlassSoft);
-                dismissBtn.style.borderTopWidth = dismissBtn.style.borderBottomWidth = dismissBtn.style.borderLeftWidth = dismissBtn.style.borderRightWidth = 0;
-
-                cardHeader.Add(titleLabel);
-                cardHeader.Add(timeLabel);
-                cardHeader.Add(dismissBtn);
-                card.Add(cardHeader);
-
-                if (!string.IsNullOrEmpty(item.Body))
-                {
-                    var bodyLabel = CreateLabel(item.Body, 12, false);
-                    bodyLabel.AddToClassList("shell-dark");
-                    bodyLabel.style.color = TabletTheme.InkOnGlassSoft;
-                    bodyLabel.style.marginRight = 10;
-                    bodyLabel.style.whiteSpace = WhiteSpace.Normal;
-                    card.Add(bodyLabel);
-                }
-
-                scroll.Add(card);
-            }
+            TabletNotifyCenterView.Populate(scroll, _state, _highContrast, () => _state.ClosePanel());
         }
 
         private void RenderControls()

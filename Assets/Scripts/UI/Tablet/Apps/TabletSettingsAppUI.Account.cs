@@ -24,7 +24,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private static void PostSystemNotice(string title, string body)
         {
-            GameMainUI.Instance?.ShellState?.Post(title, body);
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice(title, body);
         }
 
         /// <summary>账号页顶部卡片：已登录进账号中心，未登录进注册向导。</summary>

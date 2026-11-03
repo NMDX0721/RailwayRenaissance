@@ -2948,7 +2948,7 @@ public class VNManager : MonoBehaviour
                 tabletSetupOpen = false;
                 NextDialogue();
             },
-            (title, body) => { GameMainUI.Instance?.ShellState?.Post(title, body); });
+            (title, body) => { RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice(title, body); });
     }
 
     /// <summary>VN→经营场景过渡：构建 VNExitData 并切换场景。</summary>

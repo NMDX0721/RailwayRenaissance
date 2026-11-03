@@ -24,6 +24,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             public string body;
             public string createdAt;
             public bool isRead;
+            public string channelId;
         }
 
         public string FilePath { get; }
@@ -127,7 +128,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 {
                     dt = DateTime.Now;
                 }
-                var notif = new TabletNotification(item.id, item.title, item.body, dt, item.isRead);
+                var notif = new TabletNotification(item.id, item.title, item.body, dt, item.isRead, item.channelId);
                 result.Add(notif);
                 count++;
             }
@@ -160,7 +161,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                         title = n.Title,
                         body = n.Body,
                         createdAt = n.CreatedAt.ToString("o"),
-                        isRead = n.IsRead
+                        isRead = n.IsRead,
+                        channelId = n.ChannelId
                     });
                 }
             }

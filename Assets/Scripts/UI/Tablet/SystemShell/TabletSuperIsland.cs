@@ -21,7 +21,21 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             Recorder,      // 声音备忘录 / 拾音
             Timer,         // 运行倒计时 / 测时秒表
             CloudSync,     // 本地备份与云端同步
-            DispatchAlert  // 铁道调度电报 / 紧急通报
+            DispatchAlert, // 铁道调度电报 / 紧急通报
+            Custom         // 其他应用：用 IslandSession.Key + Icon + Actions 自行登记，走通用模板
+        }
+
+        public enum IslandActionStyle { Neutral, Primary, Danger }
+
+        /// <summary>通用大岛上的一个按钮。Icon 不为空时画成圆形图标按钮，否则是文字胶囊。</summary>
+        public class IslandAction
+        {
+            public string Label;
+            public TabletIconKind? Icon;
+            public IslandActionStyle Style;
+            public Action OnClick;
+            /// <summary>点击后是否收起大岛。</summary>
+            public bool CloseOnClick;
         }
 
         public class IslandSession
@@ -37,6 +51,28 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             public Action OnSecondaryAction;
             public float AuxValue; // e.g. Speed, elapsed seconds, or volume
             public string Subtitle;
+
+            // ---- 通用（Custom）会话字段；预设类型也可以用 Key 同时登记多个会话 ----
+            /// <summary>会话唯一键；为空则用 AppType 名称。Custom 类型必须填写。</summary>
+            public string Key;
+            public TabletIconKind Icon = TabletIconKind.Bell;
+            /// <summary>大岛顶部小标题，如“录音机 · 录制中”。</summary>
+            public string Header;
+            public readonly List<IslandAction> Actions = new List<IslandAction>();
+
+            public string EffectiveKey => string.IsNullOrEmpty(Key) ? AppType.ToString() : Key;
+
+            public IslandSession WithAction(string label, Action onClick, IslandActionStyle style = IslandActionStyle.Neutral, bool closeOnClick = false)
+            {
+                if (Actions.Count < 3) Actions.Add(new IslandAction { Label = label, OnClick = onClick, Style = style, CloseOnClick = closeOnClick });
+                return this;
+            }
+
+            public IslandSession WithIconAction(TabletIconKind icon, Action onClick, IslandActionStyle style = IslandActionStyle.Neutral)
+            {
+                if (Actions.Count < 3) Actions.Add(new IslandAction { Icon = icon, OnClick = onClick, Style = style });
+                return this;
+            }
         }
 
         public static TabletSuperIsland Instance { get; private set; }
@@ -44,7 +80,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private readonly VisualElement _parentContainer;
         private readonly VisualElement _pillAnchor;
         private readonly Action<string> _onLaunchApp;
-        private readonly Dictionary<IslandAppType, IslandSession> _activeSessions = new Dictionary<IslandAppType, IslandSession>();
+        private readonly Dictionary<string, IslandSession> _activeSessions = new Dictionary<string, IslandSession>();
 
         // 顶层根节点与两态视图
         public VisualElement Root { get; private set; }
@@ -59,9 +95,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private bool _isExpanded = false;
         private IslandAppType _currentPrimaryType = IslandAppType.None;
         private IslandAppType _currentSecondaryType = IslandAppType.None;
+        private string _primaryKey = "";
+        private string _secondaryKey = "";
 
         public bool IsExpanded => _isExpanded;
         public IslandAppType PrimaryType => _currentPrimaryType;
+        public string PrimaryKey => _primaryKey;
 
         public TabletSuperIsland(VisualElement parentContainer, Action<string> onLaunchApp = null, VisualElement pillAnchor = null)
         {
@@ -91,6 +130,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _scrimOverlay.style.right = 0;
             _scrimOverlay.style.bottom = 0;
             _scrimOverlay.style.backgroundColor = TabletTheme.IslandScrim;
+            _scrimOverlay.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity") };
+            _scrimOverlay.style.transitionDuration = new List<TimeValue> { new TimeValue(200, TimeUnit.Millisecond) };
+            _scrimOverlay.style.opacity = 0f;
             _scrimOverlay.style.display = DisplayStyle.None;
             _scrimOverlay.RegisterCallback<ClickEvent>(evt =>
             {
@@ -142,6 +184,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _pillContainer.style.flexDirection = FlexDirection.Row;
             _pillContainer.style.alignItems = Align.Center;
             _pillContainer.style.justifyContent = Justify.SpaceBetween;
+            _pillContainer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity"), new StylePropertyName("scale") };
+            _pillContainer.style.transitionDuration = new List<TimeValue> { new TimeValue(180, TimeUnit.Millisecond) };
             _pillContainer.pickingMode = PickingMode.Position;
             _pillContainer.style.display = DisplayStyle.None;
             _pillContainer.RegisterCallback<ClickEvent>(evt =>
@@ -200,6 +244,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _expandedCard.style.paddingRight = 22;
             _expandedCard.style.paddingTop = 16;
             _expandedCard.style.paddingBottom = 20;
+            _expandedCard.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("opacity") };
+            _expandedCard.style.transitionDuration = new List<TimeValue> { new TimeValue(220, TimeUnit.Millisecond) };
 
             // 底部把手：黄铜色细条，既是 HyperOS 的下拉把手，也是铁道铭牌细节
             var handle = _expandedHandle = new VisualElement { name = "super-island-handle", pickingMode = PickingMode.Ignore };
@@ -225,32 +271,38 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             if (session == null || session.AppType == IslandAppType.None) return;
             // GameMainUI 每帧都会重新登记播放/遥测会话：外观没变就只换回调，不重建整座岛（否则每帧销毁重建 UI 树）
-            bool unchanged = _activeSessions.TryGetValue(session.AppType, out var existing) && SameVisual(existing, session);
-            _activeSessions[session.AppType] = session;
+            string key = session.EffectiveKey;
+            bool unchanged = _activeSessions.TryGetValue(key, out var existing) && SameVisual(existing, session);
+            _activeSessions[key] = session;
             if (unchanged) return;
             EvaluateActiveSessions();
         }
 
         private static bool SameVisual(IslandSession a, IslandSession b)
         {
-            return a.AppType == b.AppType && a.Priority == b.Priority &&
+            return a.AppType == b.AppType && a.Priority == b.Priority && a.Key == b.Key && a.Icon == b.Icon && a.Header == b.Header &&
+                   a.Actions.Count == b.Actions.Count &&
                    a.Title == b.Title && a.Subtitle == b.Subtitle && a.Metric == b.Metric &&
                    Mathf.Approximately(a.Progress, b.Progress) && Mathf.Approximately(a.AuxValue, b.AuxValue) &&
                    a.AccentColor == b.AccentColor;
         }
 
-        public void UpdateSession(IslandAppType type, Action<IslandSession> update)
+        public void UpdateSession(IslandAppType type, Action<IslandSession> update) => UpdateSession(type.ToString(), update);
+
+        public void UpdateSession(string key, Action<IslandSession> update)
         {
-            if (_activeSessions.TryGetValue(type, out var session))
+            if (!string.IsNullOrEmpty(key) && _activeSessions.TryGetValue(key, out var session))
             {
                 update?.Invoke(session);
                 EvaluateActiveSessions();
             }
         }
 
-        public void RemoveSession(IslandAppType type)
+        public void RemoveSession(IslandAppType type) => RemoveSession(type.ToString());
+
+        public void RemoveSession(string key)
         {
-            if (_activeSessions.Remove(type))
+            if (!string.IsNullOrEmpty(key) && _activeSessions.Remove(key))
             {
                 EvaluateActiveSessions();
             }
@@ -264,38 +316,76 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
         public void SetExpanded(bool expanded)
         {
-            _isExpanded = expanded && (_currentPrimaryType != IslandAppType.None);
-            _scrimOverlay.style.display = _isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
-            _expandedCard.style.display = _isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
-            if (_isExpanded) PlayExpandAnimation();
-            _pillContainer.style.opacity = _isExpanded ? 0f : 1f;
-            _pillContainer.pickingMode = _isExpanded ? PickingMode.Ignore : PickingMode.Position;
+            bool targetExpanded = expanded && (_currentPrimaryType != IslandAppType.None);
+            if (_isExpanded == targetExpanded && _expandedCard.style.display == (_isExpanded ? DisplayStyle.Flex : DisplayStyle.None)) return;
+            _isExpanded = targetExpanded;
+
+            int ms = TabletTheme.MotionMs(220);
 
             if (_isExpanded)
             {
+                Root.BringToFront();
+                _scrimOverlay.style.display = DisplayStyle.Flex;
+                _expandedCard.style.display = DisplayStyle.Flex;
+                _expandedCard.BringToFront();
                 RenderExpandedContent();
-            }
-        }
 
-        private void PlayExpandAnimation()
-        {
-            // 先落在缩小的起点，下一帧回到原尺寸，由 USS 过渡完成弹出；减少动效时直接到位
-            int ms = TabletTheme.MotionMs(220);
-            _expandedCard.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("opacity") };
-            _expandedCard.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
-            if (ms <= 0)
-            {
-                _expandedCard.style.scale = new Scale(Vector3.one);
-                _expandedCard.style.opacity = 1f;
-                return;
+                _pillContainer.pickingMode = PickingMode.Ignore;
+
+                if (ms <= 0)
+                {
+                    _scrimOverlay.style.opacity = 1f;
+                    _expandedCard.style.scale = new Scale(Vector3.one);
+                    _expandedCard.style.opacity = 1f;
+                    _pillContainer.style.opacity = 0f;
+                }
+                else
+                {
+                    _scrimOverlay.style.opacity = 0f;
+                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
+                    _expandedCard.style.opacity = 0f;
+                    _pillContainer.style.scale = new Scale(new Vector3(0.9f, 0.9f, 1f));
+                    _pillContainer.style.opacity = 0f;
+
+                    _expandedCard.schedule.Execute(() =>
+                    {
+                        _scrimOverlay.style.opacity = 1f;
+                        _expandedCard.style.scale = new Scale(Vector3.one);
+                        _expandedCard.style.opacity = 1f;
+                    }).StartingIn(16);
+                }
             }
-            _expandedCard.style.scale = new Scale(new Vector3(0.55f, 0.55f, 1f));
-            _expandedCard.style.opacity = 0f;
-            _expandedCard.schedule.Execute(() =>
+            else
             {
-                _expandedCard.style.scale = new Scale(Vector3.one);
-                _expandedCard.style.opacity = 1f;
-            }).StartingIn(16);
+                _pillContainer.pickingMode = PickingMode.Position;
+                if (ms <= 0)
+                {
+                    _scrimOverlay.style.opacity = 0f;
+                    _scrimOverlay.style.display = DisplayStyle.None;
+                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
+                    _expandedCard.style.opacity = 0f;
+                    _expandedCard.style.display = DisplayStyle.None;
+                    _pillContainer.style.scale = new Scale(Vector3.one);
+                    _pillContainer.style.opacity = 1f;
+                }
+                else
+                {
+                    _scrimOverlay.style.opacity = 0f;
+                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
+                    _expandedCard.style.opacity = 0f;
+                    _pillContainer.style.scale = new Scale(Vector3.one);
+                    _pillContainer.style.opacity = 1f;
+
+                    _expandedCard.schedule.Execute(() =>
+                    {
+                        if (!_isExpanded)
+                        {
+                            _expandedCard.style.display = DisplayStyle.None;
+                            _scrimOverlay.style.display = DisplayStyle.None;
+                        }
+                    }).StartingIn(ms + 10);
+                }
+            }
         }
 
         public void ToggleExpanded()
@@ -328,6 +418,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 _currentPrimaryType = IslandAppType.None;
                 _currentSecondaryType = IslandAppType.None;
+                _primaryKey = ""; _secondaryKey = "";
                 _pillContainer.style.display = DisplayStyle.None;
                 _subBubble.style.display = DisplayStyle.None;
                 SetExpanded(false);
@@ -340,6 +431,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             _currentPrimaryType = list[0].AppType;
             _currentSecondaryType = list.Count > 1 ? list[1].AppType : IslandAppType.None;
+            _primaryKey = list[0].EffectiveKey;
+            _secondaryKey = list.Count > 1 ? list[1].EffectiveKey : "";
 
             _pillContainer.style.display = DisplayStyle.Flex;
             _subBubble.style.display = _currentSecondaryType != IslandAppType.None && !_isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
@@ -358,7 +451,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private void PromoteSubSession()
         {
             if (_currentSecondaryType == IslandAppType.None) return;
-            if (_activeSessions.TryGetValue(_currentSecondaryType, out var sub))
+            if (_activeSessions.TryGetValue(_secondaryKey, out var sub))
             {
                 // 暂时提升其优先级
                 sub.Priority += 200;
@@ -369,7 +462,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         // ==================== 微胶囊态渲染 (Compact Pill) ====================
         private void RenderCompactContent()
         {
-            if (!_activeSessions.TryGetValue(_currentPrimaryType, out var s)) return;
+            if (!_activeSessions.TryGetValue(_primaryKey, out var s)) return;
             _pillContainer.Clear();
 
             var leftBox = new VisualElement();
@@ -459,9 +552,32 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     rightBox.Add(syncPct);
                     break;
 
+                case IslandAppType.Custom:
+                    // 通用模板：图标 + 标题，右侧指标
+                    var cIc = new TabletIconElement(s.Icon, 16, s.AccentColor);
+                    cIc.style.marginRight = 6;
+                    leftBox.Add(cIc);
+                    if (s.Progress > 0f)
+                    {
+                        leftBox.Add(CreateMicroProgressBar(s.Progress, s.AccentColor));
+                    }
+                    else
+                    {
+                        var cTitle = CreatePillLabel(s.Title ?? "", 12, true);
+                        cTitle.style.maxWidth = 120; cTitle.style.overflow = Overflow.Hidden;
+                        leftBox.Add(cTitle);
+                    }
+                    if (!string.IsNullOrEmpty(s.Metric))
+                    {
+                        var cMetric = CreatePillLabel(s.Metric, 12, true);
+                        cMetric.style.marginLeft = 6;
+                        rightBox.Add(cMetric);
+                    }
+                    break;
+
                 case IslandAppType.DispatchAlert:
-                    // ⚠️ 调度闪烁红黄警标 + 指令简报
-                    var alertIc = CreatePillLabel("⚠️", 13, false);
+                    // 调度警标 + 指令简报
+                    var alertIc = new TabletIconElement(TabletIconKind.Bolt, 14, TabletTheme.Alert);
                     alertIc.style.marginRight = 4;
                     leftBox.Add(alertIc);
 
@@ -479,7 +595,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         // ==================== 次要副岛小气泡渲染 ====================
         private void RenderSubBubble()
         {
-            if (!_activeSessions.TryGetValue(_currentSecondaryType, out var s))
+            if (!_activeSessions.TryGetValue(_secondaryKey, out var s))
             {
                 _subBubble.style.display = DisplayStyle.None;
                 return;
@@ -493,19 +609,25 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     _subBubble.Add(CreateMicroDisc(s.AccentColor, 18));
                     break;
                 case IslandAppType.TrainCab:
-                    _subBubble.Add(CreatePillLabel("🚂", 12, false));
+                    _subBubble.Add(new TabletIconElement(TabletIconKind.Train, 16, TabletTheme.TextStrong));
                     break;
                 case IslandAppType.Recorder:
                     _subBubble.Add(CreateSignalDot(TabletTheme.SignalRed, pulsing: true));
                     break;
                 case IslandAppType.Timer:
-                    _subBubble.Add(CreatePillLabel("⏱", 12, false));
+                    _subBubble.Add(new TabletIconElement(TabletIconKind.Hourglass, 15, TabletTheme.Info));
                     break;
                 case IslandAppType.CloudSync:
-                    _subBubble.Add(CreatePillLabel("☁", 11, false));
+                    _subBubble.Add(new TabletIconElement(TabletIconKind.Cloud, 16, TabletTheme.TextStrong));
+                    break;
+                case IslandAppType.DispatchAlert:
+                    _subBubble.Add(new TabletIconElement(TabletIconKind.Bolt, 15, TabletTheme.Alert));
+                    break;
+                case IslandAppType.Custom:
+                    _subBubble.Add(new TabletIconElement(s.Icon, 16, s.AccentColor));
                     break;
                 default:
-                    _subBubble.Add(CreatePillLabel("●", 10, false));
+                    _subBubble.Add(CreateSignalDot(TabletTheme.Accent));
                     break;
             }
         }
@@ -513,7 +635,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         // ==================== 大岛展开态渲染 (Expanded Island Card) ====================
         private void RenderExpandedContent()
         {
-            if (!_activeSessions.TryGetValue(_currentPrimaryType, out var s)) return;
+            if (!_activeSessions.TryGetValue(_primaryKey, out var s)) return;
             _expandedCard.Clear();
             if (_expandedHandle != null) _expandedCard.Add(_expandedHandle);
 
@@ -524,16 +646,17 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             topRow.style.marginBottom = 8;
             _expandedCard.Add(topRow);
 
-            var closeBtn = new Button(() => SetExpanded(false)) { text = "✕" };
+            var closeBtn = new Button(() => SetExpanded(false));
             closeBtn.style.width = 24; closeBtn.style.height = 24;
             closeBtn.style.borderTopLeftRadius = 12; closeBtn.style.borderTopRightRadius = 12;
             closeBtn.style.borderBottomLeftRadius = 12; closeBtn.style.borderBottomRightRadius = 12;
             closeBtn.style.backgroundColor = TabletTheme.OverlaySoft;
-            closeBtn.style.color = Color.white;
-            TabletUIHelper.SetButtonIcon(closeBtn, TabletIconKind.Close, 14, Color.white);
-            closeBtn.style.fontSize = 11;
             closeBtn.style.borderTopWidth = 0; closeBtn.style.borderBottomWidth = 0;
             closeBtn.style.borderLeftWidth = 0; closeBtn.style.borderRightWidth = 0;
+            closeBtn.style.alignItems = Align.Center; closeBtn.style.justifyContent = Justify.Center;
+            closeBtn.style.paddingLeft = 0; closeBtn.style.paddingRight = 0;
+            closeBtn.style.paddingTop = 0; closeBtn.style.paddingBottom = 0;
+            closeBtn.Add(new TabletIconElement(TabletIconKind.Close, 14, Color.white));
 
             switch (s.AppType)
             {
@@ -578,11 +701,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     controls.style.alignItems = Align.Center;
                     musicBody.Add(controls);
 
-                    var prevBtn = CreateIconActionBtn("⏮", () => s.OnSecondaryAction?.Invoke());
-                    var playBtn = CreateIconActionBtn("⏯", () => s.OnPrimaryAction?.Invoke(), isAccent: true);
+                    var prevBtn = CreateIconActionBtn(TabletIconKind.Back, () => s.OnSecondaryAction?.Invoke());
+                    var playBtn = CreateIconActionBtn(TabletIconKind.Play, () => s.OnPrimaryAction?.Invoke(), isAccent: true);
                     playBtn.style.width = 36; playBtn.style.height = 36;
                     playBtn.style.marginLeft = 6; playBtn.style.marginRight = 6;
-                    var appBtn = CreateIconActionBtn("↗", () => { SetExpanded(false); _onLaunchApp?.Invoke("音乐"); });
+                    var appBtn = CreateIconActionBtn(TabletIconKind.Apps, () => { SetExpanded(false); _onLaunchApp?.Invoke("音乐"); });
 
                     controls.Add(prevBtn);
                     controls.Add(playBtn);
@@ -728,6 +851,67 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     syncBody.Add(fullBar);
                     break;
 
+                // ---------- 通用大岛（任何应用登记的会话） ----------
+                case IslandAppType.Custom:
+                    var gHeader = CreatePillLabel(s.Header ?? s.Title ?? "", 11, false);
+                    gHeader.style.color = s.AccentColor;
+                    topRow.Add(gHeader);
+                    topRow.Add(closeBtn);
+
+                    var gBody = new VisualElement();
+                    gBody.style.flexDirection = FlexDirection.Row;
+                    gBody.style.alignItems = Align.Center;
+                    gBody.style.justifyContent = Justify.SpaceBetween;
+                    _expandedCard.Add(gBody);
+
+                    var gLeft = new VisualElement();
+                    gLeft.style.flexDirection = FlexDirection.Row;
+                    gLeft.style.alignItems = Align.Center;
+                    gLeft.style.flexGrow = 1; gLeft.style.flexShrink = 1;
+                    gBody.Add(gLeft);
+                    var gBadge = new VisualElement();
+                    gBadge.style.width = 44; gBadge.style.height = 44; gBadge.style.marginRight = 12; gBadge.style.flexShrink = 0;
+                    gBadge.style.alignItems = Align.Center; gBadge.style.justifyContent = Justify.Center;
+                    gBadge.style.backgroundColor = new Color(s.AccentColor.r, s.AccentColor.g, s.AccentColor.b, 0.22f);
+                    gBadge.style.borderTopLeftRadius = gBadge.style.borderTopRightRadius = 14;
+                    gBadge.style.borderBottomLeftRadius = gBadge.style.borderBottomRightRadius = 14;
+                    gBadge.Add(new TabletIconElement(s.Icon, 24, s.AccentColor));
+                    gLeft.Add(gBadge);
+                    var gText = new VisualElement();
+                    gText.style.flexShrink = 1;
+                    gLeft.Add(gText);
+                    gText.Add(CreatePillLabel(s.Metric ?? s.Title ?? "", 20, true));
+                    if (!string.IsNullOrEmpty(s.Subtitle))
+                    {
+                        var gSub = CreatePillLabel(s.Subtitle, 11, false);
+                        gSub.style.color = TabletTheme.TextSecondary;
+                        gText.Add(gSub);
+                    }
+
+                    var gActions = new VisualElement();
+                    gActions.style.flexDirection = FlexDirection.Row;
+                    gActions.style.alignItems = Align.Center;
+                    gBody.Add(gActions);
+                    foreach (var act in s.Actions)
+                    {
+                        var captured = act;
+                        Action click = () => { captured.OnClick?.Invoke(); if (captured.CloseOnClick) SetExpanded(false); };
+                        VisualElement ab;
+                        if (act.Icon.HasValue)
+                            ab = CreateIconActionBtn(act.Icon.Value, click, isAccent: act.Style == IslandActionStyle.Primary);
+                        else
+                            ab = CreateTextActionBtn(act.Label ?? "", act.Style == IslandActionStyle.Danger ? TabletTheme.Danger : act.Style == IslandActionStyle.Primary ? s.AccentColor : TabletTheme.OverlayMedium, click);
+                        ab.style.marginLeft = 8;
+                        gActions.Add(ab);
+                    }
+                    if (s.Progress > 0f)
+                    {
+                        var gBar = CreateMicroProgressBar(s.Progress, s.AccentColor, width: 410, height: 5);
+                        gBar.style.marginTop = 10;
+                        _expandedCard.Add(gBar);
+                    }
+                    break;
+
                 // ---------- 6. 调度警报大岛 ----------
                 case IslandAppType.DispatchAlert:
                     var alHeader = CreatePillLabel("铁道调度紧急令书", 11, true);
@@ -871,9 +1055,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             return l;
         }
 
-        private Button CreateIconActionBtn(string icon, Action onClick, bool isAccent = false)
+        private Button CreateIconActionBtn(TabletIconKind kind, Action onClick, bool isAccent = false)
         {
-            var btn = new Button(onClick) { text = icon };
+            var btn = new Button(onClick);
             btn.style.width = 30;
             btn.style.height = 30;
             btn.style.borderTopLeftRadius = 15;
@@ -881,13 +1065,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.borderBottomLeftRadius = 15;
             btn.style.borderBottomRightRadius = 15;
             btn.style.backgroundColor = isAccent ? TabletTheme.Accent : TabletTheme.OverlaySoft;
-            btn.style.color = Color.white;
-            btn.style.fontSize = 12;
             btn.style.borderTopWidth = 0; btn.style.borderBottomWidth = 0;
             btn.style.borderLeftWidth = 0; btn.style.borderRightWidth = 0;
             btn.style.alignItems = Align.Center;
             btn.style.justifyContent = Justify.Center;
-            btn.style.unityFontDefinition = Fd();
+            btn.style.paddingLeft = 0; btn.style.paddingRight = 0;
+            btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
+            btn.Add(new TabletIconElement(kind, 16, Color.white));
             return btn;
         }
 

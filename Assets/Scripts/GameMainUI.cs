@@ -98,7 +98,7 @@ public class GameMainUI : MonoBehaviour
 
     // 电量徽标配色：充电或电量充足为绿，≤30% 琥珀，≤15% 红；没有电量数据时灰色满格
     private static readonly Color BatteryTrackColor = new Color(0.26f, 0.28f, 0.32f, 0.94f);
-    private const float BatteryInnerWidth = 38f;
+    private const float BatteryInnerWidth = 42f;
     private static Length BatteryFillWidth(int pct) => new Length(BatteryInnerWidth * (pct < 0 ? 1f : Mathf.Clamp01(pct / 100f)), LengthUnit.Pixel);
 
     private static Color BatteryFillColor(int pct, bool charging)
@@ -892,17 +892,18 @@ public class GameMainUI : MonoBehaviour
         statusBar.Add(leftGroup);
 
         statusClock = new Label(System.DateTime.Now.ToString("HH:mm"));
-        statusClock.style.fontSize = 17;
+        statusClock.style.fontSize = RailwayRenaissance.UI.Tablet.TabletType.StatusText;
         statusClock.style.color = GlassText;
         statusClock.style.unityFontDefinition = Fd();
         leftGroup.Add(statusClock);
 
         // 日期（对照参考图“22:22  Sat, Oct 31”）：有超级岛时让位给岛，避免挤占状态栏
         statusDate = new Label(FormatStatusDate(RailwayRenaissance.UI.Tablet.TabletDateTime.Now)) { name = "tablet-status-date" };
-        statusDate.style.fontSize = 15;
+        statusDate.style.fontSize = RailwayRenaissance.UI.Tablet.TabletType.StatusText;
         statusDate.style.color = GlassText;
         statusDate.style.unityFontDefinition = Fd();
-        statusDate.style.marginLeft = 12;
+        statusDate.style.marginLeft = 10;
+        statusDate.style.color = new Color(1f, 1f, 1f, 0.78f);
         leftGroup.Add(statusDate);
 
         // 未读通知小红点（时间右侧）
@@ -941,7 +942,7 @@ public class GameMainUI : MonoBehaviour
         TraceLog.L("[GameMainUI] Desktop: battery ok pct=" + battPct);
         // 电量徽标：深灰圆角底 + 按电量铺的浅灰填充 + 白色粗体数字（对照 HyperOS 状态栏：深浅背景下都清晰）
         var battBox = new VisualElement { name = "tablet-status-battery-box" };
-        battBox.style.width = 42; battBox.style.height = 22;
+        battBox.style.width = 46; battBox.style.height = 24;
         battBox.style.overflow = Overflow.Hidden;
         battBox.style.borderTopLeftRadius = battBox.style.borderTopRightRadius = 8;
         battBox.style.borderBottomLeftRadius = battBox.style.borderBottomRightRadius = 8;
@@ -965,7 +966,7 @@ public class GameMainUI : MonoBehaviour
         battNub.style.backgroundColor = BatteryTrackColor;
         rightInfo.Add(battNub);
         var batt = new Label(FormatBattBadge(battPct)) { name = "tablet-status-battery" };
-        batt.style.fontSize = 13; batt.style.color = Color.white; batt.style.unityFontDefinition = Fd();
+        batt.style.fontSize = RailwayRenaissance.UI.Tablet.TabletType.StatusText - 1; batt.style.color = Color.white; batt.style.unityFontDefinition = Fd();
         batt.style.unityFontStyleAndWeight = FontStyle.Bold;
         batt.style.unityTextAlign = TextAnchor.MiddleCenter;
         batt.pickingMode = PickingMode.Ignore;
@@ -2325,6 +2326,9 @@ public class GameMainUI : MonoBehaviour
     }
 
     private void BuildSystemNavigation()
+        tabletNotifyBanner?.Dispose();
+        tabletNotifyBanner = new RailwayRenaissance.UI.Tablet.SystemShell.TabletNotifyBanner(root, tabletShellState);
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.Attach(tabletShellState, LaunchApp, m => tabletNotifyBanner?.ShowToast(m));
     {
         systemNavigationBar = new VisualElement { name = "tablet-system-navigation" };
         systemNavigationBar.style.position = Position.Absolute;
@@ -3241,106 +3245,15 @@ public class GameMainUI : MonoBehaviour
         win.style.flexDirection = FlexDirection.Column;
         appLayer.Add(win);
 
-        // 系统级顶栏（高度 44px，深邃毛玻璃底 + 细黄铜拉丝底边）
-        var topBar = new VisualElement();
-        topBar.style.height = 44;
-        topBar.style.flexDirection = FlexDirection.Row;
-        topBar.style.justifyContent = Justify.SpaceBetween;
-        topBar.style.alignItems = Align.Center;
-        topBar.style.paddingLeft = 18; topBar.style.paddingRight = 18;
-        topBar.style.backgroundColor = barBg;
-        topBar.style.borderBottomWidth = 1;
-        topBar.style.borderBottomColor = barLine;
-        win.Add(topBar);
-
-        // 左侧：返回桌面胶囊按钮 + 应用名
-        var leftGroup = new VisualElement();
-        leftGroup.style.flexDirection = FlexDirection.Row;
-        leftGroup.style.alignItems = Align.Center;
-        topBar.Add(leftGroup);
-
-        var backBtn = new Button(() =>
+        // 统一应用顶栏：圆形返回键 + 标题（+ 副标题）。退出靠返回键与全面屏手势，不再摆“✕”和“返回桌面”文字按钮。
+        var appBar = RailwayRenaissance.UI.Tablet.TabletAppBar.Build(new RailwayRenaissance.UI.Tablet.TabletAppBarSpec
         {
-            if (onBack != null) onBack();
-            else ReturnToTabletHome();
-        }) { text = onBack == null ? "◀  返回桌面" : "◀  返回" };
-        backBtn.style.height = 30;
-        backBtn.style.paddingLeft = 14; backBtn.style.paddingRight = 14;
-        backBtn.style.fontSize = 12;
-        backBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        backBtn.style.unityFontDefinition = Fd();
-        backBtn.style.backgroundColor = chipBg;
-        backBtn.style.color = chipText;
-        backBtn.style.borderTopLeftRadius = 15; backBtn.style.borderTopRightRadius = 15;
-        backBtn.style.borderBottomLeftRadius = 15; backBtn.style.borderBottomRightRadius = 15;
-        backBtn.style.borderTopWidth = 1; backBtn.style.borderBottomWidth = 1;
-        backBtn.style.borderLeftWidth = 1; backBtn.style.borderRightWidth = 1;
-        backBtn.style.borderTopColor = chipBorder;
-        backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
-        backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
-        backBtn.style.borderRightColor = backBtn.style.borderTopColor;
-        backBtn.RegisterCallback<PointerEnterEvent>(_ =>
-        {
-            backBtn.style.backgroundColor = chipHoverBg;
-            backBtn.style.borderTopColor = darkApp ? new Color(0.83f, 0.66f, 0.26f, 0.8f) : chipBorder;
-            backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
-            backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
-            backBtn.style.borderRightColor = backBtn.style.borderTopColor;
+            Title = appTitle,
+            Subtitle = subtitle,
+            Dark = darkApp,
+            OnBack = () => { if (onBack != null) onBack(); else ReturnToTabletHome(); }
         });
-        backBtn.RegisterCallback<PointerLeaveEvent>(_ =>
-        {
-            backBtn.style.backgroundColor = chipBg;
-            backBtn.style.borderTopColor = chipBorder;
-            backBtn.style.borderBottomColor = backBtn.style.borderTopColor;
-            backBtn.style.borderLeftColor = backBtn.style.borderTopColor;
-            backBtn.style.borderRightColor = backBtn.style.borderTopColor;
-        });
-        leftGroup.Add(backBtn);
-
-        var titleLabel = new Label(appTitle);
-        titleLabel.style.fontSize = 16;
-        titleLabel.style.color = titleColor;
-        titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        titleLabel.style.unityFontDefinition = Fd();
-        titleLabel.style.marginLeft = 16;
-        leftGroup.Add(titleLabel);
-
-        if (!string.IsNullOrEmpty(subtitle))
-        {
-            var subLabel = new Label("· " + subtitle);
-            subLabel.style.fontSize = 12;
-            subLabel.style.color = subColor;
-            subLabel.style.unityFontDefinition = Fd();
-            subLabel.style.marginLeft = 10;
-            leftGroup.Add(subLabel);
-        }
-
-        // 右侧关闭按钮
-        var closeBtn = new Button(ReturnToTabletHome) { text = "✕", name = "tablet-app-close" };
-        closeBtn.style.width = 30; closeBtn.style.height = 30;
-        closeBtn.style.fontSize = 14;
-        closeBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        closeBtn.style.unityFontDefinition = Fd();
-        closeBtn.style.backgroundColor = chipBg;
-        closeBtn.style.color = darkApp ? new Color(0.70f, 0.70f, 0.72f, 1f) : new Color(0.40f, 0.40f, 0.44f, 1f);
-        RailwayRenaissance.UI.Tablet.TabletUIHelper.SetButtonIcon(closeBtn, RailwayRenaissance.UI.Tablet.TabletIconKind.Close, 16, closeBtn.style.color.value);
-        closeBtn.style.borderTopLeftRadius = 15; closeBtn.style.borderTopRightRadius = 15;
-        closeBtn.style.borderBottomLeftRadius = 15; closeBtn.style.borderBottomRightRadius = 15;
-        closeBtn.style.borderTopWidth = 1; closeBtn.style.borderBottomWidth = 1;
-        closeBtn.style.borderLeftWidth = 1; closeBtn.style.borderRightWidth = 1;
-        closeBtn.style.borderTopColor = chipBorder;
-        closeBtn.style.borderBottomColor = closeBtn.style.borderTopColor;
-        closeBtn.style.borderLeftColor = closeBtn.style.borderTopColor;
-        closeBtn.style.borderRightColor = closeBtn.style.borderTopColor;
-        closeBtn.RegisterCallback<PointerEnterEvent>(_ => {
-            closeBtn.style.backgroundColor = new Color(0.80f, 0.22f, 0.22f, 0.8f);
-            closeBtn.style.color = Color.white;
-        });
-        closeBtn.RegisterCallback<PointerLeaveEvent>(_ => {
-            closeBtn.style.backgroundColor = chipBg;
-            closeBtn.style.color = darkApp ? new Color(0.70f, 0.70f, 0.72f, 1f) : new Color(0.40f, 0.40f, 0.44f, 1f);
-        });
-        topBar.Add(closeBtn);
+        win.Add(appBar);
 
         // 主体内容区（供具体 App 渲染）
         var content = new VisualElement { name = "app-content" };
@@ -3501,7 +3414,7 @@ public class GameMainUI : MonoBehaviour
         if (PlayerPrefs.GetInt("AccountNudged_v1", 0) == 1) return;
         PlayerPrefs.SetInt("AccountNudged_v1", 1);
         PlayerPrefs.Save();
-        tabletShellState?.Post("小米账号", "登录小米账号，使用云空间、查找设备与家庭服务。前往 设置 → 小米账号。");
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice("小米账号", "登录小米账号，使用云空间、查找设备与家庭服务。前往 设置 → 小米账号。");
     }
 
     public void OpenSystemPanel(TabletSystemPanel panel)
@@ -3562,41 +3475,10 @@ public class GameMainUI : MonoBehaviour
         desktopBuilding = false;
     }
 
-    private Label backupToast;
-    private void ShowBackupToast(string msg)
-    {
-        tabletShellState.Post("应用提示", msg);
-        if (tabletShellState.QuietMode)
-        {
-            if (backupToast != null) backupToast.style.display = DisplayStyle.None;
-            return;
-        }
-        if (backupToast == null)
-        {
-            backupToast = new Label(msg);
-            backupToast.style.position = Position.Absolute;
-            backupToast.style.bottom = 90;
-            backupToast.style.left = 100; backupToast.style.right = 100;
-            backupToast.style.height = 44;
-            backupToast.style.fontSize = 16;
-            backupToast.style.color = new Color(1f, 0.9f, 0.6f, 0.95f);
-            backupToast.style.unityTextAlign = TextAnchor.MiddleCenter;
-            backupToast.style.unityFontDefinition = Fd();
-            backupToast.style.backgroundColor = GlassBg;
-            backupToast.style.borderTopLeftRadius = 12; backupToast.style.borderTopRightRadius = 12;
-            backupToast.style.borderBottomLeftRadius = 12; backupToast.style.borderBottomRightRadius = 12;
-            backupToast.pickingMode = PickingMode.Ignore;
-            var shell = root.Q("tablet-shell-root");
-            if (shell != null) root.Insert(root.IndexOf(shell), backupToast);
-            else root.Add(backupToast);
-        }
-        else
-        {
-            backupToast.text = msg;
-        }
-        backupToast.style.display = DisplayStyle.Flex;
-        backupToast.schedule.Execute(() => { if (backupToast != null) backupToast.style.display = DisplayStyle.None; }).ExecuteLater(1500);
-    }
+    private RailwayRenaissance.UI.Tablet.SystemShell.TabletNotifyBanner tabletNotifyBanner;
+
+    /// <summary>各应用共用的轻提示回调：短暂小条，不进通知中心。需要留痕的事件请用 TabletNotify.Post。</summary>
+    private void ShowBackupToast(string msg) => RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.Toast(msg);
 
     // ============ App: RDA（已抽离至 TabletRDAAppUI）============
     private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
