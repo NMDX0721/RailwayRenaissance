@@ -42,6 +42,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public bool lyricFilter = true;      // take credit and copyright lines out of lyrics
         public string lyricFilterWords = "";   // extra words: any line containing one is taken out (comma separated)
         public int toneMode;   // listening tone: 0 clean, 1 work-train radio, 2 tube radio, 3 tube FM
+        public bool eqOn, replayGain;   // equalizer and replay gain (see MusicEqualizer)
+        public string eqPreset = ""; public float[] eqGains;   // the equalizer's preset name and its ten band gains in dB
+        public string themeAccent = ""; public int themeBase;   // fixed accent colour as #RRGGBB (empty: follow the cover), and the base colour of the page: 0 grey-green, 1 ink, 2 warm
+        public string barSlots = "";   // comma separated buttons pinned to the player bar (speed, tone, timer, eq, queue ...); empty keeps the older barSpeed/barTone/barTimer flags
+        public bool tutorialDone;   // the first-use tour was shown
         public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;

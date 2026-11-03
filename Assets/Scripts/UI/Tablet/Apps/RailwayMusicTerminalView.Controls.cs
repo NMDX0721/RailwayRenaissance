@@ -14,7 +14,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // Which of speed, tone and timer also keep a button on the bar is the player's own choice ("放到播放栏").
     public sealed partial class RailwayMusicTerminalView
     {
-        Button speedChip, toneChip, timerChip;   // optional bar buttons
+        Button speedChip, toneChip, timerChip, eqChip;   // optional bar buttons
+        VisualElement barButtons;                         // the row they sit in, with the fixed buttons after them
+        Button barAnchor;                                 // the first fixed button; pinned ones are placed in front of it, in the player's order
         VisualElement controlsPanel;
         string controlsPage;                     // null: the category list; otherwise the category being shown
 
@@ -91,17 +93,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 Text(menu, "播放设置", "music-popover-title");
                 CategoryRow(menu, "speed", "倍速", SpeedText());
+                Button eqRow = new Button(() => { CloseModal(); OpenSettings("sound"); }) { name = "music-setting-eq", tooltip = "均衡器与统一响度" }; eqRow.AddToClassList("music-setting-row"); menu.Add(eqRow);
+                eqRow.Add(new Label("音效 · 均衡器") { pickingMode = PickingMode.Ignore, enableRichText = false, name = null }); eqRow[0].AddToClassList("music-setting-title");
+                var eqValue = new Label(MusicEqualizer.SummaryText()) { pickingMode = PickingMode.Ignore, enableRichText = false }; eqValue.AddToClassList("music-setting-value"); eqRow.Add(eqValue);
+                var eqArrow = new Label("›") { pickingMode = PickingMode.Ignore }; eqArrow.AddToClassList("music-setting-arrow"); eqRow.Add(eqArrow);
                 CategoryRow(menu, "tone", "收听音色", ToneNames[Mathf.Clamp((int)MusicAudioEffectsEngine.CurrentFilterMode, 0, 3)]);
                 CategoryRow(menu, "timer", "睡眠定时", TimerText());
                 if (hasTrack) CategoryRow(menu, "timing", "歌词时间校准", TimingText(id));
-                string pinned = string.Join(" ", new[] { state.barSpeed ? "倍速" : null, state.barTone ? "音色" : null, state.barTimer ? "定时" : null }.Where(x => x != null));
-                CategoryRow(menu, "pins", "放到播放栏", pinned.Length > 0 ? pinned : "无");
+                var pins = BarSlots();
+                CategoryRow(menu, "pins", "放到播放栏", pins.Count > 0 ? string.Join(" ", pins.Select(k => SlotNames[Array.IndexOf(SlotKeys, k)])) : "无");
                 ToggleRow(menu, "crossfade", "智能过渡 · 换歌淡入淡出", !state.noCrossfade, () => { state.noCrossfade = !state.noCrossfade; MusicAudioEffectsEngine.CrossfadeEnabled = !state.noCrossfade; });
                 ToggleRow(menu, "cover", "封面取色 · 强调色跟着封面", !state.noCoverTheme, () => { state.noCoverTheme = !state.noCoverTheme; themeId = "<reload>"; });
                 var links = Box(menu, "music-option-row"); links.AddToClassList("music-option-links");
                 Chip(links, "电台", () => { CloseModal(); TabletMusicAppUI.StartRadioAuto(); }, "music-radio", "先民时代电台：顺序全自动轮播").AddToClassList("music-option-link");
                 Chip(links, "唱片档案", () => { CloseModal(); ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); }, "music-option-detail").AddToClassList("music-option-link");
                 Chip(links, "歌词 / 字幕", () => { CloseModal(); OpenLyrics(); }, "music-option-lyrics").AddToClassList("music-option-link");
+                Chip(links, "全部设置", () => { CloseModal(); OpenSettings(); }, "music-option-allsettings", "音乐设置页").AddToClassList("music-option-link");
                 return;
             }
 
@@ -161,9 +168,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 case "pins":
                 {
                     BackBar(menu, "放到播放栏");
-                    ChoiceRow(menu, "pin", 0, "倍速", "在播放栏上显示当前倍速", state.barSpeed, () => { state.barSpeed = !state.barSpeed; MusicLibrarySession.Save(); }, false);
-                    ChoiceRow(menu, "pin", 1, "音色", "在播放栏上加音色按钮", state.barTone, () => { state.barTone = !state.barTone; MusicLibrarySession.Save(); }, false);
-                    ChoiceRow(menu, "pin", 2, "定时", "在播放栏上加定时按钮", state.barTimer, () => { state.barTimer = !state.barTimer; MusicLibrarySession.Save(); }, false);
+                    for (int i = 0; i < SlotKeys.Length; i++)
+                    {
+                        string key = SlotKeys[i];
+                        ChoiceRow(menu, "pin", i, SlotNames[i], SlotNotes[i], BarSlots().Contains(key), () => ToggleSlot(key), false);
+                    }
+                    Text(menu, "顺序和更多选项在 全部设置 › 播放栏。", "music-setting-hint");
                     break;
                 }
             }
@@ -175,18 +185,67 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var button = new Button(action) { text = text, tooltip = tip ?? text, name = name }; button.AddToClassList("music-option-chip"); parent.Add(button); return button;
         }
 
-        // The bar's own buttons for speed, tone and timer exist only when pinned; they open the panel.
-        void UpdateBarChips()
+        // ---- The buttons the player pinned to the bar, in the player's own order ----
+        static readonly string[] SlotKeys = { "speed", "tone", "timer", "eq" };
+        static readonly string[] SlotNames = { "倍速", "音色", "定时", "音效" };
+        static readonly string[] SlotNotes = { "在播放栏上显示当前倍速", "在播放栏上加音色按钮", "在播放栏上加定时按钮", "在播放栏上加均衡器按钮" };
+
+        // The pinned buttons in order. Older saves only have the three flags; they give the same set in the default order.
+        static List<string> BarSlots()
         {
             var state = MusicLibrarySession.State;
+            var list = new List<string>();
+            if (string.IsNullOrEmpty(state.barSlots))
+            {
+                if (state.barSpeed) list.Add("speed");
+                if (state.barTone) list.Add("tone");
+                if (state.barTimer) list.Add("timer");
+                return list;
+            }
+            foreach (string part in state.barSlots.Split(',')) if (Array.IndexOf(SlotKeys, part) >= 0 && !list.Contains(part)) list.Add(part);
+            return list;
+        }
+        static void SetBarSlots(List<string> list)
+        {
+            var state = MusicLibrarySession.State;
+            state.barSlots = list.Count == 0 ? "-" : string.Join(",", list);   // "-" marks "chosen: none", so the old flags no longer apply
+            state.barSpeed = state.barTone = state.barTimer = false;
+            MusicLibrarySession.Save();
+        }
+        static void ToggleSlot(string key)
+        {
+            var list = BarSlots(); if (!list.Remove(key)) list.Add(key); SetBarSlots(list);
+        }
+        static void MoveSlot(string key, int delta)
+        {
+            var list = BarSlots(); int at = list.IndexOf(key), to = at + delta;
+            if (at < 0 || to < 0 || to >= list.Count) return;
+            list.RemoveAt(at); list.Insert(to, key); SetBarSlots(list);
+        }
+
+        Button SlotChip(string key) { switch (key) { case "speed": return speedChip; case "tone": return toneChip; case "timer": return timerChip; default: return eqChip; } }
+
+        void UpdateBarChips()
+        {
+            var slots = BarSlots();
+            foreach (string key in SlotKeys)
+            {
+                var chip = SlotChip(key); if (chip == null) continue;
+                chip.style.display = slots.Contains(key) ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            if (barButtons != null && barAnchor != null && barAnchor.parent == barButtons)
+                foreach (string key in slots)
+                {
+                    var chip = SlotChip(key); if (chip == null) continue;
+                    if (barButtons.IndexOf(chip) != barButtons.IndexOf(barAnchor) - 1 - (slots.Count - 1 - slots.IndexOf(key)) || chip.parent != barButtons)
+                    { chip.RemoveFromHierarchy(); barButtons.Insert(barButtons.IndexOf(barAnchor), chip); }
+                }
             if (speedChip != null)
             {
-                speedChip.style.display = state.barSpeed ? DisplayStyle.Flex : DisplayStyle.None;
                 speedChip.text = SpeedText();
                 speedChip.EnableInClassList("is-active", Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - 1f) > .01f);
             }
-            if (toneChip != null) toneChip.style.display = state.barTone ? DisplayStyle.Flex : DisplayStyle.None;
-            if (timerChip != null) timerChip.style.display = state.barTimer ? DisplayStyle.Flex : DisplayStyle.None;
+            if (eqChip != null) eqChip.EnableInClassList("is-active", MusicEqualizer.Enabled || MusicEqualizer.ReplayGain);
         }
     }
 }

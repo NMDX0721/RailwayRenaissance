@@ -1338,7 +1338,7 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-opt-pin-0"));
                     break;
                 case 51:
-                    Assert(MusicLibrarySession.State.barSpeed && root.Q<Button>("music-speed").resolvedStyle.display != DisplayStyle.None, "Pinning the speed did not put it on the bar");
+                    Assert(MusicLibrarySession.State.barSlots == "speed" && root.Q<Button>("music-speed").resolvedStyle.display != DisplayStyle.None, "Pinning the speed did not put it on the bar");
                     Capture("25-controls-pins");
                     Submit(root.Q<Button>("music-setting-back"));
                     break;
@@ -1346,9 +1346,79 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q<Button>("music-setting-speed") != null, "Back did not return to the category list");
                     // Put everything back for whatever runs after.
                     MusicAudioEffectsEngine.SetPlaybackSpeed(1f); MusicLibrarySession.State.playbackSpeed = 1f; MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
-                    MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSpeed = false;
+                    MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSlots = "";
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     Debug.Log("MUSIC_CONTROLS_PANEL_OK: three levels, speed and tone applied, pinning, back");
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 53:
+                    Assert(root.Q("music-settings-scroll") != null, "The settings page did not open from the rail");
+                    Capture("26-settings-sound");
+                    Submit(root.Q<Button>("music-eq-preset-5"));
+                    break;
+                case 54:
+                    Assert(MusicEqualizer.Enabled && MusicEqualizer.Preset == "电台" && MusicEqualizer.Gains[0] < -11f, "The equalizer preset was not applied");
+                    {
+                        var deck = GameObject.Find("TabletMusic_DeckA");
+                        Assert(deck == null || deck.GetComponent<MusicEqFilter>() != null, "The equalizer filter is not on the deck");
+                    }
+                    Capture("27-settings-eq");
+                    Submit(root.Q<Button>("music-set-gain"));
+                    break;
+                case 55:
+                    Assert(MusicEqualizer.ReplayGain, "Replay gain did not switch on");
+                    Submit(root.Q<Button>("music-settings-tab-look"));
+                    break;
+                case 56:
+                    Capture("28-settings-look");
+                    Submit(root.Q<Button>("music-accent-2"));
+                    break;
+                case 57:
+                    Assert(MusicLibrarySession.State.themeAccent == "#6C9BD8", "The fixed accent was not stored");
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 58:
+                    Capture("29-settings-bar");
+                    Submit(root.Q<Button>("music-slot-eq"));
+                    break;
+                case 59:
+                    Assert(MusicLibrarySession.State.barSlots == "eq" && root.Q<Button>("music-eq").resolvedStyle.display != DisplayStyle.None, "Pinning the equalizer did not put it on the bar");
+                    Submit(root.Q<Button>("music-settings-tab-lyrics"));
+                    break;
+                case 60:
+                    Capture("30-settings-lyrics");
+                    Submit(root.Q<Button>("music-settings-tab-help"));
+                    break;
+                case 61:
+                    Submit(root.Q<Button>("music-tutorial-again"));
+                    break;
+                case 62:
+                    Assert(root.Q("music-tour") != null && root.Q<Button>("music-tour-next") != null, "The tour did not start");
+                    Capture("31-tour-1");
+                    Submit(root.Q<Button>("music-tour-next"));
+                    break;
+                case 63:
+                    Capture("32-tour-2");
+                    Submit(root.Q<Button>("music-tour-skip"));
+                    break;
+                case 64:
+                    Assert(root.Q("music-tour") == null && MusicLibrarySession.State.tutorialDone, "Skipping the tour did not end it");
+                    // Back to the defaults for whatever runs after, then the title click that finds the track in the lists.
+                    MusicEqualizer.Enabled = false; MusicEqualizer.ReplayGain = false; MusicEqualizer.ChoosePreset("平直"); MusicEqualizer.Store(MusicLibrarySession.State); MusicAudioEffectsEngine.RefreshEq();
+                    MusicLibrarySession.State.themeAccent = ""; MusicLibrarySession.State.barSlots = "";
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-nav-首页"));
+                    break;
+                case 65:
+                    {
+                        var title = root.Q<Label>("music-player-title") ?? root.Q("music-player").Q<Label>(className: "music-track-title");
+                        using (var click = ClickEvent.GetPooled()) { click.target = title; title.SendEvent(click); }
+                    }
+                    break;
+                case 66:
+                    Assert(root.Query(className: "music-track-row").ToList().Any(r => r.ClassListContains("is-located")), "Clicking the title did not locate the track in a list");
+                    Capture("33-located");
+                    Debug.Log("MUSIC_SETTINGS_OK: settings page, equalizer, loudness, accent, bar slots, tour, locate");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
