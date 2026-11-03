@@ -108,6 +108,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
             MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)Mathf.Clamp(MusicLibrarySession.State.toneMode, 0, 3);
+            MusicAudioEffectsEngine.CrossfadeEnabled = !MusicLibrarySession.State.noCrossfade;
             var header = Box(root, "music-header");
             Button(header, "返回桌面", close, "music-close");
             var navToggle = Button(header, "侧栏", ToggleNavigation, "music-nav-toggle"); navToggle.tooltip = "收起 / 展开侧栏";
@@ -676,7 +677,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void CloseModal()
         {
             bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
-            overlay?.RemoveFromHierarchy(); overlay = null; disc = null; detailId = null; lyrics = null;
+            // Menus and small panels fade out in about a tenth of a second; sheets and the lyrics page leave at once.
+            var leaving = overlay;
+            if (leaving != null && (leaving.ClassListContains("music-menu-overlay") || leaving.ClassListContains("music-popover-overlay")) && !MusicLibrarySession.State.reduceMotion)
+            {
+                leaving.pickingMode = PickingMode.Ignore; leaving.AddToClassList("music-leaving");
+                leaving.schedule.Execute(() => leaving.RemoveFromHierarchy()).StartingIn(130);
+            }
+            else leaving?.RemoveFromHierarchy();
+            overlay = null; disc = null; detailId = null; lyrics = null; controlsPanel = null;
             if (modalReturnFocus?.panel == root.panel && modalReturnFocus.enabledInHierarchy) modalReturnFocus.Focus();
             else root.Focus();
             modalReturnFocus = null;
@@ -939,39 +948,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var effects = Box(extras, "music-player-buttons");
             effects.AddToClassList("music-utility-buttons");
             MusicAudioEffectsEngine.SetPlaybackSpeed(MusicLibrarySession.State.playbackSpeed <= 0 ? 1f : MusicLibrarySession.State.playbackSpeed);
-            var speed = new Button { name = "music-speed" }; speed.AddToClassList("music-speed-chip");
-            void ShowSpeed() { speed.text = MusicAudioEffectsEngine.PlaybackSpeed.ToString("0.##") + "x"; speed.EnableInClassList("is-active", Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - 1f) > 0.01f); }
-            speed.tooltip = "播放速度（同时改变音高）";
-            speed.clicked += () => {
-                var panel = Popover("播放速度 · 音高随速度变化");
-                foreach (float option in new[] { 0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f })
-                {
-                    float chosen = option;
-                    PopoverItem(panel, chosen.ToString("0.##") + "x" + (chosen == 1f ? "  正常" : ""), Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - chosen) < 0.01f, () => {
-                        MusicAudioEffectsEngine.SetPlaybackSpeed(chosen); MusicLibrarySession.State.playbackSpeed = chosen; MusicLibrarySession.Save(); ShowSpeed(); CloseModal();
-                    });
-                }
-            };
-            effects.Add(speed); ShowSpeed();
-            Button(effects, "音色", () => {
-                var panel = Popover("收听音色");
-                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 窄频、沙风、磁带抖晃", 1), ("先民真空电台 · 温暖电子管、底噪", 2), ("电子管调频立体声 · 宽频温润", 3) })
-                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; MusicLibrarySession.State.toneMode = pair.Item2; MusicLibrarySession.Save(); CloseModal(); });
-            });
-            Button(effects, "定时", () => {
-                var panel = Popover("睡眠定时");
-                foreach (int minutes in new[] { 0, 15, 30, 45, 999 })
-                    PopoverItem(panel, minutes == 0 ? "关闭定时" : minutes == 999 ? "播完本曲暂停" : minutes + " 分钟后暂停", false, () => {
-                        MusicAudioEffectsEngine.SetSleepTimer((MusicAudioEffectsEngine.SleepTimerOption)minutes,
-                            TabletMusicAppUI.tabletCurrentClip == null ? 0 : TabletMusicAppUI.tabletCurrentClip.length - TabletMusicAppUI.CurrentPosition);
-                        CloseModal(); ShowToast("睡眠定时已更新");
-                    });
-            });
+            // Speed, tone and timer live in the playback settings panel; each keeps a button on the bar only when the player pinned it there.
+            speedChip = new Button(() => OpenControlsPanel(speedChip)) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
+            speedChip.tooltip = "播放速度（点开播放设置）"; effects.Add(speedChip);
+            toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip), "music-tone"); toneChip.tooltip = "收听音色";
+            timerChip = Button(effects, "定时", () => OpenControlsPanel(timerChip), "music-timer"); timerChip.tooltip = "睡眠定时";
             var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue");
             var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-badge"); queueButton.Add(queueBadgeLabel); queueBadgeNode = queueBadgeLabel;
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
             Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
-            Button(effects, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
+            Button settingsButton = null;
+            settingsButton = Button(effects, "播放设置", () => OpenControlsPanel(settingsButton), "music-settings"); settingsButton.tooltip = "播放设置：倍速、音色、定时、歌词校准、电台";
+            UpdateBarChips();
         }
         void ShowDetail(string id)
         {

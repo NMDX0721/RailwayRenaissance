@@ -932,3 +932,61 @@
 .music-replace-title { font-size: 14px; color: rgb(240, 233, 210); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; padding: 0; -unity-text-align: middle-left; }
 .music-replace-sub { font-size: 11px; color: rgb(160, 160, 138); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0; padding: 0; -unity-text-align: middle-left; }
 .music-replace-row .music-button { flex-shrink: 0; height: 32px; min-height: 32px; padding: 0 14px; border-radius: 16px; }
+
+/* ===== Menus and the playback settings panel ===== */
+/* Menus and small panels do not dim the page (the dimming scrim is for sheets). */
+.music-overlay.music-popover-overlay, .music-overlay.music-menu-overlay { background-color: rgba(0, 0, 0, 0); }
+/* Menu rows have no left marker line: with rounded corners it showed as small slanted ticks. A selected row is marked by its fill and colour. */
+.music-menu-item { border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; }
+.music-menu-item.is-selected { background-color: rgba(205, 176, 112, 0.2); color: rgb(240, 214, 150); }
+.music-popover .music-menu-item { height: 38px; min-height: 38px; justify-content: flex-start; padding: 0 12px; border-radius: 12px; background-color: rgba(0, 0, 0, 0); }
+.music-popover .music-menu-item:hover { background-color: rgb(52, 57, 46); }
+.music-popover .music-menu-item.is-selected:hover { background-color: rgba(205, 176, 112, 0.28); }
+
+.music-controls-panel { width: 372px; padding: 14px 16px 12px; }
+.music-controls-heading { font-size: 12px; color: rgb(176, 153, 106); letter-spacing: 1px; margin: 10px 0 6px 2px; padding: 0; -unity-text-align: middle-left; }
+.music-option-row { flex-direction: row; flex-wrap: wrap; align-items: center; }
+.music-option-chip { height: 30px; min-height: 30px; margin: 0 6px 6px 0; padding: 0 12px; border-radius: 15px; font-size: 12px; background-color: rgb(46, 51, 43); border-width: 0; color: rgb(228, 220, 196); }
+.music-option-chip:hover { background-color: rgb(60, 66, 54); }
+.music-option-chip.is-active { background-color: rgb(205, 176, 112); color: rgb(30, 33, 26); }
+.music-option-value { font-size: 12px; color: rgb(228, 220, 196); margin: 0 10px 6px 4px; padding: 0; min-width: 62px; -unity-text-align: middle-center; }
+.music-option-links { margin-top: 10px; padding-top: 10px; border-top-width: 1px; border-top-color: rgb(62, 67, 54); }
+.music-option-link { height: 32px; min-height: 32px; margin: 0 6px 0 0; padding: 0 14px; border-radius: 16px; font-size: 12px; background-color: rgb(52, 58, 47); border-width: 0; }
+.music-option-link:hover { background-color: rgb(66, 72, 58); }
+.music-menu-overlay .music-popover { transition-property: opacity, translate; transition-duration: 140ms; }
+.music-leaving { opacity: 0; transition-property: opacity; transition-duration: 120ms; }
+/* Chip rows: equal chips on one line, text centred, visible against the panel. */
+.music-controls-panel { width: 380px; padding: 12px 14px 10px; }
+.music-option-row { flex-wrap: nowrap; }
+.music-option-chip { flex-grow: 1; flex-basis: 0; min-width: 0; height: 32px; min-height: 32px; margin: 0 4px 6px 0; padding: 0 4px; justify-content: center; align-items: center; background-color: rgb(58, 64, 53); }
+.music-option-chip .music-button-label { margin: 0; padding: 0; -unity-text-align: middle-center; text-overflow: clip; white-space: nowrap; font-size: 12px; }
+.music-option-chip.is-active .music-button-label { color: rgb(30, 33, 26); }
+.music-option-value { flex-shrink: 0; min-width: 58px; margin: 0 6px 6px 2px; }
+.music-option-link { flex-grow: 1; flex-basis: 0; min-width: 0; justify-content: center; align-items: center; padding: 0 6px; }
+.music-option-link .music-button-label { margin-left: 6px; }
+.music-controls-heading { margin: 8px 0 5px 2px; }
+/* Plain text chips (no icon structure): the whole width is for the text. */
+.music-option-chip { -unity-text-align: middle-center; white-space: nowrap; overflow: hidden; text-overflow: clip; border-width: 0; font-size: 12px; color: rgb(228, 220, 196); }
+.music-option-chip.is-active { color: rgb(30, 33, 26); }
+
+/* ===== Playback settings in levels: category list, then the choices of one category ===== */
+.music-controls-panel { width: 316px; padding: 10px 10px 8px; }
+.music-setting-row { flex-direction: row; align-items: center; justify-content: flex-start; height: 46px; min-height: 46px; margin: 1px 0; padding: 0 12px; border-width: 0; border-radius: 12px; background-color: rgba(0, 0, 0, 0); }
+.music-setting-row:hover, .music-setting-row:focus { background-color: rgb(52, 57, 46); }
+.music-setting-title { flex-grow: 1; font-size: 14px; color: rgb(238, 230, 206); margin: 0; padding: 0; -unity-text-align: middle-left; white-space: nowrap; }
+.music-setting-value { font-size: 13px; color: rgb(176, 168, 140); margin: 0 6px 0 8px; padding: 0; -unity-text-align: middle-right; white-space: nowrap; }
+.music-setting-arrow { font-size: 20px; color: rgb(150, 150, 128); margin: 0; padding: 0; width: 14px; -unity-text-align: middle-center; }
+.music-setting-text { flex-grow: 1; flex-shrink: 1; min-width: 0; }
+.music-setting-text .music-setting-title { flex-grow: 0; }
+.music-setting-note { font-size: 11px; color: rgb(158, 159, 138); margin: 1px 0 0 0; padding: 0; -unity-text-align: middle-left; white-space: nowrap; }
+.music-setting-check { width: 22px; font-size: 16px; color: rgb(205, 176, 112); margin: 0; padding: 0; -unity-text-align: middle-center; }
+.music-setting-row.is-current .music-setting-title { color: rgb(240, 214, 150); }
+.music-setting-back { flex-direction: row; align-items: center; margin: 0 0 4px 0; }
+.music-setting-backbutton { width: 34px; min-width: 34px; height: 34px; min-height: 34px; margin: 0 6px 0 0; padding: 0; border-width: 0; border-radius: 17px; background-color: rgb(52, 58, 47); align-items: center; justify-content: center; }
+.music-setting-backbutton Label { font-size: 22px; color: rgb(236, 229, 206); margin: 0; padding: 0; -unity-text-align: middle-center; }
+.music-setting-pagetitle { font-size: 14px; -unity-font-style: bold; color: rgb(244, 237, 214); margin: 0; padding: 0; -unity-text-align: middle-left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; }
+.music-setting-hint { font-size: 11px; color: rgb(158, 159, 138); margin: 8px 6px 4px 6px; white-space: normal; }
+.music-timing-row { margin: 6px 0 0 0; }
+.music-option-links { margin: 8px 2px 0 2px; padding-top: 10px; }
+.music-setting-switch { font-size: 12px; color: rgb(150, 150, 128); margin: 0; padding: 3px 12px; border-radius: 12px; background-color: rgb(52, 58, 47); -unity-text-align: middle-center; }
+.music-setting-switch.is-on { color: rgb(30, 33, 26); background-color: rgb(205, 176, 112); }

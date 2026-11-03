@@ -37,6 +37,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
         public int lyricFontSize = 24;
         public int lyricMotion = 1;
+        public bool noCrossfade, noCoverTheme;   // the smart track transition and the cover-coloured accent are on unless switched off here
+        public bool barSpeed, barTone, barTimer;   // which of speed, tone and timer also keep a button on the player bar
         public bool lyricFilter = true;      // take credit and copyright lines out of lyrics
         public string lyricFilterWords = "";   // extra words: any line containing one is taken out (comma separated)
         public int toneMode;   // listening tone: 0 clean, 1 work-train radio, 2 tube radio, 3 tube FM

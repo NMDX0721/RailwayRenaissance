@@ -127,7 +127,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else if (action == "刷新文件") { p.BeginPath(); p.Arc(new Vector2(10, 10), 6, 30, 310); p.Stroke(); Line(new Vector2(12, 2), new Vector2(16, 5), new Vector2(12, 6)); }
             else if (action.Contains("文件夹")) { Line(new Vector2(2, 16), new Vector2(2, 4), new Vector2(8, 4), new Vector2(10, 7), new Vector2(18, 7), new Vector2(18, 16), new Vector2(2, 16)); }
             else if (action == "定时" || action == "加载中") { Circle(10, 10, 7); Line(new Vector2(10, 5), new Vector2(10, 10), new Vector2(14, 12)); }
-            else if (action == "音色")
+            else if (action == "音色" || action == "播放设置")
             {
                 for (int x = 4; x <= 16; x += 6) { Line(new Vector2(x, 3), new Vector2(x, 17)); Circle(x, x == 10 ? 13 : 7, 2); }
             }

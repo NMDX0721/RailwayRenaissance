@@ -31,6 +31,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 当前滤镜与定时器状态
         /// <summary>Playback speed as a tape would do it: pitch changes with speed (no time stretching).</summary>
         public static float PlaybackSpeed = 1f;
+        /// <summary>The smooth hand-over between two tracks. When off, a new track simply replaces the one that is playing.</summary>
+        public static bool CrossfadeEnabled = true;
         public static void SetPlaybackSpeed(float speed)
         {
             PlaybackSpeed = Mathf.Clamp(speed, 0.5f, 2f);
@@ -200,6 +202,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var activeDeck = GetActiveDeck();
             var nextDeck = GetStandbyDeck();
+            if (!CrossfadeEnabled && activeDeck != null && activeDeck.isPlaying) activeDeck.Stop();
 
             if (activeDeck == null || nextDeck == null || !activeDeck.isPlaying)
             {

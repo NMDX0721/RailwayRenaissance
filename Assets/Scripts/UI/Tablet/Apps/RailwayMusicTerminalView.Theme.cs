@@ -19,7 +19,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 themeId = id;
                 var track = MusicLibrarySession.Find(id);
-                accentTarget = track == null ? BrassAccent : MusicReactiveStageView.AccentFor(MusicAlbumArtResolver.GetAlbumCover(id, track.category));
+                accentTarget = track == null || MusicLibrarySession.State.noCoverTheme ? BrassAccent : MusicReactiveStageView.AccentFor(MusicAlbumArtResolver.GetAlbumCover(id, track.category));
             }
             float distance = Mathf.Abs(accent.r - accentTarget.r) + Mathf.Abs(accent.g - accentTarget.g) + Mathf.Abs(accent.b - accentTarget.b);
             if (distance < .004f)

@@ -1309,6 +1309,46 @@ public static class RailwayMusicTerminalReview
                 case 44:
                     Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
                     Capture("22-match");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-settings"));
+                    break;
+                case 45:
+                    Assert(root.Q(className: "music-controls-panel") != null, "The playback settings panel did not open");
+                    Assert(root.Q("music-option-speed") == null && root.Q<Button>("music-setting-speed") != null, "Level two should list categories, not spread every choice out");
+                    Capture("23-controls-list");
+                    Submit(root.Q<Button>("music-setting-speed"));
+                    break;
+                case 46:
+                    Capture("24-controls-speed");
+                    Submit(root.Q<Button>("music-opt-speed-4"));
+                    break;
+                case 47:
+                    Assert(Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - 1.5f) < .01f, "The speed choice did not set the speed");
+                    Assert(root.Q<Button>("music-setting-speed") != null && root.Q<Button>("music-setting-speed").Q<Label>(className: "music-setting-value").text == "1.5x", "Picking a speed did not go back to the list with the new value");
+                    Submit(root.Q<Button>("music-setting-tone"));
+                    break;
+                case 48:
+                    Submit(root.Q<Button>("music-opt-tone-1"));
+                    break;
+                case 49:
+                    Assert(MusicAudioEffectsEngine.CurrentFilterMode == MusicAudioEffectsEngine.RadioFilterMode.Locomotive, "The tone choice did not set the tone");
+                    Submit(root.Q<Button>("music-setting-pins"));
+                    break;
+                case 50:
+                    Submit(root.Q<Button>("music-opt-pin-0"));
+                    break;
+                case 51:
+                    Assert(MusicLibrarySession.State.barSpeed && root.Q<Button>("music-speed").resolvedStyle.display != DisplayStyle.None, "Pinning the speed did not put it on the bar");
+                    Capture("25-controls-pins");
+                    Submit(root.Q<Button>("music-setting-back"));
+                    break;
+                case 52:
+                    Assert(root.Q<Button>("music-setting-speed") != null, "Back did not return to the category list");
+                    // Put everything back for whatever runs after.
+                    MusicAudioEffectsEngine.SetPlaybackSpeed(1f); MusicLibrarySession.State.playbackSpeed = 1f; MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
+                    MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSpeed = false;
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_CONTROLS_PANEL_OK: three levels, speed and tone applied, pinning, back");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
