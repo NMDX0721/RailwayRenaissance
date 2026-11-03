@@ -29,8 +29,48 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         readonly float[] spectrum = new float[512];
         float bandLow, bandMid, bandHigh;
 
+        // The backdrop is drawn by a shader into a small RenderTexture (see Resources/Shaders/MusicStageBackdrop.shader); when the shader
+        // cannot be used the older painter fields below are the whole backdrop.
+        static Shader backdropShader;
+        Material backdropMaterial; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        public bool HasShaderBackdrop => backdropTexture != null;
+
+        void EnsureBackdrop()
+        {
+            if (backdropFailed || backdropTexture != null) return;
+            try
+            {
+                if (backdropShader == null) backdropShader = Resources.Load<Shader>("Shaders/MusicStageBackdrop");
+                if (backdropShader == null || !backdropShader.isSupported) { backdropFailed = true; return; }
+                backdropMaterial = new Material(backdropShader) { hideFlags = HideFlags.HideAndDontSave };
+                backdropTexture = new RenderTexture(512, 320, 0, RenderTextureFormat.ARGB32) { name = "MusicStageBackdrop", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
+                backdropTexture.Create();
+                style.backgroundImage = new StyleBackground(Background.FromRenderTexture(backdropTexture));
+            }
+            catch (Exception) { backdropFailed = true; ReleaseBackdrop(); }
+        }
+
+        void ReleaseBackdrop()
+        {
+            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; }
+            if (backdropMaterial != null) { UnityEngine.Object.Destroy(backdropMaterial); backdropMaterial = null; }
+        }
+
+        void RenderBackdrop()
+        {
+            EnsureBackdrop();
+            if (backdropTexture == null || backdropMaterial == null) return;
+            if (!backdropTexture.IsCreated()) backdropTexture.Create();
+            var m = backdropMaterial; float w = Mathf.Max(contentRect.width, 1f), h = Mathf.Max(contentRect.height, 1f);
+            m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
+            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh);
+            m.SetFloat("_Energy", energy); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
+            Graphics.Blit(null, backdropTexture, m);
+        }
+
         public MusicReactiveStageView()
         {
+            RegisterCallback<DetachFromPanelEvent>(_ => ReleaseBackdrop());
             name = "music-reactive-stage";
             pickingMode = PickingMode.Ignore;
             AddToClassList("music-reactive-stage");
@@ -188,6 +228,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float fall = 1 - Mathf.Exp(-dt * 6);
                 bandLow = Mathf.Lerp(bandLow, 0, fall); bandMid = Mathf.Lerp(bandMid, 0, fall); bandHigh = Mathf.Lerp(bandHigh, 0, fall);
             }
+            if (!reducedMotion) { flowClock += dt; changed = true; }
+            if (changed || backdropTexture == null) RenderBackdrop();
             if (changed) MarkDirtyRepaint();
         }
 
@@ -204,8 +246,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float y = composition == 0 ? .25f + .48f * (i % 2) : composition == 1 ? .18f + i * .23f : .8f - i * .2f;
                 x += .08f * Mathf.Sin(t + i * 1.7f); y += .08f * Mathf.Cos(t * .7f + i);
                 SoftField(context, new Vector2(w * x, h * y), w * (.35f + seed * .12f) * pulse,
-                    h * (composition == 2 ? .3f : .5f) * pulse, i % 2 == 0 ? primary : secondary, .32f + energy * .18f);
+                    h * (composition == 2 ? .3f : .5f) * pulse, i % 2 == 0 ? primary : secondary, (.32f + energy * .18f) * (backdropTexture != null ? .4f : 1f));
             }
+            if (backdropTexture != null) return;
             painter.lineWidth = 1;
             var ink = Color.Lerp(primary, secondary, .5f); ink.a = .12f + energy * .12f;
             painter.strokeColor = ink;
