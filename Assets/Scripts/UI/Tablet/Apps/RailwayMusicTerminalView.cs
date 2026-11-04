@@ -871,15 +871,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
             var sub = Box(drawer, "music-drawer-sub");
             Text(sub, queue.Count == 0 ? "下一首从这里出发" : queue.Count + " 首 · 下一首从这里出发", "music-muted music-grow");
-            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); queuePicked.Clear(); queuePicking = false; MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
-            // Tools: search the queue, pick several rows for a batch action, drop repeats.
+            // Tools: search the queue; the less used actions (pick several, drop repeats, clear) sit in a second menu.
             var tools = Box(drawer, "music-queue-tools");
             var filterField = new TextField { name = "music-queue-filter" }; filterField.AddToClassList("music-queue-filter"); filterField.SetValueWithoutNotify(queueFilter); filterField.tooltip = "在队列里找歌"; tools.Add(filterField);
-            var pickButton = Chip(tools, queuePicking ? "完成" : "选择", () => { queuePicking = !queuePicking; queuePicked.Clear(); RenderDrawer(); }, "music-queue-pick"); pickButton.SetEnabled(queue.Count > 0);
-            var dedupe = Chip(tools, "去重", () => {
-                int before = queue.Count; var seen = new HashSet<string>(); queue.RemoveAll(q => !seen.Add(q)); queuePicked.Clear();
-                MusicLibrarySession.Commit(); ShowToast(before == queue.Count ? "队列里没有重复的歌" : "已去掉 " + (before - queue.Count) + " 首重复");
-            }, "music-queue-dedupe"); dedupe.SetEnabled(queue.Count > 1);
+            Button moreButton = null;
+            moreButton = Chip(tools, queuePicking ? "完成" : "更多", () =>
+            {
+                if (queuePicking) { queuePicking = false; queuePicked.Clear(); RenderDrawer(); return; }
+                var menu = MenuAt(moreButton, "队列");
+                PopoverItem(menu, "选择多首…", false, () => { CloseModal(); queuePicking = true; queuePicked.Clear(); RenderDrawer(); }).name = "music-queue-pick";
+                PopoverItem(menu, "去掉重复的歌", false, () =>
+                {
+                    CloseModal(); int before = queue.Count; var seen = new HashSet<string>(); queue.RemoveAll(q => !seen.Add(q)); queuePicked.Clear();
+                    MusicLibrarySession.Commit(); ShowToast(before == queue.Count ? "队列里没有重复的歌" : "已去掉 " + (before - queue.Count) + " 首重复");
+                }).name = "music-queue-dedupe";
+                PopoverItem(menu, "清空队列", false, () => { CloseModal(); queue.Clear(); queuePicked.Clear(); queuePicking = false; MusicLibrarySession.Commit(); }).name = "music-clear-queue";
+            }, "music-queue-more"); moreButton.SetEnabled(queue.Count > 0 || queuePicking);
             VisualElement batch = null;
             if (queuePicking)
             {
