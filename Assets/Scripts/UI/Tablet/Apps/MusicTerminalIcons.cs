@@ -64,6 +64,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.BezierCurveTo(new Vector2(19, 0), new Vector2(21, 10), new Vector2(10, 17));
                 p.ClosePath(); if (action == "已藏") p.Fill(); else p.Stroke();
             }
+            else if (action == "队列·计数")
+            {
+                // The count takes the place of the arrow: the list keeps two full rows and a short third row, and the digit sits where that row would end.
+                Line(new Vector2(3, 5), new Vector2(17, 5)); Line(new Vector2(3, 10), new Vector2(17, 10)); Line(new Vector2(3, 15), new Vector2(9, 15));
+            }
             else if (action.Contains("队列") || action == "下一首播放")
             {
                 Line(new Vector2(3, 5), new Vector2(15, 5)); Line(new Vector2(3, 10), new Vector2(12, 10)); Line(new Vector2(3, 15), new Vector2(10, 15));

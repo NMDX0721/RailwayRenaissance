@@ -630,7 +630,7 @@ public static class RailwayMusicTerminalReview
                     Capture("04-compact");
                     Assert(root.Q("music-player").worldBound.yMax <= root.worldBound.yMax + 1, "Compact player outside screen");
                     Assert(root.Q<Button>("music-play-toggle").text == "" && root.Q<Button>("music-play-toggle").Q(className: "music-vector-icon") != null, "Playback button is still plain text");
-                    Assert(root.Q<Button>("music-queue").tooltip == "队列", "Icon button lost its tooltip");
+                    Assert(root.Q<Button>("music-queue").tooltip.StartsWith("队列"), "Icon button lost its tooltip");
                     Submit(root.Q<Button>("music-new-playlist"));
                     root.Q(className: "music-modal").Q<TextField>().value = "临时歌单";
                     Submit(root.Q<Button>("music-save-playlist"));

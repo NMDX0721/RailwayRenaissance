@@ -1009,6 +1009,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             rail.RegisterCallback<GeometryChangedEvent>(_ => Show());
             volumeRefresh = Show; Show();
         }
+        // The queue icon carries its count inside the glyph: with songs queued the arrow gives way to a digit in the same ink, in the third row.
+        void ShowQueueCount(int queued)
+        {
+            var button = root.Q<Button>("music-queue"); if (button == null || queueBadgeNode == null) return;
+            MusicTerminalIcons.Apply(button, queued > 0 ? "队列·计数" : "队列", true);
+            button.tooltip = queued > 0 ? "队列（" + queued + " 首）" : "队列";
+            var icon = button.Q(className: "music-vector-icon");
+            if (icon != null && queueBadgeNode.parent != icon) icon.Add(queueBadgeNode);
+            queueBadgeNode.text = queued > 99 ? "99" : queued > 9 ? "9+" : queued.ToString();
+            queueBadgeNode.EnableInClassList("is-wide", queued > 9);
+            queueBadgeNode.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
         void BuildPlayer()
         {
             var player = Box(playerHost ?? root, "music-player", "music-player");
@@ -1054,7 +1066,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             eqChip = Button(effects, "音效", () => OpenSettings("sound"), "music-eq"); eqChip.tooltip = "均衡器与统一响度";
             barButtons = effects;
             var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue"); barAnchor = queueButton;
-            var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-badge"); queueButton.Add(queueBadgeLabel); queueBadgeNode = queueBadgeLabel;
+            var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-queue-count"); queueButton.Add(queueBadgeLabel); queueBadgeNode = queueBadgeLabel;
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
             Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
             Button settingsButton = null;
@@ -1371,11 +1383,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (queueBadgeNode != null)
             {
                 int queued = MusicLibrarySession.State.queue.Count;
-                if (queued != shownQueueCount)
-                {
-                    shownQueueCount = queued;
-                    queueBadgeNode.text = queued > 99 ? "99+" : queued.ToString(); queueBadgeNode.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
-                }
+                if (queued != shownQueueCount) { shownQueueCount = queued; ShowQueueCount(queued); }
             }
             lyrics?.Tick();
             // The meters in the player bar are hidden (the lyrics page has the live ones), so they are not driven here.
