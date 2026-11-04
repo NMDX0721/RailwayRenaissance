@@ -83,12 +83,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             // Whole-line float (Folia's breathing): distance and period by intensity, scaled by the tuning; low frequencies add a little push.
             float m = c.calm ? 0 : tuning.breathing;
-            if (m <= 0) { lineHost.style.translate = new Translate(0, 0); lineHost.style.scale = new Scale(Vector3.one); }
+            // A new line pushes in: the stage starts a little close and low, and settles over 0.7 s (a slow camera move on every line change).
+            float push = c.calm ? 0f : 1f - Mathf.SmoothStep(0, 1, Mathf.Clamp01((now - builtAt) / .7f));
+            if (m <= 0) { lineHost.style.translate = new Translate(0, 12f * push); lineHost.style.scale = new Scale(new Vector3(1 + .04f * push, 1 + .04f * push, 1)); }
             else
             {
                 float s = Mathf.Sin(now * Mathf.PI * 2f / floatPeriod);
-                float y = (s > 0 ? -floatDistance * s : -floatDistance * .45f * s) * m - c.low * 4f * m;
-                float sc = 1 + (s > 0 ? .01f * s : .005f * s) * m;
+                float y = (s > 0 ? -floatDistance * s : -floatDistance * .45f * s) * m - c.low * 4f * m + 12f * push;
+                float sc = (1 + (s > 0 ? .01f * s : .005f * s) * m) * (1 + .04f * push);
                 lineHost.style.translate = new Translate(0, y); lineHost.style.scale = new Scale(new Vector3(sc, sc, 1));
             }
         }

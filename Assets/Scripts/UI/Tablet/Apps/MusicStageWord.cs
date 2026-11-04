@@ -15,12 +15,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed class StageWord
     {
         public VisualElement body, ripple;
-        public Label glow;
+        public Label glow, bloom, ghost;   // bloom: a wide soft halo behind the glow; ghost: an afterimage that grows and fades when the word lights
         public readonly List<Label> labels = new List<Label>();
         public readonly List<float> tones = new List<float>();
         public LyricUnit unit;
         public float baseScale, cx, cy, rot, passedRot, rippleScale;
-        public float x, y, s = .5f, r, o, vx, vy, vs, vr, rippleTime = 1, glowTone;
+        public float x, y, s = .5f, r, o, vx, vy, vs, vr, rippleTime = 1, glowTone, ghostTime = 1;
         public int state = -1;
 
         public static float Random(int seed, float offset)
@@ -46,7 +46,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string text = ""; foreach (var glyph in unit.glyphs) text += glyph.text;
             w.glow = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; w.glow.AddToClassList("music-stage-word-text"); w.glow.AddToClassList("music-stage-glow");
             w.glow.style.fontSize = size; w.glow.style.color = new Color(accent.r, accent.g, accent.b, .9f); w.glow.style.opacity = 0; StageFonts.Apply(w.glow);
-            w.body.Add(w.glow);
+            w.bloom = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; w.bloom.AddToClassList("music-stage-word-text"); w.bloom.AddToClassList("music-stage-glow");
+            w.bloom.style.fontSize = size; w.bloom.style.color = new Color(accent.r, accent.g, accent.b, .55f); w.bloom.style.opacity = 0; StageFonts.Apply(w.bloom);
+            w.ghost = new Label(text) { pickingMode = PickingMode.Ignore, enableRichText = false }; w.ghost.AddToClassList("music-stage-word-text"); w.ghost.AddToClassList("music-stage-glow");
+            w.ghost.style.fontSize = size; w.ghost.style.color = new Color(accent.r, accent.g, accent.b, .9f); w.ghost.style.opacity = 0; StageFonts.Apply(w.ghost);
+            w.body.Add(w.bloom); w.body.Add(w.glow); w.body.Add(w.ghost);
             if (chorus)
             {
                 w.ripple = new VisualElement { pickingMode = PickingMode.Ignore }; w.ripple.AddToClassList("music-stage-ripple");
@@ -95,6 +99,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             int newState = StateAt(unit, clock, reveal, lineEnd);
             if (newState == 1 && state != 1 && chorus && !calm) rippleTime = 0;
+            if (newState == 1 && state != 1 && !calm) ghostTime = 0;
             state = newState;
 
             if (calm)
@@ -135,6 +140,24 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 glowTone = calm ? 0 : Mathf.Lerp(glowTone, lit, 1 - Mathf.Exp(-dt * (lit > glowTone ? 16f : 3f)));
                 glow.style.opacity = glowTone * lineFade;
                 glow.style.textShadow = new TextShadow { offset = Vector2.zero, blurRadius = 12f + 14f * Mathf.Clamp01(high), color = new Color(accent.r, accent.g, accent.b, .8f) };
+            }
+
+            if (bloom != null)
+            {
+                bloom.style.opacity = glowTone * lineFade * (.55f + .45f * Mathf.Clamp01(high));
+                bloom.style.textShadow = new TextShadow { offset = Vector2.zero, blurRadius = 34f + 26f * Mathf.Clamp01(high), color = new Color(accent.r, accent.g, accent.b, .65f) };
+            }
+            // The afterimage leaves the word as it lights: it grows by half and fades in about 0.7 s, drifting a little upward.
+            if (ghost != null)
+            {
+                if (ghostTime < .7f && !calm)
+                {
+                    ghostTime += dt; float t = Mathf.Clamp01(ghostTime / .7f), ease = 1 - (1 - t) * (1 - t);
+                    float gs = Mathf.Lerp(1f, 1.5f, ease);
+                    ghost.style.scale = new Scale(new Vector3(gs, gs, 1)); ghost.style.translate = new Translate(0, -ease * 10f);
+                    ghost.style.opacity = .5f * (1 - t) * lineFade;
+                }
+                else ghost.style.opacity = 0;
             }
 
             if (ripple != null)
