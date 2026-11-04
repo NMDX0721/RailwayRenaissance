@@ -11,7 +11,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed class MusicStageLyrics : VisualElement
     {
         readonly Label previous = new Label { enableRichText = false }, upcoming = new Label { enableRichText = false }, translation = new Label { enableRichText = false };
-        IStageStyle stageStyle;
+        IStageStyle stageStyle, leaving;
+        float handover = 1; bool lastCalm;   // 0..1 progress of the cross-fade between two styles; 1 when none is running
+        const float HandoverSeconds = .5f;
         MusicTimedDocument shownDocument; int shownLine = -2; bool shownTranslation;
 
         public string StyleId => stageStyle?.Id;
@@ -29,11 +31,34 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             if (!StageStyles.Has(id)) id = StageStyles.Default;
             if (stageStyle != null && stageStyle.Id == id) return;
-            stageStyle?.Root.RemoveFromHierarchy();
+            // The old style stays on stage, frozen, and dissolves while the new one grows in; reduced motion cuts instead.
+            EndHandover();
+            var old = stageStyle;
             stageStyle = StageStyles.Create(id);
             Clear();
             Add(previous); Add(stageStyle.Root); Add(translation); Add(upcoming);
+            if (old != null && !lastCalm)
+            {
+                leaving = old; handover = 0;
+                var root = leaving.Root; root.style.position = Position.Absolute; root.style.left = 0; root.style.right = 0; root.style.top = 0; root.style.bottom = 0; root.pickingMode = PickingMode.Ignore;
+                Insert(IndexOf(stageStyle.Root), root);
+                ApplyHandover();
+            }
             shownDocument = null;   // the subtitle layer is refreshed on the next Tick, which also applies OwnsSubtitles
+        }
+
+        void EndHandover()
+        {
+            if (leaving != null) leaving.Root.RemoveFromHierarchy();
+            leaving = null; handover = 1;
+            if (stageStyle != null) { stageStyle.Root.style.opacity = StyleKeyword.Null; stageStyle.Root.style.scale = new StyleScale(StyleKeyword.Null); }
+        }
+
+        void ApplyHandover()
+        {
+            float t = handover * handover * (3 - 2 * handover);
+            stageStyle.Root.style.opacity = t; stageStyle.Root.style.scale = new Scale(new Vector3(.96f + .04f * t, .96f + .04f * t, 1));
+            if (leaving != null) { leaving.Root.style.opacity = 1 - t; leaving.Root.style.scale = new Scale(new Vector3(1 + .05f * t, 1 + .05f * t, 1)); }
         }
 
         /// <summary>Settings changed: rebuild the current line.</summary>
@@ -42,6 +67,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public void Tick(MusicTimedDocument document, int active, double clock, float dt, bool calm, bool estimate, float fontScale,
             Color accent, float energy, bool showTranslation, StageTuning tuning, float low, float mid, float high, string title = null)
         {
+            lastCalm = calm;
+            if (leaving != null)
+            {
+                handover = calm ? 1 : Mathf.Min(1, handover + dt / HandoverSeconds);
+                if (handover >= 1) EndHandover(); else ApplyHandover();
+            }
             if (!ReferenceEquals(document, shownDocument) || active != shownLine || showTranslation != shownTranslation) RefreshSubtitles(document, active, showTranslation);
             stageStyle.Tick(new StageContext
             {

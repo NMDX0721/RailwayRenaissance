@@ -1474,7 +1474,12 @@ public static class RailwayMusicTerminalReview
                         Assert(string.IsNullOrEmpty(yrc.error) && yrc.lines.Count == 2 && yrc.lines[0].text == "你好" && yrc.lines[0].words.Count == 2 && Math.Abs(yrc.lines[0].words[1].start - 12.74) < .001, "YRC parse failed: " + yrc.error);
                         var qrc = MusicTimedText.Parse("[ti:x]\n[12340,900]你(12340,400)好(12740,500)\n[14000,800]世界(14000,800)", ".qrc");
                         Assert(string.IsNullOrEmpty(qrc.error) && qrc.lines.Count == 2 && qrc.lines[1].text == "世界" && qrc.lines[0].words.Count == 2 && Math.Abs(qrc.lines[0].end - 13.24) < .001, "QRC parse failed: " + qrc.error);
-                        Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
+                        {
+                        var host = new MusicStageLyrics(); int plain = host.childCount; host.Select("tilt");
+                        Assert(host.childCount == plain + 1 && host.StyleId == "tilt", "Switching style did not keep the old one for the hand-over");
+                        Debug.Log("MUSIC_STAGE_HANDOVER_OK: old style stays while the new one grows in");
+                    }
+                    Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
                     }
                     Finish(); return;
             }
