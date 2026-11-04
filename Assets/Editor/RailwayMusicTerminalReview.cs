@@ -1482,10 +1482,34 @@ public static class RailwayMusicTerminalReview
                     {
                         var song = MusicTimedText.Parse("[00:01.00]主歌一行\n[00:03.00]主歌二行\n[00:05.00]\n[00:06.00]回来吧回来\n[00:08.00]回来吧回来\n[00:10.00]别的一句\n[00:12.00]yeah\n[00:13.00]yeah\n[00:14.00]回来吧回来", ".lrc");
                         Assert(song.IsChorus(3) && song.IsChorus(4) && song.IsChorus(8) && !song.IsChorus(0) && !song.IsChorus(5) && !song.IsChorus(6), "Chorus detection picked the wrong lines");
-                        Debug.Log("MUSIC_CHORUS_OK: repeated runs are chorus, short interjections are not");
+                        {
+                        var q = MusicLibrarySession.State.queue; q.Clear(); q.AddRange(new[] { "platform", "iron_and_ash", "platform" });
+                        MusicLibrarySession.Enqueue("platform", true);
+                        Assert(q.Count(x => x == "platform") == 1 && q[0] == "platform", "Enqueue should keep one copy and move it to the front");
+                        q.Clear();
+                    }
+                    Debug.Log("MUSIC_CHORUS_OK: repeated runs are chorus, short interjections are not");
                     }
                     Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
                     }
+                    var q0 = MusicLibrarySession.State.queue; q0.Clear(); q0.AddRange(new[] { "platform", "iron_and_ash" }); MusicLibrarySession.Commit();
+                    Submit(root.Q<Button>("music-queue"));
+                    break;
+                case 76:
+                    Assert(root.Q<TextField>("music-queue-filter") != null && root.Q<Button>("music-queue-pick") != null, "The queue tools are missing");
+                    Submit(root.Q<Button>("music-queue-pick"));
+                    break;
+                case 77:
+                    Submit(root.Q<Button>("music-queue-check-0"));
+                    break;
+                case 78:
+                    Capture("38-queue-picking");
+                    Submit(root.Q<Button>("music-queue-batch-移到末尾"));
+                    break;
+                case 79:
+                    Assert(MusicLibrarySession.State.queue.Count == 2 && MusicLibrarySession.State.queue[1] == "platform", "Batch move to end did not work");
+                    MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
+                    Debug.Log("MUSIC_QUEUE_OK: tools, batch move");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

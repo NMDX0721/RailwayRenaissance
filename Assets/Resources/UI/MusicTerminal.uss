@@ -1071,3 +1071,12 @@
 .music-ruler-nudges { flex-direction: row; justify-content: center; flex-wrap: wrap; margin: 12px 0 0 0; }
 .music-ruler-line { font-size: 14px; color: rgb(238, 230, 206); -unity-text-align: middle-center; margin: 14px 0 0 0; padding: 0; white-space: normal; }
 .music-ruler-nudges .music-option-chip { min-width: 72px; padding-left: 6px; padding-right: 6px; margin: 2px 3px; }
+
+/* queue tools */
+.music-queue-tools { flex-direction: row; align-items: center; margin: 0 0 6px 0; }
+.music-queue-filter { flex-grow: 1; min-width: 120px; margin: 0 6px 0 0; }
+.music-queue-tools .music-option-chip, .music-queue-batch .music-option-chip { flex-grow: 0; flex-shrink: 0; flex-basis: auto; min-width: 56px; padding: 0 12px; margin: 2px 3px; }
+.music-queue-filter .unity-base-text-field__input { height: 30px; border-radius: 15px; padding-left: 12px; font-size: 13px; }
+.music-queue-batch { flex-direction: row; flex-wrap: wrap; margin: 0 0 6px 0; }
+.music-queue-item.is-picked { background-color: rgba(205, 176, 112, 0.18); }
+.music-queue-item .music-queue-check { flex-grow: 0; flex-shrink: 0; flex-basis: auto; width: 32px; min-width: 32px; height: 32px; padding: 0; margin: 0 6px 0 0; font-size: 16px; background-color: rgba(0, 0, 0, 0); border-width: 0; }

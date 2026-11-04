@@ -348,6 +348,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void Enqueue(string id, bool next = false)
         {
             if (Find(id) == null) return;
+            State.queue.RemoveAll(q => q == id);   // a song sits in the queue once: adding it again moves it
             if (next) State.queue.Insert(0, id); else State.queue.Add(id);
             Commit();
         }

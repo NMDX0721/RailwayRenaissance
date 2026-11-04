@@ -857,6 +857,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var moveDown = Button(row, "↓", () => MusicLibrarySession.Move(list, index, index + 1));
             moveDown.tooltip = "向下移动"; moveDown.SetEnabled(index + 1 < list.Count);
         }
+        readonly HashSet<int> queuePicked = new HashSet<int>(); bool queuePicking; string queueFilter = "";
         void RenderDrawer()
         {
             bool opening = queueOpen && drawer.resolvedStyle.display == DisplayStyle.None;
@@ -870,32 +871,76 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
             var sub = Box(drawer, "music-drawer-sub");
             Text(sub, queue.Count == 0 ? "下一首从这里出发" : queue.Count + " 首 · 下一首从这里出发", "music-muted music-grow");
-            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
-            var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
-            if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
-            for (int i = 0; i < queue.Count; i++)
+            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); queuePicked.Clear(); queuePicking = false; MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
+            // Tools: search the queue, pick several rows for a batch action, drop repeats.
+            var tools = Box(drawer, "music-queue-tools");
+            var filterField = new TextField { name = "music-queue-filter" }; filterField.AddToClassList("music-queue-filter"); filterField.SetValueWithoutNotify(queueFilter); filterField.tooltip = "在队列里找歌"; tools.Add(filterField);
+            var pickButton = Chip(tools, queuePicking ? "完成" : "选择", () => { queuePicking = !queuePicking; queuePicked.Clear(); RenderDrawer(); }, "music-queue-pick"); pickButton.SetEnabled(queue.Count > 0);
+            var dedupe = Chip(tools, "去重", () => {
+                int before = queue.Count; var seen = new HashSet<string>(); queue.RemoveAll(q => !seen.Add(q)); queuePicked.Clear();
+                MusicLibrarySession.Commit(); ShowToast(before == queue.Count ? "队列里没有重复的歌" : "已去掉 " + (before - queue.Count) + " 首重复");
+            }, "music-queue-dedupe"); dedupe.SetEnabled(queue.Count > 1);
+            VisualElement batch = null;
+            if (queuePicking)
             {
-                int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
-                var item = Box(scroll.contentContainer, "music-queue-item");
-                // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
-                AddQueueReorder(item, item, queue, index);
-                var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
-                var queueText = Box(item, "music-queue-text");
-                Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
-                Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
-                item.Insert(1, queueCover); item.Insert(2, queueText);
-                var row = item;
-                Button(row, "播放", () => {
-                    var queuedTrack = MusicLibrarySession.Find(id);
-                    if (!MusicLibrarySession.Available(queuedTrack))
-                    {
-                        ShowToast(MusicLibrarySession.Unlocked(queuedTrack) ? "音频文件不可用，请检查文件或重新导入" : "该曲目尚未解锁或不存在");
-                        return;
-                    }
-                    MusicLibrarySession.PlayQueued(index);
-                });
-                Button(row, "移除", () => { queue.RemoveAt(index); MusicLibrarySession.Commit(); });
+                batch = Box(drawer, "music-queue-batch");
+                void Apply(string label, Action<List<string>> change)
+                {
+                    var b2 = Chip(batch, label, () => {
+                        if (queuePicked.Count == 0) { ShowToast("先点选要操作的歌"); return; }
+                        var picked = queuePicked.OrderBy(i => i).Where(i => i < queue.Count).Select(i => queue[i]).ToList();
+                        var rest = queue.Where((_, i) => !queuePicked.Contains(i)).ToList();
+                        queue.Clear(); queue.AddRange(rest); change(picked); queuePicked.Clear(); MusicLibrarySession.Commit(); ShowToast(label + "：" + picked.Count + " 首");
+                    }, "music-queue-batch-" + label); b2.tooltip = label;
+                }
+                Chip(batch, "全选", () => { for (int i = 0; i < queue.Count; i++) queuePicked.Add(i); RenderDrawer(); }, "music-queue-all");
+                Apply("移到最前", picked => queue.InsertRange(0, picked));
+                Apply("移到末尾", picked => queue.AddRange(picked));
+                Apply("移除", picked => { });
             }
+            var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
+            void FillList()
+            {
+                scroll.contentContainer.Clear();
+                string needle = (queueFilter ?? "").Trim().ToLowerInvariant();
+                if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
+                int shown = 0;
+                for (int i = 0; i < queue.Count; i++)
+                {
+                    int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
+                    if (needle.Length > 0 && !((track?.title ?? "").ToLowerInvariant().Contains(needle) || (track?.artist ?? "").ToLowerInvariant().Contains(needle))) continue;
+                    shown++;
+                    var item = Box(scroll.contentContainer, "music-queue-item");
+                    if (queuePicking)
+                    {
+                        item.EnableInClassList("is-picked", queuePicked.Contains(index));
+                        var check = Chip(item, queuePicked.Contains(index) ? "☑" : "☐", () => { if (!queuePicked.Remove(index)) queuePicked.Add(index); RenderDrawer(); }, "music-queue-check-" + index);
+                        check.AddToClassList("music-queue-check");
+                    }
+                    // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
+                    if (needle.Length == 0 && !queuePicking) AddQueueReorder(item, item, queue, index);
+                    var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
+                    var queueText = Box(item, "music-queue-text");
+                    Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
+                    Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
+                    int at = (queuePicking ? 1 : 0) + (needle.Length == 0 && !queuePicking ? 1 : 0); item.Insert(at, queueCover); item.Insert(at + 1, queueText);
+                    var row = item;
+                    if (queuePicking) { item.RegisterCallback<ClickEvent>(_ => { if (!queuePicked.Remove(index)) queuePicked.Add(index); RenderDrawer(); }); continue; }
+                    Button(row, "播放", () => {
+                        var queuedTrack = MusicLibrarySession.Find(id);
+                        if (!MusicLibrarySession.Available(queuedTrack))
+                        {
+                            ShowToast(MusicLibrarySession.Unlocked(queuedTrack) ? "音频文件不可用，请检查文件或重新导入" : "该曲目尚未解锁或不存在");
+                            return;
+                        }
+                        MusicLibrarySession.PlayQueued(index);
+                    });
+                    Button(row, "移除", () => { queue.RemoveAt(index); MusicLibrarySession.Commit(); });
+                }
+                if (queue.Count > 0 && shown == 0) Text(scroll, "队列里没有匹配的歌", "music-wrap");
+            }
+            filterField.RegisterValueChangedCallback(e => { if (e.target != filterField) return; queueFilter = e.newValue; FillList(); });
+            FillList();
         }
         void AddQueueReorder(VisualElement row, VisualElement item, List<string> queue, int index)
         {
