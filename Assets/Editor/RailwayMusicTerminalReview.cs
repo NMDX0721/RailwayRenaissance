@@ -1419,6 +1419,25 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Query(className: "music-track-row").ToList().Any(r => r.ClassListContains("is-located")), "Clicking the title did not locate the track in a list");
                     Capture("33-located");
                     Debug.Log("MUSIC_SETTINGS_OK: settings page, equalizer, loudness, accent, bar slots, tour, locate");
+                    Submit(root.Q<Button>("music-palette-open"));
+                    break;
+                case 67:
+                    Assert(root.Q<TextField>("music-palette-input") != null, "The command palette did not open");
+                    Capture("34-palette");
+                    root.Q<TextField>("music-palette-input").value = "均衡";
+                    break;
+                case 68:
+                    {
+                        var first = root.Q<Button>("music-palette-row-0");
+                        Assert(first != null && first.Q<Label>(className: "music-palette-title").text.Contains("均衡"), "The palette did not filter to the equalizer");
+                        Capture("35-palette-filtered");
+                        Submit(first);
+                    }
+                    break;
+                case 69:
+                    Assert(root.Q("music-settings-scroll") != null, "Running the palette command did not open the settings");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_PALETTE_OK: opened from the bar, filtered, ran a command");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

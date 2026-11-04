@@ -46,6 +46,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public string eqPreset = ""; public float[] eqGains;   // the equalizer's preset name and its ten band gains in dB
         public string themeAccent = ""; public int themeBase;   // fixed accent colour as #RRGGBB (empty: follow the cover), and the base colour of the page: 0 grey-green, 1 ink, 2 warm
         public string barSlots = "";   // comma separated buttons pinned to the player bar (speed, tone, timer, eq, queue ...); empty keeps the older barSpeed/barTone/barTimer flags
+        public string paletteRecent = "";   // ids of the commands run last from the command palette, newest first
         public bool tutorialDone;   // the first-use tour was shown
         public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;

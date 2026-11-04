@@ -123,6 +123,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             search.RegisterValueChangedCallback(e => { if (e.target != search) return; query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
             clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
             clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            Button(header, "命令", () => OpenPalette(), "music-palette-open").tooltip = "命令面板 Ctrl+K";
             Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
@@ -183,6 +184,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (e.keyCode == KeyCode.Escape && queueOpen) { queueOpen = false; RenderDrawer(); root.Q<Button>("music-queue")?.Focus(); e.StopImmediatePropagation(); return; }
             var target = e.target as VisualElement;
             bool editing = target is TextField || target?.GetFirstAncestorOfType<TextField>() != null;
+            if ((e.ctrlKey || e.commandKey) && e.keyCode == KeyCode.K)
+            { OpenPalette(); e.StopImmediatePropagation(); return; }
             if ((e.ctrlKey || e.commandKey) && e.keyCode == KeyCode.F)
             { CloseModal(); search.Focus(); e.StopImmediatePropagation(); return; }
             if (editing || target is Slider || target?.GetFirstAncestorOfType<Slider>() != null) return;
@@ -226,6 +229,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 ("搜索", "顶部搜索同时查曲库和所选在线来源"),
                 ("来源", "切换来源标签即可换平台"),
                 ("Ctrl+F", "跳到搜索框"),
+                ("Ctrl+K", "命令面板：输入名字找功能或队列里的歌"),
                 ("菜单键", "顶栏菜单键收起 / 展开侧栏"));
             Section("播放",
                 ("播放", "点击三角按钮，停留可看按钮名称"),

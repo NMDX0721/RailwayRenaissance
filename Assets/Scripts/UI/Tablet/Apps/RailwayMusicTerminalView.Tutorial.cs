@@ -10,7 +10,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         struct TourStep { public string target, title, text; public TourStep(string a, string b, string c) { target = a; title = b; text = c; } }
         static readonly TourStep[] Tour =
         {
-            new TourStep("music-search", "搜索", "输入歌名或歌手，也可以粘贴歌单链接；按 Ctrl+F 随时回到这里。"),
+            new TourStep("music-search", "搜索", "输入歌名或歌手，也可以粘贴歌单链接；按 Ctrl+F 随时回到这里；Ctrl+K 打开命令面板。"),
             new TourStep("music-nav-首页", "沿线收听", "首页、榜单、原声、本地音乐、收藏和云端都在这里；私人歌单在下面。"),
             new TourStep("music-player", "播放栏", "点曲名，会在列表里找到正在播放的歌；点封面，打开这张唱片的档案。"),
             new TourStep("music-lyrics", "歌词与舞台", "全屏歌词页，有多种舞台风格；按 L 也能打开。"),
