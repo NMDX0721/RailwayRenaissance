@@ -22,6 +22,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public int Composition => composition;
         public float RenderClock => clock;
         public float VisualEnergy => energy;
+        /// <summary>0..1: how much the current line is chorus; lifts the backdrop light.</summary>
+        public float ChorusBoost;
         // Smoothed low / mid / high band levels (0..1) from the playing source's spectrum; they follow the audio, not a timer.
         public float BandLow => bandLow;
         public float BandMid => bandMid;
@@ -64,7 +66,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var m = backdropMaterial; float w = Mathf.Max(contentRect.width, 1f), h = Mathf.Max(contentRect.height, 1f);
             m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
             m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh);
-            m.SetFloat("_Energy", energy); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
+            m.SetFloat("_Energy", Mathf.Clamp01(energy + ChorusBoost * .25f)); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
             Graphics.Blit(null, backdropTexture, m);
         }
 

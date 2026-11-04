@@ -25,6 +25,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         public readonly List<MusicTimedLine> lines = new List<MusicTimedLine>();
         public string source, error, plainText;
+        bool[] chorus;
+        /// <summary>Per line: is it part of the chorus (computed once, on first use).</summary>
+        public bool IsChorus(int line) { chorus ??= MusicChorus.Detect(this); return line >= 0 && line < chorus.Length && chorus[line]; }
         public int Active(double seconds)
         {
             // AudioSource's float/sample clock can land a fraction of a millisecond before a clicked cue.

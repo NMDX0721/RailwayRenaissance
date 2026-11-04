@@ -65,7 +65,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public void Invalidate() => stageStyle?.Invalidate();
 
         public void Tick(MusicTimedDocument document, int active, double clock, float dt, bool calm, bool estimate, float fontScale,
-            Color accent, float energy, bool showTranslation, StageTuning tuning, float low, float mid, float high, string title = null)
+            Color accent, float energy, bool showTranslation, StageTuning tuning, float low, float mid, float high, string title = null, float chorusLevel = 0)
         {
             lastCalm = calm;
             if (leaving != null)
@@ -77,7 +77,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             stageStyle.Tick(new StageContext
             {
                 document = document, active = active, clock = clock, dt = dt, calm = calm, estimate = estimate, showTranslation = showTranslation,
-                fontScale = fontScale, energy = energy, low = low, mid = mid, high = high, accent = accent, tuning = tuning, title = title
+                fontScale = fontScale, energy = Mathf.Clamp01(energy + chorusLevel * .2f), low = low, mid = mid, high = Mathf.Clamp01(high + chorusLevel * .45f), accent = accent, tuning = tuning, title = title
             });
         }
 

@@ -1479,6 +1479,11 @@ public static class RailwayMusicTerminalReview
                         Assert(host.childCount == plain + 1 && host.StyleId == "tilt", "Switching style did not keep the old one for the hand-over");
                         Debug.Log("MUSIC_STAGE_HANDOVER_OK: old style stays while the new one grows in");
                     }
+                    {
+                        var song = MusicTimedText.Parse("[00:01.00]主歌一行\n[00:03.00]主歌二行\n[00:05.00]\n[00:06.00]回来吧回来\n[00:08.00]回来吧回来\n[00:10.00]别的一句\n[00:12.00]yeah\n[00:13.00]yeah\n[00:14.00]回来吧回来", ".lrc");
+                        Assert(song.IsChorus(3) && song.IsChorus(4) && song.IsChorus(8) && !song.IsChorus(0) && !song.IsChorus(5) && !song.IsChorus(6), "Chorus detection picked the wrong lines");
+                        Debug.Log("MUSIC_CHORUS_OK: repeated runs are chorus, short interjections are not");
+                    }
                     Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
                     }
                     Finish(); return;

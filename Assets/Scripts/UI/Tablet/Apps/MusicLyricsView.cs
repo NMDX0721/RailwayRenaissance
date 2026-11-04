@@ -34,7 +34,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         Button followButton;
         Slider progress;
         Label playTime;
-        string trackId;
+        string trackId; float chorusLevel;
         bool instrumental;
         bool following = true, scrubbing;
         bool focused;
@@ -430,6 +430,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             float cueFraction = validCue && !double.IsInfinity(cueLength) && cueLength > 0
                 ? Mathf.Clamp01((float)((clock - document.lines[active].start) / cueLength)) : 0;
             stageProgress.style.width = Length.Percent(cueFraction * 100);
+            bool inChorus = active >= 0 && document.IsChorus(active) && TabletMusicAppUI.tabletIsPlaying;
+            chorusLevel = MusicLibrarySession.State.reduceMotion ? 0f : Mathf.Lerp(chorusLevel, inChorus ? 1f : 0f, 1 - Mathf.Exp(-Time.unscaledDeltaTime * (inChorus ? 2.5f : 1.2f)));
+            reactiveStage.ChorusBoost = chorusLevel;
             reactiveStage.Tick(MusicAudioEffectsEngine.GetActiveDeck(), TabletMusicAppUI.tabletIsPlaying,
                 MusicLibrarySession.State.reduceMotion || MusicLibrarySession.State.lyricMotion == 0);
             // Stage mode draws the current line on its own layer (Folia-style word pop); the list stays underneath, hidden.
@@ -441,7 +444,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 stage.Select(MusicLibrarySession.State.stageStyle);
                 stage.Tick(document, active, clock, Time.unscaledDeltaTime, MusicLibrarySession.State.reduceMotion, MusicLibrarySession.State.estimateWords,
                     Mathf.Clamp(MusicLibrarySession.State.lyricFontSize / 24f, .75f, 1.5f), reactiveStage.PrimaryColor, reactiveStage.VisualEnergy, MusicLibrarySession.State.lyricTranslation,
-                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh, TabletMusicAppUI.tabletCurrentTrackTitle);
+                    StageTuning.FromState(MusicLibrarySession.State), reactiveStage.BandLow, reactiveStage.BandMid, reactiveStage.BandHigh, TabletMusicAppUI.tabletCurrentTrackTitle, chorusLevel);
             }
             foreach (var pair in words)
             {
