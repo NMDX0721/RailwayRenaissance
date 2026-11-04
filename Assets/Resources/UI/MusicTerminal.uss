@@ -1089,3 +1089,9 @@
 .music-volume-fill { position: absolute; left: 0; right: 0; bottom: 0; background-color: rgba(205, 176, 112, 0.55); }
 .music-volume-knob { position: absolute; left: 3px; right: 3px; height: 8px; margin-bottom: -4px; border-radius: 4px; background-color: rgb(244, 224, 170); }
 .music-volume-pop .music-icon-button { margin: 8px 0 0 0; }
+
+/* smaller secondary buttons */
+.music-queue-tools .music-icon-button, .music-queue-batch .music-icon-button { width: 30px; min-width: 30px; height: 30px; min-height: 30px; padding: 5px; margin: 2px 3px; border-radius: 15px; }
+.music-drawer-header .music-icon-button { width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 6px; }
+.music-volume-pop .music-icon-button { width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 5px; }
+.music-queue-filter .unity-base-text-field__input { height: 28px; }
