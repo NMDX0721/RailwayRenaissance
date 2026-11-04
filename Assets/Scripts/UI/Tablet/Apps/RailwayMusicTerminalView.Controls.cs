@@ -250,10 +250,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return list;
         }
         static void SetBarOrder(List<string> order) { MusicLibrarySession.State.barOrder = string.Join(",", order); MusicLibrarySession.Save(); }
-        static void MoveBarKey(string key, int to)
+        // Put a button at place `to` among the buttons of its own section (the bar, or the more menu); the other section keeps its order.
+        static void MoveBarKey(string key, List<string> section, int to)
         {
-            var order = BarOrder(); if (!order.Remove(key)) return;
-            order.Insert(Mathf.Clamp(to, 0, order.Count), key); SetBarOrder(order);
+            var order = BarOrder(); var others = section.Where(k => k != key).ToList();
+            if (others.Count == 0 || !order.Remove(key)) return;
+            to = Mathf.Clamp(to, 0, others.Count);
+            if (to < others.Count) order.Insert(order.IndexOf(others[to]), key); else order.Insert(order.IndexOf(others[others.Count - 1]) + 1, key);
+            SetBarOrder(order);
         }
         static void SetFolded(string key, bool folded)
         {

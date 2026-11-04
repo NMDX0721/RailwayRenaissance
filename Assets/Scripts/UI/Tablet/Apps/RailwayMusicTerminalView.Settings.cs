@@ -262,10 +262,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // ---- the player bar ----
         void FillBarSettings()
         {
-            var group = Group("播放栏按钮");
-            Text(group, "拖动左边的把手排列顺序。每个按钮可以显示在栏上，或折叠进栏尾的「更多」菜单（折叠的按钮仍然可以从那里打开）。", "music-setting-hint");
-            var order = BarOrder(); var rows = new List<VisualElement>();
-            foreach (string key in order)
+            var order = BarOrder();
+            var shown = order.Where(k => !IsFolded(k)).ToList(); var folded = order.Where(IsFolded).ToList();
+            var note = Box(settingsContent, "music-settings-pageheader"); Text(note, "拖动左边的把手调整顺序。折叠的按钮收在栏尾的「更多」菜单里，仍然可以从那里打开。", "music-setting-hint");
+            BarSection("在播放栏上", "栏上的按钮，从左到右", shown);
+            BarSection("在「更多」菜单里", "折叠起来的按钮，从上到下", folded);
+        }
+
+        void BarSection(string heading, string empty, List<string> keys)
+        {
+            var group = Group(heading); var rows = new List<VisualElement>();
+            if (keys.Count == 0) Text(group, "没有按钮在这里（" + empty + "）", "music-setting-hint");
+            foreach (string key in keys)
             {
                 string slot = key; int at = Array.IndexOf(BarKeys, slot); bool optional = IsOptionalKey(slot);
                 var row = Box(group, "music-settings-row"); row.AddToClassList("music-slot-row"); row.name = "music-slot-row-" + slot; rows.Add(row);
@@ -275,7 +283,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var text = Box(row, "music-setting-text");
                 Text(text, BarKeyNames[at], "music-setting-title");
                 Text(text, BarKeyNotes[at], "music-setting-note");
-                DragRow(grip, row, rows, slot);
+                DragRow(grip, row, rows, slot, keys);
                 int current = IsFolded(slot) ? 1 : 0;
                 Segmented(row, new[] { "显示", "折叠" }, current, i =>
                 {
@@ -292,7 +300,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // The grip of a bar row: drag it up or down to put the button somewhere else (arrow keys work too).
-        void DragRow(VisualElement grip, VisualElement row, List<VisualElement> rows, string key)
+        void DragRow(VisualElement grip, VisualElement row, List<VisualElement> rows, string key, List<string> section)
         {
             bool dragging = false; float startY = 0, baseCenter = 0; int target = 0;
             void Unmark() { foreach (var other in rows) { other.RemoveFromClassList("is-drop-before"); other.RemoveFromClassList("is-drop-after"); } }
@@ -306,7 +314,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (!dragging) return; dragging = false;
                 row.RemoveFromClassList("is-dragging"); row.style.translate = new Translate(0, 0); Unmark();
-                if (commit) { MoveBarKey(key, target); UpdateBarChips(); RefreshSettings(); }
+                if (commit) { MoveBarKey(key, section, target); UpdateBarChips(); RefreshSettings(); }
             }
             grip.RegisterCallback<PointerDownEvent>(e =>
             {
@@ -328,7 +336,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 int at = rows.IndexOf(row), to = e.keyCode == KeyCode.UpArrow ? at - 1 : e.keyCode == KeyCode.DownArrow ? at + 1 : at;
                 if (to == at || to < 0 || to >= rows.Count) return;
-                MoveBarKey(key, to); UpdateBarChips(); RefreshSettings(); e.StopPropagation();
+                MoveBarKey(key, section, to); UpdateBarChips(); RefreshSettings(); e.StopPropagation();
                 settingsContent?.schedule.Execute(() => settingsContent?.Q("music-bar-drag-" + key)?.Focus());
             });
         }

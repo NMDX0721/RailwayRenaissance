@@ -1157,7 +1157,9 @@
 .music-slot-row.is-dragging { background-color: rgb(58, 62, 48); border-radius: 12px; opacity: 0.96; }
 .music-slot-row.is-drop-before { border-top-width: 2px; border-top-color: rgb(205, 176, 112); }
 .music-slot-row.is-drop-after { border-bottom-width: 2px; border-bottom-color: rgb(205, 176, 112); }
-.music-terminal .music-settings-scroll .unity-scroller--vertical { width: 16px; min-width: 16px; margin-left: 10px; padding: 3px 2px; background-color: rgba(0, 0, 0, 0.22); border-left-width: 0; border-radius: 7px; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical { width: 12px; min-width: 12px; margin-left: 8px; padding: 2px 3px; background-color: rgba(0, 0, 0, 0); border-left-width: 0; border-radius: 6px; }
 .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__tracker { opacity: 0; }
-.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger { width: 10px; min-width: 10px; margin-left: -5px; left: 50%; border-width: 0; border-radius: 5px; background-color: rgba(205, 176, 112, 0.5); }
-.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover, .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:active { background-color: rgba(228, 200, 140, 0.85); }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger { width: auto; min-width: 0; margin: 0; left: 0; right: 0; border-width: 0; border-radius: 3px; background-color: rgba(205, 176, 112, 0.42); }
+.music-terminal .music-settings-scroll .unity-scroller--vertical:hover .unity-base-slider__dragger { background-color: rgba(205, 176, 112, 0.62); }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover, .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:active { background-color: rgba(232, 204, 144, 0.9); }
+.music-settings-scroll .unity-scroll-view__content-container { padding-right: 20px; }
