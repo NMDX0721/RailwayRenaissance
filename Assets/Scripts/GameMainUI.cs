@@ -3253,14 +3253,14 @@ public class GameMainUI : MonoBehaviour
             Dark = darkApp,
             OnBack = () => { if (onBack != null) onBack(); else ReturnToTabletHome(); }
         });
-        win.Add(appBar);
+        if (appTitle != "设置") win.Add(appBar);   // 设置自带左栏标题与返回，不再叠一条老顶栏
 
         // 主体内容区（供具体 App 渲染）
         var content = new VisualElement { name = "app-content" };
         content.style.flexGrow = 1;
         content.style.flexShrink = 1;
         content.style.paddingLeft = 20; content.style.paddingRight = 20;
-        content.style.paddingTop = 16; content.style.paddingBottom = 16;
+        content.style.paddingTop = 16; content.style.paddingBottom = 0;   // 内容一直铺到屏幕底，底部手势条叠在上面
         win.Add(content);
 
         appLayer.style.display = DisplayStyle.Flex;
@@ -3318,6 +3318,15 @@ public class GameMainUI : MonoBehaviour
     }
 
     private void BuildTabletTaskContent(string name)
+        // 给手势条留位改在各滚动区末尾：应用渲染完（下一帧）后，所有 ScrollView 的内容底部补 36 的内边距
+        content.schedule.Execute(() => PadScrollEnds(content)).ExecuteLater(0);
+
+        if (appTitle == "设置")
+        {
+            // 设置没有顶栏：状态栏下方直接是内容，去掉原来为顶栏留的空白
+            win.style.paddingTop = 36 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop;
+            content.style.paddingTop = 0;
+        }
     {
         if (appLayer == null) return;
         appLayer.Clear();
@@ -3325,6 +3334,22 @@ public class GameMainUI : MonoBehaviour
         {
             var musicWin = new VisualElement { name = "app-fullscreen-music" };
             musicWin.style.position = Position.Absolute;
+    private const float GestureBarReserve = 36f;
+
+    /// <summary>滚动区末尾补出手势条的位置，保证滚到底时最后一项不被手势条盖住。已有更大底部内边距的不动。</summary>
+    private static void PadScrollEnds(VisualElement root)
+    {
+        if (root == null) return;
+        root.Query<ScrollView>().ForEach(sv =>
+        {
+            var cc = sv.contentContainer;
+            if (cc.ClassListContains("pad-end")) return;
+            if (cc.resolvedStyle.paddingBottom < GestureBarReserve)
+                cc.style.paddingBottom = GestureBarReserve;
+            cc.AddToClassList("pad-end");
+        });
+    }
+
             musicWin.style.top = 0;
             musicWin.style.left = 0;
             musicWin.style.right = 0;
