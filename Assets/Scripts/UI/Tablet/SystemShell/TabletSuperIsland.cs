@@ -88,6 +88,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private VisualElement _subBubble;
         private VisualElement _expandedCard;
         private VisualElement _expandedHandle;
+        private VisualElement _expandedGrab;
+        private bool _morphing;
+        private int _morphToken;
+
+        /// <summary>把手下滑越过阈值时触发：返回 true 表示已处理（岛随后收起）；返回 false 则卡片弹回。</summary>
+        public Func<IslandSession, bool> FloatRequested;
         private VisualElement _scrimOverlay;
 
         // 动效模拟心跳
@@ -99,6 +105,16 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private string _secondaryKey = "";
 
         public bool IsExpanded => _isExpanded;
+
+        /// <summary>胶囊至少和它顶替的日期一样宽，替换时前后长度协调。</summary>
+        public void SetPillMinWidth(float width)
+        {
+            if (width < 60f) return;
+            _pillContainer.style.minWidth = Mathf.Min(width, 220f);
+        }
+
+        /// <summary>岛的显示状态变了（有/无会话、展开/收起）：状态栏据此决定日期是否被岛盖住。</summary>
+        public event Action VisualStateChanged;
         public IslandAppType PrimaryType => _currentPrimaryType;
         public string PrimaryKey => _primaryKey;
 
@@ -150,7 +166,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             if (_pillAnchor != null)
             {
-                islandRow.style.marginLeft = 12;
+                // 岛占的是日期的位置：绝对定位叠在日期槽上，不挤占别的元素；日期槽自己的宽度不变，岛收放时旁边不会跳
+                islandRow.style.position = Position.Absolute;
+                islandRow.style.left = 0; islandRow.style.top = 0; islandRow.style.bottom = 0;
                 _pillAnchor.Add(islandRow);
             }
             else
@@ -163,14 +181,14 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             // 主胶囊 (微胶囊态，高度 32px，圆角 16px)
             _pillContainer = new VisualElement { name = "super-island-pill" };
-            _pillContainer.style.height = 34;
-            _pillContainer.style.minWidth = 96;
-            _pillContainer.style.paddingLeft = 10;
-            _pillContainer.style.paddingRight = 12;
-            _pillContainer.style.borderTopLeftRadius = 17;
-            _pillContainer.style.borderTopRightRadius = 17;
-            _pillContainer.style.borderBottomLeftRadius = 17;
-            _pillContainer.style.borderBottomRightRadius = 17;
+            _pillContainer.style.height = 28;
+            _pillContainer.style.minWidth = 84;
+            _pillContainer.style.paddingLeft = 9;
+            _pillContainer.style.paddingRight = 11;
+            _pillContainer.style.borderTopLeftRadius = 14;
+            _pillContainer.style.borderTopRightRadius = 14;
+            _pillContainer.style.borderBottomLeftRadius = 14;
+            _pillContainer.style.borderBottomRightRadius = 14;
             _pillContainer.style.backgroundColor = TabletTheme.IslandBlack;   // 参考 HyperOS：纯黑胶囊
             _pillContainer.style.borderTopWidth = 1;
             _pillContainer.style.borderLeftWidth = 1;
@@ -197,13 +215,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             // 次要副岛气泡 (Dual-Island Capsule, 类似 HyperOS 2 / iOS 灵动岛小圆球)
             _subBubble = new VisualElement { name = "super-island-sub-bubble" };
-            _subBubble.style.width = 32;
-            _subBubble.style.height = 32;
+            _subBubble.style.width = 28;
+            _subBubble.style.height = 28;
             _subBubble.style.marginLeft = 6;
-            _subBubble.style.borderTopLeftRadius = 16;
-            _subBubble.style.borderTopRightRadius = 16;
-            _subBubble.style.borderBottomLeftRadius = 16;
-            _subBubble.style.borderBottomRightRadius = 16;
+            _subBubble.style.borderTopLeftRadius = 14;
+            _subBubble.style.borderTopRightRadius = 14;
+            _subBubble.style.borderBottomLeftRadius = 14;
+            _subBubble.style.borderBottomRightRadius = 14;
             _subBubble.style.backgroundColor = TabletTheme.IslandPill;
             _subBubble.style.borderTopWidth = 1;
             _subBubble.style.borderLeftWidth = 1;
@@ -227,7 +245,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             // 3. 大岛展开态卡片 (Expanded Island Card，左侧下沉展开，宽度 390px，悬浮于时间与微胶囊下方)
             _expandedCard = new VisualElement { name = "super-island-expanded" };
             // 展开态：从左侧小胶囊变大，移到屏幕上方正中（对齐 HyperOS 超级岛展开形态）
-            _expandedCard.style.width = 460;
+            _expandedCard.style.width = 440;
             _expandedCard.style.maxWidth = Length.Percent(90);
             _expandedCard.style.minHeight = 112;
             _expandedCard.style.position = Position.Absolute;
@@ -242,10 +260,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _expandedCard.style.backgroundColor = TabletTheme.IslandBlack;
             _expandedCard.style.paddingLeft = 22;
             _expandedCard.style.paddingRight = 22;
-            _expandedCard.style.paddingTop = 16;
-            _expandedCard.style.paddingBottom = 20;
-            _expandedCard.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("opacity") };
-            _expandedCard.style.transitionDuration = new List<TimeValue> { new TimeValue(220, TimeUnit.Millisecond) };
+            _expandedCard.style.paddingTop = 14;
+            _expandedCard.style.paddingBottom = 18;
+            _expandedCard.style.overflow = Overflow.Hidden;
 
             // 底部把手：黄铜色细条，既是 HyperOS 的下拉把手，也是铁道铭牌细节
             var handle = _expandedHandle = new VisualElement { name = "super-island-handle", pickingMode = PickingMode.Ignore };
@@ -258,7 +275,15 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             handle.style.borderTopLeftRadius = handle.style.borderTopRightRadius = 2;
             handle.style.borderBottomLeftRadius = handle.style.borderBottomRightRadius = 2;
             handle.style.backgroundColor = TabletTheme.Brass;
-            _expandedCard.Add(handle);
+            // 把手所在的整条底边是可拖动区：下滑呼出小窗、上滑收起
+            _expandedGrab = new VisualElement { name = "super-island-grab" };
+            _expandedGrab.style.position = Position.Absolute;
+            _expandedGrab.style.left = 0; _expandedGrab.style.right = 0; _expandedGrab.style.bottom = 0;
+            _expandedGrab.style.height = 26;
+            _expandedGrab.pickingMode = PickingMode.Position;
+            _expandedGrab.Add(handle);
+            AttachHandleDrag(_expandedGrab);
+            _expandedCard.Add(_expandedGrab);
             _expandedCard.pickingMode = PickingMode.Position;
             _expandedCard.style.display = DisplayStyle.None;
             _expandedCard.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
@@ -314,13 +339,86 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             EvaluateActiveSessions();
         }
 
+        private static readonly StylePropertyName[] MorphProps =
+        {
+            new StylePropertyName("left"), new StylePropertyName("top"), new StylePropertyName("width"), new StylePropertyName("height"),
+            new StylePropertyName("border-top-left-radius"), new StylePropertyName("border-top-right-radius"),
+            new StylePropertyName("border-bottom-left-radius"), new StylePropertyName("border-bottom-right-radius"),
+            new StylePropertyName("translate"), new StylePropertyName("opacity")
+        };
+
+        private void SetCardTransition(int ms, EasingMode ease)
+        {
+            _expandedCard.style.transitionProperty = new List<StylePropertyName>(MorphProps);
+            _expandedCard.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+            _expandedCard.style.transitionTimingFunction = new List<EasingFunction> { new EasingFunction(ease) };
+        }
+
+        private void SetCardRadius(float r)
+        {
+            _expandedCard.style.borderTopLeftRadius = r; _expandedCard.style.borderTopRightRadius = r;
+            _expandedCard.style.borderBottomLeftRadius = r; _expandedCard.style.borderBottomRightRadius = r;
+        }
+
+        private Rect RootLocalRect(VisualElement e)
+        {
+            Rect w = e.worldBound, r = Root.worldBound;
+            return new Rect(w.x - r.x, w.y - r.y, w.width, w.height);
+        }
+
+        /// <summary>变形期间把内容按最终宽度固定住，卡片只是“揭开”它，避免窄卡片里内容挤成一团。</summary>
+        private void PinChildren(float width)
+        {
+            foreach (var c in _expandedCard.Children())
+            {
+                if (c == _expandedGrab) continue;
+                c.style.width = width; c.style.flexShrink = 0;
+            }
+        }
+
+        private void UnpinChildren()
+        {
+            foreach (var c in _expandedCard.Children())
+            {
+                if (c == _expandedGrab) continue;
+                c.style.width = StyleKeyword.Auto; c.style.flexShrink = 1;
+                c.style.transitionDuration = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                c.style.opacity = 1f;
+            }
+        }
+
+        private void FadeChildren(float to, int ms, int delay)
+        {
+            foreach (var c in _expandedCard.Children())
+            {
+                if (c == _expandedGrab) continue;
+                c.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity") };
+                c.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+                c.style.transitionDelay = new List<TimeValue> { new TimeValue(delay, TimeUnit.Millisecond) };
+                c.style.opacity = to;
+            }
+        }
+
+        private void RestoreCardLayout()
+        {
+            _expandedCard.style.left = Length.Percent(50);
+            _expandedCard.style.top = 10;
+            _expandedCard.style.width = 440;
+            _expandedCard.style.height = StyleKeyword.Auto;
+            _expandedCard.style.minHeight = 112;
+            _expandedCard.style.maxWidth = Length.Percent(90);
+            _expandedCard.style.translate = new Translate(Length.Percent(-50), 0);
+            SetCardRadius(34);
+        }
+
         public void SetExpanded(bool expanded)
         {
             bool targetExpanded = expanded && (_currentPrimaryType != IslandAppType.None);
             if (_isExpanded == targetExpanded && _expandedCard.style.display == (_isExpanded ? DisplayStyle.Flex : DisplayStyle.None)) return;
             _isExpanded = targetExpanded;
-
-            int ms = TabletTheme.MotionMs(220);
+            VisualStateChanged?.Invoke();
+            int token = ++_morphToken;
+            int ms = TabletTheme.MotionMs(340);
 
             if (_isExpanded)
             {
@@ -329,62 +427,181 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 _expandedCard.style.display = DisplayStyle.Flex;
                 _expandedCard.BringToFront();
                 RenderExpandedContent();
-
                 _pillContainer.pickingMode = PickingMode.Ignore;
 
                 if (ms <= 0)
                 {
+                    _morphing = false;
+                    RestoreCardLayout();
+                    SetCardTransition(0, EasingMode.Linear);
+                    _expandedCard.style.opacity = 1f;
                     _scrimOverlay.style.opacity = 1f;
-                    _expandedCard.style.scale = new Scale(Vector3.one);
+                    _pillContainer.style.opacity = 0f;
+                    return;
+                }
+
+                // 从小胶囊的位置和大小“长”成居中的大岛：先在胶囊位置就位（不可见），下一帧起过渡到最终尺寸
+                _morphing = true;
+                SetCardTransition(0, EasingMode.Linear);
+                _expandedCard.style.opacity = 0f;
+                _expandedCard.schedule.Execute(() =>
+                {
+                    if (token != _morphToken) return;
+                    Rect pill = RootLocalRect(_pillContainer);
+                    float cardW = _expandedCard.layout.width, cardH = _expandedCard.layout.height;
+                    if (cardW <= 1f || cardH <= 1f) { _morphing = false; RestoreCardLayout(); _expandedCard.style.opacity = 1f; return; }
+                    float endLeft = (Root.layout.width - cardW) * 0.5f;
+                    PinChildren(cardW - 44f);
+                    _expandedCard.style.maxWidth = StyleKeyword.None;
+                    _expandedCard.style.minHeight = 0;
+                    _expandedCard.style.translate = new Translate(0, 0);
+                    _expandedCard.style.left = pill.x; _expandedCard.style.top = pill.y;
+                    _expandedCard.style.width = pill.width; _expandedCard.style.height = pill.height;
+                    SetCardRadius(pill.height * 0.5f);
                     _expandedCard.style.opacity = 1f;
                     _pillContainer.style.opacity = 0f;
-                }
-                else
-                {
-                    _scrimOverlay.style.opacity = 0f;
-                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
-                    _expandedCard.style.opacity = 0f;
-                    _pillContainer.style.scale = new Scale(new Vector3(0.9f, 0.9f, 1f));
-                    _pillContainer.style.opacity = 0f;
-
+                    foreach (var c in _expandedCard.Children()) { if (c == _expandedGrab) continue; c.style.transitionDuration = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) }; c.style.opacity = 0f; }
                     _expandedCard.schedule.Execute(() =>
                     {
+                        if (token != _morphToken) return;
+                        SetCardTransition(ms, EasingMode.EaseOutCubic);
+                        _expandedCard.style.left = endLeft; _expandedCard.style.top = 10;
+                        _expandedCard.style.width = cardW; _expandedCard.style.height = cardH;
+                        SetCardRadius(34);
                         _scrimOverlay.style.opacity = 1f;
-                        _expandedCard.style.scale = new Scale(Vector3.one);
-                        _expandedCard.style.opacity = 1f;
-                    }).StartingIn(16);
-                }
+                        FadeChildren(1f, 200, ms / 5);
+                    }).ExecuteLater(16);
+                    _expandedCard.schedule.Execute(() =>
+                    {
+                        if (token != _morphToken) return;
+                        UnpinChildren();
+                        SetCardTransition(0, EasingMode.Linear);
+                        RestoreCardLayout();
+                        _morphing = false;
+                    }).ExecuteLater(ms + 60);
+                }).ExecuteLater(16);
             }
             else
             {
                 _pillContainer.pickingMode = PickingMode.Position;
                 if (ms <= 0)
                 {
+                    _morphing = false;
                     _scrimOverlay.style.opacity = 0f;
                     _scrimOverlay.style.display = DisplayStyle.None;
-                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
                     _expandedCard.style.opacity = 0f;
                     _expandedCard.style.display = DisplayStyle.None;
-                    _pillContainer.style.scale = new Scale(Vector3.one);
                     _pillContainer.style.opacity = 1f;
+                    return;
+                }
+
+                // 收回：卡片缩回胶囊的位置和大小，胶囊在收尾时淡入接替
+                int closeMs = (int)(ms * 0.8f);
+                _morphing = true;
+                Rect from = RootLocalRect(_expandedCard);
+                Rect to = RootLocalRect(_pillContainer);
+                SetCardTransition(0, EasingMode.Linear);
+                PinChildren(from.width - 44f);
+                _expandedCard.style.maxWidth = StyleKeyword.None;
+                _expandedCard.style.minHeight = 0;
+                _expandedCard.style.translate = new Translate(0, 0);
+                _expandedCard.style.left = from.x; _expandedCard.style.top = from.y;
+                _expandedCard.style.width = from.width; _expandedCard.style.height = from.height;
+                _expandedCard.schedule.Execute(() =>
+                {
+                    if (token != _morphToken) return;
+                    SetCardTransition(closeMs, EasingMode.EaseInOutCubic);
+                    _expandedCard.style.left = to.x; _expandedCard.style.top = to.y;
+                    _expandedCard.style.width = to.width; _expandedCard.style.height = to.height;
+                    SetCardRadius(to.height * 0.5f);
+                    _scrimOverlay.style.opacity = 0f;
+                    FadeChildren(0f, closeMs / 3, 0);
+                }).ExecuteLater(16);
+                _pillContainer.schedule.Execute(() =>
+                {
+                    if (token != _morphToken) return;
+                    _pillContainer.style.opacity = 1f;
+                }).ExecuteLater((int)(closeMs * 0.75f));
+                _expandedCard.schedule.Execute(() =>
+                {
+                    if (token != _morphToken || _isExpanded) return;
+                    UnpinChildren();
+                    SetCardTransition(0, EasingMode.Linear);
+                    _expandedCard.style.display = DisplayStyle.None;
+                    _scrimOverlay.style.display = DisplayStyle.None;
+                    RestoreCardLayout();
+                    _morphing = false;
+                }).ExecuteLater(closeMs + 60);
+            }
+        }
+
+        // ---------- 把手拖动：下滑呼出小窗，上滑收起 ----------
+        private void AttachHandleDrag(VisualElement grab)
+        {
+            int pointer = -1;
+            float startY = 0f;
+            const float FloatThreshold = 56f;
+            grab.RegisterCallback<PointerDownEvent>(e =>
+            {
+                if (_morphing) return;
+                pointer = e.pointerId; startY = e.position.y;
+                grab.CapturePointer(pointer);
+                SetCardTransition(0, EasingMode.Linear);
+                e.StopPropagation();
+            });
+            grab.RegisterCallback<PointerMoveEvent>(e =>
+            {
+                if (pointer != e.pointerId) return;
+                float dy = e.position.y - startY;
+                float shown = dy > 0f ? Mathf.Min(dy, FloatThreshold * 2f) * 0.6f : Mathf.Max(dy, -40f) * 0.5f;
+                _expandedCard.style.translate = new Translate(Length.Percent(-50), shown);
+                e.StopPropagation();
+            });
+            EventCallback<PointerUpEvent> release = e =>
+            {
+                if (pointer != e.pointerId) return;
+                grab.ReleasePointer(pointer);
+                pointer = -1;
+                float dy = e.position.y - startY;
+                if (dy > FloatThreshold && _activeSessions.TryGetValue(_primaryKey, out var session) && FloatRequested != null && FloatRequested(session))
+                {
+                    SetExpanded(false);
+                }
+                else if (dy < -28f)
+                {
+                    SetExpanded(false);
                 }
                 else
                 {
-                    _scrimOverlay.style.opacity = 0f;
-                    _expandedCard.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
-                    _expandedCard.style.opacity = 0f;
-                    _pillContainer.style.scale = new Scale(Vector3.one);
-                    _pillContainer.style.opacity = 1f;
-
-                    _expandedCard.schedule.Execute(() =>
-                    {
-                        if (!_isExpanded)
-                        {
-                            _expandedCard.style.display = DisplayStyle.None;
-                            _scrimOverlay.style.display = DisplayStyle.None;
-                        }
-                    }).StartingIn(ms + 10);
+                    SetCardTransition(TabletTheme.MotionMs(240), EasingMode.EaseOutBack);
+                    _expandedCard.style.translate = new Translate(Length.Percent(-50), 0);
                 }
+                e.StopPropagation();
+            };
+            grab.RegisterCallback(release);
+            grab.RegisterCallback<PointerCancelEvent>(_ =>
+            {
+                if (pointer < 0) return;
+                grab.ReleasePointer(pointer); pointer = -1;
+                SetCardTransition(TabletTheme.MotionMs(240), EasingMode.EaseOutBack);
+                _expandedCard.style.translate = new Translate(Length.Percent(-50), 0);
+            });
+        }
+
+        /// <summary>岛会话对应的桌面应用名（用于“呼出小窗/打开应用”）；没有对应应用返回 null。</summary>
+        public static string AppNameFor(IslandSession s)
+        {
+            if (s == null) return null;
+            switch (s.AppType)
+            {
+                case IslandAppType.Music: return "音乐";
+                case IslandAppType.Timer: return "时钟";
+                case IslandAppType.Recorder: return "录音机";
+                case IslandAppType.TrainCab: return "驾驶台";
+                case IslandAppType.DispatchAlert: return "RDA";
+                case IslandAppType.CloudSync: return "设置";
+                case IslandAppType.Custom: return s.Key;
+                default: return null;
             }
         }
 
@@ -405,7 +622,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 {
                     RenderCompactContent();
                 }
-                else
+                else if (!_morphing)
                 {
                     RenderExpandedContent();
                 }
@@ -419,9 +636,21 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 _currentPrimaryType = IslandAppType.None;
                 _currentSecondaryType = IslandAppType.None;
                 _primaryKey = ""; _secondaryKey = "";
-                _pillContainer.style.display = DisplayStyle.None;
                 _subBubble.style.display = DisplayStyle.None;
                 SetExpanded(false);
+                VisualStateChanged?.Invoke();
+                if (_pillContainer.style.display == DisplayStyle.Flex && TabletTheme.MotionMs(180) > 0)
+                {
+                    _pillContainer.style.opacity = 0f;
+                    _pillContainer.schedule.Execute(() =>
+                    {
+                        if (_activeSessions.Count == 0) _pillContainer.style.display = DisplayStyle.None;
+                    }).ExecuteLater(220);
+                }
+                else
+                {
+                    _pillContainer.style.display = DisplayStyle.None;
+                }
                 return;
             }
 
@@ -434,7 +663,28 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _primaryKey = list[0].EffectiveKey;
             _secondaryKey = list.Count > 1 ? list[1].EffectiveKey : "";
 
+            bool pillWasHidden = _pillContainer.style.display != DisplayStyle.Flex;
             _pillContainer.style.display = DisplayStyle.Flex;
+            if (pillWasHidden && !_isExpanded && TabletTheme.MotionMs(180) > 0)
+            {
+                // 日期先淡出，岛随后在同一位置浮现
+                _pillContainer.style.transitionDuration = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                _pillContainer.style.opacity = 0f;
+                _pillContainer.style.scale = new Scale(new Vector3(0.9f, 0.9f, 1f));
+                _pillContainer.schedule.Execute(() =>
+                {
+                    _pillContainer.style.transitionDuration = new List<TimeValue> { new TimeValue(200, TimeUnit.Millisecond) };
+                    _pillContainer.style.transitionDelay = new List<TimeValue> { new TimeValue(120, TimeUnit.Millisecond) };
+                    _pillContainer.style.opacity = 1f;
+                    _pillContainer.style.scale = new Scale(Vector3.one);
+                }).ExecuteLater(16);
+                _pillContainer.schedule.Execute(() => _pillContainer.style.transitionDelay = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) }).ExecuteLater(500);
+            }
+            else if (pillWasHidden)
+            {
+                _pillContainer.style.opacity = 1f;
+            }
+            VisualStateChanged?.Invoke();
             _subBubble.style.display = _currentSecondaryType != IslandAppType.None && !_isExpanded ? DisplayStyle.Flex : DisplayStyle.None;
 
             if (_isExpanded)
@@ -637,7 +887,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             if (!_activeSessions.TryGetValue(_primaryKey, out var s)) return;
             _expandedCard.Clear();
-            if (_expandedHandle != null) _expandedCard.Add(_expandedHandle);
+            if (_expandedGrab != null) _expandedCard.Add(_expandedGrab);
 
             var topRow = new VisualElement();
             topRow.style.flexDirection = FlexDirection.Row;
@@ -906,7 +1156,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     }
                     if (s.Progress > 0f)
                     {
-                        var gBar = CreateMicroProgressBar(s.Progress, s.AccentColor, width: 410, height: 5);
+                        var gBar = CreateMicroProgressBar(s.Progress, s.AccentColor, width: 396, height: 5);
                         gBar.style.marginTop = 10;
                         _expandedCard.Add(gBar);
                     }

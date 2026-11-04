@@ -4,7 +4,7 @@ namespace RailwayRenaissance.UI.Tablet
     public static class TabletType
     {
         /// <summary>状态栏：时间、日期、电量数字共用同一字号。</summary>
-        public const int StatusText = 16;
+        public const int StatusText = 17;
         public const int Caption = 11;
         public const int Small = 12;
         public const int Body = 13;
