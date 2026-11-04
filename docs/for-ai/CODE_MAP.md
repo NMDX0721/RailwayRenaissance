@@ -636,3 +636,14 @@ GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 Railwa
 
 
 - 2026-10-30 Folia 内容页精修：`RenderHome/HomeSongs/HomeCloudLists/CollectionCard` 构建封面优先的首页与真实歌单内容，来源状态压缩成栏；`RenderCloud` 的账户设置折叠，已登录默认展示歌单墙与可播放列表。`ShowDetail` 按来源显示歌手/专辑/真实时长与原声信息，支持刷新和队列/收藏/歌单。`EnsureRemoteMetadata` 补 NetEase/Spotify 曲目信息，网易云在 Tick 中按最多50首批量请求；`MusicAlbumArtResolver` 支持失败冷却重试、HTTPS有限跳转、URL版本保护、512缩略图和歌单图片。公开专辑与时长可保存在原 v1 JSON 的可选字段，带签名URL不落盘。
+
+2026-10-28 ATO V3：新增独立空间速度包络候选及 .NET 检查；三目标规划、控制接线和实验尚未实现，见 ATO_V3_IMPLEMENTATION.md。
+2026-10-28 后续：V3 局部控制雏形已有单次内核运行；平稳和省气仍停在起点，未通过验收，详情见 ATO_V3_IMPLEMENTATION.md。
+2026-10-28 V3进度：`AtoTrajectoryPlanner`、`CabAtoControllerV3`及研究封装v3接入独立场景；V2仍为默认。冻结配对实验和失败及个人参赛范围见 [V3研究记录](../research/ato_v3_results.md)。
+2026-10-28 V3个人参赛准备：独立研究报告和事实底稿分别见 [V3研究记录](../research/ato_v3_results.md)、[个人参赛准备](../research/ato_v3_personal_entry.md)；学生实际贡献待按事实填写，实验含失败案例。
+2026-10-29 进度反馈开发实验：仅在 `research/ato-v3/followup/` 的冻结源码副本中添加反馈并对照；已观察到普遍晚到，不接入游戏，见 [开发记录](../research/ato_schedule_feedback_development.md)。
+2026-10-29 末端渐退反馈候选：隔离研究实验与新种子/工况冻结测试已运行；成功率未优于 V3，部分模式 jerk 和排气代理增加，未接入游戏，见同一开发记录。
+
+2026-11-04 平板机车遥测通过 CabEngineState.ActiveInstance 获取启用的驾驶室。实例启用时注册，禁用时仅清理自己的引用。GameMainUI 使用此入口读取驾驶状态。
+
+2026-11-04 ATO V3 恢复经 `CabAtoControllerV3.DecodeCheckpoint` 迁移历史版本 1 的状态字段。驱动的停车误差与路线遥测跟随 V3 任务，V2 路线开关关闭时仍可使用 V3 目标。

@@ -1,0 +1,17 @@
+{
+  "editor": "Unity 6000.5.8f1 Windows",
+  "exit_code": 0,
+  "reviewed_git_commit": "50727f938dc18d89ac232c70bb1a36dec2002e2c",
+  "log_sha256": "806ba64aaaa66f119f27b18a9116b87648ef3d008baa8281ef7d30060d017ac0",
+  "markers": [
+    "ATO_PAUSED_MANUAL_CHECKPOINT_OK",
+    "ATO_V3_MOVING_START_OK",
+    "ATO_V3_PLAY_ACCEPTED",
+    "ATO_V2_PLAY_ACCEPTED",
+    "ATO_PLAY_ACCEPTED"
+  ],
+  "compiler_errors_found": false,
+  "editor_exception": "ArgumentOutOfRangeException in UnityEditor.Search.SearchDatabase",
+  "package": "Burst 1.8.30 copied local package, temporary manifest reference restored",
+  "scope": "Automated nominal Play review; not visual demonstration or real-train validation"
+}

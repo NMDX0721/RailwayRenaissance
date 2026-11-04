@@ -28,16 +28,23 @@ namespace RailwayRenaissance.Cab.Simulation
             }
         }
         public static T Decode<T>(string encoded) where T:new()
+            => Decode<T>(encoded, null, out _);
+
+        internal static T Decode<T>(string encoded, string legacyMissingField, out bool migrated) where T:new()
         {
             if(string.IsNullOrEmpty(encoded)||encoded.Length>1000000)throw new ArgumentException("Invalid checkpoint size");
             using(var stream=new MemoryStream(Convert.FromBase64String(encoded)))
             using(var reader=new BinaryReader(stream))
             {
                 var fields=Fields(typeof(T));
-                if(reader.ReadString()!="NF5K1"||reader.ReadString()!=typeof(T).FullName||reader.ReadInt32()!=fields.Length)throw new ArgumentException("Checkpoint schema mismatch");
+                if(reader.ReadString()!="NF5K1"||reader.ReadString()!=typeof(T).FullName)throw new ArgumentException("Checkpoint schema mismatch");
+                int fieldCount=reader.ReadInt32();
+                migrated=legacyMissingField!=null&&fieldCount==fields.Length-1&&fields.Any(f=>f.Name==legacyMissingField);
+                if(fieldCount!=fields.Length&&!migrated)throw new ArgumentException("Checkpoint schema mismatch");
                 var result=new T();
                 foreach(var f in fields)
                 {
+                    if(migrated&&f.Name==legacyMissingField)continue;
                     if(reader.ReadString()!=f.Name)throw new ArgumentException("Checkpoint field mismatch");
                     var type=f.FieldType;
                     if(type==typeof(double))f.SetValue(result,reader.ReadDouble());

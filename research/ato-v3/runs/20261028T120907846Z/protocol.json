@@ -1,0 +1,29 @@
+{
+  "frozenUtc": "2026-10-28T12:09:06.0470199Z",
+  "seeds": [
+    62001,
+    62002,
+    62003
+  ],
+  "scenarios": [
+    "nominal",
+    "weak_wet",
+    "changing_conditions"
+  ],
+  "repeats": 2,
+  "task": "900m; 12/18/10 m/s; arrival 120 \u002B/- 5s; stop \u002B/-5m; 50Hz plant, 10Hz control",
+  "scenarioDefinitions": "nominal: default; weak_wet: mass 1.10, service/loco brake 0.80, grip 0.50, grade -4 permille; changing_conditions: mass 0.95, brakes 1.15, grade \u002B4 then at t=40s grip 0.45 and grade -4",
+  "metrics": "stop error, first arrival, safety violation episodes and ticks above 0.15m/s, failure, switches, squared jerk integral, exhaust kPaL, fuel L, controller time, exact repeat fingerprint",
+  "hashes": {
+    "Assets/Scripts/Cab/CabSimulation.cs": "597F6AD2C06DD5A55D20BDA43A7442F53B5167043BF167AD391D5F6586EE120C",
+    "Assets/Scripts/Cab/CabSimulationCodec.cs": "99EFFB7FE1C7DA2CFF6B497FBDB266085B96BF8EC7328BCC3DFB9D491799B4AB",
+    "Assets/Scripts/Cab/Research/AtoRouteTask.cs": "77938C25302179CFBCC1E1DD5BC9A899DBBE2A41D658080529CDB1583AF3807D",
+    "Assets/Scripts/Cab/Research/AtoTrajectoryPlanner.cs": "CFBA12F99EE5A46AE4EA5AE5B553C9430C0BBE41C38CDC880B137C2E9B91062D",
+    "Assets/Scripts/Cab/Research/CabAtoController.cs": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV2.cs": "5614DC59E7DD362ABAD9A6C02407DD9DD4312F7D4ED1071433183E3D235B59CF",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV3.cs": "307B511555A3437FDF697D913AC0C2ED897F123EC0C023BB7BEA95D5DA8BF655",
+    "research/ato-v3/FrozenV3.cs": "8AD6A95B4FA83D9D696EEDB078CF56874D5258D36050630ABFE27EF4EB43C662",
+    "research/ato-v3/AtoV3.csproj": "6CE7BCAFFEF0B77110069CD018F0DA39B1B481F2ECA3FB76CC82BFD08A4C1C8E",
+    "research/ato-v3/Program.cs": "8A3C5333E26DF67303CA40C1BB481450355608A1313A8C7B70B680F288D964A8"
+  }
+}

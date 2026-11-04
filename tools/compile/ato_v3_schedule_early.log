@@ -1,0 +1,25 @@
+63001-weak_wet-Smooth-baseline-r0 arrival=118.4 intervention=False
+63001-weak_wet-Smooth-baseline-r1 arrival=118.4 intervention=False
+63001-weak_wet-AirSaving-baseline-r0 arrival=113.9 intervention=False
+63001-weak_wet-AirSaving-baseline-r1 arrival=113.9 intervention=False
+63001-weak_wet-Punctual-baseline-r0 arrival=118.3 intervention=False
+63001-weak_wet-Punctual-baseline-r1 arrival=118.3 intervention=False
+63003-weak_wet-Smooth-baseline-r0 arrival=118.5 intervention=False
+63003-weak_wet-Smooth-baseline-r1 arrival=118.5 intervention=False
+63003-weak_wet-AirSaving-baseline-r0 arrival=114.5 intervention=False
+63003-weak_wet-AirSaving-baseline-r1 arrival=114.5 intervention=False
+63003-weak_wet-Punctual-baseline-r0 arrival=118.4 intervention=False
+63003-weak_wet-Punctual-baseline-r1 arrival=118.4 intervention=False
+63001-weak_wet-Smooth-schedule_feedback-r0 arrival=155.5 intervention=False
+63001-weak_wet-Smooth-schedule_feedback-r1 arrival=155.5 intervention=False
+63001-weak_wet-AirSaving-schedule_feedback-r0 arrival=118.4 intervention=False
+63001-weak_wet-AirSaving-schedule_feedback-r1 arrival=118.4 intervention=False
+63001-weak_wet-Punctual-schedule_feedback-r0 arrival=119.8 intervention=False
+63001-weak_wet-Punctual-schedule_feedback-r1 arrival=119.8 intervention=False
+63003-weak_wet-Smooth-schedule_feedback-r0 arrival=155.4 intervention=False
+63003-weak_wet-Smooth-schedule_feedback-r1 arrival=155.4 intervention=False
+63003-weak_wet-AirSaving-schedule_feedback-r0 arrival=117.7 intervention=False
+63003-weak_wet-AirSaving-schedule_feedback-r1 arrival=117.7 intervention=False
+63003-weak_wet-Punctual-schedule_feedback-r0 arrival=119 intervention=False
+63003-weak_wet-Punctual-schedule_feedback-r1 arrival=119 intervention=False
+COMPLETE C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\research\ato-v3\followup\runs\20261029T020620860712Z

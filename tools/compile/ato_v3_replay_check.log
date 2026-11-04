@@ -1,0 +1,10 @@
+REFERENCE_CHECK_OK samples=901 nominal_seconds=100.49
+ARRIVAL_REFERENCE_OK seconds=120.000000; infeasible target rejected
+DEV mode=Smooth error=-2.41 arrival=118.70 violations=0 intervention=False air=150002.7 fuel=1.196 reason=停车窗内停稳
+DEV mode=AirSaving error=-2.42 arrival=120.80 violations=0 intervention=False air=126956.8 fuel=1.162 reason=停车窗内停稳
+DEV mode=Punctual error=-2.33 arrival=124.10 violations=0 intervention=False air=111037.4 fuel=1.126 reason=停车窗内停稳
+V3_CAPTURE tick=500 brake=1 arrival=-1.00
+V3_CAPTURE tick=1826 brake=1 arrival=-1.00
+V3_CAPTURE tick=5036 brake=2 arrival=-1.00
+V3_CAPTURE tick=6500 brake=3 arrival=124.10
+V3_REPLAY_OK: four capture points replay to confirmed stop; mode switch at 30/60/144 FPS; overshoot, infeasible, late and corrupt-state guards
