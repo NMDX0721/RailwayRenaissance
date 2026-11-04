@@ -90,7 +90,7 @@ public static class RailwayMusicTerminalReview
     static void ValidateControlGeometry()
     {
         ValidateScrollerGeometry();
-        foreach (string name in new[] { "music-volume", "music-progress" })
+        foreach (string name in new[] { "music-progress" })
         {
             var slider = root.Q<Slider>(name);
             var track = slider.Q(className: "unity-base-slider__tracker");
@@ -994,12 +994,14 @@ public static class RailwayMusicTerminalReview
                     using (var buttonArrow = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None))
                     { buttonArrow.target = focusedButton; focusedButton.SendEvent(buttonArrow); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - buttonPosition) < .2f, "Arrow on focused button unexpectedly sought audio");
-                    var focusedSlider = root.Q<Slider>("music-volume"); focusedSlider.Focus();
+                    Submit(root.Q<Button>("music-volume-button")); var focusedSlider = root.Q("music-volume"); focusedSlider.Focus();
                     float sliderPosition = TabletMusicAppUI.CurrentPosition;
                     using (var sliderArrow = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None))
                     { sliderArrow.target = focusedSlider; focusedSlider.SendEvent(sliderArrow); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - sliderPosition) < .2f, "Arrow on focused slider unexpectedly sought audio");
                     Debug.Log("MUSIC_KEYBOARD_FOCUS_OK: button and slider arrows do not seek");
+                    Assert(root.Q("music-volume-mute") != null && root.Q("music-volume") != null, "The volume popover is incomplete"); Capture("39-volume-popover");
+                    using (var escape = KeyDownEvent.GetPooled(' ', KeyCode.Escape, EventModifiers.None)) { var ov = root.Q(className: "music-overlay"); escape.target = ov; ov.SendEvent(escape); }
                     float at = TabletMusicAppUI.CurrentPosition;
                     using (var right = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None)) { right.target = root; root.SendEvent(right); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - at - 5) < .2, "Focused music seek shortcut failed");
@@ -1521,6 +1523,21 @@ public static class RailwayMusicTerminalReview
                     Assert(MusicLibrarySession.State.queue.Count == 2 && MusicLibrarySession.State.queue[1] == "platform", "Batch move to end did not work");
                     MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
                     Debug.Log("MUSIC_QUEUE_OK: tools, batch move");
+                    MusicLibrarySession.State.volume = .6f; TabletMusicAppUI.SetVolume(.6f);
+                    Submit(root.Q<Button>("music-volume-button"));
+                    break;
+                case 81:
+                    Assert(root.Q("music-volume") != null, "The volume popover did not open");
+                    Capture("40-volume-popover");
+                    Submit(root.Q<Button>("music-volume-mute"));
+                    break;
+                case 82:
+                    Assert(MusicLibrarySession.State.volume < .005f, "Mute did not silence the volume");
+                    Submit(root.Q<Button>("music-volume-mute"));
+                    break;
+                case 83:
+                    Assert(Mathf.Abs(MusicLibrarySession.State.volume - .6f) < .02f, "Unmute did not restore the volume");
+                    Debug.Log("MUSIC_VOLUME_OK: popover opens, mute and restore");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

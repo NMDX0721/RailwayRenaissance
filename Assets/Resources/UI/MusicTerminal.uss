@@ -1080,3 +1080,12 @@
 .music-queue-batch { flex-direction: row; flex-wrap: wrap; margin: 0 0 6px 0; }
 .music-queue-item.is-picked { background-color: rgba(205, 176, 112, 0.18); }
 .music-queue-item .music-queue-check { flex-grow: 0; flex-shrink: 0; flex-basis: auto; width: 32px; min-width: 32px; height: 32px; padding: 0; margin: 0 6px 0 0; font-size: 16px; background-color: rgba(0, 0, 0, 0); border-width: 0; }
+
+/* volume popover */
+.music-volume-pop { width: 64px; min-width: 64px; max-width: 64px; padding: 10px 0 8px 0; align-items: center; }
+.music-volume-value { font-size: 12px; color: rgb(238, 230, 206); -unity-text-align: middle-center; margin: 0 0 8px 0; padding: 0; }
+.music-volume-rail { position: relative; width: 26px; height: 150px; border-radius: 13px; background-color: rgb(34, 38, 32); border-width: 1px; border-color: rgb(70, 76, 62); overflow: hidden; }
+.music-volume-rail:focus { border-color: rgb(205, 176, 112); }
+.music-volume-fill { position: absolute; left: 0; right: 0; bottom: 0; background-color: rgba(205, 176, 112, 0.55); }
+.music-volume-knob { position: absolute; left: 3px; right: 3px; height: 8px; margin-bottom: -4px; border-radius: 4px; background-color: rgb(244, 224, 170); }
+.music-volume-pop .music-icon-button { margin: 8px 0 0 0; }

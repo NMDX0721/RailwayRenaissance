@@ -16,7 +16,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         // Per-frame Update keeps what it last drew, so a frame in which nothing changed does no lookups, string building or icon work.
-        Label queueBadgeNode; Slider volumeSlider;
+        Label queueBadgeNode; Button volumeButton; VisualElement volumePop; Action volumeRefresh; float mutedFrom;
         int shownQueueCount = -1, shownSecond = -1, shownLengthSecond = -2;
         string shownPlayAction, shownModeAction, shownFavoriteAction, shownTitle;
         float shownVolumeFill = -1f, shownProgressFill = -1f;
@@ -68,7 +68,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var button = new Button(action) { name = name }; button.AddToClassList("music-button"); parent.Add(button);
             bool iconOnly = parent.ClassListContains("music-track-row") || parent.ClassListContains("music-queue-row") ||
                 parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-queue-item") || parent.ClassListContains("music-tools") ||
-                parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
+                parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-queue-tools") || parent.ClassListContains("music-queue-batch") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
             MusicTerminalIcons.Apply(button, text, iconOnly); return button;
         }
         static bool sessionRestoreStarted;
@@ -875,7 +875,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var tools = Box(drawer, "music-queue-tools");
             var filterField = new TextField { name = "music-queue-filter" }; filterField.AddToClassList("music-queue-filter"); filterField.SetValueWithoutNotify(queueFilter); filterField.tooltip = "在队列里找歌"; tools.Add(filterField);
             Button moreButton = null;
-            moreButton = Chip(tools, queuePicking ? "完成" : "更多", () =>
+            moreButton = Button(tools, queuePicking ? "保存" : "更多", () =>
             {
                 if (queuePicking) { queuePicking = false; queuePicked.Clear(); RenderDrawer(); return; }
                 var menu = MenuAt(moreButton, "队列");
@@ -886,21 +886,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     MusicLibrarySession.Commit(); ShowToast(before == queue.Count ? "队列里没有重复的歌" : "已去掉 " + (before - queue.Count) + " 首重复");
                 }).name = "music-queue-dedupe";
                 PopoverItem(menu, "清空队列", false, () => { CloseModal(); queue.Clear(); queuePicked.Clear(); queuePicking = false; MusicLibrarySession.Commit(); }).name = "music-clear-queue";
-            }, "music-queue-more"); moreButton.SetEnabled(queue.Count > 0 || queuePicking);
+            }, "music-queue-more"); moreButton.tooltip = queuePicking ? "完成选择" : "更多：选择多首、去重、清空"; moreButton.SetEnabled(queue.Count > 0 || queuePicking);
             VisualElement batch = null;
             if (queuePicking)
             {
                 batch = Box(drawer, "music-queue-batch");
                 void Apply(string label, Action<List<string>> change)
                 {
-                    var b2 = Chip(batch, label, () => {
+                    var b2 = Button(batch, label, () => {
                         if (queuePicked.Count == 0) { ShowToast("先点选要操作的歌"); return; }
                         var picked = queuePicked.OrderBy(i => i).Where(i => i < queue.Count).Select(i => queue[i]).ToList();
                         var rest = queue.Where((_, i) => !queuePicked.Contains(i)).ToList();
                         queue.Clear(); queue.AddRange(rest); change(picked); queuePicked.Clear(); MusicLibrarySession.Commit(); ShowToast(label + "：" + picked.Count + " 首");
                     }, "music-queue-batch-" + label); b2.tooltip = label;
                 }
-                Chip(batch, "全选", () => { for (int i = 0; i < queue.Count; i++) queuePicked.Add(i); RenderDrawer(); }, "music-queue-all");
+                Button(batch, "全选", () => { for (int i = 0; i < queue.Count; i++) queuePicked.Add(i); RenderDrawer(); }, "music-queue-all");
                 Apply("移到最前", picked => queue.InsertRange(0, picked));
                 Apply("移到末尾", picked => queue.AddRange(picked));
                 Apply("移除", picked => { });
@@ -969,6 +969,46 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var moveDown = Button(row, "↓", () => MusicLibrarySession.Move(queue, index, index + 1));
             moveDown.tooltip = "向下移动"; moveDown.SetEnabled(index + 1 < queue.Count);
         }
+        // Volume: the speaker on the bar opens a small vertical fader (drag or click on the rail; arrows nudge by 5%).
+        void OpenVolumePopover()
+        {
+            var menu = MenuAt(volumeButton, null); menu.AddToClassList("music-volume-pop"); volumePop = menu;
+            var percent = Text(menu, "", "music-volume-value");
+            var rail = Box(menu, "music-volume-rail"); rail.name = "music-volume";
+            var fill = Box(rail, "music-volume-fill"); fill.pickingMode = PickingMode.Ignore;
+            var knob = Box(rail, "music-volume-knob"); knob.pickingMode = PickingMode.Ignore;
+            var mute = Button(menu, MusicLibrarySession.State.volume < .005f ? "静音" : "音量", () =>
+            {
+                float now = MusicLibrarySession.State.volume;
+                if (now < .005f) TabletMusicAppUI.SetVolume(mutedFrom > .005f ? mutedFrom : .5f); else { mutedFrom = now; TabletMusicAppUI.SetVolume(0f); }
+                volumeRefresh?.Invoke();
+            }, "music-volume-mute");
+            mute.AddToClassList("music-icon-button");
+            void Show()
+            {
+                float v = MusicLibrarySession.State.volume;
+                percent.text = Mathf.RoundToInt(v * 100) + "%";
+                fill.style.height = Length.Percent(v * 100f); knob.style.bottom = Length.Percent(v * 100f);
+                MusicTerminalIcons.Apply(mute, v < .005f ? "静音" : "音量", true); mute.tooltip = v < .005f ? "取消静音" : "静音";
+            }
+            void SetFrom(float y)
+            {
+                float height = rail.resolvedStyle.height; if (height <= 1f) return;
+                TabletMusicAppUI.SetVolume(Mathf.Round((1f - Mathf.Clamp01(y / height)) * 100f) / 100f); Show();
+            }
+            rail.RegisterCallback<PointerDownEvent>(e => { rail.CapturePointer(e.pointerId); SetFrom(e.localPosition.y); rail.Focus(); e.StopPropagation(); });
+            rail.RegisterCallback<PointerMoveEvent>(e => { if (rail.HasPointerCapture(e.pointerId)) SetFrom(e.localPosition.y); });
+            rail.RegisterCallback<PointerUpEvent>(e => { if (rail.HasPointerCapture(e.pointerId)) { rail.ReleasePointer(e.pointerId); MusicLibrarySession.Save(); } });
+            rail.focusable = true;
+            rail.RegisterCallback<KeyDownEvent>(e =>
+            {
+                float step = e.keyCode == KeyCode.UpArrow || e.keyCode == KeyCode.RightArrow ? .05f : e.keyCode == KeyCode.DownArrow || e.keyCode == KeyCode.LeftArrow ? -.05f : 0f;
+                if (step == 0f) return;
+                TabletMusicAppUI.SetVolume(Mathf.Clamp01(MusicLibrarySession.State.volume + step)); Show(); e.StopPropagation();
+            });
+            rail.RegisterCallback<GeometryChangedEvent>(_ => Show());
+            volumeRefresh = Show; Show();
+        }
         void BuildPlayer()
         {
             var player = Box(playerHost ?? root, "music-player", "music-player");
@@ -1002,13 +1042,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             progress.RegisterValueChangedCallback(e => { if (TabletMusicAppUI.tabletCurrentClip != null) TabletMusicAppUI.SeekTabletMusic(e.newValue); });
             time = Text(timeline, "0:00 / --:--", "music-player-time");
             var extras = Box(player, "music-player-extras");
-            var volume = new Slider("音量", 0, 1) { value = MusicLibrarySession.State.volume, name = "music-volume" }; extras.Add(volume); volumeSlider = volume;
-            volume.tooltip = "音量：拖动或点击滑轨；聚焦后可用方向键微调";
-            volume.RegisterValueChangedCallback(e => TabletMusicAppUI.SetVolume(e.newValue));
             var effects = Box(extras, "music-player-buttons");
             effects.AddToClassList("music-utility-buttons");
             MusicAudioEffectsEngine.SetPlaybackSpeed(MusicLibrarySession.State.playbackSpeed <= 0 ? 1f : MusicLibrarySession.State.playbackSpeed);
             // Speed, tone and timer live in the playback settings panel; each keeps a button on the bar only when the player pinned it there.
+            volumeButton = Button(effects, "音量", OpenVolumePopover, "music-volume-button");
             speedChip = new Button(() => OpenControlsPanel(speedChip)) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
             speedChip.tooltip = "播放速度（点开播放设置）"; effects.Add(speedChip);
             toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip), "music-tone"); toneChip.tooltip = "收听音色";
@@ -1363,7 +1401,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string favoriteAction = MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏";
             if (favoriteAction != shownFavoriteAction) { shownFavoriteAction = favoriteAction; MusicTerminalIcons.Apply(favorite, favoriteAction, true); }
             float volumeNow = MusicLibrarySession.State.volume;
-            if (volumeSlider != null && volumeNow != shownVolumeFill) { shownVolumeFill = volumeNow; volumeSlider.SetValueWithoutNotify(volumeNow); UpdateSliderFill(volumeSlider, volumeNow); }
+            if (volumeNow != shownVolumeFill)
+            {
+                shownVolumeFill = volumeNow;
+                if (volumeButton != null) { MusicTerminalIcons.Apply(volumeButton, volumeNow < .005f ? "静音" : "音量", true); volumeButton.tooltip = "音量 " + Mathf.RoundToInt(volumeNow * 100) + "%"; }
+                if (volumePop != null && volumePop.panel != null) volumeRefresh?.Invoke();
+            }
             var clip = TabletMusicAppUI.tabletCurrentClip;
             float position = clip == null ? MusicLibrarySession.State.position : TabletMusicAppUI.CurrentPosition;
             progress.SetEnabled(clip != null);

@@ -337,8 +337,8 @@ public static class TabletGestureReview
                     // Stage 4: Music Player Bar Immunity at Bottom
                     Call("LaunchApp", "音乐");
                     // The music terminal replaced the legacy player bar; its volume slider is the bottom-bar control under test.
-                    var musicVolume = root.Q<Slider>("music-volume");
-                    Assert(musicVolume != null, "Music terminal volume slider missing");
+                    var musicVolume = root.Q<Slider>("music-progress");
+                    Assert(musicVolume != null, "Music terminal progress slider missing");
 
                     VisualElement track = musicVolume.Q(className: "unity-base-slider__tracker") ?? musicVolume;
                     Vector2 trackCenter = track.worldBound.center;
@@ -482,6 +482,13 @@ public static class TabletGestureReview
                     Assert(navBar.pickingMode == PickingMode.Position, "Three-button bar must receive input");
                     Assert(root.Q("tablet-nav-back") != null && root.Q("tablet-nav-home") != null && root.Q("tablet-nav-recents") != null, "Three-button bar is missing a button");
                     Assert(navBar.resolvedStyle.translate.y == 0f, "Three-button bar must stay on screen");
+                    var appWin = root.Q("app-fullscreen-window");
+                    Assert(appWin != null && appWin.resolvedStyle.paddingBottom >= 43f, "App window must leave room for the three-button bar");
+                    Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.None, "Gesture indicator must be hidden in three-button mode");
+                    Assert(navBar.IndexOf(root.Q("tablet-nav-back")) == 0, "Back must be leftmost by default");
+                    TabletNavigationOptions.MirrorButtons = true;
+                    Assert(navBar.IndexOf(root.Q("tablet-nav-back")) == 2 && navBar.IndexOf(root.Q("tablet-nav-recents")) == 0, "Mirror must swap back and recents");
+                    TabletNavigationOptions.MirrorButtons = false;
                     Capture("11-three-button-in-app");
                     Call("ReturnToTabletHome");
                     navBar = root.Q("tablet-system-navigation");
@@ -490,6 +497,12 @@ public static class TabletGestureReview
                     Assert(navBar.resolvedStyle.display == DisplayStyle.None, "Gestures mode must hide the bar on the desktop");
                     Call("LaunchApp", "设置");
                     Assert(root.Q("tablet-system-navigation").resolvedStyle.display == DisplayStyle.None, "Gestures mode must hide the bar inside an app");
+                    Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.Flex, "Gesture indicator must show inside an app");
+                    TabletNavigationOptions.HideIndicator = true;
+                    Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.None, "HideIndicator must hide the indicator");
+                    TabletNavigationOptions.HideIndicator = false;
+                    Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.Flex, "Indicator must come back");
+                    Assert(root.Q("app-fullscreen-window").resolvedStyle.paddingBottom == 0f, "Gestures mode must run content to the bottom");
                     Debug.Log("TABLET_GESTURE_GRAPHIC_REVIEW_OK: full interactive graphics touch review passed across portrait and landscape ratios (16:10, 4:3, portrait), music progress bar & scroll & slider & textfield input isolation, multi-touch second touch point rejection, orientation rotation reset, and system back navigation");
 
                     SessionState.SetBool(PendingKey, false);
