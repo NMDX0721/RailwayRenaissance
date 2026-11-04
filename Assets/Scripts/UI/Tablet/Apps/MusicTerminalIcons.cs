@@ -139,7 +139,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 p.BeginPath(); p.MoveTo(new Vector2(3, 8)); p.LineTo(new Vector2(7, 8)); p.LineTo(new Vector2(11, 4)); p.LineTo(new Vector2(11, 16)); p.LineTo(new Vector2(7, 12)); p.LineTo(new Vector2(3, 12)); p.ClosePath(); p.Stroke();
                 if (action == "静音") { Line(new Vector2(14, 7), new Vector2(19, 13)); Line(new Vector2(19, 7), new Vector2(14, 13)); }
-                else { p.BeginPath(); p.Arc(new Vector2(11, 10), 4, -50, 50); p.Stroke(); p.BeginPath(); p.Arc(new Vector2(11, 10), 7.5f, -50, 50); p.Stroke(); }
+                else
+                {
+                    // Two sound waves drawn as short polylines on circles round the speaker, kept inside the 20-unit box.
+                    foreach (float radius in new[] { 3.6f, 6.6f })
+                    {
+                        p.BeginPath();
+                        for (int step = 0; step <= 8; step++)
+                        {
+                            float angle = Mathf.Deg2Rad * (-46f + step * 11.5f);
+                            var point = new Vector2(11 + radius * Mathf.Cos(angle), 10 + radius * Mathf.Sin(angle));
+                            if (step == 0) p.MoveTo(point); else p.LineTo(point);
+                        }
+                        p.Stroke();
+                    }
+                }
             }
             else if (action == "倍速") { Line(new Vector2(3, 4), new Vector2(9, 10), new Vector2(3, 16)); Line(new Vector2(10, 4), new Vector2(16, 10), new Vector2(10, 16)); }
             else if (action == "全选") { Rect(3, 3, 14, 14); Line(new Vector2(6, 10), new Vector2(9, 13), new Vector2(14, 6)); }
