@@ -322,9 +322,17 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             if (_state.Panel == TabletSystemPanel.None)
             {
-                _overlay.style.display = DisplayStyle.None;
-                _overlay.style.opacity = 0f;
-                ClearBlurredBackground();
+                int closeMs = TabletTheme.MotionMs(180);
+                if (_renderedPanel != TabletSystemPanel.None && closeMs > 0)
+                {
+                    PlayPanelCloseAnimation(closeMs);
+                }
+                else
+                {
+                    _overlay.style.display = DisplayStyle.None;
+                    _overlay.style.opacity = 0f;
+                    ClearBlurredBackground();
+                }
                 if (_renderedPanel != TabletSystemPanel.None)
                 {
                     if (_previousFocus is VisualElement previous && previous.panel == _parent.panel)
@@ -338,6 +346,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             bool opening = _renderedPanel == TabletSystemPanel.None;
+            _closeToken++;   // 关闭动画进行中又被打开：取消收尾
+            _overlay.pickingMode = PickingMode.Position;
+            if (opening)
+            {
+                _overlay.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+            }
             if (opening) _previousFocus = _parent.panel?.focusController.focusedElement;
             _renderedPanel = _state.Panel;
             _overlay.style.display = DisplayStyle.Flex;
@@ -377,12 +391,41 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             ApplyPresentation(_accent, _highContrast);
         }
 
+        private int _closeToken;
+
+        /// <summary>面板向状态栏方向轻轻收起并淡出，再真正隐藏；期间不拦截点击。</summary>
+        private void PlayPanelCloseAnimation(int ms)
+        {
+            int token = ++_closeToken;
+            var list = new System.Collections.Generic.List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+            var ease = new System.Collections.Generic.List<EasingFunction> { new EasingFunction(EasingMode.EaseIn) };
+            _overlay.pickingMode = PickingMode.Ignore;
+            _overlay.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("opacity") };
+            _overlay.style.transitionDuration = list;
+            _overlay.style.transitionTimingFunction = ease;
+            _panel.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("translate"), new StylePropertyName("opacity") };
+            _panel.style.transitionDuration = list;
+            _panel.style.transitionTimingFunction = ease;
+            _panel.style.translate = new Translate(0, -20);
+            _panel.style.opacity = 0f;
+            _overlay.style.opacity = 0f;
+            _overlay.schedule.Execute(() =>
+            {
+                if (token != _closeToken || _state.Panel != TabletSystemPanel.None) return;
+                _overlay.style.display = DisplayStyle.None;
+                _overlay.pickingMode = PickingMode.Position;
+                _overlay.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                ClearBlurredBackground();
+            }).ExecuteLater(ms + 30);
+        }
+
         /// <summary>面板从状态栏方向轻轻落下并淡入；开启“减少动效”时直接到位。</summary>
         private void PlayPanelOpenAnimation()
         {
             int ms = TabletTheme.MotionMs(240);
             _panel.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("translate"), new StylePropertyName("opacity") };
             _panel.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+            _panel.style.transitionTimingFunction = new System.Collections.Generic.List<EasingFunction> { new EasingFunction(EasingMode.EaseOut) };
             if (ms <= 0)
             {
                 _panel.style.translate = new Translate(0, 0);

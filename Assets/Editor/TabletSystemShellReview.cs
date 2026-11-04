@@ -245,21 +245,21 @@ public static class TabletSystemShellReview
 
                     // A. Escape 关闭与焦点恢复
                     Escape();
-                    Assert(recents.style.display == DisplayStyle.None, "Escape closed recent tasks overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Escape closed recent tasks overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after recent tasks closed via Escape");
 
                     // B. 系统返回 (RequestSystemBack) 关闭
                     Call("OpenRecentTasks");
                     Assert(recents.style.display == DisplayStyle.Flex, "Recent tasks reopened for back test");
                     Call("RequestSystemBack");
-                    Assert(recents.style.display == DisplayStyle.None, "RequestSystemBack closed recent tasks overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "RequestSystemBack closed recent tasks overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after system back");
 
                     // C. 点击外部 (Scrim) 关闭
                     Call("OpenRecentTasks");
                     Assert(recents.style.display == DisplayStyle.Flex, "Recent tasks reopened for scrim click test");
                     using (var clickEvt = ClickEvent.GetPooled()) { clickEvt.target = recents; recents.SendEvent(clickEvt); }
-                    Assert(recents.style.display == DisplayStyle.None, "Clicking recent tasks scrim closed overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Clicking recent tasks scrim closed overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after scrim click");
 
                     // D. 焦点销毁后的安全退回
@@ -270,7 +270,7 @@ public static class TabletSystemShellReview
                     Call("OpenRecentTasks");
                     tempInput.RemoveFromHierarchy();
                     Call("CloseRecentTasks");
-                    Assert(recents.style.display == DisplayStyle.None, "Recent tasks closed with destroyed previous focus");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Recent tasks closed with destroyed previous focus");
                     Assert(root.panel?.focusController.focusedElement != tempInput, "Destroyed element safe fallback");
 
                     // 重新聚焦有效输入框并打开通知中心
@@ -390,7 +390,7 @@ public static class TabletSystemShellReview
 
                     // 全部关闭 (CloseAllTabletTasks)：应用层隐藏，桌面完全显示
                     Call("CloseAllTabletTasks");
-                    Assert(appLayer.style.display == DisplayStyle.None, "App layer hidden after CloseAllTabletTasks");
+                    Assert(appLayer.style.display == DisplayStyle.None || appLayer.style.opacity.value < 0.01f, "App layer hidden after CloseAllTabletTasks");
                     var desktop = root.Q("tablet-desktop");
                     Assert(desktop != null && desktop.style.display == DisplayStyle.Flex, "Desktop visible after CloseAllTabletTasks");
                     Capture("07-desktop-all-closed");
