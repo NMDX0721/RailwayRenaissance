@@ -1569,10 +1569,35 @@ public static class RailwayMusicTerminalReview
                 case 90:
                     Assert(root.Q<Button>("music-bar-more-queue") != null && root.Q<Button>("music-bar-more-volume") != null, "The more menu lacks the folded buttons");
                     Capture("44-bar-more");
+                    Assert(root.Q<Button>("music-bar-more-timer") != null && root.Q<Button>("music-bar-more-tone") != null, "Buttons that were never pinned are not reachable from the more menu");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     MusicLibrarySession.State.barFolded = ""; MusicLibrarySession.Save();
-                    Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu");
-                    Finish(); return;
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 91:
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 92:
+                    {
+                        var dragGrip = root.Q("music-bar-drag-queue");
+                        Assert(dragGrip != null, "The bar rows have no drag dragGrip");
+                        string before = MusicLibrarySession.State.barOrder;
+                        using (var key = KeyDownEvent.GetPooled(' ', KeyCode.UpArrow, EventModifiers.None)) { key.target = dragGrip; dragGrip.SendEvent(key); }
+                    }
+                    break;
+                case 93:
+                    {
+                        string order = MusicLibrarySession.State.barOrder ?? "";
+                        Assert(order.StartsWith("volume,speed,tone,timer,queue,eq") || order.IndexOf("queue") < order.IndexOf("eq"), "Moving a bar row did not change the order: " + order);
+                        Capture("45-settings-bar-order");
+                        var bar = root.Q("music-queue").parent; var q = bar.IndexOf(root.Q("music-queue")); var l = bar.IndexOf(root.Q("music-lyrics"));
+                        Assert(q < l, "The bar does not follow the chosen order");
+                        MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
+                        root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                        Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu and can be reordered");
+                        Finish(); return;
+                    }
             }
             stage++; frame = Time.frameCount;
             // Batch frames can advance before a 180ms entrance transition has finished.

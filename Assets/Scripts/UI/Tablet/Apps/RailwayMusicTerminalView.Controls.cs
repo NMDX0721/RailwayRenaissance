@@ -215,7 +215,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         static void ToggleSlot(string key)
         {
-            var list = BarSlots(); if (!list.Remove(key)) list.Add(key); SetBarSlots(list);
+            var list = BarSlots(); if (!list.Remove(key)) { list.Add(key); SetFolded(key, false); } SetBarSlots(list);
         }
         static void MoveSlot(string key, int delta)
         {
@@ -238,7 +238,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!string.IsNullOrEmpty(raw)) foreach (string part in raw.Split(',')) if (Array.IndexOf(BarKeys, part) >= 0 && !list.Contains(part)) list.Add(part);
             return list;
         }
-        static bool IsFolded(string key) => FoldedKeys().Contains(key);
+        // Buttons that are not shown on the bar are never lost: they wait in the "more" menu. An optional button that is not pinned counts as folded.
+        static bool IsFolded(string key) => FoldedKeys().Contains(key) || (IsOptionalKey(key) && !BarSlots().Contains(key));
+
+        // Every bar button in the order the player chose; anything not mentioned keeps its default place after them.
+        static List<string> BarOrder()
+        {
+            var list = new List<string>(); string raw = MusicLibrarySession.State.barOrder;
+            if (!string.IsNullOrEmpty(raw)) foreach (string part in raw.Split(',')) if (Array.IndexOf(BarKeys, part) >= 0 && !list.Contains(part)) list.Add(part);
+            foreach (string key in BarKeys) if (!list.Contains(key)) list.Add(key);
+            return list;
+        }
+        static void SetBarOrder(List<string> order) { MusicLibrarySession.State.barOrder = string.Join(",", order); MusicLibrarySession.Save(); }
+        static void MoveBarKey(string key, int to)
+        {
+            var order = BarOrder(); if (!order.Remove(key)) return;
+            order.Insert(Mathf.Clamp(to, 0, order.Count), key); SetBarOrder(order);
+        }
         static void SetFolded(string key, bool folded)
         {
             var list = FoldedKeys(); list.Remove(key); if (folded) list.Add(key);
@@ -263,14 +279,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // The keys that are on the bar's side at all (optional ones only when pinned), in bar order.
-        bool BarPresent(string key) => !IsOptionalKey(key) || BarSlots().Contains(key);
+        static bool BarPresent(string key) => true;
 
         void OpenBarMore()
         {
             var menu = MenuAt(barMoreButton, "更多"); var more = barMoreButton;
-            foreach (string key in BarKeys)
+            foreach (string key in BarOrder())
             {
-                if (!BarPresent(key) || !IsFolded(key)) continue;
+                if (!IsFolded(key)) continue;
                 string k = key; int at = Array.IndexOf(BarKeys, k);
                 string label = BarKeyNames[at];
                 if (k == "speed") label += " " + SpeedText(); else if (k == "queue" && MusicLibrarySession.State.queue.Count > 0) label += "（" + MusicLibrarySession.State.queue.Count + " 首）";
@@ -292,22 +308,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         void UpdateBarChips()
         {
-            var slots = BarSlots(); var folded = FoldedKeys(); bool anyFolded = false;
-            foreach (string key in BarKeys)
+            bool anyFolded = false; var order = BarOrder();
+            foreach (string key in order)
             {
                 var button = BarButton(key); if (button == null) continue;
-                bool present = BarPresent(key), fold = folded.Contains(key);
-                button.style.display = present && !fold ? DisplayStyle.Flex : DisplayStyle.None;
-                anyFolded |= present && fold;
+                bool fold = IsFolded(key);
+                button.style.display = fold ? DisplayStyle.None : DisplayStyle.Flex;
+                anyFolded |= fold;
             }
             if (barMoreButton != null) barMoreButton.style.display = anyFolded ? DisplayStyle.Flex : DisplayStyle.None;
-            if (barButtons != null && barAnchor != null && barAnchor.parent == barButtons)
-                foreach (string key in slots)
+            if (barButtons != null)
+            {
+                int place = 0;
+                foreach (string key in order)
                 {
-                    var chip = SlotChip(key); if (chip == null) continue;
-                    if (barButtons.IndexOf(chip) != barButtons.IndexOf(barAnchor) - 1 - (slots.Count - 1 - slots.IndexOf(key)) || chip.parent != barButtons)
-                    { chip.RemoveFromHierarchy(); barButtons.Insert(barButtons.IndexOf(barAnchor), chip); }
+                    var button = BarButton(key); if (button == null || button.parent != barButtons) continue;
+                    if (barButtons.IndexOf(button) != place) { button.RemoveFromHierarchy(); barButtons.Insert(place, button); }
+                    place++;
                 }
+                if (barMoreButton != null && barMoreButton.parent == barButtons && barButtons.IndexOf(barMoreButton) != place) { barMoreButton.RemoveFromHierarchy(); barButtons.Insert(place, barMoreButton); }
+            }
             if (speedChip != null)
             {
                 speedChip.text = SpeedText();

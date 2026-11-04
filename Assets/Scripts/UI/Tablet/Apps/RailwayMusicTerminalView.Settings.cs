@@ -263,38 +263,74 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void FillBarSettings()
         {
             var group = Group("播放栏按钮");
-            Text(group, "每个按钮可以显示在栏上，或折叠进栏尾的「更多」菜单，想要更简洁的界面就多折叠几个。倍速、音色、定时、音效还可以隐藏。", "music-setting-hint");
-            var slots = BarSlots();
-            var ordered = BarKeys.Where(k => !IsOptionalKey(k) || !slots.Contains(k)).ToList();
-            // Optional buttons that are on the bar come first, in the player's own order, then the fixed ones and the optional ones not used.
-            ordered = slots.Concat(BarKeys.Where(k => !slots.Contains(k))).ToList();
-            foreach (string key in ordered)
+            Text(group, "拖动左边的把手排列顺序。每个按钮可以显示在栏上，或折叠进栏尾的「更多」菜单（折叠的按钮仍然可以从那里打开）。", "music-setting-hint");
+            var order = BarOrder(); var rows = new List<VisualElement>();
+            foreach (string key in order)
             {
-                string slot = key; int at = Array.IndexOf(BarKeys, slot); bool optional = IsOptionalKey(slot), pinned = slots.Contains(slot), fold = IsFolded(slot);
-                var row = Box(group, "music-settings-row"); row.AddToClassList("music-slot-row");
+                string slot = key; int at = Array.IndexOf(BarKeys, slot); bool optional = IsOptionalKey(slot);
+                var row = Box(group, "music-settings-row"); row.AddToClassList("music-slot-row"); row.name = "music-slot-row-" + slot; rows.Add(row);
+                var grip = Box(row, "music-slot-grip"); grip.name = "music-bar-drag-" + slot; grip.tooltip = "拖动排序"; grip.focusable = true;
+                for (int d = 0; d < 3; d++) Box(grip, "music-slot-grip-line").pickingMode = PickingMode.Ignore;
                 var icon = new Button { pickingMode = PickingMode.Ignore }; icon.AddToClassList("music-slot-icon"); row.Add(icon); MusicTerminalIcons.Apply(icon, BarKeyIcons[at], true);
                 var text = Box(row, "music-setting-text");
                 Text(text, BarKeyNames[at], "music-setting-title");
                 Text(text, BarKeyNotes[at], "music-setting-note");
-                if (optional && pinned && !fold)
-                {
-                    Chip(row, "▲", () => { MoveSlot(slot, -1); UpdateBarChips(); RefreshSettings(); }, "music-slot-up-" + slot, "前移").AddToClassList("music-slot-move");
-                    Chip(row, "▼", () => { MoveSlot(slot, 1); UpdateBarChips(); RefreshSettings(); }, "music-slot-down-" + slot, "后移").AddToClassList("music-slot-move");
-                }
-                var options = optional ? new[] { "显示", "折叠", "隐藏" } : new[] { "显示", "折叠" };
-                int current = optional ? (!pinned ? 2 : fold ? 1 : 0) : (fold ? 1 : 0);
-                Segmented(row, options, current, i =>
+                DragRow(grip, row, rows, slot);
+                int current = IsFolded(slot) ? 1 : 0;
+                Segmented(row, new[] { "显示", "折叠" }, current, i =>
                 {
                     if (optional)
                     {
                         var list = BarSlots(); bool has = list.Contains(slot);
-                        if (i == 2) { if (has) { list.Remove(slot); SetBarSlots(list); } SetFolded(slot, false); }
-                        else { if (!has) { list.Add(slot); SetBarSlots(list); } SetFolded(slot, i == 1); }
+                        if (i == 0) { if (!has) { list.Add(slot); SetBarSlots(list); } SetFolded(slot, false); }
+                        else { if (has) { list.Remove(slot); SetBarSlots(list); } SetFolded(slot, true); }
                     }
                     else SetFolded(slot, i == 1);
                     UpdateBarChips(); RefreshSettings();
                 }, i => optional && i == 0 ? "music-slot-" + slot : "music-set-bar-" + slot + "-" + i);
             }
+        }
+
+        // The grip of a bar row: drag it up or down to put the button somewhere else (arrow keys work too).
+        void DragRow(VisualElement grip, VisualElement row, List<VisualElement> rows, string key)
+        {
+            bool dragging = false; float startY = 0, baseCenter = 0; int target = 0;
+            void Unmark() { foreach (var other in rows) { other.RemoveFromClassList("is-drop-before"); other.RemoveFromClassList("is-drop-after"); } }
+            void Mark()
+            {
+                Unmark();
+                var others = rows.Where(r => r != row).ToList(); if (others.Count == 0) return;
+                if (target < others.Count) others[target].AddToClassList("is-drop-before"); else others[others.Count - 1].AddToClassList("is-drop-after");
+            }
+            void Finish(bool commit)
+            {
+                if (!dragging) return; dragging = false;
+                row.RemoveFromClassList("is-dragging"); row.style.translate = new Translate(0, 0); Unmark();
+                if (commit) { MoveBarKey(key, target); UpdateBarChips(); RefreshSettings(); }
+            }
+            grip.RegisterCallback<PointerDownEvent>(e =>
+            {
+                if (e.button != 0) return;
+                dragging = true; startY = e.position.y; baseCenter = row.worldBound.center.y; target = rows.IndexOf(row);
+                row.AddToClassList("is-dragging"); grip.CapturePointer(e.pointerId); e.StopPropagation();
+            });
+            grip.RegisterCallback<PointerMoveEvent>(e =>
+            {
+                if (!dragging) return;
+                float dy = e.position.y - startY; row.style.translate = new Translate(0, dy);
+                float at = baseCenter + dy; int index = 0;
+                foreach (var other in rows) if (other != row && other.worldBound.center.y < at) index++;
+                target = index; Mark();
+            });
+            grip.RegisterCallback<PointerUpEvent>(e => { if (!dragging) return; grip.ReleasePointer(e.pointerId); Finish(true); });
+            grip.RegisterCallback<PointerCaptureOutEvent>(e => Finish(false));
+            grip.RegisterCallback<KeyDownEvent>(e =>
+            {
+                int at = rows.IndexOf(row), to = e.keyCode == KeyCode.UpArrow ? at - 1 : e.keyCode == KeyCode.DownArrow ? at + 1 : at;
+                if (to == at || to < 0 || to >= rows.Count) return;
+                MoveBarKey(key, to); UpdateBarChips(); RefreshSettings(); e.StopPropagation();
+                settingsContent?.schedule.Execute(() => settingsContent?.Q("music-bar-drag-" + key)?.Focus());
+            });
         }
 
         // A small joined choice: one pill with the options side by side, the chosen one lit.

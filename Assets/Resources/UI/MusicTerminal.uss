@@ -1147,3 +1147,17 @@
 .music-settings-foldhead:hover .music-settings-chevron { color: rgb(240, 214, 150); }
 .music-settings-chevron { font-size: 14px; color: rgb(158, 159, 138); margin: 18px 0 8px 0; padding: 0; }
 .music-slot-row .music-segmented { margin-left: 10px; }
+
+/* bar rows: drag grip, drop marks; wider, calmer scrollbar in the settings sheet */
+.music-slot-grip { width: 22px; height: 34px; margin-right: 6px; flex-shrink: 0; justify-content: center; align-items: center; border-radius: 8px; }
+.music-slot-grip:hover { background-color: rgba(255, 255, 255, 0.07); }
+.music-slot-grip:focus { background-color: rgba(205, 176, 112, 0.18); }
+.music-slot-grip-line { width: 12px; height: 2px; margin: 1.5px 0; border-radius: 1px; background-color: rgb(128, 128, 108); }
+.music-slot-grip:hover .music-slot-grip-line { background-color: rgb(205, 176, 112); }
+.music-slot-row.is-dragging { background-color: rgb(58, 62, 48); border-radius: 12px; opacity: 0.96; }
+.music-slot-row.is-drop-before { border-top-width: 2px; border-top-color: rgb(205, 176, 112); }
+.music-slot-row.is-drop-after { border-bottom-width: 2px; border-bottom-color: rgb(205, 176, 112); }
+.music-terminal .music-settings-scroll .unity-scroller--vertical { width: 16px; min-width: 16px; margin-left: 10px; padding: 3px 2px; background-color: rgba(0, 0, 0, 0.22); border-left-width: 0; border-radius: 7px; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__tracker { opacity: 0; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger { width: 10px; min-width: 10px; margin-left: -5px; left: 50%; border-width: 0; border-radius: 5px; background-color: rgba(205, 176, 112, 0.5); }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover, .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:active { background-color: rgba(228, 200, 140, 0.85); }
