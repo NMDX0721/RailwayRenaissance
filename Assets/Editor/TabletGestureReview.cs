@@ -468,6 +468,28 @@ public static class TabletGestureReview
                     SimulateMouse("up", new Vector2(900, 440));
                     Assert(state.Panel == TabletSystemPanel.None, "Mouse drag away from the top edge must not open a panel");
 
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 10:
+                    // Stage 10: 三键导航模式 —— 应用内与桌面都常驻导航条，全面屏提示条隐藏；切回手势后恢复
+                    Resize(1280, 800);
+                    Call("LaunchApp", "设置");
+                    ui.PresentationPreferences.SetNavigationMode(TabletNavigationMode.ThreeButton);
+                    var navBar = root.Q("tablet-system-navigation");
+                    Assert(navBar != null && navBar.resolvedStyle.display == DisplayStyle.Flex, "Three-button bar must be visible inside an app");
+                    Assert(navBar.pickingMode == PickingMode.Position, "Three-button bar must receive input");
+                    Assert(root.Q("tablet-nav-back") != null && root.Q("tablet-nav-home") != null && root.Q("tablet-nav-recents") != null, "Three-button bar is missing a button");
+                    Assert(navBar.resolvedStyle.translate.y == 0f, "Three-button bar must stay on screen");
+                    Capture("11-three-button-in-app");
+                    Call("ReturnToTabletHome");
+                    navBar = root.Q("tablet-system-navigation");
+                    Assert(navBar.resolvedStyle.display == DisplayStyle.Flex, "Three-button bar must stay on the desktop");
+                    ui.PresentationPreferences.SetNavigationMode(TabletNavigationMode.Gestures);
+                    Assert(navBar.resolvedStyle.display == DisplayStyle.None, "Gestures mode must hide the bar on the desktop");
+                    Call("LaunchApp", "设置");
+                    Assert(root.Q("tablet-system-navigation").resolvedStyle.display == DisplayStyle.None, "Gestures mode must hide the bar inside an app");
                     Debug.Log("TABLET_GESTURE_GRAPHIC_REVIEW_OK: full interactive graphics touch review passed across portrait and landscape ratios (16:10, 4:3, portrait), music progress bar & scroll & slider & textfield input isolation, multi-touch second touch point rejection, orientation rotation reset, and system back navigation");
 
                     SessionState.SetBool(PendingKey, false);

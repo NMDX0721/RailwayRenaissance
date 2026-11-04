@@ -3337,15 +3337,17 @@ public class GameMainUI : MonoBehaviour
     private const float GestureBarReserve = 36f;
 
     /// <summary>滚动区末尾补出手势条的位置，保证滚到底时最后一项不被手势条盖住。已有更大底部内边距的不动。</summary>
-    private static void PadScrollEnds(VisualElement root)
+    private void PadScrollEnds(VisualElement root)
     {
         if (root == null) return;
+        bool threeButton = PresentationPreferences != null && PresentationPreferences.NavigationMode == RailwayRenaissance.UI.Tablet.SystemShell.TabletNavigationMode.ThreeButton;
+        float reserve = threeButton ? SystemNavBarHeight + 8f : GestureBarReserve;   // 三键导航条常驻时要让出整条
         root.Query<ScrollView>().ForEach(sv =>
         {
             var cc = sv.contentContainer;
             if (cc.ClassListContains("pad-end")) return;
-            if (cc.resolvedStyle.paddingBottom < GestureBarReserve)
-                cc.style.paddingBottom = GestureBarReserve;
+            if (cc.resolvedStyle.paddingBottom < reserve)
+                cc.style.paddingBottom = reserve;
             cc.AddToClassList("pad-end");
         });
     }
