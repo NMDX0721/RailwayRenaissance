@@ -14,6 +14,12 @@ namespace RailwayRenaissance.Cab.Research
     {
         readonly AtoRouteTask task; AtoTrajectoryReference reference; AtoV3State state;
         public AtoV3State Snapshot=>SimulationCodec.Decode<AtoV3State>(SimulationCodec.Encode(state));
+        public static AtoV3State DecodeCheckpoint(string encoded)
+        {
+            var saved=SimulationCodec.Decode<AtoV3State>(encoded,nameof(AtoV3State.LastBrakeSwitch),out bool migrated);
+            if(migrated&&saved.Version!=1)throw new ArgumentException("Checkpoint schema mismatch");
+            return saved;
+        }
         public CabAtoControllerV3(AtoRouteTask task,long tick,AtoObjective objective,double initialSpeed=0)
         {this.task=task??throw new ArgumentNullException(nameof(task));reference=AtoTrajectoryPlanner.PlanForMode(task,objective,initialSpeed);state=new AtoV3State{StartTick=tick,Mode=(int)objective,PendingMode=(int)objective,InitialSpeed=initialSpeed};Validate(state,tick);}
         public static CabAtoControllerV3 Restore(AtoRouteTask task,AtoV3State saved,long tick)

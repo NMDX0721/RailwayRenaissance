@@ -1,5 +1,9 @@
 # AGENTS.md — 铁路复兴：沙能冲击
 
+## ATO V3 trajectory research (2026-11-04)
+
+`AtoTrajectoryPlanner` and `CabAtoControllerV3` supply the opt-in trajectory controller in `CabAtoResearchReview`. Frozen V3 state version 1 retains its original switching behavior and checkpoint migration preserves that policy. New state version 3 persists the accepted brake switch tick and predicts the remaining hold before an ordinary switch can occur after 25 ticks (0.5 s). Safety intervention and arrival hold remain separate. Use the V3 route for signed error and telemetry even when the V2 route toggle is off. Keep historical artifacts immutable. See `docs/for-ai/ATO_V3_CONTROL.md` for verification and Unity Play limits.
+
 ## ATO research prototype (2026-10-25)
 
 CabAtoController is a System-only research controller; CabAtoResearchDriver is opt-in in the separate CabAtoResearchReview scene. BeforeSimulationStep schedules commands on simulation ticks through existing facade interlocks. Keep manual takeover, signed target errors and immutable run artifacts. A frozen finite-grid holdout verified the 0.5s switching constraint; Unity Play checks passed. V2 adds versioned full checkpoints, route tasks and switchable smooth/air-saving/punctual objectives; Windows nominal Play and exact replay pass. Frozen mismatch trials retain interventions and speed violations, so full-envelope reliability and real-train calibration remain pending. See docs/for-ai/ATO_V2_IMPLEMENTATION.md and docs/research/ato_v2_results.md.

@@ -130,7 +130,8 @@ public static class NF5KAtoPlayReview
             foreach(AtoObjective mode in Enum.GetValues(typeof(AtoObjective)))
             {
                 ato.SetPaused(true);driver.RestoreCheckpoint(preparedPhysics);ato.SetPaused(false);
-                ato.UseV3=true;ato.UseRouteController=true;ato.SelectMode(mode);Require(ato.Engage(),"V3 engagement failed");
+                ato.UseV3=true;ato.UseRouteController=false;ato.RelativeTargetMeters=500;ato.SelectMode(mode);Require(ato.Engage(),"V3 engagement failed");
+                Require(Math.Abs(ato.SignedErrorMeters+900)<1e-9,"V3 signed error used the legacy target");
                 if(mode==AtoObjective.Smooth){Require(independent.Activate(true)&&!ato.Active&&state.IndependentBrakeNotch==0,"V3 same-setting manual takeover failed");Require(ato.Engage(),"V3 re-engagement failed");}
                 driver.Advance(1);
                 if(mode==AtoObjective.Smooth){var before=ato.RouteV3State;ato.SelectMode(AtoObjective.Punctual);var pending=ato.RouteV3State;Require(pending.Mode==before.Mode&&pending.PendingMode==(int)AtoObjective.Punctual&&pending.BrakeGain==before.BrakeGain,"V3 mode changed early or reset estimator");driver.Advance(.12);Require(ato.RouteV3State.Mode==(int)AtoObjective.Punctual,"V3 mode did not change on control cycle");ato.SelectMode(mode);driver.Advance(.12);}

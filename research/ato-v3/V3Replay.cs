@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using RailwayRenaissance.Cab.Research;
 using RailwayRenaissance.Cab.Simulation;
 static class V3Replay
@@ -11,6 +13,23 @@ static class V3Replay
  }
  public static void Check()
  {
+  using(var archive=JsonDocument.Parse(File.ReadAllText("research/ato-v3/runs/20261028T121643698Z/results.json")))
+  {
+   int restored=0;
+   foreach(var row in archive.RootElement.EnumerateArray())
+   {
+    if(row.GetProperty("controller").GetString()!="V3")continue;
+    var saved=CabAtoControllerV3.DecodeCheckpoint(row.GetProperty("finalController").GetString());
+    var physics=SimulationCodec.Decode<SimulationState>(row.GetProperty("finalState").GetString());
+    if(saved.Version!=1||saved.LastBrakeSwitch!=-1000)throw new Exception("Historical V3 checkpoint policy changed");
+    var task=AtoRouteTask.Standard(physics.PositionM-900-row.GetProperty("error").GetDouble());
+    var controller=CabAtoControllerV3.Restore(task,saved,physics.Tick);
+    if(SimulationCodec.Encode(saved)!=SimulationCodec.Encode(controller.Snapshot))throw new Exception("Historical V3 checkpoint restore changed state");
+    restored++;
+   }
+   if(restored!=54)throw new Exception("Historical V3 checkpoint coverage changed");
+   Console.WriteLine("V3_LEGACY_CHECKPOINT_OK: 54 archived controller payloads restored");
+  }
   var probe=new CabSimulation(1100);var probeInput=new SimulationInput{Master=true,FuelPump=true,EngineRun=true,Brake=1};for(int i=0;i<15000;i++)probe.Step(probeInput);probeInput.ParkingBrake=false;probeInput.Direction=1;
   var probeController=new CabAtoControllerV3(AtoRouteTask.Standard(0),probe.State.Tick,AtoObjective.Punctual);int brakingCapture=-1,slowCapture=-1;
   for(int i=0;i<9000;i++){Step(probe,probeInput,probeController);if(slowCapture<0&&probe.State.Acceleration<-.005&&probeInput.Throttle==0&&probe.State.SpeedMps>1&&probe.State.PositionM>250&&probe.State.PositionM<650)slowCapture=i+1;if(probeController.Snapshot.LastBrake>=2&&probe.State.SpeedMps>1&&probe.State.PositionM>650){brakingCapture=i+1;break;}}

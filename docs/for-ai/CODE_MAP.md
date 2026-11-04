@@ -645,3 +645,5 @@ GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 Railwa
 2026-10-29 末端渐退反馈候选：隔离研究实验与新种子/工况冻结测试已运行；成功率未优于 V3，部分模式 jerk 和排气代理增加，未接入游戏，见同一开发记录。
 
 2026-11-04 平板机车遥测通过 CabEngineState.ActiveInstance 获取启用的驾驶室。实例启用时注册，禁用时仅清理自己的引用。GameMainUI 使用此入口读取驾驶状态。
+
+2026-11-04 ATO V3 恢复经 `CabAtoControllerV3.DecodeCheckpoint` 迁移历史版本 1 的状态字段。驱动的停车误差与路线遥测跟随 V3 任务，V2 路线开关关闭时仍可使用 V3 目标。

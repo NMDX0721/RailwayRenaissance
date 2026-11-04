@@ -27,7 +27,8 @@ namespace RailwayRenaissance.Cab.Research
         public void SelectMode(AtoObjective mode){Objective=mode;routeController?.RequestMode(mode);v3Controller?.RequestMode(mode);}
         public bool Active {get;private set;}
         public string Status {get;private set;}="研究自动驾驶未接管";
-        public double SignedErrorMeters=>driver?.Model==null?0:driver.Model.State.PositionM-(UseRouteController&&routeController!=null?routeController.Task.Target:controller?.Target??driver.Model.State.PositionM);
+        bool UsesRoute => (UseV3 || UseRouteController) && routeController != null;
+        public double SignedErrorMeters=>driver?.Model==null?0:driver.Model.State.PositionM-(UsesRoute?routeController.Task.Target:controller?.Target??driver.Model.State.PositionM);
         CabSimulationDriver driver;CabEngineState facade;CabAtoController controller;
         int lastThrottle,lastBrake;long lastControl=-1;int heldTicks;
         bool hadCommand;
@@ -71,7 +72,7 @@ namespace RailwayRenaissance.Cab.Research
             if(pack.version>=2){if(pack.objective<0||pack.objective>2)throw new ArgumentException("Invalid objective");if(!string.IsNullOrEmpty(pack.v2))routeCandidate=CabAtoControllerV2.Restore(AtoRouteTask.Decode(pack.route),SimulationCodec.Decode<AtoV2State>(pack.v2),physicalState.Tick);}
             CabAtoControllerV3 v3Candidate=null;
             // An inactive checkpoint may carry no V3 controller yet (V3 selected before the first engagement, or an engagement that did not start); an active one must.
-            if(pack.version==3&&pack.useV3&&(adapter.Active||!string.IsNullOrEmpty(pack.v3))){if(string.IsNullOrEmpty(pack.v3)||string.IsNullOrEmpty(pack.route))throw new ArgumentException("Missing V3 state");v3Candidate=CabAtoControllerV3.Restore(AtoRouteTask.Decode(pack.route),SimulationCodec.Decode<AtoV3State>(pack.v3),physicalState.Tick);if(adapter.Active&&v3Candidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V3 schedule");}
+            if(pack.version==3&&pack.useV3&&(adapter.Active||!string.IsNullOrEmpty(pack.v3))){if(string.IsNullOrEmpty(pack.v3)||string.IsNullOrEmpty(pack.route))throw new ArgumentException("Missing V3 state");v3Candidate=CabAtoControllerV3.Restore(AtoRouteTask.Decode(pack.route),CabAtoControllerV3.DecodeCheckpoint(pack.v3),physicalState.Tick);if(adapter.Active&&v3Candidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V3 schedule");}
             if(adapter.Active&&(pack.version==3&&pack.useV3?v3Candidate==null:pack.version>=2&&pack.useRoute?routeCandidate==null:candidate==null))throw new ArgumentException("Active checkpoint lacks controller");
             if(routeCandidate!=null&&adapter.Active&&!(pack.version==3&&pack.useV3)&&routeCandidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V2 schedule");
             if(candidate!=null&&CabAtoCheckpoint.Capture(candidate).LastTick>physicalState.Tick)throw new ArgumentException("Controller ahead of physics");
@@ -139,7 +140,7 @@ namespace RailwayRenaissance.Cab.Research
             GUILayout.BeginHorizontal();
             foreach(AtoObjective mode in Enum.GetValues(typeof(AtoObjective)))if(GUILayout.Button(mode==AtoObjective.Smooth?"平稳":mode==AtoObjective.AirSaving?"省气":"准点"))SelectMode(mode);
             GUILayout.EndHorizontal();
-            if(UseRouteController&&routeController!=null&&driver.Model!=null){double eta=UseV3&&v3Controller!=null?v3Controller.Snapshot.PredictedArrival:routeController.Snapshot.PredictedArrival;GUILayout.Label($"限速 {routeController.Task.LimitAt(driver.Model.State.PositionM):F1}m/s · 剩余 {-SignedErrorMeters:F1}m · 预计偏差 {eta-routeController.Task.TargetSeconds:F1}s");}
+            if(UsesRoute&&driver.Model!=null){double eta=UseV3&&v3Controller!=null?v3Controller.Snapshot.PredictedArrival:routeController.Snapshot.PredictedArrival;GUILayout.Label($"限速 {routeController.Task.LimitAt(driver.Model.State.PositionM):F1}m/s · 剩余 {-SignedErrorMeters:F1}m · 预计偏差 {eta-routeController.Task.TargetSeconds:F1}s");}
             if(UseV3&&v3Controller!=null)GUILayout.Label($"V3 估计制动响应 {v3Controller.Snapshot.BrakeGain:F2} · 到达 {v3Controller.Snapshot.Arrival:F1}s");
             if(controller!=null)GUILayout.Label($"目标误差 {SignedErrorMeters:F2}m · 估计减速度 {(UseRouteController&&routeController!=null?routeController.Snapshot.Gain:controller.EstimatedDeceleration):F2}m/s²");
             GUILayout.BeginHorizontal();
