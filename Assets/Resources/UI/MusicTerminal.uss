@@ -1163,3 +1163,7 @@
 .music-terminal .music-settings-scroll .unity-scroller--vertical:hover .unity-base-slider__dragger { background-color: rgba(205, 176, 112, 0.62); }
 .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover, .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__dragger:active { background-color: rgba(232, 204, 144, 0.9); }
 .music-settings-scroll .unity-scroll-view__content-container { padding-right: 20px; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical { overflow: hidden; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-slider { width: 100%; min-width: 0; max-width: 100%; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__drag-container { width: 100%; min-width: 0; max-width: 100%; }
+.music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__tracker { left: 0; right: 0; width: auto; margin-left: 0; }

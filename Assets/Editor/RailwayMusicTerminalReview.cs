@@ -1591,6 +1591,8 @@ public static class RailwayMusicTerminalReview
                         string order = MusicLibrarySession.State.barOrder ?? "";
                         Assert(order.StartsWith("volume,speed,tone,timer,queue,eq") || order.IndexOf("queue") < order.IndexOf("eq"), "Moving a bar row did not change the order: " + order);
                         Capture("45-settings-bar-order");
+                        { var sv = root.Q<ScrollView>("music-settings-scroll"); var sc = sv.verticalScroller; var dr = sc.Q(className: "unity-base-slider__dragger"); var dc = sc.Q(className: "unity-base-slider__drag-container"); var tr = sc.Q(className: "unity-base-slider__tracker");
+                          Debug.Log("SCROLLDBG view=" + sv.worldBound + " content=" + sv.contentContainer.worldBound + " scroller=" + sc.worldBound + " drag=" + dr.worldBound + " container=" + dc.worldBound + " tracker=" + tr.worldBound + " range=" + sc.lowValue + ".." + sc.highValue + " val=" + sc.value + " dragStyle=" + dr.resolvedStyle.backgroundColor + " scVis=" + sc.resolvedStyle.display); }
                         var bar = root.Q("music-queue").parent; var q = bar.IndexOf(root.Q("music-queue")); var l = bar.IndexOf(root.Q("music-lyrics"));
                         Assert(q < l, "The bar does not follow the chosen order");
                         MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
