@@ -71,7 +71,7 @@ namespace RailwayRenaissance.Cab.Research
             if(pack.version>=2){if(pack.objective<0||pack.objective>2)throw new ArgumentException("Invalid objective");if(!string.IsNullOrEmpty(pack.v2))routeCandidate=CabAtoControllerV2.Restore(AtoRouteTask.Decode(pack.route),SimulationCodec.Decode<AtoV2State>(pack.v2),physicalState.Tick);}
             CabAtoControllerV3 v3Candidate=null;
             // An inactive checkpoint may carry no V3 controller yet (V3 selected before the first engagement, or an engagement that did not start); an active one must.
-            if(pack.version==3&&pack.useV3&&(adapter.Active||!string.IsNullOrEmpty(pack.v3)||!string.IsNullOrEmpty(pack.route))){if(string.IsNullOrEmpty(pack.v3)||string.IsNullOrEmpty(pack.route))throw new ArgumentException("Missing V3 state");v3Candidate=CabAtoControllerV3.Restore(AtoRouteTask.Decode(pack.route),SimulationCodec.Decode<AtoV3State>(pack.v3),physicalState.Tick);if(adapter.Active&&v3Candidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V3 schedule");}
+            if(pack.version==3&&pack.useV3&&(adapter.Active||!string.IsNullOrEmpty(pack.v3))){if(string.IsNullOrEmpty(pack.v3)||string.IsNullOrEmpty(pack.route))throw new ArgumentException("Missing V3 state");v3Candidate=CabAtoControllerV3.Restore(AtoRouteTask.Decode(pack.route),SimulationCodec.Decode<AtoV3State>(pack.v3),physicalState.Tick);if(adapter.Active&&v3Candidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V3 schedule");}
             if(adapter.Active&&(pack.version==3&&pack.useV3?v3Candidate==null:pack.version>=2&&pack.useRoute?routeCandidate==null:candidate==null))throw new ArgumentException("Active checkpoint lacks controller");
             if(routeCandidate!=null&&adapter.Active&&!(pack.version==3&&pack.useV3)&&routeCandidate.Snapshot.LastTick!=adapter.LastControl)throw new ArgumentException("Inconsistent V2 schedule");
             if(candidate!=null&&CabAtoCheckpoint.Capture(candidate).LastTick>physicalState.Tick)throw new ArgumentException("Controller ahead of physics");
@@ -85,11 +85,18 @@ namespace RailwayRenaissance.Cab.Research
             driver.EnsureInitialized();var s=driver.Model.State;
             if(!s.Running||s.PipeKpa<470||s.MainKpa<600||driver.ParkingBrake||facade.Reverser!=ReverserPosition.Forward)
             {Status="请先启机、充风、前进换向并缓解停放制动";return false;}
-            routeController=(UseRouteController||UseV3)?new CabAtoControllerV2(AtoRouteTask.Standard(s.PositionM),s.Tick,Objective,AdaptiveV2):null;
-            try{v3Controller=UseV3?new CabAtoControllerV3(AtoRouteTask.Standard(s.PositionM),s.Tick,Objective,s.SpeedMps):null;}
+            CabAtoControllerV2 nextRoute;
+            CabAtoControllerV3 nextV3;
+            CabAtoController nextLegacy;
+            try
+            {
+                nextRoute=(UseRouteController||UseV3)?new CabAtoControllerV2(AtoRouteTask.Standard(s.PositionM),s.Tick,Objective,AdaptiveV2):null;
+                nextV3=UseV3?new CabAtoControllerV3(AtoRouteTask.Standard(s.PositionM),s.Tick,Objective,s.SpeedMps):null;
+                nextLegacy=new CabAtoController(Method,s.PositionM+RelativeTargetMeters,TargetSpeedMps,180,SwitchPenalty,MinimumBrakeTicks);
+            }
             catch(ArgumentException e){Status="无法建立轨迹："+e.Message;return false;}
             catch(InvalidOperationException e){Status="无法建立轨迹："+e.Message;return false;}
-            controller=new CabAtoController(Method,s.PositionM+RelativeTargetMeters,TargetSpeedMps,180,SwitchPenalty,MinimumBrakeTicks);
+            routeController=nextRoute;v3Controller=nextV3;controller=nextLegacy;
             lastControl=-1;hadCommand=false;heldTicks=0;Active=true;Status="自动运行已接管";return true;
         }
         public void TakeOver(){if(Active&&facade!=null)facade.SetThrottle(0);Relinquish();}
