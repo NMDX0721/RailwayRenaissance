@@ -16,7 +16,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
         // Per-frame Update keeps what it last drew, so a frame in which nothing changed does no lookups, string building or icon work.
-        Label queueBadgeNode; Button volumeButton; VisualElement volumePop; Action volumeRefresh; float mutedFrom;
+        Label queueBadgeNode; Button volumeButton, barMoreButton; VisualElement volumePop; Action volumeRefresh; float mutedFrom;
         int shownQueueCount = -1, shownSecond = -1, shownLengthSecond = -2;
         string shownPlayAction, shownModeAction, shownFavoriteAction, shownTitle;
         float shownVolumeFill = -1f, shownProgressFill = -1f;
@@ -970,9 +970,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             moveDown.tooltip = "向下移动"; moveDown.SetEnabled(index + 1 < queue.Count);
         }
         // Volume: the speaker on the bar opens a small vertical fader (drag or click on the rail; arrows nudge by 5%).
-        void OpenVolumePopover()
+        void OpenVolumePopover(VisualElement anchor)
         {
-            var menu = MenuAt(volumeButton, null); menu.AddToClassList("music-volume-pop"); volumePop = menu;
+            var menu = MenuAt(anchor ?? volumeButton, null); menu.AddToClassList("music-volume-pop"); volumePop = menu;
             var percent = Text(menu, "", "music-volume-value");
             var rail = Box(menu, "music-volume-rail"); rail.name = "music-volume";
             var fill = Box(rail, "music-volume-fill"); fill.pickingMode = PickingMode.Ignore;
@@ -1013,11 +1013,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void ShowQueueCount(int queued)
         {
             var button = root.Q<Button>("music-queue"); if (button == null || queueBadgeNode == null) return;
-            MusicTerminalIcons.Apply(button, queued > 0 ? "队列·计数" : "队列", true);
+            MusicTerminalIcons.Apply(button, queued > 9 ? "队列·计数宽" : queued > 0 ? "队列·计数" : "队列", true);
             button.tooltip = queued > 0 ? "队列（" + queued + " 首）" : "队列";
             var icon = button.Q(className: "music-vector-icon");
             if (icon != null && queueBadgeNode.parent != icon) icon.Add(queueBadgeNode);
-            queueBadgeNode.text = queued > 99 ? "99" : queued > 9 ? "9+" : queued.ToString();
+            queueBadgeNode.text = queued > 99 ? "99" : queued.ToString();
             queueBadgeNode.EnableInClassList("is-wide", queued > 9);
             queueBadgeNode.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
         }
@@ -1058,7 +1058,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             effects.AddToClassList("music-utility-buttons");
             MusicAudioEffectsEngine.SetPlaybackSpeed(MusicLibrarySession.State.playbackSpeed <= 0 ? 1f : MusicLibrarySession.State.playbackSpeed);
             // Speed, tone and timer live in the playback settings panel; each keeps a button on the bar only when the player pinned it there.
-            volumeButton = Button(effects, "音量", OpenVolumePopover, "music-volume-button");
+            volumeButton = Button(effects, "音量", () => OpenVolumePopover(volumeButton), "music-volume-button");
             speedChip = new Button(() => OpenControlsPanel(speedChip)) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
             speedChip.tooltip = "播放速度（点开播放设置）"; effects.Add(speedChip);
             toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip), "music-tone"); toneChip.tooltip = "收听音色";
@@ -1071,6 +1071,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
             Button settingsButton = null;
             settingsButton = Button(effects, "播放设置", () => OpenControlsPanel(settingsButton), "music-settings"); settingsButton.tooltip = "播放设置：倍速、音色、定时、歌词校准、电台";
+            barMoreButton = Button(effects, "更多", OpenBarMore, "music-bar-more"); barMoreButton.tooltip = "更多";
             UpdateBarChips();
         }
         void ShowDetail(string id)

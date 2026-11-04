@@ -81,6 +81,7 @@ public static class RailwayMusicTerminalReview
     // At the normal review size a failed check stops the run. When MUSIC_REVIEW_SIZE asks for another size (a pre-flight for a new canvas), a failed
     // check is logged as MUSIC_PREFLIGHT_ISSUE and the run goes on, so one run shows everything that does not fit instead of only the first thing.
     static bool Preflight => MainSize.x != 1440 || MainSize.y != 900;
+    static bool IsHidden(VisualElement e) => e == null || e.resolvedStyle.display == DisplayStyle.None || e.style.display == DisplayStyle.None;
     static void Assert(bool condition, string reason)
     {
         if (condition) return;
@@ -1538,6 +1539,39 @@ public static class RailwayMusicTerminalReview
                 case 83:
                     Assert(Mathf.Abs(MusicLibrarySession.State.volume - .6f) < .02f, "Unmute did not restore the volume");
                     Debug.Log("MUSIC_VOLUME_OK: popover opens, mute and restore");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    { var qq = MusicLibrarySession.State.queue; qq.Clear(); for (int n = 0; n < 12; n++) qq.Add("platform"); MusicLibrarySession.Commit(); }
+                    break;
+                case 84:
+                    Capture("41-queue-count-12");
+                    { var qq = MusicLibrarySession.State.queue; qq.Clear(); qq.AddRange(new[] { "platform", "iron_and_ash", "platform", "iron_and_ash", "platform" }); MusicLibrarySession.Commit(); }
+                    break;
+                case 85:
+                    Capture("42-queue-count-5");
+                    MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 86:
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 87:
+                    Capture("43-settings-bar");
+                    Submit(root.Q<Button>("music-set-bar-queue-1"));
+                    break;
+                case 88:
+                    Submit(root.Q<Button>("music-set-bar-volume-1"));
+                    break;
+                case 89:
+                    Assert(IsHidden(root.Q<Button>("music-queue")) && IsHidden(root.Q<Button>("music-volume-button")) && !IsHidden(root.Q<Button>("music-bar-more")), "Folding bar buttons did not move them into the more menu");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-bar-more"));
+                    break;
+                case 90:
+                    Assert(root.Q<Button>("music-bar-more-queue") != null && root.Q<Button>("music-bar-more-volume") != null, "The more menu lacks the folded buttons");
+                    Capture("44-bar-more");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    MusicLibrarySession.State.barFolded = ""; MusicLibrarySession.Save();
+                    Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

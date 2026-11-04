@@ -226,14 +226,81 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         Button SlotChip(string key) { switch (key) { case "speed": return speedChip; case "tone": return toneChip; case "timer": return timerChip; default: return eqChip; } }
 
+        // ---- Every bar button can also be folded into the "more" menu at the end of the bar ----
+        static readonly string[] BarKeys = { "volume", "speed", "tone", "timer", "eq", "queue", "lyrics", "detail", "settings" };
+        static readonly string[] BarKeyNames = { "音量", "倍速", "音色", "定时", "音效", "队列", "歌词", "唱片档案", "播放设置" };
+        static readonly string[] BarKeyIcons = { "音量", "倍速", "音色", "定时", "音效", "队列", "歌词 / 字幕", "唱片档案", "播放设置" };
+        static readonly string[] BarKeyNotes = { "点开后竖向调节音量", "当前倍速", "收听音色", "睡眠定时", "均衡器与统一响度", "接续播放的队列", "歌词与舞台", "当前曲目的唱片档案", "倍速、音色、定时、歌词校准" };
+
+        static List<string> FoldedKeys()
+        {
+            var list = new List<string>(); string raw = MusicLibrarySession.State.barFolded;
+            if (!string.IsNullOrEmpty(raw)) foreach (string part in raw.Split(',')) if (Array.IndexOf(BarKeys, part) >= 0 && !list.Contains(part)) list.Add(part);
+            return list;
+        }
+        static bool IsFolded(string key) => FoldedKeys().Contains(key);
+        static void SetFolded(string key, bool folded)
+        {
+            var list = FoldedKeys(); list.Remove(key); if (folded) list.Add(key);
+            MusicLibrarySession.State.barFolded = string.Join(",", list); MusicLibrarySession.Save();
+        }
+        static bool IsOptionalKey(string key) => Array.IndexOf(SlotKeys, key) >= 0;
+
+        Button BarButton(string key)
+        {
+            switch (key)
+            {
+                case "volume": return volumeButton;
+                case "speed": return speedChip;
+                case "tone": return toneChip;
+                case "timer": return timerChip;
+                case "eq": return eqChip;
+                case "queue": return root?.Q<Button>("music-queue");
+                case "lyrics": return root?.Q<Button>("music-lyrics");
+                case "detail": return root?.Q<Button>("music-detail");
+                default: return root?.Q<Button>("music-settings");
+            }
+        }
+
+        // The keys that are on the bar's side at all (optional ones only when pinned), in bar order.
+        bool BarPresent(string key) => !IsOptionalKey(key) || BarSlots().Contains(key);
+
+        void OpenBarMore()
+        {
+            var menu = MenuAt(barMoreButton, "更多"); var more = barMoreButton;
+            foreach (string key in BarKeys)
+            {
+                if (!BarPresent(key) || !IsFolded(key)) continue;
+                string k = key; int at = Array.IndexOf(BarKeys, k);
+                string label = BarKeyNames[at];
+                if (k == "speed") label += " " + SpeedText(); else if (k == "queue" && MusicLibrarySession.State.queue.Count > 0) label += "（" + MusicLibrarySession.State.queue.Count + " 首）";
+                PopoverItem(menu, label, false, () =>
+                {
+                    CloseModal();
+                    switch (k)
+                    {
+                        case "volume": OpenVolumePopover(more); break;
+                        case "speed": case "tone": case "timer": case "settings": OpenControlsPanel(more); break;
+                        case "eq": OpenSettings("sound"); break;
+                        case "queue": queueOpen = !queueOpen; RenderDrawer(); break;
+                        case "lyrics": OpenLyrics(); break;
+                        default: ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); break;
+                    }
+                }).name = "music-bar-more-" + k;
+            }
+        }
+
         void UpdateBarChips()
         {
-            var slots = BarSlots();
-            foreach (string key in SlotKeys)
+            var slots = BarSlots(); var folded = FoldedKeys(); bool anyFolded = false;
+            foreach (string key in BarKeys)
             {
-                var chip = SlotChip(key); if (chip == null) continue;
-                chip.style.display = slots.Contains(key) ? DisplayStyle.Flex : DisplayStyle.None;
+                var button = BarButton(key); if (button == null) continue;
+                bool present = BarPresent(key), fold = folded.Contains(key);
+                button.style.display = present && !fold ? DisplayStyle.Flex : DisplayStyle.None;
+                anyFolded |= present && fold;
             }
+            if (barMoreButton != null) barMoreButton.style.display = anyFolded ? DisplayStyle.Flex : DisplayStyle.None;
             if (barButtons != null && barAnchor != null && barAnchor.parent == barButtons)
                 foreach (string key in slots)
                 {

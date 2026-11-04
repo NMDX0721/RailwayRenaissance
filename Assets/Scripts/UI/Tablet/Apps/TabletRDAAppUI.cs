@@ -42,6 +42,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         leftCol.style.flexDirection = FlexDirection.Column;
         leftCol.style.marginRight = 16;
         columns.Add(leftCol);
+        var history = new Button(() => TabletHistoryUI.BuildStatistics(win, () => { win.Clear(); BuildRDAApp(win); })) { text = "运营统计", name = "rda-statistics" };
+        history.style.height = 48;
+        TabletBookmarksUI.StyleAction(history);
+        history.style.alignSelf = Align.FlexStart;
+        history.style.marginBottom = 10;
+        leftCol.Add(history);
 
         // 线路状态大卡片
         var lineCard = new VisualElement();

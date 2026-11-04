@@ -64,10 +64,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.BezierCurveTo(new Vector2(19, 0), new Vector2(21, 10), new Vector2(10, 17));
                 p.ClosePath(); if (action == "已藏") p.Fill(); else p.Stroke();
             }
-            else if (action == "队列·计数")
+            else if (action.StartsWith("队列·计数"))
             {
-                // The count takes the place of the arrow: the list keeps two full rows and a short third row, and the digit sits where that row would end.
-                Line(new Vector2(3, 5), new Vector2(17, 5)); Line(new Vector2(3, 10), new Vector2(17, 10)); Line(new Vector2(3, 15), new Vector2(9, 15));
+                // The count takes the place of the arrow: two full rows well apart from a short third row, and the digit sits where that row ends.
+                bool wide = action.EndsWith("宽");
+                Line(new Vector2(3, 4), new Vector2(17, 4)); Line(new Vector2(3, 8.5f), new Vector2(17, 8.5f)); Line(new Vector2(3, 15), new Vector2(wide ? 5.5f : 8, 15));
             }
             else if (action.Contains("队列") || action == "下一首播放")
             {
@@ -140,6 +141,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (action == "静音") { Line(new Vector2(14, 7), new Vector2(19, 13)); Line(new Vector2(19, 7), new Vector2(14, 13)); }
                 else { p.BeginPath(); p.Arc(new Vector2(11, 10), 4, -50, 50); p.Stroke(); p.BeginPath(); p.Arc(new Vector2(11, 10), 7.5f, -50, 50); p.Stroke(); }
             }
+            else if (action == "倍速") { Line(new Vector2(3, 4), new Vector2(9, 10), new Vector2(3, 16)); Line(new Vector2(10, 4), new Vector2(16, 10), new Vector2(10, 16)); }
             else if (action == "全选") { Rect(3, 3, 14, 14); Line(new Vector2(6, 10), new Vector2(9, 13), new Vector2(14, 6)); }
             else if (action == "移到最前") { Line(new Vector2(4, 3), new Vector2(16, 3)); Line(new Vector2(10, 17), new Vector2(10, 7)); Line(new Vector2(6, 10), new Vector2(10, 6), new Vector2(14, 10)); }
             else if (action == "移到末尾") { Line(new Vector2(4, 17), new Vector2(16, 17)); Line(new Vector2(10, 3), new Vector2(10, 13)); Line(new Vector2(6, 10), new Vector2(10, 14), new Vector2(14, 10)); }

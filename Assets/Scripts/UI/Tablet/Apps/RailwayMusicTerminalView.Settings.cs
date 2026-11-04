@@ -217,23 +217,49 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void FillBarSettings()
         {
             var group = Group("播放栏按钮");
-            Text(group, "选择要放在播放栏上的按钮，并用箭头调整先后。队列、歌词、唱片档案和设置始终在栏上。", "music-setting-hint");
+            Text(group, "每个按钮可以留在栏上，或折进栏尾的「更多」里，想要更简洁的界面就多折几个。倍速、音色、定时、音效还可以不放。", "music-setting-hint");
             var slots = BarSlots();
-            var ordered = slots.Concat(SlotKeys.Where(k => !slots.Contains(k))).ToList();
+            var ordered = BarKeys.Where(k => !IsOptionalKey(k) || !slots.Contains(k)).ToList();
+            // Optional buttons that are on the bar come first, in the player's own order, then the fixed ones and the optional ones not used.
+            ordered = slots.Concat(BarKeys.Where(k => !slots.Contains(k))).ToList();
             foreach (string key in ordered)
             {
-                string slot = key; int index = Array.IndexOf(SlotKeys, slot); bool on = slots.Contains(slot);
+                string slot = key; int at = Array.IndexOf(BarKeys, slot); bool optional = IsOptionalKey(slot), pinned = slots.Contains(slot), fold = IsFolded(slot);
                 var row = Box(group, "music-settings-row"); row.AddToClassList("music-slot-row");
+                var icon = new Button { pickingMode = PickingMode.Ignore }; icon.AddToClassList("music-slot-icon"); row.Add(icon); MusicTerminalIcons.Apply(icon, BarKeyIcons[at], true);
                 var text = Box(row, "music-setting-text");
-                Text(text, SlotNames[index], "music-setting-title");
-                Text(text, SlotNotes[index], "music-setting-note");
-                if (on)
+                Text(text, BarKeyNames[at], "music-setting-title");
+                Text(text, BarKeyNotes[at], "music-setting-note");
+                if (optional && pinned && !fold)
                 {
                     Chip(row, "▲", () => { MoveSlot(slot, -1); UpdateBarChips(); RefreshSettings(); }, "music-slot-up-" + slot, "前移").AddToClassList("music-slot-move");
                     Chip(row, "▼", () => { MoveSlot(slot, 1); UpdateBarChips(); RefreshSettings(); }, "music-slot-down-" + slot, "后移").AddToClassList("music-slot-move");
                 }
-                var toggle = Chip(row, on ? "已放入" : "放入", () => { ToggleSlot(slot); UpdateBarChips(); RefreshSettings(); }, "music-slot-" + slot);
-                toggle.AddToClassList("music-settings-chip"); toggle.EnableInClassList("is-active", on);
+                var options = optional ? new[] { "栏上", "折叠", "不放" } : new[] { "栏上", "折叠" };
+                int current = optional ? (!pinned ? 2 : fold ? 1 : 0) : (fold ? 1 : 0);
+                Segmented(row, options, current, i =>
+                {
+                    if (optional)
+                    {
+                        var list = BarSlots(); bool has = list.Contains(slot);
+                        if (i == 2) { if (has) { list.Remove(slot); SetBarSlots(list); } SetFolded(slot, false); }
+                        else { if (!has) { list.Add(slot); SetBarSlots(list); } SetFolded(slot, i == 1); }
+                    }
+                    else SetFolded(slot, i == 1);
+                    UpdateBarChips(); RefreshSettings();
+                }, i => optional && i == 0 ? "music-slot-" + slot : "music-set-bar-" + slot + "-" + i);
+            }
+        }
+
+        // A small joined choice: one pill with the options side by side, the chosen one lit.
+        void Segmented(VisualElement parent, IList<string> options, int current, Action<int> pick, Func<int, string> nameOf)
+        {
+            var seg = Box(parent, "music-segmented");
+            for (int i = 0; i < options.Count; i++)
+            {
+                int index = i;
+                var button = new Button(() => pick(index)) { text = options[i], name = nameOf(i), tooltip = options[i] };
+                button.AddToClassList("music-seg"); button.EnableInClassList("is-active", i == current); seg.Add(button);
             }
         }
 
