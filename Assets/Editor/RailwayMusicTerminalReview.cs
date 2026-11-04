@@ -1469,6 +1469,13 @@ public static class RailwayMusicTerminalReview
                     MusicLibrarySession.State.lyricGlobalOffsetMs = 0; MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs = 0;
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     Debug.Log("MUSIC_RULER_OK: ruler opened from the palette, track and global offsets add");
+                    {
+                        var yrc = MusicTimedText.Parse("{\"t\":0,\"c\":[{\"tx\":\"作词\"}]}\n[12340,900](12340,400,0)你(12740,500,0)好\n[14000,800](14000,800,0)世界", ".yrc");
+                        Assert(string.IsNullOrEmpty(yrc.error) && yrc.lines.Count == 2 && yrc.lines[0].text == "你好" && yrc.lines[0].words.Count == 2 && Math.Abs(yrc.lines[0].words[1].start - 12.74) < .001, "YRC parse failed: " + yrc.error);
+                        var qrc = MusicTimedText.Parse("[ti:x]\n[12340,900]你(12340,400)好(12740,500)\n[14000,800]世界(14000,800)", ".qrc");
+                        Assert(string.IsNullOrEmpty(qrc.error) && qrc.lines.Count == 2 && qrc.lines[1].text == "世界" && qrc.lines[0].words.Count == 2 && Math.Abs(qrc.lines[0].end - 13.24) < .001, "QRC parse failed: " + qrc.error);
+                        Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
+                    }
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

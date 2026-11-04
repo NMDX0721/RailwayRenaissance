@@ -76,6 +76,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 text = text.TrimStart('\uFEFF').Replace("\r\n", "\n").Replace('\r', '\n');
                 if (format == ".json") ParseJsonWords(text, result);
+                else if (YrcOrQrc.IsMatch(text)) ParseWordMs(text, result);
                 else if (format == ".srt" || format == ".vtt" || text.StartsWith("WEBVTT") || text.Contains("-->")) ParseCues(text, result);
                 else ParseLrc(text, result);
                 var ordered = result.lines.OrderBy(l => l.start).ToArray();
@@ -133,6 +134,37 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 line.end = word.end;
                 previousEnd = word.end;
             }
+        }
+        // NetEase YRC and QQ QRC: "[lineStartMs,lineMs]" then per-word millisecond times, absolute in both.
+        //   YRC  [12340,3000](12340,400,0)你(12740,500,0)好        QRC  [12340,3000]你(12340,400)好(12740,500)
+        static readonly Regex YrcOrQrc = new Regex(@"^\[\d+,\d+\]", RegexOptions.Multiline);
+        static readonly Regex YrcWord = new Regex(@"\((\d+),(\d+),-?\d+\)([^(\n]*)");
+        static readonly Regex QrcWord = new Regex(@"([^()\n]*?)\((\d+),(\d+)\)");
+        static readonly Regex MsLine = new Regex(@"^\[(\d+),(\d+)\](.*)$");
+        static void ParseWordMs(string text, MusicTimedDocument doc)
+        {
+            foreach (string raw in text.Split('\n'))
+            {
+                var head = MsLine.Match(raw.Trim());
+                if (!head.Success) continue;      // credits written as {"t":...} JSON, <meta> tags and the like
+                double start = long.Parse(head.Groups[1].Value) / 1000d, length = long.Parse(head.Groups[2].Value) / 1000d;
+                string body = head.Groups[3].Value;
+                var line = new MusicTimedLine { start = start, end = start + Math.Max(length, .05) };
+                if (body.StartsWith("("))
+                    foreach (Match m in YrcWord.Matches(body))
+                        AddMsWord(line, long.Parse(m.Groups[1].Value), long.Parse(m.Groups[2].Value), m.Groups[3].Value);
+                else
+                    foreach (Match m in QrcWord.Matches(body))
+                        AddMsWord(line, long.Parse(m.Groups[2].Value), long.Parse(m.Groups[3].Value), m.Groups[1].Value);
+                line.text = string.Concat(line.words.Select(w => w.text)).Trim();
+                if (line.words.Count == 0) continue;
+                doc.lines.Add(line);
+            }
+        }
+        static void AddMsWord(MusicTimedLine line, long startMs, long lengthMs, string token)
+        {
+            if (token.Length == 0 || lengthMs <= 0) return;
+            line.words.Add(new MusicTimedWord { start = startMs / 1000d, end = (startMs + lengthMs) / 1000d, text = token });
         }
         static double Seconds(string stamp)
         {
@@ -239,7 +271,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (document == null && track.local)
             {
                 string stem = Path.Combine(LocalMusicFileImporter.GetCustomMusicDirectory(), Path.GetFileNameWithoutExtension(track.fileName));
-                foreach (string format in new[] { ".lrc", ".vtt", ".srt", ".json" })
+                foreach (string format in new[] { ".lrc", ".vtt", ".srt", ".json", ".yrc", ".qrc" })
                     if (File.Exists(stem + format)) { document = Read(stem + format); break; }
                 if (File.Exists(stem + ".t.lrc")) translation = Read(stem + ".t.lrc");
             }
@@ -303,7 +335,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static bool Import(string id, string path, bool translation, out string message)
         {
             string extension = Path.GetExtension(path ?? "").ToLowerInvariant();
-            if (extension != ".lrc" && extension != ".vtt" && extension != ".srt" && extension != ".json") { message = "支持 LRC、SRT、WebVTT 和逐词 JSON"; return false; }
+            if (extension != ".lrc" && extension != ".vtt" && extension != ".srt" && extension != ".json" && extension != ".yrc" && extension != ".qrc") { message = "支持 LRC、YRC、QRC、SRT、WebVTT 和逐词 JSON"; return false; }
             var parsed = Read(path);
             if (!string.IsNullOrEmpty(parsed.error)) { message = parsed.error; return false; }
             try
