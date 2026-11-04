@@ -1043,7 +1043,7 @@
 .music-settings-chips .music-settings-chip { min-width: 74px; }
 
 /* ===== Command palette ===== */
-.music-palette { width: 580px; max-width: 92%; max-height: 92%; padding: 12px; }
+.music-palette { width: 720px; max-width: 92%; max-height: 92%; padding: 12px; }
 .music-palette-input { margin: 0 0 8px 0; }
 .music-palette-input .unity-base-text-field__input { height: 40px; border-radius: 20px; padding-left: 16px; font-size: 15px; }
 .music-palette-scroll { flex-grow: 1; flex-shrink: 1; min-height: 80px; max-height: 620px; }
