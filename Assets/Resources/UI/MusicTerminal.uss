@@ -921,8 +921,8 @@
 .music-navigation .music-new-playlist, .music-navigation .music-nav-note { flex-shrink: 0; }
 
 /* Song change on the lyrics page: the lyric layer fades in. */
-.music-lyrics-surface > * { transition-property: opacity; transition-duration: 380ms; transition-timing-function: ease-out; }
-.music-lyrics-surface > .music-lyrics-entering { opacity: 0; }
+.music-lyrics-surface > * { transition-property: opacity, translate; transition-duration: 380ms, 560ms; transition-timing-function: ease-out; }
+.music-lyrics-surface > .music-lyrics-entering { opacity: 0; translate: 0 16px; }
 .music-reduce-motion .music-lyrics-surface > * { transition-duration: 0s; }
 
 /* Replacement sheet: candidates from the other sources. */

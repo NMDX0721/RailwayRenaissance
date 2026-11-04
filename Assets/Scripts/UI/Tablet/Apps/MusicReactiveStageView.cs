@@ -12,7 +12,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         readonly float[] output = new float[512];
         float[] decoded;
         Color primary, secondary, fromPrimary, fromSecondary, targetPrimary, targetSecondary;
-        float blend = 1, energy, transient, lastRaw, nextFrame, clock, seed;
+        float blend = 1, energy, transient, lastRaw, nextFrame, clock, seed, seedTarget;
         int composition;
         bool initialized;
         public string TrackId { get; private set; }
@@ -84,13 +84,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             TrackId = id;
             uint hash = 2166136261;
             foreach (char c in id) hash = (hash ^ c) * 16777619;
-            seed = (hash % 1000) / 1000f;
+            seedTarget = (hash % 1000) / 1000f; if (!initialized) seed = seedTarget;
             composition = id == "south_wind" ? 0 : id == "starlit_rails" ? 1 : id == "chollima_ride" ? 2 : (int)(hash % 3);
             var palette = Palette(MusicAlbumArtResolver.GetAlbumCover(id, track?.category));
             fromPrimary = initialized ? primary : palette[0];
             fromSecondary = initialized ? secondary : palette[1];
-            targetPrimary = Tint(palette[0], (seed - .5f) * .08f);
-            targetSecondary = Tint(palette[1], (.5f - seed) * .08f);
+            targetPrimary = Tint(palette[0], (seedTarget - .5f) * .08f);
+            targetSecondary = Tint(palette[1], (.5f - seedTarget) * .08f);
             // Art direction keeps the four original vocal songs visually distinct, including shared sleeves.
             if (id == "south_wind") { targetPrimary = Color.Lerp(targetPrimary, new Color(.64f, .5f, .2f), .65f); targetSecondary = new Color(.22f, .49f, .36f); }
             if (id == "starlit_rails") { targetPrimary = new Color(.23f, .35f, .65f); targetSecondary = new Color(.53f, .28f, .46f); }
@@ -99,7 +99,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             blend = initialized ? 0 : 1;
             primary = initialized ? primary : targetPrimary;
             secondary = initialized ? secondary : targetSecondary;
-            initialized = true; energy = transient = lastRaw = 0;
+            initialized = true; transient = lastRaw = 0;
             style.backgroundColor = Color.Lerp(new Color(.045f, .055f, .06f), primary, .12f);
             MarkDirtyRepaint();
         }
@@ -202,7 +202,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             float dt = Mathf.Clamp(Time.unscaledTime - (nextFrame - 1f / 30), .001f, .1f);
             nextFrame = Time.unscaledTime + 1f / 30;
             bool changed = blend < 1;
-            blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .65f);
+            blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .9f);
+            seed = reducedMotion ? seedTarget : Mathf.MoveTowards(seed, seedTarget, dt / 1.4f);
+            if (seed != seedTarget && !changed) MarkDirtyRepaint();
             float eased = blend * blend * (3 - 2 * blend);
             primary = Color.Lerp(fromPrimary, targetPrimary, eased);
             secondary = Color.Lerp(fromSecondary, targetSecondary, eased);
