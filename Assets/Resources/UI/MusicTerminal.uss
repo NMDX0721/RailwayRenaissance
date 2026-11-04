@@ -1167,3 +1167,9 @@
 .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-slider { width: 100%; min-width: 0; max-width: 100%; }
 .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__drag-container { width: 100%; min-width: 0; max-width: 100%; }
 .music-terminal .music-settings-scroll .unity-scroller--vertical .unity-base-slider__tracker { left: 0; right: 0; width: auto; margin-left: 0; }
+
+/* buttons: one even outline all the way round (no light-top / dark-bottom bevel, which looks broken on round corners) */
+.music-button { border-color: rgba(255, 255, 255, 0.09); }
+.music-button:hover { border-color: rgba(205, 176, 112, 0.7); }
+.music-button:active { border-color: rgba(205, 176, 112, 0.45); }
+.music-button:focus { border-color: rgba(222, 190, 125, 0.85); }
