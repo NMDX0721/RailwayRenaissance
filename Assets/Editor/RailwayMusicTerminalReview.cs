@@ -662,7 +662,7 @@ public static class RailwayMusicTerminalReview
                     using (var up = PointerUpEvent.GetPooled(new Event { type = EventType.MouseUp, button = 0, mousePosition = queueRows[1].worldBound.center }))
                     { up.target = handle; handle.SendEvent(up); }
                     Assert(MusicLibrarySession.State.queue[0] == "iron_and_ash", "Pointer drag did not reorder the queue");
-                    Submit(FindButton("清空队列")); Assert(MusicLibrarySession.State.queue.Count == 0, "Queue clear failed");
+                    Submit(root.Q<Button>("music-queue-more")); Submit(root.Q<Button>("music-clear-queue")); Assert(MusicLibrarySession.State.queue.Count == 0, "Queue clear failed");
                     Assert(TabletMusicAppUI.tabletCurrentClip != null, "Deleting a playlist affected the playing clip");
                     Debug.Log("MUSIC_UI_EXTENDED_OK: icon controls/tooltips, UI rename/delete, actual pointer drag in playlist/queue, clear, import filtering");
                     string jsonPath = Path.Combine(Local, "review.json");
@@ -1488,6 +1488,13 @@ public static class RailwayMusicTerminalReview
                         Assert(q.Count(x => x == "platform") == 1 && q[0] == "platform", "Enqueue should keep one copy and move it to the front");
                         q.Clear();
                     }
+                    {
+                        string Cut(string run) => string.Join(",", MusicChineseWords.Cut(run));
+                        Assert(Cut("我们的世界") == "3,2", "Cut 我们的世界 gave " + Cut("我们的世界"));
+                        Assert(Cut("不想回忆") == "2,2", "Cut 不想回忆 gave " + Cut("不想回忆"));
+                        Assert(Cut("列车驶向远方") == "2,2,2", "Cut 列车驶向远方 gave " + Cut("列车驶向远方"));
+                        Debug.Log("MUSIC_CN_WORDS_OK: Chinese words cut by list and particle rules");
+                    }
                     Debug.Log("MUSIC_CHORUS_OK: repeated runs are chorus, short interjections are not");
                     }
                     Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
@@ -1496,17 +1503,21 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-queue"));
                     break;
                 case 76:
-                    Assert(root.Q<TextField>("music-queue-filter") != null && root.Q<Button>("music-queue-pick") != null, "The queue tools are missing");
-                    Submit(root.Q<Button>("music-queue-pick"));
+                    Assert(root.Q<TextField>("music-queue-filter") != null && root.Q<Button>("music-queue-more") != null, "The queue tools are missing");
+                    Submit(root.Q<Button>("music-queue-more"));
                     break;
                 case 77:
-                    Submit(root.Q<Button>("music-queue-check-0"));
+                    Assert(root.Q<Button>("music-queue-pick") != null && root.Q<Button>("music-queue-dedupe") != null && root.Q<Button>("music-clear-queue") != null, "The queue's second menu is missing items");
+                    Submit(root.Q<Button>("music-queue-pick"));
                     break;
                 case 78:
+                    Submit(root.Q<Button>("music-queue-check-0"));
+                    break;
+                case 79:
                     Capture("38-queue-picking");
                     Submit(root.Q<Button>("music-queue-batch-移到末尾"));
                     break;
-                case 79:
+                case 80:
                     Assert(MusicLibrarySession.State.queue.Count == 2 && MusicLibrarySession.State.queue[1] == "platform", "Batch move to end did not work");
                     MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
                     Debug.Log("MUSIC_QUEUE_OK: tools, batch move");

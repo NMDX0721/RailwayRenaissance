@@ -135,6 +135,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (kind == Kind.Hira || kind == Kind.Kata) kana = true; else if (kind == Kind.Han) han = true;
             }
             bool chinese = han && !kana;
+            // Chinese: where the words of each run of Han characters begin.
+            bool[] wordStart = null;
+            if (chinese)
+            {
+                wordStart = new bool[glyphs.Count];
+                for (int i = 0; i < glyphs.Count;)
+                {
+                    if (Classify(glyphs[i].text[0]) != Kind.Han) { i++; continue; }
+                    int end = i; var run = new StringBuilder();
+                    while (end < glyphs.Count && Classify(glyphs[end].text[0]) == Kind.Han) { run.Append(glyphs[end].text[0]); end++; }
+                    int at = i; foreach (int length in MusicChineseWords.Cut(run.ToString())) { wordStart[at] = true; at += length; }
+                    i = end;
+                }
+            }
 
             LyricUnit current = null; int hanInUnit = 0;
             for (int i = 0; i < glyphs.Count; i++)
@@ -149,11 +163,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     {
                         case Kind.Punct: break;
                         case Kind.Han:
-                            if (chinese)
-                            {
-                                int remaining = 0; while (i + remaining < glyphs.Count && Classify(glyphs[i + remaining].text[0]) == Kind.Han) remaining++;
-                                start = hanInUnit >= 2 && remaining >= 2;
-                            }
+                            if (chinese) start = wordStart[i] || lastKind != Kind.Han;
                             else start = !(lastKind == Kind.Han || lastKind == Kind.Hira && !lastParticle && current.glyphs.Count <= 4 && HasKind(current, Kind.Han));
                             break;
                         case Kind.Hira:
