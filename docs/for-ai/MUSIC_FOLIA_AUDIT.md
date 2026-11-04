@@ -72,3 +72,34 @@
 3. **歌词偏移标尺 + 全局偏移 + YRC/QRC 解析**：歌词体验的"好用"部分。
 4. **切歌 / 切风格过渡**（`songHandover`）：对照 Folia 的实际表现再定。
 5. **运行 Folia 对照截图**：装依赖并起开发服务需要下载，先征得同意；舞台升级前最好做一次，避免只凭静态图判断。
+
+## 6. 更新（2026-11-04 晚）
+
+### 已完成（上面表格里对应行以此为准）
+舞台着色器背景 + 逐字光晕/残影 + 换句推进、命令面板（`Ctrl+K`，命令 + 队列歌曲 + 最近）、歌词时间标尺 + 全局偏移、YRC/QRC 解析、切歌过渡（背景图案缓动 + 歌词滑入）。
+
+### 再扫一遍 Folia 源码后，我们还没做的
+| 项 | Folia 位置 | 判断 |
+| --- | --- | --- |
+| 舞台风格过渡 | `visualizer/styleTransition/` | 切风格现在直接换；值得做，和切歌过渡同一类 |
+| 更多舞台风格：Fume、Lumiere、Monet、Sonnet、Tempera、Diorama | `visualizer/*` | 需要着色器/图层；Fume、Lumiere 可复用已有背景着色器，先做这两个 |
+| 副歌/和声叠层 | `chorusDetector.ts`、`VisualizerHarmonyOverlay.tsx` | 按歌词行重复频率找副歌，舞台上加强；纯 C# 可做，成本低 |
+| 悬浮播放条：位置记忆、闲置自动隐藏、光标隐藏 | `floating-player/`、`usePlayerChromeAutoHide`、`useIdleCursorHide` | 舞台沉浸感，成本中 |
+| 队列批量操作与"加入方式"（下一首/末尾/替换） | `queueBatchOperations.ts`、`queueAddBehavior.ts`、`queueReorder.ts` | 好用度高；我们只有基础排序和加入 |
+| 私人 FM 模式 | `usePersonalFmModeController.ts`、`fmQueue.ts` | 依赖网易云账号，视在线功能范围而定 |
+| 本地库：艺术家/专辑实体页、文件夹忽略、自动扫描、m3u 歌单导入 | `local-library-entity/`、`localLibraryFolderIgnore.ts`、`localPlaylistFileService.ts` | m3u 导入和文件夹忽略便宜；实体页大 |
+| 预取下一首 / 已播缓存 | `prefetchService.ts`、`playedTrackCache.ts`、`audioCache.ts` | 切歌更快；在线曲目有用，本地没必要 |
+| 播放恢复（出错重试/转码回退） | `playbackRecovery/`、`useTranscodeFallback.ts` | 我们有不可播放替换，但没有自动重试 |
+| 歌词导出（含视频导出） | `lyricExport/`、`videoExportFramePipeline.ts` | 视频导出不搬；文本/LRC 导出可做 |
+| 自定义歌词字体 | `customLyricsFont.ts` | 游戏内可放字体文件选择，低优先 |
+| 歌词分词（ICU 断词） | `useIcuFoliaSegmentation.ts`、`lyricSegmentation.ts` | 我们估算逐字按字数；中文断词能让估算更自然，值得看 |
+| 听歌记录/Scrobble、Navidrome | `navidromeScrobble.ts`、`navidromeService.ts` | 我们有 Navidrome 同步引擎；scrobble 不搬 |
+| 媒体会话（系统媒体键/锁屏） | `mediaSessionSync.ts` | 桌面端能力，不搬 |
+| 主题公园、AI 主题、首页网格墙、3D 轮播 | `ThemePark`、`wall/`、`Carousel3D.tsx` | 已在 §2/§4 |
+
+### 推荐下一批
+1. 舞台风格过渡（便宜，补完过渡）。
+2. 副歌检测 + 舞台强调（便宜，效果直观）。
+3. 队列批量操作与加入方式（好用度）。
+4. 中文断词改进估算逐字。
+5. 再做 Fume / Lumiere 两个舞台风格。
