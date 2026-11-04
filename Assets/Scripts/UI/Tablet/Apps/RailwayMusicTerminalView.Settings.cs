@@ -15,6 +15,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         static readonly string[] SettingsTabs = { "sound", "look", "lyrics", "bar", "help" };
         static readonly string[] SettingsTabNames = { "声音", "外观", "歌词", "播放栏", "帮助" };
+        static readonly string[] SettingsTabIcons = { "音量", "显示设置", "歌词 / 字幕", "播放设置", "操作帮助" };
+        static readonly string[] SettingsTabNotes = { "均衡器、统一响度、换歌过渡与播放", "主题色、底色和动效", "歌词怎么显示，以及怎么对准时间", "决定哪些按钮留在播放栏，哪些折叠起来", "上手教学、快捷键与小窍门" };
+        readonly HashSet<string> settingsOpen = new HashSet<string>();
 
         void OpenSettings(string tab = null)
         {
@@ -34,10 +37,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             for (int i = 0; i < SettingsTabs.Length; i++)
             {
                 string key = SettingsTabs[i];
-                var tab = new Button(() => { settingsTab = key; FillSettings(); }) { text = SettingsTabNames[i], name = "music-settings-tab-" + key };
+                var tab = new Button(() => { settingsTab = key; FillSettings(); }) { name = "music-settings-tab-" + key, tooltip = SettingsTabNames[i] };
                 tab.AddToClassList("music-settings-tab"); tab.EnableInClassList("is-active", settingsTab == key); settingsNav.Add(tab);
+                MusicTerminalIcons.Apply(tab, SettingsTabIcons[i], false);
+                tab.Q<Label>(className: "music-button-label").text = SettingsTabNames[i];
+                if (settingsTab == key) { var mark = new VisualElement { pickingMode = PickingMode.Ignore }; mark.AddToClassList("music-settings-tab-mark"); tab.Add(mark); }
             }
             settingsContent.Clear();
+            int tabAt = Array.IndexOf(SettingsTabs, settingsTab);
+            var header = Box(settingsContent, "music-settings-pageheader");
+            Text(header, SettingsTabNames[tabAt], "music-settings-pagetitle");
+            Text(header, SettingsTabNotes[tabAt], "music-settings-pagenote");
             switch (settingsTab)
             {
                 case "sound": FillSoundSettings(); break;
@@ -64,21 +74,40 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return Box(settingsContent, "music-settings-group");
         }
 
-        // A row with a title and a note on the left and an on/off pill on the right.
+        // A row with a title and a note on the left and a sliding switch on the right.
         void SwitchRow(VisualElement group, string key, string title, string note, bool on, Action toggle)
         {
-            var row = new Button(() => { toggle(); MusicLibrarySession.Save(); RefreshSettings(); }) { name = "music-set-" + key, tooltip = title };
+            Button row = null;
+            row = new Button { name = "music-set-" + key, tooltip = title };
             row.AddToClassList("music-setting-row"); row.AddToClassList("music-settings-row"); group.Add(row);
             var text = new VisualElement { pickingMode = PickingMode.Ignore }; text.AddToClassList("music-setting-text"); row.Add(text);
             var name = new Label(title) { pickingMode = PickingMode.Ignore, enableRichText = false }; name.AddToClassList("music-setting-title"); text.Add(name);
             if (!string.IsNullOrEmpty(note)) { var sub = new Label(note) { pickingMode = PickingMode.Ignore, enableRichText = false }; sub.AddToClassList("music-setting-note"); text.Add(sub); }
-            var state = new Label(on ? "开" : "关") { pickingMode = PickingMode.Ignore }; state.AddToClassList("music-setting-switch"); state.EnableInClassList("is-on", on); row.Add(state);
+            var track = new VisualElement { pickingMode = PickingMode.Ignore }; track.AddToClassList("music-toggle"); track.EnableInClassList("is-on", on); row.Add(track);
+            var knob = new VisualElement { pickingMode = PickingMode.Ignore }; knob.AddToClassList("music-toggle-knob"); track.Add(knob);
+            row.clicked += () =>
+            {
+                toggle(); MusicLibrarySession.Save(); on = !on; track.EnableInClassList("is-on", on);
+                // Let the knob finish sliding before the page is rebuilt with the new state.
+                row.schedule.Execute(RefreshSettings).StartingIn(190);
+            };
         }
 
         // A row with a title and a note, and below it a group of chips to choose from.
         void ChipsRow(VisualElement group, string key, string title, string note, IList<string> options, int current, Action<int> pick)
         {
+            int letters = 0; foreach (string option in options) letters += option.Length;
+            bool inline = options.Count <= 4 && letters <= 24;
             var row = Box(group, "music-settings-row"); row.AddToClassList("music-settings-chiprow");
+            if (inline)
+            {
+                row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
+                var text = Box(row, "music-setting-text");
+                Text(text, title, "music-setting-title");
+                if (!string.IsNullOrEmpty(note)) Text(text, note, "music-setting-note");
+                Segmented(row, options, current, i => { pick(i); MusicLibrarySession.Save(); RefreshSettings(); }, i => "music-set-" + key + "-" + i);
+                return;
+            }
             Text(row, title, "music-setting-title").style.flexGrow = 0;
             if (!string.IsNullOrEmpty(note)) Text(row, note, "music-setting-note");
             var chips = Box(row, "music-settings-chips");
@@ -88,6 +117,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var chip = Chip(chips, options[i], () => { pick(index); MusicLibrarySession.Save(); RefreshSettings(); }, "music-set-" + key + "-" + i);
                 chip.AddToClassList("music-settings-chip"); chip.EnableInClassList("is-active", i == current);
             }
+        }
+
+        // A group the reader can fold away: its heading is a button with a chevron, and the choice is remembered while the page is open.
+        VisualElement FoldGroup(string heading, bool openByDefault = false)
+        {
+            string id = heading; bool open = settingsOpen.Contains(id) || (openByDefault && !settingsOpen.Contains("-" + id));
+            var head = new Button { name = "music-fold-" + heading, tooltip = open ? "收起" : "展开" }; head.AddToClassList("music-settings-foldhead"); settingsContent.Add(head);
+            var title = new Label(heading) { pickingMode = PickingMode.Ignore }; title.AddToClassList("music-settings-heading"); head.Add(title);
+            var chevron = new Label(open ? "▾" : "▸") { pickingMode = PickingMode.Ignore }; chevron.AddToClassList("music-settings-chevron"); head.Add(chevron);
+            var body = Box(settingsContent, "music-settings-group"); body.style.display = open ? DisplayStyle.Flex : DisplayStyle.None;
+            head.clicked += () =>
+            {
+                bool now = body.resolvedStyle.display != DisplayStyle.None; now = !now;
+                body.style.display = now ? DisplayStyle.Flex : DisplayStyle.None; chevron.text = now ? "▾" : "▸"; head.tooltip = now ? "收起" : "展开";
+                if (now) { settingsOpen.Add(id); settingsOpen.Remove("-" + id); } else { settingsOpen.Remove(id); settingsOpen.Add("-" + id); }
+            };
+            return body;
         }
 
         // ---- sound ----
@@ -204,7 +250,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             SwitchRow(group, "estimate", "估算逐字时间", "没有逐字时间的歌词按字数估算", state.estimateWords, () => state.estimateWords = !state.estimateWords);
             int[] sizes = { 20, 24, 28, 32 };
             ChipsRow(group, "size", "字号", null, sizes.Select(x => x + " px").ToList(), Array.IndexOf(sizes, state.lyricFontSize), i => state.lyricFontSize = sizes[i]);
-            var timing = Group("时间校准");
+            var timing = FoldGroup("时间校准");
             var row = Box(timing, "music-settings-row"); row.AddToClassList("music-settings-chiprow");
             Text(row, "全局偏移", "music-setting-title").style.flexGrow = 0;
             Text(row, "当前 " + Signed(state.lyricGlobalOffsetMs) + " ms，加在每首歌自己的偏移之上", "music-setting-note");
@@ -217,7 +263,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void FillBarSettings()
         {
             var group = Group("播放栏按钮");
-            Text(group, "每个按钮可以留在栏上，或折进栏尾的「更多」里，想要更简洁的界面就多折几个。倍速、音色、定时、音效还可以不放。", "music-setting-hint");
+            Text(group, "每个按钮可以显示在栏上，或折叠进栏尾的「更多」菜单，想要更简洁的界面就多折叠几个。倍速、音色、定时、音效还可以隐藏。", "music-setting-hint");
             var slots = BarSlots();
             var ordered = BarKeys.Where(k => !IsOptionalKey(k) || !slots.Contains(k)).ToList();
             // Optional buttons that are on the bar come first, in the player's own order, then the fixed ones and the optional ones not used.
@@ -235,7 +281,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     Chip(row, "▲", () => { MoveSlot(slot, -1); UpdateBarChips(); RefreshSettings(); }, "music-slot-up-" + slot, "前移").AddToClassList("music-slot-move");
                     Chip(row, "▼", () => { MoveSlot(slot, 1); UpdateBarChips(); RefreshSettings(); }, "music-slot-down-" + slot, "后移").AddToClassList("music-slot-move");
                 }
-                var options = optional ? new[] { "栏上", "折叠", "不放" } : new[] { "栏上", "折叠" };
+                var options = optional ? new[] { "显示", "折叠", "隐藏" } : new[] { "显示", "折叠" };
                 int current = optional ? (!pinned ? 2 : fold ? 1 : 0) : (fold ? 1 : 0);
                 Segmented(row, options, current, i =>
                 {
@@ -272,7 +318,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(row, "用几步带你认识搜索、播放栏、歌词页和设置。", "music-setting-note");
             var chips = Box(row, "music-settings-chips");
             Chip(chips, "重新观看", () => { CloseModal(); StartTutorial(); }, "music-tutorial-again").AddToClassList("music-settings-chip");
-            var keys = Group("快捷键");
+            var keys = FoldGroup("快捷键", true);
             foreach (string line in new[] { "空格  播放 / 暂停", "← →  快退 / 快进 5 秒", "L  打开歌词页", "Ctrl+F  搜索", "Esc  关闭当前面板" })
                 Text(keys, line, "music-setting-note").AddToClassList("music-settings-key");
         }

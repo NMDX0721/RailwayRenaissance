@@ -1118,3 +1118,32 @@
 .music-utility-buttons .music-icon-button { width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 6px; margin: 0 2px; border-radius: 16px; background-color: rgba(0, 0, 0, 0); border-width: 0; }
 .music-utility-buttons .music-icon-button:hover { background-color: rgb(52, 58, 47); }
 .music-utility-buttons .music-icon-button.is-active { background-color: rgba(205, 176, 112, 0.2); }
+
+/* settings, second pass: lively cards, sliding switches, icons in the side list, folded groups */
+.music-settings-nav { width: 142px; }
+.music-settings-tab { flex-direction: row; align-items: center; justify-content: flex-start; height: 42px; margin: 3px 0; padding: 0 12px; border-radius: 12px; transition-property: background-color; transition-duration: 140ms; }
+.music-settings-tab-mark { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 2px; background-color: rgb(205, 176, 112); }
+.music-settings-tab .music-vector-icon { width: 18px; height: 18px; margin-right: 10px; color: rgb(170, 168, 142); }
+.music-settings-tab .music-button-label { font-size: 14px; margin: 0; padding: 0; -unity-text-align: middle-left; color: rgb(214, 206, 180); }
+.music-settings-tab.is-active { background-color: rgba(205, 176, 112, 0.14); }
+.music-settings-tab.is-active .music-vector-icon { color: rgb(240, 214, 150); }
+.music-settings-tab.is-active .music-button-label { color: rgb(244, 224, 170); }
+.music-settings-pageheader { margin: 2px 4px 6px 4px; }
+.music-settings-pagetitle { font-size: 22px; -unity-font-style: bold; color: rgb(244, 237, 214); margin: 0; padding: 0; -unity-text-align: middle-left; }
+.music-settings-pagenote { font-size: 12px; color: rgb(158, 159, 138); margin: 3px 0 0 0; padding: 0; -unity-text-align: middle-left; white-space: normal; }
+.music-settings-heading { margin: 18px 4px 8px 4px; padding-left: 8px; border-left-width: 3px; border-left-color: rgba(205, 176, 112, 0.7); }
+.music-settings-group { padding: 2px 0; border-radius: 16px; background-color: rgba(0, 0, 0, 0.2); border-width: 1px; border-color: rgba(255, 255, 255, 0.04); }
+.music-settings-group > .music-settings-row { margin: 0; padding-left: 16px; padding-right: 14px; border-radius: 0; border-top-width: 1px; border-top-color: rgba(255, 255, 255, 0.05); }
+.music-settings-group > .music-settings-row:first-child { border-top-width: 0; border-top-left-radius: 14px; border-top-right-radius: 14px; }
+.music-settings-group > .music-settings-row:last-child { border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; }
+.music-settings-group > .music-setting-row:hover { background-color: rgba(255, 255, 255, 0.04); }
+.music-setting-title { font-size: 14px; }
+.music-toggle { width: 40px; min-width: 40px; height: 22px; border-radius: 11px; background-color: rgb(58, 62, 52); flex-shrink: 0; transition-property: background-color; transition-duration: 160ms; }
+.music-toggle.is-on { background-color: rgb(205, 176, 112); }
+.music-toggle-knob { position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 8px; background-color: rgb(224, 218, 196); transition-property: translate, background-color; transition-duration: 160ms; transition-timing-function: ease-out; }
+.music-toggle.is-on .music-toggle-knob { translate: 18px 0; background-color: rgb(40, 38, 28); }
+.music-reduce-motion .music-toggle, .music-reduce-motion .music-toggle-knob { transition-duration: 0s; }
+.music-settings-foldhead { flex-direction: row; align-items: center; justify-content: space-between; height: auto; min-height: 0; margin: 0; padding: 0 12px 0 0; border-width: 0; background-color: rgba(0, 0, 0, 0); }
+.music-settings-foldhead:hover .music-settings-chevron { color: rgb(240, 214, 150); }
+.music-settings-chevron { font-size: 14px; color: rgb(158, 159, 138); margin: 18px 0 8px 0; padding: 0; }
+.music-slot-row .music-segmented { margin-left: 10px; }
