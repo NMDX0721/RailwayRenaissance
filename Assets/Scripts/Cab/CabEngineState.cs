@@ -33,6 +33,18 @@ namespace RailwayRenaissance.Cab
     /// </summary>
     public class CabEngineState : MonoBehaviour
     {
+        public static CabEngineState ActiveInstance { get; private set; }
+
+        private void OnEnable()
+        {
+            ActiveInstance = this;
+        }
+
+        private void OnDisable()
+        {
+            if (ActiveInstance == this) ActiveInstance = null;
+        }
+
         // 1. 控制操作位
         public bool IsEngineStarted { get; private set; } = false;
         internal CabSimulationDriver DetailedSimulation {get;set;}
