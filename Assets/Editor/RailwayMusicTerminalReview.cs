@@ -1438,6 +1438,37 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q("music-settings-scroll") != null, "Running the palette command did not open the settings");
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     Debug.Log("MUSIC_PALETTE_OK: opened from the bar, filtered, ran a command");
+                    Submit(root.Q<Button>("music-palette-open"));
+                    break;
+                case 70:
+                    root.Q<TextField>("music-palette-input").value = "标尺";
+                    break;
+                case 71:
+                    Assert(root.Q<Button>("music-palette-row-0") != null, "The palette did not find the ruler");
+                    Submit(root.Q<Button>("music-palette-row-0"));
+                    break;
+                case 72:
+                    {
+                        Assert(root.Q("music-ruler-track") != null, "The ruler did not open");
+                        MusicLibrarySession.State.lyricGlobalOffsetMs = 0;
+                        var pref = MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId); pref.offsetMs = 0;
+                        Submit(root.Q<Button>("music-ruler-nudgep100"));
+                    }
+                    break;
+                case 73:
+                    Assert(MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs == 100, "Nudging the ruler did not move the track offset");
+                    Capture("36-ruler");
+                    Submit(root.Q<Button>("music-ruler-scope-global"));
+                    break;
+                case 74:
+                    Submit(root.Q<Button>("music-ruler-nudgem1000"));
+                    break;
+                case 75:
+                    Assert(MusicLibrarySession.State.lyricGlobalOffsetMs == -1000 && MusicTimedText.EffectiveOffsetMs(TabletMusicAppUI.tabletCurrentTrackId) == -900, "The global offset did not add to the track offset");
+                    Capture("37-ruler-global");
+                    MusicLibrarySession.State.lyricGlobalOffsetMs = 0; MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs = 0;
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_RULER_OK: ruler opened from the palette, track and global offsets add");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

@@ -217,6 +217,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (found == null) { found = new MusicLyricPreference { id = id }; list.Add(found); }
             return found;
         }
+        /// <summary>The track's own offset plus the global one, in milliseconds.</summary>
+        public static int EffectiveOffsetMs(string id) => Mathf.Clamp(Preference(id).offsetMs + MusicLibrarySession.State.lyricGlobalOffsetMs, -20000, 20000);
         public static double? SeekPosition(double lineTime, int offsetMs, double duration)
         {
             double position = lineTime - offsetMs / 1000d;

@@ -204,6 +204,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             SwitchRow(group, "estimate", "估算逐字时间", "没有逐字时间的歌词按字数估算", state.estimateWords, () => state.estimateWords = !state.estimateWords);
             int[] sizes = { 20, 24, 28, 32 };
             ChipsRow(group, "size", "字号", null, sizes.Select(x => x + " px").ToList(), Array.IndexOf(sizes, state.lyricFontSize), i => state.lyricFontSize = sizes[i]);
+            var timing = Group("时间校准");
+            var row = Box(timing, "music-settings-row"); row.AddToClassList("music-settings-chiprow");
+            Text(row, "全局偏移", "music-setting-title").style.flexGrow = 0;
+            Text(row, "当前 " + Signed(state.lyricGlobalOffsetMs) + " ms，加在每首歌自己的偏移之上", "music-setting-note");
+            var buttons = Box(row, "music-settings-chips");
+            var open = Chip(buttons, "打开标尺", () => OpenOffsetRuler(true), "music-set-ruler"); open.AddToClassList("music-settings-chip");
+            var reset = Chip(buttons, "归零", () => { state.lyricGlobalOffsetMs = 0; MusicLibrarySession.Save(); RefreshSettings(); }, "music-set-ruler-reset"); reset.AddToClassList("music-settings-chip");
         }
 
         // ---- the player bar ----

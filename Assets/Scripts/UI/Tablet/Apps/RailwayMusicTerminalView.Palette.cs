@@ -28,7 +28,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Add("mode", "切换播放顺序", "顺序 / 随机 / 单曲", "播放顺序 随机 单曲 顺序 shuffle repeat", () => TabletMusicAppUI.SetPlayMode(((int)TabletMusicAppUI.tabletPlayMode + 1) % 3));
             Add("locate", "在列表中找到正在播放的歌", null, "定位 找到 当前 locate", LocateCurrent);
             Add("lyrics", "打开歌词页", "L", "歌词 字幕 舞台 lyrics stage", OpenLyrics);
-            Add("record", "打开唱片档案", null, "唱片 档案 详情 record", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId));
+            Add("ruler", "歌词时间标尺", "拖动校准歌词快慢", "歌词 时间 偏移 校准 标尺 延迟 offset sync", () => OpenOffsetRuler());
+            Add("record","打开唱片档案", null, "唱片 档案 详情 record", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId));
             Add("radio", "先民时代电台", "顺序全自动轮播", "电台 radio", TabletMusicAppUI.StartRadioAuto);
             foreach (string target in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端" })
             { string t = target; Add("go-" + t, "前往：" + t, null, "前往 打开 导航 " + t, () => Navigate(t)); }

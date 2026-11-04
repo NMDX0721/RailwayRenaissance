@@ -343,7 +343,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     var clip = TabletMusicAppUI.tabletCurrentClip;
                     if (clip == null || TabletMusicAppUI.tabletCurrentTrackId != trackId)
                     { TabletMusicAppUI.ShowToast("先播放当前曲目，再点击字幕定位"); return; }
-                    var position = MusicTimedText.SeekPosition(line.start, MusicTimedText.Preference(trackId).offsetMs, clip.length);
+                    var position = MusicTimedText.SeekPosition(line.start, MusicTimedText.EffectiveOffsetMs(trackId), clip.length);
                     if (!position.HasValue) { TabletMusicAppUI.ShowToast("这一句超出当前音频时长，未跳转"); return; }
                     TabletMusicAppUI.SeekTabletMusic((float)(position.Value / clip.length));
                     following = true; active = -2;
@@ -390,7 +390,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 vu.UpdateLevels(left, right, Time.unscaledDeltaTime);
             }
             var preference = MusicTimedText.Preference(trackId);
-            offsetLabel.text = (preference.offsetMs > 0 ? "+" : "") + preference.offsetMs + " ms";
+            int totalOffset = MusicTimedText.EffectiveOffsetMs(trackId);
+            offsetLabel.text = (totalOffset > 0 ? "+" : "") + totalOffset + " ms";
             // The stage never scrolls, so the "back to current line" banner has nothing to return to there.
             followButton.style.display = following || document.lines.Count == 0 || MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.None : DisplayStyle.Flex;
             heading.text = (TabletMusicAppUI.tabletCurrentTrackTitle ?? "歌词 / 字幕") + " / " + (TabletMusicAppUI.tabletIsPlaying ? "正在播放" : "已暂停");
@@ -402,7 +403,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!scrubbing) progress.SetValueWithoutNotify(clip != null && clip.length > 0 ? TabletMusicAppUI.CurrentPosition / clip.length : 0);
             RailwayMusicTerminalView.UpdateSliderFill(progress, progress.value);
             MusicTerminalIcons.Apply(host.Q<Button>("music-lyrics-play"), TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);
-            double clock = TabletMusicAppUI.CurrentPosition + preference.offsetMs / 1000d;
+            double clock = TabletMusicAppUI.CurrentPosition + totalOffset / 1000d;
             int next = document.Active(clock);
             bool lineChanged = active != next;
             if (lineChanged)

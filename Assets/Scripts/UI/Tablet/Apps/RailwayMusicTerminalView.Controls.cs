@@ -162,6 +162,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     Text(row, TimingText(id), "music-option-value");
                     Chip(row, "提前", () => Shift(100), "music-option-earlier", "提前 100ms");
                     Chip(row, "重置", () => { pref.offsetMs = 0; MusicLibrarySession.Save(); RefreshControlsPanel(); }, "music-option-reset");
+                    Chip(row, "标尺", () => OpenOffsetRuler(), "music-option-ruler", "用标尺拖动校准，可作用于所有歌曲");
                     Text(menu, "歌词比声音晚就点“提前”，早就点“延后”，每次 100 毫秒；每首歌单独记住。", "music-setting-hint");
                     break;
                 }

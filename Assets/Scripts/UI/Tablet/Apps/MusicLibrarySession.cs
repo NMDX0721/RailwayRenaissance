@@ -48,6 +48,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public string barSlots = "";   // comma separated buttons pinned to the player bar (speed, tone, timer, eq, queue ...); empty keeps the older barSpeed/barTone/barTimer flags
         public string paletteRecent = "";   // ids of the commands run last from the command palette, newest first
         public bool tutorialDone;   // the first-use tour was shown
+        public int lyricGlobalOffsetMs;   // added to every track's own lyric offset (positive: lyrics come earlier)
         public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
@@ -85,6 +86,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     (!string.IsNullOrEmpty(p.fileName) && System.IO.Path.GetFileName(p.fileName) != p.fileName) ||
                     (!string.IsNullOrEmpty(p.translationFileName) && System.IO.Path.GetFileName(p.translationFileName) != p.translationFileName));
                 foreach (var preference in state.lyrics) preference.offsetMs = Mathf.Clamp(preference.offsetMs, -10000, 10000);
+                state.lyricGlobalOffsetMs = Mathf.Clamp(state.lyricGlobalOffsetMs, -10000, 10000);
                 state.lyricFontSize = state.lyricFontSize == 0 ? 24 : Mathf.Clamp(state.lyricFontSize, 18, 36);
                 state.lyricMotion = Mathf.Clamp(state.lyricMotion, 0, 2);
                 state.stageIntensity = Mathf.Clamp(state.stageIntensity, 0, 2);
