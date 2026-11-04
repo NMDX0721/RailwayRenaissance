@@ -1095,3 +1095,6 @@
 .music-drawer-header .music-icon-button { width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 6px; }
 .music-volume-pop .music-icon-button { width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 5px; }
 .music-queue-filter .unity-base-text-field__input { height: 28px; }
+
+/* quiet queue count: tucked into the corner, tinted like the bar instead of a bright dot */
+.music-badge { right: -1px; top: -2px; min-width: 12px; height: 12px; padding: 0 2px; font-size: 8px; color: rgb(214, 205, 178); background-color: rgba(120, 128, 100, 0.55); border-radius: 6px; }
