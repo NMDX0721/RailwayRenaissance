@@ -16,6 +16,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         [NonSerialized] public string coverUrl;
     }
 
+    /// <summary>How often a song was played, kept with its name so the career page still reads after an online song leaves the library.</summary>
+    [Serializable]
+    public sealed class MusicPlayStat
+    {
+        public string id, title, artist;
+        public int count;
+        public long last;   // unix seconds of the latest play
+    }
+
     [Serializable]
     public sealed class MusicUserPlaylist
     {
@@ -48,6 +57,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public string barSlots = "";   // comma separated buttons pinned to the player bar (speed, tone, timer, eq, queue ...); empty keeps the older barSpeed/barTone/barTimer flags
         public string barOrder = "";    // comma separated bar buttons in the order the player dragged them into
         public string barFolded = "";   // comma separated bar buttons kept in the bar's "more" menu instead of on the bar (volume, speed, tone, timer, eq, queue, lyrics, detail, settings)
+        public List<MusicPlayStat> plays = new List<MusicPlayStat>();   // the career: every song the player started and how many times
         public string paletteRecent = "";   // ids of the commands run last from the command palette, newest first
         public bool tutorialDone;   // the first-use tour was shown
         public int lyricGlobalOffsetMs;   // added to every track's own lyric offset (positive: lyrics come earlier)
@@ -468,9 +478,28 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             state.currentId = id; state.position = 0;
             if (state.recent == null) state.recent = new List<string>();
             state.recent.Remove(id); state.recent.Insert(0, id); if (state.recent.Count > 30) state.recent.RemoveRange(30, state.recent.Count - 30);
+            CountPlay(id);
             if (tracks.TryGetValue(id, out var track)) track.duration = clip.length;
             Commit();
             TrackStarted?.Invoke(id);
+        }
+        static void CountPlay(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            if (state.plays == null) state.plays = new List<MusicPlayStat>();
+            var stat = state.plays.Find(x => x.id == id);
+            if (stat == null) { stat = new MusicPlayStat { id = id }; state.plays.Add(stat); }
+            var track = Find(id);
+            if (track != null) { stat.title = track.title; stat.artist = track.artist; }
+            stat.count++; stat.last = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        }
+        /// <summary>The career: songs ordered by how often they were played, then by how recently.</summary>
+        public static List<MusicPlayStat> PlayStats()
+        {
+            Ensure();
+            var list = new List<MusicPlayStat>(state.plays ?? new List<MusicPlayStat>());
+            list.Sort((a, b) => a.count != b.count ? b.count.CompareTo(a.count) : b.last.CompareTo(a.last));
+            return list;
         }
         public static void Play(string id, bool resume = false) { failed.Remove(id); PlayInternal(id, resume, -1); }
         public static void PlayQueued(int index) => PlayQueued(index, false);

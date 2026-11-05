@@ -155,6 +155,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     }
                 }
             }
+            else if (action == "生涯") { Line(new Vector2(3, 17), new Vector2(17, 17)); Line(new Vector2(3, 13), new Vector2(7, 8), new Vector2(11, 11), new Vector2(17, 4)); }
             else if (action == "倍速") { Line(new Vector2(3, 4), new Vector2(9, 10), new Vector2(3, 16)); Line(new Vector2(10, 4), new Vector2(16, 10), new Vector2(10, 16)); }
             else if (action == "全选") { Rect(3, 3, 14, 14); Line(new Vector2(6, 10), new Vector2(9, 13), new Vector2(14, 6)); }
             else if (action == "移到最前") { Line(new Vector2(4, 3), new Vector2(16, 3)); Line(new Vector2(10, 17), new Vector2(10, 7)); Line(new Vector2(6, 10), new Vector2(10, 6), new Vector2(14, 10)); }

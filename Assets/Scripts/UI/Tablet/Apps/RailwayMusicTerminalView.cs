@@ -121,8 +121,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             search.RegisterCallback<FocusInEvent>(_ => ShowSuggestions());
             search.RegisterCallback<FocusOutEvent>(_ => search.schedule.Execute(HideSuggestions).StartingIn(180));
             search.RegisterValueChangedCallback(e => { if (e.target != search) return; query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
-            clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
-            clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            // The clear and search buttons sit inside the search pill, on its right.
+            clearSearch = Button(search, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search"); clearSearch.AddToClassList("music-search-clear");
+            MusicTerminalIcons.Apply(clearSearch, "关闭", true); clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            var goSearch = Button(search, "搜索", () => { HideSuggestions(); query = search.value.Trim(); if (query.Length > 0) { page = "搜索"; RenderContent(); } search.Focus(); }, "music-search-go"); goSearch.AddToClassList("music-search-go");
+            MusicTerminalIcons.Apply(goSearch, "搜索", true); goSearch.tooltip = "搜索";
             Button(header, "命令", () => OpenPalette(), "music-palette-open").tooltip = "命令面板 Ctrl+K";
             Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
@@ -261,7 +264,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
             Text(navigation, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端" })
+            foreach (string item in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端", "生涯" })
             {
                 string target = item;
                 var b = Button(navigation, item, () => Navigate(target), "music-nav-" + target);
@@ -299,6 +302,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (query.Length > 0) { RenderSearch(); return; }
             if (page == "首页") { RenderHome(); return; }
             if (page == "榜单") { RenderCharts(); return; }
+            if (page == "生涯") { RenderCareer(); return; }
             if (page == "搜索") { RenderSearch(); return; }
             if (page == "云端" && query.Length == 0) { RenderCloud(); return; }
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
@@ -576,35 +580,39 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (root.panel != null && page == "首页" && query.Length == 0 && NeteaseLocalBridge.HasSession(source)) Refresh();
             });
         }
+        bool searchAllLibrary;
         void RenderSearch()
         {
             int generation = catalogGeneration;
-            string term = query, scope = searchProvider;
+            string term = query, scope = searchProvider == "library" ? "auto" : searchProvider;
             Text(content, "搜索", "music-section-title");
             var tabs = Box(content, "music-list-actions"); tabs.AddToClassList("music-channel-selector");
-            // "Smart" already includes the collected library; the library-only list is reached from "view all" and shows its own chip while active.
-            foreach (string value in new[] { "auto" }.Concat(scope == "library" ? new[] { "library" } : new string[0]).Concat(MusicCatalogSearch.Sources))
+            foreach (string value in new[] { "auto" }.Concat(MusicCatalogSearch.Sources))
             {
                 string id = value;
-                string caption = id == "auto" ? "智能" : id == "library" ? "已收录 · 全部" : MusicCatalogSearch.Label(id) + (NeteaseLocalBridge.HasSession(id) ? " · 已连接" : "");
-                var tab = Button(tabs, caption, () => { searchProvider = id; RenderContent(); }, "music-search-source-" + id);
+                string caption = id == "auto" ? "智能" : MusicCatalogSearch.Label(id) + (NeteaseLocalBridge.HasSession(id) ? " · 已连接" : "");
+                var tab = Button(tabs, caption, () => { searchProvider = id; searchAllLibrary = false; RenderContent(); }, "music-search-source-" + id);
                 tab.EnableInClassList("is-active", scope == id);
             }
             var scroll = new ScrollView { name = "music-track-list" }; scroll.AddToClassList("music-track-list"); content.Add(scroll);
             if (term.Length == 0) { Text(scroll, "在顶部输入曲名或作者；自动搜索曲库、网易云和本应用已登录的来源。", "music-empty"); return; }
+            // Smart search shows only what it found: songs already in the app first (no separate heading), then each source that has matches.
             var matches = VisibleTracks();
-            Text(scroll, "已收录曲库 / " + matches.Count + " 首", "music-eyebrow");
-            int visible = scope == "library" ? matches.Count : Math.Min(12, matches.Count);
+            int visible = searchAllLibrary ? matches.Count : Math.Min(12, matches.Count);
             for (int i = 0; i < visible; i++) AddTrackRow(scroll.contentContainer, matches[i], i);
-            if (matches.Count == 0) Text(scroll, "已收录曲库没有匹配结果。", "music-muted");
-            if (visible < matches.Count) Button(scroll, "查看全部已收录结果", () => { searchProvider = "library"; RenderContent(); });
-            if (scope == "library") return;
+            if (visible < matches.Count) Button(scroll, "再显示 " + (matches.Count - visible) + " 首", () => { searchAllLibrary = true; RenderContent(); }, "music-search-more");
             var sources = scope == "auto" ? new[] { "netease" }.Concat(MusicCatalogSearch.Sources.Where(NeteaseLocalBridge.HasSession)).Distinct().ToArray() : new[] { scope };
-            if (scope == "auto") Text(scroll, "自动合并：曲库 + " + string.Join("、", sources.Select(MusicCatalogSearch.Label)), "music-muted");
             var seen = new HashSet<string>(matches.Take(visible).Select(t => t.id));
-            foreach (string source in sources) RenderOnlineSearch(scroll.contentContainer, source, term, scope, generation, seen);
+            var nothing = Text(scroll, "没有找到匹配的曲目，换个关键词或来源试试。", "music-muted"); nothing.name = "music-search-nothing"; nothing.style.display = DisplayStyle.None;
+            int pending = sources.Length, found = matches.Count;
+            foreach (string source in sources)
+                RenderOnlineSearch(scroll.contentContainer, source, term, scope, generation, seen, count =>
+                {
+                    pending--; found += count;
+                    if (pending == 0 && found == 0 && nothing.panel != null) nothing.style.display = DisplayStyle.Flex;
+                });
         }
-        void RenderOnlineSearch(VisualElement parent, string source, string term, string scope, int generation, HashSet<string> seen)
+        void RenderOnlineSearch(VisualElement parent, string source, string term, string scope, int generation, HashSet<string> seen, Action<int> done = null)
         {
             var remote = Box(parent, "music-unified-results"); remote.name = "music-unified-results-" + source;
             Text(remote, MusicCatalogSearch.Label(source) + (NeteaseLocalBridge.HasSession(source) ? " / 使用已登录连接" : " / 在线搜索"), "music-eyebrow");
@@ -619,6 +627,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     rows.Clear();
                     if (!response.ok || response.result == null)
                     {
+                        done?.Invoke(0);
                         status.text = response.error ?? "在线搜索失败，请重试";
                         var actions = Box(rows, "music-list-actions");
                         Button(actions, "重试搜索", Run, "music-unified-retry-" + source);
@@ -632,6 +641,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         if (track == null || !seen.Add(track.id)) continue;
                         AddTrackRow(rows, track, count++);
                     }
+                    done?.Invoke(count);
+                    if (scope == "auto" && count == 0) { remote.style.display = DisplayStyle.None; return; }   // a source without matches takes no room in smart search
                     status.text = found.Length == 0 ? "没有找到在线曲目，试试其他关键词或来源。" : MusicCatalogSearch.Label(source) + " 返回 " + found.Length + " 首" + (count == 0 ? "，已在上方曲库显示。" : " · 播放以账号与版权为准");
                     MusicLibrarySession.Save();
                 });

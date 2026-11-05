@@ -1592,8 +1592,19 @@ public static class RailwayMusicTerminalReview
                         MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
                         root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                         Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu and can be reordered");
-                        Finish(); return;
+                        Submit(root.Q<Button>("music-nav-生涯"));
                     }
+                    break;
+                case 94:
+                    Assert(root.Q("music-career-total") != null || root.Q(className: "music-empty") != null, "The career page did not open");
+                    Capture("46-career");
+                    root.Q<TextField>("music-search").value = "Platform";
+                    break;
+                case 95:
+                    Capture("47-search-results");
+                    Assert(root.Q<Button>("music-clear-search").resolvedStyle.display != DisplayStyle.None, "The clear button is not shown while the search has text");
+                    Debug.Log("MUSIC_CAREER_SEARCH_OK: career page and the search pill with its clear and search buttons");
+                    Finish(); return;
             }
             stage++; frame = Time.frameCount;
             // Batch frames can advance before a 180ms entrance transition has finished.
