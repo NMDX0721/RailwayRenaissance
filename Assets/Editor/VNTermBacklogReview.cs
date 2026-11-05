@@ -120,7 +120,7 @@ public static class VNTermBacklogReview
                     var box = (DialogueBox)typeof(VNManager).GetField("dialogueBox", Hidden).GetValue(vn);
                     typeof(DialogueBox).GetMethod("CloseTermCard", Hidden).Invoke(box, null);
                     var backlog = (VNBacklog)typeof(VNManager).GetField("vnBacklog", Hidden).GetValue(vn);
-                    if (!backlog.IsOpen) backlog.ToggleBacklog();
+                    if (!backlog.IsOpen) typeof(VNManager).GetMethod("ToggleBacklog", Hidden).Invoke(vn, null);   // 真实打开路径（会隐藏 Auto/Menu）
                     step++; Wait(2.5); return;
                 }
                 case 5:

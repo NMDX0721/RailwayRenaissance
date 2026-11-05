@@ -1473,6 +1473,9 @@ public partial class VNManager : MonoBehaviour
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
         }
+        // 回顾打开时无论从哪条路径进入，Auto/Menu 都不应盖在回顾页上
+        else if (menuBar != null && menuBar.style.display == DisplayStyle.Flex && vnBacklog != null && vnBacklog.IsOpen)
+            menuBar.style.display = DisplayStyle.None;
 
         // 开场/话标题卡分镜强制播放：期间屏蔽一切输入（点击/按键均不跳过，播完自动进入）
         if (IsCinematicBlocking())
