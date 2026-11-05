@@ -147,16 +147,22 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public void Configure(float[] gainsDb)
         {
             sampleRate = AudioSettings.outputSampleRate;
+            if (sampleRate <= 0) { coefficients = null; return; }
             bool flat = true;
             if (gainsDb != null) foreach (float g in gainsDb) if (Mathf.Abs(g) > .05f) flat = false;
             if (flat) { coefficients = null; return; }
             var next = new float[MusicEqualizer.BandCount * 5];
             for (int band = 0; band < MusicEqualizer.BandCount; band++)
             {
+                int o = band * 5;
+                if (MusicEqualizer.Frequencies[band] >= sampleRate * .5)
+                {
+                    next[o] = 1f;
+                    continue;
+                }
                 double a = Math.Pow(10.0, gainsDb[band] / 40.0), w = 2.0 * Math.PI * MusicEqualizer.Frequencies[band] / sampleRate;
                 double alpha = Math.Sin(w) / (2.0 * 1.1), cos = Math.Cos(w);
                 double b0 = 1 + alpha * a, b1 = -2 * cos, b2 = 1 - alpha * a, a0 = 1 + alpha / a, a1 = -2 * cos, a2 = 1 - alpha / a;
-                int o = band * 5;
                 next[o] = (float)(b0 / a0); next[o + 1] = (float)(b1 / a0); next[o + 2] = (float)(b2 / a0); next[o + 3] = (float)(a1 / a0); next[o + 4] = (float)(a2 / a0);
             }
             coefficients = next;

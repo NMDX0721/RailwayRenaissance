@@ -336,11 +336,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (win == null) return;
             var p = AccountService.Profile;
             if (p == null) return;
-            win.Add(AccountHint("我们会向绑定手机 " + AccountService.MaskedPhone(p) + " 发送验证码，验证后即可设置新密码。"));
+            win.Add(AccountHint("为绑定手机 " + AccountService.MaskedPhone(p) + " 生成本地验证码，验证后即可设置新密码。验证码显示在通知中心，通知不可用时显示在本页。"));
 
             var code = AccountField("6 位验证码", false, 6);
             code.name = "account-reset-code";
             win.Add(code);
+
+            var delivery = AccountHint(string.Empty);
+            delivery.name = "account-reset-code-delivery";
+            delivery.style.display = DisplayStyle.None;
+            win.Add(delivery);
 
             float readyAt = 0f;
             var send = AccountLinkButton("获取验证码", () => { });
@@ -351,8 +356,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (Time.realtimeSinceStartup < readyAt) return;
                 string c = AccountService.IssueCode(p.phone);
                 readyAt = Time.realtimeSinceStartup + 60f;
-                PostSystemNotice("短信", "【小米】你的验证码是 " + c + "，5 分钟内有效。请勿向他人泄露。");
-                ShowToast("验证码已发送，请在通知中心查看");
+                long notification = RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice("短信", "【小米】你的验证码是 " + c + "，5 分钟内有效。请勿向他人泄露。");
+                bool delivered = notification >= 0;
+                delivery.text = delivered ? string.Empty : "本地验证码为 " + c + "，5 分钟内有效。";
+                delivery.style.display = delivered ? DisplayStyle.None : DisplayStyle.Flex;
+                ShowToast(delivered ? "验证码已生成，请在通知中心查看" : "验证码已生成，请在本页查看");
             };
             send.schedule.Execute(() =>
             {
