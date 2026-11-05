@@ -15,8 +15,11 @@ public class VNAudioManager : MonoBehaviour
     private Coroutine bgmFadeCoroutine;
     private float bgmTargetVolume = 0.6f;
     private const float DefaultFadeDuration = 1.0f;
-    // 缓存已加载的音频资源，避免高频播放时重复Resources.Load
+    // 缓存已加载的音频资源，避免高频播放时重复Resources.Load。
+    // 短音效（sfx）常驻缓存；背景音乐（bgm）一首解压后可达几十 MB，只保留正在播放的这一首，换曲后其余的释放，
+    // 否则连续玩几个章节后会常驻几百 MB 的废弃音频数据。
     private readonly Dictionary<string, AudioClip> clipCache = new Dictionary<string, AudioClip>();
+    private bool unloadScheduled;
 
     private void Awake()
     {
@@ -41,6 +44,27 @@ public class VNAudioManager : MonoBehaviour
             if (clip != null) clipCache[key] = clip;
         }
         return clip;
+    }
+
+    /// <summary>换曲后释放背景音乐缓存：只留下 keepName 这一首（可为空）。不再被任何对象引用的音频由 UnloadUnusedAssets 回收；
+    /// 随身听等仍在使用的同名资源因为还有引用，不会被误卸载。</summary>
+    private void TrimBgmCache(string keepName)
+    {
+        string keepKey = string.IsNullOrEmpty(keepName) ? null : "bgm/" + keepName;
+        List<string> drop = null;
+        foreach (var pair in clipCache)
+            if (pair.Key.StartsWith("bgm/") && pair.Key != keepKey) (drop ??= new List<string>()).Add(pair.Key);
+        if (drop == null) return;
+        foreach (string key in drop) clipCache.Remove(key);
+        if (!unloadScheduled) StartCoroutine(UnloadUnusedAfterFrame());
+    }
+
+    private IEnumerator UnloadUnusedAfterFrame()
+    {
+        unloadScheduled = true;
+        yield return null;   // 等 AudioSource 换上新曲目、旧曲目不再被引用
+        yield return Resources.UnloadUnusedAssets();
+        unloadScheduled = false;
     }
 
     public void PlayBGM(string name)
@@ -179,6 +203,7 @@ public class VNAudioManager : MonoBehaviour
         bgmSource.clip = newClip;
         bgmSource.Play();
         currentBGM = newName;
+        TrimBgmCache(newName);
 
         // Fade in new
         float elapsed2 = 0f;
@@ -203,9 +228,11 @@ public class VNAudioManager : MonoBehaviour
             yield return null;
         }
         bgmSource.Stop();
+        bgmSource.clip = null;   // 不再持有已停止的曲目，缓存释放后才能真正回收
         bgmSource.volume = 0f;
         currentBGM = null;
         bgmFadeCoroutine = null;
+        TrimBgmCache(null);
     }
 
     public void PlaySFX(string name)

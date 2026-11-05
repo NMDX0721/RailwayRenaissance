@@ -31,6 +31,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 当前滤镜与定时器状态
         /// <summary>Playback speed as a tape would do it: pitch changes with speed (no time stretching).</summary>
         public static float PlaybackSpeed = 1f;
+        /// <summary>The smooth hand-over between two tracks. When off, a new track simply replaces the one that is playing.</summary>
+        public static bool CrossfadeEnabled = true;
         public static void SetPlaybackSpeed(float speed)
         {
             PlaybackSpeed = Mathf.Clamp(speed, 0.5f, 2f);
@@ -116,6 +118,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (chorus.enabled) { chorus.dryMix = .85f; chorus.wetMix1 = tone.chorusWet; chorus.wetMix2 = tone.chorusWet * .6f; chorus.wetMix3 = 0f; chorus.delay = 28f; chorus.rate = .6f; chorus.depth = .12f; }
         }
 
+        /// <summary>Pushes the equalizer and replay gain settings to both decks (and to the clips that are playing).</summary>
+        public static void RefreshEq() { MusicEqualizer.Prepare(s_deckA, s_deckA != null ? s_deckA.clip : null); MusicEqualizer.Prepare(s_deckB, s_deckB != null ? s_deckB.clip : null); }
+
         /// <summary>Applies the current mode now (the review uses this; playback applies it every frame).</summary>
         public static void RefreshTone(float userVolume) => UpdateTone(userVolume);
 
@@ -200,6 +205,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var activeDeck = GetActiveDeck();
             var nextDeck = GetStandbyDeck();
+            if (!CrossfadeEnabled && activeDeck != null && activeDeck.isPlaying) activeDeck.Stop();
 
             if (activeDeck == null || nextDeck == null || !activeDeck.isPlaying)
             {
@@ -207,7 +213,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // 无在播曲目时直接单轨起播
                 if (activeDeck != null)
                 {
-                    activeDeck.clip = newClip;
+                    activeDeck.clip = newClip; MusicEqualizer.Prepare(activeDeck, newClip);
                     activeDeck.volume = 0f; s_fadeInTimer = 0f;
                     activeDeck.pitch = PlaybackSpeed;
                     activeDeck.Play();
@@ -217,7 +223,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             // 启动平滑交替淡化
             nextDeck.Stop();
-            nextDeck.clip = newClip;
+            nextDeck.clip = newClip; MusicEqualizer.Prepare(nextDeck, newClip);
             nextDeck.time = 0f;
             nextDeck.volume = 0f;
             nextDeck.pitch = PlaybackSpeed;

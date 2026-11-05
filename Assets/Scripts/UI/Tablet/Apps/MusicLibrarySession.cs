@@ -37,9 +37,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public List<MusicLyricPreference> lyrics = new List<MusicLyricPreference>();
         public int lyricFontSize = 24;
         public int lyricMotion = 1;
+        public bool noCrossfade, noCoverTheme;   // the smart track transition and the cover-coloured accent are on unless switched off here
+        public bool barSpeed, barTone, barTimer;   // which of speed, tone and timer also keep a button on the player bar
         public bool lyricFilter = true;      // take credit and copyright lines out of lyrics
         public string lyricFilterWords = "";   // extra words: any line containing one is taken out (comma separated)
         public int toneMode;   // listening tone: 0 clean, 1 work-train radio, 2 tube radio, 3 tube FM
+        public bool eqOn, replayGain;   // equalizer and replay gain (see MusicEqualizer)
+        public string eqPreset = ""; public float[] eqGains;   // the equalizer's preset name and its ten band gains in dB
+        public string themeAccent = ""; public int themeBase;   // fixed accent colour as #RRGGBB (empty: follow the cover), and the base colour of the page: 0 grey-green, 1 ink, 2 warm
+        public string barSlots = "";   // comma separated buttons pinned to the player bar (speed, tone, timer, eq, queue ...); empty keeps the older barSpeed/barTone/barTimer flags
+        public string barOrder = "";    // comma separated bar buttons in the order the player dragged them into
+        public string barFolded = "";   // comma separated bar buttons kept in the bar's "more" menu instead of on the bar (volume, speed, tone, timer, eq, queue, lyrics, detail, settings)
+        public string paletteRecent = "";   // ids of the commands run last from the command palette, newest first
+        public bool tutorialDone;   // the first-use tour was shown
+        public int lyricGlobalOffsetMs;   // added to every track's own lyric offset (positive: lyrics come earlier)
         public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
@@ -77,6 +88,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     (!string.IsNullOrEmpty(p.fileName) && System.IO.Path.GetFileName(p.fileName) != p.fileName) ||
                     (!string.IsNullOrEmpty(p.translationFileName) && System.IO.Path.GetFileName(p.translationFileName) != p.translationFileName));
                 foreach (var preference in state.lyrics) preference.offsetMs = Mathf.Clamp(preference.offsetMs, -10000, 10000);
+                state.lyricGlobalOffsetMs = Mathf.Clamp(state.lyricGlobalOffsetMs, -10000, 10000);
                 state.lyricFontSize = state.lyricFontSize == 0 ? 24 : Mathf.Clamp(state.lyricFontSize, 18, 36);
                 state.lyricMotion = Mathf.Clamp(state.lyricMotion, 0, 2);
                 state.stageIntensity = Mathf.Clamp(state.stageIntensity, 0, 2);
@@ -120,13 +132,34 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             foreach (char c in id) if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z')) return false;
             return true;
         }
+        readonly object writeLock = new object();
+        int writeVersion; string lastJson;
+
+        // Saves that matter (a track change, a favourite, leaving) are written at once and in full.
         public bool Save(MusicLibraryState state)
         {
             if (ReadOnly) return false;
+            string json = JsonUtility.ToJson(state, true);
+            lock (writeLock) { writeVersion++; lastJson = json; return WriteFile(json); }
+        }
+
+        // The periodic save: the text is made here (Unity's serializer is main-thread only), the file is written on a worker thread, and nothing
+        // is written when the text is the same as the last save. A later immediate Save makes any write still waiting obsolete.
+        public void SaveInBackground(MusicLibraryState state)
+        {
+            if (ReadOnly) return;
+            string json = JsonUtility.ToJson(state, true);
+            int version;
+            lock (writeLock) { if (json == lastJson) return; lastJson = json; version = ++writeVersion; }
+            System.Threading.Tasks.Task.Run(() => { lock (writeLock) { if (version == writeVersion) WriteFile(json); } });
+        }
+
+        bool WriteFile(string json)
+        {
             try
             {
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
-                File.WriteAllText(Path + ".tmp", JsonUtility.ToJson(state, true));
+                File.WriteAllText(Path + ".tmp", json);
                 if (File.Exists(Path)) File.Replace(Path + ".tmp", Path, Path + ".bak");
                 else File.Move(Path + ".tmp", Path);
                 return true;
@@ -317,6 +350,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void Enqueue(string id, bool next = false)
         {
             if (Find(id) == null) return;
+            State.queue.RemoveAll(q => q == id);   // a song sits in the queue once: adding it again moves it
             if (next) State.queue.Insert(0, id); else State.queue.Add(id);
             Commit();
         }
@@ -400,6 +434,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             state.mode = (int)TabletMusicAppUI.tabletPlayMode;
             store.Save(state);
+        }
+        /// <summary>The periodic autosave: same content as <see cref="Save"/>, written off the main thread and skipped when nothing changed.</summary>
+        static void SaveInBackground()
+        {
+            if (state == null) return;
+            if (TabletMusicAppUI.TryGetCurrentPosition(out float position))
+            {
+                state.currentId = TabletMusicAppUI.tabletCurrentTrackId;
+                state.position = position;
+            }
+            state.mode = (int)TabletMusicAppUI.tabletPlayMode;
+            store.SaveInBackground(state);
         }
         public static List<MusicLibraryTrack> RecentTracks(int count)
         {
@@ -587,7 +633,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             FlushMetadata();
             TabletMusicAppUI.UpdateAudioProgress();
             saveTimer += delta;
-            if (saveTimer >= 5) { saveTimer = 0; Save(); }
+            if (saveTimer >= 10) { saveTimer = 0; SaveInBackground(); }
         }
     }
 }

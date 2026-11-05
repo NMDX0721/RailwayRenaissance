@@ -22,6 +22,7 @@ namespace RailwayRenaissance.Cab
             var simulation=GetComponent<CabSimulationDriver>();
             if(simulation!=null&&simulation.isActiveAndEnabled&&simulation.BlocksPointer(mouse.position.ReadValue()))return;
             var ray = viewCamera.ScreenPointToRay(mouse.position.ReadValue());
+            CabPhysicsQueries.Prepare();
             if (Physics.Raycast(ray, out var hover, 4f, interactionMask, QueryTriggerInteraction.Ignore))
             {
                 var driving = hover.collider.GetComponentInParent<CabDrivingTarget>();
@@ -44,6 +45,7 @@ namespace RailwayRenaissance.Cab
         }
         public bool ActivateRay(Ray ray, bool secondary = false)
         {
+            CabPhysicsQueries.Prepare();
             if (!Physics.Raycast(ray, out var hit, 4f, interactionMask, QueryTriggerInteraction.Ignore)) return false;
             var target = hit.collider.GetComponent<CabStartupClickTarget>();
             if (target != null) return target.Activate(secondary);

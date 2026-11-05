@@ -81,6 +81,7 @@ public static class RailwayMusicTerminalReview
     // At the normal review size a failed check stops the run. When MUSIC_REVIEW_SIZE asks for another size (a pre-flight for a new canvas), a failed
     // check is logged as MUSIC_PREFLIGHT_ISSUE and the run goes on, so one run shows everything that does not fit instead of only the first thing.
     static bool Preflight => MainSize.x != 1440 || MainSize.y != 900;
+    static bool IsHidden(VisualElement e) => e == null || e.resolvedStyle.display == DisplayStyle.None || e.style.display == DisplayStyle.None;
     static void Assert(bool condition, string reason)
     {
         if (condition) return;
@@ -90,7 +91,7 @@ public static class RailwayMusicTerminalReview
     static void ValidateControlGeometry()
     {
         ValidateScrollerGeometry();
-        foreach (string name in new[] { "music-volume", "music-progress" })
+        foreach (string name in new[] { "music-progress" })
         {
             var slider = root.Q<Slider>(name);
             var track = slider.Q(className: "unity-base-slider__tracker");
@@ -630,7 +631,7 @@ public static class RailwayMusicTerminalReview
                     Capture("04-compact");
                     Assert(root.Q("music-player").worldBound.yMax <= root.worldBound.yMax + 1, "Compact player outside screen");
                     Assert(root.Q<Button>("music-play-toggle").text == "" && root.Q<Button>("music-play-toggle").Q(className: "music-vector-icon") != null, "Playback button is still plain text");
-                    Assert(root.Q<Button>("music-queue").tooltip == "队列", "Icon button lost its tooltip");
+                    Assert(root.Q<Button>("music-queue").tooltip.StartsWith("队列"), "Icon button lost its tooltip");
                     Submit(root.Q<Button>("music-new-playlist"));
                     root.Q(className: "music-modal").Q<TextField>().value = "临时歌单";
                     Submit(root.Q<Button>("music-save-playlist"));
@@ -662,7 +663,7 @@ public static class RailwayMusicTerminalReview
                     using (var up = PointerUpEvent.GetPooled(new Event { type = EventType.MouseUp, button = 0, mousePosition = queueRows[1].worldBound.center }))
                     { up.target = handle; handle.SendEvent(up); }
                     Assert(MusicLibrarySession.State.queue[0] == "iron_and_ash", "Pointer drag did not reorder the queue");
-                    Submit(FindButton("清空队列")); Assert(MusicLibrarySession.State.queue.Count == 0, "Queue clear failed");
+                    Submit(root.Q<Button>("music-queue-more")); Submit(root.Q<Button>("music-clear-queue")); Assert(MusicLibrarySession.State.queue.Count == 0, "Queue clear failed");
                     Assert(TabletMusicAppUI.tabletCurrentClip != null, "Deleting a playlist affected the playing clip");
                     Debug.Log("MUSIC_UI_EXTENDED_OK: icon controls/tooltips, UI rename/delete, actual pointer drag in playlist/queue, clear, import filtering");
                     string jsonPath = Path.Combine(Local, "review.json");
@@ -994,12 +995,14 @@ public static class RailwayMusicTerminalReview
                     using (var buttonArrow = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None))
                     { buttonArrow.target = focusedButton; focusedButton.SendEvent(buttonArrow); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - buttonPosition) < .2f, "Arrow on focused button unexpectedly sought audio");
-                    var focusedSlider = root.Q<Slider>("music-volume"); focusedSlider.Focus();
+                    Submit(root.Q<Button>("music-volume-button")); var focusedSlider = root.Q("music-volume"); focusedSlider.Focus();
                     float sliderPosition = TabletMusicAppUI.CurrentPosition;
                     using (var sliderArrow = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None))
                     { sliderArrow.target = focusedSlider; focusedSlider.SendEvent(sliderArrow); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - sliderPosition) < .2f, "Arrow on focused slider unexpectedly sought audio");
                     Debug.Log("MUSIC_KEYBOARD_FOCUS_OK: button and slider arrows do not seek");
+                    Assert(root.Q("music-volume-mute") != null && root.Q("music-volume") != null, "The volume popover is incomplete"); Capture("39-volume-popover");
+                    using (var escape = KeyDownEvent.GetPooled(' ', KeyCode.Escape, EventModifiers.None)) { var ov = root.Q(className: "music-overlay"); escape.target = ov; ov.SendEvent(escape); }
                     float at = TabletMusicAppUI.CurrentPosition;
                     using (var right = KeyDownEvent.GetPooled('\0', KeyCode.RightArrow, EventModifiers.None)) { right.target = root; root.SendEvent(right); }
                     Assert(Math.Abs(TabletMusicAppUI.CurrentPosition - at - 5) < .2, "Focused music seek shortcut failed");
@@ -1309,7 +1312,292 @@ public static class RailwayMusicTerminalReview
                 case 44:
                     Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
                     Capture("22-match");
-                    Finish(); return;
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-settings"));
+                    break;
+                case 45:
+                    Assert(root.Q(className: "music-controls-panel") != null, "The playback settings panel did not open");
+                    Assert(root.Q("music-option-speed") == null && root.Q<Button>("music-setting-speed") != null, "Level two should list categories, not spread every choice out");
+                    Capture("23-controls-list");
+                    Submit(root.Q<Button>("music-setting-speed"));
+                    break;
+                case 46:
+                    Capture("24-controls-speed");
+                    Submit(root.Q<Button>("music-opt-speed-4"));
+                    break;
+                case 47:
+                    Assert(Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - 1.5f) < .01f, "The speed choice did not set the speed");
+                    Assert(root.Q<Button>("music-setting-speed") != null && root.Q<Button>("music-setting-speed").Q<Label>(className: "music-setting-value").text == "1.5x", "Picking a speed did not go back to the list with the new value");
+                    Submit(root.Q<Button>("music-setting-tone"));
+                    break;
+                case 48:
+                    Submit(root.Q<Button>("music-opt-tone-1"));
+                    break;
+                case 49:
+                    Assert(MusicAudioEffectsEngine.CurrentFilterMode == MusicAudioEffectsEngine.RadioFilterMode.Locomotive, "The tone choice did not set the tone");
+                    Submit(root.Q<Button>("music-setting-pins"));
+                    break;
+                case 50:
+                    Submit(root.Q<Button>("music-opt-pin-0"));
+                    break;
+                case 51:
+                    Assert(MusicLibrarySession.State.barSlots == "speed" && root.Q<Button>("music-speed").resolvedStyle.display != DisplayStyle.None, "Pinning the speed did not put it on the bar");
+                    Capture("25-controls-pins");
+                    Submit(root.Q<Button>("music-setting-back"));
+                    break;
+                case 52:
+                    Assert(root.Q<Button>("music-setting-speed") != null, "Back did not return to the category list");
+                    // Put everything back for whatever runs after.
+                    MusicAudioEffectsEngine.SetPlaybackSpeed(1f); MusicLibrarySession.State.playbackSpeed = 1f; MusicAudioEffectsEngine.CurrentFilterMode = MusicAudioEffectsEngine.RadioFilterMode.Clean;
+                    MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSlots = "";
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_CONTROLS_PANEL_OK: three levels, speed and tone applied, pinning, back");
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 53:
+                    Assert(root.Q("music-settings-scroll") != null, "The settings page did not open from the rail");
+                    Capture("26-settings-sound");
+                    Submit(root.Q<Button>("music-eq-preset-5"));
+                    break;
+                case 54:
+                    Assert(MusicEqualizer.Enabled && MusicEqualizer.Preset == "电台" && MusicEqualizer.Gains[0] < -11f, "The equalizer preset was not applied");
+                    {
+                        var deck = GameObject.Find("TabletMusic_DeckA");
+                        Assert(deck == null || deck.GetComponent<MusicEqFilter>() != null, "The equalizer filter is not on the deck");
+                    }
+                    Capture("27-settings-eq");
+                    Submit(root.Q<Button>("music-set-gain"));
+                    break;
+                case 55:
+                    Assert(MusicEqualizer.ReplayGain, "Replay gain did not switch on");
+                    Submit(root.Q<Button>("music-settings-tab-look"));
+                    break;
+                case 56:
+                    Capture("28-settings-look");
+                    Submit(root.Q<Button>("music-accent-2"));
+                    break;
+                case 57:
+                    Assert(MusicLibrarySession.State.themeAccent == "#6C9BD8", "The fixed accent was not stored");
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 58:
+                    Capture("29-settings-bar");
+                    Submit(root.Q<Button>("music-slot-eq"));
+                    break;
+                case 59:
+                    Assert(MusicLibrarySession.State.barSlots == "eq" && root.Q<Button>("music-eq").resolvedStyle.display != DisplayStyle.None, "Pinning the equalizer did not put it on the bar");
+                    Submit(root.Q<Button>("music-settings-tab-lyrics"));
+                    break;
+                case 60:
+                    Capture("30-settings-lyrics");
+                    Submit(root.Q<Button>("music-settings-tab-help"));
+                    break;
+                case 61:
+                    Submit(root.Q<Button>("music-tutorial-again"));
+                    break;
+                case 62:
+                    Assert(root.Q("music-tour") != null && root.Q<Button>("music-tour-next") != null, "The tour did not start");
+                    Capture("31-tour-1");
+                    Submit(root.Q<Button>("music-tour-next"));
+                    break;
+                case 63:
+                    Capture("32-tour-2");
+                    Submit(root.Q<Button>("music-tour-skip"));
+                    break;
+                case 64:
+                    Assert(root.Q("music-tour") == null && MusicLibrarySession.State.tutorialDone, "Skipping the tour did not end it");
+                    // Back to the defaults for whatever runs after, then the title click that finds the track in the lists.
+                    MusicEqualizer.Enabled = false; MusicEqualizer.ReplayGain = false; MusicEqualizer.ChoosePreset("平直"); MusicEqualizer.Store(MusicLibrarySession.State); MusicAudioEffectsEngine.RefreshEq();
+                    MusicLibrarySession.State.themeAccent = ""; MusicLibrarySession.State.barSlots = "";
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-nav-首页"));
+                    break;
+                case 65:
+                    {
+                        var title = root.Q<Label>("music-player-title") ?? root.Q("music-player").Q<Label>(className: "music-track-title");
+                        using (var click = ClickEvent.GetPooled()) { click.target = title; title.SendEvent(click); }
+                    }
+                    break;
+                case 66:
+                    Assert(root.Query(className: "music-track-row").ToList().Any(r => r.ClassListContains("is-located")), "Clicking the title did not locate the track in a list");
+                    Capture("33-located");
+                    Debug.Log("MUSIC_SETTINGS_OK: settings page, equalizer, loudness, accent, bar slots, tour, locate");
+                    Submit(root.Q<Button>("music-palette-open"));
+                    break;
+                case 67:
+                    Assert(root.Q<TextField>("music-palette-input") != null, "The command palette did not open");
+                    Capture("34-palette");
+                    root.Q<TextField>("music-palette-input").value = "均衡";
+                    break;
+                case 68:
+                    {
+                        var first = root.Q<Button>("music-palette-row-0");
+                        Assert(first != null && first.Q<Label>(className: "music-palette-title").text.Contains("均衡"), "The palette did not filter to the equalizer");
+                        Capture("35-palette-filtered");
+                        Submit(first);
+                    }
+                    break;
+                case 69:
+                    Assert(root.Q("music-settings-scroll") != null, "Running the palette command did not open the settings");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_PALETTE_OK: opened from the bar, filtered, ran a command");
+                    Submit(root.Q<Button>("music-palette-open"));
+                    break;
+                case 70:
+                    root.Q<TextField>("music-palette-input").value = "标尺";
+                    break;
+                case 71:
+                    Assert(root.Q<Button>("music-palette-row-0") != null, "The palette did not find the ruler");
+                    Submit(root.Q<Button>("music-palette-row-0"));
+                    break;
+                case 72:
+                    {
+                        Assert(root.Q("music-ruler-track") != null, "The ruler did not open");
+                        MusicLibrarySession.State.lyricGlobalOffsetMs = 0;
+                        var pref = MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId); pref.offsetMs = 0;
+                        Submit(root.Q<Button>("music-ruler-nudgep100"));
+                    }
+                    break;
+                case 73:
+                    Assert(MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs == 100, "Nudging the ruler did not move the track offset");
+                    Capture("36-ruler");
+                    Submit(root.Q<Button>("music-ruler-scope-global"));
+                    break;
+                case 74:
+                    Submit(root.Q<Button>("music-ruler-nudgem1000"));
+                    break;
+                case 75:
+                    Assert(MusicLibrarySession.State.lyricGlobalOffsetMs == -1000 && MusicTimedText.EffectiveOffsetMs(TabletMusicAppUI.tabletCurrentTrackId) == -900, "The global offset did not add to the track offset");
+                    Capture("37-ruler-global");
+                    MusicLibrarySession.State.lyricGlobalOffsetMs = 0; MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs = 0;
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Debug.Log("MUSIC_RULER_OK: ruler opened from the palette, track and global offsets add");
+                    {
+                        var yrc = MusicTimedText.Parse("{\"t\":0,\"c\":[{\"tx\":\"作词\"}]}\n[12340,900](12340,400,0)你(12740,500,0)好\n[14000,800](14000,800,0)世界", ".yrc");
+                        Assert(string.IsNullOrEmpty(yrc.error) && yrc.lines.Count == 2 && yrc.lines[0].text == "你好" && yrc.lines[0].words.Count == 2 && Math.Abs(yrc.lines[0].words[1].start - 12.74) < .001, "YRC parse failed: " + yrc.error);
+                        var qrc = MusicTimedText.Parse("[ti:x]\n[12340,900]你(12340,400)好(12740,500)\n[14000,800]世界(14000,800)", ".qrc");
+                        Assert(string.IsNullOrEmpty(qrc.error) && qrc.lines.Count == 2 && qrc.lines[1].text == "世界" && qrc.lines[0].words.Count == 2 && Math.Abs(qrc.lines[0].end - 13.24) < .001, "QRC parse failed: " + qrc.error);
+                        {
+                        var host = new MusicStageLyrics(); int plain = host.childCount; host.Select("tilt");
+                        Assert(host.childCount == plain + 1 && host.StyleId == "tilt", "Switching style did not keep the old one for the hand-over");
+                        Debug.Log("MUSIC_STAGE_HANDOVER_OK: old style stays while the new one grows in");
+                    }
+                    {
+                        var song = MusicTimedText.Parse("[00:01.00]主歌一行\n[00:03.00]主歌二行\n[00:05.00]\n[00:06.00]回来吧回来\n[00:08.00]回来吧回来\n[00:10.00]别的一句\n[00:12.00]yeah\n[00:13.00]yeah\n[00:14.00]回来吧回来", ".lrc");
+                        Assert(song.IsChorus(3) && song.IsChorus(4) && song.IsChorus(8) && !song.IsChorus(0) && !song.IsChorus(5) && !song.IsChorus(6), "Chorus detection picked the wrong lines");
+                        {
+                        var q = MusicLibrarySession.State.queue; q.Clear(); q.AddRange(new[] { "platform", "iron_and_ash", "platform" });
+                        MusicLibrarySession.Enqueue("platform", true);
+                        Assert(q.Count(x => x == "platform") == 1 && q[0] == "platform", "Enqueue should keep one copy and move it to the front");
+                        q.Clear();
+                    }
+                    {
+                        string Cut(string run) => string.Join(",", MusicChineseWords.Cut(run));
+                        Assert(Cut("我们的世界") == "3,2", "Cut 我们的世界 gave " + Cut("我们的世界"));
+                        Assert(Cut("不想回忆") == "2,2", "Cut 不想回忆 gave " + Cut("不想回忆"));
+                        Assert(Cut("列车驶向远方") == "2,2,2", "Cut 列车驶向远方 gave " + Cut("列车驶向远方"));
+                        Debug.Log("MUSIC_CN_WORDS_OK: Chinese words cut by list and particle rules");
+                    }
+                    Debug.Log("MUSIC_CHORUS_OK: repeated runs are chorus, short interjections are not");
+                    }
+                    Debug.Log("MUSIC_YRC_QRC_OK: word-timed YRC and QRC parse");
+                    }
+                    var q0 = MusicLibrarySession.State.queue; q0.Clear(); q0.AddRange(new[] { "platform", "iron_and_ash" }); MusicLibrarySession.Commit();
+                    Submit(root.Q<Button>("music-queue"));
+                    break;
+                case 76:
+                    Assert(root.Q<TextField>("music-queue-filter") != null && root.Q<Button>("music-queue-more") != null, "The queue tools are missing");
+                    Submit(root.Q<Button>("music-queue-more"));
+                    break;
+                case 77:
+                    Assert(root.Q<Button>("music-queue-pick") != null && root.Q<Button>("music-queue-dedupe") != null && root.Q<Button>("music-clear-queue") != null, "The queue's second menu is missing items");
+                    Submit(root.Q<Button>("music-queue-pick"));
+                    break;
+                case 78:
+                    Submit(root.Q<Button>("music-queue-check-0"));
+                    break;
+                case 79:
+                    Capture("38-queue-picking");
+                    Submit(root.Q<Button>("music-queue-batch-移到末尾"));
+                    break;
+                case 80:
+                    Assert(MusicLibrarySession.State.queue.Count == 2 && MusicLibrarySession.State.queue[1] == "platform", "Batch move to end did not work");
+                    MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
+                    Debug.Log("MUSIC_QUEUE_OK: tools, batch move");
+                    MusicLibrarySession.State.volume = .6f; TabletMusicAppUI.SetVolume(.6f);
+                    Submit(root.Q<Button>("music-volume-button"));
+                    break;
+                case 81:
+                    Assert(root.Q("music-volume") != null, "The volume popover did not open");
+                    Capture("40-volume-popover");
+                    Submit(root.Q<Button>("music-volume-mute"));
+                    break;
+                case 82:
+                    Assert(MusicLibrarySession.State.volume < .005f, "Mute did not silence the volume");
+                    Submit(root.Q<Button>("music-volume-mute"));
+                    break;
+                case 83:
+                    Assert(Mathf.Abs(MusicLibrarySession.State.volume - .6f) < .02f, "Unmute did not restore the volume");
+                    Debug.Log("MUSIC_VOLUME_OK: popover opens, mute and restore");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    { var qq = MusicLibrarySession.State.queue; qq.Clear(); for (int n = 0; n < 12; n++) qq.Add("platform"); MusicLibrarySession.Commit(); }
+                    break;
+                case 84:
+                    Capture("41-queue-count-12");
+                    { var qq = MusicLibrarySession.State.queue; qq.Clear(); qq.AddRange(new[] { "platform", "iron_and_ash", "platform", "iron_and_ash", "platform" }); MusicLibrarySession.Commit(); }
+                    break;
+                case 85:
+                    Capture("42-queue-count-5");
+                    MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 86:
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 87:
+                    Capture("43-settings-bar");
+                    Submit(root.Q<Button>("music-set-bar-queue-1"));
+                    break;
+                case 88:
+                    Submit(root.Q<Button>("music-set-bar-volume-1"));
+                    break;
+                case 89:
+                    Assert(IsHidden(root.Q<Button>("music-queue")) && IsHidden(root.Q<Button>("music-volume-button")) && !IsHidden(root.Q<Button>("music-bar-more")), "Folding bar buttons did not move them into the more menu");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    Submit(root.Q<Button>("music-bar-more"));
+                    break;
+                case 90:
+                    Assert(root.Q<Button>("music-bar-more-queue") != null && root.Q<Button>("music-bar-more-volume") != null, "The more menu lacks the folded buttons");
+                    Capture("44-bar-more");
+                    Assert(root.Q<Button>("music-bar-more-timer") != null && root.Q<Button>("music-bar-more-tone") != null, "Buttons that were never pinned are not reachable from the more menu");
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                    MusicLibrarySession.State.barFolded = ""; MusicLibrarySession.Save();
+                    Submit(root.Q<Button>("music-nav-settings"));
+                    break;
+                case 91:
+                    Submit(root.Q<Button>("music-settings-tab-bar"));
+                    break;
+                case 92:
+                    {
+                        var dragGrip = root.Q("music-bar-drag-queue");
+                        Assert(dragGrip != null, "The bar rows have no drag dragGrip");
+                        string before = MusicLibrarySession.State.barOrder;
+                        using (var key = KeyDownEvent.GetPooled(' ', KeyCode.UpArrow, EventModifiers.None)) { key.target = dragGrip; dragGrip.SendEvent(key); }
+                    }
+                    break;
+                case 93:
+                    {
+                        string order = MusicLibrarySession.State.barOrder ?? "";
+                        Assert(order.StartsWith("volume,speed,tone,timer,queue,eq") || order.IndexOf("queue") < order.IndexOf("eq"), "Moving a bar row did not change the order: " + order);
+                        Capture("45-settings-bar-order");
+                        var bar = root.Q("music-queue").parent; var q = bar.IndexOf(root.Q("music-queue")); var l = bar.IndexOf(root.Q("music-lyrics"));
+                        Assert(q < l, "The bar does not follow the chosen order");
+                        MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
+                        root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
+                        Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu and can be reordered");
+                        Finish(); return;
+                    }
             }
             stage++; frame = Time.frameCount;
             // Batch frames can advance before a 180ms entrance transition has finished.

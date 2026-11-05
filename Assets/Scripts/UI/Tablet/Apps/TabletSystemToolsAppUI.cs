@@ -98,7 +98,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         time.style.unityFontDefinition = Fd();
         clockCard.Add(time);
 
-        var date = new Label($"运营第 {GameData.Day} 天 · 主体历 105 年 1 月 1 日");
+        var sDate = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
+        var date = new Label($"运营第 {GameData.Day} 天 · 主体历 {RailwayRenaissance.UI.Tablet.TabletDateTime.EraYear} 年 {sDate.Month} 月 {sDate.Day} 日");
         date.style.fontSize = 14; date.style.color = AccentSystem;
         date.style.unityFontDefinition = Fd(); date.style.marginTop = 8;
         clockCard.Add(date);
@@ -106,7 +107,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // 分组卡片：功能Tab（闹钟/世界时钟/秒表/倒计时）
         var funcCard = BuildAppCard("时钟功能");
-        funcCard.Add(BuildLightRow("晨间出车早擎闹钟", "已设定 05:30（工作日）", () => ShowToast("闹钟已同步到先民排班系统")));
+        funcCard.Add(BuildLightRow("晨间出车早擎闹钟", "已设定 05:30（工作日）", () =>
+        {
+            var ch = new RailwayRenaissance.UI.Tablet.SystemShell.TabletNotifyChannel { Id = "clock", AppId = "时钟", AppName = "时钟", Name = "闹钟与计时", Icon = RailwayRenaissance.UI.Tablet.TabletIconKind.Clock };
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.RegisterChannel(ch);
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.Post("clock", "闹钟已同步", "早擎闹钟 05:30（工作日）已同步到先民排班系统");
+        }));
         funcCard.Add(BuildLightRow("平壤内网主时钟同步", "偏移量 +0.002s · 阿里郎1号卫星校准", () => ShowToast("授时服务器连接稳定")));
         funcCard.Add(BuildLightRow("运行耗时秒表", "用于测定雾峰站至茶山站实际单程区间时分", () => ToggleStopwatch()));
         body.Add(funcCard);
@@ -115,7 +121,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // ============ App: 日历 ============
     public static void BuildCalendarApp(VisualElement win)
     {
-        var body = BuildAppBody(win, "日历", "主体历 105 年 1 月（公历 2076 年 1 月）");
+        var calNow = RailwayRenaissance.UI.Tablet.TabletDateTime.Now;
+        var body = BuildAppBody(win, "日历", $"主体历 {RailwayRenaissance.UI.Tablet.TabletDateTime.EraYear} 年 {calNow.Month} 月（公历 {calNow.Year} 年 {calNow.Month} 月）");
 
         var calCard = BuildAppCard("月度运行视图");
         calCard.style.alignSelf = Align.Center;
@@ -135,8 +142,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             header.Add(dl);
         }
 
-        // 5周网格，完整呈现 31 天
-        for (int w = 0; w < 5; w++)
+        // 6周网格：按当月 1 日是星期几错位，高亮当天
+        int calOffset = ((int)new System.DateTime(calNow.Year, calNow.Month, 1).DayOfWeek + 6) % 7;
+        int calDays = System.DateTime.DaysInMonth(calNow.Year, calNow.Month);
+        for (int w = 0; w < 6; w++)
         {
             var week = new VisualElement();
             week.style.flexDirection = FlexDirection.Row;
@@ -145,14 +154,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             calCard.Add(week);
             for (int d = 0; d < 7; d++)
             {
-                int day = w * 7 + d + 1;
-                var dl = new Label(day <= 31 ? day.ToString() : "");
+                int day = w * 7 + d - calOffset + 1;
+                var dl = new Label(day >= 1 && day <= calDays ? day.ToString() : "");
                 dl.style.width = 85; dl.style.height = 38; dl.style.fontSize = 14;
                 dl.style.unityFontDefinition = Fd(); dl.style.unityTextAlign = TextAnchor.MiddleCenter;
 
-                if (day <= 31)
+                if (day >= 1 && day <= calDays)
                 {
-                    bool isCurrentDay = (day == GameData.Day || (GameData.Day > 31 && day == 1));
+                    bool isCurrentDay = day == calNow.Day;
                     dl.style.color = isCurrentDay ? Color.white : InkPrimary;
                     if (isCurrentDay)
                     {
@@ -195,17 +204,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         tempRow.style.alignItems = Align.Center;
         tempCol.Add(tempRow);
 
-        var temp = new Label("18°C");
+        var wx = RailwayRenaissance.UI.Tablet.TabletWeather.Now;
+        var wxTomorrow = RailwayRenaissance.UI.Tablet.TabletWeather.For(RailwayRenaissance.UI.Tablet.TabletDateTime.Now.AddDays(1));
+        var temp = new Label(wx.Now + "°C");
         temp.style.fontSize = 52; temp.style.color = InkPrimary;
         temp.style.unityFontStyleAndWeight = FontStyle.Bold;
         temp.style.unityFontDefinition = Fd();
         tempRow.Add(temp);
 
-        var weatherBadge = BuildTagPill("多云", new Color(0.23f, 0.51f, 0.96f, 0.15f), new Color(0.23f, 0.51f, 0.96f, 1f), 12f);
+        var weatherBadge = BuildTagPill(wx.Condition, new Color(0.23f, 0.51f, 0.96f, 0.15f), new Color(0.23f, 0.51f, 0.96f, 1f), 12f);
         weatherBadge.style.marginLeft = 14;
         tempRow.Add(weatherBadge);
 
-        var cond = new Label("东北风 2级 (3.2 m/s) · 大气压 101.4 kPa · 体感舒适");
+        var cond = new Label($"{wx.WindDirection}风 {wx.WindLevel}级 ({wx.WindMs:0.0} m/s) · 大气压 {wx.PressureKPa:0.0} kPa · {wx.Comfort}");
         cond.style.fontSize = 13; cond.style.color = InkSecondary;
         cond.style.unityFontDefinition = Fd(); cond.style.marginTop = 6;
         tempCol.Add(cond);
@@ -213,9 +224,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         var tempRangeBox = new VisualElement();
         tempRangeBox.style.alignItems = Align.FlexEnd;
-        var rangePill = BuildTagPill("↑ 21°C  ↓ 9°C", SurfaceHover, InkPrimary, 12f);
+        var rangePill = BuildTagPill($"↑ {wx.High}°C  ↓ {wx.Low}°C", SurfaceHover, InkPrimary, 12f);
         tempRangeBox.Add(rangePill);
-        var airQualityLbl = new Label("空气质量：优 (AQI 22)");
+        var airQualityLbl = new Label($"空气质量：{wx.AqiLabel} (AQI {wx.Aqi})");
         airQualityLbl.style.fontSize = 12; airQualityLbl.style.color = new Color(0.15f, 0.70f, 0.42f, 1f);
         airQualityLbl.style.unityFontDefinition = Fd(); airQualityLbl.style.marginTop = 6;
         tempRangeBox.Add(airQualityLbl);
@@ -277,10 +288,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             grid.Add(card);
         }
 
-        AddTelemetryCard("🛤", new Color(0.12f, 0.72f, 0.50f, 1f), "轨面附着系数", "μ = 0.38 · 峰值", 0.85f, new Color(0.12f, 0.72f, 0.50f, 1f), "钢轨干燥洁净，牵引与动力制动粘着性能峰值");
+        AddTelemetryCard("🛤", new Color(0.12f, 0.72f, 0.50f, 1f), "轨面附着系数", $"μ = {wx.Adhesion:0.00} · {(wx.Wet ? "偏低" : "峰值")}", wx.Adhesion / 0.45f, wx.Wet ? new Color(0.92f, 0.64f, 0.16f, 1f) : new Color(0.12f, 0.72f, 0.50f, 1f), wx.Wet ? "轨面潮湿，粘着下降，牵引与制动都要留足余量" : "钢轨干燥洁净，牵引与动力制动粘着性能峰值");
         AddTelemetryCard("⚡", new Color(0.23f, 0.51f, 0.96f, 1f), "沙能流转阻力", "0.12 · 阻力平稳", 0.24f, new Color(0.23f, 0.51f, 0.96f, 1f), "沙粒流速平缓，竞争对手沙能载具无异常运力加成");
-        AddTelemetryCard("💧", new Color(0.05f, 0.68f, 0.88f, 1f), "大气相对湿度", "62% · 正常", 0.62f, new Color(0.05f, 0.68f, 0.88f, 1f), "道床与枕木含水率正常，电气回路绝缘稳定");
-        AddTelemetryCard("👁", new Color(0.96f, 0.62f, 0.10f, 1f), "大气能见度", "8.5 km · 良好", 0.85f, new Color(0.96f, 0.62f, 0.10f, 1f), "明日午后有薄雾，建议提早开启0721机车大灯");
+        AddTelemetryCard("💧", new Color(0.05f, 0.68f, 0.88f, 1f), "大气相对湿度", $"{wx.Humidity}% · {wx.HumidityLabel}", wx.Humidity / 100f, new Color(0.05f, 0.68f, 0.88f, 1f), wx.Humidity > 75 ? "道床与枕木含水偏高，注意电气回路绝缘" : "道床与枕木含水率正常，电气回路绝缘稳定");
+        AddTelemetryCard("👁", new Color(0.96f, 0.62f, 0.10f, 1f), "大气能见度", $"{wx.VisibilityKm:0.0} km · {wx.VisibilityLabel}", Mathf.Clamp01(wx.VisibilityKm / 12f), new Color(0.96f, 0.62f, 0.10f, 1f), $"明日{wxTomorrow.Condition}，{wxTomorrow.Advice}");
 
         // 3日气象胶囊卡
         var forecastCard = BuildAppCard("未来三日铁道气象预报");
@@ -289,7 +300,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         forecastRow.style.justifyContent = Justify.SpaceBetween;
         forecastCard.Add(forecastRow);
 
-        void AddDayForecast(string day, string icon, string weather, string tempStr, string alert)
+        void AddDayForecast(string day, RailwayRenaissance.UI.Tablet.TabletIconKind iconKind, string weather, string tempStr, string alert)
         {
             var dayBox = new VisualElement();
             dayBox.style.width = new Length(32, LengthUnit.Percent);
@@ -304,7 +315,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             dLbl.style.fontSize = 12; dLbl.style.color = InkTertiary; dLbl.style.unityFontDefinition = Fd();
             dayBox.Add(dLbl);
 
-            var ic = BuildGlyphIcon(icon, 28f, icon.StartsWith("\u2600") ? new Color(0.96f, 0.62f, 0.10f, 1f) : new Color(0.35f, 0.55f, 0.85f, 1f));
+            var ic = new RailwayRenaissance.UI.Tablet.TabletIconElement(iconKind, 28f, iconKind == RailwayRenaissance.UI.Tablet.TabletIconKind.Sun ? new Color(0.96f, 0.62f, 0.10f, 1f) : new Color(0.35f, 0.55f, 0.85f, 1f));
             ic.style.marginTop = 4;
             dayBox.Add(ic);
 
@@ -325,9 +336,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             forecastRow.Add(dayBox);
         }
 
-        AddDayForecast("今日（周一）", "⛅", "多云", "18° / 9°", "线路畅通");
-        AddDayForecast("明日（周二）", "☀️", "晴间多云", "21° / 11°", "适合巡检");
-        AddDayForecast("后日（周三）", "🌧", "小雨转阴", "15° / 8°", "轨面湿滑注意制动");
+        string[] dayNames = { "今日", "明日", "后日" };
+        string[] weekdays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+        for (int di = 0; di < 3; di++)
+        {
+            var fr = RailwayRenaissance.UI.Tablet.TabletWeather.For(RailwayRenaissance.UI.Tablet.TabletDateTime.Now.AddDays(di));
+            AddDayForecast($"{dayNames[di]}（{weekdays[(int)fr.Date.DayOfWeek]}）", fr.Icon, fr.Condition, $"{fr.High}° / {fr.Low}°", fr.Advice);
+        }
         body.Add(forecastCard);
     }
 

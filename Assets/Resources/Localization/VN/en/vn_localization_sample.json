@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "scriptId": "vn_localization_sample",
+  "locale": "en",
+  "entries": [
+    {
+      "key": "vn_localization_sample/suiyue_deadpan",
+      "sourceHash": "c4d3bd65a0fc63a179417c31e286b624e3147901561d85741dcda75ded38f7ac",
+      "status": "ready",
+      "text": "I'm only recording the facts! I'm an AI! I don't tell jokes!",
+      "segments": [
+        {
+          "source": "我只是在记录事实嘛！",
+          "text": "I'm only recording the facts! "
+        },
+        {
+          "source": "我是 AI！",
+          "text": "I'm an AI! "
+        },
+        {
+          "source": "我不会开玩笑！",
+          "text": "I don't tell jokes!"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example",
+      "sourceHash": "3b4be99009d36de6651bccd37ed5af495cd9ec3a9365b387e09f4fcff7333754",
+      "status": "ready",
+      "text": "What would you like to do on the journey?",
+      "segments": [
+        {
+          "source": "旅途中想做什么？",
+          "text": "What would you like to do on the journey?"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example/option-0",
+      "sourceHash": "8a5d8723a3939705d8ffcba94618fbf42995a59e9807c29efc59518772d9ecf1",
+      "status": "ready",
+      "text": "Talk about the old railway",
+      "segments": [
+        {
+          "source": "聊聊旧铁路",
+          "text": "Talk about the old railway"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example/option-1",
+      "sourceHash": "afd0cddd2a62447414abbaaf23891641f909d36e9a98be61da8bc6d2d205ff68",
+      "status": "ready",
+      "text": "Get some rest",
+      "segments": [
+        {
+          "source": "先休息一下",
+          "text": "Get some rest"
+        }
+      ]
+    }
+  ]
+}

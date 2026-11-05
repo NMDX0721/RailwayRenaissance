@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 角色音色设计（ElevenLabs Voice Design）
 
+> **2026-11-01 用户更新：当前采用日语配音＋中文字幕。** 当前实施方案见 [序章补全计划](../../docs/for-ai/VN_PROLOGUE_COMPLETION_PLAN.md)。下文完整保留旧韩语方案作历史参考；其中韩语 Prompt、试听台词、方言要求、语言表和模型选择均不再是当前生产指令，不可直接用于日语配音。角色性格与音色底色可供改写参考；日语台本、读音表与试听稿仍待制作。英文字幕属于后续范围，未因本次语言变更视为完成。
+
 > 工具：ElevenLabs Voice Design（v3，文本提示生成音色，兼容 Eleven v3 + audio tags）
 > 文档依据：ElevenLabs 官方《Voice Design Prompting Guide》
 > 使用方式：ElevenLabs → Voice Lab → Voice Design → 粘贴【Prompt】→ 粘贴【Preview Text】→ 调整 Guidance Scale → 生成 3 个候选 → 选型保存 `voice_{角色id}`

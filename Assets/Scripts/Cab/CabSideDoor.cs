@@ -23,6 +23,7 @@ namespace RailwayRenaissance.Cab
             openFraction=Mathf.Clamp01(fraction);
             if(latch!=null)latch.localPosition=latchClosedPosition+(openFraction>.001f?Vector3.forward*.035f:Vector3.zero);
             transform.localRotation=Quaternion.Euler(0,openAngle*openFraction,0);
+            CabPhysicsQueries.MarkDirty();
         }
         [ContextMenu("Open door inward")] public void Open() => SetOpen(1);
         [ContextMenu("Close door")] public void Close() => SetOpen(0);

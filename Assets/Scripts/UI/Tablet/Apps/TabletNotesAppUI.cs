@@ -72,29 +72,29 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         },
         new WikiEntry
         {
-            name = "NF-5 耕牛",
+            name = "NF-5K 耕牛",
             category = "机车",
             icon = "🚂",
             badgeColor = new Color(0.85f, 0.45f, 0.15f, 1f),
             statusTag = "国家定型",
             tagBg = new Color(0.85f, 0.45f, 0.15f, 0.15f),
             tagColor = new Color(0.85f, 0.45f, 0.15f, 1f),
-            metrics = new[] { "1965定型", "重载电传动", "1500kg沙容" },
-            summary = "1965年定型的经典重载先民内燃机车，皮实耐用，是雾峰村线三十年货运与通勤的钢铁基石。",
-            detail = "采用经典的六轴柴油-电力传动架构，配备高刚性铸钢转向架，对恶劣多沙轨面拥有极高适应性与牵引附着力。"
+            metrics = new[] { "内燃电传动", "客运头车", "雾峰村线" },
+            summary = "雾峰村线的内燃动力头车，兼顾驾驶与客运空间，是重新开行列车的重要基础。",
+            detail = "由柴油机与电传动系统提供牵引动力，驾驶室后可通往客室。重开前需要完成检修与线路检查。"
         },
         new WikiEntry
         {
-            name = "0721 沙子飞猪",
+            name = "0721 千里马",
             category = "机车",
             icon = "🚄",
             badgeColor = new Color(0.98f, 0.45f, 0.12f, 1f),
             statusTag = "特许运营",
             tagBg = new Color(0.98f, 0.45f, 0.12f, 0.15f),
             tagColor = new Color(0.98f, 0.45f, 0.12f, 1f),
-            metrics = new[] { "先民机密型", "沙能点火", "双节客厢" },
-            summary = "沉睡在机务段深处的特种动力机车，搭载沙本位混合点火与电驱总成，动力澎湃。",
-            detail = "在先民工程部秘密改装，能够以高纯度动力沙作为燃烧催化流体，兼具内燃机的机械韧性与沙能的极高热膨胀做功效率。"
+            metrics = new[] { "2053年出厂", "沙能飞行载具", "岁月搭载平台" },
+            summary = "由学院批准用于现场实践的千里马飞行载具，搭载岁月AI，陪伴林彪悍踏上归乡旅途。",
+            detail = "2053年出厂，封存多年后重新启用。载具用于飞行与旅途生活，和雾峰村线上运行的NF-5K列车分别承担不同任务。"
         },
         new WikiEntry
         {
@@ -214,6 +214,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         RenderWikiGrid(grid, win);
     }
 
+    private static IEnumerable<WikiEntry> AllWikiEntries()
+    {
+        var names = new HashSet<string>();
+        foreach (var entry in s_masterWikiEntries) { names.Add(entry.name); yield return entry; }
+        var records = new List<StoryArchiveCatalog.ArchiveInfo>(StoryArchiveCatalog.Characters);
+        records.AddRange(StoryArchiveCatalog.Trains);
+        foreach (var item in records)
+        {
+            if (!names.Add(item.name)) continue;
+            bool unlocked = PlayerPrefs.GetInt(item.prefsKey, 0) == 1;
+            yield return new WikiEntry { name = item.name, category = item.prefsKey.StartsWith("ArchiveChar_") ? "人物" : "机车",
+                icon = "", badgeColor = AccentSystem, statusTag = unlocked ? item.type : "未解锁", tagBg = SurfaceHover,
+                tagColor = InkSecondary, metrics = new[] { item.type }, summary = unlocked ? item.intro : item.condition,
+                detail = unlocked ? item.intro : item.condition };
+        }
+    }
+
     private static void RenderWikiGrid(VisualElement container, VisualElement win)
     {
         var grid = new VisualElement();
@@ -223,7 +240,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         container.Add(grid);
 
         var matches = new List<WikiEntry>();
-        foreach (var e in s_masterWikiEntries)
+        foreach (var e in AllWikiEntries())
         {
             if (s_wikiCategoryFilter != "全部" && e.category != s_wikiCategoryFilter) continue;
             if (!string.IsNullOrEmpty(s_wikiSearchKeyword))
@@ -397,7 +414,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 id = 1,
                 category = "运营备忘",
                 title = "雾峰村线重开财务备忘与调度复盘",
-                date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 author = "林彪悍",
                 content = $"今天是我们正式重启雾峰村线的第 {GameData.Day} 天。\n\n" +
                           $"根据调度系统的核算，今天沿线茶农与通勤客流达到了 {GameData.ExpectedPassengers} 人次。\n" +
@@ -446,7 +463,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                             id = 1000 + ach.GetHashCode() % 9000,
                             category = "成就里程碑",
                             title = achTitle,
-                            date = string.IsNullOrEmpty(ach.unlockedDate) ? System.DateTime.Now.ToString("yyyy-MM-dd") : ach.unlockedDate,
+                            date = string.IsNullOrEmpty(ach.unlockedDate) ? RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd") : ach.unlockedDate,
                             author = "系统记录",
                             content = $"【荣誉成就已达成】\n\n成就名称：{ach.title}\n稀有度：{ach.rarity}\n达成描述：{ach.description}\n\n铁道总署特发此状，以资鼓励！",
                             isSystemGenerated = true
@@ -472,7 +489,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                             id = 2000 + bm.GetHashCode() % 8000,
                             category = "剧情书签",
                             title = bmTitle,
-                            date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                            date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                             author = "岁月AI同步",
                             content = $"【剧目断点存盘】\n\n剧目：第{bm.episodeNum}话 {bm.episodeTitle}\n脚本：{bm.scriptName} (场景{bm.sceneIndex}, 对话{bm.dialogueIndex})\n摘抄：{bm.previewText}\n\n随时可在归途或VN中重温。",
                             isSystemGenerated = true
@@ -491,7 +508,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 id = 3000 + GameData.Day,
                 category = "运营备忘",
                 title = weeklyTitle,
-                date = System.DateTime.Now.ToString("yyyy-MM-dd"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd"),
                 author = "调度中心",
                 content = $"【雾峰村线每日运营摘要】\n\n" +
                           $"• 运营天数：第 {GameData.Day} 天\n" +
@@ -534,6 +551,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         ReleaseTaskView(win);
         win.Clear();
         if (userTabletNotes == null) LoadUserTabletNotes();
+        var achievements = new Button(() => TabletHistoryUI.BuildAchievements(win, () => BuildNotesApp(win))) { text = "成就记录", name = "notes-achievements" };
+        achievements.style.height = 48;
+        TabletBookmarksUI.StyleAction(achievements);
+        achievements.style.alignSelf = Align.FlexStart;
+        achievements.style.flexShrink = 0;
+        win.Add(achievements);
 
         // 统一浅色背景应用主体（三栏架构：左导航 200px + 中列表 290px + 右正文 flexGrow）
         var noteCols = new VisualElement();
@@ -826,8 +849,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 id = (int)(System.DateTime.UtcNow.Ticks % 1000000),
                 category = catToAssign,
-                title = "新备忘录 " + System.DateTime.Now.ToString("MM-dd HH:mm"),
-                date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                title = "新备忘录 " + RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("MM-dd HH:mm"),
+                date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 author = "林彪悍",
                 content = "在此输入新的笔记与运营日志内容...",
                 isSystemGenerated = false
@@ -904,7 +927,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 curNote.title = noteTitleField.value;
                 curNote.content = noteBodyField.value;
-                curNote.date = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                curNote.date = RailwayRenaissance.UI.Tablet.TabletDateTime.Now.ToString("yyyy-MM-dd HH:mm");
                 SaveUserTabletNotes();
                 ShowToast("笔记已保存到平板闪存。");
                 BuildNotesApp(win);

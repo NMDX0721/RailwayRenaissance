@@ -21,6 +21,8 @@ public class CharacterSpriteManager : MonoBehaviour
             { "小芳", "xiaofang" },
             { "导师", "daoshi" },
             { "教授", "daoshi" },
+            { "佯教授", "daoshi" },
+            { "佯明远", "daoshi" },
         };
 
     private static string ToSpriteId(string name)
@@ -45,13 +47,24 @@ public class CharacterSpriteManager : MonoBehaviour
     private VisualElement slotCenter;
     private VisualElement slotRight;
     private readonly Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
+    private readonly HashSet<string> missingWarnings = new HashSet<string>();
+    public int ResourceLookupCount { get; private set; }
+
+    public void ClearSpriteCache()
+    {
+        spriteCache.Clear();
+        missingWarnings.Clear();
+        ResourceLookupCount = 0;
+    }
+    private readonly List<(VisualElement slot, float width, float height)> activeSlots =
+        new List<(VisualElement, float, float)>();
 
     // 每个角色的默认slot尺寸（像素）——基于实际精灵的有效内容区域（1.25x 放大，贴底显示）
     private readonly Dictionary<string, (int w, int h)> charSlotSize = new Dictionary<string, (int, int)>
     {
         { "lin_biaohan", (450, 675) },   // 2:3 ratio
         { "suiyue",      (450, 675) },   // 2:3 ratio
-        { "jiaying_xu",  (550, 606) },   // 接近1:1，需要更宽
+        { "jiaying_xu",  (660, 727) },   // 半身构图；提高头部位置以接近其他成人的视线高度
         { "laochen",     (450, 450) },   // 1:1 ratio
     };
     private const int DefaultSlotW = 450;
@@ -72,6 +85,7 @@ public class CharacterSpriteManager : MonoBehaviour
         container.style.justifyContent = Justify.Center;
         container.pickingMode = PickingMode.Ignore;
         root.Add(container);
+        container.RegisterCallback<GeometryChangedEvent>(_ => ReflowSlots());
 
         slotLeft = CreateCharSlot("char-left");
         slotCenter = CreateCharSlot("char-center");
@@ -97,8 +111,15 @@ public class CharacterSpriteManager : MonoBehaviour
 
     public void UpdateDisplay(CharacterEntry[] chars, string emotion, string speaker = null, string[] reactions = null)
     {
+        ClearAll();
         if (chars == null || chars.Length == 0)
             return;
+
+        // VN camera belongs to the player; keep legacy assets and script slots for migration.
+        chars = System.Array.FindAll(chars, entry => entry != null &&
+            !string.IsNullOrEmpty(entry.name) && ToSpriteId(entry.name) != "lin_biaohan");
+        if (chars.Length == 0) return;
+        System.Array.Sort(chars, (a, b) => PositionRank(a.pos).CompareTo(PositionRank(b.pos)));
 
         // 解析旁观者表情映射
         var reactionMap = new Dictionary<string, string>();
@@ -155,9 +176,15 @@ public class CharacterSpriteManager : MonoBehaviour
 
             foreach (var path in tryPaths)
             {
-                if (spriteCache.TryGetValue(path, out tex) && tex != null) break;
+                if (spriteCache.TryGetValue(path, out tex))
+                {
+                    if (tex != null) break;
+                    continue;
+                }
+                ResourceLookupCount++;
                 tex = Resources.Load<Texture2D>(path);
-                if (tex != null) { spriteCache[path] = tex; break; }
+                spriteCache[path] = tex;
+                if (tex != null) break;
                 tex = null;
             }
 
@@ -178,7 +205,8 @@ public class CharacterSpriteManager : MonoBehaviour
             if (tex == null)
             {
                 // 缺立绘：占位色块 + 名字，不把 emotion 写到别人身上
-                Debug.LogWarning("[VN Characters] Sprite not found (placeholder): " + entry.name + " / " + emotionKey);
+                if (missingWarnings.Add(spriteId + "/" + emotionKey))
+                    Debug.LogWarning("[VN Characters] Sprite not found (placeholder): " + entry.name + " / " + emotionKey);
                 slot.style.backgroundImage = StyleKeyword.Null;
                 var tint = PlaceholderTint.TryGetValue(spriteId, out var c) ? c : new Color(0.5f, 0.5f, 0.5f, 0.3f);
                 slot.style.backgroundColor = tint;
@@ -196,7 +224,7 @@ public class CharacterSpriteManager : MonoBehaviour
                 ph.style.whiteSpace = WhiteSpace.Normal;
                 ph.pickingMode = PickingMode.Ignore;
                 slot.Add(ph);
-                PositionSlot(slot, entry.pos, chars.Length);
+                PositionSlot(slot);
                 continue;
             }
 
@@ -206,34 +234,53 @@ public class CharacterSpriteManager : MonoBehaviour
             slot.Clear();
             slot.style.backgroundImage = new StyleBackground(tex);
             slot.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
-            PositionSlot(slot, entry.pos, chars.Length);
+            PositionSlot(slot);
         }
     }
 
-    private void PositionSlot(VisualElement slot, string pos, int totalChars)
+    private void PositionSlot(VisualElement slot)
     {
         slot.style.display = DisplayStyle.Flex;
+        activeSlots.Add((slot, slot.style.width.value.value, slot.style.height.value.value));
+        ReflowSlots();
+    }
 
-        switch (pos)
+    private static int PositionRank(string pos) => pos == "left" ? 0 : pos == "right" ? 2 : 1;
+
+    private void ReflowSlots()
+    {
+        int count = activeSlots.Count;
+        if (count == 0) return;
+        float availableWidth = container?.contentRect.width ?? 0;
+        if (availableWidth <= 0) availableWidth = 1200;
+        float widest = 1;
+        foreach (var item in activeSlots) widest = Mathf.Max(widest, item.width * FramingScale(item.slot));
+        float scale = Mathf.Min(1, Mathf.Max(1, availableWidth / count - 40) / widest);
+        for (int index = 0; index < count; index++)
         {
-            case "left":
-                slot.style.left = new Length(15, LengthUnit.Percent);
-                slot.style.right = Length.Auto();
-                break;
-            case "center":
+            var item = activeSlots[index];
+            var slot = item.slot;
+            float framing = FramingScale(slot);
+            slot.style.width = item.width * scale * framing;
+            slot.style.height = item.height * scale * framing;
+            slot.style.right = Length.Auto();
+            if (count == 1)
+            {
                 slot.style.left = Length.Auto();
-                slot.style.right = Length.Auto();
+                slot.style.marginLeft = 0;
                 slot.style.alignSelf = Align.Center;
-                break;
-            case "right":
-                slot.style.left = Length.Auto();
-                slot.style.right = new Length(15, LengthUnit.Percent);
-                break;
-            default:
-                slot.style.left = Length.Auto();
-                slot.style.right = Length.Auto();
-                slot.style.alignSelf = Align.Center;
-                break;
+            }
+            else
+            {
+                slot.style.left = Length.Percent((index + 0.5f) * 100 / count);
+                slot.style.marginLeft = -item.width * scale * framing * 0.5f;
+                slot.style.alignSelf = Align.FlexEnd;
+            }
+        }
+        float FramingScale(VisualElement slot)
+        {
+            var texture = slot.style.backgroundImage.value.texture;
+            return count > 1 && texture != null && texture.name.StartsWith("jiaying_xu") ? 0.8f : 1f;
         }
     }
 
@@ -250,6 +297,7 @@ public class CharacterSpriteManager : MonoBehaviour
 
     public void ClearAll()
     {
+        activeSlots.Clear();
         if (slotLeft != null) ClearSlot(slotLeft);
         if (slotCenter != null) ClearSlot(slotCenter);
         if (slotRight != null) ClearSlot(slotRight);

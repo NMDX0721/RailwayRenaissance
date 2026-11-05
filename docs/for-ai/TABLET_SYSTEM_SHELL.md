@@ -1,5 +1,15 @@
 # 平板系统层与协作计划（2026-10-23）
 
+2026-11-03 综合体验与系统修复：
+1. **音乐服务与打包兼容**：`NeteaseLocalBridge` 放开 Standalone Windows 对 `tools/music` 及可执行文件同级目录的查找，多层 fallback 消除“服务未安装”硬阻断，扫码与登录提供本地/OST降级指引。
+2. **超级岛系统级图层与动效现代化**：`TabletSuperIsland` 根图层提升至系统顶层，大岛展开时置于最顶层；增加展开与收缩的平滑缩放/透明度过渡补间动画；彻底清除所有 Emoji 符号，统一替换为 `TabletIconElement` Painter2D 矢量图标。
+3. **状态栏互斥让位**：`GameMainUI` 状态栏日期在超级岛活跃时互斥隐藏让位，无活跃会话时自愈恢复。
+4. **系统导航方式二选一**：`TabletPresentationPreferences` 引入 `TabletNavigationMode`（全面屏手势与经典三键导航），在“设置 -> 桌面”提供二选一切换卡片，互斥管理底部三键栏与手势条。
+5. **通知栏交互修复**：`TabletShellView` 修复 `_panel.pickingMode = Position` 与时间格式，解决列表空白处触控导致面板意外闪退关闭的缺陷。
+6. **VN 平板适配与跳转立绘自愈**：`BackgroundManager` 背景采用 `Cover` 比例裁切，彻底消除 16:10 安卓平板挤压拉伸；`VNManager` 在 Backlog 历史跳转时回放立绘登场状态，杜绝跳句后立绘丢失。
+
+2026-11-03更新：旧站长日志与旧Main Story界面已删除，目录/解锁/回放改为独立服务，内容分别进入归途、相册、音乐、媒姬百科、笔记及RDA。归途现承接手动/自动书签与真实位置/分支恢复。原Prefs数据保留。新增公共入口`GameMainUI.OpenTabletApp`，目标移动设备明确为Android平板。详细映射、运行证据及未做真机/Player的边界见 [最终平板验收](VN_FINAL_TABLET_ACCEPTANCE_20261103.md)。
+
 PR #7 笔记内存修复：任务回收或关闭时仅释放属于该任务视图的笔记静态控件引用；回收前仍先捕获草稿快照，恢复时重建并还原输入。笔记视图内部重建也先释放旧控件。
 
 Unity 图形批处理 `TabletInteractionReview.Batch` 退出 0，`tools/compile/pr7_notes_reclaim.log` 包含 `TABLET_NOTES_RECLAIM_OK`：实际任务回收后静态控件引用为空，标题与正文草稿恢复，关闭后再次清空引用。此检查不测量 Android 真机内存或证明垃圾回收时机。

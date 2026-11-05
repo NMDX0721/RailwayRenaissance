@@ -91,7 +91,7 @@ public sealed class MusicPlayerRuntimeReview : MonoBehaviour
         target = new RenderTexture(1024, 768, 24); target.Create(); settings.targetTexture = target;
         for (int i = 0; i < 60; i++) yield return null;
         bool compactOk = root.worldBound.width > 900 && root.Q("music-player").worldBound.yMax <= root.worldBound.yMax + 1;
-        var slider = root.Q<Slider>("music-volume");
+        var slider = root.Q<Slider>("music-progress");
         var rail = slider.Q(className: "unity-base-slider__tracker");
         var thumb = slider.Q(className: "unity-base-slider__dragger");
         compactOk = compactOk && Mathf.Abs(rail.worldBound.center.y - thumb.worldBound.center.y) < 1;

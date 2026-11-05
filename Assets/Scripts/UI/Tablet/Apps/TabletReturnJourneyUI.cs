@@ -14,10 +14,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
     // ============ App: 归途（蔚蓝档案两级架构 · 本作深棕像素调色）============
     private static int returnJourneyCurrentChapter = 0;
+    private static bool showBookmarks;
     private static bool returnJourneyInDetail = false;
 
     public static readonly (string id, string chapterNum, string title, string subTitle, string desc, string coverBg)[] StoryChapters = {
-        ("prologue", "序章", "归乡", "雾峰村线重开纪事 · 破晓到明天", "带着金日成综合大学毕业行囊回到沉寂四年的雾峰村，拾起万能道尺，重组先民班组，唤醒0721号动力机车。", "bg/station"),
+        ("prologue", "序章", "归乡", "雾峰村线重开纪事 · 破晓到明天", "从金日成综合大学启程，回到沉寂四年的雾峰村，拾起万能道尺，重组班组，让NF-5K重新驶上线路。", "bg/station"),
         ("chapter1", "第一章", "求生", "沙能风暴逼近 · 荒野生机", "沙能载具步步紧逼，在严酷的沙币结算体系下，维持雾峰村线基本运力与村民信任。", "bg/platform_evening"),
         ("chapter2", "第二章", "扩张", "联通乌金岭 · 铁轨向前", "勘探荒废的重载矿区支线，克服设施老化与政治压力，打通区域经济大动脉。", "bg/railway_track"),
         ("chapter3", "第三章", "对抗", "沙能铁龙暗面 · 基金博弈", "沙能巨头以保护之名行垄断之实，嘉颖徐铁路基金携手地方守护铁道尊严。", "bg/hangar"),
@@ -25,16 +26,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     };
 
     public static readonly (string scriptId, string episode, string title, string desc)[] PrologueEpisodes = {
-        ("prologue_01_news", "01", "破晓之行", "金日成综合大学荣誉毕业，带着行囊回到雾峰村。"),
-        ("prologue_02_day0", "02", "归乡旧站", "老旧的站房与铁栅售票口，四年前停运的日历仍未翻动。"),
-        ("prologue_03_journey", "03", "荒草长轨", "铁轨长满杂草，锈迹斑斑的双孔石拱桥跨过溪水。"),
-        ("prologue_04_arrival", "04", "雾峰暮色", "老陈守在月台，茶园梯田笼罩在金黄色的晚霞里。"),
-        ("prologue_05_inspection", "05", "铁轨与道尺 ★样板", "拿起爷爷留下的万能道尺，摔尺、正尺，排查轨距绝不妥协。"),
-        ("prologue_06_team", "06", "故人相见", "聚集村中的老机修工张工与调度员，重组先民班组。"),
-        ("prologue_07_first_repair", "07", "首试扳手", "机库深处的0721号机车，拧紧轴承的第一声金属撞击。"),
-        ("prologue_08_first_run", "08", "汽笛重响", "沙能点火，雾峰村线上空响起了沉寂四年的第一声鸣笛。"),
-        ("prologue_09_funding", "09", "筹措前路", "嘉颖徐铁路基金的援助与来自乌金岭矿区的猜忌。"),
-        ("prologue_10_transition", "10", "走向明天", "支线正式通车，准备迎接新的沙本位经济挑战。")
+        ("prologue_01_news", "01", "广播里的时代", "停运新闻、老陈来电与佯教授的现场实践安排。"),
+        ("prologue_02_day0", "02", "启程之日", "会面嘉颖徐，领取0721号飞行载具与平板。"),
+        ("prologue_03_journey", "03", "边境危机", "跨境途中遇检查，设法带着0721继续归乡。"),
+        ("prologue_04_arrival", "04", "抵达雾峰", "老陈守在月台，祖父留下的线路等待重开。"),
+        ("prologue_05_inspection", "05", "线路巡视", "拿起万能道尺，检查钢轨、桥涵与道口。"),
+        ("prologue_06_team", "06", "旧人重逢", "张工、李阿姨和大家重新组成车站班组。"),
+        ("prologue_07_first_repair", "07", "第一次检修", "拆检NF-5K柴油机喷油系统，决定修复方案。"),
+        ("prologue_08_first_run", "08", "首班车", "柴油机重新启动，雾峰村线迎来首班车。"),
+        ("prologue_09_funding", "09", "三条来路", "核清乡亲筹款、市级扶持与协会互助三笔资金。"),
+        ("prologue_10_transition", "10", "序章落幕", "完成交接，接手雾峰站的每日运营。"),
     };
 
     public static bool IsStoryChapterUnlocked(int chIdx)
@@ -46,31 +47,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public static bool IsStoryChapterCompleted(int chIdx)
     {
-        if (chIdx == 0)
-        {
-            return PlayerPrefs.GetInt("ArchiveScene_prologue_10_transition", 0) == 1
-                || PlayerPrefs.GetInt("ArchiveStory_prologue_10_transition", 0) == 1
-                || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
-        }
-        return false;
+        return chIdx == 0 && PlayerPrefs.GetInt("ArchiveScene_prologue_10_transition", 0) == 1;
     }
-
     public static bool IsStoryEpisodeUnlocked(int epIdx)
     {
-        if (PlayerPrefs.GetInt("DebugUnlockAllChapters", 0) == 1) return true;
-        if (epIdx == 0) return true; // 第 1 幕默认解锁
-        string prevScript = PrologueEpisodes[epIdx - 1].scriptId;
-        return PlayerPrefs.GetInt("ArchiveScene_" + prevScript, 0) == 1
-            || PlayerPrefs.GetInt("ArchiveStory_" + prevScript, 0) == 1
-            || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        if (epIdx < 0 || epIdx >= PrologueEpisodes.Length) return false;
+        if (PlayerPrefs.GetInt("DebugUnlockAllChapters", 0) == 1 || epIdx == 0) return true;
+        return PlayerPrefs.GetInt("ArchiveScene_" + PrologueEpisodes[epIdx - 1].scriptId, 0) == 1 ||
+            PlayerPrefs.GetInt("ArchiveStory_" + PrologueEpisodes[epIdx].scriptId, 0) == 1;
     }
-
     public static bool IsStoryEpisodeCompleted(int epIdx)
     {
-        string curScript = PrologueEpisodes[epIdx].scriptId;
-        return PlayerPrefs.GetInt("ArchiveScene_" + curScript, 0) == 1
-            || PlayerPrefs.GetInt("ArchiveStory_" + curScript, 0) == 1
-            || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        return epIdx >= 0 && epIdx < PrologueEpisodes.Length &&
+            PlayerPrefs.GetInt("ArchiveScene_" + PrologueEpisodes[epIdx].scriptId, 0) == 1;
     }
 
         private static Action s_onExitApp;
@@ -87,6 +76,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         if (onExitApp != null) s_onExitApp = onExitApp;
         if (showToast != null) s_showToast = showToast;
         win.Clear();
+        if (showBookmarks)
+        {
+            TabletBookmarksUI.Build(win, () => { showBookmarks = false; BuildReturnJourneyApp(win); }, s_onExitApp, s_showToast);
+            return;
+        }
+        var bookmarksButton = new Button(() => { showBookmarks = true; BuildReturnJourneyApp(win); }) { text = "阅读书签", name = "return-journey-bookmarks" };
+        bookmarksButton.style.height = 48;
+        TabletBookmarksUI.StyleAction(bookmarksButton);
+        bookmarksButton.style.alignSelf = Align.FlexEnd;
+        bookmarksButton.style.flexShrink = 0;
+        win.Add(bookmarksButton);
 
         if (!returnJourneyInDetail)
         {
@@ -723,7 +723,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     if (unlocked)
                     {
                         s_onExitApp?.Invoke();
-                        MainStoryUI.StartEpisodeStatic(ep.scriptId);
+                        StoryReplayService.StartEpisode(ep.scriptId);
                     }
                     else
                     {

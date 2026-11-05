@@ -12,7 +12,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         readonly float[] output = new float[512];
         float[] decoded;
         Color primary, secondary, fromPrimary, fromSecondary, targetPrimary, targetSecondary;
-        float blend = 1, energy, transient, lastRaw, nextFrame, clock, seed;
+        float blend = 1, energy, transient, lastRaw, nextFrame, clock, seed, seedTarget;
         int composition;
         bool initialized;
         public string TrackId { get; private set; }
@@ -22,6 +22,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public int Composition => composition;
         public float RenderClock => clock;
         public float VisualEnergy => energy;
+        /// <summary>0..1: how much the current line is chorus; lifts the backdrop light.</summary>
+        public float ChorusBoost;
         // Smoothed low / mid / high band levels (0..1) from the playing source's spectrum; they follow the audio, not a timer.
         public float BandLow => bandLow;
         public float BandMid => bandMid;
@@ -29,8 +31,48 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         readonly float[] spectrum = new float[512];
         float bandLow, bandMid, bandHigh;
 
+        // The backdrop is drawn by a shader into a small RenderTexture (see Resources/Shaders/MusicStageBackdrop.shader); when the shader
+        // cannot be used the older painter fields below are the whole backdrop.
+        static Shader backdropShader;
+        Material backdropMaterial; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        public bool HasShaderBackdrop => backdropTexture != null;
+
+        void EnsureBackdrop()
+        {
+            if (backdropFailed || backdropTexture != null) return;
+            try
+            {
+                if (backdropShader == null) backdropShader = Resources.Load<Shader>("Shaders/MusicStageBackdrop");
+                if (backdropShader == null || !backdropShader.isSupported) { backdropFailed = true; return; }
+                backdropMaterial = new Material(backdropShader) { hideFlags = HideFlags.HideAndDontSave };
+                backdropTexture = new RenderTexture(512, 320, 0, RenderTextureFormat.ARGB32) { name = "MusicStageBackdrop", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
+                backdropTexture.Create();
+                style.backgroundImage = new StyleBackground(Background.FromRenderTexture(backdropTexture));
+            }
+            catch (Exception) { backdropFailed = true; ReleaseBackdrop(); }
+        }
+
+        void ReleaseBackdrop()
+        {
+            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; }
+            if (backdropMaterial != null) { UnityEngine.Object.Destroy(backdropMaterial); backdropMaterial = null; }
+        }
+
+        void RenderBackdrop()
+        {
+            EnsureBackdrop();
+            if (backdropTexture == null || backdropMaterial == null) return;
+            if (!backdropTexture.IsCreated()) backdropTexture.Create();
+            var m = backdropMaterial; float w = Mathf.Max(contentRect.width, 1f), h = Mathf.Max(contentRect.height, 1f);
+            m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
+            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh);
+            m.SetFloat("_Energy", Mathf.Clamp01(energy + ChorusBoost * .25f)); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
+            Graphics.Blit(null, backdropTexture, m);
+        }
+
         public MusicReactiveStageView()
         {
+            RegisterCallback<DetachFromPanelEvent>(_ => ReleaseBackdrop());
             name = "music-reactive-stage";
             pickingMode = PickingMode.Ignore;
             AddToClassList("music-reactive-stage");
@@ -44,13 +86,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             TrackId = id;
             uint hash = 2166136261;
             foreach (char c in id) hash = (hash ^ c) * 16777619;
-            seed = (hash % 1000) / 1000f;
+            seedTarget = (hash % 1000) / 1000f; if (!initialized) seed = seedTarget;
             composition = id == "south_wind" ? 0 : id == "starlit_rails" ? 1 : id == "chollima_ride" ? 2 : (int)(hash % 3);
             var palette = Palette(MusicAlbumArtResolver.GetAlbumCover(id, track?.category));
             fromPrimary = initialized ? primary : palette[0];
             fromSecondary = initialized ? secondary : palette[1];
-            targetPrimary = Tint(palette[0], (seed - .5f) * .08f);
-            targetSecondary = Tint(palette[1], (.5f - seed) * .08f);
+            targetPrimary = Tint(palette[0], (seedTarget - .5f) * .08f);
+            targetSecondary = Tint(palette[1], (.5f - seedTarget) * .08f);
             // Art direction keeps the four original vocal songs visually distinct, including shared sleeves.
             if (id == "south_wind") { targetPrimary = Color.Lerp(targetPrimary, new Color(.64f, .5f, .2f), .65f); targetSecondary = new Color(.22f, .49f, .36f); }
             if (id == "starlit_rails") { targetPrimary = new Color(.23f, .35f, .65f); targetSecondary = new Color(.53f, .28f, .46f); }
@@ -59,7 +101,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             blend = initialized ? 0 : 1;
             primary = initialized ? primary : targetPrimary;
             secondary = initialized ? secondary : targetSecondary;
-            initialized = true; energy = transient = lastRaw = 0;
+            initialized = true; transient = lastRaw = 0;
             style.backgroundColor = Color.Lerp(new Color(.045f, .055f, .06f), primary, .12f);
             MarkDirtyRepaint();
         }
@@ -162,7 +204,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             float dt = Mathf.Clamp(Time.unscaledTime - (nextFrame - 1f / 30), .001f, .1f);
             nextFrame = Time.unscaledTime + 1f / 30;
             bool changed = blend < 1;
-            blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .65f);
+            blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .9f);
+            seed = reducedMotion ? seedTarget : Mathf.MoveTowards(seed, seedTarget, dt / 1.4f);
+            if (seed != seedTarget && !changed) MarkDirtyRepaint();
             float eased = blend * blend * (3 - 2 * blend);
             primary = Color.Lerp(fromPrimary, targetPrimary, eased);
             secondary = Color.Lerp(fromSecondary, targetSecondary, eased);
@@ -188,6 +232,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float fall = 1 - Mathf.Exp(-dt * 6);
                 bandLow = Mathf.Lerp(bandLow, 0, fall); bandMid = Mathf.Lerp(bandMid, 0, fall); bandHigh = Mathf.Lerp(bandHigh, 0, fall);
             }
+            if (!reducedMotion) { flowClock += dt; changed = true; }
+            if (changed || backdropTexture == null) RenderBackdrop();
             if (changed) MarkDirtyRepaint();
         }
 
@@ -204,8 +250,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 float y = composition == 0 ? .25f + .48f * (i % 2) : composition == 1 ? .18f + i * .23f : .8f - i * .2f;
                 x += .08f * Mathf.Sin(t + i * 1.7f); y += .08f * Mathf.Cos(t * .7f + i);
                 SoftField(context, new Vector2(w * x, h * y), w * (.35f + seed * .12f) * pulse,
-                    h * (composition == 2 ? .3f : .5f) * pulse, i % 2 == 0 ? primary : secondary, .32f + energy * .18f);
+                    h * (composition == 2 ? .3f : .5f) * pulse, i % 2 == 0 ? primary : secondary, (.32f + energy * .18f) * (backdropTexture != null ? .4f : 1f));
             }
+            if (backdropTexture != null) return;
             painter.lineWidth = 1;
             var ink = Color.Lerp(primary, secondary, .5f); ink.a = .12f + energy * .12f;
             painter.strokeColor = ink;

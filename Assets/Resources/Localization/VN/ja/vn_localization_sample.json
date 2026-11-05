@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "scriptId": "vn_localization_sample",
+  "locale": "ja",
+  "entries": [
+    {
+      "key": "vn_localization_sample/suiyue_deadpan",
+      "sourceHash": "c4d3bd65a0fc63a179417c31e286b624e3147901561d85741dcda75ded38f7ac",
+      "status": "ready",
+      "text": "私は事実を記録しているだけですよ！私はAIです！冗談なんて言いません！",
+      "segments": [
+        {
+          "source": "我只是在记录事实嘛！",
+          "text": "私は事実を記録しているだけですよ！"
+        },
+        {
+          "source": "我是 AI！",
+          "text": "私はAIです！"
+        },
+        {
+          "source": "我不会开玩笑！",
+          "text": "冗談なんて言いません！"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example",
+      "sourceHash": "3b4be99009d36de6651bccd37ed5af495cd9ec3a9365b387e09f4fcff7333754",
+      "status": "ready",
+      "text": "旅の間、何をしましょうか？",
+      "segments": [
+        {
+          "source": "旅途中想做什么？",
+          "text": "旅の間、何をしましょうか？"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example/option-0",
+      "sourceHash": "8a5d8723a3939705d8ffcba94618fbf42995a59e9807c29efc59518772d9ecf1",
+      "status": "ready",
+      "text": "昔の鉄道について話す",
+      "segments": [
+        {
+          "source": "聊聊旧铁路",
+          "text": "昔の鉄道について話す"
+        }
+      ]
+    },
+    {
+      "key": "vn_localization_sample/choice_example/option-1",
+      "sourceHash": "afd0cddd2a62447414abbaaf23891641f909d36e9a98be61da8bc6d2d205ff68",
+      "status": "ready",
+      "text": "少し休む",
+      "segments": [
+        {
+          "source": "先休息一下",
+          "text": "少し休む"
+        }
+      ]
+    }
+  ]
+}

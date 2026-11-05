@@ -15,7 +15,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     // ============ App: 相册（分类筛选 + 真实存档解锁）============
     private static int currentGalleryCategory = 0; // 0: 全部, 1: 历史车站, 2: 暮色与晨曦, 3: 车厢与机库
 
-    public static readonly (string resId, string title, string desc, int cat)[] MasterGalleryItems = {
+    private static readonly (string resId, string title, string desc, int cat)[] BaseGalleryItems = {
         ("songqiao_station", "松桥站 · 午后", "剥落红砖、生苔灰瓦、斜插狗尾草的旧铁牌。", 1),
         ("platform_evening", "雾峰站 · 暮色站台", "夕阳余晖斜照在石板上，远山如黛。", 2),
         ("platform_morning", "雾峰站 · 晨曦", "破晓的第一缕阳光穿透薄雾照耀钢轨。", 2),
@@ -24,17 +24,33 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         ("station_office", "站务室 · 调度图", "木头老算盘、泛黄的日历与墙上的手绘时刻表。", 1),
         ("railway_track", "铁道延伸 · 枕木", "单线铁轨锈蚀严重，枕木缝里长出杂草与小黄花。", 1),
         ("depot_morning", "机务段车库 · 晨雾", "机修车间弥漫着机油与水汽的温润气息。", 3),
-        ("hangar", "机车库 · 0721号", "停放着沉睡23年的先民动力机车。", 3),
-        ("cabin_interior", "客厢白天 · 阳光", "暖阳靠窗木制长椅，绿皮革椅面有些磨损。", 3),
+        ("hangar", "大学停机坪 · 0721号", "准备启程的千里马飞行载具。", 3),
+        ("cabin_interior", "0721客舱 · 日间", "岁月投影与日常物件相伴的飞行客舱。", 3),
         ("tea_house", "茶室 · 梯田远眺", "山坡茶园梯田，茶树深绿弧形条带层层叠叠。", 1)
     };
 
+    public static readonly (string resId, string title, string desc, int cat)[] MasterGalleryItems = BuildCatalogue();
+    private static (string resId, string title, string desc, int cat)[] BuildCatalogue()
+    {
+        var items = new List<(string resId, string title, string desc, int cat)>(BaseGalleryItems);
+        foreach (var scene in StoryArchiveCatalog.SceneEntries)
+            if (!items.Exists(item => item.resId == scene.id)) items.Add((scene.id, scene.title, scene.condition, 3));
+        foreach (var cg in StoryArchiveCatalog.Cgs)
+            if (Resources.Load<Texture2D>(cg.imagePath) != null) items.Add((cg.imagePath, cg.title, cg.condition, 4));
+        return items.ToArray();
+    }
     public static bool IsGalleryPhotoUnlocked(string resId)
     {
-        if (resId == "songqiao_station") return true; // 序章默认解锁
-        return PlayerPrefs.GetInt("ArchiveScene_" + resId, 0) == 1
-            || PlayerPrefs.GetInt("ArchiveCG_" + resId, 0) == 1
-            || PlayerPrefs.GetInt("VN_Got0721", 0) == 1;
+        if (resId == "songqiao_station") return true;
+        string id = resId.StartsWith("cg/") ? resId.Substring(3) : resId;
+        return PlayerPrefs.GetInt((resId.StartsWith("cg/") ? "ArchiveCG_" : "ArchiveScene_") + id, 0) == 1;
+    }
+    public static Texture2D LoadGalleryTexture(string resId)
+    {
+        if (resId.StartsWith("cg/")) return Resources.Load<Texture2D>(resId);
+        string file = resId == "cabin_interior" ? "cabin_interior_night" : resId == "cabin_interior_night" ? "cabin_interior" : resId;
+        var texture = Resources.Load<Texture2D>("bg/" + file);
+        return texture != null ? texture : resId == "professor_office" ? Resources.Load<Texture2D>("bg/profsessor_office") : null;
     }
 
         private static VisualElement s_appLayer;
@@ -51,6 +67,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         if (appLayer != null) s_appLayer = appLayer;
         if (showToast != null) s_showToast = showToast;
         win.Clear();
+        if (s_appLayer == null) s_appLayer = win;
 
         // 全屏画廊（左侧分类 + 右侧缩略图卡片网格 + 全屏灯箱预览）
         var rootRow = new VisualElement();
@@ -65,7 +82,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         sideNav.style.marginRight = 18;
         rootRow.Add(sideNav);
 
-        string[] cats = { "全部相片", "历史车站", "暮色与晨曦", "车厢与机库" };
+        string[] cats = { "全部相片", "历史车站", "暮色与晨曦", "车厢与机库", "剧情插画" };
         var catBtns = new System.Collections.Generic.List<Button>();
         for (int i = 0; i < cats.Length; i++)
         {
@@ -135,10 +152,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             if (isUnlocked)
             {
-                var sp = Resources.Load<Sprite>("bg/" + item.resId);
+                var sp = LoadGalleryTexture(item.resId);
                 if (sp != null)
                 {
-                    var img = new Image { sprite = sp };
+                    var img = new Image { image = sp };
                     img.style.position = Position.Absolute;
                     img.style.top = 0; img.style.left = 0; img.style.right = 0; img.style.bottom = 0;
                     img.scaleMode = ScaleMode.ScaleAndCrop;
@@ -216,11 +233,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (evt.target == lightbox) s_appLayer.Remove(lightbox);
         });
 
-        var sp = Resources.Load<Sprite>("bg/" + resId);
+        var sp = LoadGalleryTexture(resId);
         if (sp != null)
         {
-            var bigImg = new Image { sprite = sp };
-            bigImg.style.width = 760; bigImg.style.height = 430;
+            var bigImg = new Image { image = sp };
+            bigImg.style.width = Length.Percent(86); bigImg.style.maxWidth = 960; bigImg.style.height = Length.Percent(62);
             bigImg.scaleMode = ScaleMode.ScaleToFit;
             bigImg.style.borderTopLeftRadius = 14; bigImg.style.borderTopRightRadius = 14;
             bigImg.style.borderBottomLeftRadius = 14; bigImg.style.borderBottomRightRadius = 14;
@@ -228,7 +245,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         var infoCard = new VisualElement();
-        infoCard.style.width = 760;
+        infoCard.style.width = Length.Percent(86); infoCard.style.maxWidth = 960;
         infoCard.style.backgroundColor = new Color(0.1f, 0.1f, 0.14f, 0.9f);
         infoCard.style.borderTopLeftRadius = 12; infoCard.style.borderTopRightRadius = 12;
         infoCard.style.borderBottomLeftRadius = 12; infoCard.style.borderBottomRightRadius = 12;

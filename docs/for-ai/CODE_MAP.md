@@ -1,5 +1,55 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-04 冷却模块：`NF5KCoolingReview` 在独立 CabCoolingReview 中生成车底散热芯、百叶、双轴流风扇、罩壳与接口，复用原动力包络。见 [冷却模块](NF5K_COOLING_DETAIL.md)。
+
+2026-11-03 设备装车：`NF5KEquipmentInstallation` 导出电池箱/燃油箱共享预制体，Apply用于四基线整车及CabInteriorBlockoutSetup再生成，保留驾驶接线；缩短后段通用占位柜留出燃油箱空间。见 [装车与验收](NF5K_EQUIPMENT_INSTALLATION.md)。
+
+2026-11-03 燃油箱第二件：`NF5KFuelTankReview.Batch` 复制独立 CabFuelTankReview，生成焊接削角箱壳/箍带吊架/车侧加油接口/油位及供回油接口/排污护件/防晃板；保留细化电池箱，28姿态外部干涉报告与四机位输出。见 [燃油箱结构细化](NF5K_FUEL_TANK_DETAIL.md)。
+
+2026-11-03 电池箱近景：`NF5KBatteryFineFinish` 增加折边薄板细节、搭扣、导轨、模塑壳体及固定件；`BatteryLabel.shader` 提供URP深度正确的标识。`NF5KBatteryDetailReview` 集成细化并重新进行31姿态外部干涉检查。见 [电池箱修订](NF5K_BATTERY_DETAIL.md)。
+
+2026-11-03 电池箱首件细化：`NF5KBatteryDetailReview.Batch` 生成独立 CabBatteryDetailReview，45个壳体/托盘/固定件/电池与绝缘部件，31个收纳/抽出姿态的外部干涉检查及双状态近景。参考LPA/HOPPECKE及铁路电池箱结构资料，边界见 [电池箱细化](NF5K_BATTERY_DETAIL.md)。
+
+2026-11-03 动力布局：`NF5KPowerLayoutReview.Batch` 复制独立 CabPowerLayoutReview，新增动力/冷却/燃油/电池候选外包络、检修方向、18姿态保守包围盒筛查及图像/CSV/JSON；不覆盖基线或ATO、不接动力仿真。见 [动力包络首轮](NF5K_POWER_LAYOUT.md)。
+
+2026-11-03 VN多语言架构：`VNLocalization`加载语言目录与按章节的独立译文JSON，稳定ID/坐标回退＋源文SHA-256防误绑，命中/缺文件缓存；`DialogueBox.Localization`将显式segments按句组显示（小副语言在上、大主语言在下，颜色与行距区分），共用打字机与术语命中。`VNManager`选择/地点/新闻支持主语言。中日英样例与Gemini十章空翻译工作包、导出/回传校验工具已备。详见[多语言协议](VN_LOCALIZATION.md)。
+
+2026-11-03字幕语言修订：`VNSubtitleSettings`管理主/副字幕语言与副字幕字号，默认中文＋副字幕关闭；平板显示设置新增语言选择和实时预览。`DialogueBox`移除框外日文条，主副文字统一在同一对白框中分层显示、按内容扩高；主语言日文缺译回退中文且不重复副字幕。旧布尔偏好仅做显式迁移。详见[字幕语言与排版修订](VN_JAPANESE_SUBTITLES_20261103.md)。
+
+2026-11-03日语副字幕：`DialogueEntry.textJa`保存审校后的日文字幕，`VNManager`传到`DialogueBox`独立日文标签；平板显示设置增加即时生效的`VNJapaneseSubtitles`开关。旧JSON缺字段自动隐藏，主中文打字机保持原逻辑。另修回顾立绘恢复中两处局部类型不匹配。功能范围、验证入口和翻译先行流程见[日语副字幕](VN_JAPANESE_SUBTITLES_20261103.md)；岁月正文225条发言的声音设计依据见[音色基准](../../参考资料/资产/岁月_日语音色与配音基准.md)。
+
+2026-11-03最终收尾：旧`TitleArchiveUI`、`MainStoryUI`与meta已删除。`StoryArchiveProgress`承接解锁、`StoryArchiveCatalog`承接目录、`StoryReplayService`承接回放；归途新增`TabletBookmarksUI`，相册补CG/场景，百科补人物/列车，笔记与RDA通过`TabletHistoryUI`呈现成就/统计。`GameMainUI.OpenTabletApp`统一入口，保留原Prefs键。`BookmarkManager`新增分支快照、单调更新时间与安全跳转；`VNViewportLayout`支持Windows及Android平板安全区。`GameData`音量getter缓存，`CharacterSpriteManager`增加查空缓存和显式清理。接口、证据和平台限制见 [最终平板验收](VN_FINAL_TABLET_ACCEPTANCE_20261103.md)。
+
+2026-11-03 VN连续推进：`SelectOption`补齐跨场景背景/BGM请求；结束页单次绑定并消费续章目标，阻止重复开章/点击穿透；`StartScriptInternal`只在自然续章保留变量，修复07维修选择丢失导致08时间线错误。实际管理器全部选项/跨章验收入口`VNPrologueFlowReview.Batch`，方法和边界见 [连续流程复核](VN_FULL_FLOW_REVIEW_20261103.md)。
+
+2026-11-02序章选项收尾：`OptionData.nextDialogue`补充场景内跳转；`VNManager.SelectOption`验证目标、支持多赋值，`SetupOptionsUI`显示选择提示并下移按钮；`VNSaveSystem`保存/恢复条件变量。`BackgroundManager.ResolveAssetName`修正客舱昼夜文件倒置（普通/retro共用）。原03章三处越界目标已修复，11节点25选项静态检查及旅途两路真实按钮、存读档、2.5K显示通过；未替代全篇通关。接口与证据见 [选项与文本复核](VN_JOURNEY_FLOW_REVIEW_20261102.md)。
+
+2026-11-02 隔门近景：`NF5KPassageDoorFinish.MakeLever` 生成持久化连续弯颈执手网格，圆底座与独立锁孔取代矩形长底板；`NF5KPassengerInterior.RoundedBox` 开放为Editor共用圆角工具，门部件共享其网格。`NF5KPassageDoorReview` 新增 handle_detail 近景。见 [隔门细化](NF5K_PASSAGE_DOOR.md)。
+
+2026-11-02佯教授：CharacterSpriteManager新增佯教授/佯明远到daoshi的别名；六表情原图已入库，表情回退0。序章01—03共59个说话人标签及少量教授身份台词已适配，场景/条目/选择目标未变。验收覆盖五别名、六贴图与2.5K实际台词截图。见 [角色差分接入与边界](VN_PROFESSOR_EXPRESSIONS_20261102.md)；另记录序章03既有三处越界选择目标，未把资源验收扩称完整流程通过。
+
+2026-11-02旧启动进度修复：`LoginManager.Start`作为Login场景兼容入口，保留全局设置初始化后直接路由VN_Test，不再创建AutoLoginUI或执行凭证进度动画。`LegacyLoginStartupReview.Batch`在独立项目实际验证跳转且无旧UI实例。详情及Player验证边界见 [启动路由修复](VN_STARTUP_ROUTING_20261102.md)。
+
+2026-11-02 隔门第二轮比例：`NF5KPassageDoorFinish` 同步调整隔墙开口为800mm、门扇776mm并重做双面圆杆执手/销筒合页；转轴移至前侧销筒，四基线场景迁移、扫掠、通行代理及Play开关在proportion_v9通过。见 [隔门修订状态](NF5K_PASSAGE_DOOR.md)。
+
+2026-11-02 隔门外观：`NF5KPassageDoorFinish.Apply` 共用于基线生成及四场景迁移，补固定门框、灰绿门扇立边/顶边、嵌窗密封与压条、五金及踢板；独立玻璃材质抑制检查补光的强反光。验证及边界见 [隔门说明](NF5K_PASSAGE_DOOR.md)。
+
+2026-11-02 驾驶室性能：`CabPhysicsQueries` 合并变脏后的查询前同步；Context 缓存遮挡组件并限制每次 Update 最多五射线；FlexibleHose 按网格空间端点/基向量变化更新。`NF5KCabPerformanceReview.Batch` 验证计数与移动射线，详见 [运行时成本](CAB_RUNTIME_PERFORMANCE.md)。
+
+2026-11-02 VN 2.5K布局：`CharacterSpriteManager`按过滤后的角色数量居中/分列，同场统一等比例缩放并响应容器尺寸变化；角色显示次序沿用left/center/right。`VNAssetCompletionReview`新增正式PanelSettings副本与DialogueBox的2560×1440单/双/三人布局检查、small/full CG截图，独立Unity通过；未新增剧情出场名单。见 [2.5K验收](VN_2_5K_LAYOUT_20261102.md)。
+
+2026-11-02导师占位修复：新增 `Resources/characters/daoshi_normal.png`，使用既有 `CharacterSpriteManager` flat资源路径和normal回退，无需改运行时显示策略；导师不加入男主隐藏名单。`VNAssetCompletionReview`增加导师三种别名、六种表情请求的实际贴图对象/无占位检查与实验室截图，独立Unity通过。正常比例主立绘与Q版CG分开；默认图已齐，45次情绪请求仍回退normal。来源、审计与证据见 `tools/vn/mentor_portrait_provenance_20261102.json`、`prologue_asset_audit_20261102_mentor.json`、`mentor_acceptance_20261102/`。
+
+2026-11-02 VN验收更新：`VNAssetCompletionReview.Batch`在独立编译快照项目通过七张CG实际显示、small/full比例与点击回调、十章1207组配置男主隐藏检查。`tools/vn/compile_review_sources.py`记录编译源哈希，`prepare_compiled_review.py`按实际程序集依赖准备隔离项目，`collect_acceptance_evidence.py`核对VN源码及12张图片一致性并收集10张截图。证据和仍未完成的发布门槛见 [本轮验收](VN_ACCEPTANCE_20261102.md)；下方更早的运行未完成记录以此更新为准。
+
+2026-11-02 VN：`Resources/cg/` 七张序章必要CG已按脚本text名称接入；`tools/vn/prologue_asset_audit_20261102.json`确认背景/CG文件引用无缺失，02章四处岁月happy已改为已有smile/excited，表情回退0，导师立绘仍暂缓定脸。`CharacterSpriteManager`过滤男主立绘，`VNManager.LayoutCgImage`赋予CG等比例尺寸；`VNAssetCompletionReview.Batch`覆盖七张CG导入/显示，但本次Unity启动在导入前退出，未获得运行通过证据。当前状态见 [序章补全计划](VN_PROLOGUE_COMPLETION_PLAN.md) 与 [视觉方向](VN_VISUAL_DIRECTION.md)。
+
+2026-11-01 VN发布准备：`tools/vn/audit_prologue_assets.py` 静态核对序章十章背景/BGM/CG、显式立绘与对白台本，输出源文件哈希和缺口定位；不代表Unity运行验收。补图与配音实施顺序见 [序章补全计划](VN_PROLOGUE_COMPLETION_PLAN.md)。
+
+2026-11-01：`CabPassageDoor` 管理基线驾驶室隔门，与 `CabContextInteraction` 共用交互菜单；`NF5KPassageDoorReview.Batch` 负责四检查场景 Editor API 迁移、扫掠、短通路胶囊体和 Play 动作分发检查。ATO 精修隔门未迁移，见 [隔门说明](NF5K_PASSAGE_DOOR.md)。
+
+2026-11-01：`Assets/Editor/NF5KStructureReview.cs` 新增只读已保存场景的尺寸清单及六面正交截图入口 `NF5KStructureReview.Batch`；不重建或保存场景。结构、通行缺口与证据见 [整车结构复核](NF5K_STRUCTURE_REVIEW.md)。
+
 2026-11-01 平板账号系统（本地仿真，无网络）：`UI/Tablet/Account/AccountService.cs` 管资料（PlayerPrefs `XiaomiAccountProfile_v1`、`TabletSetupDone_v1`）、加盐哈希密码、内存短信验证码；`UI/Tablet/Account/TabletSetupWizard.cs` 是开机激活/注册向导（`Flow.Activation` 与 `Flow.RegisterOnly`，`Active`/`HandleBack` 供系统返回使用）；`UI/Tablet/Apps/TabletSettingsAppUI.Account.cs` 是设置里的账号中心（改昵称、头像、改密码、短信重置）。剧情接入：`Resources/Scripts/prologue_02_day0.json` 的 `special` 条目 `TABLET_SETUP` 由 `VNManager.ShowTabletSetup` 处理，向导打开期间 `tabletSetupOpen` 拦截点击、键盘和自动播放。`GameMainUI.OverlayHost` 是向导等全屏覆盖层的宿主。见 [平板 HyperOS 说明](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)。
 
 2026-10-28：`NotesTabletTaskLifecycle` 在任务回收、关闭时调用 `TabletNotesAppUI.ReleaseTaskView` 解除静态控件引用；任务快照仍负责草稿恢复。
@@ -169,7 +219,7 @@ LoginManager ──────────→ TitleScreen ───────
   │  PlayerPrefs          │  Resources/UI/         │
   │  auth.json            │  LoginManager          │
   │                       │  NewGameSetupUI        │
-  │                       │  TitleArchiveUI        │
+  │                       │  StoryArchiveProgress  │
   │                       ▼                        │
   │                  VN_Test (VNManager)            │
   │                    │ 依赖:                      │
@@ -637,6 +687,9 @@ GameMainUI.LaunchApp（音乐）经 TabletMusicAppUI.BuildMusicApp 进入 Railwa
 
 - 2026-10-30 Folia 内容页精修：`RenderHome/HomeSongs/HomeCloudLists/CollectionCard` 构建封面优先的首页与真实歌单内容，来源状态压缩成栏；`RenderCloud` 的账户设置折叠，已登录默认展示歌单墙与可播放列表。`ShowDetail` 按来源显示歌手/专辑/真实时长与原声信息，支持刷新和队列/收藏/歌单。`EnsureRemoteMetadata` 补 NetEase/Spotify 曲目信息，网易云在 Tick 中按最多50首批量请求；`MusicAlbumArtResolver` 支持失败冷却重试、HTTPS有限跳转、URL版本保护、512缩略图和歌单图片。公开专辑与时长可保存在原 v1 JSON 的可选字段，带签名URL不落盘。
 
+### VN reading presentation (2026-11-03)
+
+`VNManager.Presentation.cs` wires transport and optional Japanese atmosphere signals; `VNVoicePlayer.cs` validates locale/script audio catalogues against source and translation hashes. `DialogueBox.Presentation.cs` positions bookmark/replay/voice scrub controls. `VNRailwayArt.cs` draws 19 chapter route profiles and the train cursor. `VNViewportLayout` applies tablet hit sizes and safe areas. Design and evidence: [VN_READING_PRESENTATION.md](VN_READING_PRESENTATION.md).
 2026-10-28 ATO V3：新增独立空间速度包络候选及 .NET 检查；三目标规划、控制接线和实验尚未实现，见 ATO_V3_IMPLEMENTATION.md。
 2026-10-28 后续：V3 局部控制雏形已有单次内核运行；平稳和省气仍停在起点，未通过验收，详情见 ATO_V3_IMPLEMENTATION.md。
 2026-10-28 V3进度：`AtoTrajectoryPlanner`、`CabAtoControllerV3`及研究封装v3接入独立场景；V2仍为默认。冻结配对实验和失败及个人参赛范围见 [V3研究记录](../research/ato_v3_results.md)。

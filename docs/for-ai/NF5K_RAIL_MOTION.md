@@ -1,5 +1,7 @@
 # NF-5K 走行部运动检查
 
+2026-11-02 同步方式更新：不再在每次 ApplyBackend 后无条件调用 Physics.SyncTransforms；改为姿态变化标脏、驾驶室交互射线前由 CabPhysicsQueries 合并同步。同一仿真时间/位移无重置时跳过投影。下方原有同步说明为历史行为，当前接口与验证见 [运行时成本](CAB_RUNTIME_PERFORMANCE.md)。
+
 2026-10-22。独立场景：`Assets/Scenes/CabRailMotionReview.unity`。生成和验证入口：`NF5KRailMotionReview.BatchBuild`，菜单没有替代原有场景入口；批处理从现有CabSimulationReview复制，保留实体操纵、后端、灯光与交互绑定。
 
 ## 已接入

@@ -15,6 +15,7 @@ namespace RailwayRenaissance.Cab
         Vector3 dockPosition, dockScale;
         Quaternion dockRotation;
         bool held;
+        Matrix4x4 lastHeldPose;
         public bool Held => held;
         public string Hint => manual?"消防器材手册 / FIRE EQUIPMENT MANUAL":extinguisher ? "灭火器 / EXTINGUISHER · " + (held ? "已取下 / REMOVED" : "在架 / STOWED") : "安全锤 / SAFETY HAMMER · " + (held ? "已取下 / REMOVED" : "在架 / STOWED");
         public string Description => manual
@@ -34,18 +35,25 @@ namespace RailwayRenaissance.Cab
             var camera=Camera.main;
             if(item==null||camera==null||Vector3.Distance(camera.transform.position,transform.position)>2.4f)return false;
             if(held){Restore();return true;}
-            foreach(var equipment in FindObjectsByType<CabSafetyEquipment>(FindObjectsSortMode.None))
+            foreach(var equipment in FindObjectsByType<CabSafetyEquipment>())
                 if(equipment!=this&&equipment.Held)return false;
             dockParent=item.parent;dockPosition=item.localPosition;dockRotation=item.localRotation;dockScale=item.localScale;
             SetBands(true);
             item.SetParent(camera.transform,true);item.localPosition=new Vector3(.28f,-.32f,.60f);item.localRotation=extinguisher?Quaternion.Euler(0,180,0):Quaternion.identity;
-            held=true;return true;
+            held=true;lastHeldPose=item.localToWorldMatrix;CabPhysicsQueries.MarkDirty();return true;
         }
         void Restore()
         {
             if(item!=null&&dockParent!=null){item.SetParent(dockParent,false);item.localPosition=dockPosition;item.localRotation=dockRotation;item.localScale=dockScale;}
             SetBands(false);
             held=false;
+            CabPhysicsQueries.MarkDirty();
+        }
+        void LateUpdate()
+        {
+            if(!held||item==null)return;
+            var pose=item.localToWorldMatrix;
+            if(pose!=lastHeldPose){lastHeldPose=pose;CabPhysicsQueries.MarkDirty();}
         }
         void SetBands(bool open)
         {

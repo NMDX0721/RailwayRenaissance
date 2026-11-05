@@ -27,7 +27,7 @@ public static class CabTachometerAssetSetup
             reviewFrames++;
             if (reviewFrames == 30)
             {
-                var gauge = UnityEngine.Object.FindFirstObjectByType<CabDieselTachometer>();
+                var gauge = UnityEngine.Object.FindAnyObjectByType<CabDieselTachometer>();
                 gauge.SetRpm(650f);
                 var camera = Camera.main;
                 var target = new RenderTexture(1000, 900, 24);
@@ -292,12 +292,12 @@ public static class CabTachometerAssetSetup
             AssetDatabase.CreateAsset(reflection, reflectionPath);
         }
         RenderSettings.defaultReflectionMode = DefaultReflectionMode.Custom;
-        RenderSettings.customReflection = reflection;
+        RenderSettings.customReflectionTexture = reflection;
         EditorSceneManager.SaveScene(scene,"Assets/Scenes/CabTachometerReview.unity");
         var target = new RenderTexture(1000, 900, 24);
         camera.targetTexture = target;
         var otherLights = new Dictionary<Light, int>();
-        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>())
         {
             if (other.gameObject.scene == scene) continue;
             otherLights.Add(other, other.cullingMask);

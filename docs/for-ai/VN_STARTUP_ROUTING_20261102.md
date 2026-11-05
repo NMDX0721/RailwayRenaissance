@@ -1,0 +1,9 @@
+# 旧自动登录进度条入口修复
+
+2026-11-02用户确认仍看到启动时“自动登录/校验本地凭证/百分比”旧界面。`LoginManager`和`AutoLoginUI`虽然标记DEPRECATED，`Assets/Scenes/Login.unity`仍挂载启用的LoginManager，且其Start仍执行SetupCanvas和CheckAutoLogin，因此注释并未停用实际入口。
+
+当前修复：LoginManager.Start不再构建旧UGUI、加载旧登录素材或调用CheckAutoLogin；保留全局光标、音量、FPS/帧率、统计与焦点初始化后，直接进入原自动登录流程最终目标VN_Test。不改凭证文件、不删除用户存档、不修改正式场景YAML，不绕过VNManager已有的存档/书签恢复判断。TitleScreen类与旧账号辅助代码仍保留供兼容引用，本次没有将它们整体删除。
+
+验证：187个运行时源码和验收Editor脚本使用Unity缓存引用编译通过。在独立VNCompiledReviewProject中通过Editor API构造Login入口夹具与VN_Test目标夹具，实际LoginManager.Start完成场景跳转，全程未发现AutoLoginUI实例。成功标记 `VN_LEGACY_STARTUP_BYPASS_OK`，日志 `tools/vn/legacy_startup_review_20261102.log`。验收入口LegacyLoginStartupReview.Batch有项目路径保护，不能用于主项目场景写入。
+
+此项证明旧UI入口已被跳过，不是正式VN完整加载/Windows Player测试。独立项目仍有已知UnityEditor.Search索引异常；不能宣称日志零异常。已经导出的旧exe不随源代码改变，需要新构建才能包含修复。

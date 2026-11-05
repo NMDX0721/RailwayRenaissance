@@ -64,6 +64,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.BezierCurveTo(new Vector2(19, 0), new Vector2(21, 10), new Vector2(10, 17));
                 p.ClosePath(); if (action == "已藏") p.Fill(); else p.Stroke();
             }
+            else if (action.StartsWith("队列·计数"))
+            {
+                // The count takes the place of the arrow: two full rows well apart from a short third row, and the digit sits where that row ends.
+                bool wide = action.EndsWith("宽");
+                Line(new Vector2(3, 4), new Vector2(17, 4)); Line(new Vector2(3, 8.5f), new Vector2(17, 8.5f)); Line(new Vector2(3, 15), new Vector2(wide ? 5.5f : 8, 15));
+            }
             else if (action.Contains("队列") || action == "下一首播放")
             {
                 Line(new Vector2(3, 5), new Vector2(15, 5)); Line(new Vector2(3, 10), new Vector2(12, 10)); Line(new Vector2(3, 15), new Vector2(10, 15));
@@ -127,9 +133,40 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else if (action == "刷新文件") { p.BeginPath(); p.Arc(new Vector2(10, 10), 6, 30, 310); p.Stroke(); Line(new Vector2(12, 2), new Vector2(16, 5), new Vector2(12, 6)); }
             else if (action.Contains("文件夹")) { Line(new Vector2(2, 16), new Vector2(2, 4), new Vector2(8, 4), new Vector2(10, 7), new Vector2(18, 7), new Vector2(18, 16), new Vector2(2, 16)); }
             else if (action == "定时" || action == "加载中") { Circle(10, 10, 7); Line(new Vector2(10, 5), new Vector2(10, 10), new Vector2(14, 12)); }
+            else if (action == "命令") { Line(new Vector2(3, 5), new Vector2(9, 10), new Vector2(3, 15)); Line(new Vector2(11, 15), new Vector2(17, 15)); }
+            else if (action == "音效") { float[] tops = { 11, 4, 8, 2, 9 }; for (int i = 0; i < 5; i++) { float x = 3.5f + i * 3.2f; p.lineWidth = 2.4f; Line(new Vector2(x, 17), new Vector2(x, tops[i] + 1)); } p.lineWidth = 1.6f; }
+            else if (action == "音量" || action == "静音")
+            {
+                p.BeginPath(); p.MoveTo(new Vector2(3, 8)); p.LineTo(new Vector2(7, 8)); p.LineTo(new Vector2(11, 4)); p.LineTo(new Vector2(11, 16)); p.LineTo(new Vector2(7, 12)); p.LineTo(new Vector2(3, 12)); p.ClosePath(); p.Stroke();
+                if (action == "静音") { Line(new Vector2(14, 7), new Vector2(19, 13)); Line(new Vector2(19, 7), new Vector2(14, 13)); }
+                else
+                {
+                    // Two sound waves drawn as short polylines on circles round the speaker, kept inside the 20-unit box.
+                    foreach (float radius in new[] { 3.4f, 6.2f })
+                    {
+                        p.BeginPath();
+                        for (int step = 0; step <= 8; step++)
+                        {
+                            float angle = Mathf.Deg2Rad * (-46f + step * 11.5f);
+                            var point = new Vector2(11 + radius * Mathf.Cos(angle), 10 + radius * Mathf.Sin(angle));
+                            if (step == 0) p.MoveTo(point); else p.LineTo(point);
+                        }
+                        p.Stroke();
+                    }
+                }
+            }
+            else if (action == "倍速") { Line(new Vector2(3, 4), new Vector2(9, 10), new Vector2(3, 16)); Line(new Vector2(10, 4), new Vector2(16, 10), new Vector2(10, 16)); }
+            else if (action == "全选") { Rect(3, 3, 14, 14); Line(new Vector2(6, 10), new Vector2(9, 13), new Vector2(14, 6)); }
+            else if (action == "移到最前") { Line(new Vector2(4, 3), new Vector2(16, 3)); Line(new Vector2(10, 17), new Vector2(10, 7)); Line(new Vector2(6, 10), new Vector2(10, 6), new Vector2(14, 10)); }
+            else if (action == "移到末尾") { Line(new Vector2(4, 17), new Vector2(16, 17)); Line(new Vector2(10, 3), new Vector2(10, 13)); Line(new Vector2(6, 10), new Vector2(10, 14), new Vector2(14, 10)); }
+            else if (action == "设置") { Circle(10, 10, 3); Circle(10, 10, 7); for (int k = 0; k < 8; k++) { float a = k * Mathf.PI / 4f; Line(new Vector2(10 + Mathf.Cos(a) * 7, 10 + Mathf.Sin(a) * 7), new Vector2(10 + Mathf.Cos(a) * 9.5f, 10 + Mathf.Sin(a) * 9.5f)); } }
             else if (action == "音色")
             {
-                for (int x = 4; x <= 16; x += 6) { Line(new Vector2(x, 3), new Vector2(x, 17)); Circle(x, x == 10 ? 13 : 7, 2); }
+                p.BeginPath(); p.MoveTo(new Vector2(2, 10)); p.BezierCurveTo(new Vector2(5, 0), new Vector2(7, 0), new Vector2(10, 10)); p.BezierCurveTo(new Vector2(13, 20), new Vector2(15, 20), new Vector2(18, 10)); p.Stroke();
+            }
+            else if (action == "播放设置")
+            {
+                for (int y = 4; y <= 16; y += 6) { Line(new Vector2(2, y), new Vector2(18, y)); Circle(y == 10 ? 6 : 13, y, 2.2f, true); }
             }
             else if (action == "首页") { Line(new Vector2(2, 9), new Vector2(10, 2), new Vector2(18, 9)); Line(new Vector2(4, 8), new Vector2(4, 18), new Vector2(16, 18), new Vector2(16, 8)); Rect(8, 12, 4, 6); }
             else if (action.Contains("搜索")) { Circle(8, 8, 5); Line(new Vector2(12, 12), new Vector2(18, 18)); }

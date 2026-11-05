@@ -15,7 +15,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         VisualElement playerHost, mainArea, bodyArea; VisualElement playerCover; string playerCoverId; Label playingArtist;
         Button play, mode, favorite;
         MusicIconHelper.VuMeterHandle vuMeter;
-        float vuTime;
+        // Per-frame Update keeps what it last drew, so a frame in which nothing changed does no lookups, string building or icon work.
+        Label queueBadgeNode; Button volumeButton, barMoreButton; VisualElement volumePop; Action volumeRefresh; float mutedFrom;
+        int shownQueueCount = -1, shownSecond = -1, shownLengthSecond = -2;
+        string shownPlayAction, shownModeAction, shownFavoriteAction, shownTitle;
+        float shownVolumeFill = -1f, shownProgressFill = -1f;
         Slider progress;
         TextField search;
         string page = "首页", query = "", detailId, lastId, neteaseUserId;
@@ -64,7 +68,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var button = new Button(action) { name = name }; button.AddToClassList("music-button"); parent.Add(button);
             bool iconOnly = parent.ClassListContains("music-track-row") || parent.ClassListContains("music-queue-row") ||
                 parent.ClassListContains("music-player-buttons") || parent.ClassListContains("music-queue-item") || parent.ClassListContains("music-tools") ||
-                parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
+                parent.ClassListContains("music-modal-header") || parent.ClassListContains("music-queue-tools") || parent.ClassListContains("music-queue-batch") || parent.ClassListContains("music-drawer-header") || parent.ClassListContains("music-header");
             MusicTerminalIcons.Apply(button, text, iconOnly); return button;
         }
         static bool sessionRestoreStarted;
@@ -104,6 +108,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (drawerScrim != null) drawerScrim.style.display = queueOpen && root.resolvedStyle.width < 1280 ? DisplayStyle.Flex : DisplayStyle.None;
             });
             MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)Mathf.Clamp(MusicLibrarySession.State.toneMode, 0, 3);
+            MusicAudioEffectsEngine.CrossfadeEnabled = !MusicLibrarySession.State.noCrossfade;
+            MusicEqualizer.Load(MusicLibrarySession.State); MusicAudioEffectsEngine.RefreshEq();
             var header = Box(root, "music-header");
             Button(header, "返回桌面", close, "music-close");
             var navToggle = Button(header, "侧栏", ToggleNavigation, "music-nav-toggle"); navToggle.tooltip = "收起 / 展开侧栏";
@@ -117,6 +123,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             search.RegisterValueChangedCallback(e => { if (e.target != search) return; query = e.newValue.Trim(); if (query.Length > 0) HideSuggestions(); else if (search.focusController?.focusedElement != null) ShowSuggestions(); clearSearch.style.display = search.value.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None; RenderContent(); });
             clearSearch = Button(header, "关闭", () => { search.value = ""; search.Focus(); }, "music-clear-search");
             clearSearch.tooltip = "清空搜索"; clearSearch.style.display = DisplayStyle.None;
+            Button(header, "命令", () => OpenPalette(), "music-palette-open").tooltip = "命令面板 Ctrl+K";
             Button(header, "操作帮助", ShowHelp, "music-help");
             var body = Box(root, "music-body");
             navigation = Box(body, "music-navigation");
@@ -162,7 +169,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             RenderDrawer(); Update();
             if (renderedPage != pageKey) AnimateEntry(content);
             renderedPage = pageKey;
-            root.schedule.Execute(ApplyAccent);
+            root.schedule.Execute(ApplyAccent); MaybeStartTutorial();
             var next = content.Q<ScrollView>("music-track-list");
             next?.schedule.Execute(() => { if (next.panel != null) next.scrollOffset = position; });
             var nextDrawer = drawer.Q<ScrollView>();
@@ -177,6 +184,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (e.keyCode == KeyCode.Escape && queueOpen) { queueOpen = false; RenderDrawer(); root.Q<Button>("music-queue")?.Focus(); e.StopImmediatePropagation(); return; }
             var target = e.target as VisualElement;
             bool editing = target is TextField || target?.GetFirstAncestorOfType<TextField>() != null;
+            if ((e.ctrlKey || e.commandKey) && e.keyCode == KeyCode.K)
+            { OpenPalette(); e.StopImmediatePropagation(); return; }
             if ((e.ctrlKey || e.commandKey) && e.keyCode == KeyCode.F)
             { CloseModal(); search.Focus(); e.StopImmediatePropagation(); return; }
             if (editing || target is Slider || target?.GetFirstAncestorOfType<Slider>() != null) return;
@@ -220,6 +229,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 ("搜索", "顶部搜索同时查曲库和所选在线来源"),
                 ("来源", "切换来源标签即可换平台"),
                 ("Ctrl+F", "跳到搜索框"),
+                ("Ctrl+K", "命令面板：输入名字找功能或队列里的歌"),
                 ("菜单键", "顶栏菜单键收起 / 展开侧栏"));
             Section("播放",
                 ("播放", "点击三角按钮，停留可看按钮名称"),
@@ -265,6 +275,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 b.tooltip = list.title; b.EnableInClassList("is-active", selected == list);
             }
             Button(navigation, "新建歌单", () => EditName(null), "music-new-playlist");
+            Button(navigation, "设置", () => OpenSettings(), "music-nav-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
             Text(navigation, "拾起沿线的声音\n留住旅途的回响", "music-nav-note");
         }
         List<MusicLibraryTrack> VisibleTracks()
@@ -671,8 +682,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         bool recordFromLyrics;
         void CloseModal()
         {
+            rulerTick?.Pause(); rulerTick = null; rulerTrackId = null; rulerDoc = null;
+            rulerValue = null; rulerTotal = null; rulerLine = null; rulerKnob = null; rulerFill = null;
             bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
-            overlay?.RemoveFromHierarchy(); overlay = null; disc = null; detailId = null; lyrics = null;
+            // Menus and small panels fade out in about a tenth of a second; sheets and the lyrics page leave at once.
+            var leaving = overlay;
+            if (leaving != null && (leaving.ClassListContains("music-menu-overlay") || leaving.ClassListContains("music-popover-overlay")) && !MusicLibrarySession.State.reduceMotion)
+            {
+                leaving.pickingMode = PickingMode.Ignore; leaving.AddToClassList("music-leaving");
+                leaving.schedule.Execute(() => leaving.RemoveFromHierarchy()).StartingIn(130);
+            }
+            else leaving?.RemoveFromHierarchy();
+            overlay = null; disc = null; detailId = null; lyrics = null; controlsPanel = null; settingsContent = null;
             if (modalReturnFocus?.panel == root.panel && modalReturnFocus.enabledInHierarchy) modalReturnFocus.Focus();
             else root.Focus();
             modalReturnFocus = null;
@@ -838,6 +859,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var moveDown = Button(row, "↓", () => MusicLibrarySession.Move(list, index, index + 1));
             moveDown.tooltip = "向下移动"; moveDown.SetEnabled(index + 1 < list.Count);
         }
+        readonly HashSet<int> queuePicked = new HashSet<int>(); bool queuePicking; string queueFilter = "";
         void RenderDrawer()
         {
             bool opening = queueOpen && drawer.resolvedStyle.display == DisplayStyle.None;
@@ -851,32 +873,83 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(header, "收起", () => { queueOpen = false; RenderDrawer(); });
             var sub = Box(drawer, "music-drawer-sub");
             Text(sub, queue.Count == 0 ? "下一首从这里出发" : queue.Count + " 首 · 下一首从这里出发", "music-muted music-grow");
-            var clearQueue = Button(sub, "清空队列", () => { queue.Clear(); MusicLibrarySession.Commit(); }, "music-clear-queue"); clearQueue.AddToClassList("music-drawer-clear"); clearQueue.SetEnabled(queue.Count > 0);
-            var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
-            if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
-            for (int i = 0; i < queue.Count; i++)
+            // Tools: search the queue; the less used actions (pick several, drop repeats, clear) sit in a second menu.
+            var tools = Box(drawer, "music-queue-tools");
+            var filterField = new TextField { name = "music-queue-filter" }; filterField.AddToClassList("music-queue-filter"); filterField.SetValueWithoutNotify(queueFilter); filterField.tooltip = "在队列里找歌"; tools.Add(filterField);
+            Button moreButton = null;
+            moreButton = Button(tools, queuePicking ? "保存" : "更多", () =>
             {
-                int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
-                var item = Box(scroll.contentContainer, "music-queue-item");
-                // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
-                AddQueueReorder(item, item, queue, index);
-                var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
-                var queueText = Box(item, "music-queue-text");
-                Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
-                Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
-                item.Insert(1, queueCover); item.Insert(2, queueText);
-                var row = item;
-                Button(row, "播放", () => {
-                    var queuedTrack = MusicLibrarySession.Find(id);
-                    if (!MusicLibrarySession.Available(queuedTrack))
-                    {
-                        ShowToast(MusicLibrarySession.Unlocked(queuedTrack) ? "音频文件不可用，请检查文件或重新导入" : "该曲目尚未解锁或不存在");
-                        return;
-                    }
-                    MusicLibrarySession.PlayQueued(index);
-                });
-                Button(row, "移除", () => { queue.RemoveAt(index); MusicLibrarySession.Commit(); });
+                if (queuePicking) { queuePicking = false; queuePicked.Clear(); RenderDrawer(); return; }
+                var menu = MenuAt(moreButton, "队列");
+                PopoverItem(menu, "选择多首…", false, () => { CloseModal(); queuePicking = true; queuePicked.Clear(); RenderDrawer(); }).name = "music-queue-pick";
+                PopoverItem(menu, "去掉重复的歌", false, () =>
+                {
+                    CloseModal(); int before = queue.Count; var seen = new HashSet<string>(); queue.RemoveAll(q => !seen.Add(q)); queuePicked.Clear();
+                    MusicLibrarySession.Commit(); ShowToast(before == queue.Count ? "队列里没有重复的歌" : "已去掉 " + (before - queue.Count) + " 首重复");
+                }).name = "music-queue-dedupe";
+                PopoverItem(menu, "清空队列", false, () => { CloseModal(); queue.Clear(); queuePicked.Clear(); queuePicking = false; MusicLibrarySession.Commit(); }).name = "music-clear-queue";
+            }, "music-queue-more"); moreButton.tooltip = queuePicking ? "完成选择" : "更多：选择多首、去重、清空"; moreButton.SetEnabled(queue.Count > 0 || queuePicking);
+            VisualElement batch = null;
+            if (queuePicking)
+            {
+                batch = Box(drawer, "music-queue-batch");
+                void Apply(string label, Action<List<string>> change)
+                {
+                    var b2 = Button(batch, label, () => {
+                        if (queuePicked.Count == 0) { ShowToast("先点选要操作的歌"); return; }
+                        var picked = queuePicked.OrderBy(i => i).Where(i => i < queue.Count).Select(i => queue[i]).ToList();
+                        var rest = queue.Where((_, i) => !queuePicked.Contains(i)).ToList();
+                        queue.Clear(); queue.AddRange(rest); change(picked); queuePicked.Clear(); MusicLibrarySession.Commit(); ShowToast(label + "：" + picked.Count + " 首");
+                    }, "music-queue-batch-" + label); b2.tooltip = label;
+                }
+                Button(batch, "全选", () => { for (int i = 0; i < queue.Count; i++) queuePicked.Add(i); RenderDrawer(); }, "music-queue-all");
+                Apply("移到最前", picked => queue.InsertRange(0, picked));
+                Apply("移到末尾", picked => queue.AddRange(picked));
+                Apply("移除", picked => { });
             }
+            var scroll = new ScrollView(); scroll.style.flexGrow = 1; scroll.style.minHeight = 0; drawer.Add(scroll);
+            void FillList()
+            {
+                scroll.contentContainer.Clear();
+                string needle = (queueFilter ?? "").Trim().ToLowerInvariant();
+                if (queue.Count == 0) Text(scroll, "队列为空。可从曲目的“更多”菜单追加。", "music-wrap");
+                int shown = 0;
+                for (int i = 0; i < queue.Count; i++)
+                {
+                    int index = i; string id = queue[i]; var track = MusicLibrarySession.Find(id);
+                    if (needle.Length > 0 && !((track?.title ?? "").ToLowerInvariant().Contains(needle) || (track?.artist ?? "").ToLowerInvariant().Contains(needle))) continue;
+                    shown++;
+                    var item = Box(scroll.contentContainer, "music-queue-item");
+                    if (queuePicking)
+                    {
+                        item.EnableInClassList("is-picked", queuePicked.Contains(index));
+                        var check = Chip(item, queuePicked.Contains(index) ? "☑" : "☐", () => { if (!queuePicked.Remove(index)) queuePicked.Add(index); RenderDrawer(); }, "music-queue-check-" + index);
+                        check.AddToClassList("music-queue-check");
+                    }
+                    // One row per queued track: grip, cover, title and artist, then the small actions. Drag targets use the item bounds.
+                    if (needle.Length == 0 && !queuePicking) AddQueueReorder(item, item, queue, index);
+                    var queueCover = track != null ? Cover(item, track.id, track.category, 42) : Box(item, "music-sleeve");
+                    var queueText = Box(item, "music-queue-text");
+                    Text(queueText, track?.title ?? "未知曲目", "music-queue-title");
+                    Text(queueText, !MusicLibrarySession.Available(track) ? "不可用 · 连播时跳过" : string.IsNullOrEmpty(track.artist) ? track.category : track.artist, "music-queue-sub");
+                    int at = (queuePicking ? 1 : 0) + (needle.Length == 0 && !queuePicking ? 1 : 0); item.Insert(at, queueCover); item.Insert(at + 1, queueText);
+                    var row = item;
+                    if (queuePicking) { item.RegisterCallback<ClickEvent>(_ => { if (!queuePicked.Remove(index)) queuePicked.Add(index); RenderDrawer(); }); continue; }
+                    Button(row, "播放", () => {
+                        var queuedTrack = MusicLibrarySession.Find(id);
+                        if (!MusicLibrarySession.Available(queuedTrack))
+                        {
+                            ShowToast(MusicLibrarySession.Unlocked(queuedTrack) ? "音频文件不可用，请检查文件或重新导入" : "该曲目尚未解锁或不存在");
+                            return;
+                        }
+                        MusicLibrarySession.PlayQueued(index);
+                    });
+                    Button(row, "移除", () => { queue.RemoveAt(index); MusicLibrarySession.Commit(); });
+                }
+                if (queue.Count > 0 && shown == 0) Text(scroll, "队列里没有匹配的歌", "music-wrap");
+            }
+            filterField.RegisterValueChangedCallback(e => { if (e.target != filterField) return; queueFilter = e.newValue; FillList(); });
+            FillList();
         }
         void AddQueueReorder(VisualElement row, VisualElement item, List<string> queue, int index)
         {
@@ -898,6 +971,58 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var moveDown = Button(row, "↓", () => MusicLibrarySession.Move(queue, index, index + 1));
             moveDown.tooltip = "向下移动"; moveDown.SetEnabled(index + 1 < queue.Count);
         }
+        // Volume: the speaker on the bar opens a small vertical fader (drag or click on the rail; arrows nudge by 5%).
+        void OpenVolumePopover(VisualElement anchor)
+        {
+            var menu = MenuAt(anchor ?? volumeButton, null); menu.AddToClassList("music-volume-pop"); volumePop = menu;
+            var percent = Text(menu, "", "music-volume-value");
+            var rail = Box(menu, "music-volume-rail"); rail.name = "music-volume";
+            var fill = Box(rail, "music-volume-fill"); fill.pickingMode = PickingMode.Ignore;
+            var knob = Box(rail, "music-volume-knob"); knob.pickingMode = PickingMode.Ignore;
+            var mute = Button(menu, MusicLibrarySession.State.volume < .005f ? "静音" : "音量", () =>
+            {
+                float now = MusicLibrarySession.State.volume;
+                if (now < .005f) TabletMusicAppUI.SetVolume(mutedFrom > .005f ? mutedFrom : .5f); else { mutedFrom = now; TabletMusicAppUI.SetVolume(0f); }
+                volumeRefresh?.Invoke();
+            }, "music-volume-mute");
+            mute.AddToClassList("music-icon-button");
+            void Show()
+            {
+                float v = MusicLibrarySession.State.volume;
+                percent.text = Mathf.RoundToInt(v * 100) + "%";
+                fill.style.height = Length.Percent(v * 100f); knob.style.bottom = Length.Percent(v * 100f);
+                MusicTerminalIcons.Apply(mute, v < .005f ? "静音" : "音量", true); mute.tooltip = v < .005f ? "取消静音" : "静音";
+            }
+            void SetFrom(float y)
+            {
+                float height = rail.resolvedStyle.height; if (height <= 1f) return;
+                TabletMusicAppUI.SetVolume(Mathf.Round((1f - Mathf.Clamp01(y / height)) * 100f) / 100f); Show();
+            }
+            rail.RegisterCallback<PointerDownEvent>(e => { rail.CapturePointer(e.pointerId); SetFrom(e.localPosition.y); rail.Focus(); e.StopPropagation(); });
+            rail.RegisterCallback<PointerMoveEvent>(e => { if (rail.HasPointerCapture(e.pointerId)) SetFrom(e.localPosition.y); });
+            rail.RegisterCallback<PointerUpEvent>(e => { if (rail.HasPointerCapture(e.pointerId)) { rail.ReleasePointer(e.pointerId); MusicLibrarySession.Save(); } });
+            rail.focusable = true;
+            rail.RegisterCallback<KeyDownEvent>(e =>
+            {
+                float step = e.keyCode == KeyCode.UpArrow || e.keyCode == KeyCode.RightArrow ? .05f : e.keyCode == KeyCode.DownArrow || e.keyCode == KeyCode.LeftArrow ? -.05f : 0f;
+                if (step == 0f) return;
+                TabletMusicAppUI.SetVolume(Mathf.Clamp01(MusicLibrarySession.State.volume + step)); Show(); e.StopPropagation();
+            });
+            rail.RegisterCallback<GeometryChangedEvent>(_ => Show());
+            volumeRefresh = Show; Show();
+        }
+        // The queue icon carries its count inside the glyph: with songs queued the arrow gives way to a digit in the same ink, in the third row.
+        void ShowQueueCount(int queued)
+        {
+            var button = root.Q<Button>("music-queue"); if (button == null || queueBadgeNode == null) return;
+            MusicTerminalIcons.Apply(button, queued > 9 ? "队列·计数宽" : queued > 0 ? "队列·计数" : "队列", true);
+            button.tooltip = queued > 0 ? "队列（" + queued + " 首）" : "队列";
+            var icon = button.Q(className: "music-vector-icon");
+            if (icon != null && queueBadgeNode.parent != icon) icon.Add(queueBadgeNode);
+            queueBadgeNode.text = queued > 99 ? "99" : queued.ToString();
+            queueBadgeNode.EnableInClassList("is-wide", queued > 9);
+            queueBadgeNode.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
         void BuildPlayer()
         {
             var player = Box(playerHost ?? root, "music-player", "music-player");
@@ -906,6 +1031,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             playingTitle = Text(info, "尚未选择曲目", "music-track-title");
             playingArtist = Text(info, "", "music-track-artist");
             // Cover and title open the record archive, as in the streaming apps' mini players.
+            playingTitle.tooltip = "点曲名：在列表中找到这首歌"; playingTitle.RegisterCallback<ClickEvent>(e => { LocateCurrent(); e.StopPropagation(); });
+            playingArtist.RegisterCallback<ClickEvent>(e => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); e.StopPropagation(); });
             info.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
             playerCover.RegisterCallback<ClickEvent>(_ => { if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) ShowDetail(TabletMusicAppUI.tabletCurrentTrackId); });
             playerCover.pickingMode = PickingMode.Position;
@@ -929,45 +1056,25 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             progress.RegisterValueChangedCallback(e => { if (TabletMusicAppUI.tabletCurrentClip != null) TabletMusicAppUI.SeekTabletMusic(e.newValue); });
             time = Text(timeline, "0:00 / --:--", "music-player-time");
             var extras = Box(player, "music-player-extras");
-            var volume = new Slider("音量", 0, 1) { value = MusicLibrarySession.State.volume, name = "music-volume" }; extras.Add(volume);
-            volume.tooltip = "音量：拖动或点击滑轨；聚焦后可用方向键微调";
-            volume.RegisterValueChangedCallback(e => TabletMusicAppUI.SetVolume(e.newValue));
             var effects = Box(extras, "music-player-buttons");
             effects.AddToClassList("music-utility-buttons");
             MusicAudioEffectsEngine.SetPlaybackSpeed(MusicLibrarySession.State.playbackSpeed <= 0 ? 1f : MusicLibrarySession.State.playbackSpeed);
-            var speed = new Button { name = "music-speed" }; speed.AddToClassList("music-speed-chip");
-            void ShowSpeed() { speed.text = MusicAudioEffectsEngine.PlaybackSpeed.ToString("0.##") + "x"; speed.EnableInClassList("is-active", Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - 1f) > 0.01f); }
-            speed.tooltip = "播放速度（同时改变音高）";
-            speed.clicked += () => {
-                var panel = Popover("播放速度 · 音高随速度变化");
-                foreach (float option in new[] { 0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f })
-                {
-                    float chosen = option;
-                    PopoverItem(panel, chosen.ToString("0.##") + "x" + (chosen == 1f ? "  正常" : ""), Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - chosen) < 0.01f, () => {
-                        MusicAudioEffectsEngine.SetPlaybackSpeed(chosen); MusicLibrarySession.State.playbackSpeed = chosen; MusicLibrarySession.Save(); ShowSpeed(); CloseModal();
-                    });
-                }
-            };
-            effects.Add(speed); ShowSpeed();
-            Button(effects, "音色", () => {
-                var panel = Popover("收听音色");
-                foreach (var pair in new[] { ("纯净原声", 0), ("工务电台 · 窄频、沙风、磁带抖晃", 1), ("先民真空电台 · 温暖电子管、底噪", 2), ("电子管调频立体声 · 宽频温润", 3) })
-                    PopoverItem(panel, pair.Item1, (int)MusicAudioEffectsEngine.CurrentFilterMode == pair.Item2, () => { MusicAudioEffectsEngine.CurrentFilterMode = (MusicAudioEffectsEngine.RadioFilterMode)pair.Item2; MusicLibrarySession.State.toneMode = pair.Item2; MusicLibrarySession.Save(); CloseModal(); });
-            });
-            Button(effects, "定时", () => {
-                var panel = Popover("睡眠定时");
-                foreach (int minutes in new[] { 0, 15, 30, 45, 999 })
-                    PopoverItem(panel, minutes == 0 ? "关闭定时" : minutes == 999 ? "播完本曲暂停" : minutes + " 分钟后暂停", false, () => {
-                        MusicAudioEffectsEngine.SetSleepTimer((MusicAudioEffectsEngine.SleepTimerOption)minutes,
-                            TabletMusicAppUI.tabletCurrentClip == null ? 0 : TabletMusicAppUI.tabletCurrentClip.length - TabletMusicAppUI.CurrentPosition);
-                        CloseModal(); ShowToast("睡眠定时已更新");
-                    });
-            });
-            var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue");
-            var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-badge"); queueButton.Add(queueBadgeLabel);
+            // Speed, tone and timer live in the playback settings panel; each keeps a button on the bar only when the player pinned it there.
+            volumeButton = Button(effects, "音量", () => OpenVolumePopover(volumeButton), "music-volume-button");
+            speedChip = new Button(() => OpenControlsPanel(speedChip)) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
+            speedChip.tooltip = "播放速度（点开播放设置）"; effects.Add(speedChip);
+            toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip), "music-tone"); toneChip.tooltip = "收听音色";
+            timerChip = Button(effects, "定时", () => OpenControlsPanel(timerChip), "music-timer"); timerChip.tooltip = "睡眠定时";
+            eqChip = Button(effects, "音效", () => OpenSettings("sound"), "music-eq"); eqChip.tooltip = "均衡器与统一响度";
+            barButtons = effects;
+            var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue"); barAnchor = queueButton;
+            var queueBadgeLabel = new Label("") { name = "music-queue-badge", pickingMode = PickingMode.Ignore }; queueBadgeLabel.AddToClassList("music-queue-count"); queueButton.Add(queueBadgeLabel); queueBadgeNode = queueBadgeLabel;
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
             Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
-            Button(effects, "电台", TabletMusicAppUI.StartRadioAuto, "music-radio").tooltip = "先民时代电台：顺序全自动轮播";
+            Button settingsButton = null;
+            settingsButton = Button(effects, "播放设置", () => OpenControlsPanel(settingsButton), "music-settings"); settingsButton.tooltip = "播放设置：倍速、音色、定时、歌词校准、电台";
+            barMoreButton = Button(effects, "更多", OpenBarMore, "music-bar-more"); barMoreButton.tooltip = "更多";
+            UpdateBarChips();
         }
         void ShowDetail(string id)
         {
@@ -1276,29 +1383,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (root == null || play == null) return;
             root.EnableInClassList("music-reduce-motion", MusicLibrarySession.State.reduceMotion);
             root.EnableInClassList("music-nav-collapsed", MusicLibrarySession.State.navCollapsed);
-            var queueBadge = root.Q<Label>("music-queue-badge");
-            if (queueBadge != null)
+            if (queueBadgeNode != null)
             {
                 int queued = MusicLibrarySession.State.queue.Count;
-                queueBadge.text = queued > 99 ? "99+" : queued.ToString(); queueBadge.style.display = queued > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+                if (queued != shownQueueCount) { shownQueueCount = queued; ShowQueueCount(queued); }
             }
             lyrics?.Tick();
-            if (vuMeter != null)
-            {
-                float lEnergy = 0f, rEnergy = 0f;
-                if (TabletMusicAppUI.tabletIsPlaying)
-                {
-                    vuTime += Time.unscaledDeltaTime;
-                    float waveL = Mathf.Sin(vuTime * 4.4f) * 0.5f + 0.5f;
-                    float waveR = Mathf.Cos(vuTime * 3.8f + 1.2f) * 0.5f + 0.5f;
-                    lEnergy = Mathf.Clamp01(waveL * 0.70f + 0.20f);
-                    rEnergy = Mathf.Clamp01(waveR * 0.72f + 0.18f);
-                }
-                vuMeter.UpdateLevels(lEnergy, rEnergy, Time.unscaledDeltaTime);
-            }
+            // The meters in the player bar are hidden (the lyrics page has the live ones), so they are not driven here.
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             UpdateTheme(id);
-            playingTitle.text = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目"; playingTitle.tooltip = playingTitle.text;
+            if (rulerTrackId != null && rulerTrackId != id) CloseModal();
+            string title = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目";
+            if (title != shownTitle) { shownTitle = title; playingTitle.text = title; playingTitle.tooltip = title + "\n点击曲名：在列表中找到这首歌"; }
             { var nowTrack = MusicLibrarySession.Find(id); string line = nowTrack == null ? "" : string.IsNullOrEmpty(nowTrack.artist) ? nowTrack.category : nowTrack.artist; if (playingArtist.text != line) playingArtist.text = line; }
             if (playerCover != null && playerCoverId != id)
             {
@@ -1310,18 +1406,31 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     string shown = id; MusicAlbumArtResolver.LoadRemoteCover(currentTrack.id, cover => { if (playerCover.panel != null && playerCoverId == shown) { playerCover.style.backgroundImage = new StyleBackground(cover); themeId = "<reload>"; } });
                 }
             }
-            MusicTerminalIcons.Apply(play, MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放", true);
-            MusicTerminalIcons.Apply(mode, TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Sequential ? "顺序" : TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Shuffle ? "随机" : "单曲", true);
-            MusicTerminalIcons.Apply(favorite, MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏", true);
-            var volume = root.Q<Slider>("music-volume");
-            volume?.SetValueWithoutNotify(MusicLibrarySession.State.volume);
-            UpdateSliderFill(volume, MusicLibrarySession.State.volume);
+            string playAction = MusicLibrarySession.Loading ? "加载中" : TabletMusicAppUI.tabletIsPlaying ? "暂停" : "播放";
+            if (playAction != shownPlayAction) { shownPlayAction = playAction; MusicTerminalIcons.Apply(play, playAction, true); }
+            string modeAction = TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Sequential ? "顺序" : TabletMusicAppUI.tabletPlayMode == TabletMusicAppUI.TabletPlayMode.Shuffle ? "随机" : "单曲";
+            if (modeAction != shownModeAction) { shownModeAction = modeAction; MusicTerminalIcons.Apply(mode, modeAction, true); }
+            string favoriteAction = MusicLibrarySession.State.favorites.Contains(id) ? "已藏" : "收藏";
+            if (favoriteAction != shownFavoriteAction) { shownFavoriteAction = favoriteAction; MusicTerminalIcons.Apply(favorite, favoriteAction, true); }
+            float volumeNow = MusicLibrarySession.State.volume;
+            if (volumeNow != shownVolumeFill)
+            {
+                shownVolumeFill = volumeNow;
+                if (volumeButton != null) { MusicTerminalIcons.Apply(volumeButton, volumeNow < .005f ? "静音" : "音量", true); volumeButton.tooltip = "音量 " + Mathf.RoundToInt(volumeNow * 100) + "%"; }
+                if (volumePop != null && volumePop.panel != null) volumeRefresh?.Invoke();
+            }
             var clip = TabletMusicAppUI.tabletCurrentClip;
             float position = clip == null ? MusicLibrarySession.State.position : TabletMusicAppUI.CurrentPosition;
             progress.SetEnabled(clip != null);
             if (!scrubbing) progress.SetValueWithoutNotify(clip != null && clip.length > 0 ? position / clip.length : 0);
-            UpdateSliderFill(progress, progress.value);
-            time.text = TabletMusicAppUI.FormatAudioTime(position) + " / " + (clip != null ? TabletMusicAppUI.FormatAudioTime(clip.length) : "--:--");
+            if (progress.value != shownProgressFill) { shownProgressFill = progress.value; UpdateSliderFill(progress, progress.value); }
+            // The clock reads whole seconds, so the text is rebuilt once a second rather than every frame.
+            int second = (int)position, lengthSecond = clip != null ? (int)clip.length : -1;
+            if (second != shownSecond || lengthSecond != shownLengthSecond)
+            {
+                shownSecond = second; shownLengthSecond = lengthSecond;
+                time.text = TabletMusicAppUI.FormatAudioTime(position) + " / " + (clip != null ? TabletMusicAppUI.FormatAudioTime(clip.length) : "--:--");
+            }
             if (lastId != id)
             {
                 foreach (var pair in indicators) pair.Value.parent.EnableInClassList("is-playing", pair.Key == id);

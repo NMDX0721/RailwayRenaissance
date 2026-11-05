@@ -15,6 +15,7 @@ namespace RailwayRenaissance.UI.Tablet
 
         private static Font s_ui;
         private static Font s_uiBold;
+        private static Font s_pixel;
 
         public static Font Ui()
         {
@@ -37,6 +38,10 @@ namespace RailwayRenaissance.UI.Tablet
             return s_uiBold;
         }
 
-        public static Font Pixel() => Resources.Load<Font>(PixelFontPath);
+        public static Font Pixel()
+        {
+            if (s_pixel == null) s_pixel = Resources.Load<Font>(PixelFontPath);
+            return s_pixel;
+        }
     }
 }

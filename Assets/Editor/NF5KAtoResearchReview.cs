@@ -18,7 +18,7 @@ public static class NF5KAtoResearchReview
         var scene=EditorSceneManager.OpenScene(source);
         if(!EditorSceneManager.SaveScene(scene,ScenePath,true))throw new IOException("Could not create research scene");
         scene=EditorSceneManager.OpenScene(ScenePath);
-        var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();
+        var driver=UnityEngine.Object.FindAnyObjectByType<CabSimulationDriver>();
         if(driver==null)throw new InvalidOperationException("No detailed simulation driver");
         if(driver.GetComponent<CabAtoResearchDriver>()==null)driver.gameObject.AddComponent<CabAtoResearchDriver>();
         EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
@@ -51,7 +51,7 @@ public static class NF5KAtoPlayReview
         EditorApplication.update-=Check;
         try
         {
-            var ato=UnityEngine.Object.FindFirstObjectByType<CabAtoResearchDriver>();
+            var ato=UnityEngine.Object.FindAnyObjectByType<CabAtoResearchDriver>();
             var state=ato.GetComponent<CabEngineState>();var driver=ato.GetComponent<CabSimulationDriver>();
             state.enabled=false;ato.UseRouteController=false;
             Require(!ato.Engage(),"ATO accepted a cold, unprepared cockpit");

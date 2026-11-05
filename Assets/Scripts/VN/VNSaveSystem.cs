@@ -2,6 +2,13 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
+public class VNVariableState
+{
+    public string name;
+    public bool value;
+}
+
+[System.Serializable]
 public class VNSaveData
 {
     public string scriptName;
@@ -10,6 +17,7 @@ public class VNSaveData
     public string timestamp;
     public string bgName;
     public string bgmName;
+    public VNVariableState[] variables;
 }
 
 public class VNSaveSystem
@@ -17,7 +25,8 @@ public class VNSaveSystem
     private const int MaxSlots = 61;
     private const string SaveKeyPrefix = "VN_Save_";
 
-    public bool SaveGame(int slot, string scriptName, int sceneIndex, int dialogueIndex, string bgName, string bgmName)
+    public bool SaveGame(int slot, string scriptName, int sceneIndex, int dialogueIndex, string bgName, string bgmName,
+        VNVariableState[] variableState = null)
     {
         if (slot < 0 || slot >= MaxSlots)
         {
@@ -32,7 +41,8 @@ public class VNSaveSystem
             dialogueIndex = dialogueIndex,
             timestamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm"),
             bgName = bgName,
-            bgmName = bgmName
+            bgmName = bgmName,
+            variables = variableState ?? VNManager.Instance?.CaptureVariableState()
         };
 
         string json = JsonUtility.ToJson(saveData);

@@ -196,7 +196,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     }
                     string sourceStem = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(source)), Path.GetFileNameWithoutExtension(source));
                     string destinationStem = Path.Combine(directory, Path.GetFileNameWithoutExtension(destination));
-                    foreach (string subtitle in new[] { ".lrc", ".vtt", ".srt", ".json", ".t.lrc" })
+                    foreach (string subtitle in new[] { ".lrc", ".vtt", ".srt", ".json", ".yrc", ".qrc", ".t.lrc" })
                     {
                         string companion = sourceStem + subtitle;
                         if (File.Exists(companion) && new FileInfo(companion).Length <= MusicTimedText.MaxBytes &&
@@ -252,7 +252,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var found = new List<string>();
             if (string.IsNullOrEmpty(audioPath)) return found;
             string stem = Path.Combine(Path.GetDirectoryName(audioPath) ?? "", Path.GetFileNameWithoutExtension(audioPath));
-            foreach (string extension in new[] { ".lrc", ".vtt", ".srt", ".json", ".t.lrc", ".jpg", ".jpeg", ".png" })
+            foreach (string extension in new[] { ".lrc", ".vtt", ".srt", ".json", ".yrc", ".qrc", ".t.lrc", ".jpg", ".jpeg", ".png" })
                 if (File.Exists(stem + extension)) found.Add(stem + extension);
             return found;
         }
@@ -325,7 +325,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 ofn.structSize = Marshal.SizeOf(ofn);
                 // 筛选器：格式用 \0 分割，末尾双 \0
                 ofn.filter = "支持的音频文件 (*.mp3;*.wav;*.ogg)\0*.mp3;*.wav;*.ogg\0MP3 音乐 (*.mp3)\0*.mp3\0WAV 无损 (*.wav)\0*.wav\0OGG 音频 (*.ogg)\0*.ogg\0所有文件 (*.*)\0*.*\0\0";
-                if (lyrics) ofn.filter = "歌词与字幕 (*.lrc;*.srt;*.vtt;*.json)\0*.lrc;*.srt;*.vtt;*.json\0\0";
+                if (lyrics) ofn.filter = "歌词与字幕 (*.lrc;*.yrc;*.qrc;*.srt;*.vtt;*.json)\0*.lrc;*.yrc;*.qrc;*.srt;*.vtt;*.json\0\0";
                 ofn.file = bufferPtr;
                 ofn.maxFile = bufferSize;
                 ofn.fileTitle = new string(new char[64]);

@@ -27,7 +27,7 @@ public static class CabLinearGaugeAssetSetup
             reviewFrames++;
             if (reviewFrames == 30)
             {
-                var gauge = UnityEngine.Object.FindFirstObjectByType<CabLinearCurrentGauge>();
+                var gauge = UnityEngine.Object.FindAnyObjectByType<CabLinearCurrentGauge>();
                 gauge.SetCurrentAmps(450f);
                 var camera = Camera.main;
                 var target = new RenderTexture(1000, 900, 24);
@@ -286,12 +286,12 @@ public static class CabLinearGaugeAssetSetup
             AssetDatabase.CreateAsset(reflection, reflectionPath);
         }
         RenderSettings.defaultReflectionMode = DefaultReflectionMode.Custom;
-        RenderSettings.customReflection = reflection;
+        RenderSettings.customReflectionTexture = reflection;
         EditorSceneManager.SaveScene(scene,"Assets/Scenes/CabLinearGaugeReview.unity");
         var target = new RenderTexture(1000, 900, 24);
         camera.targetTexture = target;
         var otherLights = new Dictionary<Light, int>();
-        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>())
         {
             if (other.gameObject.scene == scene) continue;
             otherLights.Add(other, other.cullingMask);

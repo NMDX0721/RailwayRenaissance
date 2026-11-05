@@ -42,12 +42,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!connected) { SessionUserId = null; SessionNickname = null; }
             MusicCatalogSearch.Invalidate(); SessionChanged?.Invoke();
         }
+        readonly List<int> expiredIds = new List<int>();   // reused every frame: Update must not allocate while nothing is pending
         readonly object sync = new object();
         readonly Queue<string> lines = new Queue<string>();
         readonly Dictionary<int, Pending> pending = new Dictionary<int, Pending>();
         Process process;
         int nextId;
         volatile bool exited;
+        string lastProcessError;
         public static NeteaseLocalBridge Instance
         {
             get
@@ -75,12 +77,53 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             StopService();
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             string service = Path.Combine(Application.streamingAssetsPath, provider == "qq" ? "QQMusicService" : provider == "kugou" ? "KugouMusicService" : provider == "bodian" ? "BodianMusicService" : provider == "subsonic" ? "SubsonicMusicService" : provider == "webdav" ? "WebdavMusicService" : provider == "spotify" ? "SpotifyMusicService" : "MusicService", "bridge.js");
-#if UNITY_EDITOR
-            if (!File.Exists(service)) service = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "tools", "music", provider == "qq" ? "qq-service" : provider == "kugou" ? "kugou-service" : provider == "bodian" ? "bodian-service" : provider == "subsonic" ? "subsonic-service" : provider == "webdav" ? "webdav-service" : provider == "spotify" ? "spotify-service" : "netease-service", "bridge.js"));
-#endif
-            if (!File.Exists(service)) { error = (provider == "qq" ? "QQ 音乐" : provider == "kugou" ? "酷狗" : provider == "bodian" ? "波点" : provider == "subsonic" ? "Subsonic" : provider == "webdav" ? "WebDAV" : provider == "spotify" ? "Spotify" : "网易云") + "服务未安装"; return false; }
+            if (!File.Exists(service))
+            {
+                string providerDir = provider == "qq" ? "qq-service" : provider == "kugou" ? "kugou-service" : provider == "bodian" ? "bodian-service" : provider == "subsonic" ? "subsonic-service" : provider == "webdav" ? "webdav-service" : provider == "spotify" ? "spotify-service" : "netease-service";
+                string[] candidates = new string[]
+                {
+                    Path.GetFullPath(Path.Combine(Application.dataPath, "..", "tools", "music", providerDir, "bridge.js")),
+                    Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "music", providerDir, "bridge.js")),
+                    Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "tools", "music", providerDir, "bridge.js")),
+                    Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "tools", "music", providerDir, "bridge.js")),
+                    Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "tools", "music", providerDir, "bridge.js")),
+                    Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, provider == "qq" ? "QQMusicService" : provider == "kugou" ? "KugouMusicService" : provider == "bodian" ? "BodianMusicService" : provider == "subsonic" ? "SubsonicMusicService" : provider == "webdav" ? "WebdavMusicService" : provider == "spotify" ? "SpotifyMusicService" : "MusicService", "bridge.js"))
+                };
+                foreach (var cand in candidates)
+                {
+                    try { if (File.Exists(cand)) { service = cand; break; } }
+                    catch { }
+                }
+            }
+            if (!File.Exists(service)) { error = (provider == "qq" ? "QQ 音乐" : provider == "kugou" ? "酷狗" : provider == "bodian" ? "波点" : provider == "subsonic" ? "Subsonic" : provider == "webdav" ? "WebDAV" : provider == "spotify" ? "Spotify" : "网易云") + "服务未安装（请将 tools/music 复制至程序目录或安装相关服务组件）"; return false; }
             string node = Path.Combine(Path.GetDirectoryName(service), "node.exe");
             if (!File.Exists(node) && provider != "netease" && provider != "bodian") node = Path.Combine(Application.streamingAssetsPath, "MusicService", "node.exe");
+            if (!File.Exists(node))
+            {
+                string[] nodeCandidates = new string[]
+                {
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "node.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MusicService", "node.exe"),
+                    Path.Combine(Application.dataPath, "..", "node.exe")
+                };
+                foreach (var cand in nodeCandidates)
+                {
+                    try { if (File.Exists(cand)) { node = cand; break; } }
+                    catch { }
+                }
+            }
+            if (!File.Exists(node))
+            {
+                foreach (string directory in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator))
+                {
+                    try
+                    {
+                        string candidate = Path.Combine(directory.Trim().Trim('"'), "node.exe");
+                        if (File.Exists(candidate)) { node = candidate; break; }
+                    }
+                    catch { }
+                }
+            }
             if (provider == "bodian" && (!File.Exists(node) || FileVersionInfo.GetVersionInfo(node).FileMajorPart < 24))
             {
                 node = null;
@@ -105,10 +148,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 start.EnvironmentVariables["RAILWAY_MUSIC_AUTH_DIR"] = MusicLibrarySession.AuthDirectory;
                 process = new Process { StartInfo = start, EnableRaisingEvents = true };
                 process.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sync) lines.Enqueue(e.Data); };
-                process.ErrorDataReceived += (_, e) => { }; // Never log provider output or session data.
+                process.ErrorDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) lastProcessError = e.Data; };
                 var startedProcess = process;
                 process.Exited += (_, __) => { if (ReferenceEquals(process, startedProcess)) exited = true; };
-                exited = false;
+                exited = false; lastProcessError = null;
                 if (!process.Start()) throw new InvalidOperationException();
                 process.BeginOutputReadLine(); process.BeginErrorReadLine();
                 return true;
@@ -136,11 +179,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 try { var response = JsonUtility.FromJson<Response>(line); if (response != null) Complete(response.id, response); }
                 catch (Exception) { /* Ignore malformed child output. */ }
             }
-            var expired = new List<int>();
+            expiredIds.Clear();
+            var expired = expiredIds;
             foreach (var pair in pending) if (exited || Time.realtimeSinceStartup >= pair.Value.deadline) expired.Add(pair.Key);
             if (expired.Count > 0)
             {
-                string error = exited ? "音乐服务已退出" : "音乐服务请求超时，请重试";
+                string error = exited ? (!string.IsNullOrEmpty(lastProcessError) ? $"音乐服务已退出 ({lastProcessError})" : "音乐服务已退出") : "音乐服务请求超时，请重试";
                 StopService();
                 var remaining = new List<int>(pending.Keys);
                 foreach (int id in remaining) Complete(id, new Response { id = id, error = error });

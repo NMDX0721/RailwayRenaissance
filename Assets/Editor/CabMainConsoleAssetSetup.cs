@@ -27,8 +27,8 @@ public static class CabMainConsoleAssetSetup
             reviewFrames++;
             if (reviewFrames == 30)
             {
-                var gauge = UnityEngine.Object.FindFirstObjectByType<CabTemperatureGauge>();
-                foreach (var channel in UnityEngine.Object.FindObjectsByType<CabTemperatureGauge>(FindObjectsSortMode.None))
+                var gauge = UnityEngine.Object.FindAnyObjectByType<CabTemperatureGauge>();
+                foreach (var channel in UnityEngine.Object.FindObjectsByType<CabTemperatureGauge>())
                     channel.SetTemperature(channel.Calibration.previewC);
                 var camera = Camera.main;
                 var target = new RenderTexture(1400, 1050, 24);
@@ -370,12 +370,12 @@ public static class CabMainConsoleAssetSetup
             AssetDatabase.CreateAsset(reflection, reflectionPath);
         }
         RenderSettings.defaultReflectionMode = DefaultReflectionMode.Custom;
-        RenderSettings.customReflection = reflection;
+        RenderSettings.customReflectionTexture = reflection;
         EditorSceneManager.SaveScene(scene,"Assets/Scenes/CabMainConsoleReview.unity");
         var target = new RenderTexture(1400, 1050, 24);
         camera.targetTexture = target;
         var otherLights = new Dictionary<Light, int>();
-        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+        foreach (var other in UnityEngine.Object.FindObjectsByType<Light>())
         {
             if (other.gameObject.scene == scene) continue;
             otherLights.Add(other, other.cullingMask);

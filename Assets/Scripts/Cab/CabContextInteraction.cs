@@ -12,6 +12,14 @@ namespace RailwayRenaissance.Cab
         const string AimPref = "Cab.Interaction.Aim.v1", GuidePref = "Cab.Interaction.Guide.v1";
         readonly List<Choice> choices = new List<Choice>();
         readonly List<Collider> candidates = new List<Collider>();
+        readonly Collider[] nearby = new Collider[4];
+        readonly float[] nearbyDistances = new float[4];
+        CabInteriorLighting interiorLighting;
+        CabExteriorLighting exteriorLighting;
+        CabDaylightEnvironment daylight;
+        CabRailReviewViews railViews;
+        float nextReferenceRefresh;
+        public int LastQueryCount { get; private set; }
         InputAction primary;
         Camera view;
         Component focused;
@@ -48,6 +56,8 @@ namespace RailwayRenaissance.Cab
         }
         void OnEnable()
         {
+            candidates.Clear();
+            RefreshSceneReferences();
             state = GetComponent<CabEngineState>(); driver = GetComponent<CabSimulationDriver>();
             if(driver!=null)driver.ReviewPanelVisible=false;
             view = Camera.main;
@@ -65,6 +75,8 @@ namespace RailwayRenaissance.Cab
                 candidates.AddRange(t.GetComponentsInChildren<Collider>());
             foreach (var t in GetComponentsInChildren<CabSafetyEquipment>())
                 candidates.AddRange(t.GetComponents<Collider>());
+            foreach (var t in transform.root.GetComponentsInChildren<CabPassageDoor>())
+                candidates.AddRange(t.GetComponentsInChildren<Collider>());
         }
         void OnDisable() { primary?.Dispose(); primary=null; }
         public bool SetPrimaryPath(string path, bool persist = true)
@@ -92,17 +104,27 @@ namespace RailwayRenaissance.Cab
         Vector2 GuiPointer => new Vector2(Pointer.x, Screen.height-Pointer.y);
         bool OverOtherUI()
         {
+            if(Time.unscaledTime>=nextReferenceRefresh)RefreshSceneReferences();
             if (SettingsButton.Contains(GuiPointer)) return true;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return true;
             if (driver != null && driver.BlocksPointer(Pointer)) return true;
-            if (FindFirstObjectByType<CabInteriorLighting>()?.BlocksPointer(GuiPointer) == true) return true;
-            if (FindFirstObjectByType<CabExteriorLighting>()?.BlocksPointer(GuiPointer) == true) return true;
-            var day = FindFirstObjectByType<CabDaylightEnvironment>();
+            if (interiorLighting!=null && interiorLighting.isActiveAndEnabled && interiorLighting.BlocksPointer(GuiPointer)) return true;
+            if (exteriorLighting!=null && exteriorLighting.isActiveAndEnabled && exteriorLighting.BlocksPointer(GuiPointer)) return true;
+            var day = daylight;
             if(day!=null&&day.isActiveAndEnabled&&new Rect(Mathf.Max(0,(Screen.width-400)/2),Screen.height-108,400,98).Contains(GuiPointer))return true;
-            return FindFirstObjectByType<CabRailReviewViews>()?.BlocksPointer(Pointer)==true;
+            return railViews!=null && railViews.isActiveAndEnabled && railViews.BlocksPointer(Pointer);
+        }
+        void RefreshSceneReferences()
+        {
+            interiorLighting=FindAnyObjectByType<CabInteriorLighting>();
+            exteriorLighting=FindAnyObjectByType<CabExteriorLighting>();
+            daylight=FindAnyObjectByType<CabDaylightEnvironment>();
+            railViews=FindAnyObjectByType<CabRailReviewViews>();
+            nextReferenceRefresh=Time.unscaledTime+1f;
         }
         void Update()
         {
+            LastQueryCount=0;
             if (view == null) view=Camera.main;
             if(equipmentInfo!=null)
             {
@@ -127,12 +149,14 @@ namespace RailwayRenaissance.Cab
             var point = cursorAim ? Pointer : new Vector2(Screen.width*.5f,Screen.height*.5f);
             var ray=view.ScreenPointToRay(point);
             Component next=null;Collider nextCollider=null;
+            CabPhysicsQueries.Prepare();
+            LastQueryCount++;
             if (Physics.Raycast(ray,out var hit,2.2f,~0,QueryTriggerInteraction.Ignore))
             { next=Target(hit.collider);if(next!=null)nextCollider=hit.collider; }
             // Proximity hints never execute an action or steal an aimed target.
             if (next==null)
             {
-                float best=1.15f;
+                int nearbyCount=0;
                 foreach(var c in candidates)
                 {
                     if(c==null||!c.enabled||!c.gameObject.activeInHierarchy)continue;
@@ -140,11 +164,21 @@ namespace RailwayRenaissance.Cab
                     var viewport=view.WorldToViewportPoint(position);
                     if(viewport.z<=0||viewport.x<0||viewport.x>1||viewport.y<0||viewport.y>1)continue;
                     float distance=Vector3.Distance(view.transform.position,position);
-                    if(distance>=best)continue;
-                    var direction=position-view.transform.position;
+                    if(distance>=1.15f)continue;
+                    int slot=0;while(slot<nearbyCount&&nearbyDistances[slot]<=distance)slot++;
+                    if(slot==nearby.Length)continue;
+                    for(int i=Mathf.Min(nearbyCount,nearby.Length-1);i>slot;i--){nearby[i]=nearby[i-1];nearbyDistances[i]=nearbyDistances[i-1];}
+                    nearby[slot]=c;nearbyDistances[slot]=distance;nearbyCount=Mathf.Min(nearbyCount+1,nearby.Length);
+                }
+                for(int i=0;i<nearbyCount;i++)
+                {
+                    var c=nearby[i];float distance=nearbyDistances[i];
+                    var candidateTarget=Target(c);if(candidateTarget==null)continue;
+                    var direction=c.bounds.center-view.transform.position;
+                    LastQueryCount++;
                     if(Physics.Raycast(view.transform.position,direction.normalized,out var sight,distance+.02f,~0,QueryTriggerInteraction.Ignore)
-                        &&Target(sight.collider)==Target(c))
-                    {best=distance;next=Target(c);nextCollider=c;}
+                        &&Target(sight.collider)==candidateTarget)
+                    {next=candidateTarget;nextCollider=c;break;}
                 }
             }
             if(next!=focused){focused=next;focusedCollider=nextCollider;selected=0;holdStart=-1;inputAfter=Time.unscaledTime+.12f;}
@@ -165,6 +199,8 @@ namespace RailwayRenaissance.Cab
         }
         static Component Target(Collider collider)
         {
+            var door=collider.GetComponentInParent<CabPassageDoor>();
+            if(door!=null)return door;
             var equipment=collider.GetComponentInParent<CabSafetyEquipment>();
             if(equipment!=null)return equipment;
             var startup=collider.GetComponent<CabStartupClickTarget>();
@@ -173,7 +209,9 @@ namespace RailwayRenaissance.Cab
         void BuildChoices()
         {
             choices.Clear();
-            if(focused is CabSafetyEquipment equipment)
+            if(focused is CabPassageDoor door)
+                choices.Add(new Choice(door.OpenFraction>.5f?"关闭客舱隔门":"打开客舱隔门",()=>door.Toggle()));
+            else if(focused is CabSafetyEquipment equipment)
             {
                 choices.Add(new Choice(equipment.IsManual?"阅读手册 / READ MANUAL":"设备资料 / EQUIPMENT DETAILS",()=>ShowEquipmentInfo(equipment)));
                 if(!equipment.IsManual)choices.Add(new Choice(equipment.Held?"放回并固定 / RETURN":"取下检查 / REMOVE",()=>equipment.Toggle(),true));
@@ -330,7 +368,7 @@ namespace RailwayRenaissance.Cab
                 float h=80+choices.Count*29;
                 actionRect=new Rect(Mathf.Clamp(p.x+24,8,Mathf.Max(8,Screen.width-308)),Mathf.Clamp(Screen.height-p.y-h/2,52,Mathf.Max(52,Screen.height-h-118)),300,h);
                 GUI.Box(actionRect,GUIContent.none);
-                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabDrivingTarget d?d.Hint:focused is CabSafetyEquipment equipment?equipment.Hint:"驾驶台操作");
+                GUI.Label(new Rect(actionRect.x+10,actionRect.y+6,280,24),focused is CabPassageDoor door?door.Hint:focused is CabDrivingTarget d?d.Hint:focused is CabSafetyEquipment equipment?equipment.Hint:"驾驶台操作");
                 for(int i=0;i<choices.Count;i++)
                 {
                     string prefix=i==selected?"› ":"  ";

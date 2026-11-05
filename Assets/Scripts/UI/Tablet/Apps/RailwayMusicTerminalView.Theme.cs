@@ -9,7 +9,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed partial class RailwayMusicTerminalView
     {
         static readonly Color BrassAccent = new Color(205f / 255f, 176f / 255f, 112f / 255f, 1f);
-        static readonly Color BaseBackground = new Color(32f / 255f, 33f / 255f, 31f / 255f, 1f);
+        static readonly Color[] BaseBackgrounds = { new Color(32f / 255f, 33f / 255f, 31f / 255f, 1f), new Color(20f / 255f, 21f / 255f, 23f / 255f, 1f), new Color(41f / 255f, 34f / 255f, 30f / 255f, 1f) };
+        static Color BaseBackground => BaseBackgrounds[Mathf.Clamp(MusicLibrarySession.State.themeBase, 0, BaseBackgrounds.Length - 1)];
         Color accent = BrassAccent, accentTarget = BrassAccent;
         string themeId = "<none>"; float nextAccentPass;
 
@@ -19,7 +20,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 themeId = id;
                 var track = MusicLibrarySession.Find(id);
-                accentTarget = track == null ? BrassAccent : MusicReactiveStageView.AccentFor(MusicAlbumArtResolver.GetAlbumCover(id, track.category));
+                if (!string.IsNullOrEmpty(MusicLibrarySession.State.themeAccent) && ColorUtility.TryParseHtmlString(MusicLibrarySession.State.themeAccent, out var fixedAccent)) accentTarget = fixedAccent;
+                else accentTarget = track == null || MusicLibrarySession.State.noCoverTheme ? BrassAccent : MusicReactiveStageView.AccentFor(MusicAlbumArtResolver.GetAlbumCover(id, track.category));
             }
             float distance = Mathf.Abs(accent.r - accentTarget.r) + Mathf.Abs(accent.g - accentTarget.g) + Mathf.Abs(accent.b - accentTarget.b);
             if (distance < .004f)
@@ -48,7 +50,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             foreach (var e in root.Query(className: "music-home-chip").Where(x => x.ClassListContains("is-active")).ToList()) Fill(e);
             foreach (var e in root.Query(className: "music-channel-selector").Children<VisualElement>().Where(x => x.ClassListContains("is-active")).ToList()) Fill(e);
             foreach (var e in root.Query(className: "music-big-play").ToList()) Fill(e);
-            foreach (var e in root.Query(className: "unity-base-slider__dragger").ToList()) e.style.backgroundColor = accent;
+            // Scroll bars keep their own calm colour; only real sliders take the accent.
+            foreach (var e in root.Query(className: "unity-base-slider__dragger").ToList()) if (e.GetFirstAncestorOfType<Scroller>() == null) e.style.backgroundColor = accent;
             foreach (var e in root.Query(className: "music-navigation").Descendents<VisualElement>().Where(x => x.ClassListContains("is-active") && x is Button).ToList())
             {
                 e.style.backgroundColor = new Color(accent.r, accent.g, accent.b, .2f); e.style.color = soft;

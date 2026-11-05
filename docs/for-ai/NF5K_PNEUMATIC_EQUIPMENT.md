@@ -1,5 +1,7 @@
 # NF-5K pneumatic equipment — 2026-10-22
 
+2026-11-02: CabFlexibleHose now skips geometry uploads/normals/bounds for unchanged mesh-space endpoint and basis data; topology is only assigned on first mesh update. Actual deformation still recalculates normals. See [runtime cost and verification](CAB_RUNTIME_PERFORMANCE.md).
+
 ## Scope and generation
 
 `Assets/Editor/NF5KPneumaticEquipment.cs` adds visual pneumatic equipment through `Apply`, called after the anime detail pass by `CabInteriorBlockoutSetup`. `BatchBuild` updates CabInteriorBlockout, CabDaylightReview, CabSimulationReview and CabRailMotionReview using Unity scene APIs. Existing running-gear transforms and motion bindings are preserved.

@@ -23,13 +23,13 @@ public static class NF5KRailMotionReview
         EditorSceneManager.OpenScene("Assets/Scenes/CabSimulationReview.unity");
         EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(),ScenePath,true);
         var scene=EditorSceneManager.OpenScene(ScenePath);
-        var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();
+        var driver=UnityEngine.Object.FindAnyObjectByType<CabSimulationDriver>();
         var body=GameObject.Find("CabInterior_Blockout").transform;
         var staticTrack=GameObject.Find("Inspection_Track_Not_Vehicle");if(staticTrack!=null)UnityEngine.Object.DestroyImmediate(staticTrack);
         var ground=GameObject.Find("Review_Ground_Not_Vehicle");ground.transform.position=new Vector3(60,-1.68f,-160);ground.transform.localScale=new Vector3(600,.04f,900);
         BuildTrack();
         var motion=new GameObject("Rail_Motion_Controller").AddComponent<CabRailMotion>();motion.Configure(driver,body);
-        var day=UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>();day.Apply(CabDaylightEnvironment.DayPreset.Overcast);day.enabled=false;
+        var day=UnityEngine.Object.FindAnyObjectByType<CabDaylightEnvironment>();day.Apply(CabDaylightEnvironment.DayPreset.Overcast);day.enabled=false;
         var views=motion.gameObject.AddComponent<CabRailReviewViews>();views.Configure(motion,Camera.main);
         driver.ReviewPanelVisible=true;
         var result=Validate(motion);
@@ -163,7 +163,7 @@ public static class NF5KRailMotionReview
         try
         {
             Directory.CreateDirectory("tools/compile");Prepare();
-            var motion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();var camera=Camera.main;
+            var motion=UnityEngine.Object.FindAnyObjectByType<CabRailMotion>();var camera=Camera.main;
             NF5KBogieDetailReview.ConfigureInspectionLighting();
             foreach(var pose in new[]{(0.0,"straight"),(110.0,"curve")})
             {

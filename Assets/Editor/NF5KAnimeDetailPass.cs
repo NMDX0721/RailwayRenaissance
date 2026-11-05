@@ -90,7 +90,7 @@ public static class NF5KAnimeDetailPass
                 NF5KDoorReview.Validate();EditorSceneManager.SaveScene(scene);
             }
             AssetDatabase.SaveAssets();EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");
-            UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
+            UnityEngine.Object.FindAnyObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
             NF5KBogieDetailReview.ConfigureInspectionLighting();var camera=Camera.main;camera.orthographic=true;
             foreach(var angle in new[]{new Vector3(35,-50,0),new Vector3(20,125,0)})
             {

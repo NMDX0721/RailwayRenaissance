@@ -245,21 +245,21 @@ public static class TabletSystemShellReview
 
                     // A. Escape 关闭与焦点恢复
                     Escape();
-                    Assert(recents.style.display == DisplayStyle.None, "Escape closed recent tasks overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Escape closed recent tasks overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after recent tasks closed via Escape");
 
                     // B. 系统返回 (RequestSystemBack) 关闭
                     Call("OpenRecentTasks");
                     Assert(recents.style.display == DisplayStyle.Flex, "Recent tasks reopened for back test");
                     Call("RequestSystemBack");
-                    Assert(recents.style.display == DisplayStyle.None, "RequestSystemBack closed recent tasks overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "RequestSystemBack closed recent tasks overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after system back");
 
                     // C. 点击外部 (Scrim) 关闭
                     Call("OpenRecentTasks");
                     Assert(recents.style.display == DisplayStyle.Flex, "Recent tasks reopened for scrim click test");
                     using (var clickEvt = ClickEvent.GetPooled()) { clickEvt.target = recents; recents.SendEvent(clickEvt); }
-                    Assert(recents.style.display == DisplayStyle.None, "Clicking recent tasks scrim closed overlay");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Clicking recent tasks scrim closed overlay");
                     Assert(root.panel?.focusController.focusedElement == appInput, "Focus restored to input field after scrim click");
 
                     // D. 焦点销毁后的安全退回
@@ -270,7 +270,7 @@ public static class TabletSystemShellReview
                     Call("OpenRecentTasks");
                     tempInput.RemoveFromHierarchy();
                     Call("CloseRecentTasks");
-                    Assert(recents.style.display == DisplayStyle.None, "Recent tasks closed with destroyed previous focus");
+                    Assert((recents.style.display == DisplayStyle.None || recents.style.opacity.value < 0.01f), "Recent tasks closed with destroyed previous focus");
                     Assert(root.panel?.focusController.focusedElement != tempInput, "Destroyed element safe fallback");
 
                     // 重新聚焦有效输入框并打开通知中心
@@ -319,10 +319,13 @@ public static class TabletSystemShellReview
                     Capture("04-controls");
 
                     Submit("tablet-quiet-toggle"); Call("ShowBackupToast", "勿扰期间的应用提示");
-                    Assert(state.QuietMode && state.Notifications.Count == 1 && ((Label)Field("backupToast")).style.display == DisplayStyle.None, "Quiet notification storage/presentation");
-                    Submit("tablet-quiet-toggle"); Call("ShowBackupToast", "关闭勿扰后的应用提示");
-                    Assert(!state.QuietMode && state.Notifications.Count == 2 && ((Label)Field("backupToast")).style.display == DisplayStyle.Flex, "Toast resumed after quiet mode ended");
-                    ((Label)Field("backupToast")).style.display = DisplayStyle.None;
+                    Assert(state.QuietMode && state.Notifications.Count == 0, "Toast must not be stored as a notification");
+                    var quietBanner = root.Q("tablet-notify-banner");
+                    TabletNotify.Post("system", "勿扰横幅", "勿扰时只进通知中心");
+                    Assert(state.Notifications.Count == 1 && quietBanner != null && quietBanner.Q("tablet-notify-banner-card") == null, "Quiet mode must suppress the banner");
+                    Submit("tablet-quiet-toggle");
+                    TabletNotify.Post(new TabletNotifyRequest("sms", "短信", "【小米】你的验证码是 123456").WithAction("复制验证码", () => { }, true));
+                    Assert(state.Notifications.Count == 2 && state.Notifications[0].ChannelId == "sms", "Request notification stored with its channel");
                     Submit("tablet-quiet-toggle");
 
                     using (var typing = KeyDownEvent.GetPooled('x', KeyCode.X, EventModifiers.None))
@@ -387,7 +390,7 @@ public static class TabletSystemShellReview
 
                     // 全部关闭 (CloseAllTabletTasks)：应用层隐藏，桌面完全显示
                     Call("CloseAllTabletTasks");
-                    Assert(appLayer.style.display == DisplayStyle.None, "App layer hidden after CloseAllTabletTasks");
+                    Assert(appLayer.style.display == DisplayStyle.None || appLayer.style.opacity.value < 0.01f, "App layer hidden after CloseAllTabletTasks");
                     var desktop = root.Q("tablet-desktop");
                     Assert(desktop != null && desktop.style.display == DisplayStyle.Flex, "Desktop visible after CloseAllTabletTasks");
                     Capture("07-desktop-all-closed");
