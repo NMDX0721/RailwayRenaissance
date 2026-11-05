@@ -1225,9 +1225,10 @@
 /* search pill: the clear and search buttons live inside it */
 .music-header .music-search .unity-base-text-field__input { padding-right: 84px; }
 .music-search-clear, .music-search-go { position: absolute; top: 3px; bottom: 3px; width: 32px; min-width: 32px; height: auto; min-height: 0; margin: 0; padding: 0; border-width: 0; border-radius: 50%; background-color: rgba(0, 0, 0, 0); }
-.music-search-go { right: 5px; background-color: rgba(205, 176, 112, 0.2); }
+.music-search-go { right: 5px; background-color: rgba(255, 255, 255, 0.06); border-width: 1px; border-color: rgba(255, 255, 255, 0.22); }
 .music-search-clear { right: 41px; }
-.music-search-clear:hover, .music-search-go:hover { background-color: rgba(205, 176, 112, 0.32); }
+.music-search-clear:hover { background-color: rgba(255, 255, 255, 0.1); }
+.music-search-go:hover { background-color: rgba(255, 255, 255, 0.14); border-color: rgba(205, 176, 112, 0.7); }
 
 /* career page */
 .music-career-cards { flex-direction: row; margin: 6px 0 10px 0; }
