@@ -1192,3 +1192,12 @@
 .music-lyrics-topfade { position: absolute; left: 0; right: 0; top: 0; height: 76px; -unity-background-scale-mode: stretch-to-fill; }
 .music-lyrics-header .music-lyrics-style-button { display: none; }
 .music-motion-stage .music-lyrics-header .music-lyrics-style-button { display: flex; }
+
+/* lyric settings: a sheet over the lyrics page */
+.music-lyrics-sheet { position: absolute; left: 0; top: 0; right: 0; bottom: 0; align-items: center; justify-content: center; background-color: rgba(8, 10, 8, 0.55); }
+.music-lyrics-sheet .music-lyrics-sheet-panel.music-lyrics-art, .music-compact .music-lyrics-sheet .music-lyrics-sheet-panel.music-lyrics-art { width: 440px; max-width: 92%; max-height: 88%; flex-shrink: 1; padding: 18px 20px 14px 20px; border-radius: 22px; border-right-width: 0; background-color: rgb(36, 41, 34); display: flex; }
+.music-lyrics-sheet-panel > .music-modal-header { flex-shrink: 0; }
+.music-lyrics-sheet-panel > .music-lyrics-sheet-scroll { flex-shrink: 1; min-height: 0; }
+.music-lyrics-more-open > .unity-foldout__toggle { display: none; }
+.music-lyrics-more-open .unity-foldout__content { margin-left: 0; }
+.music-lyrics-cover { background-color: rgba(0, 0, 0, 0); }

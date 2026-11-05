@@ -169,6 +169,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                             var candidate = new Texture2D(2, 2);
                             if (candidate.LoadImage(bytes) && candidate.width <= 4096 && candidate.height <= 4096)
                             {
+                                candidate = TrimBlankBorders(candidate);
                                 candidate.wrapMode = TextureWrapMode.Clamp; candidate.filterMode = FilterMode.Bilinear;
                                 cover = candidate; s_coverCache[id] = candidate; s_ownedCovers.Add(id); s_paletteCache[id] = ExtractPalette(candidate);
                             }
@@ -183,6 +184,28 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 };
             }
             Read(uri, 0);
+        }
+
+        // NetEase's image service pads a non-square sleeve out to a square with white bars; cut those bars off so the cover keeps its own shape.
+        static Texture2D TrimBlankBorders(Texture2D source)
+        {
+            int w = source.width, h = source.height; if (w < 32 || h < 32) return source;
+            var pixels = source.GetPixels32();
+            bool Blank(Color32 c) => c.a < 12 || (c.r >= 244 && c.g >= 244 && c.b >= 244);
+            bool ColumnBlank(int x) { int bad = 0; for (int y = 0; y < h; y++) if (!Blank(pixels[y * w + x]) && ++bad > h / 100) return false; return true; }
+            bool RowBlank(int y) { int bad = 0; for (int x = 0; x < w; x++) if (!Blank(pixels[y * w + x]) && ++bad > w / 100) return false; return true; }
+            int left = 0, right = w - 1, bottom = 0, top = h - 1;
+            while (left < w / 3 && ColumnBlank(left)) left++;
+            while (right > w * 2 / 3 && ColumnBlank(right)) right--;
+            while (bottom < h / 3 && RowBlank(bottom)) bottom++;
+            while (top > h * 2 / 3 && RowBlank(top)) top--;
+            int cropW = right - left + 1, cropH = top - bottom + 1;
+            if (left <= 2 && w - 1 - right <= 2 && bottom <= 2 && h - 1 - top <= 2) return source;
+            if (cropW < w / 3 || cropH < h / 3) return source;
+            var cropped = new Texture2D(cropW, cropH, TextureFormat.RGBA32, false);
+            cropped.SetPixels(source.GetPixels(left, bottom, cropW, cropH)); cropped.Apply();
+            UnityEngine.Object.Destroy(source);
+            return cropped;
         }
 
         public static void InvalidateLocal(string id)

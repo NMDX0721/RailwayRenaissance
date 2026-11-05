@@ -174,9 +174,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
             var record = Action(art, "唱片档案", () => RailwayMusicTerminalView.OpenRecord(trackId), "music-lyrics-record");
-            record.tooltip = "打开这首曲目的完整唱片档案（会离开歌词页，关闭后回到曲库）";
-            var more = new Foldout { text = "设置  +", value = false, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); art.Add(more);
-            more.RegisterValueChangedCallback(e => { if (e.target == more) more.text = e.newValue ? "设置  -" : "设置  +"; });
+            record.tooltip = "打开这首曲目的完整唱片档案（盖在歌词页上，关闭后回到歌词）";
+            // The lyric settings live in their own sheet over the page, not in the narrow column under the cover where the player bar used to cover them.
+            var sheet = Box(host, "music-lyrics-sheet"); sheet.name = "music-lyrics-sheet"; sheet.style.display = DisplayStyle.None;
+            sheet.RegisterCallback<PointerDownEvent>(e => { if (e.target == sheet) sheet.style.display = DisplayStyle.None; });
+            var sheetPanel = Box(sheet, "music-lyrics-sheet-panel"); sheetPanel.AddToClassList("music-lyrics-art");
+            var sheetHead = Box(sheetPanel, "music-modal-header"); Text(sheetHead, "歌词设置", "music-grow");
+            Action(sheetHead, "关闭", () => sheet.style.display = DisplayStyle.None, "music-lyrics-sheet-close", true);
+            var sheetScroll = new ScrollView { verticalScrollerVisibility = ScrollerVisibility.Auto, name = "music-lyrics-sheet-scroll" }; sheetScroll.AddToClassList("music-lyrics-sheet-scroll"); sheetPanel.Add(sheetScroll);
+            Action(art, "歌词设置", () => { sheet.style.display = DisplayStyle.Flex; sheet.BringToFront(); }, "music-lyrics-settings-open");
+            var more = new Foldout { text = "歌词设置", value = true, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); more.AddToClassList("music-lyrics-more-open"); sheetScroll.Add(more);
             var imports = Box(more, "music-lyrics-actions");
             Action(imports, "导入字幕", () => Import(false), "music-lyrics-import");
             Action(imports, "导入翻译", () => Import(true), "music-lyrics-import-translation");
