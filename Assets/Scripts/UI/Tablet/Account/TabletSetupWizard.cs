@@ -410,7 +410,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
                         Go(_index + 1);
                         return;
                     }
-                    err.text = e == "验证码错误" ? $"验证码错误（{_codeFails}/3），再错 {3 - _codeFails} 次将自动跳过" : e;
+                    err.text = e;
                     return;
                 }
                 _codeFails = 0;
@@ -582,7 +582,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
         {
             _codeFails = 0;
             string code = AccountService.IssueCode(_phone);
-            _resendReadyAt = Time.realtimeSinceStartup + 60f;
+            _resendReadyAt = Time.realtimeSinceStartup + 30f;
             string body = $"【小米】你的验证码是 {code}，5 分钟内有效。请勿向他人泄露。";
             ShowSms(body);
             _smsSink?.Invoke("短信", body);

@@ -356,7 +356,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (Time.realtimeSinceStartup < readyAt) return;
                 string c = AccountService.IssueCode(p.phone);
-                readyAt = Time.realtimeSinceStartup + 60f;
+                readyAt = Time.realtimeSinceStartup + 30f;
                 long notification = RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice("短信", "【小米】你的验证码是 " + c + "，5 分钟内有效。请勿向他人泄露。");
                 bool delivered = notification >= 0;
                 delivery.text = delivered ? string.Empty : "本地验证码为 " + c + "，5 分钟内有效。";
