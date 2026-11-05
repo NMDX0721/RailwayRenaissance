@@ -1173,3 +1173,22 @@
 .music-button:hover { border-color: rgba(205, 176, 112, 0.7); }
 .music-button:active { border-color: rgba(205, 176, 112, 0.45); }
 .music-button:focus { border-color: rgba(222, 190, 125, 0.85); }
+
+/* The player card floats over the content only: it starts to the right of the sidebar (and follows it when the sidebar folds), so the playlists and settings at the foot of the sidebar are never covered. */
+.music-player { left: 192px; transition-property: left; transition-duration: 220ms; transition-timing-function: ease-out; }
+.music-compact .music-player { left: 156px; }
+.music-nav-collapsed .music-player { left: 94px; }
+.music-reduce-motion .music-player { transition-duration: 0s; }
+.music-navigation { padding-bottom: 16px; }
+.music-nav-collapsed .music-navigation { padding-bottom: 12px; }
+
+/* Official chart covers already carry the chart's name in big letters: once the cover is in, the card shows only the update note, on a slimmer shade, so nothing is written twice. */
+.music-big-named .music-big-title { display: none; }
+.music-big-named .music-big-shade { height: 52px; background-color: rgba(14, 16, 12, 0.6); }
+.music-big-named .music-big-text { bottom: 17px; }
+.music-big-named .music-big-subtitle { font-size: 12px; margin: 0; color: rgb(226, 219, 190); }
+
+/* lyrics page: soft fade into the tablet's status strip, and the quick stage-style button in the header */
+.music-lyrics-topfade { position: absolute; left: 0; right: 0; top: 0; height: 76px; -unity-background-scale-mode: stretch-to-fill; }
+.music-lyrics-header .music-lyrics-style-button { display: none; }
+.music-motion-stage .music-lyrics-header .music-lyrics-style-button { display: flex; }

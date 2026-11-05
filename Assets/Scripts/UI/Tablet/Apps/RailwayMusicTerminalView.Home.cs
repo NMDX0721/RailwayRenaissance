@@ -59,7 +59,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else
             {
                 art.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(key, "歌单"));
-                if (!string.IsNullOrEmpty(coverUrl)) MusicAlbumArtResolver.LoadRemoteImage(key, coverUrl, texture => { if (art.panel != null) art.style.backgroundImage = new StyleBackground(texture); });
+                if (!string.IsNullOrEmpty(coverUrl)) MusicAlbumArtResolver.LoadRemoteImage(key, coverUrl, texture => { if (art.panel == null) return; art.style.backgroundImage = new StyleBackground(texture); if (key.StartsWith("chart:")) card.AddToClassList("music-big-named"); });
             }
             var shade = Box(card, "music-big-shade"); shade.pickingMode = PickingMode.Ignore;
             var text = Box(card, "music-big-text"); text.pickingMode = PickingMode.Ignore;

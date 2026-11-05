@@ -680,6 +680,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         // True while the record archive sheet was opened from the lyrics page: closing it then goes back to the lyrics page, not to the library.
         bool recordFromLyrics;
+        VisualElement keptLyricsOverlay; MusicLyricsView keptLyrics;
         void CloseModal()
         {
             rulerTick?.Pause(); rulerTick = null; rulerTrackId = null; rulerDoc = null;
@@ -697,7 +698,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (modalReturnFocus?.panel == root.panel && modalReturnFocus.enabledInHierarchy) modalReturnFocus.Focus();
             else root.Focus();
             modalReturnFocus = null;
-            if (backToLyrics) OpenLyrics();
+            if (backToLyrics && keptLyricsOverlay != null && keptLyricsOverlay.panel != null)
+            { overlay = keptLyricsOverlay; lyrics = keptLyrics; keptLyricsOverlay = null; keptLyrics = null; overlay.Focus(); }
+            else
+            {
+                keptLyricsOverlay?.RemoveFromHierarchy(); keptLyricsOverlay = null; keptLyrics = null;
+                if (backToLyrics) OpenLyrics();
+            }
         }
         bool arriving; string renderedArrival;
         bool importing, importCancel; int importDone, importTotal;
@@ -1457,7 +1464,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         public static void UpdatePlayback() => current?.Update();
         /// <summary>Open a track's record archive sheet. The sheet is a modal, so it replaces whatever page overlay (such as the lyrics page) is open.</summary>
-        public static void OpenRecord(string id) { if (current == null) return; current.ShowDetail(id); current.recordFromLyrics = true; }
+        public static void OpenRecord(string id)
+        {
+            var view = current; if (view == null) return;
+            // The record sheet opens on top of the lyrics page, which stays where it is behind the dimming, instead of letting the library show through.
+            if (view.lyrics != null && view.overlay != null && view.overlay.ClassListContains("music-lyrics-overlay"))
+            { view.keptLyricsOverlay = view.overlay; view.keptLyrics = view.lyrics; view.overlay = null; }
+            view.ShowDetail(id); view.recordFromLyrics = true;
+            if (view.keptLyrics != null) view.lyrics = view.keptLyrics;
+            if (view.overlay == null && view.keptLyricsOverlay != null) { view.overlay = view.keptLyricsOverlay; view.keptLyricsOverlay = null; view.keptLyrics = null; view.recordFromLyrics = false; }
+        }
         /// <summary>True while an open record archive sheet will return to the lyrics page when closed (read by the review).</summary>
         public static bool RecordReturnsToLyrics => current != null && current.recordFromLyrics;
         public static bool ShowToast(string message)

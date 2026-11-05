@@ -62,6 +62,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             foreach (char c in value) if ((c >= '\uAC00' && c <= '\uD7AF') || (c >= '\u1100' && c <= '\u11FF') || (c >= '\u3130' && c <= '\u318F')) return true;
             return false;
         }
+        static Texture2D topFade;
+        static Texture2D TopFadeTexture()
+        {
+            if (topFade != null) return topFade;
+            const int rows = 48;
+            var texture = new Texture2D(1, rows, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            for (int y = 0; y < rows; y++)
+            {
+                float t = y / (rows - 1f);                  // texture y = 0 is the bottom edge
+                float alpha = Mathf.Pow(t, 1.6f);
+                texture.SetPixel(0, y, new Color(0.085f, 0.09f, 0.085f, alpha));
+            }
+            texture.Apply();
+            return topFade = texture;
+        }
         static VisualElement Box(VisualElement parent, string css)
         {
             var element = new VisualElement(); element.AddToClassList(css); parent.Add(element); return element;
@@ -77,6 +92,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             previousStage?.RemoveFromHierarchy();
             host.Clear();
             reactiveStage = previousStage ?? new MusicReactiveStageView(); host.Add(reactiveStage);
+            // The tablet's dark status strip sits right above this page: fade the top edge into it instead of meeting it with a hard line.
+            var topFade = Box(host, "music-lyrics-topfade"); topFade.pickingMode = PickingMode.Ignore;
+            topFade.style.backgroundImage = new StyleBackground(TopFadeTexture());
             var header = Box(host, "music-lyrics-header");
             heading = Text(header, "歌词 / 字幕", "music-grow");
             Action(header, "专注阅读", () => {
@@ -92,6 +110,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 host.Q<Button>("music-lyrics-motion").tooltip = "切换歌词表现：静读（平铺阅读）/ 随行（当前句放大，远处渐隐）/ 舞台（居中单句，随音乐起伏）；减少动态效果优先";
             }, "music-lyrics-motion");
             motion.tooltip = "切换歌词表现：静读（平铺阅读）/ 随行（当前句放大，远处渐隐）/ 舞台（居中单句，随音乐起伏）；减少动态效果优先";
+            // The stage look has its own style switch right on the header, so it does not hide in the settings panel.
+            var quickStyle = new Button { name = "music-lyrics-style", text = "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle) };
+            quickStyle.AddToClassList("music-button"); quickStyle.AddToClassList("music-lyrics-style-button"); header.Add(quickStyle);
+            quickStyle.tooltip = "切换舞台样式";
+            quickStyle.clicked += () =>
+            {
+                MusicLibrarySession.State.stageStyle = StageStyles.Next(MusicLibrarySession.State.stageStyle); MusicLibrarySession.Save();
+                string title = StageStyles.TitleOf(MusicLibrarySession.State.stageStyle);
+                quickStyle.text = "样式：" + title;
+                var inner = host.Q<Button>("music-stage-style"); if (inner != null) inner.text = "样式：" + title;
+            };
             Action(header, "关闭", close, "music-lyrics-close", true);
             var body = Box(host, "music-lyrics-body");
             var art = Box(body, "music-lyrics-art");
