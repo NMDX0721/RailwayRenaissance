@@ -40,6 +40,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         // 向导内收集的数据
         private string _phone = string.Empty;
+        private int _codeFails; // 当前这条验证码连续输错的次数
         private string _verifiedPhone; // 已通过验证码校验的手机号：回退再前进时不必重新消耗验证码
         private string _password = string.Empty;
         private string _nickname = "旅人";
@@ -399,7 +400,20 @@ namespace RailwayRenaissance.UI.Tablet.Account
             _body.Add(Primary("下一步", () =>
             {
                 string e = AccountService.VerifyCode(_phone, codeField.value);
-                if (e != null) { err.text = e; return; }
+                if (e != null)
+                {
+                    // 连续输错 3 次：不再卡在这一步，直接放行（本机模拟账号，验证码不涉及真实安全）
+                    if (e == "验证码错误" && ++_codeFails >= 3)
+                    {
+                        _codeFails = 0;
+                        _verifiedPhone = _phone;
+                        Go(_index + 1);
+                        return;
+                    }
+                    err.text = e == "验证码错误" ? $"验证码错误（{_codeFails}/3），再错 {3 - _codeFails} 次将自动跳过" : e;
+                    return;
+                }
+                _codeFails = 0;
                 _verifiedPhone = _phone;
                 err.text = string.Empty;
                 Go(_index + 1);
@@ -422,17 +436,20 @@ namespace RailwayRenaissance.UI.Tablet.Account
             strengthRow.style.flexDirection = FlexDirection.Row;
             strengthRow.style.alignItems = Align.Center;
             strengthRow.style.marginTop = 12;
-            var bars = new VisualElement[3];
-            for (int i = 0; i < 3; i++)
-            {
-                bars[i] = new VisualElement();
-                bars[i].style.height = 6; bars[i].style.flexGrow = 1;
-                bars[i].style.marginRight = 6;
-                RoundAll(bars[i], 3);
-                strengthRow.Add(bars[i]);
-            }
+            // 一条连续的强度条（不再切成三段），强度文字紧贴条右侧
+            var track = new VisualElement();
+            track.style.height = 6; track.style.flexGrow = 1;
+            track.style.backgroundColor = new Color(0, 0, 0, 0.10f);
+            track.style.overflow = Overflow.Hidden;
+            RoundAll(track, 3);
+            var fill = new VisualElement();
+            fill.style.height = Length.Percent(100);
+            fill.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("width"), new StylePropertyName("background-color") };
+            fill.style.transitionDuration = new List<TimeValue> { new TimeValue(180, TimeUnit.Millisecond) };
+            track.Add(fill);
+            strengthRow.Add(track);
             var strengthLabel = Text("", 13, new Color(0.45f, 0.45f, 0.5f));
-            strengthLabel.style.width = 64; strengthLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+            strengthLabel.style.marginLeft = 10; strengthLabel.style.minWidth = 18;
             strengthRow.Add(strengthLabel);
             _body.Add(strengthRow);
 
@@ -457,8 +474,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
             {
                 int level = string.IsNullOrEmpty(pw.value) ? -1 : AccountService.PasswordStrength(pw.value);
                 Color[] palette = { new Color(0.93f, 0.35f, 0.30f), new Color(0.97f, 0.70f, 0.20f), new Color(0.25f, 0.75f, 0.45f) };
-                for (int i = 0; i < 3; i++)
-                    bars[i].style.backgroundColor = i <= level ? palette[Mathf.Max(level, 0)] : new Color(0, 0, 0, 0.10f);
+                fill.style.width = Length.Percent(level < 0 ? 0f : (level + 1) * 100f / 3f);
+                fill.style.backgroundColor = palette[Mathf.Max(level, 0)];
                 strengthLabel.text = level < 0 ? string.Empty : level == 0 ? "弱" : level == 1 ? "中" : "强";
             };
             pw.RegisterValueChangedCallback(_ => { refresh(); err.text = string.Empty; });
@@ -563,6 +580,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         private void SendCode()
         {
+            _codeFails = 0;
             string code = AccountService.IssueCode(_phone);
             _resendReadyAt = Time.realtimeSinceStartup + 60f;
             string body = $"【小米】你的验证码是 {code}，5 分钟内有效。请勿向他人泄露。";

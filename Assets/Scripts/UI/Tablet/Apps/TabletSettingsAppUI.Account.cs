@@ -187,25 +187,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             row.style.flexDirection = FlexDirection.Row;
             row.style.alignItems = Align.Center;
             row.style.marginTop = 12;
-            var bars = new VisualElement[3];
-            for (int i = 0; i < 3; i++)
-            {
-                bars[i] = new VisualElement();
-                bars[i].style.height = 6; bars[i].style.flexGrow = 1; bars[i].style.marginRight = 6;
-                bars[i].style.borderTopLeftRadius = bars[i].style.borderTopRightRadius = 3;
-                bars[i].style.borderBottomLeftRadius = bars[i].style.borderBottomRightRadius = 3;
-                row.Add(bars[i]);
-            }
+            var track = new VisualElement();
+            track.style.height = 6; track.style.flexGrow = 1;
+            track.style.backgroundColor = new Color(0, 0, 0, 0.10f);
+            track.style.overflow = Overflow.Hidden;
+            track.style.borderTopLeftRadius = track.style.borderTopRightRadius = 3;
+            track.style.borderBottomLeftRadius = track.style.borderBottomRightRadius = 3;
+            var fill = new VisualElement();
+            fill.style.height = Length.Percent(100);
+            track.Add(fill);
+            row.Add(track);
             var label = new Label(string.Empty);
-            label.style.width = 64; label.style.fontSize = 13; label.style.color = InkSecondary;
-            label.style.unityTextAlign = TextAnchor.MiddleRight; label.style.unityFontDefinition = Fd();
+            label.style.marginLeft = 10; label.style.minWidth = 18; label.style.fontSize = 13; label.style.color = InkSecondary;
+            label.style.unityFontDefinition = Fd();
             row.Add(label);
             Action refresh = () =>
             {
                 int level = string.IsNullOrEmpty(pw.value) ? -1 : AccountService.PasswordStrength(pw.value);
                 Color[] palette = { new Color(0.93f, 0.35f, 0.30f), new Color(0.97f, 0.70f, 0.20f), new Color(0.25f, 0.75f, 0.45f) };
-                for (int i = 0; i < 3; i++)
-                    bars[i].style.backgroundColor = i <= level ? palette[Mathf.Max(level, 0)] : new Color(0, 0, 0, 0.10f);
+                fill.style.width = Length.Percent(level < 0 ? 0f : (level + 1) * 100f / 3f);
+                fill.style.backgroundColor = palette[Mathf.Max(level, 0)];
                 label.text = level < 0 ? string.Empty : level == 0 ? "弱" : level == 1 ? "中" : "强";
             };
             pw.RegisterValueChangedCallback(_ => refresh());
