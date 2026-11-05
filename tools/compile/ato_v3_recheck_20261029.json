@@ -1,0 +1,9 @@
+{
+  "unity": "6000.5.8f1 Windows",
+  "result": "incomplete; stopped after licensing initialization failure and no ATO acceptance marker",
+  "process_exit_code": "not available; validation process interrupted",
+  "log_sha256": "b9cfd6fd687e6656b0c1360219c7a917f6499938d14d5346be37849fa2a00988",
+  "previous_accepted_run": "tools/compile/ato_v3_unity_acceptance.json",
+  "independent_dotnet": "passed after excluding followup source files",
+  "frozen_v2_replay": "108/108 IDs and fingerprints matched original"
+}

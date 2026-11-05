@@ -1,5 +1,9 @@
 # AGENTS.md — 铁路复兴：沙能冲击
 
+## ATO V3 trajectory research (2026-11-04)
+
+`AtoTrajectoryPlanner` and `CabAtoControllerV3` supply the opt-in trajectory controller in `CabAtoResearchReview`. Frozen V3 state version 1 retains its original switching behavior and checkpoint migration preserves that policy. New state version 3 persists the accepted brake switch tick and predicts the remaining hold before an ordinary switch can occur after 25 ticks (0.5 s). Safety intervention and arrival hold remain separate. Use the V3 route for signed error and telemetry even when the V2 route toggle is off. Keep historical artifacts immutable. See `docs/for-ai/ATO_V3_CONTROL.md` for verification and Unity Play limits.
+
 ## VN multilingual text (2026-11-03)
 
 `VNLocalization` loads the language registry and per-locale/per-script translation JSON under `Resources/Localization/VN`. Keep stable entry IDs, source hashes, explicit source/translation sentence segments and cached misses. `DialogueBox.Localization` flows sentence pairs horizontally until width requires wrapping, with smaller secondary text above the larger primary sentence; do not force each sentence onto a separate line. Preserve typewriter completion and term hit targets. Chinese source scripts, control/resource IDs, save/bookmark coordinates must remain unchanged during translation. Japanese and English batch translation is assigned by the user to Gemini; use `tools/vn/translation_package.py` for local export/validation. Independent sample and `VNLocalizationReview.Batch` are development checks, not complete localization or device acceptance. See `docs/for-ai/VN_LOCALIZATION.md`.

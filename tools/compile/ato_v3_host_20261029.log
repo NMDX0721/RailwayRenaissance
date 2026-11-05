@@ -1,0 +1,742 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.8f1 (5cb7df797b7d) revision 6076383'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Channel LicenseClient-Oe_Lee doesn't exist
+OS: 'Windows 11  (10.0.26340) Professional' Language: 'zh' Physical Memory: 31934 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-29T04:30:07Z
+[Licensing::Module] Successfully launched the LicensingClient (PId: 58124)
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\Unity 6.5\Editor\Unity.exe
+-batchmode
+-projectPath
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance
+-logFile
+C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\ato_v3_host_20261029.log
+-executeMethod
+NF5KAtoResearchReview.Batch
+Successfully changed project path to: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance
+C:/Users/Oe_Lee/.codex/worktrees/aa7a/RailwayRenaissance
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [58892]  Target information:
+
+Player connection [58892]  * "[IP] 192.168.71.9 [Port] 55504 [Flags] 2 [Guid] 3434328389 [EditorId] 3434328389 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [58892]  * "[IP] 172.28.208.1 [Port] 55504 [Flags] 2 [Guid] 3434328389 [EditorId] 3434328389 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [58892]  * "[IP] 172.31.240.1 [Port] 55504 [Flags] 2 [Guid] 3434328389 [EditorId] 3434328389 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [58892]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3434328389 [EditorId] 3434328389 [Version] 1048832 [Id] WindowsEditor(7,OeLeeComputer) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [58892] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [58892] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-57396" after 0.4 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee" at "2026-10-29T04:30:08.8985982Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 58124, path: "D:/Unity Hub/Unity 6.5/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              8eb8ca236dca4420953d084762a66b29
+  Correlation Id:          9a84c20d18c70a2df5563f4d2065da23
+  External correlation Id: 4149734341351997659
+  Machine Id:              3vy2qkUMwmQErChAY5t7lyDgyDc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Oe_Lee" (connect: 1.29s, validation: 0.12s, handshake: 0.17s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Oe_Lee-notifications" at "2026-10-29T04:30:09.1911565Z"
+[Licensing::Module] Connected to LicensingClient (PId: 58124, launch time: 0.02, total connection time: 1.58s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX
+  Product: Unity Personal Version
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.02
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 1.65s
+[Licensing::Module] Licensing is initialized (took 0.59s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 2.73 ms, found 0 plugins.
+Initialize engine version: 6000.5.8f1 (5cb7df797b7d)
+[Subsystems] Discovering subsystems at path D:/Unity Hub/Unity 6.5/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Oe_Lee/.codex/worktrees/aa7a/RailwayRenaissance/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)
+    Vendor:   NVIDIA
+    VRAM:     11944 MB
+    Driver:   32.0.16.2101
+Initialize mono
+Mono path[0] = 'D:/Unity Hub/Unity 6.5/Editor/Data/Managed'
+Mono path[1] = 'D:/Unity Hub/Unity 6.5/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Unity Hub/Unity 6.5/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56396
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/Unity Hub/Unity 6.5/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003845 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.535 seconds
+Domain Reload Profiling: 2485ms
+	BeginReloadAssembly (257ms)
+		CreateAndSetChildDomain (10ms)
+	RebuildCommonClasses (13ms)
+	RebuildNativeTypeToScriptingClass (36ms)
+	initialDomainReloadingComplete (112ms)
+	LoadAllAssembliesAndSetupDomain (528ms)
+		LoadAssemblies (242ms)
+		AnalyzeDomain (381ms)
+			TypeCache.Refresh (377ms)
+				TypeCache.ScanAssembly (350ms)
+	FinalizeReload (1539ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (5ms)
+			BeforeProcessingInitializeOnLoad (176ms)
+			ProcessInitializeOnLoadAttributes (202ms)
+			ProcessInitializeOnLoadMethodAttributes (1018ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.settings-manager@2.1.1 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+  Local packages:
+    com.unity.burst@file:C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\BurstOffline (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\BurstOffline)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.05 seconds
+[Package Manager] Done resolving packages in 4.56 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Lock file was modified
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.13.5 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.collab-proxy@120d77864ebc)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.12 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.editorcoroutines@1.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.editorcoroutines@87a15ed012c2)
+    com.unity.performance.profile-analyzer@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.performance.profile-analyzer@2bb26871883c)
+    com.unity.testtools.codecoverage@1.3.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.testtools.codecoverage@19a841221620)
+    com.unity.searcher@4.9.5 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.settings-manager@2.1.1 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.settings-manager@0b8638c5ce86)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.feature.development@1.0.2 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.feature.development@767aadbc6eb7)
+    com.unity.mathematics@1.4.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal@73b4c4ff130e)
+    com.unity.ugui@2.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ugui@1c4864518158)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.render-pipelines.core@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.core@a4c9a9793789)
+    com.unity.shadergraph@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.shadergraph@8d7376ec43ee)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.test-framework@1.7.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.collections@6.5.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.collections@ec2c217e4cb2)
+    com.unity.ext.nunit@2.1.0 (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+  Local packages:
+    com.unity.burst@file:C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\BurstOffline (location: C:\Users\Oe_Lee\.codex\worktrees\aa7a\RailwayRenaissance\tools\compile\BurstOffline)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+A meta data file (.meta) exists but its asset 'Assets/Audio/Train Through Keys.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Audio/UI/ui_click.ogg' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Audio/UI/ui_confirm.ogg' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Audio/UI/ui_error.ogg' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Audio/UI/ui_switch.ogg' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/Audio/Train Through Keys.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/ambient_nature.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/borderline.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/calm.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/chollima_ride.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/cloud_rail.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/curious.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/determination.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/embers.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/emotional.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/first_light.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/iron_and_ash.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/melancholy.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/morning.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/mystery.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/news.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/news_explosive.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/night_cargo.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/platform.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/silence.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/sleepers.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/south_wind.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/starlit_rails.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/train_ambient.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/train_through_keys.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/warm.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/bgm/wheels_joke.mp3' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/sfx/button_click.wav' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Resources/Videos/cloud_sea_bg.mp4' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/StreamingAssets/cloud_sea_long.mp4' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its asset 'Assets/Videos/cloud_sea_bg.mp4' can't be found. When moving or deleting files outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Starting: D:\Unity Hub\Unity 6.5\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/Oe_Lee/.codex/worktrees/aa7a/RailwayRenaissance
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 1s803ms
+[761/969    1s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (1.70 seconds), 1 items updated, 969 evaluated
+AssetDatabase: script compilation time: 2.809226s
+Begin MonoManager ReloadAssembly
+Importing 'GUID: 0f42328dd7b54be4395ecc5aa4ca95f3 - Path: Assets/Models/Cab' with importer (DefaultImporter)
+Imported 'GUID: 0f42328dd7b54be4395ecc5aa4ca95f3' -> (Import Result ID: '82a5d554b76bce893ab7413f1f31e638') in 0.065 seconds [static dependencies only]. Details - ImportResultOutputID=4c6c560359ed33b1fb1fd6f65c0676fc DependenciesID=05a7a8a534a55624db5aa0903b32fc77 StaticDependenciesID=087105555d0c08c5cc38e9fd6653eb6b 
+Refreshing native plugins compatible for Editor in 106.63 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 3.98 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  6.898 seconds
+Domain Reload Profiling: 9467ms
+	BeginReloadAssembly (532ms)
+		DisableScriptedObjects (78ms)
+		CreateAndSetChildDomain (189ms)
+	RebuildCommonClasses (16ms)
+	RebuildNativeTypeToScriptingClass (28ms)
+	initialDomainReloadingComplete (89ms)
+	LoadAllAssembliesAndSetupDomain (1903ms)
+		LoadAssemblies (1402ms)
+		AnalyzeDomain (480ms)
+			TypeCache.Refresh (337ms)
+				TypeCache.ScanAssembly (318ms)
+			BuildScriptInfoCaches (126ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (6900ms)
+		SetupLoadedEditorAssemblies (0ms)
+			BeforeProcessingInitializeOnLoad (137ms)
+			ProcessInitializeOnLoadAttributes (4484ms)
+			ProcessInitializeOnLoadMethodAttributes (1724ms)
+			AfterProcessingInitializeOnLoad (6ms)
+		AwakeInstancesAfterBackupRestoration (176ms)
+Importing 'GUID: ea52b0df9021fe047a294b23e9288a3e - Path: Assets/Scenes/CabAtoResearchReview.unity' with importer (DefaultImporter)
+Imported 'GUID: ea52b0df9021fe047a294b23e9288a3e' -> (Import Result ID: '31d49e73e1c40354b38065a08fdfe16e') in 0.020 seconds [static dependencies only]. Details - ImportResultOutputID=2c859cff96a5bc94492ae2aa3714ac61 DependenciesID=5486cc37a4221cca460472c04500b134 StaticDependenciesID=3031831bc188a697431a1a040c3aaa99 
+Importing 'GUID: a0df23751500c67499b61ba5ce2b6021 - Path: Assets/Models/Cab/UnityStartupControls/Materials/Startup_Unlit_Green_Lens.mat' with importer (NativeFormatImporter)
+Imported 'GUID: a0df23751500c67499b61ba5ce2b6021' -> (Import Result ID: 'a3014d797e0b6cd8253c73a396a64250') in 0.017 seconds [static dependencies only]. Details - ImportResultOutputID=bb9b0f19cac13460e6083e78cf0dc697 DependenciesID=b675db587e3a165095a3baab2970e79b StaticDependenciesID=2a141c84cebcbe03ddd6967759a5c36d 
+Importing 'GUID: ce18d1e63d70e7544a73123539a4ffea - Path: Assets/UniversalRenderPipelineGlobalSettings.asset' with importer (NativeFormatImporter)
+Imported 'GUID: ce18d1e63d70e7544a73123539a4ffea' -> (Import Result ID: 'dd7c1d846de2611bb75c9ec699dba520') in 0.012 seconds [static dependencies only]. Details - ImportResultOutputID=f7ab86d9b795e1b4fc58863a519911ed DependenciesID=9924df7d995e489c4bc68a5121fc9f5a StaticDependenciesID=758dfb1b05f71b4b8167f00a02e43a59 
+Starting new worker id: 0 with log in C:/Users/Oe_Lee/.codex/worktrees/aa7a/RailwayRenaissance/Logs/AssetImportWorkerHW0.log
+Refreshing native plugins compatible for Editor in 4.71 ms, found 4 plugins.
+
+Asset Pipeline Refresh (id=92624331b92b5dc4197d1a90df0d99fa): Total: 35.933 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=4 (actual=4, local cache=0, cache server=0)
+		Asset DB Process Time: managed=7 ms, native=24945 ms
+		Asset DB Callback time: managed=687 ms, native=4711 ms
+		Scripting: domain reloads=1, domain reload time=2662 ms, compile time=2813 ms, other=106 ms
+		Project Asset Count: scripts=1512, non-scripts=3648
+		Asset File Changes: new=0, changed=4, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 4704.667ms
+	ApplyChangesToAssetFolders: 2.098ms
+	Scan: 579.472ms
+	Collect global state as custom dependencies: 46.855ms
+	OnSourceAssetsModified: 2.030ms
+	CategorizeScriptCompilationAssets: 3764.392ms
+	ProcessAssetsWithTransientArtifactChanges: 139.700ms
+	CategorizeAssets: 207.659ms
+	CompileScripts: 2812.596ms
+	ImportOutOfDateAssets: 7273.569ms (7038.427ms without children)
+		ImportManagerImport: 125.423ms (5.946ms without children)
+			UpdateCategorizedAssets: 0.118ms
+		ReloadNativeAssets: 0.066ms
+		UnloadImportedAssets: 1.444ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.529ms
+		ImportSchedulerStart: 106.659ms
+	PostProcessAllAssets: 689.293ms
+		XRBuildSystem.XRAssetImported 1.194ms
+		WindowTitlePostprocess 0.238ms
+		MonoPostProcessAllAssets: 685.475ms
+			AssetPostprocessor.OnPostprocessAllAssets 300.951ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 139.256ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 100.591ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 36.250ms
+			MaterialPostprocessor.OnPostprocessAllAssets 14.551ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 12.447ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 7.806ms
+			AssetChangedListener.OnPostprocessAllAssets 7.748ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 5.617ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 4.812ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 3.914ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 2.518ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 2.051ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 1.992ms
+			PostProcessor.OnPostprocessAllAssets 1.583ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 1.288ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 1.172ms
+			AssetEvents.OnPostprocessAllAssets 1.083ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.895ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.873ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.809ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.797ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.777ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.683ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.616ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.591ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.584ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.475ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.441ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.391ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.369ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.352ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.344ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.275ms
+			SyncVS.PostprocessSyncProject 0.248ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.232ms
+	PostAssetChangesProfiler: 8.595ms
+	UnloadStreamsBegin: 5.147ms
+	PersistCurrentRevisions: 0.695ms
+	GenerateScriptTypeHashes: 4.344ms
+	GenerateScriptTypeSerializationHashes: 7.416ms
+	Untracked: 15683.934ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Scanning for USB devices : 5.178ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RailwayRenaissance
+Unloading 28 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6974 unused Assets / (7.3 MB). Loaded Objects now: 8011.
+Memory consumption went from 452.1 MB to 444.7 MB.
+Total: 23.565600 ms (FindLiveObjects: 1.301800 ms CreateObjectMapping: 2.997300 ms MarkObjects: 11.698200 ms  DeleteObjects: 7.374800 ms)
+
+Opening scene 'Assets/Scenes/CabRailMotionReview.unity'
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Worker ready: AssetImportWorkerHW0 0
+Loaded scene 'Assets/Scenes/CabRailMotionReview.unity'
+	Deserialize:            510.241 ms
+	Integration:            8360.806 ms
+	Integration of assets:  0.343 ms
+	Thread Wait Time:       0.015 ms
+	Total Operation Time:   8871.405 ms
+Unloading 3 unused Assets / (2.7 KB). Loaded Objects now: 32158.
+Memory consumption went from 0.52 GB to 0.52 GB.
+Total: 17.495400 ms (FindLiveObjects: 3.577900 ms CreateObjectMapping: 2.414500 ms MarkObjects: 11.441200 ms  DeleteObjects: 0.059600 ms)
+
+Importing 'GUID: ea52b0df9021fe047a294b23e9288a3e - Path: Assets/Scenes/CabAtoResearchReview.unity' with importer (DefaultImporter)
+Imported 'GUID: ea52b0df9021fe047a294b23e9288a3e' -> (Import Result ID: 'f17f611e2b692c3e08c3c69a751cc946') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=2c859cff96a5bc94492ae2aa3714ac61 DependenciesID=4634fd9d24a5681c44944f5aec51e206 StaticDependenciesID=a8fa2c705188a35704b9b79e50c574ad 
+Refreshing native plugins compatible for Editor in 3.23 ms, found 4 plugins.
+Asset Pipeline Refresh (id=417c27d88ac2b464d998a52175af9ef4): Total: 0.171 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/CabAtoResearchReview.unity'
+Unloading 24 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/CabAtoResearchReview.unity'
+	Deserialize:            368.343 ms
+	Integration:            521.222 ms
+	Integration of assets:  0.087 ms
+	Thread Wait Time:       -0.013 ms
+	Total Operation Time:   889.639 ms
+Unloading 159 unused Assets / (128.2 KB). Loaded Objects now: 32168.
+Memory consumption went from 0.51 GB to 0.51 GB.
+Total: 17.147900 ms (FindLiveObjects: 3.302400 ms CreateObjectMapping: 2.146200 ms MarkObjects: 10.730100 ms  DeleteObjects: 0.967000 ms)
+
+Importing 'GUID: ea52b0df9021fe047a294b23e9288a3e - Path: Assets/Scenes/CabAtoResearchReview.unity' with importer (DefaultImporter)
+Imported 'GUID: ea52b0df9021fe047a294b23e9288a3e' -> (Import Result ID: '1fedcbc24eb8060537dc71745058636f') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=2c859cff96a5bc94492ae2aa3714ac61 DependenciesID=47744aa1ebc4f77bfdb4f628ac0f87f2 StaticDependenciesID=582b660cfa7f49261f4473591fe10e37 
+Refreshing native plugins compatible for Editor in 3.35 ms, found 4 plugins.
+Asset Pipeline Refresh (id=91856fb26c1135247adbd6c4df55dc24): Total: 0.140 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+ATO_RESEARCH_SCENE_CREATED: separate opt-in scene; no real-train validation
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoResearchReview:Build () (at Assets/Editor/NF5KAtoResearchReview.cs:25)
+NF5KAtoResearchReview:Batch () (at Assets/Editor/NF5KAtoResearchReview.cs:29)
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 25)
+
+[Project] Loading completed in 56.877 seconds
+	Project init time: 				44.040 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.953 seconds
+		Asset Database init time: 		0.765 seconds
+		Global illumination init time: 	0.019 seconds
+		Assemblies load time: 			2.634 seconds
+		Unity extensions init time: 	0.028 seconds
+		Asset Database refresh time: 	35.935 seconds
+	Scene opening time: 			12.314 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1793248264444,"processId":57396,"projectLoad":56.8769989,"projectInit":44.0398466,"templateInit":0.0,"packageManagerInit":0.9531899,"assetDatabaseInit":0.7653708,"globalIlluminationInit":0.0189461,"assembliesLoad":2.6336079,"unityExtensionsInit":0.0283951,"assetDatabaseRefresh":35.9345176,"sceneOpening":12.314426599999999}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1793248264444,"processId":57396,"editorVersion":"6000.5.8f1 (5cb7df797b7d)","branch":"6000.5/staging","buildType":"Release","platform":"Windows"}
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Refreshing native plugins compatible for Editor in 3.31 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.466 seconds
+Domain Reload Profiling: 2624ms
+	BeginReloadAssembly (716ms)
+		DisableScriptedObjects (45ms)
+		CreateAndSetChildDomain (450ms)
+	RebuildCommonClasses (15ms)
+	RebuildNativeTypeToScriptingClass (28ms)
+	initialDomainReloadingComplete (88ms)
+	LoadAllAssembliesAndSetupDomain (309ms)
+		LoadAssemblies (209ms)
+		AnalyzeDomain (60ms)
+			TypeCache.Refresh (10ms)
+			ResolveRequiredComponents (42ms)
+	FinalizeReload (1467ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (135ms)
+			ProcessInitializeOnLoadAttributes (460ms)
+			ProcessInitializeOnLoadMethodAttributes (241ms)
+			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (92ms)
+No restricted APIs configured; Validation skipped.
+Checking 24 assemblies for restricted APIs found 0 usage(s) in 7 ms
+Refreshing native plugins compatible for Editor in 3.87 ms, found 4 plugins.
+
+Asset Pipeline Refresh (id=f0bf7d079c3e3114d8ed4f7c8ab4d7de): Total: 4.596 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1992 ms
+		Asset DB Callback time: managed=797 ms, native=564 ms
+		Scripting: domain reloads=1, domain reload time=1238 ms, compile time=3 ms, other=0 ms
+		Project Asset Count: scripts=1512, non-scripts=3648
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 5.159ms
+	ApplyChangesToAssetFolders: 0.662ms
+	Collect global state as custom dependencies: 5.349ms
+	ProcessAssetsWithTransientArtifactChanges: 275.861ms
+	CategorizeAssets: 91.682ms
+	CompileScripts: 3.260ms
+	ImportOutOfDateAssets: 1546.561ms (1490.335ms without children)
+		CollectScriptTypesHashes: 3.276ms
+		ReloadNativeAssets: 2.687ms
+		UnloadImportedAssets: 0.376ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.272ms
+		ImportSchedulerStart: 51.852ms
+	PostProcessAllAssets: 1353.570ms
+		PostProcessCallbackCreateDeferredMaterials 53.189ms
+		AssemblyValidation.PostprocessAllAssets 38.931ms
+		ShaderAssetModifiedCallback 27.470ms
+		RaytracingShaderImportPostprocess 12.801ms
+		ComputeShaderImportPostprocess 12.381ms
+		SpeedTreeImporter.PostprocessAllAssets 10.182ms
+		BlockShaderImporter.PostprocessAllAssets 5.927ms
+		LocalizationDatabase.AssetDatabasePostprocessCallback 5.544ms
+		XRBuildSystem.XRAssetImported 1.238ms
+		MonoPostProcessAllAssets: 795.070ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 286.515ms
+			PostProcessor.OnPostprocessAllAssets 55.851ms
+			AssetPostprocessor.OnPostprocessAllAssets 55.088ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 51.896ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 51.826ms
+			MaterialPostprocessor.OnPostprocessAllAssets 51.758ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 31.613ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 29.657ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 24.606ms
+			AssetChangedListener.OnPostprocessAllAssets 22.922ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 16.369ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 8.859ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 8.684ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 8.067ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 2.933ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 2.812ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 1.506ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 1.475ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 1.211ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.778ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.755ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.569ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.544ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.527ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.475ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.448ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.444ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.411ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.376ms
+			AssetEvents.OnPostprocessAllAssets 0.366ms
+			SyncVS.PostprocessSyncProject 0.284ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.247ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.183ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.175ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.156ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.123ms
+	PostAssetChangesProfiler: 7.684ms
+	GatherAllCurrentPrimaryImportResultRevisions: 0.205ms
+	UnloadStreamsBegin: 0.316ms
+	PersistCurrentRevisions: 0.262ms
+	GenerateScriptTypeHashes: 6.047ms
+	GenerateScriptTypeSerializationHashes: 9.979ms
+	Untracked: 1293.614ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            2866.688 ms
+	Integration:            1230.348 ms
+	Integration of assets:  116.988 ms
+	Thread Wait Time:       -2.823 ms
+	Total Operation Time:   4211.202 ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Start Indexing on Editor startup
+ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <816f70bc2a9c4332b0bd119906a8d40e>:0 
+  at UnityEditor.Search.SearchDatabase+<EnumerateAll>d__76.MoveNext () [0x00089] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at System.Linq.Enumerable.TryGetFirst[TSource] (System.Collections.Generic.IEnumerable`1[T] source, System.Boolean& found) [0x00045] in <fe644d7ad1cf499ebe4e7ad937bc03bf>:0 
+  at System.Linq.Enumerable.First[TSource] (System.Collections.Generic.IEnumerable`1[T] source) [0x00000] in <fe644d7ad1cf499ebe4e7ad937bc03bf>:0 
+  at UnityEditor.Search.SearchDatabase.GetDefaultSearchDatabase () [0x00005] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at UnityEditor.Search.SearchInit.IndexationOnStartup () [0x0000a] in <dd17d9b243f3485ab399f5c24f024906>:0 
+  at UnityEditor.EditorApplication.Internal_CallDelayFunctions () [0x00029] in <da871bb30d6448e2981f366171b14bb9>:0 
+
+Created GICache directory at C:/Users/Oe_Lee/AppData/LocalLow/Unity/Caches/GiCache. Took: 0.029s, timestamps: [66.769 - 66.798]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+ATO_PAUSED_MANUAL_CHECKPOINT_OK: emergency brake and zero throttle survive capture and restore without advancing physics
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoPlayReview:Check () (at Assets/Editor/NF5KAtoResearchReview.cs:90)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 90)
+
+ATO_V3_MOVING_START_OK: actual speed used by planner and checkpoint replay
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoPlayReview:Check () (at Assets/Editor/NF5KAtoResearchReview.cs:162)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 162)
+
+ATO_V3_PLAY_ACCEPTED: three nominal modes and checkpoint replay
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoPlayReview:Check () (at Assets/Editor/NF5KAtoResearchReview.cs:163)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 163)
+
+ATO_V2_PLAY_ACCEPTED: three modes, full replay, facade and pure-physics manual restore
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoPlayReview:Check () (at Assets/Editor/NF5KAtoResearchReview.cs:165)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 165)
+
+ATO_PLAY_ACCEPTED: actual facade commands, takeover, nominal stop error=-2.29422317475826
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+NF5KAtoPlayReview:Check () (at Assets/Editor/NF5KAtoResearchReview.cs:168)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: Assets/Editor/NF5KAtoResearchReview.cs Line: 168)
+
+Unloading 248 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            132.820 ms
+	Integration:            519.727 ms
+	Integration of assets:  0.122 ms
+	Thread Wait Time:       -0.064 ms
+	Total Operation Time:   652.605 ms
+Unloading 6402 unused Assets / (5.8 MB). Loaded Objects now: 32430.
+Memory consumption went from 0.59 GB to 0.58 GB.
+Total: 41.914200 ms (FindLiveObjects: 3.704000 ms CreateObjectMapping: 4.134700 ms MarkObjects: 29.419100 ms  DeleteObjects: 4.654300 ms)
+
+[Licensing::Client] Successfully resolved entitlement details
+MonoPathRemapper: Attempts to remap: 27942; Successful remaps: 4
+Serialized file version minimum: 22, current 23
+Importing 'GUID: a0df23751500c67499b61ba5ce2b6021 - Path: Assets/Models/Cab/UnityStartupControls/Materials/Startup_Unlit_Green_Lens.mat' with importer (NativeFormatImporter)
+Imported 'GUID: a0df23751500c67499b61ba5ce2b6021' -> (Import Result ID: '540dc977ade1a8a0ab2e2f8c79f5aa0f') in 0.009 seconds [static dependencies only]. Details - ImportResultOutputID=bb9b0f19cac13460e6083e78cf0dc697 DependenciesID=b4a1e7a8616ecab7dd33fb4efd39bed8 StaticDependenciesID=39be36e2b4a95aa2ebd24f4dd79761e4 
+Refreshing native plugins compatible for Editor in 3.82 ms, found 4 plugins.
+Asset Pipeline Refresh (id=50916ba59d589c24da8c668a615ff418): Total: 0.152 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-Oe_Lee channel disconnected successfully.
+Lingering sessions upon destruction of worker manager
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1793248291238,"processId":57396,"allocatedMemory":18085610,"memoryLabels":[{"Default":223025},{"Permanent":15516},{"NewDelete":66747},{"Thread":4197560},{"Manager":827237},{"VertexData":1352},{"Geometry":816},{"Texture":24},{"Shader":852023},{"Material":24},{"GfxDevice":56120},{"Animation":952},{"Audio":1168},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":1016},{"Input":42840},{"JobScheduler":256},{"TextLib":280},{"Mono":48},{"MonoCode":64},{"ScriptingNativeRuntime":1618060},{"BaseObject":1621896},{"Resource":1208},{"Renderer":3080},{"Transform":4685},{"File":15901},{"WebCam":616},{"Culling":32},{"Terrain":11442},{"Wind":24},{"STL":40},{"String":31199},{"StaticString":3808},{"Utility":2675958},{"Curl":2675},{"PoolAlloc":2360},{"AI":80},{"TypeTree":14869},{"CodeReload":448},{"RuntimeInitializeOnLoadManager":64},{"Sprites":102},{"SpriteAtlas":120},{"GI":7816},{"Director":8296},{"CloudService":10520},{"WebRequest":552},{"VR":47114},{"SceneManager":608},{"Video":208},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":552},{"Hierarchy":1176},{"UIElements":72},{"CoreStats":13688},{"Identifiers":6768},{"Gui":128},{"EditorUtility":242794},{"VersionControl":8},{"Undo":931},{"AssetDatabase":5038191},{"AssetImporter":40},{"EditorGi":328},{"UnityConnect":38929},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":212},{"ProfilerEditor":9778},{"CoreBusinessMetrics":3482},{"Windowing":456},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}

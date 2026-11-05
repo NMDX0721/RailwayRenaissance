@@ -40,8 +40,7 @@ def compile_one(name, editor=False):
             revised.append('"' + path.as_posix() + '"')
             sources[path.relative_to(ROOT).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     else:
-        extra = list((ROOT / 'Assets/Scripts/VN').glob('*.cs'))
-        extra += [ROOT / 'Assets/Scripts/UI/Tablet/Apps/TabletBookmarksUI.cs', ROOT / 'Assets/Scripts/UI/Tablet/Apps/TabletHistoryUI.cs']
+        extra = list((ROOT / 'Assets/Scripts').rglob('*.cs'))
         for path in extra:
             source = path.relative_to(ROOT).as_posix()
             if path.exists() and source not in sources:

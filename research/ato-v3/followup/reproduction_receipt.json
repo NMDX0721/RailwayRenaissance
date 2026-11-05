@@ -1,0 +1,12 @@
+{
+  "original_run": "20261028T231656177361Z",
+  "repeat_run": "20261028T233013933033Z",
+  "rows_compared": 252,
+  "identical": true,
+  "sorted_id_fingerprint_sha256": "4b107c7f0a91b2e5337208b828748a8c7d8b570a858c6f5ea0767af7d0386206",
+  "components_run": "20261028T233032799050Z",
+  "component_baseline_rows": 84,
+  "component_baseline_matches_original": true,
+  "component_baseline_sha256": "1e3b5cffb60b696275bc42fc1679c0b1c4ec9ee0b8c0c8a99afb5a7482aa9846",
+  "note": "Fingerprints cover terminal physical state and requested/accepted command sequence; they do not compare execution timing."
+}

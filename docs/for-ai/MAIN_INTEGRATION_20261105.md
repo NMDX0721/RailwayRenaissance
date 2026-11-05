@@ -6,6 +6,8 @@ The pending integration includes VN localisation, presentation and tablet archiv
 
 Validation before main synchronisation compiled 218 runtime source files and 76 editor source files with Roslyn and cached Unity references. Both compiler invocations succeeded. Reports and source hashes are in tools/compile/main-integration-20261105/result.json. This check covers source compilation. Unity import, normal-frame ATO driving, visual verification and device acceptance require separate execution.
 
+After main synchronisation, the compiler helper includes every runtime C# source under Assets/Scripts, so newly merged V3 sources are covered even when the cached Unity response file predates them. The combined 220 runtime and 76 editor sources compiled successfully, with reports in tools/compile/main-integrated-20261105/result.json. The archive migration and ten-chapter static flow audits passed. The V3 .NET checks passed, including restoration of all 54 historical controller payloads and exact replay at four capture phases. Development results retain signed stopping errors of approximately -2.02, -2.27 and -2.07 metres for Smooth, AirSaving and Punctual respectively.
+
 An isolated retry established that setting the missing user environment paths gets Unity beyond the previous package-manager undefined-path error. Subsequent package resolution aborted while obtaining com.unity.burst 1.8.30. Following the user's direction, further work uses the primary checkout.
 
 The new track delivery contract is in 参考资料/系统/ATO试验线路制作要求.md. Existing 3D inspection geometry ends at 500 metres while the standard ATO task targets 900 metres. Route sampling, rendered rail and ballast extent, and end protection must be aligned before claiming normal-frame 900-metre 3D acceptance.

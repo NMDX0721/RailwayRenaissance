@@ -1,0 +1,16 @@
+{
+  "editor": "Unity 6000.5.8f1 Windows",
+  "log_sha256": "4496da22ca1b354df84bc9eea0d4ea21e09312843e7f7a359e74b4199c9f3c5d",
+  "markers": [
+    "ATO_V3_MOVING_START_OK",
+    "ATO_V3_PLAY_ACCEPTED",
+    "ATO_V2_PLAY_ACCEPTED",
+    "ATO_PLAY_ACCEPTED",
+    "ATO_PAUSED_MANUAL_CHECKPOINT_OK"
+  ],
+  "compiler_errors_found": false,
+  "process_exit_code": "not preserved",
+  "editor_exception": "ArgumentOutOfRangeException in UnityEditor.Search",
+  "package": "Burst 1.8.30 copied from local cache, temporarily referenced",
+  "scope": "Nominal Play review; not real-train validation"
+}

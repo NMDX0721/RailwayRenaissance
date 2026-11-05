@@ -1,0 +1,38 @@
+{
+  "frozenUtc": "2026-10-29T02:05:44.674743+00:00",
+  "seeds": [
+    64001,
+    64002
+  ],
+  "scenarios": [
+    "nominal",
+    "weak_wet",
+    "weak_brake",
+    "strong_brake",
+    "downhill",
+    "uphill",
+    "low_grip"
+  ],
+  "modes": [
+    "Smooth",
+    "AirSaving",
+    "Punctual"
+  ],
+  "repeats": 2,
+  "variants": {
+    "baseline": "V3 unchanged",
+    "schedule_feedback": "bounded speed-reference correction using elapsed versus planned time at current position; exploratory fixed gain 0.08 and bound 1 m/s"
+  },
+  "constraints": "900 m, first arrival 115-125 s, stop +/-5 m, 100-tick dwell, no intervention or speed violation above 0.15 m/s",
+  "hashes": {
+    "Assets/Scripts/Cab/CabSimulation.cs": "597F6AD2C06DD5A55D20BDA43A7442F53B5167043BF167AD391D5F6586EE120C",
+    "Assets/Scripts/Cab/CabSimulationCodec.cs": "99EFFB7FE1C7DA2CFF6B497FBDB266085B96BF8EC7328BCC3DFB9D491799B4AB",
+    "Assets/Scripts/Cab/Research/AtoRouteTask.cs": "77938C25302179CFBCC1E1DD5BC9A899DBBE2A41D658080529CDB1583AF3807D",
+    "Assets/Scripts/Cab/Research/AtoTrajectoryPlanner.cs": "112C59E3B2CD65B2F634298244B45F2675D17BDEC75A772393FD6BF06896858F",
+    "Assets/Scripts/Cab/Research/CabAtoController.cs": "8D0123DD32C4E146412228DC53B16AC4F27B0A751B5709A355E301EDFA7B446C",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV2.cs": "5614DC59E7DD362ABAD9A6C02407DD9DD4312F7D4ED1071433183E3D235B59CF",
+    "Assets/Scripts/Cab/Research/CabAtoControllerV3.cs": "630412011DBE4FC336C456B78780499ED9056318A9F0BB5750B5143A8D2CCF94",
+    "research/ato-v3/followup/Runner.cs": "794319243246904F02263706ACACE1613DF03657C362719A60C49F192349B818",
+    "research/ato-v3/followup/study_schedule.py": "BC4103D4692F81044DB35BDF99ED84BB1A8EEDC8C27A2BF2ECCA5BAFA78E09EE"
+  }
+}
