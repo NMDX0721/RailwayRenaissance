@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
@@ -31,18 +32,20 @@ namespace RailwayRenaissance.EditorScripts
                 var psi = new ProcessStartInfo
                 {
                     FileName = "robocopy",
-                    Arguments = $"\"{sourceTools}\" \"\"{targetTools}\"\" /E /MT:8 /NDL /NFL /NJH /NJS /R:1 /W:1",
+                    Arguments = $"\"{sourceTools}\" \"{targetTools}\" /E /MT:8 /NDL /NFL /NJH /NJS /R:1 /W:1",
                     CreateNoWindow = true,
                     UseShellExecute = false
                 };
                 using (var proc = Process.Start(psi))
                 {
-                    proc?.WaitForExit(30000);
+                    if (proc == null) throw new IOException("无法启动 robocopy");
+                    proc.WaitForExit();
+                    if (proc.ExitCode >= 8) throw new IOException($"robocopy 退出码 {proc.ExitCode}");
                 }
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogWarning($"[MusicServiceBuild] robocopy 增量复制失败，尝试降级复制: {ex.Message}");
+                throw new BuildFailedException($"[MusicServiceBuild] 音乐服务复制失败，构建未完成: {ex.Message}");
             }
 
             // 同步 node.exe 独立运行时，使独立包无需玩家机器预装 Node

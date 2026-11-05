@@ -46,8 +46,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 var last = s_samples[s_samples.Count - 1];
                 bool unchanged = last.percent == pct && last.charging == charging;
-                if (now - last.unix < MinGapSeconds && (unchanged || now - last.unix < 20L)) return;
                 if (now < last.unix) s_samples.Clear();   // 系统时间被调回，旧记录不可信
+                else if (now - last.unix < MinGapSeconds && (unchanged || now - last.unix < 20L)) return;
             }
             s_samples.Add(new Sample { unix = now, percent = pct, charging = charging });
             Trim(now);

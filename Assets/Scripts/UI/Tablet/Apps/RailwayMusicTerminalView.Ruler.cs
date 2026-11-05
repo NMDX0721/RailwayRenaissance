@@ -10,15 +10,28 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     {
         const int RulerSpan = 3000, RulerStep = 10;
         bool rulerGlobal; MusicTimedDocument rulerDoc;
+        string rulerTrackId;
         Label rulerValue, rulerTotal, rulerLine; VisualElement rulerKnob, rulerFill; IVisualElementScheduledItem rulerTick;
 
-        int RulerOffset() => rulerGlobal ? MusicLibrarySession.State.lyricGlobalOffsetMs : MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs;
+        int RulerOffset()
+        {
+            if (!RulerTrackIsCurrent()) return 0;
+            return rulerGlobal ? MusicLibrarySession.State.lyricGlobalOffsetMs : MusicTimedText.Preference(rulerTrackId).offsetMs;
+        }
+
+        bool RulerTrackIsCurrent()
+        {
+            if (rulerTrackId != null && rulerTrackId == TabletMusicAppUI.tabletCurrentTrackId) return true;
+            CloseModal();
+            return false;
+        }
 
         void SetRulerOffset(int ms)
         {
+            if (!RulerTrackIsCurrent()) return;
             ms = Mathf.Clamp(ms, -10000, 10000);
             if (rulerGlobal) MusicLibrarySession.State.lyricGlobalOffsetMs = ms;
-            else MusicTimedText.Preference(TabletMusicAppUI.tabletCurrentTrackId).offsetMs = ms;
+            else MusicTimedText.Preference(rulerTrackId).offsetMs = ms;
             ShowRuler();
         }
 
@@ -26,8 +39,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             if (string.IsNullOrEmpty(id)) { ShowToast("先播放一首歌，再校准歌词时间"); return; }
-            rulerGlobal = global; rulerDoc = MusicTimedText.Load(MusicLibrarySession.Find(id));
+            rulerGlobal = global;
             var menu = MenuAt(null, "歌词时间标尺"); menu.AddToClassList("music-ruler");
+            rulerTrackId = id; rulerDoc = MusicTimedText.Load(MusicLibrarySession.Find(id));
             var scope = Box(menu, "music-ruler-scope");
             var one = Chip(scope, "这首歌", () => { rulerGlobal = false; ShowRuler(); }, "music-ruler-scope-track");
             var all = Chip(scope, "所有歌曲", () => { rulerGlobal = true; ShowRuler(); }, "music-ruler-scope-global");
@@ -82,6 +96,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void ShowRuler()
         {
             if (rulerValue == null || rulerKnob == null) return;
+            if (!RulerTrackIsCurrent()) return;
             var state = MusicLibrarySession.State; string id = TabletMusicAppUI.tabletCurrentTrackId;
             int ms = RulerOffset();
             rulerValue.text = (ms > 0 ? "+" : "") + ms + " ms" + (ms > 0 ? "  提前" : ms < 0 ? "  延后" : "");
@@ -102,6 +117,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void UpdateRulerLine()
         {
             if (rulerLine == null) return;
+            if (!RulerTrackIsCurrent()) return;
             var doc = rulerDoc;
             if (doc == null || doc.lines.Count == 0) { rulerLine.text = "这首歌没有同步歌词"; return; }
             int at = doc.Active(TabletMusicAppUI.CurrentPosition + MusicTimedText.EffectiveOffsetMs(TabletMusicAppUI.tabletCurrentTrackId) / 1000d);
@@ -110,6 +126,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         void ReplayRulerLine()
         {
+            if (!RulerTrackIsCurrent()) return;
             string id = TabletMusicAppUI.tabletCurrentTrackId; var clip = TabletMusicAppUI.tabletCurrentClip;
             if (clip == null) return;
             var doc = rulerDoc;

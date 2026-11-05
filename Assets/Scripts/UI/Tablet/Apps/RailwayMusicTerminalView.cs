@@ -682,6 +682,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         bool recordFromLyrics;
         void CloseModal()
         {
+            rulerTick?.Pause(); rulerTick = null; rulerTrackId = null; rulerDoc = null;
+            rulerValue = null; rulerTotal = null; rulerLine = null; rulerKnob = null; rulerFill = null;
             bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
             // Menus and small panels fade out in about a tenth of a second; sheets and the lyrics page leave at once.
             var leaving = overlay;
@@ -1390,6 +1392,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             // The meters in the player bar are hidden (the lyrics page has the live ones), so they are not driven here.
             string id = TabletMusicAppUI.tabletCurrentTrackId;
             UpdateTheme(id);
+            if (rulerTrackId != null && rulerTrackId != id) CloseModal();
             string title = TabletMusicAppUI.tabletCurrentTrackTitle ?? "尚未选择曲目";
             if (title != shownTitle) { shownTitle = title; playingTitle.text = title; playingTitle.tooltip = title + "\n点击曲名：在列表中找到这首歌"; }
             { var nowTrack = MusicLibrarySession.Find(id); string line = nowTrack == null ? "" : string.IsNullOrEmpty(nowTrack.artist) ? nowTrack.category : nowTrack.artist; if (playingArtist.text != line) playingArtist.text = line; }
