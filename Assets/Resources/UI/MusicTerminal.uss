@@ -1123,7 +1123,7 @@
 .music-settings-nav { width: 142px; }
 .music-settings-tab { flex-direction: row; align-items: center; justify-content: flex-start; height: 42px; margin: 3px 0; padding: 0 12px; border-radius: 12px; transition-property: background-color; transition-duration: 140ms; }
 .music-settings-tab-mark { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 2px; background-color: rgb(205, 176, 112); }
-.music-settings-tab .music-vector-icon { width: 18px; height: 18px; margin-right: 10px; color: rgb(170, 168, 142); }
+.music-settings-tab .music-vector-icon { width: 20px; height: 20px; margin-right: 8px; color: rgb(170, 168, 142); }
 .music-settings-tab .music-button-label { font-size: 14px; margin: 0; padding: 0; -unity-text-align: middle-left; color: rgb(214, 206, 180); }
 .music-settings-tab.is-active { background-color: rgba(205, 176, 112, 0.14); }
 .music-settings-tab.is-active .music-vector-icon { color: rgb(240, 214, 150); }
