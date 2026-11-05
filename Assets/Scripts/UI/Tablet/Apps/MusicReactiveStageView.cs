@@ -244,7 +244,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // Paused: let the bands settle instead of freezing mid-pulse.
                 lowTarget = midTarget = highTarget = 0; transientTarget = 0;
                 float fall = 1 - Mathf.Exp(-dt * 5);
-                energy = Mathf.Lerp(energy, 0, fall); transient = Mathf.Lerp(transient, 0, fall);
+                transient = Mathf.Lerp(transient, 0, fall);
                 GlideBands(dt);
             }
             // The flow runs a little faster when the music is loud, so the picture breathes with the song instead of looping at one speed.

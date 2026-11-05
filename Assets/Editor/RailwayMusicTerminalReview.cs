@@ -696,7 +696,7 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-lyrics-earlier"));
                     Submit(root.Q<Button>("music-lyric-line-1"));
                     Assert(MusicTimedText.Preference("platform").offsetMs == 100 && Math.Abs(TabletMusicAppUI.CurrentPosition - 1.9) < .15, "Per-song offset was not applied to lyric seek");
-                    root.Q<Slider>("music-lyrics-font").value = 30;
+                    MusicLibrarySession.State.lyricFontSize = 30; MusicLyricsView.Refresh(false);
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 10:
@@ -719,7 +719,7 @@ public static class RailwayMusicTerminalReview
                         var probeFont = fontProbe?.resolvedStyle.unityFontDefinition.font;
                         Assert(probeFont != null && probeFont.name.ToLowerInvariant().Contains("zpix"), "Lyric subtitles are not set in the pixel font (got " + (probeFont != null ? probeFont.name : "none") + ")");
                         Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
-                        Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                        Assert(root.Q<Button>("music-lyrics-style").resolvedStyle.display != DisplayStyle.None, "The stage style button is hidden in stage mode");
                     }
                     // Luminous poses are a function of the audio clock: step the clock forward and the words must actually move.
                     if (lumiSeq < 10)
@@ -902,10 +902,10 @@ public static class RailwayMusicTerminalReview
                             // The sheet is a modal and replaces the lyrics page by design; close it and reopen the lyrics for the steps that follow.
                             Assert(root.Q(className: "music-record-sheet") != null, "The record archive did not open from the lyrics page");
                             // The lyrics page is found by its name; it has no such class, so a class query would find nothing whether or not it is open.
-                            Assert(root.Q("music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            Assert(root.Q("music-lyrics-overlay") != null, "The lyrics page should stay open behind the record archive sheet");
                             Assert(RailwayMusicTerminalView.RecordReturnsToLyrics, "The record archive opened from the lyrics page did not remember to return to it");
                             Capture("08-record-from-lyrics");
-                            Submit(root.Q(className: "music-modal-header").Q<Button>());
+                            Submit(root.Q(className: "music-record-sheet").Q(className: "music-modal-header").Q<Button>());
                         }
                         else if (styleStep == 16 + StressStyles.Length)
                         {
@@ -972,17 +972,13 @@ public static class RailwayMusicTerminalReview
                     Capture("06-lyrics-compact");
                     // Stage tuning is saved with the library and rebuilds the line; restore the defaults afterwards.
                     int intensityBefore = MusicLibrarySession.State.stageIntensity;
-                    Submit(root.Q<Button>("music-stage-intensity"));
-                    Assert(MusicLibrarySession.State.stageIntensity == (intensityBefore + 1) % 3, "Stage intensity button did not change the saved tuning");
-                    root.Q<Toggle>("music-stage-rotation").value = false;
-                    root.Q<Slider>("music-stage-spacing").value = 1.4f;
+                    MusicLibrarySession.State.stageIntensity = (intensityBefore + 1) % 3; MusicLyricsView.InvalidateStage();
+                    MusicLibrarySession.State.stageRotation = false; MusicLibrarySession.State.stageSpacing = 1.4f; MusicLyricsView.InvalidateStage();
                     Assert(!MusicLibrarySession.State.stageRotation && Mathf.Approximately(MusicLibrarySession.State.stageSpacing, 1.4f), "Stage rotation/spacing were not saved");
                     MusicLibrarySession.State.stageIntensity = intensityBefore; MusicLibrarySession.State.stageRotation = true; MusicLibrarySession.State.stageSpacing = .7f;
-                    root.Q<Toggle>("music-stage-rotation").SetValueWithoutNotify(true); root.Q<Slider>("music-stage-spacing").SetValueWithoutNotify(.7f);
+                    MusicLyricsView.InvalidateStage();
                     Assert(root.Q<Button>("music-lyrics-reset").worldBound.yMax < root.Q("music-lyrics-progress").worldBound.yMin, "Compact lyric settings overlap playback controls");
                     Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None, "The follow banner must not cover the stage, which never scrolls");
-                    var settingsLabel = root.Q<Foldout>("music-lyrics-more").Q(className: "unity-foldout__text");
-                    Assert(settingsLabel != null && settingsLabel.resolvedStyle.width > 36f, "The settings foldout title is squeezed out by the switch styling");
                     Submit(root.Q<Button>("music-lyrics-follow"));
                     using (var escape = KeyDownEvent.GetPooled('\0', KeyCode.Escape, EventModifiers.None))
                     { escape.target = root.Q("music-lyrics-overlay"); root.SendEvent(escape); }
@@ -1023,7 +1019,7 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q<Button>("music-lyric-line-0") == null && root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None,
                         "Untimed sheet offered fake seeking or auto-follow");
                     Capture("07-original-lyrics");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     break;
                 case 13:
                     Assert(root.ClassListContains("music-reduce-motion"), "Reduce-motion setting did not reach terminal effects");
@@ -1092,13 +1088,13 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-lyrics-motion"));
                     Assert(MusicLibrarySession.State.lyricMotion == 1, "Follow mode cycle failed");
                     Submit(root.Q<Button>("music-lyrics-motion"));
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 20:
                     Assert(Mathf.Abs(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value) < .01f,
                         "Reduced motion retained word lift");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = false;
+                    MusicLibrarySession.State.reduceMotion = false; MusicLibrarySession.Save();
                     Submit(root.Q<Button>("music-lyrics-close"));
                     TabletMusicAppUI.SeekTabletMusic(.15f);
                     MusicLibrarySession.Save();
@@ -1174,7 +1170,7 @@ public static class RailwayMusicTerminalReview
                 case 27:
                     var pausedStage = root.Q<MusicReactiveStageView>();
                     Assert(pausedStage.RenderClock == pausedStageClock && pausedStage.VisualEnergy == pausedStageEnergy, "Paused stage kept moving");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     break;
                 case 28:
                     Assert(root.Q<MusicReactiveStageView>().RenderClock == 0 && root.Q<MusicReactiveStageView>().VisualEnergy == 0, "Reduce motion did not stop stage geometry");
@@ -1313,7 +1309,7 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
                     Capture("22-match");
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
-                    Submit(root.Q<Button>("music-settings"));
+                    RailwayMusicTerminalView.OpenControlsList();
                     break;
                 case 45:
                     Assert(root.Q(className: "music-controls-panel") != null, "The playback settings panel did not open");

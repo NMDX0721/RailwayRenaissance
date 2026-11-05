@@ -1469,7 +1469,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         static void OpenOverLyrics(Action open)
         {
             var view = current; if (view == null) return;
-            if (view.lyrics != null && view.overlay != null && view.overlay.ClassListContains("music-lyrics-overlay"))
+            if (view.lyrics != null && view.overlay != null && view.overlay.name == "music-lyrics-overlay")
             { view.keptLyricsOverlay = view.overlay; view.keptLyrics = view.lyrics; view.overlay = null; }
             open();
             view.recordFromLyrics = view.keptLyrics != null;
@@ -1483,6 +1483,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             OpenOverLyrics(() => view.ShowDetail(id));
             if (!fromLyrics) view.recordFromLyrics = true;
         }
+        /// <summary>The general playback panel (all categories); the bar no longer opens it, the command palette does.</summary>
+        public static void OpenControlsList() { var view = current; if (view != null) view.OpenControlsPanel(view.root.Q<Button>("music-settings") ?? (VisualElement)view.root); }
         public static void OpenSettingsPage(string tab) { var view = current; if (view != null) OpenOverLyrics(() => view.OpenSettings(tab)); }
         public static bool RecordReturnsToLyrics => current != null && current.recordFromLyrics;
         public static bool ShowToast(string message)
