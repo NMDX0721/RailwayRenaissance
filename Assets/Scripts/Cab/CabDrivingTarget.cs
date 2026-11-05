@@ -58,7 +58,8 @@ namespace RailwayRenaissance.Cab
                 CabDrivingAction.ParkingBrake => state.GetComponent<CabSimulationDriver>()?.ParkingBrake == true ? 1 : 0,
                 _ => (int)state.Reverser
             };
-            transform.localRotation = restRotation * Quaternion.AngleAxis(fraction * travelDegrees, axis);
+            var rotation=restRotation * Quaternion.AngleAxis(fraction * travelDegrees, axis);
+            if(transform.localRotation!=rotation){transform.localRotation=rotation;CabPhysicsQueries.MarkDirty();}
         }
     }
 }

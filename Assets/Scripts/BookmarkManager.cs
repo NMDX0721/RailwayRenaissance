@@ -21,7 +21,10 @@ public static class BookmarkManager
         public bool isAuto;
         public bool isCompleted;
         public long updatedAt;
+        public VNVariableState[] variables;
     }
+
+    [Serializable] private class ReplayState { public VNVariableState[] variables; }
 
     private const int AutoSlotCount = 5;
     private const string AutoKey = "Bookmark_Auto_";     // Bookmark_Auto_0 ~ 4
@@ -31,7 +34,8 @@ public static class BookmarkManager
     // ================= 自动书签 =================
 
     /// <summary>更新当前话的自动书签（自动推进）。已存在则覆盖，否则新建；满员滚动覆盖最旧。</summary>
-    public static void UpdateAutoBookmark(string scriptName, string episodeTitle, int episodeNum, int sceneIndex, int dialogueIndex, string preview)
+    public static void UpdateAutoBookmark(string scriptName, string episodeTitle, int episodeNum, int sceneIndex, int dialogueIndex, string preview,
+        VNVariableState[] state = null)
     {
         for (int i = 0; i < AutoSlotCount; i++)
         {
@@ -44,6 +48,8 @@ public static class BookmarkManager
                 bm.episodeTitle = episodeTitle;
                 bm.episodeNum = episodeNum;
                 bm.updatedAt = Now();
+                bm.isCompleted = false;
+                bm.variables = state ?? VNManager.Instance?.CaptureVariableState();
                 SaveAuto(i, bm);
                 return;
             }
@@ -62,7 +68,8 @@ public static class BookmarkManager
             previewText = TrimPreview(preview),
             isAuto = true,
             isCompleted = false,
-            updatedAt = Now()
+            updatedAt = Now(),
+            variables = state ?? VNManager.Instance?.CaptureVariableState()
         };
         SaveAuto(slot, nb);
     }
@@ -91,17 +98,15 @@ public static class BookmarkManager
             var bm = LoadAuto(i);
             if (bm != null) list.Add(bm);
         }
+        list.Sort((a, b) => b.updatedAt.CompareTo(a.updatedAt));
         return list;
     }
 
     /// <summary>查找未完成的自动书签（用于强制退出恢复提示）；无则返回 null。</summary>
     public static Bookmark FindIncompleteAuto()
     {
-        for (int i = 0; i < AutoSlotCount; i++)
-        {
-            var bm = LoadAuto(i);
-            if (bm != null && !bm.isCompleted) return bm;
-        }
+        foreach (var bm in GetAllAuto())
+            if (!bm.isCompleted && IsPlayable(bm)) return bm;
         return null;
     }
 
@@ -123,9 +128,16 @@ public static class BookmarkManager
     // ================= 手动书签 =================
 
     /// <summary>添加手动书签。</summary>
-    public static void AddManual(string scriptName, string episodeTitle, int episodeNum, int sceneIndex, int dialogueIndex, string preview)
+    public static void AddManual(string scriptName, string episodeTitle, int episodeNum, int sceneIndex, int dialogueIndex, string preview,
+        VNVariableState[] state = null)
     {
-        string id = "bm_" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+        DateTime stamp = DateTime.Now;
+        string id = "bm_" + stamp.ToString("yyyyMMddHHmmssfff");
+        while (PlayerPrefs.HasKey(ManualKey + id))
+        {
+            stamp = stamp.AddMilliseconds(1);
+            id = "bm_" + stamp.ToString("yyyyMMddHHmmssfff");
+        }
         var bm = new Bookmark
         {
             id = id,
@@ -138,7 +150,8 @@ public static class BookmarkManager
             previewText = TrimPreview(preview),
             isAuto = false,
             isCompleted = false,
-            updatedAt = Now()
+            updatedAt = Now(),
+            variables = state ?? VNManager.Instance?.CaptureVariableState()
         };
         PlayerPrefs.SetString(ManualKey + id, JsonUtility.ToJson(bm));
         AddToIndex(id);
@@ -168,14 +181,41 @@ public static class BookmarkManager
     }
 
     /// <summary>跳转到书签位置（故事回看，走 VN_ReplayScript 机制）。</summary>
-    public static void JumpToBookmark(Bookmark bm)
+    public static bool JumpToBookmark(Bookmark bm)
     {
-        if (bm == null || string.IsNullOrEmpty(bm.scriptName)) return;
+        if (!IsPlayable(bm)) return false;
         PlayerPrefs.SetString("VN_ReplayScript", bm.scriptName);
         PlayerPrefs.SetInt("VN_ReplayScene", bm.sceneIndex);
         PlayerPrefs.SetInt("VN_ReplayDialogue", bm.dialogueIndex);
-        PlayerPrefs.SetInt("VN_AutoLoad", 0);
+        PlayerPrefs.DeleteKey("VN_AutoLoad");
+        PlayerPrefs.DeleteKey("VN_LoadSaveSlot");
+        PlayerPrefs.DeleteKey("VN_ShowLoadUI");
+        PlayerPrefs.SetString("VN_ReplayVariables", JsonUtility.ToJson(new ReplayState { variables = bm.variables }));
         PlayerPrefs.Save();
+        return true;
+    }
+
+    public static bool IsPlayable(Bookmark bm)
+    {
+        if (bm == null || string.IsNullOrEmpty(bm.scriptName)) return false;
+        var asset = Resources.Load<TextAsset>("Scripts/" + bm.scriptName);
+        if (asset == null) return false;
+        ScriptData script;
+        try { script = JsonUtility.FromJson<ScriptData>(asset.text); }
+        catch { return false; }
+        return script?.scenes != null && bm.sceneIndex >= 0 && bm.sceneIndex < script.scenes.Length &&
+            script.scenes[bm.sceneIndex]?.d != null && bm.dialogueIndex >= 0 &&
+            bm.dialogueIndex < script.scenes[bm.sceneIndex].d.Length;
+    }
+
+    public static VNVariableState[] TakeReplayVariables()
+    {
+        string json = PlayerPrefs.GetString("VN_ReplayVariables", "");
+        PlayerPrefs.DeleteKey("VN_ReplayVariables");
+        PlayerPrefs.Save();
+        if (string.IsNullOrEmpty(json)) return null;
+        try { return JsonUtility.FromJson<ReplayState>(json)?.variables; }
+        catch { return null; }
     }
 
     // ================= 索引维护 =================
@@ -241,7 +281,17 @@ public static class BookmarkManager
         return slot;
     }
 
-    private static long Now() => DateTime.UtcNow.Ticks;
+    private static long latestStamp;
+    private static long Now()
+    {
+        if (latestStamp == 0)
+        {
+            foreach (var bm in GetAllAuto()) latestStamp = Math.Max(latestStamp, bm.updatedAt);
+            foreach (var bm in GetAllManual()) latestStamp = Math.Max(latestStamp, bm.updatedAt);
+        }
+        latestStamp = Math.Max(DateTime.UtcNow.Ticks, latestStamp + 1);
+        return latestStamp;
+    }
 
     private static string TrimPreview(string text)
     {

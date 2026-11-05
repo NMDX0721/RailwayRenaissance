@@ -43,8 +43,8 @@ public static class NF5KContextInteractionReview
             Assert(!CabContextInteraction.ValidPath("<Keyboard>/Escape")&&!CabContextInteraction.ValidPath("<Mouse>/delta")
                 &&!ui.SetPrimaryPath("<Keyboard>/F2",false),"Reserved binding accepted");
             Assert(ui.SetPrimaryPath("<Keyboard>/e",false),"E binding rejected");
-            var interiorLights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
-            var exteriorLights=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+            var interiorLights=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();
+            var exteriorLights=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();
             var overOtherUI=typeof(CabContextInteraction).GetMethod("OverOtherUI",flags);
             InputSystem.QueueStateEvent(mouse,new MouseState {position=new Vector2(30,Screen.height-40)});
             Pump();

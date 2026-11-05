@@ -21,7 +21,6 @@ public class TitleScreen : MonoBehaviour
     private Button announcementBtn;
     private VideoPlayer videoPlayer;
     private NewGameSetupUI newGameSetup;
-    private TitleArchiveUI archiveUI;
     private StationBulletinUI bulletinUI;
 
     private readonly Color glassBg = new Color(40f/255f, 25f/255f, 15f/255f, 0.35f);
@@ -39,8 +38,8 @@ public class TitleScreen : MonoBehaviour
         SetupVideoBackground();
         SetupBGM();
         // 标题界面解锁：标题 BGM + 舒缓曲 + 基础音乐鉴赏
-        TitleArchiveUI.UnlockMusic("iron_and_ash");
-        TitleArchiveUI.UnlockMusic("platform");
+        StoryArchiveProgress.UnlockMusic("iron_and_ash");
+        StoryArchiveProgress.UnlockMusic("platform");
         SetupGameCursor();
         Camera.main.clearFlags = CameraClearFlags.SolidColor;
         // 深檀棕黑（避免浅砖紫 0.55/0.38/0.32 被误认"紫色没内容"）
@@ -65,7 +64,7 @@ public class TitleScreen : MonoBehaviour
         btnSettings = root.Q<Button>("btn-settings");
         btnExit = root.Q<Button>("btn-exit");
         announcementBtn = root.Q<Button>("announcement-btn");
-        btnStory?.RegisterCallback<ClickEvent>(e => { MainStoryUI.Show(); });
+        btnStory?.RegisterCallback<ClickEvent>(e => { StoryReplayService.OpenLibrary(); });
 
         SetupGlassButton(btnNewGame);
         SetupGlassButton(btnContinue);
@@ -114,7 +113,6 @@ public class TitleScreen : MonoBehaviour
             SceneManager.LoadScene("VN_Test");
         });
 
-        archiveUI = TitleArchiveUI.EnsureInstance();
 
         bulletinUI = new GameObject("StationBulletinUI").AddComponent<StationBulletinUI>();
         bulletinUI.Init(GetComponent<UIDocument>());
@@ -309,7 +307,7 @@ public class TitleScreen : MonoBehaviour
         SceneManager.LoadScene("VN_Test");
     }
 
-    void OnArchive() { archiveUI?.Show(); }
+    void OnArchive() { GameMainUI.OpenTabletApp("归途"); }
     void OnSettings() { bulletinUI?.Show(); }
     void OnAnnouncement() { ShowNewsPanel(); }
     void OnExit()

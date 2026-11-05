@@ -115,8 +115,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // UI 引用与绑定缓存（消除全局重建重绘）
         private static VisualElement s_activeWindow;
-        private static VisualElement tabletProgressTrack;
-        private static VisualElement tabletProgressFill;
         private static Label tabletCurTimeLbl;
         private static Label tabletTotalTimeLbl;
         private static Label tabletPlayerTitleLbl;
@@ -214,7 +212,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_toastScheduledItem = null;
             s_progressScheduledItem = null;
             s_activeWindow = null;
-            tabletProgressTrack = tabletProgressFill = null;
             tabletCurTimeLbl = tabletTotalTimeLbl = tabletPlayerTitleLbl = tabletPlayerSubLbl = null;
             tabletMiniCover = tabletModeToggleBtn = null;
             tabletMiniDiscIcon = null;

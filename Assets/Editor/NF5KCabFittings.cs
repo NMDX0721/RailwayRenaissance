@@ -160,9 +160,9 @@ public static class NF5KCabFittings
                 var scene=EditorSceneManager.OpenScene("Assets/Scenes/"+name+".unity");Apply(GameObject.Find("CabInterior_Blockout").transform);EditorSceneManager.SaveScene(scene);
             }
             AssetDatabase.SaveAssets();EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");
-            UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
+            UnityEngine.Object.FindAnyObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
             NF5KBogieDetailReview.ConfigureInspectionLighting();
-            var lights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();lights.SetAssistantTask(true);
+            var lights=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();lights.SetAssistantTask(true);
             var camera=Camera.main;camera.orthographic=false;camera.fieldOfView=65;
             camera.transform.position=new Vector3(-.40f,1.31f,.65f);camera.transform.LookAt(new Vector3(-.87f,.85f,-.10f));
             var fill=new GameObject("Temporary_Cab_Fittings_Fill").AddComponent<Light>();fill.type=LightType.Point;fill.range=4;fill.intensity=1.5f;fill.transform.position=new Vector3(0,1.7f,.65f);

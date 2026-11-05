@@ -91,7 +91,7 @@ public static class NF5KSimulationReview
         EditorSceneManager.OpenScene(NF5KDaylightReview.ScenePath);
         EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(),ScenePath,true);
         var scene=EditorSceneManager.OpenScene(ScenePath);
-        var state=UnityEngine.Object.FindFirstObjectByType<CabEngineState>();
+        var state=UnityEngine.Object.FindAnyObjectByType<CabEngineState>();
         var driver=state.gameObject.AddComponent<CabSimulationDriver>();driver.ConfigureReviewSeed(20261021);
         NF5KDrivingInteractionSetup.Configure(state);
         EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
@@ -125,7 +125,7 @@ public static class NF5KSimulationReview
         if(++frames<10)return;
         try
         {
-            var driver=UnityEngine.Object.FindFirstObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
+            var driver=UnityEngine.Object.FindAnyObjectByType<CabSimulationDriver>();var state=driver.GetComponent<CabEngineState>();
             driver.EnsureInitialized();var controls=state.GetComponentInChildren<CabStartupControls>();
             var targets=state.GetComponentsInChildren<CabDrivingTarget>();
             Assert(targets.Length>=4,"Driving target bindings missing");
@@ -142,7 +142,7 @@ public static class NF5KSimulationReview
             Assert(controls.InsertKey()&&controls.SetMaster(true)&&controls.SetFuelPump(true)&&controls.TryStartEngine(),"Physical startup chain failed");
             driver.Advance(6);Assert(driver.Model.State.Running&&state.IsEngineRunning,"Adapter did not expose running engine");
             driver.Advance(300);Assert(state.BrakePipeKpa>490,"Adapter pipe charging failed");
-            var lights=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+            var lights=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();
             Assert(lights.MainPower&&lights.BatteryPower,"Backend generator/battery supply not projected to lighting");
             Assert(ClickDriving(state,Driving(CabDrivingAction.Reverser)),"Physical reverser rejected ready engine");
             state.SetBrakeNotch(BrakeNotch.Run);driver.ParkingBrake=false;
@@ -162,7 +162,7 @@ public static class NF5KSimulationReview
                 state.SetThrottle(6);
                 Debug.Log("NF5K_PARKING_SELECTOR_GUARD_OK: moving command rejected even with zero throttle");
             }
-            var railMotion=UnityEngine.Object.FindFirstObjectByType<CabRailMotion>();
+            var railMotion=UnityEngine.Object.FindAnyObjectByType<CabRailMotion>();
             if(railMotion!=null)
             {
                 railMotion.ApplyBackend(true);
@@ -196,7 +196,7 @@ public static class NF5KSimulationReview
             Assert(state.BrakePos==BrakeNotch.Emergency&&state.ThrottleNotch==0,"Physical brake failed to cut traction");
             driver.Advance(180);Assert(Math.Abs(state.CurrentSpeedKmh)<.001,"Runtime emergency braking failed");
             Debug.Log("NF5K_DRIVING_INTERACTION_OK: four mesh raycast targets, cold interlock, accepted detents, moving reverser guard, independent cylinder and automatic emergency brake");
-            var railViews=UnityEngine.Object.FindFirstObjectByType<CabRailReviewViews>();int priorView=railViews!=null?railViews.View:0;
+            var railViews=UnityEngine.Object.FindAnyObjectByType<CabRailReviewViews>();int priorView=railViews!=null?railViews.View:0;
             if(railMotion!=null){railMotion.ApplyBackend(true);railViews?.SetView(0);}
             try{NF5KSafetyEquipmentReview.Validate(state);NF5KContextInteractionReview.Validate(state);}finally{railViews?.SetView(priorView);}
             state.StopEngine();driver.Advance(5);Assert(!lights.MainPower&&lights.EmergencyActive,"Engine stop did not transfer lighting to backup");

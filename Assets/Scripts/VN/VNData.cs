@@ -31,9 +31,11 @@ public class SceneData
 [System.Serializable]
 public class DialogueEntry
 {
+    public string id; // Optional stable localization ID, scoped to the script. Legacy coordinates remain unchanged.
     public string t;
     public string s;
     public string text;
+    public string textJa; // Reviewed Japanese subtitle; excludes TTS tags and pronunciation substitutions.
     public string e;
     public int next;
     public string condition; // if set, only show when condition is met
@@ -49,8 +51,9 @@ public class OptionData
 {
     public string text;
     public int next;
+    public int nextDialogue; // Optional entry index within next scene; omitted means 0 (legacy behaviour).
     public string condition; // if set, only show when condition is met
-    public string setValue;  // "varName=value" to set when selected
+    public string setValue;  // "varName=value", comma-separated assignments supported.
 }
 
 [System.Serializable]

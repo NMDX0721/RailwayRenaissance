@@ -32,6 +32,7 @@ namespace RailwayRenaissance.Cab
             if(UnityEngine.InputSystem.Keyboard.current?.f2Key.wasPressedThisFrame==true)showReviewPanel=!showReviewPanel;
         }
         public CabSimulation Model {get;private set;}
+        public double CoolingFanTargetRpm => Model?.CoolingFanTargetRpm(Input) ?? 0d;
         public SimulationInput Input {get;private set;}=new SimulationInput();
         public event Action<long> BeforeSimulationStep;
         public event Action CheckpointRestoring;
@@ -131,7 +132,7 @@ namespace RailwayRenaissance.Cab
             if(font==null)font=Resources.Load<Font>("Fonts/SarasaMonoSC-Regular");var old=GUI.skin.font;if(font!=null)GUI.skin.font=font;
             GUILayout.BeginArea(ReviewPanelRect,GUI.skin.box);
             GUILayout.Label("NF-5K 模拟后端 · 候选车型 / 50 Hz");
-            GUILayout.Label($"{(s.Cranking?"启动中":s.Running?"运转":"停机")}  {s.SpeedMps*3.6:F1} km/h  {s.Rpm:F0} r/min  水温 {s.CoolantC:F1}℃");
+            GUILayout.Label($"{(s.Cranking?"启动中":s.Running?"运转":"停机")}  {s.SpeedMps*3.6:F1} km/h  {s.Rpm:F0} r/min  水温 {s.CoolantC:F1}℃  风扇 {CoolingFanTargetRpm:F0} rpm");
             GUILayout.Label($"总风 {s.MainKpa:F0}  管压 {s.PipeKpa:F0}  制动缸 {s.LocoCylinderKpa:F0} kPa");
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("插钥匙"))startup?.InsertKey();

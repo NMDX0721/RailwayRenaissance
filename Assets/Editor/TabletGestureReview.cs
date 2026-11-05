@@ -241,6 +241,13 @@ public static class TabletGestureReview
         Debug.Log("TABLET_GESTURE_STATE_OK: deterministic touch decision tree, inward back, home swipe, hold recents, notifications/controls edge swipe, multi-touch rejection, direct manipulation immunity, cancellation, and geometry reset");
     }
 
+    private static int islandFloatCalls;
+
+    private static void ReturnHomeForIsland()
+    {
+        Call("ReturnToTabletHome");
+    }
+
     private static void Check()
     {
         try
@@ -483,7 +490,7 @@ public static class TabletGestureReview
                     Assert(root.Q("tablet-nav-back") != null && root.Q("tablet-nav-home") != null && root.Q("tablet-nav-recents") != null, "Three-button bar is missing a button");
                     Assert(navBar.resolvedStyle.translate.y == 0f, "Three-button bar must stay on screen");
                     var appWin = root.Q("app-fullscreen-window");
-                    Assert(appWin != null && appWin.resolvedStyle.paddingBottom >= 43f, "App window must leave room for the three-button bar");
+                    Assert(appWin != null && appWin.style.paddingBottom.value.value >= 43f, "App window must leave room for the three-button bar");
                     Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.None, "Gesture indicator must be hidden in three-button mode");
                     Assert(navBar.IndexOf(root.Q("tablet-nav-back")) == 0, "Back must be leftmost by default");
                     TabletNavigationOptions.MirrorButtons = true;
@@ -502,7 +509,58 @@ public static class TabletGestureReview
                     Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.None, "HideIndicator must hide the indicator");
                     TabletNavigationOptions.HideIndicator = false;
                     Assert(root.Q("tablet-nav-hint").resolvedStyle.display == DisplayStyle.Flex, "Indicator must come back");
-                    Assert(root.Q("app-fullscreen-window").resolvedStyle.paddingBottom == 0f, "Gestures mode must run content to the bottom");
+                    Assert(root.Q("app-fullscreen-window").style.paddingBottom.value.value == 0f, "Gestures mode must run content to the bottom");
+                    ReturnHomeForIsland();
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 11:
+                    // Stage 11: 超级岛展开卡片 —— 底边把手下滑越过阈值触发“小窗”请求；不够远则弹回；上滑收起
+                    Assert(islandFloatCalls == 0, "Float request must not fire before the gesture");
+                    ui.SuperIsland.FloatRequested = _ => { islandFloatCalls++; return true; };
+                    ui.SuperIsland.RegisterSession(new TabletSuperIsland.IslandSession
+                    {
+                        AppType = TabletSuperIsland.IslandAppType.Custom, Key = "review-test", Priority = 20, Title = "测试", Header = "测试", Subtitle = "测试", Metric = "01:00"
+                    });
+                    ui.SuperIsland.SetExpanded(true);
+                    nextCheck = EditorApplication.timeSinceStartup + 0.9;   // 等 340ms 的变形动画落定
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 12:
+                    // 副岛气泡（第二个会话的唱片小圆）必须落在状态栏这一行，不能跑到桌面部件下面
+                    ui.SuperIsland.RegisterSession(new TabletSuperIsland.IslandSession
+                    {
+                        AppType = TabletSuperIsland.IslandAppType.Custom, Key = "review-sub", Priority = 10, Title = "副", Header = "副", Metric = "1"
+                    });
+                    var sub = root.Q("super-island-sub-bubble");
+                    Assert(sub != null, "Sub bubble must exist");
+                    Assert(sub.worldBound.yMax < 70f, "Sub bubble must sit in the status bar row, got y=" + sub.worldBound.y + ".." + sub.worldBound.yMax + " display=" + sub.resolvedStyle.display);
+                    ui.SuperIsland.RemoveSession("review-sub");
+                    var grab = root.Q("super-island-grab");
+                    Assert(grab != null && grab.worldBound.width > 100f, "Island grab zone must exist once expanded: grab=" + (grab != null) + " w=" + (grab != null ? grab.worldBound.width : -1f) + " card=" + root.Q("super-island-expanded")?.style.display.value + " cardW=" + root.Q("super-island-expanded")?.layout.width + " primary=" + ui.SuperIsland.PrimaryType);
+                    Vector2 gp = grab.worldBound.center;
+                    // 拖得不够远：卡片弹回，不触发
+                    SimulateTouchDown(21, gp, grab);
+                    SimulateTouchMove(21, gp + new Vector2(0, 30), grab);
+                    SimulateTouchUp(21, gp + new Vector2(0, 30), grab);
+                    Assert(islandFloatCalls == 0, "A short drag must not request a floating window");
+                    Assert(root.Q("super-island-expanded").style.display == DisplayStyle.Flex, "Island stays expanded after a short drag");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 13:
+                    var grab2 = root.Q("super-island-grab");
+                    Vector2 gp2 = grab2.worldBound.center;
+                    SimulateTouchDown(22, gp2, grab2);
+                    SimulateTouchMove(22, gp2 + new Vector2(0, 40), grab2);
+                    SimulateTouchMove(22, gp2 + new Vector2(0, 100), grab2);
+                    SimulateTouchUp(22, gp2 + new Vector2(0, 100), grab2);
+                    Assert(islandFloatCalls == 1, "Dragging the handle down past the threshold must request a floating window");
+                    ui.SuperIsland.RemoveSession("review-test");
                     Debug.Log("TABLET_GESTURE_GRAPHIC_REVIEW_OK: full interactive graphics touch review passed across portrait and landscape ratios (16:10, 4:3, portrait), music progress bar & scroll & slider & textfield input isolation, multi-touch second touch point rejection, orientation rotation reset, and system back navigation");
 
                     SessionState.SetBool(PendingKey, false);

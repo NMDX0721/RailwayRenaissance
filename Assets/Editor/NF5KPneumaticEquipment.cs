@@ -148,7 +148,7 @@ public static class NF5KPneumaticEquipment
         try
         {
             foreach(string name in new[]{"CabInteriorBlockout","CabDaylightReview","CabSimulationReview","CabRailMotionReview"}){var scene=EditorSceneManager.OpenScene("Assets/Scenes/"+name+".unity");Apply(GameObject.Find("CabInterior_Blockout").transform);EditorSceneManager.SaveScene(scene);}
-            AssetDatabase.SaveAssets();EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
+            AssetDatabase.SaveAssets();EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");UnityEngine.Object.FindAnyObjectByType<CabDaylightEnvironment>().Apply(CabDaylightEnvironment.DayPreset.Overcast);
             NF5KBogieDetailReview.ConfigureInspectionLighting();var light=new GameObject("Temporary_Service_Inspection_Light").AddComponent<Light>();light.type=LightType.Directional;light.intensity=.8f;light.transform.rotation=Quaternion.Euler(30,-50,0);
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=2.15f;camera.transform.position=new Vector3(4,-.05f,14);camera.transform.LookAt(new Vector3(0,-.50f,11.8f));
             NF5KBogieDetailReview.Capture(camera,"tools/cab_reference/interior_review/pneumatic_reservoir_verified.png");

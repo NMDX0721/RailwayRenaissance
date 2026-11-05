@@ -21,6 +21,13 @@ public class TypewriterEffect : MonoBehaviour
     private float sfxTimer;
 
     public bool IsTyping => isTyping;
+    public event Action<string> TextUpdated;
+
+    private void SetRenderedText(string text)
+    {
+        dialogueText.text = text;
+        TextUpdated?.Invoke(text);
+    }
 
     public void Initialize(Label textLabel)
     {
@@ -63,7 +70,7 @@ public class TypewriterEffect : MonoBehaviour
         }
 
         isTyping = true;
-        dialogueText.text = "";
+        SetRenderedText("");
 
         // 设置页“文字速度”(1–10，默认 5)：速度越大每字间隔越短，默认值保持原来的 0.03s
         int speedSetting = Mathf.Clamp(PlayerPrefs.GetInt("TextSpeed", 5), 1, 10);
@@ -77,7 +84,7 @@ public class TypewriterEffect : MonoBehaviour
         {
             if (skipRequested)
             {
-                dialogueText.text = text;
+                SetRenderedText(text);
                 break;
             }
 
@@ -116,13 +123,13 @@ public class TypewriterEffect : MonoBehaviour
                 }
 
                 textBuilder.Append(text[i]);
-                dialogueText.text = textBuilder.ToString();
+                SetRenderedText(textBuilder.ToString());
                 i++;
             }
 
             if (skipRequested)
             {
-                dialogueText.text = text;
+                SetRenderedText(text);
                 break;
             }
             yield return null;

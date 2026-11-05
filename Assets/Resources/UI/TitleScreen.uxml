@@ -23,7 +23,7 @@
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
         <Button name="btn-continue" text="继续运营" class="glass-button"
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
-        <Button name="btn-archive" text="站长日志" class="glass-button"
+        <Button name="btn-archive" text="归途" class="glass-button"
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />
         <Button name="btn-settings" text="站务公告" class="glass-button"
                 style="padding: 12px 24px; margin: 0 10px; background-color: rgba(40, 25, 15, 0.35); border-width: 1px; border-color: rgba(255, 220, 150, 0.55); border-radius: 8px; color: rgba(255, 215, 0, 0.95); font-size: 20px; -unity-text-align: middle-center;" />

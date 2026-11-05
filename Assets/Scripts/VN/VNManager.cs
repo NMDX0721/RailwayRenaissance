@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.EventSystems;
 
-public class VNManager : MonoBehaviour
+public partial class VNManager : MonoBehaviour
 {
     public static VNManager Instance { get; private set; }
 
@@ -58,6 +58,7 @@ public class VNManager : MonoBehaviour
     private Label bookmarkToast;
     private Coroutine bookmarkToastCoroutine;
     private VisualElement episodeClearOverlay;
+    private string pendingEpisodeScript;
     private Coroutine autoAdvanceCoroutine;
     private bool clickedButtonThisFrame; // 按钮点击标记，防止 root BubbleUp 误推进
     private Label musicToast;
@@ -98,6 +99,7 @@ public class VNManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        lineVoice?.Clear();
         if (VNAudioManager.Instance != null)
             VNAudioManager.Instance.OnBGMStarted -= ShowMusicToast;
     }
@@ -153,7 +155,7 @@ public class VNManager : MonoBehaviour
             }
         }
 
-        // 站长日志·故事回看：跳播指定章节脚本（支持书签跳转——指定场景/对话索引）
+        // 平板归途·故事回看：跳播指定章节脚本（支持书签跳转——指定场景/对话索引）
         string replay = PlayerPrefs.GetString("VN_ReplayScript", "");
         if (!string.IsNullOrEmpty(replay))
         {
@@ -179,7 +181,8 @@ public class VNManager : MonoBehaviour
         }
 
         // 强制退出恢复：存在未完成的自动书签，且非读档/继续运营/回看进入 → 提示继续观看
-        bool isLoadFlow = PlayerPrefs.HasKey("VN_AutoLoad") || PlayerPrefs.HasKey("VN_ShowLoadUI") || PlayerPrefs.HasKey("VN_ReplayScript");
+        bool isLoadFlow = PlayerPrefs.GetInt("VN_AutoLoad", 0) == 1 || PlayerPrefs.GetInt("VN_ShowLoadUI", 0) == 1 ||
+            !string.IsNullOrEmpty(PlayerPrefs.GetString("VN_ReplayScript", "")) || PlayerPrefs.HasKey("VN_LoadSaveSlot");
         var incomplete = BookmarkManager.FindIncompleteAuto();
         if (incomplete != null && !isLoadFlow)
         {
@@ -243,8 +246,8 @@ public class VNManager : MonoBehaviour
             {
                 resumeDialog.style.display = DisplayStyle.None;
                 pendingResumeBookmark = null;
-                BookmarkManager.JumpToBookmark(bm);
-                UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
+                if (BookmarkManager.JumpToBookmark(bm))
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("VN_Test");
             });
     }
 
@@ -253,11 +256,7 @@ public class VNManager : MonoBehaviour
     /// <summary>从书签指定的场景/对话位置开始播放脚本。</summary>
     private void StartBookmarkScript(string scriptName, int sceneIndex, int dialogueIndex)
     {
-        StartScript(scriptName);
-        // StartScript 已设 sceneIndex=0/dialogueIndex=0，重定位到书签
-        if (currentScript == null || currentSceneIndex >= currentScript.scenes.Length) return;
-        int targetScene = Mathf.Clamp(sceneIndex, 0, currentScript.scenes.Length - 1);
-        StartScriptAt(scriptName, targetScene, dialogueIndex);
+        StartScriptAt(scriptName, sceneIndex, dialogueIndex);
     }
 
     private void StartScriptAt(string scriptName, int sceneIndex, int dialogueIndex)
@@ -265,17 +264,24 @@ public class VNManager : MonoBehaviour
         if (string.IsNullOrEmpty(scriptName)) return;
         currentScript = jsonParser.LoadScript(scriptName);
         if (currentScript == null) { Debug.LogError("Failed to load: " + scriptName); return; }
+        if (sceneIndex < 0 || sceneIndex >= currentScript.scenes.Length || dialogueIndex < 0 ||
+            dialogueIndex >= (currentScript.scenes[sceneIndex].d?.Length ?? 0))
+        {
+            BookmarkManager.TakeReplayVariables();
+            StartScript(scriptName);
+            return;
+        }
         currentScriptName = scriptName;
         currentSceneIndex = sceneIndex;
         currentDialogueIndex = dialogueIndex;
         ResetProgressShown();
         isScriptRunning = true;
 
-        TitleArchiveUI.AutoUnlock(scriptName);
+        StoryArchiveProgress.AutoUnlock(scriptName);
 
         vnBacklog?.Clear();
         characterSpriteManager?.ClearAll();
-        variables.Clear();
+        RestoreVariableState(BookmarkManager.TakeReplayVariables());
 
         var scene = currentScript.scenes[Mathf.Min(sceneIndex, currentScript.scenes.Length - 1)];
         if (!string.IsNullOrEmpty(scene.bg))
@@ -309,6 +315,13 @@ public class VNManager : MonoBehaviour
     {
         if (hasFocus && LoginManager.cursorTexture != null)
             UnityEngine.Cursor.SetCursor(LoginManager.cursorTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+    }
+
+    private void OnApplicationPause(bool paused)
+    {
+        if (!paused || !isScriptRunning || currentScript == null || VN_ReplayInjected) return;
+        AutoBookmarkTrack();
+        PlayerPrefs.Save();
     }
 
     private void AddCursorHover(VisualElement element)
@@ -372,7 +385,16 @@ public class VNManager : MonoBehaviour
         fullScreenNews.OnClosed += OnFullScreenNewsClosed;
 
         SetupMenuButtons(uiDoc);
+        SetupReadingPresentation();
 
+        SetupOptionsUI();
+        var viewport = gameObject.AddComponent<VNViewportLayout>();
+        viewport.ReadingBox = dialogueBox;
+        viewport.Init(uiDoc);
+    }
+
+    private void SetupOptionsUI()
+    {
         optionsOverlay = new VisualElement();
         optionsOverlay.name = "options-overlay";
         optionsOverlay.style.position = Position.Absolute;
@@ -395,8 +417,8 @@ public class VNManager : MonoBehaviour
         optionsContainer.style.right = new Length(0, LengthUnit.Pixel);
         optionsContainer.style.flexDirection = FlexDirection.Column;
         optionsContainer.style.alignItems = Align.Center;
-        optionsContainer.style.justifyContent = Justify.Center;
-        optionsContainer.style.paddingBottom = 80;
+        optionsContainer.style.justifyContent = Justify.FlexEnd;
+        optionsContainer.style.paddingBottom = 56;
         optionsContainer.style.display = DisplayStyle.None;
 
         var vnUss = Resources.Load<StyleSheet>("UI/VN/DialogueBox");
@@ -434,7 +456,7 @@ public class VNManager : MonoBehaviour
         root.Add(menuBar);
 
         // Auto 按钮
-        autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto" };
+        autoBtn = new UnityEngine.UIElements.Button(() => ToggleAutoPlay()) { text = "Auto", name = "vn-auto-btn" };
         autoBtn.focusable = false; // 防止 Space 激活聚焦按钮导致误开 Auto
         autoBtn.RegisterCallback<PointerDownEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
         autoBtn.RegisterCallback<ClickEvent>(evt => { clickedButtonThisFrame = true; evt.StopImmediatePropagation(); });
@@ -537,22 +559,21 @@ public class VNManager : MonoBehaviour
         menuExpandedContainer.pickingMode = PickingMode.Position;
         root.Add(menuExpandedContainer);
 
-        // 子菜单项：回顾 / 跳过 / 书签 / 退出（Shift+→ 仍可场景内快进，不再占菜单位）
-        var menuItemDefs = new (Texture2D icon, System.Action action)[]
+        // 书签在姓名旁；信号显示开关仅在设置。Menu 只保留三个操作图标。
+        var menuItemDefs = new (string key, string label, Texture2D icon, System.Action action)[]
         {
-            (PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()), // 回顾
-            (PixelIconHelper.SkipFastIcon(), () => RequestSkip()),     // 跳过（Day0 前答题 / 注册后确认）
-            (PixelIconHelper.BookmarkTabIcon(), () => AddBookmark()), // 书签
-            (PixelIconHelper.ExitDoorIcon(), () => ShowExitDialog()), // 退出
+            ("backlog", "回顾", PixelIconHelper.MenuHamburgerIcon(), () => ToggleBacklog()),
+            ("skip", "跳过", PixelIconHelper.SkipFastIcon(), () => RequestSkip()),
+            ("exit", "退出", PixelIconHelper.ExitDoorIcon(), () => ShowExitDialog()),
         };
 
-        foreach (var (icon, itemAction) in menuItemDefs)
+        foreach (var (key, label, icon, itemAction) in menuItemDefs)
         {
-            var btn = new UnityEngine.UIElements.Button(() => itemAction());
+            var btn = new UnityEngine.UIElements.Button(() => itemAction()) { name = "vn-" + key + "-btn", tooltip = label };
             // 图标用 Label 背景渲染（避免 Unicode 字形在不同系统字体下的不一致）
             var iconLabel = new Label();
-            iconLabel.style.width = 30;
-            iconLabel.style.height = 30;
+            iconLabel.style.width = 24;
+            iconLabel.style.height = 24;
             iconLabel.style.flexShrink = 0;
             iconLabel.pickingMode = PickingMode.Ignore;
             iconLabel.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
@@ -562,6 +583,7 @@ public class VNManager : MonoBehaviour
             iconLabel.style.backgroundImage = new StyleBackground(icon);
             iconLabel.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 0.95f);
             btn.Add(iconLabel);
+            btn.style.flexDirection = FlexDirection.Column;
             // Click 必须停冒泡：否则松开时 Bubble 到 root 会推进下一句（书签/跳过误推进的根因）
             btn.RegisterCallback<PointerDownEvent>(evt =>
             {
@@ -576,7 +598,7 @@ public class VNManager : MonoBehaviour
                 evt.StopImmediatePropagation();
             });
             // 居中图标：去掉 Button 默认 padding，显式 flex 居中（框小、图标大）
-            btn.style.width = 48;
+            btn.style.width = 40;
             btn.style.height = 40;
             btn.style.paddingLeft = 0; btn.style.paddingRight = 0;
             btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
@@ -643,12 +665,8 @@ public class VNManager : MonoBehaviour
         fastFwdBadge.pickingMode = PickingMode.Ignore;
         fastFwdBadge.style.display = DisplayStyle.None;
 
-        var icon = new Label();
-        icon.style.width = 18; icon.style.height = 18;
-        icon.style.backgroundImage = new StyleBackground(PixelIconHelper.SkipFastIcon());
-        icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
-        icon.style.unityBackgroundImageTintColor = new Color(1f, 0.86f, 0.59f, 1f);
-        icon.pickingMode = PickingMode.Ignore;
+        var icon = new VNInkIcon(VNArtIcon.Speed);
+        icon.style.width = 28;icon.style.height = 28;
         fastFwdBadge.Add(icon);
 
         var txt = new Label(" ×2");
@@ -943,7 +961,7 @@ public class VNManager : MonoBehaviour
             musicToast = new Label("");
             musicToast.style.position = Position.Absolute;
             musicToast.style.top = 50;
-            musicToast.style.left = 16;
+            musicToast.style.left = 82;
             musicToast.style.maxWidth = 300;
             musicToast.style.fontSize = 16;
             musicToast.style.color = new Color(1f, 0.92f, 0.78f, 0.9f);
@@ -1193,11 +1211,7 @@ public class VNManager : MonoBehaviour
         }
         Debug.Log("[VN] ReturnToTitle step: hide-vn-ui");
         // 只隐藏已存在的图鉴——绝不 EnsureInstance（退出路径凭空创建 2000+ 行 UITK 构建是 native 崩点）
-        try { TitleArchiveUI.Instance?.Hide(); }
-        catch (System.Exception ex) { Debug.LogError("[VN] archive hide failed: " + ex); }
         Debug.Log("[VN] ReturnToTitle step: archive-ok");
-        try { MainStoryUI.HideStatic(); }
-        catch (System.Exception ex) { Debug.LogError("[VN] mainstory hide failed: " + ex); }
         Debug.Log("[VN] ReturnToTitle step: mainstory-ok");
         try
         {
@@ -1267,32 +1281,6 @@ public class VNManager : MonoBehaviour
             kv.Key.style.display = kv.Value;
         }
         hiddenUiSnapshots.Clear();
-    }
-
-    /// <summary>打开站长日志（独立面板，标题/VN 通用）。暂停 VN 场景 BGM 交给日志面板自行处理。</summary>
-    private void OpenArchivePanel()
-    {
-        CloseAllPanels();
-        if (menuBar != null) menuBar.style.display = DisplayStyle.None;
-        // 暂停 VN 场景 BGM，避免与日志氛围曲叠放
-        VNAudioManager.Instance?.StopBGM(0.3f);
-        var archive = TitleArchiveUI.EnsureInstance();
-        archive.OnClosed -= ResumeVNSceneAudio;
-        archive.OnClosed += ResumeVNSceneAudio;
-        archive.Show();
-    }
-
-    /// <summary>日志关闭后：恢复当前场景 BGM。</summary>
-    private void ResumeVNSceneAudio()
-    {
-        if (currentScript != null && currentSceneIndex >= 0 && currentSceneIndex < currentScript.scenes.Length)
-        {
-            var scene = currentScript.scenes[currentSceneIndex];
-            if (!string.IsNullOrEmpty(scene.bgm))
-                VNAudioManager.Instance?.PlayBGM(scene.bgm, 0.3f);
-        }
-        // 恢复菜单栏
-        if (menuBar != null && !uiHidden) menuBar.style.display = DisplayStyle.Flex;
     }
 
     private void ShowConfirmDialog()
@@ -1377,6 +1365,7 @@ public class VNManager : MonoBehaviour
             return;
         }
 
+        RestoreVariableState(saveData.variables);
         currentSceneIndex = saveData.sceneIndex;
         currentDialogueIndex = saveData.dialogueIndex;
         ResetProgressShown();
@@ -1417,6 +1406,7 @@ public class VNManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateReadingPresentation();
         clickedButtonThisFrame = false; // 每帧重置按钮标记
 
         // 应用失焦（如 Win+S 截图、切窗口）时不处理键鼠，避免 Shift 被系统快捷键误触发倍速
@@ -1688,8 +1678,8 @@ public class VNManager : MonoBehaviour
 
     private void AdvanceOnClick()
     {
-        // 设置页“点击对话框推进”关闭后，点击不再推进（仍可用键盘、Auto 与菜单）
-        if (PlayerPrefs.GetInt("ClickAdvance", 1) == 0) return;
+        // Touch-only devices must retain a way to advance even with an old desktop preference.
+        if (!Application.isMobilePlatform && PlayerPrefs.GetInt("ClickAdvance", 1) == 0) return;
         lastAdvanceTime = Time.unscaledTime;
         StopAutoPlay();
         if (dialogueBox != null && dialogueBox.IsTyping())
@@ -1717,6 +1707,11 @@ public class VNManager : MonoBehaviour
 
     public void StartScript(string scriptName)
     {
+        StartScriptInternal(scriptName, false);
+    }
+
+    private void StartScriptInternal(string scriptName, bool preserveVariables)
+    {
         if (string.IsNullOrEmpty(scriptName)) return;
         if (jsonParser == null)
         {
@@ -1731,12 +1726,12 @@ public class VNManager : MonoBehaviour
         ResetProgressShown();
         isScriptRunning = true;
 
-        // 站长日志解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
-        TitleArchiveUI.AutoUnlock(scriptName);
+        // 剧情收集解锁绑定：进入序章脚本时解锁对应 CG/角色/列车
+        StoryArchiveProgress.AutoUnlock(scriptName);
 
         vnBacklog?.Clear();
         characterSpriteManager?.ClearAll();
-        variables.Clear();
+        if (!preserveVariables) variables.Clear();
 
         if (currentScript.scenes.Length > 0)
         {
@@ -1987,8 +1982,9 @@ public class VNManager : MonoBehaviour
         if (entry.t == "loc")
         {
             dialogueBox?.Hide();
-            ShowLocationCard(entry.text);
+            ShowLocationCard(LocalizeLine(entry).PrimaryText);
         }
+        else BindLineVoice(entry);
     }
 
     /// <summary>话标题卡：黑底 + 话数 + 标题，2秒后淡出。</summary>
@@ -2113,6 +2109,12 @@ public class VNManager : MonoBehaviour
             preview);
     }
 
+    private VNLocalizedLine LocalizeLine(DialogueEntry entry)
+    {
+        string scriptId = !string.IsNullOrEmpty(currentScript?.id) ? currentScript.id : currentScriptName;
+        return VNLocalization.Resolve(scriptId, VNLocalization.Key(scriptId, currentSceneIndex, currentDialogueIndex, entry), entry.text, entry.textJa);
+    }
+
     private void ShowCurrentDialogue()
     {
         if (currentScript == null || currentSceneIndex >= currentScript.scenes.Length) return;
@@ -2128,6 +2130,8 @@ public class VNManager : MonoBehaviour
         if (currentDialogueIndex >= scene.d.Length) return;
         var entry = scene.d[currentDialogueIndex];
 
+        ResetLineVoice();
+        dialogueBox?.SetStoryRoute(currentScriptName);
         // 底部剧情进度条：当前句/全本句数（所有推进路径都汇聚到这里，单点刷新）
         UpdateProgress();
 
@@ -2159,7 +2163,7 @@ public class VNManager : MonoBehaviour
 
         if (entry.t == "c")
         {
-            ShowOptions(entry.opts);
+            ShowOptions(entry.opts, LocalizeLine(entry).PrimaryText);
         }
         else if (entry.t == "scroll")
         {
@@ -2167,7 +2171,7 @@ public class VNManager : MonoBehaviour
             dialogueBox?.Hide();
             HideOptions();
             if (menuBar != null) menuBar.style.display = DisplayStyle.None;
-            fullScreenNews?.Show(entry.text);
+            fullScreenNews?.Show(LocalizeLine(entry).PrimaryText);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
         }
         else if (entry.t == "boot")
@@ -2176,7 +2180,7 @@ public class VNManager : MonoBehaviour
             dialogueBox?.Hide();
             HideOptions();
             if (menuBar != null) menuBar.style.display = DisplayStyle.None;
-            ShowBootScreen(entry.text, entry.s);
+            ShowBootScreen(LocalizeLine(entry).PrimaryText, entry.s);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
             return; // 不显示常规对话，由BootScreen处理点击
         }
@@ -2188,7 +2192,7 @@ public class VNManager : MonoBehaviour
             if (menuBar != null) menuBar.style.display = DisplayStyle.None;
             bool isSmall = entry.size == "small";
             ShowCgScreen(entry.text, isSmall);
-            TitleArchiveUI.UnlockCG(entry.text);
+            StoryArchiveProgress.UnlockCG(entry.text);
             vnBacklog?.AddEntry(entry.s, entry.text, currentSceneIndex, currentDialogueIndex);
             return;
         }
@@ -2204,14 +2208,15 @@ public class VNManager : MonoBehaviour
             if (progressSeeking) return; // 拖动扫过：不弹卡不切界面（松手后由 RefreshAfterSeek 补显示）
             dialogueBox?.Hide();
             HideOptions();
-            ShowLocationCard(entry.text);
+            ShowLocationCard(LocalizeLine(entry).PrimaryText);
         }
         else
         {
             HideOptions();
             // 说话者显示名：主角替换为别名（如果设置了）
             var displaySpeaker = ResolveSpeakerName(entry.s);
-            dialogueBox?.ShowDialogue(displaySpeaker, entry.text);
+            dialogueBox?.ShowDialogue(displaySpeaker, entry.text, entry.textJa, LocalizeLine(entry));
+            BindLineVoice(entry);
 
             bool isNarration = entry.t == "n" || string.IsNullOrEmpty(entry.s);
             if (isNarration)
@@ -2232,7 +2237,7 @@ public class VNManager : MonoBehaviour
         }
     }
 
-    private void ShowOptions(OptionData[] options)
+    private void ShowOptions(OptionData[] options, string prompt = null)
     {
         if (optionsContainer == null || options == null) return;
         optionsContainer.Clear();
@@ -2241,6 +2246,21 @@ public class VNManager : MonoBehaviour
         dialogueBox?.Hide();
         StopAutoPlay();
 
+        if (!string.IsNullOrWhiteSpace(prompt))
+        {
+            var caption = new Label(prompt) { name = "choice-prompt" };
+            caption.style.width = Length.Percent(92);
+            caption.style.maxWidth = 700;
+            caption.style.fontSize = 24;
+            caption.style.color = new Color(1f, 0.95f, 0.85f, 1f);
+            caption.style.whiteSpace = WhiteSpace.Normal;
+            caption.style.unityTextAlign = TextAnchor.MiddleCenter;
+            caption.style.marginBottom = 20;
+            caption.pickingMode = PickingMode.Ignore;
+            if (gameFont != null) caption.style.unityFontDefinition = new FontDefinition { font = gameFont };
+            optionsContainer.Add(caption);
+        }
+
         foreach (var opt in options)
         {
             if (!EvaluateCondition(opt.condition)) continue;
@@ -2248,24 +2268,22 @@ public class VNManager : MonoBehaviour
             var optCopy = opt;
             var btn = new UnityEngine.UIElements.Button(() =>
             {
-                ApplySetValue(optCopy.setValue);
-                HideOptions();
-                currentSceneIndex = optCopy.next;
-                currentDialogueIndex = 0;
-                ResetProgressShown();
-                ShowCurrentDialogue();
+                SelectOption(optCopy);
             })
-            { text = opt.text };
+            { text = VNLocalization.Resolve(currentScript.id,
+                VNLocalization.Key(currentScript.id, currentSceneIndex, currentDialogueIndex, currentScript.scenes[currentSceneIndex].d[currentDialogueIndex])
+                + "/option-" + System.Array.IndexOf(options, opt), opt.text).PrimaryText };
             // 纯代码绘制：不用图片素材/不用 USS 类（用户要求）
             btn.pickingMode = PickingMode.Position;
             AddCursorHover(btn);
-            btn.style.width = new Length(700, LengthUnit.Pixel);
+            btn.style.width = Length.Percent(92);
+            btn.style.maxWidth = 700;
             btn.style.height = new Length(76, LengthUnit.Pixel);
             btn.style.marginBottom = new Length(16, LengthUnit.Pixel);
             btn.style.fontSize = 32;
             btn.style.color = new Color(1f, 0.95f, 0.85f, 1f);
             btn.style.unityTextAlign = TextAnchor.MiddleCenter;
-            btn.style.unityTextOutlineWidth = 2;
+            btn.style.unityTextOutlineWidth = 0;
             btn.style.unityTextOutlineColor = new Color(0.15f, 0.08f, 0.05f, 0.9f);
             // 深棕底 + 金色边框（像素风单选卡）
             btn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.94f);
@@ -2298,12 +2316,41 @@ public class VNManager : MonoBehaviour
                 btn.style.unityFontDefinition = new FontDefinition { font = gameFont };
             optionsContainer.Add(btn);
         }
+        GetComponent<VNViewportLayout>()?.Refresh();
     }
 
     private void HideOptions()
     {
         if (optionsOverlay != null) optionsOverlay.style.display = DisplayStyle.None;
         if (optionsContainer != null) optionsContainer.style.display = DisplayStyle.None;
+    }
+
+    private void SelectOption(OptionData option)
+    {
+        if (option == null || currentScript?.scenes == null || option.next < 0 ||
+            option.next >= currentScript.scenes.Length || option.nextDialogue < 0 ||
+            option.nextDialogue >= (currentScript.scenes[option.next].d?.Length ?? 0))
+        {
+            Debug.LogError("[VN] Invalid option destination; selection was not applied.");
+            return;
+        }
+        ApplySetValue(option.setValue);
+        HideOptions();
+        bool sceneChanged = currentSceneIndex != option.next;
+        currentSceneIndex = option.next;
+        currentDialogueIndex = option.nextDialogue;
+        if (sceneChanged)
+        {
+            var destination = currentScript.scenes[currentSceneIndex];
+            if (!string.IsNullOrEmpty(destination.bg))
+                backgroundManager?.SetBackground(destination.bg, ParseTransition(destination.transition));
+            if (!string.IsNullOrEmpty(destination.bgm))
+                VNAudioManager.Instance?.PlayBGM(destination.bgm, 1.0f, false);
+            characterSpriteManager?.ClearAll();
+        }
+        ResetProgressShown();
+        ShowCurrentDialogue();
+        if (isScriptRunning && currentScript != null && !VN_ReplayInjected) AutoBookmarkTrack();
     }
 
     private void ShowBootScreen(string text, string speaker)
@@ -2479,6 +2526,8 @@ public class VNManager : MonoBehaviour
 
     private void EndScript()
     {
+        ResetLineVoice();
+        StoryArchiveProgress.CompleteEpisode(currentScriptName);
         StopAutoPlay();
         isScriptRunning = false;
         dialogueBox?.SetPhoneCall("__off__");
@@ -2495,7 +2544,7 @@ public class VNManager : MonoBehaviour
             currentScript = null;
             currentScriptName = null;
             // 话完成：剧情中不弹重奖励窗，直接节过渡（解锁静默入档）
-            var newUnlocks = TitleArchiveUI.TakePendingUnlocks();
+            var newUnlocks = StoryArchiveProgress.TakePendingUnlocks();
             _ = newUnlocks; // 已入库，不在剧情中打断
             ShowEpisodeClear(curName, next);
             return;
@@ -2626,8 +2675,10 @@ public class VNManager : MonoBehaviour
             // 近黑暖棕半透明，保留底层场景轮廓
             episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.88f);
             episodeClearOverlay.pickingMode = PickingMode.Position;
+            episodeClearOverlay.RegisterCallback<ClickEvent>(OnEpisodeClearClick);
             root.Add(episodeClearOverlay);
         }
+        pendingEpisodeScript = nextScript;
         episodeClearOverlay.Clear();
         episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.88f);
 
@@ -2655,17 +2706,6 @@ public class VNManager : MonoBehaviour
         episodeClearOverlay.Add(tbc);
 
         // 点击：取消倒计时，直接进下一话
-        episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
-        {
-            if (autoAdvanceCoroutine != null)
-            {
-                StopCoroutine(autoAdvanceCoroutine);
-                autoAdvanceCoroutine = null;
-            }
-            episodeClearOverlay.style.display = DisplayStyle.None;
-            StartScript(nextScript);
-        });
-
         episodeClearOverlay.style.display = DisplayStyle.Flex;
         // 阶段1停留 → 阶段2横条 → 自动进
         autoAdvanceCoroutine = StartCoroutine(EpisodeClearSequence(nextScript, epNum, nextTitle, fontDef));
@@ -2681,17 +2721,7 @@ public class VNManager : MonoBehaviour
         // 阶段2：清空 → 暖金横条 Next Episode（BA 结构 + 本作配色）
         episodeClearOverlay.Clear();
         episodeClearOverlay.style.backgroundColor = new Color(0.05f, 0.03f, 0.02f, 0.94f);
-        // 重绑点击（Clear 会丢）
-        episodeClearOverlay.RegisterCallback<ClickEvent>(e =>
-        {
-            if (autoAdvanceCoroutine != null)
-            {
-                StopCoroutine(autoAdvanceCoroutine);
-                autoAdvanceCoroutine = null;
-            }
-            episodeClearOverlay.style.display = DisplayStyle.None;
-            StartScript(nextScript);
-        });
+        // Clear removes children, while the overlay's single click handler remains registered.
 
         var bandRow = new VisualElement();
         bandRow.style.position = Position.Absolute;
@@ -2765,10 +2795,29 @@ public class VNManager : MonoBehaviour
         }
         if (episodeClearOverlay != null && episodeClearOverlay.style.display == DisplayStyle.Flex)
         {
-            episodeClearOverlay.style.display = DisplayStyle.None;
-            StartScript(nextScript);
+            ContinueAfterEpisode();
         }
         autoAdvanceCoroutine = null;
+    }
+
+    private void OnEpisodeClearClick(ClickEvent evt)
+    {
+        evt.StopImmediatePropagation();
+        if (autoAdvanceCoroutine != null)
+        {
+            StopCoroutine(autoAdvanceCoroutine);
+            autoAdvanceCoroutine = null;
+        }
+        ContinueAfterEpisode();
+    }
+
+    private void ContinueAfterEpisode()
+    {
+        string next = pendingEpisodeScript;
+        if (string.IsNullOrEmpty(next)) return;
+        pendingEpisodeScript = null;
+        episodeClearOverlay.style.display = DisplayStyle.None;
+        StartScriptInternal(next, true);
     }
 
     private IEnumerator AutoAdvanceCountdown(float seconds, VisualElement fill, System.Action onDone)
@@ -2803,7 +2852,7 @@ public class VNManager : MonoBehaviour
 
     private string GetEpisodeTitle(string scriptName)
     {
-        // 从 MainStoryUI 的章节数据获取标题
+        // 章节标题与归途保持一致
         var titles = new System.Collections.Generic.Dictionary<string, string>
         {
             {"prologue_01_news", "广播里的时代"},
@@ -2848,6 +2897,22 @@ public class VNManager : MonoBehaviour
         variables.Clear();
     }
 
+    public VNVariableState[] CaptureVariableState()
+    {
+        var snapshot = new List<VNVariableState>();
+        foreach (var item in variables)
+            snapshot.Add(new VNVariableState { name = item.Key, value = item.Value });
+        return snapshot.ToArray();
+    }
+
+    private void RestoreVariableState(VNVariableState[] snapshot)
+    {
+        variables.Clear();
+        if (snapshot == null) return;
+        foreach (var item in snapshot)
+            if (item != null && !string.IsNullOrEmpty(item.name)) variables[item.name] = item.value;
+    }
+
     private bool EvaluateCondition(string condition)
     {
         if (string.IsNullOrEmpty(condition)) return true;
@@ -2865,22 +2930,26 @@ public class VNManager : MonoBehaviour
     private void ApplySetValue(string setValue)
     {
         if (string.IsNullOrEmpty(setValue)) return;
-        var parts = setValue.Split('=');
-        if (parts.Length != 2) return;
-        string varName = parts[0].Trim();
-        string valStr = parts[1].Trim();
-        if (valStr == "true" || valStr == "1")
+        foreach (string assignment in setValue.Split(','))
         {
-            SetVariable(varName, true);
-            return;
+            var parts = assignment.Split('=');
+            if (parts.Length != 2) continue;
+            string varName = parts[0].Trim();
+            string valStr = parts[1].Trim();
+            if (string.IsNullOrEmpty(varName)) continue;
+            if (valStr == "true" || valStr == "1")
+            {
+                SetVariable(varName, true);
+                continue;
+            }
+            if (valStr == "false" || valStr == "0")
+            {
+                SetVariable(varName, false);
+                continue;
+            }
+            // 字符串值：注册 varName_value flag，条件写 condition="varName_value"
+            SetVariable(varName + "_" + valStr.ToLower(), true);
         }
-        if (valStr == "false" || valStr == "0")
-        {
-            SetVariable(varName, false);
-            return;
-        }
-        // 字符串值：注册 varName_value flag，条件写 condition="varName_value"
-        SetVariable(varName + "_" + valStr.ToLower(), true);
     }
 
     private TransitionType ParseTransition(string transition)
@@ -2954,6 +3023,7 @@ public class VNManager : MonoBehaviour
     /// <summary>VN→经营场景过渡：构建 VNExitData 并切换场景。</summary>
     private void TransitionToGameplay()
     {
+        StoryArchiveProgress.CompleteEpisode(currentScriptName);
         StopAutoPlay();
         isScriptRunning = false;
 
@@ -3002,7 +3072,7 @@ public class VNManager : MonoBehaviour
             // 当前句已播完且无选项/面板挡着 → 立刻跳下一句，不等 autoPlayDelay
             bool typing = dialogueBox != null && dialogueBox.IsTyping();
             bool optionsShowing = optionsContainer != null && optionsContainer.style.display == DisplayStyle.Flex;
-            if (!typing && !optionsShowing && !AdvanceBlockedByPanels())
+            if (!typing && !optionsShowing && !AdvanceBlockedByPanels() && (lineVoice == null || !lineVoice.IsPending))
                 NextDialogue();
             StartAutoPlayTimer();
         }
@@ -3082,6 +3152,51 @@ public class VNManager : MonoBehaviour
         OnBacklogEntryClicked(sceneIndex, dialogueIndex, false);
     }
 
+    private void RestoreCharacterSpritesUpTo(SceneData scene, int targetDialogueIndex)
+    {
+        if (characterSpriteManager == null || scene == null) return;
+        characterSpriteManager.ClearAll();
+        if (scene.d == null || targetDialogueIndex < 0 || targetDialogueIndex >= scene.d.Length) return;
+
+        CharacterEntry[] activeChars = null;
+        string activeEmotion = null;
+        string activeSpeaker = null;
+        string[] activeReactions = null;
+
+        for (int i = targetDialogueIndex; i >= 0; i--)
+        {
+            var e = scene.d[i];
+            if (e == null) continue;
+            if (e.t == "n" || (string.IsNullOrEmpty(e.s) && e.t != "loc"))
+            {
+                characterSpriteManager.ClearAll();
+                return;
+            }
+            if (e.chars != null && e.chars.Length > 0)
+            {
+                activeChars = e.chars;
+                activeEmotion = !string.IsNullOrEmpty(e.e) ? e.e : scene.e;
+                activeSpeaker = e.s;
+                activeReactions = e.reactions;
+                break;
+            }
+        }
+
+        if (activeChars == null && scene.chars != null && scene.chars.Length > 0)
+        {
+            activeChars = scene.chars;
+            activeEmotion = scene.e;
+            var targetEntry = scene.d[targetDialogueIndex];
+            if (targetEntry != null && !string.IsNullOrEmpty(targetEntry.e)) activeEmotion = targetEntry.e;
+            activeSpeaker = targetEntry?.s;
+        }
+
+        if (activeChars != null && activeChars.Length > 0)
+        {
+            characterSpriteManager.UpdateDisplay(activeChars, activeEmotion, activeSpeaker, activeReactions);
+        }
+    }
+
     private void OnBacklogEntryClicked(int sceneIndex, int dialogueIndex, bool preserveProgressFrontier)
     {
         if (!isScriptRunning || currentScript == null) return;
@@ -3102,7 +3217,8 @@ public class VNManager : MonoBehaviour
         if (!string.IsNullOrEmpty(scene.bgm))
             VNAudioManager.Instance?.PlayBGM(scene.bgm);
 
-        characterSpriteManager?.ClearAll();
+        // 恢复立绘：回放当前场景历史立绘，避免跳转后立绘丢失
+        RestoreCharacterSpritesUpTo(scene, dialogueIndex);
 
         // 回顾以跳转点重建：丢弃目标之后的未来条目，(0,0)→目标前一句重放历史；
         // 目标句随后由 ShowCurrentDialogue 追加为末条（否则旧列表里目标条会重复出现在底部）
@@ -3215,6 +3331,9 @@ public class VNManager : MonoBehaviour
         float delay = PlayerPrefs.HasKey("AutoInterval") ? Mathf.Clamp(PlayerPrefs.GetInt("AutoInterval", 2), 1, 10) : autoPlayDelay;
         yield return new WaitForSeconds(delay);
 
+        while (isAutoPlay && isScriptRunning &&
+               ((lineVoice != null && lineVoice.IsPending) || menuExpanded || uiHidden || AdvanceBlockedByPanels()))
+            yield return null;
         if (!isAutoPlay || !isScriptRunning) yield break;
         if (tabletSetupOpen) yield break;
 

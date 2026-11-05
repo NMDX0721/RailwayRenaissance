@@ -1,5 +1,13 @@
 # 铁路复兴：沙能冲击 — AI 项目总览
 
+2026-11-03：电池箱与燃油箱细化模型导出共享预制体，装入四基线NF-5K整车检查场景，并接入整车生成器；不表示新电气/燃油功能，也不覆盖ATO或另一套运行时Cab3DSceneController车辆。见 [装车记录](NF5K_EQUIPMENT_INSTALLATION.md)。
+
+2026-11-03 VN多语言：源剧本与ja/en独立译文分离，按稳定ID/坐标兼容键和源文哈希加载、缓存缺译并回退。主副字幕按句对齐自然流排，不强制每句另起一行；小副文在上、大主文在下。提供中日英独立样例与Gemini十章翻译模板；不表示全篇翻译完成。见[多语言底层与翻译交付](VN_LOCALIZATION.md)。
+
+2026-11-03内容入口更新：旧站长日志与旧Main Story界面文件正式删除；剧情/书签在归途、CG/场景在相册、原声在音乐、人物/列车在媒姬百科、成就在笔记、统计在RDA。进度仍使用原Prefs键，由独立StoryArchiveProgress服务维护，不再由旧界面类承担。当前目标平台为Windows与Android平板；编辑器模拟检查不等同独立Player或平板实机验收。见 [本轮收尾](VN_FINAL_TABLET_ACCEPTANCE_20261103.md)。
+
+2026-11-02启动入口更新：Login场景的兼容LoginManager现在直接进入VN_Test，不再展示已废弃的自动登录/凭证校验进度界面。原目标保持不变，VN自身存档/书签恢复处理保持。本文更早的登录/标题流程说明为历史结构；本轮验证范围见 [入口修复记录](VN_STARTUP_ROUTING_20261102.md)。
+
 2026-10-26 独立ATO V2研究场景支持900m分段任务、三目标切换、完整暂停检查点与人工接管。名义Unity闭环和精确重放通过，84次冻结执行保留全部失败；失配可靠性尚未通过，不声称节气或真实车辆适用。见[结果与限制](../research/ato_v2_results.md)。
 
 2026-10-25新增独立ATO研究场景：复用纯C#控制器进行速度跟踪和停车，保留人工接管/联锁；独立.NET开发对照及Unity Play检查通过。结果属于开发集，不能声称自适应算法优越或真实列车适用。见[研究原型实现](ATO_RESEARCH_IMPLEMENTATION.md)。
@@ -437,3 +445,5 @@ JSON 结构：
 # NF5K backend prototype (2026-10-21)
 
 An opt-in fixed-step backend now models delayed diesel start, finite-air automatic/independent brakes, power/adhesion-limited traction, grade, fuel, battery and thermal protection. `CabSimulationReview.unity` connects it to the existing cockpit state/gauges through `CabSimulationDriver`; other scenes retain legacy demonstration physics. This is a lumped prototype with candidate NF5K short-consist parameters, not calibrated original-vehicle dynamics. Full route movement, 3D handle interaction and global save-slot integration remain pending. Research/formulas/validation: `NF5K_SIMULATION_BACKEND.md`.
+
+2026-11-03 VN阅读界面：Menu展开仅图标，书签移至姓名左侧；独立配音通道支持审核译文/源文双哈希、重播、定位、Auto等待及男主/旁白排除。19剧本具备原创矢量风景轨道、列车游标和可关闭的日式剧情氛围信号。正式音频尚未导入，验证范围见[阅读界面](VN_READING_PRESENTATION.md)。

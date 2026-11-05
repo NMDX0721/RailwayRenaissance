@@ -52,6 +52,10 @@ namespace RailwayRenaissance.Cab.Simulation
     public sealed class CabSimulation
     {
         public const double StepSeconds=.02;
+        public const double CoolingFanRatedRpm = 1450d;
+
+        public double CoolingFanTargetRpm(SimulationInput input) =>
+            State.Fan && !input.CoolingFailure ? CoolingFanRatedRpm : 0d;
         public SimulationConfig Config {get;}
         public SimulationState State {get;private set;}
         public CabSimulation(int seed,SimulationConfig config=null)
@@ -155,7 +159,7 @@ namespace RailwayRenaissance.Cab.Simulation
             double fuel=s.Running?(8+.25*load*c.EnginePowerW/1000)*dt/3600:0;
             fuel=Math.Min(s.FuelL,fuel);s.FuelL-=fuel;s.FuelUsedL+=fuel;
             if(s.CoolantC>83)s.Fan=true;else if(s.CoolantC<78)s.Fan=false;
-            double cooling=(u.CoolingFailure?150:900+(s.Fan?5600:0)+Math.Abs(s.SpeedMps)*50)*(s.CoolantC-u.AmbientC);
+            double cooling=(u.CoolingFailure?150:900+(CoolingFanTargetRpm(u)>0?5600:0)+Math.Abs(s.SpeedMps)*50)*(s.CoolantC-u.AmbientC);
             s.CoolantC+=(c.FullLoadHeatW*load-cooling)*dt/c.HeatCapacityJPerC;
             s.OilC=Lag(s.OilC,s.Running?s.CoolantC+8*load:u.AmbientC,120);
             if(s.CoolantC>=c.TripTemperatureC){s.ThermalTrip=true;s.Running=false;s.TractionN=0;s.CurrentA=0;s.RailPowerW=0;}

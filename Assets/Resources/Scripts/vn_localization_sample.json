@@ -1,0 +1,51 @@
+{
+  "id": "vn_localization_sample",
+  "scenes": [
+    {
+      "bg": "cabin_interior",
+      "bgm": "calm",
+      "d": [
+        {
+          "id": "suiyue_deadpan",
+          "t": "d",
+          "s": "岁月",
+          "e": "smile",
+          "text": "我只是在记录事实嘛！我是 AI！我不会开玩笑！"
+        },
+        {
+          "id": "missing_example",
+          "t": "d",
+          "s": "岁月",
+          "e": "gentle",
+          "text": "您……准备好了吗？"
+        },
+        {
+          "id": "choice_example",
+          "t": "c",
+          "text": "旅途中想做什么？",
+          "opts": [
+            {
+              "text": "聊聊旧铁路",
+              "next": 1
+            },
+            {
+              "text": "先休息一下",
+              "next": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bg": "cabin_interior",
+      "bgm": "calm",
+      "d": [
+        {
+          "id": "sample_end",
+          "t": "n",
+          "text": "窗外的铁轨向远处延伸。"
+        }
+      ]
+    }
+  ]
+}

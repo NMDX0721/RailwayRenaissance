@@ -81,11 +81,10 @@ namespace RailwayRenaissance.Cab
         {
             if(driver==null||driver.Model==null)return;
             var s=driver.Model.State;
+            if(!reset && initialized && s.Time==lastTime && s.PositionM==lastPosition)return;
             bool jump=lastTime<0||s.Time<lastTime||Math.Abs(s.PositionM-lastPosition)>Math.Abs(s.SpeedMps)*Math.Max(0,s.Time-lastTime)+2;
             Apply(s.PositionM,s.SpeedMps,s.Acceleration,Math.Max(s.LocoCylinderKpa,s.TrainCylinderKpa)/380,Math.Min(.1,Math.Max(0,s.Time-lastTime)),reviewTrackSeed,reset||jump);
             lastTime=s.Time;lastPosition=s.PositionM;
-            // Cabin interaction raycasts must see the moved colliders in the current frame.
-            Physics.SyncTransforms();
         }
         void ProtectReviewRouteEnd()
         {
@@ -145,6 +144,7 @@ namespace RailwayRenaissance.Cab
                     var pos=pad.localPosition;pos.y=-.3825f+h*.5f;pad.localPosition=pos;var scale=b.padScales[i];scale.y=h;pad.localScale=scale;
                 }
             }
+            CabPhysicsQueries.MarkDirty();
         }
     }
 }

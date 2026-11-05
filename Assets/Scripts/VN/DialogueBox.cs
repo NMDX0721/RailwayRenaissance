@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DialogueBox : MonoBehaviour
+public partial class DialogueBox : MonoBehaviour
 {
     private UIDocument uiDoc;
     private VisualElement dialogueBox;
@@ -34,6 +34,11 @@ public class DialogueBox : MonoBehaviour
     private VisualElement cardCatcher;
     private string _lastWrapped = "";
     private int _lastFs = 36;
+    private string lastSpeaker, lastText;
+    private string lastJapaneseText;
+    private VNLocalizedLine lastLocalizedLine;
+    private string displayedPrimaryLanguage;
+    private float primaryBlockHeight = 100;
     /// <summary>小卡「术语图鉴」跳转（参数 termId）；由 VNManager 接到平板 TIPS 页后才显示按钮。</summary>
     public Action<string> OnOpenTips;
 
@@ -42,8 +47,10 @@ public class DialogueBox : MonoBehaviour
         uiDoc = document;
         gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
+        VNSubtitleSettings.Changed += OnSubtitleSettingsChanged;
         typewriterEffect = gameObject.AddComponent<TypewriterEffect>();
         typewriterEffect.Initialize(dialogueText);
+        typewriterEffect.TextUpdated += SyncSentenceText;
     }
 
     private FontDefinition GetFontDef()
@@ -62,8 +69,8 @@ public class DialogueBox : MonoBehaviour
         dialogueBox.style.position = Position.Absolute;
         dialogueBox.style.left = 0;
         dialogueBox.style.right = 0;
-        dialogueBox.style.bottom = 16; // 贴近屏幕底，只留一点呼吸空间
-        dialogueBox.style.height = 120; // 固定高度：边框4 + 上下padding16 + 内容区100（折行容量84居中，留白加厚）
+        dialogueBox.style.bottom = 26;
+        dialogueBox.style.height = 160;
         dialogueBox.style.flexDirection = FlexDirection.Row;
         dialogueBox.style.backgroundColor = new Color(25f / 255f, 17f / 255f, 12f / 255f, 0.92f);
         dialogueBox.style.borderTopWidth = 2;
@@ -105,12 +112,22 @@ public class DialogueBox : MonoBehaviour
 
         var textArea = new VisualElement { name = "text-area" };
         textAreaField = textArea;
+        textArea.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            if (Mathf.Abs(evt.newRect.width - evt.oldRect.width) < 0.5f || evt.newRect.width <= 0 ||
+                lastText == null || dialogueBox.style.display == DisplayStyle.None) return;
+            textArea.schedule.Execute(() =>
+            {
+                if (dialogueBox.style.display != DisplayStyle.None) ShowDialogue(lastSpeaker, lastText, lastJapaneseText, lastLocalizedLine);
+            });
+        });
         textArea.style.flexGrow = 1;
-        textArea.style.paddingRight = 30;
+        textArea.style.paddingRight = 64;
         textArea.style.paddingTop = 8;
         textArea.style.paddingBottom = 8;
         // 默认顶部对齐（不竖向居中）：文字从上往下长，多出的空间留在底部
         textArea.style.overflow = Overflow.Hidden;
+        textArea.style.justifyContent = Justify.FlexStart;
         dialogueBox.Add(textArea);
 
         dialogueText = new Label { name = "dialogue-text" };
@@ -119,7 +136,9 @@ public class DialogueBox : MonoBehaviour
         dialogueText.style.whiteSpace = WhiteSpace.Normal;
         dialogueText.style.unityTextAlign = TextAnchor.UpperLeft;
         dialogueText.style.unityFontDefinition = fontDef;
+        dialogueText.style.flexShrink = 0;
         textArea.Add(dialogueText);
+
 
         continueIndicator = new Label { name = "continue-indicator", text = "\u25BC" };
         continueIndicator.style.position = Position.Absolute;
@@ -156,103 +175,11 @@ public class DialogueBox : MonoBehaviour
         phoneLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
         phoneBar.Add(phoneLabel);
 
-        // 底部剧情进度条：细线轨道 + 米色滑块 + 两端箭头（贴屏幕最底，随对话框显隐）
-        // 支持：在已解锁进度内拖动/点击轨道跳转（回调 VNManager 反查句索引）
-        progressBar = new VisualElement { name = "progress-bar" };
-        progressBar.style.position = Position.Absolute;
-        progressBar.style.left = 16;
-        progressBar.style.right = 16;
-        progressBar.style.bottom = 0;
-        progressBar.style.height = 10;
-        progressBar.style.flexDirection = FlexDirection.Row;
-        progressBar.style.alignItems = Align.Center;
-        progressBar.pickingMode = PickingMode.Position;
-        progressBar.style.display = DisplayStyle.None;
-        root.Add(progressBar);
-
-        var pPrev = new Label { text = "◀" };
-        pPrev.style.fontSize = 8;
-        pPrev.style.color = new Color(1f, 1f, 1f, 0.35f);
-        pPrev.style.unityFontDefinition = fontDef;
-        pPrev.style.marginLeft = 4;
-        progressBar.Add(pPrev);
-
-        var track = new VisualElement { name = "progress-track" };
-        track.style.flexGrow = 1;
-        track.style.height = 3;
-        track.style.marginLeft = 6;
-        track.style.marginRight = 6;
-        track.style.backgroundColor = new Color(0.38f, 0.2f, 0.17f, 0.9f);
-        track.style.borderTopLeftRadius = 2;
-        track.style.borderTopRightRadius = 2;
-        track.style.borderBottomLeftRadius = 2;
-        track.style.borderBottomRightRadius = 2;
-        track.style.position = Position.Relative;
-        track.pickingMode = PickingMode.Position;
-        progressBar.Add(track);
-
-        // 点击/拖动 → 回调（挂在整个进度条上：track 仅 3px 高难点中；已解锁判定在 VNManager 侧）
-        // OnProgressDragChanged(true/false) 抑制拖动期间的日期地点卡反复弹出
-        progressBar.RegisterCallback<PointerDownEvent>(e =>
-        {
-            OnProgressDragChanged?.Invoke(true);
-            SeekAtPointer(e.localPosition.x);
-            progressBar.CapturePointer(e.pointerId);
-            e.StopImmediatePropagation();
-        });
-        progressBar.RegisterCallback<PointerMoveEvent>(e =>
-        {
-            if (progressBar.HasPointerCapture(e.pointerId)) SeekAtPointer(e.localPosition.x);
-        });
-        progressBar.RegisterCallback<PointerUpEvent>(e =>
-        {
-            if (progressBar.HasPointerCapture(e.pointerId)) progressBar.ReleasePointer(e.pointerId);
-            OnProgressDragChanged?.Invoke(false);
-            e.StopImmediatePropagation();
-        });
-        progressBar.RegisterCallback<PointerCaptureOutEvent>(e => OnProgressDragChanged?.Invoke(false));
-        progressBar.RegisterCallback<ClickEvent>(e => e.StopImmediatePropagation());
-        // 可交互：悬停切换手型
-        progressBar.RegisterCallback<PointerEnterEvent>(e => UiCursor.ShowHand());
-        progressBar.RegisterCallback<PointerLeaveEvent>(e => UiCursor.ShowArrow());
-
-        void SeekAtPointer(float xInBar)
-        {
-            // 换算到轨道区域（扣掉两端箭头占位）
-            float xInTrack = xInBar - track.layout.x;
-            float w = track.contentRect.width;
-            if (w <= 0f) return;
-            OnProgressSeek?.Invoke(Mathf.Clamp01(xInTrack / w));
-        }
-
-        progressThumb = new VisualElement { name = "progress-thumb" };
-        progressThumb.style.position = Position.Absolute;
-        progressThumb.style.width = 16;
-        progressThumb.style.height = 7;
-        progressThumb.style.top = -2;
-        progressThumb.style.left = new Length(0f, LengthUnit.Percent);
-        progressThumb.style.translate = new Translate(new Length(-50f, LengthUnit.Percent), 0);
-        progressThumb.style.backgroundColor = new Color(0.93f, 0.87f, 0.72f, 0.95f);
-        progressThumb.style.borderTopLeftRadius = 4;
-        progressThumb.style.borderTopRightRadius = 4;
-        progressThumb.style.borderBottomLeftRadius = 4;
-        progressThumb.style.borderBottomRightRadius = 4;
-        track.Add(progressThumb);
-
-        var pNext = new Label { text = "▶" };
-        pNext.style.fontSize = 8;
-        pNext.style.color = new Color(1f, 1f, 1f, 0.35f);
-        pNext.style.unityFontDefinition = fontDef;
-        pNext.style.marginRight = 4;
-        progressBar.Add(pNext);
+        BuildReadingControls();
+        BuildJourneyProgress(root);
     }
 
-    /// <summary>剧情进度（0~1），滑块按百分比定位。</summary>
-    public void SetProgress(float p)
-    {
-        if (progressThumb == null) return;
-        progressThumb.style.left = new Length(Mathf.Clamp01(p) * 100f, LengthUnit.Percent);
-    }
+    public void SetProgress(float p) => scenicRoute?.SetProgress(p);
 
     /// <summary>通话条：对方名为空则显示通用「通话中」。</summary>
     public void SetPhoneCall(string peer)
@@ -276,9 +203,14 @@ public class DialogueBox : MonoBehaviour
 
     public VisualElement RootElement => dialogueBox;
 
-    public void ShowDialogue(string speaker, string text)
+    public void ShowDialogue(string speaker, string text, string textJa = null, VNLocalizedLine localized = null)
     {
         if (dialogueBox == null) return;
+        lastSpeaker = speaker;
+        lastText = text;
+        lastJapaneseText = textJa;
+        lastLocalizedLine = localized ?? VNLocalization.Legacy(text, textJa);
+        displayedPrimaryLanguage = VNSubtitleSettings.PrimaryLanguage;
         dialogueBox.style.display = DisplayStyle.Flex;
         if (progressBar != null) progressBar.style.display = DisplayStyle.Flex;
 
@@ -287,13 +219,20 @@ public class DialogueBox : MonoBehaviour
         ClearTermHits();
 
         bool isNarration = string.IsNullOrEmpty(speaker) || speaker == "n";
-        nameArea.style.visibility = isNarration ? Visibility.Hidden : Visibility.Visible;
+        nameArea.style.visibility = Visibility.Visible;
+        speakerName.text = isNarration ? "" : speaker;
+        SetVoiceState(replayButton != null && replayButton.style.display == DisplayStyle.Flex, 0);
+        continueIndicator.style.display = DisplayStyle.None;
+        ApplyDialogAlpha();
+        if (ShowSentencePairs(lastLocalizedLine, isNarration)) return;
 
         // 内心活动：整句 [xxx] → 蓝色斜体富文本（独白不叠术语高亮：嵌套 color 会截断外层色）
         bool isThought = !string.IsNullOrEmpty(text) && text.Length > 2 &&
                          text.StartsWith("[") && text.EndsWith("]");
-        string displayText = ConvertInnerThought(text);
-        if (!isThought)
+        string selectedText = lastLocalizedLine.PrimaryText;
+        if (isThought && !string.IsNullOrEmpty(selectedText) && !selectedText.StartsWith("[")) selectedText = "[" + selectedText + "]";
+        string displayText = ConvertInnerThought(selectedText);
+        if (!isThought && (displayedPrimaryLanguage == VNSubtitleSettings.Chinese || lastLocalizedLine.Text(displayedPrimaryLanguage) == null))
             displayText = TermHighlightSystem.HighlightTerms(displayText);
         // zpix 的 ——（U+2014）字形是两段短横；换 U+2500 框线横双连＝2em 整段长横、无缝
         displayText = displayText.Replace("——", "──");
@@ -311,12 +250,19 @@ public class DialogueBox : MonoBehaviour
             // 固定高度框：动态字号（4步进）+ 手动折行；折行后 blockH 超内容区就降档重折
             float avail = AvailableTextWidth();
             string wrapped = FitAndWrap(displayText, avail, out int fs);
+            if (displayedPrimaryLanguage != VNSubtitleSettings.Chinese && fs < 28)
+            {
+                fs = 28;
+                wrapped = WrapText(displayText, fs, avail);
+            }
             _lastWrapped = wrapped;
             _lastFs = fs;
             int rows = wrapped.Split('\n').Length;
+            primaryBlockHeight = rows * fs + (rows - 1) * LineGap;
             dialogueText.style.fontSize = fs;
             dialogueText.style.unityParagraphSpacing = LineGap;
-            dialogueText.style.minHeight = rows * fs + (rows - 1) * LineGap;
+            dialogueText.style.minHeight = primaryBlockHeight;
+            ApplySingleLanguageLayout();
 
             typewriterEffect.StartTypewriter(wrapped, () =>
             {
@@ -330,8 +276,27 @@ public class DialogueBox : MonoBehaviour
             dialogueText.text = displayText;
             _lastWrapped = displayText;
             _lastFs = (int)dialogueText.style.fontSize.value.value;
+            primaryBlockHeight = 100;
+            ApplySingleLanguageLayout();
             BuildTermHits();
         }
+    }
+
+    private void OnSubtitleSettingsChanged()
+    {
+        if (lastText == null) return;
+        if (dialogueBox.style.display != DisplayStyle.None)
+        {
+            bool complete = !IsTyping();
+            ShowDialogue(lastSpeaker, lastText, lastJapaneseText, lastLocalizedLine);
+            if (complete) SkipTyping();
+        }
+    }
+
+    private void ApplySingleLanguageLayout()
+    {
+        speakerName.style.top = 0;speakerName.style.bottom = 0;speakerName.style.height = StyleKeyword.Auto;
+        dialogueBox.style.height = Mathf.Max(160, 24 + primaryBlockHeight);
     }
 
     /// <summary>整句以 [ ] 包裹的旁白转为蓝色斜体，标记不显示。</summary>
@@ -354,11 +319,20 @@ public class DialogueBox : MonoBehaviour
     private void BuildTermHits()
     {
         ClearTermHits();
+        if (sentenceViews.Count > 0)
+        {
+            foreach (var view in sentenceViews) AddTermHits(view.Wrapped, view.FontSize, view.Primary, view.Group);
+            return;
+        }
         if (textAreaField == null || string.IsNullOrEmpty(_lastWrapped)) return;
-        float fs = _lastFs;
+        AddTermHits(_lastWrapped, _lastFs, dialogueText, textAreaField);
+    }
+
+    private void AddTermHits(string wrapped, float fs, Label anchor, VisualElement hitHost)
+    {
 
         // 逐字符行走（跳过富文本标签）：记录每个 raw 下标的行号与行内 x
-        int n = _lastWrapped.Length;
+        int n = wrapped.Length;
         var inTag = new bool[n];
         var lineOf = new int[n];
         var xOf = new float[n];
@@ -366,10 +340,10 @@ public class DialogueBox : MonoBehaviour
         float x = 0f;
         for (int i = 0; i < n; i++)
         {
-            char c = _lastWrapped[i];
+            char c = wrapped[i];
             if (c == '<')
             {
-                int close = _lastWrapped.IndexOf('>', i);
+                int close = wrapped.IndexOf('>', i);
                 if (close != -1)
                 {
                     for (int k = i; k <= close; k++) inTag[k] = true;
@@ -384,7 +358,7 @@ public class DialogueBox : MonoBehaviour
         }
 
         // 共享匹配器（与黄字高亮完全同判）：含 skipWhen 抑制，防「铁路基本」误中「路基」
-        foreach (var (s, len, id) in TermHighlightSystem.FindOccurrences(_lastWrapped))
+        foreach (var (s, len, id) in TermHighlightSystem.FindOccurrences(wrapped))
         {
             int e = s + len;
             // 术语可能跨行：按行切成若干段，逐段落框
@@ -393,7 +367,7 @@ public class DialogueBox : MonoBehaviour
             for (int r = s; r < e && r < n; r++)
             {
                 if (inTag[r]) continue;
-                char c = _lastWrapped[r];
+                char c = wrapped[r];
                 if (c == '\n') continue;
                 int ln = lineOf[r];
                 float x0 = xOf[r], x1 = x0 + CharWidthEm(c) * fs;
@@ -416,8 +390,8 @@ public class DialogueBox : MonoBehaviour
             if (ln < 0 || max <= min) return;
             var hit = new VisualElement();
             hit.style.position = Position.Absolute;
-            hit.style.left = dialogueText.layout.x + min;
-            hit.style.top = dialogueText.layout.y + ln * (fontSize + LineGap) + 4f;
+            hit.style.left = anchor.layout.x + min;
+            hit.style.top = anchor.layout.y + ln * (fontSize + LineGap) + 4f;
             hit.style.width = max - min;
             hit.style.height = fontSize + 6f; // 延伸到中文字形基线下方，确保下划线贴在字底而非切入字身
             hit.style.borderBottomWidth = 0;   // 默认不交互无下划线（参考图三）
@@ -441,7 +415,7 @@ public class DialogueBox : MonoBehaviour
                 hit.style.borderBottomWidth = 0; // 鼠标移开下划线消失
                 hit.style.borderBottomColor = Color.clear;
             });
-            textAreaField.Add(hit);
+            hitHost.Add(hit);
             _termHits.Add(hit);
         }
     }
@@ -672,13 +646,15 @@ public class DialogueBox : MonoBehaviour
 
 
     private const float LineGap = 12f;        // 行距（unityParagraphSpacing，配合手动折行）
-    private const float BoxContentZone = 100f; // 内容区（120 - 边框4 - padding16）：字号降档的容量门槛
+    private const float BoxContentZone = 136f;
 
     private float AvailableTextWidth()
     {
+        float contentWidth = textAreaField?.contentRect.width ?? 0;
+        if (contentWidth > 0) return contentWidth;
         float rootW = uiDoc?.rootVisualElement?.contentRect.width ?? 0f;
         if (rootW <= 0f) rootW = 1280f; // 布局未就绪时兜底
-        return rootW - 234f;            // paddingLeft100 + nameArea100 + paddingRight30 + border4
+        return rootW - 18f - (nameArea?.style.width.value.value ?? 262f) - 68f;
     }
 
     /// <summary>zpix 实测字宽（em）：CJK 1.08、字母数字 0.58、空格 0.42、其余ASCII 0.33。</summary>
@@ -709,9 +685,9 @@ public class DialogueBox : MonoBehaviour
     private static bool IsNoEnd(char c) => "「『（【《〈“‘([".IndexOf(c) >= 0;
 
     /// <summary>按可用宽度贪心折行（标签原子不可拆），含简易避头尾。</summary>
-    private static string WrapText(string text, int fs, float avail)
+    private static string WrapText(string text, int fs, float avail, bool reserveEndSpace = true)
     {
-        float limit = avail - fs; // 留一行安全边距
+        float limit = avail - (reserveEndSpace ? fs : 0);
         var sb = new StringBuilder(text.Length + 16);
         string[] paras = text.Split('\n');
         for (int p = 0; p < paras.Length; p++)
@@ -732,6 +708,18 @@ public class DialogueBox : MonoBehaviour
                 float cw = CharWidthEm(c) * fs;
                 if (lw + cw > limit && line.Length > 0)
                 {
+                    if (c < 128 && char.IsLetter(c) && line[line.Length - 1] < 128 && char.IsLetter(line[line.Length - 1]))
+                    {
+                        int space = line.ToString().LastIndexOf(' ');
+                        if (space > 0)
+                        {
+                            string word = line.ToString(space + 1, line.Length - space - 1);
+                            sb.Append(line.ToString(0, space));sb.Append('\n');
+                            line.Clear();line.Append(word);lw = 0;
+                            foreach (char wc in word) lw += CharWidthEm(wc) * fs;
+                            line.Append(c);lw += cw;continue;
+                        }
+                    }
                     if (IsNoStart(c))
                     {
                         // 行首禁则：标点硬挤进当前行尾（宁可超宽一点点），绝不允许换到新行行首
@@ -773,6 +761,11 @@ public class DialogueBox : MonoBehaviour
 
     public void Show()
     {
+        if (lastText != null && displayedPrimaryLanguage != VNSubtitleSettings.PrimaryLanguage)
+        {
+            ShowDialogue(lastSpeaker, lastText, lastJapaneseText, lastLocalizedLine);
+            return;
+        }
         dialogueBox.style.display = DisplayStyle.Flex;
         if (progressBar != null) progressBar.style.display = DisplayStyle.Flex;
     }
@@ -840,6 +833,8 @@ public class DialogueBox : MonoBehaviour
 
     private void OnDestroy()
     {
+        VNSubtitleSettings.Changed -= OnSubtitleSettingsChanged;
+        if (typewriterEffect != null) typewriterEffect.TextUpdated -= SyncSentenceText;
         StopContinueAnimation();
         typewriterEffect?.StopTyping();
     }

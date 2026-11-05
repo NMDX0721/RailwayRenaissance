@@ -131,7 +131,7 @@ public static class NF5KPassengerInterior
         obj.GetComponent<MeshFilter>().sharedMesh=RoundedBox(size,radius);obj.GetComponent<Renderer>().sharedMaterial=mat;
         if(solid)obj.AddComponent<BoxCollider>().size=size;return obj;
     }
-    static Mesh RoundedBox(Vector3 size,float radius)
+    public static Mesh RoundedBox(Vector3 size,float radius)
     {
         string path=Folder+"Passenger_Rounded_"+Hash128.Compute(size.ToString("F4")+radius.ToString("F4",System.Globalization.CultureInfo.InvariantCulture))+".asset";
         var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(mesh!=null)return mesh;

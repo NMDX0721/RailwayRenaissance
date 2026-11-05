@@ -8,19 +8,34 @@ namespace RailwayRenaissance.Cab
         [SerializeField] Transform from,to;
         [SerializeField] float radius=.009f;
         Mesh runtimeMesh;
+        Mesh updatedMesh;
+        Vector3 lastA,lastB,lastUp,lastRight,lastForward;
+        float lastRadius;
+        public int GeometryUpdateCount { get; private set; }
         readonly Vector3[] vertices=new Vector3[17*8];
         readonly int[] triangles=new int[16*8*6];
-        public void Configure(Transform a,Transform b){from=a;to=b;}
+        public void Configure(Transform a,Transform b){from=a;to=b;updatedMesh=null;}
         void OnEnable()
         {
             if(!Application.isPlaying)return;
             runtimeMesh=new Mesh{name="Flexible_Service_Hose_Runtime"};runtimeMesh.MarkDynamic();GetComponent<MeshFilter>().sharedMesh=runtimeMesh;
         }
         void LateUpdate(){if(runtimeMesh!=null)UpdateGeometry(runtimeMesh);}
-        void OnDisable(){if(runtimeMesh!=null){Destroy(runtimeMesh);runtimeMesh=null;}}
+        void OnDisable(){if(runtimeMesh!=null){Destroy(runtimeMesh);runtimeMesh=null;}updatedMesh=null;}
         public void UpdateGeometry(Mesh mesh)
         {
-            if(from==null||to==null)return;
+            if(from==null||to==null||mesh==null)return;
+            var localA=transform.InverseTransformPoint(from.position);
+            var localB=transform.InverseTransformPoint(to.position);
+            var localUp=transform.InverseTransformVector(Vector3.up);
+            var localRight=transform.InverseTransformVector(Vector3.right);
+            var localForward=transform.InverseTransformVector(Vector3.forward);
+            bool sameMesh=updatedMesh==mesh && mesh.vertexCount==vertices.Length;
+            // Compare in mesh space: a shared rigid translation does not deform the tube.
+            const float toleranceSquared=1e-10f;
+            if(sameMesh && lastRadius==radius && (localA-lastA).sqrMagnitude<toleranceSquared
+                && (localB-lastB).sqrMagnitude<toleranceSquared && (localUp-lastUp).sqrMagnitude<toleranceSquared
+                && (localRight-lastRight).sqrMagnitude<toleranceSquared && (localForward-lastForward).sqrMagnitude<toleranceSquared)return;
             const int steps=16,sides=8;
             var a=from.position;var b=to.position;var c=a-Vector3.up*.18f;var d=b-Vector3.up*.18f;
             Vector3 Point(float t){float s=1-t;return s*s*s*a+3*s*s*t*c+3*s*t*t*d+t*t*t*b;}
@@ -36,7 +51,9 @@ namespace RailwayRenaissance.Cab
                     triangles[k]=p;triangles[k+1]=q;triangles[k+2]=p+sides;triangles[k+3]=q;triangles[k+4]=q+sides;triangles[k+5]=p+sides;
                 }
             }
-            mesh.Clear();mesh.vertices=vertices;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateBounds();
+            mesh.vertices=vertices;if(!sameMesh)mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateBounds();
+            updatedMesh=mesh;lastA=localA;lastB=localB;lastUp=localUp;lastRight=localRight;lastForward=localForward;lastRadius=radius;
+            GeometryUpdateCount++;
         }
         public float EndpointError()
         {

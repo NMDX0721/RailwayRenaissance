@@ -102,8 +102,8 @@ public static class CabInteriorBlockoutSetup
         try
         {
             camera.targetTexture=target;
-            UnityEngine.Object.FindFirstObjectByType<CabDiffuseFill>()?.Refresh();
-            var reflections=UnityEngine.Object.FindFirstObjectByType<CabInteriorReflections>();
+            UnityEngine.Object.FindAnyObjectByType<CabDiffuseFill>()?.Refresh();
+            var reflections=UnityEngine.Object.FindAnyObjectByType<CabInteriorReflections>();
             if(reflections!=null&&reflections.RefreshIfChanged())camera.Render();
             camera.Render();
             // A 3:1 bilinear reduction alone misses source pixels; explicitly average all nine samples.
@@ -156,13 +156,16 @@ public static class CabInteriorBlockoutSetup
         Box("Floor",new Vector3(0,-.045f,.7f),new Vector3(2.8f,.09f,2.4f),floor);
         NF5KReferenceBody.Build(root.transform,blue,cream,stripe,trim,glass,hardware);
         var rear=new GameObject("Rear_Assembly");rear.transform.SetParent(root.transform);
-        foreach(float x in new[]{-.855f,.855f})
-            Box("Rear_Passenger_Partition",new Vector3(x,1.05f,1.91f),new Vector3(1.09f,2.1f,.08f),wall,rear.transform);
-        Box("Rear_Passenger_Door_Header",new Vector3(0,2f,1.91f),new Vector3(.62f,.20f,.08f),wall,rear.transform);
-        var passage=new GameObject("Passenger_Passage_Door_Pivot");passage.transform.SetParent(rear.transform);passage.transform.position=new Vector3(-.30f,0,1.91f);
+        foreach(float x in new[]{-.90f,.90f})
+            Box("Rear_Passenger_Partition",new Vector3(x,1.05f,1.91f),new Vector3(1.0f,2.1f,.08f),wall,rear.transform);
+        Box("Rear_Passenger_Door_Header",new Vector3(0,2f,1.91f),new Vector3(.80f,.20f,.08f),wall,rear.transform);
+        var passage=new GameObject("Passenger_Passage_Door_Pivot");passage.transform.SetParent(rear.transform);passage.transform.position=new Vector3(-.385f,0,1.876f);
         Box("Passenger_Passage_Door_Lower",new Vector3(0,.50f,1.91f),new Vector3(.58f,.96f,.045f),wall,passage.transform);
         Box("Passenger_Passage_Door_Glass",new Vector3(0,1.41f,1.91f),new Vector3(.50f,.76f,.009f),glass,passage.transform,false);
         Box("Passenger_Door_Handle",new Vector3(.23f,.98f,1.87f),new Vector3(.07f,.025f,.025f),trim,passage.transform);
+        passage.AddComponent<CabPassageDoor>();
+        passage.transform.Find("Passenger_Passage_Door_Glass").gameObject.AddComponent<BoxCollider>();
+        NF5KPassageDoorFinish.Apply(passage.transform);
         Box("Rear_Electrical_Service_Panel",new Vector3(.85f,1.48f,1.85f),new Vector3(.65f,.35f,.035f),trim,rear.transform);
         var passenger=new GameObject("Integrated_Passenger_Bay_Blockout");passenger.transform.SetParent(root.transform);
         for(int module=0;module<4;module++)Box("Passenger_Floor_Module_"+module,new Vector3(0,-.045f,3.85f+module*3.9f),new Vector3(2.8f,.09f,3.9f),floor,passenger.transform);
@@ -211,6 +214,7 @@ public static class CabInteriorBlockoutSetup
         ground.transform.position=new Vector3(0,-1.39f,8);ground.transform.localScale=new Vector3(18,.04f,32);
         ground.GetComponent<Renderer>().sharedMaterial=Mat("Industrial_Review_Ground",new Color(.57f,.59f,.60f));
         NF5KWheelTrackReview.Install();
+        NF5KEquipmentInstallation.Apply(root.transform);
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene,ScenePath);
         var state=console.GetComponent<CabEngineState>();
         if(state==null||console.GetComponentsInChildren<CabStartupControls>().Length!=1)throw new InvalidOperationException("Interior lost console startup/state binding");

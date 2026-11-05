@@ -142,7 +142,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 else
                 {
                     // Two sound waves drawn as short polylines on circles round the speaker, kept inside the 20-unit box.
-                    foreach (float radius in new[] { 3.6f, 6.6f })
+                    foreach (float radius in new[] { 3.4f, 6.2f })
                     {
                         p.BeginPath();
                         for (int step = 0; step <= 8; step++)

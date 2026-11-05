@@ -26,7 +26,7 @@ public static class NF5KLightingReview
     }
     public static void Render(Camera camera,Action<Camera,string> shot)
     {
-        var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();Validate(controller);
+        var controller=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();Validate(controller);
         var position=camera.transform.position;var rotation=camera.transform.rotation;float size=camera.orthographicSize;
         var background=camera.backgroundColor;var ambient=RenderSettings.ambientMode;
         var sky=RenderSettings.ambientSkyColor;var equator=RenderSettings.ambientEquatorColor;var bottom=RenderSettings.ambientGroundColor;
@@ -98,27 +98,27 @@ public static class NF5KLightingPlayReview
         {
             if(++frames==10)
             {
-                var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
-                NF5KInteriorLightingReview.Validate(UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>());
+                var controller=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();
+                NF5KInteriorLightingReview.Validate(UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>());
                 NF5KLightingReview.Validate(controller);controller.SetMode(ExteriorLightMode.Bright);
-                var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();interior.SetInstrumentDimmer(.37f);
-                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().InstrumentLightOn=false;
-                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().HeadlightOn=false;
+                var interior=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();interior.SetInstrumentDimmer(.37f);
+                UnityEngine.Object.FindAnyObjectByType<CabEngineState>().InstrumentLightOn=false;
+                UnityEngine.Object.FindAnyObjectByType<CabEngineState>().HeadlightOn=false;
             }
             if(frames==25)
             {
-                var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+                var controller=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();
                 if(controller.Mode!=ExteriorLightMode.Off)throw new InvalidOperationException("Legacy headlight switch did not disable runtime lighting");
-                if(UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>().InstrumentDimmer!=0)throw new InvalidOperationException("Legacy instrument switch did not turn lighting off");
-                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().InstrumentLightOn=true;
-                UnityEngine.Object.FindFirstObjectByType<CabEngineState>().HeadlightOn=true;
+                if(UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>().InstrumentDimmer!=0)throw new InvalidOperationException("Legacy instrument switch did not turn lighting off");
+                UnityEngine.Object.FindAnyObjectByType<CabEngineState>().InstrumentLightOn=true;
+                UnityEngine.Object.FindAnyObjectByType<CabEngineState>().HeadlightOn=true;
             }
             if(frames>=40)
             {
-                var controller=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+                var controller=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();
                 if(controller.Mode!=ExteriorLightMode.Bright)throw new InvalidOperationException("Legacy switch did not restore selected mode");
                 controller.enabled=false;foreach(var beam in controller.Beams)if(beam.enabled)throw new InvalidOperationException("Disabled controller left lights on");
-                var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+                var interior=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();
                 if(!Mathf.Approximately(interior.InstrumentDimmer,.37f))throw new InvalidOperationException("Legacy instrument switch did not restore dimmer");
                 interior.SetSupply(false,true);interior.enabled=false;
                 foreach(var fixture in interior.Fixtures)if(fixture.light.enabled||(fixture.bounce!=null&&fixture.bounce.enabled))throw new InvalidOperationException("Disabled interior controller left emergency lamps energized");

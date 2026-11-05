@@ -23,7 +23,10 @@ namespace RailwayRenaissance.Editor
 
         private static double deadline;
         private static double nextCheck;
+        private static string settleName;
+        private static int settleNext;
         private static int stage;
+        private static bool reviewRegisteredAccount;
         private static int frame;
         private static UIDocument document;
         private static VisualElement root;
@@ -126,7 +129,7 @@ namespace RailwayRenaissance.Editor
             Assert(f != null, "wizard field missing: " + name);
             return f;
         }
-        private static readonly string[] SettingsPagesToCapture = { "显示与亮度", "电池", "我的设备", "小米超级AI", "通知与状态栏", "桌面", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
+        private static readonly string[] SettingsPagesToCapture = { "当前账号", "当前账号#登录", "当前账号#云空间", "当前账号#备份", "当前账号#退出", "显示与亮度", "电池", "我的设备", "我的设备#存储", "小米超级AI", "通知与状态栏", "通知与状态栏#通知管理", "桌面", "桌面#系统导航", "桌面#手势演示", "桌面#按钮导航", "桌面#恢复手势", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
 
         private static void Capture(string name)
         {
@@ -266,8 +269,14 @@ namespace RailwayRenaissance.Editor
                         Assert(pill != null, "super-island-pill element should exist");
                         Assert(pill.style.display == DisplayStyle.Flex, "super-island-pill must be visible when session is active");
 
-                        Capture("01_super_island_music_compact");
-                        stage++;
+                        // 日期淡出、岛浮现要约 0.4 秒：等落定再截图
+                        settleName = "01_super_island_music_compact"; settleNext = stage + 1; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+
+                    case 900:
+                        Capture(settleName);
+                        stage = settleNext;
                         frame = Time.frameCount;
                         break;
 
@@ -278,8 +287,8 @@ namespace RailwayRenaissance.Editor
                         Assert(expanded != null, "super-island-expanded should exist");
                         Assert(expanded.style.display == DisplayStyle.Flex, "Expanded island must be displayed");
 
-                        Capture("02_super_island_music_expanded");
-                        stage++;
+                        // 展开是 340ms 的变形动画：等它落定再截图，看到的才是最终形态
+                        settleName = "02_super_island_music_expanded"; settleNext = stage + 1; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
                         frame = Time.frameCount;
                         break;
 
@@ -312,8 +321,8 @@ namespace RailwayRenaissance.Editor
                         ui.SuperIsland.SetExpanded(true);
                         Assert(ui.SuperIsland.PrimaryType == TabletSuperIsland.IslandAppType.Timer, "Primary island should be Timer");
 
-                        Capture("04_super_island_timer_expanded");
-                        stage++;
+                        // 展开是 340ms 的变形动画：等它落定再截图，看到的才是最终形态
+                        settleName = "04_super_island_timer_expanded"; settleNext = stage + 1; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
                         frame = Time.frameCount;
                         break;
 
@@ -335,8 +344,8 @@ namespace RailwayRenaissance.Editor
                         ui.SuperIsland.SetExpanded(true);
                         Assert(ui.SuperIsland.PrimaryType == TabletSuperIsland.IslandAppType.TrainCab, "Primary island should be TrainCab");
 
-                        Capture("05_super_island_cab_expanded");
-                        stage++;
+                        // 展开是 340ms 的变形动画：等它落定再截图，看到的才是最终形态
+                        settleName = "05_super_island_cab_expanded"; settleNext = stage + 1; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
                         frame = Time.frameCount;
                         break;
 
@@ -406,6 +415,7 @@ namespace RailwayRenaissance.Editor
                             // 开发者选项入口只在解锁后出现；审查结束时会移除该键
                             PlayerPrefs.SetInt("TabletDevModeUnlocked", 1);
                             PlayerPrefs.Save();
+                            TabletSettingsAppUI.RefreshCategoryList();
                             Capture("09_settings_inset_grouped_cards");
                             settingsSubPage = 1;
                             frame = Time.frameCount;
@@ -414,6 +424,116 @@ namespace RailwayRenaissance.Editor
                         if (settingsSubPage <= SettingsPagesToCapture.Length)
                         {
                             string pageName = SettingsPagesToCapture[settingsSubPage - 1];
+                            if (pageName == "当前账号")
+                            {
+                                // 账号页是默认页，导航栏里是头像卡而不是文字项，直接截图
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_account");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName.EndsWith("#通知管理"))
+                            {
+                                var chCard = root.Q("settings-notification-channels-card");
+                                Assert(chCard != null, "settings-notification-channels-card missing");
+                                (root.Q("settings-right-pane") as ScrollView)?.ScrollTo(chCard);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_notification_channels");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "桌面#系统导航")
+                            {
+                                var navRow = root.Q("settings-home-system-nav-row");
+                                Assert(navRow != null, "settings-home-system-nav-row missing");
+                                ClickElement(navRow);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_system_navigation_gestures");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "桌面#手势演示")
+                            {
+                                var demos = root.Q("settings-nav-gesture-demos");
+                                Assert(demos != null, "settings-nav-gesture-demos missing");
+                                (root.Q("settings-right-pane") as ScrollView)?.ScrollTo(demos);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_system_navigation_demos");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "桌面#按钮导航" || pageName == "桌面#恢复手势")
+                            {
+                                bool toButtons = pageName == "桌面#按钮导航";
+                                var pick = root.Q(toButtons ? "settings-nav-preview-buttons" : "settings-nav-preview-gestures");
+                                Assert(pick != null, "nav preview missing: " + pageName);
+                                ClickElement(pick);
+                                if (toButtons) Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_system_navigation_buttons");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "我的设备#存储")
+                            {
+                                TabletSettingsAppUI.ShowCategory(98);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_storage");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "当前账号#登录")
+                            {
+                                // 云空间需要登录：审查里临时注册一个账号，结束时（#退出）清掉
+                                if (!RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered)
+                                {
+                                    string regErr = RailwayRenaissance.UI.Tablet.Account.AccountService.Register("13800138000", "Passw0rd123", "测试员", 0);
+                                    Assert(regErr == null, "review register failed: " + regErr);
+                                    reviewRegisteredAccount = true;
+                                }
+                                TabletSettingsAppUI.RefreshCategoryList();
+                                TabletSettingsAppUI.RefreshCurrentPage();
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_account_signed_in");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName == "当前账号#退出")
+                            {
+                                if (reviewRegisteredAccount)
+                                {
+                                    TabletStorageLedger.ClearCloudSyncForCurrentAccount();
+                                    RailwayRenaissance.UI.Tablet.Account.AccountService.ResetForTests();
+                                    PlayerPrefs.Save();
+                                    reviewRegisteredAccount = false;
+                                }
+                                TabletSettingsAppUI.RefreshCategoryList();
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName.EndsWith("#云空间"))
+                            {
+                                var cloudTop = root.Q("account-cloud-card");
+                                Assert(cloudTop != null, "account-cloud-card missing");
+                                ClickElement(cloudTop);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_cloud_top");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
+                            if (pageName.EndsWith("#备份"))
+                            {
+                                
+                                // 点云空间卡片进入云空间子页，再点“备份”行截取同步中状态
+                                var backupRow = root.Q("settings-cloud-backup-row");
+                                Assert(backupRow != null, "settings-cloud-backup-row missing");
+                                (root.Q("settings-right-pane") as ScrollView)?.ScrollTo(backupRow);
+                                ClickElement(backupRow);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_cloud_syncing");
+                                settingsSubPage++;
+                                frame = Time.frameCount;
+                                break;
+                            }
                             Button navButton = null;
                             root.Q("settings-category-rail").Query<Label>().ForEach(l =>
                             {

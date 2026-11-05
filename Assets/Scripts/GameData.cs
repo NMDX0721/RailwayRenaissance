@@ -1752,13 +1752,32 @@ public static class GameData
     }
 
     // 音量设置
-    public static float MasterVolume { get => PlayerPrefs.GetFloat("MasterVolume", 1f); set { PlayerPrefs.SetFloat("MasterVolume", value); ApplyVolume(); } }
-    public static float BGMVolume { get => PlayerPrefs.GetFloat("BGMVolume", 0.8f); set { PlayerPrefs.SetFloat("BGMVolume", value); ApplyVolume(); } }
-    public static float SFXVolume { get => PlayerPrefs.GetFloat("SFXVolume", 1f); set { PlayerPrefs.SetFloat("SFXVolume", value); ApplyVolume(); } }
-    public static float TypewriterVolume { get => PlayerPrefs.GetFloat("TypewriterVolume", 0.12f); set { PlayerPrefs.SetFloat("TypewriterVolume", value); ApplyVolume(); } }
+    private static bool audioSettingsLoaded;
+    private static float masterVolume, bgmVolume, sfxVolume, typewriterVolume;
+    public static int AudioPreferenceReadCount { get; private set; }
+    public static float MasterVolume { get { EnsureAudioSettings(); return masterVolume; } set { PlayerPrefs.SetFloat("MasterVolume", Mathf.Clamp01(value)); ApplyVolume(); } }
+    public static float BGMVolume { get { EnsureAudioSettings(); return bgmVolume; } set { PlayerPrefs.SetFloat("BGMVolume", Mathf.Clamp01(value)); ApplyVolume(); } }
+    public static float SFXVolume { get { EnsureAudioSettings(); return sfxVolume; } set { PlayerPrefs.SetFloat("SFXVolume", Mathf.Clamp01(value)); ApplyVolume(); } }
+    public static float TypewriterVolume { get { EnsureAudioSettings(); return typewriterVolume; } set { PlayerPrefs.SetFloat("TypewriterVolume", Mathf.Clamp01(value)); ApplyVolume(); } }
+
+    private static void EnsureAudioSettings()
+    {
+        if (!audioSettingsLoaded) ReloadAudioSettings();
+    }
+
+    private static void ReloadAudioSettings()
+    {
+        masterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("MasterVolume", 1f));
+        bgmVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("BGMVolume", 0.8f));
+        sfxVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("SFXVolume", 1f));
+        typewriterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("TypewriterVolume", 0.12f));
+        AudioPreferenceReadCount += 4;
+        audioSettingsLoaded = true;
+    }
 
     public static void ApplyVolume()
     {
+        ReloadAudioSettings();
         var bgmObj = GameObject.Find("BGM");
         if (bgmObj != null)
         {

@@ -53,17 +53,17 @@ public static class NF5KDaylightReview
         var environment=new GameObject("Daylight_Environment").AddComponent<CabDaylightEnvironment>();
         environment.Configure(sun,camera,sky);
         environment.SetView(0);
-        UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>().AllOff();
-        UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>().SetMode(ExteriorLightMode.Off);
+        UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>().AllOff();
+        UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>().SetMode(ExteriorLightMode.Off);
         AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);
     }
     public static void Render(Action<Camera,string> shot)
     {
         Prepare();
-        var camera=Camera.main;var environment=UnityEngine.Object.FindFirstObjectByType<CabDaylightEnvironment>();
+        var camera=Camera.main;var environment=UnityEngine.Object.FindAnyObjectByType<CabDaylightEnvironment>();
         if(Mathf.Abs(camera.fieldOfView-65)>.01f)throw new InvalidOperationException("Saved daylight driver view must use 65 degrees");
         environment.SetView(2);if(Mathf.Abs(camera.fieldOfView-55)>.01f)throw new InvalidOperationException("Exterior view setup failed");
-        var interior=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();
+        var interior=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();
         foreach(CabDaylightEnvironment.DayPreset preset in Enum.GetValues(typeof(CabDaylightEnvironment.DayPreset)))
         {
             environment.Apply(preset);interior.AllOff();

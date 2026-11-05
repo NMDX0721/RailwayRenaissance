@@ -39,7 +39,9 @@ public class BackgroundManager : MonoBehaviour
         layer.style.left = 0;
         layer.style.right = 0;
         layer.style.bottom = 0;
-        layer.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+        layer.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Cover);
+        layer.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        layer.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
         layer.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
         return layer;
     }
@@ -53,8 +55,20 @@ public class BackgroundManager : MonoBehaviour
     /// 未预渲染的新图回退到动态降采样兜底。</summary>
     private static readonly System.Collections.Generic.Dictionary<string, Texture2D> _retroCache = new();
 
+    private static string ResolveAssetName(string name)
+    {
+        // Legacy source filenames are reversed; keep script/save background IDs semantic.
+        switch (name)
+        {
+            case "cabin_interior": return "cabin_interior_night";
+            case "cabin_interior_night": return "cabin_interior";
+            default: return name;
+        }
+    }
+
     private static Texture2D LoadBgTex(string bgName)
     {
+        bgName = ResolveAssetName(bgName);
         if (PlayerPrefs.GetInt("RetroLowResBG", 0) != 1)
             return Resources.Load<Texture2D>("bg/" + bgName);
 

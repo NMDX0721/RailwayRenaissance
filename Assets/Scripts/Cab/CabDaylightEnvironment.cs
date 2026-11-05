@@ -30,8 +30,8 @@ namespace RailwayRenaissance.Cab
             RenderSettings.ambientEquatorColor=cloudy?new Color(.25f,.27f,.28f):new Color(.20f,.24f,.27f);
             RenderSettings.ambientGroundColor=new Color(.075f,.085f,.065f);
             reviewCamera.clearFlags=CameraClearFlags.Skybox; reviewCamera.farClipPlane=350;
-            Object.FindFirstObjectByType<CabDiffuseFill>()?.Refresh();
-            Object.FindFirstObjectByType<CabInteriorReflections>()?.RefreshIfChanged();
+            Object.FindAnyObjectByType<CabDiffuseFill>()?.Refresh();
+            Object.FindAnyObjectByType<CabInteriorReflections>()?.RefreshIfChanged();
         }
         [ContextMenu("Daylight/Clear")] void Clear() { Apply(DayPreset.Clear); }
         [ContextMenu("Daylight/Overcast")] void Overcast() { Apply(DayPreset.Overcast); }

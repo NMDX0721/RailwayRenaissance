@@ -42,7 +42,7 @@ public static class NF5KBogieDetailReview
             }
             else Prepare();
             EditorSceneManager.OpenScene("Assets/Scenes/CabDaylightReview.unity");
-            var day=UnityEngine.Object.FindFirstObjectByType<RailwayRenaissance.Cab.CabDaylightEnvironment>();
+            var day=UnityEngine.Object.FindAnyObjectByType<RailwayRenaissance.Cab.CabDaylightEnvironment>();
             day.Apply(RailwayRenaissance.Cab.CabDaylightEnvironment.DayPreset.Overcast);
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=1.62f;
             camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.72f,.75f,.77f);
@@ -63,7 +63,7 @@ public static class NF5KBogieDetailReview
             var wheel=GameObject.Find("Running_Gear").GetComponentsInChildren<MeshRenderer>();
             MeshRenderer sample=null;foreach(var renderer in wheel)if(renderer.name=="Steel_Wheel"&&renderer.transform.position.x>0){sample=renderer;break;}
             var hidden=new System.Collections.Generic.List<MeshRenderer>();
-            foreach(var renderer in UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))
+            foreach(var renderer in UnityEngine.Object.FindObjectsByType<MeshRenderer>())
                 if(renderer!=sample&&renderer.enabled){renderer.enabled=false;hidden.Add(renderer);}
             camera.transform.position=sample.bounds.center+new Vector3(1.8f,.5f,1.2f);camera.transform.LookAt(sample.bounds.center);camera.orthographicSize=.65f;
             Shot(camera,"tools/cab_reference/interior_review/wheel_continuous_isolated.png");

@@ -18,7 +18,7 @@ public static class NF5KInteriorLightingReview
         c.SetSupply(false,false);Expect(c,0);c.SetSupply(true,true);Expect(c,14);
         c.AllOff();c.SetInstrumentDimmer(2);if(c.InstrumentDimmer!=1)throw new InvalidOperationException("Instrument dimmer not clamped");
         c.SetInstrumentDimmer(-1);Expect(c,0);
-        var ext=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();var previous=ext.Mode;ext.SetMode(ExteriorLightMode.Marker);
+        var ext=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();var previous=ext.Mode;ext.SetMode(ExteriorLightMode.Marker);
         c.SetCabCeiling(true);if(ext.Mode!=ExteriorLightMode.Marker)throw new InvalidOperationException("Interior switch changed exterior lighting");
         c.AllOff();ext.SetMode(previous);
         foreach(var f in c.Fixtures)
@@ -39,8 +39,8 @@ public static class NF5KInteriorLightingReview
     }
     public static void Render(Camera camera,Action<Camera,string> shot)
     {
-        var c=UnityEngine.Object.FindFirstObjectByType<CabInteriorLighting>();Validate(c);
-        var exterior=UnityEngine.Object.FindFirstObjectByType<CabExteriorLighting>();
+        var c=UnityEngine.Object.FindAnyObjectByType<CabInteriorLighting>();Validate(c);
+        var exterior=UnityEngine.Object.FindAnyObjectByType<CabExteriorLighting>();
         var p=camera.transform.position;var rotation=camera.transform.rotation;bool ortho=camera.orthographic;float fov=camera.fieldOfView;var bg=camera.backgroundColor;
         var key=GameObject.Find("Interior_Review_Key").GetComponent<Light>();var fill=GameObject.Find("Industrial_Review_Fill").GetComponent<Light>();float keyValue=key.intensity,fillValue=fill.intensity;
         var sky=RenderSettings.ambientSkyColor;var eq=RenderSettings.ambientEquatorColor;var bottom=RenderSettings.ambientGroundColor;

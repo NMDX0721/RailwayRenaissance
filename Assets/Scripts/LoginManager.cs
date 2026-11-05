@@ -80,27 +80,8 @@ public class LoginManager : MonoBehaviour
 
     void Start()
     {
-        authFilePath = Path.Combine(Application.persistentDataPath, "auth.json");
-
-        if (FindAnyObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
-        {
-            var esObj = new GameObject("EventSystem");
-            esObj.AddComponent<UnityEngine.EventSystems.EventSystem>();
-#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
-            esObj.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
-#else
-            esObj.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
-#endif
-        }
-
-        LoadSprites();
-        GenerateCodeSprites();
-        SetupCamera();
-        SetupCanvas();
-        LoadBackground();
-        SetupAudio();
+        // Legacy scenes still carry this component. Route before creating any login UI.
         SetupGameCursor();
-        CheckAutoLogin();
         GameData.ApplyVolume();
         // 初始化帧率设置：VSync 与自定义帧率互斥，保证二者恰有一个生效
         FPSDisplay.Init();
@@ -123,6 +104,7 @@ public class LoginManager : MonoBehaviour
         PlayerPrefs.Save();
         QualitySettings.vSyncCount = customFps == 1 ? 0 : 1;
         Application.targetFrameRate = customFps == 1 ? PlayerPrefs.GetInt("TargetFPS", 60) : -1;
+        SceneManager.LoadScene("VN_Test");
     }
 
     private Font customFont;
