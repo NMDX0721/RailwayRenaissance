@@ -23,9 +23,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         static readonly string[] ToneNames = { "纯净原声", "工务电台", "先民真空电台", "电子管调频立体声" };
         static readonly string[] ToneNotes = { "不做处理", "窄频、沙风、磁带抖晃", "温暖电子管、底噪", "宽频温润" };
 
-        void OpenControlsPanel(VisualElement anchor)
+        // Opened straight on one page (speed, tone or timer) it is a small menu of just those choices; without a page it is the whole category list.
+        bool controlsDirect;
+        void OpenControlsPanel(VisualElement anchor, string page = null)
         {
-            controlsPage = null;
+            controlsPage = page; controlsDirect = page != null;
             var menu = MenuAt(anchor, null); menu.AddToClassList("music-controls-panel");
             controlsPanel = menu;
             FillControlsPanel();
@@ -65,7 +67,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // A choice on a level-3 page: a check mark for the current one.
         Button ChoiceRow(VisualElement parent, string key, int index, string label, string note, bool current, Action pick, bool backAfter)
         {
-            var row = new Button(() => { pick(); if (backAfter) controlsPage = null; RefreshControlsPanel(); }) { name = "music-opt-" + key + "-" + index, tooltip = label };
+            var row = new Button(() => { pick(); if (backAfter && controlsDirect) { CloseModal(); UpdateBarChips(); return; } if (backAfter) controlsPage = null; RefreshControlsPanel(); }) { name = "music-opt-" + key + "-" + index, tooltip = label };
             row.AddToClassList("music-setting-row"); row.EnableInClassList("is-current", current); parent.Add(row);
             var text = new VisualElement { pickingMode = PickingMode.Ignore }; text.AddToClassList("music-setting-text"); row.Add(text);
             var title = new Label(label) { pickingMode = PickingMode.Ignore, enableRichText = false }; title.AddToClassList("music-setting-title"); text.Add(title);
@@ -76,6 +78,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         void BackBar(VisualElement parent, string title)
         {
+            if (controlsDirect) { Text(parent, title, "music-popover-title"); return; }
             var bar = Box(parent, "music-setting-back");
             var back = new Button(() => { controlsPage = null; RefreshControlsPanel(); }) { name = "music-setting-back", tooltip = "返回" }; back.AddToClassList("music-setting-backbutton"); bar.Add(back);
             back.Add(new Label("‹") { pickingMode = PickingMode.Ignore });
@@ -228,9 +231,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // ---- Every bar button can also be folded into the "more" menu at the end of the bar ----
         static readonly string[] BarKeys = { "volume", "speed", "tone", "timer", "eq", "queue", "lyrics", "detail", "settings" };
-        static readonly string[] BarKeyNames = { "音量", "倍速", "音色", "定时", "音效", "队列", "歌词", "唱片档案", "播放设置" };
+        static readonly string[] BarKeyNames = { "音量", "倍速", "音色", "定时", "音效", "队列", "歌词", "唱片档案", "音乐设置" };
         static readonly string[] BarKeyIcons = { "音量", "倍速", "音色", "定时", "音效", "队列", "歌词 / 字幕", "唱片档案", "播放设置" };
-        static readonly string[] BarKeyNotes = { "点开后竖向调节音量", "当前倍速", "收听音色", "睡眠定时", "均衡器与统一响度", "接续播放的队列", "歌词与舞台", "当前曲目的唱片档案", "倍速、音色、定时、歌词校准" };
+        static readonly string[] BarKeyNotes = { "点开后竖向调节音量", "当前倍速", "收听音色", "睡眠定时", "均衡器与统一响度", "接续播放的队列", "歌词与舞台", "当前曲目的唱片档案", "打开完整的音乐设置" };
 
         static List<string> FoldedKeys()
         {
@@ -300,7 +303,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     switch (k)
                     {
                         case "volume": OpenVolumePopover(more); break;
-                        case "speed": case "tone": case "timer": case "settings": OpenControlsPanel(more); break;
+                        case "speed": case "tone": case "timer": OpenControlsPanel(more, k); break;
+                        case "settings": OpenSettings("sound"); break;
                         case "eq": OpenSettings("sound"); break;
                         case "queue": queueOpen = !queueOpen; RenderDrawer(); break;
                         case "lyrics": OpenLyrics(); break;

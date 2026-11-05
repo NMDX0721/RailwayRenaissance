@@ -183,6 +183,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Action(sheetHead, "关闭", () => sheet.style.display = DisplayStyle.None, "music-lyrics-sheet-close", true);
             var sheetScroll = new ScrollView { verticalScrollerVisibility = ScrollerVisibility.Auto, name = "music-lyrics-sheet-scroll" }; sheetScroll.AddToClassList("music-lyrics-sheet-scroll"); sheetPanel.Add(sheetScroll);
             Action(art, "歌词设置", () => { sheet.style.display = DisplayStyle.Flex; sheet.BringToFront(); }, "music-lyrics-settings-open");
+            Action(sheetPanel, "全部设置", () => { sheet.style.display = DisplayStyle.None; RailwayMusicTerminalView.OpenSettingsPage("lyrics"); }, "music-lyrics-all-settings");
             var more = new Foldout { text = "歌词设置", value = true, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); more.AddToClassList("music-lyrics-more-open"); sheetScroll.Add(more);
             var imports = Box(more, "music-lyrics-actions");
             Action(imports, "导入字幕", () => Import(false), "music-lyrics-import");

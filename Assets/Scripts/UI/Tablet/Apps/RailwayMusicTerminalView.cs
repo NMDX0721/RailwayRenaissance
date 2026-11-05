@@ -683,6 +683,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         VisualElement keptLyricsOverlay; MusicLyricsView keptLyrics;
         void CloseModal()
         {
+            controlsDirect = false;
             rulerTick?.Pause(); rulerTick = null; rulerTrackId = null; rulerDoc = null;
             rulerValue = null; rulerTotal = null; rulerLine = null; rulerKnob = null; rulerFill = null;
             bool backToLyrics = recordFromLyrics; recordFromLyrics = false;
@@ -1068,10 +1069,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicAudioEffectsEngine.SetPlaybackSpeed(MusicLibrarySession.State.playbackSpeed <= 0 ? 1f : MusicLibrarySession.State.playbackSpeed);
             // Speed, tone and timer live in the playback settings panel; each keeps a button on the bar only when the player pinned it there.
             volumeButton = Button(effects, "音量", () => OpenVolumePopover(volumeButton), "music-volume-button");
-            speedChip = new Button(() => OpenControlsPanel(speedChip)) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
-            speedChip.tooltip = "播放速度（点开播放设置）"; effects.Add(speedChip);
-            toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip), "music-tone"); toneChip.tooltip = "收听音色";
-            timerChip = Button(effects, "定时", () => OpenControlsPanel(timerChip), "music-timer"); timerChip.tooltip = "睡眠定时";
+            speedChip = new Button(() => OpenControlsPanel(speedChip, "speed")) { name = "music-speed" }; speedChip.AddToClassList("music-speed-chip");
+            speedChip.tooltip = "播放速度"; effects.Add(speedChip);
+            toneChip = Button(effects, "音色", () => OpenControlsPanel(toneChip, "tone"), "music-tone"); toneChip.tooltip = "收听音色";
+            timerChip = Button(effects, "定时", () => OpenControlsPanel(timerChip, "timer"), "music-timer"); timerChip.tooltip = "睡眠定时";
             eqChip = Button(effects, "音效", () => OpenSettings("sound"), "music-eq"); eqChip.tooltip = "均衡器与统一响度";
             barButtons = effects;
             var queueButton = Button(effects, "队列", () => { queueOpen = !queueOpen; RenderDrawer(); }, "music-queue"); barAnchor = queueButton;
@@ -1079,7 +1080,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(effects, "歌词 / 字幕", OpenLyrics, "music-lyrics");
             Button(effects, "唱片档案", () => ShowDetail(TabletMusicAppUI.tabletCurrentTrackId), "music-detail").tooltip = "唱片档案";
             Button settingsButton = null;
-            settingsButton = Button(effects, "播放设置", () => OpenControlsPanel(settingsButton), "music-settings"); settingsButton.tooltip = "播放设置：倍速、音色、定时、歌词校准、电台";
+            settingsButton = Button(effects, "播放设置", () => OpenSettings("sound"), "music-settings"); settingsButton.tooltip = "音乐设置";
             barMoreButton = Button(effects, "更多", OpenBarMore, "music-bar-more"); barMoreButton.tooltip = "更多";
             UpdateBarChips();
         }
@@ -1464,17 +1465,25 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         public static void UpdatePlayback() => current?.Update();
         /// <summary>Open a track's record archive sheet. The sheet is a modal, so it replaces whatever page overlay (such as the lyrics page) is open.</summary>
-        public static void OpenRecord(string id)
+        // A sheet opened from the lyrics page goes on top of it: the lyrics page stays behind the dimming and comes back when the sheet closes.
+        static void OpenOverLyrics(Action open)
         {
             var view = current; if (view == null) return;
-            // The record sheet opens on top of the lyrics page, which stays where it is behind the dimming, instead of letting the library show through.
             if (view.lyrics != null && view.overlay != null && view.overlay.ClassListContains("music-lyrics-overlay"))
             { view.keptLyricsOverlay = view.overlay; view.keptLyrics = view.lyrics; view.overlay = null; }
-            view.ShowDetail(id); view.recordFromLyrics = true;
+            open();
+            view.recordFromLyrics = view.keptLyrics != null;
             if (view.keptLyrics != null) view.lyrics = view.keptLyrics;
             if (view.overlay == null && view.keptLyricsOverlay != null) { view.overlay = view.keptLyricsOverlay; view.keptLyricsOverlay = null; view.keptLyrics = null; view.recordFromLyrics = false; }
         }
-        /// <summary>True while an open record archive sheet will return to the lyrics page when closed (read by the review).</summary>
+        public static void OpenRecord(string id)
+        {
+            var view = current; if (view == null) return;
+            bool fromLyrics = view.lyrics != null;
+            OpenOverLyrics(() => view.ShowDetail(id));
+            if (!fromLyrics) view.recordFromLyrics = true;
+        }
+        public static void OpenSettingsPage(string tab) { var view = current; if (view != null) OpenOverLyrics(() => view.OpenSettings(tab)); }
         public static bool RecordReturnsToLyrics => current != null && current.recordFromLyrics;
         public static bool ShowToast(string message)
         {
