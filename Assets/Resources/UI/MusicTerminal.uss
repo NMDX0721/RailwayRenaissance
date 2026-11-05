@@ -1251,3 +1251,8 @@
 .music-terminal .music-utility-buttons .music-icon-button { border-width: 0; }
 .music-terminal .music-icon-button.music-primary { border-width: 0; background-color: rgb(98, 142, 214); }
 .music-terminal .music-search-clear.music-icon-button, .music-terminal .music-search-clear.music-icon-button:hover { border-width: 0; }
+
+/* no outlines: icon buttons are bare glyphs that gain a soft glass disc on hover and when active */
+.music-terminal .music-icon-button, .music-modal .music-icon-button, .music-terminal .music-search-go.music-icon-button { border-width: 0; }
+.music-terminal .music-icon-button:hover, .music-modal .music-icon-button:hover, .music-terminal .music-search-go.music-icon-button:hover, .music-terminal .music-search-clear.music-icon-button:hover { border-width: 0; background-color: rgba(255, 255, 255, 0.09); }
+.music-terminal .music-icon-button.is-active { border-width: 0; background-color: rgba(205, 176, 112, 0.2); }
