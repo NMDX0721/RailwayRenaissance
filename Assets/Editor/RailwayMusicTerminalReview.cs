@@ -1596,12 +1596,14 @@ public static class RailwayMusicTerminalReview
                     }
                     break;
                 case 94:
+                    Assert(root.Q<Button>("music-clear-search").resolvedStyle.display == DisplayStyle.None, "The clear button is shown with an empty search");
                     Assert(root.Q("music-career-total") != null || root.Q(className: "music-empty") != null, "The career page did not open");
                     Capture("46-career");
                     root.Q<TextField>("music-search").value = "Platform";
                     break;
                 case 95:
                     Capture("47-search-results");
+                    { var go = root.Q<Button>("music-search-go"); var bar = root.Q("music-search"); Assert(Mathf.Abs(go.worldBound.center.y - bar.worldBound.center.y) < 1.5f, "The search button is not vertically centred in the search pill"); }
                     Assert(root.Q<Button>("music-clear-search").resolvedStyle.display != DisplayStyle.None, "The clear button is not shown while the search has text");
                     Debug.Log("MUSIC_CAREER_SEARCH_OK: career page and the search pill with its clear and search buttons");
                     Finish(); return;

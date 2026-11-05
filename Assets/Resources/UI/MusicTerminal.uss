@@ -1256,3 +1256,5 @@
 .music-terminal .music-icon-button, .music-modal .music-icon-button, .music-terminal .music-search-go.music-icon-button { border-width: 0; }
 .music-terminal .music-icon-button:hover, .music-modal .music-icon-button:hover, .music-terminal .music-search-go.music-icon-button:hover, .music-terminal .music-search-clear.music-icon-button:hover { border-width: 0; background-color: rgba(255, 255, 255, 0.09); }
 .music-terminal .music-icon-button.is-active { border-width: 0; background-color: rgba(205, 176, 112, 0.2); }
+.music-header .music-search .music-search-clear, .music-header .music-search .music-search-go { top: 5px; margin-top: 0; }
+.music-header .music-search .music-search-clear.music-icon-button, .music-header .music-search .music-search-go.music-icon-button { top: 5px; margin: 0; width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 5px; }
