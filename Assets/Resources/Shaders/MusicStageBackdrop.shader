@@ -14,7 +14,7 @@ Shader "Hidden/RailwayRenaissance/MusicStageBackdrop"
             #include "UnityCG.cginc"
 
             float4 _ColA, _ColB, _Base;
-            float _Clock, _Low, _Mid, _High, _Energy, _Aspect, _Seed;
+            float _Clock, _Low, _Mid, _High, _Energy, _Aspect, _Seed, _Beat;
 
             float hash21(float2 p) { p = frac(p * float2(123.34, 456.21)); p += dot(p, p + 45.32); return frac(p.x * p.y); }
             float noise(float2 p)
@@ -63,6 +63,17 @@ Shader "Hidden/RailwayRenaissance/MusicStageBackdrop"
                 float2 c = float2(.5 + .22 * sin(t * 3.0 + _Seed * 6.0), .12);
                 float glow = exp(-dot((uv - c) * float2(1.0, 1.7), (uv - c) * float2(1.0, 1.7)) * 5.0);
                 col += lerp(_ColA.rgb, _ColB.rgb, .4) * glow * (.12 + _Low * .3);
+
+                // Two broad lights wander on slow, unequal paths (about a minute a lap), so no two moments of the song look alike; a beat lifts them.
+                float tl = _Clock * .11;
+                float2 l1 = float2(.5 + .36 * sin(tl * 1.0 + _Seed * 6.0), .5 + .28 * cos(tl * .83 + _Seed * 3.0));
+                float2 l2 = float2(.5 + .4 * cos(tl * .71 + 2.0 + _Seed * 5.0), .5 + .32 * sin(tl * 1.13 + 1.0 + _Seed * 2.0));
+                float2 d1 = (uv - l1) * float2(_Aspect, 1.0), d2 = (uv - l2) * float2(_Aspect, 1.0);
+                col += _ColA.rgb * exp(-dot(d1, d1) * 5.5) * (.10 + _Mid * .22 + _Beat * .22);
+                col += _ColB.rgb * exp(-dot(d2, d2) * 5.5) * (.10 + _Low * .2 + _Beat * .2);
+                // The mix of the two cover colours drifts over time.
+                float drift = .5 + .5 * sin(_Clock * .05 + _Seed * 6.0);
+                col = lerp(col, lerp(_ColA.rgb, _ColB.rgb, drift) * (.5 + f * .7), smoothstep(.35, .9, f) * .22);
 
                 // Dust in two depths; the high band makes it twinkle.
                 float2 duv = float2(uv.x * _Aspect, uv.y);

@@ -30,6 +30,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public float BandHigh => bandHigh;
         readonly float[] spectrum = new float[512];
         float bandLow, bandMid, bandHigh;
+        // What the audio analysis last measured (30 times a second); the shown levels glide to these on every frame, so the motion never steps.
+        float lowTarget, midTarget, highTarget, rawTarget, transientTarget, lastTick;
 
         // The backdrop is drawn by a shader into a small RenderTexture (see Resources/Shaders/MusicStageBackdrop.shader); when the shader
         // cannot be used the older painter fields below are the whole backdrop.
@@ -65,7 +67,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!backdropTexture.IsCreated()) backdropTexture.Create();
             var m = backdropMaterial; float w = Mathf.Max(contentRect.width, 1f), h = Mathf.Max(contentRect.height, 1f);
             m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
-            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh);
+            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh); m.SetFloat("_Beat", transient);
             m.SetFloat("_Energy", Mathf.Clamp01(energy + ChorusBoost * .25f)); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
             Graphics.Blit(null, backdropTexture, m);
         }
@@ -180,7 +182,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // Bins are ~43 Hz wide at 44.1 kHz: low ≈ 40–260 Hz, mid ≈ 260 Hz–3 kHz, high ≈ 3–11 kHz. When the engine hands out no spectrum
         // (decoded-only fallback) the bands follow the measured power instead, so they never invent a level.
-        void ReadBands(AudioSource source, float dt)
+        void MeasureBands(AudioSource source)
         {
             float low = 0, mid = 0, high = 0;
             source.GetSpectrumData(spectrum, 0, FFTWindow.Hanning);
@@ -192,17 +194,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             mid = Mathf.Clamp01(Mathf.Sqrt((float)(sumMid / 64)) * 22f);
             high = Mathf.Clamp01(Mathf.Sqrt((float)(sumHigh / 185)) * 60f);
             if (low + mid + high <= 0.0001f) { low = mid = high = Mathf.Clamp01(MeasuredPower * 4); }
-            float rise = 1 - Mathf.Exp(-dt * 16), fall = 1 - Mathf.Exp(-dt * 5);
-            bandLow = Mathf.Lerp(bandLow, low, low > bandLow ? rise : fall);
-            bandMid = Mathf.Lerp(bandMid, mid, mid > bandMid ? rise : fall);
-            bandHigh = Mathf.Lerp(bandHigh, high, high > bandHigh ? rise : fall);
+            lowTarget = low; midTarget = mid; highTarget = high;
+        }
+
+        void GlideBands(float dt)
+        {
+            float rise = 1 - Mathf.Exp(-dt * 14), fall = 1 - Mathf.Exp(-dt * 4);
+            bandLow = Mathf.Lerp(bandLow, lowTarget, lowTarget > bandLow ? rise : fall);
+            bandMid = Mathf.Lerp(bandMid, midTarget, midTarget > bandMid ? rise : fall);
+            bandHigh = Mathf.Lerp(bandHigh, highTarget, highTarget > bandHigh ? rise : fall);
         }
 
         public void Tick(AudioSource source, bool playing, bool reducedMotion)
         {
-            if (Time.unscaledTime < nextFrame) return;
-            float dt = Mathf.Clamp(Time.unscaledTime - (nextFrame - 1f / 30), .001f, .1f);
-            nextFrame = Time.unscaledTime + 1f / 30;
+            // Every frame: colours, glide and the flow clock (smooth). Thirty times a second: the audio measurements (cheap enough, and plenty).
+            float now = Time.unscaledTime;
+            float dt = Mathf.Clamp(now - lastTick, .0005f, .1f); lastTick = now;
+            bool measure = now >= nextFrame; if (measure) nextFrame = now + 1f / 30;
             bool changed = blend < 1;
             blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .9f);
             seed = reducedMotion ? seedTarget : Mathf.MoveTowards(seed, seedTarget, dt / 1.4f);
@@ -215,32 +223,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 changed |= energy != 0 || clock != 0;
                 clock = energy = transient = 0;
-                bandLow = bandMid = bandHigh = 0;
+                bandLow = bandMid = bandHigh = lowTarget = midTarget = highTarget = 0;
             }
             else if (playing && source != null && source.clip != null)
             {
-                MeasuredPower = ReadPower(source);
-                float raw = Mathf.Clamp01(MeasuredPower * 4);
-                energy = Mathf.Lerp(energy, raw, 1 - Mathf.Exp(-dt * (raw > energy ? 15 : 4)));
-                transient = Mathf.Lerp(transient, Mathf.Clamp01((raw - lastRaw) * 5), 1 - Mathf.Exp(-dt * 12));
-                lastRaw = raw; clock = source.time; changed = true;
-                ReadBands(source, dt);
+                if (measure)
+                {
+                    MeasuredPower = ReadPower(source);
+                    rawTarget = Mathf.Clamp01(MeasuredPower * 4);
+                    transientTarget = Mathf.Clamp01((rawTarget - lastRaw) * 5); lastRaw = rawTarget;
+                    MeasureBands(source);
+                }
+                energy = Mathf.Lerp(energy, rawTarget, 1 - Mathf.Exp(-dt * (rawTarget > energy ? 14 : 3.5f)));
+                transient = Mathf.Lerp(transient, transientTarget, 1 - Mathf.Exp(-dt * 10));
+                clock = source.time; changed = true;
+                GlideBands(dt);
             }
             else if (bandLow + bandMid + bandHigh > 0)
             {
                 // Paused: let the bands settle instead of freezing mid-pulse.
-                float fall = 1 - Mathf.Exp(-dt * 6);
-                bandLow = Mathf.Lerp(bandLow, 0, fall); bandMid = Mathf.Lerp(bandMid, 0, fall); bandHigh = Mathf.Lerp(bandHigh, 0, fall);
+                lowTarget = midTarget = highTarget = 0; transientTarget = 0;
+                float fall = 1 - Mathf.Exp(-dt * 5);
+                energy = Mathf.Lerp(energy, 0, fall); transient = Mathf.Lerp(transient, 0, fall);
+                GlideBands(dt);
             }
-            if (!reducedMotion) { flowClock += dt; changed = true; }
+            // The flow runs a little faster when the music is loud, so the picture breathes with the song instead of looping at one speed.
+            if (!reducedMotion) { flowClock += dt * (1f + energy * .8f + bandLow * .5f); changed = true; }
             if (changed || backdropTexture == null) RenderBackdrop();
-            if (changed) MarkDirtyRepaint();
+            // With the shader backdrop the texture is read at draw time; the mesh only needs rebuilding for the painter fallback.
+            if (changed && backdropTexture == null) MarkDirtyRepaint();
         }
 
         void Draw(MeshGenerationContext context)
         {
             float w = contentRect.width, h = contentRect.height;
             if (w < 2 || h < 2) return;
+            if (backdropTexture != null) return;
             var painter = context.painter2D;
             float t = clock * .06f + seed * 6;
             float pulse = 1 + energy * .13f + transient * .05f;
