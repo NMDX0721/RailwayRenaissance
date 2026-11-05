@@ -48,6 +48,7 @@ public partial class VNManager
     }
     private void UpdateReadingPresentation()
     {
+        if (backlogVoice != null && backlogVoice.HasClip && (vnBacklog == null || !vnBacklog.IsOpen)) backlogVoice.Clear();
         if(lineVoice!=null)
         {
             bool blocked=!Application.isFocused||uiHidden||menuExpanded||AdvanceBlockedByPanels();
