@@ -753,6 +753,8 @@ public class GameMainUI : MonoBehaviour
     private VisualElement pageDot1;
     private VisualElement folderOverlay;
     private bool isDesktopDragging = false;
+    private static readonly string[] DockMainApps = { "RDA", "归途", "笔记", "时钟", "日历", "天气" };
+    private VisualElement dockRecentBox, dockRecentDivider;
     private Vector2 desktopDragStartPos;
     private float desktopDragDeltaX = 0f;
     private static readonly string[] MasterAllApps = {
@@ -770,7 +772,7 @@ public class GameMainUI : MonoBehaviour
 
     private static readonly string[] Page0SelectedApps = {
         "相册", "音乐", "驾驶台", "媒姬百科", "米家", "地图",
-        "铁路", "浏览器", "安全中心", "未来网", "文件管理", "应用商店"
+        "铁路", "浏览器", "安全中心", "设置", "文件管理", "应用商店"
     };
 
     // ============ 岁月AI投影 ============
@@ -1046,52 +1048,53 @@ public class GameMainUI : MonoBehaviour
                 desktopPointerCaptured = false;
                 desktopDragStartPos = evt.position;
                 desktopDragDeltaX = 0f;
+                desktopPagerVelocity = 0f;
+                desktopPagerLastX = evt.position.x; desktopPagerLastT = Time.unscaledTime;
             }
         });
 
         pagesRoot.RegisterCallback<PointerMoveEvent>(evt =>
         {
-            if (isDesktopDragging)
+            if (!isDesktopDragging) return;
+            desktopDragDeltaX = evt.position.x - desktopDragStartPos.x;
+            if (!desktopPointerCaptured && Mathf.Abs(desktopDragDeltaX) > 8f)
             {
-                desktopDragDeltaX = evt.position.x - desktopDragStartPos.x;
-                if (!desktopPointerCaptured && Mathf.Abs(desktopDragDeltaX) > 8f)
-                {
-                    desktopPointerCaptured = true;
-                    pagesRoot.CapturePointer(evt.pointerId);
-                }
-                float offset = Mathf.Clamp(desktopDragDeltaX * 0.45f, -48f, 48f);
-                if (currentDesktopPage == 0 && desktopPage0 != null)
-                {
-                    desktopPage0.style.translate = new Translate(offset, 0);
-                }
-                else if (currentDesktopPage == 1 && desktopPage1 != null)
-                {
-                    desktopPage1.style.translate = new Translate(offset, 0);
-                }
+                desktopPointerCaptured = true;
+                desktopPagerAnim?.Pause();
+                pagesRoot.CapturePointer(evt.pointerId);
             }
+            if (!desktopPointerCaptured) return;
+            // 速度：最近一小段时间内的平均水平速度（px/s）
+            float now = Time.unscaledTime;
+            float dt = Mathf.Max(0.016f, now - desktopPagerLastT);
+            desktopPagerVelocity = Mathf.Lerp(desktopPagerVelocity, (evt.position.x - desktopPagerLastX) / dt, 0.5f);
+            desktopPagerLastX = evt.position.x; desktopPagerLastT = now;
+            // 页面跟着手指走：进度 = 当前页 - 位移/页宽；到头时带橡皮筋阻尼
+            float w = Mathf.Max(1f, pagesRoot.resolvedStyle.width);
+            float p = currentDesktopPage - desktopDragDeltaX / w;
+            if (p < 0f) p = p * 0.3f;
+            else if (p > 1f) p = 1f + (p - 1f) * 0.3f;
+            ApplyDesktopPager(p);
         });
 
         System.Action<IPointerEvent> finishDrag = (evt) =>
         {
             if (!isDesktopDragging) return;
             isDesktopDragging = false;
+            bool wasDragging = desktopPointerCaptured;
             if (desktopPointerCaptured && pagesRoot.HasPointerCapture(evt.pointerId))
             {
                 pagesRoot.ReleasePointer(evt.pointerId);
             }
             desktopPointerCaptured = false;
+            if (!wasDragging) return;
 
-            if (desktopPage0 != null) desktopPage0.style.translate = new Translate(0, 0);
-            if (desktopPage1 != null) desktopPage1.style.translate = new Translate(0, 0);
-
-            if (desktopDragDeltaX < -60f && currentDesktopPage == 0)
-            {
-                SwitchDesktopPage(1);
-            }
-            else if (desktopDragDeltaX > 60f && currentDesktopPage == 1)
-            {
-                SwitchDesktopPage(0);
-            }
+            // 位移过 1/4 页宽，或甩动速度够快，就翻页；否则回弹
+            float w = Mathf.Max(1f, pagesRoot.resolvedStyle.width);
+            int target = currentDesktopPage;
+            if ((desktopDragDeltaX < -w * 0.25f || desktopPagerVelocity < -600f) && currentDesktopPage == 0) target = 1;
+            else if ((desktopDragDeltaX > w * 0.25f || desktopPagerVelocity > 600f) && currentDesktopPage == 1) target = 0;
+            SwitchDesktopPage(target);
         };
 
         pagesRoot.RegisterCallback<PointerUpEvent>(evt => finishDrag(evt));
@@ -1101,8 +1104,8 @@ public class GameMainUI : MonoBehaviour
             if (isDesktopDragging)
             {
                 isDesktopDragging = false;
-                if (desktopPage0 != null) desktopPage0.style.translate = new Translate(0, 0);
-                if (desktopPage1 != null) desktopPage1.style.translate = new Translate(0, 0);
+                desktopPointerCaptured = false;
+                SwitchDesktopPage(currentDesktopPage);
             }
         });
 
@@ -1189,17 +1192,20 @@ public class GameMainUI : MonoBehaviour
         desktop.Add(dock);
 
         // 对照参考图：一排常用应用 + 竖线分隔 + 另一组（像“最近使用”）共 9 个
-        string[] dockMain = { "RDA", "归途", "笔记", "时钟", "日历", "天气" };
-        string[] dockRecent = { "计算器", "设置", "白头疫苗" };
-        foreach (var d in dockMain) dock.Add(BuildDockIcon(d));
-        var dockDivider = new VisualElement { pickingMode = PickingMode.Ignore };
+        foreach (var d in DockMainApps) dock.Add(BuildDockIcon(d));
+        var dockDivider = new VisualElement { pickingMode = PickingMode.Ignore, name = "tablet-dock-divider" };
         dockDivider.style.width = 2; dockDivider.style.height = 40;
         dockDivider.style.marginLeft = 8; dockDivider.style.marginRight = 8;
         dockDivider.style.backgroundColor = new Color(1f, 1f, 1f, 0.28f);
         dockDivider.style.borderTopLeftRadius = dockDivider.style.borderTopRightRadius = 1;
         dockDivider.style.borderBottomLeftRadius = dockDivider.style.borderBottomRightRadius = 1;
         dock.Add(dockDivider);
-        foreach (var d in dockRecent) dock.Add(BuildDockIcon(d));
+        dockRecentDivider = dockDivider;
+        dockRecentBox = new VisualElement { name = "tablet-dock-recents" };
+        dockRecentBox.style.flexDirection = FlexDirection.Row;
+        dockRecentBox.style.alignItems = Align.Center;
+        dock.Add(dockRecentBox);
+        RefreshDockRecents();
 
         // ---- 真实「铁路」文件夹浮层 ----
         BuildFolderOverlay();
@@ -1208,20 +1214,35 @@ public class GameMainUI : MonoBehaviour
         BuildSuiyueWidget();
     }
 
-    private void SwitchDesktopPage(int pageIndex)
+    // 桌面翻页：两页并排，进度 0..1，页面按进度平移；松手后用缓出曲线滑到目标页，而不是瞬间跳过去
+    private float desktopPagerP;
+    private float desktopPagerLastX, desktopPagerLastT, desktopPagerVelocity;
+    private IVisualElementScheduledItem desktopPagerAnim;
+
+    private void ApplyDesktopPager(float p)
     {
-        currentDesktopPage = Mathf.Clamp(pageIndex, 0, 1);
+        desktopPagerP = p;
+        var pagesRoot = desktopPage0?.parent;
+        float w = pagesRoot != null ? pagesRoot.resolvedStyle.width : 0f;
+        if (float.IsNaN(w) || w < 1f) w = 1f;
+        bool p0 = p < 0.999f, p1 = p > 0.001f;
         if (desktopPage0 != null)
         {
-            desktopPage0.style.display = (currentDesktopPage == 0) ? DisplayStyle.Flex : DisplayStyle.None;
-            desktopPage0.style.translate = new Translate(0, 0);
+            desktopPage0.style.display = p0 ? DisplayStyle.Flex : DisplayStyle.None;
+            desktopPage0.style.translate = new Translate(-p * w, 0);
+            desktopPage0.style.opacity = Mathf.Clamp01(1f - Mathf.Max(0f, p) * 0.35f);
         }
         if (desktopPage1 != null)
         {
-            desktopPage1.style.display = (currentDesktopPage == 1) ? DisplayStyle.Flex : DisplayStyle.None;
-            desktopPage1.style.translate = new Translate(0, 0);
+            desktopPage1.style.display = p1 ? DisplayStyle.Flex : DisplayStyle.None;
+            desktopPage1.style.translate = new Translate((1f - p) * w, 0);
+            desktopPage1.style.opacity = Mathf.Clamp01(1f - Mathf.Max(0f, 1f - p) * 0.35f);
         }
+    }
 
+    private void SwitchDesktopPage(int pageIndex)
+    {
+        currentDesktopPage = Mathf.Clamp(pageIndex, 0, 1);
         if (pageDot0 != null)
         {
             pageDot0.style.width = (currentDesktopPage == 0) ? 20 : 6;
@@ -1232,6 +1253,23 @@ public class GameMainUI : MonoBehaviour
             pageDot1.style.width = (currentDesktopPage == 1) ? 20 : 6;
             pageDot1.style.backgroundColor = (currentDesktopPage == 1) ? Color.white : new Color(1f, 1f, 1f, 0.4f);
         }
+        desktopPagerAnim?.Pause();
+        float from = desktopPagerP, to = currentDesktopPage;
+        int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(300);
+        var host = desktopPage0;
+        if (host == null || ms <= 0 || Mathf.Abs(from - to) < 0.002f || host.panel == null)
+        {
+            ApplyDesktopPager(to);
+            return;
+        }
+        float start = Time.unscaledTime;
+        desktopPagerAnim = host.schedule.Execute(() =>
+        {
+            float t = Mathf.Clamp01((Time.unscaledTime - start) * 1000f / ms);
+            float e = 1f - Mathf.Pow(1f - t, 3f);   // 缓出
+            ApplyDesktopPager(Mathf.LerpUnclamped(from, to, e));
+            if (t >= 1f) desktopPagerAnim?.Pause();
+        }).Every(8).Until(() => Mathf.Abs(desktopPagerP - to) < 0.0005f);
     }
 
     private void BuildDesktopPage0()
@@ -1754,6 +1792,24 @@ public class GameMainUI : MonoBehaviour
         w.RegisterCallback<PointerLeaveEvent>(_ => w.style.scale = new Scale(new Vector2(1f, 1f)));
         w.RegisterCallback<ClickEvent>(_ => LaunchApp("日历"));
         return w;
+    }
+
+    /// <summary>Dock 右侧是最近使用的最多三个后台应用；从后台关掉就不再显示，没有后台应用时连分隔线一起隐藏。</summary>
+    private void RefreshDockRecents()
+    {
+        if (dockRecentBox == null) return;
+        dockRecentBox.Clear();
+        var recent = new List<TabletTaskSession>(tabletTasks);
+        recent.Sort((a, b) => b.LastActivated.CompareTo(a.LastActivated));
+        int shown = 0;
+        foreach (var task in recent)
+        {
+            if (shown >= 3) break;
+            if (System.Array.IndexOf(DockMainApps, task.AppId) >= 0) continue;
+            dockRecentBox.Add(BuildDockIcon(task.AppId));
+            shown++;
+        }
+        if (dockRecentDivider != null) dockRecentDivider.style.display = shown > 0 ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     private VisualElement BuildDockIcon(string name)
@@ -2533,6 +2589,7 @@ public class GameMainUI : MonoBehaviour
         }
         activeTabletTask = null;
         appLayer = null;
+        RefreshDockRecents();
         desktopInkLight = -1; // 回到桌面：按壁纸重新取字色
         ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
@@ -2858,6 +2915,7 @@ public class GameMainUI : MonoBehaviour
         task.LastFocusedElement = null;
         tabletTasks.Remove(task);
         RenderRecentTasks();
+        RefreshDockRecents();
         if (tabletTasks.Count == 0) CloseRecentTasks();
     }
 
@@ -2882,6 +2940,7 @@ public class GameMainUI : MonoBehaviour
         }
         tabletTasks.Clear();
         recentTasksList?.Clear();
+        RefreshDockRecents();
         if (appLayer == null && root != null)
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
@@ -2899,6 +2958,7 @@ public class GameMainUI : MonoBehaviour
     private void RequestSystemBack()
     {
         if (tabletShellState.ClosePanel()) return;
+        if (RailwayRenaissance.UI.Tablet.SystemShell.TabletConfirmDialog.HandleBack()) return;
         // 注册向导盖在平板上时，返回键只作用于向导（退一页或取消），不落到下面的应用
         var setupWizard = RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Active;
         if (setupWizard != null && setupWizard.HandleBack()) return;
