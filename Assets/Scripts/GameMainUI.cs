@@ -2941,6 +2941,18 @@ public class GameMainUI : MonoBehaviour
 
     private bool CancelTabletRebind()
     {
+    private void ConfirmQuitFromDesktop()
+    {
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletConfirmDialog.Show(root, "退出游戏", "确定要退出游戏吗？", "退出", () =>
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        });
+    }
+
         var callback = TabletSettingsAppUI.TabletRebindAction;
         if (callback == null) return false;
         TabletSettingsAppUI.TabletRebindAction = null;
