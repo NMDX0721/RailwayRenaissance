@@ -100,7 +100,7 @@ public sealed class NeteaseMusicRuntimeReview : MonoBehaviour
         yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(Path.Combine(directory, "home-1024.png"));
         Debug.Log("MUSIC_HOME_SEARCH_OK home=" + homeUi + " unified=" + unifiedUi + " libraryScope=" + selectedLibrary + " compact=" + compactHome);
-        var cloud = root?.Q<Button>("music-nav-云端");
+        var cloud = root?.Q<Button>("music-lib-tab-云端");
         Debug.Log("MUSIC_NAV_PROBE cloud=" + (cloud != null) + " panel=" + (root?.panel != null) + " size=" + Screen.width + "x" + Screen.height);
         if (cloud == null) Debug.Log("MUSIC_NAV_IDS " + string.Join(";", root.Query<Button>().ToList().Take(20).Select(b => b.name + "=" + b.tooltip)));
         if (cloud != null) using (var evt = NavigationSubmitEvent.GetPooled()) { evt.target = cloud; cloud.SendEvent(evt); }

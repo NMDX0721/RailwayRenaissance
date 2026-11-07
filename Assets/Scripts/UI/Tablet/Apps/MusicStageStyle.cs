@@ -77,23 +77,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public static class StageStyles
     {
-        sealed class Entry { public string id, title; public Func<IStageStyle> create; }
+        sealed class Entry { public string id, title; public Func<IStageStyle> create; public bool hidden; }
         static readonly List<Entry> entries = new List<Entry>
         {
-            new Entry { id = "luminous", title = "Luminous", create = () => new MusicStageLuminous() },
+            new Entry { id = "luminous", title = "流光", create = () => new MusicStageLuminous() },
             new Entry { id = "partita", title = "云阶", create = () => new MusicStagePartita() },
-            new Entry { id = "tilt", title = "Tilt", create = () => new MusicStageTilt() },
+            new Entry { id = "tilt", title = "倾斜", create = () => new MusicStageTilt() },
             new Entry { id = "claddagh", title = "回环", create = () => new MusicStageCladdagh() },
             new Entry { id = "cadenza", title = "心象", create = () => new MusicStageCadenza() },
             new Entry { id = "cappella", title = "清唱", create = () => new MusicStageCappella() },
             new Entry { id = "pendolo", title = "摆线", create = () => new MusicStagePendolo() },
-            new Entry { id = "still", title = "Still", create = () => new MusicStageStill() }
+            new Entry { id = "still", title = "静读", create = () => new MusicStageStill(), hidden = true }
         };
 
+        // "Still" is the same look as the plain 静读 lyric mode, so it is not offered twice: it stays creatable for old saves but is not listed.
+        static readonly List<Entry> shown = entries.FindAll(e => !e.hidden);
         public const string Default = "luminous";
-        public static int Count => entries.Count;
-        public static string IdAt(int index) => entries[Mathf.Clamp(index, 0, entries.Count - 1)].id;
-        public static string Next(string id) { for (int i = 0; i < entries.Count; i++) if (entries[i].id == id) return entries[(i + 1) % entries.Count].id; return entries[0].id; }
+        public static int Count => shown.Count;
+        public static string IdAt(int index) => shown[Mathf.Clamp(index, 0, shown.Count - 1)].id;
+        public static int IndexOf(string id) => shown.FindIndex(e => e.id == id);
+        public static string Next(string id) { int at = IndexOf(id); return shown[(at + 1) % shown.Count].id; }
         public static string TitleOf(string id) { foreach (var e in entries) if (e.id == id) return e.title; return entries[0].title; }
         public static bool Has(string id) { foreach (var e in entries) if (e.id == id) return true; return false; }
         public static IStageStyle Create(string id)

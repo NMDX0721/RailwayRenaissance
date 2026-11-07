@@ -116,16 +116,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 host.Q<Button>("music-lyrics-motion").tooltip = "切换歌词表现：静读（平铺阅读）/ 随行（当前句放大，远处渐隐）/ 舞台（居中单句，随音乐起伏）；减少动态效果优先";
             }, "music-lyrics-motion");
             motion.tooltip = "切换歌词表现：静读（平铺阅读）/ 随行（当前句放大，远处渐隐）/ 舞台（居中单句，随音乐起伏）；减少动态效果优先";
-            // The stage look has its own style switch right on the header, so it does not hide in the settings panel.
-            var quickStyle = new Button { name = "music-lyrics-style", text = "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle) };
+            // One style switch for every lyric look: 静读, 随行, then the stage styles. (The mode button above stays as the programmatic switch but is not shown.)
+            motion.style.display = DisplayStyle.None;
+            var quickStyle = new Button { name = "music-lyrics-style", text = "样式：" + StyleTitle() };
             quickStyle.AddToClassList("music-button"); quickStyle.AddToClassList("music-lyrics-style-button"); header.Add(quickStyle);
-            quickStyle.tooltip = "切换舞台样式";
+            quickStyle.tooltip = "切换歌词样式：静读 / 随行 / 各种舞台样式（背景也随样式变化）";
             quickStyle.clicked += () =>
             {
-                MusicLibrarySession.State.stageStyle = StageStyles.Next(MusicLibrarySession.State.stageStyle); MusicLibrarySession.Save();
-                string title = StageStyles.TitleOf(MusicLibrarySession.State.stageStyle);
-                quickStyle.text = "样式：" + title;
-                var inner = host.Q<Button>("music-stage-style"); if (inner != null) inner.text = "样式：" + title;
+                CycleStyle(); ApplyMotionStyle(); RenderRows(); active = -2;
+                quickStyle.text = "样式：" + StyleTitle();
+                var inner = host.Q<Button>("music-stage-style"); if (inner != null) inner.text = "样式：" + StageStyles.TitleOf(MusicLibrarySession.State.stageStyle);
             };
             Action(header, "关闭", close, "music-lyrics-close", true);
             var body = Box(host, "music-lyrics-body");
@@ -160,6 +160,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(art, "沿线声音档案 / RAILWAY SOUND", "music-eyebrow");
             // Song information, from the same track data as the record archive: who sings it, the album, where it comes from and how long it is;
             // a soundtrack also shows how it is unlocked and its line of atmosphere. The settings below stay folded away.
+            // Record archive and lyric settings are two small icon buttons under the title, so the column never runs under the player bar.
+            var quick = Box(art, "music-lyrics-quick"); Button settingsOpen;
+            var record = Action(quick, "唱片档案", () => RailwayMusicTerminalView.OpenRecord(trackId), "music-lyrics-record", true);
+            record.tooltip = "唱片档案：打开这首曲目的完整档案（盖在歌词页上，关闭后回到歌词）";
             var info = Box(art, "music-lyrics-info");
             void InfoRow(string key, string value)
             {
@@ -179,8 +183,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 }
             }
             status = new StatusLines(); status.AddToClassList("music-lyrics-status"); art.Add(status);
-            var record = Action(art, "唱片档案", () => RailwayMusicTerminalView.OpenRecord(trackId), "music-lyrics-record");
-            record.tooltip = "打开这首曲目的完整唱片档案（盖在歌词页上，关闭后回到歌词）";
             // The lyric settings live in their own sheet over the page, not in the narrow column under the cover where the player bar used to cover them.
             var sheet = Box(host, "music-lyrics-sheet"); sheet.name = "music-lyrics-sheet"; sheet.style.display = DisplayStyle.None;
             sheet.RegisterCallback<PointerDownEvent>(e => { if (e.target == sheet) sheet.style.display = DisplayStyle.None; });
@@ -188,7 +190,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var sheetHead = Box(sheetPanel, "music-modal-header"); Text(sheetHead, "这首歌的歌词", "music-grow");
             Action(sheetHead, "关闭", () => sheet.style.display = DisplayStyle.None, "music-lyrics-sheet-close", true);
             var sheetScroll = new ScrollView { verticalScrollerVisibility = ScrollerVisibility.Auto, name = "music-lyrics-sheet-scroll" }; sheetScroll.AddToClassList("music-lyrics-sheet-scroll"); sheetPanel.Add(sheetScroll);
-            Action(art, "歌词设置", () => { sheet.style.display = DisplayStyle.Flex; sheet.BringToFront(); }, "music-lyrics-settings-open");
+            settingsOpen = Action(quick, "歌词设置", () => { sheet.style.display = DisplayStyle.Flex; sheet.BringToFront(); }, "music-lyrics-settings-open", true); settingsOpen.tooltip = "歌词设置";
             Action(sheetPanel, "全部设置", () => { sheet.style.display = DisplayStyle.None; RailwayMusicTerminalView.OpenSettingsPage("lyrics"); }, "music-lyrics-all-settings");
             var more = new Foldout { text = "歌词设置", value = true, name = "music-lyrics-more" }; more.AddToClassList("music-lyrics-more"); more.AddToClassList("music-lyrics-more-open"); sheetScroll.Add(more);
             var imports = Box(more, "music-lyrics-actions");
@@ -239,12 +241,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 host.schedule.Execute(() => { foreach (var child in fading) child.RemoveFromClassList("music-lyrics-entering"); }).StartingIn(60);
             }
         }
+        // Unified lyric style: 0 静读, 1 随行, then every listed stage style in order.
+        static string StyleTitle() { int m = MusicLibrarySession.State.lyricMotion; return m == 0 ? "静读" : m == 1 ? "随行" : StageStyles.TitleOf(MusicLibrarySession.State.stageStyle); }
+        static string LookKey() { int m = MusicLibrarySession.State.lyricMotion; return m == 0 ? "static" : m == 1 ? "follow" : MusicLibrarySession.State.stageStyle; }
+        static void CycleStyle()
+        {
+            var state = MusicLibrarySession.State;
+            if (state.lyricMotion == 0) state.lyricMotion = 1;
+            else if (state.lyricMotion == 1) { state.lyricMotion = 2; state.stageStyle = StageStyles.IdAt(0); }
+            else if (StageStyles.IndexOf(state.stageStyle) >= StageStyles.Count - 1) state.lyricMotion = 0;
+            else state.stageStyle = StageStyles.Next(state.stageStyle);
+            MusicLibrarySession.Save();
+        }
         static string MotionTitle() => new[] { "静读", "随行", "舞台" }[Mathf.Clamp(MusicLibrarySession.State.lyricMotion, 0, 2)];
         void ApplyMotionStyle()
         {
             host.EnableInClassList("music-motion-static", MusicLibrarySession.State.lyricMotion == 0);
             host.EnableInClassList("music-motion-follow", MusicLibrarySession.State.lyricMotion == 1);
             host.EnableInClassList("music-motion-stage", MusicLibrarySession.State.lyricMotion == 2);
+            reactiveStage?.SetLook(LookKey());
+            var styleButton = host.Q<Button>("music-lyrics-style"); if (styleButton != null) styleButton.text = "样式：" + StyleTitle();
             var tuningBox = host.Q("music-lyrics-stage-tuning");
             if (tuningBox != null) tuningBox.style.display = MusicLibrarySession.State.lyricMotion == 2 ? DisplayStyle.Flex : DisplayStyle.None;
         }

@@ -30,6 +30,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         string cloudProvider = "netease", searchProvider = "auto";
         int catalogGeneration;
         string requestedCloudPlaylist;
+        bool cloudManage;   // the cloud page is the content of the connected accounts; sources, login and search live on this second page
         bool cloudLoggedIn;
         MusicLyricsView lyrics;
         string renderedPage;
@@ -260,26 +261,29 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void RenderNavigation()
         {
             navigation.Clear();
-            var plaque = Box(navigation, "music-station-plaque");
+            // The whole sidebar scrolls as one column, so nothing is cut off on a short window.
+            var scroll = new ScrollView { name = "music-nav-scroll" }; scroll.AddToClassList("music-nav-scroll"); navigation.Add(scroll);
+            var nav = scroll.contentContainer;
+            var plaque = Box(nav, "music-station-plaque");
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
-            Text(navigation, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "榜单", "原声", "本地音乐", "收藏", "云端", "生涯" })
+            Text(nav, "沿线收听", "music-eyebrow");
+            foreach (string item in new[] { "首页", "曲库", "收藏", "生涯" })
             {
                 string target = item;
-                var b = Button(navigation, item, () => Navigate(target), "music-nav-" + target);
-                b.EnableInClassList("is-active", page == item);
+                var b = Button(nav, item, () => Navigate(target), "music-nav-" + target);
+                b.EnableInClassList("is-active", item == "曲库" ? IsLibraryPage(page) : page == item);
             }
-            Text(navigation, "私人磁带 / 歌单", "music-eyebrow");
-            var lists = new ScrollView(); lists.AddToClassList("music-playlists"); navigation.Add(lists);
+            Text(nav, "私人磁带 / 歌单", "music-eyebrow");
+            var lists = Box(nav, "music-playlists");
             foreach (var list in MusicLibrarySession.State.playlists)
             {
                 var b = Button(lists, list.title, () => Navigate("歌单", list));
                 b.tooltip = list.title; b.EnableInClassList("is-active", selected == list);
             }
-            Button(navigation, "新建歌单", () => EditName(null), "music-new-playlist");
-            Button(navigation, "设置", () => OpenSettings(), "music-nav-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
-            Text(navigation, "拾起沿线的声音\n留住旅途的回响", "music-nav-note");
+            Button(nav, "新建歌单", () => EditName(null), "music-new-playlist");
+            Button(nav, "设置", () => OpenSettings(), "music-nav-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
+            Text(nav, "拾起沿线的声音\n留住旅途的回响", "music-nav-note");
         }
         List<MusicLibraryTrack> VisibleTracks()
         {
@@ -290,16 +294,30 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 else if (page == "收藏") items = items.Where(t => MusicLibrarySession.State.favorites.Contains(t.id));
                 else if (page == "歌单" && selected != null) items = selected.tracks.Select(MusicLibrarySession.Find).Where(t => t != null);
                 else if (page == "在线歌单") items = (onlineIds ?? new List<string>()).Select(MusicLibrarySession.Find).Where(t => t != null);
+                else if (page == "曲库") { /* every channel together */ }
                 else items = items.Where(t => !t.local && string.IsNullOrEmpty(t.provider));
             }
             else items = items.Where(t => ((t.title ?? "") + " " + (t.artist ?? "") + " " + t.category).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
             return items.ToList();
         }
+        // 曲库 is one place: every channel (soundtrack, local files, cloud accounts, charts) is a tab of it, not a separate entry in the sidebar.
+        static bool IsLibraryPage(string p) => p == "曲库" || p == "原声" || p == "本地音乐" || p == "云端" || p == "榜单" || p == "在线歌单";
+        void BuildLibraryTabs()
+        {
+            var tabs = Box(content, "music-lib-tabs");
+            foreach (var pair in new[] { ("全部", "曲库"), ("原声", "原声"), ("本地", "本地音乐"), ("云端", "云端"), ("榜单", "榜单") })
+            {
+                string target = pair.Item2;
+                var b = Button(tabs, pair.Item1, () => { if (page != target) Navigate(target); }, "music-lib-tab-" + target); b.AddToClassList("music-lib-tab"); b.tooltip = target;
+                b.EnableInClassList("is-active", page == target || (page == "在线歌单" && target == "榜单"));
+            }
+        }
         void RenderContent()
         {
             ++catalogGeneration;
-            content.Clear(); indicators.Clear();
+            content.Clear(); indicators.Clear(); content.RemoveFromClassList("music-list-collapsed");
             if (query.Length > 0) { RenderSearch(); return; }
+            if (IsLibraryPage(page)) BuildLibraryTabs();
             if (page == "首页") { RenderHome(); return; }
             if (page == "榜单") { RenderCharts(); return; }
             if (page == "生涯") { RenderCareer(); return; }
@@ -308,7 +326,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
             var hero = Box(content, "music-library-heading");
             hero.Add(new VisualElement { pickingMode = PickingMode.Ignore, name = "music-route-engraving" });
-            var sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 120);
+            VisualElement sleeve;
+            if (page == "在线歌单" && query.Length == 0 && !string.IsNullOrEmpty(onlineCoverUrl))
+            {
+                // A chart or playlist shows its own cover (the chart covers carry their name), not the stock platform picture.
+                string coverKey = "chart:" + onlineId;
+                sleeve = Box(hero, "music-sleeve"); sleeve.style.width = 120; sleeve.style.height = 120;
+                var image = Box(sleeve, "music-cover-image");
+                image.style.backgroundImage = new StyleBackground(MusicAlbumArtResolver.GetAlbumCover(coverKey, "歌单"));
+                MusicAlbumArtResolver.LoadRemoteImage(coverKey, onlineCoverUrl, texture => { if (image.panel != null) image.style.backgroundImage = new StyleBackground(texture); });
+            }
+            else sleeve = Cover(hero, query.Length > 0 ? "railway_track" : "platform", "BGM", 120);
             sleeve.AddToClassList("music-hero-cover");
             var headingText = Box(hero, "music-heading-text");
             Text(headingText, page == "在线歌单" ? MusicCatalogSearch.Label(onlineSource) + " · 歌单" : "沿线声音档案  /  SOUND ARCHIVE", "music-eyebrow");
@@ -319,7 +347,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Button(actions, "播放全部", () => PlayAll(items), "music-play-all").AddToClassList("music-primary");
             if (page == "在线歌单")
             {
-                Button(actions, "刷新", () => OpenOnlinePlaylist(onlineSource, onlineId, onlineTitle), "music-online-refresh");
+                Button(actions, "刷新", () => OpenOnlinePlaylist(onlineSource, onlineId, onlineTitle, onlineCoverUrl), "music-online-refresh");
                 Button(actions, "返回", () => Navigate("首页"), "music-online-back");
             }
             if (page == "本地音乐")
@@ -350,6 +378,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var tableHead = Box(content, "music-table-head");
             Text(tableHead, "档案 / 曲目", "music-grow"); Text(tableHead, "时长", "music-duration"); Text(tableHead, "操作", "music-action-caption");
             var scroll = new ScrollView { name = "music-track-list" }; scroll.AddToClassList("music-track-list"); content.Add(scroll);
+            BindListCollapse(scroll);
             if (items.Count == 0)
             {
                 string emptyMessage = query.Length > 0 ? "没有找到曲目，试试曲名、作者或分类。" :
@@ -365,6 +394,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var track = items[i];
                 AddTrackRow(scroll.contentContainer, track, i, selected != null && query.Length == 0);
             }
+        }
+        // Scrolling down folds the cover, title and action buttons away to give the list the room; a small button (or scrolling back to the top) brings them back.
+        void BindListCollapse(ScrollView scroll)
+        {
+            var top = new Button(() => scroll.scrollOffset = Vector2.zero) { name = "music-scroll-top", tooltip = "回到顶部" };
+            top.AddToClassList("music-icon-button"); top.AddToClassList("music-scroll-top"); MusicTerminalIcons.Apply(top, "↑", true); content.Add(top);
+            top.style.display = DisplayStyle.None;
+            void Sync(float y)
+            {
+                bool collapsed = content.ClassListContains("music-list-collapsed");
+                float spare = scroll.contentContainer.layout.height - scroll.contentViewport.layout.height;
+                // Fold only when the list really has room to keep scrolling afterwards, so a short list never flickers between the two states.
+                if (!collapsed && y > 48f && spare > 260f) collapsed = true; else if (collapsed && y < 2f) collapsed = false; else return;
+                content.EnableInClassList("music-list-collapsed", collapsed); top.style.display = collapsed ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            scroll.verticalScroller.valueChanged += Sync;
+            content.RemoveFromClassList("music-list-collapsed");
         }
         void AddTrackRow(VisualElement parent, MusicLibraryTrack track, int i, bool reorder = false, bool resume = false)
         {
@@ -405,11 +451,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 #if MUSIC_RUNTIME_REVIEW
             Debug.Log("MUSIC_NAVIGATE " + target);
 #endif
-            HideSuggestions(); page = target; selected = playlist; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
+            HideSuggestions(); page = target; selected = playlist; cloudManage = false; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
         }
         void OpenSource(string source, bool account)
         {
-            if (account) { cloudProvider = source; cloudLoggedIn = false; neteaseUserId = null; ++qrGeneration; Navigate("云端"); }
+            if (account) { cloudProvider = source; cloudLoggedIn = false; neteaseUserId = null; ++qrGeneration; Navigate("云端"); cloudManage = true; RenderContent(); }
             else { requestedCloudPlaylist = null; searchProvider = source; Navigate("搜索"); search.Focus(); }
         }
         void RenderHome()
@@ -840,8 +886,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             delete.AddToClassList("music-danger"); delete.SetEnabled(chosen.Count > 0);
         }
         // A playlist from the home page opens its own page with the tracks; playing is a choice made there.
-        void OpenOnlinePlaylist(string source, string id, string title)
+        string onlineCoverUrl;
+        void OpenOnlinePlaylist(string source, string id, string title, string coverUrl = null)
         {
+            onlineCoverUrl = coverUrl;
             onlineSource = source; onlineId = id; onlineTitle = title; onlineIds = null; onlineError = null; onlineLoading = true;
             int generation = ++onlineGeneration;
             Navigate("在线歌单");
@@ -1145,17 +1193,24 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
         void RenderCloud()
         {
-            Text(content, "在线曲库", "music-section-title");
+            string[] providerIds = { "netease", "qq", "kugou", "bodian", "subsonic", "webdav", "spotify" };
+            // The cloud page shows what is in the accounts that are connected: with none selected it falls to the first connected one.
+            if (!cloudManage && !NeteaseLocalBridge.HasSession(cloudProvider)) foreach (string id in providerIds) if (NeteaseLocalBridge.HasSession(id)) { cloudProvider = id; break; }
+            var titleBar = Box(content, "music-section-bar");
+            Text(titleBar, cloudManage ? "云端来源与连接" : "云端", "music-section-title");
             var scroll = new ScrollView { name = "music-cloud-scroll" }; scroll.style.flexGrow = 1; content.Add(scroll);
             var channels = Box(scroll.contentContainer, "music-list-actions");
             channels.AddToClassList("music-channel-selector");
             void AddChannel(string label, string id)
             {
+                // Outside the connection page only connected sources are offered, and only when there is more than one.
+                if (!cloudManage && !NeteaseLocalBridge.HasSession(id)) { return; }
                 var button = Button(channels, label, () => { requestedCloudPlaylist = null; ++cloudRequestGeneration; cloudProvider = id; cloudLoggedIn = false; neteaseUserId = null; ++qrGeneration; RenderContent(); }, "music-cloud-source-" + id);
                 button.EnableInClassList("is-active", cloudProvider == id);
             }
             AddChannel("网易云", "netease"); AddChannel("QQ 音乐", "qq"); AddChannel("酷狗", "kugou");
             AddChannel("波点", "bodian"); AddChannel("Subsonic", "subsonic"); AddChannel("WebDAV", "webdav"); AddChannel("Spotify", "spotify");
+            if (!cloudManage && channels.childCount < 2) channels.style.display = DisplayStyle.None;
             string provider = cloudProvider;
             string providerName = provider == "qq" ? "QQ 音乐" : provider == "kugou" ? "酷狗" : provider == "bodian" ? "波点" : provider == "subsonic" ? "Subsonic" : provider == "webdav" ? "WebDAV" : provider == "spotify" ? "Spotify" : "网易云";
             var bridge = NeteaseLocalBridge.ForProvider(provider);
@@ -1165,6 +1220,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var connection = new Foldout { text = "账户与连接", value = !cloudLoggedIn, name = "music-cloud-account" }; connection.AddToClassList("music-account-foldout");
             var controls = connection.contentContainer;
             var cloudStatus = Text(scroll, providerName + (cloudLoggedIn ? " / 已连接：" + bridge.SessionNickname : " / 尚未登录或连接"), "music-muted"); cloudStatus.name = "music-cloud-status";
+            if (!cloudManage && !cloudLoggedIn) cloudStatus.text = "还没有连接云端账号。点右上角“添加云端连接”选择来源并登录。";
             var qrImage = new Image { name = "music-cloud-qr", scaleMode = ScaleMode.ScaleToFit };
             qrImage.style.width = 150; qrImage.style.height = 150; qrImage.style.flexShrink = 0; qrImage.style.display = DisplayStyle.None;
             controls.Add(qrImage);
@@ -1277,6 +1333,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(controls, "来源说明", "music-eyebrow");
             Text(controls, provider != "netease" ? providerName + "接入为实验功能，扫码、歌单与播放尚需真实账号验证。" : "网易云曲目可通过搜索或歌单加入曲库；播放能力取决于账号与版权。", "music-wrap");
             var searchBar = Box(scroll.contentContainer, "music-cloud-search-bar");
+            if (!cloudManage) searchBar.style.display = DisplayStyle.None;
             var cloudSearch = new TextField { maxLength = 200, name = "music-cloud-query" }; cloudSearch.label = "搜 " + providerName; searchBar.Add(cloudSearch);
             var cloudResults = new VisualElement { name = "music-cloud-results" }; cloudResults.AddToClassList("music-cloud-results");
             var seenTracks = new HashSet<string>();
@@ -1370,8 +1427,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 loadLists(0);
             };
             var libraryActions = Box(scroll.contentContainer, "music-list-actions");
-            Button(libraryActions, provider == "webdav" ? "查看子目录" : "我的歌单", readLibrary, "music-cloud-library");
-            Button(libraryActions, "账户与连接", () => { connection.value = !connection.value; if (connection.value) scroll.ScrollTo(connection); });
+            Button libraryButton = Button(libraryActions, provider == "webdav" ? "查看子目录" : "我的歌单", readLibrary, "music-cloud-library");
+            var accountButton = Button(libraryActions, "账户与连接", () => { connection.value = !connection.value; if (connection.value) scroll.ScrollTo(connection); });
+            if (!cloudManage) { libraryActions.style.display = DisplayStyle.None; }
+            else Button(libraryActions, "返回云端", () => { cloudManage = false; RenderContent(); }, "music-cloud-back");
+            // Main page: one button leads to the second page where sources, accounts and search are managed.
+            Button(titleBar, cloudManage ? "返回云端" : "添加云端连接", () => { cloudManage = !cloudManage; RenderContent(); }, "music-cloud-manage");
             if (cloudLoggedIn) scroll.schedule.Execute(() => { if (scroll.panel != null) readLibrary(); }).StartingIn(100);
             Button(controls, "退出登录", () => bridge.Send("logout", null, result => {
                 if (cloudStatus.panel == null || provider != cloudProvider) return;
@@ -1380,6 +1441,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             scroll.Add(cloudResults);
             scroll.Add(connection);
             var otherSources = new Foldout { text = "其他来源", value = false }; scroll.Add(otherSources);
+            if (!cloudManage) { connection.style.display = DisplayStyle.None; otherSources.style.display = DisplayStyle.None; }
             Text(otherSources, "YouTube Music：需要符合平台要求的可见播放器。\nApple Music 和 SoundCloud：需要开发者应用凭据与用户授权。\nB 站：需要进一步核实开放平台权限和播放能力。", "music-wrap");
             foreach (var pair in new[] { ("Apple Music 歌单链接", "AppleMusic_Url"), ("YouTube Music 歌单链接", "Ytm_Playlist_Url"),
                 ("SoundCloud 链接", "SoundCloud_Url") })

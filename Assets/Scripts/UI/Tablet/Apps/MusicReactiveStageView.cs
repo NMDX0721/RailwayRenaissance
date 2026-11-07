@@ -37,6 +37,32 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // cannot be used the older painter fields below are the whole backdrop.
         static Shader backdropShader;
         Material backdropMaterial; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        // Each lyric style has its own backdrop look (flow speed, swirl, dust, wandering lights, brightness); switching eases between them.
+        struct Look { public float flow, warp, dust, lights, bright; public Look(float f, float w, float d, float l, float b) { flow = f; warp = w; dust = d; lights = l; bright = b; } }
+        Look look = new Look(1, 1, 1, 1, 1), lookTarget = new Look(1, 1, 1, 1, 1); bool lookSet;
+        static Look LookOf(string key)
+        {
+            switch (key)
+            {
+                case "static": return new Look(.35f, .7f, .25f, .45f, .82f);
+                case "follow": return new Look(.7f, 1.1f, .6f, .8f, .95f);
+                case "luminous": return new Look(1.25f, 1.5f, 1.2f, 1.3f, 1.12f);
+                case "partita": return new Look(.8f, 1f, .6f, .7f, 1f);
+                case "tilt": return new Look(1.05f, 1.3f, .9f, 1f, 1.02f);
+                case "claddagh": return new Look(.9f, 2.1f, .7f, 1f, 1f);
+                case "cadenza": return new Look(.6f, 1.8f, 1.5f, .6f, .95f);
+                case "cappella": return new Look(.5f, .7f, .3f, .5f, .85f);
+                case "pendolo": return new Look(1f, 1f, .5f, 1.5f, 1.05f);
+                default: return new Look(.35f, .7f, .25f, .45f, .82f);
+            }
+        }
+        /// <summary>The look of the lyric style now on show: "static", "follow" or a stage style id.</summary>
+        public void SetLook(string key) { lookTarget = LookOf(key); if (!lookSet) { look = lookTarget; lookSet = true; } MarkDirtyRepaint(); }
+        void GlideLook(float dt)
+        {
+            float k = 1 - Mathf.Exp(-dt * 3.2f);
+            look = new Look(Mathf.Lerp(look.flow, lookTarget.flow, k), Mathf.Lerp(look.warp, lookTarget.warp, k), Mathf.Lerp(look.dust, lookTarget.dust, k), Mathf.Lerp(look.lights, lookTarget.lights, k), Mathf.Lerp(look.bright, lookTarget.bright, k));
+        }
         public bool HasShaderBackdrop => backdropTexture != null;
 
         void EnsureBackdrop()
@@ -69,6 +95,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
             m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh); m.SetFloat("_Beat", transient);
             m.SetFloat("_Energy", Mathf.Clamp01(energy + ChorusBoost * .25f)); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
+            m.SetFloat("_Warp", look.warp); m.SetFloat("_DustAmt", look.dust); m.SetFloat("_Lights", look.lights); m.SetFloat("_Bright", look.bright);
             Graphics.Blit(null, backdropTexture, m);
         }
 
@@ -248,7 +275,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 GlideBands(dt);
             }
             // The flow runs a little faster when the music is loud, so the picture breathes with the song instead of looping at one speed.
-            if (!reducedMotion) { flowClock += dt * (1f + energy * .8f + bandLow * .5f); changed = true; }
+            if (!reducedMotion) { GlideLook(dt); flowClock += dt * look.flow * (1f + energy * .8f + bandLow * .5f); changed = true; }
             if (changed || backdropTexture == null) RenderBackdrop();
             // With the shader backdrop the texture is read at draw time; the mesh only needs rebuilding for the painter fallback.
             if (changed && backdropTexture == null) MarkDirtyRepaint();

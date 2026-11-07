@@ -272,7 +272,14 @@ public static class RailwayMusicTerminalReview
         Assert(button != null && button.enabledInHierarchy, "Missing or disabled button");
         using var evt = NavigationSubmitEvent.GetPooled(); evt.target = button; button.SendEvent(evt);
     }
-    static Button FindButton(string text) => root.Query<Button>().ToList().FirstOrDefault(b => b.tooltip == text);
+    static Button FindButton(string text)
+    {
+        Button Find() => root.Query<Button>().ToList().FirstOrDefault(b => b.tooltip == text);
+        var found = Find();
+        // The channel pages are tabs of the library page now: reach the library first when the tab is not on screen.
+        if (found == null && (text == "原声" || text == "本地音乐" || text == "云端" || text == "榜单")) { Submit(root.Q<Button>("music-nav-曲库")); found = Find(); }
+        return found;
+    }
     static void Setup()
     {
         if (UnityEngine.Object.FindAnyObjectByType<AudioListener>() == null)
@@ -1206,7 +1213,8 @@ public static class RailwayMusicTerminalReview
                     break;
                 case 31:
                     // Collapsed sidebar must not hide the labels of the page content, and the help dialog stays readable.
-                    Submit(root.Q<Button>("music-nav-云端"));
+                    Submit(root.Q<Button>("music-nav-曲库"));
+                    Submit(root.Q<Button>("music-lib-tab-云端"));
                     break;
                 case 32:
                     // The narrow rail is the default; start from the wide sidebar so the toggle below still collapses it.
@@ -1230,7 +1238,8 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_NAV_HELP_OK: sidebar collapse keeps content labels, help dialog uses grouped rows");
                     root.Q<Button>("music-help")?.Focus(); CloseHelpForReview();
                     chartDeadline = EditorApplication.timeSinceStartup + 25;
-                    Submit(root.Q<Button>("music-nav-榜单"));
+                    Submit(root.Q<Button>("music-nav-曲库"));
+                    Submit(root.Q<Button>("music-lib-tab-榜单"));
                     break;
                 case 36:
                     // The charts are read from the network; wait for the answer (or a failure) rather than a fixed time.

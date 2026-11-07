@@ -1190,8 +1190,7 @@
 
 /* lyrics page: soft fade into the tablet's status strip, and the quick stage-style button in the header */
 .music-lyrics-topfade { position: absolute; left: 0; right: 0; top: 0; height: 76px; -unity-background-scale-mode: stretch-to-fill; }
-.music-lyrics-header .music-lyrics-style-button { display: none; }
-.music-motion-stage .music-lyrics-header .music-lyrics-style-button { display: flex; }
+.music-lyrics-header .music-lyrics-style-button { display: flex; }
 
 /* lyric settings: a sheet over the lyrics page */
 .music-lyrics-sheet { position: absolute; left: 0; top: 0; right: 0; bottom: 0; align-items: center; justify-content: center; background-color: rgba(8, 10, 8, 0.55); }
@@ -1258,3 +1257,47 @@
 .music-terminal .music-icon-button.is-active { border-width: 0; background-color: rgba(205, 176, 112, 0.2); }
 .music-header .music-search .music-search-clear, .music-header .music-search .music-search-go { top: 5px; margin-top: 0; }
 .music-header .music-search .music-search-clear.music-icon-button, .music-header .music-search .music-search-go.music-icon-button { top: 5px; margin: 0; width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 5px; }
+
+/* sidebar: one scrolling column with a floating scrollbar */
+.music-navigation .music-nav-scroll { flex-grow: 1; flex-shrink: 1; min-height: 0; }
+.music-navigation .music-nav-scroll > .unity-scroll-view__content-viewport { margin-right: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical { position: absolute; right: -6px; top: 0; bottom: 0; width: 8px; background-color: rgba(0, 0, 0, 0); border-width: 0; margin: 0; padding: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__tracker { opacity: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__dragger { width: 4px; margin-left: 2px; border-width: 0; border-radius: 2px; background-color: rgba(205, 176, 112, 0.35); }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__drag-container, .music-navigation .music-nav-scroll .unity-scroller--vertical .unity-slider { width: 8px; }
+.music-navigation .music-nav-scroll .unity-scroller__low-button, .music-navigation .music-nav-scroll .unity-scroller__high-button { display: none; }
+.music-navigation .music-playlists { flex-grow: 0; flex-shrink: 0; min-height: 0; }
+
+/* settings cards: everything inside is clipped to the card's rounded corners; the focus/hover fill never shows square corners */
+.music-settings-group { overflow: hidden; }
+.music-settings-group > .music-settings-row, .music-settings-group > .music-setting-row { border-radius: 0; }
+.music-settings-group > .music-setting-row:hover, .music-settings-group > .music-setting-row:focus { background-color: rgba(255, 255, 255, 0.05); }
+
+/* lyrics page column: record archive and lyric settings are small icon buttons */
+.music-lyrics-quick { flex-direction: row; flex-shrink: 0; margin: 8px 0 4px 0; }
+.music-lyrics-art .music-lyrics-quick > .music-button { width: 36px; min-width: 36px; height: 36px; min-height: 36px; padding: 7px; margin: 0 8px 0 0; border-radius: 18px; background-color: rgba(255, 255, 255, 0.06); border-width: 0; justify-content: center; }
+.music-lyrics-art .music-lyrics-quick > .music-button:hover { background-color: rgba(255, 255, 255, 0.14); }
+
+/* chat stage: rows never squash into each other; the active bubble grows by font and padding, with only a small scale on top */
+.music-stage-cappella-row { flex-shrink: 0; margin-bottom: 20px; }
+.music-stage-cappella-list { flex-shrink: 0; }
+.music-stage-cappella-bubble { overflow: visible; flex-shrink: 0; }
+.music-stage-cappella-stamp { margin-top: 6px; }
+
+/* search pill: a complete 1px outline on every side, and the field never clips its own border */
+.music-header .music-search { overflow: visible; }
+.music-header .music-search .unity-base-text-field__input, .music-header .unity-text-field__input { border-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-color: rgba(255, 255, 255, 0.2); border-radius: 19px; }
+.music-header .music-search .unity-base-text-field__input:focus { border-color: rgba(205, 176, 112, 0.75); }
+.music-header { overflow: visible; }
+
+/* list pages: the heading and its action buttons fold away while scrolling; a small button returns to the top */
+.music-list-collapsed > .music-library-heading, .music-list-collapsed > .music-list-actions { display: none; }
+.music-scroll-top { position: absolute; right: 26px; bottom: 120px; width: 38px; height: 38px; min-width: 38px; min-height: 38px; padding: 9px; border-radius: 19px; border-width: 1px; border-color: rgba(255, 255, 255, 0.18); background-color: rgba(34, 38, 31, 0.92); }
+.music-scroll-top:hover { background-color: rgba(60, 66, 52, 0.96); border-color: rgba(205, 176, 112, 0.7); }
+
+/* library tabs: all / soundtrack / local / cloud / charts, one row at the top of every library page */
+.music-lib-tabs { flex-direction: row; flex-shrink: 0; margin: 2px 0 10px 0; padding: 3px; align-self: flex-start; border-radius: 18px; background-color: rgba(0, 0, 0, 0.22); }
+.music-lib-tab { height: 32px; min-height: 32px; margin: 0 2px; padding: 0 16px; border-radius: 16px; border-width: 0; background-color: rgba(0, 0, 0, 0); font-size: 13px; color: rgb(190, 184, 156); }
+.music-lib-tab .music-vector-icon { display: none; }
+.music-lib-tab:hover { background-color: rgba(255, 255, 255, 0.07); }
+.music-lib-tab.is-active { background-color: rgba(205, 176, 112, 0.24); color: rgb(246, 226, 176); }

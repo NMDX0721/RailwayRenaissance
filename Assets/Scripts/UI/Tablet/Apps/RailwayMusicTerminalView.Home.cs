@@ -71,7 +71,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         ScrollView BigRow(VisualElement parent)
         {
             var row = new ScrollView(ScrollViewMode.Horizontal) { horizontalScrollerVisibility = ScrollerVisibility.Hidden, verticalScrollerVisibility = ScrollerVisibility.Hidden };
-            row.AddToClassList("music-big-row"); parent.Add(row); return row;
+            row.AddToClassList("music-big-row"); parent.Add(row);
+            // The wheel scrolls the page, not this strip sideways; only a sideways gesture (trackpad, shift) moves the strip.
+            row.RegisterCallback<WheelEvent>(e =>
+            {
+                if (Mathf.Abs(e.delta.y) <= Mathf.Abs(e.delta.x)) return;
+                VisualElement up = row.parent; while (up != null && !(up is ScrollView sv && sv.mode != ScrollViewMode.Horizontal)) up = up.parent;
+                e.StopPropagation();
+                if (up is ScrollView page) page.scrollOffset += new Vector2(0, e.delta.y * page.mouseWheelScrollSize);
+            }, TrickleDown.TrickleDown);
+            return row;
         }
     }
 }
