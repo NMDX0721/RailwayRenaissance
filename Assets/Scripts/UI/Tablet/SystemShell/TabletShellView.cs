@@ -24,7 +24,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private readonly VisualElement _notifContent;
         private readonly VisualElement _ctrlContent;
         private readonly Button _clearFab;
-        private readonly Button _closeFab;
         private readonly VisualElement _pagerDots;
         private readonly VisualElement _dotNotif, _dotCtrl;
         private float _progress;          // 0 = 通知页，1 = 控制中心
@@ -175,12 +174,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _pageNotif[0].Add(notifSettings);
 
             // 清除全部：页面右侧中部一枚白色圆形 ✕
-            // 对照 HyperOS：通知列表侧边一个 ✕ 圆钮（收起），旁边下方一枚“全部清除”胶囊
-            _closeFab = new Button(() => _state.ClosePanel()) { name = "tablet-notifications-close", tooltip = "收起" };
-            StyleFab(_closeFab, 64, 64, 32);
-            _closeFab.Add(new TabletIconElement(TabletIconKind.Close, 24, TabletTheme.InkOnGlass) { pickingMode = PickingMode.Ignore });
-            _panel.Add(_closeFab);
-
+            // 对照 HyperOS：通知列表侧边只有一枚“全部清除”胶囊，没有 ✕
             _clearFab = new Button(() => _state.ClearNotifications()) { name = "tablet-notifications-clear", tooltip = "清除全部通知", text = "全部清除" };
             StyleFab(_clearFab, 132, 64, 32);
             _clearFab.style.fontSize = 18;
@@ -542,8 +536,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             float notifRight = _pageNotif.style.left.value.value + notifWidth;
             if (fullSheet)
             {
-                _closeFab.style.left = StyleKeyword.Auto; _closeFab.style.right = 24;
-                _closeFab.style.top = StyleKeyword.Auto; _closeFab.style.bottom = 124;
                 _clearFab.style.left = StyleKeyword.Auto; _clearFab.style.right = 24;
                 _clearFab.style.top = StyleKeyword.Auto; _clearFab.style.bottom = 44;
             }
@@ -552,12 +544,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 float gap = Mathf.Min(Mathf.Max(24f, (width - notifRight - 132f) * 0.5f), 120f);
                 float x = notifRight + gap;
                 float midY = height * 0.5f;
-                _closeFab.style.right = StyleKeyword.Auto; _closeFab.style.bottom = StyleKeyword.Auto;
-                _closeFab.style.left = x + 34f;
-                _closeFab.style.top = midY - 96f;
                 _clearFab.style.right = StyleKeyword.Auto; _clearFab.style.bottom = StyleKeyword.Auto;
                 _clearFab.style.left = x;
-                _clearFab.style.top = midY + 16f;
+                _clearFab.style.top = midY - 32f;
             }
             // 铺满全屏的容器本身不画东西，但保留现代圆角属性供审查读取
             _panel.style.borderTopLeftRadius = 22; _panel.style.borderTopRightRadius = 22;
@@ -658,8 +647,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             float ctrlAlpha = Mathf.Clamp01(t * 1.25f - 0.25f);
             _pageNotif.style.opacity = notifAlpha;
             _clearFab.style.opacity = notifAlpha;
-            _closeFab.style.opacity = notifAlpha;
-            _closeFab.style.display = notifAlpha <= 0.001f ? DisplayStyle.None : DisplayStyle.Flex;
             _clearFab.style.display = notifAlpha <= 0.001f || _state.Notifications.Count == 0 ? DisplayStyle.None : DisplayStyle.Flex;
             _pageCtrl.style.opacity = ctrlAlpha;
             // 完全看不见的那页不参与布局检测与点击
@@ -834,7 +821,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
         private bool _ctrlEditing;
         private const string TogglePrefKey = "TabletControlToggles_v1";
-        private static readonly string[] AllToggleIds = { "mute", "contrast", "motion", "accent", "screenshot", "settings" };
+        private static readonly string[] AllToggleIds = { "quiet", "bluetooth", "airplane", "mute", "saver", "contrast", "motion", "accent", "dim", "clear", "screenshot", "settings" };
 
         private sealed class CcToggle
         {
@@ -849,6 +836,36 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             switch (id)
             {
+                case "quiet":
+                    return new CcToggle { Id = id, Name = "tablet-quiet-toggle", Label = "勿扰", Icon = TabletIconKind.Moon,
+                        Active = () => _state.QuietMode, ActiveIcon = new Color(0.45f, 0.32f, 0.85f, 1f),
+                        Click = () => _state.SetQuietMode(!_state.QuietMode) };
+                case "bluetooth":
+                    return new CcToggle { Id = id, Name = "tablet-bluetooth-toggle", Label = "蓝牙", Icon = TabletIconKind.Bluetooth,
+                        Active = () => TabletConnectivity.BluetoothOn, ActiveIcon = new Color(0.16f, 0.48f, 0.95f, 1f),
+                        Click = () => { if (!TabletConnectivity.Airplane) TabletConnectivity.SetBluetooth(!TabletConnectivity.BluetoothSwitch); Render(); } };
+                case "airplane":
+                    return new CcToggle { Id = id, Name = "tablet-airplane-toggle", Label = "飞行模式", Icon = TabletIconKind.Airplane,
+                        Active = () => TabletConnectivity.Airplane, ActiveIcon = new Color(0.98f, 0.60f, 0.10f, 1f),
+                        Click = () => { TabletConnectivity.SetAirplane(!TabletConnectivity.Airplane); Render(); } };
+                case "saver":
+                    return new CcToggle { Id = id, Name = "tablet-battery-saver-toggle", Label = "省电模式", Icon = TabletIconKind.Battery,
+                        Active = () => TabletConnectivity.BatterySaver, ActiveIcon = new Color(0.20f, 0.70f, 0.40f, 1f),
+                        Click = () =>
+                        {
+                            bool on = !TabletConnectivity.BatterySaver;
+                            TabletConnectivity.SetBatterySaver(on);
+                            if (on && _presentation != null) _presentation.SetReduceMotion(true);
+                            Render();
+                        } };
+                case "dim":
+                    return new CcToggle { Id = id, Name = "tablet-wallpaper-dim-toggle", Label = "壁纸压暗", Icon = TabletIconKind.Image,
+                        Active = () => _presentation != null && _presentation.WallpaperDim > 0.05f, ActiveIcon = new Color(0.30f, 0.30f, 0.38f, 1f),
+                        Click = () => { if (_presentation != null) _presentation.SetWallpaperDim(_presentation.WallpaperDim > 0.05f ? 0f : 0.3f); } };
+                case "clear":
+                    return new CcToggle { Id = id, Name = "tablet-clear-toggle", Label = "清除通知", Icon = TabletIconKind.Trash,
+                        Active = () => false, ActiveIcon = TabletTheme.InkOnGlass,
+                        Click = () => _state.ClearNotifications() };
                 case "mute":
                     return new CcToggle { Id = id, Name = "tablet-mute-toggle", Label = "静音", Icon = TabletIconKind.SpeakerMuted,
                         Active = () => GameData.MasterVolume <= 0.001f, ActiveIcon = new Color(0.93f, 0.30f, 0.25f, 1f),
@@ -989,9 +1006,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var icons = new VisualElement { pickingMode = PickingMode.Ignore };
             icons.style.flexDirection = FlexDirection.Row;
             icons.style.alignItems = Align.Center;
+            if (TabletConnectivity.Airplane) icons.Add(StatusGlyph(TabletIconKind.Airplane));
             if (_state.QuietMode) icons.Add(StatusGlyph(TabletIconKind.Moon));
             if (GameData.MasterVolume <= 0.001f) icons.Add(StatusGlyph(TabletIconKind.SpeakerMuted));
-            icons.Add(StatusGlyph(TabletIconKind.Wifi));
+            if (TabletConnectivity.BluetoothOn) icons.Add(StatusGlyph(TabletIconKind.Bluetooth));
+            if (TabletConnectivity.MobileOn) icons.Add(StatusGlyph(TabletIconKind.Cloud));
+            if (TabletConnectivity.WifiOn) icons.Add(StatusGlyph(TabletIconKind.Wifi));
             info.Add(icons);
             scroll.Add(info);
 
@@ -1002,21 +1022,25 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             topPillsRow.style.marginBottom = 10;
             scroll.Add(topPillsRow);
 
-            // 网络卡（白底、蓝色图标）：本机是车载内网，不假装有公共 Wi-Fi，点开去设置
-            var netBtn = BuildBigTile("tablet-network-tile", "车载内网", "本地连接", true, TabletIconKind.Wifi, () =>
-            {
-                _state.ClosePanel();
-                _openSettings?.Invoke();
-            });
-            netBtn.AddToClassList("shell-keep");
-            netBtn.style.backgroundColor = TabletTheme.GlassTileActive;
-            topPillsRow.Add(netBtn);
+            // Wi-Fi 与移动网络（高丽联）：平板可随身携带，两项各自开关；飞行模式下都显示关闭
+            bool airplane = TabletConnectivity.Airplane;
+            var wifiBtn = BuildBigTile("tablet-network-tile", TabletConnectivity.WifiName, airplane ? "飞行模式" : (TabletConnectivity.WifiOn ? "已连接" : "已关闭"),
+                TabletConnectivity.WifiOn, TabletIconKind.Wifi, () =>
+                {
+                    if (!TabletConnectivity.Airplane) TabletConnectivity.SetWifi(!TabletConnectivity.WifiSwitch);
+                    Render();
+                });
+            wifiBtn.AddToClassList("shell-keep");
+            topPillsRow.Add(wifiBtn);
 
-            var quietBtn = BuildBigTile("tablet-quiet-toggle", "勿扰", _state.QuietMode ? "已开启" : "已关闭", _state.QuietMode, TabletIconKind.Moon, () =>
-            {
-                _state.SetQuietMode(!_state.QuietMode);
-            });
-            topPillsRow.Add(quietBtn);
+            var mobileBtn = BuildBigTile("tablet-mobile-tile", TabletConnectivity.CarrierName, airplane ? "飞行模式" : (TabletConnectivity.MobileOn ? TabletConnectivity.CarrierNetwork + " · 已连接" : "已关闭"),
+                TabletConnectivity.MobileOn, TabletIconKind.Cloud, () =>
+                {
+                    if (!TabletConnectivity.Airplane) TabletConnectivity.SetMobile(!TabletConnectivity.MobileSwitch);
+                    Render();
+                });
+            mobileBtn.AddToClassList("shell-keep");
+            topPillsRow.Add(mobileBtn);
 
             // ---- 2. 播控卡 + 亮度 / 音量两条竖滑条 ----
             var centerRow = new VisualElement();
@@ -1069,20 +1093,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             foreach (var id in LoadToggleOrder())
             {
                 var t = MakeToggle(id);
-                grid.Add(ToggleCell(BuildToggleCircle(t, 74f), null));
+                grid.Add(ToggleCell(BuildToggleCircle(t, 58f), null));
             }
             scroll.Add(grid);
-
-            // 没有公共网络：如实说明，放在开关下面当一行小字
-            var offlineCard = new VisualElement { name = "settings-hardware-offline-box" };
-            offlineCard.style.marginTop = 4; offlineCard.style.marginBottom = 8;
-            offlineCard.style.paddingLeft = 8; offlineCard.style.paddingRight = 8;
-            var boxBody = CreateLabel("本终端运行在车载内网，没有公共 Wi-Fi、蓝牙与蜂窝模块。", 11, false);
-            boxBody.style.whiteSpace = WhiteSpace.Normal;
-            boxBody.style.color = new Color(1f, 1f, 1f, 0.62f);
-            boxBody.style.unityTextAlign = TextAnchor.MiddleCenter;
-            offlineCard.Add(boxBody);
-            scroll.Add(offlineCard);
 
             // ---- 4. 编辑 ----
             var editRow = new VisualElement();
@@ -1142,7 +1155,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 var t = MakeToggle(id);
                 string captured = id;
-                var circle = BuildToggleCircle(t, 74f);
+                var circle = BuildToggleCircle(t, 58f);
                 circle.clicked -= t.Click;
                 circle.clicked += () => { var o = LoadToggleOrder(); o.Remove(captured); SaveToggleOrder(o); Render(); };
                 circle.name = "tablet-edit-remove-" + id;
@@ -1179,7 +1192,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 var t = MakeToggle(id);
                 string captured = id;
-                var circle = BuildToggleCircle(t, 74f);
+                var circle = BuildToggleCircle(t, 58f);
                 circle.clicked -= t.Click;
                 circle.clicked += () => { var o = LoadToggleOrder(); if (!o.Contains(captured)) o.Add(captured); SaveToggleOrder(o); Render(); };
                 circle.name = "tablet-edit-add-" + id;
@@ -1383,6 +1396,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             var btn = CreateTileButton(string.Empty, name, active, onClick);
             StyleBigTile(btn);
+            btn.style.backgroundColor = active ? TabletTheme.GlassTileActive : (_highContrast ? Color.black : TabletTheme.GlassTile);
             btn.style.flexDirection = FlexDirection.Row;
             btn.style.alignItems = Align.Center;
             var column = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -1411,6 +1425,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 case TabletIconKind.Bolt: return new Color(0.98f, 0.60f, 0.10f, 1f);
                 case TabletIconKind.Palette: return new Color(0.88f, 0.30f, 0.55f, 1f);
                 case TabletIconKind.Wifi: return new Color(0.16f, 0.48f, 0.95f, 1f);
+                case TabletIconKind.Cloud: return new Color(0.16f, 0.48f, 0.95f, 1f);
                 case TabletIconKind.Contrast: return new Color(0.16f, 0.48f, 0.95f, 1f);
                 default: return TabletTheme.InkOnGlass;
             }

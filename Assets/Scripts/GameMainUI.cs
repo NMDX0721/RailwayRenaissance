@@ -3370,8 +3370,9 @@ public class GameMainUI : MonoBehaviour
         {
             blurService = new TabletGaussianBlur
             {
-                Downsample = 2,
-                Sigma = 2.5f
+                // 对照 HyperOS：背景是很重的磨砂，细节完全化开；四分之一分辨率 + 大 sigma，既重又省
+                Downsample = 8,
+                Sigma = 8f
             };
         }
     }

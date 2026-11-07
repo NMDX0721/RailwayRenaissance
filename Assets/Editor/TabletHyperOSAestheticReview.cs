@@ -387,14 +387,12 @@ namespace RailwayRenaissance.Editor
                         var dimBtn = root.Q<Button>("tablet-brightness-slider");
                         var muteBtn = root.Q<Button>("tablet-audio-mute-toggle");
                         var mediaCard = root.Q("tablet-media-card");
-                        var offlineBox = root.Q("settings-hardware-offline-box");
 
                         Assert(quietBtn != null, "quiet toggle pill card should exist");
                         Assert(hcBtn != null, "high contrast pill card should exist");
                         Assert(dimBtn != null, "dim vertical pill slider should exist");
                         Assert(muteBtn != null, "mute vertical pill slider should exist");
                         Assert(mediaCard != null, "media player card should exist");
-                        Assert(offlineBox != null, "hardware offline box should exist");
 
                         // 触发勿扰模式激活
                         ClickElement(quietBtn);

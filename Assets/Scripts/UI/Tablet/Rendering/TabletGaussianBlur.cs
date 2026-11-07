@@ -34,7 +34,7 @@ namespace UI.Tablet.Rendering
         public bool IsSupported { get; private set; }
         public string LastError { get; private set; } = string.Empty;
 
-        public int Downsample { get; set; } = 2; // 1 = full, 2 = half, 4 = quarter
+        public int Downsample { get; set; } = 2; // 1 = full, 2 = half, 4 = quarter, 8 = eighth
         public float Sigma { get; set; } = 2.5f;
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace UI.Tablet.Rendering
 
         private void EnsureResources(RenderTexture source)
         {
-            int down = Mathf.Clamp(Downsample, 1, 4);
+            int down = Mathf.Clamp(Downsample, 1, 8);
             int targetWidth = Mathf.Max(16, source.width / down);
             int targetHeight = Mathf.Max(16, source.height / down);
 

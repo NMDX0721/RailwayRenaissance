@@ -9,7 +9,7 @@ namespace RailwayRenaissance.UI.Tablet
         Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
         Note, Clock, Calendar, Calc, Map, Star,
         Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash,
-        Back, Circle, Square, Play, Pause }
+        Back, Circle, Square, Play, Pause, Airplane }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -457,6 +457,10 @@ namespace RailwayRenaissance.UI.Tablet
                 case TabletIconKind.Square:
                     RoundRectPath(p, 5f * k, 5f * k, 14f * k, 14f * k, 3.4f * k);
                     p.Stroke();
+                    break;
+
+                case TabletIconKind.Airplane:
+                    FillPolygon(p, new List<Vector2> { P(12, 2.5f), P(14, 3.8f), P(14, 9.5f), P(21.5f, 14f), P(21.5f, 16.2f), P(14, 13.8f), P(14, 18.5f), P(16.5f, 20.2f), P(16.5f, 21.8f), P(12, 20.6f), P(7.5f, 21.8f), P(7.5f, 20.2f), P(10, 18.5f), P(10, 13.8f), P(2.5f, 16.2f), P(2.5f, 14f), P(10, 9.5f), P(10, 3.8f) });
                     break;
 
                 case TabletIconKind.Play:

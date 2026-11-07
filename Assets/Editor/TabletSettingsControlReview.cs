@@ -244,7 +244,6 @@ public static class TabletSettingsControlReview
                     var accentBtn = root.Q<Button>("tablet-accent-cycle");
                     var dimBtn = root.Q<Button>("tablet-brightness-slider");
                     var muteBtn = root.Q<Button>("tablet-audio-mute-toggle");
-                    var offlineBox = root.Q("settings-hardware-offline-box");
 
                     Assert(quietBtn != null, "tablet-quiet-toggle tile missing");
                     Assert(hcBtn != null, "tablet-high-contrast-toggle tile missing");
@@ -252,7 +251,6 @@ public static class TabletSettingsControlReview
                     Assert(accentBtn != null, "tablet-accent-cycle tile missing");
                     Assert(dimBtn != null, "tablet-brightness-slider tile missing");
                     Assert(muteBtn != null, "tablet-audio-mute-toggle tile missing");
-                    Assert(offlineBox != null, "settings-hardware-offline-box indicator missing");
 
                     Capture("01-control-center-initial");
                     frame = Time.frameCount;
@@ -281,6 +279,8 @@ public static class TabletSettingsControlReview
                     ClickElement(btnDim); // 亮度 100% -> 60%
                     Assert(TabletDisplayPreferences.Brightness < 0.7f, "tablet-brightness-slider click failed to lower brightness");
                     TabletDisplayPreferences.SetBrightness(1f);
+                    ClickElement(root.Q<Button>("tablet-wallpaper-dim-toggle")); // 壁纸压暗 0 -> 0.3
+                    Assert(presentation.WallpaperDim > 0.2f, "tablet-wallpaper-dim-toggle click failed to set WallpaperDim");
 
                     var btnMute = root.Q<Button>("tablet-audio-mute-toggle");
                     ClickElement(btnMute);
