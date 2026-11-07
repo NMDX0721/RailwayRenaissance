@@ -17,10 +17,24 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private readonly VisualElement _overlay;
         private readonly VisualElement _blurBackground;
         private readonly VisualElement _scrim;
-        private readonly VisualElement _panel;
-        private readonly Label _panelTitle;
-        private readonly Label _panelSub;
-        private readonly VisualElement _contentContainer;
+        private readonly VisualElement _panel;          // 铺满全屏的容器：开合动画作用在它上面，两页在里面左右滑动
+        private readonly VisualElement _pageNotif;
+        private readonly VisualElement _pageCtrl;
+        private readonly Label _notifTitle, _notifSub, _ctrlTitle, _ctrlSub;
+        private readonly VisualElement _notifContent;
+        private readonly VisualElement _ctrlContent;
+        private readonly VisualElement _pagerDots;
+        private readonly VisualElement _dotNotif, _dotCtrl;
+        private float _progress;          // 0 = 通知页，1 = 控制中心
+        private float _pageShift = 220f;  // 页面随进度平移的距离
+        private float _dragSpan = 420f;   // 手指横移多远等于完整切换一页
+        private int _pagerToken;
+        private int _pagerPointer = -1;
+        private bool _pagerDragging;
+        private Vector2 _pagerStart;
+        private float _pagerStartProgress;
+        private float _pagerLastX, _pagerVelocity;
+        private float _pagerLastT;
         private readonly Label _badge;
         private Focusable _previousFocus;
         private TabletSystemPanel _renderedPanel;
@@ -135,56 +149,33 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             _panel = new VisualElement { name = "tablet-shell-panel" };
             _panel.style.position = Position.Absolute;
-            _panel.style.top = 52;
-            _panel.style.bottom = 12;
-            _panel.style.left = 0;
-            _panel.style.right = StyleKeyword.Auto;
-            _panel.style.width = 380;
-            _panel.style.maxWidth = Length.Percent(100);
+            _panel.style.left = 0; _panel.style.right = 0; _panel.style.top = 0; _panel.style.bottom = 0;
             _panel.style.backgroundColor = Color.clear;   // 内容直接浮在整屏模糊背景上，由卡片承载材质
-            _panel.style.borderTopLeftRadius = 8;
-            _panel.style.borderTopRightRadius = 8;
-            _panel.style.borderBottomLeftRadius = 8;
-            _panel.style.borderBottomRightRadius = 8;
-            _panel.style.paddingTop = 12;
-            _panel.style.paddingRight = 12;
-            _panel.style.paddingBottom = 12;
-            _panel.style.paddingLeft = 12;
-            _panel.pickingMode = PickingMode.Position;
-            _panel.focusable = true;
-            _panel.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
-            _panel.RegisterCallback<PointerDownEvent>(evt => evt.StopPropagation());
+            _panel.pickingMode = PickingMode.Ignore;      // 空白处的点击落到遮罩上，用来收起
 
-            var panelHeader = new VisualElement();
-            panelHeader.style.flexDirection = FlexDirection.Row;
-            panelHeader.style.justifyContent = Justify.SpaceBetween;
-            panelHeader.style.alignItems = Align.Center;
-            panelHeader.style.marginBottom = 10;
+            _pageNotif = BuildPage("tablet-page-notifications", out _notifTitle, out _notifSub, out _notifContent);
+            _pageCtrl = BuildPage("tablet-page-controls", out _ctrlTitle, out _ctrlSub, out _ctrlContent);
+            _panel.Add(_pageNotif);
+            _panel.Add(_pageCtrl);
 
-            var titleBox = new VisualElement();
-            _panelTitle = CreateLabel("系统面板", 15, true);
-            _panelSub = CreateLabel(string.Empty, 13, false);
-            _panelSub.style.color = TabletTheme.TextStrong;
-            titleBox.Add(_panelTitle);
-            titleBox.Add(_panelSub);
-            var btnClose = CreateButton("✕", 44, 44, () => _state.ClosePanel());
-            btnClose.name = "tablet-shell-close";
-            btnClose.AddToClassList("shell-keep");
-            btnClose.style.width = 44; btnClose.style.height = 44;
-            btnClose.style.backgroundColor = TabletTheme.GlassTileActive;
-            btnClose.style.color = TabletTheme.InkOnGlass;
-            TabletUIHelper.SetButtonIcon(btnClose, TabletIconKind.Close, 20, TabletTheme.InkOnGlass);
-            btnClose.style.borderTopWidth = 0; btnClose.style.borderBottomWidth = 0;
-            btnClose.style.borderLeftWidth = 0; btnClose.style.borderRightWidth = 0;
-            btnClose.style.borderTopLeftRadius = 22; btnClose.style.borderTopRightRadius = 22;
-            btnClose.style.borderBottomLeftRadius = 22; btnClose.style.borderBottomRightRadius = 22;
-            panelHeader.Add(titleBox);
-            panelHeader.Add(btnClose);
-            _panel.Add(panelHeader);
+            // 顶部两点指示（状态栏下方、页面上方）：当前页是长点，点哪个去哪页
+            _pagerDots = new VisualElement { name = "tablet-pager-dots" };
+            _pagerDots.style.position = Position.Absolute;
+            _pagerDots.style.left = 0; _pagerDots.style.right = 0; _pagerDots.style.top = 40;
+            _pagerDots.style.flexDirection = FlexDirection.Row;
+            _pagerDots.style.justifyContent = Justify.Center;
+            _pagerDots.pickingMode = PickingMode.Ignore;
+            _dotNotif = BuildDot(TabletSystemPanel.Notifications);
+            _dotCtrl = BuildDot(TabletSystemPanel.Controls);
+            _pagerDots.Add(_dotNotif);
+            _pagerDots.Add(_dotCtrl);
+            _panel.Add(_pagerDots);
 
-            _contentContainer = new VisualElement();
-            _contentContainer.style.flexGrow = 1;
-            _panel.Add(_contentContainer);
+            // 横向滑动切页：从空白处、页头或控制中心任意位置起手；通知卡片上的横滑留给“滑动清除”
+            _overlay.RegisterCallback<PointerDownEvent>(OnPagerDown, TrickleDown.TrickleDown);
+            _overlay.RegisterCallback<PointerMoveEvent>(OnPagerMove, TrickleDown.TrickleDown);
+            _overlay.RegisterCallback<PointerUpEvent>(OnPagerUp, TrickleDown.TrickleDown);
+            _overlay.RegisterCallback<PointerCancelEvent>(_ => EndPagerGesture(false), TrickleDown.TrickleDown);
 
             _overlay.Add(_panel);
             _rootContainer.Add(_overlay);
@@ -212,8 +203,24 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             {
                 if (blurredTexture != null && _state.Panel != TabletSystemPanel.None && !_highContrast)
                 {
+                    bool alreadyShown = _blurBackground.style.display == DisplayStyle.Flex && _blurBackground.style.backgroundImage.value.renderTexture != null;
                     _blurBackground.style.backgroundImage = Background.FromRenderTexture(blurredTexture);
                     _blurBackground.style.display = DisplayStyle.Flex;
+                    int fadeMs = TabletTheme.MotionMs(300);
+                    if (!alreadyShown && fadeMs > 0)
+                    {
+                        // 模糊背景淡入，而不是一帧跳出来
+                        _blurBackground.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                        _blurBackground.style.opacity = 0f;
+                        _blurBackground.schedule.Execute(() =>
+                        {
+                            _blurBackground.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("opacity") };
+                            _blurBackground.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(fadeMs, TimeUnit.Millisecond) };
+                            _blurBackground.style.transitionTimingFunction = new System.Collections.Generic.List<EasingFunction> { new EasingFunction(EasingMode.EaseOut) };
+                            _blurBackground.style.opacity = 1f;
+                        }).StartingIn(16);
+                    }
+                    else _blurBackground.style.opacity = 1f;
                 }
                 else
                 {
@@ -346,33 +353,49 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             bool opening = _renderedPanel == TabletSystemPanel.None;
+            TabletSystemPanel previousPanel = _renderedPanel;
             _closeToken++;   // 关闭动画进行中又被打开：取消收尾
             _overlay.pickingMode = PickingMode.Position;
             if (opening)
             {
                 _overlay.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                // 遮罩的暗色随面板一起淡入
+                int scrimMs = TabletTheme.MotionMs(260);
+                _scrim.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                _scrim.style.opacity = scrimMs > 0 ? 0f : 1f;
+                if (scrimMs > 0)
+                {
+                    _scrim.schedule.Execute(() =>
+                    {
+                        _scrim.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("opacity") };
+                        _scrim.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(scrimMs, TimeUnit.Millisecond) };
+                        _scrim.style.transitionTimingFunction = new System.Collections.Generic.List<EasingFunction> { new EasingFunction(EasingMode.EaseOut) };
+                        _scrim.style.opacity = 1f;
+                    }).StartingIn(16);
+                }
             }
             if (opening) _previousFocus = _parent.panel?.focusController.focusedElement;
             _renderedPanel = _state.Panel;
             _overlay.style.display = DisplayStyle.Flex;
-            _contentContainer.Clear();
-
-            if (_state.Panel == TabletSystemPanel.Notifications)
-            {
-                TabletSuperIsland.Instance?.SetExpanded(false);
-                _panelTitle.text = TabletDateTime.Now.ToString("HH:mm");
-                _panelTitle.style.fontSize = 44;
-                _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
-                RenderNotifications();
-            }
-            else if (_state.Panel == TabletSystemPanel.Controls)
-            {
-                TabletSuperIsland.Instance?.SetExpanded(false);
-                _panelTitle.text = "控制中心";
-                _panelTitle.style.fontSize = 20;
-                _panelSub.text = TabletDateTime.Now.Month + "月" + TabletDateTime.Now.Day + "日 " + TabletDateTime.WeekdayLong(TabletDateTime.Now);
-                RenderControls();
-            }
+            _notifContent.Clear();
+            _ctrlContent.Clear();
+            TabletSuperIsland.Instance?.SetExpanded(false);
+            var now = TabletDateTime.Now;
+            string dateText = now.Month + "月" + now.Day + "日 " + TabletDateTime.WeekdayLong(now);
+            _notifTitle.text = now.ToString("HH:mm");
+            _notifTitle.style.fontSize = 44;
+            _notifSub.text = dateText;
+            _ctrlTitle.text = "控制中心";
+            _ctrlTitle.style.fontSize = 20;
+            _ctrlSub.text = dateText;
+            // 两页同时存在、互相打通：切换只是滑动，不重新“打开”
+            RenderNotifications();
+            RenderControls();
+            UpdateDots();
+            float targetProgress = _state.Panel == TabletSystemPanel.Controls ? 1f : 0f;
+            if (opening) { _pagerToken++; ApplyProgress(targetProgress); }
+            else if (previousPanel != _state.Panel) AnimatePagerTo(targetProgress, 340);
+            else if (!_pagerDragging) ApplyProgress(_progress);
             ApplyResponsiveLayout(_parent.layout.width, _parent.layout.height);
             if (opening)
             {
@@ -452,39 +475,253 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             bool compact = width < 820 || height < 520;
             bool fullSheet = height > width || width < 620;
-            bool notifications = _state.Panel == TabletSystemPanel.Notifications;
 
             // 通知页：整屏模糊上居中一列（约 47% 宽）；控制中心：靠右一列（约 31% 宽）。
-            float columnWidth = notifications
-                ? Mathf.Clamp(width * 0.47f, compact ? 340f : 420f, 640f)
-                : Mathf.Clamp(width * 0.31f, compact ? 340f : 380f, 480f);
-            if (fullSheet) columnWidth = width - 24f;
-            columnWidth = Mathf.Min(columnWidth, width);
+            float notifWidth = Mathf.Clamp(width * 0.47f, compact ? 340f : 420f, 640f);
+            float ctrlWidth = Mathf.Clamp(width * 0.31f, compact ? 340f : 380f, 480f);
+            if (fullSheet) notifWidth = ctrlWidth = width - 24f;
+            notifWidth = Mathf.Min(notifWidth, width);
+            ctrlWidth = Mathf.Min(ctrlWidth, width);
 
-            _panel.style.width = columnWidth;
-            _panel.style.maxWidth = Length.Percent(100);
-            if (notifications || fullSheet)
+            _pageNotif.style.width = notifWidth;
+            _pageNotif.style.left = Mathf.Max(0f, (width - notifWidth) * 0.5f);
+            _pageCtrl.style.width = ctrlWidth;
+            if (fullSheet)
             {
-                _panel.style.left = Mathf.Max(0f, (width - columnWidth) * 0.5f);
-                _panel.style.right = StyleKeyword.Auto;
+                _pageCtrl.style.left = Mathf.Max(0f, (width - ctrlWidth) * 0.5f);
+                _pageCtrl.style.right = StyleKeyword.Auto;
             }
             else
             {
-                _panel.style.left = StyleKeyword.Auto;
-                _panel.style.right = 16;
+                _pageCtrl.style.left = StyleKeyword.Auto;
+                _pageCtrl.style.right = 16;
             }
-            _panel.style.top = 52 + TabletTheme.SafeInsetTop;
-            _panel.style.bottom = 12;
-            _panel.style.borderTopLeftRadius = 22;
-            _panel.style.borderTopRightRadius = 22;
-            _panel.style.borderBottomLeftRadius = 22;
-            _panel.style.borderBottomRightRadius = 22;
-            _panel.style.borderTopWidth = 0; _panel.style.borderLeftWidth = 0;
-            _panel.style.borderRightWidth = 0; _panel.style.borderBottomWidth = 0;
-            _panel.style.paddingLeft = 0;
-            _panel.style.paddingRight = 0;
-            _panel.style.paddingTop = 4;
-            _panel.style.paddingBottom = 0;
+            _pageShift = fullSheet ? width : Mathf.Clamp(width * 0.15f, 160f, 280f);
+            _dragSpan = fullSheet ? width * 0.8f : Mathf.Clamp(width * 0.32f, 280f, 520f);
+
+            foreach (var page in new[] { _pageNotif, _pageCtrl })
+            {
+                page.style.top = 52 + TabletTheme.SafeInsetTop;
+                page.style.bottom = 12;
+                page.style.paddingLeft = 0; page.style.paddingRight = 0;
+                page.style.paddingTop = 4; page.style.paddingBottom = 0;
+            }
+            // 铺满全屏的容器本身不画东西，但保留现代圆角属性供审查读取
+            _panel.style.borderTopLeftRadius = 22; _panel.style.borderTopRightRadius = 22;
+            _panel.style.borderBottomLeftRadius = 22; _panel.style.borderBottomRightRadius = 22;
+            ApplyProgress(_progress);
+        }
+
+        // ================= 两页之间的横向切换 =================
+
+        private VisualElement BuildPage(string name, out Label title, out Label sub, out VisualElement content)
+        {
+            var page = new VisualElement { name = name };
+            page.style.position = Position.Absolute;
+            page.style.backgroundColor = Color.clear;
+            page.pickingMode = PickingMode.Position;
+            page.focusable = true;
+            page.RegisterCallback<ClickEvent>(evt => evt.StopPropagation());
+            page.RegisterCallback<PointerDownEvent>(evt => evt.StopPropagation());
+
+            var header = new VisualElement();
+            header.style.flexDirection = FlexDirection.Row;
+            header.style.justifyContent = Justify.SpaceBetween;
+            header.style.alignItems = Align.Center;
+            header.style.marginBottom = 10;
+
+            var titleBox = new VisualElement();
+            title = CreateLabel("系统面板", 15, true);
+            sub = CreateLabel(string.Empty, 13, false);
+            sub.style.color = TabletTheme.TextStrong;
+            titleBox.Add(title);
+            titleBox.Add(sub);
+            var btnClose = CreateButton("✕", 44, 44, () => _state.ClosePanel());
+            btnClose.name = "tablet-shell-close";
+            btnClose.AddToClassList("shell-keep");
+            btnClose.style.width = 44; btnClose.style.height = 44;
+            btnClose.style.backgroundColor = TabletTheme.GlassTileActive;
+            btnClose.style.color = TabletTheme.InkOnGlass;
+            TabletUIHelper.SetButtonIcon(btnClose, TabletIconKind.Close, 20, TabletTheme.InkOnGlass);
+            btnClose.style.borderTopWidth = 0; btnClose.style.borderBottomWidth = 0;
+            btnClose.style.borderLeftWidth = 0; btnClose.style.borderRightWidth = 0;
+            btnClose.style.borderTopLeftRadius = 22; btnClose.style.borderTopRightRadius = 22;
+            btnClose.style.borderBottomLeftRadius = 22; btnClose.style.borderBottomRightRadius = 22;
+            header.Add(titleBox);
+            header.Add(btnClose);
+            page.Add(header);
+
+            content = new VisualElement();
+            content.style.flexGrow = 1;
+            page.Add(content);
+            return page;
+        }
+
+        private VisualElement BuildDot(TabletSystemPanel target)
+        {
+            var hit = new VisualElement { name = target == TabletSystemPanel.Notifications ? "tablet-dot-notifications" : "tablet-dot-controls" };
+            hit.style.width = 26; hit.style.height = 26;
+            hit.style.alignItems = Align.Center; hit.style.justifyContent = Justify.Center;
+            hit.pickingMode = PickingMode.Position;
+            var dot = new VisualElement { pickingMode = PickingMode.Ignore };
+            dot.style.height = 7; dot.style.width = 7;
+            dot.style.borderTopLeftRadius = dot.style.borderTopRightRadius = 3.5f;
+            dot.style.borderBottomLeftRadius = dot.style.borderBottomRightRadius = 3.5f;
+            dot.style.backgroundColor = new Color(1f, 1f, 1f, 0.45f);
+            dot.style.transitionProperty = new System.Collections.Generic.List<StylePropertyName> { new StylePropertyName("width"), new StylePropertyName("background-color") };
+            dot.style.transitionDuration = new System.Collections.Generic.List<TimeValue> { new TimeValue(TabletTheme.MotionMs(220), TimeUnit.Millisecond) };
+            hit.Add(dot);
+            hit.RegisterCallback<ClickEvent>(e =>
+            {
+                e.StopPropagation();
+                if (_state.Panel != target) _state.TogglePanel(target);
+            });
+            return hit;
+        }
+
+        private void UpdateDots()
+        {
+            SetDot(_dotNotif, 1f - _progress);
+            SetDot(_dotCtrl, _progress);
+        }
+
+        private static void SetDot(VisualElement hit, float weight)
+        {
+            if (hit == null || hit.childCount == 0) return;
+            var dot = hit[0];
+            dot.style.width = Mathf.Lerp(7f, 20f, Mathf.Clamp01(weight));
+            dot.style.backgroundColor = new Color(1f, 1f, 1f, Mathf.Lerp(0.40f, 0.95f, Mathf.Clamp01(weight)));
+        }
+
+        /// <summary>进度 0..1 决定两页的位置、透明度与可点击性；拖动和动画都经过这里。</summary>
+        private void ApplyProgress(float p)
+        {
+            _progress = Mathf.Clamp01(p);
+            float shift = _pageShift;
+            float t = _progress;
+            _pageNotif.style.translate = new Translate(-t * shift, 0);
+            _pageCtrl.style.translate = new Translate((1f - t) * shift, 0);
+            float notifAlpha = Mathf.Clamp01(1f - t * 1.25f);
+            float ctrlAlpha = Mathf.Clamp01(t * 1.25f - 0.25f);
+            _pageNotif.style.opacity = notifAlpha;
+            _pageCtrl.style.opacity = ctrlAlpha;
+            // 完全看不见的那页不参与布局检测与点击
+            _pageNotif.style.display = notifAlpha <= 0.001f ? DisplayStyle.None : DisplayStyle.Flex;
+            _pageCtrl.style.display = ctrlAlpha <= 0.001f ? DisplayStyle.None : DisplayStyle.Flex;
+            _pageNotif.pickingMode = notifAlpha >= 0.5f ? PickingMode.Position : PickingMode.Ignore;
+            _pageCtrl.pickingMode = ctrlAlpha >= 0.5f ? PickingMode.Position : PickingMode.Ignore;
+            UpdateDots();
+        }
+
+        private void AnimatePagerTo(float target, int baseMs)
+        {
+            int token = ++_pagerToken;
+            float from = _progress;
+            int ms = TabletTheme.MotionMs(Mathf.RoundToInt(Mathf.Lerp(160f, baseMs, Mathf.Clamp01(Mathf.Abs(target - from)))));
+            if (ms <= 0 || Mathf.Approximately(from, target))
+            {
+                ApplyProgress(target);
+                return;
+            }
+            float t0 = Time.realtimeSinceStartup;
+            _overlay.schedule.Execute(() =>
+            {
+                if (token != _pagerToken) return;
+                float k = Mathf.Clamp01((Time.realtimeSinceStartup - t0) * 1000f / ms);
+                float eased = 1f - Mathf.Pow(1f - k, 3f);   // 先快后慢，落点不生硬
+                ApplyProgress(Mathf.Lerp(from, target, eased));
+            }).Every(8).Until(() => token != _pagerToken || Time.realtimeSinceStartup - t0 >= ms / 1000f);
+            _overlay.schedule.Execute(() =>
+            {
+                if (token == _pagerToken) ApplyProgress(target);
+            }).StartingIn(ms + 20);
+        }
+
+        private static bool InsideNoPager(VisualElement e)
+        {
+            for (; e != null; e = e.parent)
+                if (e.ClassListContains("shell-no-pager")) return true;
+            return false;
+        }
+
+        private void OnPagerDown(PointerDownEvent e)
+        {
+            if (_state.Panel == TabletSystemPanel.None || _pagerPointer != -1) return;
+            if (e.target is VisualElement ve && InsideNoPager(ve)) return;
+            _pagerPointer = e.pointerId;
+            _pagerStart = e.position;
+            _pagerStartProgress = _progress;
+            _pagerDragging = false;
+            _pagerLastX = e.position.x; _pagerVelocity = 0f; _pagerLastT = Time.realtimeSinceStartup;
+        }
+
+        private void OnPagerMove(PointerMoveEvent e)
+        {
+            if (e.pointerId != _pagerPointer) return;
+            float dx = e.position.x - _pagerStart.x, dy = e.position.y - _pagerStart.y;
+            if (!_pagerDragging)
+            {
+                if (Mathf.Abs(dx) > 14f && Mathf.Abs(dx) > Mathf.Abs(dy) * 1.4f)
+                {
+                    _pagerDragging = true;
+                    _pagerToken++;                      // 打断正在进行的切换动画，直接跟手
+                    _overlay.CapturePointer(e.pointerId);
+                }
+                else if (Mathf.Abs(dy) > 14f)
+                {
+                    _pagerPointer = -1;                 // 竖向滑动留给列表与滑条
+                    return;
+                }
+                else return;
+            }
+            float now = Time.realtimeSinceStartup;
+            float dt = Mathf.Max(0.016f, now - _pagerLastT);
+            _pagerVelocity = Mathf.Lerp(_pagerVelocity, (e.position.x - _pagerLastX) / dt, 0.4f);
+            _pagerLastX = e.position.x; _pagerLastT = now;
+            float p = _pagerStartProgress - dx / _dragSpan;
+            // 拖出两端时带一点阻尼，而不是硬停
+            if (p < 0f) p *= 0.25f; else if (p > 1f) p = 1f + (p - 1f) * 0.25f;
+            ApplyProgressRaw(p);
+            e.StopPropagation();
+        }
+
+        private void ApplyProgressRaw(float p)
+        {
+            // 越界部分只做轻微位移，不改变透明度
+            float clamped = Mathf.Clamp01(p);
+            ApplyProgress(clamped);
+            float over = p - clamped;
+            if (Mathf.Abs(over) > 0f)
+            {
+                float extra = -over * _pageShift;
+                var page = clamped <= 0f ? _pageNotif : _pageCtrl;
+                page.style.translate = new Translate(page.resolvedStyle.translate.x + extra, 0);
+            }
+        }
+
+        private void OnPagerUp(PointerUpEvent e)
+        {
+            if (e.pointerId != _pagerPointer) return;
+            EndPagerGesture(true);
+            e.StopPropagation();
+        }
+
+        private void EndPagerGesture(bool commit)
+        {
+            if (_pagerPointer == -1) return;
+            bool wasDragging = _pagerDragging;
+            if (_overlay.HasPointerCapture(_pagerPointer)) _overlay.ReleasePointer(_pagerPointer);
+            _pagerPointer = -1;
+            _pagerDragging = false;
+            if (!wasDragging) return;
+            // 速度 + 位置共同决定去哪页：快速一甩就切，慢拖过半也切
+            // 只有明显的快速一甩（> 700 px/s）才让速度参与判断，慢拖看位置
+            float flick = Mathf.Abs(_pagerVelocity) > 700f ? _pagerVelocity : 0f;
+            float projected = _progress - flick / _dragSpan * 0.18f;
+            float target = commit ? (projected > 0.5f ? 1f : 0f) : Mathf.Round(_progress);
+            var panel = target > 0.5f ? TabletSystemPanel.Controls : TabletSystemPanel.Notifications;
+            if (_state.Panel != panel) _state.TogglePanel(panel);   // Render 会从当前位置接着滑到位
+            else AnimatePagerTo(target, 300);
         }
 
         private void UpdateBadge()
@@ -524,14 +761,14 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             clearBtn.style.borderTopLeftRadius = clearBtn.style.borderTopRightRadius = clearBtn.style.borderBottomLeftRadius = clearBtn.style.borderBottomRightRadius = 22;
             clearBtn.SetEnabled(_state.Notifications.Count > 0);
             toolbar.Add(clearBtn);
-            _contentContainer.Add(toolbar);
+            _notifContent.Add(toolbar);
 
             var scroll = new ScrollView(ScrollViewMode.Vertical);
             scroll.style.flexGrow = 1;
             scroll.pickingMode = PickingMode.Position;
             scroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
-            _contentContainer.pickingMode = PickingMode.Position;
-            _contentContainer.Add(scroll);
+            _notifContent.pickingMode = PickingMode.Position;
+            _notifContent.Add(scroll);
 
             TabletNotifyCenterView.Populate(scroll, _state, _highContrast, () => _state.ClosePanel());
         }
@@ -542,7 +779,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             scroll.style.flexGrow = 1;
             scroll.verticalScrollerVisibility = ScrollerVisibility.Hidden;
             scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-            _contentContainer.Add(scroll);
+            _ctrlContent.Add(scroll);
 
             // ---- 1. 两张大胶囊：勿扰 / 高对比度 ----
             var topPillsRow = new VisualElement();

@@ -60,6 +60,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     var item = n;
                     var wrap = new VisualElement();
                     wrap.style.marginBottom = 10;
+                    wrap.AddToClassList("shell-no-pager");   // 卡片上的横滑是“滑动清除”，不当作切页
                     var card = TabletNotifyCard.Build(item, TabletNotifyCardMode.Center, highContrast,
                         () => state.Dismiss(item.Id), null);
                     wrap.Add(card);

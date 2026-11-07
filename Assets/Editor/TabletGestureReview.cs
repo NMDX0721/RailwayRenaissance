@@ -561,12 +561,78 @@ public static class TabletGestureReview
                     SimulateTouchUp(22, gp2 + new Vector2(0, 100), grab2);
                     Assert(islandFloatCalls == 1, "Dragging the handle down past the threshold must request a floating window");
                     ui.SuperIsland.RemoveSession("review-test");
+                    stage++;
+                    break;
+
+                // Stage 14: 通知 ⇄ 控制中心 横滑切页（两页打通，不是各自独立的面板）
+                case 14:
+                    state.ClosePanel();
+                    ui.OpenSystemPanel(TabletSystemPanel.Controls);
+                    nextCheck = EditorApplication.timeSinceStartup + 0.6;
+                    stage++;
+                    break;
+
+                case 15:
+                {
+                    var shade = root.Q("tablet-shell-overlay");
+                    var pageC = root.Q("tablet-page-controls");
+                    var pageN = root.Q("tablet-page-notifications");
+                    Assert(state.Panel == TabletSystemPanel.Controls && pageC.resolvedStyle.opacity > 0.99f && pageN.resolvedStyle.display == DisplayStyle.None, "Controls page must be the only visible page after opening");
+                    // 慢拖不过半：弹回控制中心
+                    SimulateTouchDown(23, new Vector2(700, 500), shade);
+                    SimulateTouchMove(23, new Vector2(708, 502), shade);
+                    SimulateTouchMove(23, new Vector2(716, 504), shade);
+                    SimulateTouchMove(23, new Vector2(724, 505), shade);
+                    SimulateTouchMove(23, new Vector2(732, 506), shade);
+                    SimulateTouchUp(23, new Vector2(732, 506), shade);
+                    Assert(state.Panel == TabletSystemPanel.Controls, "A short horizontal drag must snap back to the controls page");
+                    // 向右划过半：回到通知
+                    SimulateTouchDown(24, new Vector2(700, 500), shade);
+                    SimulateTouchMove(24, new Vector2(760, 504), shade);
+                    SimulateTouchMove(24, new Vector2(900, 506), shade);
+                    SimulateTouchMove(24, new Vector2(1000, 508), shade);
+                    Assert(pageN.resolvedStyle.display == DisplayStyle.Flex && pageC.resolvedStyle.display == DisplayStyle.Flex, "Both pages must be visible mid-swipe");
+                    nextCheck = EditorApplication.timeSinceStartup + 0.25;   // 等一帧布局，截到的才是滑到一半的样子
+                    stage = 150;
+                    break;
+                }
+
+                case 150:
+                {
+                    Capture("14-shade-midswipe");
+                    SimulateTouchUp(24, new Vector2(1000, 508), root.Q("tablet-shell-overlay"));
+                    Assert(state.Panel == TabletSystemPanel.Notifications, "Swiping right must move from controls to notifications");
+                    nextCheck = EditorApplication.timeSinceStartup + 0.7;
+                    stage = 16;
+                    break;
+                }
+
+                case 16:
+                {
+                    var shade = root.Q("tablet-shell-overlay");
+                    var pageC = root.Q("tablet-page-controls");
+                    var pageN = root.Q("tablet-page-notifications");
+                    Assert(pageN.resolvedStyle.opacity > 0.99f && pageC.resolvedStyle.display == DisplayStyle.None, "Notifications page must be settled and the controls page hidden");
+                    SimulateTouchDown(25, new Vector2(1000, 500), shade);
+                    SimulateTouchMove(25, new Vector2(940, 503), shade);
+                    SimulateTouchMove(25, new Vector2(820, 506), shade);
+                    SimulateTouchMove(25, new Vector2(700, 508), shade);
+                    SimulateTouchUp(25, new Vector2(700, 508), shade);
+                    Assert(state.Panel == TabletSystemPanel.Controls, "Swiping left must move from notifications to controls");
+                    // 竖向滑动不切页
+                    SimulateTouchDown(26, new Vector2(900, 500), shade);
+                    SimulateTouchMove(26, new Vector2(905, 440), shade);
+                    SimulateTouchMove(26, new Vector2(908, 380), shade);
+                    SimulateTouchUp(26, new Vector2(908, 380), shade);
+                    Assert(state.Panel == TabletSystemPanel.Controls, "A vertical drag must not change page");
+                    state.ClosePanel();
                     Debug.Log("TABLET_GESTURE_GRAPHIC_REVIEW_OK: full interactive graphics touch review passed across portrait and landscape ratios (16:10, 4:3, portrait), music progress bar & scroll & slider & textfield input isolation, multi-touch second touch point rejection, orientation rotation reset, and system back navigation");
 
                     SessionState.SetBool(PendingKey, false);
                     EditorApplication.isPlaying = false;
                     EditorApplication.Exit(0);
                     break;
+                }
             }
         }
         catch (Exception ex)
