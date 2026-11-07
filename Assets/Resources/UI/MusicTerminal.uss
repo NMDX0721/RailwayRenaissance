@@ -1301,3 +1301,41 @@
 .music-lib-tab .music-vector-icon { display: none; }
 .music-lib-tab:hover { background-color: rgba(255, 255, 255, 0.07); }
 .music-lib-tab.is-active { background-color: rgba(205, 176, 112, 0.24); color: rgb(246, 226, 176); }
+
+/* Layout: the page ends above the player card, so nothing hides behind it and a scrollbar appears only when the content really overflows;
+   the scrollbar sits at the very right edge of the window area. */
+.music-track-list .unity-scroll-view__content-container, .music-home-content { padding-bottom: 8px; }
+.music-column > .music-main { margin-bottom: 116px; }
+.music-player-is-mini .music-column > .music-main { margin-bottom: 76px; }
+.music-content > .unity-scroll-view { margin-right: -24px; }
+.music-content > .unity-scroll-view > .unity-scroll-view__content-viewport > .unity-scroll-view__content-container { padding-right: 24px; }
+.music-content .unity-scroller--vertical { right: 3px; }
+
+/* the player card as a small capsule at the bottom right */
+.music-player-resize { width: 30px; min-width: 30px; height: 30px; min-height: 30px; padding: 5px; margin-left: 6px; flex-shrink: 0; align-self: center; }
+.music-player.music-player-mini { left: auto; right: 14px; width: 212px; min-height: 60px; height: 60px; padding: 6px 10px; border-radius: 30px; }
+.music-nav-collapsed .music-player.music-player-mini, .music-compact .music-player.music-player-mini { left: auto; }
+.music-player-mini .music-player-info, .music-player-mini .music-player-extras, .music-player-mini .music-timeline, .music-player-mini .music-player-vu { display: none; }
+.music-player-mini .music-player-controls { flex-grow: 1; min-width: 0; padding-left: 0; }
+.music-player-mini .music-transport > .music-button { display: none; }
+.music-player-mini .music-transport > .music-primary { display: flex; }
+.music-player-mini .music-player-cover { width: 42px; height: 42px; min-width: 42px; margin-right: 8px; border-radius: 21px; }
+.music-player-mini .music-player-buttons.music-transport { justify-content: center; }
+
+/* custom speed: slider and number side by side */
+.music-speed-custom { flex-direction: row; align-items: center; padding: 8px 14px 6px 14px; }
+.music-speed-custom .music-setting-title { margin-right: 10px; }
+.music-speed-slider { flex-grow: 1; margin: 0 10px; }
+.music-speed-field { width: 64px; flex-shrink: 0; }
+.music-speed-custom .music-setting-note { margin: 0 0 0 4px; }
+.music-track-row { cursor: link; }
+
+/* 我的: account card */
+.music-mine-card { flex-direction: row; align-items: center; margin: 8px 0 14px 0; padding: 18px 20px; border-radius: 18px; background-color: rgba(0, 0, 0, 0.2); }
+.music-mine-avatar { width: 64px; height: 64px; border-radius: 32px; overflow: hidden; flex-shrink: 0; margin-right: 16px; }
+.music-mine-avatar .music-stage-cappella-shoulders { left: 12px; top: 40px; width: 40px; height: 40px; border-radius: 20px; }
+.music-mine-avatar .music-stage-cappella-head { left: 22px; top: 12px; width: 20px; height: 20px; border-radius: 10px; }
+.music-mine-who { flex-grow: 1; flex-shrink: 1; }
+.music-mine-name { font-size: 24px; -unity-font-style: bold; color: rgb(244, 237, 214); margin: 0; padding: 0; white-space: normal; }
+.music-mine-sub { font-size: 13px; color: rgb(170, 170, 146); margin: 4px 0 0 0; padding: 0; white-space: normal; }
+.music-mine-card .music-primary { margin-left: 12px; flex-shrink: 0; }

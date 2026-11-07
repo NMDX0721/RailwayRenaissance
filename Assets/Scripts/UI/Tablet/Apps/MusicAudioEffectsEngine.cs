@@ -35,7 +35,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static bool CrossfadeEnabled = true;
         public static void SetPlaybackSpeed(float speed)
         {
-            PlaybackSpeed = Mathf.Clamp(speed, 0.5f, 2f);
+            PlaybackSpeed = Mathf.Clamp(speed, 0.25f, 3f);
             if (s_deckA != null) s_deckA.pitch = PlaybackSpeed;
             if (s_deckB != null) s_deckB.pitch = PlaybackSpeed;
         }

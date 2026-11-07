@@ -272,12 +272,19 @@ public static class RailwayMusicTerminalReview
         Assert(button != null && button.enabledInHierarchy, "Missing or disabled button");
         using var evt = NavigationSubmitEvent.GetPooled(); evt.target = button; button.SendEvent(evt);
     }
+    static Button NewPlaylistButton()
+    {
+        if (root.Q<Button>("music-new-playlist") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-new-playlist");
+    }
     static Button FindButton(string text)
     {
         Button Find() => root.Query<Button>().ToList().FirstOrDefault(b => b.tooltip == text);
         var found = Find();
         // The channel pages are tabs of the library page now: reach the library first when the tab is not on screen.
         if (found == null && (text == "原声" || text == "本地音乐" || text == "云端" || text == "榜单")) { Submit(root.Q<Button>("music-nav-曲库")); found = Find(); }
+        // Private playlists are on the 我的 page now, not in the sidebar.
+        if (found == null) { Submit(root.Q<Button>("music-nav-我的")); found = Find(); }
         return found;
     }
     static void Setup()
@@ -459,7 +466,7 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_LOCAL_EMPTY_GUIDANCE_OK: import instruction shown");
                     var locked = MusicLibrarySession.Tracks.FirstOrDefault(t => !MusicLibrarySession.Unlocked(t));
                     if (locked != null) { string before = TabletMusicAppUI.tabletCurrentTrackId; MusicLibrarySession.Play(locked.id); Assert(TabletMusicAppUI.tabletCurrentTrackId == before, "Story lock was bypassed"); }
-                    Submit(root.Q<Button>("music-new-playlist"));
+                    Submit(NewPlaylistButton());
                     root.Q(className: "music-modal").Q<TextField>().value = "雾峰沿线收藏";
                     Submit(root.Q<Button>("music-save-playlist"));
                     var list = MusicLibrarySession.State.playlists.Single();
@@ -639,7 +646,7 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q("music-player").worldBound.yMax <= root.worldBound.yMax + 1, "Compact player outside screen");
                     Assert(root.Q<Button>("music-play-toggle").text == "" && root.Q<Button>("music-play-toggle").Q(className: "music-vector-icon") != null, "Playback button is still plain text");
                     Assert(root.Q<Button>("music-queue").tooltip.StartsWith("队列"), "Icon button lost its tooltip");
-                    Submit(root.Q<Button>("music-new-playlist"));
+                    Submit(NewPlaylistButton());
                     root.Q(className: "music-modal").Q<TextField>().value = "临时歌单";
                     Submit(root.Q<Button>("music-save-playlist"));
                     Submit(FindButton("重命名")); root.Q(className: "music-modal").Q<TextField>().value = "改名后的歌单";
@@ -1615,6 +1622,25 @@ public static class RailwayMusicTerminalReview
                     { var go = root.Q<Button>("music-search-go"); var bar = root.Q("music-search"); Assert(Mathf.Abs(go.worldBound.center.y - bar.worldBound.center.y) < 1.5f, "The search button is not vertically centred in the search pill"); }
                     Assert(root.Q<Button>("music-clear-search").resolvedStyle.display != DisplayStyle.None, "The clear button is not shown while the search has text");
                     Debug.Log("MUSIC_CAREER_SEARCH_OK: career page and the search pill with its clear and search buttons");
+                    root.Q<TextField>("music-search").value = "";
+                    Submit(root.Q<Button>("music-nav-我的"));
+                    break;
+                case 96:
+                    Assert(root.Q("music-mine-name") != null && root.Q<Button>("music-new-playlist") != null, "The 我的 page is missing its name or the new-playlist button");
+                    Capture("49-mine");
+                    Submit(root.Q<Button>("music-player-resize"));
+                    break;
+                case 97:
+                    Assert(MusicLibrarySession.State.playerMini && root.Q("music-player").ClassListContains("music-player-mini"), "The player did not shrink to a capsule");
+                    Assert(root.Q("music-player").worldBound.width < 260, "The capsule is still wide");
+                    Capture("48-player-mini");
+                    Submit(root.Q<Button>("music-player-resize"));
+                    break;
+                case 98:
+                    Assert(!MusicLibrarySession.State.playerMini && root.Q("music-player").worldBound.width > 600, "The player did not expand again");
+                    var mainBox = root.Q(className: "music-main"); var playerBox = root.Q("music-player");
+                    Assert(mainBox.worldBound.yMax <= playerBox.worldBound.yMin + 1f, "The page runs under the player card: main " + mainBox.worldBound + " player " + playerBox.worldBound + " root " + root.worldBound);
+                    Debug.Log("MUSIC_PLAYER_MINI_OK: capsule and page reserve");
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;

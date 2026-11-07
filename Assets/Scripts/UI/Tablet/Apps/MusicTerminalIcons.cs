@@ -172,6 +172,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else if (action == "首页") { Line(new Vector2(2, 9), new Vector2(10, 2), new Vector2(18, 9)); Line(new Vector2(4, 8), new Vector2(4, 18), new Vector2(16, 18), new Vector2(16, 8)); Rect(8, 12, 4, 6); }
             else if (action.Contains("搜索")) { Circle(8, 8, 5); Line(new Vector2(12, 12), new Vector2(18, 18)); }
             else if (action == "本地音乐") { Rect(2, 4, 16, 12); Circle(6, 9, 2); Circle(14, 9, 2); Line(new Vector2(5, 14), new Vector2(15, 14)); }
+            else if (action == "我的") { Circle(10, 7, 3); p.BeginPath(); p.MoveTo(new Vector2(3.5f, 17)); p.BezierCurveTo(new Vector2(3.5f, 11), new Vector2(16.5f, 11), new Vector2(16.5f, 17)); p.Stroke(); }
+            else if (action == "缩小播放栏") { Line(new Vector2(4, 4), new Vector2(10, 10)); Line(new Vector2(4, 10), new Vector2(10, 10), new Vector2(10, 4)); Line(new Vector2(16, 16), new Vector2(10, 10)); Line(new Vector2(16, 10), new Vector2(10, 10), new Vector2(10, 16)); }
+            else if (action == "展开播放栏") { Line(new Vector2(10, 10), new Vector2(4, 4)); Line(new Vector2(4, 9), new Vector2(4, 4), new Vector2(9, 4)); Line(new Vector2(10, 10), new Vector2(16, 16)); Line(new Vector2(16, 11), new Vector2(16, 16), new Vector2(11, 16)); }
             else if (action == "云端")
             {
                 // Kept inside the 20 px icon box (the old outline ran to x = 22 and lost its right side).

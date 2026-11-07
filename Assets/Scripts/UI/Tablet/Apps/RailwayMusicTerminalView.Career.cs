@@ -16,7 +16,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(body, "沿线声音档案  /  CAREER", "music-eyebrow");
             Text(body, "生涯", "music-section-title");
             var stats = MusicLibrarySession.PlayStats();
-            if (stats.Count == 0) { Text(body, "还没有播放记录。听几首歌，听过的曲目和次数会记在这里。", "music-empty"); return; }
+            if (stats.Count == 0) { Text(body, "还没有播放记录。听几首歌，听过的曲目、次数和时长会记在这里。", "music-empty"); return; }
             int total = stats.Sum(s => s.count);
             var cards = Box(body, "music-career-cards");
             void Card(string value, string label, string name)
@@ -26,6 +26,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             Card(total.ToString(), "累计播放（次）", "music-career-total");
             Card(stats.Count.ToString(), "听过的曲目（首）", "music-career-songs");
+            Card(MusicLibrarySession.ListenText(), "累计时长", "music-career-time");
             Text(body, "最常播放", "music-eyebrow");
             int top = stats[0].count;
             for (int i = 0; i < Math.Min(30, stats.Count); i++)

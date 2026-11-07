@@ -148,6 +148,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicCharts.Changed -= OnChartsChanged; MusicCharts.Changed += OnChartsChanged;   // also here: the attach callback is not run for a window that is already attached
             // Ask the bridge once per run: it restores a stored (encrypted) login and reports whether it is still valid.
             if (!sessionRestoreStarted) { sessionRestoreStarted = true; NeteaseLocalBridge.ForProvider("netease").Send("status", null, _ => { }); }
+            BindCursor(); BindAccount();
             Refresh(); Update();
         }
         void Refresh()
@@ -268,20 +269,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
             Text(nav, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "曲库", "收藏", "生涯" })
+            foreach (string item in new[] { "首页", "曲库", "收藏", "生涯", "我的" })
             {
                 string target = item;
                 var b = Button(nav, item, () => Navigate(target), "music-nav-" + target);
-                b.EnableInClassList("is-active", item == "曲库" ? IsLibraryPage(page) : page == item);
+                b.EnableInClassList("is-active", item == "曲库" ? IsLibraryPage(page) : item == "我的" ? page == "我的" || page == "歌单" : page == item);
             }
-            Text(nav, "私人磁带 / 歌单", "music-eyebrow");
-            var lists = Box(nav, "music-playlists");
-            foreach (var list in MusicLibrarySession.State.playlists)
-            {
-                var b = Button(lists, list.title, () => Navigate("歌单", list));
-                b.tooltip = list.title; b.EnableInClassList("is-active", selected == list);
-            }
-            Button(nav, "新建歌单", () => EditName(null), "music-new-playlist");
             Button(nav, "设置", () => OpenSettings(), "music-nav-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
             Text(nav, "拾起沿线的声音\n留住旅途的回响", "music-nav-note");
         }
@@ -321,6 +314,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (page == "首页") { RenderHome(); return; }
             if (page == "榜单") { RenderCharts(); return; }
             if (page == "生涯") { RenderCareer(); return; }
+            if (page == "我的") { RenderMine(); return; }
             if (page == "搜索") { RenderSearch(); return; }
             if (page == "云端" && query.Length == 0) { RenderCloud(); return; }
             string heading = query.Length > 0 ? "搜索结果" : page == "在线歌单" ? onlineTitle : selected != null ? selected.title : page;
@@ -438,7 +432,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(row, track.duration > 0 ? TabletMusicAppUI.FormatAudioTime(track.duration) : "--:--", "music-duration");
             // An online track that failed to play can still be pressed: the button then looks for the same song on the other sources.
             bool canReplace = unlocked && !available && !string.IsNullOrEmpty(track.provider);
-            var start = Button(row, "播放", () => { if (canReplace) OpenReplacement(track); else MusicLibrarySession.Play(track.id, resume); }, "music-play-" + track.id); start.SetEnabled(available || canReplace);
+            Action startTrack = () => { if (canReplace) OpenReplacement(track); else MusicLibrarySession.Play(track.id, resume); };
+            var start = Button(row, "播放", startTrack, "music-play-" + track.id); start.SetEnabled(available || canReplace);
+            // Pressing anywhere on the row (not on one of its buttons) plays the song too.
+            row.RegisterCallback<ClickEvent>(e =>
+            {
+                for (var t = e.target as VisualElement; t != null && t != row; t = t.parent) if (t is Button || t is Slider || t is Toggle) return;
+                if (available || canReplace) startTrack();
+            });
             if (canReplace) start.tooltip = "无法播放：点这里找替代来源";
             Button(row, MusicLibrarySession.State.favorites.Contains(track.id) ? "已藏" : "收藏", () => MusicLibrarySession.ToggleFavorite(track.id), "music-favorite-" + track.id);
             Button moreButton = null;
@@ -462,7 +463,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var scroll = new ScrollView { name = "music-track-list" }; scroll.AddToClassList("music-track-list"); content.Add(scroll);
             int hour = DateTime.Now.Hour;
-            Text(scroll.contentContainer, (hour < 5 ? "夜深了" : hour < 11 ? "早上好" : hour < 14 ? "中午好" : hour < 18 ? "下午好" : "晚上好") + " · 雾峰站", "music-home-greeting");
+            Text(scroll.contentContainer, (hour < 5 ? "夜深了" : hour < 11 ? "早上好" : hour < 14 ? "中午好" : hour < 18 ? "下午好" : "晚上好") + " · " + AccountName(), "music-home-greeting");
             scroll.contentContainer.AddToClassList("music-home-content");
             HomeChips(scroll.contentContainer);
             HomeCoverTiles(scroll.contentContainer);
@@ -491,6 +492,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             var manage = Button(actions, "来源", () => OpenSource(cloudProvider, true), "music-home-manage-sources");
             manage.tooltip = "登录和管理网易云、QQ 音乐、酷狗、波点、Spotify、Subsonic、WebDAV";
+            // 小米账号登录：系统账号服务提供的悬浮登录窗；登录后首页显示昵称，再点一下退出
+            bool miIn = RailwayRenaissance.UI.Tablet.Account.TabletXiaomiSignIn.IsSignedIn("music");
+            var miBtn = Button(actions, miIn ? "小米账号 · " + RailwayRenaissance.UI.Tablet.Account.AccountService.DisplayName : "小米账号登录", () =>
+            {
+                if (miIn) { RailwayRenaissance.UI.Tablet.Account.TabletXiaomiSignIn.SignOut("music"); RenderContent(); return; }
+                RailwayRenaissance.UI.Tablet.Account.TabletXiaomiSignIn.Request(actions, "music", "音乐", new Color(0.19f, 0.72f, 0.42f, 1f), ok => { if (ok) RenderContent(); });
+            }, "music-home-xiaomi-signin");
+            miBtn.tooltip = miIn ? "点击退出小米账号" : "用本机的小米账号登录音乐";
             MusicCharts.Ensure();
             HomeCharts(scroll.contentContainer);
             var favorites = MusicLibrarySession.State.favorites.Select(MusicLibrarySession.Find).Where(t => t != null).Take(6).ToList();
@@ -507,9 +516,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 }
             }
             foreach (string source in MusicCatalogSearch.Sources.Where(NeteaseLocalBridge.HasSession)) HomeCloudLists(scroll.contentContainer, source);
-            HomeSongs(scroll.contentContainer, "沿线原声", MusicLibrarySession.Tracks.Where(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)).Take(6).ToList());
-            var online = MusicLibrarySession.Tracks.Where(t => !string.IsNullOrEmpty(t.provider)).Reverse().Take(6).ToList();
-            if (online.Count > 0) HomeSongs(scroll.contentContainer, "已收录的在线曲目", online);
+            var soundtrack = MusicLibrarySession.Tracks.Where(t => !t.local && string.IsNullOrEmpty(t.provider) && MusicLibrarySession.Unlocked(t)).ToList();
+            HomeSongs(scroll.contentContainer, "沿线原声", soundtrack.Take(6).ToList(), "原声", soundtrack.Count);
+            var allOnline = MusicLibrarySession.Tracks.Where(t => !string.IsNullOrEmpty(t.provider)).Reverse().ToList();
+            if (allOnline.Count > 0) HomeSongs(scroll.contentContainer, "已收录的在线曲目", allOnline.Take(6).ToList(), "曲库", allOnline.Count);
         }
         void QuickTile(VisualElement parent, string title, string subtitle, Action open, string icon)
         {
@@ -574,11 +584,14 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             MusicLibrarySession.State.navCollapsed = !MusicLibrarySession.State.navCollapsed;
             MusicLibrarySession.Save(); root.EnableInClassList("music-nav-collapsed", MusicLibrarySession.State.navCollapsed);
         }
-        void HomeSongs(VisualElement parent, string heading, List<MusicLibraryTrack> tracks)
+        // moreTotal: how many tracks the whole channel has; when that is more than the cards shown, a "更多" button jumps to the channel's library tab.
+        void HomeSongs(VisualElement parent, string heading, List<MusicLibraryTrack> tracks, string morePage = null, int moreTotal = 0)
         {
             if (tracks.Count == 0) return;
             var bar = Box(parent, "music-section-bar"); Text(bar, heading, "music-section-title music-section-small");
-            Button(Box(bar, "music-section-actions"), "播放全部", () => PlayAll(tracks));
+            var barActions = Box(bar, "music-section-actions");
+            Button(barActions, "播放全部", () => PlayAll(tracks));
+            if (morePage != null && moreTotal > tracks.Count) Button(barActions, "更多 · " + moreTotal + " 首", () => Navigate(morePage), "music-home-more-" + morePage);
             var grid = Box(parent, "music-card-grid");
             foreach (var track in tracks)
                 CollectionCard(grid, track.title, string.IsNullOrEmpty(track.artist) ? track.category : track.artist, () => MusicLibrarySession.Play(track.id), track, track.id, null);
@@ -1111,7 +1124,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             play = Button(buttons, "播放", TabletMusicAppUI.ToggleTabletMusicPlayPause, "music-play-toggle"); play.AddToClassList("music-primary");
             Button(buttons, "下一首", TabletMusicAppUI.PlayNextTabletTrack);
             vuMeter = MusicIconHelper.CreateDualVuMeter();
-            controls.Add(vuMeter.root);
+            vuMeter.root.AddToClassList("music-player-vu"); controls.Add(vuMeter.root);
             favorite = Button(buttons, "收藏", () => {
                 if (MusicLibrarySession.Find(TabletMusicAppUI.tabletCurrentTrackId) != null) MusicLibrarySession.ToggleFavorite(TabletMusicAppUI.tabletCurrentTrackId);
             });
@@ -1142,6 +1155,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             settingsButton = Button(effects, "播放设置", () => OpenSettings("sound"), "music-settings"); settingsButton.tooltip = "音乐设置";
             barMoreButton = Button(effects, "更多", OpenBarMore, "music-bar-more"); barMoreButton.tooltip = "更多";
             UpdateBarChips();
+            // A small button shrinks the whole card to a capsule at the bottom right (and brings it back).
+            var resize = new Button(() => { MusicLibrarySession.State.playerMini = !MusicLibrarySession.State.playerMini; MusicLibrarySession.Save(); ApplyPlayerMini(); }) { name = "music-player-resize" };
+            resize.AddToClassList("music-icon-button"); resize.AddToClassList("music-player-resize"); player.Add(resize);
+            ApplyPlayerMini();
+        }
+        void ApplyPlayerMini()
+        {
+            bool mini = MusicLibrarySession.State.playerMini;
+            var player = root?.Q("music-player"); if (player == null) return;
+            player.EnableInClassList("music-player-mini", mini); root.EnableInClassList("music-player-is-mini", mini);
+            var resize = root.Q<Button>("music-player-resize");
+            if (resize != null) { MusicTerminalIcons.Apply(resize, mini ? "展开播放栏" : "缩小播放栏", true); resize.tooltip = mini ? "展开播放栏" : "缩小成右下角的小胶囊"; }
         }
         void ShowDetail(string id)
         {

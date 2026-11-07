@@ -61,7 +61,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public string paletteRecent = "";   // ids of the commands run last from the command palette, newest first
         public bool tutorialDone;   // the first-use tour was shown
         public int lyricGlobalOffsetMs;   // added to every track's own lyric offset (positive: lyrics come earlier)
-        public bool lyricTranslation = true, reduceMotion, navCollapsed = true;   // the narrow icon rail is the default; the menu button opens the wide sidebar
+        public double listenSeconds;   // total time the player has had music playing
+        public bool lyricTranslation = true, reduceMotion, navCollapsed = true, playerMini;   // the narrow icon rail is the default; the menu button opens the wide sidebar
         public float playbackSpeed = 1f;
         public bool estimateWords = true;
         // Stage style tuning (Folia's classic tunables): 0 calm / 1 normal / 2 chaotic, word rotation, whole-line float, word spacing.
@@ -656,11 +657,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 next = (Mathf.Max(0, index) + UnityEngine.Random.Range(1, playable.Count)) % playable.Count;
             Commit(); Play(playable[next].id);
         }
+        public static string ListenText()
+        {
+            long seconds = (long)(state?.listenSeconds ?? 0); long hours = seconds / 3600, minutes = seconds % 3600 / 60;
+            return hours > 0 ? hours + " 小时 " + minutes + " 分" : minutes > 0 ? minutes + " 分钟" : seconds + " 秒";
+        }
         public static void Tick(float delta)
         {
             if (state == null) return;
             FlushMetadata();
             TabletMusicAppUI.UpdateAudioProgress();
+            if (TabletMusicAppUI.tabletIsPlaying) state.listenSeconds += Mathf.Min(delta, 1f);
             saveTimer += delta;
             if (saveTimer >= 10) { saveTimer = 0; SaveInBackground(); }
         }

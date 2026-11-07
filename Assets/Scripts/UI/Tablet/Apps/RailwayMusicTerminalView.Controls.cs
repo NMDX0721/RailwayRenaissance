@@ -127,6 +127,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         ChoiceRow(menu, "speed", index++, chosen.ToString("0.##") + "x", chosen == 1f ? "正常" : null, Mathf.Abs(MusicAudioEffectsEngine.PlaybackSpeed - chosen) < .01f,
                             () => { MusicAudioEffectsEngine.SetPlaybackSpeed(chosen); state.playbackSpeed = chosen; MusicLibrarySession.Save(); }, true);
                     }
+                    // Any speed between 0.25x and 3x: a slider and a number to type, kept in step with each other.
+                    var custom = Box(menu, "music-speed-custom");
+                    Text(custom, "自定义", "music-setting-title");
+                    var speedSlider = new Slider(0.25f, 3f) { name = "music-speed-slider", value = MusicAudioEffectsEngine.PlaybackSpeed }; speedSlider.AddToClassList("music-speed-slider"); custom.Add(speedSlider);
+                    var speedField = new FloatField { name = "music-speed-field", value = MusicAudioEffectsEngine.PlaybackSpeed, isDelayed = true }; speedField.AddToClassList("music-speed-field"); custom.Add(speedField);
+                    Text(custom, "x", "music-setting-note");
+                    bool syncing = false;
+                    void ApplySpeed(float value, bool fromField)
+                    {
+                        if (syncing) return; syncing = true;
+                        value = Mathf.Round(Mathf.Clamp(value, 0.25f, 3f) * 20f) / 20f;
+                        MusicAudioEffectsEngine.SetPlaybackSpeed(value); state.playbackSpeed = value; MusicLibrarySession.Save();
+                        speedSlider.SetValueWithoutNotify(value); speedField.SetValueWithoutNotify(value); UpdateBarChips();
+                        syncing = false;
+                    }
+                    speedSlider.RegisterValueChangedCallback(e => ApplySpeed(e.newValue, false));
+                    speedField.RegisterValueChangedCallback(e => ApplySpeed(e.newValue, true));
                     break;
                 }
                 case "tone":
