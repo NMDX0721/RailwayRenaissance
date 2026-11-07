@@ -1165,55 +1165,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private VisualElement _musicFill, _musicKnob;
         private Label _musicElapsed, _musicTotal;
 
-        private enum TransportKind { Prev, Next, Pause, Play }
-
-        /// <summary>播控按键的矢量图标：上一首 / 下一首（竖条 + 三角）、暂停、播放。</summary>
-        private sealed class TransportIcon : VisualElement
-        {
-            private readonly TransportKind _kind;
-            private readonly Color _color;
-
-            public TransportIcon(TransportKind kind, float size, Color color)
-            {
-                _kind = kind; _color = color;
-                pickingMode = PickingMode.Ignore;
-                style.width = size; style.height = size; style.flexShrink = 0;
-                generateVisualContent += Draw;
-            }
-
-            private void Draw(MeshGenerationContext ctx)
-            {
-                float w = contentRect.width, h = contentRect.height;
-                if (w <= 0f || h <= 0f) return;
-                var p = ctx.painter2D;
-                p.fillColor = _color;
-                void Poly(params Vector2[] pts)
-                {
-                    p.BeginPath(); p.MoveTo(pts[0]);
-                    for (int i = 1; i < pts.Length; i++) p.LineTo(pts[i]);
-                    p.ClosePath(); p.Fill();
-                }
-                switch (_kind)
-                {
-                    case TransportKind.Prev:
-                        Poly(new Vector2(w * 0.10f, h * 0.18f), new Vector2(w * 0.24f, h * 0.18f), new Vector2(w * 0.24f, h * 0.82f), new Vector2(w * 0.10f, h * 0.82f));
-                        Poly(new Vector2(w * 0.92f, h * 0.16f), new Vector2(w * 0.92f, h * 0.84f), new Vector2(w * 0.30f, h * 0.50f));
-                        break;
-                    case TransportKind.Next:
-                        Poly(new Vector2(w * 0.90f, h * 0.18f), new Vector2(w * 0.76f, h * 0.18f), new Vector2(w * 0.76f, h * 0.82f), new Vector2(w * 0.90f, h * 0.82f));
-                        Poly(new Vector2(w * 0.08f, h * 0.16f), new Vector2(w * 0.08f, h * 0.84f), new Vector2(w * 0.70f, h * 0.50f));
-                        break;
-                    case TransportKind.Pause:
-                        Poly(new Vector2(w * 0.20f, h * 0.10f), new Vector2(w * 0.40f, h * 0.10f), new Vector2(w * 0.40f, h * 0.90f), new Vector2(w * 0.20f, h * 0.90f));
-                        Poly(new Vector2(w * 0.60f, h * 0.10f), new Vector2(w * 0.80f, h * 0.10f), new Vector2(w * 0.80f, h * 0.90f), new Vector2(w * 0.60f, h * 0.90f));
-                        break;
-                    default:
-                        Poly(new Vector2(w * 0.22f, h * 0.08f), new Vector2(w * 0.22f, h * 0.92f), new Vector2(w * 0.90f, h * 0.50f));
-                        break;
-                }
-            }
-        }
-
         private static float MusicNorm(out float pos, out float dur)
         {
             pos = 0f; dur = 0f;
@@ -1233,7 +1184,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             if (_musicTotal != null) _musicTotal.text = dur > 0.1f ? RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(dur) : "--:--";
         }
 
-        private Button TransportButton(TransportKind kind, float iconSize, Action onClick)
+        private Button TransportButton(TabletTransportKind kind, float iconSize, Action onClick)
         {
             var btn = new Button(onClick);
             btn.style.width = 64; btn.style.height = 44;
@@ -1242,7 +1193,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btn.style.paddingLeft = 0; btn.style.paddingRight = 0; btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
             btn.style.marginLeft = 0; btn.style.marginRight = 0; btn.style.marginTop = 0; btn.style.marginBottom = 0;
             btn.style.alignItems = Align.Center; btn.style.justifyContent = Justify.Center;
-            btn.Add(new TransportIcon(kind, iconSize, Color.white));
+            btn.Add(new TabletTransportIcon(kind, iconSize, Color.white));
             btn.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
             btn.style.transitionDuration = new List<TimeValue> { new TimeValue(TabletTheme.MotionMs(110), TimeUnit.Millisecond) };
             btn.RegisterCallback<PointerDownEvent>(_ => btn.style.scale = new Scale(new Vector3(0.86f, 0.86f, 1f)));
@@ -1345,9 +1296,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             controls.style.justifyContent = Justify.SpaceAround;
             controls.style.alignItems = Align.Center;
             controls.style.marginTop = outMode ? 6 : 10;
-            controls.Add(TransportButton(TransportKind.Prev, 26, () => RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.PlayPrevTabletTrack()));
-            controls.Add(TransportButton(TransportKind.Pause, 32, () => s.OnPrimaryAction?.Invoke()));
-            controls.Add(TransportButton(TransportKind.Next, 26, () => s.OnSecondaryAction?.Invoke()));
+            controls.Add(TransportButton(TabletTransportKind.Prev, 26, () => RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.PlayPrevTabletTrack()));
+            controls.Add(TransportButton(TabletTransportKind.Pause, 32, () => s.OnPrimaryAction?.Invoke()));
+            controls.Add(TransportButton(TabletTransportKind.Next, 26, () => s.OnSecondaryAction?.Invoke()));
             _expandedCard.Add(controls);
 
             // ---- 进度：已播 | 进度条（可拖动）| 总长 ----

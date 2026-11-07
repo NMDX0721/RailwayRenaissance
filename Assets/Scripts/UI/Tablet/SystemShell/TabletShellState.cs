@@ -133,6 +133,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             Changed?.Invoke();
         }
 
+        /// <summary>界面自己的展开/折叠等状态变了，通知视图重画（数据本身没变）。</summary>
+        public void NotifyChanged() => Changed?.Invoke();
+
         public bool ClosePanel()
         {
             if (Panel == TabletSystemPanel.None)

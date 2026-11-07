@@ -242,7 +242,7 @@ public static class TabletSettingsControlReview
                     var hcBtn = root.Q<Button>("tablet-high-contrast-toggle");
                     var rmBtn = root.Q<Button>("tablet-reduce-motion-toggle");
                     var accentBtn = root.Q<Button>("tablet-accent-cycle");
-                    var dimBtn = root.Q<Button>("tablet-wallpaper-dim-toggle");
+                    var dimBtn = root.Q<Button>("tablet-brightness-slider");
                     var muteBtn = root.Q<Button>("tablet-audio-mute-toggle");
                     var offlineBox = root.Q("settings-hardware-offline-box");
 
@@ -250,7 +250,7 @@ public static class TabletSettingsControlReview
                     Assert(hcBtn != null, "tablet-high-contrast-toggle tile missing");
                     Assert(rmBtn != null, "tablet-reduce-motion-toggle tile missing");
                     Assert(accentBtn != null, "tablet-accent-cycle tile missing");
-                    Assert(dimBtn != null, "tablet-wallpaper-dim-toggle tile missing");
+                    Assert(dimBtn != null, "tablet-brightness-slider tile missing");
                     Assert(muteBtn != null, "tablet-audio-mute-toggle tile missing");
                     Assert(offlineBox != null, "settings-hardware-offline-box indicator missing");
 
@@ -277,9 +277,10 @@ public static class TabletSettingsControlReview
                     ClickElement(btnAcc); // Amber -> Teal
                     Assert(presentation.Accent == TabletAccent.Teal, "tablet-accent-cycle click failed to switch to Teal");
 
-                    var btnDim = root.Q<Button>("tablet-wallpaper-dim-toggle");
-                    ClickElement(btnDim); // 0f -> 0.3f
-                    Assert(presentation.WallpaperDim > 0.2f, "tablet-wallpaper-dim-toggle click failed to set WallpaperDim");
+                    var btnDim = root.Q<Button>("tablet-brightness-slider");
+                    ClickElement(btnDim); // 亮度 100% -> 60%
+                    Assert(TabletDisplayPreferences.Brightness < 0.7f, "tablet-brightness-slider click failed to lower brightness");
+                    TabletDisplayPreferences.SetBrightness(1f);
 
                     var btnMute = root.Q<Button>("tablet-audio-mute-toggle");
                     ClickElement(btnMute);

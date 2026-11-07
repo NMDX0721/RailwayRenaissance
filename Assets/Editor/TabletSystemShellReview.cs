@@ -305,7 +305,10 @@ public static class TabletSystemShellReview
                     var boundaryBadge = root.Q<Label>("tablet-notifications-badge");
                     int renderedRows = root.Query<Button>().Where(b => b.name != null && b.name.StartsWith("tablet-notification-dismiss-")).ToList().Count;
                     Assert(state.Notifications.Count == 32 && state.UnreadCount == 32, "32-item capacity state mismatch");
-                    Assert(boundaryBadge.text == "32" && renderedRows == 32, "32-item capacity UI did not match state");
+                    Assert(boundaryBadge.text == "32" && renderedRows == 4 && root.Q<Button>("tablet-notifications-more") != null, "Collapsed list must show 4 cards plus a 'more notifications' row");
+                    Submit("tablet-notifications-more");
+                    renderedRows = root.Query<Button>().Where(b => b.name != null && b.name.StartsWith("tablet-notification-dismiss-")).ToList().Count;
+                    Assert(renderedRows == 32 && root.Q<Button>("tablet-notifications-more") == null, "Expanding must render all 32 notifications");
                     Submit("tablet-notifications-clear");
                     Assert(state.Notifications.Count == 0 && root.Query<Label>().Where(l => l.text == "暂无通知").First() != null, "Clear did not render empty state");
 

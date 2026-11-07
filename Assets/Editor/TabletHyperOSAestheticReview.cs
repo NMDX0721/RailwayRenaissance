@@ -288,7 +288,21 @@ namespace RailwayRenaissance.Editor
                         Assert(expanded.style.display == DisplayStyle.Flex, "Expanded island must be displayed");
 
                         // 展开是 340ms 的变形动画：等它落定再截图，看到的才是最终形态
-                        settleName = "02_super_island_music_expanded"; settleNext = stage + 1; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
+                        settleName = "02_super_island_music_expanded"; settleNext = 201; nextCheck = EditorApplication.timeSinceStartup + 0.9; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+
+                    // 点右上角输出按钮：卡片切到音量与输出设备
+                    case 201:
+                        ui.SuperIsland.ToggleMusicOutput();
+                        Assert(root.Q("super-island-music-volume") != null, "output panel must show the volume slider");
+                        settleName = "02b_super_island_music_output"; settleNext = 202; nextCheck = EditorApplication.timeSinceStartup + 1.0; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+                    case 202:
+                        ui.SuperIsland.ToggleMusicOutput();
+                        Assert(root.Q("super-island-music-volume") == null, "toggling back must hide the volume slider");
+                        settleName = "02c_super_island_music_back"; settleNext = 3; nextCheck = EditorApplication.timeSinceStartup + 1.0; stage = 900;
                         frame = Time.frameCount;
                         break;
 
@@ -370,7 +384,7 @@ namespace RailwayRenaissance.Editor
                     case 7:
                         var quietBtn = root.Q<Button>("tablet-quiet-toggle");
                         var hcBtn = root.Q<Button>("tablet-high-contrast-toggle");
-                        var dimBtn = root.Q<Button>("tablet-wallpaper-dim-toggle");
+                        var dimBtn = root.Q<Button>("tablet-brightness-slider");
                         var muteBtn = root.Q<Button>("tablet-audio-mute-toggle");
                         var mediaCard = root.Q("tablet-media-card");
                         var offlineBox = root.Q("settings-hardware-offline-box");
