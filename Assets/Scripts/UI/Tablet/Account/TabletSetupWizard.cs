@@ -586,8 +586,9 @@ namespace RailwayRenaissance.UI.Tablet.Account
             string code = AccountService.IssueCode(_phone);
             _resendReadyAt = Time.realtimeSinceStartup + 30f;
             string body = $"【小米】你的验证码是 {code}，5 分钟内有效。请勿向他人泄露。";
-            ShowSms(body);
-            _smsSink?.Invoke("短信", body);
+            // 有系统通知可用时，验证码只走系统横幅；向导自带的深色短信条只在没有通知出口时兜底，避免两个弹窗叠在一起
+            if (_smsSink != null) _smsSink("短信", body);
+            else ShowSms(body);
         }
 
         private void ShowSms(string text)

@@ -131,6 +131,9 @@ namespace RailwayRenaissance.Editor
         }
         private static readonly string[] SettingsPagesToCapture = { "当前账号", "当前账号#登录", "当前账号#云空间", "当前账号#备份", "当前账号#退出", "显示与亮度", "电池", "我的设备", "我的设备#存储", "小米超级AI", "通知与状态栏", "通知与状态栏#通知管理", "桌面", "桌面#系统导航", "桌面#手势演示", "桌面#按钮导航", "桌面#恢复手势", "声音与振动", "人脸与锁屏密码", "隐私与安全", "健康使用设备", "儿童模式", "无障碍", "更多设置", "反馈", "开发者选项" };
 
+        private static bool xiaomiRegisteredHere;
+        private static bool? xiaomiResult;
+
         private static void Capture(string name)
         {
             FlushPendingCapture();
@@ -302,7 +305,36 @@ namespace RailwayRenaissance.Editor
                     case 202:
                         ui.SuperIsland.ToggleMusicOutput();
                         Assert(root.Q("super-island-music-volume") == null, "toggling back must hide the volume slider");
-                        settleName = "02c_super_island_music_back"; settleNext = 3; nextCheck = EditorApplication.timeSinceStartup + 1.0; stage = 900;
+                        settleName = "02c_super_island_music_back"; settleNext = 203; nextCheck = EditorApplication.timeSinceStartup + 1.0; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+
+                    // 小米账号登录悬浮窗：选账号 → 授权 → 记录登录状态
+                    case 203:
+                        xiaomiRegisteredHere = !AccountService.IsRegistered;
+                        if (xiaomiRegisteredHere) Assert(AccountService.Register("13800138000", "Passw0rd123", "测试员", 0) == null, "test account must register");
+                        TabletXiaomiSignIn.SignOut("review-music");
+                        xiaomiResult = null;
+                        TabletXiaomiSignIn.Request(root, "review-music", "音乐", new Color(0.19f, 0.72f, 0.42f, 1f), ok => xiaomiResult = ok);
+                        Assert(root.Q("tablet-xiaomi-signin-window") != null, "sign-in window must open");
+                        Assert(root.Q<Button>("tablet-xiaomi-signin-account") != null, "chooser must list the local account");
+                        settleName = "02d_xiaomi_signin_chooser"; settleNext = 204; nextCheck = EditorApplication.timeSinceStartup + 0.6; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+                    case 204:
+                        ClickElement(root.Q<Button>("tablet-xiaomi-signin-account"));
+                        Assert(root.Q<Button>("tablet-xiaomi-signin-allow") != null, "consent step must offer Allow");
+                        settleName = "02e_xiaomi_signin_consent"; settleNext = 205; nextCheck = EditorApplication.timeSinceStartup + 0.6; stage = 900;
+                        frame = Time.frameCount;
+                        break;
+                    case 205:
+                        ClickElement(root.Q<Button>("tablet-xiaomi-signin-allow"));
+                        Assert(xiaomiResult == true, "allow must report success");
+                        Assert(TabletXiaomiSignIn.IsSignedIn("review-music"), "grant must be recorded");
+                        TabletXiaomiSignIn.SignOut("review-music");
+                        Assert(!TabletXiaomiSignIn.IsSignedIn("review-music"), "sign out must clear the grant");
+                        if (xiaomiRegisteredHere) AccountService.ResetForTests();
+                        stage = 3;
                         frame = Time.frameCount;
                         break;
 
