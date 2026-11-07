@@ -347,6 +347,23 @@ public static class TabletSystemShellReview
                     var closedBlurBg = root.Q("tablet-shell-blur-bg");
                     Assert(closedBlurBg == null || closedBlurBg.style.display == DisplayStyle.None, "Blur background hidden on close");
 
+                    // 桌面上按返回（Esc）：弹出退出确认；再按一次取消；点“取消”也关闭，都不退出
+                    Call("ReturnToTabletHome");
+                    Assert(Field("activeTabletTask") == null, "desktop expected before the exit-confirm check");
+                    Call("RequestSystemBack");
+                    Assert(TabletConfirmDialog.IsOpen && root.Q("tablet-confirm-window") != null, "Esc on the desktop must ask before quitting");
+                    Call("RequestSystemBack");
+                    Assert(!TabletConfirmDialog.IsOpen, "second Esc must dismiss the exit confirmation");
+                    Call("RequestSystemBack");
+                    Assert(TabletConfirmDialog.IsOpen, "exit confirmation must reopen");
+                    {
+                        var cancelBtn = root.Query<Button>("tablet-confirm-cancel").Last(); // 前一个弹窗还在淡出，取最新的
+                        Assert(cancelBtn != null, "Cancel button missing");
+                        using var evt = NavigationSubmitEvent.GetPooled();
+                        evt.target = cancelBtn; cancelBtn.SendEvent(evt);
+                    }
+                    Assert(!TabletConfirmDialog.IsOpen, "Cancel must close the exit confirmation");
+
                     // 控制中心点击设置入口跳转设置
                     Submit("tablet-controls-open");
                     Submit("tablet-shell-settings");

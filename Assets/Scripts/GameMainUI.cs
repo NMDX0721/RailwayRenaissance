@@ -2908,7 +2908,12 @@ public class GameMainUI : MonoBehaviour
             CloseRecentTasks();
             return;
         }
-        if (activeTabletTask == null) return;
+        if (activeTabletTask == null)
+        {
+            // 在桌面上按 Esc：先问一声是否退出游戏
+            if (unlocked) ConfirmQuitFromDesktop();
+            return;
+        }
 
         VisualElement target = root.panel?.focusController.focusedElement as VisualElement;
         if (target == null || activeTabletTask.Root == null || !activeTabletTask.Root.Contains(target))
