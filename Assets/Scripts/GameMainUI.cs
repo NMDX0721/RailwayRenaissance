@@ -753,7 +753,7 @@ public class GameMainUI : MonoBehaviour
     private VisualElement pageDot1;
     private VisualElement folderOverlay;
     private bool isDesktopDragging = false;
-    private static readonly string[] DockMainApps = { "RDA", "归途", "笔记", "时钟", "日历", "天气" };
+    private static readonly string[] DockMainApps = { "米家", "岁月 · AI对话", "媒姬百科", "浏览器", "安全中心", "笔记", "相册" };   // 互联/岁月/搜索 + 浏览器/VPN/笔记/相册，没有的用现有应用平替
     private VisualElement dockRecentBox, dockRecentDivider;
     private Vector2 desktopDragStartPos;
     private float desktopDragDeltaX = 0f;
@@ -1274,6 +1274,9 @@ public class GameMainUI : MonoBehaviour
 
     private void BuildDesktopPage0()
     {
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Configure(Page0SelectedApps, MasterAllApps);
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.EnsureLoaded();
+        page0SlotEls.Clear();
         // 严格按参考截图的栅格：6 列 × 4 行，列距 = 行距 = p。小组件占 0.8p 的方块（或 1.8p 的大块），
         // 与下面两行应用图标共用同一套列。p 由屏幕高度（约 19%）与可用宽高共同决定。
         var grid = new VisualElement { name = "desktop-page0-grid" };
@@ -1333,9 +1336,10 @@ public class GameMainUI : MonoBehaviour
                 slot.style.flexShrink = 0;
                 row.Add(slot);
                 slots.Add(slot);
-                if (idx >= Page0SelectedApps.Length) continue;
-                string name = Page0SelectedApps[idx];
-                var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+                page0SlotEls.Add(slot);
+                string name = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Page0[idx];
+                if (string.IsNullOrEmpty(name)) continue;
+                var cell = MakeDesktopCell(name);
                 cell.style.marginLeft = 0; cell.style.marginRight = 0; cell.style.marginTop = 0; cell.style.marginBottom = 0;
                 slot.Add(cell);
                 appIcons.Add(cell);
@@ -1381,35 +1385,166 @@ public class GameMainUI : MonoBehaviour
         allGrid.style.alignItems = Align.Center;
         desktopPage1.Add(allGrid);
 
-        // 严格排除 Page 0 已出现的图标，计算差集避免重复（A2）
-        var p0Set = new System.Collections.Generic.HashSet<string>(Page0SelectedApps);
-        var page1Apps = new System.Collections.Generic.List<string>();
-        foreach (var app in MasterAllApps)
-        {
-            if (!p0Set.Contains(app))
-            {
-                page1Apps.Add(app);
-            }
-        }
+        page1GridEl = allGrid;
+        FillPage1Grid();
+    }
 
+    // ============ 桌面图标排布（可拖动）============
+    private readonly List<VisualElement> page0SlotEls = new List<VisualElement>();
+    private readonly List<VisualElement> page1CellEls = new List<VisualElement>();
+    private VisualElement page1GridEl, folderGridEl, folderBlockEl;
+    private RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag desktopDrag;
+
+    private void EnsureDesktopDrag()
+    {
+        if (desktopDrag != null || desktop == null) return;
+        desktopDrag = new RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag(desktop,
+            n => BuildIconTile(n, 60f, 18f, 32),
+            GetDesktopDropSlots, OnDesktopIconDropped,
+            dir => SwitchDesktopPage(currentDesktopPage + dir),
+            active => { if (active) isDesktopDragging = false; });
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Changed -= OnDesktopLayoutChanged;
+        RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Changed += OnDesktopLayoutChanged;
+    }
+
+    private VisualElement MakeDesktopCell(string name)
+    {
+        EnsureDesktopDrag();
+        bool isFolder = name == RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.FolderName;
+        var cell = isFolder ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+        if (!isFolder) desktopDrag?.Attach(cell, name);
+        return cell;
+    }
+
+    private void FillPage1Grid()
+    {
+        if (page1GridEl == null) return;
+        page1GridEl.Clear();
+        page1CellEls.Clear();
+        var apps = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Page1;
         int cols = 5;
-        int rows = Mathf.CeilToInt((float)page1Apps.Count / cols);
+        int rows = Mathf.CeilToInt((float)apps.Count / cols);
         for (int r = 0; r < rows; r++)
         {
             var row = new VisualElement();
             row.style.flexDirection = FlexDirection.Row;
             row.style.marginTop = (r > 0) ? 8 : 0;
-            allGrid.Add(row);
+            page1GridEl.Add(row);
             for (int c = 0; c < cols; c++)
             {
                 int idx = r * cols + c;
-                if (idx >= page1Apps.Count) continue;
-                string name = page1Apps[idx];
-                var cell = name == "铁路" ? BuildRailwayFolderIcon() : BuildAppIcon(name);
+                if (idx >= apps.Count) continue;
+                var cell = MakeDesktopCell(apps[idx]);
                 row.Add(cell);
                 appIcons.Add(cell);
+                page1CellEls.Add(cell);
             }
         }
+    }
+
+    private void FillFolderGrid()
+    {
+        if (folderGridEl == null) return;
+        EnsureDesktopDrag();
+        folderGridEl.Clear();
+        foreach (var fa in RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Folder)
+        {
+            string app = fa;
+            var item = BuildAppIcon(app);
+            item.style.width = 140; item.style.height = 110;
+            item.style.marginLeft = 0; item.style.marginRight = 0;
+            item.Query<Label>().ForEach(l => l.style.color = Color.white);
+            item.RegisterCallback<ClickEvent>(_ => { if (!RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.JustDragged) CloseRailwayFolder(); });
+            desktopDrag?.Attach(item, app, true);
+            folderGridEl.Add(item);
+        }
+    }
+
+    private void OnDesktopLayoutChanged()
+    {
+        if (desktop == null) return;
+        desktop.schedule.Execute(RebuildDesktopIcons).ExecuteLater(0);
+    }
+
+    private void RebuildDesktopIcons()
+    {
+        appIcons.Clear();
+        var layout = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Page0;
+        for (int i = 0; i < page0SlotEls.Count; i++)
+        {
+            var slot = page0SlotEls[i];
+            slot.Clear();
+            string name = i < layout.Count ? layout[i] : string.Empty;
+            if (string.IsNullOrEmpty(name)) continue;
+            var cell = MakeDesktopCell(name);
+            cell.style.marginLeft = 0; cell.style.marginRight = 0; cell.style.marginTop = 0; cell.style.marginBottom = 0;
+            slot.Add(cell);
+            appIcons.Add(cell);
+        }
+        FillPage1Grid();
+        FillFolderGrid();
+    }
+
+    private List<RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot> GetDesktopDropSlots(bool fromFolder)
+    {
+        var list = new List<RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot>();
+        var kinds = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Page0;
+        if (fromFolder)
+        {
+            if (folderBlockEl != null)
+                list.Add(new RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot
+                { rect = folderBlockEl.worldBound, kind = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.FolderPanel });
+            return list;
+        }
+        if (currentDesktopPage == 0)
+        {
+            var layout = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Page0;
+            for (int i = 0; i < page0SlotEls.Count; i++)
+            {
+                bool isFolder = i < layout.Count && layout[i] == RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.FolderName;
+                list.Add(new RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot
+                {
+                    rect = page0SlotEls[i].worldBound,
+                    kind = isFolder ? RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Folder : kinds,
+                    index = i
+                });
+            }
+        }
+        else
+        {
+            for (int i = 0; i < page1CellEls.Count; i++)
+                list.Add(new RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot
+                { rect = page1CellEls[i].worldBound, kind = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Page1, index = i });
+            if (page1GridEl != null)
+                list.Add(new RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot
+                {
+                    rect = page1GridEl.worldBound,
+                    kind = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Page1,
+                    index = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Page1.Count
+                });
+        }
+        return list;
+    }
+
+    private void OnDesktopIconDropped(string app, RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.Slot? slot, bool fromFolder)
+    {
+        var L = typeof(RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout);
+        var K = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Folder;
+        if (fromFolder)
+        {
+            // 在文件夹面板里放下 = 不动；拖到面板外 = 拿出文件夹回到桌面
+            if (slot.HasValue && slot.Value.kind == RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.FolderPanel) return;
+            CloseRailwayFolder();
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.TakeOutOfFolder(app);
+            return;
+        }
+        if (!slot.HasValue) return;
+        var sl = slot.Value;
+        if (sl.kind == K) RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.MoveToFolder(app);
+        else if (sl.kind == RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Page0)
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.MoveToPage0(app, sl.index);
+        else if (sl.kind == RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.SlotKind.Page1)
+            RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.MoveToPage1(app, sl.index);
     }
 
     private VisualElement BuildClockWidget()
@@ -1853,9 +1988,10 @@ public class GameMainUI : MonoBehaviour
         folderBox.pickingMode = PickingMode.Ignore;
         cell.Add(folderBox);
 
-        string[] miniIcons = { "归途", "媒姬百科", "音乐", "RDA" };
-        foreach (var mini in miniIcons)
+        var folderApps = RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopLayout.Folder;
+        for (int mi = 0; mi < folderApps.Count && mi < 9; mi++)
         {
+            string mini = folderApps[mi];
             var slot = new VisualElement { pickingMode = PickingMode.Ignore };
             slot.style.width = 16; slot.style.height = 16; slot.style.flexShrink = 0;
             slot.style.alignItems = Align.Center; slot.style.justifyContent = Justify.Center;
@@ -1873,7 +2009,7 @@ public class GameMainUI : MonoBehaviour
 
         cell.RegisterCallback<PointerEnterEvent>(_ => folderBox.style.scale = new Scale(new Vector2(1.08f, 1.08f)));
         cell.RegisterCallback<PointerLeaveEvent>(_ => folderBox.style.scale = new Scale(new Vector2(1f, 1f)));
-        cell.RegisterCallback<ClickEvent>(_ => OpenRailwayFolder());
+        cell.RegisterCallback<ClickEvent>(_ => { if (!RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.JustDragged) OpenRailwayFolder(); });
         return cell;
     }
 
@@ -1944,16 +2080,9 @@ public class GameMainUI : MonoBehaviour
         grid.style.flexWrap = Wrap.Wrap;
         block.Add(grid);
 
-        string[] folderApps = { "归途", "媒姬百科", "音乐", "RDA" };
-        foreach (var fa in folderApps)
-        {
-            var item = BuildAppIcon(fa);
-            item.style.width = 140; item.style.height = 110;
-            item.style.marginLeft = 0; item.style.marginRight = 0;
-            item.Query<Label>().ForEach(l => l.style.color = Color.white);
-            item.RegisterCallback<ClickEvent>(_ => CloseRailwayFolder());
-            grid.Add(item);
-        }
+        folderGridEl = grid;
+        folderBlockEl = block;
+        FillFolderGrid();
     }
 
     private readonly List<VisualElement> folderHiddenLayers = new List<VisualElement>();
@@ -2234,7 +2363,7 @@ public class GameMainUI : MonoBehaviour
                 iconBg = new Color(0.22f, 0.68f, 0.85f, 1f);  // 地图天蓝
                 iconFg = Color.white;
                 break;
-            case "铁路运营": case "RDA 助手": case "岁月": case "站务日志": case "列车图鉴":
+            case "铁路运营": case "RDA 助手": case "岁月": case "岁月 · AI对话": case "站务日志": case "列车图鉴":
             case "铁路": case "驾驶台":
                 iconBg = new Color(0.18f, 0.38f, 0.65f, 1f);  // 铁路功能：深工装蓝实底
                 iconFg = new Color(0.92f, 0.96f, 1f, 1f);
@@ -2273,6 +2402,7 @@ public class GameMainUI : MonoBehaviour
             "设置" => RailwayRenaissance.UI.Tablet.TabletIconKind.Gear,
             "天气" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sun,
             "RDA" => RailwayRenaissance.UI.Tablet.TabletIconKind.Cube,
+            "岁月 · AI对话" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sparkle,
             "驾驶台" => RailwayRenaissance.UI.Tablet.TabletIconKind.Train,
             "归途" => RailwayRenaissance.UI.Tablet.TabletIconKind.Home,
             "媒姬百科" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sparkle,
@@ -2340,7 +2470,7 @@ public class GameMainUI : MonoBehaviour
         {
             icon.style.scale = new Scale(new Vector2(1f, 1f));
         });
-        cell.RegisterCallback<ClickEvent>(_ => LaunchApp(name));
+        cell.RegisterCallback<ClickEvent>(_ => { if (!RailwayRenaissance.UI.Tablet.SystemShell.TabletDesktopDrag.JustDragged) LaunchApp(name); });
         return cell;
     }
 
