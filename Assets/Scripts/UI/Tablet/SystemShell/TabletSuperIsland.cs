@@ -1363,7 +1363,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             thisDevice.Add(new TabletIconElement(TabletIconKind.Check, 18, Color.white));
             _expandedCard.Add(thisDevice);
 
-            // 本终端是车载内网沙箱：没有蓝牙与外接输出，如实说明，不伪造耳机设备
+            // 目前没有任何可配对的外接输出设备，如实说明，不伪造耳机
             var noOther = new VisualElement();
             noOther.style.minHeight = 52; noOther.style.marginTop = 8; noOther.style.paddingTop = 8; noOther.style.paddingBottom = 8;
             noOther.style.justifyContent = Justify.Center;
@@ -1374,7 +1374,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var noLbl = CreatePillLabel("没有其他可用的输出设备", 13, false);
             noLbl.style.color = TabletTheme.TextMuted;
             noOther.Add(noLbl);
-            var noSub = CreatePillLabel("本终端为车载内网沙箱，不提供蓝牙与外接输出", 10, false);
+            var noSub = CreatePillLabel("附近没有可配对的蓝牙或外接设备", 10, false);
             noSub.style.color = TabletTheme.TextMuted; noSub.style.opacity = 0.8f; noSub.style.marginTop = 1;
             noOther.Add(noSub);
             _expandedCard.Add(noOther);

@@ -357,8 +357,8 @@ public static class TabletSettingsControlReview
                     var wlanPage = root.Q("settings-wlan-page");
                     Assert(wlanPage != null, "settings-wlan-page missing");
                     var labels = wlanPage.Query<Label>().ToList();
-                    bool foundSandbox = labels.Exists(l => l.text != null && l.text.Contains("车载内网沙箱"));
-                    Assert(foundSandbox, "WLAN page must state clear unavailable sandboxed hardware status");
+                    bool foundSandbox = labels.Exists(l => l.text != null && l.text.Contains("铁路职工网"));
+                    Assert(foundSandbox, "WLAN page must show the current Wi-Fi network name");
 
                     Capture("05-settings-hardware-unavailable-cat4");
                     frame = Time.frameCount;

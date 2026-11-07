@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RailwayRenaissance.UI.Tablet.SystemShell;
 
 namespace RailwayRenaissance.UI.Tablet.Account
 {
@@ -254,8 +255,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
             var inner = new ScrollView(ScrollViewMode.Vertical);
             inner.verticalScrollerVisibility = ScrollerVisibility.Hidden;
             inner.style.maxHeight = 240;
-            inner.Add(Body("《小米用户协议》摘要：本设备及其系统软件由嘉颖徐铁路基金配发，供铁路运营与调度工作使用。使用本设备即表示你同意遵守车载内网的使用规范。"));
-            inner.Add(Body("《隐私政策》摘要：本设备运行在车载内网沙箱中，不连接公共网络。你在本设备上创建的账号与资料只保存在本机；音乐应用的在线账号由对应服务独立处理。"));
+            inner.Add(Body("《小米用户协议》摘要：本设备及其系统软件由嘉颖徐铁路基金配发，供铁路运营与调度工作使用。使用本设备即表示你同意遵守铁路内部网络的使用规范。"));
+            inner.Add(Body("《隐私政策》摘要：你在本设备上创建的账号与资料只保存在本机；联网时，音乐应用的在线账号由对应服务独立处理。"));
             inner.Add(Body("以上为游戏内虚构条款，仅用于营造设备首次使用的氛围。"));
             card.Add(inner);
             _body.Add(card);
@@ -274,11 +275,12 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         private void BuildNetwork()
         {
-            _body.Add(Title("连接网络", "本设备使用车载内网"));
+            _body.Add(Title("连接网络", "可连接 Wi-Fi，也可使用移动网络"));
             var card = Card();
-            card.Add(InfoRow("阿里郎内网", "已连接"));
+            card.Add(InfoRow(TabletConnectivity.WifiName, TabletConnectivity.WifiOn ? "已连接" : "已关闭"));
+            card.Add(InfoRow(TabletConnectivity.CarrierName + " " + TabletConnectivity.CarrierNetwork, TabletConnectivity.MobileOn ? "已连接" : "已关闭"));
             _body.Add(card);
-            _body.Add(Body("此终端运行在车载内网沙箱中，没有公共 Wi-Fi 与蜂窝网络，无需手动配置。"));
+            _body.Add(Body("已自动接入“铁路职工网”和高丽联移动网络，无需手动配置；之后可在控制中心随时开关。"));
             _body.Add(Primary("下一步", () => Go(_index + 1)));
         }
 
