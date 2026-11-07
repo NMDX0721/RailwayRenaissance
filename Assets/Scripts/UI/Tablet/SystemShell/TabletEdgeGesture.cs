@@ -24,6 +24,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private bool _recentsOpened;
         private bool _backFromLeft;
 
+        private Vector2 _last;
+
+        /// <summary>当前这次手势从按下到现在的位移，供界面做跟手反馈。</summary>
+        public Vector2 Delta => _pointerId == -1 ? Vector2.zero : _last - _start;
+        /// <summary>是否正在拖底边手势线（上滑回桌面 / 停住进多任务）。</summary>
+        public bool IsBottomDrag => _pointerId != -1 && _kind == Kind.Bottom && !_recentsOpened;
+
         public int ActivePointerId => _pointerId;
         public bool HasActiveGesture => _pointerId != -1;
 
@@ -45,6 +52,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             _pointerId = pointerId;
             _kind = kind;
             _start = point;
+            _last = point;
             _backFromLeft = point.x <= 18f;
             _holdSince = -1f;
             _recentsOpened = false;
@@ -53,6 +61,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
         public void Move(int pointerId, Vector2 point, float now)
         {
+            if (pointerId == _pointerId) _last = point;
             if (pointerId != _pointerId || _kind != Kind.Bottom || _recentsOpened) return;
             Vector2 delta = point - _start;
             if (!IsVertical(delta, false))

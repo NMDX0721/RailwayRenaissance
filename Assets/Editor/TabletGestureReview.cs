@@ -322,8 +322,13 @@ public static class TabletGestureReview
                     Call("LaunchApp", "时钟");
 
                     // Bottom edge upward swipe and hold
-                    SimulateTouchDown(3, new Vector2(720, 890));
-                    SimulateTouchMove(3, new Vector2(720, 780));
+                    float panelW = root.panel.visualTree.layout.width, panelH = root.panel.visualTree.layout.height;
+                    SimulateTouchDown(3, new Vector2(panelW * 0.5f, panelH - 10f));
+                    SimulateTouchMove(3, new Vector2(panelW * 0.5f, panelH - 120f));
+                    {
+                        var followTask = (TabletTaskSession)Field("activeTabletTask");
+                        Assert(followTask?.Root != null && followTask.Root.style.scale.value.value.x < 0.99f, "Dragging the bottom gesture line must shrink the app under the finger: active=" + ((TabletEdgeGesture)Field("tabletEdgeGesture")).HasActiveGesture + " bottom=" + ((TabletEdgeGesture)Field("tabletEdgeGesture")).IsBottomDrag + " delta=" + ((TabletEdgeGesture)Field("tabletEdgeGesture")).Delta + " root=" + (followTask?.Root != null) + " scale=" + followTask?.Root?.style.scale.value.value + " unlocked=" + Field("unlocked"));
+                    }
 
                     // Advance hold timer directly on tabletEdgeGesture
                     var gesture = (TabletEdgeGesture)Field("tabletEdgeGesture");

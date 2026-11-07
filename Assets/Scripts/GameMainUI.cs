@@ -2588,9 +2588,9 @@ public class GameMainUI : MonoBehaviour
             PlayAppLeaveAnimation(activeTabletTask);
         }
         activeTabletTask = null;
-        appLayer = null;
         RefreshDockRecents();
         desktopInkLight = -1; // 回到桌面：按壁纸重新取字色
+        appLayer = null;
         ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
         bool useGesturesHome = PresentationPreferences == null || PresentationPreferences.NavigationMode == RailwayRenaissance.UI.Tablet.SystemShell.TabletNavigationMode.Gestures;
@@ -2617,7 +2617,7 @@ public class GameMainUI : MonoBehaviour
     {
         var layer = task.Root;
         int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(200);
-        if (ms <= 0) { layer.style.display = DisplayStyle.None; return; }
+        if (ms <= 0) { ResetAppLayerTransform(layer); layer.style.display = DisplayStyle.None; return; }
         layer.pickingMode = PickingMode.Ignore;
         layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity"), new StylePropertyName("scale") };
         layer.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
@@ -2630,9 +2630,17 @@ public class GameMainUI : MonoBehaviour
             layer.style.display = DisplayStyle.None;
             layer.pickingMode = PickingMode.Position;
         }).ExecuteLater(ms + 30);
+            ResetAppLayerTransform(layer);
     }
 
     // 打开应用：从略小、半透明淡入到全尺寸（减少动效下直接显示）
+    private static void ResetAppLayerTransform(VisualElement layer)
+    {
+        layer.style.translate = new Translate(0, 0);
+        layer.style.borderTopLeftRadius = layer.style.borderTopRightRadius = 0;
+        layer.style.borderBottomLeftRadius = layer.style.borderBottomRightRadius = 0;
+    }
+
     private void PlayAppOpenAnimation(VisualElement layer)
     {
         int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(220);
@@ -2914,9 +2922,9 @@ public class GameMainUI : MonoBehaviour
         task.AppState = null;
         task.LastFocusedElement = null;
         tabletTasks.Remove(task);
-        RenderRecentTasks();
         RefreshDockRecents();
         if (tabletTasks.Count == 0) CloseRecentTasks();
+        RenderRecentTasks();
     }
 
     private void CloseAllTabletTasks()
@@ -2939,9 +2947,9 @@ public class GameMainUI : MonoBehaviour
             task.LastFocusedElement = null;
         }
         tabletTasks.Clear();
-        recentTasksList?.Clear();
         RefreshDockRecents();
         if (appLayer == null && root != null)
+        recentTasksList?.Clear();
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
             appLayer.style.position = Position.Absolute;
@@ -2957,9 +2965,9 @@ public class GameMainUI : MonoBehaviour
 
     private void RequestSystemBack()
     {
-        if (tabletShellState.ClosePanel()) return;
         if (RailwayRenaissance.UI.Tablet.SystemShell.TabletConfirmDialog.HandleBack()) return;
         // 注册向导盖在平板上时，返回键只作用于向导（退一页或取消），不落到下面的应用
+        if (tabletShellState.ClosePanel()) return;
         var setupWizard = RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Active;
         if (setupWizard != null && setupWizard.HandleBack()) return;
         if (CancelTabletRebind()) return;
@@ -3031,7 +3039,8 @@ public class GameMainUI : MonoBehaviour
     {
         if (unlocked && IsMouseGestureEvent(evt) && evt.button <= 0 && root?.panel != null)
         {
-            if (evt.position.y <= MouseGestureTopZone)
+            if (evt.position.y <= MouseGestureTopZone ||
+                evt.position.y >= root.panel.visualTree.layout.height - TabletEdgeGesture.BottomEdgeZone)
             {
                 float mw = root.panel.visualTree.layout.width;
                 float mh = root.panel.visualTree.layout.height;
@@ -3064,7 +3073,10 @@ public class GameMainUI : MonoBehaviour
                 ShowTabletNavigationBar();
             if (tabletEdgeGesture.HasActiveGesture && tabletEdgeGesture.ActivePointerId == evt.pointerId)
                 tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
+            {
             return;
+                UpdateHomeSwipeVisual();
+            }
         }
         if (evt.pointerType != "touch") return;
         if (activeTouchPointers.Count > 1)
@@ -3074,6 +3086,49 @@ public class GameMainUI : MonoBehaviour
         }
         tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
     }
+        UpdateHomeSwipeVisual();
+    }
+
+    // 底边手势线跟手：应用随上滑距离缩小、上移、圆角渐显；松手回桌面则接着走离开动画，否则弹回
+    private bool homeSwipeActive;
+
+    private void UpdateHomeSwipeVisual()
+    {
+        if (!tabletEdgeGesture.IsBottomDrag || activeTabletTask?.Root == null) return;
+        var layer = activeTabletTask.Root;
+        float t = Mathf.Clamp01(-tabletEdgeGesture.Delta.y / 240f);
+        if (!homeSwipeActive)
+        {
+            if (t <= 0.02f) return;
+            homeSwipeActive = true;
+            layer.style.transitionDuration = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+            layer.style.overflow = Overflow.Hidden;
+        }
+        float k = 1f - 0.22f * t;
+        layer.style.scale = new Scale(new Vector3(k, k, 1f));
+        layer.style.translate = new Translate(0, -t * 36f);
+        float r = 30f * t;
+        layer.style.borderTopLeftRadius = layer.style.borderTopRightRadius = r;
+        layer.style.borderBottomLeftRadius = layer.style.borderBottomRightRadius = r;
+    }
+
+    private void EndHomeSwipeVisual(bool leaving)
+    {
+        if (!homeSwipeActive) return;
+        homeSwipeActive = false;
+        var layer = activeTabletTask?.Root;
+        if (layer == null || leaving) return;
+        int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(200);
+        layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("translate") };
+        layer.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
+        layer.style.transitionTimingFunction = new List<EasingFunction> { new EasingFunction(EasingMode.EaseOut) };
+        layer.style.scale = new Scale(Vector3.one);
+        layer.style.translate = new Translate(0, 0);
+        layer.schedule.Execute(() =>
+        {
+            layer.style.borderTopLeftRadius = layer.style.borderTopRightRadius = 0;
+            layer.style.borderBottomLeftRadius = layer.style.borderBottomRightRadius = 0;
+        }).ExecuteLater(ms + 20);
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
@@ -3083,6 +3138,7 @@ public class GameMainUI : MonoBehaviour
         activeTouchPointers.Remove(evt.pointerId);
         TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
         switch (action)
+        EndHomeSwipeVisual(action == TabletGestureAction.Home);
         {
             case TabletGestureAction.Notifications: OpenSystemPanel(TabletSystemPanel.Notifications); break;
             case TabletGestureAction.Controls: OpenSystemPanel(TabletSystemPanel.Controls); break;
@@ -3956,7 +4012,10 @@ public class GameMainUI : MonoBehaviour
         // 系统面板模糊尺寸自适应
         if (tabletShellState.Panel != TabletSystemPanel.None)
         {
+        {
+            EndHomeSwipeVisual(false);
             int curW = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
+        }
                 ? uiDoc.panelSettings.targetTexture.width
                 : Screen.width;
             int curH = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
