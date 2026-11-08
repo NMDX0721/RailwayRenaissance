@@ -710,8 +710,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
         if (AccountService.IsRegistered)
         {
-            avatar.style.color = Color.white;
-            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+            TabletAvatar.Decorate(avatar, AccountService.Profile, 76);
         }
         else
         {
@@ -3781,8 +3780,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
         if (AccountService.IsRegistered)
         {
-            avatar.style.color = Color.white;
-            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+            TabletAvatar.Decorate(avatar, AccountService.Profile, 58);
         }
         else avatar.Add(new TabletIconElement(TabletIconKind.Person, 36, new Color(0.62f, 0.64f, 0.70f, 1f)));
         avatar.style.width = 58; avatar.style.height = 58; avatar.style.flexShrink = 0;

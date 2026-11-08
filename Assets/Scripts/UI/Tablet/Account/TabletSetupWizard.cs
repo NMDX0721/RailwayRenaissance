@@ -46,6 +46,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
         private string _password = string.Empty;
         private string _nickname = "旅人";
         private int _avatar;
+        private string _avatarImage;      // 注册时选的自定义头像（原图路径）
+        private Texture2D _avatarPreview; // 裁好的预览
         private bool _agreedDevice;
         private bool _agreedAccount;
         private float _resendReadyAt;
@@ -457,17 +459,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
             _body.Add(Body($"{AccountService.MinPasswordLength}–{AccountService.MaxPasswordLength} 位，需同时包含字母和数字。"));
 
-            var showBtn = MakeTextButton("显示密码", () => { });
-            showBtn.style.alignSelf = Align.FlexStart;
-            bool shown = false;
-            showBtn.clicked += () =>
-            {
-                shown = !shown;
-                pw.isPasswordField = !shown;
-                confirm.isPasswordField = !shown;
-                showBtn.text = shown ? "隐藏密码" : "显示密码";
-            };
-            _body.Add(showBtn);
+            TabletPasswordEye.Attach(new Color(0.45f, 0.45f, 0.50f), pw, confirm);
 
             var err = ErrorLabel();
             _body.Add(err);
@@ -508,34 +500,44 @@ namespace RailwayRenaissance.UI.Tablet.Account
             nameField.name = "wizard-nickname";
 
             Action refreshAvatars = null;
-            for (int i = 0; i < AvatarColors.Length; i++)
+            Color ringCol = new Color(0.1f, 0.1f, 0.12f, 0.85f);
+            for (int i = 0; i < TabletAvatar.PresetCount; i++)
             {
                 int idx = i;
-                var c = new Label();
-                c.style.width = 56; c.style.height = 56;
+                var c = TabletAvatar.BuildPreset(i, 56);
                 c.style.marginLeft = 6; c.style.marginRight = 6;
-                c.style.unityTextAlign = TextAnchor.MiddleCenter;
-                Style(c, 24, Color.white, true);
-                RoundAll(c, 28);
-                c.style.backgroundColor = AvatarColors[i];
-                c.RegisterCallback<ClickEvent>(_ => { _avatar = idx; refreshAvatars(); });
+                c.RegisterCallback<ClickEvent>(_ => { _avatar = idx; _avatarImage = null; refreshAvatars(); });
                 circles.Add(c);
                 avatarRow.Add(c);
             }
+            // 最后一格：从电脑选图片
+            var customHolder = new VisualElement { name = "wizard-avatar-custom" };
+            customHolder.style.marginLeft = 6; customHolder.style.marginRight = 6;
+            customHolder.style.width = 56; customHolder.style.height = 56;
+            RoundAll(customHolder, 28);
+            customHolder.RegisterCallback<ClickEvent>(_ =>
+            {
+                if (!TabletFilePicker.Available) { Toast("当前平台不支持选择本地图片"); return; }
+                string path = TabletFilePicker.PickImage("选择头像图片");
+                if (string.IsNullOrEmpty(path)) return;
+                var tex = TabletAvatar.LoadAndCrop(path, out string perr);
+                if (tex == null) { Toast(perr ?? "读取图片失败"); return; }
+                if (_avatarPreview != null) UnityEngine.Object.Destroy(_avatarPreview);
+                _avatarPreview = tex; _avatarImage = path;
+                refreshAvatars();
+            });
+            avatarRow.Add(customHolder);
             refreshAvatars = () =>
             {
-                string initial = string.IsNullOrWhiteSpace(nameField.value) ? "旅" : nameField.value.Trim().Substring(0, 1);
                 for (int i = 0; i < circles.Count; i++)
-                {
-                    var lab = (Label)circles[i];
-                    lab.text = i == _avatar ? initial : string.Empty;
-                    float w = i == _avatar ? 3f : 0f;
-                    lab.style.borderTopWidth = lab.style.borderBottomWidth = lab.style.borderLeftWidth = lab.style.borderRightWidth = w;
-                    Color bc = new Color(0.1f, 0.1f, 0.12f, 0.85f);
-                    lab.style.borderTopColor = lab.style.borderBottomColor = lab.style.borderLeftColor = lab.style.borderRightColor = bc;
-                }
+                    SetRing(circles[i], string.IsNullOrEmpty(_avatarImage) && i == _avatar, ringCol);
+                bool hasCustom = !string.IsNullOrEmpty(_avatarImage) && _avatarPreview != null;
+                customHolder.Clear();
+                var tile = TabletAvatar.BuildCustomTile(56, hasCustom ? _avatarPreview : null);
+                tile.pickingMode = PickingMode.Ignore;
+                customHolder.Add(tile);
+                SetRing(customHolder, hasCustom, ringCol);
             };
-            nameField.RegisterValueChangedCallback(_ => refreshAvatars());
             refreshAvatars();
             _body.Add(avatarRow);
             _body.Add(nameField);
@@ -550,6 +552,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
                 _nickname = nameField.value.Trim();
                 e = AccountService.Register(_phone, _password, _nickname, _avatar);
                 if (e != null) { err.text = e; return; }
+                if (!string.IsNullOrEmpty(_avatarImage)) AccountService.SetCustomAvatar(_avatarImage);
                 Go(_index + 1);
             }));
         }
@@ -789,6 +792,13 @@ namespace RailwayRenaissance.UI.Tablet.Account
         private void Toast(string message)
         {
             ShowSms(message);   // 复用顶部提示条
+        }
+
+        private static void SetRing(VisualElement e, bool on, Color color)
+        {
+            float w = on ? 3f : 0f;
+            e.style.borderTopWidth = e.style.borderBottomWidth = e.style.borderLeftWidth = e.style.borderRightWidth = w;
+            e.style.borderTopColor = e.style.borderBottomColor = e.style.borderLeftColor = e.style.borderRightColor = color;
         }
 
         private static void RoundAll(VisualElement e, float r)
