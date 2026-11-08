@@ -34,17 +34,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(body, "沿线声音档案  /  MINE", "music-eyebrow");
             Text(body, "我的", "music-section-title");
             var card = Box(body, "music-mine-card");
-            var avatar = Box(card, "music-mine-avatar");
             var profile = AccountService.Profile;
-            avatar.style.backgroundColor = Color.HSVToRGB((((profile?.avatar ?? 0) * .137f) + .08f) % 1f, .38f, .74f);
-            var head = new VisualElement { pickingMode = PickingMode.Ignore }; head.AddToClassList("music-stage-cappella-head"); head.style.backgroundColor = new Color(1, 1, 1, .78f);
-            var shoulders = new VisualElement { pickingMode = PickingMode.Ignore }; shoulders.AddToClassList("music-stage-cappella-shoulders"); shoulders.style.backgroundColor = new Color(0, 0, 0, .28f);
-            avatar.Add(shoulders); avatar.Add(head);
+            var avatar = Box(card, "music-mine-avatar");
+            TabletAvatar.Decorate(avatar, profile, 64f);
             var who = Box(card, "music-mine-who");
             Text(who, AccountName(), "music-mine-name").name = "music-mine-name";
             if (AccountService.IsRegistered)
             {
                 Text(who, "小米账号 · " + AccountService.MaskedPhone(profile), "music-mine-sub");
+                if (TabletXiaomiSignIn.IsSignedIn("music"))
+                    Button(card, "退出登录", () => { TabletXiaomiSignIn.SignOut("music"); RenderContent(); }, "music-mine-logout");
+                else
+                    Button(card, "小米账号登录", () => TabletXiaomiSignIn.Request(card, "music", "音乐", new Color(0.19f, 0.72f, 0.42f, 1f), ok => { if (ok) RenderContent(); }), "music-mine-login").AddToClassList("music-primary");
             }
             else
             {
@@ -52,7 +53,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var login = Button(card, "小米账号一键登录", () =>
                 {
                     if (MusicAccountHooks.OneTapLogin != null) MusicAccountHooks.OneTapLogin();
-                    else ShowToast("小米账号一键登录流程待接入");
+                    else TabletXiaomiSignIn.Request(card, "music", "音乐", new Color(0.19f, 0.72f, 0.42f, 1f), ok => { if (ok) RenderContent(); });
                 }, "music-mine-login"); login.AddToClassList("music-primary");
             }
             var stats = MusicLibrarySession.PlayStats();
