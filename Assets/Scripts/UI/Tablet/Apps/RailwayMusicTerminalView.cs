@@ -269,13 +269,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Text(plaque, "雾峰", "music-station-name");
             Text(plaque, "WUFENG  /  随身终端", "music-station-code");
             Text(nav, "沿线收听", "music-eyebrow");
-            foreach (string item in new[] { "首页", "曲库", "收藏", "生涯", "我的" })
+            foreach (string item in new[] { "首页", "曲库", "收藏", "我的" })
             {
                 string target = item;
                 var b = Button(nav, item, () => Navigate(target), "music-nav-" + target);
-                b.EnableInClassList("is-active", item == "曲库" ? IsLibraryPage(page) : item == "我的" ? page == "我的" || page == "歌单" : page == item);
+                b.EnableInClassList("is-active", item == "曲库" ? IsLibraryPage(page) : item == "我的" ? page == "我的" || page == "歌单" || page == "生涯" : page == item);
             }
-            Button(nav, "设置", () => OpenSettings(), "music-nav-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
             Text(nav, "拾起沿线的声音\n留住旅途的回响", "music-nav-note");
         }
         List<MusicLibraryTrack> VisibleTracks()

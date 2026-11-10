@@ -56,6 +56,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     else TabletXiaomiSignIn.Request(card, "music", "音乐", new Color(0.19f, 0.72f, 0.42f, 1f), ok => { if (ok) RenderContent(); });
                 }, "music-mine-login"); login.AddToClassList("music-primary");
             }
+            // Settings: a gear at the card's right edge.
+            var tools = Box(card, "music-tools"); tools.AddToClassList("music-mine-tools");
+            Button(tools, "设置", () => OpenSettings(), "music-mine-settings").tooltip = "音乐设置：均衡器、主题、歌词、播放栏";
             var stats = MusicLibrarySession.PlayStats();
             var cards = Box(body, "music-career-cards");
             void Stat(string value, string label, string name)
@@ -68,6 +71,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Stat(stats.Count.ToString(), "听过的曲目（首）", "music-mine-songs");
             Stat(MusicLibrarySession.State.favorites.Count.ToString(), "收藏（首）", "music-mine-favorites");
             Stat(MusicLibrarySession.State.playlists.Count.ToString(), "私人歌单（个）", "music-mine-lists");
+            // Cloud connections (login, sources) are account matters, so they live here; the 曲库 > 云端 tab shows the content.
+            var cloudBar = Box(body, "music-section-bar"); Text(cloudBar, "云端连接", "music-section-title music-section-small");
+            Button(Box(cloudBar, "music-section-actions"), "管理连接", () => OpenSource(cloudProvider, true), "music-mine-cloud");
+            var linked = MusicCatalogSearch.Sources.Where(NeteaseLocalBridge.HasSession).Select(MusicCatalogSearch.Label).ToList();
+            Text(body, linked.Count == 0 ? "还没有连接云端音乐。点右侧“管理连接”，登录网易云、QQ 音乐、酷狗、波点、Spotify，或添加 Subsonic、WebDAV。" : "已连接：" + string.Join("、", linked), "music-muted").name = "music-mine-cloud-state";
             // Private playlists live here, not in the sidebar.
             var listBar = Box(body, "music-section-bar"); Text(listBar, "我的歌单", "music-section-title music-section-small");
             Button(Box(listBar, "music-section-actions"), "新建歌单", () => EditName(null), "music-new-playlist");

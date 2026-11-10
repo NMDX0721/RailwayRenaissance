@@ -272,6 +272,18 @@ public static class RailwayMusicTerminalReview
         Assert(button != null && button.enabledInHierarchy, "Missing or disabled button");
         using var evt = NavigationSubmitEvent.GetPooled(); evt.target = button; button.SendEvent(evt);
     }
+    static bool reviewHadAccount; static string reviewGrants = "";
+    // Settings live on the 我的 page now, not in the sidebar.
+    static Button CareerButton()
+    {
+        if (root.Q<Button>("music-mine-career") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-mine-career");
+    }
+    static Button SettingsButton()
+    {
+        if (root.Q<Button>("music-mine-settings") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-mine-settings");
+    }
     static Button NewPlaylistButton()
     {
         if (root.Q<Button>("music-new-playlist") == null) Submit(root.Q<Button>("music-nav-我的"));
@@ -1364,7 +1376,7 @@ public static class RailwayMusicTerminalReview
                     MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSlots = "";
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     Debug.Log("MUSIC_CONTROLS_PANEL_OK: three levels, speed and tone applied, pinning, back");
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 53:
                     Assert(root.Q("music-settings-scroll") != null, "The settings page did not open from the rail");
@@ -1561,7 +1573,7 @@ public static class RailwayMusicTerminalReview
                 case 85:
                     Capture("42-queue-count-5");
                     MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 86:
                     Submit(root.Q<Button>("music-settings-tab-bar"));
@@ -1585,7 +1597,7 @@ public static class RailwayMusicTerminalReview
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     MusicLibrarySession.State.barFolded = ""; MusicLibrarySession.Save();
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 91:
                     Submit(root.Q<Button>("music-settings-tab-bar"));
@@ -1608,7 +1620,7 @@ public static class RailwayMusicTerminalReview
                         MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
                         root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                         Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu and can be reordered");
-                        Submit(root.Q<Button>("music-nav-生涯"));
+                        Submit(CareerButton());
                     }
                     break;
                 case 94:
@@ -1641,6 +1653,23 @@ public static class RailwayMusicTerminalReview
                     var mainBox = root.Q(className: "music-main"); var playerBox = root.Q("music-player");
                     Assert(mainBox.worldBound.yMax <= playerBox.worldBound.yMin + 1f, "The page runs under the player card: main " + mainBox.worldBound + " player " + playerBox.worldBound + " root " + root.worldBound);
                     Debug.Log("MUSIC_PLAYER_MINI_OK: capsule and page reserve");
+                    // Signed-in look: a throwaway account, only when this machine has none, removed again in the next step.
+                    reviewHadAccount = RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered;
+                    reviewGrants = PlayerPrefs.GetString("TabletXiaomiSignInApps", "");
+                    if (!reviewHadAccount) RailwayRenaissance.UI.Tablet.Account.AccountService.Register("13800138000", "Review#2468ab", "审查员", 2);
+                    PlayerPrefs.SetString("TabletXiaomiSignInApps", "music");
+                    Submit(root.Q<Button>("music-nav-首页"));
+                    break;
+                case 99:
+                    if (root.Q("music-queue-drawer") != null || root.Q(className: "music-drawer") != null) Submit(root.Q<Button>("music-queue"));
+                    Submit(root.Q<Button>("music-nav-我的"));
+                    break;
+                case 100:
+                    Assert(root.Q<Button>("music-mine-logout") != null, "The 我的 page has no logout button while signed in");
+                    Capture("50-mine-signed-in");
+                    Debug.Log("MUSIC_MINE_SIGNED_IN_OK: avatar, name and logout button");
+                    if (!reviewHadAccount) RailwayRenaissance.UI.Tablet.Account.AccountService.ResetForTests();
+                    PlayerPrefs.SetString("TabletXiaomiSignInApps", reviewGrants); PlayerPrefs.Save();
                     Finish(); return;
             }
             stage++; frame = Time.frameCount;
