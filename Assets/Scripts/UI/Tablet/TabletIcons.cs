@@ -9,7 +9,7 @@ namespace RailwayRenaissance.UI.Tablet
         Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
         Note, Clock, Calendar, Calc, Map, Star,
         Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash,
-        Back, Circle, Square, Play, Pause, Airplane, EyeOff }
+        Back, Circle, Square, Play, Pause, Airplane, EyeOff, Encyclopedia }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -445,6 +445,20 @@ namespace RailwayRenaissance.UI.Tablet
                         }
                     pc.Add(P(18.2f, 19.5f)); pc.Add(P(4.1f, 19.5f));
                     FillPolygon(p, pc);
+                    break;
+                }
+
+                case TabletIconKind.Encyclopedia:
+                {
+                    // 摊开的百科全书：两页共用书脊，左页两行字，右页垂下一条书签
+                    p.BeginPath();
+                    p.MoveTo(P(12, 6.5f)); p.LineTo(P(3.5f, 5f)); p.LineTo(P(3.5f, 18.5f)); p.LineTo(P(12, 20f));
+                    p.LineTo(P(20.5f, 18.5f)); p.LineTo(P(20.5f, 5f)); p.LineTo(P(12, 6.5f));
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(12, 6.5f)); p.LineTo(P(12, 20f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(6f, 9f)); p.LineTo(P(9.5f, 9.6f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(6f, 12.4f)); p.LineTo(P(9.5f, 13f)); p.Stroke();
+                    FillPolygon(p, new List<Vector2> { P(14.6f, 6.1f), P(17.6f, 5.6f), P(17.6f, 11.6f), P(16.1f, 10.4f), P(14.6f, 11.6f) });
                     break;
                 }
 
