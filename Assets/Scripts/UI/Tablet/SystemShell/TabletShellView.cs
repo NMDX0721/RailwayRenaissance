@@ -346,8 +346,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
         }
 
+        private bool _sliderDragging, _renderPending;
+
         private void Render()
         {
+            // 正在拖亮度/音量滑条时不重建界面（会把手指下的滑条换掉，拖动当场中断）；松手后补一次
+            if (_sliderDragging) { _renderPending = true; return; }
             UpdateBadge();
 
             if (_state.Panel == TabletSystemPanel.None)
@@ -1056,7 +1060,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             float bright = TabletDisplayPreferences.Brightness;
             float brightFill = Mathf.InverseLerp(TabletDisplayPreferences.MinBrightness, TabletDisplayPreferences.MaxBrightness, bright);
             var brightSlider = CreateVerticalSlider("tablet-brightness-slider", TabletIconKind.Sun, brightFill,
-                () => TabletDisplayPreferences.SetBrightness(bright > 0.99f ? 0.6f : 1f),
+                () => TabletDisplayPreferences.SetBrightness(TabletDisplayPreferences.Brightness > 0.99f ? 0.6f : 1f),
                 fill => TabletDisplayPreferences.SetBrightness(Mathf.Lerp(TabletDisplayPreferences.MinBrightness, TabletDisplayPreferences.MaxBrightness, fill)),
                 fill => TabletDisplayPreferences.SetBrightness(Mathf.Lerp(TabletDisplayPreferences.MinBrightness, TabletDisplayPreferences.MaxBrightness, fill)));
             centerRow.Add(brightSlider);
@@ -1082,6 +1086,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     GameData.MasterVolume = fill;
                     if (fill > 0.05f) s_preMuteVolume = fill;
                     Render();
+                },
+                fill =>
+                {
+                    GameData.MasterVolume = fill;   // 拖动中就实时生效，不等松手
+                    if (fill > 0.05f) s_preMuteVolume = fill;
                 });
             centerRow.Add(volSlider);
 
@@ -1351,32 +1360,65 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             iconLabel.style.bottom = 16;
             btn.Add(iconLabel);
 
-            btn.RegisterCallback<PointerDownEvent>(e => { down = true; dragged = false; startY = e.position.y; });
+            // 指针处理：按下就独占指针（外层滚动区、翻页手势都抢不走）；任何一种结束方式（抬起、取消、被抢走）
+            // 都走同一个收尾，状态不会卡在“按着”；位置取屏幕坐标，不受缩放和悬停动画影响
+            int activeId = -1;
+
+            void SetFromY(float y)
+            {
+                Rect wb = btn.worldBound;
+                float h = Mathf.Max(1f, wb.height);
+                fillValue = Mathf.Clamp01(1f - (y - wb.yMin) / h);
+                fill.style.height = Length.Percent(fillValue * 100f);
+                iconLabel.IconColor = SliderIconColor(icon, fillValue);
+                onLive?.Invoke(fillValue);
+            }
+
+            void Finish(bool commit)
+            {
+                if (activeId == -1) return;
+                int id = activeId;
+                activeId = -1;
+                down = false;
+                if (btn.HasPointerCapture(id)) btn.ReleasePointer(id);
+                bool wasDragged = dragged;
+                if (wasDragged && commit) onCommit?.Invoke(fillValue);
+                _sliderDragging = false;
+                if (_renderPending) { _renderPending = false; Render(); }
+                // 点击回调在抬起之后才触发，保留 dragged 到那之后再清
+                if (wasDragged) btn.schedule.Execute(() => dragged = false).ExecuteLater(0);
+            }
+
+            btn.RegisterCallback<PointerDownEvent>(e =>
+            {
+                if (e.button != 0) return;
+                if (activeId != -1) Finish(false);
+                activeId = e.pointerId;
+                down = true; dragged = false; startY = e.position.y;
+                btn.CapturePointer(e.pointerId);
+                e.StopPropagation();
+            });
             btn.RegisterCallback<PointerMoveEvent>(e =>
             {
-                if (!down) return;
+                if (e.pointerId != activeId) return;
                 if (!dragged && Mathf.Abs(e.position.y - startY) > 6f)
                 {
                     dragged = true;
-                    btn.CapturePointer(e.pointerId);
+                    _sliderDragging = true;
                 }
-                if (dragged)
-                {
-                    float h = Mathf.Max(1f, btn.resolvedStyle.height);
-                    fillValue = Mathf.Clamp01(1f - e.localPosition.y / h);
-                    fill.style.height = Length.Percent(fillValue * 100f);
-                    iconLabel.IconColor = SliderIconColor(icon, fillValue);
-                    onLive?.Invoke(fillValue);
-                }
+                if (!dragged) return;
+                SetFromY(e.position.y);
+                e.StopPropagation();
             });
             btn.RegisterCallback<PointerUpEvent>(e =>
             {
-                if (!down) return;
-                down = false;
-                if (!dragged) return;
-                if (btn.HasPointerCapture(e.pointerId)) btn.ReleasePointer(e.pointerId);
-                onCommit?.Invoke(fillValue);
+                if (e.pointerId != activeId) return;
+                Finish(true);
+                e.StopPropagation();
             });
+            btn.RegisterCallback<PointerCancelEvent>(e => { if (e.pointerId == activeId) Finish(true); });
+            btn.RegisterCallback<PointerCaptureOutEvent>(e => { if (e.pointerId == activeId) Finish(true); });
+            btn.RegisterCallback<DetachFromPanelEvent>(_ => { if (activeId != -1) Finish(false); });
             return btn;
         }
 
