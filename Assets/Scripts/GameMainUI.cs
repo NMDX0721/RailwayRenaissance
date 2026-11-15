@@ -630,11 +630,6 @@ public class GameMainUI : MonoBehaviour
             activeTouchPointers.Remove(evt.pointerId);
             tabletEdgeGesture.Cancel(evt.pointerId);
         }, TrickleDown.TrickleDown);
-        root.RegisterCallback<PointerCaptureOutEvent>(evt =>
-        {
-            activeTouchPointers.Remove(evt.pointerId);
-            tabletEdgeGesture.Cancel(evt.pointerId);
-        }, TrickleDown.TrickleDown);
         root.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             if (Mathf.Abs(evt.newRect.width - evt.oldRect.width) > 1f ||
@@ -2747,13 +2742,20 @@ public class GameMainUI : MonoBehaviour
     {
         var layer = task.Root;
         int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(200);
+        bool fromDrag = leaveFromDrag; leaveFromDrag = false;
         if (ms <= 0) { ResetAppLayerTransform(layer); layer.style.display = DisplayStyle.None; return; }
         layer.pickingMode = PickingMode.Ignore;
-        layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity"), new StylePropertyName("scale") };
-        layer.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
-        layer.style.transitionTimingFunction = new List<EasingFunction> { new EasingFunction(EasingMode.EaseIn) };
+        layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("opacity"), new StylePropertyName("scale"), new StylePropertyName("translate") };
+        layer.style.transitionDuration = new List<TimeValue> { new TimeValue(fromDrag ? ms : ms, TimeUnit.Millisecond) };
+        layer.style.transitionTimingFunction = new List<EasingFunction> { new EasingFunction(fromDrag ? EasingMode.EaseOut : EasingMode.EaseIn) };
         layer.style.opacity = 0f;
-        layer.style.scale = new Scale(new Vector3(0.94f, 0.94f, 1f));
+        // 拖着手势线离开：从当前缩小的姿态继续缩小上飘；按键回桌面：原来的轻微缩小淡出
+        if (fromDrag)
+        {
+            layer.style.scale = new Scale(new Vector3(0.6f, 0.6f, 1f));
+            layer.style.translate = new Translate(0, -90f);
+        }
+        else layer.style.scale = new Scale(new Vector3(0.94f, 0.94f, 1f));
         layer.schedule.Execute(() =>
         {
             if (activeTabletTask == task) return;   // 期间又切回了这个应用
@@ -3221,6 +3223,7 @@ public class GameMainUI : MonoBehaviour
 
     // 底边手势线跟手：应用随上滑距离缩小、上移、圆角渐显；松手回桌面则接着走离开动画，否则弹回
     private bool homeSwipeActive;
+    private bool leaveFromDrag;
 
     private void UpdateHomeSwipeVisual()
     {
@@ -3247,7 +3250,8 @@ public class GameMainUI : MonoBehaviour
         if (!homeSwipeActive) return;
         homeSwipeActive = false;
         var layer = activeTabletTask?.Root;
-        if (layer == null || leaving) return;
+        if (layer == null) return;
+        if (leaving) { leaveFromDrag = true; return; }
         int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(200);
         layer.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale"), new StylePropertyName("translate") };
         layer.style.transitionDuration = new List<TimeValue> { new TimeValue(ms, TimeUnit.Millisecond) };
@@ -3308,9 +3312,8 @@ public class GameMainUI : MonoBehaviour
         VisualElement element = target as VisualElement;
         while (element != null)
         {
-            if (element is Button || element is TextField || element is Slider || element is SliderInt ||
-                element is Toggle || element is ScrollView) return true;
-            if (element is Scroller || element is RepeatButton) return true;
+            // 只拦真正需要边缘的控件（输入框、滑块、进度条）；按钮和滚动区不拦，否则手指下面刚好是列表时手势就“不触发”
+            if (element is TextField || element is Slider || element is SliderInt) return true;
             if (element.GetType().Name.IndexOf("TextInput", System.StringComparison.OrdinalIgnoreCase) >= 0) return true;
             if (!string.IsNullOrEmpty(element.name) && (
                 element.name.IndexOf("progress", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
