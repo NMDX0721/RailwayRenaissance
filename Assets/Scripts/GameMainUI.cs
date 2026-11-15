@@ -1055,6 +1055,8 @@ public class GameMainUI : MonoBehaviour
             if (!desktopPointerCaptured && Mathf.Abs(desktopDragDeltaX) > 8f)
             {
                 desktopPointerCaptured = true;
+                desktopDragStartPos = evt.position;   // 从抓住的这一刻起算，页面不会先跳一下
+                desktopDragDeltaX = 0f;
                 desktopPagerAnim?.Pause();
                 pagesRoot.CapturePointer(evt.pointerId);
             }
@@ -1132,7 +1134,7 @@ public class GameMainUI : MonoBehaviour
         desktopPage1.style.flexDirection = FlexDirection.Column;
         desktopPage1.style.justifyContent = Justify.Center;
         desktopPage1.style.alignItems = Align.Center;
-        desktopPage1.style.display = DisplayStyle.None;
+        desktopPage1.style.translate = new Translate(100000f, 0);   // 先停在屏外（保持 Flex，首次翻页不再重排版）
         pagesRoot.Add(desktopPage1);
 
         // 构建 Page 0
@@ -1220,18 +1222,16 @@ public class GameMainUI : MonoBehaviour
         var pagesRoot = desktopPage0?.parent;
         float w = pagesRoot != null ? pagesRoot.resolvedStyle.width : 0f;
         if (float.IsNaN(w) || w < 1f) w = 1f;
-        bool p0 = p < 0.999f, p1 = p > 0.001f;
+        // 两页一直保持 Flex，只改位移（位移不触发重绘）；用 display/opacity 会在翻页第一帧重排版、重画整页，造成卡一下
         if (desktopPage0 != null)
         {
-            desktopPage0.style.display = p0 ? DisplayStyle.Flex : DisplayStyle.None;
+            desktopPage0.style.display = DisplayStyle.Flex;
             desktopPage0.style.translate = new Translate(-p * w, 0);
-            desktopPage0.style.opacity = Mathf.Clamp01(1f - Mathf.Max(0f, p) * 0.35f);
         }
         if (desktopPage1 != null)
         {
-            desktopPage1.style.display = p1 ? DisplayStyle.Flex : DisplayStyle.None;
+            desktopPage1.style.display = DisplayStyle.Flex;
             desktopPage1.style.translate = new Translate((1f - p) * w, 0);
-            desktopPage1.style.opacity = Mathf.Clamp01(1f - Mathf.Max(0f, 1f - p) * 0.35f);
         }
     }
 

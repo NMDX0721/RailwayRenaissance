@@ -20,10 +20,13 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             public int index;
         }
 
-        private const float HoldMs = 380f;
-        private const float MoveCancel = 10f;
-        private const float EdgeZone = 56f;
-        private const float EdgeHoldSeconds = 0.6f;
+        // 防误触：长按更久才拿起，手指轻微抖动不算移动；文件夹只认中间一块；贴边翻页要停更久；拖出文件夹要明显离开面板
+        private const float HoldMs = 480f;
+        private const float MoveCancel = 18f;
+        private const float EdgeZone = 40f;
+        private const float EdgeHoldSeconds = 0.9f;
+        private const float FolderCoreScale = 0.5f;
+        private const float PanelExitMargin = 36f;
 
         private static float s_justDraggedUntil;
         /// <summary>刚放下图标的一小段时间内，图标上的点击不当作“打开应用”。</summary>
@@ -119,7 +122,17 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private Slot? Hit(Vector2 world)
         {
             foreach (var s in _slots(_fromFolder))
-                if (s.rect.Contains(world)) return s;
+            {
+                Rect r = s.rect;
+                if (s.kind == SlotKind.Folder)
+                {
+                    float w = r.width * FolderCoreScale, h = r.height * FolderCoreScale;
+                    r = new Rect(r.center.x - w * 0.5f, r.center.y - h * 0.5f, w, h);
+                }
+                else if (s.kind == SlotKind.FolderPanel)
+                    r = new Rect(r.xMin - PanelExitMargin, r.yMin - PanelExitMargin, r.width + PanelExitMargin * 2f, r.height + PanelExitMargin * 2f);
+                if (r.Contains(world)) return s;
+            }
             return null;
         }
 
