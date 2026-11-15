@@ -249,3 +249,12 @@ Restored the existing ShowAffairsPage/ShowStoryPage entry points from HEAD after
 按真实 HyperOS Pad 参考截图校正：状态栏叠在壁纸上；通知中心为整屏模糊上居中一列、控制中心为靠右一列；超级岛紧凑态留在状态栏左侧、点击后在屏幕上方正中展开；顶部触发区 24px→48px；应用窗口与顶栏默认浅色；新增 `TabletTheme`、`TabletIcons`、`TabletFonts`（MiSans）。完整描述、验证日志与未验证项见 [TABLET_HYPEROS_PAD_SUPER_ISLAND.md](TABLET_HYPEROS_PAD_SUPER_ISLAND.md)（v2.0 取代 v1.0）。
 
 此前 2026-10-29 归档的 `tablet_hyperos_aesthetic_v1` 截图存在读取时机错误（截到上一阶段画面），不能作为视觉证据；`TabletHyperOSAestheticReview.Capture` 已改为延迟到渲染后读取。控制面板中原先显示给玩家的 `NOT_RUN`、`沙箱隔离` 等调试字样已移除，改为“车载内网 · 离线沙箱”说明。
+
+## 2026-11-15 桌面拖拽、边缘手势与滑条修复（Claude / feat/vn-term-backlog-icons）
+
+- **桌面图标拖拽**：长按约 480 ms 拿起（手指抖动容忍 18 px），拖到「铁路」文件夹**中间一半**区域放入，拖到别的图标上互换，拖到空格放置；贴屏幕左右边缘（40 px）停 0.9 s 翻页；文件夹里的图标拖出面板（外扩 36 px）后回到桌面。排布保存在 PlayerPrefs `TabletDesktopLayout_v1`（`TabletDesktopLayout.cs`），手势在 `TabletDesktopDrag.cs`，`GameMainUI` 负责重建图标。刚放下的 0.3 s 内图标点击不当作“打开应用”。
+- **Dock**：固定 7 个（米家、岁月 · AI对话、媒姬百科、浏览器、安全中心、笔记、相册）+ 最近使用的最多 3 个后台应用（关掉后台任务即消失）。其中「互联 / 搜索 / VPN」是按用户要求用现有应用平替，等用户给出平板实际设置再换。
+- **边缘手势**：底部热区 48、侧边 32、顶部 48；上滑 56 px 且竖直分量大于水平即回桌面；侧滑返回 64 px。手势起点下面的按钮/滚动区不再拦手势，只拦输入框、滑块和音乐进度条；别的控件抢走或释放指针不再取消手势；占用超过 2 s 的手势视为过期。拖着手势线松手回桌面时，应用从当前缩小姿态继续缩小上飘淡出。
+- **桌面翻页**：两页常驻 Flex、只改 translate，不再每帧改透明度，也不再用 display 切换，避免第二页首次出现时整页重排版、重画造成的一下卡顿。
+- **亮度/音量滑条**（`TabletShellView.CreateVerticalSlider`）：按下即独占指针，抬起/取消/被抢走/被移除统一收尾；拖动期间推迟界面重建；位置用屏幕坐标；音量拖动实时生效。
+- **验证**：`TabletGestureReview`、`TabletSystemShellReview`、`TabletSettingsControlReview`、`TabletDesktopLayoutReview`、`TabletHyperOSAestheticReview` 批处理均通过。**未验证**：真人触屏/鼠标下的手感与上述阈值是否合适。
