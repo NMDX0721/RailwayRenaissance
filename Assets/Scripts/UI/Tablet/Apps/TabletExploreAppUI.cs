@@ -1555,11 +1555,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// <summary>绘制带贴图的矩形（点采样图）。uv 方向若与预期相反，改 FlipV。</summary>
         private const bool FlipV = false;
         private const float FloorLift = 0.62f;
-        private static void Quad(MeshGenerationContext mgc, Texture tex, float x, float y, float w, float h, bool mirror = false)
+        private static void Quad(MeshGenerationContext mgc, Texture tex, float x, float y, float w, float h, bool mirror = false, float uMin = 0f, float uMax = 1f)
         {
             if (tex == null) return;
             var mw = mgc.Allocate(4, 6, tex);
-            float u0 = mirror ? 1f : 0f, u1 = mirror ? 0f : 1f;
+            float u0 = mirror ? uMax : uMin, u1 = mirror ? uMin : uMax;
             float vTop = FlipV ? 0f : 1f, vBot = FlipV ? 1f : 0f;
             Color32 white = new Color32(255, 255, 255, 255);
             mw.SetNextVertex(new Vertex { position = new Vector3(x, y, Vertex.nearZ), tint = white, uv = new Vector2(u0, vTop) });
@@ -1570,80 +1570,72 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             mw.SetNextIndex(0); mw.SetNextIndex(2); mw.SetNextIndex(3);
         }
 
-        /// <summary>室内：地板、墙体、家具（GPT 逐格素材）。</summary>
+        /// <summary>
+        /// 室内（参考星露谷）：只有北墙有可见立面（墙纸上部 + 护墙板下部，GPT 素材），
+        /// 左右与南侧只是地板边缘的一圈深色描边，外面是黑褐色虚空；门在南缘，用门垫表示。
+        /// </summary>
         private void DrawInterior(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
         {
             Rect view = contentRect;
-            p.fillColor = new Color(0.45f, 0.40f, 0.35f);
+            Color void_ = new Color(0.13f, 0.10f, 0.08f), outline = new Color(0.20f, 0.13f, 0.09f);
+            p.fillColor = void_;
             p.BeginPath(); Rect(p, 0, 0, view.width, view.height); p.Fill();
             float ts = T * s;
-            var floor = Tex(cur.floor);
             Texture2D[] wood = { Tex("int_floor_wood_01"), Tex("int_floor_wood_02"), Tex("int_floor_wood_03") };
             var wallTop = Tex("int_wall_top"); var wallFront = Tex("int_wall_front");
-            var cnw = Tex("int_wall_corner_nw"); var cne = Tex("int_wall_corner_ne");
-            var csw = Tex("int_wall_corner_sw"); var cse = Tex("int_wall_corner_se");
-            for (int y = 0; y < gh; y++)
-                for (int x = 0; x < gw; x++)
+            float L = (1 * T - origin.x) * s, R = ((gw - 1) * T - origin.x) * s;      // 地板左右边界（屏幕）
+            float N = (2 * T - origin.y) * s, S = ((gh - 1) * T - origin.y) * s;      // 北墙下沿 / 地板南缘
+            // 地板：x 1..gw-2，y 2..gh-2
+            for (int y = 2; y < gh - 1; y++)
+                for (int x = 1; x < gw - 1; x++)
                 {
                     float sx = (x * T - origin.x) * s, sy = (y * T - origin.y) * s;
-                    char c = grid[y, x];
-                    if (c == 'a') Quad(mgc, wallTop, sx, sy, ts + 0.5f, ts + 0.5f);
-                    else if (c == 's' || c == 'D') { /* 侧墙与南墙只画一圈薄墙帽，见下 */ }
-                    else if (c != 'b') Quad(mgc, wood[((x * 7 + y * 3) % 3 + 3) % 3] ?? floor, sx, sy, ts + 0.5f, ts + 0.5f);
+                    Quad(mgc, wood[((x * 7 + y * 3) % 3 + 3) % 3], sx, sy, ts + 0.5f, ts + 0.5f);
                 }
-            // 地板提亮：奶油色半透明罩（GPT 原图偏深；以后换浅色贴图时把 FloorLift 设 0）
+            // 地板提亮（GPT 原图偏深；以后换浅色贴图时把 FloorLift 设 0）
             if (FloorLift > 0f)
             {
-                p.fillColor = new Color(0.98f, 0.96f, 0.91f, FloorLift);   // 米白
-                p.BeginPath();
-                Rect(p, (1 * T - origin.x) * s, (2 * T - origin.y) * s, (gw - 2) * ts, (gh - 3) * ts);
-                p.Fill();
+                p.fillColor = new Color(0.98f, 0.96f, 0.91f, FloorLift);
+                p.BeginPath(); Rect(p, L, N, R - L, S - N); p.Fill();
             }
-            // 北墙正面（32×48：底边对齐第 1 行下沿，向上探入第 0 行）
-            for (int x = 0; x < gw; x++)
-                if (grid[1, x] == 'b')
-                {
-                    float sx = (x * T - origin.x) * s, sy = (2f * T - origin.y) * s;
-                    Quad(mgc, wallFront, sx, sy - 48f * s, ts + 0.5f, 48f * s);
-                }
-            // 墙面提亮：与地板同色系的米白罩（北墙带 + 南墙行）
-            p.fillColor = new Color(0.98f, 0.96f, 0.92f, 0.55f);
-            p.BeginPath();
-            Rect(p, (0 - origin.x) * s, (0 - origin.y) * s, gw * ts, 2f * ts);
-            p.Fill();
-            // 侧墙/南墙：只露薄薄的墙帽（3/4 视角下看不到这三面墙的内壁），外侧是背景
+            // 北墙：第 0 行顶帽 + 第 1 行正面（32×48，底边对齐第 1 行下沿）
+            for (int x = 1; x < gw - 1; x++)
             {
-                Color capC = new Color(0.86f, 0.82f, 0.76f), capEdge = new Color(0.45f, 0.34f, 0.26f);
-                float th = 12f;
-                void Cap(float wx, float wy, float ww, float wh)
-                {
-                    float sx = (wx - origin.x) * s, sy = (wy - origin.y) * s;
-                    p.fillColor = capC; p.BeginPath(); Rect(p, sx, sy, ww * s, wh * s); p.Fill();
-                    p.fillColor = capEdge;
-                    p.BeginPath();
-                    if (ww < wh) Rect(p, sx + (wx < gw * T / 2f ? ww * s - 3f * s : 0f), sy, 3f * s, wh * s);
-                    else Rect(p, sx, sy, ww * s, 3f * s);
-                    p.Fill();
-                }
-                Cap(T - th, 2f * T, th, (gh - 3) * T + th );                     // 左
-                Cap((gw - 1) * T, 2f * T, th, (gh - 3) * T + th);               // 右
-                for (int x = 0; x < gw; x++)                                // 南（门洞处留空）
-                    if (grid[gh - 1, x] != 'D') Cap(x * T, (gh - 1) * T, T, th);
+                float sx = (x * T - origin.x) * s;
+                Quad(mgc, wallTop, sx, (0 - origin.y) * s, ts + 0.5f, ts + 0.5f);
+                Quad(mgc, wallFront, sx, N - 48f * s, ts + 0.5f, 48f * s);
             }
-            // 出口门：底边对齐南墙行下沿
-            for (int x = 0; x < gw; x++)
+            p.fillColor = new Color(0.98f, 0.96f, 0.92f, 0.5f);   // 墙面提亮
+            p.BeginPath(); Rect(p, L, (0 - origin.y) * s, R - L, N - (0 - origin.y) * s); p.Fill();
+            // 北墙下沿的踢脚阴影，让墙与地面分开
+            p.fillColor = new Color(0.30f, 0.20f, 0.14f, 0.35f);
+            p.BeginPath(); Rect(p, L, N, R - L, 5f * s); p.Fill();
+            // 描边：左右与南缘（门洞处断开），北墙顶部
+            float ow = 6f * s;
+            p.fillColor = outline;
+            p.BeginPath();
+            Rect(p, L - ow, (0 - origin.y) * s - ow, ow, S - (0 - origin.y) * s + 2f * ow);          // 左
+            Rect(p, R, (0 - origin.y) * s - ow, ow, S - (0 - origin.y) * s + 2f * ow);               // 右
+            Rect(p, L - ow, (0 - origin.y) * s - ow, R - L + 2f * ow, ow);                           // 北顶
+            for (int x = 1; x < gw - 1; x++)
+                if (grid[gh - 1, x] != 'D') Rect(p, (x * T - origin.x) * s, S, ts + 0.5f, ow);       // 南缘
+            p.Fill();
+            // 门垫（出口格）
+            for (int x = 1; x < gw - 1; x++)
                 if (grid[gh - 1, x] == 'D')
                 {
-                    float sx = (x * T - origin.x) * s, sy = (gh * T - origin.y) * s;
-                    Quad(mgc, Tex("int_door_open"), sx, sy - 64f * s, ts + 0.5f, 64f * s);
+                    float sx = (x * T - origin.x) * s;
+                    p.fillColor = outline; p.BeginPath(); Rect(p, sx, S - ts * 0.02f, ts, ts * 0.78f); p.Fill();
+                    p.fillColor = new Color(0.55f, 0.20f, 0.16f); p.BeginPath(); Rect(p, sx + ts * 0.08f, S + ts * 0.05f, ts * 0.84f, ts * 0.6f); p.Fill();
+                    p.fillColor = new Color(0.82f, 0.62f, 0.34f); p.BeginPath(); Rect(p, sx + ts * 0.16f, S + ts * 0.13f, ts * 0.68f, ts * 0.06f); p.Fill();
                 }
-            // 家具：底边对齐 ty 行下沿，原图尺寸
+            // 家具：底边对齐 ty 行下沿，原图尺寸；墙面装饰先画，落地家具进入遮挡排序
             foreach (var pr in cur.props)
             {
                 var tx = Tex(pr.tex);
                 if (tx == null) continue;
                 float sx = (pr.tx * T - origin.x) * s, sy = ((pr.ty + 1) * T - origin.y) * s;
-                var prc = pr; var txc = tx;
+                var txc = tx;
                 if (pr.wall) Quad(mgc, tx, sx, sy - tx.height * s, tx.width * s, tx.height * s);
                 else sortedExtras.Add(((pr.ty + 1) * T, () => Quad(mgc, txc, sx, sy - txc.height * s, txc.width * s, txc.height * s)));
             }
@@ -1651,8 +1643,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private Vector2 ScreenToWorld(Vector2 local)
         {
-            float s = Scale;
-            return CameraOrigin(s) + local / s;
+            float sc = Scale;
+            return CameraOrigin(sc) + local / sc;
         }
 
         private static void Rect(Painter2D p, float x, float y, float w, float h)
@@ -1677,6 +1669,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Rect view = contentRect;
             if (view.width <= 1f || view.height <= 1f) return;
             var p = mgc.painter2D;
+            sortedExtras.Clear();   // 室内/室外切换后不得残留上一区域的树、列车
             float s = Scale;
             Vector2 origin = CameraOrigin(s);
             float ts = T * s;
