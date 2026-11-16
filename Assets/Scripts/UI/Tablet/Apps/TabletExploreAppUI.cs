@@ -870,7 +870,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private struct Spot { public string id, label; public int tx, ty; public float cost; }
         private struct Npc { public string id, name; public Vector2 pos; public Color color; public string[] lines; public int talk; }
         /// <summary>家具/设备：以 tx,ty 为底行左端，sprite 宽 wt 格、高 ht 格，底边对齐格线。</summary>
-        private struct Prop { public string tex; public int tx, ty, wt, ht; }
+        private struct Prop { public string tex; public int tx, ty, wt, ht; public bool wall; }
+        /// <summary>按脚底 y 排序的遮挡层：树、列车、室内落地家具与角色同序绘制（北面的人被南面的高物体挡住）。</summary>
+        private readonly List<(float y, Action draw)> sortedExtras = new List<(float y, Action draw)>();
         /// <summary>区域：室外站区或某栋建筑的室内。grid/spots/npcs/props 全部按区域独立。</summary>
         private sealed class Area
         {
@@ -1003,6 +1005,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // ================= 区域切换 =================
         private void UseArea(Area a)
         {
+            style.backgroundColor = a == outdoor ? new Color(0.12f, 0.2f, 0.12f) : new Color(0.93f, 0.90f, 0.83f);
             cur = a; grid = a.grid; gw = a.w; gh = a.h; spots = a.spots; npcs = a.npcs;
             foreach (var im in charImgs.Values) im.style.display = DisplayStyle.None;
             foreach (var l in npcLabels.Values) l.style.display = DisplayStyle.None;
@@ -1066,8 +1069,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Building(5, 3, 10, 6, 10, 8);      // 站务大厅
             Building(18, 3, 6, 5, 20, 7); Fill(20, 8, 1, 1, ',');   // 调度室
             Building(26, 3, 7, 5, 29, 7); Fill(29, 8, 1, 1, ',');   // 候车室
-            Building(24, 15, 8, 5, 27, 15);    // 车库（门朝北）
-            Fill(27, 13, 1, 2, ',');
+            Building(24, 15, 8, 5, 27, 19);    // 车库（门朝南：屋顶在北、立面在南，门在立面上）
+            Fill(27, 20, 1, 2, ',');
             Fill(2, 15, 10, 6, 'f');           // 茶田
             Building(13, 16, 4, 3, 14, 18);    // 茶摊
             Fill(33, 18, 5, 4, '~');           // 水塘
@@ -1079,7 +1082,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             spots.Add(new Spot { id = "dispatch", label = "调度室", tx = 20, ty = 7, cost = 15 });
             spots.Add(new Spot { id = "waiting", label = "候车室", tx = 29, ty = 7, cost = 30 });
             spots.Add(new Spot { id = "platform", label = "站台", tx = 17, ty = 10, cost = 10 });
-            spots.Add(new Spot { id = "garage", label = "车库", tx = 27, ty = 15, cost = 30 });
+            spots.Add(new Spot { id = "garage", label = "车库", tx = 27, ty = 19, cost = 30 });
             spots.Add(new Spot { id = "tea", label = "茶摊", tx = 14, ty = 18, cost = 15 });
             spots.Add(new Spot { id = "crossing", label = "道口", tx = 35, ty = 13, cost = 20 });
             spots.Add(new Spot { id = "board", label = "公告栏", tx = 6, ty = 9, cost = 10 });
@@ -1097,38 +1100,40 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 室内：a 北墙顶 / b 北墙正面 / s 侧墙与南墙 / o 家具占位
         private static bool IsSolid(char c) => c == '#' || c == 'R' || c == 'T' || c == '~' || c == 'F' || c == 'X' || c == 'a' || c == 'b' || c == 's' || c == 'o';
 
-        /// <summary>调度室（12×9）：北墙挂钟/线路屏/窗，中部调度台/策略板/电台，南侧沙发茶几与出口。素材由 GPT 逐格交付。</summary>
+        /// <summary>调度室（20×12）：北墙挂钟/线路屏/四扇窗，中部调度台/策略板/电台，南侧两组沙发茶几与出口。素材由 GPT 逐格交付。</summary>
         private void BuildDispatchRoom()
         {
-            var a = new Area { id = "dispatch", w = 12, h = 9, floor = "int_floor_wood_01" };
-            a.grid = new char[9, 12];
-            for (int y = 0; y < 9; y++)
-                for (int x = 0; x < 12; x++)
-                    a.grid[y, x] = y == 0 ? 'a' : y == 1 ? 'b' : (y == 8 || x == 0 || x == 11) ? 's' : '.';
-            a.grid[8, 6] = 'D';
-            a.spawn = new Vector2(6.5f * T, 7.5f * T);
+            const int RW = 20, RH = 12;
+            var a = new Area { id = "dispatch", w = RW, h = RH, floor = "int_floor_wood_01" };
+            a.grid = new char[RH, RW];
+            for (int y = 0; y < RH; y++)
+                for (int x = 0; x < RW; x++)
+                    a.grid[y, x] = y == 0 ? 'a' : y == 1 ? 'b' : (y == RH - 1 || x == 0 || x == RW - 1) ? 's' : '.';
+            a.grid[RH - 1, 10] = 'D';
+            a.spawn = new Vector2(10.5f * T, (RH - 1.5f) * T);
             void Occupy(int x, int y, int w, int h) { for (int j = y; j < y + h; j++) for (int i = x; i < x + w; i++) a.grid[j, i] = 'o'; }
             void P(string tex, int tx, int ty, int wt, int ht, bool solid = true)
             {
-                a.props.Add(new Prop { tex = tex, tx = tx, ty = ty, wt = wt, ht = ht });
+                a.props.Add(new Prop { tex = tex, tx = tx, ty = ty, wt = wt, ht = ht, wall = !solid });
                 if (solid) Occupy(tx, ty - (ht - 1), wt, ht);
             }
-            // 墙面装饰（不占地）：挂钟、线路屏、窗
-            P("prop_wall_clock", 3, 1, 1, 1, false);
-            P("prop_route_screen_on", 5, 1, 2, 1, false);
-            P("int_window_01", 1, 1, 1, 1, false); P("int_window_01", 10, 1, 1, 1, false);
+            // 墙面装饰（不占地）：窗、挂钟、线路屏
+            foreach (int wx in new[] { 2, 5, 14, 17 }) P("int_window_01", wx, 1, 1, 1, false);
+            P("prop_wall_clock", 7, 1, 1, 1, false);
+            P("prop_route_screen_on", 9, 1, 2, 1, false);
             // 地面家具
-            P("prop_strategy_board", 9, 3, 1, 2);
-            P("prop_radio", 1, 3, 1, 1);
-            P("prop_dispatch_desk", 4, 4, 2, 1);
-            P("prop_sofa", 1, 6, 2, 1);
-            P("prop_teatable", 3, 6, 1, 1);
+            P("prop_radio", 3, 3, 1, 1);
+            P("prop_strategy_board", 16, 3, 1, 2);
+            P("prop_dispatch_desk", 9, 5, 2, 1);
+            P("prop_sofa", 2, 9, 2, 1); P("prop_teatable", 4, 9, 1, 1);
+            P("prop_sofa", 15, 9, 2, 1); P("prop_teatable", 14, 9, 1, 1);
 
-            a.spots.Add(new Spot { id = "dispatch_desk", label = "调度台 · 发车方案", tx = 5, ty = 5, cost = 15 });
-            a.spots.Add(new Spot { id = "strategy_board", label = "策略板 · 经营策略", tx = 9, ty = 4, cost = 15 });
-            a.spots.Add(new Spot { id = "radio", label = "电台", tx = 1, ty = 4, cost = 5 });
-            a.spots.Add(new Spot { id = "sofa", label = "沙发 · 歇一会儿", tx = 2, ty = 7, cost = 20 });
-            a.npcs.Add(new Npc { id = "zhaoshifu", name = "赵师傅", pos = new Vector2(7.5f * T, 5.5f * T), color = new Color(0.34f, 0.50f, 0.44f), lines = new[] { "今天的班次表我排好了。", "沙能那边最近动作不小，得留心。" } });
+            a.spots.Add(new Spot { id = "dispatch_desk", label = "调度台 · 发车方案", tx = 10, ty = 6, cost = 15 });
+            a.spots.Add(new Spot { id = "strategy_board", label = "策略板 · 经营策略", tx = 16, ty = 4, cost = 15 });
+            a.spots.Add(new Spot { id = "radio", label = "电台", tx = 3, ty = 4, cost = 5 });
+            a.spots.Add(new Spot { id = "sofa", label = "沙发 · 歇一会儿", tx = 3, ty = 10, cost = 20 });
+            a.spots.Add(new Spot { id = "sofa2", label = "沙发 · 歇一会儿", tx = 16, ty = 10, cost = 20 });
+            a.npcs.Add(new Npc { id = "zhaoshifu", name = "赵师傅", pos = new Vector2(13.5f * T, 6.5f * T), color = new Color(0.34f, 0.50f, 0.44f), lines = new[] { "今天的班次表我排好了。", "沙能那边最近动作不小，得留心。" } });
             areas[a.id] = a;
         }
 
@@ -1391,6 +1396,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public char TileAt(int x, int y) => outdoor.grid[y, x];
         /// <summary>地图面板用的玩家位置：在室内时显示为所在建筑门口。</summary>
         public Vector2 MapPlayerPos => Indoors ? returnPos : player;
+        public void FinishFade() { fadeA = 0f; if (fadeEl != null) fadeEl.style.opacity = 0f; }
         public void LeaveIndoors() { if (Indoors) { player = returnPos; ExitArea(); } }
 
         public Color TileColor(char c, int x, int y)
@@ -1477,7 +1483,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 case "dispatch": EnterArea("dispatch"); break;   // 室外调度室门口 → 进入室内
                 case "radio": OnToast?.Invoke("电台里只有杂音，沙能那边暂时没有新通告。"); break;
-                case "sofa":
+                case "sofa": case "sofa2":
                     Stamina = MaxStamina; SprintLocked = false;
                     OnToast?.Invoke("在沙发上歇了一会儿，精力恢复了。");
                     break;
@@ -1548,7 +1554,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         /// <summary>绘制带贴图的矩形（点采样图）。uv 方向若与预期相反，改 FlipV。</summary>
         private const bool FlipV = false;
-        private const float FloorLift = 0.74f;
+        private const float FloorLift = 0.62f;
         private static void Quad(MeshGenerationContext mgc, Texture tex, float x, float y, float w, float h, bool mirror = false)
         {
             if (tex == null) return;
@@ -1568,7 +1574,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private void DrawInterior(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
         {
             Rect view = contentRect;
-            p.fillColor = new Color(0.07f, 0.055f, 0.045f);
+            p.fillColor = new Color(0.45f, 0.40f, 0.35f);
             p.BeginPath(); Rect(p, 0, 0, view.width, view.height); p.Fill();
             float ts = T * s;
             var floor = Tex(cur.floor);
@@ -1581,16 +1587,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 {
                     float sx = (x * T - origin.x) * s, sy = (y * T - origin.y) * s;
                     char c = grid[y, x];
-                    if (c == 'a') Quad(mgc, x == 0 ? cnw : x == gw - 1 ? cne : wallTop, sx, sy, ts + 0.5f, ts + 0.5f);
-                    else if (c == 's' && y == gh - 1) Quad(mgc, x == 0 ? csw : x == gw - 1 ? cse : wallTop, sx, sy, ts + 0.5f, ts + 0.5f);
-                    else if (c == 's')
-                    {
-                        // 侧墙：连续的灰墙面 + 室内一侧的深褐踢脚，避免角砖重复出现的条纹
-                        p.fillColor = new Color(0.88f, 0.85f, 0.80f);
-                        p.BeginPath(); Rect(p, sx, sy, ts + 0.5f, ts + 0.5f); p.Fill();
-                        p.fillColor = new Color(0.55f, 0.42f, 0.32f);
-                        p.BeginPath(); Rect(p, x == 0 ? sx + ts - 7f * s : sx, sy, 7f * s, ts + 0.5f); p.Fill();
-                    }
+                    if (c == 'a') Quad(mgc, wallTop, sx, sy, ts + 0.5f, ts + 0.5f);
+                    else if (c == 's' || c == 'D') { /* 侧墙与南墙只画一圈薄墙帽，见下 */ }
                     else if (c != 'b') Quad(mgc, wood[((x * 7 + y * 3) % 3 + 3) % 3] ?? floor, sx, sy, ts + 0.5f, ts + 0.5f);
                 }
             // 地板提亮：奶油色半透明罩（GPT 原图偏深；以后换浅色贴图时把 FloorLift 设 0）
@@ -1609,11 +1607,29 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     Quad(mgc, wallFront, sx, sy - 48f * s, ts + 0.5f, 48f * s);
                 }
             // 墙面提亮：与地板同色系的米白罩（北墙带 + 南墙行）
-            p.fillColor = new Color(0.98f, 0.96f, 0.92f, 0.6f);
+            p.fillColor = new Color(0.98f, 0.96f, 0.92f, 0.55f);
             p.BeginPath();
             Rect(p, (0 - origin.x) * s, (0 - origin.y) * s, gw * ts, 2f * ts);
-            Rect(p, (0 - origin.x) * s, ((gh - 1) * T - origin.y) * s, gw * ts, ts);
             p.Fill();
+            // 侧墙/南墙：只露薄薄的墙帽（3/4 视角下看不到这三面墙的内壁），外侧是背景
+            {
+                Color capC = new Color(0.86f, 0.82f, 0.76f), capEdge = new Color(0.45f, 0.34f, 0.26f);
+                float th = 12f;
+                void Cap(float wx, float wy, float ww, float wh)
+                {
+                    float sx = (wx - origin.x) * s, sy = (wy - origin.y) * s;
+                    p.fillColor = capC; p.BeginPath(); Rect(p, sx, sy, ww * s, wh * s); p.Fill();
+                    p.fillColor = capEdge;
+                    p.BeginPath();
+                    if (ww < wh) Rect(p, sx + (wx < gw * T / 2f ? ww * s - 3f * s : 0f), sy, 3f * s, wh * s);
+                    else Rect(p, sx, sy, ww * s, 3f * s);
+                    p.Fill();
+                }
+                Cap(T - th, 2f * T, th, (gh - 3) * T + th );                     // 左
+                Cap((gw - 1) * T, 2f * T, th, (gh - 3) * T + th);               // 右
+                for (int x = 0; x < gw; x++)                                // 南（门洞处留空）
+                    if (grid[gh - 1, x] != 'D') Cap(x * T, (gh - 1) * T, T, th);
+            }
             // 出口门：底边对齐南墙行下沿
             for (int x = 0; x < gw; x++)
                 if (grid[gh - 1, x] == 'D')
@@ -1627,7 +1643,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var tx = Tex(pr.tex);
                 if (tx == null) continue;
                 float sx = (pr.tx * T - origin.x) * s, sy = ((pr.ty + 1) * T - origin.y) * s;
-                Quad(mgc, tx, sx, sy - tx.height * s, tx.width * s, tx.height * s);
+                var prc = pr; var txc = tx;
+                if (pr.wall) Quad(mgc, tx, sx, sy - tx.height * s, tx.width * s, tx.height * s);
+                else sortedExtras.Add(((pr.ty + 1) * T, () => Quad(mgc, txc, sx, sy - txc.height * s, txc.width * s, txc.height * s)));
             }
         }
 
@@ -1666,7 +1684,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (Indoors)
             {
                 DrawInterior(mgc, p, origin, s);
-                DrawOverlay(p, origin, s, ts, false);
+                DrawOverlay(mgc, p, origin, s, ts, false);
                 return;
             }
             int x0 = Mathf.Max(0, Mathf.FloorToInt(origin.x / T)), x1 = Mathf.Min(gw - 1, Mathf.CeilToInt((origin.x + view.width / s) / T));
@@ -1680,7 +1698,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 list.Add(new Vector4(x, y, w, h));
             }
 
-            var trees = new List<Vector2>();
+            sortedExtras.Clear();
+            var trees = new List<(Vector2 c, float key)>();
             for (int ty = y0; ty <= y1; ty++)
                 for (int tx = x0; tx <= x1; tx++)
                 {
@@ -1708,8 +1727,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         Add(Sleeper, sx + ts * 0.12f, sy + ts * 0.18f, ts * 0.14f, ts * 0.64f);
                         Add(Sleeper, sx + ts * 0.62f, sy + ts * 0.18f, ts * 0.14f, ts * 0.64f);
                     }
-                    else if (c == '#' && ((tx * 3 + ty) % 4 == 0) && ty + 1 < H && grid[ty + 1, tx] == '#')
-                        Add(Win, sx + ts * 0.25f, sy + ts * 0.2f, ts * 0.5f, ts * 0.45f);
+                    else if (c == '#')
+                    {
+                        // 立面：屋檐投影、整齐的窗（紧贴屋顶下第一排墙，隔格一扇，带窗框和窗台）、底部勒脚
+                        bool firstRow = ty > 0 && grid[ty - 1, tx] == 'R';
+                        bool lastRow = ty + 1 >= H || grid[ty + 1, tx] != '#';
+                        if (firstRow) Add(new Color(0.40f, 0.27f, 0.21f), sx, sy, ts + 0.6f, ts * 0.14f);
+                        if (firstRow && (tx & 1) == 0 && tx > 0 && tx + 1 < W && grid[ty, tx - 1] == '#' && grid[ty, tx + 1] == '#')
+                        {
+                            Add(new Color(0.30f, 0.20f, 0.14f), sx + ts * 0.2f, sy + ts * 0.26f, ts * 0.6f, ts * 0.56f);
+                            Add(Win, sx + ts * 0.26f, sy + ts * 0.32f, ts * 0.48f, ts * 0.44f);
+                            Add(new Color(0.30f, 0.20f, 0.14f), sx + ts * 0.48f, sy + ts * 0.32f, Mathf.Max(1.5f, ts * 0.04f), ts * 0.44f);
+                            Add(new Color(0.78f, 0.66f, 0.50f), sx + ts * 0.16f, sy + ts * 0.82f, ts * 0.68f, ts * 0.07f);
+                        }
+                        if (lastRow) Add(new Color(0.46f, 0.33f, 0.26f), sx, sy + ts * 0.86f, ts + 0.6f, ts * 0.14f);
+                    }
                     else if (c == 'F')
                     {
                         Add(Fence, sx, sy + ts * 0.4f, ts + 0.6f, ts * 0.12f);
@@ -1718,7 +1750,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     else if (c == 'f' && (ty & 1) == 0)
                         Add(new Color(0.22f, 0.40f, 0.20f), sx, sy + ts * 0.4f, ts + 0.6f, ts * 0.18f);
                     else if (c == 'T')
-                        trees.Add(new Vector2(sx + ts / 2f, sy + ts / 2f));
+                        trees.Add((new Vector2(sx + ts / 2f, sy + ts / 2f), (ty + 1) * T));
                 }
 
             foreach (var kv in buckets)
@@ -1729,17 +1761,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.Fill();
             }
 
-            foreach (var t in trees)
+            foreach (var tr in trees)
             {
-                Disc(p, Shadow, t + new Vector2(0f, ts * 0.28f), ts * 0.38f);
-                Disc(p, Trunk, t + new Vector2(0f, ts * 0.22f), ts * 0.12f);
-                Disc(p, Canopy, t - new Vector2(0f, ts * 0.05f), ts * 0.46f);
+                var t = tr.c;
+                sortedExtras.Add((tr.key, () =>
+                {
+                    Disc(p, Shadow, t + new Vector2(0f, ts * 0.28f), ts * 0.38f);
+                    Disc(p, Trunk, t + new Vector2(0f, ts * 0.22f), ts * 0.12f);
+                    Disc(p, Canopy, t - new Vector2(0f, ts * 0.05f), ts * 0.46f);
+                }));
             }
 
-            DrawOverlay(p, origin, s, ts, true);
+            DrawOverlay(mgc, p, origin, s, ts, true);
         }
 
-        private void DrawOverlay(Painter2D p, Vector2 origin, float s, float ts, bool outdoorTrain)
+        private void DrawOverlay(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s, float ts, bool outdoorTrain)
         {
             // 自动寻路路线与终点
             if (path != null)
@@ -1761,7 +1797,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.Stroke();
             }
 
-            if (outdoorTrain) DrawTrain(p, origin, s);
+            if (outdoorTrain) sortedExtras.Add((11.95f * T, () => DrawTrain(p, origin, s)));
 
             // 脚步扬尘
             foreach (var dd in dust)
@@ -1781,9 +1817,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var n = npcs[i];
                 Vector2 toPlayer = player - n.pos;
                 CharDir nd = toPlayer.magnitude < 3f * T ? DirOf(toPlayer) : CharDir.Down;
-                drawList.Add((n.pos.y, () => DrawChar(p, n.id, n.pos, origin, s, nd, 0, false, now)));
+                drawList.Add((n.pos.y, () => DrawChar(mgc, p, n.id, n.pos, origin, s, nd, 0, false, now)));
             }
-            drawList.Add((player.y, () => DrawChar(p, "player", player, origin, s, DirOf(facing), walkFrame, IsMoving, now)));
+            drawList.Add((player.y, () => DrawChar(mgc, p, "player", player, origin, s, DirOf(facing), walkFrame, IsMoving, now)));
+            drawList.AddRange(sortedExtras);
             drawList.Sort((a, b) => a.y.CompareTo(b.y));
             foreach (var d in drawList) d.draw();
 
@@ -1840,22 +1877,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return v.y < 0f ? CharDir.Up : CharDir.Down;
         }
 
-        private void DrawChar(Painter2D p, string id, Vector2 world, Vector2 origin, float s, CharDir dir, int frame, bool moving, float time)
+        private void DrawChar(MeshGenerationContext mgc, Painter2D p, string id, Vector2 world, Vector2 origin, float s, CharDir dir, int frame, bool moving, float time)
         {
             Vector2 feet = (world - origin) * s + new Vector2(0f, 9f * s);
             var tex = ExploreCharacters.TrySprite(id, moving, dir, frame, out bool mirror);
-            if (charImgs.TryGetValue(id, out var im))
+            if (tex != null)
             {
-                if (tex != null)
-                {
-                    im.image = tex;
-                    im.style.left = feet.x - 16f * s; im.style.top = feet.y - 48f * s;
-                    im.style.width = 32f * s; im.style.height = 48f * s;
-                    im.style.scale = new Scale(new Vector3(mirror ? -1f : 1f, 1f, 1f));
-                    im.style.display = DisplayStyle.Flex;
-                    return;
-                }
-                im.style.display = DisplayStyle.None;
+                // 位图角色与程序绘制一样参与 y 排序（不再用 Image 子元素，避免永远盖在家具/树上）
+                Quad(mgc, tex, feet.x - 16f * s, feet.y - 48f * s, 32f * s, 48f * s, mirror);
+                return;
             }
             ExploreCharacters.Draw(p, ExploreCharacters.Get(id), feet, s, dir, frame, moving, time);
         }

@@ -109,6 +109,7 @@ public static class ExploreReview
                     Resize(1920, 1080);
                     Call("Unlock");
                     GameData.InitializeIfNeeded();
+                    RailwayRenaissance.UI.Tablet.SystemShell.TabletDisplayPreferences.SetBrightness(1f);   // 其他评审可能把亮度留在最低
                     frame = Time.frameCount;
                     stage++;
                     break;
@@ -153,6 +154,7 @@ public static class ExploreReview
                     Assert(view.PlayerPos.y > 4f * ExploreMapView.T, "player walked through the dispatch desk (y=" + view.PlayerPos.y + ")");
                     view.TeleportToSpot("dispatch_desk");
                     interiorShot = true;
+                    view.FinishFade();
                     frame = Time.frameCount;
                     stage++;
                     break;
