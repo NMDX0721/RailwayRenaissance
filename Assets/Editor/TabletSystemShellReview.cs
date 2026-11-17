@@ -90,7 +90,7 @@ public static class TabletSystemShellReview
         Assert(sample.Dismiss(sample.Notifications[0].Id), "Dismiss failed");
         Assert(sample.UnreadCount == 31, "Dismiss did not decrement unread count");
         sample.TogglePanel(TabletSystemPanel.Notifications);
-        Assert(sample.UnreadCount == 0, "Opening panel did not mark all as read");
+        Assert(sample.UnreadCount == 31, "Opening panel must not change notification state (no read/unread concept)");
         sample.TogglePanel(TabletSystemPanel.Controls);
         Assert(sample.Panel == TabletSystemPanel.Controls && sample.ClosePanel() && !sample.ClosePanel(), "Panel mutual exclusion/close consumption");
         sample.SetQuietMode(true); int before = changed; sample.SetQuietMode(true);
@@ -122,10 +122,10 @@ public static class TabletSystemShellReview
         Assert(restored.UnreadCount == 2, "Unread count did not round-trip");
 
         restored.TogglePanel(TabletSystemPanel.Notifications);
-        Assert(restored.UnreadCount == 0, "Mark all as read failed on restored instance");
+        Assert(restored.UnreadCount == 2, "Opening the panel must not mark anything read");
 
         var recheck = new TabletShellState(path);
-        Assert(recheck.UnreadCount == 0, "Read state did not persist");
+        Assert(recheck.UnreadCount == 2, "Notification state must not change by opening the panel");
 
         string savedJson = File.ReadAllText(path);
 
@@ -200,8 +200,7 @@ public static class TabletSystemShellReview
                     document.panelSettings = settings; Resize(1440, 900);
                     state = (TabletShellState)Field("tabletShellState");
                     Assert(root.Q("tablet-shell-root").style.display == DisplayStyle.None && state.Notifications.Count == 0, "Lockscreen leaked system shell");
-                    var initBadge = root.Q<Label>("tablet-notifications-badge");
-                    Assert(initBadge == null || initBadge.style.display == DisplayStyle.None, "Initial unread badge visible");
+                    Assert(root.Q<Label>("tablet-notifications-badge") == null && root.Q("tablet-status-unread") == null, "Unread badge/dot must not exist (notifications have no read state)");
                     Call("Unlock"); break;
 
                 case 1:
@@ -222,8 +221,7 @@ public static class TabletSystemShellReview
                     Assert(alarmRow != null, "Clock alarm row element missing");
                     using (var clickEvt = ClickEvent.GetPooled()) { clickEvt.target = alarmRow; alarmRow.SendEvent(clickEvt); }
                     Assert(state.Notifications.Count == 1 && state.UnreadCount == 1, "Clock alarm generated notification");
-                    var badge = root.Q<Label>("tablet-notifications-badge");
-                    Assert(badge != null && badge.resolvedStyle.display == DisplayStyle.Flex && badge.text == "1", "Badge showing 1 unread notification");
+                    Assert(root.Q<Label>("tablet-notifications-badge") == null && root.Q("tablet-status-unread") == null, "No unread badge/dot after posting");
 
                     // 打开最近任务，验证后台按键隔离
                     Call("OpenRecentTasks");
@@ -281,9 +279,7 @@ public static class TabletSystemShellReview
                 case 3:
                     // 3. 通知中心真实模糊、32项容量、已读清除与互斥切换
                     Assert(state.Panel == TabletSystemPanel.Notifications && state.Notifications.Count == 1, "Notifications panel open");
-                    Assert(state.UnreadCount == 0, "Opening notification panel marked all as read");
-                    var readBadge = root.Q<Label>("tablet-notifications-badge");
-                    Assert(readBadge == null || readBadge.style.display == DisplayStyle.None, "Badge hidden when notifications opened");
+                    Assert(root.Q<Label>("tablet-notifications-badge") == null, "No badge when notifications opened");
 
                     var blurBg = root.Q("tablet-shell-blur-bg");
                     Assert(blurBg != null && blurBg.style.display == DisplayStyle.Flex, "Blur background visible on notification open");
@@ -300,12 +296,11 @@ public static class TabletSystemShellReview
                     long dismissId = state.Post("review_dismiss", "dismiss through rendered row");
                     Assert(root.Q<Button>("tablet-notification-dismiss-" + dismissId) != null, "Rendered dismiss action missing");
                     Submit("tablet-notification-dismiss-" + dismissId);
-                    Assert(state.Notifications.Count == 1 && state.UnreadCount == 0, "Rendered dismiss did not update state");
+                    Assert(state.Notifications.Count == 1, "Rendered dismiss did not update state");
                     for (int i = 0; i < 40; i++) state.Post("capacity_" + i, "capacity body");
-                    var boundaryBadge = root.Q<Label>("tablet-notifications-badge");
                     int renderedRows = root.Query<Button>().Where(b => b.name != null && b.name.StartsWith("tablet-notification-dismiss-")).ToList().Count;
-                    Assert(state.Notifications.Count == 32 && state.UnreadCount == 32, "32-item capacity state mismatch");
-                    Assert(boundaryBadge.text == "32" && renderedRows == 4 && root.Q<Button>("tablet-notifications-more") != null, "Collapsed list must show 4 cards plus a 'more notifications' row");
+                    Assert(state.Notifications.Count == 32, "32-item capacity state mismatch");
+                    Assert(renderedRows == 4 && root.Q<Button>("tablet-notifications-more") != null, "Collapsed list must show 4 cards plus a 'more notifications' row");
                     Submit("tablet-notifications-more");
                     renderedRows = root.Query<Button>().Where(b => b.name != null && b.name.StartsWith("tablet-notification-dismiss-")).ToList().Count;
                     Assert(renderedRows == 32 && root.Q<Button>("tablet-notifications-more") == null, "Expanding must render all 32 notifications");
@@ -389,15 +384,15 @@ public static class TabletSystemShellReview
 
                 case 6:
                     // 6. 设置子页面返回、同名页替换和全部关闭后的可见层级
-                    TabletSettingsAppUI.ShowTipsPage("rail_ballast");
+                    TabletSettingsAppUI.ShowAffairsPage();
                     var appLayer = AppLayer;
                     Assert(appLayer != null && appLayer.style.display == DisplayStyle.Flex, "App layer visible for settings subpage");
-                    var tipsHeader = root.Query<Label>().Where(l => l.text != null && l.text.Contains("术语图鉴")).First();
-                    Assert(tipsHeader != null, "Tips subpage opened");
+                    var tipsHeader = root.Query<Label>().Where(l => l.text != null && l.text.Contains("事务")).First();
+                    Assert(tipsHeader != null, "Subpage opened");
                     Capture("05-settings-subpage");
 
                     // 同名页替换验证：再次请求同名子页，页面栈不重复入栈
-                    TabletSettingsAppUI.ShowTipsPage("rail_expansion_joint");
+                    TabletSettingsAppUI.ShowAffairsPage();
                     var settingsTask = (TabletTaskSession)Call("FindTabletTask", "设置");
                     var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(settingsTask);
                     Assert(settingsTask != null && pages.Count == 1, "Same-name subpage replaced top page without stacking duplicate layer");

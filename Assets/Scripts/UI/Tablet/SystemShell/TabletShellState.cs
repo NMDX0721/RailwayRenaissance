@@ -126,10 +126,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             Panel = panel;
-            if (Panel == TabletSystemPanel.Notifications)
-            {
-                MarkAllAsReadInternal();
-            }
             Changed?.Invoke();
         }
 

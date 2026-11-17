@@ -36,7 +36,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private float _pagerStartProgress;
         private float _pagerLastX, _pagerVelocity;
         private float _pagerLastT;
-        private readonly Label _badge;
         private Focusable _previousFocus;
         private TabletSystemPanel _renderedPanel;
         private Color _accent = TabletTheme.Accent;
@@ -86,27 +85,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             btnCtrl.name = "tablet-controls-open";
             btnNotif.style.marginRight = 6;
 
-            _badge = new Label { name = "tablet-notifications-badge" };
-            _badge.style.position = Position.Absolute;
-            _badge.style.top = -2;
-            _badge.style.right = -2;
-            _badge.style.minWidth = 16;
-            _badge.style.height = 16;
-            _badge.style.borderTopLeftRadius = 8;
-            _badge.style.borderTopRightRadius = 8;
-            _badge.style.borderBottomLeftRadius = 8;
-            _badge.style.borderBottomRightRadius = 8;
-            _badge.style.backgroundColor = TabletTheme.Badge;
-            _badge.style.color = Color.white;
-            _badge.style.fontSize = 10;
-            _badge.style.unityFontStyleAndWeight = FontStyle.Bold;
-            _badge.style.unityTextAlign = TextAnchor.MiddleCenter;
-            _badge.style.paddingLeft = 3;
-            _badge.style.paddingRight = 3;
-            _badge.pickingMode = PickingMode.Ignore;
-            _badge.style.display = DisplayStyle.None;
-            ApplyFont(_badge);
-            btnNotif.Add(_badge);
 
             _launcher.Add(btnNotif);
             _launcher.Add(btnCtrl);
@@ -352,7 +330,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             // 正在拖亮度/音量滑条时不重建界面（会把手指下的滑条换掉，拖动当场中断）；松手后补一次
             if (_sliderDragging) { _renderPending = true; return; }
-            UpdateBadge();
 
             if (_state.Panel == TabletSystemPanel.None)
             {
@@ -770,27 +747,6 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             var panel = target > 0.5f ? TabletSystemPanel.Controls : TabletSystemPanel.Notifications;
             if (_state.Panel != panel) _state.TogglePanel(panel);   // Render 会从当前位置接着滑到位
             else AnimatePagerTo(target, 300);
-        }
-
-        private void UpdateBadge()
-        {
-            if (_badge == null) return;
-            int unread = _state.UnreadCount;
-            var btnNotif = _launcher?.Q<Button>("tablet-notifications-open");
-            if (unread > 0)
-            {
-                _badge.style.display = DisplayStyle.Flex;
-                _badge.text = unread > 99 ? "99+" : unread.ToString();
-                _badge.tooltip = $"{unread}条未读通知";
-                if (btnNotif != null) btnNotif.tooltip = $"通知 ({_badge.text} 未读)";
-            }
-            else
-            {
-                _badge.style.display = DisplayStyle.None;
-                _badge.text = string.Empty;
-                _badge.tooltip = string.Empty;
-                if (btnNotif != null) btnNotif.tooltip = "通知";
-            }
         }
 
         private void RenderNotifications()

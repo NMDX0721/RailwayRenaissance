@@ -737,7 +737,6 @@ public class GameMainUI : MonoBehaviour
     private Label statusDate;
     private static readonly string[] WeekdayShort = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
     private static string FormatStatusDate(System.DateTime t) => $"{t.Month}月{t.Day}日 {WeekdayShort[(int)t.DayOfWeek]}";
-    private VisualElement statusUnread;
     private VisualElement statusBattBox;
     private int battTick;
     private readonly System.Collections.Generic.List<VisualElement> appIcons = new System.Collections.Generic.List<VisualElement>();
@@ -943,16 +942,6 @@ public class GameMainUI : MonoBehaviour
         dateSlot.style.marginLeft = 12;
         dateSlot.Add(statusDate);
         leftGroup.Add(dateSlot);
-
-        // 未读通知小红点（时间右侧）
-        statusUnread = new VisualElement { name = "tablet-status-unread", pickingMode = PickingMode.Ignore };
-        statusUnread.style.width = 8; statusUnread.style.height = 8;
-        statusUnread.style.marginLeft = 6;
-        statusUnread.style.borderTopLeftRadius = statusUnread.style.borderTopRightRadius = 4;
-        statusUnread.style.borderBottomLeftRadius = statusUnread.style.borderBottomRightRadius = 4;
-        statusUnread.style.backgroundColor = RailwayRenaissance.UI.Tablet.TabletTheme.SignalRed;
-        statusUnread.style.display = DisplayStyle.None;
-        leftGroup.Add(statusUnread);
 
         // 点按状态栏左侧（时间）呼出通知中心，点按右侧（状态图标）呼出控制中心；拖动手势同样可用
         leftGroup.RegisterCallback<ClickEvent>(_ => tabletShellState?.TogglePanel(RailwayRenaissance.UI.Tablet.SystemShell.TabletSystemPanel.Notifications));
@@ -4193,8 +4182,6 @@ public class GameMainUI : MonoBehaviour
                 battTick = 0;
                 ApplyBatteryBadge(GetDeviceBatteryPercent());
             }
-            if (statusUnread != null && tabletShellState != null)
-                statusUnread.style.display = tabletShellState.UnreadCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
             ApplySafeArea();
             if (statusDate != null)
             {
