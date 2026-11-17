@@ -1172,6 +1172,10 @@ public class GameMainUI : MonoBehaviour
         var dockBorder = new Color(1f, 1f, 1f, 0.22f);
         dock.style.borderTopColor = dockBorder; dock.style.borderBottomColor = dockBorder;
         dock.style.borderLeftColor = dockBorder; dock.style.borderRightColor = dockBorder;
+        // 真高斯模糊：与系统面板一致，模糊 Dock 背后的壁纸（Unity 6.6 原生 backdrop-filter）
+        var dockBlur = new FilterFunction(FilterFunctionType.Blur);
+        dockBlur.AddParameter(new FilterParameter(24f));
+        dock.style.backdropFilter = new System.Collections.Generic.List<FilterFunction> { dockBlur };
         dock.style.alignSelf = Align.Center;
         dock.style.paddingLeft = 12; dock.style.paddingRight = 12;
         dock.style.marginBottom = 14;

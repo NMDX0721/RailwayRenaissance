@@ -126,7 +126,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 DateTime dt;
                 if (!DateTime.TryParse(item.createdAt, null, System.Globalization.DateTimeStyles.RoundtripKind, out dt))
                 {
-                    dt = DateTime.Now;
+                    dt = TabletDateTime.Now;
                 }
                 var notif = new TabletNotification(item.id, item.title, item.body, dt, item.isRead, item.channelId);
                 result.Add(notif);

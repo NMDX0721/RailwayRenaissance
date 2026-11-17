@@ -198,7 +198,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             long id = _nextId++;
-            var notification = new TabletNotification(id, cleanTitle, cleanBody, DateTime.Now, isRead: false, channelId: channelId, request: request);
+            var notification = new TabletNotification(id, cleanTitle, cleanBody, TabletDateTime.Now, isRead: false, channelId: channelId, request: request);
             _notifications.Insert(0, notification);
 
             while (_notifications.Count > MaxCapacity)

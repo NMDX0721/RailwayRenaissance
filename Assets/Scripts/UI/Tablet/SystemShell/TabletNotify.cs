@@ -195,10 +195,12 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
         public static string RelativeTime(DateTime created)
         {
-            var span = DateTime.Now - created;
+            var now = TabletDateTime.Now;
+            created = TabletDateTime.ToStory(created);   // 旧存档里的真实年份也按剧情年份显示
+            var span = now - created;
             if (span.TotalSeconds < 60) return "现在";
             if (span.TotalMinutes < 60) return (int)span.TotalMinutes + "分钟前";
-            if (created.Date == DateTime.Now.Date) return created.ToString("HH:mm");
+            if (created.Date == now.Date) return created.ToString("HH:mm");
             return created.ToString("M月d日");
         }
     }
