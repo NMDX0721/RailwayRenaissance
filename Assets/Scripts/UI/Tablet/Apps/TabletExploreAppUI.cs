@@ -77,7 +77,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 o.style.opacity = 0f;
                 o.schedule.Execute(() => { if (o.style.opacity.value < 0.05f) o.style.display = DisplayStyle.None; }).ExecuteLater(220);
             }
-            void CloseAll() { HidePanel(mapOverlay); HidePanel(menuOverlay); }
+            VisualElement journalOverlay = null;
+            void CloseAll() { HidePanel(mapOverlay); HidePanel(menuOverlay); if (journalOverlay != null) HidePanel(journalOverlay); }
             void ToggleMap() { bool was = IsOpen(mapOverlay); CloseAll(); if (!was) { ShowPanel(mapOverlay); (mapOverlay.userData as Action)?.Invoke(); } }
             void ToggleMenu() { bool was = IsOpen(menuOverlay); CloseAll(); if (!was) ShowPanel(menuOverlay); }
             ToggleMapRef = ToggleMap; ToggleMenuRef = ToggleMenu;
@@ -336,8 +337,71 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             ApplyJoy(joyOn);
             menuOverlay.userData = (Action)(() => ApplyJoy(!joyOn));
 
+            // ===== 任务：左侧追踪卡 + 站长手记（任务簿）=====
+            ExploreQuests.EnsureToday();
+            var journalBody = default(VisualElement);
+            journalOverlay = PaperUI.Sheet("站长手记", "今日任务 · 每天重置", out journalBody, () => HidePanel(journalOverlay), 62f, 82f);
+            journalOverlay.name = "explore-journal";
+            host.Add(journalOverlay);
+            void RebuildJournal()
+            {
+                journalBody.Clear();
+                var scroll = new ScrollView(ScrollViewMode.Vertical);
+                scroll.style.flexGrow = 1; scroll.style.paddingLeft = 24; scroll.style.paddingRight = 24; scroll.style.paddingTop = 14;
+                journalBody.Add(scroll);
+                scroll.Add(PaperUI.Text($"今天已完成 {ExploreQuests.CompletedToday} / {ExploreQuests.Active.Count}", PaperTokens.FsSmall, PaperTokens.InkSoft));
+                foreach (var q in ExploreQuests.Active)
+                {
+                    var card = PaperUI.Card(PaperTokens.S3, false, q.Done ? PaperTokens.Good : PaperTokens.Amber);
+                    card.style.marginTop = 10;
+                    var head = new VisualElement(); head.style.flexDirection = FlexDirection.Row; head.style.alignItems = Align.Center;
+                    var t = PaperUI.Text(q.title, PaperTokens.FsSub, q.Done ? PaperTokens.InkSoft : PaperTokens.Ink, true); t.style.flexGrow = 1;
+                    head.Add(t); head.Add(PaperUI.Tag(q.giver, PaperTokens.Amber));
+                    if (q.Done) { var d = PaperUI.Tag("已完成", PaperTokens.Good); d.style.marginLeft = 6; head.Add(d); }
+                    card.Add(head);
+                    var desc = PaperUI.Text(q.desc, PaperTokens.FsSmall, PaperTokens.InkSoft); desc.style.whiteSpace = WhiteSpace.Normal; desc.style.marginTop = 4;
+                    card.Add(desc);
+                    foreach (var o in q.objectives)
+                    {
+                        var r = PaperUI.Text((o.Done ? "✓  " : "○  ") + o.text + (o.need > 1 ? $"（{o.have}/{o.need}）" : ""), PaperTokens.FsBody, o.Done ? PaperTokens.Good : PaperTokens.Ink);
+                        r.style.marginTop = 4; card.Add(r);
+                    }
+                    if (q.RewardText.Length > 0) { var rw = PaperUI.Text("奖励：" + q.RewardText, PaperTokens.FsSmall, PaperTokens.InkSoft); rw.style.marginTop = 6; card.Add(rw); }
+                    scroll.Add(card);
+                }
+            }
+            void OpenJournal() { CloseAll(); RebuildJournal(); ShowPanel(journalOverlay); }
+
+            var tracker = PaperUI.Panel(PaperTokens.RadiusM, 14, 10, true, false);
+            tracker.name = "explore-tracker";
+            tracker.style.position = Position.Absolute; tracker.style.left = 18; tracker.style.top = 182; tracker.style.width = 380;
+            tracker.pickingMode = PickingMode.Position;
+            tracker.RegisterCallback<ClickEvent>(_ => OpenJournal());
+            host.Add(tracker);
+            void RefreshTracker()
+            {
+                tracker.Clear();
+                var hd = new VisualElement { pickingMode = PickingMode.Ignore }; hd.style.flexDirection = FlexDirection.Row; hd.style.alignItems = Align.Center;
+                var tt = PaperUI.Text("站长手记", PaperTokens.FsSmall, PaperTokens.InkSoft, true); tt.style.flexGrow = 1; tt.pickingMode = PickingMode.Ignore;
+                var ct = PaperUI.Text($"{ExploreQuests.CompletedToday}/{ExploreQuests.Active.Count}", PaperTokens.FsSmall, PaperTokens.Amber, true); ct.pickingMode = PickingMode.Ignore;
+                hd.Add(tt); hd.Add(ct); tracker.Add(hd);
+                var q = ExploreQuests.First(true);
+                if (q == null) { var ok = PaperUI.Text("今天的事都办完了", PaperTokens.FsBody, PaperTokens.Good, true); ok.style.marginTop = 4; ok.pickingMode = PickingMode.Ignore; tracker.Add(ok); return; }
+                var title = PaperUI.Text(q.title, PaperTokens.FsBody, PaperTokens.Ink, true); title.style.marginTop = 4; title.pickingMode = PickingMode.Ignore; tracker.Add(title);
+                foreach (var o in q.objectives)
+                {
+                    var l = PaperUI.Text((o.Done ? "✓ " : "○ ") + o.text, PaperTokens.FsSmall, o.Done ? PaperTokens.Good : PaperTokens.InkSoft);
+                    l.style.marginTop = 2; l.pickingMode = PickingMode.Ignore; tracker.Add(l);
+                }
+            }
+            RefreshTracker();
+            Action onQuestChanged = () => { RefreshTracker(); if (journalOverlay.style.display == DisplayStyle.Flex) RebuildJournal(); };
+            Action<Quest> onQuestDone = q => view.OnToast?.Invoke($"任务完成：{q.title}　{q.RewardText}");
+            ExploreQuests.Changed += onQuestChanged; ExploreQuests.Completed += onQuestDone;
+            host.RegisterCallback<DetachFromPanelEvent>(_ => { ExploreQuests.Changed -= onQuestChanged; ExploreQuests.Completed -= onQuestDone; });
+
             // 大面板盖在所有常驻 HUD 之上
-            mapOverlay.BringToFront(); rdaOverlay.BringToFront(); menuOverlay.BringToFront();
+            mapOverlay.BringToFront(); rdaOverlay.BringToFront(); menuOverlay.BringToFront(); journalOverlay.BringToFront();
 
             host.schedule.Execute(() =>
             {
@@ -345,7 +409,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // 走动时 HUD 退到半透明，停下来再亮起，不遮挡画面
                 prompt.style.display = (IsOpen(mapOverlay) || IsOpen(menuOverlay) || IsOpen(rdaOverlay)) ? DisplayStyle.None : DisplayStyle.Flex;
                 float a = view.IsMoving ? 0.5f : 1f;
-                status.style.opacity = a; bar.style.opacity = a;
+                status.style.opacity = a; bar.style.opacity = a; tracker.style.opacity = a;
+                tracker.style.display = prompt.style.display;
                 float f = Mathf.Clamp01(view.Stamina / ExploreMapView.MaxStamina);
                 fill.style.width = Length.Percent(f * 100f);
                 fill.style.backgroundColor = view.SprintLocked ? new Color(0.80f, 0.28f, 0.22f) : f < 0.35f ? new Color(0.92f, 0.62f, 0.16f) : new Color(0.36f, 0.72f, 0.30f);
@@ -1022,6 +1087,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             player = a.spawn; facing = Vector2.up;
             fadeA = 1f;
             lastPrompt = "";
+            ExploreQuests.Report(QuestEvent.Enter, id);
             RunQueued();
         }
 
@@ -1513,10 +1579,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 cur.talk++;
                 npcs[idx] = cur;
                 Minutes += 5f;
+                ExploreQuests.Report(QuestEvent.Talk, cur.id);
                 return;
             }
 
             Minutes += s.cost;
+            ExploreQuests.Report(QuestEvent.Interact, s.id);
             switch (s.id)
             {
                 case "dispatch": EnterArea("dispatch"); break;   // 室外调度室门口 → 进入室内

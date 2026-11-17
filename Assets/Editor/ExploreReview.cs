@@ -115,6 +115,7 @@ public static class ExploreReview
                     break;
 
                 case 1:
+                    ExploreQuests.ResetForTests();
                     Call("LaunchApp", "巡线");
                     frame = Time.frameCount;
                     stage++;
@@ -148,6 +149,10 @@ public static class ExploreReview
                     view.TeleportToSpot("dispatch_desk");
                     view.Interact();
                     Assert(lastAction == "dispatch_desk", "dispatch desk interaction did not fire (got '" + lastAction + "')");
+                    var timetable = ExploreQuests.Active.Find(q => q.id == "timetable");
+                    Assert(timetable != null && timetable.Done, "quest 'timetable' did not complete after entering dispatch and using the desk");
+                    Assert(ExploreQuests.CompletedToday >= 1, "completed quest counter did not advance");
+                    Assert(root.Q("explore-tracker") != null, "quest tracker missing");
                     // 室内碰撞：从沙发旁向北走不得穿过家具/墙
                     view.TeleportToSpot("dispatch_desk");
                     for (int i = 0; i < 90; i++) view.Step(new Vector2(0f, -1f), 1f / 30f);
@@ -244,6 +249,20 @@ public static class ExploreReview
                     Capture("06-explore-menu");
                     root.Q("explore-menu").style.display = DisplayStyle.None;
                     root.Q("explore-menu").style.opacity = 0f;
+                    var journal = root.Q("explore-journal");
+                    Assert(journal != null, "journal overlay missing");
+                    var trackerEl = root.Q("explore-tracker");
+                    using (var click = ClickEvent.GetPooled()) { click.target = trackerEl; trackerEl.SendEvent(click); }
+                    journal.style.opacity = 1f;
+                    Assert(journal.style.display == DisplayStyle.Flex, "clicking the tracker did not open the journal");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 8:
+                    Capture("06b-explore-journal");
+                    root.Q("explore-journal").style.display = DisplayStyle.None;
+                    root.Q("explore-journal").style.opacity = 0f;
                     // 悬浮提示 + NPC 对话框
                     view.TeleportToSpot("platform");
                     view.Step(new Vector2(-1f, 0f), 0.26f);
@@ -252,7 +271,7 @@ public static class ExploreReview
                     stage++;
                     break;
 
-                case 8:
+                case 9:
                     Capture("07-explore-dialogue");
                     Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, time advances, A* + sprint ok");
                     SessionState.SetBool(PendingKey, false);

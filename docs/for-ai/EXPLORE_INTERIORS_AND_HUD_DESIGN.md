@@ -117,3 +117,9 @@
 3. 室外设备（检票机等）与调度室、站务大厅两个室内先落地，设备→受限 RDA 页面。
 4. 其余室内；小活动（耗时/精力/改 GameData 字段）；NPC 日程。
 5. GPT 按本文清单出室内家具/设备位图与名牌，接入绘制层。
+
+## 8. 任务系统「站长手记」（2026-11-17）
+- `ExploreQuests`（静态）：每天重置的日常任务；目标类型 Talk / Interact / Enter（key = NPC id / 地点 id / 区域 id）；全部目标达成即结算奖励（`GameData.AddMoney/AddTrust`）并触发 `Completed`。
+- 上报点：`ExploreMapView.Interact`（对话、地点交互）与 `EnterArea`；UI 只订阅 `Changed/Completed`。
+- UI：左侧工牌卡下方追踪卡（当前第一个未完成任务，点击打开手记）；`站长手记` 大面板列出全部任务、目标进度、奖励；完成时顶部提示条。
+- 待做：任务持久化（存档）、带前置/限时的任务链、剧情任务接 VN、发放来源 NPC 头顶感叹号。
