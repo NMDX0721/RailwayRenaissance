@@ -24,7 +24,7 @@ public static class ExploreReview
     private static GameMainUI ui;
     private static ExploreMapView view;
     private static string lastAction = "";
-    private static bool interiorShot;
+    private static bool interiorShot, hallShot;
 
     static ExploreReview()
     {
@@ -129,10 +129,10 @@ public static class ExploreReview
                     Capture("01-explore-start");
 
                     // 碰撞：从大厅门口一直向上走，不得穿过站房墙体
-                    view.TeleportToSpot("hall");
+                    view.TeleportToSpot("garage");
                     float yBefore = view.PlayerPos.y;
                     for (int i = 0; i < 60; i++) view.Step(new Vector2(0f, -1f), 1f / 30f); // 屏幕坐标 y 向下，向北走 = -y
-                    Assert(view.PlayerPos.y > 7f * ExploreMapView.T + 3f, "player walked through the hall wall (y=" + view.PlayerPos.y + ")");
+                    Assert(view.PlayerPos.y > 18f * ExploreMapView.T + 3f, "player walked through the garage wall (y=" + view.PlayerPos.y + ")");
                     Assert(view.PlayerPos.y < yBefore, "player did not move up at all");
 
                     // 水塘不可进入
@@ -172,6 +172,30 @@ public static class ExploreReview
                         view.TeleportToSpot("platform");
                         view.LeaveIndoors();
                         Assert(!view.Indoors, "failed to leave the interior");
+                        // 站务大厅：进门 → 公告板 → 截图
+                        view.TeleportToSpot("hall");
+                        view.Interact();
+                        Assert(view.Indoors && view.AreaId == "hall", "entering the hall door did not switch to the interior");
+                        view.TeleportToSpot("hall_board");
+                        view.Interact();
+                        Assert(lastAction == "hall_board", "hall board interaction did not fire (got '" + lastAction + "')");
+                        for (int i = 0; i < 90; i++) view.Step(new Vector2(0f, -1f), 1f / 30f);
+                        Assert(view.PlayerPos.y > 3f * ExploreMapView.T, "player walked through the hall notice board (y=" + view.PlayerPos.y + ")");
+                        view.TeleportToSpot("ticket_window");
+                        hallShot = true;
+                        view.FinishFade();
+                        frame = Time.frameCount;
+                        break;
+                    }
+                    if (hallShot)
+                    {
+                        Capture("02b-explore-hall");
+                        hallShot = false;
+                        var hallQuest = ExploreQuests.Active.Find(q => q.id == "hallboard");
+                        Assert(hallQuest != null && hallQuest.Done, "quest 'hallboard' did not complete");
+                        view.TeleportToSpot("platform");
+                        view.LeaveIndoors();
+                        Assert(!view.Indoors, "failed to leave the hall");
                         frame = Time.frameCount;
                         break;
                     }

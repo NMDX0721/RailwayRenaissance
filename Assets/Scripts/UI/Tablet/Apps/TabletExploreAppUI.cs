@@ -142,7 +142,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     // 经营功能只能在地图对应地点办理（走到地点按 E / 点击）；总览为随身只读
                     case "dispatch_desk": OpenRda(1, 0, "调度台 · 发车方案"); break;
                     case "strategy_board": OpenRda(1, 1, "策略板 · 经营策略"); break;
-                    case "hall": OpenRda(3, 0, "站务大厅 · 委托"); break;
+                    case "hall_board": OpenRda(3, 0, "委托公告板 · 在办订单"); break;
                     case "tea": OpenRda(3, 0, "茶摊 · 货主委托"); break;
                     case "garage": OpenRda(2, 0, "车库 · 人员"); break;
                     case "board": OpenRda(4, 0, "公告栏 · 沙能动向"); break;
@@ -1038,6 +1038,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             UseArea(outdoor);
             BuildMap();
             BuildDispatchRoom();
+            BuildHall();
             UseArea(outdoor);
             generateVisualContent += Draw;
             RegisterCallback<PointerDownEvent>(OnPointerDown);
@@ -1203,6 +1204,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             npcs.Add(new Npc { id = "zhanggong", name = "张工", pos = new Vector2(25.5f * T, 13.5f * T), color = new Color(0.30f, 0.45f, 0.65f), lines = new[] { "车况还撑得住，别太压榨它。", "闸瓦该换了，等有钱再说。" } });
             npcs.Add(new Npc { id = "chasao", name = "茶嫂", pos = new Vector2(15.5f * T, 19.5f * T), color = new Color(0.85f, 0.60f, 0.25f), lines = new[] { "霜降前这批茶得下山。", "哟，小站长，尝尝新茶？" } });
             doorLinks[new Vector2Int(20, 7)] = "dispatch";
+            doorLinks[new Vector2Int(10, 8)] = "hall";
             npcs.Add(new Npc { id = "xiaofang", name = "小芳", pos = new Vector2(7.5f * T, 9.5f * T), color = new Color(0.60f, 0.78f, 0.55f), lines = new[] { "我在学看信号灯，您教教我吧。" } });
         }
 
@@ -1243,6 +1245,39 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             a.spots.Add(new Spot { id = "sofa", label = "沙发 · 歇一会儿", tx = 3, ty = 10, cost = 20 });
             a.spots.Add(new Spot { id = "sofa2", label = "沙发 · 歇一会儿", tx = 16, ty = 10, cost = 20 });
             a.npcs.Add(new Npc { id = "zhaoshifu", name = "赵师傅", pos = new Vector2(13.5f * T, 6.5f * T), color = new Color(0.34f, 0.50f, 0.44f), lines = new[] { "今天的班次表我排好了。", "沙能那边最近动作不小，得留心。" } });
+            areas[a.id] = a;
+        }
+
+        /// <summary>站务大厅（16×11）：北墙委托公告板/信息屏/窗，售票窗口与售票员，两组长椅。地板用瓷砖。</summary>
+        private void BuildHall()
+        {
+            const int RW = 16, RH = 11;
+            var a = new Area { id = "hall", w = RW, h = RH, floor = "tile" };
+            a.grid = new char[RH, RW];
+            for (int y = 0; y < RH; y++)
+                for (int x = 0; x < RW; x++)
+                    a.grid[y, x] = y == 0 ? 'a' : y == 1 ? 'b' : (y == RH - 1 || x == 0 || x == RW - 1) ? 's' : '.';
+            a.grid[RH - 1, 8] = 'D';
+            a.spawn = new Vector2(8.5f * T, (RH - 1.5f) * T);
+            void Occupy(int x, int y, int w, int h) { for (int j = y; j < y + h; j++) for (int i = x; i < x + w; i++) a.grid[j, i] = 'o'; }
+            void P(string tex, int tx, int ty, int wt, int ht, bool solid = true)
+            {
+                a.props.Add(new Prop { tex = tex, tx = tx, ty = ty, wt = wt, ht = ht, wall = !solid });
+                if (solid) Occupy(tx, ty - (ht - 1), wt, ht);
+            }
+            foreach (int wx in new[] { 2, 6, 10, 13 }) P("int_window_01", wx, 1, 1, 1, false);
+            P("prop_wall_clock", 8, 1, 1, 1, false);
+            P("prop_route_screen_off", 4, 1, 2, 1, false);          // 信息屏
+            P("prop_strategy_board", 3, 3, 1, 2);                   // 委托公告板
+            P("prop_dispatch_desk", 10, 4, 2, 1);                   // 售票窗口
+            P("prop_radio", 14, 3, 1, 1);                           // 广播机
+            P("prop_sofa", 2, 8, 2, 1); P("prop_teatable", 4, 8, 1, 1);     // 长椅
+            P("prop_sofa", 11, 8, 2, 1); P("prop_teatable", 10, 8, 1, 1);
+
+            a.spots.Add(new Spot { id = "hall_board", label = "委托公告板 · 在办订单", tx = 3, ty = 4, cost = 15 });
+            a.spots.Add(new Spot { id = "ticket_window", label = "售票窗口", tx = 10, ty = 5, cost = 10 });
+            a.spots.Add(new Spot { id = "bench", label = "长椅 · 歇一会儿", tx = 3, ty = 9, cost = 15 });
+            a.npcs.Add(new Npc { id = "laoqian", name = "老钱", pos = new Vector2(12.5f * T, 5.5f * T), color = new Color(0.52f, 0.42f, 0.60f), lines = new[] { "今天的票卖得不多，山里天冷了。", "要买票排队，别挤窗口。", "公告板上的委托，早接早有钱赚。" } });
             areas[a.id] = a;
         }
 
@@ -1591,6 +1626,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             switch (s.id)
             {
                 case "dispatch": EnterArea("dispatch"); break;   // 室外调度室门口 → 进入室内
+                case "hall": EnterArea("hall"); break;
+                case "ticket_window": OnToast?.Invoke("窗口里的老钱把今天的车票理了一遍，余票还很充足。"); break;
+                case "bench":
+                    Stamina = MaxStamina; SprintLocked = false;
+                    OnToast?.Invoke("在长椅上坐了一会儿，精力恢复了。");
+                    break;
                 case "radio": OnToast?.Invoke("电台里只有杂音，沙能那边暂时没有新通告。"); break;
                 case "sofa": case "sofa2":
                     Stamina = MaxStamina; SprintLocked = false;
@@ -1701,7 +1742,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             p.fillColor = void_;
             p.BeginPath(); Rect(p, 0, 0, view.width, view.height); p.Fill();
             float ts = T * s;
-            Texture2D[] wood = { Tex("int_floor_wood_01"), Tex("int_floor_wood_02"), Tex("int_floor_wood_03") };
+            Texture2D[] wood = cur.floor == "tile"
+                ? new[] { Tex("int_floor_tile_01"), Tex("int_floor_tile_02"), Tex("int_floor_tile_01") }
+                : new[] { Tex("int_floor_wood_01"), Tex("int_floor_wood_02"), Tex("int_floor_wood_03") };
             var wallTop = Tex("int_wall_top"); var wallFront = Tex("int_wall_front");
             float L = (1 * T - origin.x) * s, R = ((gw - 1) * T - origin.x) * s;      // 地板左右边界（屏幕）
             float N = (2 * T - origin.y) * s, S = ((gh - 1) * T - origin.y) * s;      // 北墙下沿 / 地板南缘

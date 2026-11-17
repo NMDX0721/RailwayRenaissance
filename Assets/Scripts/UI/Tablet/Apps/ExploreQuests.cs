@@ -58,6 +58,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Active.Add(Make("timetable", "核对今日班次", "赵师傅", "赵师傅排好了班次表，到调度室的调度台前对一遍再发车。", 50, 1,
                 Obj(QuestEvent.Enter, "dispatch", "走进调度室"),
                 Obj(QuestEvent.Interact, "dispatch_desk", "在调度台前查看班次")));
+            Active.Add(Make("hallboard", "看看委托公告板", "老钱", "站务大厅的公告板上挂着货主的委托，去看看有什么活可接。", 40, 0,
+                Obj(QuestEvent.Enter, "hall", "走进站务大厅"),
+                Obj(QuestEvent.Interact, "hall_board", "在公告板前查看委托")));
             Active.Add(Make("garage", "车库问问车况", "张工", "闸瓦和车况都得问问张工，别等出了毛病再说。", 40, 0,
                 Obj(QuestEvent.Talk, "zhanggong", "和张工聊聊车况")));
             Active.Add(Make("tea", "尝尝新茶", "茶嫂", "茶嫂说霜降前这批茶得下山，去茶摊坐一坐。", 35, 1,
@@ -71,7 +74,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public static void Report(QuestEvent kind, string key)
         {
             EnsureToday();
-            if (key == "sofa2") key = "sofa";
+            if (key == "sofa2" || key == "bench") key = "sofa";
             bool any = false;
             foreach (var q in Active)
             {
