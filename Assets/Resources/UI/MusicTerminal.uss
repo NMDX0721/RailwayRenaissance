@@ -1342,3 +1342,19 @@
 
 .music-mine-card .music-mine-logout { margin-left: 12px; flex-shrink: 0; }
 .music-mine-tools { margin: 0 0 0 8px; padding: 0; flex-shrink: 0; flex-grow: 0; width: auto; min-width: 0; background-color: rgba(0, 0, 0, 0); border-width: 0; }
+
+/* Interaction motion: page entrance, press and hover feedback */
+.music-terminal .music-enter-anim { transition-property: opacity, translate; transition-duration: 280ms, 340ms; transition-timing-function: ease-out; }
+.music-terminal .music-enter { opacity: 0; translate: 0 14px; }
+.music-player-buttons .music-button { transition-property: background-color, border-color, scale, opacity; transition-duration: 140ms; }
+.music-player-buttons .music-button:hover { scale: 1.08 1.08; }
+.music-player-buttons .music-button:active { scale: 0.92 0.92; }
+.music-player-buttons .music-primary:hover { scale: 1.06 1.06; }
+.music-tools .music-button:hover, .music-track-row .music-button:hover { scale: 1.08 1.08; }
+.music-mine-tools .music-button { transition-property: background-color, border-color, scale, rotate; transition-duration: 160ms, 160ms, 160ms, 360ms; }
+.music-mine-tools .music-button:hover { rotate: 60deg; scale: 1.06 1.06; }
+.music-mine-card { transition-property: background-color, translate; transition-duration: 160ms; }
+.music-career-card { transition-property: background-color, translate; transition-duration: 160ms; transition-timing-function: ease-out; }
+.music-career-card:hover { translate: 0 -2px; background-color: rgba(255, 255, 255, 0.05); }
+.music-reduce-motion .music-player-buttons .music-button, .music-reduce-motion .music-mine-tools .music-button, .music-reduce-motion .music-career-card { transition-duration: 0s; scale: 1 1; rotate: 0deg; translate: 0 0; }
+.music-reduce-motion .music-enter { opacity: 1; translate: 0 0; }

@@ -451,7 +451,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 #if MUSIC_RUNTIME_REVIEW
             Debug.Log("MUSIC_NAVIGATE " + target);
 #endif
-            HideSuggestions(); page = target; selected = playlist; cloudManage = false; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh();
+            HideSuggestions(); page = target; selected = playlist; cloudManage = false; query = ""; search.SetValueWithoutNotify(""); clearSearch.style.display = DisplayStyle.None; Refresh(); PlayEnter();
         }
         void OpenSource(string source, bool account)
         {
