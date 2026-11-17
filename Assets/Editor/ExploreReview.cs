@@ -272,8 +272,7 @@ public static class ExploreReview
                     break;
 
                 case 9:
-                    Capture("07-explore-dialogue");
-                    Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, time advances, A* + sprint ok");
+                    Capture("07-explore-dialogue");                    Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, time advances, A* + sprint ok");
                     SessionState.SetBool(PendingKey, false);
                     EditorApplication.isPlaying = false;
                     EditorApplication.Exit(0);

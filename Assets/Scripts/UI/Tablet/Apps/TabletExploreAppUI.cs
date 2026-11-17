@@ -227,11 +227,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var dlgCard = new VisualElement();
             dlgCard.style.flexDirection = FlexDirection.Row; dlgCard.style.alignItems = Align.Center;
             dlgCard.style.width = 700;
-            StyleCard(dlgCard, 22, 20, 16);
+            PaperUI.StylePanel(dlgCard, PaperTokens.RadiusL, 22, 16, true, true);
             var avatar = new Label { pickingMode = PickingMode.Ignore };
-            avatar.style.width = 56; avatar.style.height = 56; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
-            avatar.style.fontSize = 24; avatar.style.color = Color.white; avatar.style.unityFontDefinition = FdBold();
-            Round(avatar, 28); avatar.style.marginRight = 16;
+            avatar.style.width = 64; avatar.style.height = 64; avatar.style.unityTextAlign = TextAnchor.MiddleCenter;
+            avatar.style.fontSize = 28; avatar.style.color = Color.white; avatar.style.unityFontDefinition = FdBold();
+            PaperUI.Round(avatar, 32); PaperUI.Border(avatar, 3f, PaperTokens.PaperDeep); avatar.style.marginRight = 18;
             dlgCard.Add(avatar);
             var dlgBody = new VisualElement { pickingMode = PickingMode.Ignore }; dlgBody.style.flexGrow = 1; dlgBody.style.flexShrink = 1;
             var dlgName = new Label { pickingMode = PickingMode.Ignore };
@@ -239,8 +239,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             var dlgText = new Label { pickingMode = PickingMode.Ignore };
             dlgText.style.fontSize = 18; dlgText.style.color = Ink; dlgText.style.unityFontDefinition = Fd();
             dlgText.style.whiteSpace = WhiteSpace.Normal; dlgText.style.marginTop = 4;
-            dlgBody.Add(dlgName); dlgBody.Add(dlgText);
+            dlgName.style.color = PaperTokens.Amber;
+            var dlgRule = PaperUI.PerfDivider(); dlgRule.style.marginTop = 4;
+            dlgBody.Add(dlgName); dlgBody.Add(dlgRule); dlgBody.Add(dlgText);
             dlgCard.Add(dlgBody);
+            var more = PaperUI.Text("▼", PaperTokens.FsSmall, PaperTokens.Amber); more.pickingMode = PickingMode.Ignore;
+            more.style.alignSelf = Align.FlexEnd; more.style.marginLeft = 10;
+            dlgCard.Add(more);
             dlg.Add(dlgCard);
             host.Add(dlg);
             IVisualElementScheduledItem dlgHide = null;
@@ -306,16 +311,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             energy.Add(sprintBtn);
 
             var track = new VisualElement { name = "explore-energy-track" };
-            track.style.width = 84; track.style.height = 12; track.style.marginTop = 10;
-            track.style.backgroundColor = new Color(0.42f, 0.32f, 0.20f, 0.22f);
-            Round(track, 6);
-            var fill = new VisualElement { name = "explore-energy-fill" };
-            fill.style.height = Length.Percent(100); fill.style.width = Length.Percent(100);
-            fill.style.backgroundColor = new Color(0.36f, 0.72f, 0.30f);
-            Round(fill, 6);
-            fill.generateVisualContent += ctx => DrawGlossy(ctx, fill, 5f);
-            track.Add(fill);
+            track.style.width = 96; track.style.height = 24; track.style.marginTop = 6;
+            float energyFrac = 1f; Color energyCol = new Color(0.36f, 0.72f, 0.30f);
+            track.generateVisualContent += ctx => PaperDraw.Ruler(ctx.painter2D, 2f, track.layout.width - 2f, 12f, energyFrac, energyCol, energyCol, false);
             energy.Add(track);
+            var fill = new VisualElement { name = "explore-energy-fill" };   // 仅保留名称供评审/旧逻辑查询，不显示
+            fill.style.display = DisplayStyle.None;
+            track.Add(fill);
             var shiftHint = new Label("Shift 加速") { pickingMode = PickingMode.Ignore };
             shiftHint.style.fontSize = 11; shiftHint.style.color = InkSoft; shiftHint.style.unityFontDefinition = Fd();
             shiftHint.style.marginTop = 4;
@@ -412,8 +414,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 status.style.opacity = a; bar.style.opacity = a; tracker.style.opacity = a;
                 tracker.style.display = prompt.style.display;
                 float f = Mathf.Clamp01(view.Stamina / ExploreMapView.MaxStamina);
-                fill.style.width = Length.Percent(f * 100f);
-                fill.style.backgroundColor = view.SprintLocked ? new Color(0.80f, 0.28f, 0.22f) : f < 0.35f ? new Color(0.92f, 0.62f, 0.16f) : new Color(0.36f, 0.72f, 0.30f);
+                energyFrac = f;
+                energyCol = view.SprintLocked ? PaperTokens.Bad : f < 0.35f ? PaperTokens.Warn : PaperTokens.Good;
+                track.MarkDirtyRepaint();
             }).Every(100);
         }
 
