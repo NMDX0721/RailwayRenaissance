@@ -9,6 +9,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed class MusicReactiveStageView : VisualElement
     {
         static readonly Dictionary<Texture2D, Color[]> Palettes = new Dictionary<Texture2D, Color[]>();
+        public static long BackdropBytes;   // bytes of the live backdrop render textures (summed over open stage views)
+        public static void TrimPalettes() => Palettes.Clear();
         readonly float[] output = new float[512];
         float[] decoded;
         Color primary, secondary, fromPrimary, fromSecondary, targetPrimary, targetSecondary;
@@ -36,7 +38,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // The backdrop is drawn by a shader into a small RenderTexture (see Resources/Shaders/MusicStageBackdrop.shader); when the shader
         // cannot be used the older painter fields below are the whole backdrop.
         static Shader backdropShader;
-        Material backdropMaterial; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        Material backdropMaterial; long backdropBytes; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
         // Each lyric style has its own backdrop look (flow speed, swirl, dust, wandering lights, brightness); switching eases between them.
         struct Look { public float flow, warp, dust, lights, bright; public Look(float f, float w, float d, float l, float b) { flow = f; warp = w; dust = d; lights = l; bright = b; } }
         Look look = new Look(1, 1, 1, 1, 1), lookTarget = new Look(1, 1, 1, 1, 1); bool lookSet;
@@ -74,7 +76,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (backdropShader == null || !backdropShader.isSupported) { backdropFailed = true; return; }
                 backdropMaterial = new Material(backdropShader) { hideFlags = HideFlags.HideAndDontSave };
                 backdropTexture = new RenderTexture(512, 320, 0, RenderTextureFormat.ARGB32) { name = "MusicStageBackdrop", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
-                backdropTexture.Create();
+                backdropTexture.Create(); BackdropBytes += MusicMemory.Bytes(backdropTexture); backdropBytes = MusicMemory.Bytes(backdropTexture);
                 style.backgroundImage = new StyleBackground(Background.FromRenderTexture(backdropTexture));
             }
             catch (Exception) { backdropFailed = true; ReleaseBackdrop(); }
@@ -82,7 +84,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         void ReleaseBackdrop()
         {
-            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; }
+            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; BackdropBytes -= backdropBytes; backdropBytes = 0; }
             if (backdropMaterial != null) { UnityEngine.Object.Destroy(backdropMaterial); backdropMaterial = null; }
         }
 

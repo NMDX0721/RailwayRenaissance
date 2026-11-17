@@ -1668,6 +1668,14 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q<Button>("music-mine-logout") != null, "The 我的 page has no logout button while signed in");
                     Capture("50-mine-signed-in");
                     Debug.Log("MUSIC_MINE_SIGNED_IN_OK: avatar, name and logout button");
+                    {
+                        var before = RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Measure();
+                        Assert(before.coverCount > 0 && before.covers > 0, "No cover memory is measured although covers are shown");
+                        RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Trim();
+                        var after = RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Measure();
+                        Assert(after.coverCount == 0, "Trim left covers in the cache");
+                        Debug.Log("MUSIC_MEMORY_OK: covers " + before.coverCount + " = " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.covers) + ", audio " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.audio) + ", stage " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.stage) + ", icons " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.icons) + "; after trim " + after.coverCount);
+                    }
                     if (!reviewHadAccount) RailwayRenaissance.UI.Tablet.Account.AccountService.ResetForTests();
                     PlayerPrefs.SetString("TabletXiaomiSignInApps", reviewGrants); PlayerPrefs.Save();
                     Finish(); return;

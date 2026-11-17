@@ -47,6 +47,15 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // 双通道平滑交叉淡化 (Deck A & Deck B Crossfade)
         private static AudioSource s_deckA;
         private static AudioSource s_deckB;
+
+        /// <summary>Real bytes of the clips the two decks hold (a standby deck may hold the next track).</summary>
+        public static long ClipBytes()
+        {
+            long total = 0;
+            if (s_deckA != null && s_deckA.clip != null) total += MusicMemory.Bytes(s_deckA.clip);
+            if (s_deckB != null && s_deckB.clip != null && s_deckB.clip != (s_deckA != null ? s_deckA.clip : null)) total += MusicMemory.Bytes(s_deckB.clip);
+            return total;
+        }
         private static bool s_isDeckAPrimary = true;
         private static bool s_isCrossfading = false;
         private static bool s_paused;

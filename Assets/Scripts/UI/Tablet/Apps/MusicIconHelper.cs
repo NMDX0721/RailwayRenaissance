@@ -455,6 +455,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         // ==================== 随身听现代高精度平滑矢量图标系统 (SDF 抗锯齿渲染) ====================
         private static readonly System.Collections.Generic.Dictionary<string, Texture2D> s_vectorIconCache = new System.Collections.Generic.Dictionary<string, Texture2D>();
 
+        public static long IconCacheBytes()
+        {
+            long total = 0;
+            foreach (var t in s_vectorIconCache.Values) if (t != null) total += MusicMemory.Bytes(t);
+            return total;
+        }
+
         private static float DistToSegment(Vector2 p, Vector2 a, Vector2 b)
         {
             Vector2 pa = p - a;

@@ -225,6 +225,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s_cardBindings.Clear();
             s_waveBars.Clear();
             s_viewForeground = false;
+            MusicMemory.Trim();   // reclaimed by the system: drop the rebuildable covers and palettes
         }
 
         public static void CloseTaskView(VisualElement taskRoot)

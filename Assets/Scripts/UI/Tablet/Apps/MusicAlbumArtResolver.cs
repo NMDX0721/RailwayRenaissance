@@ -21,6 +21,39 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static readonly HashSet<string> s_ownedCovers = new HashSet<string>();
         private static readonly Dictionary<string, Color> s_paletteCache = new Dictionary<string, Color>();
 
+        // Embedded art can be 1400 px or more while the biggest place it is drawn is a few hundred: keep at most 512 px on the long side (a quarter of the memory or less).
+        const int MaxCoverSide = 512;
+        static Texture2D Shrink(Texture2D source)
+        {
+            if (source == null || Mathf.Max(source.width, source.height) <= MaxCoverSide) return source;
+            float scale = MaxCoverSide / (float)Mathf.Max(source.width, source.height);
+            int w = Mathf.Max(1, Mathf.RoundToInt(source.width * scale)), h = Mathf.Max(1, Mathf.RoundToInt(source.height * scale));
+            var rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32); var previous = RenderTexture.active;
+            try
+            {
+                source.filterMode = FilterMode.Bilinear; Graphics.Blit(source, rt); RenderTexture.active = rt;
+                var small = new Texture2D(w, h, TextureFormat.RGBA32, false); small.ReadPixels(new Rect(0, 0, w, h), 0, 0); small.Apply(false);
+                UnityEngine.Object.Destroy(source); return small;
+            }
+            catch (Exception) { return source; }
+            finally { RenderTexture.active = previous; RenderTexture.ReleaseTemporary(rt); }
+        }
+
+        /// <summary>Real bytes held by the cover cache (Unity's own measurement of each texture).</summary>
+        public static long CacheBytes(out int count)
+        {
+            long total = 0; count = 0;
+            var seen = new HashSet<Texture2D>();   // many tracks share one authored sleeve: count each texture once
+            foreach (var t in s_coverCache.Values) if (t != null && seen.Add(t)) { total += MusicMemory.Bytes(t); count++; }
+            return total;
+        }
+
+        /// <summary>Forget every cached cover; they are drawn or fetched again on demand. Textures still on screen survive until unused.</summary>
+        public static void TrimCache()
+        {
+            s_coverCache.Clear(); s_ownedCovers.Clear(); s_paletteCache.Clear();
+        }
+
         // 经典调频暖调工业色板
         private static readonly Color C_BrassGold = new Color(0.96f, 0.82f, 0.45f, 1f);
         private static readonly Color C_BrassDark = new Color(0.83f, 0.66f, 0.26f, 1f);
@@ -65,7 +98,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         var cover = new Texture2D(2, 2);
                         if (cover.LoadImage(System.IO.File.ReadAllBytes(file)) && cover.width <= 4096 && cover.height <= 4096)
                         {
-                            cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
+                            cover = Shrink(cover); cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
                             s_coverCache[key] = cover; s_ownedCovers.Add(key); s_paletteCache[key] = ExtractPalette(cover); return cover;
                         }
                         UnityEngine.Object.Destroy(cover);
@@ -76,7 +109,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                         var cover = new Texture2D(2, 2);
                         if (cover.LoadImage(embedded) && cover.width <= 4096 && cover.height <= 4096)
                         {
-                            cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
+                            cover = Shrink(cover); cover.wrapMode = TextureWrapMode.Clamp; cover.filterMode = FilterMode.Bilinear;
                             s_coverCache[key] = cover; s_ownedCovers.Add(key); s_paletteCache[key] = ExtractPalette(cover); return cover;
                         }
                         UnityEngine.Object.Destroy(cover);
