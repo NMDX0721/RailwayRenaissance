@@ -804,8 +804,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (tx < 0 || ty < 0 || tx >= ExploreMapView.W || ty >= ExploreMapView.H) return;
             bool onSpot = false;
             foreach (var s in spotList) if (Mathf.Abs(s.tx - tx) <= 1 && Mathf.Abs(s.ty - ty) <= 1) { tx = s.tx; ty = s.ty; onSpot = true; break; }
-            view.LeaveIndoors();
-            if (view.NavigateToTile(tx, ty, onSpot)) view.OnMapPicked?.Invoke();
+            if (view.RouteToOutdoorTile(tx, ty, onSpot)) view.OnMapPicked?.Invoke();
             e.StopPropagation();
         }
 
@@ -917,6 +916,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private bool pendingInteract;
         private float stuck;
         public bool HasPath => path != null;
+        public int Interactions { get; private set; }
+        public Vector2 NpcPos(string id) { foreach (var a in areas.Values) foreach (var n in a.npcs) if (n.id == id) return n.pos; return Vector2.zero; }
+        public void SetPlayerPos(Vector2 p) { player = p; }
 
         // 加速 / 能量
         public const float MaxStamina = 100f;
@@ -1020,6 +1022,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             player = a.spawn; facing = Vector2.up;
             fadeA = 1f;
             lastPrompt = "";
+            RunQueued();
         }
 
         private void ExitArea()
@@ -1031,6 +1034,43 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             facing = Vector2.down;
             fadeA = 1f;
             lastPrompt = "";
+            RunQueued();
+        }
+
+        // ---- 跨区域导航：先走到门，切换区域后再继续走向最终目标 ----
+        private Action queuedAfterSwitch;
+        private void RunQueued() { var q = queuedAfterSwitch; queuedAfterSwitch = null; q?.Invoke(); }
+
+        private Vector2Int ExitDoorTile()
+        {
+            for (int y = 0; y < gh; y++) for (int x = 0; x < gw; x++) if (grid[y, x] == 'D') return new Vector2Int(x, y);
+            return PlayerTile;
+        }
+
+        private string AreaOfSpot(string id)
+        {
+            foreach (var a in areas.Values) foreach (var sp in a.spots) if (sp.id == id) return a.id;
+            return null;
+        }
+
+        /// <summary>要去的目标在别的区域时，规划“先出门/先进门”。返回 false 表示目标就在当前区域。</summary>
+        private bool RouteAcrossAreas(string targetArea, Action arrive)
+        {
+            if (targetArea == null || targetArea == AreaId) return false;
+            if (Indoors)
+            {
+                // 先出门；出门后若目标在别的建筑，再继续进门
+                queuedAfterSwitch = () => { if (!RouteAcrossAreas(targetArea, arrive)) arrive(); };
+                var d = ExitDoorTile();
+                NavigateToTile(d.x, d.y, false);
+                return true;
+            }
+            Vector2Int door = default; bool found = false;
+            foreach (var kv in doorLinks) if (kv.Value == targetArea) { door = kv.Key; found = true; break; }
+            if (!found) return false;
+            queuedAfterSwitch = arrive;
+            NavigateToTile(door.x, door.y, false);
+            return true;
         }
 
         private void CheckDoor()
@@ -1146,7 +1186,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     if (tx < 0 || ty < 0 || tx >= gw || ty >= gh) return true;
                     if (IsSolid(grid[ty, tx])) return true;
                 }
-            return false;
+            return NpcBlocks(px, py);
         }
 
         // ================= 主循环 =================
@@ -1230,7 +1270,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             bool sprint = shift || SprintHeld;
             if (fadeA > 0f) { fadeA = Mathf.Max(0f, fadeA - dt * 4.5f); fadeEl.style.opacity = fadeA; }
 
-            if (dir.sqrMagnitude > 0.001f) { ClearPath(); Step(dir, dt, sprint); }
+            if (dir.sqrMagnitude > 0.001f) { ClearPath(); queuedAfterSwitch = null; Step(dir, dt, sprint); }
             else if (path != null) FollowPath(dt, sprint);
             else Step(Vector2.zero, dt);
             UpdatePrompt();
@@ -1238,67 +1278,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // ================= 自动寻路（A*，8 向，不切角）=================
-        private static readonly Vector2Int[] Dirs =
-        {
-            new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1),
-            new Vector2Int(1, 1), new Vector2Int(1, -1), new Vector2Int(-1, 1), new Vector2Int(-1, -1),
-        };
-
         private bool Walk(int x, int y) => x >= 0 && y >= 0 && x < gw && y < gh && !IsSolid(grid[y, x]);
 
-        public Vector2Int PlayerTile => new Vector2Int(Mathf.Clamp(Mathf.FloorToInt(player.x / T), 0, gw - 1), Mathf.Clamp(Mathf.FloorToInt(player.y / T), 0, gh - 1));
+        /// <summary>寻路用：地形可走且不是 NPC 脚下的格子（NPC 是实体障碍，路径要绕开）。</summary>
+        private bool NavWalk(int x, int y) => Walk(x, y) && !NpcOnTile(x, y);
 
-        private bool NearestWalkable(Vector2Int t, out Vector2Int result)
+        private bool NpcOnTile(int x, int y)
         {
-            for (int r = 0; r <= 6; r++)
-                for (int dy = -r; dy <= r; dy++)
-                    for (int dx = -r; dx <= r; dx++)
-                    {
-                        if (Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy)) != r) continue;
-                        if (Walk(t.x + dx, t.y + dy)) { result = new Vector2Int(t.x + dx, t.y + dy); return true; }
-                    }
-            result = t;
+            foreach (var n in npcs)
+                if (Mathf.FloorToInt(n.pos.x / T) == x && Mathf.FloorToInt(n.pos.y / T) == y) return true;
             return false;
         }
 
+        /// <summary>移动碰撞：NPC 占一个小方块；玩家已经与某 NPC 重叠时放行（避免出生/刷新时被卡死）。</summary>
+        private bool NpcBlocks(float px, float py)
+        {
+            foreach (var n in npcs)
+            {
+                if (OverlapsNpc(player.x, player.y, n)) continue;
+                if (OverlapsNpc(px, py, n)) return true;
+            }
+            return false;
+        }
+        private static bool OverlapsNpc(float px, float py, Npc n) => Mathf.Abs(px - n.pos.x) < 15f && Mathf.Abs(py - n.pos.y) < 12f;
+
+        public Vector2Int PlayerTile => new Vector2Int(Mathf.Clamp(Mathf.FloorToInt(player.x / T), 0, gw - 1), Mathf.Clamp(Mathf.FloorToInt(player.y / T), 0, gh - 1));
+
+        private bool NearestWalkable(Vector2Int t, out Vector2Int result) => ExplorePathfinding.NearestWalkable(NavWalk, t, 6, out result);
+
         private List<Vector2> FindPath(Vector2Int start, Vector2Int goal)
         {
-            if (!Walk(goal.x, goal.y)) return null;
-            if (!Walk(start.x, start.y) && !NearestWalkable(start, out start)) return null;
-            int GW = gw;
-            var g = new float[gw * gh];
-            var from = new int[gw * gh];
-            var closed = new bool[gw * gh];
-            for (int i = 0; i < g.Length; i++) { g[i] = float.MaxValue; from[i] = -1; }
-            var open = new List<int>();
-            int si = start.y * GW + start.x, gi = goal.y * GW + goal.x;
-            g[si] = 0f; open.Add(si);
-            float H_(int i) { int dx = Mathf.Abs(i % GW - goal.x), dy = Mathf.Abs(i / GW - goal.y); return Mathf.Max(dx, dy) + 0.414f * Mathf.Min(dx, dy); }
-            while (open.Count > 0)
-            {
-                int bi = 0; float bf = float.MaxValue;
-                for (int i = 0; i < open.Count; i++) { float f = g[open[i]] + H_(open[i]); if (f < bf) { bf = f; bi = i; } }
-                int cur = open[bi]; open.RemoveAt(bi);
-                if (cur == gi) break;
-                closed[cur] = true;
-                int cx = cur % GW, cy = cur / GW;
-                foreach (var d in Dirs)
-                {
-                    int nx = cx + d.x, ny = cy + d.y;
-                    if (!Walk(nx, ny)) continue;
-                    if (d.x != 0 && d.y != 0 && (!Walk(cx + d.x, cy) || !Walk(cx, cy + d.y))) continue;
-                    int ni = ny * GW + nx;
-                    if (closed[ni]) continue;
-                    float ng = g[cur] + (d.x != 0 && d.y != 0 ? 1.414f : 1f);
-                    if (ng < g[ni]) { g[ni] = ng; from[ni] = cur; if (!open.Contains(ni)) open.Add(ni); }
-                }
-            }
-            if (from[gi] < 0 && gi != si) return null;
-            var tiles = new List<int>();
-            for (int c = gi; c != -1; c = from[c]) tiles.Add(c);
-            tiles.Reverse();
-            var pts = new List<Vector2>();
-            foreach (int t in tiles) pts.Add(new Vector2((t % GW + 0.5f) * T, (t / GW + 0.5f) * T));
+            if (!NavWalk(goal.x, goal.y)) return null;
+            if (!NavWalk(start.x, start.y) && !NearestWalkable(start, out start)) return null;
+            var tiles = ExplorePathfinding.FindPath(gw, gh, NavWalk, start, goal);
+            if (tiles == null) return null;
+            var pts = new List<Vector2>(tiles.Count);
+            foreach (var t in tiles) pts.Add(new Vector2((t.x + 0.5f) * T, (t.y + 0.5f) * T));
             return pts;
         }
 
@@ -1306,11 +1321,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public bool NavigateToTile(int tx, int ty, bool interact = false)
         {
             var goal = new Vector2Int(tx, ty);
-            if (!Walk(goal.x, goal.y) && !NearestWalkable(goal, out goal)) { OnToast?.Invoke("走不过去"); return false; }
+            if (!NavWalk(goal.x, goal.y) && !NearestWalkable(goal, out goal)) { OnToast?.Invoke("走不过去"); return false; }
             var p = Plan(goal);
             if (p == null) { OnToast?.Invoke("没有路可走"); return false; }
             path = p; pathIdx = 1; goalTile = goal; pendingInteract = interact; stuck = 0f; repaths = 0;
             return true;
+        }
+
+        /// <summary>评审/回放用：按固定步长推进自动寻路（等价于 Tick 里没有手动输入的分支）。返回是否仍在行走。</summary>
+        public bool SimulateAutoWalk(int maxSteps, float dt = 1f / 30f)
+        {
+            for (int i = 0; i < maxSteps && path != null; i++) FollowPath(dt, false);
+            return path != null;
         }
 
         public void ClearPath() { path = null; pendingInteract = false; stuck = 0f; }
@@ -1379,6 +1401,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private void OnPointerDown(PointerDownEvent e)
         {
+            queuedAfterSwitch = null;
             Vector2 world = ScreenToWorld(e.localPosition);
             // 点中交互点 / NPC：走过去并自动交互
             foreach (var s in spots)
@@ -1389,7 +1412,21 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     NavigateToTile(Mathf.FloorToInt(n.pos.x / T), Mathf.FloorToInt(n.pos.y / T), true);
                     return;
                 }
-            NavigateToTile(Mathf.FloorToInt(world.x / T), Mathf.FloorToInt(world.y / T), false);
+            int wx = Mathf.FloorToInt(world.x / T), wy = Mathf.FloorToInt(world.y / T);
+            if (wx >= 0 && wy >= 0 && wx < gw && wy < gh && (grid[wy, wx] == '#' || grid[wy, wx] == 'R'))
+            {
+                // 点到建筑墙体/屋顶：走到离点击处最近的门并进入，而不是随便贴到哪面墙
+                float best = float.MaxValue; Vector2Int door = default; bool found = false;
+                for (int y = 0; y < gh; y++)
+                    for (int x = 0; x < gw; x++)
+                        if (grid[y, x] == 'D')
+                        {
+                            float d = (x - wx) * (x - wx) + (y - wy) * (y - wy);
+                            if (d < best && d <= 144f) { best = d; door = new Vector2Int(x, y); found = true; }
+                        }
+                if (found) { NavigateToTile(door.x, door.y, true); return; }
+            }
+            NavigateToTile(wx, wy, false);
         }
 
         // ---- 给地图面板用 ----
@@ -1464,6 +1501,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         public void Interact()
         {
+            Interactions++;
             if (!Nearest(out var s, out var n, out bool isNpc)) return;
             if (isNpc)
             {
@@ -1518,12 +1556,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             player = new Vector2(20.5f * T, 8.5f * T); // 起床点：调度室门口
         }
 
-        /// <summary>自动寻路前往某地点并在到达后触发交互（目前仅限当前区域；室外地点会先出门）。</summary>
+        /// <summary>自动寻路前往某地点并在到达后触发交互；地点在别的区域（室内/室外）时会先走到门、切换区域后再继续。</summary>
         public void GoToSpot(string id)
         {
-            if (!spots.Any(s => s.id == id)) LeaveIndoors();
-            foreach (var s in spots)
-                if (s.id == id) { NavigateToTile(s.tx, s.ty, true); return; }
+            string target = AreaOfSpot(id);
+            if (target == null) return;
+            void Arrive() { foreach (var sp in spots) if (sp.id == id) { NavigateToTile(sp.tx, sp.ty, true); return; } }
+            if (RouteAcrossAreas(target, Arrive)) return;
+            Arrive();
+        }
+
+        /// <summary>地图面板点击：目标是室外某格；人在室内时先走出门。</summary>
+        public bool RouteToOutdoorTile(int tx, int ty, bool interact)
+        {
+            if (!Indoors) return NavigateToTile(tx, ty, interact);
+            queuedAfterSwitch = () => NavigateToTile(tx, ty, interact);
+            var d = ExitDoorTile();
+            return NavigateToTile(d.x, d.y, false);
         }
 
         public void TeleportToSpot(string id)

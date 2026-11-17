@@ -193,6 +193,24 @@ public static class ExploreReview
                     Assert(!view.NavigateToTile(0, 0, false) || view.HasPath, "navigate to blocked tile should snap to walkable or fail");
                     view.ClearPath();
 
+                    // 跨区域寻路：室外 → 调度室调度台；室内 → 室外茶摊
+                    view.TeleportToSpot("platform"); view.LeaveIndoors();
+                    view.GoToSpot("dispatch_desk");
+                    for (int guard = 0; guard < 6 && (view.HasPath || !view.Indoors); guard++) view.SimulateAutoWalk(4000);
+                    Assert(view.Indoors && view.AreaId == "dispatch", "cross-area route outdoor->dispatch desk did not enter the room");
+                    Assert(view.Interactions > 0 || lastAction == "dispatch_desk", "arrived at the desk but did not interact");
+                    view.GoToSpot("tea");
+                    for (int guard = 0; guard < 6 && (view.HasPath || view.Indoors); guard++) view.SimulateAutoWalk(4000);
+                    Assert(!view.Indoors, "cross-area route indoor->tea did not leave the room");
+                    view.ClearPath();
+                    // NPC 是实体：朝老陈直走不能穿过他
+                    view.TeleportToSpot("platform");
+                    var nearNpc = view.NpcPos("laochen");
+                    view.SetPlayerPos(nearNpc + new Vector2(-40f, 0f));
+                    for (int i = 0; i < 60; i++) view.Step(new Vector2(1f, 0f), 1f / 30f);
+                    Assert(view.PlayerPos.x < nearNpc.x - 10f, "player walked through an NPC (x=" + view.PlayerPos.x + " npc=" + nearNpc.x + ")");
+                    view.TeleportToSpot("platform");
+
                     // 加速消耗能量，且比步行快
                     view.TeleportToSpot("platform");
                     float x0 = view.PlayerPos.x;
