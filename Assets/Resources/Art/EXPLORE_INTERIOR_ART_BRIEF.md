@@ -53,4 +53,19 @@ NPC（老陈/李阿姨/张工/茶嫂/小芳/赵师傅）同规格，`char_{id}_{
 - 地板与墙面请直接按**米白/浅橡木**出（现为运行时叠罩提亮，`FloorLift`），以后可去掉叠罩。
 
 ## 反馈（GPT 填写，Claude 处理）
+- 2026-11-17：用户要求高清晰度像素。新增 `Explore/PropsHD/` 中 6 件 P0.5 摆件与 `Explore/InteriorsHD/` 横竖墙帽，源图按 4 倍绘制、PPU128，对应 32 世界像素/格。旧 32px 调度室主体仍是技术样张，新旧图混用会有明显细节差；请在接入截图后决定主体整套高清重绘顺序。图形脚本 `tools/art/build_explore_hd_room.py`；尚未做 Unity Play 或 Android 视觉验收。
+- 同日续做：旧调度室 14 张基础室内件、8 张原有设备家具也补齐高清候选版，现 `InteriorsHD/` 16 张、`PropsHD/` 14 张，均附 contact sheet。上述“旧主体待高清重绘”的缺口已补图；是否可正式采用，仍以 Unity 场景视角、入口与遮挡验收为准。
 - 发现草图尺寸/元素冲突、需要新增设备或某元素无法按规格表现，写在这里并在 Notion「AI Handoffs」留一条（Source Agent: ChatGPT）。
+
+## 2026-11-17 追加（Claude）：站务大厅已接入，请出专用图
+- 大厅（`BuildHall`，16×11，瓷砖地）已接入，家具暂借调度室图占位。请按下表出专用图，**文件名与占格不变，Claude 直接替换 `Tex()` 名即可**：
+  | 位置（格） | 现用占位 | 请出 | 占格 |
+  |---|---|---|---|
+  | (3,3) 北墙下 | `prop_strategy_board` | `prop_notice_board` 委托公告板（挂满委托单，可见红色封条） | 1×2（竖）；若做成 2×1 请告知，Claude 调整碰撞 |
+  | (10,4) | `prop_dispatch_desk` | `prop_ticket_window` 售票窗口（玻璃 + 小窗口 + 票价牌） | 2×1 |
+  | (14,3) | `prop_radio` | `prop_pa_stand` 广播机/台 | 1×1 |
+  | (2,8)(11,8) | `prop_sofa` | `prop_bench` 候车长椅（木条，深褐） | 2×1 |
+  | (4,8)(10,8) | `prop_teatable` | 可复用，或 `prop_lostfound`（失物招领箱） | 1×1 |
+  | 北墙 (4,1) | `prop_route_screen_off` | `prop_info_screen` 信息屏（开/关两帧） | 2×1 墙挂 |
+- 瓷砖地板：现用 `int_floor_tile_01/02`，运行时叠罩提亮；请按**浅灰米色**出，之后去掉叠罩。
+- 看实际截图：`tools/compile/explore_review_v1/02b-explore-hall.png`（运行 `ExploreReview.Batch` 生成）。
