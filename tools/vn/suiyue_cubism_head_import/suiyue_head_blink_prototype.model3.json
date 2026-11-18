@@ -1,0 +1,10 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "suiyue_head_blink_prototype.moc3",
+		"Textures": [
+			"suiyue_head_blink_prototype.2048/texture_00.png"
+		],
+		"DisplayInfo": "suiyue_head_blink_prototype.cdi3.json"
+	}
+}
