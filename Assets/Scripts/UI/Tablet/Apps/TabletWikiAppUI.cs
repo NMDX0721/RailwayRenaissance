@@ -37,6 +37,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static readonly List<View> s_back = new List<View>();
         private static readonly List<View> s_fwd = new List<View>();
         private static readonly List<string> s_session = new List<string>();
+        private static HashSet<string> s_lockedArticles;
         private static View s_cur;
         private static string s_pending;
 
@@ -145,8 +146,27 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             });
 
             RefreshAccount();
+            s_lockedArticles = LockedArticles();
             if (s_cur == null) s_cur = new View { Kind = Kind.Home };
             if (!string.IsNullOrEmpty(s_pending)) ConsumePending(); else Render();
+        }
+
+        private static HashSet<string> LockedArticles()
+        {
+            var locked = new HashSet<string>();
+            foreach (var article in TabletWikiData.All)
+                if (!article.Unlocked) locked.Add(article.Id);
+            return locked;
+        }
+
+        internal static void RefreshStoryProgress()
+        {
+            if (!Alive()) return;
+            var locked = LockedArticles();
+            if (s_lockedArticles.SetEquals(locked)) return;
+            s_lockedArticles = locked;
+            s_listCache.Clear();
+            Render();
         }
 
         private static void OnAccountChanged()

@@ -2215,6 +2215,15 @@ public class GameMainUI : MonoBehaviour
         public void OnClosed(VisualElement view) => TabletMusicAppUI.CloseTaskView(view);
     }
 
+    private sealed class WikiTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        public void OnViewCreated(VisualElement view, bool restored) { }
+        public void OnForeground(VisualElement view) => TabletWikiAppUI.RefreshStoryProgress();
+        public void OnBackground(VisualElement view) { }
+        public void OnViewReclaimed(VisualElement view) { }
+        public void OnClosed(VisualElement view) { }
+    }
+
     private sealed class ExploreTabletTaskLifecycle : ITabletTaskLifecycle
     {
         internal ExploreMapView.SessionState SavedState { get; private set; }
@@ -3886,6 +3895,7 @@ public class GameMainUI : MonoBehaviour
             task = new TabletTaskSession(name, name);
             if (name == "音乐") task.Lifecycle = new MusicTabletTaskLifecycle();
             if (name == "笔记") task.Lifecycle = new NotesTabletTaskLifecycle();
+            if (name == "媒姬百科") task.Lifecycle = new WikiTabletTaskLifecycle();
             if (name == "RDA") task.Lifecycle = new ExploreTabletTaskLifecycle();
             tabletTasks.Add(task);
         }

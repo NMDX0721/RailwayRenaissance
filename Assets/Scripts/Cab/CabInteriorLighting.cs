@@ -32,6 +32,7 @@ namespace RailwayRenaissance.Cab
         MaterialPropertyBlock properties;
         bool previousLegacy;
         Font reviewFont;
+        int passengerFrontCommand, passengerRearCommand;
         public bool CabCeilingOn => cabCeiling;
         public bool TaskOn => task;
         public bool AssistantTaskOn => assistantTask;
@@ -47,6 +48,7 @@ namespace RailwayRenaissance.Cab
             if (zone < 0 || zone > 1) throw new ArgumentOutOfRangeException(nameof(zone));
             return zone == 0 ? passengerFront : passengerRear;
         }
+        internal int PassengerZoneCommand(int zone) => zone == 0 ? passengerFrontCommand : passengerRearCommand;
         public void Configure(CabEngineState state, Fixture[] bindings)
         {
             engineState = state; fixtures = bindings ?? throw new ArgumentNullException(nameof(bindings));
@@ -73,7 +75,8 @@ namespace RailwayRenaissance.Cab
         public void SetPassengerZone(int zone, bool on)
         {
             if (zone < 0 || zone > 1) throw new ArgumentOutOfRangeException(nameof(zone));
-            if (zone == 0) passengerFront = on; else passengerRear = on;
+            if (zone == 0) { passengerFront = on; passengerFrontCommand++; }
+            else { passengerRear = on; passengerRearCommand++; }
             Apply();
         }
         public void SetInstrumentDimmer(float level)
@@ -86,6 +89,8 @@ namespace RailwayRenaissance.Cab
         public void SetSupply(bool normal, bool backup) { mainPower = normal; batteryPower = backup; Apply(); }
         public void AllOff()
         {
+            passengerFrontCommand++;
+            passengerRearCommand++;
             cabCeiling = task = passengerFront = passengerRear = assistantTask = access = false; instrumentDimmer = 0; Apply();
         }
         float Level(InteriorLightCircuit circuit)

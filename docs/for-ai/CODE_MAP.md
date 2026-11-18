@@ -1,5 +1,7 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-18 PR #13 审核跟进。媒姬百科在前台检测词条解锁变化并刷新当前页，保留导航与滚动位置。`VNManager` 在回顾跳转、书签重放与无曲名的旧存档中恢复目标句之前最近一条生效的场景内配乐。自动照明分别记录两个客室灯区和近光灯的命令版本，白天只撤销自入夜以来未被其他命令接管的自动设置。
+
 2026-11-18 PR #12 审核跟进。RDA 和巡线共用平板任务，切换应用保留巡线视图，回收视图时保存区域、位置、时间、精力和发现奖励状态。巡线仅在前台且系统面板、子页或地图内面板关闭时处理世界输入。经营 HUD 通过 `GameData.GetDailyCapacity()` 显示计划运力。控制中心分页只消费横拖的松手事件，歌词页从面板卸载时解除静态引用。
 
 2026-11-18 巡线室外 56×24 格。`ExploreMapView.DrawOutdoorArt` 将 `Scenes/scene_wufeng_station_v2` 和 `Scenes/scene_wufeng_east` 按黄线与四条钢轨接合。逻辑网格负责通行、小地图、铁路商店、东端道口及货运栈台交互。`DrawTrain` 单独叠绘 v8 编组 `Vehicles/train_nf5k_parked`。`TabletExploreAppUI.BuildStatus` 提供紧凑状态卡。`ExploreReview.Batch` 包含商店柜台和东段寻路验证。见[室外美术单](../../Assets/Resources/Art/EXPLORE_MAIN_SCENE_ART_BRIEF.md)。

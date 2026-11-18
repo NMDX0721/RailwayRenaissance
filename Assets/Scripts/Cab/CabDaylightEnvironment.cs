@@ -22,7 +22,12 @@ namespace RailwayRenaissance.Cab
         Font font;
         Material sourceSky; bool instancedSky;
         Light moon; GameObject moonDisc; Material moonMaterial;
-        bool lampsAutoOn; float lastAutoCheck;
+        bool automaticNight;
+        float lastAutoCheck;
+        CabInteriorLighting automaticPassengerLights;
+        CabExteriorLighting automaticHeadlight;
+        int? automaticFrontCommand, automaticRearCommand;
+        int automaticHeadlightCommand;
 
         public float Hour => hour;
         public float SunElevation { get; private set; }
@@ -252,25 +257,51 @@ namespace RailwayRenaissance.Cab
             moonDisc = null; moon = null; moonMaterial = null; windowLight = null;
         }
 
-        // ---- automatic lamps: dark enough -> cab/passenger/head lamps come on; bright again -> only the ones we switched on go off ----
+        // At dawn, release only passenger and headlight settings still owned by the dusk automation.
         void AutoLamps()
         {
-            var lamps = Object.FindAnyObjectByType<CabInteriorLighting>();
-            var outside = Object.FindAnyObjectByType<CabExteriorLighting>();
-            bool dark = SunElevation < 3f;
-            if (dark && !lampsAutoOn)
+            if (SunElevation < 3f && !automaticNight)
             {
-                lampsAutoOn = true;
-                if (lamps != null && !lamps.CabCeilingOn && !lamps.TaskOn) lamps.SetCabPreset(1);
-                if (lamps != null) { lamps.SetPassengerZone(0, true); lamps.SetPassengerZone(1, true); }
-                if (outside != null && outside.Mode == ExteriorLightMode.Off) outside.SetMode(ExteriorLightMode.Dim);
+                automaticNight = true;
+                automaticPassengerLights = Object.FindAnyObjectByType<CabInteriorLighting>();
+                if (automaticPassengerLights != null)
+                {
+                    if (!automaticPassengerLights.CabCeilingOn && !automaticPassengerLights.TaskOn)
+                        automaticPassengerLights.SetCabPreset(1);
+                    automaticFrontCommand = EnableAutomaticZone(automaticPassengerLights, 0);
+                    automaticRearCommand = EnableAutomaticZone(automaticPassengerLights, 1);
+                }
+                var outside = Object.FindAnyObjectByType<CabExteriorLighting>();
+                if (outside != null && outside.Mode == ExteriorLightMode.Off)
+                {
+                    outside.SetMode(ExteriorLightMode.Dim);
+                    automaticHeadlight = outside;
+                    automaticHeadlightCommand = outside.ModeCommand;
+                }
             }
-            else if (!dark && SunElevation > 8f && lampsAutoOn)
+            else if (SunElevation > 8f && automaticNight)
             {
-                lampsAutoOn = false;
-                if (lamps != null) { lamps.SetPassengerZone(0, false); lamps.SetPassengerZone(1, false); }
-                if (outside != null && outside.Mode == ExteriorLightMode.Dim) outside.SetMode(ExteriorLightMode.Off);
+                automaticNight = false;
+                if (automaticPassengerLights != null)
+                {
+                    if (automaticFrontCommand == automaticPassengerLights.PassengerZoneCommand(0))
+                        automaticPassengerLights.SetPassengerZone(0, false);
+                    if (automaticRearCommand == automaticPassengerLights.PassengerZoneCommand(1))
+                        automaticPassengerLights.SetPassengerZone(1, false);
+                }
+                if (automaticHeadlight != null && automaticHeadlight.ModeCommand == automaticHeadlightCommand)
+                    automaticHeadlight.SetMode(ExteriorLightMode.Off);
+                automaticPassengerLights = null;
+                automaticHeadlight = null;
+                automaticFrontCommand = automaticRearCommand = null;
             }
+        }
+
+        private static int? EnableAutomaticZone(CabInteriorLighting lamps, int zone)
+        {
+            if (lamps.PassengerZoneOn(zone)) return null;
+            lamps.SetPassengerZone(zone, true);
+            return lamps.PassengerZoneCommand(zone);
         }
 
         [ContextMenu("Daylight/Clear")] void Clear() { Apply(DayPreset.Clear); }

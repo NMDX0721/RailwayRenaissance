@@ -287,10 +287,29 @@ public partial class VNManager : MonoBehaviour
         var scene = currentScript.scenes[Mathf.Min(sceneIndex, currentScript.scenes.Length - 1)];
         if (!string.IsNullOrEmpty(scene.bg))
             backgroundManager?.SetBackgroundImmediate(scene.bg);
-        if (!string.IsNullOrEmpty(scene.bgm))
-            VNAudioManager.Instance?.PlayBGM(scene.bgm);
+        RestoreCursorBgm(scene, dialogueIndex);
         characterSpriteManager?.ClearAll();
         ShowCurrentDialogue();
+    }
+
+    private string ResolveCursorBgm(SceneData scene, int dialogueIndex)
+    {
+        if (scene.d != null)
+        {
+            for (int i = Mathf.Min(dialogueIndex, scene.d.Length - 1); i >= 0; i--)
+            {
+                var entry = scene.d[i];
+                if (!string.IsNullOrEmpty(entry?.bgm) && EvaluateCondition(entry.condition))
+                    return entry.bgm;
+            }
+        }
+        return scene.bgm;
+    }
+
+    private void RestoreCursorBgm(SceneData scene, int dialogueIndex)
+    {
+        var bgm = ResolveCursorBgm(scene, dialogueIndex);
+        if (!string.IsNullOrEmpty(bgm)) VNAudioManager.Instance?.PlayBGM(bgm);
     }
 
     private VNSaveData LoadLatestSave()
@@ -1495,8 +1514,8 @@ public partial class VNManager : MonoBehaviour
 
             if (!string.IsNullOrEmpty(saveData.bgmName))
                 VNAudioManager.Instance?.PlayBGM(saveData.bgmName);
-            else if (!string.IsNullOrEmpty(scene.bgm))
-                VNAudioManager.Instance?.PlayBGM(scene.bgm);
+            else
+                RestoreCursorBgm(scene, currentDialogueIndex);
         }
 
         characterSpriteManager?.ClearAll();
@@ -3488,8 +3507,7 @@ public partial class VNManager : MonoBehaviour
         var scene = currentScript.scenes[sceneIndex];
         if (!string.IsNullOrEmpty(scene.bg))
             backgroundManager?.SetBackgroundImmediate(scene.bg);
-        if (!string.IsNullOrEmpty(scene.bgm))
-            VNAudioManager.Instance?.PlayBGM(scene.bgm);
+        RestoreCursorBgm(scene, dialogueIndex);
 
         // 恢复立绘：回放当前场景历史立绘，避免跳转后立绘丢失
         RestoreCharacterSpritesUpTo(scene, dialogueIndex);

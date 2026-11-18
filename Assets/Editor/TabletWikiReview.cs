@@ -231,7 +231,32 @@ namespace RailwayRenaissance.Editor
                         root.Add(sheet); Next(); break;
                     }
                     case 76: Capture("31_mascot"); Next(); break;
-                    case 77: Teardown(true, "all stages"); break;
+                    case 77:
+                    {
+                        var article = TabletWikiData.Get("laochen");
+                        string key = article.UnlockKey;
+                        bool hadKey = PlayerPrefs.HasKey(key);
+                        int previous = PlayerPrefs.GetInt(key);
+                        try
+                        {
+                            PlayerPrefs.SetInt(key, 0);
+                            TabletWikiAppUI.OpenArticle(article.Id);
+                            var articleView = root.Q<ScrollView>("wiki-main");
+                            Assert(articleView.Query<Label>().ToList().Exists(label => label.text == "此词条尚未收录"),
+                                "locked article did not show its unlock notice");
+                            GameMainUI.OpenTabletApp("设置");
+                            PlayerPrefs.SetInt(key, 1);
+                            GameMainUI.OpenTabletApp("媒姬百科");
+                            Assert(root.Q<ScrollView>("wiki-main") == articleView && !articleView.Query<Label>().ToList()
+                                .Exists(label => label.text == "此词条尚未收录"), "returning to Wiki did not refresh the cached article");
+                        }
+                        finally
+                        {
+                            if (hadKey) PlayerPrefs.SetInt(key, previous);
+                            else PlayerPrefs.DeleteKey(key);
+                        }
+                        Teardown(true, "all stages and foreground unlock refresh"); break;
+                    }
                 }
             }
             catch (Exception ex) { Teardown(false, "Exception at stage " + stage + ": " + ex.Message + "\n" + ex.StackTrace); }
