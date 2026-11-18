@@ -66,7 +66,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Active.Add(Make("tea", "尝尝新茶", "茶嫂", "茶嫂说霜降前这批茶得下山，去茶摊坐一坐。", 35, 1,
                 Obj(QuestEvent.Talk, "chasao", "和茶嫂聊聊新茶"),
                 Obj(QuestEvent.Interact, "tea", "在茶摊接一份委托")));
-            Active.Add(Make("rest", "歇口气", "自己", "忙了半天，在调度室的沙发上歇一会儿，恢复精力。", 0, 1,
+            Active.Add(Make("tinker", "闲不住的站长", "小芳", "小芳在学看信号灯：扳一扳站台边的信号机手柄，再去东端道口放一次栏杆给她看看。", 40, 1,
+                Obj(QuestEvent.Interact, "signal_lever", "扳动信号机手柄"),
+                Obj(QuestEvent.Interact, "east_crossing", "在东端道口操作栏杆")));
+            Active.Add(Make("rest","歇口气", "自己", "忙了半天，在调度室的沙发上歇一会儿，恢复精力。", 0, 1,
                 Obj(QuestEvent.Interact, "sofa", "在沙发上休息")));
             Changed?.Invoke();
         }

@@ -10,7 +10,7 @@ using RailwayRenaissance.UI.Tablet.Paper;
 namespace RailwayRenaissance.UI.Tablet.Apps
 {
     /// <summary>
-    /// 平板应用「巡线」：星露谷式 2D 俯视自由探索层（灰盒毛坯）。
+    /// 平板应用「巡线」的 2D 俯视自由探索层。
     /// 屏幕布局：左上状态胶囊 · 右上 地图/菜单 图标键 · 底部物品栏 · 右下能量条与加速键 · 左下虚拟摇杆（可开关）。
     /// 经营页（调度/人员/订单/市场/财务）统一收进菜单面板；返回桌面也在菜单里，不再占据角落。
     /// </summary>
@@ -50,11 +50,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             host.Add(view);
             ActiveView = view;
 
-            // ===== 左上：打卡机工牌卡（头像 / 时间 / 日程条 / 资金 / 信任；地图与系统键收在卡上）=====
-            var badge = BuildBadge(view, out var updateBadge, () => ToggleMapRef?.Invoke(), () => ToggleMenuRef?.Invoke());
-            Fade(badge, 0.3f);
-            host.Add(badge);
-            var status = badge;
+            var status = BuildStatus(view, out var updateStatus);
+            Fade(status, 0.3f);
+            host.Add(status);
+
+            var actions = new VisualElement { name = "explore-actions", pickingMode = PickingMode.Ignore };
+            actions.style.position = Position.Absolute;
+            actions.style.top = 46; actions.style.right = 18;
+            actions.style.flexDirection = FlexDirection.Row;
+            actions.Add(IconButton(TabletIconKind.Map, "地图", () => ToggleMapRef?.Invoke()));
+            actions.Add(IconButton(TabletIconKind.Gear, "系统", () => ToggleMenuRef?.Invoke()));
+            host.Add(actions);
 
             // ===== 面板（地图 / 菜单）=====
             var mapOverlay = BuildMapOverlay(view, () => { });
@@ -261,15 +267,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var bar = new VisualElement { name = "explore-hotbar-slots" };
             bar.style.flexDirection = FlexDirection.Row;
-            StyleCard(bar, 20, 10, 10);
+            StyleCard(bar, 17, 7, 6);
             Fade(bar, 0.3f);
             hotbar.Add(bar);
             var slots = new List<VisualElement>();
             int selected = 0;
             var itemName = new Label { name = "explore-item-name" };
             itemName.pickingMode = PickingMode.Ignore;
-            itemName.style.fontSize = 13; itemName.style.color = InkSoft; itemName.style.unityFontDefinition = Fd();
-            itemName.style.marginTop = 6;
+            itemName.style.fontSize = 13; itemName.style.color = Ink; itemName.style.unityFontDefinition = Fd();
+            itemName.style.marginBottom = 5;
+            StyleCard(itemName, 9, 8, 2);
             void Select(int i)
             {
                 selected = i;
@@ -287,7 +294,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 bar.Add(slot);
                 slots.Add(slot);
             }
-            hotbar.Add(itemName);
+            hotbar.Insert(0, itemName);
             Select(0);
 
             // ===== 右下：能量条 + 加速键 =====
@@ -374,9 +381,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
             void OpenJournal() { CloseAll(); RebuildJournal(); ShowPanel(journalOverlay); }
 
-            var tracker = PaperUI.Panel(PaperTokens.RadiusM, 14, 10, true, false);
+            var tracker = PaperUI.Panel(PaperTokens.RadiusM, 12, 7, true, false);
             tracker.name = "explore-tracker";
-            tracker.style.position = Position.Absolute; tracker.style.left = 18; tracker.style.top = 182; tracker.style.width = 380;
+            tracker.style.position = Position.Absolute; tracker.style.left = 18; tracker.style.top = 128; tracker.style.width = 292;
             tracker.pickingMode = PickingMode.Position;
             tracker.RegisterCallback<ClickEvent>(_ => OpenJournal());
             host.Add(tracker);
@@ -390,9 +397,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 var q = ExploreQuests.First(true);
                 if (q == null) { var ok = PaperUI.Text("今天的事都办完了", PaperTokens.FsBody, PaperTokens.Good, true); ok.style.marginTop = 4; ok.pickingMode = PickingMode.Ignore; tracker.Add(ok); return; }
                 var title = PaperUI.Text(q.title, PaperTokens.FsBody, PaperTokens.Ink, true); title.style.marginTop = 4; title.pickingMode = PickingMode.Ignore; tracker.Add(title);
-                foreach (var o in q.objectives)
+                var objective = q.objectives.FirstOrDefault(o => !o.Done);
+                if (objective != null)
                 {
-                    var l = PaperUI.Text((o.Done ? "✓ " : "○ ") + o.text, PaperTokens.FsSmall, o.Done ? PaperTokens.Good : PaperTokens.InkSoft);
+                    var l = PaperUI.Text(objective.text, PaperTokens.FsSmall, PaperTokens.InkSoft);
+                    l.style.whiteSpace = WhiteSpace.Normal;
                     l.style.marginTop = 2; l.pickingMode = PickingMode.Ignore; tracker.Add(l);
                 }
             }
@@ -407,7 +416,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             host.schedule.Execute(() =>
             {
-                updateBadge();
+                updateStatus();
                 // 走动时 HUD 退到半透明，停下来再亮起，不遮挡画面
                 prompt.style.display = (IsOpen(mapOverlay) || IsOpen(menuOverlay) || IsOpen(rdaOverlay)) ? DisplayStyle.None : DisplayStyle.Flex;
                 float a = view.IsMoving ? 0.5f : 1f;
@@ -679,109 +688,51 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static Action ToggleMapRef, ToggleMenuRef;
 
         /// <summary>打卡机工牌卡：顶部穿孔条 + 头像窗 + 姓名/地点 + 大号时间 + 日程刻度条 + 资金/信任。</summary>
-        private static VisualElement BuildBadge(ExploreMapView view, out Action update, Action onMap, Action onMenu)
+        private static VisualElement BuildStatus(ExploreMapView view, out Action update)
         {
-            var card = new VisualElement { name = "explore-status" };
+            var card = PaperUI.Panel(PaperTokens.RadiusM, 12, 7, true, false);
+            card.name = "explore-status";
             card.pickingMode = PickingMode.Ignore;
             card.style.position = Position.Absolute;
             card.style.left = 18; card.style.top = 46;
-            card.style.width = 380; card.style.height = 126;
-            card.style.flexDirection = FlexDirection.Row;
-            PaperUI.StylePanel(card, PaperTokens.RadiusM, 12, 12, true, true);
-            card.style.paddingTop = 14;
+            card.style.width = 292; card.style.height = 76;
 
-            // 头像窗：证件照式相框，里面是正在走的小人
-            var photo = new VisualElement { pickingMode = PickingMode.Ignore };
-            photo.style.width = 72; photo.style.height = 86; photo.style.flexShrink = 0;
-            photo.style.backgroundColor = new Color(0.80f, 0.86f, 0.90f, 1f);
-            PaperUI.Round(photo, 10); PaperUI.Border(photo, 2f, PaperTokens.Line); photo.style.overflow = Overflow.Hidden;
-            photo.generateVisualContent += ctx =>
-            {
-                var p = ctx.painter2D;
-                float w = photo.layout.width, h = photo.layout.height;
-                p.fillColor = new Color(0.62f, 0.72f, 0.80f, 1f);
-                p.BeginPath(); p.MoveTo(new Vector2(0, h * 0.62f)); p.LineTo(new Vector2(w, h * 0.55f)); p.LineTo(new Vector2(w, h)); p.LineTo(new Vector2(0, h)); p.ClosePath(); p.Fill();
-                ExploreCharacters.Draw(p, ExploreCharacters.Get("player"), new Vector2(w * 0.5f, h + 44f), 2.5f, CharDir.Down, 0, false, 0f);
-            };
-            card.Add(photo);
-
-            var col = new VisualElement { pickingMode = PickingMode.Ignore };
-            col.style.flexGrow = 1; col.style.marginLeft = 12; col.style.minWidth = 0;
-            card.Add(col);
-
-            var nameRow = new VisualElement { pickingMode = PickingMode.Ignore };
-            nameRow.style.flexDirection = FlexDirection.Row; nameRow.style.alignItems = Align.Center;
-            var nameL = PaperUI.Text("林彪悍", PaperTokens.FsBody, PaperTokens.Ink, true);
-            var whereL = PaperUI.Text("", PaperTokens.FsNote + 1, PaperTokens.InkSoft); whereL.style.marginLeft = 8; whereL.style.flexGrow = 1;
-            nameRow.Add(nameL); nameRow.Add(whereL);
-            col.Add(nameRow);
-
-            var timeRow = new VisualElement { pickingMode = PickingMode.Ignore };
-            timeRow.style.flexDirection = FlexDirection.Row; timeRow.style.alignItems = Align.FlexEnd;
-            var clockL = PaperUI.Text("06:00", 30, PaperTokens.Ink, true);
-            var dayL = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.InkSoft); dayL.style.marginLeft = 8; dayL.style.marginBottom = 4;
-            timeRow.Add(clockL); timeRow.Add(dayL);
-            col.Add(timeRow);
-
-            // 日程刻度条：06:00 → 22:00
-            float dayFrac = 0f; Color dayCol = PaperTokens.Amber;
-            var sched = new VisualElement { pickingMode = PickingMode.Ignore };
-            sched.style.height = 14; sched.style.marginTop = 4;
-            sched.generateVisualContent += ctx => PaperDraw.Ruler(ctx.painter2D, 2f, sched.layout.width - 2f, 7f, dayFrac, dayCol, dayCol, false);
-            col.Add(sched);
+            var header = new VisualElement { pickingMode = PickingMode.Ignore };
+            header.style.flexDirection = FlexDirection.Row; header.style.alignItems = Align.Center;
+            var clock = PaperUI.Text("06:00", 25, PaperTokens.Ink, true);
+            var day = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.InkSoft);
+            day.style.marginLeft = 9;
+            var location = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.InkSoft);
+            location.style.marginLeft = 10; location.style.flexGrow = 1;
+            location.style.unityTextAlign = TextAnchor.MiddleRight;
+            header.Add(clock); header.Add(day); header.Add(location);
+            card.Add(header);
 
             var stats = new VisualElement { pickingMode = PickingMode.Ignore };
-            stats.style.flexDirection = FlexDirection.Row; stats.style.alignItems = Align.Center; stats.style.marginTop = 4;
-            var ic1 = new TabletIconElement(TabletIconKind.Bolt, 16, PaperTokens.Good); ic1.style.marginRight = 3;
-            var moneyL = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.Ink, true);
-            var ic2 = new TabletIconElement(TabletIconKind.Heart, 16, PaperTokens.Bad); ic2.style.marginLeft = 12; ic2.style.marginRight = 3;
-            var trustL = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.Ink, true);
-            stats.Add(ic1); stats.Add(moneyL); stats.Add(ic2); stats.Add(trustL);
-            col.Add(stats);
-
-            // 右侧竖排：地图 / 系统（小号，收在卡片边上）
-            var btns = new VisualElement();
-            btns.style.flexShrink = 0; btns.style.marginLeft = 6; btns.style.justifyContent = Justify.SpaceBetween;
-            VisualElement Small(TabletIconKind icon, string tip, Action click)
-            {
-                var b = new VisualElement { tooltip = tip };
-                b.style.width = 38; b.style.height = 38;
-                b.style.alignItems = Align.Center; b.style.justifyContent = Justify.Center;
-                b.style.backgroundColor = PaperTokens.PaperDeep; PaperUI.Round(b, 19); PaperUI.Border(b, 1f, PaperTokens.Line);
-                b.Add(new TabletIconElement(icon, 20, PaperTokens.Ink) { pickingMode = PickingMode.Ignore });
-                b.RegisterCallback<ClickEvent>(_ => click?.Invoke());
-                return b;
-            }
-            btns.Add(Small(TabletIconKind.Map, "地图", onMap));
-            var gear = Small(TabletIconKind.Gear, "系统", onMenu); gear.style.marginTop = 6;
-            btns.Add(gear);
-            card.Add(btns);
-            card.pickingMode = PickingMode.Position;
-
-            // 顶部打卡槽与穿孔线
-            card.generateVisualContent += ctx =>
-            {
-                var p = ctx.painter2D;
-                float w = card.layout.width;
-                p.fillColor = new Color(0.25f, 0.20f, 0.14f, 0.55f);
-                p.BeginPath(); PaperDraw.RoundRectPath(p, new Rect(w * 0.5f - 26f, 5f, 52f, 5f), 2.5f); p.Fill();
-                PaperDraw.Perforation(p, new Vector2(14f, 14f), new Vector2(w - 14f, 14f), PaperTokens.LineSoft, 7f, 1f);
-            };
+            stats.style.flexDirection = FlexDirection.Row; stats.style.alignItems = Align.Center;
+            stats.style.marginTop = 5;
+            var moneyIcon = new TabletIconElement(TabletIconKind.Bolt, 15, PaperTokens.Good) { pickingMode = PickingMode.Ignore };
+            moneyIcon.style.marginRight = 4;
+            var money = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.Ink, true);
+            var trustIcon = new TabletIconElement(TabletIconKind.Heart, 15, PaperTokens.Bad) { pickingMode = PickingMode.Ignore };
+            trustIcon.style.marginLeft = 14; trustIcon.style.marginRight = 4;
+            var trust = PaperUI.Text("", PaperTokens.FsSmall, PaperTokens.Ink, true);
+            stats.Add(moneyIcon); stats.Add(money); stats.Add(trustIcon); stats.Add(trust);
+            card.Add(stats);
 
             update = () =>
             {
-                float m = view.Minutes;
-                clockL.text = view.ClockText;
-                clockL.style.color = m >= 21f * 60f ? PaperTokens.Bad : PaperTokens.Ink;
-                dayL.text = $"第 {GameData.GetDay()} 天";
-                whereL.text = view.NearLabel;
-                moneyL.text = GameData.GetMoney().ToString("N0");
-                trustL.text = GameData.GetTrust().ToString();
-                float f = Mathf.Clamp01((m - 360f) / (1320f - 360f));
-                if (Mathf.Abs(f - dayFrac) > 0.002f) { dayFrac = f; dayCol = m >= 21f * 60f ? PaperTokens.Bad : (m >= 18f * 60f ? PaperTokens.Warn : PaperTokens.Amber); sched.MarkDirtyRepaint(); }
+                clock.text = view.ClockText;
+                clock.style.color = view.Minutes >= 21f * 60f ? PaperTokens.Bad : PaperTokens.Ink;
+                day.text = $"第 {GameData.GetDay()} 天";
+                location.text = view.NearLabel;
+                money.text = GameData.GetMoney().ToString("N0");
+                trust.text = GameData.GetTrust().ToString();
             };
+            update();
             return card;
         }
+
 
         private static VisualElement IconButton(TabletIconKind icon, string tip, Action click)
         {
@@ -799,7 +750,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static VisualElement BuildSlot(int index, Item? item)
         {
             var s = new VisualElement();
-            s.style.width = 62; s.style.height = 62; s.style.marginLeft = index == 0 ? 0 : 6;
+            s.style.width = 50; s.style.height = 50; s.style.marginLeft = index == 0 ? 0 : 5;
             s.style.alignItems = Align.Center; s.style.justifyContent = Justify.Center;
             s.style.backgroundColor = new Color(0.45f, 0.32f, 0.16f, 0.09f);
             Round(s, 12);
@@ -813,7 +764,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             s.Add(num);
             if (item.HasValue)
             {
-                s.Add(new TabletIconElement(item.Value.icon, 30, item.Value.color));
+                s.Add(new TabletIconElement(item.Value.icon, 25, item.Value.color));
                 if (item.Value.count > 1)
                 {
                     var c = new Label(item.Value.count.ToString()) { pickingMode = PickingMode.Ignore };
@@ -919,7 +870,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
     public sealed class ExploreMapView : VisualElement
     {
-        public const int W = 40, H = 24;
+        private const int StationWidth = 40;
+        public const int W = StationWidth + 16, H = 24;
         public const float T = 32f;          // 世界像素/格
         private const float Speed = 150f;    // 世界像素/秒
         private const float Half = 8f;       // 碰撞半宽（世界像素）
@@ -930,6 +882,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public Action<string> OnToast;
         public event Action<string> PromptChanged;
         public float Minutes { get; private set; } = DayStart;
+        /// <summary>评审用：直接设游戏内分钟（夜景/晨雾截图）。</summary>
+        public void SetMinutesForTests(float minutes) { Minutes = minutes; }
         public Vector2 PlayerPos => player;
         public string ClockText => $"{(int)(Minutes / 60):00}:{(int)(Minutes % 60):00}";
 
@@ -969,7 +923,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private static Texture2D Tex(string name)
         {
             if (texCache.TryGetValue(name, out var t)) return t;
-            t = Resources.Load<Texture2D>("Art/Explore/" + (name.StartsWith("int_") ? "Interiors/" : "Props/") + name);
+            string folder = name.StartsWith("int_") ? "Interiors/" : name.StartsWith("scene_") ? "Scenes/"
+                : name.StartsWith("fx_") ? "Fixtures/" : name.StartsWith("fog_") ? "Scenes/"
+                : name.StartsWith("train_") ? "Vehicles/" : "Props/";
+            t = Resources.Load<Texture2D>("Art/Explore/" + folder + name);
             texCache[name] = t;
             return t;
         }
@@ -1172,8 +1129,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             Fill(4, 9, 33, 1, ',');            // 站前土路
             Fill(4, 10, 33, 1, 'P');           // 站台
-            Fill(1, 11, 38, 1, '=');           // 正线
-            Fill(1, 12, 38, 1, '=');           // 侧线
+            Fill(1, 11, W - 2, 1, '=');        // 正线贯通东段
+            Fill(1, 12, W - 2, 1, '=');        // 侧线贯通东段
             Fill(8, 11, 7, 1, 'X');            // NF-5K「耕牛」与客厢停靠（不可穿越）
 
             Building(5, 3, 10, 6, 10, 8);      // 站务大厅
@@ -1181,11 +1138,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             Building(26, 3, 7, 5, 29, 7); Fill(29, 8, 1, 1, ',');   // 候车室
             Building(24, 15, 8, 5, 27, 19);    // 车库（门朝南：屋顶在北、立面在南，门在立面上）
             Fill(27, 20, 1, 2, ',');
+            Fill(StationWidth, 10, W - StationWidth - 1, 1, 'P');
+            Fill(49, 2, 6, 4, '#');             // 东段货棚墙体
+            Fill(51, 6, 4, 1, ',');
+            Fill(50, 13, 1, 2, ',');
+            Fill(54, 15, 1, 6, '~');            // 东缘排水沟
             Fill(2, 15, 10, 6, 'f');           // 茶田
             Building(13, 16, 4, 3, 14, 18);    // 茶摊
+            Building(18, 15, 5, 5, 19, 19);    // 铁路商店
+            Fill(19, 20, 2, 2, ',');
             Fill(33, 18, 5, 4, '~');           // 水塘
             Fill(35, 13, 1, 4, ',');           // 道口小径
-            Fill(2, 2, 2, 2, 'T'); Fill(36, 5, 2, 2, 'T'); Fill(19, 20, 2, 2, 'T'); Fill(3, 7, 1, 1, 'T');
+            Fill(2, 2, 2, 2, 'T'); Fill(36, 5, 2, 2, 'T'); Fill(3, 7, 1, 1, 'T');
             Fill(1, 14, 12, 1, 'F');           // 茶田围栏
 
             spots.Add(new Spot { id = "hall", label = "站务大厅", tx = 10, ty = 8, cost = 20 });
@@ -1194,10 +1158,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             spots.Add(new Spot { id = "platform", label = "站台", tx = 17, ty = 10, cost = 10 });
             spots.Add(new Spot { id = "garage", label = "车库", tx = 27, ty = 19, cost = 30 });
             spots.Add(new Spot { id = "tea", label = "茶摊", tx = 14, ty = 18, cost = 15 });
+            spots.Add(new Spot { id = "rail_shop", label = "铁路商店", tx = 19, ty = 19 });
+            spots.Add(new Spot { id = "east_crossing", label = "东端道口", tx = 50, ty = 13 });
+            spots.Add(new Spot { id = "east_freight", label = "货运栈台", tx = 53, ty = 6 });
             spots.Add(new Spot { id = "crossing", label = "道口", tx = 35, ty = 13, cost = 20 });
             spots.Add(new Spot { id = "board", label = "公告栏", tx = 6, ty = 9, cost = 10 });
             spots.Add(new Spot { id = "finance", label = "账房", tx = 33, ty = 9, cost = 15 });
             spots.Add(new Spot { id = "rest", label = "宿舍（休息 · 结算今日）", tx = 36, ty = 9, cost = 0 });
+            // 探索点：每个玩法不同（搜寻一次 / 收集成套 / 拨动机关 ×2 / 每日摇树），避免重复同类互动
+            spots.Add(new Spot { id = "pond_look", label = "水塘 · 俯身看看", tx = 35, ty = 17, cost = 5 });
+            spots.Add(new Spot { id = "tea_nails", label = "茶田边 · 拨开杂草", tx = 12, ty = 15, cost = 5 });
+            spots.Add(new Spot { id = "signal_lever", label = "信号机 · 扳动手柄", tx = 36, ty = 7, cost = 5 });
+            spots.Add(new Spot { id = "blossom", label = "樱树 · 摇一摇", tx = 4, ty = 6, cost = 5 });
 
             npcs.Add(new Npc { id = "laochen", name = "老陈", pos = new Vector2(16.5f * T, 9.5f * T), color = new Color(0.55f, 0.55f, 0.60f), lines = new[] { "今天水箱水位正常，随时能发车。", "松桥那边的线路，早晚得去看看。" } });
             npcs.Add(new Npc { id = "liayi", name = "李阿姨", pos = new Vector2(28f * T, 9.5f * T), color = new Color(0.78f, 0.45f, 0.50f), lines = new[] { "候车的乘客们都等着呢。", "站里的茶水我都备好了。" } });
@@ -1289,6 +1261,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     int tx = Mathf.FloorToInt((px + dx) / T), ty = Mathf.FloorToInt((py + dy) / T);
                     if (tx < 0 || ty < 0 || tx >= gw || ty >= gh) return true;
                     if (IsSolid(grid[ty, tx])) return true;
+                    if (!Indoors && ExploreFixtures.DecalSolid(tx, ty)) return true;
                 }
             return NpcBlocks(px, py);
         }
@@ -1377,12 +1350,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (dir.sqrMagnitude > 0.001f) { ClearPath(); queuedAfterSwitch = null; Step(dir, dt, sprint); }
             else if (path != null) FollowPath(dt, sprint);
             else Step(Vector2.zero, dt);
+            if (!Indoors)
+            {
+                ExploreFixtures.Tick(dt, player, T);
+                ExploreFlyers.Update(dt, W * T, H * T, SandRivalManager.GetPenetration("wufeng"));
+            }
             UpdatePrompt();
             MarkDirtyRepaint();
         }
 
         // ================= 自动寻路（A*，8 向，不切角）=================
-        private bool Walk(int x, int y) => x >= 0 && y >= 0 && x < gw && y < gh && !IsSolid(grid[y, x]);
+        private bool Walk(int x, int y) => x >= 0 && y >= 0 && x < gw && y < gh && !IsSolid(grid[y, x]) && (Indoors || !ExploreFixtures.DecalSolid(x, y));
 
         /// <summary>寻路用：地形可走且不是 NPC 脚下的格子（NPC 是实体障碍，路径要绕开）。</summary>
         private bool NavWalk(int x, int y) => Walk(x, y) && !NpcOnTile(x, y);
@@ -1586,6 +1564,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         public string NearLabel { get; private set; } = "雾峰站";
+        private bool pondFound;
+        private int nailsFound;
+        private int blossomDay = -1;
 
         private void UpdatePrompt()
         {
@@ -1648,6 +1629,53 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     break;
                 case "platform":
                     OnToast?.Invoke($"NF-5K「耕牛」停在 1 道，车况 {GameData.GetTrainCondition()}%");
+                    break;
+                case "rail_shop":
+                    OnDialogue?.Invoke("铁路商店", "柜台里摆着手旗、信号灯和检修扳手。", new Color(0.33f, 0.56f, 0.51f));
+                    break;
+                case "east_crossing":
+                {
+                    bool up = ExploreFixtures.Get("crossing_bar_n").target < 0.5f;
+                    ExploreFixtures.Set("crossing_bar_n", up ? 1f : 0f);
+                    ExploreFixtures.Set("crossing_bar_s", up ? 1f : 0f);
+                    OnToast?.Invoke(up ? "抬起栏杆，旧村道放行。" : "放下栏杆，红灯开始交替闪烁。");
+                    break;
+                }
+                case "signal_lever":
+                {
+                    bool green = ExploreFixtures.Get("signal_station").target < 0.5f;
+                    ExploreFixtures.Set("signal_station", green ? 1f : 0f);
+                    OnToast?.Invoke(green ? "扳下手柄，臂板落下——绿灯，进路开通。" : "手柄扳回，臂板抬起——红灯，禁止通过。");
+                    break;
+                }
+                case "pond_look":
+                    if (!pondFound)
+                    {
+                        pondFound = true; GameData.AddMoney(20);
+                        OnToast?.Invoke("荷叶底下压着一张褪色的旧车票，背面写着「雾峰—松桥」。资金 +20");
+                    }
+                    else OnToast?.Invoke("水面上漂着几片荷叶，一只青蛙「扑通」跳进水里。");
+                    break;
+                case "tea_nails":
+                    if (nailsFound < 3)
+                    {
+                        nailsFound++;
+                        if (nailsFound < 3) OnToast?.Invoke($"杂草里露出一枚锈迹斑斑的旧道钉（{nailsFound}/3）");
+                        else { GameData.AddMoney(60); OnToast?.Invoke("第三枚道钉！三枚凑成一套，老陈说能当镇纸，卖了 资金 +60"); }
+                    }
+                    else OnToast?.Invoke("茶田边的杂草里再也翻不出东西了。");
+                    break;
+                case "blossom":
+                    if (blossomDay != GameData.GetDay())
+                    {
+                        blossomDay = GameData.GetDay();
+                        Stamina = MaxStamina; SprintLocked = false;
+                        OnToast?.Invoke("摇了摇樱树，花瓣落了一身，心情好多了。精力恢复（每天一次）");
+                    }
+                    else OnToast?.Invoke("树上的花瓣已经被你摇光了，明天再来。");
+                    break;
+                case "east_freight":
+                    OnToast?.Invoke("货运栈台：枕木和零件已收进货棚。");
                     break;
                 case "crossing":
                     OnToast?.Invoke("道口无异常（巡检效果待接入）");
@@ -1716,17 +1744,19 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// <summary>绘制带贴图的矩形（点采样图）。uv 方向若与预期相反，改 FlipV。</summary>
         private const bool FlipV = false;
         private const float FloorLift = 0.62f;
-        private static void Quad(MeshGenerationContext mgc, Texture tex, float x, float y, float w, float h, bool mirror = false, float uMin = 0f, float uMax = 1f)
+        private static void Quad(MeshGenerationContext mgc, Texture tex, float x, float y, float w, float h, bool mirror = false,
+            float uMin = 0f, float uMax = 1f, float vMin = 0f, float vMax = 1f, byte leftAlpha = 255, byte alpha = 255)
         {
             if (tex == null) return;
             var mw = mgc.Allocate(4, 6, tex);
             float u0 = mirror ? uMax : uMin, u1 = mirror ? uMin : uMax;
-            float vTop = FlipV ? 0f : 1f, vBot = FlipV ? 1f : 0f;
-            Color32 white = new Color32(255, 255, 255, 255);
-            mw.SetNextVertex(new Vertex { position = new Vector3(x, y, Vertex.nearZ), tint = white, uv = new Vector2(u0, vTop) });
+            float vTop = FlipV ? vMin : vMax, vBot = FlipV ? vMax : vMin;
+            Color32 white = new Color32(255, 255, 255, alpha);
+            Color32 leftTint = new Color32(255, 255, 255, (byte)Mathf.Min(leftAlpha, alpha));
+            mw.SetNextVertex(new Vertex { position = new Vector3(x, y, Vertex.nearZ), tint = leftTint, uv = new Vector2(u0, vTop) });
             mw.SetNextVertex(new Vertex { position = new Vector3(x + w, y, Vertex.nearZ), tint = white, uv = new Vector2(u1, vTop) });
             mw.SetNextVertex(new Vertex { position = new Vector3(x + w, y + h, Vertex.nearZ), tint = white, uv = new Vector2(u1, vBot) });
-            mw.SetNextVertex(new Vertex { position = new Vector3(x, y + h, Vertex.nearZ), tint = white, uv = new Vector2(u0, vBot) });
+            mw.SetNextVertex(new Vertex { position = new Vector3(x, y + h, Vertex.nearZ), tint = leftTint, uv = new Vector2(u0, vBot) });
             mw.SetNextIndex(0); mw.SetNextIndex(1); mw.SetNextIndex(2);
             mw.SetNextIndex(0); mw.SetNextIndex(2); mw.SetNextIndex(3);
         }
@@ -1843,6 +1873,17 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 DrawOverlay(mgc, p, origin, s, ts, false);
                 return;
             }
+            var station = Tex("scene_wufeng_station_v2");
+            var east = Tex("scene_wufeng_east");
+            if (station != null && east != null)
+            {
+                DrawOutdoorArt(mgc, station, east, origin, s, ts);
+                DrawOverlay(mgc, p, origin, s, ts, true);
+                DrawFlyers(mgc, p, origin, s);
+                DrawNight(mgc, p, origin, s, ts);
+                DrawFog(mgc, p, origin, s);
+                return;
+            }
             int x0 = Mathf.Max(0, Mathf.FloorToInt(origin.x / T)), x1 = Mathf.Min(gw - 1, Mathf.CeilToInt((origin.x + view.width / s) / T));
             int y0 = Mathf.Max(0, Mathf.FloorToInt(origin.y / T)), y1 = Mathf.Min(gh - 1, Mathf.CeilToInt((origin.y + view.height / s) / T));
 
@@ -1876,7 +1917,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     }
                     Add(baseC, sx, sy, ts + 0.6f, ts + 0.6f);
 
-                    if (c == '=' || c == 'X')
+                    if (c == 'P' && ty + 1 < gh && (grid[ty + 1, tx] == '=' || grid[ty + 1, tx] == 'X'))
+                    {
+                        Add(new Color(0.79f, 0.63f, 0.26f), sx, sy + ts * 0.81f, ts + 0.15f, ts * 0.048f);
+                    }
+                    else if (c == '=' || c == 'X')
                     {
                         Add(Rail, sx, sy + ts * 0.25f, ts + 0.6f, Mathf.Max(2f, ts * 0.08f));
                         Add(Rail, sx, sy + ts * 0.68f, ts + 0.6f, Mathf.Max(2f, ts * 0.08f));
@@ -1931,6 +1976,148 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             DrawOverlay(mgc, p, origin, s, ts, true);
         }
 
+        // 黄线和四条钢轨在两张原画边缘的实际行号。按这些行配准，避免拼接处错轨。
+        private static readonly int[] StationSeamRows = { 0, 397, 440, 465, 486, 511, 971 };
+        private static readonly int[] EastSeamRows = { 0, 642, 686, 716, 740, 770, 1536 };
+
+        private void DrawOutdoorArt(MeshGenerationContext mgc, Texture station, Texture east, Vector2 origin, float s, float ts)
+        {
+            float x = -origin.x * s;
+            float y = -origin.y * s;
+            float height = H * ts;
+            float stationWidth = StationWidth * ts;
+            float eastWidth = (W - StationWidth) * ts;
+            float seamX = x + stationWidth;
+            float blendWidth = 0.75f * ts;
+            float eastBlendU = blendWidth / eastWidth;
+            Quad(mgc, station, x, y, stationWidth, height);
+            Quad(mgc, station, seamX, y, blendWidth, height, true, uMin: 1f - blendWidth / stationWidth);
+            for (int i = 0; i < StationSeamRows.Length - 1; i++)
+            {
+                float top = StationSeamRows[i] / (float)station.height;
+                float bottom = StationSeamRows[i + 1] / (float)station.height;
+                float minV = 1f - EastSeamRows[i + 1] / (float)east.height;
+                float maxV = 1f - EastSeamRows[i] / (float)east.height;
+                float bandY = y + top * height;
+                float bandHeight = (bottom - top) * height;
+                Quad(mgc, east, seamX, bandY, blendWidth, bandHeight, uMax: eastBlendU, vMin: minV, vMax: maxV, leftAlpha: 0);
+                Quad(mgc, east, seamX + blendWidth, bandY, eastWidth - blendWidth, bandHeight, uMin: eastBlendU, vMin: minV, vMax: maxV);
+            }
+            DrawFixtures(mgc, mgc.painter2D, origin, s);
+            // 线路老化磨损叠层：1 经常保养 / 2 临时补修 / 3 评定失格（0 状态合格=整图原样）。叠层自成一套，一次只画一档。
+            int grade = Mathf.Clamp(GameData.DecayGrade, 0, 3);
+            if (grade > 0)
+                DrawSceneLayer(mgc, Tex($"scene_wufeng_station_v2_wear{grade}"), Tex($"scene_wufeng_east_wear{grade}"), origin, s, ts, 255);
+        }
+
+        /// <summary>整图级叠层（与两张整图同尺寸）：站区直铺，东段按钢轨行逐段配准，与 DrawOutdoorArt 一致。</summary>
+        private void DrawSceneLayer(MeshGenerationContext mgc, Texture gs, Texture ge, Vector2 origin, float s, float ts, byte alpha)
+        {
+            float x = -origin.x * s, y = -origin.y * s, height = H * ts;
+            float stationWidth = StationWidth * ts, eastWidth = (W - StationWidth) * ts;
+            if (gs != null) Quad(mgc, gs, x, y, stationWidth, height, alpha: alpha);
+            if (ge == null) return;
+            var east = Tex("scene_wufeng_east"); var station = Tex("scene_wufeng_station_v2");
+            if (east == null || station == null) return;
+            float seamX = x + stationWidth;
+            for (int i = 0; i < StationSeamRows.Length - 1; i++)
+            {
+                float top = StationSeamRows[i] / (float)station.height, bottom = StationSeamRows[i + 1] / (float)station.height;
+                float minV = 1f - EastSeamRows[i + 1] / (float)east.height, maxV = 1f - EastSeamRows[i] / (float)east.height;
+                Quad(mgc, ge, seamX, y + top * height, eastWidth, (bottom - top) * height, vMin: minV, vMax: maxV, alpha: alpha);
+            }
+        }
+
+        /// <summary>飞行器影子：有 fx_flyer_shadow_a/b/c 用贴图（机头朝右，向左飞镜像），否则程序影子。</summary>
+        private void DrawFlyers(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
+        {
+            foreach (var f in ExploreFlyers.Active)
+            {
+                float w = f.size.x * s, h = f.size.y * s;
+                float x = (f.pos.x - origin.x) * s - w / 2f, y = (f.pos.y - origin.y) * s - h / 2f;
+                if (x > contentRect.width || y > contentRect.height || x + w < 0 || y + h < 0) continue;
+                var tex = Tex("fx_flyer_shadow_" + (char)('a' + f.type));
+                if (tex != null) { Quad(mgc, tex, x, y, w, h, mirror: f.vel.x < 0f); continue; }
+                p.fillColor = new Color(0f, 0f, 0f, 0.26f);
+                p.BeginPath(); Rect(p, x + w * 0.05f, y + h * 0.40f, w * 0.90f, h * 0.20f); p.Fill();      // 机身
+                p.BeginPath(); Rect(p, x + w * (f.vel.x > 0f ? 0.34f : 0.46f), y, w * 0.20f, h); p.Fill();   // 机翼
+                p.BeginPath(); Rect(p, x + w * (f.vel.x > 0f ? 0.05f : 0.78f), y + h * 0.28f, w * 0.17f, h * 0.44f); p.Fill(); // 尾翼
+            }
+        }
+
+        /// <summary>晨雾（6:00–9:00 渐退）：有 Scenes/fog_tile.png（256×256 可平铺）就滚动叠加，没有就一层淡雾色。</summary>
+        private void DrawFog(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
+        {
+            float h = Minutes / 60f;
+            float fog = Mathf.Clamp01((9f - h) / 3f);
+            if (fog <= 0.01f) return;
+            p.fillColor = new Color(0.86f, 0.90f, 0.92f, 0.20f * fog);
+            p.BeginPath(); Rect(p, 0, 0, contentRect.width, contentRect.height); p.Fill();
+            var tile = Tex("fog_tile");
+            if (tile == null) return;
+            float size = 256f * s * 1.6f, drift = (Time.unscaledTime * 6f * s) % size;
+            byte a = (byte)Mathf.RoundToInt(255f * 0.55f * fog);
+            for (float yy = -size; yy < contentRect.height + size; yy += size)
+                for (float xx = -size; xx < contentRect.width + size; xx += size)
+                    Quad(mgc, tile, xx + drift, yy, size, size, alpha: a);
+        }
+
+        /// <summary>夜色强度 0..1：6:00–6:30 微暗，18:00 起渐入，21:00 最深。</summary>
+        public float Night
+        {
+            get
+            {
+                float h = Minutes / 60f;
+                if (h < 6.6f) return Mathf.Lerp(0.45f, 0f, Mathf.Clamp01((h - 6f) / 0.6f));
+                if (h >= 18f) return Mathf.Clamp01((h - 18f) / 3f) * 0.9f;
+                return 0f;
+            }
+        }
+
+        /// <summary>
+        /// 夜晚：先整体压一层冷蓝色，再叠「光晕层」（scene_wufeng_*_glow.png：窗光、灯晕，
+        /// 与原图同尺寸、除发光处全透明）。没有光晕图时只有色调。
+        /// </summary>
+        private void DrawNight(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s, float ts)
+        {
+            float n = Night;
+            if (n <= 0.01f) return;
+            p.fillColor = new Color(0.06f, 0.09f, 0.26f, 0.56f * n);
+            p.BeginPath(); Rect(p, 0, 0, contentRect.width, contentRect.height); p.Fill();
+            byte a = (byte)Mathf.RoundToInt(255f * Mathf.Clamp01(n * 1.15f));
+            DrawSceneLayer(mgc, Tex("scene_wufeng_station_v2_glow"), Tex("scene_wufeng_east_glow"), origin, s, ts, a);
+        }
+
+        /// <summary>
+        /// 动画补丁：门/栏杆/灯/信号机/环境循环。有 fx_&lt;id&gt; 帧条贴图就取对应帧，
+        /// 没有则只对「门」画程序占位（深色门洞），其余保持原画。
+        /// </summary>
+        private void DrawFixtures(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
+        {
+            foreach (var f in ExploreFixtures.All)
+            {
+                if (!ExploreFixtures.NeedsPatch(f)) continue;
+                Rect r = ExploreFixtures.ToWorld(f, T, StationWidth, H);
+                float x = (r.x - origin.x) * s, y = (r.y - origin.y) * s, w = r.width * s, h = r.height * s;
+                if (x > contentRect.width || y > contentRect.height || x + w < 0 || y + h < 0) continue;
+                var tex = Tex(f.asset);
+                if (tex != null)
+                {
+                    int fr = f.Frame;
+                    Quad(mgc, tex, x, y, w, h, uMin: fr / (float)f.frames, uMax: (fr + 1) / (float)f.frames);
+                }
+                else if (f.kind == FixtureKind.Door)
+                {
+                    float k = f.t;
+                    float gw2 = w * 0.62f * k, gx = x + (w - gw2) * 0.5f;
+                    p.fillColor = new Color(0.10f, 0.07f, 0.05f, 0.82f);
+                    p.BeginPath(); Rect(p, gx, y + h * 0.10f, gw2, h * 0.86f); p.Fill();
+                    p.fillColor = new Color(1f, 0.82f, 0.45f, 0.32f * k);
+                    p.BeginPath(); Rect(p, gx, y + h * 0.80f, gw2, h * 0.16f); p.Fill();
+                }
+            }
+        }
+
         private void DrawOverlay(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s, float ts, bool outdoorTrain)
         {
             // 自动寻路路线与终点
@@ -1953,7 +2140,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 p.Stroke();
             }
 
-            if (outdoorTrain) sortedExtras.Add((11.95f * T, () => DrawTrain(p, origin, s)));
+            if (outdoorTrain) sortedExtras.Add((11.95f * T, () => DrawTrain(mgc, p, origin, s)));
 
             // 脚步扬尘
             foreach (var dd in dust)
@@ -2004,10 +2191,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             }
         }
 
-        private void DrawTrain(Painter2D p, Vector2 origin, float s)
+        private void DrawTrain(MeshGenerationContext mgc, Painter2D p, Vector2 origin, float s)
         {
             float ts = T * s;
             Vector2 a = (new Vector2(8f * T, 11f * T) - origin) * s;
+            var train = Tex("train_nf5k_parked");
+            if (train != null)
+            {
+                float height = 2.05f * ts;
+                float wheelLine = a.y + 0.54f * ts;
+                Quad(mgc, train, a.x, wheelLine - height, 7f * ts, height);
+                return;
+            }
             // NF-5K 朝鲜原厂深蓝涂装的头车与两节客厢；正式贴图接入前的灰盒示意。
             Color[] cols = { new Color(0.10f, 0.22f, 0.48f), new Color(0.10f, 0.22f, 0.48f), new Color(0.10f, 0.22f, 0.48f) };
             float[] lens = { 3f, 2f, 2f };
@@ -2040,7 +2235,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (tex != null)
             {
                 // 位图角色与程序绘制一样参与 y 排序（不再用 Image 子元素，避免永远盖在家具/树上）
-                Quad(mgc, tex, feet.x - 16f * s, feet.y - 48f * s, 32f * s, 48f * s, mirror);
+                const float playerSpriteScale = 1.0625f;
+                float spriteScale = id == "player" ? s * playerSpriteScale : s;
+                Quad(mgc, tex, feet.x - 16f * spriteScale, feet.y - 48f * spriteScale,
+                    32f * spriteScale, 48f * spriteScale, mirror);
                 return;
             }
             ExploreCharacters.Draw(p, ExploreCharacters.Get(id), feet, s, dir, frame, moving, time);

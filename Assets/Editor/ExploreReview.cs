@@ -116,7 +116,7 @@ public static class ExploreReview
 
                 case 1:
                     ExploreQuests.ResetForTests();
-                    Call("LaunchApp", "巡线");
+                    GameMainUI.OpenTabletApp("RDA");
                     frame = Time.frameCount;
                     stage++;
                     break;
@@ -136,9 +136,13 @@ public static class ExploreReview
                     Assert(view.PlayerPos.y < yBefore, "player did not move up at all");
 
                     // 水塘不可进入
-                    view.TeleportToSpot("crossing");
-                    for (int i = 0; i < 120; i++) view.Step(new Vector2(0.4f, 1f), 1f / 30f);
-                    Assert(view.PlayerPos.x < 39f * ExploreMapView.T && view.PlayerPos.y < 23f * ExploreMapView.T, "player escaped map bounds: " + view.PlayerPos);
+                    view.SetPlayerPos(new Vector2(35.5f, 17.4f) * ExploreMapView.T);
+                    for (int i = 0; i < 30; i++) view.Step(Vector2.down, 1f / 30f);
+                    Assert(view.PlayerPos.y < 18f * ExploreMapView.T, "player walked into the pond: " + view.PlayerPos);
+
+                    view.TeleportToSpot("east_crossing");
+                    for (int i = 0; i < 120; i++) view.Step(Vector2.right, 1f / 30f);
+                    Assert(view.PlayerPos.x < (ExploreMapView.W - 1) * ExploreMapView.T, "player escaped the east map boundary: " + view.PlayerPos);
 
                     // 交互：调度室
                     view.TeleportToSpot("dispatch");
@@ -296,7 +300,85 @@ public static class ExploreReview
                     break;
 
                 case 9:
-                    Capture("07-explore-dialogue");                    Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, time advances, A* + sprint ok");
+                    Capture("07-explore-dialogue");
+                    view.TeleportToSpot("rail_shop");
+                    bool sawShop = false;
+                    var previousDialogue = view.OnDialogue;
+                    view.OnDialogue = (who, line, color) =>
+                    {
+                        sawShop = who == "铁路商店";
+                        previousDialogue?.Invoke(who, line, color);
+                    };
+                    view.Interact();
+                    view.OnDialogue = previousDialogue;
+                    Assert(sawShop, "railway shop did not open its counter dialogue");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 10:
+                    Capture("08-explore-rail-shop");
+                    root.Q("explore-dialogue").style.opacity = 0f;
+                    root.Q("explore-toasts").Clear();
+                    Assert(view.NavigateToTile(50, 13, false) && view.HasPath, "route from station to east crossing missing");
+                    view.SimulateAutoWalk(4000);
+                    Assert(Mathf.FloorToInt(view.PlayerPos.x / ExploreMapView.T) == 50, "player did not reach the east crossing");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 11:
+                    Capture("09-explore-east-crossing");
+                    // 探索点与状态件：信号机、道口栏杆、任务「闲不住的站长」
+                    view.TeleportToSpot("signal_lever"); view.Interact();
+                    Assert(ExploreFixtures.Get("signal_station").target > 0.5f, "signal lever did not set the semaphore to green");
+                    view.TeleportToSpot("east_crossing"); view.Interact();
+                    Assert(ExploreFixtures.Get("crossing_bar_n").target > 0.5f, "crossing bars did not rise");
+                    {
+                        Quest tinker = null;
+                        foreach (var q in ExploreQuests.Active) if (q.id == "tinker") tinker = q;
+                        Assert(tinker != null && tinker.Done, "quest 'tinker' not completed by signal lever + crossing");
+                    }
+                    // 门：靠近站务大厅门口自动打开（占位门洞）
+                    view.TeleportToSpot("hall");
+                    ExploreFixtures.Tick(2f, view.PlayerPos, ExploreMapView.T);
+                    Assert(ExploreFixtures.Get("door_hall").t > 0.95f, "hall door did not open when the player stood at it");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 12:
+                    Capture("10-explore-door-open");
+                    // 世界状态：老化 2 档、政治 2 档、沙能渗透 0.5、傍晚 20:00、一架飞行器
+                    GameData.DecayGrade = 2; GameData.PoliticalTier = 2;
+                    SandRivalManager.SetPenetration("wufeng", 0.5f);
+                    view.SetMinutesForTests(20f * 60f);
+                    ExploreFlyers.Clear(); ExploreFlyers.Spawn(ExploreMapView.W * ExploreMapView.T, ExploreMapView.H * ExploreMapView.T);
+                    view.TeleportToSpot("platform");
+                    {
+                        var fl = ExploreFlyers.Active[0];
+                        fl.pos = view.PlayerPos + new Vector2(40f, 30f);   // 直接放进视口，评审里看影子
+                        ExploreFlyers.Active[0] = fl;
+                    }
+                    ExploreFixtures.Tick(0.1f, view.PlayerPos, ExploreMapView.T);
+                    // 沙能贴花会占格：占用格不可通行
+                    Assert(ExploreFixtures.DecalSolid(33, 14) && ExploreFixtures.DecalSolid(30, 2), "decal footprints not solid at penetration 0.5");
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 13:
+                    Capture("11-explore-night-state");
+                    view.SetMinutesForTests(6.5f * 60f);
+                    frame = Time.frameCount;
+                    stage++;
+                    break;
+
+                case 14:
+                    Capture("12-explore-morning-fog");
+                    GameData.DecayGrade = 0; GameData.PoliticalTier = 0;
+                    ExploreFixtures.ResetAll(); ExploreFlyers.Clear();
+                    Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, railway shop + east crossing + fixtures + quests + time + A* + sprint ok");
                     SessionState.SetBool(PendingKey, false);
                     EditorApplication.isPlaying = false;
                     EditorApplication.Exit(0);

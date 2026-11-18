@@ -1,5 +1,11 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-18 巡线室外 56×24 格。`ExploreMapView.DrawOutdoorArt` 将 `Scenes/scene_wufeng_station_v2` 和 `Scenes/scene_wufeng_east` 按黄线与四条钢轨接合。逻辑网格负责通行、小地图、铁路商店、东端道口及货运栈台交互。`DrawTrain` 单独叠绘 v8 编组 `Vehicles/train_nf5k_parked`。`TabletExploreAppUI.BuildStatus` 提供紧凑状态卡。`ExploreReview.Batch` 包含商店柜台和东段寻路验证。见[室外美术单](../../Assets/Resources/Art/EXPLORE_MAIN_SCENE_ART_BRIEF.md)。
+
+2026-11-18 巡线地图角色。`ExploreCharacters.TrySprite` 加载男主四向待机与行走帧。`ExploreMapView.DrawChar` 以脚底为锚将男主位图绘制为 34×51 世界像素。其他角色尺寸、逻辑位置与碰撞沿用原有地图规则。见[探索美术规格](../../Assets/Resources/Art/EXPLORE_ASSET_SPEC.md)。
+
+2026-11-18 平板入口与手势。GameMainUI 的 RDA 和巡线入口打开雾峰站，返回桌面走统一导航，回站休息通过 DayLoopController 结算并排队日报。桌面退出确认和按键重绑取消各自独立，底边手势在松手或长按打开最近任务时结束跟手预览。
+
 2026-11-04 冷却模块：`NF5KCoolingReview` 在独立 CabCoolingReview 中生成车底散热芯、百叶、双轴流风扇、罩壳与接口，复用原动力包络。见 [冷却模块](NF5K_COOLING_DETAIL.md)。
 
 2026-11-03 设备装车：`NF5KEquipmentInstallation` 导出电池箱/燃油箱共享预制体，Apply用于四基线整车及CabInteriorBlockoutSetup再生成，保留驾驶接线；缩短后段通用占位柜留出燃油箱空间。见 [装车与验收](NF5K_EQUIPMENT_INSTALLATION.md)。

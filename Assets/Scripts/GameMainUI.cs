@@ -2882,7 +2882,7 @@ public class GameMainUI : MonoBehaviour
         var snapshot = TabletViewStateSnapshot.Capture(content);
         content.Clear();
         if (task.AppId == "归途") BuildReturnJourneyApp(content);
-        else BuildRDAApp(content);
+        else BuildExploreApp(content);
         snapshot.Restore(content);
     }
 
@@ -3132,8 +3132,6 @@ public class GameMainUI : MonoBehaviour
         if (!handled && !ReturnToPreviousTabletPage()) ReturnToTabletHome();
     }
 
-    private bool CancelTabletRebind()
-    {
     private void ConfirmQuitFromDesktop()
     {
         RailwayRenaissance.UI.Tablet.SystemShell.TabletConfirmDialog.Show(root, "退出游戏", "确定要退出游戏吗？", "退出", () =>
@@ -3146,6 +3144,8 @@ public class GameMainUI : MonoBehaviour
         });
     }
 
+    private bool CancelTabletRebind()
+    {
         var callback = TabletSettingsAppUI.TabletRebindAction;
         if (callback == null) return false;
         TabletSettingsAppUI.TabletRebindAction = null;
@@ -3197,11 +3197,11 @@ public class GameMainUI : MonoBehaviour
                 systemNavigationBar != null && systemNavigationBar.pickingMode == PickingMode.Ignore)
                 ShowTabletNavigationBar();
             if (tabletEdgeGesture.HasActiveGesture && tabletEdgeGesture.ActivePointerId == evt.pointerId)
-                tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
             {
-            return;
+                tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
                 UpdateHomeSwipeVisual();
             }
+            return;
         }
         if (evt.pointerType != "touch") return;
         if (activeTouchPointers.Count > 1)
@@ -3210,7 +3210,6 @@ public class GameMainUI : MonoBehaviour
             return;
         }
         tabletEdgeGesture.Move(evt.pointerId, evt.position, Time.unscaledTime);
-    }
         UpdateHomeSwipeVisual();
     }
 
@@ -3256,6 +3255,7 @@ public class GameMainUI : MonoBehaviour
             layer.style.borderTopLeftRadius = layer.style.borderTopRightRadius = 0;
             layer.style.borderBottomLeftRadius = layer.style.borderBottomRightRadius = 0;
         }).ExecuteLater(ms + 20);
+    }
 
     private void OnSystemPointerUp(PointerUpEvent evt)
     {
@@ -3264,8 +3264,8 @@ public class GameMainUI : MonoBehaviour
         if (evt.pointerType != "touch" && !IsMouseGestureEvent(evt)) return;
         activeTouchPointers.Remove(evt.pointerId);
         TabletGestureAction action = tabletEdgeGesture.End(evt.pointerId, evt.position);
-        switch (action)
         EndHomeSwipeVisual(action == TabletGestureAction.Home);
+        switch (action)
         {
             case TabletGestureAction.Notifications: OpenSystemPanel(TabletSystemPanel.Notifications); break;
             case TabletGestureAction.Controls: OpenSystemPanel(TabletSystemPanel.Controls); break;
@@ -3875,7 +3875,8 @@ public class GameMainUI : MonoBehaviour
         switch (name)
         {
             case "五线态势": RailwayRenaissance.UI.TabletTrendDashboardUI.Build(win); break;
-            case "RDA": BuildRDAApp(win); break;
+            case "RDA": BuildExploreApp(win); break;
+            case "巡线": BuildExploreApp(win); break;
             case "归途": BuildReturnJourneyApp(win); break;
             case "媒姬百科": BuildWikiApp(win); break;
             case "岁月 · AI对话": BuildSuiyueDialogue(win); break;
@@ -4027,6 +4028,21 @@ public class GameMainUI : MonoBehaviour
     // ============ App: RDA（已抽离至 TabletRDAAppUI）============
     private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
 
+    // ============ App: 巡线（雾峰站 2D 俯视探索）============
+    private void BuildExploreApp(VisualElement win) => TabletExploreAppUI.Build(win, OnExploreAction, OnExploreEndDay, ShowBackupToast, LaunchApp, ShowStoryPage, ShowAffairsPage);
+
+    private void OnExploreAction(string id)
+    {
+        if (id == "back") ReturnToTabletHome();
+    }
+
+    /// <summary>回站休息：结算一天并排队日报（场景随后在 RDA 面板里展示）。</summary>
+    private void OnExploreEndDay()
+    {
+        var report = DayLoopController.EndDay();
+        TabletRDAAppUI.QueueReport(report);
+    }
+
     // ============ App: 归途（已抽离至 TabletReturnJourneyUI）============
     private static (string scriptId, string episode, string title, string desc)[] PrologueEpisodes => TabletReturnJourneyUI.PrologueEpisodes;
     private void BuildReturnJourneyApp(VisualElement win) => TabletReturnJourneyUI.BuildReturnJourneyApp(win, ReturnToTabletHome, ShowBackupToast);
@@ -4127,7 +4143,10 @@ public class GameMainUI : MonoBehaviour
         if (root == null || root.style.display == DisplayStyle.None) return;
 
         if (tabletEdgeGesture.Tick(Time.unscaledTime) == TabletGestureAction.Recents)
+        {
+            EndHomeSwipeVisual(false);
             OpenRecentTasks();
+        }
 
         if (rebindConsumedFrame != Time.frameCount && LegacyInputAdapter.GetKeyDown(KeyCode.Escape))
         {
@@ -4138,10 +4157,7 @@ public class GameMainUI : MonoBehaviour
         // 系统面板模糊尺寸自适应
         if (tabletShellState.Panel != TabletSystemPanel.None)
         {
-        {
-            EndHomeSwipeVisual(false);
             int curW = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
-        }
                 ? uiDoc.panelSettings.targetTexture.width
                 : Screen.width;
             int curH = uiDoc != null && uiDoc.panelSettings != null && uiDoc.panelSettings.targetTexture != null
