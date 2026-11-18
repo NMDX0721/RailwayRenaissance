@@ -62,7 +62,7 @@ public static class NF5KBatteryDetailReview
             for(int i=0;i<=12;i++){drawer.localPosition=Vector3.left*(i*.02f);Check("service");poses++;}
             drawer.localPosition=Vector3.zero;cover.gameObject.SetActive(true);AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);
             File.WriteAllText(Output+"acceptance.json",JsonUtility.ToJson(new Report{poses=poses,parts=root.GetComponentsInChildren<MeshFilter>().Length,conflicts=findings.ToArray()},true));
-            foreach(var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))if(!r.transform.IsChildOf(body))r.enabled=false;
+            foreach(var r in UnityEngine.Object.FindObjectsByType<Renderer>())if(!r.transform.IsChildOf(body))r.enabled=false;
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=.48f;camera.farClipPlane=100;
             camera.transform.position=root.TransformPoint(new Vector3(-1.6f,.60f,-.9f));camera.transform.LookAt(root.position);
             var light=new GameObject("Battery_Review_Fill").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.2f;light.transform.rotation=Quaternion.LookRotation(root.position-camera.transform.position);

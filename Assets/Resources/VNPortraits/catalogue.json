@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "status": "preparation_only",
+  "characters": [
+    {
+      "id": "jiaying_xu",
+      "displayName": "嘉颖徐",
+      "enabled": false,
+      "stagePolicy": "default",
+      "modelAsset": "Assets/Live2DModels/jiaying_xu/jiaying_xu.model3.json",
+      "prefabAsset": "Assets/Live2DModels/jiaying_xu/jiaying_xu.prefab",
+      "sourcePsd": "参考资料/资产/Live2D源文件/jiaying_xu/jiaying_xu.psd",
+      "sourceCmo3": "参考资料/资产/Live2D源文件/jiaying_xu/jiaying_xu.cmo3",
+      "staticFallback": "characters/jiaying_xu_normal",
+      "targetTextureSize": 2048,
+      "requiredParameters": [
+        "ParamAngleX",
+        "ParamAngleY",
+        "ParamAngleZ",
+        "ParamEyeLOpen",
+        "ParamEyeROpen",
+        "ParamEyeBallX",
+        "ParamEyeBallY",
+        "ParamMouthOpenY",
+        "ParamMouthForm",
+        "ParamBreath"
+      ],
+      "expressions": [
+        {
+          "script": "normal",
+          "asset": "normal"
+        },
+        {
+          "script": "serious",
+          "asset": "serious"
+        },
+        {
+          "script": "smile",
+          "asset": "smile"
+        },
+        {
+          "script": "gentle",
+          "asset": "gentle"
+        },
+        {
+          "script": "curious",
+          "asset": "curious"
+        },
+        {
+          "script": "smug",
+          "asset": "smug"
+        },
+        {
+          "script": "bored",
+          "asset": "bored"
+        },
+        {
+          "script": "angry",
+          "asset": "angry"
+        },
+        {
+          "script": "excited",
+          "asset": "smile"
+        },
+        {
+          "script": "happy",
+          "asset": "smile"
+        },
+        {
+          "script": "sad",
+          "asset": "sad"
+        },
+        {
+          "script": "surprise",
+          "asset": "surprise"
+        }
+      ],
+      "requiredMotions": [
+        "idle"
+      ],
+      "minimumExpressions": [
+        "normal",
+        "serious",
+        "smile",
+        "gentle",
+        "curious"
+      ]
+    },
+    {
+      "id": "suiyue",
+      "displayName": "岁月",
+      "enabled": false,
+      "stagePolicy": "tablet_by_playback_cursor",
+      "modelAsset": "Assets/Live2DModels/suiyue/suiyue.model3.json",
+      "prefabAsset": "Assets/Live2DModels/suiyue/suiyue.prefab",
+      "sourcePsd": "参考资料/资产/Live2D源文件/suiyue/suiyue.psd",
+      "sourceCmo3": "参考资料/资产/Live2D源文件/suiyue/suiyue.cmo3",
+      "staticFallback": "characters/suiyue/normal",
+      "staticFallbackBeforeTablet": "characters/suiyue/normal_no_pad",
+      "targetTextureSize": 2048,
+      "requiredParameters": [
+        "ParamAngleX",
+        "ParamAngleY",
+        "ParamEyeLOpen",
+        "ParamEyeROpen",
+        "ParamEyeBallX",
+        "ParamEyeBallY",
+        "ParamMouthOpenY",
+        "ParamMouthForm",
+        "ParamBreath",
+        "ParamTabletPose"
+      ],
+      "expressions": [
+        {
+          "script": "normal",
+          "asset": "normal"
+        },
+        {
+          "script": "serious",
+          "asset": "serious"
+        },
+        {
+          "script": "smile",
+          "asset": "smile"
+        },
+        {
+          "script": "gentle",
+          "asset": "gentle"
+        },
+        {
+          "script": "curious",
+          "asset": "curious"
+        },
+        {
+          "script": "smug",
+          "asset": "smug"
+        },
+        {
+          "script": "bored",
+          "asset": "bored"
+        },
+        {
+          "script": "angry",
+          "asset": "angry"
+        },
+        {
+          "script": "excited",
+          "asset": "smile"
+        },
+        {
+          "script": "happy",
+          "asset": "smile"
+        },
+        {
+          "script": "sad",
+          "asset": "sad"
+        },
+        {
+          "script": "surprise",
+          "asset": "surprise"
+        },
+        {
+          "script": "calm",
+          "asset": "normal"
+        },
+        {
+          "script": "wink",
+          "asset": "wink"
+        },
+        {
+          "script": "worried",
+          "asset": "worried"
+        }
+      ],
+      "requiredMotions": [
+        "idle"
+      ],
+      "minimumExpressions": [
+        "normal",
+        "serious",
+        "smile",
+        "curious"
+      ]
+    }
+  ]
+}

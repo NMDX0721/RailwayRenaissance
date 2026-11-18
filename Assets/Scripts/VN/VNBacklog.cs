@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class VNBacklog : MonoBehaviour
 {
     private UIDocument uiDoc;
-    private Font gameFont;
+    private Font gameFont => VNFonts.Game;   // 随「剧情字体」设置实时变化
 
     private VisualElement backlogPanel;
     private VisualElement backlogHeader;
@@ -26,12 +26,12 @@ public class VNBacklog : MonoBehaviour
 
     public Action<int, int> OnEntryClicked;
     public Action<int, int> OnEntryBookmark, OnEntryVoice;
+    public Func<int, int, bool> IsBookmarked;   // 该句是否已收藏（决定书签图标实心/空心）
     public Func<int, int, bool> HasVoice;   // 该句是否有已审配音（决定是否显示重放图标）
 
     public void Init(UIDocument document)
     {
         uiDoc = document;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
     }
 
@@ -1708,7 +1708,26 @@ public class VNBacklog : MonoBehaviour
             contentBox.Add(speakerLabel);
         }
 
-        var textLabel = new Label(PinPunctuation(entry.text));
+        string entryText = entry.text;
+        var textLabel = new Label(PinPunctuation(TermHighlightSystem.HighlightTerms(entryText, true)));   // 术语金黄高亮，与对话框一致；带 link 可点
+        textLabel.pickingMode = PickingMode.Position;
+        // 悬停：该术语加下划线 + 手形光标；移开还原；点击：在术语旁弹小卡
+        textLabel.RegisterCallback<UnityEngine.UIElements.Experimental.PointerOverLinkTagEvent>(ev =>
+        {
+            textLabel.text = PinPunctuation(TermHighlightSystem.HighlightTerms(entryText, true, ev.linkID));
+            UiCursor.ShowHand();
+        });
+        textLabel.RegisterCallback<UnityEngine.UIElements.Experimental.PointerOutLinkTagEvent>(ev =>
+        {
+            textLabel.text = PinPunctuation(TermHighlightSystem.HighlightTerms(entryText, true));
+            UiCursor.ShowArrow();
+        });
+        Vector2 lastPointer = Vector2.zero;   // 链接事件不一定带坐标，自己跟踪指针位置
+        textLabel.RegisterCallback<PointerMoveEvent>(e => lastPointer = new Vector2(e.position.x, e.position.y));
+        textLabel.RegisterCallback<PointerDownEvent>(e => lastPointer = new Vector2(e.position.x, e.position.y));
+        textLabel.RegisterCallback<UnityEngine.UIElements.Experimental.PointerUpLinkTagEvent>(ev =>
+            ShowTermCard(ev.linkID, backlogPanel.WorldToLocal(lastPointer)));
+        textLabel.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
         textLabel.style.fontSize = 26;
         textLabel.style.letterSpacing = 2;
         textLabel.style.color = isNarration
@@ -1730,7 +1749,16 @@ public class VNBacklog : MonoBehaviour
         int si = entry.sceneIndex, di = entry.dialogueIndex;
         if (HasVoice != null && HasVoice(si, di))
             actions.Add(MakeIconButton(VNArtIcon.Replay, "重播本句配音", () => OnEntryVoice?.Invoke(si, di)));
-        actions.Add(MakeIconButton(VNArtIcon.Bookmark, "收藏这句台词", () => OnEntryBookmark?.Invoke(si, di)));
+        UnityEngine.UIElements.Button bookmarkBtn = null;
+        void RefreshBookmark()
+        {
+            bool marked = IsBookmarked != null && IsBookmarked(si, di);
+            bookmarkBtn.Q<VNInkIcon>().Filled = marked;
+            bookmarkBtn.tooltip = marked ? "取消收藏" : "收藏这句台词";
+        }
+        bookmarkBtn = MakeIconButton(VNArtIcon.Bookmark, "收藏这句台词", () => { OnEntryBookmark?.Invoke(si, di); RefreshBookmark(); });
+        RefreshBookmark();
+        actions.Add(bookmarkBtn);
         actions.Add(MakeIconButton(VNArtIcon.Jump, "跳转到这句", () => JumpToEntry(si, di)));
         entryRow.Add(actions);
         return entryRow;
@@ -1758,6 +1786,109 @@ public class VNBacklog : MonoBehaviour
         btn.RegisterCallback<PointerEnterEvent>(e => { btn.style.backgroundColor = hoverBg; UiCursor.ShowHand(); });
         btn.RegisterCallback<PointerLeaveEvent>(e => { btn.style.backgroundColor = normalBg; UiCursor.ShowArrow(); });
         return btn;
+    }
+
+    private VisualElement termCardLayer;
+
+    /// <summary>回顾里点金色术语：弹出与对话框同款的小卡（标题 + 释义 + 百科按钮），点卡外收起。</summary>
+    private void ShowTermCard(string termId, Vector2 anchor)
+    {
+        var entry = TermHighlightSystem.GetEntry(termId);
+        if (entry == null || backlogPanel == null) return;
+        CloseTermCard();
+        var fontDef = GetFontDef();
+        var gold = new Color(1f, 0.85f, 0.25f, 1f);
+        var goldEdge = new Color(0.82f, 0.62f, 0.35f, 0.9f);
+
+        termCardLayer = new VisualElement { name = "backlog-term-card-layer" };
+        termCardLayer.style.position = Position.Absolute;
+        termCardLayer.style.left = 0; termCardLayer.style.right = 0;
+        termCardLayer.style.top = 0; termCardLayer.style.bottom = 0;
+        termCardLayer.pickingMode = PickingMode.Position;
+        termCardLayer.RegisterCallback<PointerDownEvent>(ev => { ev.StopImmediatePropagation(); CloseTermCard(); });
+
+        var card = new VisualElement();
+        card.style.position = Position.Absolute;
+        float panelW = backlogPanel.layout.width > 0f ? backlogPanel.layout.width : 1920f;
+        float panelH = backlogPanel.layout.height > 0f ? backlogPanel.layout.height : 1080f;
+        float cardW = Mathf.Min(620f, panelW - 40f);
+        card.style.width = cardW;
+        // 贴着被点的术语：水平夹在屏内；量出卡片实际高度后，按上下剩余空间选位置（哪边放得下放哪边，都放得下则优先下方——不盖住上文，
+        // 都放不下取空间大的一边并夹在屏内）。布局前先隐藏，避免闪现在错位处。
+        card.style.left = Mathf.Clamp(anchor.x - 60f, 20f, Mathf.Max(20f, panelW - cardW - 20f));
+        card.style.top = 0;
+        card.style.opacity = 0f;
+        const float lineHalf = 26f, gap = 8f, edge = 12f;
+        EventCallback<GeometryChangedEvent> onGeo = null;
+        onGeo = _ =>
+        {
+            if (card.layout.height <= 0f) return;
+            card.UnregisterCallback(onGeo);
+            PlaceCard();
+        };
+        card.RegisterCallback(onGeo);
+        void PlaceCard()
+        {
+            float h = card.layout.height;
+            float below = panelH - (anchor.y + lineHalf + gap) - edge;   // 术语行下沿到屏底的可用高度
+            float above = (anchor.y - lineHalf - gap) - edge;            // 屏顶到术语行上沿的可用高度
+            bool putBelow = below >= h || (above < h && below >= above);
+            float top = putBelow ? anchor.y + lineHalf + gap : anchor.y - lineHalf - gap - h;
+            card.style.top = Mathf.Clamp(top, edge, Mathf.Max(edge, panelH - h - edge));
+            card.style.opacity = 1f;
+        }
+        card.style.backgroundColor = new Color(0.08f, 0.05f, 0.04f, 0.96f);
+        card.style.borderTopWidth = card.style.borderBottomWidth = card.style.borderLeftWidth = card.style.borderRightWidth = 2;
+        card.style.borderTopColor = card.style.borderBottomColor = card.style.borderLeftColor = card.style.borderRightColor = goldEdge;
+        card.style.borderTopLeftRadius = card.style.borderTopRightRadius = card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 10;
+        card.style.paddingLeft = card.style.paddingRight = 18;
+        card.style.paddingTop = 12; card.style.paddingBottom = 14;
+        card.pickingMode = PickingMode.Position;
+        card.RegisterCallback<PointerDownEvent>(ev => ev.StopImmediatePropagation());
+
+        var titleRow = new VisualElement();
+        titleRow.style.flexDirection = FlexDirection.Row;
+        titleRow.style.justifyContent = Justify.SpaceBetween;
+        titleRow.style.alignItems = Align.Center;
+        titleRow.style.marginBottom = 8;
+        var title = new Label(entry.name);
+        title.style.fontSize = 26; title.style.color = gold;
+        title.style.unityFontStyleAndWeight = FontStyle.Bold;
+        title.style.unityFontDefinition = fontDef;
+        titleRow.Add(title);
+        var tipsBtn = new UnityEngine.UIElements.Button(() =>
+        {
+            CloseTermCard();
+            ToggleBacklog();                       // 先收回顾，百科退出后直接是 VN
+            GameMainUI.OpenTipsPage(termId);
+        }) { text = "百科 ›", focusable = false };
+        tipsBtn.style.fontSize = 18; tipsBtn.style.color = gold;
+        tipsBtn.style.unityFontDefinition = fontDef;
+        tipsBtn.style.backgroundColor = new Color(0.20f, 0.14f, 0.09f, 0.95f);
+        tipsBtn.style.borderTopWidth = tipsBtn.style.borderBottomWidth = tipsBtn.style.borderLeftWidth = tipsBtn.style.borderRightWidth = 1;
+        tipsBtn.style.borderTopColor = tipsBtn.style.borderBottomColor = tipsBtn.style.borderLeftColor = tipsBtn.style.borderRightColor = goldEdge;
+        tipsBtn.style.paddingLeft = tipsBtn.style.paddingRight = 12;
+        tipsBtn.RegisterCallback<PointerEnterEvent>(_ => UiCursor.ShowHand());
+        tipsBtn.RegisterCallback<PointerLeaveEvent>(_ => UiCursor.ShowArrow());
+        titleRow.Add(tipsBtn);
+        card.Add(titleRow);
+
+        string explain = entry.explanations != null && entry.explanations.Count > 0 ? entry.explanations[0].text : "";
+        var body = new Label(explain);
+        body.style.fontSize = 20;
+        body.style.color = new Color(0.96f, 0.94f, 0.90f, 0.95f);
+        body.style.whiteSpace = WhiteSpace.Normal;
+        body.style.unityFontDefinition = fontDef;
+        card.Add(body);
+
+        termCardLayer.Add(card);
+        backlogPanel.Add(termCardLayer);
+    }
+
+    private void CloseTermCard()
+    {
+        termCardLayer?.RemoveFromHierarchy();
+        termCardLayer = null;
     }
 
     private void JumpToEntry(int sceneIndex, int dialogueIndex)
@@ -1814,6 +1945,7 @@ public class VNBacklog : MonoBehaviour
     public void ToggleBacklog()
     {
         isOpen = !isOpen;
+        CloseTermCard();
         backlogPanel.style.display = isOpen ? DisplayStyle.Flex : DisplayStyle.None;
 
         if (isOpen)

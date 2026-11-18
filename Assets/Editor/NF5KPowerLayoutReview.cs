@@ -62,7 +62,7 @@ public static class NF5KPowerLayoutReview
             File.WriteAllText(Output+"conflicts.json",JsonUtility.ToJson(report,true));
             motion.Apply(0,0,0,0,0,20261021,true);
             AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);
-            foreach(var renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            foreach(var renderer in UnityEngine.Object.FindObjectsByType<Renderer>())
                 if(!renderer.transform.IsChildOf(body))renderer.enabled=false;
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=4;camera.farClipPlane=100;
             camera.transform.position=body.TransformPoint(new Vector3(13,-.2f,8));camera.transform.LookAt(body.TransformPoint(new Vector3(0,-.6f,8)));

@@ -21,7 +21,7 @@ public partial class DialogueBox : MonoBehaviour
     public System.Action<bool> OnProgressDragChanged;
     private VisualElement progressThumb;
     private TypewriterEffect typewriterEffect;
-    private Font gameFont;
+    private Font gameFont => VNFonts.Game;   // 随「剧情字体」设置实时变化
     private Coroutine continueAnimCoroutine;
 
     public Action OnTypewriterComplete;
@@ -39,13 +39,12 @@ public partial class DialogueBox : MonoBehaviour
     private VNLocalizedLine lastLocalizedLine;
     private string displayedPrimaryLanguage;
     private float primaryBlockHeight = 100;
-    /// <summary>小卡「术语图鉴」跳转（参数 termId）；由 VNManager 接到平板 TIPS 页后才显示按钮。</summary>
+    /// <summary>小卡「百科」跳转（参数 termId）；由 VNManager 接到平板媒姬百科后才显示按钮。</summary>
     public Action<string> OnOpenTips;
 
     public void Init(UIDocument document)
     {
         uiDoc = document;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
         VNSubtitleSettings.Changed += OnSubtitleSettingsChanged;
         typewriterEffect = gameObject.AddComponent<TypewriterEffect>();
@@ -180,6 +179,7 @@ public partial class DialogueBox : MonoBehaviour
     }
 
     public void SetProgress(float p) => scenicRoute?.SetProgress(p);
+    public void SetBookmarkMarks(System.Collections.Generic.IList<float> ratios) => scenicRoute?.SetMarks(ratios);
 
     /// <summary>通话条：对方名为空则显示通用「通话中」。</summary>
     public void SetPhoneCall(string peer)
@@ -260,6 +260,8 @@ public partial class DialogueBox : MonoBehaviour
             int rows = wrapped.Split('\n').Length;
             primaryBlockHeight = rows * fs + (rows - 1) * LineGap;
             dialogueText.style.fontSize = fs;
+            // 折行已由 WrapText 手动完成：关掉 Label 自带折行，否则估宽与实际字宽的微小误差会让末尾字（如"边，"）被二次折到下一行
+            dialogueText.style.whiteSpace = WhiteSpace.NoWrap;
             dialogueText.style.unityParagraphSpacing = LineGap;
             dialogueText.style.minHeight = primaryBlockHeight;
             ApplySingleLanguageLayout();
@@ -434,7 +436,7 @@ public partial class DialogueBox : MonoBehaviour
         return tex;
     }
 
-    /// <summary>术语小卡（参考图四：居于下方、单人解释、无说话人名称、左侧头像、右侧图鉴按钮）。</summary>
+    /// <summary>术语小卡（参考图四：居于下方、单人解释、无说话人名称、左侧头像、右侧百科按钮）。</summary>
     private void OpenTermCard(string termId, VisualElement hit)
     {
         CloseTermCard();
@@ -526,7 +528,7 @@ public partial class DialogueBox : MonoBehaviour
         titleRow.Add(close);
         termCard.Add(titleRow);
 
-        // 主体横排：左头像 + 中解释 + 右 MORE 图鉴按钮
+        // 主体横排：左头像 + 中解释 + 右 MORE 百科按钮
         var mainRow = new VisualElement();
         mainRow.style.flexDirection = FlexDirection.Row;
         mainRow.style.alignItems = Align.Center;
@@ -615,7 +617,7 @@ public partial class DialogueBox : MonoBehaviour
         moreIcon.style.unityFontDefinition = fontDef;
         moreBtn.Add(moreIcon);
 
-        var moreText = new Label("图鉴");
+        var moreText = new Label("百科");
         moreText.style.fontSize = 13;
         moreText.style.color = gold;
         moreText.style.unityFontDefinition = fontDef;
@@ -713,6 +715,7 @@ public partial class DialogueBox : MonoBehaviour
                 float cw = CharWidthEm(c) * fs;
                 if (lw + cw > limit && line.Length > 0)
                 {
+                    // 统一规则：左对齐，行满才换，不在标点处提前断行（仅保留避头尾）
                     if (c < 128 && char.IsLetter(c) && line[line.Length - 1] < 128 && char.IsLetter(line[line.Length - 1]))
                     {
                         int space = line.ToString().LastIndexOf(' ');

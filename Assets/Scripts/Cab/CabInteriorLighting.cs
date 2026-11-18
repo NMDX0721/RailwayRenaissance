@@ -27,6 +27,7 @@ namespace RailwayRenaissance.Cab
         [SerializeField] float lastInstrumentDimmer = .25f;
         [SerializeField] bool mainPower = true, batteryPower = true;
         [SerializeField] bool reviewControls = true;
+        [SerializeField, Range(1,4)] float lampGain = 1.35f;   // scene fixtures were tuned for a bright review room; at dusk/night they read too weak
         Rect ReviewPanelRect => new Rect(Mathf.Max(250, Screen.width - 260),16,244,400);
         MaterialPropertyBlock properties;
         bool previousLegacy;
@@ -113,13 +114,15 @@ namespace RailwayRenaissance.Cab
             foreach (var fixture in fixtures)
             {
                 float level = Level(fixture.circuit);
-                if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level; }
-                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = fixture.bounceIntensity * level; }
-                if (fixture.lowerBounce != null) { fixture.lowerBounce.enabled = level > 0; fixture.lowerBounce.intensity = fixture.lowerBounceIntensity * level; }
+                bool saloon = fixture.circuit == InteriorLightCircuit.PassengerFront || fixture.circuit == InteriorLightCircuit.PassengerRear;
+                float gain = saloon ? lampGain * .7f : lampGain;   // the saloon has many luminaires close to a low ceiling: less each, or the ceiling washes out
+                if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level * gain; }
+                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = fixture.bounceIntensity * level * gain; }
+                if (fixture.lowerBounce != null) { fixture.lowerBounce.enabled = level > 0; fixture.lowerBounce.intensity = fixture.lowerBounceIntensity * level * gain; }
                 if (fixture.diffuser == null) continue;
                 fixture.diffuser.GetPropertyBlock(properties);
                 var tint = fixture.light != null ? fixture.light.color : Color.white;
-                properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : .65f));
+                properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : saloon ? .38f : .65f));
                 fixture.diffuser.SetPropertyBlock(properties);
             }
             GetComponent<CabDiffuseFill>()?.Refresh();

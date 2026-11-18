@@ -395,7 +395,14 @@ public class UIManager : MonoBehaviour
         PlaySound("confirm");
         yield return new WaitForSeconds(0.2f);
 
-        lastDayResult = GameData.AdvanceDay();
+        DayLoopController.DayReport report = DayLoopController.EndDay();
+        lastDayResult = new GameData.DayResult
+        {
+            EventTitle = report.EventTitle,
+            EventDescription = report.EventDescription,
+            GoalCompleted = report.GoalCompleted,
+            Tone = report.Tone,
+        };
         RefreshAll();
         ShowPanel(summaryPanel);
 

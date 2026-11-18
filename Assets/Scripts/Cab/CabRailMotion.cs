@@ -34,7 +34,13 @@ namespace RailwayRenaissance.Cab
         Spring height,pitch,roll;
         bool initialized;
         double lastTime=-1,lastPosition;
-        readonly CabReviewTrack track=new CabReviewTrack();
+        CabReviewTrack track=new CabReviewTrack();
+        // Swap the route (default: legacy 180 m review curve). A graded route also feeds the backend grade and pitches the vehicle.
+        public void UseTrack(CabReviewTrack route)
+        {
+            track=route??throw new ArgumentNullException(nameof(route));initialized=false;lastTime=-1;
+            if(driver!=null)driver.RouteGradePermille=route.HasGrade?(Func<double,double>)route.GradePermilleAt:null;
+        }
         public Transform Vehicle=>vehicle;
         public Bogie[] Bogies=>bogies;
         public double Station {get;private set;}
@@ -47,6 +53,7 @@ namespace RailwayRenaissance.Cab
         public void Configure(CabSimulationDriver source,Transform body)
         {
             driver=source;vehicle=body;var list=new List<Bogie>();
+            if(track.HasGrade&&driver!=null)driver.RouteGradePermille=track.GradePermilleAt;
             foreach(Transform node in body.GetComponentsInChildren<Transform>(true))
             {
                 if(!node.name.StartsWith("Powered_Bogie_",StringComparison.Ordinal))continue;
@@ -89,10 +96,14 @@ namespace RailwayRenaissance.Cab
         void ProtectReviewRouteEnd()
         {
             if(driver==null||driver.Model==null)return;
-            var s=driver.Model.State;
-            double remaining=s.SpeedMps>=0?CabReviewTrack.End-Station-10:Station-CabReviewTrack.Start-10;
-            if(Math.Abs(s.SpeedMps)>.01&&remaining<s.SpeedMps*s.SpeedMps/(2*.25)+30)
+            if(RouteEndBrakeRequired(driver.Model.State.SpeedMps))
                 driver.GetComponent<CabEngineState>().SetBrakeNotch(BrakeNotch.Emergency);
+        }
+        // True when the vehicle at Station could not stop on the remaining route at 0.25 m/s^2 (plus a 10 m + 30 m margin).
+        public bool RouteEndBrakeRequired(double speedMps)
+        {
+            double remaining=speedMps>=0?track.RangeEnd-Station-10:Station-track.RangeStart-10;
+            return Math.Abs(speedMps)>.01&&remaining<speedMps*speedMps/(2*.25)+30;
         }
         public void Apply(double station,double speed,double acceleration,double brake,double dt,int seed,bool reset=false)
         {
@@ -114,13 +125,16 @@ namespace RailwayRenaissance.Cab
             pitch.Value=Math.Max(-.08,Math.Min(.08,pitch.Value));roll.Value=Math.Max(-.30,Math.Min(.30,roll.Value));
             HeaveError=height.Value-targetHeight;PitchDegrees=pitch.Value;RollDegrees=roll.Value;
             var centre=(front.Position+rear.Position)*.5f;centre.y=(float)height.Value;
-            vehicle.rotation=yaw*Quaternion.Euler((float)pitch.Value,0,(float)roll.Value);
+            bool graded=track.HasGrade;var chord=front.Position-rear.Position;
+            float gradePitch=graded?Mathf.Atan2(chord.y,new Vector2(chord.x,chord.z).magnitude)*Mathf.Rad2Deg:0; // uphill (front higher) pitches the -Z nose up
+            vehicle.rotation=yaw*Quaternion.Euler((float)pitch.Value+gradePitch,0,(float)roll.Value);
             vehicle.position=centre-vehicle.rotation*new Vector3(0,0,8.6f);
             foreach(var b in bogies)
             {
                 double bs=station+b.stationOffset;
                 var a=track.At(bs+1.1,seed);var c=track.At(bs-1.1,seed);
-                var tangent=a.Position-c.Position;tangent.y=0;
+                var tangent=a.Position-c.Position;float slope=0;
+                if(graded)slope=tangent.y/new Vector2(tangent.x,tangent.z).magnitude;else tangent.y=0;
                 Quaternion rotation=Quaternion.LookRotation(-tangent,Vector3.up);
                 var framePosition=(a.Position+c.Position)*.5f;framePosition.y-=CabReviewTrack.RailDatum;
                 b.frame.SetPositionAndRotation(framePosition,rotation);
@@ -129,7 +143,7 @@ namespace RailwayRenaissance.Cab
                     var rail=track.At(bs-b.axlePositions[i].z,seed);
                     b.axles[i].SetPositionAndRotation(rail.Position+Vector3.up*(float)RollingRadius,rotation*Quaternion.AngleAxis((float)(WheelAngleDegrees%360),Vector3.right));
                 }
-                float Delta(float z){return track.At(bs-z,seed).Position.y-CabReviewTrack.RailDatum-framePosition.y;}
+                float Delta(float z){return track.At(bs-z,seed).Position.y-CabReviewTrack.RailDatum-framePosition.y+z*slope;} // slope term: the frame itself is pitched on graded routes
                 for(int i=0;i<b.lowerParts.Length;i++)b.lowerParts[i].localPosition=b.lowerPositions[i]+Vector3.up*Delta(Mathf.Sign(b.lowerPositions[i].z)*1.1f);
                 for(int i=0;i<b.coils.Length;i++)
                 {

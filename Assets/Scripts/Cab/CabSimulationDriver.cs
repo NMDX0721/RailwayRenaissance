@@ -37,6 +37,8 @@ namespace RailwayRenaissance.Cab
         public event Action<long> BeforeSimulationStep;
         public event Action CheckpointRestoring;
         public bool SimulationPaused {get;set;}
+        // Optional route profile: grade (permille, positive uphill toward increasing PositionM) read from the vehicle position each tick.
+        public Func<double,double> RouteGradePermille {get;set;}
         public bool ParkingBrake {get=>parkingBrake;set=>parkingBrake=value;}
         public void ConfigureReviewSeed(int seed) {noWorldSeedReviewFallback=seed;}
         void OnEnable()
@@ -81,7 +83,7 @@ namespace RailwayRenaissance.Cab
             Input.FuelPump=facade.FuelPumpOn;Input.EngineRun=facade.IsEngineStarted;
             Input.Direction=(int)facade.Reverser;Input.Throttle=facade.ThrottleNotch;Input.Brake=(int)facade.BrakePos;
             Input.IndependentBrake=facade.IndependentBrakeNotch;Input.Sand=facade.SandOn;
-            Input.ParkingBrake=parkingBrake;Input.GradePermille=restoredGrade??gradePermille;Input.RailGrip=restoredGrip??(wetRail?.55:1);
+            Input.ParkingBrake=parkingBrake;Input.GradePermille=RouteGradePermille!=null&&Model!=null?RouteGradePermille(Model.State.PositionM):restoredGrade??gradePermille;Input.RailGrip=restoredGrip??(wetRail?.55:1);
             Input.CoolingFailure=coolingFailure;Input.CompressorFailure=compressorFailure;
         }
         void ApplyPower()

@@ -428,9 +428,9 @@ public static class TabletGestureReview
                 case 8:
                     // Stage 8: Edge Back Navigation (Inward Swipe on Left Edge)
                     Call("LaunchApp", "设置");
-                    TabletSettingsAppUI.ShowTipsPage("rail_ballast");
-                    var tipsTitle = root.Q<Label>("tips-detail-title");
-                    Assert(tipsTitle != null && tipsTitle.text == "道砟", "Glossary subpage not opened");
+                    TabletSettingsAppUI.ShowAffairsPage();
+                    var tipsTitle = root.Query<Label>().Where(l => l.text != null && l.text.Contains("事务功能")).First();
+                    Assert(tipsTitle != null, "Subpage not opened");
                     var activeTask = (TabletTaskSession)Field("activeTabletTask");
                     var pagesField = typeof(TabletTaskSession).GetField("Pages", BindingFlags.Instance | BindingFlags.NonPublic);
                     var pages = (System.Collections.IList)pagesField.GetValue(activeTask);

@@ -55,6 +55,7 @@ NPC（老陈/李阿姨/张工/茶嫂/小芳/赵师傅）同规格，`char_{id}_{
 ## 反馈（GPT 填写，Claude 处理）
 - 2026-11-17：用户要求高清晰度像素。新增 `Explore/PropsHD/` 中 6 件 P0.5 摆件与 `Explore/InteriorsHD/` 横竖墙帽，源图按 4 倍绘制、PPU128，对应 32 世界像素/格。旧 32px 调度室主体仍是技术样张，新旧图混用会有明显细节差；请在接入截图后决定主体整套高清重绘顺序。图形脚本 `tools/art/build_explore_hd_room.py`；尚未做 Unity Play 或 Android 视觉验收。
 - 同日续做：旧调度室 14 张基础室内件、8 张原有设备家具也补齐高清候选版，现 `InteriorsHD/` 16 张、`PropsHD/` 14 张，均附 contact sheet。上述“旧主体待高清重绘”的缺口已补图；是否可正式采用，仍以 Unity 场景视角、入口与遮挡验收为准。
+- 视觉质量复核：用户指出 128px 程序图仍达不到高清晰度像素画，故上述图片降为技术样张。imagegen 新绘 `Explore/Concept/dispatch_room_hd_art_direction_v2.png` 作为调度室材质/细节密度目标，不直接接入运行时。
 - 发现草图尺寸/元素冲突、需要新增设备或某元素无法按规格表现，写在这里并在 Notion「AI Handoffs」留一条（Source Agent: ChatGPT）。
 
 ## 2026-11-17 追加（Claude）：站务大厅已接入，请出专用图

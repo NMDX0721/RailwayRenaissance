@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public class VNSaveLoadUI : MonoBehaviour
 {
     private UIDocument uiDoc;
-    private Font gameFont;
+    private Font gameFont => VNFonts.Game;   // 随「剧情字体」设置实时变化
     private VNSaveSystem saveSystem;
 
     private VisualElement panel;
@@ -59,7 +59,6 @@ public class VNSaveLoadUI : MonoBehaviour
     {
         uiDoc = document;
         saveSystem = system;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
     }
 

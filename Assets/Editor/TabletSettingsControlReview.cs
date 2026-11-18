@@ -390,9 +390,9 @@ public static class TabletSettingsControlReview
 
                 case 7:
                     // Stage 7: Subpage Navigation & Depth (Tips glossary)
-                    TabletSettingsAppUI.ShowTipsPage("rail_ballast");
-                    var tipsTitle = root.Q<Label>("tips-detail-title");
-                    Assert(tipsTitle != null && tipsTitle.text == "道砟", "Subpage glossary '道砟' not opened");
+                    TabletSettingsAppUI.ShowAffairsPage();
+                    var tipsTitle = root.Query<Label>().Where(l => l.text != null && l.text.Contains("事务功能")).First();
+                    Assert(tipsTitle != null, "Subpage 事务 not opened");
 
                     var activeTask = (TabletTaskSession)Field("activeTabletTask");
                     var pagesField = typeof(TabletTaskSession).GetField("Pages", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -412,7 +412,7 @@ public static class TabletSettingsControlReview
                     var pagesAfter = (IList)curPagesField?.GetValue(curTask);
                     Assert(pagesAfter != null && pagesAfter.Count == 0, "Subpage not popped after RequestSystemBack");
 
-                    var tipsAfter = root.Q<Label>("tips-detail-title");
+                    var tipsAfter = root.Query<Label>().Where(l => l.text != null && l.text.Contains("事务功能")).First();
                     Assert(tipsAfter == null, "Subpage view leaked after back navigation");
 
                     Capture("08-settings-subpage-back-recovery");

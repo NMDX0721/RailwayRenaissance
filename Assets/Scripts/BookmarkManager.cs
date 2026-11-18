@@ -172,6 +172,17 @@ public static class BookmarkManager
         return list;
     }
 
+    /// <summary>查找某句上的手动书签；没有则返回 null。</summary>
+    public static Bookmark FindManual(string scriptName, int sceneIndex, int dialogueIndex)
+    {
+        foreach (string id in ManualIndex())
+        {
+            var bm = LoadManual(id);
+            if (bm != null && bm.scriptName == scriptName && bm.sceneIndex == sceneIndex && bm.dialogueIndex == dialogueIndex) return bm;
+        }
+        return null;
+    }
+
     /// <summary>删除手动书签。</summary>
     public static void RemoveManual(string id)
     {

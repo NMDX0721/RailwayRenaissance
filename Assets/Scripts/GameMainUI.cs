@@ -350,7 +350,7 @@ public class GameMainUI : MonoBehaviour
     private System.Collections.IEnumerator BuildDesktopAsync()
     {
         yield return null; // 先让锁屏渲染出来（用户立刻看到中间页，而非黑屏）
-        if (desktopBuilt) { desktopBuilding = false; yield break; } // 图鉴页可能已同步构建完
+        if (desktopBuilt) { desktopBuilding = false; yield break; } // 百科直达（OpenTipsPage）可能已同步构建完
         TraceLog.L("[GameMainUI] DesktopAsync: start (background)");
         BuildDesktop();
         TraceLog.L("[GameMainUI] DesktopAsync: desktop ok");
@@ -2351,7 +2351,7 @@ public class GameMainUI : MonoBehaviour
                 iconBg = new Color(0.22f, 0.68f, 0.85f, 1f);  // 地图天蓝
                 iconFg = Color.white;
                 break;
-            case "铁路运营": case "RDA 助手": case "岁月": case "岁月 · AI对话": case "站务日志": case "列车图鉴":
+            case "铁路运营": case "RDA 助手": case "岁月": case "岁月 · AI对话": case "站务日志":
             case "铁路": case "驾驶台":
                 iconBg = new Color(0.18f, 0.38f, 0.65f, 1f);  // 铁路功能：深工装蓝实底
                 iconFg = new Color(0.92f, 0.96f, 1f, 1f);
@@ -2370,6 +2370,10 @@ public class GameMainUI : MonoBehaviour
                 break;
             case "浏览器":
                 iconBg = new Color(0.20f, 0.52f, 0.92f, 1f);  // 浏览器蓝实底
+                iconFg = Color.white;
+                break;
+            case "媒姬百科":
+                iconBg = new Color(0.12f, 0.52f, 0.46f, 1f);  // 百科青绿：摊开的书 + 书签
                 iconFg = Color.white;
                 break;
             case "米家":
@@ -2393,7 +2397,7 @@ public class GameMainUI : MonoBehaviour
             "岁月 · AI对话" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sparkle,
             "驾驶台" => RailwayRenaissance.UI.Tablet.TabletIconKind.Train,
             "归途" => RailwayRenaissance.UI.Tablet.TabletIconKind.Home,
-            "媒姬百科" => RailwayRenaissance.UI.Tablet.TabletIconKind.Sparkle,
+            "媒姬百科" => RailwayRenaissance.UI.Tablet.TabletIconKind.Encyclopedia,
             "相册" => RailwayRenaissance.UI.Tablet.TabletIconKind.Image,
             "笔记" => RailwayRenaissance.UI.Tablet.TabletIconKind.Note,
             "浏览器" => RailwayRenaissance.UI.Tablet.TabletIconKind.Globe,
@@ -2410,7 +2414,14 @@ public class GameMainUI : MonoBehaviour
             "地图" => RailwayRenaissance.UI.Tablet.TabletIconKind.Map,
             _ => null
         };
-        if (vector.HasValue)
+        if (name == "媒姬百科")
+        {
+            // 媒姬：代码绘制的双马尾小姑娘（图标自带底色，铺满整块）
+            tile.style.backgroundColor = RailwayRenaissance.UI.Tablet.TabletMediaMascot.Paper;
+            tile.style.overflow = Overflow.Hidden;
+            tile.Add(new RailwayRenaissance.UI.Tablet.TabletMediaMascot(size, false));
+        }
+        else if (vector.HasValue)
         {
             tile.Add(new RailwayRenaissance.UI.Tablet.TabletIconElement(vector.Value, size * 0.56f, iconFg));
         }
@@ -2695,6 +2706,10 @@ public class GameMainUI : MonoBehaviour
 
     private void ReturnToTabletHome()
     {
+        // 从 VN 术语小卡进入百科：退出百科直接回到 VN
+        bool backToVn = tipsOpenedFromVN && activeTabletTask != null && activeTabletTask.AppId == "媒姬百科";
+        tipsOpenedFromVN = false;
+        TabletWikiAppUI.ClearVnOrigin();
         ResetSystemGesture();
         CancelTabletRebind();
         tabletShellState.ClosePanel();
@@ -2707,8 +2722,8 @@ public class GameMainUI : MonoBehaviour
         }
         activeTabletTask = null;
         RefreshDockRecents();
-        desktopInkLight = -1; // 回到桌面：按壁纸重新取字色
         appLayer = null;
+        desktopInkLight = -1; // 回到桌面：按壁纸重新取字色
         ApplyStatusBarForApp(false);
         if (desktop != null) desktop.style.display = DisplayStyle.Flex;
         bool useGesturesHome = PresentationPreferences == null || PresentationPreferences.NavigationMode == RailwayRenaissance.UI.Tablet.SystemShell.TabletNavigationMode.Gestures;
@@ -2728,6 +2743,7 @@ public class GameMainUI : MonoBehaviour
                 systemNavigationBar.BringToFront();
             }
         }
+        if (backToVn) Hide();
     }
 
     /// <summary>回桌面：应用略微缩小并淡出，桌面同时在下方显现；动画结束再真正隐藏，重新打开时复位。</summary>
@@ -2754,11 +2770,10 @@ public class GameMainUI : MonoBehaviour
             if (activeTabletTask == task) return;   // 期间又切回了这个应用
             layer.style.display = DisplayStyle.None;
             layer.pickingMode = PickingMode.Position;
-        }).ExecuteLater(ms + 30);
             ResetAppLayerTransform(layer);
+        }).ExecuteLater(ms + 30);
     }
 
-    // 打开应用：从略小、半透明淡入到全尺寸（减少动效下直接显示）
     private static void ResetAppLayerTransform(VisualElement layer)
     {
         layer.style.translate = new Translate(0, 0);
@@ -2766,6 +2781,7 @@ public class GameMainUI : MonoBehaviour
         layer.style.borderBottomLeftRadius = layer.style.borderBottomRightRadius = 0;
     }
 
+    // 打开应用：从略小、半透明淡入到全尺寸（减少动效下直接显示）
     private void PlayAppOpenAnimation(VisualElement layer)
     {
         int ms = RailwayRenaissance.UI.Tablet.TabletTheme.MotionMs(220);
@@ -3048,8 +3064,8 @@ public class GameMainUI : MonoBehaviour
         task.LastFocusedElement = null;
         tabletTasks.Remove(task);
         RefreshDockRecents();
-        if (tabletTasks.Count == 0) CloseRecentTasks();
         RenderRecentTasks();
+        if (tabletTasks.Count == 0) CloseRecentTasks();
     }
 
     private void CloseAllTabletTasks()
@@ -3073,8 +3089,8 @@ public class GameMainUI : MonoBehaviour
         }
         tabletTasks.Clear();
         RefreshDockRecents();
-        if (appLayer == null && root != null)
         recentTasksList?.Clear();
+        if (appLayer == null && root != null)
         {
             appLayer = new VisualElement { name = "tablet-app-layer" };
             appLayer.style.position = Position.Absolute;
@@ -3091,8 +3107,8 @@ public class GameMainUI : MonoBehaviour
     private void RequestSystemBack()
     {
         if (RailwayRenaissance.UI.Tablet.SystemShell.TabletConfirmDialog.HandleBack()) return;
-        // 注册向导盖在平板上时，返回键只作用于向导（退一页或取消），不落到下面的应用
         if (tabletShellState.ClosePanel()) return;
+        // 注册向导盖在平板上时，返回键只作用于向导（退一页或取消），不落到下面的应用
         var setupWizard = RailwayRenaissance.UI.Tablet.Account.TabletSetupWizard.Active;
         if (setupWizard != null && setupWizard.HandleBack()) return;
         if (CancelTabletRebind()) return;
@@ -3382,11 +3398,17 @@ public class GameMainUI : MonoBehaviour
             ReclaimInactiveTabletTasks(false);
     }
 
-    private long GetTabletMemorySoftBudget()
+    private long GetTabletMemorySoftBudget() => TabletMemorySoftBudgetBytes;
+
+    /// <summary>平板系统开始回收后台任务的内存线：物理内存的 62%，至少 768 MB。设置页“运行内存”读同一个数字。</summary>
+    public static long TabletMemorySoftBudgetBytes
     {
-        long physicalMemory = SystemInfo.systemMemorySize * 1024L * 1024L;
-        if (physicalMemory <= 0) return MinimumMemorySoftBudgetBytes;
-        return System.Math.Max(MinimumMemorySoftBudgetBytes, (long)(physicalMemory * 0.62));
+        get
+        {
+            long physicalMemory = SystemInfo.systemMemorySize * 1024L * 1024L;
+            if (physicalMemory <= 0) return MinimumMemorySoftBudgetBytes;
+            return System.Math.Max(MinimumMemorySoftBudgetBytes, (long)(physicalMemory * 0.62));
+        }
     }
 
     private void CheckTabletMemoryBudget(bool force)
@@ -3735,7 +3757,7 @@ public class GameMainUI : MonoBehaviour
         win.style.paddingTop = 48 + RailwayRenaissance.UI.Tablet.TabletTheme.SafeInsetTop; // 状态栏叠在窗口之上，窗口自己留出顶部
         win.style.paddingBottom = IsThreeButtonNav ? SystemNavBarHeight : 0;   // 三键导航条常驻，内容让出一条；手势模式内容铺到底
         // 默认浅色窗口，与 HyperOS 应用一致；少数深色界面的应用保留深色窗口
-        bool darkApp = appTitle == "五线态势" || appTitle == "岁月 · AI对话" || appTitle == "驾驶台";
+        bool darkApp = appTitle == "五线态势" || appTitle == "巡线" || appTitle == "RDA" || appTitle == "岁月 · AI对话" || appTitle == "驾驶台";
         var winBg = darkApp ? new Color(0.08f, 0.09f, 0.11f, 1f) : new Color(0.97f, 0.97f, 0.98f, 1f);
         var barBg = darkApp ? new Color(0.07f, 0.08f, 0.10f, 0.96f) : new Color(0.97f, 0.97f, 0.98f, 1f);
         var barLine = darkApp ? new Color(0.24f, 0.22f, 0.18f, 0.5f) : new Color(0f, 0f, 0f, 0.07f);
@@ -3757,7 +3779,9 @@ public class GameMainUI : MonoBehaviour
             Dark = darkApp,
             OnBack = () => { if (onBack != null) onBack(); else ReturnToTabletHome(); }
         });
-        if (appTitle != "设置") win.Add(appBar);   // 设置自带左栏标题与返回，不再叠一条老顶栏
+        bool ownHeader = appTitle == "设置" || appTitle == "媒姬百科" || appTitle == "巡线" || appTitle == "RDA";
+        if (!ownHeader) win.Add(appBar);   // 设置、媒姬百科自带标题区，不再叠一条老顶栏（媒姬百科参照音乐，无顶部返回键，退出走手势条）
+        if (appTitle == "媒姬百科") win.style.backgroundColor = new Color(0.949f, 0.957f, 0.953f, 1f);   // 与百科浅底同色，状态栏与标题区连成一片
 
         // 主体内容区（供具体 App 渲染）
         var content = new VisualElement { name = "app-content" };
@@ -3769,6 +3793,13 @@ public class GameMainUI : MonoBehaviour
         // 给手势条留位改在各滚动区末尾：应用渲染完（下一帧）后，所有 ScrollView 的内容底部补 36 的内边距
         content.schedule.Execute(() => PadScrollEnds(content)).ExecuteLater(0);
 
+        if (appTitle == "媒姬百科") content.style.paddingTop = 0;
+        if (appTitle == "巡线" || appTitle == "RDA")
+        {
+            // 探索场景全屏铺满：无顶栏、无黑边，状态栏直接叠在地图上
+            win.style.paddingTop = 0;
+            content.style.paddingTop = 0; content.style.paddingLeft = 0; content.style.paddingRight = 0;
+        }
         if (appTitle == "设置")
         {
             // 设置没有顶栏：状态栏下方直接是内容，去掉原来为顶栏留的空白
@@ -3806,7 +3837,7 @@ public class GameMainUI : MonoBehaviour
         "RDA" => "铁路行车调度助手",
         "驾驶台" => "0721型机车仿真视界",
         "归途" => "剧情回顾 · Return Journey",
-        "媒姬百科" => "铁路知识图鉴",
+        "媒姬百科" => "铁路复兴世界的百科全书",
         "相册" => "岁月回忆与场景收集",
         "设置" => "系统偏好与本地备份",
         "笔记" => "运营备忘与乘务笔记",
@@ -4000,14 +4031,15 @@ public class GameMainUI : MonoBehaviour
             }
         }
         Instance.EnsureDesktopBuiltSync();
-        // 图鉴直达：不走锁屏，直接进桌面态
+        // 百科直达：不走锁屏，直接进桌面态
         Instance.unlocked = true;
         if (Instance.lockScreen != null) Instance.lockScreen.style.display = DisplayStyle.None;
         if (Instance.desktop != null) Instance.desktop.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
         Instance.tabletShellView?.SetVisible(true);
-        Instance.LaunchApp("设置");
-        TabletSettingsAppUI.ShowTipsPage(termId);
+        TabletWikiAppUI.OpenFromVN(termId, () => { if (Instance != null) Instance.ReturnToTabletHome(); });
+        Instance.LaunchApp("媒姬百科");
+        Instance.tipsOpenedFromVN = true;
     }
 
     /// <summary>同步补建桌面/App层（后台错帧协程可能还没跑）；只补缺的部分，避免与协程重复构建。</summary>
@@ -4028,7 +4060,7 @@ public class GameMainUI : MonoBehaviour
     // ============ App: RDA（已抽离至 TabletRDAAppUI）============
     private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
 
-    // ============ App: 巡线（雾峰站 2D 俯视探索）============
+    // ============ App: 巡线（星露谷式 2D 俯视探索层，灰盒毛坯）============
     private void BuildExploreApp(VisualElement win) => TabletExploreAppUI.Build(win, OnExploreAction, OnExploreEndDay, ShowBackupToast, LaunchApp, ShowStoryPage, ShowAffairsPage);
 
     private void OnExploreAction(string id)
@@ -4048,7 +4080,7 @@ public class GameMainUI : MonoBehaviour
     private void BuildReturnJourneyApp(VisualElement win) => TabletReturnJourneyUI.BuildReturnJourneyApp(win, ReturnToTabletHome, ShowBackupToast);
 
     // ============ App: 媒姬百科与便签（已抽离至 TabletNotesAppUI）============
-    private void BuildWikiApp(VisualElement win) => TabletNotesAppUI.BuildWikiApp(win);
+    private void BuildWikiApp(VisualElement win) => TabletWikiAppUI.BuildWikiApp(win);
     private void BuildNotesApp(VisualElement win) => TabletNotesAppUI.BuildNotesApp(win, ShowBackupToast);
 
     // ============ App: 音乐（已抽离至 TabletMusicAppUI）============
@@ -4116,6 +4148,7 @@ public class GameMainUI : MonoBehaviour
 
     private bool ReturnToPreviousTabletPage()
     {
+        if (activeTabletTask != null && activeTabletTask.AppId == "媒姬百科" && activeTabletTask.Pages.Count == 0 && TabletWikiAppUI.TryGoBack()) return true;
         if (activeTabletTask == null || appLayer == null || activeTabletTask.Pages.Count == 0) return false;
         List<TabletPageEntry> pages = activeTabletTask.Pages;
         TabletPageEntry current = pages[pages.Count - 1];
@@ -4128,6 +4161,8 @@ public class GameMainUI : MonoBehaviour
         else appLayer.Focus();
         return true;
     }
+
+    private bool tipsOpenedFromVN;
 
     private void Update()
     {

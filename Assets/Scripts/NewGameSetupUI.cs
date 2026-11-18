@@ -377,6 +377,8 @@ public class NewGameSetupUI : MonoBehaviour
 
     private static readonly string[] PresetSeeds = { "RR-7A3F-B2C9", "RR-042-D9E1", "RR-077-F5A2", "RR-113-C8D4", "RR-999-E0B7" };
 
+    private static readonly string[] PresetSeedIds = { "seed_001", "seed_042", "seed_077", "seed_113", "seed_999" };
+
     private void OnConfirm()
     {
         var config = GameConfig.Load();
@@ -399,7 +401,9 @@ public class NewGameSetupUI : MonoBehaviour
             config.ApplyDifficultyPreset(difficultyKeys[selectedDifficulty]);
         }
         // 单档：每次新游戏随机种子
-        config.seedCode = PresetSeeds[UnityEngine.Random.Range(0, PresetSeeds.Length)];
+        int presetIdx = UnityEngine.Random.Range(0, PresetSeeds.Length);
+        config.seedCode = PresetSeeds[presetIdx];
+        config.seedId = PresetSeedIds[presetIdx]; // InitializeSubsystems 按 seedId 加载 Resources/Seeds
 
         config.Save();
         Hide();

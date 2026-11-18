@@ -13,6 +13,11 @@ public sealed class VNVoicePlayer : MonoBehaviour
     private readonly Dictionary<string, AudioClip> clips = new();
     public bool HasClip => source != null && source.clip != null;
     public bool IsPlaying => HasClip && source.isPlaying;
+    // Future CubismAudioMouthInput uses this source, not the typewriter or microphone.
+    public AudioSource PlaybackSource => source;
+    public string Speaker { get; private set; }
+    public bool IsAudible => IsPlaying && source.volume > 0.0001f && !source.mute &&
+        !AudioListener.pause && AudioListener.volume > 0.0001f;
     private bool paused;
     public bool IsPending => IsPlaying || paused;
     public float Progress => !HasClip ? 0 : source.isPlaying || paused ? Mathf.Clamp01(source.time / source.clip.length) : completed ? 1 : 0;
@@ -70,6 +75,7 @@ public sealed class VNVoicePlayer : MonoBehaviour
         if (!clips.TryGetValue(clipPath, out var clip)) clips[clipPath] = clip = Resources.Load<AudioClip>(clipPath);
         if (clip == null) return;
         source.clip = clip;
+        Speaker = entry.s;
         if (autoPlay) Replay();
     }
     public void Replay()
@@ -95,6 +101,7 @@ public sealed class VNVoicePlayer : MonoBehaviour
     public void Clear()
     {
         if (source != null) { source.Stop(); source.clip = null; }
+        Speaker = null;
         paused = completed = false;
     }
     private void OnDisable() => Clear();

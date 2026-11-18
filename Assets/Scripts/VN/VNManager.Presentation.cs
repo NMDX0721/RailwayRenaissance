@@ -46,8 +46,23 @@ public partial class VNManager
         lineVoice.Bind(!string.IsNullOrEmpty(currentScript?.id)?currentScript.id:currentScriptName,currentSceneIndex,currentDialogueIndex,entry);
         dialogueBox.SetVoiceState(lineVoice.HasClip,lineVoice.Progress);
     }
+    // 右键隐藏期间点击推进会让 DialogueBox.Show / 进度条等重新置为显示；每帧末把被隐藏的容器压回去
+    private void LateUpdate()
+    {
+        if (!uiHidden || hiddenUiSnapshots.Count == 0) return;
+        foreach (var hidden in hiddenUiSnapshots.Keys)
+            if (hidden != null && hidden.style.display != DisplayStyle.None) hidden.style.display = DisplayStyle.None;
+    }
+    private int bookmarkShownKey = int.MinValue;
     private void UpdateReadingPresentation()
     {
+        // 换句时刷新对话框书签键的收藏状态（PlayerPrefs 解析较重，不逐帧做）
+        int bookmarkKey = (currentSceneIndex * 100003 + currentDialogueIndex) * 31 + (currentScriptName != null ? currentScriptName.GetHashCode() : 0);
+        if (bookmarkKey != bookmarkShownKey && dialogueBox != null)
+        {
+            bookmarkShownKey = bookmarkKey;
+            dialogueBox.SetBookmarked(isScriptRunning && IsBookmarkedAt(currentSceneIndex, currentDialogueIndex));
+        }
         if (backlogVoice != null && backlogVoice.HasClip && (vnBacklog == null || !vnBacklog.IsOpen)) backlogVoice.Clear();
         if(lineVoice!=null)
         {
@@ -58,13 +73,15 @@ public partial class VNManager
         storySignal.style.display=VNPresentationSettings.StorySignal&&isScriptRunning&&!uiHidden&&!IsCinematicBlocking()&&!AdvanceBlockedByPanels()?DisplayStyle.Flex:DisplayStyle.None;
         var profile=VNRouteProfile.Find(currentScriptName);
         // Authored atmosphere beats; no analysis of unread dialogue, identities or choices.
-        var beats=profile.Beats;
-        var aspect=beats[Mathf.Min(beats.Length-1,Mathf.FloorToInt(Mathf.Clamp01(progressShown)*beats.Length))];
+        // 信号表示"前方区间"：显示再往前一小段的基调，话末时预告下一话；不读取未读台词，仅用预设的氛围段
+        // 优先用作者标注的危机点按阅读时间预告（约 5 分钟）；本话与下一话都没有标注时退回预设氛围段
+        VNSignalAspect aspect;
+        if(!(isScriptRunning&&currentScript!=null&&VNSignalForecast.TryAspect(currentScript,currentSceneIndex,currentDialogueIndex,out aspect)))
+            aspect=profile.AspectAhead(progressShown,currentScript?.nextScript);
         if(!signalSet||aspect!=shownAspect)
         {
             signalSet=true;shownAspect=aspect;signalArt.Aspect=aspect;signalArt.MarkDirtyRepaint();
             string label=aspect==VNSignalAspect.Proceed?"进行":aspect==VNSignalAspect.Reduced?"减速":aspect==VNSignalAspect.Caution?"注意":aspect==VNSignalAspect.Restricted?"警戒":"停止";
-            storySignal.tooltip="剧情氛围信号 · "+label+"\n显示开关位于设置";
         }
     }
 }

@@ -50,15 +50,44 @@ public static class TermHighlightSystem
             Debug.LogWarning("[Terms] Resources/Terms.json missing");
         }
 
-        // 2) 旧架空词条（单句解释，无角色口吻；后续可并入 JSON）
-        RegisterLore("sand_energy", "沙能科技", "以沙子为能源的交通技术，2050年由英国发明");
-        RegisterLore("sand_pig", "沙子飞猪号", "第一代沙能载具，2053年商用化，可飞行的汽车");
-        RegisterLore("great_dereg", "大废线", "2072年全球铁路系统基本停运的历史事件");
-        RegisterLore("nf5", "NF-5耕牛", "东风4型内燃机车，2000kW柴油机，老旧但可靠");
-        RegisterLore("sand_penetration", "沙能渗透", "沙能科技在特定城市的市场占有率");
-        RegisterLore("generational_gap", "代际断层", "当城市信任度长期低于阈值时，新人口默认不乘坐铁路");
-        RegisterLore("wufeng_village", "雾峰村", "游戏初始地点，主角长大的村庄");
-        RegisterLore("kuwon_univ", "金日成综合大学", "位于平壤的全球顶尖大学，主角的母校");
+        // 2) 世界观/线路/车辆词条：直接取自媒姬百科的手写条目（Resources/Wiki/wiki_articles.json 里带 tips 名单的条目）。
+        //    id 与百科条目一致，小卡上的「百科」按钮才能跳到对应条目；解释用条目的副标题（一句话，不剧透正文）。
+        var wiki = Resources.Load<TextAsset>("Wiki/wiki_articles");
+        if (wiki != null)
+        {
+            try
+            {
+                var data = JsonUtility.FromJson<WikiTipRoot>(wiki.text);
+                if (data != null && data.articles != null)
+                {
+                    foreach (var a in data.articles)
+                    {
+                        if (a == null || string.IsNullOrEmpty(a.id) || a.tips == null || a.tips.Length == 0) continue;
+                        if (termDictionary.ContainsKey(a.id)) continue;
+                        var entry = new TermEntry { id = a.id, name = string.IsNullOrEmpty(a.title) ? a.tips[0] : a.title, explanations = new List<TermExplanation>() };
+                        entry.explanations.Add(new TermExplanation { speaker = "", text = string.IsNullOrEmpty(a.subtitle) ? entry.name : a.subtitle });
+                        termDictionary[a.id] = entry;
+                        foreach (var n in a.tips) RegisterName(n, entry);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning("[Terms] wiki_articles.json parse failed: " + ex.Message);
+            }
+        }
+    }
+
+    [System.Serializable] private class WikiTipRoot { public WikiTipItem[] articles; }
+    [System.Serializable] private class WikiTipItem { public string id; public string title; public string subtitle; public string[] tips; }
+
+    /// <summary>给词条登记一个可命中的写法（一个词条可以有多个写法，如「耕牛」「NF-5」）。已被别的词条占用的写法不覆盖。</summary>
+    private static void RegisterName(string name, TermEntry entry)
+    {
+        if (string.IsNullOrEmpty(name) || nameToEntry.ContainsKey(name)) return;
+        nameToEntry[name] = entry;
+        namesByLenDesc.Add(name);
+        namesByLenDesc.Sort((x, y) => y.Length != x.Length ? y.Length.CompareTo(x.Length) : string.CompareOrdinal(x, y));
     }
 
     private static void Register(TermEntry entry)
@@ -73,13 +102,6 @@ public static class TermHighlightSystem
                 ? b.Length.CompareTo(a.Length)
                 : string.CompareOrdinal(a, b));
         }
-    }
-
-    private static void RegisterLore(string id, string name, string explanation)
-    {
-        var entry = new TermEntry { id = id, name = name, explanations = new List<TermExplanation>() };
-        entry.explanations.Add(new TermExplanation { speaker = "", text = explanation });
-        Register(entry);
     }
 
     /// <summary>黄金加粗包裹文本中的术语。已有 &lt;&gt; 富文本标签区原样跳过、不回扫，
@@ -134,20 +156,27 @@ public static class TermHighlightSystem
     }
 
     /// <summary>文本包黄（下划线由对话框命中层画）；结果与 FindOccurrences 完全一致。</summary>
-    public static string HighlightTerms(string text)
+    /// <param name="withLinks">true：再套 &lt;link="词条id"&gt;，供回顾等无命中层的 Label 用 PointerUpLinkTagEvent 取点击。</param>
+    /// <param name="underlineId">非空：该词条的所有出现处再套 &lt;u&gt; 下划线（回顾里悬停反馈）。</param>
+    public static string HighlightTerms(string text, bool withLinks = false, string underlineId = null)
     {
         if (string.IsNullOrEmpty(text)) return text;
         var occ = FindOccurrences(text);
         if (occ.Count == 0) return text;
         var sb = new StringBuilder(text.Length + 64);
         int last = 0;
-        foreach (var (s, len, _) in occ)
+        foreach (var (s, len, id) in occ)
         {
             if (s < last) continue;
             sb.Append(text, last, s - last);
+            if (withLinks) sb.Append("<link=\"").Append(id).Append("\">");
+            bool ul = underlineId != null && id == underlineId;
             sb.Append("<color=#FFD700>");
+            if (ul) sb.Append("<u>");
             sb.Append(text, s, len);
+            if (ul) sb.Append("</u>");
             sb.Append("</color>");
+            if (withLinks) sb.Append("</link>");
             last = s + len;
         }
         sb.Append(text, last, text.Length - last);

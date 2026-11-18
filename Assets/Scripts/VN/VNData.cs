@@ -40,6 +40,8 @@ public class DialogueEntry
     public int next;
     public string condition; // if set, only show when condition is met
     public string setValue;  // "varName=value" to set when this entry is processed
+    public string bgm;       // 条目级换曲：进入该条目时立即切到此曲（不受场景级最短驻留限制）
+    public string sig;       // 作者标注："stop" = 危机/转折点，供左上角信号灯提前预告（见 VNSignalForecast）
     public OptionData[] opts;
     public CharacterEntry[] chars;
     public string size;  // CG专用: "full"(全屏) / "small"(居中小插画), 默认full

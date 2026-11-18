@@ -7,8 +7,38 @@ public enum VNSignalAspect { Proceed, Reduced, Caution, Restricted, Stop }
 
 public sealed class VNInkIcon : VisualElement
 {
-    public VNSignalAspect Aspect;
+    private VNSignalAspect aspect;
+    private readonly float[] lamp = new float[5];          // 各灯亮度 0~1，换灯时渐变而不是瞬切
+    private IVisualElementScheduledItem lampFade;
     private readonly VNArtIcon kind;
+    public VNSignalAspect Aspect
+    {
+        get => aspect;
+        set
+        {
+            aspect = value;
+            if (kind != VNArtIcon.Signal) return;
+            if (lampFade == null) lampFade = schedule.Execute(StepLamps).Every(30);
+            lampFade.Resume();
+        }
+    }
+    private static bool LampLit(VNSignalAspect a, int i) =>
+        a == VNSignalAspect.Proceed ? i==4 : a == VNSignalAspect.Reduced ? i==1||i==4 : a == VNSignalAspect.Caution ? i==3 : a == VNSignalAspect.Restricted ? i==0||i==3 : i==2;
+    private void StepLamps()
+    {
+        bool moving = false;
+        for (int i = 0; i < 5; i++)
+        {
+            float target = LampLit(aspect, i) ? 1f : 0f;
+            lamp[i] = Mathf.MoveTowards(lamp[i], target, .1f);
+            if (!Mathf.Approximately(lamp[i], target)) moving = true;
+        }
+        MarkDirtyRepaint();
+        if (!moving) lampFade.Pause();
+    }
+    private bool filled;
+    /// <summary>书签图标：true＝已收藏（实心金色）。</summary>
+    public bool Filled { get => filled; set { if (filled == value) return; filled = value; MarkDirtyRepaint(); } }
     public VNInkIcon(VNArtIcon value)
     {
         kind = value; pickingMode = PickingMode.Ignore;
@@ -23,7 +53,14 @@ public sealed class VNInkIcon : VisualElement
         p.strokeColor = new Color(.96f, .84f, .61f); p.fillColor = p.strokeColor; p.lineWidth = 1.7f;
         void Path(params Vector2[] points) { p.BeginPath(); p.MoveTo(points[0]); for (int i=1;i<points.Length;i++) p.LineTo(points[i]); p.Stroke(); }
         if (kind == VNArtIcon.Bookmark)
+        {
+            if (filled)
+            {
+                p.fillColor = new Color(1f, .78f, .3f); p.strokeColor = new Color(1f, .84f, .45f);
+                p.BeginPath(); p.MoveTo(V(.28f,.14f)); p.LineTo(V(.72f,.14f)); p.LineTo(V(.72f,.88f)); p.LineTo(V(.5f,.68f)); p.LineTo(V(.28f,.88f)); p.ClosePath(); p.Fill();
+            }
             Path(V(.28f,.14f),V(.72f,.14f),V(.72f,.88f),V(.5f,.68f),V(.28f,.88f),V(.28f,.14f));
+        }
         else if (kind == VNArtIcon.Replay)
         {
             Path(V(.13f,.38f),V(.31f,.38f),V(.53f,.19f),V(.53f,.81f),V(.31f,.62f),V(.13f,.62f),V(.13f,.38f));
@@ -56,19 +93,30 @@ public sealed class VNInkIcon : VisualElement
             // Five-aspect Japanese colour-light head, Y/Y/R/Y/G from top to bottom.
             p.fillColor = new Color(.035f,.04f,.037f,.97f);p.strokeColor=new Color(.3f,.31f,.27f);p.lineWidth=1;
             p.BeginPath();p.MoveTo(V(.17f,.12f));p.Arc(V(.5f,.12f),w*.33f,180,360);p.LineTo(V(.83f,.87f));p.Arc(V(.5f,.87f),w*.33f,0,180);p.ClosePath();p.Fill();p.Stroke();
+            float r0=Mathf.Min(w*.245f,h*.078f);   // 灯径按灯间距限制，上下灯框不互相穿插
             for(int i=0;i<5;i++)
             {
-                bool lit = Aspect == VNSignalAspect.Proceed ? i==4 : Aspect == VNSignalAspect.Reduced ? i==1||i==4 : Aspect == VNSignalAspect.Caution ? i==3 : Aspect == VNSignalAspect.Restricted ? i==0||i==3 : i==2;
+                float level = lamp[i]; bool lit = level > .02f;
                 Color color=i==4?new Color(.36f,.92f,.64f):i==2?new Color(1f,.28f,.23f):new Color(1f,.78f,.24f);
                 var centre=V(.5f,.13f+i*.17f);
                 p.fillColor=new Color(.08f,.09f,.078f);p.strokeColor=new Color(.24f,.25f,.22f);p.lineWidth=1;
-                p.BeginPath();p.Arc(centre,w*.245f,0,360);p.Fill();p.Stroke();
-                p.fillColor=lit?color:new Color(.13f,.145f,.125f);
-                p.BeginPath();p.Arc(centre,w*.177f,0,360);p.Fill();
+                p.BeginPath();p.Arc(centre,r0,0,360);p.Fill();p.Stroke();
+                // 灭灯带一点透镜反光，亮灯有两层光晕，渐亮渐灭
+                p.fillColor=Color.Lerp(new Color(.13f,.145f,.125f),color,level);
+                p.BeginPath();p.Arc(centre,r0*.72f,0,360);p.Fill();
+                if(lit)
+                {
+                    p.fillColor=new Color(color.r,color.g,color.b,.16f*level);p.BeginPath();p.Arc(centre,r0*1.3f,0,360);p.Fill();
+                    p.fillColor=new Color(color.r,color.g,color.b,.12f*level);p.BeginPath();p.Arc(centre,r0*1.12f,0,360);p.Fill();
+                }
+                else
+                {
+                    p.fillColor=new Color(1f,1f,1f,.05f);p.BeginPath();p.Arc(centre+new Vector2(-r0*.2f,-r0*.2f),r0*.2f,0,360);p.Fill();
+                }
                 // Projecting dark visor and its grey lip, instead of a flat traffic-light disc.
                 p.fillColor=new Color(.018f,.024f,.021f);p.strokeColor=new Color(.35f,.36f,.3f);
-                p.BeginPath();p.Arc(centre,w*.26f,185,355);p.LineTo(centre+new Vector2(w*.23f,-h*.023f));p.Arc(centre+new Vector2(0,-h*.023f),w*.23f,355,185,ArcDirection.CounterClockwise);p.ClosePath();p.Fill();p.Stroke();
-                if(lit){p.fillColor=new Color(1,.97f,.76f,.36f);p.BeginPath();p.Arc(centre+new Vector2(-w*.04f,-w*.04f),w*.06f,0,360);p.Fill();}
+                p.BeginPath();p.Arc(centre,r0*1.06f,185,355);p.LineTo(centre+new Vector2(r0*.94f,-r0*.1f));p.Arc(centre+new Vector2(0,-r0*.1f),r0*.94f,355,185,ArcDirection.CounterClockwise);p.ClosePath();p.Fill();p.Stroke();
+                if(lit){p.fillColor=new Color(1,.97f,.76f,.36f);p.BeginPath();p.Arc(centre+new Vector2(-r0*.16f,-r0*.16f),r0*.24f,0,360);p.Fill();}
             }
             p.strokeColor=new Color(.42f,.43f,.36f);p.lineWidth=2;Path(V(.5f,.97f),V(.5f,1f));
         }
@@ -112,6 +160,13 @@ public sealed class VNRouteProfile
     private static System.Collections.Generic.Dictionary<string,VNRouteProfile> BuildIndex()
     {
         var result=new System.Collections.Generic.Dictionary<string,VNRouteProfile>();foreach(var profile in All)result.Add(profile.Script,profile);return result;
+    }
+    /// <summary>信号显示"前方区间"：取读到的位置再往前一小段的预设氛围；接近话末时预告下一话的开头基调。</summary>
+    public VNSignalAspect AspectAhead(float progress,string nextScript,float lookahead=.12f)
+    {
+        float ahead=progress+lookahead;
+        if(ahead>=1f&&!string.IsNullOrEmpty(nextScript)&&Index.TryGetValue(nextScript,out var next))return next.Beats[0];
+        return Beats[Mathf.Min(Beats.Length-1,Mathf.FloorToInt(Mathf.Clamp01(ahead)*Beats.Length))];
     }
     public static VNRouteProfile Find(string script) => script!=null&&Index.TryGetValue(script,out var profile)?profile:All[0];
 }
@@ -185,6 +240,14 @@ public sealed class VNScenicRoute : VisualElement
         tooltip="本章风景意象："+Profile.Line+" · "+Profile.Landscape;MarkDirtyRepaint();PlaceTrain();
     }
     public void SetProgress(float value){Progress=Mathf.Clamp01(value);PlaceTrain();MarkDirtyRepaint();}
+    private float[] marks=System.Array.Empty<float>();
+    /// <summary>书签标记（0~1 的位置）：轨道上方画金色小书签旗。</summary>
+    public void SetMarks(System.Collections.Generic.IList<float> ratios)
+    {
+        var next=new float[ratios?.Count??0];for(int i=0;i<next.Length;i++)next[i]=ratios[i];
+        bool same=next.Length==marks.Length;for(int i=0;same&&i<next.Length;i++)same=Mathf.Approximately(next[i],marks[i]);
+        if(same)return;marks=next;MarkDirtyRepaint();
+    }
     public float Normalize(float x)=>Mathf.Clamp01((x-24)/Mathf.Max(1,contentRect.width-48));
     private float HeightAt(float x)
     {
@@ -249,6 +312,12 @@ public sealed class VNScenicRoute : VisualElement
         {
             float t=i/4f;p.fillColor=t<=Progress?accent:new Color(.34f,.35f,.32f);p.strokeColor=accent;p.lineWidth=1;
             p.BeginPath();p.Arc(new(24+t*(w-48),HeightAt(t)+1),3,0,360);p.Fill();p.Stroke();
+        }
+        foreach(float m in marks)
+        {
+            float mx=24+m*(w-48),my=HeightAt(m)+1;var gold=new Color(1f,.82f,.30f,.95f);
+            Line(new(mx,my),new(mx,my-15),gold,1.5f);
+            Poly(gold,new(mx,my-15),new(mx+8,my-15),new(mx+8,my-7),new(mx+4,my-10),new(mx,my-7));
         }
         float ex=w-24,ey=HeightAt(1);Line(new(ex,ey-23),new(ex,ey-3),accent);
         Poly(accent,new(ex,ey-23),new(ex+9,ey-19),new(ex,ey-15));

@@ -49,6 +49,7 @@ public class CharacterSpriteManager : MonoBehaviour
     private readonly Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
     private readonly HashSet<string> missingWarnings = new HashSet<string>();
     public int ResourceLookupCount { get; private set; }
+    public bool SuiyueHasTablet { get; set; } = true;
 
     public void ClearSpriteCache()
     {
@@ -171,6 +172,15 @@ public class CharacterSpriteManager : MonoBehaviour
                     "characters/" + spriteId + "/" + emotionKey,
                     "characters/" + spriteId + "_normal",
                     "characters/" + spriteId + "/normal",
+                };
+            }
+
+            if (spriteId == "suiyue" && !SuiyueHasTablet)
+            {
+                // An unavailable early expression must not fall back to a tablet pose.
+                tryPaths = new[] {
+                    "characters/suiyue/" + emotionKey + "_no_pad",
+                    "characters/suiyue/normal_no_pad",
                 };
             }
 

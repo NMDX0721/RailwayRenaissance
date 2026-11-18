@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class VNPrologueQuiz : MonoBehaviour
 {
     private UIDocument uiDoc;
-    private Font gameFont;
+    private Font gameFont => VNFonts.Game;   // 随「剧情字体」设置实时变化
 
     private VisualElement panel;
     private Label progressLabel;
@@ -61,7 +61,6 @@ public class VNPrologueQuiz : MonoBehaviour
     public void Init(UIDocument document)
     {
         uiDoc = document;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
     }
 

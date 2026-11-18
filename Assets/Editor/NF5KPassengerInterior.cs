@@ -16,7 +16,7 @@ public static class NF5KPassengerInterior
         shell=Mat("Passenger_Seat_Enamel",new Color(.30f,.34f,.31f),.15f,.23f);
         steel=Mat("Passenger_Satin_Steel",new Color(.43f,.45f,.43f),.78f,.31f);
         ivory=Mat("Passenger_Warm_Liner",new Color(.66f,.64f,.55f),0,.20f);
-        rubber=Mat("Passenger_Rubber_Floor",new Color(.075f,.085f,.078f),0,.10f);
+        rubber=Mat("Passenger_Rubber_Floor",new Color(.17f,.16f,.145f),0,.34f);   // lighter, with a sheen: near-black rubber read as a hole in the floor
         wood=Mat("Passenger_Armrest_HPL",new Color(.25f,.15f,.095f),0,.21f);
         bag=Mat("Passenger_Canvas_Luggage",new Color(.31f,.24f,.15f),0,.12f);
         FabricWeave(fabric);FabricWeave(bag);

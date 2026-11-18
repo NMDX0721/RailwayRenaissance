@@ -10,7 +10,7 @@ using static RailwayRenaissance.UI.Tablet.TabletUIHelper;
 namespace RailwayRenaissance.UI.Tablet.Apps
 {
     /// <summary>
-    /// 平板应用：设置（严格照截图 24 分类 + 术语图鉴 TIPS + 备份/应用管理/开发者选项）
+    /// 平板应用：设置（严格照截图 24 分类 + 媒姬百科入口 + 备份/应用管理/开发者选项）
     /// 从 GameMainUI 剥离（T306 Batch 1-C）
     /// </summary>
     public static partial class TabletSettingsAppUI
@@ -631,8 +631,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         SaveSettingsSearchHistory(list);
     }
 
-    // 子页挂在父分类下：98 存储 → 我的设备(2)；97 云空间 → 账号(1)；96 系统导航 → 桌面(12)
-    private static int SubPageParent(int id) => id == 98 ? 2 : id == 97 ? 1 : id == 96 ? 12 : id;
+    // 子页挂在父分类下：98 存储、95 运行内存 → 我的设备(2)；97 云空间 → 账号(1)；96 系统导航 → 桌面(12)
+    private static int SubPageParent(int id) => id == 98 || id == 95 ? 2 : id == 97 ? 1 : id == 96 ? 12 : id;
 
     private static string GetSettingsCategoryName(int id)
     {
@@ -670,6 +670,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             case 22: RenderAccessibilitySettings(rightPane, win); break;
             case 23: RenderAdditionalSettings(rightPane); break;
             case 24: RenderFeedbackSettings(rightPane); break;
+            case 95: RenderMemorySettings(rightPane, win); break;
             case 96: RenderSystemNavSettings(rightPane, win); break;
             case 97: RenderCloudSettings(rightPane, win); break;
             case 98: RenderStorageSettings(rightPane, win); break;
@@ -870,6 +871,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var summaryCard = BuildWhiteCard();
         summaryCard.name = "settings-device-summary-card";
         summaryCard.Add(BuildInfoRow("设备名称", "Xiaomi Pad 36 Ultra", null, () => ShowToast("设备名称由先民军工固化，不可修改")));
+        summaryCard.Add(BuildInfoRow("运行内存", MemoryNowText(), null, () => NavigateToCategory(95, win)));
         summaryCard.Add(BuildInfoRow("存储", TabletStorageLedger.Format(TabletStorageLedger.UserUsedBytes) + " / " + TabletStorageLedger.Format(TabletStorageLedger.UserPartitionBytes) + "（标称 " + TabletStorageLedger.Format(TabletStorageLedger.NominalTotalBytes) + "）", null, () => NavigateToCategory(98, win)));
         summaryCard.Add(BuildInfoRow("系统版本", "32.0.4.1.CHL.C11"));
         rightPane.Add(summaryCard);
@@ -2013,6 +2015,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             PlayerPrefs.Save();
             preview.setAlpha(v);
         }, " %"));
+        var fontNames = new List<string> { "像素 Zpix", "清晰 MiSans" };
+        readCard.Add(BuildSubtitleLanguageRow("剧情字体", "settings-vn-font", fontNames,
+            VNFonts.Current == VNFonts.Clear ? fontNames[1] : fontNames[0],
+            value => VNFonts.Set(value == fontNames[1] ? VNFonts.Clear : VNFonts.Pixel)));
         rightPane.Add(readCard);
 
         AddSectionHeader(rightPane, "剧情字幕语言");
@@ -2282,7 +2288,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             GameData.MasterVolume = 1f;
             GameData.BGMVolume = 0.8f;
             GameData.SFXVolume = 1f;
-            GameData.TypewriterVolume = 0.12f;
+            GameData.TypewriterVolume = 0f;
             ShowToast("音频设置已恢复默认");
             RefreshCurrentPage();
         }));
@@ -2693,13 +2699,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         long used = TabletStorageLedger.UserUsedBytes;
         long part = TabletStorageLedger.UserPartitionBytes;
         long game = TabletStorageLedger.GameDataBytes;
-        long sysOther = 0, apps = 0;
+        long sysOther = TabletStorageLedger.OtherUsedBytes;
         var entries = TabletStorageLedger.UserEntries();
-        foreach (var e in entries)
-        {
-            if (e.isApp) apps += e.bytes;
-            else if (!e.isReal) sysOther += e.bytes;
-        }
         var blue = new Color(0.20f, 0.50f, 0.98f, 1f);
         var green = new Color(0.20f, 0.78f, 0.40f, 1f);
         var grey = new Color(0.62f, 0.64f, 0.70f, 1f);
@@ -2731,11 +2732,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         hero.Add(figure);
         var userBar = BuildSegmentBar(16, new[]
         {
-            (apps, blue), (game, green), (sysOther, grey), (Math.Max(0L, part - used), new Color(0.93f, 0.93f, 0.95f, 1f)),
+            (game, green), (sysOther, grey), (Math.Max(0L, part - used), new Color(0.93f, 0.93f, 0.95f, 1f)),
         });
         userBar.style.marginTop = 14;
         hero.Add(userBar);
-        hero.Add(BuildLegendRow(new[] { (blue, "应用"), (green, "本游戏占用（实测）"), (grey, "系统与其他") }));
+        hero.Add(BuildLegendRow(new[] { (green, "本游戏占用"), (grey, "系统与其他程序") }));
 
         var divider = new VisualElement();
         divider.style.height = 1; divider.style.backgroundColor = InsetDivider;
@@ -2749,7 +2750,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         });
         nominalBar.style.marginTop = 10;
         hero.Add(nominalBar);
-        hero.Add(BuildLegendRow(new[] { (red, "国家战略储备（锁定）"), (grey, "系统分区"), (blue, "用户可用分区") }));
+        hero.Add(BuildLegendRow(new[] { (red, "国家战略储备"), (grey, "系统分区"), (blue, "用户可用分区") }));
         rightPane.Add(hero);
 
         AddSectionHeader(rightPane, "分区");
@@ -2778,7 +2779,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             row.style.borderBottomLeftRadius = row.style.borderBottomRightRadius = 10;
             row.pickingMode = PickingMode.Position;
             AddRowFeedback(row);
-            row.RegisterCallback<ClickEvent>(_ => ShowToast(entry.name + " 占用 " + TabletStorageLedger.Format(entry.bytes) + (entry.isReal ? "（实测）" : "")));
+            row.RegisterCallback<ClickEvent>(_ => ShowToast(entry.name + " 占用 " + TabletStorageLedger.Format(entry.bytes) + (string.IsNullOrEmpty(entry.note) ? "" : " · " + entry.note)));
 
             VisualElement icon = entry.isApp ? GameMainUI.BuildTabletAppIconTile(entry.name, 44f) : null;
             if (icon == null)
@@ -2789,7 +2790,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             var mid = new VisualElement { pickingMode = PickingMode.Ignore };
             mid.style.flexGrow = 1; mid.style.flexShrink = 1;
-            var nm = new Label(entry.name + (entry.isReal ? "（实测）" : "")) { pickingMode = PickingMode.Ignore };
+            var nm = new Label(entry.name) { pickingMode = PickingMode.Ignore };
             nm.style.fontSize = 18; nm.style.color = InkPrimary; nm.style.unityFontDefinition = Fd();
             mid.Add(nm);
             var track = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -2824,6 +2825,177 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             RefreshCurrentPage();
         }));
         rightPane.Add(askCard);
+    }
+
+    // ---------- 运行内存（95）：和存储页同一套世界观——64 GB 里绝大部分是国家战略运算保留，用户只有一小块分区。
+    // 音乐与游戏本体的占用是引擎实测，其余应用是设定值；工程数字放在页面最底下的小字里。 ----------
+
+    private static string MemoryNowText()
+    {
+        return TabletMemoryLedger.Format(TabletMemoryLedger.UserUsedBytes) + " / " + TabletMemoryLedger.Format(TabletMemoryLedger.UserPartitionBytes)
+            + "（标称 " + TabletMemoryLedger.Format(TabletMemoryLedger.NominalBytes) + "）";
+    }
+
+    private static void RenderMemorySettings(ScrollView rightPane, VisualElement win)
+    {
+        AddCenterHeader(rightPane, "运行内存");
+        var blue = new Color(0.20f, 0.50f, 0.98f, 1f);
+        var green = new Color(0.20f, 0.78f, 0.40f, 1f);
+        var grey = new Color(0.62f, 0.64f, 0.70f, 1f);
+        var red = new Color(0.78f, 0.22f, 0.22f, 1f);
+        var trackCol = new Color(0.93f, 0.93f, 0.95f, 1f);
+        long part = TabletMemoryLedger.UserPartitionBytes;
+
+        var hero = BuildWhiteCard();
+        hero.name = "settings-memory-hero";
+        hero.style.paddingTop = 22; hero.style.paddingBottom = 20;
+        var figure = new VisualElement();
+        figure.style.flexDirection = FlexDirection.Row; figure.style.alignItems = Align.FlexEnd;
+        var usedLbl = new Label { name = "settings-memory-used", style = { fontSize = 40, color = InkPrimary, unityFontDefinition = FdBold() } };
+        figure.Add(usedLbl);
+        figure.Add(new Label("/ " + TabletMemoryLedger.Format(part) + " 用户可用内存") { style = { fontSize = 16, color = InkSecondary, unityFontDefinition = Fd(), marginLeft = 10, marginBottom = 7 } });
+        hero.Add(figure);
+        var userBarHost = new VisualElement { name = "settings-memory-bar" };
+        userBarHost.style.marginTop = 14;
+        hero.Add(userBarHost);
+        hero.Add(BuildLegendRow(new[] { (green, "音乐与游戏"), (grey, "系统与其他程序") }));
+
+        var divider = new VisualElement();
+        divider.style.height = 1; divider.style.backgroundColor = InsetDivider;
+        divider.style.marginTop = 20; divider.style.marginBottom = 18;
+        hero.Add(divider);
+        hero.Add(new Label("标称运行内存 " + TabletMemoryLedger.Format(TabletMemoryLedger.NominalBytes)) { style = { fontSize = 16, color = InkPrimary, unityFontDefinition = Fd() } });
+        var nominalBar = BuildSegmentBar(10, new[]
+        {
+            (TabletMemoryLedger.ReservedBytes, red), (TabletMemoryLedger.SystemBytes, grey), (part, blue),
+        });
+        nominalBar.style.marginTop = 10;
+        hero.Add(nominalBar);
+        hero.Add(BuildLegendRow(new[] { (red, "国家战略运算保留"), (grey, "系统与军工基带"), (blue, "用户可用内存") }));
+        rightPane.Add(hero);
+
+        AddSectionHeader(rightPane, "分区");
+        var partCard = BuildWhiteCard();
+        partCard.Add(BuildInfoRow("标称运行内存", TabletMemoryLedger.Format(TabletMemoryLedger.NominalBytes), "LPDDR9 Ultra · 先民军工定制"));
+        partCard.Add(BuildInfoRow("国家战略运算保留", TabletMemoryLedger.Format(TabletMemoryLedger.ReservedBytes),
+            "卫星链路与国家算力调度专用 · 已锁定，不可调用", () => ShowToast(TabletMemoryLedger.RegisterReservedAttempt())));
+        partCard.Add(BuildInfoRow("系统与军工基带", TabletMemoryLedger.Format(TabletMemoryLedger.SystemBytes), "常驻"));
+        var userPartRow = BuildInfoRow("用户可用内存", TabletMemoryLedger.Format(part), " ");
+        partCard.Add(userPartRow);
+        rightPane.Add(partCard);
+
+        AddSectionHeader(rightPane, "占用明细");
+        var listCard = BuildWhiteCard();
+        listCard.name = "settings-memory-list";
+        var entries = TabletMemoryLedger.UserEntries();
+        long maxBytes = 1;
+        foreach (var e in entries) if (e.bytes > maxBytes) maxBytes = e.bytes;
+        var liveRows = new List<(string name, Label size, VisualElement fill)>();
+        foreach (var e in entries)
+        {
+            var entry = e;
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
+            row.style.paddingTop = 12; row.style.paddingBottom = 12; row.style.paddingLeft = 8; row.style.paddingRight = 8;
+            row.style.borderBottomWidth = 1; row.style.borderBottomColor = InsetDivider;
+            row.style.borderTopLeftRadius = row.style.borderTopRightRadius = 10;
+            row.style.borderBottomLeftRadius = row.style.borderBottomRightRadius = 10;
+            row.pickingMode = PickingMode.Position;
+            AddRowFeedback(row);
+            row.RegisterCallback<ClickEvent>(_ => ShowToast(entry.name + " 占用 " + TabletMemoryLedger.Format(entry.bytes) + (string.IsNullOrEmpty(entry.note) ? "" : " · " + entry.note)));
+
+            VisualElement icon = entry.isApp ? GameMainUI.BuildTabletAppIconTile(entry.name, 44f) : null;
+            if (icon == null) icon = BuildIconBadge(entry.isReal ? "🎮" : "▦", entry.isReal ? green : grey, 44);
+            icon.style.flexShrink = 0; icon.style.width = 44; icon.style.height = 44;
+            icon.style.marginRight = 16; icon.pickingMode = PickingMode.Ignore;
+            row.Add(icon);
+
+            var mid = new VisualElement { pickingMode = PickingMode.Ignore };
+            mid.style.flexGrow = 1; mid.style.flexShrink = 1;
+            mid.Add(new Label(entry.name) { pickingMode = PickingMode.Ignore, style = { fontSize = 18, color = InkPrimary, unityFontDefinition = Fd() } });
+            var track = new VisualElement { pickingMode = PickingMode.Ignore };
+            track.style.height = 6; track.style.marginTop = 8; track.style.backgroundColor = trackCol;
+            track.style.borderTopLeftRadius = track.style.borderTopRightRadius = 3;
+            track.style.borderBottomLeftRadius = track.style.borderBottomRightRadius = 3;
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore };
+            fill.style.height = 6; fill.style.minWidth = 3;
+            fill.style.width = Length.Percent(Mathf.Clamp(entry.bytes * 100f / maxBytes, 0.5f, 100f));
+            fill.style.backgroundColor = entry.isReal ? green : grey;
+            fill.style.borderTopLeftRadius = fill.style.borderTopRightRadius = 3;
+            fill.style.borderBottomLeftRadius = fill.style.borderBottomRightRadius = 3;
+            track.Add(fill);
+            mid.Add(track);
+            row.Add(mid);
+
+            var size = new Label(TabletMemoryLedger.Format(entry.bytes)) { pickingMode = PickingMode.Ignore };
+            size.style.fontSize = 15; size.style.color = InkTertiary; size.style.unityFontDefinition = Fd();
+            size.style.marginLeft = 16; size.style.minWidth = 80; size.style.unityTextAlign = TextAnchor.MiddleRight;
+            row.Add(size);
+            listCard.Add(row);
+            liveRows.Add((entry.name, size, fill));
+        }
+        rightPane.Add(listCard);
+
+        AddSectionHeader(rightPane, "操作");
+        var actCard = BuildWhiteCard();
+        actCard.Add(BuildInfoRow("清理后台应用", "", "通知各应用交还可重建的缓存", () =>
+        {
+            long before = TabletMemoryLedger.GameBytes;
+            MusicMemory.Trim();
+            long freed = before - TabletMemoryLedger.GameBytes;
+            ShowToast(freed > 1000000L ? "同志们让出了 " + TabletMemoryLedger.Format(freed) : "后台很干净，没有可让出的内存");
+        }));
+        int tries = TabletMemoryLedger.ReservedAttempts;
+        actCard.Add(BuildInfoRow("申请调用国家战略运算", tries > 0 ? "已申请 " + tries + " 次" : "", "无需多言", () =>
+        {
+            ShowToast(TabletMemoryLedger.RegisterReservedAttempt());
+            RefreshCurrentPage();
+        }));
+        rightPane.Add(actCard);
+
+        // 说明放最后、用小字：这些数字是引擎实测的，只用来解释上面“实测”那几项从哪来
+        var note = new Label { name = "settings-memory-footnote" };
+        note.style.fontSize = 12; note.style.color = InkTertiary; note.style.unityFontDefinition = Fd();
+        note.style.whiteSpace = WhiteSpace.Normal; note.style.marginTop = 14; note.style.marginLeft = 6; note.style.marginRight = 6;
+        rightPane.Add(note);
+
+        Action refresh = () =>
+        {
+            long music = TabletMemoryLedger.MusicBytes;
+            long body = TabletMemoryLedger.GameBodyBytes;
+            long used = TabletMemoryLedger.UserUsedBytes;
+            long sysOther = TabletMemoryLedger.OtherUsedBytes;
+            usedLbl.text = TabletMemoryLedger.Format(used);
+            userBarHost.Clear();
+            var bar = BuildSegmentBar(16, new[]
+            {
+                (music + body, green), (sysOther, grey), (Math.Max(0L, part - used), trackCol),
+            });
+            userBarHost.Add(bar);
+            foreach (var r in liveRows)
+            {
+                long b = r.name == "音乐" ? music : r.name == "游戏画面与剧情" ? body : TabletMemoryLedger.OtherUsedBytes;
+                r.size.text = TabletMemoryLedger.Format(b);
+                r.fill.style.width = Length.Percent(Mathf.Clamp(b * 100f / Mathf.Max(1f, Mathf.Max(maxBytes, b)), 0.5f, 100f));
+            }
+            SetInfoRowSub(userPartRow, "已用 " + TabletMemoryLedger.Format(used) + " · 剩余 " + TabletMemoryLedger.Format(TabletMemoryLedger.UserFreeBytes));
+            note.text = "用户可用内存与占用取自这台设备的真实数据；游戏之外的占用记为系统与其他程序。"
+                + "音乐与游戏当前共占 " + MusicMemory.Format(TabletMemoryLedger.GameBytes) + "，系统在占用过高时会自动回收后台应用。";
+        };
+        refresh();
+        rightPane.schedule.Execute(() => { if (currentSettingsCategory == 95) refresh(); }).Every(1500);
+    }
+
+    // 改 BuildInfoRow 左侧的小字说明（行建好时没有说明就补一个）
+    private static void SetInfoRowSub(VisualElement row, string sub)
+    {
+        var left = row.childCount > 0 ? row[0] : null;
+        if (left == null) return;
+        if (left.childCount > 1 && left[1] is Label d) { d.text = sub; return; }
+        var lab = new Label(sub);
+        lab.style.fontSize = 14; lab.style.color = InkSecondary; lab.style.unityFontDefinition = Fd();
+        lab.style.marginTop = 4; lab.style.whiteSpace = WhiteSpace.Normal;
+        left.Add(lab);
     }
 
     // 17 隐私与安全：本地存储边界与沙箱权限
@@ -3301,7 +3473,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightPane.Add(card);
     }
 
-    // 23 更多设置：老设置「游戏」6条全量 + 备份 + 术语图鉴
+    // 23 更多设置：老设置「游戏」6条全量 + 备份 + 媒姬百科入口
     private static void RenderAdditionalSettings(ScrollView rightPane)
     {
         AddCenterHeader(rightPane, "更多设置");
@@ -3335,10 +3507,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }, " 秒"));
         rightPane.Add(gameCard);
 
-        AddSectionHeader(rightPane, "数据与图鉴");
+        AddSectionHeader(rightPane, "数据与百科");
         var dataCard = BuildWhiteCard();
         dataCard.Add(BuildWhiteRow("本地数据备份与恢复", "快照 VN 剧目存档、成就与书签记录（不含经营运行态）", () => ShowBackupRestorePage()));
-        dataCard.Add(BuildWhiteRow("铁路百科与专有名词图鉴", "30 条完整术语词条 · 角色口吻释义", () => ShowTipsPage(null)));
+        dataCard.Add(BuildWhiteRow("媒姬百科", "人物、车辆、线路、剧情章节与 65 条铁路术语", () => ShowTipsPage(null)));
         rightPane.Add(dataCard);
     }
 
@@ -3985,232 +4157,12 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         win.Add(verLabel);
     }
 
-    // ============ 术语图鉴（TIPS）============
-    [System.Serializable] private class TipsJsonData { public TipsTerm[] terms; }
-    [System.Serializable] private class TipsTerm { public string id; public string name; public string py; public TipsExplanation[] explanations; }
-    [System.Serializable] private class TipsExplanation { public string speaker; public string text; }
-
-    // 说话者 → Resources/characters 立绘前缀（与 CharacterSpriteManager.SpeakerAlias 同源；无贴图的角色仅显示名字 chip）
-    private static readonly System.Collections.Generic.Dictionary<string, string> TipsPortraitPrefix =
-        new System.Collections.Generic.Dictionary<string, string>
-        {
-            { "男大学生", "lin_biaohan" },
-            { "林彪悍", "lin_biaohan" },
-            { "老陈", "laochen" },
-            { "岁月", "suiyue" },
-            { "嘉颖徐", "jiaying_xu" },
-            { "张工", "zhanggong" },
-        };
-
-    /// <summary>术语图鉴入口（静态）：确保桌面/App层就绪、跳过锁屏直达图鉴。
-    /// termId 非空 → 右侧详情定位该词条；null → 浏览模式（提示从左侧选择）。</summary>
-    private static Texture2D LoadTipsPortrait(string speaker)
+    // ============ 媒姬百科入口（旧「术语图鉴」页已删除，这里只负责跳转）============
+    /// <summary>打开媒姬百科；termId 非空时直接定位到该词条。</summary>
+    public static void ShowTipsPage(string termId = null)
     {
-        if (string.IsNullOrEmpty(speaker)) return null;
-        if (!TipsPortraitPrefix.TryGetValue(speaker, out var prefix)) return null;
-        return Resources.Load<Texture2D>("characters/" + prefix);
-    }
-
-    /// <summary>Terms.json 全量词条（带 py），按拼音首字母、再按名称排序。</summary>
-    private static System.Collections.Generic.List<TipsTerm> LoadTipsTerms()
-    {
-        var list = new System.Collections.Generic.List<TipsTerm>();
-        var asset = Resources.Load<TextAsset>("Terms");
-        if (asset == null) return list;
-        try
-        {
-            var data = JsonUtility.FromJson<TipsJsonData>(asset.text);
-            if (data != null && data.terms != null) list.AddRange(data.terms);
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning("[Tips] Terms.json parse failed: " + ex.Message);
-        }
-        list.Sort((a, b) =>
-        {
-            string pa = string.IsNullOrEmpty(a.py) ? "~" : a.py;
-            string pb = string.IsNullOrEmpty(b.py) ? "~" : b.py;
-            int c = string.CompareOrdinal(pa, pb);
-            return c != 0 ? c : string.CompareOrdinal(a.name, b.name);
-        });
-        return list;
-    }
-
-    /// <summary>左索引右详情（Maitetsu TIPS 式，平板玻璃风）。</summary>
-    private sealed class TipsSelection { public string Id; }
-    private static Action TipsRebuilder(TipsSelection selection) => () => ShowTipsPageWithSelection(selection);
-    public static void ShowTipsPage(string termId = null) => ShowTipsPageWithSelection(new TipsSelection { Id = termId });
-    private static void ShowTipsPageWithSelection(TipsSelection selection)
-    {
-        string termId = selection.Id;
-        var win = BuildInnerPanel("术语图鉴", TipsRebuilder(selection));
-        if (win == null) return;
-        win.style.width = 900;
-        win.style.height = 560;
-
-        var terms = LoadTipsTerms();
-
-        var body = new VisualElement();
-        body.style.flexDirection = FlexDirection.Row;
-        body.style.flexGrow = 1;
-        body.style.marginTop = 12;
-        win.Add(body);
-
-        // 左：按拼音首字母分组的可滚动索引
-        var indexScroll = new ScrollView { name = "tips-index" };
-        indexScroll.style.width = 230;
-        indexScroll.style.flexShrink = 0;
-        indexScroll.style.marginRight = 16;
-        indexScroll.style.backgroundColor = GlassBgSoft;
-        indexScroll.style.borderTopLeftRadius = 10; indexScroll.style.borderTopRightRadius = 10;
-        indexScroll.style.borderBottomLeftRadius = 10; indexScroll.style.borderBottomRightRadius = 10;
-        indexScroll.style.paddingLeft = 8; indexScroll.style.paddingRight = 8;
-        indexScroll.style.paddingTop = 8; indexScroll.style.paddingBottom = 8;
-        body.Add(indexScroll);
-
-        // 右：详情（可滚动）
-        var detail = new ScrollView { name = "tips-detail" };
-        detail.style.flexGrow = 1;
-        detail.style.paddingLeft = 14; detail.style.paddingRight = 10;
-        body.Add(detail);
-
-        var placeholder = new Label("← 点击左侧词条，查看角色口吻详解");
-        placeholder.style.fontSize = 14;
-        placeholder.style.color = GlassTextMuted;
-        placeholder.style.unityFontDefinition = Fd();
-        placeholder.style.marginTop = 24;
-        detail.Add(placeholder);
-
-        Label selectedRow = null;
-        TipsTerm initial = null;
-        string curPy = null;
-        foreach (var t in terms)
-        {
-            string py = string.IsNullOrEmpty(t.py) ? "#" : t.py;
-            if (py != curPy)
-            {
-                curPy = py;
-                var head = new Label(py);
-                head.style.fontSize = 13;
-                head.style.color = GlassAccent;
-                head.style.unityFontDefinition = Fd();
-                head.style.marginTop = 10;
-                head.style.marginBottom = 2;
-                indexScroll.Add(head);
-            }
-
-            var row = new Label(t.name) { name = "tips-term-" + t.id };
-            row.style.fontSize = 15;
-            row.style.color = GlassText;
-            row.style.unityFontDefinition = Fd();
-            row.style.paddingLeft = 10; row.style.paddingRight = 10;
-            row.style.paddingTop = 6; row.style.paddingBottom = 6;
-            row.style.borderTopLeftRadius = 6; row.style.borderTopRightRadius = 6;
-            row.style.borderBottomLeftRadius = 6; row.style.borderBottomRightRadius = 6;
-            var captured = t;
-            row.RegisterCallback<ClickEvent>(_ =>
-            {
-                if (selectedRow != null) selectedRow.style.backgroundColor = StyleKeyword.Null;
-                selectedRow = row;
-                selection.Id = captured.id;
-                row.style.backgroundColor = GlassBgHover;
-                detail.Clear();
-                RenderTipsDetail(detail, captured);
-            });
-            indexScroll.Add(row);
-            if (termId != null && t.id == termId)
-            {
-                initial = t;
-                selectedRow = row;
-                row.style.backgroundColor = GlassBgHover;
-            }
-        }
-
-        if (initial != null)
-        {
-            RenderTipsDetail(detail, initial);
-            var scrollTo = selectedRow;
-            indexScroll.schedule.Execute(() => indexScroll.ScrollTo(scrollTo));
-        }
-    }
-
-    /// <summary>右侧详情：词条名标题条 + 每段（立绘小图+角色 chip + 释义全文，文中其它术语包金）。</summary>
-    private static void RenderTipsDetail(ScrollView detail, TipsTerm t)
-    {
-        var titleBar = new VisualElement();
-        titleBar.style.flexDirection = FlexDirection.Row;
-        titleBar.style.alignItems = Align.Center;
-        titleBar.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
-        titleBar.style.borderTopLeftRadius = 6; titleBar.style.borderTopRightRadius = 6;
-        titleBar.style.borderBottomLeftRadius = 6; titleBar.style.borderBottomRightRadius = 6;
-        titleBar.style.paddingLeft = 12; titleBar.style.paddingRight = 12;
-        titleBar.style.paddingTop = 6; titleBar.style.paddingBottom = 6;
-        var title = new Label(t.name) { name = "tips-detail-title" };
-        title.style.fontSize = 20;
-        title.style.color = new Color(1f, 0.86f, 0.59f, 1f);
-        title.style.unityFontDefinition = Fd();
-        titleBar.Add(title);
-        if (!string.IsNullOrEmpty(t.py))
-        {
-            var pyTag = new Label(t.py);
-            pyTag.style.fontSize = 12;
-            pyTag.style.color = new Color(1f, 0.86f, 0.59f, 0.7f);
-            pyTag.style.unityFontDefinition = Fd();
-            pyTag.style.marginLeft = 10;
-            titleBar.Add(pyTag);
-        }
-        detail.Add(titleBar);
-
-        if (t.explanations == null) return;
-        foreach (var ex in t.explanations)
-        {
-            if (ex == null) continue;
-
-            if (!string.IsNullOrEmpty(ex.speaker))
-            {
-                var chipRow = new VisualElement();
-                chipRow.style.flexDirection = FlexDirection.Row;
-                chipRow.style.alignItems = Align.Center;
-                chipRow.style.marginTop = 12;
-                chipRow.style.marginBottom = 4;
-
-                var portrait = LoadTipsPortrait(ex.speaker);
-                if (portrait != null)
-                {
-                    var img = new Image { image = portrait };
-                    img.style.width = 28; img.style.height = 28;
-                    img.style.borderTopLeftRadius = 14; img.style.borderTopRightRadius = 14;
-                    img.style.borderBottomLeftRadius = 14; img.style.borderBottomRightRadius = 14;
-                    img.style.borderTopWidth = 1; img.style.borderBottomWidth = 1;
-                    img.style.borderLeftWidth = 1; img.style.borderRightWidth = 1;
-                    img.style.borderTopColor = GlassBorderSoft; img.style.borderBottomColor = GlassBorderSoft;
-                    img.style.borderLeftColor = GlassBorderSoft; img.style.borderRightColor = GlassBorderSoft;
-                    img.style.marginRight = 8;
-                    chipRow.Add(img);
-                }
-
-                var chip = new Label(ex.speaker);
-                chip.style.fontSize = 13;
-                chip.style.color = new Color(1f, 0.86f, 0.59f, 1f);
-                chip.style.backgroundColor = new Color(0.16f, 0.10f, 0.06f, 0.9f);
-                chip.style.paddingLeft = 8; chip.style.paddingRight = 8;
-                chip.style.paddingTop = 3; chip.style.paddingBottom = 3;
-                chip.style.borderTopLeftRadius = 4; chip.style.borderTopRightRadius = 4;
-                chip.style.borderBottomLeftRadius = 4; chip.style.borderBottomRightRadius = 4;
-                chip.style.unityFontDefinition = Fd();
-                chipRow.Add(chip);
-                detail.Add(chipRow);
-            }
-
-            var bodyText = new Label(TermHighlightSystem.HighlightTerms(ex.text));
-            bodyText.style.fontSize = 14;
-            bodyText.style.color = new Color(1f, 1f, 1f, 0.92f);
-            bodyText.style.unityFontDefinition = Fd();
-            bodyText.style.whiteSpace = WhiteSpace.Normal;
-            bodyText.style.marginTop = 5;
-            bodyText.style.marginBottom = 4;
-            detail.Add(bodyText);
-        }
+        TabletWikiAppUI.OpenArticle(termId);
+        GameMainUI.OpenTabletApp("媒姬百科");
     }
 
     private static void StyleRowBtn(Button btn)

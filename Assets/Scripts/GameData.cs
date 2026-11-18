@@ -517,6 +517,18 @@ public static class GameData
             EventManager.SetPatternModifiers(seed);
 
             SandRivalManager.InitializeFromSeed(seed);
+
+            // 区域解锁 + 招募池（此前仅 Generate() 路径会调用 WorldInitializer，预设种子漏掉）
+            WorldGen.RegionUnlockManager.Initialize(seed);
+            var npcPools = new Dictionary<string, string[]>();
+            if (seed.cities != null)
+            {
+                foreach (var kvp in seed.cities)
+                {
+                    npcPools[kvp.Key] = kvp.Value.npcPool;
+                }
+            }
+            CrewManager.SetRecruitingPools(npcPools);
         }
         else
         {
@@ -613,8 +625,16 @@ public static class GameData
         Money = Mathf.RoundToInt(data.startMoney > 0 ? data.startMoney : 40000f);
         Trust = data.startTrust > 0 ? data.startTrust : 60;
         TrainCondition = data.startTrainCondition > 0 ? data.startTrainCondition : 70;
-        ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
         CarCount = 2;
+
+        // 种子抖动的政治压力/基建老化等初值；序章结算的信任/车况优先于种子
+        if (CurrentSeed != null)
+        {
+            ApplySeedInitialValues(CurrentSeed);
+            Trust = data.startTrust > 0 ? data.startTrust : Trust;
+            TrainCondition = data.startTrainCondition > 0 ? data.startTrainCondition : TrainCondition;
+        }
+        ExpectedPassengers = Mathf.RoundToInt(CalculateDailyPassengers() * GetTripsForDispatchPlan());
 
         DailyMoneyChange = 0;
         DailyTrustChange = 0;
@@ -1770,7 +1790,7 @@ public static class GameData
         masterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("MasterVolume", 1f));
         bgmVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("BGMVolume", 0.8f));
         sfxVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("SFXVolume", 1f));
-        typewriterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("TypewriterVolume", 0.12f));
+        typewriterVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("TypewriterVolume", 0f));
         AudioPreferenceReadCount += 4;
         audioSettingsLoaded = true;
     }

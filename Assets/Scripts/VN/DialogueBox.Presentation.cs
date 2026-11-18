@@ -34,6 +34,13 @@ public partial class DialogueBox
         button.RegisterCallback<PointerLeaveEvent>(_=>{button.style.backgroundColor=new Color(.1f,.07f,.045f,.45f);UiCursor.ShowArrow();});
         return button;
     }
+    private VNInkIcon bookmarkIcon;
+    public void SetBookmarked(bool marked)
+    {
+        if (bookmarkIcon == null) return;
+        bookmarkIcon.Filled = marked;
+        bookmarkButton.tooltip = marked ? "取消收藏" : "收藏当前台词";
+    }
     private void BuildReadingControls()
     {
         dialogueBox.style.paddingLeft=18;
@@ -43,6 +50,7 @@ public partial class DialogueBox
         replayButton.style.translate=new Translate(0,Length.Percent(-50));
         nameArea.Add(replayButton);
         bookmarkButton=ReadingButton("vn-bookmark-btn",VNArtIcon.Bookmark,"收藏当前台词",()=>OnBookmark?.Invoke());
+        bookmarkIcon=bookmarkButton.Q<VNInkIcon>();
         bookmarkButton.style.position=Position.Absolute;bookmarkButton.style.left=48;bookmarkButton.style.top=Length.Percent(50);
         bookmarkButton.style.translate=new Translate(0,Length.Percent(-50));
         nameArea.Add(bookmarkButton);
@@ -99,7 +107,7 @@ public partial class DialogueBox
         voiceThumb.style.left = position;
         bool named=!string.IsNullOrEmpty(speakerName.text);
         // Keep bookmarking narration; only spoken, voiced lines get replay and audio transport.
-        nameArea.style.visibility=Visibility.Visible;nameArea.style.width=named?readingHit*2+174:readingHit+12;
+        nameArea.style.visibility=Visibility.Visible;nameArea.style.width=readingHit*2+174;   // 旁白只留空人物栏，正文起点与有人物时一致
         bookmarkButton.style.left=available?readingHit+4:0;speakerName.style.left=available?readingHit*2+10:readingHit+4;
     }
     public void SetStoryRoute(string script)=>scenicRoute?.SetRoute(script);

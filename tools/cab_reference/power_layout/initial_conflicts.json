@@ -1,0 +1,94 @@
+{
+    "scope": "Candidate external equipment envelopes only; not rated equipment or engineering clearance approval",
+    "items": [
+        {
+            "id": "Diesel_Generator",
+            "center": {
+                "x": 0.0,
+                "y": -0.6800000071525574,
+                "z": 8.100000381469727
+            },
+            "size": {
+                "x": 1.899999976158142,
+                "y": 0.6499999761581421,
+                "z": 2.0
+            },
+            "service": "Right side disconnect; downward removal, tooling not modeled"
+        },
+        {
+            "id": "Cooling_Pack",
+            "center": {
+                "x": 0.0,
+                "y": -0.6499999761581421,
+                "z": 9.899999618530274
+            },
+            "size": {
+                "x": 1.7999999523162842,
+                "y": 0.5799999833106995,
+                "z": 1.0
+            },
+            "service": "Right side withdrawal; airflow unverified"
+        },
+        {
+            "id": "Battery_Box",
+            "center": {
+                "x": 0.6499999761581421,
+                "y": -0.5799999833106995,
+                "z": 5.349999904632568
+            },
+            "size": {
+                "x": 0.5,
+                "y": 0.3400000035762787,
+                "z": 0.5
+            },
+            "service": "Right side tray, 0.70m free workspace candidate"
+        },
+        {
+            "id": "Fuel_Tank",
+            "center": {
+                "x": 0.0,
+                "y": -0.699999988079071,
+                "z": 10.699999809265137
+            },
+            "size": {
+                "x": 1.2000000476837159,
+                "y": 0.4000000059604645,
+                "z": 0.44999998807907107
+            },
+            "service": "Downward removal; volume is external envelope, not usable fuel capacity"
+        }
+    ],
+    "conflicts": [
+        {
+            "item": "Diesel_Generator",
+            "obstacle": "Dryer_Mount",
+            "station": 0.0,
+            "overlapM": 0.0149993896484375
+        },
+        {
+            "item": "Diesel_Generator",
+            "obstacle": "Dryer_To_MR_Trunk",
+            "station": 0.0,
+            "overlapM": 0.03347933292388916
+        },
+        {
+            "item": "Diesel_Generator",
+            "obstacle": "Dryer_To_MR_Trunk_Elbow",
+            "station": 0.0,
+            "overlapM": 0.02399998903274536
+        },
+        {
+            "item": "Battery_Box",
+            "obstacle": "Underfloor_Equipment_Cabinet",
+            "station": 0.0,
+            "overlapM": 0.3249998092651367
+        }
+    ],
+    "poses": 18,
+    "unresolved": [
+        "Exhaust and combustion-air routing, fire/heat isolation and discharge limits",
+        "Cooling airflow and hot-air recirculation",
+        "Fuel capacity/heat shielding and battery service interfaces",
+        "Structural hangers and removal tooling; old compressor cabinet remains generic"
+    ]
+}

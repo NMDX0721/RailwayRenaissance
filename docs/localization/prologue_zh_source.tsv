@@ -1,0 +1,2514 @@
+﻿id	file	type	speaker	emotion	zh	ja	en
+ch01.S0.000	prologue_01_news	loc			2076年4月 · 雾峰站		
+ch01.S0.001	prologue_01_news	n			入秋后的湿冷大雾封锁了整座深山。		
+ch01.S0.002	prologue_01_news	n			锈迹斑斑的钢轨无声延伸进竹林深处。		
+ch01.S0.003	prologue_01_news	n			昏暗的机车库里，柴油机剧烈咳了三声。		
+ch01.S0.004	prologue_01_news	n			浓黑呛人的尾烟弥漫在潮湿的冷空气中。		
+ch01.S0.005	prologue_01_news	d	老陈	sad	再来一次……求你了，再转一把，就一把！		
+ch01.S0.006	prologue_01_news	n			老陈满手油污，颤抖着死死握住启动手柄。		
+ch01.S0.007	prologue_01_news	n			高压起动机发出濒死般尖锐的摩擦怪叫。		
+ch01.S0.008	prologue_01_news	n			微弱的气缸轰鸣刚刚泛起，转瞬跌回死寂。		
+ch01.S0.009	prologue_01_news	n			高压喷油泵位置骤然传来一声沉闷脆响。		
+ch01.S0.010	prologue_01_news	n			像某种支撑了数十年的生铁筋骨彻底断裂。		
+ch01.S0.011	prologue_01_news	d	老陈	sad	……不行了。机体抱死了，喷油嘴全炸了。		
+ch01.S0.012	prologue_01_news	n			老陈脱力般松开冰凉发黏的金属闸把。		
+ch01.S0.013	prologue_01_news	n			在冰冷喘息的钢铁机车旁，他佝偻站了很久。		
+ch01.S0.014	prologue_01_news	n			机油混合着粗盐霜，正从接缝无声滴落。		
+ch01.S0.015	prologue_01_news	n			空旷的水泥站台上，没有哪怕一个乘客。		
+ch01.S0.016	prologue_01_news	loc			雾峰村线 · 正式停运		
+ch01.S0.017	prologue_01_news	n			刺骨山风呼啸穿过空荡荡的木质候车室。		
+ch01.S0.018	prologue_01_news	n			发黄受潮的列车时刻表在墙上哗哗拍打。		
+ch01.S0.019	prologue_01_news	n			这条坚持了四年的孤线，终究还是倒下了。		
+ch01.S1.000	prologue_01_news	loc			2050年 · 伦敦		
+ch01.S1.001	prologue_01_news	n			世界首辆沙能试验车奇幻沙子正式面世。		
+ch01.S1.002	prologue_01_news	n			沙子，一夜之间被奉为取代石油的新神祇。		
+ch01.S1.003	prologue_01_news	n			狂热的资本与跨国车企如同潮水般涌入。		
+ch01.S1.004	prologue_01_news	n			浮空飞艇的轰鸣声迅速盖过了旧时代汽笛。		
+ch01.S1.005	prologue_01_news	n			没有人注意到，传统铁路正被推向历史绞架。		
+ch01.S1.006	prologue_01_news	d	林彪悍	sad	沙子成了新石油……可真正被抽干的又是谁？		
+ch01.S1.007	prologue_01_news	loc			2056年 · 全球停运潮		
+ch01.S1.008	prologue_01_news	n			全球铁路客运总量发生毁灭性断崖下跌。		
+ch01.S1.009	prologue_01_news	n			各大陆干线电气化扩建工程被全面叫停。		
+ch01.S1.010	prologue_01_news	n			机车制造厂纷纷砸烂模具，改造沙能浮艇。		
+ch01.S1.011	prologue_01_news	n			漫长的钢轨开始在荒烟蔓草中迅速锈蚀。		
+ch01.S1.012	prologue_01_news	d	林彪悍	angry	短短六年，几代人流汗铺下的钢轨就被当成了废铁。		
+ch01.S1.013	prologue_01_news	loc			2072年 · 大废线		
+ch01.S1.014	prologue_01_news	n			全球铁路网迎来了最后的休克性停摆。		
+ch01.S1.015	prologue_01_news	n			官方公报上冠冕堂皇称之为全面战略转型。		
+ch01.S1.016	prologue_01_news	d	林彪悍	serious	全面战略转型……说得真漂亮，不过是一纸强拆令。		
+ch01.S1.017	prologue_01_news	n			交通部一夜之间撤销了全部传统铁道运营牌照。		
+ch01.S1.018	prologue_01_news	n			数百万靠铁轨谋生三代的老铁路人被勒令转岗。		
+ch01.S1.019	prologue_01_news	n			而守在道班房里的老工人们只叫它大废线。		
+ch01.S1.020	prologue_01_news	n			数以万计的重载机车被当成废铜烂铁回炉。		
+ch01.S1.021	prologue_01_news	n			数百万公里的轨道被推土机连根野蛮扒起。		
+ch01.S1.022	prologue_01_news	n			全境八万公里干线，被硬生生切成互不通联的绝路。		
+ch01.S1.023	prologue_01_news	n			曾经吞吐百万吨物资的编组站长满一人高的蓬蒿。		
+ch01.S1.024	prologue_01_news	n			铁锈顺枕木渗进泥土，像大地上无法愈合的血痂。		
+ch01.S1.025	prologue_01_news	n			钢铁走廊被开辟为沙能飞艇的高压加注通道。		
+ch01.S1.026	prologue_01_news	n			我滑动着档案终端上泛黄的历史新闻胶卷。		
+ch01.S1.027	prologue_01_news	n			每一次所谓的技术跃进，背后都是生生被撕开的锈轨。		
+ch01.S1.028	prologue_01_news	n			曾经隆隆作响的重载枢纽，如今只剩风沙穿堂。		
+ch01.S1.029	prologue_01_news	n			最后苟延残喘的，只剩被世界遗忘的深山小线。		
+ch01.S1.030	prologue_01_news	n			就像雾峰村这一段孤悬在外的二十三公里。		
+ch01.S1.031	prologue_01_news	d	林彪悍	sad	二十三公里……全境就只剩下这点最后的呼吸了么。		
+ch01.S1.032	prologue_01_news	n			那是地图上甚至不配标注名字的一道灰色盲肠。		
+ch01.S1.033	prologue_01_news	n			它在江南湿冷的浓雾里，等待着最后的拆除令。		
+ch01.S2.000	prologue_01_news	loc			2076年4月18日 · 金日成综合大学 智能调度实验室		
+ch01.S2.001	prologue_01_news	n			通宵运转的机柜阵列发出低沉焦躁的嗡鸣。		
+ch01.S2.002	prologue_01_news	n			我揉了揉布满血丝的眼眶，盯着终端屏幕。		
+ch01.S2.003	prologue_01_news	n			绿色的单色荧光屏上，光标还在徒劳跳转。		
+ch01.S2.004	prologue_01_news	n			屏幕中央是一幅复杂的山区铁道路网模型。		
+ch01.S2.005	prologue_01_news	n			然而在雾峰村节点周围，所有参数全呈暗红。		
+ch01.S2.006	prologue_01_news	n			动态规划算法的状态空间再度发生致命溢出。		
+ch01.S2.007	prologue_01_news	n			终端屏幕再度弹出一排刺眼的报错字符：		
+ch01.S2.008	prologue_01_news	n			【运力成本超出阈值，最优闭环路径无解】		
+ch01.S2.009	prologue_01_news	d	林彪悍	worried	可恶……不管代入多少次运力收敛公式，算出的惩罚项全都是无穷大。		
+ch01.S2.010	prologue_01_news	d	林彪悍	sad	没有干线中继，没有动力机车，单纯算法在现实面前根本一文不值。		
+ch01.S2.011	prologue_01_news	n			实验室厚重的隔音木门被轻轻推开。		
+ch01.S2.012	prologue_01_news	n			佯明远教授端着一杯冒着热气的浓茶，走到我身后。他负责智能调度课题组，也是我的研究生导师。		
+ch01.S2.013	prologue_01_news	n			他的目光落在屏幕那片闪烁报错的死局上。		
+ch01.S2.014	prologue_01_news	d	佯教授	serious	熬了整整三天三夜，你这台电脑里算来算去，果然还是那条线。		
+ch01.S2.015	prologue_01_news	d	林彪悍	sad	教授……我只是想在数学上证明，那二十三公里哪怕只拉土特产也能活。		
+ch01.S2.016	prologue_01_news	d	佯教授	gentle	停手吧。算法能算出最优周转率，但算不出一台抱死停转的旧柴油机。		
+ch01.S2.017	prologue_01_news	d	佯教授	serious	铁道从来都不是冷冰冰的数字拓扑，它是活生生的钢铁与人情。		
+ch01.S2.018	prologue_01_news	d	佯教授	serious	今天一大早，雾峰村那边有人辗转打通了办公室的长途电话。		
+ch01.S2.019	prologue_01_news	n			佯教授从白色实验外套的口袋里掏出一张泛黄的便签条。		
+ch01.S2.020	prologue_01_news	n			上面是铅笔匆忙写就的凌乱字迹：		
+ch01.S2.021	prologue_01_news	n			【喷油系统故障，耕牛停机，全线已停运二十二天】		
+ch01.S2.022	prologue_01_news	d	林彪悍	surprise	是陈叔打来的……连耕牛都彻底趴窝了？		
+ch01.S2.023	prologue_01_news	d	佯教授	sad	老陈在电话那头哽咽得说不出整话。他说……他守了四年，今天实在顶不住了。		
+ch01.S2.024	prologue_01_news	d	林彪悍	serious	爷爷在那条险峻的崇山里守了三十七年……四年前爷爷走了，陈叔又苦撑了四年。		
+ch01.S2.025	prologue_01_news	d	林彪悍	sad	这整整四年里，陈叔每个月都会往平壤寄一包炒青豆，问我的自动化课业顺不顺利。		
+ch01.S2.026	prologue_01_news	d	佯教授	gentle	四年前你考进大学那天，你爷爷特意翻出了三十年前的站长呢子大衣。		
+ch01.S2.027	prologue_01_news	d	佯教授	smile	老汉跟我喝酒时说，老林家出了个懂电懂算法的后代，往后的铁道准能开得更远。		
+ch01.S2.028	prologue_01_news	d	佯教授	sad	可他没等到看你毕业，大停运的风暴就把一切都吹散了。		
+ch01.S2.029	prologue_01_news	d	林彪悍	gentle	我至今还记得，小时候趴在爷爷肩头，听机车汽笛震响整座山谷。		
+ch01.S2.030	prologue_01_news	d	林彪悍	serious	那不是普通的噪音，那是深山里的人和外面世界连着的唯一心跳。		
+ch01.S2.031	prologue_01_news	d	佯教授	gentle	老汉要是能亲耳听见你这句话，九泉之下也能把腰杆挺直了。		
+ch01.S2.032	prologue_01_news	d	林彪悍	serious	我不能躲在象牙塔里敲代码写论文，眼睁睁看着爷爷用命守下来的钢轨被铲进炼钢炉。		
+ch01.S2.033	prologue_01_news	d	林彪悍	serious	教授，我想回雾峰村去。		
+ch01.S2.034	prologue_01_news	d	佯教授	serious	你想清楚了？回去可不是当大工程师，而是接手一个没钱没人的烂摊子。		
+ch01.S2.035	prologue_01_news	d	佯教授	serious	今天送到站里的复核通知，只给了两个星期。到期拿不出恢复最低货运能力的材料，专班就会启动拆轨清算。		
+ch01.S2.036	prologue_01_news	d	佯教授	angry	他们做梦都想把那二十三公里的路基刨开，铺设高压电缆与沙能充电桩。		
+ch01.S2.037	prologue_01_news	d	林彪悍	serious	我想得无比清楚。如果连我这个学铁道的孙子都不回去，那条老线就彻底死了。		
+ch01.S2.038	prologue_01_news	n			导师深深凝视着我，紧绷的嘴角微扬。		
+ch01.S2.039	prologue_01_news	n			他从皮夹里抽出一张盖着大学红印的表格。		
+ch01.S2.040	prologue_01_news	n			上面工整印着：学业休止与现场科研委派书。		
+ch01.S2.041	prologue_01_news	d	佯教授	smile	我就猜到你会这么选。实践申请学院已经批了，我昨晚也签好了指导意见。		
+ch01.S2.042	prologue_01_news	d	佯教授	normal	楼下停机坪里，封存着一辆叫0721号的古董试验车。学院同意交给你做现场实践，我来负责交接。		
+ch01.S2.043	prologue_01_news	d	佯教授	gentle	你随时可以出发。去看看它吧，那台机器身上，流淌着你爷爷当年的心血。		
+ch01.S2.044	prologue_01_news	n			我双手接过那张沉甸甸的盖章申请书。		
+ch01.S2.045	prologue_01_news	n			转身走到实验室宽大的全景落地窗前。		
+ch01.S2.046	prologue_01_news	n			下方的露天停机坪正中，卧着一具深蓝机体。		
+ch01.S2.047	prologue_01_news	n			深蓝色的机体线条凌厉，仿佛随时准备挣脱束缚。		
+ch01.S2.048	prologue_01_news	n			我的掌心隐隐发烫，胸腔里的心跳与机库轰鸣共振。		
+ch01.S2.049	prologue_01_news	n			在午后的刺目阳光下，冷峻厚重如铸铁。		
+ch01.S2.050	prologue_01_news	thought	林彪悍	serious	[四年前我离开雾峰村时，以为自己再也不会回头。但只要还有一根钢轨立在地上，我就得回去守住它。]		
+ch02.S0.000	prologue_02_day0	n			Day 0 下午		
+ch02.S0.001	prologue_02_day0	loc			金日成综合大学 · 试验停机坪		
+ch02.S0.002	prologue_02_day0	n			尖锐的高频电磁啸叫声骤然撕裂死寂。		
+ch02.S0.003	prologue_02_day0	n			我浑身一震，下意识捂住双耳向后退开。		
+ch02.S0.004	prologue_02_day0	n			后颈渗出的冷汗被过堂风吹得发凉。		
+ch02.S0.005	prologue_02_day0	n			还以为是高压稳压电容发生了致命短路。		
+ch02.S0.006	prologue_02_day0	n			导师却站在一旁，从容抬手示意我安心。		
+ch02.S0.007	prologue_02_day0	d	佯教授	gentle	二十三年没通电，电容第一次充饱，骨头节子总得响两声。		
+ch02.S0.008	prologue_02_day0	n			昏暗空旷的重型机库中央卧着一尊怪兽。		
+ch02.S0.009	prologue_02_day0	n			粗壮厚重的深蓝色合金艇身满是岁月斑驳。		
+ch02.S0.010	prologue_02_day0	n			两侧进气导流栅格结满发黄的粗盐碱霜。		
+ch02.S0.011	prologue_02_day0	n			机身侧翼用粗糙白漆喷涂着编号：0721。		
+ch02.S0.012	prologue_02_day0	n			编号正下方铆接着一块暗红铸铁铭牌。		
+ch02.S0.013	prologue_02_day0	n			上面赫然铸着雾峰村特有的交叉双轨徽记。		
+ch02.S0.014	prologue_02_day0	d	林彪悍	surprise	刚才那声刺耳尖啸……真不是线路击穿打火？		
+ch02.S0.015	prologue_02_day0	d	佯教授	smile	放一百个心。这是电枢核心重新建压的自检蜂鸣。		
+ch02.S0.016	prologue_02_day0	d	佯教授	normal	整整二十三年没动过了。今天为了你，特意重新通的电。		
+ch02.S0.017	prologue_02_day0	n			此时车旁站着一位戴着工作牌的中年男人。		
+ch02.S0.018	prologue_02_day0	n			他是大学车队管理员，负责封存这批试验车。		
+ch02.S0.019	prologue_02_day0	n			见导师领我走过来，他默默点头退到了一旁。		
+ch02.S0.020	prologue_02_day0	n			我绕着庞大粗犷的重型机体慢慢踱步。		
+ch02.S0.021	prologue_02_day0	n			双排气歧管紧紧裹着防热石棉隔层。		
+ch02.S0.022	prologue_02_day0	n			厚重风挡四周全是一丝不苟的手工焊纹。		
+ch02.S0.023	prologue_02_day0	d	林彪悍	curious	这台车的钣金工艺……看着根本不像流水线上的民用货。		
+ch02.S0.024	prologue_02_day0	d	佯教授	smile	算你识货。这是当年全境唯一一辆战备两栖原型车。		
+ch02.S0.025	prologue_02_day0	d	佯教授	serious	当年为了应对地质剧变，部里下了死命令秘密研制的独苗。		
+ch02.S0.026	prologue_02_day0	d	佯教授	gentle	它的底盘既能吸附在传统铁轨上高速滑行，又能喷气腾空越障。		
+ch02.S0.027	prologue_02_day0	d	林彪悍	surprise	既能在轨道上跑，又能离地浮空飞行？		
+ch02.S0.028	prologue_02_day0	d	佯教授	sad	可惜啊，试验刚跑完，大拆除的风暴就席卷了全境。		
+ch02.S0.029	prologue_02_day0	d	佯教授	normal	全世界都在抢沙子搞浮空，没人愿意再在铁轨上花哪怕一分钱。		
+ch02.S0.030	prologue_02_day0	d	佯教授	sad	投资方撤资，全套配套工厂转产，这台车就被直接封死在这里。		
+ch02.S0.031	prologue_02_day0	n			我走到机尾检修盖旁，轻轻抹去灰尘。		
+ch02.S0.032	prologue_02_day0	n			钢板边缘铆着一片金属验收牌，日期和结论是冲压的，旁边刻着一个名字：		
+ch02.S0.033	prologue_02_day0	n			『2053.4.12 验收合格』旁，是『林悍』两个字。		
+ch02.S0.034	prologue_02_day0	n			名字是照着手写字迹刻上去的。那个收得很短的「悍」字末笔，我在爷爷的旧本子上见过。		
+ch02.S0.035	prologue_02_day0	d	林彪悍	surprise	这是……照着爷爷当年的验收签字刻的？		
+ch02.S0.036	prologue_02_day0	d	佯教授	gentle	这台车的底盘调校，你爷爷当年亲自趴在底下改了整整三个月。		
+ch02.S0.037	prologue_02_day0	d	佯教授	serious	那老汉一辈子骨头硬，做完的事从不显摆。		
+ch02.S0.038	prologue_02_day0	d	佯教授	sad	部里把这车打入冷宫封存那天，他也是这样一个人在机库坐了一整夜。		
+ch02.S0.039	prologue_02_day0	d	佯教授	gentle	临走前，他亲手把自己的工号钢印砸在了机尾这块盖板上。		
+ch02.S0.040	prologue_02_day0	d	林彪悍	sad	所以它被孤零零锁在这里，等了整整二十三年。		
+ch02.S0.041	prologue_02_day0	d	佯教授	smile	是啊。但今天，老林家的后人终于来领它回家了。		
+ch02.S0.042	prologue_02_day0	n			我的手指轻轻按在微凉的铸铁外壳上。		
+ch02.S0.043	prologue_02_day0	n			冰冷钢铁深处，传来极其轻微的低频震颤。		
+ch02.S0.044	prologue_02_day0	n			像一头终于被唤醒心跳的沉睡巨兽。		
+ch02.S0.045	prologue_02_day0	d	佯教授	gentle	走近点吧。感应门禁系统已经录入并锁定了你的生物特征。		
+ch02.S0.046	prologue_02_day0	n			伴随着液压气浪声，客舱侧门缓缓滑开。		
+ch02.S1.000	prologue_02_day0	n			我踩上防滑踏板，弯腰跨进这间座舱。		
+ch02.S1.001	prologue_02_day0	n			陈年防锈油与松香的微涩气味扑面而来。		
+ch02.S1.002	prologue_02_day0	n			身后的厚重装甲舱门嗤的一声自动闭锁。		
+ch02.S1.003	prologue_02_day0	n			两张带双向减震气囊的帆布座椅相对而立。		
+ch02.S1.004	prologue_02_day0	n			中间架着一张可折叠收纳的胡桃木方桌。		
+ch02.S1.005	prologue_02_day0	n			前方的驾驶台上，机械仪表与数码管错落交织。		
+ch02.S1.006	prologue_02_day0	n			仪表台最上方嵌着两位已故领袖的黄铜相框。		
+ch02.S1.007	prologue_02_day0	n			铜框边缘被擦得锃亮，在暗光下泛着幽光。		
+ch02.S1.008	prologue_02_day0	n			一切都完好保持着二十三年前的模样。		
+ch02.S1.009	prologue_02_day0	d	佯教授	normal	拉开仪表台右下侧的电木盖，把那个红色主断路器推上去。		
+ch02.S1.010	prologue_02_day0	n			我握住冰凉沉重的胶木手柄，用力推死。		
+ch02.S1.011	prologue_02_day0	n			轰的一声沉闷轰鸣在地板深处骤然爆发。		
+ch02.S1.012	prologue_02_day0	n			橘黄色的数码管如灯带般一排排亮起。		
+ch02.S1.013	prologue_02_day0	n			中央阴极射线显示屏泛起翠绿的水波纹。		
+ch02.S1.014	prologue_02_day0	n			紧接着，一道清脆灵动的少女声线响彻座舱：		
+ch02.S1.015	prologue_02_day0	d	岁月	excited	——神经元逻辑回路握手成功！全传感器自检通过，系统重启完成！		
+ch02.S1.016	prologue_02_day0	d	林彪悍	surprise	哇啊！这、这是谁在说话？！		
+ch02.S1.017	prologue_02_day0	d	岁月	smile	初次见面！我是第一代战备铁路自主推演AI，代号……『岁月』！		
+ch02.S1.018	prologue_02_day0	n			屏幕上跳出一个活灵活现的像素少女笑脸。		
+ch02.S1.019	prologue_02_day0	n			两只由翠绿光点构成的眼睛冲我灵巧眨眼。		
+ch02.S1.020	prologue_02_day0	d	林彪悍	curious	二十三年前的老古董……居然装载了全逻辑自适应强人工智能？		
+ch02.S1.021	prologue_02_day0	d	佯教授	smile	她是当年全境最高保密级别项目的核心结晶，全国只造出这一个。		
+ch02.S1.022	prologue_02_day0	d	佯教授	gentle	不同于现在的那些傻瓜导航机，她能自主理解地形与轨道拓扑。		
+ch02.S1.023	prologue_02_day0	d	岁月	curious	识别到目标生物特征：林彪悍，金日成综合大学自动化系学生！		
+ch02.S1.024	prologue_02_day0	d	岁月	excited	您果然就是林悍总工程师的亲孙子！我一直处于待机状态等您唤醒呢！		
+ch02.S1.025	prologue_02_day0	d	林彪悍	curious	你……真的认得我爷爷？		
+ch02.S1.026	prologue_02_day0	d	岁月	gentle	当然认得！我的底层引导固件第一行根证书，就是林总工亲笔签发烧录的！		
+ch02.S1.027	prologue_02_day0	d	岁月	smile	当时林总工太激动，还把半杯热咖啡洒在控制台边，第三主板区至今留着焦糖痕迹呢！		
+ch02.S1.028	prologue_02_day0	d	林彪悍	smile	连泼咖啡的糗事都能记着……看来你这电子脑子比人脑还灵。		
+ch02.S1.029	prologue_02_day0	d	岁月	smug	哼哼，我的磁畴晶格存储器可是永不褪色、永久纠错的！		
+ch02.S1.030	prologue_02_day0	d	岁月	worried	不过……检测到外置高压储能电容仅剩两成基础存量，远航前必须充饱！		
+ch02.S1.031	prologue_02_day0	d	林彪悍	gentle	地勤电缆正在浮充，等我们办完手续，电量肯定能拉满。		
+ch02.S1.032	prologue_02_day0	d	林彪悍	smile	放心，二十三年都等过来了，不差充饱电这半天。		
+ch02.S1.033	prologue_02_day0	d	岁月	happy	收到！已启动低功耗吸储协议，向大电网大口吞咽能量中！		
+ch02.S1.034	prologue_02_day0	n			我注视着屏幕上那道活泼跳动的绿色脉冲。		
+ch02.S1.035	prologue_02_day0	n			心头原有的陌生与戒备，悄然消散了大半。		
+ch02.S1.036	prologue_02_day0	d	佯教授	serious	先别光顾着叙旧。跟我回趟办公室，关键交代还没给你交底。		
+ch02.S1.037	prologue_02_day0	d	岁月	smile	好的！岁月转入后台静默待命，随时恭候您的起飞指令！		
+ch02.S1.038	prologue_02_day0	n			我点点头，轻拍了一下仪表台，跨出客舱。		
+ch02.S2.000	prologue_02_day0	n			穿过长廊，我跟着导师回到熟悉的办公室。		
+ch02.S2.001	prologue_02_day0	n			宽大的红木桌上杂乱堆着泛黄的全国铁路图。		
+ch02.S2.002	prologue_02_day0	n			导师倒了一杯刚煮开的炒青粗茶推给我。		
+ch02.S2.003	prologue_02_day0	d	佯教授	sad	你决定回雾峰村接手那条烂摊子，我知道凭我是拦不住你了。		
+ch02.S2.004	prologue_02_day0	d	佯教授	serious	但既然要走，有三件关乎性命的事你必须死死烂在肚子里。		
+ch02.S2.005	prologue_02_day0	d	林彪悍	serious	老师您说，我每一条都会记牢。		
+ch02.S2.006	prologue_02_day0	d	佯教授	normal	第一件：0721号在大学账面上属于报废科研教具，我以野外考察名义批给你。		
+ch02.S2.007	prologue_02_day0	d	佯教授	serious	车辆移交公函、线路调研证明，还有出境申报要用的车辆资料，我都给你备齐了。		
+ch02.S2.008	prologue_02_day0	d	佯教授	serious	盘查时先出示公函，让他们核验任务和车辆来源。但学校的章不代替出境许可，过江前必须到检查站申报，人、车、物品都要查。		
+ch02.S2.009	prologue_02_day0	d	林彪悍	normal	记住了。公函证明我来做什么，国境手续还得另外办。		
+ch02.S2.010	prologue_02_day0	d	佯教授	serious	第二件：为什么退役车里，我偏偏力排众议把0721号留给你？		
+ch02.S2.011	prologue_02_day0	d	佯教授	normal	如今满天乱飞的民用沙能飞艇，全都极度依赖近地商业轨道卫星导引。		
+ch02.S2.012	prologue_02_day0	d	佯教授	serious	先往东北到鸭绿江检查站，过江后再折向西南。沿途山地有导航信号不稳的地磁异常区，卫星航线可能中断。		
+ch02.S2.013	prologue_02_day0	d	佯教授	gentle	但岁月不同。她的储存库里，封存着大拆除之前全境所有铁路拓扑档案。		
+ch02.S2.014	prologue_02_day0	d	佯教授	serious	每一个道班、高架桥、隧道的经纬度与地磁偏角，全在她脑子里。		
+ch02.S2.015	prologue_02_day0	d	佯教授	gentle	信号断了，先减速找停靠点。让岁月用旧铁路档案对照地形确认位置，不能闭着眼追导航箭头。		
+ch02.S2.016	prologue_02_day0	d	林彪悍	curious	难怪刚才开机时，她能一口报出沿途所有地质断裂带的数据。		
+ch02.S2.017	prologue_02_day0	d	佯教授	gentle	因为她生来就是为了在大地上奔跑、寻找铁道而建造的。		
+ch02.S2.018	prologue_02_day0	d	佯教授	normal	至于第三件……也是眼前最棘手、最现实的事。		
+ch02.S2.019	prologue_02_day0	n			导师从上锁的抽屉摸出一张烫金纸质请柬。		
+ch02.S2.020	prologue_02_day0	n			上面写着一个典雅地址：大同江茶馆。		
+ch02.S2.021	prologue_02_day0	d	佯教授	serious	出发之前，去见一个人。她能解你的燃眉之急。		
+ch02.S2.022	prologue_02_day0	d	林彪悍	curious	大同江茶馆？我听说那是商界巨擘出入的高级会所。		
+ch02.S2.023	prologue_02_day0	d	佯教授	gentle	有位徐小姐在那里等你。她名下掌管着东北亚铁路复兴专项基金。		
+ch02.S2.024	prologue_02_day0	d	佯教授	serious	她在市里专班说话极有分量，更重要的是，她当年欠你爷爷一份人情。		
+ch02.S2.025	prologue_02_day0	d	佯教授	sad	你手上连换零件的铁砂钱都没有，光凭力气可转不动火车轮子。		
+ch02.S2.026	prologue_02_day0	d	佯教授	gentle	去见见她。顺便去后街把干粮备齐，天黑前必须动身。		
+ch02.S2.027	prologue_02_day0	n			我双手接过请柬，向倾囊相授的导师深深鞠躬。		
+ch02.S3.000	prologue_02_day0	cg			cg_tea_meet		
+ch02.S3.001	prologue_02_day0	n			厚重的铜雕包厢门无声滑开。		
+ch02.S3.002	prologue_02_day0	n			室内飘散着极其雅致的冷兰花香。		
+ch02.S3.003	prologue_02_day0	n			落地观景窗外，平壤江南区的霓虹初上海面。		
+ch02.S3.004	prologue_02_day0	n			暖黄宫灯下，一张宽大的古木茶台静静横陈。		
+ch02.S3.005	prologue_02_day0	n			茶台后坐着一位身着修身黑西装的年轻女性。		
+ch02.S3.006	prologue_02_day0	n			她正执着白瓷茶夹，优雅地将沸水淋在茶宠上。		
+ch02.S3.007	prologue_02_day0	d	嘉颖徐	smile	你就是林悍的亲孙子？比我想象中要来得更准时些。		
+ch02.S3.008	prologue_02_day0	n			看到她的面容，我不由得暗暗吃了一惊。		
+ch02.S3.009	prologue_02_day0	n			她看上去太年轻了，身形甚至像个高中学妹。		
+ch02.S3.010	prologue_02_day0	n			然而那双深邃平静的眼眸，却透着商海的洗练。		
+ch02.S3.011	prologue_02_day0	d	林彪悍	curious	我是林彪悍。您就是徐小姐？您认识我爷爷？		
+ch02.S3.012	prologue_02_day0	d	嘉颖徐	gentle	全东北亚铁道系统里，谁不知道林老汉那根啃不烂的硬骨头。		
+ch02.S3.013	prologue_02_day0	d	嘉颖徐	smile	当年我刚入行被人做局，还是林老汉带着工人们硬帮我抢运出了车皮。		
+ch02.S3.014	prologue_02_day0	d	嘉颖徐	serious	他当年咬着牙守住的那条独苗线，如今还是那些能源寡头的眼中钉。		
+ch02.S3.015	prologue_02_day0	d	林彪悍	serious	沙能矿业专班……难道已经打算对雾峰村动手了？		
+ch02.S3.016	prologue_02_day0	d	嘉颖徐	serious	复核通知今天已经送到站里了。从今天起两周，考核组就要看恢复货运的材料。		
+ch02.S3.017	prologue_02_day0	d	嘉颖徐	angry	拿不出车辆、线路和货源的凭据，他们就会启动拆轨清算。不是让你两周内赚回本，但也不能只交一张计划书。		
+ch02.S3.018	prologue_02_day0	d	嘉颖徐	serious	那帮倒卖电池的财阀，早就盯上那条旧铁路下方的稀有金属矿脉了。		
+ch02.S3.019	prologue_02_day0	d	林彪悍	serious	只要我赶回雾峰村，就绝不会让他们碰那些钢轨。		
+ch02.S3.020	prologue_02_day0	d	嘉颖徐	smile	有骨气是好事，但铁路不是凭一腔热血就能空转起来的。你手头有启动资金吗？		
+ch02.S3.021	prologue_02_day0	n			我语塞在原地。现实的窘迫让我无法回答。		
+ch02.S3.022	prologue_02_day0	n			嘉颖徐莞尔一笑，从包里抽出张黑色磨砂硬卡。		
+ch02.S3.023	prologue_02_day0	n			指尖一推，卡片平稳滑过桌面停在我面前。		
+ch02.S3.024	prologue_02_day0	d	嘉颖徐	serious	拿着。这是复兴基金的定向透支黑卡，每月有一万沙币的基础授信额度。		
+ch02.S3.025	prologue_02_day0	d	林彪悍	surprise	一万沙币……徐小姐，这笔额度太大了，我不能随便收。		
+ch02.S3.026	prologue_02_day0	d	嘉颖徐	serious	别把商人都当成做慈善的。这不是白送的，是商业贷款。		
+ch02.S3.027	prologue_02_day0	d	嘉颖徐	gentle	动用了才算借款，按合同还本息；不动，就不是你账上的现金。先留着应急，别刚到站就把额度花光。		
+ch02.S3.028	prologue_02_day0	d	嘉颖徐	smile	要是真赔光了……就当我替林老汉随了一笔迟到四年的香火礼金。		
+ch02.S3.029	prologue_02_day0	d	林彪悍	serious	……多谢徐小姐。我绝不会让这笔钱变成奠仪。		
+ch02.S3.030	prologue_02_day0	d	嘉颖徐	gentle	记住我的话：铁路从来不是靠钱活着的，钱只是机油。		
+ch02.S3.031	prologue_02_day0	d	嘉颖徐	smile	想让它活下去，你得让大山深处的人们，重新发自内心地需要它。		
+ch02.S3.032	prologue_02_day0	d	嘉颖徐	smile	去吧，回你的车站去。我在这座高楼上，等着看你交卷。		
+ch02.S3.033	prologue_02_day0	n			我将那张冷硬的黑金卡小心贴身收好。		
+ch02.S3.034	prologue_02_day0	n			它贴在胸口，分量重若千钧。		
+ch02.S4.000	prologue_02_day0	n			离开茶馆，我一头扎进大学后街的市井窄巷。		
+ch02.S4.001	prologue_02_day0	n			红砖墙上刷着醒目的主体思想标语。		
+ch02.S4.002	prologue_02_day0	n			标语正下方，挂着闪烁粉蓝霓虹的招牌——		
+ch02.S4.003	prologue_02_day0	n			『통일 도시락』。统一便当店。		
+ch02.S4.004	prologue_02_day0	n			这种充满奇妙混合气息的小店，在平壤越来越多。		
+ch02.S4.005	prologue_02_day0	n			我掀开门帘，浓郁扑鼻的热油香气迎面撞来。		
+ch02.S4.006	prologue_02_day0	n			逼仄的小店里塞得满满当当。		
+ch02.S4.007	prologue_02_day0	n			货架上琳琅满目摆满了南方来的零食饮料。		
+ch02.S4.008	prologue_02_day0	n			胖店员正忙着给两名女高中生打包热炒年糕。		
+ch02.S4.009	prologue_02_day0	d	林彪悍	curious	这店里的洋货……比友谊商店还要齐全得多了。		
+ch02.S4.010	prologue_02_day0	n			店员送走客人，抓起抹布擦了擦台面迎上来。		
+ch02.S4.011	prologue_02_day0	d	店员	normal	同学面生得很啊！下课来打牙祭？想吃点啥？		
+ch02.S4.012	prologue_02_day0	d	林彪悍	gentle	老板，我这趟要出远门，预计第四天下午才到，多备点干粮。		
+ch02.S4.013	prologue_02_day0	d	店员	normal	那得备好几天的！山里停靠点少，别饿着肚子等补给。		
+ch02.S4.014	prologue_02_day0	d	店员	smile	尝尝咱家招牌刚出锅的韩式甜辣脆皮炸鸡？凉了也酥脆！		
+ch02.S4.015	prologue_02_day0	d	林彪悍	smile	装三大整盒！再搬一箱韩国原产辛拉面，加两瓶烧酒。		
+ch02.S4.016	prologue_02_day0	d	店员	happy	识货！那必须配点喝的！原装香蕉牛奶？还有冰镇提神黑咖啡！		
+ch02.S4.017	prologue_02_day0	d	林彪悍	smile	咖啡装半打，香蕉牛奶整两板，再抓两包虾条和几盒午餐肉。		
+ch02.S4.018	prologue_02_day0	n			店员麻利地把食品塞进两个特大号塑料袋。		
+ch02.S4.019	prologue_02_day0	n			算完账后，店员警惕地左右瞟了瞟门外。		
+ch02.S4.020	prologue_02_day0	n			他神秘兮兮地拉开柜台下方的带锁暗格。		
+ch02.S4.021	prologue_02_day0	d	店员	normal	同学……难得碰上大主顾，要不要瞧瞧压箱底的好东西？		
+ch02.S4.022	prologue_02_day0	d	林彪悍	curious	压箱底的？还有什么比这一桌吃的更稀罕？		
+ch02.S4.023	prologue_02_day0	n			暗格里捧出一个包着海绵的硬纸盒。		
+ch02.S4.024	prologue_02_day0	n			盒里整齐躺着几只做工极精细的毛绒钥匙扣。		
+ch02.S4.025	prologue_02_day0	n			那是戴着小骷髅头、咧嘴笑的恶魔黑兔子。		
+ch02.S4.026	prologue_02_day0	d	店员	normal	南边时兴的正版周边——骷髅兔！女学生里可火了，我这柜里也没剩几只。		
+ch02.S4.027	prologue_02_day0	d	林彪悍	surprise	连这种洋娃娃也能顺着鸭绿江水路倒腾过来？		
+ch02.S4.028	prologue_02_day0	d	店员	smile	跟江上货船的杂货一起来的。你要就挑一只，我把收条开上，过站查东西也有个凭据。		
+ch02.S4.029	prologue_02_day0	d	店员	gentle	冲你照顾我这么大单生意，收个成本价，十张沙币给你！		
+ch02.S4.030	prologue_02_day0	n			我端详着那只表情神气的小兔子，嘴角微扬。		
+ch02.S4.031	prologue_02_day0	n			长夜漫漫，仪表台上有个小玩意儿陪着也不坏。		
+ch02.S4.032	prologue_02_day0	d	林彪悍	smile	行，这只黑色的骷髅兔我要了。一起结账吧。		
+ch02.S4.033	prologue_02_day0	n			店员乐开花，把钥匙扣塞进炸鸡袋最上层。		
+ch02.S4.034	prologue_02_day0	d	店员	happy	好嘞！小哥好眼光！祝你一路顺风，平平安安发大财！		
+ch02.S4.035	prologue_02_day0	n			我付清现钞，双手拎起沉甸甸的大塑料袋。		
+ch02.S4.036	prologue_02_day0	n			炸鸡热气透过纸盒渗出，混着香蕉牛奶的甜香。		
+ch02.S4.037	prologue_02_day0	n			巷口路灯下，温热的白烟在秋风中悄然散开。		
+ch02.S4.038	prologue_02_day0	n			这是踏入荒野前，最后的温热市井烟火。		
+ch02.S5.000	prologue_02_day0	n			我拎着两大袋食品穿过停机坪，回到0721号。		
+ch02.S5.001	prologue_02_day0	n			侧滑舱门在感应下轻巧开启。		
+ch02.S5.002	prologue_02_day0	n			炸鸡焦香瞬间涌入客舱，冲淡了机舱冷铁锈味。		
+ch02.S5.003	prologue_02_day0	n			我把三盒炸鸡摆在木桌上，整箱泡面塞进椅下。		
+ch02.S5.004	prologue_02_day0	n			接着，我取出那枚黑色的骷髅兔玩偶钥匙扣。		
+ch02.S5.005	prologue_02_day0	n			将它挂在正前上方挂着领袖相框的黄铜挂钩边。		
+ch02.S5.006	prologue_02_day0	n			黑兔子在锃亮黄铜边晃荡，荒诞又奇妙和谐。		
+ch02.S5.007	prologue_02_day0	cg			cg_day0_leave		
+ch02.S5.008	prologue_02_day0	d	岁月	curious	光学传感器检测到异常有机物及高脂芳香烃挥发！		
+ch02.S5.009	prologue_02_day0	d	岁月	excited	矮桌上三大盒甜辣炸鸡、桌脚两瓶烧酒、椅下一整箱辛拉面！		
+ch02.S5.010	prologue_02_day0	d	岁月	smug	甚至……在领袖相框旁，还悬挂了一只南方黑色恶魔兔玩偶！		
+ch02.S5.011	prologue_02_day0	d	林彪悍	surprise	你这家伙，一瞬间就把所有袋子里的东西全扫描清点了？		
+ch02.S5.012	prologue_02_day0	d	岁月	smug	全场景超快光谱扫描识别！战备AI的最基础功底，不值一提！		
+ch02.S5.013	prologue_02_day0	d	岁月	serious	清单记好了。不过有几件是境外标签，过江时要核来源。您买东西的收条可别扔，光凭包装我判断不了。		
+ch02.S5.014	prologue_02_day0	d	林彪悍	smile	袋子里都留着呢。现在街角就能买到，跟你封存时不一样了。		
+ch02.S5.015	prologue_02_day0	d	林彪悍	gentle	连领袖画像都还端正挂着，街角却卖起炸鸡和洋娃娃，大家都在努力生活。		
+ch02.S5.016	prologue_02_day0	d	岁月	smile	见识到了！不过街上买得到，不等于过境不用申报。这一条我得帮您记住。		
+ch02.S5.017	prologue_02_day0	d	林彪悍	smile	包个脆皮鸡腿，再插瓶香蕉牛奶？赏你吸一口热气？		
+ch02.S5.018	prologue_02_day0	d	岁月	gentle	我是晶格存储器里的AI，不用吃碳水啦。不过……谢谢您的分享意图！		
+ch02.S5.019	prologue_02_day0	d	岁月	smile	我已经把这份『南边来的甜辣气味』当做永久记忆片段封存进数据库啦！		
+ch02.S5.020	prologue_02_day0	n			我拆开冰凉的香蕉牛奶，插上吸管喝了一口。		
+ch02.S5.021	prologue_02_day0	n			浓郁甜腻的奶香瞬间在舌尖化开。		
+ch02.S5.022	prologue_02_day0	d	林彪悍	smile	等到了雾峰村，我给你机箱散热口也倒一小盅尝尝鲜？		
+ch02.S5.023	prologue_02_day0	d	岁月	angry	警告！机箱主板严禁浸润含糖流体！林工休想谋害本AI！		
+ch02.S5.024	prologue_02_day0	d	林彪悍	smile	哈哈，逗你玩的，谁舍得谋害全境唯一的国宝AI。		
+ch02.S5.025	prologue_02_day0	n			我拉开气囊座椅坐下，咬下一大口热腾炸鸡。		
+ch02.S5.026	prologue_02_day0	n			窗外停机坪已沉入暮色，远山只余深黑轮廓。		
+ch02.S5.027	prologue_02_day0	d	林彪悍	curious	对了，我刚才看前舱操控台，怎么完全没找到主机械方向盘？		
+ch02.S5.028	prologue_02_day0	d	岁月	normal	因为我是全自主智能导航架构呀！从我出厂那天起，就没有物理方向盘呢。		
+ch02.S5.029	prologue_02_day0	d	岁月	smile	这辆0721号是最高规格原型车，靠全息神经元链路就能精准校准各舵面！		
+ch02.S5.030	prologue_02_day0	d	林彪悍	gentle	没有方向盘……看来当年造这台车时，是真的把它当成最后的逃生方舟。		
+ch02.S5.031	prologue_02_day0	d	岁月	sad	可是……后来的二十三年里，大家造出的量产飞艇全都是简配的粗糙货。		
+ch02.S5.032	prologue_02_day0	d	岁月	sad	他们装上了方向盘，却把最聪明的导航系统全换成了廉价的被动芯片……		
+ch02.S5.033	prologue_02_day0	d	岁月	gentle	林彪悍同学，您说……是不是因为我太话痨、太特别，人类才不需要我呢？		
+ch02.S5.034	prologue_02_day0	d	林彪悍	gentle	别胡思乱想。真正拥有灵魂的造物，永远都不会被时代淘汰。		
+ch02.S5.035	prologue_02_day0	d	林彪悍	serious	这二十三年你没有被遗忘，你只是在机库里，替全境守住了铁道的火种。		
+ch02.S5.036	prologue_02_day0	d	岁月	smile	嗯！只要您这么说，我就觉得这二十三年的等待全部都有意义了！		
+ch02.S5.037	prologue_02_day0	d	岁月	excited	储能电容完成预充！沙能导流管压力达到额定工况峰值！		
+ch02.S5.038	prologue_02_day0	n			机底传来一阵强劲而沉稳的涡轮轰鸣。		
+ch02.S5.039	prologue_02_day0	n			0721号艇身微晃，轻柔离开了停机坪地面。		
+ch02.S5.040	prologue_02_day0	c			舷窗外倒映着平壤深蓝色的暮霭，我对岁月开口道——		
+ch02.S5.040.o1	prologue_02_day0	opt			『岁月，这一路……拜托你了。』		
+ch02.S5.040.o2	prologue_02_day0	opt			『喂，这车……就不能飞快点吗？』		
+ch02.S6.000	prologue_02_day0	d	岁月	smile	收到最高优先级安全护航委托！神经元逻辑已锁定您的心跳频率！		
+ch02.S6.001	prologue_02_day0	d	岁月	gentle	放心交给我吧，林彪悍同学！二十三年的休眠，就为了这一刻！		
+ch02.S6.002	prologue_02_day0	d	岁月	smile	前方两千五百公里的崇山峻岭，我向您保证，香蕉牛奶都不会洒出一滴！		
+ch02.S6.003	prologue_02_day0	d	林彪悍	gentle	那就全指望你了。让我们平平稳稳地飞回老家。		
+ch02.S6.004	prologue_02_day0	d	岁月	smug	哼哼，居然当面质疑本姑娘的驾驶技术！		
+ch02.S6.005	prologue_02_day0	d	岁月	excited	最高时速八十不能超，不过起步可以利落一点——		
+ch02.S6.006	prologue_02_day0	d	岁月	excited	系好安全带，杯子放稳。我先平稳升空，再加速，不会拿老底盘开玩笑！		
+ch02.S6.007	prologue_02_day0	d	林彪悍	smile	行，快慢都听你的。别把刚买的东西甩一地就好。		
+ch02.S6.008	prologue_02_day0	n			0721号抬起机头，平稳穿过停机坪上方的薄雾。		
+ch02.S6.009	prologue_02_day0	n			背上多了一点向后的推力，座椅轻轻托住身体。		
+ch02.S6.010	prologue_02_day0	n			舷窗下方，平壤城街道迅速拉远变小。		
+ch02.S6.011	prologue_02_day0	n			万家灯火如同一条金色的璀璨缎带。		
+ch02.S6.012	prologue_02_day0	n			不久，城市灯火退到身后，东北方向的山影铺满舷窗。		
+ch02.S6.013	prologue_02_day0	n			客舱内只剩下仪表盘散发出的幽静橘光。		
+ch02.S6.014	prologue_02_day0	n			两位领袖相框在微光中泛起庄严轮廓。		
+ch02.S6.015	prologue_02_day0	n			黑色的骷髅兔小兔子随着气流轻快微晃。		
+ch02.S6.016	prologue_02_day0	n			桌上剩余的炸鸡飘散着踏实的温香。		
+ch02.S6.017	prologue_02_day0	n			我伸手隔着衬衫触碰胸口冰凉的黑金卡。		
+ch02.S6.018	prologue_02_day0	n			群山如卧倒的黑色巨兽，在艇身下方无声倒退。		
+ch02.S6.019	prologue_02_day0	n			没有路灯，没有信标，只有零星山火闪烁。		
+ch02.S6.020	prologue_02_day0	d	林彪悍	gentle	黑漆漆一片……二十三年前的火车，也是这么开过来的。		
+ch02.S6.021	prologue_02_day0	d	岁月	gentle	那时候每一座扳道房都有灯，两根铁轨在车灯前反着光呢……		
+ch02.S6.022	prologue_02_day0	d	岁月	smile	现在虽然冷清，但只要我们在飞，这片山谷就不算完全死寂。		
+ch02.S6.023	prologue_02_day0	d	岁月	gentle	已接入通往鸭绿江检查站的核准航路。先往东北，办完出境手续后再折向西南。		
+ch02.S6.024	prologue_02_day0	d	岁月	curious	绕行管制区后全程约两千五百公里。按时速八十估算，空中飞行约三十二小时，起降、补给和休息另算。		
+ch02.S6.025	prologue_02_day0	d	岁月	gentle	预计第四天下午到。夜间在停靠点落地休息，山地信号差的路段也要慢一些，不是连着飞四天哦。		
+ch02.S6.026	prologue_02_day0	d	林彪悍	gentle	独一无二的AI，开着全境唯一的古董试验车……听起来挺孤独的。		
+ch02.S6.027	prologue_02_day0	d	岁月	sad	孤独吗？这个由人类定义的概念……我的算法逻辑其实一直不太懂呢。		
+ch02.S6.028	prologue_02_day0	d	岁月	gentle	不过，只要到雾峰村之前，您愿意一直陪我这样聊聊天……		
+ch02.S6.029	prologue_02_day0	d	岁月	smile	也许在抵达雾峰村之前，我就能稍微理解一点什么是『不孤单』了。		
+ch02.S6.030	prologue_02_day0	d	林彪悍	smile	那就到第四天下午。两千五百公里，够我们一路慢慢聊了。		
+ch02.S6.031	prologue_02_day0	d	岁月	excited	太好了！一言为定哦！		
+ch02.S6.032	prologue_02_day0	d	岁月	curious	对了……副驾座椅下面的储物格里，有一件没有登记在车载物品清单上的东西。		
+ch02.S6.033	prologue_02_day0	d	岁月	smile	您要打开看看吗？		
+ch02.S6.034	prologue_02_day0	n			我弯腰拉开储物格，里面躺着一只落满灰尘的方盒。		
+ch02.S6.035	prologue_02_day0	n			抹去灰尘，盒盖上一行褪色的烫金字露了出来：Xiaomi Pad 36 Ultra。		
+ch02.S6.036	prologue_02_day0	d	林彪悍	surprise	全新的……连封膜都没拆？这是二十三年前的东西？		
+ch02.S6.037	prologue_02_day0	d	岁月	smile	共享所有权已确认。这台平板属于您，也属于我。		
+ch02.S6.038	prologue_02_day0	n			我撕开封膜，按下电源键。柔和的光晕在昏暗的座舱里缓缓漫开。		
+ch02.S6.039	prologue_02_day0	special			TABLET_SETUP		
+ch02.S6.040	prologue_02_day0	d	岁月	excited	账号注册完成！现在，我可以随时通过这台平板和您交流了。		
+ch02.S6.041	prologue_02_day0	d	岁月	gentle	不过我的核心还在 0721 号上哦——平板里的我，只是一个小小的投影。		
+ch02.S6.042	prologue_02_day0	d	岁月	gentle	那么……夜深了，请您调低座椅靠背安心休息吧。		
+ch02.S6.043	prologue_02_day0	d	岁月	smile	今晚先到核准的停靠点落地休息，明早在第一个沙能补给站降落前，我会叫醒您的！		
+ch02.S6.044	prologue_02_day0	d	林彪悍	gentle	晚安，岁月。		
+ch02.S6.045	prologue_02_day0	cg			cg_first_night		
+ch02.S6.046	prologue_02_day0	n			窗外漆黑的夜空中，繁星如钻石般铺展。		
+ch02.S6.047	prologue_02_day0	n			引擎在脚下保持着平稳而催眠的微颤。		
+ch02.S6.048	prologue_02_day0	n			伴随着柔和荧光熄灭，我缓缓合上眼帘。		
+ch02.S6.049	prologue_02_day0	n			在意识沉入梦乡前，扬声器里传来轻柔呢喃：		
+ch02.S6.050	prologue_02_day0	d	岁月	gentle	晚安……林彪悍同学。		
+ch02.S6.051	prologue_02_day0	d	岁月	excited	整整二十三年了……在这个世界上，终于又有人愿意听我说话了呢。		
+ch02.S6.052	prologue_02_day0	thought	林彪悍	serious	[不管这趟远门前面横着多少关卡，只要还有一根钢轨立在地上，我就得走到它跟前去。]		
+ch03.S0.000	prologue_03_journey	n			Day 1 上午		
+ch03.S0.001	prologue_03_journey	n			鸭绿江畔 · 朝鲜一侧的江岸补给站上空		
+ch03.S0.002	prologue_03_journey	d	岁月	excited	林彪悍——醒醒！补给站就在前面啦！		
+ch03.S0.003	prologue_03_journey	d	林彪悍	bored	嗯...到了？		
+ch03.S0.004	prologue_03_journey	d	岁月		前方五公里是江岸补给站，离出境检查站不远！过了江，再接往西南的航路。		
+ch03.S0.005	prologue_03_journey	d	岁月		建议补充沙子！		
+ch03.S0.006	prologue_03_journey	d	林彪悍	excited	终于到江边了。还没过境呢。		
+ch03.S0.007	prologue_03_journey	n			车辆缓缓降落，停在补给站。		
+ch03.S0.008	prologue_03_journey	n			补给站是一个普通的小镇设施，有几个加油机一样的设备。		
+ch03.S0.009	prologue_03_journey	d	员工		加多少？		
+ch03.S0.010	prologue_03_journey	d	林彪悍		加满。		
+ch03.S0.011	prologue_03_journey	d	员工		试验车...1500公斤。150沙币。		
+ch03.S0.012	prologue_03_journey	d	林彪悍	surprise	150块？1500公斤？		
+ch03.S0.013	prologue_03_journey	d	员工		对啊。沙子便宜。你们往江对面去？		
+ch03.S0.014	prologue_03_journey	d	林彪悍		嗯，办完手续往西南走，最后去雾峰村。		
+ch03.S0.015	prologue_03_journey	d	员工		雾峰村？听着生，没怎么听说过。你们怎么跑那种山旮旯里？		
+ch03.S0.016	prologue_03_journey	d	林彪悍	gentle	谢谢。		
+ch03.S0.017	prologue_03_journey	n			补给完成，车辆继续起飞。		
+ch03.S0.018	prologue_03_journey	d	岁月		沙子补充满一千五百公斤！		
+ch03.S0.019	prologue_03_journey	d	岁月		已飞约四百公里。本车满载理论续航一千二百公里，这次按载重和绕行余量，只排一千公里的补给间隔。		
+ch03.S0.020	prologue_03_journey	d	岁月		下次计划明天下午在河北补给，距这里约八百公里；不等用尽才加。		
+ch03.S0.021	prologue_03_journey	n			继续飞行，林彪悍翻着平板。		
+ch03.S0.022	prologue_03_journey	d	林彪悍	curious	飞了这么久...看看新闻吧。		
+ch03.S1.000	prologue_03_journey	n			离开补给站，0721号仍在鸭绿江的朝鲜一侧，沿核准航路向出境检查站飞去。窗外是连绵的山，江水在远处露出一线银光。		
+ch03.S1.001	prologue_03_journey	d	岁月		江岸补给站在管制区外缘。再往前要到检查站报到，办好手续才准过江。		
+ch03.S1.002	prologue_03_journey	d	林彪悍		边境检查？		
+ch03.S1.003	prologue_03_journey	d	岁月		嗯。我们还没出境。车辆资料、公函和随身物品都要申报，不能把学校证明当作放行单。		
+ch03.S1.004	prologue_03_journey	d	林彪悍		等等……我这辆车是学校的，我身上带的那些东西……		
+ch03.S1.005	prologue_03_journey	d	岁月		您是说后街买的那箱东西？有些标签是境外的，购买凭据和来源都得核验，我不能替检查员判断。		
+ch03.S1.006	prologue_03_journey	d	林彪悍		……你别提醒我。		
+ch03.S1.007	prologue_03_journey	n			车载警报忽然亮起琥珀色，仪表盘上浮起一行字：『检测到边境管制雷达，扫描频率上升』。		
+ch03.S1.008	prologue_03_journey	n			三秒后，一道刺耳的电子音撕裂了客舱的安静：『警告：本机已被相位锁定。管制空域拦截窗口：四十秒。』		
+ch03.S1.009	prologue_03_journey	n			林彪悍一下子挺直了背。		
+ch03.S1.010	prologue_03_journey	d	林彪悍		四十秒？！我们不是刚飞过来吗？		
+ch03.S1.011	prologue_03_journey	d	岁月		他们在一千米的雷达相位上预先锁定了我们的编号。这不是例行扫描的节奏——他们知道我们要来！		
+ch03.S1.012	prologue_03_journey	d	林彪悍		知道我们要来？怎么可能……		
+ch03.S1.013	prologue_03_journey	n			前方云层中，两辆深绿色的武装载具破云而出——流线型的沙能军车，车顶架着电磁干扰设备，呈钳形编队悬停在空中。		
+ch03.S1.014	prologue_03_journey	n			其中一辆侧面的舱门打开，一名穿深绿色制服的人举起红色信号牌：『立即降落接受检查』。		
+ch03.S1.015	prologue_03_journey	d	岁月		交通运输安全监察局的拦截车，还有边防的协同警戒车。我们还在朝鲜一侧。		
+ch03.S1.016	prologue_03_journey	d	岁月		建议您配合检查哦。		
+ch03.S1.017	prologue_03_journey	n			林彪悍低声，喉头滚动。		
+ch03.S1.018	prologue_03_journey	d	林彪悍		岁月——如果我让你加速冲过去——		
+ch03.S1.019	prologue_03_journey	d	岁月		不建议。他们最高一百一十，我们只有八十，直线飞行会被追上……		
+ch03.S1.020	prologue_03_journey	d	林彪悍	angry	我没问你的建议！加速！		
+ch03.S1.021	prologue_03_journey	n			话音未落，岁月猛地推满动力。0721号像被踹了一脚，引擎发出一声低沉的轰鸣，瞬间向前窜出。		
+ch03.S1.022	prologue_03_journey	n			林彪悍被惯性狠狠地按在座椅上，炸鸡盒从矮桌上滑落，辛拉面箱在储物格里哐当作响。		
+ch03.S1.023	prologue_03_journey	d	岁月		当前速度八十！对方开始追了！		
+ch03.S1.024	prologue_03_journey	n			后视镜里，两辆武装载具迅速调整姿态，拉近距离——车身上的徽记不同：一辆是社会安全省交通运输安全监察局的蓝徽，另一辆是边防军总参谋部的红星。它们的速度更快。		
+ch03.S1.025	prologue_03_journey	d	岁月		对方速度一百一十！预计两分钟接触！		
+ch03.S1.026	prologue_03_journey	d	林彪悍		……能甩掉吗？		
+ch03.S1.027	prologue_03_journey	d	岁月		正在计算逃脱路线——前方两公里有峡谷！可以在里面低空机动！成功率：很低，但可以赌一把！		
+ch03.S1.028	prologue_03_journey	d	林彪悍		赌一把？你的系统什么时候学会赌了？		
+ch03.S1.029	prologue_03_journey	d	岁月	worried	您的指令优先级高于风险评估——这是您教我的第一课。系好安全带！		
+ch03.S1.030	prologue_03_journey	n			0721号猛地压低头部，直插向峡谷。两侧岩壁呼啸而过，林彪悍能感觉到机身在气流里震颤，像一枚贴地飞行的子弹。		
+ch03.S1.031	prologue_03_journey	n			后方，两辆武装载具紧跟而下，车顶的电磁干扰设备嗡嗡作响——一道蓝色的扫描波扫过车身。		
+ch03.S1.032	prologue_03_journey	d	岁月		他们开启电磁干扰了！通讯会被压制——您要是想求救，现在还有十秒哦。		
+ch03.S1.033	prologue_03_journey	n			林彪悍飞快抄起平板，拨出导师的号码。		
+ch03.S1.034	prologue_03_journey	n			话筒里只有刺啦的电流声。信号断了。		
+ch03.S1.035	prologue_03_journey	d	林彪悍		靠！		
+ch03.S1.036	prologue_03_journey	d	岁月		峡谷出口三百米！前方开阔地——没有遮挡！		
+ch03.S1.037	prologue_03_journey	d	岁月		算好了。逃脱概率：百分之三。		
+ch03.S1.038	prologue_03_journey	d	林彪悍		……百分之三？		
+ch03.S1.039	prologue_03_journey	d	岁月		百分之三的意思是——现在备降还有谈判机会。再拖下去，就是边境管制条例的最重条款了……		
+ch03.S1.040	prologue_03_journey	n			前方云层中又闪出两辆武装载具——这次车身没有徽记，通体灰黑，是国家安全保卫机关的特勤车。左侧、右侧、前方——三面合围。		
+ch03.S1.041	prologue_03_journey	cg			cg_chase		
+ch03.S1.042	prologue_03_journey	d	岁月		三家单位！信号干扰全开！火控系统开始预热锁定——他们有开火权限……		
+ch03.S1.043	prologue_03_journey	n			林彪悍盯着前方灰黑色的特勤车，后槽牙咬紧。		
+ch03.S1.044	prologue_03_journey	d	林彪悍		……开火权限。		
+ch03.S1.045	prologue_03_journey	d	岁月		嗯。继续逃逸的话，对方有权击落。在它们眼里，您现在是『拒绝引导的不明载具』……		
+ch03.S1.046	prologue_03_journey	n			[逃。还是降。]		
+ch03.S1.047	prologue_03_journey	n			[爷爷守了一辈子的线还等着我。我不能死在这儿，也不能就这么进去。]		
+ch03.S1.048	prologue_03_journey	d	林彪悍		……降落吧。		
+ch03.S1.049	prologue_03_journey	n			岁月减速，缓缓降落在下方的公路上。四辆武装载具紧随其后，呈包围阵型落地，激起一圈尘土。		
+ch03.S1.050	prologue_03_journey	n			车门被人从外面一把拉开。刺眼的阳光照进来，林彪悍眯起眼，看到四五支黑洞洞的枪口指着自己。		
+ch03.S1.051	prologue_03_journey	d	检查员		下车。双手抱头。		
+ch03.S1.052	prologue_03_journey	cg			cg_arrest		
+ch03.S2.000	prologue_03_journey	n			林彪悍被拽下车，按在晒热的引擎盖上。他忍着胳膊被反剪的疼，急忙说：「包里有学校公函和车辆资料，请先看一眼！」队员翻出证件，检查员接过学生证，又抽出了盖章的文件。		
+ch03.S2.001	prologue_03_journey	n			检查员看了看学生证，又看了看车里。		
+ch03.S2.002	prologue_03_journey	d	检查员		金日成综合大学的学生？		
+ch03.S2.003	prologue_03_journey	d	林彪悍		……是。		
+ch03.S2.004	prologue_03_journey	d	检查员		第一，违反《出入境管理法》第32条——你的车编号三天前就由学院通报到名单上，我们等着你来报到，你却没到检查站就闯进管制空域。学校公函证明的是任务，不是放行单。		
+ch03.S2.005	prologue_03_journey	d	检查员		第二，违反《社会安全法》第41条——驾驶载具拒绝接受检查，强行闯关逃逸，袭扰执法。		
+ch03.S2.006	prologue_03_journey	d	检查员		第三，违反《贸易法》第23条——携带来源未核清的境外商品，涉嫌走私。第四，违反《国家保卫法》——车内查获大批韩国文化制品，涉嫌传播反国家宣传物。		
+ch03.S2.007	prologue_03_journey	d	检查员		第五，在逃逸过程中冲闯三道边防警戒线，情节性质极其恶劣。		
+ch03.S2.008	prologue_03_journey	d	检查员		你别拿学生证当挡箭牌。这五项按最重条款，光第三条走私就是七年起步，第四项反国家宣传物——进矫正局待三年都是轻的。你算算，合起来是多少年？		
+ch03.S2.009	prologue_03_journey	d	林彪悍		……公函您可以向学校核实。东西是我在平壤后街买的，凭据在包里。		
+ch03.S2.010	prologue_03_journey	n			检查员勒了勒他的衣领，凑到他耳边，压低声音：『而且——小子，你刚冲了三家单位的三道警戒线。这事已经往上报了，国务院那边都要挂号。你以为你是谁？』		
+ch03.S2.011	prologue_03_journey	n			检查员松开他，退后半步，从口袋里摸出烟点上。烟雾顺着他的话头慢悠悠飘出来——他眯着眼，像打量一件能谈价钱的货。		
+ch03.S2.012	prologue_03_journey	d	检查员		看你这年纪，第一次出远门吧？		
+ch03.S2.013	prologue_03_journey	d	检查员		按规矩，这五项罪名够你在大同江那边的矫正局关十年。十年啊，孩子——等你出来，连你爷爷的名字都记不全了。		
+ch03.S2.014	prologue_03_journey	d	检查员		不过，也不是没有别的路。		
+ch03.S2.015	prologue_03_journey	d	检查员		你要是老实告诉我，这批货是谁帮你运的、平壤那边还有谁在跑这条线——我可以帮你把罪名归成『初犯过失』。三年，最多。出来还是个完人。		
+ch03.S2.016	prologue_03_journey	d	林彪悍		货是我自己买的，自己带的。没有别人。		
+ch03.S2.017	prologue_03_journey	d	检查员		硬气。像你这样硬气的大学生，我一年见三个，个个都这么说。		
+ch03.S2.018	prologue_03_journey	d	检查员		多少人到最后都招了。你还有念想——好好想想，再回答我一次。		
+ch03.S2.019	prologue_03_journey	n			林彪悍把脸贴在发烫的引擎盖上没动。汗水顺着鬓角往下淌，淌过他咬紧的下颌。他数着自己的心跳，数到第十二下，才从那声『十年』里缓过来。		
+ch03.S2.020	prologue_03_journey	n			[要是招了，就是把我爷爷的线也一起招出去了。]		
+ch03.S2.021	prologue_03_journey	n			[不招，还有机会打电话。公函能证明任务，抹不掉刚才那几分钟。]		
+ch03.S2.022	prologue_03_journey	n			[国务院。]		
+ch03.S2.023	prologue_03_journey	n			[一个金日成综合大学的研究生，一天之内把名字送到了国务院。]		
+ch03.S2.024	prologue_03_journey	n			[爷爷，对不起。我没能守住你的名声。]		
+ch03.S2.025	prologue_03_journey	n			引擎盖烫得他半边脸发麻，他动了动被反剪的胳膊，把脸从铁皮上抬起来一点——声音闷闷的，带着铁屑味。		
+ch03.S2.026	prologue_03_journey	d	林彪悍		……行。那我能打个电话吗？		
+ch03.S2.027	prologue_03_journey	n			检查员冷笑。		
+ch03.S2.028	prologue_03_journey	d	检查员		打给谁？你们校长？还是能救你的什么人？		
+ch03.S2.029	prologue_03_journey	d	林彪悍		打给我的导师。还有……嘉颖徐，女士。		
+ch03.S2.030	prologue_03_journey	d	检查员		嘉颖徐？东北亚那个铁路大亨？		
+ch03.S2.031	prologue_03_journey	d	检查员		小伙子，你认识她，她未必认识你。现在风头正紧，谁肯为一个边境上被扣的大学生出头？		
+ch03.S2.032	prologue_03_journey	d	林彪悍		……她认识我爷爷。		
+ch03.S2.033	prologue_03_journey	n			检查员的目光动了一下，第一次没有立刻接话。过了几秒，他让队员把林彪悍的平板拿来：「打给公函上这个号码。开免提，我要听他核实。」		
+ch03.S2.034	prologue_03_journey	n			信号干扰还没有完全取消，电话响了好几遍，才终于接通。		
+ch03.S2.035	prologue_03_journey	n			电话那头的声音传了出来。		
+ch03.S2.036	prologue_03_journey	d	佯教授		彪悍？怎么了？		
+ch03.S2.037	prologue_03_journey	d	林彪悍		教授……我还在过江前的检查站。他们扣了我，五项罪名，说已经报国务院了。公函他们看了，但我刚才慌了，想开车躲检查——		
+ch03.S2.038	prologue_03_journey	n			导师沉默了几秒。		
+ch03.S2.039	prologue_03_journey	d	佯教授		平板开免提，我和检查员说。你先别再争，按项把情况讲清楚。		
+ch03.S2.040	prologue_03_journey	n			林彪悍把平板放到引擎盖上，打开免提。检查员低头，对着扬声器报出自己的单位。		
+ch03.S2.041	prologue_03_journey	n			电话里，导师的声音响起——平静，却沉甸甸的。		
+ch03.S2.042	prologue_03_journey	d	佯教授		我是金日成综合大学的佯明远教授，负责他的智能调度课题。他在执行学院批准的线路调研任务，申请材料可以核验。		
+ch03.S2.043	prologue_03_journey	d	佯教授		车辆交接和调研任务由学院确认，我马上传真签章副本。随身商品不是科研样本，该查来源就查来源，不能用学校公函代替申报。		
+ch03.S2.044	prologue_03_journey	n			检查员把公函翻到背面，核对联系电话，又让队员去取车内的购物袋与凭据。		
+ch03.S2.045	prologue_03_journey	n			检查员对着电话，语气生硬。		
+ch03.S2.046	prologue_03_journey	d	检查员		同志，您说的这些……我们核实需要时间。但在核实完成之前，按流程他得先移送——		
+ch03.S2.047	prologue_03_journey	n			话没说完，检查员自己的手机突然响了。他低头一看屏幕，脸色当场变了，下意识把手机背到身后。		
+ch03.S2.048	prologue_03_journey	d	年轻队员		队长？谁啊？		
+ch03.S2.049	prologue_03_journey	n			检查员把手机背在身后，声音绷紧。		
+ch03.S2.050	prologue_03_journey	d	检查员		局里的。都看什么，散开，警戒！		
+ch03.S2.051	prologue_03_journey	n			检查员压低声音，对身旁的人说。		
+ch03.S2.052	prologue_03_journey	d	检查员		是……局长内线。		
+ch03.S2.053	prologue_03_journey	n			检查员接起电话，冷笑僵在嘴角。听了几句，他抬眼看向林彪悍，神色惊疑；放下电话时，却先挤出了一点讨好的笑。		
+ch03.S2.054	prologue_03_journey	d	检查员		……你认识嘉颖徐？		
+ch03.S2.055	prologue_03_journey	n			林彪悍愣了一下。		
+ch03.S2.056	prologue_03_journey	d	林彪悍		……认识。		
+ch03.S2.057	prologue_03_journey	n			检查员挂断电话，沉默了几秒，又接过复核员传来的资料，核对最后一栏。		
+ch03.S2.058	prologue_03_journey	d	检查员		她刚打电话到我们局长办公室，说你是她资助的铁路研究员。学院签章副本也收到了，资料号已经核上。		
+ch03.S2.059	prologue_03_journey	d	检查员		她原话：车和人她保，货按单核——那箱泡面和玩偶是你自己的私人物品，不是什么科研采购。补一张私人物品申报，签个字，就能走。拒检的记录另存。		
+ch03.S2.060	prologue_03_journey	n			[嘉颖徐？她怎么知道我在边境？]		
+ch03.S2.061	prologue_03_journey	n			[等等——她一个电话，能打到局长内线？]		
+ch03.S2.062	prologue_03_journey	d	林彪悍	serious	……对。那些是我自己买的，不是她批的。		
+ch03.S2.063	prologue_03_journey	n			检查员的表情在震惊和无奈之间转了一圈，最后堆出一个僵硬的笑。他率先收起枪，转身冲其他人挥手——那挥手的动作，甚至带着点局促。		
+ch03.S2.064	prologue_03_journey	d	检查员		林……林研究员。误会，都是误会。申报单补一份，签个字就放行。		
+ch03.S2.065	prologue_03_journey	d	检查员		您看这事儿闹的——您要是早说是嘉颖徐女士的人，哪还用拦您车呢。		
+ch03.S2.066	prologue_03_journey	d	检查员		回去……麻烦您替我们向徐总问声好。就说，边境老朱，下回请她喝茶。		
+ch03.S2.067	prologue_03_journey	n			检查员把证件还给他，声音放低，带着一丝若有所思。		
+ch03.S2.068	prologue_03_journey	d	检查员		走吧。		
+ch03.S2.069	prologue_03_journey	d	检查员		下次——让你那位『朋友』提前打个招呼。别让我们难做。		
+ch03.S2.070	prologue_03_journey	n			林彪悍从引擎盖上撑起身子，正要转身，检查员忽然又叫住他。		
+ch03.S2.071	prologue_03_journey	n			检查员看着他，像是在确认什么。		
+ch03.S2.072	prologue_03_journey	d	检查员		……小子。你姓林？		
+ch03.S2.073	prologue_03_journey	n			林彪悍顿住。		
+ch03.S2.074	prologue_03_journey	d	林彪悍		……是。怎么？		
+ch03.S2.075	prologue_03_journey	n			检查员沉默片刻，摆摆手，声音里有种说不清的复杂。		
+ch03.S2.076	prologue_03_journey	d	检查员		没什么。走你的。		
+ch03.S2.077	prologue_03_journey	d	年轻队员		队长，他……真是大学生？		
+ch03.S2.078	prologue_03_journey	d	检查员		二十多年前，有个人也是这个姓。		
+ch03.S2.079	prologue_03_journey	d	检查员		也是开着这辆车，走这条线。他在边境救过一整个车队的人。我们欠他一条命。		
+ch03.S2.080	prologue_03_journey	d	年轻队员		那……刚才为什么不帮他？		
+ch03.S2.081	prologue_03_journey	d	检查员		我帮了。只是他不知道而已。		
+ch03.S2.082	prologue_03_journey	n			他没有解释。但林彪悍清楚看见，检查员在说出『林』这个字时，目光越过他，落在身后的 0721 号车身上——眼神里有种……像是旧识重逢的神情。		
+ch03.S2.083	prologue_03_journey	n			[他的眼神，像是见过我爷爷。]		
+ch03.S2.084	prologue_03_journey	n			林彪悍坐回车里，关上车门。手还在抖。		
+ch03.S2.085	prologue_03_journey	n			林彪悍低声。		
+ch03.S2.086	prologue_03_journey	d	林彪悍		岁月……他说，这事已经报上去了？		
+ch03.S2.087	prologue_03_journey	d	岁月	surprise	嗯！但——嘉颖徐女士的来电是从『国家保卫省』的内线转接的。对方接到那个号码后，选择了『暂时搁置上报』！		
+ch03.S2.088	prologue_03_journey	d	林彪悍		……意思是，这事被压下来了？		
+ch03.S2.089	prologue_03_journey	d	岁月		压制有效！对方系统里，您的档案已经从『待移送嫌犯』改成『科研支援人员』了——三分钟前更新的！拒检记录还留着，只是不再移送。		
+ch03.S2.090	prologue_03_journey	n			核准航路亮起绿灯。四辆武装载具让开一条路，像护送一样目送0721号缓缓升空。		
+ch03.S2.091	prologue_03_journey	d	岁月		检测到您刚才十分钟内，心率从六十八飙到一百四十七，峰值出现在您被按在引擎盖上时……		
+ch03.S2.092	prologue_03_journey	d	林彪悍		……你不说我也知道。		
+ch03.S2.093	prologue_03_journey	d	岁月		您打电话的时候，手指抖了平均水平二点三倍那么多哦。		
+ch03.S2.094	prologue_03_journey	d	林彪悍		……你能别念了吗？		
+ch03.S2.095	prologue_03_journey	d	岁月		我只是在记录事实嘛！		
+ch03.S2.096	prologue_03_journey	d	岁月		以及——嘉颖徐女士的电话记录已经存进您的通讯档案啦。建议您下次给她带份炸鸡！		
+ch03.S2.097	prologue_03_journey	n			林彪悍愣了一秒，然后笑出来，笑容里还带着劫后余生的虚脱。		
+ch03.S2.098	prologue_03_journey	d	林彪悍	wink	……你是在开玩笑吗？		
+ch03.S2.099	prologue_03_journey	d	岁月	wink	我是 AI！我不会开玩笑！		
+ch03.S2.100	prologue_03_journey	d	岁月		但根据我的情感模拟模块——刚才那句话，有百分之七十三的概率会被人类归类为『幽默』哦！		
+ch03.S2.101	prologue_03_journey	n			林彪悍靠进座椅，长长呼出一口气。		
+ch03.S2.102	prologue_03_journey	d	林彪悍		……岁月。		
+ch03.S2.103	prologue_03_journey	d	岁月		在！		
+ch03.S2.104	prologue_03_journey	d	林彪悍		刚才那个检查员……他说我姓林。那眼神，像是见过我爷爷。		
+ch03.S2.105	prologue_03_journey	n			岁月停顿。		
+ch03.S2.106	prologue_03_journey	d	岁月		根据我的记录——本车 2053 年在这检查站通过过八次。驾驶员登记名：林悍。就是……您的爷爷。		
+ch03.S2.107	prologue_03_journey	n			林彪悍一下子挺直了背。		
+ch03.S2.108	prologue_03_journey	d	林彪悍		爷爷？！他也走这条线？		
+ch03.S2.109	prologue_03_journey	d	岁月		嗯。最后一次是 2053 年 4 月 12 日，之后本车就被封存了。		
+ch03.S2.110	prologue_03_journey	n			林彪悍喃喃。		
+ch03.S2.111	prologue_03_journey	d	林彪悍		难怪那个检查员的眼神——他见过我爷爷。		
+ch03.S2.112	prologue_03_journey	d	岁月		我的情感模拟模块说：那位检查员，也许曾亲手为您爷爷放行过。		
+ch03.S2.113	prologue_03_journey	d	岁月		『林』这个姓，在这条边境线上，曾经以另一种方式被尊重过。		
+ch03.S2.114	prologue_03_journey	n			林彪悍沉默很久，声音有些发涩。		
+ch03.S2.115	prologue_03_journey	d	林彪悍	bored	……嗯。		
+ch03.S2.116	prologue_03_journey	n			窗外，四辆武装载具已经消失在云层中，仿佛什么都没有发生过。		
+ch03.S2.117	prologue_03_journey	n			林彪悍低头看了一眼副驾座上的黑兔子钥匙扣——它还在那晃荡，像是在嘲笑他刚才的狼狈。		
+ch03.S2.118	prologue_03_journey	n			林彪悍把钥匙扣扶正，对着它说。		
+ch03.S2.119	prologue_03_journey	d	林彪悍		笑什么。这趟我不仅活下来了，还多了一张『私人物品申报单』。		
+ch03.S2.120	prologue_03_journey	d	岁月		顺便一提——根据本车记录，那位检查员放行前，曾偷偷对本车行了一个极微小的、标准的铁路敬礼哦！		
+ch03.S2.121	prologue_03_journey	n			林彪悍愣住，声音很轻。		
+ch03.S2.122	prologue_03_journey	d	林彪悍		……致敬？		
+ch03.S2.123	prologue_03_journey	d	岁月		嗯嗯！方向偏离您的位置四点五度，准确指向——0721 号的车头徽记！		
+ch03.S2.124	prologue_03_journey	n			岁月停顿。		
+ch03.S2.125	prologue_03_journey	d	岁月		我的情感模拟模块认为——那是一个老兵，在向另一个老兵致意。		
+ch03.S2.126	prologue_03_journey	n			林彪悍慢慢低下头，声音又轻又重。		
+ch03.S2.127	prologue_03_journey	d	林彪悍		……爷爷，我们欠他们的。我自己闯的祸，也得自己记着。		
+ch03.S2.128	prologue_03_journey	n			检查站确认出境放行后，0721号才越过江面，按备案航路折向西南。窗外的光渐渐暗了，岁月在图上标出今晚落地休息的停靠点。		
+ch03.S3.000	prologue_03_journey	n			当天午后，平壤。边境那通电话刚接通时——		
+ch03.S3.001	prologue_03_journey	n			办公桌上的电脑屏幕开着三个窗口——左边是汇率，中间是待签的合约，右边是一个不起眼的接入界面，界面上只有一行小字：交通运输安全监察局·调度监控。		
+ch03.S3.002	prologue_03_journey	n			她的目光扫过那个没有更新的状态，没有停顿。手机响了。		
+ch03.S3.003	prologue_03_journey	n			嘉颖徐接起电话，懒洋洋地。		
+ch03.S3.004	prologue_03_journey	d	嘉颖徐	normal	喂——		
+ch03.S3.005	prologue_03_journey	d	佯教授		嘉颖，彪悍在边境被扣了。		
+ch03.S3.006	prologue_03_journey	d	嘉颖徐	bored	哦。		
+ch03.S3.007	prologue_03_journey	n			[我知道。]		
+ch03.S3.008	prologue_03_journey	n			[他被扣的时候，我这里已经亮了快十分钟了。]		
+ch03.S3.009	prologue_03_journey	d	佯教授		车辆移交公函已经给他们看了，可他慌了神想躲检查，车上还有一堆来源不明的东西。我正把学院签章副本传过去。		
+ch03.S3.010	prologue_03_journey	d	嘉颖徐	bored	……就这？我以为多大的事呢。		
+ch03.S3.011	prologue_03_journey	d	佯教授		出入境管理法32条、社会安全法41条、贸易法23条、国家保卫法——按最重条款算，走私加反国家宣传物，刑期十年起步。这小子是真敢。		
+ch03.S3.012	prologue_03_journey	d	嘉颖徐	bored	知道了。		
+ch03.S3.013	prologue_03_journey	n			[十年。]		
+ch03.S3.014	prologue_03_journey	n			[林悍的孙子，第一次出远门，就捅出个十年的大篓子。]		
+ch03.S3.015	prologue_03_journey	n			[像他爷爷。]		
+ch03.S3.016	prologue_03_journey	n			挂断电话后，她先打开电脑，接入社会安全省交通运输安全监察局的调度监控内线。边境检查站上空，一个蓝色光点被四个红色标记围住。她盯了三秒，合上电脑。		
+ch03.S3.017	prologue_03_journey	n			然后她才拿起手机。没有翻通讯录——直接输了一串号码。		
+ch03.S3.018	prologue_03_journey	n			电话那头，忙音只响了两声。		
+ch03.S3.019	prologue_03_journey	d	嘉颖徐	serious	猴局长，好久不见。听说你的人扣了我的人。		
+ch03.S3.020	prologue_03_journey	n			电话那头顿了一下。猴局长开口时还带着官腔，官腔说到一半，被什么东西压了下去。		
+ch03.S3.021	prologue_03_journey	d	猴局长		嘉颖啊，这事……不是我这层能定的。三家单位联名上报，国务院那边都挂了号。		
+ch03.S3.022	prologue_03_journey	d	嘉颖徐	smug	挂了号就销号。你们监察局上个月申报的监控设备款，不是还没批下来吗？		
+ch03.S3.023	prologue_03_journey	d	猴局长		……		
+ch03.S3.024	prologue_03_journey	d	嘉颖徐	serious	我名下基金刚好有一笔信息化预算空着。设备款，这周就到你账上。		
+ch03.S3.025	prologue_03_journey	d	猴局长		嘉颖，你我都是自己人。你说明白，我照办。		
+ch03.S3.026	prologue_03_journey	d	嘉颖徐	serious	0721号，金日成综合大学的学生，调研任务有学院编号。车和人我保；货，按单核——该申报的让他补，别当走私办。		
+ch03.S3.027	prologue_03_journey	n			电话那头还有点没跟上——她没给他缓神的时间。		
+ch03.S3.028	prologue_03_journey	n			电话那头沉默了两秒。再开口时，他连『嘉颖』两个字都叫得小声了些。		
+ch03.S3.029	prologue_03_journey	n			她靠着椅背，慢悠悠地补了一句——		
+ch03.S3.030	prologue_03_journey	d	嘉颖徐	smug	对，就是炸鸡、泡面，还有个黑兔子挂件。——怎么，我资助的研究员连泡面都不能带了？别往科研采购上凑，让他补张私人物品申报就行。		
+ch03.S3.031	prologue_03_journey	d	猴局长		……补申报就行？		
+ch03.S3.032	prologue_03_journey	n			嘉颖徐没答，端起茶杯喝了一口。听筒里只剩下猴局长自己的呼吸声——这种沉默，他最熟悉。		
+ch03.S3.033	prologue_03_journey	d	猴局长		成，我这就安排放行。		
+ch03.S3.034	prologue_03_journey	d	嘉颖徐	gentle	好，谢谢。改天请你喝茶。		
+ch03.S3.035	prologue_03_journey	d	猴局长		等等——徐总。那孩子……真是金日成综合大学的学生？		
+ch03.S3.036	prologue_03_journey	d	嘉颖徐	serious	如假包换。他爷爷是林悍。		
+ch03.S3.037	prologue_03_journey	n			电话那头彻底安静了。静到嘉颖徐甚至看了一眼屏幕，确认没有断线。		
+ch03.S3.038	prologue_03_journey	d	猴局长		……林悍。林悍的孙子？		
+ch03.S3.039	prologue_03_journey	n			他的声音再响起来时，低了半度，带着一种连自己都没察觉的郑重。		
+ch03.S3.040	prologue_03_journey	d	嘉颖徐	normal	嗯。他正要回雾峰村，接他爷爷留下的那条线。		
+ch03.S3.041	prologue_03_journey	d	猴局长		……他爷爷，当年救过我们整个车队。你早说是他，我亲自去放人。		
+ch03.S3.042	prologue_03_journey	d	嘉颖徐	smug	所以我才没早说。你要知道你欠他爷爷人情，这会该亲自把人送回去了——我还哪有机会跟你谈设备款。		
+ch03.S3.043	prologue_03_journey	d	猴局长		……嘉颖，你赢了。手续他照补、记录我照留，回头我把那孩子的出入手续也给他理顺。		
+ch03.S3.044	prologue_03_journey	d	嘉颖徐	smile	那最好了。猴哥，改天真请你喝茶。		
+ch03.S3.045	prologue_03_journey	n			挂断电话。她没有立刻放手机，又拨了第二个号码。		
+ch03.S3.046	prologue_03_journey	n			这次接通的更快。她只说了一句话——		
+ch03.S3.047	prologue_03_journey	d	嘉颖徐	serious	备案室吗？刚才边境的事，归档成『例行检查』。对，我这边已经知会过了。		
+ch03.S3.048	prologue_03_journey	n			电话那头应了一声。她挂断，把手机扣在桌上，重新端起那杯茶，喝了一口。		
+ch03.S3.049	prologue_03_journey	n			[双保险。]		
+ch03.S3.050	prologue_03_journey	n			[第一笔是要他放人。第二笔是让他永远查无此事。]		
+ch03.S3.051	prologue_03_journey	n			[这手是……跟林悍爷爷学的。]		
+ch03.S3.052	prologue_03_journey	n			[他教过我一句话：别让人欠你，要让人记得欠你。]		
+ch03.S3.053	prologue_03_journey	d	嘉颖徐	bored	这小子……我给了他一张应急卡，他攒着现钞买炸鸡和黑兔子。		
+ch03.S3.054	prologue_03_journey	d	嘉颖徐	smile	有前途。		
+ch03.S3.055	prologue_03_journey	n			午后的光斜照到桌角。她那张待签的合约背面，用钢笔写了四个小字：『保本。复利。』——那是她自己的规矩。		
+ch03.S3.056	prologue_03_journey	n			办完放行手续、重新起飞后，林彪悍的平板响了。来电显示：嘉颖徐。		
+ch03.S3.057	prologue_03_journey	n			林彪悍接起电话。		
+ch03.S3.058	prologue_03_journey	d	嘉颖徐	normal	喂——走了没有？		
+ch03.S3.059	prologue_03_journey	d	林彪悍	gentle	已经在路上了。		
+ch03.S3.060	prologue_03_journey	d	嘉颖徐	smile	那就好。		
+ch03.S3.061	prologue_03_journey	d	嘉颖徐	gentle	跟你说一声，基金会给你批了前期考察费用的报销资格。路上的票据、测量耗材都留好，核过明细才拨款，不是给车站包两个月运营。		
+ch03.S3.062	prologue_03_journey	d	林彪悍	gentle	……谢谢。		
+ch03.S3.063	prologue_03_journey	d	嘉颖徐	serious	先分清账。考察费不能付日常工钱和柴油，黑卡是另一本借款账，两样都别当作已经到账的扶持款。		
+ch03.S3.064	prologue_03_journey	d	嘉颖徐	excited	车站的事，先赶两周复核。人和车安稳到站，按实情把检查记录做出来，后面才有得谈。		
+ch03.S3.065	prologue_03_journey	d	林彪悍		……我会的。		
+ch03.S3.066	prologue_03_journey	d	嘉颖徐	gentle	行了，路上注意安全。有事打电话。		
+ch03.S3.067	prologue_03_journey	n			电话挂断。		
+ch03.S3.068	prologue_03_journey	d	岁月	normal	来电记录保存好了，通话时长47秒。也给教授报个平安吧，他还在等您的消息。		
+ch03.S3.069	prologue_03_journey	d	岁月	smug	不过——您有没有注意到，她最后说'有事打电话'的时候，语气变温柔了呢！		
+ch03.S4.000	prologue_03_journey	n			天色以肉眼可见的速度暗了下来——从黄昏到夜幕，仿佛有人在天上拉上了一块巨大的幕布。		
+ch03.S4.001	prologue_03_journey	n			林彪悍看向窗外。刚才还亮着的天空，现在已经完全黑了。		
+ch03.S4.002	prologue_03_journey	d	林彪悍	serious	天黑了。		
+ch03.S4.003	prologue_03_journey	d	岁月		嗯。前面没有路灯，我开启夜间导航模式啦！		
+ch03.S4.004	prologue_03_journey	d	林彪悍	serious	……天黑了。		
+ch03.S4.005	prologue_03_journey	n			他重复了一遍。这一次，听起来不像是在说天气。		
+ch03.S4.006	prologue_03_journey	d	岁月		检测到您的语气和三十秒前不一样——句意分析完成！您是在用天气比喻现在的处境吧。		
+ch03.S4.007	prologue_03_journey	d	林彪悍	smile	……你连这个都能分析出来？		
+ch03.S4.008	prologue_03_journey	d	岁月		我的情感模拟模块虽然还不完美，但双关语的基础识别还是能做的！		
+ch03.S4.009	prologue_03_journey	d	岁月		不过——天黑了，总会亮的！		
+ch03.S4.010	prologue_03_journey	n			林彪悍愣了一下，然后笑了。		
+ch03.S4.011	prologue_03_journey	d	林彪悍	smile	……你这句话，也是双关？		
+ch03.S4.012	prologue_03_journey	d	岁月		我是 AI！我才不会用双关呢！		
+ch03.S4.013	prologue_03_journey	d	岁月		……但这句话，有百分之八十九的概率会被人类归类为『安慰』哦。		
+ch03.S4.014	prologue_03_journey	n			林彪悍笑出了声。窗外，星星一颗接一颗地亮了起来。		
+ch03.S4.015	prologue_03_journey	n			林彪悍刷着平板，一条旧新闻跳了出来。		
+ch03.S4.016	prologue_03_journey	n			2056年，全球铁路客运量首次低于沙能载具。国际交通协会的数据显示，沙能飞行器的年客运量正式超越铁路，铁路时代面临终结的警钟首次敲响。		
+ch03.S4.017	prologue_03_journey	n			他看了一眼窗外——天空中的沙能飞行器越来越多，像一群迁徙的鸟。		
+ch03.S4.018	prologue_03_journey	d	林彪悍	curious	岁月，以前这条航线，有这么多车吗？		
+ch03.S4.019	prologue_03_journey	n			又刷到一篇。		
+ch03.S4.020	prologue_03_journey	n			2062年，全球铁路支线废弃加速。据国际铁路联盟统计，过去十年间全球超过百分之六十的铁路支线已停止运营，铁轨被拆除或废弃。		
+ch03.S4.021	prologue_03_journey	n			林彪悍放下平板，看向窗外。远处的地面上，能看到一段废弃的铁路线，铁轨锈迹斑斑，淹没在荒草中。		
+ch03.S4.022	prologue_03_journey	d	岁月		那是京广线的一段支线，1968 年建成，2059 年停运。		
+ch03.S4.023	prologue_03_journey	d	林彪悍	surprise	你连这个都知道？		
+ch03.S4.024	prologue_03_journey	d	岁月	excited	我的数据库里存着全球铁路的完整历史哦！包括您爷爷守护的那条线！不过老图得对照眼前地形，今晚先到核准停靠点～		
+ch03.S4.025	prologue_03_journey	n			Day 2 下午		
+ch03.S4.026	prologue_03_journey	n			河北某小镇上空		
+ch03.S4.027	prologue_03_journey	d	岁月		快到补给站啦！建议补点沙子！		
+ch03.S4.028	prologue_03_journey	n			车辆降落，补给。		
+ch03.S4.029	prologue_03_journey	d	员工		1500公斤，150沙币。		
+ch03.S4.030	prologue_03_journey	d	林彪悍	smile	好。		
+ch03.S4.031	prologue_03_journey	n			补给完成，车辆继续起飞。		
+ch03.S4.032	prologue_03_journey	d	岁月		沙子补充满一千五百公斤！		
+ch03.S4.033	prologue_03_journey	d	岁月		累计飞行约一千二百公里，剩余约一千三百。按这个进度，仍是第四天下午到。		
+ch03.S4.034	prologue_03_journey	d	林彪悍		还有...两天。		
+ch03.S4.035	prologue_03_journey	d	岁月		嗯。您……累了吗？		
+ch03.S4.036	prologue_03_journey	d	林彪悍		有点。但...一想到快到了，就不累了。		
+ch03.S4.037	prologue_03_journey	d	岁月		您……很想念那里，对吧。		
+ch03.S4.038	prologue_03_journey	d	林彪悍		嗯。那是...我长大的地方。也是...爷爷守了一辈子的地方。		
+ch03.S4.039	prologue_03_journey	d	岁月		您爷爷……一定很爱那条铁路。		
+ch03.S4.040	prologue_03_journey	d	林彪悍	smile	是的。他说...铁路是有灵魂的。		
+ch03.S4.041	prologue_03_journey	d	林彪悍		每一根枕木，每一段铁轨...都承载着记忆。		
+ch03.S4.042	prologue_03_journey	d	岁月		灵魂……这个概念……我有点不太懂。		
+ch03.S4.043	prologue_03_journey	d	岁月		但……我能感受到您的情感哦。		
+ch03.S4.044	prologue_03_journey	d	林彪悍	surprise	你...能感受到？		
+ch03.S4.045	prologue_03_journey	d	岁月		我是 AI，情感……对我来说是数据。		
+ch03.S4.046	prologue_03_journey	d	岁月		但您的数据……很特别。		
+ch03.S4.047	prologue_03_journey	d	林彪悍		特别？		
+ch03.S4.048	prologue_03_journey	d	岁月		嗯。您的数据里……有温度。		
+ch03.S4.049	prologue_03_journey	d	林彪悍	smile	岁月...你有时候...不像AI。		
+ch03.S4.050	prologue_03_journey	d	岁月		是吗？……也许是因为您太累了。		
+ch03.S4.051	prologue_03_journey	d	岁月		建议您休息一下。现在还剩约一千三百公里，今晚照计划落地，不赶夜路。		
+ch03.S4.052	prologue_03_journey	d	林彪悍	bored	还有一千三百公里……到现在才走了差不多一半。		
+ch03.S4.053	prologue_03_journey	d	岁月		嗯。但……我会陪着您的！		
+ch03.S4.054	prologue_03_journey	n			Day 2 夜晚 · 山区停靠点		
+ch03.S4.055	prologue_03_journey	n			傍晚那段卫星航线突然断了。岁月收起跳动的箭头，改用旧铁路图对照谷口、桥墩和隧道，确认山脊后才带我转弯。现在0721号已经落地，远处还有别的飞行器在等夜航引导。		
+ch03.S4.056	prologue_03_journey	d	岁月		已经停稳了，导航也复核过。您还是睡不着吗？		
+ch03.S4.057	prologue_03_journey	d	林彪悍		嗯……在想事情。		
+ch03.S4.058	prologue_03_journey	d	岁月		要不要我给您读点什么呀？		
+ch03.S4.059	prologue_03_journey	d	林彪悍		不用。你……给我讲讲铁路的事吧。		
+ch03.S4.060	prologue_03_journey	d	岁月		想听哪方面的呀？		
+ch03.S4.061	prologue_03_journey	d	林彪悍	curious	为什么会变成这样。铁路……为什么会输给沙能。		
+ch03.S4.062	prologue_03_journey	d	岁月		这是个复杂的问题呢。简单说：沙能载具不需要轨道、不需要车站、不用维护几百万公里的线路，边际成本太低了。		
+ch03.S4.063	prologue_03_journey	d	岁月		2058 年欧洲多国铁路濒临破产，IMF 的报告说：铁路维护成本是沙能基础设施的六倍！		
+ch03.S4.064	prologue_03_journey	d	林彪悍	sad	六倍……难怪。		
+ch03.S4.065	prologue_03_journey	d	岁月		但铁路有一样东西，是沙能替代不了的呢。		
+ch03.S4.066	prologue_03_journey	d	林彪悍	curious	什么？		
+ch03.S4.067	prologue_03_journey	d	岁月		承载量！一列火车能运一千人，或者几千吨货——沙能飞行器做不到！所以铁路不会彻底消失，它只会回到自己最擅长的领域！		
+ch03.S4.068	prologue_03_journey	d	林彪悍	sad	可就算承载量再大……光欧洲铁路的维护缺口就有一百九十二亿欧元，沙能基础设施才三十二亿。这些数字，太庞大了。		
+ch03.S4.069	prologue_03_journey	d	岁月		嗯。铁路系统的维护成本……远高于沙能载具。		
+ch03.S4.070	prologue_03_journey	d	岁月		这是……经济规律。		
+ch03.S4.071	prologue_03_journey	d	林彪悍		经济规律...就可以让铁路死吗？		
+ch03.S4.072	prologue_03_journey	d	岁月	smile	理论上……是的。但……经济规律不是唯一的标准哦。		
+ch03.S4.073	prologue_03_journey	d	林彪悍		什么意思？		
+ch03.S4.074	prologue_03_journey	d	岁月	excited	我的数据库里，没有给『记忆』和『文化』定价的条目——		
+ch03.S4.075	prologue_03_journey	d	岁月		比如……记忆。比如……文化。		
+ch03.S4.076	prologue_03_journey	d	岁月		比如……您爷爷守了一辈子的那条线。		
+ch03.S5.000	prologue_03_journey	n			Day 3 白天		
+ch03.S5.001	prologue_03_journey	n			林彪悍又刷到一条旧新闻。		
+ch03.S5.002	prologue_03_journey	n			2063年，联合沙能科学技术会社宣布与朝鲜沙能科技研究院合作，新一代沙能载具的续航里程突破五千公里。沙能技术的进步速度远超所有人的预期。		
+ch03.S5.003	prologue_03_journey	d	林彪悍		岁月，你那个年代……沙能车能飞多远？		
+ch03.S5.004	prologue_03_journey	d	岁月		本车封存时的标准续航是一千二百公里。我们这趟按载重留余量，一千公里内安排补给；新闻里的五千公里是新型号，不是我们也升级啦。		
+ch03.S5.005	prologue_03_journey	d	林彪悍		新型号走得远了。我们还是按老车的本事来。		
+ch03.S5.006	prologue_03_journey	d	岁月		技术的进步是指数级的！但有些东西，二十三年也不会变。		
+ch03.S5.007	prologue_03_journey	d	林彪悍	curious	比如？		
+ch03.S5.008	prologue_03_journey	d	岁月		比如……铁轨还在那里，等着您回去呢。		
+ch03.S5.009	prologue_03_journey	c			还有一天半的路程，先聊点什么？		
+ch03.S5.009.o1	prologue_03_journey	opt			『岁月，放首轻松点的歌听听吧。』		
+ch03.S5.009.o2	prologue_03_journey	opt			『跟我说说我爷爷的事吧。』		
+ch03.S5.010	prologue_03_journey	d	岁月		播放：《千里马奔驰在新时代》——1968 年录音修复版！		
+ch03.S5.011	prologue_03_journey	d	林彪悍	angry	……我说的是轻松点的歌，不是革命大合唱！		
+ch03.S5.012	prologue_03_journey	d	岁月		我的音乐库把它分在『群众文艺经典』类目下——轻快曲目哦！		
+ch03.S5.013	prologue_03_journey	d	林彪悍	bored	……算了，还是说说我爷爷的事吧。		
+ch03.S5.014	prologue_03_journey	d	岁月		我找到您爷爷留的一张检修记录。大雨堵了排水沟，记录上原本写着“停运待修”，他在后面补了一行：先清沟，再复查线路。		
+ch03.S5.015	prologue_03_journey	d	林彪悍	gentle	这像他会写的话。……不是不怕，是先把眼前能做的事做了。		
+ch03.S5.016	prologue_03_journey	d	岁月		他的行车日志里，每页右下角还画着一个小火车头。有的在冒烟，有的在打瞌睡。		
+ch03.S5.017	prologue_03_journey	d	林彪悍	curious	打瞌睡的火车头？		
+ch03.S5.018	prologue_03_journey	d	岁月		夜班最冷、最闷的那几页，画的都是打瞌睡的。我猜，是他自己困的时候画的。		
+ch03.S5.019	prologue_03_journey	d	林彪悍	gentle	……他在家里从来不画画。原来都画在这儿了。		
+ch03.S5.020	prologue_03_journey	d	岁月		还有一个词反复出现：『问轨』。每次下班前，他都要蹲在钢轨边听一会儿。		
+ch03.S5.021	prologue_03_journey	d	林彪悍	curious	问轨……听什么？		
+ch03.S5.022	prologue_03_journey	d	岁月		记录没写。到了雾峰，您可以问问老陈。		
+ch03.S5.023	prologue_03_journey	n					
+ch03.S5.024	prologue_03_journey	d	岁月		我找到您爷爷留的一张检修记录。大雨堵了排水沟，记录上原本写着“停运待修”，他在后面补了一行：先清沟，再复查线路。		
+ch03.S5.025	prologue_03_journey	d	林彪悍	gentle	这像他会写的话。……不是不怕，是先把眼前能做的事做了。		
+ch03.S5.026	prologue_03_journey	d	岁月		他的行车日志里，每页右下角还画着一个小火车头。有的在冒烟，有的在打瞌睡。		
+ch03.S5.027	prologue_03_journey	d	林彪悍	curious	打瞌睡的火车头？		
+ch03.S5.028	prologue_03_journey	d	岁月		夜班最冷、最闷的那几页，画的都是打瞌睡的。我猜，是他自己困的时候画的。		
+ch03.S5.029	prologue_03_journey	d	林彪悍	gentle	……他在家里从来不画画。原来都画在这儿了。		
+ch03.S5.030	prologue_03_journey	d	岁月		还有一个词反复出现：『问轨』。每次下班前，他都要蹲在钢轨边听一会儿。		
+ch03.S5.031	prologue_03_journey	d	林彪悍	curious	问轨……听什么？		
+ch03.S5.032	prologue_03_journey	d	岁月		记录没写。到了雾峰，您可以问问老陈。		
+ch03.S5.033	prologue_03_journey	d	林彪悍	bored	先放点音乐吧。让我缓一缓。		
+ch03.S5.034	prologue_03_journey	d	岁月		播放：《千里马奔驰在新时代》——1968 年录音修复版！		
+ch03.S5.035	prologue_03_journey	d	林彪悍	angry	……我说的是轻松点的歌，不是革命大合唱！		
+ch03.S5.036	prologue_03_journey	d	岁月		我的音乐库把它分在『群众文艺经典』类目下——轻快曲目哦！		
+ch03.S5.037	prologue_03_journey	n			继续飞行，林彪悍又刷到一篇新闻。		
+ch03.S5.038	prologue_03_journey	n			2066年，日本一家老牌民营铁路公司宣布终止定期客运，“铁路时代终结”的论调再次成为媒体头条。		
+ch03.S5.039	prologue_03_journey	d	岁月		日本的铁路文化……很深厚！他们的新干线曾经是全球铁路的骄傲！		
+ch03.S5.040	prologue_03_journey	d	林彪悍		连日本都放弃了……		
+ch03.S5.041	prologue_03_journey	d	岁月	excited	那条新闻说的是定期客运。当时有社区接手部分线路，改跑观光列车。规模小了，但没有立刻停下来。		
+ch03.S5.042	prologue_03_journey	d	林彪悍	curious	也就是说……换一种办法，铁路就有机会留下来？		
+ch03.S5.043	prologue_03_journey	d	岁月		嗯。那时有人试过。现在轮到您了，得先看看雾峰村还能做些什么。		
+ch03.S5.044	prologue_03_journey	n			林彪悍放下平板，看着窗外的云海。		
+ch03.S5.045	prologue_03_journey	d	林彪悍	serious	岁月，你觉得……我能做到吗？		
+ch03.S5.046	prologue_03_journey	d	岁月		您指什么呀？		
+ch03.S5.047	prologue_03_journey	d	林彪悍		让一条铁路重新跑起来。在一片所有人都说铁路已经死了的时代。		
+ch03.S5.048	prologue_03_journey	d	岁月	excited	过去三十年，全球有两千多条铁路被废弃。其中试图自己恢复运行的有一百来条，真正撑下来的只有十七条——有些只维持了一个季节。		
+ch03.S5.049	prologue_03_journey	d	林彪悍	sad	十七条……一百条里才十七条。		
+ch03.S5.050	prologue_03_journey	d	岁月		嗯。能开出第一趟车的档案里，有一项总会反复出现。		
+ch03.S5.051	prologue_03_journey	d	林彪悍	curious	什么共同点？		
+ch03.S5.052	prologue_03_journey	d	岁月		先找到真正需要运的货，或者等着坐车的人。不是先把“复兴”写在纸上。		
+ch03.S5.053	prologue_03_journey	n			我把雾峰村那段线路放大，在平板上记下两个问题：谁要坐车，什么货运不出去。		
+ch03.S5.054	prologue_03_journey	n			Day 3 傍晚		
+ch03.S5.055	prologue_03_journey	n			河南某小镇上空		
+ch03.S5.056	prologue_03_journey	d	岁月		快到补给站啦！建议补点沙子！		
+ch03.S5.057	prologue_03_journey	n			车辆降落，补给。		
+ch03.S5.058	prologue_03_journey	d	员工		1500公斤，150沙币。		
+ch03.S5.059	prologue_03_journey	d	林彪悍	smile	好。		
+ch03.S5.060	prologue_03_journey	n			补给完成，车辆继续起飞。		
+ch03.S5.061	prologue_03_journey	d	岁月		累计约两千公里，还剩五百。补好这次，今晚落地休息，明天下午就到雾峰村。		
+ch03.S5.062	prologue_03_journey	d	林彪悍		明天...就到了。		
+ch03.S5.063	prologue_03_journey	d	岁月		您……准备好了吗？		
+ch03.S5.064	prologue_03_journey	d	林彪悍	serious	不知道。但...我必须准备好。		
+ch03.S5.065	prologue_03_journey	d	岁月		到站前，先把要查的东西列出来吧。我帮您记。		
+ch03.S5.066	prologue_03_journey	d	林彪悍	curious	先看机车，再查线路。……还得问问老陈，现在谁需要这趟车。		
+ch03.S5.067	prologue_03_journey	d	岁月		记下了：机车、线路、客货需求。第一项前面，我再加一条——先跟老陈报个平安。		
+ch03.S5.068	prologue_03_journey	d	林彪悍	gentle	岁月...谢谢你。		
+ch03.S5.069	prologue_03_journey	n			Day 4 上午		
+ch03.S5.070	prologue_03_journey	n			0721号客舱内。		
+ch03.S5.071	prologue_03_journey	n			平板的旧新闻页面停在一行标题上：泰晤士报 2070年11月5日。		
+ch03.S5.072	prologue_03_journey	n			铁路事故频发：大废线末期的安全危机。		
+ch03.S5.073	prologue_03_journey	n			过去一年中，全球已发生超过850起铁路事故，造成近千人伤亡。		
+ch03.S5.074	prologue_03_journey	n			专家指出，事故主要原因是铁路系统维护不到位、设备老化、人员不足。		
+ch03.S5.075	prologue_03_journey	d	林彪悍	sad	850起事故...近千人伤亡。维护不足...设备老化...人员不足...		
+ch03.S5.076	prologue_03_journey	d	岁月	worried	嗯。2070 年……是铁路最危险的一年，很多线路因为事故被强制停运了。		
+ch03.S5.077	prologue_03_journey	d	岁月		雾峰村的铁路……也差点被停运。		
+ch03.S5.078	prologue_03_journey	d	林彪悍		差点？		
+ch03.S5.079	prologue_03_journey	d	岁月		嗯！接上网络以后，我把雾峰村往年的铁路档案都翻了一遍！		
+ch03.S5.080	prologue_03_journey	d	林彪悍		你...什么时候做的？		
+ch03.S5.081	prologue_03_journey	d	岁月		趁您睡觉的时候！档案里记着——您爷爷以个人名义担保了线路安全，铁路才没被停运。		
+ch03.S5.082	prologue_03_journey	d	林彪悍	sad	...		
+ch03.S5.083	prologue_03_journey	d	岁月		您……在想什么呀？		
+ch03.S5.084	prologue_03_journey	d	林彪悍	worried	我在想...爷爷当时...一定很害怕。害怕线路被停运。害怕...他守了一辈子的东西消失。		
+ch03.S5.085	prologue_03_journey	d	岁月	worried	嗯。他……一定很害怕。但他……没有放弃。		
+ch03.S5.086	prologue_03_journey	d	林彪悍	serious	所以...我也不能放弃。		
+ch03.S5.087	prologue_03_journey	d	岁月		嗯！您……也不会放弃的！		
+ch04.S0.000	prologue_04_arrival	n			Day 4 下午		
+ch04.S0.001	prologue_04_arrival	loc			雾峰山脉上空 · 沙能客艇0721号		
+ch04.S0.002	prologue_04_arrival	n			高空气流剧烈撕扯着机体外壳。		
+ch04.S0.003	prologue_04_arrival	n			双联沙能涡轮发出高亢而尖锐的啸叫。		
+ch04.S0.004	prologue_04_arrival	n			整间狭窄的密封客舱都在剧烈颠簸发颤。		
+ch04.S0.005	prologue_04_arrival	n			气压高度表指针在红区急促颤抖。		
+ch04.S0.006	prologue_04_arrival	n			我猛地从浑浊的昏睡中惊坐而起。		
+ch04.S0.007	prologue_04_arrival	n			后颈处的冷汗浸透了粗布衣领。		
+ch04.S0.008	prologue_04_arrival	d	岁月	excited	林彪悍——醒醒！快到了！		
+ch04.S0.009	prologue_04_arrival	d	林彪悍	surprise	……嗯？已经飞进这片山头了？		
+ch04.S0.010	prologue_04_arrival	d	岁月	smile	前方五公里！还有五分钟进入雾峰大峡谷降落航线！		
+ch04.S0.011	prologue_04_arrival	d	岁月	serious	客艇已经穿透第四道高空防风屏障，正在校准雾峰山谷的无线电盲区！		
+ch04.S0.012	prologue_04_arrival	n			我撑起发僵发麻的手臂。		
+ch04.S0.013	prologue_04_arrival	n			把前额重重贴在满是刮擦痕迹的舷窗上。		
+ch04.S0.014	prologue_04_arrival	n			窗外的浓白云海如煮沸的浓汤般滚涌。		
+ch04.S0.015	prologue_04_arrival	n			侧风如刀般割裂云絮。		
+ch04.S0.016	prologue_04_arrival	n			深青色的嶙峋峭壁在雾霭间若隐若现。		
+ch04.S0.017	prologue_04_arrival	n			野生的老茶树扎根在绝壁的石缝之间。		
+ch04.S0.018	prologue_04_arrival	d	林彪悍	sad	四年了……整整四年没回来看上一眼。		
+ch04.S0.019	prologue_04_arrival	d	林彪悍	sad	连无线电都盲了。看来这里真的被外界彻底遗忘了整整四年。		
+ch04.S0.020	prologue_04_arrival	d	岁月	curious	根据生物传感器读数：您的心率达到了一百零四次每分。您看起来有点紧张哦。		
+ch04.S0.021	prologue_04_arrival	d	林彪悍	sad	不是紧张……是不知道该怎么面对。		
+ch04.S0.022	prologue_04_arrival	n			四年前爷爷在这个小站值班室里咽了气。		
+ch04.S0.023	prologue_04_arrival	n			我头也不回地去了金日成综合大学。		
+ch04.S0.024	prologue_04_arrival	n			研究所的水磨石地板光亮得照得出人影。		
+ch04.S0.025	prologue_04_arrival	n			无菌实验室里听不到一丝铁轨的撞击声。		
+ch04.S0.026	prologue_04_arrival	n			我曾以为自己能把这山里的铁锈味忘干净。		
+ch04.S0.027	prologue_04_arrival	n			可教授转述的那通求助电话，让我再也没法把这些都当成过去的事。		
+ch04.S0.028	prologue_04_arrival	d	岁月	smile	我调出了雾峰村的地理与社会档案！需要向您播报吗？		
+ch04.S0.029	prologue_04_arrival	d	林彪悍	normal	念念吧，省得我脑子里空得发慌。		
+ch04.S0.030	prologue_04_arrival	d	岁月	gentle	雾峰村，现常住人口约三百二十人，主要产业为高山云雾茶种植与旧煤矿！		
+ch04.S0.031	prologue_04_arrival	d	岁月	normal	鼎盛时期曾有一千二百人常住呢！全长二十三公里的支线铁路，连通矿区与干线！		
+ch04.S0.032	prologue_04_arrival	d	林彪悍	smile	查得挺细。连煤矿关停前的老黄历都翻出来了。		
+ch04.S0.033	prologue_04_arrival	d	岁月	smug	哼哼，我可是第一代铁路战备AI，检索数据是我的本能！		
+ch04.S0.034	prologue_04_arrival	d	岁月	smile	在我的主存数据库里，雾峰村每一个道班的名字都完好无损！		
+ch04.S0.035	prologue_04_arrival	n			机舱里重新陷入近乎窒息的死寂。		
+ch04.S0.036	prologue_04_arrival	n			舷窗外层峦叠嶂的山脊直逼舱底。		
+ch04.S0.037	prologue_04_arrival	n			像一本被岁月粗暴合上的厚重旧书。		
+ch04.S0.038	prologue_04_arrival	n			我把手插进上衣口袋。		
+ch04.S0.039	prologue_04_arrival	n			手指触碰到爷爷留下的那只铜质车票剪。		
+ch04.S0.040	prologue_04_arrival	n			冰凉的黄铜棱角硌得掌心隐隐作痛。		
+ch04.S0.041	prologue_04_arrival	thought	林彪悍	serious	[不管别人忘没忘，既然我坐上这趟飞艇回来了，就得亲眼看看这二十三公里还剩多少硬骨头。]		
+ch04.S0.042	prologue_04_arrival	d	岁月	gentle	您的呼吸频率稳定下来了。需要我放一首舒缓的萨克斯曲吗？		
+ch04.S0.043	prologue_04_arrival	d	林彪悍	normal	不用。就这样听着风声……挺好。		
+ch04.S1.000	prologue_04_arrival	n			机头骤然向下一压。		
+ch04.S1.001	prologue_04_arrival	n			飞艇一头扎入大峡谷深处的湍急谷风。		
+ch04.S1.002	prologue_04_arrival	n			翻卷的雨雾在舷窗两侧急速向后飞退。		
+ch04.S1.003	prologue_04_arrival	d	林彪悍	surprise	那是……铁路！		
+ch04.S1.004	prologue_04_arrival	n			极目俯瞰下去。		
+ch04.S1.005	prologue_04_arrival	n			两条纤细斑驳的深褐色线条显露在林莽中。		
+ch04.S1.006	prologue_04_arrival	n			像干枯开裂的古树叶脉。		
+ch04.S1.007	prologue_04_arrival	n			紧贴在陡峭湿滑的半山腰绝壁上。		
+ch04.S1.008	prologue_04_arrival	n			山洪冲刷出的泥石流将碎石道砟冲成深沟。		
+ch04.S1.009	prologue_04_arrival	n			丛生的荆棘与茅草从朽烂的枕木缝隙钻出。		
+ch04.S1.010	prologue_04_arrival	n			古旧的木构高架栈桥悬空在干涸的谷底。		
+ch04.S1.011	prologue_04_arrival	d	岁月	worried	检测到下方连续曲线！轨距一千四百三十五毫米，道床下沉率超过百分之三十！		
+ch04.S1.012	prologue_04_arrival	n			飞艇机腹低低掠过黑石溪木构桁桥上空。		
+ch04.S1.013	prologue_04_arrival	d	岁月	worried	扫描到底下八公里处的黑石溪三号桥墩！木桩倾斜了五度，道钉松脱率高达四成！		
+ch04.S1.014	prologue_04_arrival	d	林彪悍	serious	那是当年爷爷带全站职工冒着山洪抢筑出来的保命桥。		
+ch04.S1.015	prologue_04_arrival	d	林彪悍	sad	整整二十三公里……竟锈蚀成了这副残样。		
+ch04.S1.016	prologue_04_arrival	n			机腹掠过一座早已荒废的沿途小站。		
+ch04.S1.017	prologue_04_arrival	n			木质候车亭的红漆早已剥落殆尽。		
+ch04.S1.018	prologue_04_arrival	n			那是松桥站。小时候我总在那儿等爷爷下班。		
+ch04.S1.019	prologue_04_arrival	n			记忆深处的蝉鸣声猝不及防撞进耳膜。		
+ch04.S1.020	prologue_04_arrival	n			【记忆】盛夏正午的雾峰村站台，暑气蒸腾。		
+ch04.S1.021	prologue_04_arrival	n			我还很小，趴在站长室滚烫的木窗台上。		
+ch04.S1.022	prologue_04_arrival	n			呆呆看着爷爷在被晒得冒油的铁轨边蹲下。		
+ch04.S1.023	prologue_04_arrival	d	林彪悍（幼年）	curious	爷爷，你在听什么呀？铁轨被太阳晒得那么烫！		
+ch04.S1.024	prologue_04_arrival	d	爷爷·林悍	gentle	听铁路说话。		
+ch04.S1.025	prologue_04_arrival	d	林彪悍（幼年）	smile	两条生锈的硬铁条，哪会开口说话嘛！		
+ch04.S1.026	prologue_04_arrival	d	爷爷·林悍	gentle	会说的。你把耳朵贴上去，屏住气闭上眼——		
+ch04.S1.027	prologue_04_arrival	n			爷爷侧耳紧紧贴在铁轨上。		
+ch04.S1.028	prologue_04_arrival	n			眼角漾开一片晒得黝黑的深刻笑纹。		
+ch04.S1.029	prologue_04_arrival	n			山风吹拂着他那顶褪成浅灰的铁路工作帽。		
+ch04.S1.030	prologue_04_arrival	d	爷爷·林悍	serious	它说，大峡谷深处傍晚有闷雷暴雨，货车得把车速压死在二十码以内。		
+ch04.S1.031	prologue_04_arrival	d	爷爷·林悍	gentle	它还说，三公里半弯道的枕木受潮朽透了，得提醒老陈带新道钉去抢修。		
+ch04.S1.032	prologue_04_arrival	d	林彪悍（幼年）	curious	爷爷，为什么咱们山里一定要留着这条铁路呢？		
+ch04.S1.033	prologue_04_arrival	d	爷爷·林悍	gentle	山里的春茶得运出去换盐巴和药，矿上的煤得拉下山给家家户户生火。铁轨一拆，山里人就成孤岛了。		
+ch04.S1.034	prologue_04_arrival	d	爷爷·林悍	smile	人在路在。只要路不断，山里就总有活气。		
+ch04.S1.035	prologue_04_arrival	d	林彪悍（幼年）	curious	……我把耳朵贴上去，怎么只有空洞的嗡嗡声？		
+ch04.S1.036	prologue_04_arrival	d	爷爷·林悍	smile	傻孩子。等你长大，在这条线上待得够久，就全能听明白了。		
+ch04.S1.037	prologue_04_arrival	d	爷爷·林悍	gentle	铁路是有魂灵的。只要你拿真心待它，它就会一直护着跑在上面的人。		
+ch04.S1.038	prologue_04_arrival	n			【记忆淡去】		
+ch04.S1.039	prologue_04_arrival	n			谷风狠狠撞击着飞艇的合金蒙皮。		
+ch04.S1.040	prologue_04_arrival	n			脚下的铁轨在暮色中孤独地扎入群山深处。		
+ch04.S1.041	prologue_04_arrival	d	林彪悍	sad	爷爷……我好像……开始听懂一点了。		
+ch04.S1.042	prologue_04_arrival	n			那两根沉默的钢轨，像无声的求救信号。		
+ch04.S1.043	prologue_04_arrival	c			凝视着暮色中残破沉寂的旧铁道，我紧紧攥住手心——		
+ch04.S1.043.o1	prologue_04_arrival	opt			『爷爷……这条线，我来替你守了。』		
+ch04.S1.043.o2	prologue_04_arrival	opt			『四年了……不知道这条线，还认不认得我。』		
+ch04.S2.000	prologue_04_arrival	d	林彪悍	serious	爷爷……这条线，我来替你守了。		
+ch04.S2.001	prologue_04_arrival	d	岁月	excited	路基传感器响应正常！只要钢轨和路基的骨架还在，我们就一定能让它重新鸣笛！		
+ch04.S2.002	prologue_04_arrival	d	林彪悍	serious	那就先把心沉下去，看看这地上的烂摊子到底有多大。		
+ch04.S2.003	prologue_04_arrival	d	林彪悍	sad	四年了……不知道这条线，还认不认得我。		
+ch04.S2.004	prologue_04_arrival	d	岁月	gentle	钢轨的记忆可是刻在晶格里的！它一定一直在等您回来呢！		
+ch04.S2.005	prologue_04_arrival	d	林彪悍	serious	它记不记得我不重要，重要的是我还能不能替它把这口气接上。		
+ch04.S2.006	prologue_04_arrival	n			客艇在村庄上空缓缓盘旋压低高度。		
+ch04.S2.007	prologue_04_arrival	n			沉落的血色残阳将连绵山脊熔成暗赭色。		
+ch04.S2.008	prologue_04_arrival	n			雾峰村的全部面貌在下方展露无遗。		
+ch04.S2.009	prologue_04_arrival	n			比起我记忆中的模样，这里衰败得惊人。		
+ch04.S2.010	prologue_04_arrival	n			连片的青瓦土坯房屋顶倾塌，杂草丛生。		
+ch04.S2.011	prologue_04_arrival	n			旧茶厂那根高大的红砖烟囱早不再吐烟。		
+ch04.S2.012	prologue_04_arrival	n			旧车站侧线上停着两节朽烂的敞车。		
+ch04.S2.013	prologue_04_arrival	n			木质侧板早已经烂穿成空洞。		
+ch04.S2.014	prologue_04_arrival	n			紫色牵牛花顺着锈死的轮对密密爬满。		
+ch04.S2.015	prologue_04_arrival	d	岁月	sad	根据历史调车单记录，那两节是四年前撤下的干线联运车皮。之后老陈只留一台车，隔几天跑一趟。		
+ch04.S2.016	prologue_04_arrival	d	林彪悍	sad	连车皮都没来得及挂走……真像一场仓皇的溃退。		
+ch04.S2.017	prologue_04_arrival	n			村口的老槐树叶片稀疏凋零。		
+ch04.S2.018	prologue_04_arrival	n			一头老水牛拴在树桩下，无力地甩着尾巴。		
+ch04.S2.019	prologue_04_arrival	n			单线铁路贴着村边穿过山坳。		
+ch04.S2.020	prologue_04_arrival	d	林彪悍	sad	2072年……全国干线全面停运。四年过去了，这里连人影都见不到几个。		
+ch04.S2.021	prologue_04_arrival	d	岁月	worried	根据铁路总署历史遗留日志：在2072年大停运后，全国尝试自主重启的支线……		
+ch04.S2.022	prologue_04_arrival	d	岁月	sad	最终的存活率，只有百分之十七。		
+ch04.S2.023	prologue_04_arrival	d	林彪悍	serious	百分之十七……剩下的八成多，全都送进回炉厂化成了废铁。		
+ch04.S2.024	prologue_04_arrival	d	岁月	excited	但那百分之十七，每一寸都有人在拼命死守！比如林站长……比如陈老站长……比如现在的您！		
+ch04.S2.025	prologue_04_arrival	d	岁月	gentle	活下来的支线，全靠沿线乡亲用扁担和道钉锤硬生生保住的！		
+ch04.S2.026	prologue_04_arrival	d	林彪悍	serious	只要骨架没烂透，就得把欠下的这趟车跑起来。		
+ch04.S2.027	prologue_04_arrival	n			反推喷口喷出滚烫的气浪与焦糊砂味。		
+ch04.S2.028	prologue_04_arrival	n			气流卷起满地枯黄的落叶与碎石子。		
+ch04.S2.029	prologue_04_arrival	n			客艇沉沉一震，液压支架稳稳扎进泥土。		
+ch04.S2.030	prologue_04_arrival	loc			雾峰村 · 简易停机坪		
+ch04.S2.031	prologue_04_arrival	d	岁月	smile	成功降落！雾峰村简易停机坪！那个……我是在艇上待机，还是跟您一起下车？		
+ch04.S2.032	prologue_04_arrival	d	林彪悍	normal	你留在通讯舱，保持全频段监听。我……要在这儿待很久。		
+ch04.S2.033	prologue_04_arrival	d	岁月	gentle	好！我不走！我就在机舱里随时待命，有任何需要立刻呼叫我！		
+ch04.S2.034	prologue_04_arrival	n			我关了主电，只留通讯。		
+ch04.S2.035	prologue_04_arrival	thought	林彪悍	serious	[脚底板沾上这里的泥土，就再也没有退路了。]		
+ch04.S3.000	prologue_04_arrival	n			气密隔离舱门嗤的一声向两侧滑开。		
+ch04.S3.001	prologue_04_arrival	n			我迈着发沉的双腿踏下金属脚踏。		
+ch04.S3.002	prologue_04_arrival	n			深山湿冷的穿堂风迎面扑来。		
+ch04.S3.003	prologue_04_arrival	n			混杂着红土腥气与深山枯茶的微苦清香。		
+ch04.S3.004	prologue_04_arrival	n			而在气味的最深处。		
+ch04.S3.005	prologue_04_arrival	n			还凝固着极浓重的机油与煤焦油气息。		
+ch04.S3.006	prologue_04_arrival	n			那是无论隔了多少年都不会认错的味道。		
+ch04.S3.007	prologue_04_arrival	n			是浸透在枕木与铁轨骨髓里的岁月呼吸。		
+ch04.S3.008	prologue_04_arrival	n			我狠狠吸了一口冷风，喉头不由发紧。		
+ch04.S3.009	prologue_04_arrival	n			顺着碎石与荒草丛生的斜坡走向站台。		
+ch04.S3.010	prologue_04_arrival	n			木质结构的候车小站外墙剥落大片石灰。		
+ch04.S3.011	prologue_04_arrival	n			小站售票室的木窗台磨得泛出暗红光泽。		
+ch04.S3.012	prologue_04_arrival	n			硬纸板车票格子里塞满发黄的旧票根。		
+ch04.S3.013	prologue_04_arrival	n			格子上方用毛笔工整写着『青溪』『松桥』。		
+ch04.S3.014	prologue_04_arrival	n			站名牌上的字迹历经风吹雨打早已斑驳。		
+ch04.S3.015	prologue_04_arrival	n			唯独右上角，极深地压刻着一个『雾』字。		
+ch04.S3.016	prologue_04_arrival	n			那是当年爷爷亲手用凿子刻下的标志。		
+ch04.S3.017	prologue_04_arrival	n			生怕初来乍到的新乘务员在暴雨天认错小站。		
+ch04.S3.018	prologue_04_arrival	n			吱呀一声刺耳的轴承干磨声打破死寂。		
+ch04.S3.019	prologue_04_arrival	n			站舍侧面那扇破旧木门被慢慢推开了一条缝。		
+ch04.S3.020	prologue_04_arrival	n			一个佝偻着腰身的老人提着马灯跨出门槛。		
+ch04.S3.021	prologue_04_arrival	n			洗得发白的蓝帆布制服上满是手缝的粗补丁。		
+ch04.S3.022	prologue_04_arrival	d	老陈	surprise	孩子……是你吗？你真的……回来了？		
+ch04.S3.023	prologue_04_arrival	d	老陈	gentle	好……好啊……你爷爷要是泉下有知，总算能合上双眼了……		
+ch04.S3.024	prologue_04_arrival	n			老陈颤巍巍地挑高了手里的旧马灯。		
+ch04.S3.025	prologue_04_arrival	n			灯光映照出他眼角湿润浑浊的水光。		
+ch04.S3.026	prologue_04_arrival	d	林彪悍	cry	陈叔，是我。我回来了。教授把您的话带到了，这次我留下来和您一起修。		
+ch04.S3.027	prologue_04_arrival	d	老陈	smile	四年没见……脸晒黑了，人也结实了，还是你爷爷当年那副犟脾气。		
+ch04.S3.028	prologue_04_arrival	d	林彪悍	sad	陈叔，您这腿……每逢阴雨天还疼得厉害吗？		
+ch04.S3.029	prologue_04_arrival	d	老陈	gentle	老寒腿，打年轻巡线落下的一辈子老毛病。不碍事，骨头还硬朗着呢！		
+ch04.S3.030	prologue_04_arrival	d	老陈	gentle	走，进屋，先看看你爷爷的屋子。		
+ch04.S3.031	prologue_04_arrival	n			我默默跟着老陈迈进站长值班室。		
+ch04.S3.032	prologue_04_arrival	n			虽然窗棂四处透风，屋内却被收拾得极净。		
+ch04.S3.033	prologue_04_arrival	n			靠着墙根摆放着一张漆皮斑驳的老木桌。		
+ch04.S3.034	prologue_04_arrival	n			正中央整整齐齐供着爷爷的黑白遗像。		
+ch04.S3.035	prologue_04_arrival	n			像前的粗瓷碗里插着半截干香。		
+ch04.S3.036	prologue_04_arrival	n			旁边平摊着爷爷生前的红色行车安全规程。		
+ch04.S3.037	prologue_04_arrival	n			规程首页写着爷爷生前的苍劲墨迹。		
+ch04.S3.038	prologue_04_arrival	n			『宁让行程晚一秒，不叫钢轨闪一丝险。』		
+ch04.S3.039	prologue_04_arrival	n			翻开的扉页上盖着鲜红的站长公章。		
+ch04.S3.040	prologue_04_arrival	n			摊开的行车日志，笔迹定格在二十六天前。		
+ch04.S3.041	prologue_04_arrival	d	老陈	sad	你爷爷守了这线三十七年。临走时拉着我的手，就挂念你和这几里铁道。		
+ch04.S3.042	prologue_04_arrival	d	老陈	gentle	站长、检修队长、总工，三副担子他一个人挑。大伙当面叫他老站长，背地里都说，这条线是他一根钢轨一根钢轨焊起来的。		
+ch04.S3.043	prologue_04_arrival	d	林彪悍	gentle	陈叔，您辛苦了。这些年……全靠您一个人撑着。		
+ch04.S3.044	prologue_04_arrival	d	老陈	sad	我也老了，腿脚不管用了。二十六天前，最后一台机车也趴了窝……		
+ch04.S3.045	prologue_04_arrival	d	老陈	serious	来，跟我到车棚去。看看那头老牲口。		
+ch04.S4.000	prologue_04_arrival	n			穿过漏雨的雨棚，走进后方阴冷的机车库。		
+ch04.S4.001	prologue_04_arrival	n			顶棚吊挂的老式水银灯管早就不亮了。		
+ch04.S4.002	prologue_04_arrival	n			残阳的暗光顺着破洞的石棉瓦斜斜切下。		
+ch04.S4.003	prologue_04_arrival	n			一头铁青色的钢铁巨兽沉寂在库房阴影里。		
+ch04.S4.004	prologue_04_arrival	n			标准轨距内燃头车——NF-5K 耕牛·改。		
+ch04.S4.005	prologue_04_arrival	n			车身布满干结的油垢与厚锈，像头瘫倒的老牛。		
+ch04.S4.006	prologue_04_arrival	n			前端水箱的百叶窗里积着层层干枯松针。		
+ch04.S4.007	prologue_04_arrival	n			柴油机双排气管上挂着厚厚蛛网。		
+ch04.S4.008	prologue_04_arrival	n			冷却风扇皮带早干裂成一截截硬片。		
+ch04.S4.009	prologue_04_arrival	n			机车旁的水泥地上铺着一块发黑的厚油布。		
+ch04.S4.010	prologue_04_arrival	n			摆着一只刚拆下来的高压喷油泵与喷嘴。		
+ch04.S4.011	prologue_04_arrival	d	老陈	sad	就它。二十六天前坏在半道上，拆下来就再没装回去。		
+ch04.S4.012	prologue_04_arrival	d	老陈	smile	当年这台耕牛天天拉着三节茶车出山，汽笛一响，整座大峡谷都跟着震。		
+ch04.S4.013	prologue_04_arrival	d	老陈	serious	矿上的老师傅来看过，直摇头——说喷孔积碳结死，没有备件换，修不了。		
+ch04.S4.014	prologue_04_arrival	d	林彪悍	serious	我试试。爷爷当年在车间，手把手教过我柴油机高压油路拆解。		
+ch04.S4.015	prologue_04_arrival	n			我挽起衬衫袖口，在油布前单膝蹲下。		
+ch04.S4.016	prologue_04_arrival	n			抄起地上一把冰凉沉重的十四号开口扳手。		
+ch04.S4.017	prologue_04_arrival	n			按着自动化所标准工科手册的手法咬紧螺栓。		
+ch04.S4.018	prologue_04_arrival	n			手腕猛然发力拧动，掌心传来冰冷的死力。		
+ch04.S4.019	prologue_04_arrival	n			放泄螺栓与泵体早已锈死为一体，毫无动静。		
+ch04.S4.020	prologue_04_arrival	d	林彪悍	surprise	……怎么会锈成这副模样！		
+ch04.S4.021	prologue_04_arrival	n			我不甘心地咬紧后槽牙，换了个发力角度。		
+ch04.S4.022	prologue_04_arrival	n			右脚死死抵住机车的钢制下底梁。		
+ch04.S4.023	prologue_04_arrival	n			双手十指死扣住扳手柄，将全身重量狠压下去！		
+ch04.S4.024	prologue_04_arrival	n			咔嘣——！		
+ch04.S4.025	prologue_04_arrival	n			一声极其刺耳的金属滑脱锐响撕裂空气！		
+ch04.S4.026	prologue_04_arrival	n			螺栓未动分毫，磨损的扳手豁口猛烈打滑脱开！		
+ch04.S4.027	prologue_04_arrival	n			我右手的整个手背狠狠砸在车架的尖锐棱角上！		
+ch04.S4.028	prologue_04_arrival	n			皮肉瞬间破裂，钻心刺骨的剧痛猛冲头顶。		
+ch04.S4.029	prologue_04_arrival	n			一道青紫渗血的深红擦伤印高高肿起。		
+ch04.S4.030	prologue_04_arrival	d	林彪悍	sad	嘶……！好硬的铁骨头！		
+ch04.S4.031	prologue_04_arrival	d	老陈	worried	别硬来！快把手拿开让我瞧瞧！		
+ch04.S4.032	prologue_04_arrival	n			老陈慌忙夺下我手里的铁扳手扔在一旁。		
+ch04.S4.033	prologue_04_arrival	n			拉起我的手腕，对着火辣辣的伤口连连吹气。		
+ch04.S4.034	prologue_04_arrival	d	老陈	gentle	这铁家伙跟人一样，上了年纪——浑身关节都生着倒刺。不是光凭一股猛劲，就能哄得动的。		
+ch04.S4.035	prologue_04_arrival	d	老陈	serious	上了锈的东西，先上油，再给它时间。		
+ch04.S4.036	prologue_04_arrival	d	林彪悍	sad	平壤实验室里全是用精密超声波仪拆洗……到了现场，全得靠力气硬抗。		
+ch04.S4.037	prologue_04_arrival	d	老陈	gentle	规矩是死的，铁是活的。当年你爷爷修车，从来不跟生铁较劲。		
+ch04.S4.038	prologue_04_arrival	thought	林彪悍	serious	[今天这颗螺栓没拧开，但绝不等于它修不好。手背磕出血又怎样，我绝不撂挑子。]		
+ch04.S4.039	prologue_04_arrival	n			回到故乡的第一天下午。		
+ch04.S4.040	prologue_04_arrival	n			我迎头撞上了第一个冰冷而难堪的挫败。		
+ch04.S4.041	prologue_04_arrival	d	老陈	gentle	走，先回屋。车跑不了，人得吃饭。明天带你沿线走一趟——铁轨的事，得用脚量。		
+ch04.S5.000	prologue_04_arrival	n			暮色彻底沉降，寒凉的夜风吹得站台落叶狂舞。		
+ch04.S5.001	prologue_04_arrival	n			口袋里的移动通信平板突然急促震鸣起来。		
+ch04.S5.002	prologue_04_arrival	n			屏幕亮起市能源转型专班的高保密通话界面。		
+ch04.S5.003	prologue_04_arrival	n			是嘉颖徐打来的。		
+ch04.S5.004	prologue_04_arrival	d	嘉颖徐	normal	林彪悍？你顺利落地雾峰村了吧？		
+ch04.S5.005	prologue_04_arrival	d	林彪悍	normal	到了。刚在站舍安顿下来。		
+ch04.S5.006	prologue_04_arrival	d	嘉颖徐	curious	现场实际情况到底怎么样？那台内燃机车还能点火吗？		
+ch04.S5.007	prologue_04_arrival	d	林彪悍	sad	……比预想的还要糟。站台荒了，铁轨锈死，机车喷油嘴积碳卡死，螺栓全锈死了。我刚才上手拆，手背磕破了都没拧动一颗螺栓。		
+ch04.S5.008	prologue_04_arrival	d	嘉颖徐	gentle	……		
+ch04.S5.009	prologue_04_arrival	d	嘉颖徐	serious	复核通知说的就是雾峰村到矿区这二十三公里。从四月十八日起算，两周内交出恢复最低货运能力的材料，否则启动拆轨清算。		
+ch04.S5.010	prologue_04_arrival	d	林彪悍	serious	今天已经四月二十二日，只剩十天了。光让车响一声，还不够。		
+ch04.S5.011	prologue_04_arrival	d	嘉颖徐	angry	对。先修车、查线，再拿真实货源和检查记录申请复核。霜降前发茶是乡亲们的事，专班的期限不会跟着茶期往后挪。		
+ch04.S5.012	prologue_04_arrival	d	林彪悍	serious	我林彪悍字典里从来没有认怂这两个字。这条线绝不能拆，我不会让他们把铁轨扒掉。		
+ch04.S5.013	prologue_04_arrival	d	嘉颖徐	gentle	那就别坐在机车棚里生闷气。铁路这行当，不是靠坐在冷铁堆里空想出来的，得靠人的脚底板跑出来。		
+ch04.S5.014	prologue_04_arrival	d	嘉颖徐	serious	先走一趟。顺着二十三公里踏踏实实走一遍，看看断掉的路基，摸清朽烂的枕木，见见沿线还在守着的人。心里有了底，你才知道该从哪根骨头下手。		
+ch04.S5.015	prologue_04_arrival	d	林彪悍	serious	好。我明白该怎么做了，明天我们就动身巡线。		
+ch04.S5.016	prologue_04_arrival	d	嘉颖徐	gentle	手头缺什么随时呼叫我。保重，别给你爷爷丢脸。		
+ch04.S5.017	prologue_04_arrival	n			全息屏幕闪烁两下，光芒隐去。		
+ch04.S5.018	prologue_04_arrival	n			月台背风处的石柱后亮起一团橘红色的炭火。		
+ch04.S5.019	prologue_04_arrival	n			老陈端着一口热气蒸腾的旧铝锅小心挪步出来。		
+ch04.S5.020	prologue_04_arrival	n			小煤炉在石柱旁呼呼燃烧，驱散了深山寒意。		
+ch04.S5.021	prologue_04_arrival	d	老陈	gentle	来，娃子，趁热吃。热面条，卧了自家腌的酸芥菜。		
+ch04.S5.022	prologue_04_arrival	n			老陈将一只沉甸甸的粗瓷大碗递到我手里。		
+ch04.S5.023	prologue_04_arrival	n			滚烫的碗壁贴着我破皮肿胀的右手手背。		
+ch04.S5.024	prologue_04_arrival	n			温热的汤气与麦香慢慢抚平了骨肉间的锐痛。		
+ch04.S5.025	prologue_04_arrival	n			老陈从怀里摸出一块浸透热水的旧棉布。		
+ch04.S5.026	prologue_04_arrival	n			轻柔地覆在我红肿发烫的手背伤口上。		
+ch04.S5.027	prologue_04_arrival	d	老陈	gentle	今晚先把伤口热敷好。这双手，明天还得卡道尺、敲道钉、量轨距呢。		
+ch04.S5.028	prologue_04_arrival	d	老陈	gentle	肚子吃饱了，心里才有气力。徐女娃话糙理不糙，车得修，但路得先摸透。		
+ch04.S5.029	prologue_04_arrival	d	林彪悍	serious	嗯。陈叔，明天我们巡线，我用脚把这二十三公里从头量到尾。		
+ch04.S5.030	prologue_04_arrival	d	岁月	excited	我也全程开启地理测绘记录！二十三公里的数据，一个道钉都不会漏掉！		
+ch04.S5.031	prologue_04_arrival	d	老陈	smile	好……好！明天巡线，咱们爷俩去听听这老铁轨还想说什么！		
+ch04.S5.032	prologue_04_arrival	thought	林彪悍	serious	[明天，先把这二十三公里钢轨从头量到尾，哪怕是烂泥和断枕，也得把路摸透。]		
+ch05.S0.000	prologue_05_inspection	n			Day 5 傍晚		
+ch05.S0.001	prologue_05_inspection	loc			雾峰村线 · 雾1 雾峰村 · 0km		
+ch05.S0.002	prologue_05_inspection	n			我输给了爷爷留下的那台机器。		
+ch05.S0.003	prologue_05_inspection	n			是昨天下午的事，证据还留在手背上，一碰袖口就疼。		
+ch05.S0.004	prologue_05_inspection	n			出发前先过车棚。耕牛·改趴在最里头，咳了一声，残余的油压从排气管里挤出来。		
+ch05.S0.005	prologue_05_inspection	n			柴油味混着晒了一天的铁皮气。我把手按在车壳上，像摸一头病牛的肋骨。		
+ch05.S0.006	prologue_05_inspection	d	老陈		它今晚就这么咳。明早能咳出声，算它争气。		
+ch05.S0.007	prologue_05_inspection	d	林彪悍	serious	我回去再拧一遍。今晚不弄开它，我睡不着。		
+ch05.S0.008	prologue_05_inspection	d	老陈		螺栓明晚还在。路基今晚要是塌了，明晚就不是螺栓的事。		
+ch05.S0.009	prologue_05_inspection	d	林彪悍	serious	线二十六天没人管，也没见它塌过。		
+ch05.S0.010	prologue_05_inspection	d	老陈		所以今晚得走。走一趟，才知道它塌没塌。		
+ch05.S0.011	prologue_05_inspection	d	老陈		车修好了要试车。试之前，这条线得先有人走完。		
+ch05.S0.012	prologue_05_inspection	d	老陈		巡线都在晚上。白天线上有车，晚上线是空的。		
+ch05.S0.013	prologue_05_inspection	n			他背起帆布工具包，肩上挂着一盏马灯，扳手和道钉在包里叮当响。		
+ch05.S0.014	prologue_05_inspection	n			我没接话。他也没再劝，往站台侧门走。我把手插进裤兜，把那点疼摁住，跟了上去。		
+ch05.S0.015	prologue_05_inspection	n			一步跨上道砟。夕阳贴着山脊往下掉，两根钢轨被照成两条亮线，一直伸进谷口。		
+ch05.S0.016	prologue_05_inspection	n			枕木缝里的草被人踩出一条窄印子，只够一个人走。		
+ch05.S0.017	prologue_05_inspection	d	老陈		先说一件事。铁轨的事，得先用耳朵。		
+ch05.S0.018	prologue_05_inspection	n			老陈用脚跟碾了碾道砟，碎石发出细碎的响声。		
+ch05.S0.019	prologue_05_inspection	d	老陈		道砟松了，声音空。实了，声音闷。记住这个声儿。		
+ch05.S0.020	prologue_05_inspection	d	林彪悍	curious	用耳朵听石头？		
+ch05.S0.021	prologue_05_inspection	d	老陈		我头一回上道，先学的就是这个。比摸机车还早。		
+ch05.S0.022	prologue_05_inspection	n			再往前是一段直线。老陈从包里拎出一把道尺，递给我。		
+ch05.S0.023	prologue_05_inspection	d	老陈		卡上去，读数。		
+ch05.S0.024	prologue_05_inspection	n			我弯腰把尺卡在两根钢轨上，眯眼读。		
+ch05.S0.025	prologue_05_inspection	d	林彪悍	serious	一四三八。		
+ch05.S0.026	prologue_05_inspection	d	老陈		斜了。尺子歪，数就歪。重来。		
+ch05.S0.027	prologue_05_inspection	n			我重新卡正。手背往钢轨上一撑，那道印子火辣辣地一跳，手一滑，道尺掉进道砟里，当啷一声。		
+ch05.S0.028	prologue_05_inspection	d	老陈		捡。		
+ch05.S0.029	prologue_05_inspection	d	林彪悍	normal	……是。		
+ch05.S0.030	prologue_05_inspection	d	老陈		这把比你那把扳手金贵。摔了它，今晚你抱着它睡。		
+ch05.S0.031	prologue_05_inspection	n			我把土擦干净，再卡一次。这回手稳了。		
+ch05.S0.032	prologue_05_inspection	d	林彪悍	normal	一四三五。		
+ch05.S0.033	prologue_05_inspection	d	老陈		标准轨距。宽了掉道，窄了卡轮。		
+ch05.S0.034	prologue_05_inspection	n			疼归疼，数得自己读，骗不了铁轨。		
+ch05.S0.035	prologue_05_inspection	d	老陈		零公里就是脚下。走到底二十三公里，四个站。		
+ch05.S0.036	prologue_05_inspection	d	老陈		雾2茶山，八公里。雾3松桥，十五公里，早废了。雾4矿区，到头。		
+ch05.S0.037	prologue_05_inspection	d	老陈		站牌右上角都压个『雾』字，你爷爷定的，嫌新人记不住站名。		
+ch05.S0.038	prologue_05_inspection	d	老陈		以前早晚各一趟，茶山的茶，矿区的煤，都走这两根轨。		
+ch05.S0.039	prologue_05_inspection	d	老陈		二十六天前，喷油嘴坏了。新的要五百沙币，账上两千，我不敢动。我修了又拆，拆了又修，没修好。就……停了。		
+ch05.S0.040	prologue_05_inspection	n			他的手在裤缝上擦了一下，擦掉一层并不存在的灰。		
+ch05.S0.041	prologue_05_inspection	thought	林彪悍	sad	[他把『停了』两个字说得这么轻，像在说今天没买着菜。]		
+ch05.S0.042	prologue_05_inspection	n			老陈递给我一支粉笔和一个卷了边的小本子。		
+ch05.S0.043	prologue_05_inspection	d	老陈		看四样。轨距，接头，枕木，弯道。看见什么记什么，写不清就画。		
+ch05.S0.044	prologue_05_inspection	d	林彪悍	curious	记给谁看？		
+ch05.S0.045	prologue_05_inspection	d	老陈		给下一个走这条线的人。		
+ch05.S0.046	prologue_05_inspection	n			我边写边走，脚下一空。草底下是个被道砟埋了半截的翻浆坑，膝盖实实地磕在枕木上。		
+ch05.S0.047	prologue_05_inspection	d	老陈		看路。		
+ch05.S0.048	prologue_05_inspection	d	林彪悍	normal	……这草比我想的深。		
+ch05.S0.049	prologue_05_inspection	n			一条黑狗从矮墙后头钻出来，冲老陈摇了两下尾巴，低头来嗅我的鞋带。		
+ch05.S0.050	prologue_05_inspection	d	老陈		黑子，村口老李家的。扒过三回车，被扔下来三回，第四回学乖了，跟着车跑。		
+ch05.S0.051	prologue_05_inspection	n			我没忍住，笑了一声。		
+ch05.S0.052	prologue_05_inspection	n			矮墙那边是个院子，竹席上摊着刚炒好的茶，香气漫过来，把铁锈味盖掉大半。		
+ch05.S0.053	prologue_05_inspection	d	茶嫂		哟，小站长！		
+ch05.S0.054	prologue_05_inspection	d	林彪悍	normal	我不是站长。		
+ch05.S0.055	prologue_05_inspection	d	茶嫂		差不多。你这名儿，村里人头回念，没有不打磕绊的。彪悍。		
+ch05.S0.056	prologue_05_inspection	d	林彪悍	normal	我爷爷起的。说我抓周抓了根道钉，名字不硬点，镇不住它。		
+ch05.S0.057	prologue_05_inspection	d	茶嫂		他抱你上车那回，你哭得满车厢都听得见。哄不住，他就说再哭把你交给铁轨。		
+ch05.S0.058	prologue_05_inspection	d	林彪悍	smile	……拿铁路吓唬小孩？		
+ch05.S0.059	prologue_05_inspection	d	茶嫂		吓得你哭更响了。		
+ch05.S0.060	prologue_05_inspection	d	老陈		我在这儿呢，你俩当我是电线杆？		
+ch05.S0.061	prologue_05_inspection	d	茶嫂		电线杆比你会说话。		
+ch05.S0.062	prologue_05_inspection	n			她抓起一把炒豆塞进我口袋，口袋立刻鼓出一块。		
+ch05.S0.063	prologue_05_inspection	d	茶嫂		今年秋茶边上炒的，尝尝。		
+ch05.S0.064	prologue_05_inspection	d	老陈		你这张嘴。		
+ch05.S0.065	prologue_05_inspection	d	茶嫂		我这张嘴说的都是实话。霜降前这批茶得下山，车要是再不响——		
+ch05.S0.066	prologue_05_inspection	n			她自己把话咽了回去，转头朝院里喊：		
+ch05.S0.067	prologue_05_inspection	d	茶嫂		黑子！别撵鸡！		
+ch05.S0.068	prologue_05_inspection	d	茶嫂		南瓜子也拿着。巡线费腿，嗑瓜子费嘴，人总得费一样。		
+ch05.S0.069	prologue_05_inspection	n			我捧着那把瓜子，口袋比出门时沉了不少。		
+ch05.S0.070	prologue_05_inspection	n			老陈不接话，背着手往前走。黑子跟着走了两步，又回头等我。		
+ch05.S0.071	prologue_05_inspection	thought	林彪悍	serious	[五百沙币的备件预留款，等不起的秋茶。得先弄清哪儿坏了，不能乱花。]		
+ch05.S1.000	prologue_05_inspection	n			往谷里走，线路顺着河拐了个弯，黑子先钻进草里开道。		
+ch05.S1.001	prologue_05_inspection	n			弯道外侧的钢轨亮得发白，内侧蒙着一层锈粉。		
+ch05.S1.002	prologue_05_inspection	d	林彪悍	curious	外轨亮，是车轮全压在外侧磨。这弯是不是缺了超高？		
+ch05.S1.003	prologue_05_inspection	d	老陈		量。		
+ch05.S1.004	prologue_05_inspection	n			我把道尺横卡上去，对着水泡读数。		
+ch05.S1.005	prologue_05_inspection	d	林彪悍	normal	不到五十毫米。		
+ch05.S1.006	prologue_05_inspection	d	老陈		设计八十。垫板锈了，沉下去了。以前每年垫一次。		
+ch05.S1.007	prologue_05_inspection	n			他没往下说，弯腰捡起一个瘪烟头，攥在手里。		
+ch05.S1.008	prologue_05_inspection	n			我在本子上记：『2.1km · 弯道欠超高 · 设80/实不足50』。		
+ch05.S1.009	prologue_05_inspection	d	老陈		等天黑，这片草里会有萤火虫。你爷爷管它们叫巡道灯，说哪年这儿不亮了，就是路基在渗水。		
+ch05.S1.010	prologue_05_inspection	d	林彪悍	curious	真的假的？		
+ch05.S1.011	prologue_05_inspection	d	老陈		真假我不知道。他信，我跟着看了三十年。		
+ch05.S1.012	prologue_05_inspection	n			走到三公里半，老陈忽然停住，蹲下去，手掌贴在道砟上。		
+ch05.S1.013	prologue_05_inspection	d	老陈		你过来。		
+ch05.S1.014	prologue_05_inspection	n			道床被水掏掉一块，底下露出黑洞。有根枕木整根悬着，两头搭在石头上。		
+ch05.S1.015	prologue_05_inspection	n			我把手伸进枕木底下，够不到底。水还在渗，指尖全是凉的。		
+ch05.S1.016	prologue_05_inspection	n			我掏出道尺卡在悬空的钢轨上。		
+ch05.S1.017	prologue_05_inspection	d	林彪悍	curious	沉降三毫米，轨距没变。书上说，这个数还能过车。		
+ch05.S1.018	prologue_05_inspection	n			老陈没答，拿道钉在枕木上敲了三下。		
+ch05.S1.019	prologue_05_inspection	n			三声，全是空的。		
+ch05.S1.020	prologue_05_inspection	d	老陈		尺子只告诉你它沉了多少。耳朵告诉你它还剩多少。		
+ch05.S1.021	prologue_05_inspection	d	林彪悍	serious	……不能过车。		
+ch05.S1.022	prologue_05_inspection	d	老陈		一根都不能。		
+ch05.S1.023	prologue_05_inspection	n			我摸出红布条，系在来车方向的钢轨上，又在枕木侧面画了个叉，记下里程和时间。		
+ch05.S1.024	prologue_05_inspection	d	老陈		红条一系，谁来都得先停车看一眼。		
+ch05.S1.025	prologue_05_inspection	d	林彪悍	serious	光系不够。水还在往下走，今晚填了，明早还得空。		
+ch05.S1.026	prologue_05_inspection	n			我顺着水印爬上坡。坡上一道新冲出来的沟，泥还软。		
+ch05.S1.027	prologue_05_inspection	n			我搬了三块石头压住沟口，扒下一块草皮盖上，草根蹭得掌心生疼。		
+ch05.S1.028	prologue_05_inspection	n			老陈在底下看着，半天才开口。		
+ch05.S1.029	prologue_05_inspection	d	老陈		先堵源头，再填坑。……对。		
+ch05.S1.030	prologue_05_inspection	d	林彪悍	curious	坑呢？		
+ch05.S1.031	prologue_05_inspection	d	老陈		试车之前填。这一段我说了算。		
+ch05.S1.032	prologue_05_inspection	d	林彪悍	normal	我记下了。		
+ch05.S1.033	prologue_05_inspection	n			再往前是一处接头。我蹲下盯了三遍。		
+ch05.S1.034	prologue_05_inspection	d	林彪悍	curious	陈叔，这颗是不是松的？		
+ch05.S1.035	prologue_05_inspection	n			老陈折回来眯眼看了两秒，伸手一晃，螺母跟着螺杆轻轻转了半圈。		
+ch05.S1.036	prologue_05_inspection	d	老陈		……哟。		
+ch05.S1.037	prologue_05_inspection	n			我伸手就去拧。		
+ch05.S1.038	prologue_05_inspection	d	老陈		别硬掰。上了锈的东西，先上油，再给它时间。		
+ch05.S1.039	prologue_05_inspection	n			他用粉笔在枕木侧面画了个歪圈。我在本子上记：『5.2km · 接头螺栓松1』。		
+ch05.S1.040	prologue_05_inspection	d	老陈		五公里二。你眼睛还行。		
+ch05.S1.041	prologue_05_inspection	d	林彪悍	sad	昨天这双手连螺栓都拧不动。		
+ch05.S1.042	prologue_05_inspection	d	老陈		今天它看见了一颗。		
+ch05.S1.043	prologue_05_inspection	n			前面是一座水泥涵洞，水声从底下冒上来。		
+ch05.S1.044	prologue_05_inspection	d	老陈		前年雨季，这段山坡溜下来一方土，路基压出个坑。他半夜扛着灯来填的。		
+ch05.S1.045	prologue_05_inspection	d	林彪悍	curious	半夜？		
+ch05.S1.046	prologue_05_inspection	d	老陈		白天要跑车。晚上线是空的。		
+ch05.S1.047	prologue_05_inspection	n			老陈在涵洞口站了一会儿。		
+ch05.S1.048	prologue_05_inspection	d	老陈		后来他就病了。坑填上了，人没回来。		
+ch05.S1.049	prologue_05_inspection	n			走到六公里，线路爬上一道浅坡，坡顶横着进山便道，运柴的三轮正往下开。		
+ch05.S1.050	prologue_05_inspection	n			老陈站在道口，抬手拦了一下。		
+ch05.S1.051	prologue_05_inspection	d	老陈		腿不行了。以前我一天打个来回，现在六公里是头，一寸都多不了。		
+ch05.S1.052	prologue_05_inspection	d	老陈		从这儿起，你自己走。		
+ch05.S1.053	prologue_05_inspection	n			他把肩上的马灯摘下来塞进我手里，又把那截粉笔头塞进我另一只手心。		
+ch05.S1.054	prologue_05_inspection	d	老陈		灯归你。你爷爷当年也是这么塞给我的。		
+ch05.S1.055	prologue_05_inspection	d	老陈		到松桥，还有九公里。归你画。记法不变。		
+ch05.S1.056	prologue_05_inspection	d	林彪悍	normal	我知道。		
+ch05.S1.057	prologue_05_inspection	n			他爬上三轮车斗，车斗里全是劈好的柴，冲我摆了摆手。		
+ch05.S1.058	prologue_05_inspection	d	老陈		耳朵！先用耳朵！		
+ch05.S1.059	prologue_05_inspection	n			车突突开走，扬起一片土。		
+ch05.S1.060	prologue_05_inspection	n			黑子没跟来，它在岔道口拐了个弯，跑回村里去了。		
+ch05.S1.061	prologue_05_inspection	n			后半程只剩我一个。		
+ch05.S1.062	prologue_05_inspection	loc			8km · 雾2 茶山		
+ch05.S1.063	prologue_05_inspection	n			茶山站比雾峰村小，一栋两层砖房，站牌上『茶山』两个字掉了一半漆。		
+ch05.S1.064	prologue_05_inspection	n			候车室的门上挂着锁，锁上全是灰。窗台压着一张褪成粉色的时刻表，早班七点二十，晚班四点五十。		
+ch05.S1.065	prologue_05_inspection	n			站房侧面有口井，井台上一把竹椅。穿白背心的大叔正对着棋盘，自己跟自己下。		
+ch05.S1.066	prologue_05_inspection	d	康叔		哟，你就是老陈说的那个娃？他说好这个点从我井台过，这一步，他倒悔棋了。		
+ch05.S1.067	prologue_05_inspection	d	林彪悍	normal	陈叔腿不行，六公里就折回去了。		
+ch05.S1.068	prologue_05_inspection	d	康叔		老毛病，我知道。那老东西，宁肯悔棋，也不肯说一声累。		
+ch05.S1.069	prologue_05_inspection	d	康叔		你爷爷也是这路数。倔，不爱求人。到最后站都站不住了，才让老陈替他走一趟，还叮嘱别声张。		
+ch05.S1.070	prologue_05_inspection	n			我没接话。手心里的粉笔头硌着肉。		
+ch05.S1.071	prologue_05_inspection	n			康叔掏钥匙开了站房的门，门轴叫了一声。屋里一股潮木头味，墙上的钟停在四点五十，和窗外那张时刻表一个点。		
+ch05.S1.072	prologue_05_inspection	n			桌上一本翻烂的台账，最后一页停在二十六天前。		
+ch05.S1.073	prologue_05_inspection	d	康叔		没人上弦，就这么停着。		
+ch05.S1.074	prologue_05_inspection	n			我刚坐下，棋盘边就多了三个背书包的小孩。		
+ch05.S1.075	prologue_05_inspection	d	孩子们		你是不是从平壤回来的？		
+ch05.S1.076	prologue_05_inspection	d	林彪悍	normal	……是。		
+ch05.S1.077	prologue_05_inspection	d	孩子们		松桥那条隧道里，真有蝙蝠吗？		
+ch05.S1.078	prologue_05_inspection	d	林彪悍	normal	我也不知道。		
+ch05.S1.079	prologue_05_inspection	d	孩子们		我爷爷说有。车一开进去，它们就全飞起来。		
+ch05.S1.080	prologue_05_inspection	d	林彪悍	smile	下次我去看，回来告诉你们。		
+ch05.S1.081	prologue_05_inspection	d	孩子们		拉钩。		
+ch05.S1.082	prologue_05_inspection	d	林彪悍	smile	……拉钩。		
+ch05.S1.083	prologue_05_inspection	n			康叔笑得竹椅直晃。		
+ch05.S1.084	prologue_05_inspection	d	康叔		这帮娃，问题比道砟还碎。		
+ch05.S1.085	prologue_05_inspection	n			他从井里打了半搪瓷缸水递过来，凉得咬手。		
+ch05.S1.086	prologue_05_inspection	d	康叔		天黑透了，还往里走？里头没灯。		
+ch05.S1.087	prologue_05_inspection	d	林彪悍	normal	有月亮，还有这个。		
+ch05.S1.088	prologue_05_inspection	n			我举了举马灯，朝他挥挥手。他在背后喊了句什么，我没停步。		
+ch05.S2.000	prologue_05_inspection	n			天色从金红压成灰蓝。这七公里比想的走得久，鞋面结了一层露，裤脚挂满草籽。		
+ch05.S2.001	prologue_05_inspection	loc			15km · 雾3 松桥 · 已废弃		
+ch05.S2.002	prologue_05_inspection	n			松桥站比茶山旧，可它大。一条正线，一条侧线，两股道在站里分开，又并回去。		
+ch05.S2.003	prologue_05_inspection	n			这是会让站。一上一下两趟车得在这儿错开，谁让谁，看站里那块让行牌。		
+ch05.S2.004	prologue_05_inspection	n			站牌歪着，铁皮翘起一角，『松桥』两个字的漆只剩轮廓。		
+ch05.S2.005	prologue_05_inspection	n			站房的玻璃碎了一块，从里面用纸板顶着。候车室的长椅漆皮全翘了，椅面落着鸟粪和松针。		
+ch05.S2.006	prologue_05_inspection	n			墙上留着半截标语：『安全……正点……』，后面没了。		
+ch05.S2.007	prologue_05_inspection	n			我伸手把灰擦了擦，灰全蹭在手上，字反倒清楚了一点。		
+ch05.S2.008	prologue_05_inspection	n			侧线上的草比正线高得多，几乎埋住钢轨。尽头堆着半截锈穿的水塔架，和一只翻倒的煤斗。		
+ch05.S2.009	prologue_05_inspection	n			蒸汽那年头，车到这儿要加水加煤。后来换了内燃，水塔空了，空着也没人拆。		
+ch05.S2.010	prologue_05_inspection	n			我踢了一脚煤斗，哐的一声，惊起屋檐下一窝麻雀。		
+ch05.S2.011	prologue_05_inspection	n			站房侧面立着一架锈死的臂板信号机，臂板斜斜指着天。		
+ch05.S2.012	prologue_05_inspection	n			我推了一下，转轴发出一声干涩的响，旗臂颤了颤，没动。		
+ch05.S2.013	prologue_05_inspection	n			我想起老陈那句：上了锈的东西，先上油，再给它时间。		
+ch05.S2.014	prologue_05_inspection	n			站台边的石墩上坐着个老人，拄着拐，烟袋锅在暮色里一明一灭。		
+ch05.S2.015	prologue_05_inspection	d	老人		娃……就你一个？		
+ch05.S2.016	prologue_05_inspection	d	林彪悍	normal	老陈腿不行，折回去了。剩下的我走。		
+ch05.S2.017	prologue_05_inspection	d	老人		一个人，走到这儿。		
+ch05.S2.018	prologue_05_inspection	d	林彪悍	serious	走到了。		
+ch05.S2.019	prologue_05_inspection	d	老人		好。好。		
+ch05.S2.020	prologue_05_inspection	d	老人		今天，有车？		
+ch05.S2.021	prologue_05_inspection	d	林彪悍	normal	还没有。修好了才试。		
+ch05.S2.022	prologue_05_inspection	d	老人		快一个月没车了。		
+ch05.S2.023	prologue_05_inspection	n			他在鞋底磕了磕烟灰，灰落在站台上，风一吹就散了。		
+ch05.S2.024	prologue_05_inspection	d	林彪悍	curious	老人家，您的茶园在松桥这边？		
+ch05.S2.025	prologue_05_inspection	d	老人		三代人种的。坡上的茶，全靠这条线运出去。		
+ch05.S2.026	prologue_05_inspection	d	林彪悍	curious	走公路呢？		
+ch05.S2.027	prologue_05_inspection	d	老人		公路？		
+ch05.S2.028	prologue_05_inspection	n			他伸出三根手指，举了一会儿，又慢慢收回去。		
+ch05.S2.029	prologue_05_inspection	d	老人		一车茶走铁路是这个数，走公路，翻着跟头往上蹦。蹦到头，我这一季白种。		
+ch05.S2.030	prologue_05_inspection	d	林彪悍	curious	隧道呢？再往里是什么样？		
+ch05.S2.031	prologue_05_inspection	d	老人		三百多米。以前过洞要鸣笛，回声震得人耳朵发麻。现在里头住上了蝙蝠。		
+ch05.S2.032	prologue_05_inspection	d	林彪悍	curious	真有蝙蝠？		
+ch05.S2.033	prologue_05_inspection	d	老人		天一黑，它们就出来。		
+ch05.S2.034	prologue_05_inspection	d	老人		我也不是非要坐车。我是怕……		
+ch05.S2.035	prologue_05_inspection	d	老人		车不来了，站就不是站了。站不是站，山那头的人心也就散了。		
+ch05.S2.036	prologue_05_inspection	d	林彪悍	serious	线我会接上。		
+ch05.S2.037	prologue_05_inspection	d	老人		好。好。我再等。		
+ch05.S2.038	prologue_05_inspection	n			老人撑着拐站起来，走出十几步，又回头。		
+ch05.S2.039	prologue_05_inspection	d	老人		娃，站台上的草，往后你也得割。		
+ch05.S2.040	prologue_05_inspection	d	林彪悍	serious	……我知道。		
+ch05.S2.041	prologue_05_inspection	n			他的背影消失在站房后的坡道上，烟袋那点火也跟着灭了。		
+ch05.S2.042	prologue_05_inspection	n			站台尽头立着一块水泥里程标，漆掉光了，『15』却是拿錾子凿出来的，摸上去扎手。		
+ch05.S2.043	prologue_05_inspection	n			我把手掌按在上面，凉意顺着掌心往上走。		
+ch05.S2.044	prologue_05_inspection	n			在平壤的实验室里，报告常写到后半夜，全是效率、参数、曲线。		
+ch05.S2.045	prologue_05_inspection	n			报告上没有「等」这个参数。可一个老人，已经在石墩上等了快一个月。		
+ch05.S2.046	prologue_05_inspection	n			我掏出本子，就着马灯写：『15km · 松桥 · 站牌歪1、臂板锈死1、长椅朽2、标语断』。		
+ch05.S2.047	prologue_05_inspection	n			又补一行：『答应孩子们：蝙蝠，待查』。		
+ch05.S2.048	prologue_05_inspection	n			写完，我把粉笔头按在里程标上，沿着『15』的笔画描了一圈。		
+ch05.S2.049	prologue_05_inspection	d	林彪悍	serious	十五……往后还有八。		
+ch05.S3.000	prologue_05_inspection	n			我刚合上本子，山口那边亮起一对车灯，顺着河谷便道开得很慢。		
+ch05.S3.001	prologue_05_inspection	n			是茶嫂那辆小货车。车斗盖着防雨布，绳子勒出一道道棱。		
+ch05.S3.002	prologue_05_inspection	n			她在站牌底下刹住，探出头。		
+ch05.S3.003	prologue_05_inspection	d	茶嫂		哟，巡到这儿来了？		
+ch05.S3.004	prologue_05_inspection	d	林彪悍	surprise	茶嫂？您怎么在这儿？		
+ch05.S3.005	prologue_05_inspection	d	茶嫂		收茶。松桥这一带，收了一晚上。上来，我捎你回零公里。		
+ch05.S3.006	prologue_05_inspection	n			我拉开副驾的门坐进去。车里一股炒茶的热气，脚边塞着一只空竹筐。		
+ch05.S3.007	prologue_05_inspection	n			车掉头，沿着便道往回开。窗外的钢轨一段一段往后退，比走路快得多。		
+ch05.S3.008	prologue_05_inspection	n			山谷起了薄雾，灯照出去只有十米。茶嫂把远光压成近光。		
+ch05.S3.009	prologue_05_inspection	d	茶嫂		山里有赶夜路的牲口，照远了，它们不认路。		
+ch05.S3.010	prologue_05_inspection	d	林彪悍	curious	您一个人跑夜路？		
+ch05.S3.011	prologue_05_inspection	d	茶嫂		跑了六年。头四年我抢不过它，一车茶走铁路，运费只有我这车的三分之一。		
+ch05.S3.012	prologue_05_inspection	d	茶嫂		这二十六天它不响，我倒是歇不下来了。我盼它响。它响了，我这车才能歇。		
+ch05.S3.013	prologue_05_inspection	d	茶嫂		你在平壤喝过茶没有？		
+ch05.S3.014	prologue_05_inspection	d	林彪悍	normal	喝过。都是袋泡的。		
+ch05.S3.015	prologue_05_inspection	d	茶嫂		袋泡的那不叫茶，那叫有颜色的水。		
+ch05.S3.016	prologue_05_inspection	n			到三公里半，茶嫂在道口外刹住车。		
+ch05.S3.017	prologue_05_inspection	d	林彪悍	serious	茶嫂，这处的道床被水掏空了。我堵了上游，系了红条，您等我一下。		
+ch05.S3.018	prologue_05_inspection	n			我跳下车，举着马灯往前。		
+ch05.S3.019	prologue_05_inspection	n			红布条还在，被风抽得啪啪响。压在沟口的三块石头没动，水声也停了。		
+ch05.S3.020	prologue_05_inspection	n			我蹲下，用道钉在枕木上敲了三下。		
+ch05.S3.021	prologue_05_inspection	n			声音闷闷的，比傍晚那三声实了一点。		
+ch05.S3.022	prologue_05_inspection	thought	林彪悍	sad	[石头压住了，水停了，响声也回来了。]		
+ch05.S3.023	prologue_05_inspection	n			我折回车边。		
+ch05.S3.024	prologue_05_inspection	d	林彪悍	serious	过道口的时候我走前面，您跟着灯开，贴左边。		
+ch05.S3.025	prologue_05_inspection	d	茶嫂		贴左边？这儿我闭着眼都能过。		
+ch05.S3.026	prologue_05_inspection	d	林彪悍	serious	就这一回，别闭眼。		
+ch05.S3.027	prologue_05_inspection	n			茶嫂看了我一眼，没再贫，松开了刹车。		
+ch05.S3.028	prologue_05_inspection	n			车轮压上道口的碎石，一寸一寸往前蹭。我倒着走，灯举在她车头前。		
+ch05.S3.029	prologue_05_inspection	n			前轮过去了。后轮压上道口。		
+ch05.S3.030	prologue_05_inspection	n			脚下的地忽然往下一软。		
+ch05.S3.031	prologue_05_inspection	n			车尾猛地一沉，右后轮陷进去半个轮子。车斗里的竹筐哗地往一边滑，防雨布的绳子绷得吱吱响。		
+ch05.S3.032	prologue_05_inspection	d	林彪悍	shout	刹车！		
+ch05.S3.033	prologue_05_inspection	n			我扔了灯，肩膀顶住往外歪的那摞筐，一只手抓死绳子。手背的痂当场崩开，血顺着指根渗进竹篾。		
+ch05.S3.034	prologue_05_inspection	n			车停了。		
+ch05.S3.035	prologue_05_inspection	n			筐压在我肩上，沉得像一堵墙。没有人说话，河水在车底下哗哗地响。		
+ch05.S3.036	prologue_05_inspection	n			水声回来了。		
+ch05.S3.037	prologue_05_inspection	d	茶嫂		……哟。		
+ch05.S3.038	prologue_05_inspection	d	茶嫂		筐没翻吧？		
+ch05.S3.039	prologue_05_inspection	d	林彪悍	serious	翻了一筐。半筐。		
+ch05.S3.040	prologue_05_inspection	d	茶嫂		人呢？		
+ch05.S3.041	prologue_05_inspection	d	林彪悍	normal	人没事。		
+ch05.S3.042	prologue_05_inspection	d	茶嫂		那就好。今年头茬，撒了半筐，算我的。		
+ch05.S3.043	prologue_05_inspection	n			她跳下车，蹲在轮子边看了一眼，吸了口凉气。		
+ch05.S3.044	prologue_05_inspection	d	茶嫂		陷得不深。垫点东西，能倒出来。		
+ch05.S3.045	prologue_05_inspection	n			我转身往坡上跑。三块石头还压在沟口，是我傍晚亲手搬上去的。		
+ch05.S3.046	prologue_05_inspection	n			我一块一块把它们撬下来，抱回道口，塞进轮子底下。		
+ch05.S3.047	prologue_05_inspection	n			沟口一松，水立刻漫过了刚盖上的草皮。		
+ch05.S3.048	prologue_05_inspection	thought	林彪悍	serious	[堵水的石头，现在垫了车轮。]		
+ch05.S3.049	prologue_05_inspection	n			茶嫂挂倒挡，我在车尾推。轮子在石头上空转了两圈，咬住了。		
+ch05.S3.050	prologue_05_inspection	n			车爬出来的时候，道口的碎石连着那块草皮，一起塌进了坑里。		
+ch05.S3.051	prologue_05_inspection	n			红布条在水里打了个旋，没影了。		
+ch05.S3.052	prologue_05_inspection	n			我举起灯往草丛里照。老陈说过的巡道灯，这一片草里一盏都没有。		
+ch05.S3.053	prologue_05_inspection	n			我蹲下去，用道钉敲了一下露出来的枕木。		
+ch05.S3.054	prologue_05_inspection	n			空的。比傍晚还空。		
+ch05.S3.055	prologue_05_inspection	n			道钉从手里掉进水里，我没去捞。		
+ch05.S3.056	prologue_05_inspection	d	林彪悍	sad	……对不起。		
+ch05.S3.057	prologue_05_inspection	d	茶嫂		道歉的话留着，明早拿活儿来换。		
+ch05.S3.058	prologue_05_inspection	d	林彪悍	serious	我傍晚就该把坑一起填了。		
+ch05.S3.059	prologue_05_inspection	d	茶嫂		你傍晚多长两只手，再说这话。		
+ch05.S3.060	prologue_05_inspection	n			她从车斗里扯出一块布，扔给我。		
+ch05.S3.061	prologue_05_inspection	d	茶嫂		裹上。血滴在筐上，茶会涩。		
+ch05.S3.062	prologue_05_inspection	n			我把手背裹紧，翻开本子，一笔一笔写。		
+ch05.S3.063	prologue_05_inspection	n			『3.5km · 道床冲空，复检：草皮塌2、红条失、堵水石撤走垫车 · 未根治，禁试车』		
+ch05.S3.064	prologue_05_inspection	n			车重新上路，谁都没说话。快到谷口时，山坳里的灯一盏一盏亮着。		
+ch05.S3.065	prologue_05_inspection	d	茶嫂		你奶奶从前就站在这儿数灯，数到十九盏，就知道你爷爷的车快进站了。		
+ch05.S3.066	prologue_05_inspection	d	林彪悍	curious	现在呢？		
+ch05.S3.067	prologue_05_inspection	d	茶嫂		十二盏。		
+ch05.S3.068	prologue_05_inspection	n			少的那七盏，没人知道是搬走了，还是懒得再点。		
+ch05.S3.069	prologue_05_inspection	n			车在站外的岔路口停下。我推门下车，夜风灌进来。		
+ch05.S3.070	prologue_05_inspection	d	茶嫂		明早我还得从那道口过。你给我一句准话，能不能过？		
+ch05.S3.071	prologue_05_inspection	d	林彪悍	serious	不能。我明早先去填，您等我的信儿。		
+ch05.S3.072	prologue_05_inspection	d	茶嫂		……行。肯说一句『不能』的人，我信。		
+ch05.S3.073	prologue_05_inspection	d	茶嫂		车钱？老陈上回替我挑了两筐豆，扯平。		
+ch05.S3.074	prologue_05_inspection	n			她按了一声喇叭，车尾灯顺着谷口远了。		
+ch05.S3.075	prologue_05_inspection	n			黑子从道边窜出来，差点撞在我腿上。		
+ch05.S4.000	prologue_05_inspection	loc			0km · 雾峰村 · 入夜		
+ch05.S4.001	prologue_05_inspection	n			谷口的灯先看见我。雾峰村站台亮着两盏，光落在铁轨上，泛出两道细亮。		
+ch05.S4.002	prologue_05_inspection	n			车棚的门半开着。耕牛·改趴在里头，深蓝的涂装在夜里几乎发黑，只剩边缘一道白线勾着轮廓。		
+ch05.S4.003	prologue_05_inspection	n			老陈蹲在车棚门口，面前一只小煤炉，炉上的锅冒着热气。		
+ch05.S4.004	prologue_05_inspection	d	老陈		回来了。		
+ch05.S4.005	prologue_05_inspection	d	林彪悍	normal	回来了。		
+ch05.S4.006	prologue_05_inspection	d	老陈		吃面。		
+ch05.S4.007	prologue_05_inspection	n			他往碗里捞面，眼睛没往我手上看。我把裹着布的手背往身后藏了藏。		
+ch05.S4.008	prologue_05_inspection	d	老陈		布是茶嫂的？		
+ch05.S4.009	prologue_05_inspection	d	林彪悍	curious	……您怎么知道？		
+ch05.S4.010	prologue_05_inspection	d	老陈		只有她的布带茶味。		
+ch05.S4.011	prologue_05_inspection	n			我蹲下来端过碗，热气扑了一脸。黑子凑过来，把下巴搁在我膝盖上。		
+ch05.S4.012	prologue_05_inspection	d	老陈		别给它，它早吃过了。		
+ch05.S4.013	prologue_05_inspection	d	林彪悍	smile	它看着像没吃过。		
+ch05.S4.014	prologue_05_inspection	d	老陈		它看谁都像没吃过。		
+ch05.S4.015	prologue_05_inspection	n			我偷偷分了它一根面条。老陈当没看见。		
+ch05.S4.016	prologue_05_inspection	n			面汤烫舌头，我吃得很急，吃到一半才发现自己饿了一整天。		
+ch05.S4.017	prologue_05_inspection	d	林彪悍	serious	三公里半，道床被我弄塌了。		
+ch05.S4.018	prologue_05_inspection	n			老陈的筷子在锅沿上敲了一下，没抬头。		
+ch05.S4.019	prologue_05_inspection	d	老陈		人呢？		
+ch05.S4.020	prologue_05_inspection	d	林彪悍	normal	没事。茶翻了半筐，茶嫂的车陷了一下，推出来了。		
+ch05.S4.021	prologue_05_inspection	d	老陈		红条呢？		
+ch05.S4.022	prologue_05_inspection	d	林彪悍	serious	冲没了。堵水的石头，我撬下来垫了车轮。		
+ch05.S4.023	prologue_05_inspection	d	老陈		……拿去垫车轮，倒是个活用法。		
+ch05.S4.024	prologue_05_inspection	d	林彪悍	serious	坑还在，比傍晚大。		
+ch05.S4.025	prologue_05_inspection	d	老陈		试之前填。那一段我说了算。		
+ch05.S4.026	prologue_05_inspection	d	林彪悍	normal	我抄在本子上了。		
+ch05.S4.027	prologue_05_inspection	d	老陈		嗯。		
+ch05.S4.028	prologue_05_inspection	n			我把碗放下，从工具包里抽出那把闯祸的扳手，在灯底下转了转，擦干净。		
+ch05.S4.029	prologue_05_inspection	n			然后我握住扳手头，把柄朝老陈递过去。		
+ch05.S4.030	prologue_05_inspection	d	林彪悍	serious	喷油泵的放泄螺栓，锈死了。我一个人硬拧了一下午，只拧出这道印子。		
+ch05.S4.031	prologue_05_inspection	d	林彪悍	serious	今晚先上松动剂，让它泡一夜，明早再拆。我需要三样东西：完整的拆装图，一只千分尺，还有一个搭手的人。		
+ch05.S4.032	prologue_05_inspection	d	老陈		前两样我有。		
+ch05.S4.033	prologue_05_inspection	d	林彪悍	curious	第三样呢？		
+ch05.S4.034	prologue_05_inspection	d	老陈		我腰不好，蹲不了多久。		
+ch05.S4.035	prologue_05_inspection	d	林彪悍	smile	蹲一会儿也行。		
+ch05.S4.036	prologue_05_inspection	n			老陈看着递到眼前的扳手柄，咳了一声，接了过去。		
+ch05.S4.037	prologue_05_inspection	d	老陈		……行。松动剂在柜子里，最底下那罐。		
+ch05.S4.038	prologue_05_inspection	n			我们一起把松动剂浇在断口上，拿布盖好。老陈的手在泵体上摸了一圈，停在那道断茬上。		
+ch05.S4.039	prologue_05_inspection	d	老陈		今晚我把这二十年的修车笔记翻出来，你列你的清单。账上两千，两份对一对，看那五百该往哪儿花。		
+ch05.S4.040	prologue_05_inspection	d	林彪悍	curious	代用的备件，不行？		
+ch05.S4.041	prologue_05_inspection	d	老陈		喷油嘴孔径差一丝，雾化就乱，一烧缸，五百变五千。只能原厂，全国还剩一家在做。		
+ch05.S4.042	prologue_05_inspection	d	林彪悍	normal	那我再列一张表：车况、备件、欠账。明早贴到墙上，谁路过都看得见。		
+ch05.S4.043	prologue_05_inspection	d	老陈		贴墙上的表……你爷爷也爱搞这个。		
+ch05.S4.044	prologue_05_inspection	d	林彪悍	smile	我们家遗传。		
+ch05.S4.045	prologue_05_inspection	n			车棚墙上钉着一块木板，密密麻麻全是检修记录，字迹换过四五种，最底下一行是老陈的，日期停在二十六天前。		
+ch05.S4.046	prologue_05_inspection	n			木板最高处有一行被烟熏黄的钢笔字：『车好，线就好；线好，人就回。』落款只有一个姓：林。		
+ch05.S4.047	prologue_05_inspection	d	林彪悍	normal	爷爷的字。		
+ch05.S4.048	prologue_05_inspection	d	老陈		他每天都看这块板。你在平壤念书，他没跟你提过。		
+ch05.S4.049	prologue_05_inspection	n			我把记着今天线路的那几行撕下来，用图钉钉在爷爷那行字旁边。		
+ch05.S4.050	prologue_05_inspection	n			十五公里，从傍晚走到半夜，纸上就这几行。可我闭上眼，一行能拽出一个地方：发白的弯道，停在四点五十的钟，石墩上那点烟袋火。		
+ch05.S4.051	prologue_05_inspection	n			老陈走出两步又折回来，从我手里接过马灯，挂回车棚门口的钩子上。		
+ch05.S4.052	prologue_05_inspection	d	老陈		灯留着，让它替我们俩看着车。		
+ch05.S4.053	prologue_05_inspection	n			黄光斜进去，落在耕牛·改的车头上。		
+ch05.S4.054	prologue_05_inspection	d	林彪悍	normal	从明天起，每天巡一段吧。		
+ch05.S4.055	prologue_05_inspection	d	老陈		每天？		
+ch05.S4.056	prologue_05_inspection	d	林彪悍	serious	每天。线不能停，人也不能停。		
+ch05.S4.057	prologue_05_inspection	d	老陈		……行。回去睡。		
+ch05.S4.058	prologue_05_inspection	n			我跟上他的步子。身后，耕牛·改安静地趴在灯底下。		
+ch05.S4.059	prologue_05_inspection	d	林彪悍	serious	明早六点，车棚见。先把泵拆开，把喷油嘴取出来——这次，我们两个人拆。		
+ch06.S0.000	prologue_06_team	n			Day 5 深夜		
+ch06.S0.001	prologue_06_team	loc			雾峰村车站 · 站台 · 0km		
+ch06.S0.002	prologue_06_team	cg			cg_team_night		
+ch06.S0.003	prologue_06_team	n			秋夜的山风像冰水倒灌。		
+ch06.S0.004	prologue_06_team	n			站台上的光管滋滋闪烁。		
+ch06.S0.005	prologue_06_team	n			光影在水泥地上跳动。		
+ch06.S0.006	prologue_06_team	n			六个人散在惨白的光圈边缘。		
+ch06.S0.007	prologue_06_team	n			身上全穿着洗褪色的旧工装。		
+ch06.S0.008	prologue_06_team	n			衣角被夜风吹得猎猎作响。		
+ch06.S0.009	prologue_06_team	n			彼此隔着生疏防备的空隙。		
+ch06.S0.010	prologue_06_team	n			谁也没有主动迎上来。		
+ch06.S0.011	prologue_06_team	d	老陈	normal	各位，人都到齐了。这是林彪悍，林站长的亲孙子，从平壤回来的。愿意接手……		
+ch06.S0.012	prologue_06_team	n			李阿姨直接往前迈出半步。		
+ch06.S0.013	prologue_06_team	n			她怀里紧抱着一只铁皮算盘。		
+ch06.S0.014	prologue_06_team	n			算盘底下压着发黄的硬皮账。		
+ch06.S0.015	prologue_06_team	n			硬生生把老陈的话截在半空。		
+ch06.S0.016	prologue_06_team	d	李阿姨	serious	老陈，人回来了是天大的喜事。可有些账，当着林站长孙子的面，今晚就得摊在桌面上。		
+ch06.S0.017	prologue_06_team	d	李阿姨	serious	站里账上就剩两千零四十沙币。下河村三十袋粗柴油的代购钱，还拖欠着人家的粮票。		
+ch06.S0.018	prologue_06_team	d	李阿姨	serious	供电所昨天就下了通告，下周再不结清电费，调度室和车棚的灯全得拉闸断电。		
+ch06.S0.019	prologue_06_team	n			她从兜里掏出一把压票机。		
+ch06.S0.020	prologue_06_team	n			铸铁机身生了一层暗红的锈。		
+ch06.S0.021	prologue_06_team	d	李阿姨	serious	抽屉里还锁着两箱硬板客票。四年前撤掉定期班次那天的钢印日期，到现在还卡在字轮上转不动。		
+ch06.S0.022	prologue_06_team	d	李阿姨	serious	大学生，你从平壤名牌大学回来，上头批了多少专项扶持款？能给大伙补几个月的工钱？		
+ch06.S0.023	prologue_06_team	d	李阿姨	serious	要是兜里空空如也，这条勉强撑了四年的线，二十三公里的病害，你打算拿什么填？		
+ch06.S0.024	prologue_06_team	n			站台上一片死寂。		
+ch06.S0.025	prologue_06_team	n			只有山风刮过锈轨的呼啸。		
+ch06.S0.026	prologue_06_team	d	老陈	worried	秀兰，孩子刚走完十五公里巡线，脚底全是血泡，你容他喘口气……		
+ch06.S0.027	prologue_06_team	n			水泥柱后传来一声冷笑。		
+ch06.S0.028	prologue_06_team	n			张工从阴影里慢慢踱步出来。		
+ch06.S0.029	prologue_06_team	n			他手里握着一支旧游标卡尺。		
+ch06.S0.030	prologue_06_team	n			主尺刻度早被机油老茧磨平。		
+ch06.S0.031	prologue_06_team	n			藏青夹克上泛着焦油的气味。		
+ch06.S0.032	prologue_06_team	d	张工	serious	下午你在车棚里跟喷油泵较劲的事，老陈跟我说过了。一身蛮力，方向却反拧了半扣。		
+ch06.S0.033	prologue_06_team	d	张工	serious	螺栓没拔出来，泵体座孔的内螺纹差点被你绞死。大学生，图纸跟趴在棚里的老耕牛，两码事。		
+ch06.S0.034	prologue_06_team	d	张工	serious	喷油嘴喷孔孔径零点二五毫米，雾化角偏移半度，整台柴油机就得在坡道上熄火烧缸。		
+ch06.S0.035	prologue_06_team	d	张工	serious	调速器的飞锤间隙你看过没有？供油拉杆卡死在零供油位，你把手柄硬推到底，除了憋熄火、烧缸，什么用都没有。		
+ch06.S0.036	prologue_06_team	d	张工	serious	我修了二十八年机车，机车检修技师证书还在铁盒里压着。连活扳手开口都调不准的人，拿什么领我们大修？		
+ch06.S0.037	prologue_06_team	n			道砟边蹲着一个干瘪瘦老头。		
+ch06.S0.038	prologue_06_team	n			那是赵师傅，提着长柄道钉锤。		
+ch06.S0.039	prologue_06_team	n			锤头已经敲得四角凹陷泛光。		
+ch06.S0.040	prologue_06_team	n			脚边放着装满断钉的破铁桶。		
+ch06.S0.041	prologue_06_team	d	赵师傅	serious	铁轨早就不认人了。两边荒草长得比人高，枕木烂成了黑泥，道钉全锈成了死疙瘩。		
+ch06.S0.042	prologue_06_team	d	赵师傅	calm	老站长在的时候，我一天巡两趟，哪根轨缝大了一毫米，脚底板踩上去就能觉出来。		
+ch06.S0.043	prologue_06_team	d	赵师傅	serious	七月份钢轨暴晒爬行，十一月份冻害路基起拱，全靠人在冰天雪地里拿肩膀扛着起道机去顶。		
+ch06.S0.044	prologue_06_team	d	赵师傅	serious	出站那段千分之十二的大坡道，两百五十米曲线半径，钢轨侧磨早超过了八毫米限度。		
+ch06.S0.045	prologue_06_team	d	赵师傅	calm	老站长一走，这条线就咽气了。我这把老骨头黄土埋到脖子，犯不着陪一个没走过夜路的后生瞎折腾。		
+ch06.S0.046	prologue_06_team	n			王小弟站在最后头，浑身紧绷。		
+ch06.S0.047	prologue_06_team	n			大檐帽被他死死攥在手心里。		
+ch06.S0.048	prologue_06_team	n			指节泛白，脸上红一阵白一阵。		
+ch06.S0.049	prologue_06_team	d	王小弟	worried	站长……我、我去年刚分来，铁路就全线停了。村里开沙能轻卡的同龄人，天天笑话我是给死人看大门的。		
+ch06.S0.050	prologue_06_team	d	王小弟	curious	可我不甘心！四年里我一个人在车库练习接风管、换风闸制动片，手皮磨破了又长出老茧。		
+ch06.S0.051	prologue_06_team	d	王小弟	excited	车底下的基础制动连杆我都摸熟了！只要这车真能再喷出一口黑烟，我扛钢轨、推道砟板车，哪怕累脱一层皮我都认！		
+ch06.S0.052	prologue_06_team	n			调度室的木门吱呀一声推开。		
+ch06.S0.053	prologue_06_team	n			小芳抱着两卷褪色手旗走出来。		
+ch06.S0.054	prologue_06_team	n			黄铜旗杆头被她擦得锃亮。		
+ch06.S0.055	prologue_06_team	d	小芳	sad	调度台那部手摇磁石电话，自打上个月八号停运，除了镇供电所催缴电费，没响过一次行车闭塞铃声。		
+ch06.S0.056	prologue_06_team	d	小芳	sad	但我每天早中晚换班，都用棉布擦它三遍。老站长以前教过我，只要铁轨还在，行车闭塞的规矩就不能废。		
+ch06.S0.057	prologue_06_team	d	小芳	sad	机房里那台电气路签机，二十四颗黄铜路签球我还锁在铸铁匣子里，每周上一回润滑油。		
+ch06.S0.058	prologue_06_team	d	小芳	serious	可彻底停下来这二十多天……我们天天守着不响的电话，擦着不动的信号机，到底是在等车来，还是在给车站守灵？		
+ch06.S0.059	prologue_06_team	n			六对眼睛沉甸甸地压在我身上。		
+ch06.S0.060	prologue_06_team	n			目光里没有尖刻的敌意。		
+ch06.S0.061	prologue_06_team	n			这些年咬牙撑下来的疲惫，这会儿全压在了他身上。		
+ch06.S0.062	prologue_06_team	thought	林彪悍	serious	[他们不是在赶我走。他们是怕再一次被希望骗得粉身碎骨。]		
+ch06.S1.000	prologue_06_team	n			我深吸一口带铁锈腥味的冷气。		
+ch06.S1.001	prologue_06_team	n			右手按在冰凉粗糙的水泥栏上。		
+ch06.S1.002	prologue_06_team	n			皮肉裂开的微痛让我彻底清醒。		
+ch06.S1.003	prologue_06_team	n			我左手拉开包，抽出黑皮记录簿。		
+ch06.S1.004	prologue_06_team	n			纸页被汗水雨水泡得发胀微卷。		
+ch06.S1.005	prologue_06_team	n			铅笔墨水交叠着深紫的油污。		
+ch06.S1.006	prologue_06_team	n			啪的一声，我把本子拍在长椅上。		
+ch06.S1.007	prologue_06_team	d	林彪悍	serious	李阿姨，我没有已经到账的专项扶持款。徐小姐给的黑卡是应急借款，考察费要凭票报销，都不能记作车站现有现金。先按手里实有的钱排活。		
+ch06.S1.008	prologue_06_team	d	林彪悍	serious	下河村的三十袋柴油，欠条在我包里，明早我去跟茶嫂核对升数，一分不少算清。		
+ch06.S1.009	prologue_06_team	d	林彪悍	serious	但你们嘴里的死线和烂摊子，我刚用两只脚，从零公里一步一步量到了十五公里！		
+ch06.S1.010	prologue_06_team	n			我直接翻开被磨破的第一页。		
+ch06.S1.011	prologue_06_team	n			指尖划过被雨水洇开的蓝墨水印。		
+ch06.S1.012	prologue_06_team	d	林彪悍	serious	三点五公里，老鸦峡背阴弯道。山洪把下侧道床淘空了一米二，道砟全被冲进排洪沟。		
+ch06.S1.013	prologue_06_team	d	林彪悍	serious	茶嫂装满茶筐的三轮车陷在旁边。我撬了六块护坡石垫轮子，系了红布做标记——那段路，禁试车！		
+ch06.S1.014	prologue_06_team	n			赵师傅手里的锤子猛然停住。		
+ch06.S1.015	prologue_06_team	n			他浑浊发黄的眼珠死死钉在本上。		
+ch06.S1.016	prologue_06_team	d	林彪悍	serious	五点二公里，外侧曲线轨距接头。两颗穿心螺栓松动脱扣，道夹板缝隙夹着碎石。		
+ch06.S1.017	prologue_06_team	d	林彪悍	serious	我卡了车棚那把木道尺，轨距读到一四三八，比标准值宽三毫米。不过那把木道尺没校准，我想请你复测。		
+ch06.S1.018	prologue_06_team	n			张工猛地跨步上前抢过记录簿。		
+ch06.S1.019	prologue_06_team	n			沾满老油泥的拇指在纸上摩挲。		
+ch06.S1.020	prologue_06_team	d	张工	shocked	知道这数不能直接用就好。那把尺挂在梁上太久，卡爪也松。明早先校尺，我带你回去复测。		
+ch06.S1.021	prologue_06_team	d	林彪悍	serious	好，我把一四三八标成待复测。接头松动是看得见的，换栓、复紧以后，再用校准的道尺重测一遍。		
+ch06.S1.022	prologue_06_team	d	林彪悍	serious	七点八公里处的排水平交管，被山体滑坡下来的碎石杂木堵了九成，上游积水已经漫过护坡脚！		
+ch06.S1.023	prologue_06_team	d	林彪悍	serious	十一点二公里，抽检五十根木枕，有十八根道钉孔严重滑丝朽烂，必须全部打入木塞重钉！		
+ch06.S1.024	prologue_06_team	d	林彪悍	serious	还有八公里茶山站！候车室锁着，时刻表都褪了色。墙上的钟停在四点五十，正好是表上那趟晚班的时刻。		
+ch06.S1.025	prologue_06_team	d	林彪悍	serious	到十五公里松桥，站牌歪了，侧线生满草，信号臂锈着抬不动。石墩上一个拄拐的老人问我：修好了，车还来不来？		
+ch06.S1.026	prologue_06_team	n			李阿姨抱着账本的手指发颤。		
+ch06.S1.027	prologue_06_team	n			算盘上的木珠子碰得细碎作响。		
+ch06.S1.028	prologue_06_team	d	李阿姨	worried	你在老鸦峡碰到茶嫂了？她们村压在仓里的那批秋茶，总得想办法运出去。		
+ch06.S1.029	prologue_06_team	d	林彪悍	serious	两千斤秋茶全压在下河村农户的仓房里！一斤毛茶市价八沙币，可沙能飞行器一斤运费敲诈三沙币！		
+ch06.S1.030	prologue_06_team	d	林彪悍	serious	剩五沙币根本连买化肥的本钱都不够！可要是我们用耕牛拖挂一节二十吨闷棚车皮，运费一斤只需两角钱！		
+ch06.S1.031	prologue_06_team	n			李阿姨飞快拨动算盘珠子。		
+ch06.S1.032	prologue_06_team	n			算盘发出清脆密集的碰撞声。		
+ch06.S1.033	prologue_06_team	d	李阿姨	shocked	先别按满车算。两千斤，每斤两角，这批只有四百沙币运费。车皮能装二十吨，不等于现在就有二十吨货。		
+ch06.S1.034	prologue_06_team	d	张工	serious	四百是收入，还没扣油钱。先把实货称出来，回程有没有货也问清，再算这一趟值不值得开；工钱和养护更不能漏。		
+ch06.S1.035	prologue_06_team	d	林彪悍	serious	复核期限只剩九天，霜降前这批茶也等着下山。我们先把车和线路检查过关，再把货运单交上去，不能光在这儿算一车满载的好账。		
+ch06.S1.036	prologue_06_team	n			赵师傅狠狠吸了一口冰凉夜气。		
+ch06.S1.037	prologue_06_team	n			他猛地将手里的铁皮桶顿在地上。		
+ch06.S1.038	prologue_06_team	n			半桶生锈道钉撞出金石般的脆响。		
+ch06.S1.039	prologue_06_team	d	赵师傅	serious	那就先把老鸦峡修实。淘空的地方得分层回填、起道、调平、捣固，排水也得通。没验过，车就不能上。		
+ch06.S1.040	prologue_06_team	d	张工	serious	喷油嘴喷孔积碳卡死，针阀座面磨损。原厂配件全国就剩平壤一家小厂还在做老翻新件，加急邮寄也至少要三天！		
+ch06.S1.041	prologue_06_team	d	张工	serious	今晚用松动剂泡透螺栓，明早必须拆泵。调校供油提前角得用千分表对准上止点前十五度，差一丝一毫发动机就得反喷！		
+ch06.S1.042	prologue_06_team	d	赵师傅	serious	五点二公里松动的那两颗穿心螺栓，明天得换新的弹簧垫圈。道夹板内侧全得刮干净铁锈涂黄油，不然温差一变钢轨就死拉断栓！		
+ch06.S1.043	prologue_06_team	n			站台上的空气彻底被点燃了。		
+ch06.S1.044	prologue_06_team	n			没有人再提工钱和去留。		
+ch06.S1.045	prologue_06_team	n			每个人眼里闪着被唤醒的工艺光芒。		
+ch06.S1.046	prologue_06_team	thought	林彪悍	serious	[把冰冷的数字拍在桌上，工匠的血就会自己滚烫起来。]		
+ch06.S1.047	prologue_06_team	d	老陈	serious	行了。队伍的底子被你重新盘活了。林彪悍，第一步落脚，你打算怎么开局？		
+ch06.S1.048	prologue_06_team	c			面对这支守线多年的队伍，我说——		
+ch06.S1.048.o1	prologue_06_team	opt			『先把机车的状态报给我。』		
+ch06.S1.048.o2	prologue_06_team	opt			『这四年，辛苦大家了。』		
+ch06.S2.000	prologue_06_team	loc			雾峰村车站 · 调度室 · 0km		
+ch06.S2.001	prologue_06_team	n			木桌中央亮着一盏玻璃罩子灯。		
+ch06.S2.002	prologue_06_team	n			灯光把七个人的影子拉长在斑驳墙上。		
+ch06.S2.003	prologue_06_team	d	林彪悍	serious	机车、工务、账目所有的底子，一五一十摆在桌面上。不讲客气废话，只讲技术指标！		
+ch06.S2.004	prologue_06_team	d	张工	serious	好小子，身上有你爷爷当年抓机务的狠劲！老陈，去把库房里那套德国手规抱出来！		
+ch06.S2.005	prologue_06_team	d	林彪悍	gentle	钱和车的事我来扛。但有一句话我必须先交代——这四年，辛苦大家了。谢谢你们没把铁轨拆了卖废铁。		
+ch06.S2.006	prologue_06_team	d	李阿姨	sad	你这孩子……一句话净往人心坎最软的地方扎。老站长要是地下有知，今晚也能合上眼了。		
+ch06.S2.007	prologue_06_team	n			大家紧紧围拢在方桌四角。		
+ch06.S2.008	prologue_06_team	n			老陈展开一张画满标记的纵断面图。		
+ch06.S2.009	prologue_06_team	n			图纸边缘被手指按得发黑。		
+ch06.S2.010	prologue_06_team	d	张工	serious	耕牛·改的核心是那台直列六缸柴油机。下午喷油泵螺栓锈死，是机舱顶盖渗漏进的雨水泡糟了丝牙。		
+ch06.S2.011	prologue_06_team	d	张工	serious	松动剂浸泡十二小时。明早六点整，我和王小弟搭手拆卸高压油泵总成。煤油清洗槽和黄铜丝刷连夜备齐。		
+ch06.S2.012	prologue_06_team	d	张工	serious	要是针阀卡死在针阀体里，得用热甘油煮透了拔，绝对不能拿钳子硬夹，夹出毛刺五百块就打水漂！		
+ch06.S2.013	prologue_06_team	d	张工	serious	润滑油箱里的底油停运以后就没放过，早就氧化成了黑沥青般的胶质。明早我和小王用柴油冲洗油底壳三遍，再注入新机油。		
+ch06.S2.014	prologue_06_team	d	王小弟	serious	高压油管接头的紫铜垫圈全发黑氧化了。我今晚拿喷灯全部重新退火烧红，水淬软化！		
+ch06.S2.015	prologue_06_team	d	张工	smile	行，退火后用细砂纸打磨平整。紫铜垫圈密封不严，两百个大气压喷出来全是柴油雾，见火星就得爆燃。		
+ch06.S2.016	prologue_06_team	n			张工从帆布包倒出两盒抛光膏。		
+ch06.S2.017	prologue_06_team	n			暗绿色的膏体泛着刺鼻松节油味。		
+ch06.S2.018	prologue_06_team	d	张工	serious	库房角落还有半罐德国金刚砂和零点五微米的氧化铬抛光膏。针阀要是拉了毛刺，只能用羊毛毡手工细细研磨。		
+ch06.S2.019	prologue_06_team	d	张工	serious	柴油粗滤清器那层四百目黄铜滤网，被劣质柴油胶质糊死了。小王，明早泡进热碱水里刷洗透亮！		
+ch06.S2.020	prologue_06_team	d	王小弟	serious	张师傅，连杆大头瓦和曲轴轴颈的间隙，明早用压铅丝法还是用厚薄规测？我把铅丝和游标千分尺都擦出来了！		
+ch06.S2.021	prologue_06_team	d	张工	smile	用压铅丝！厚度压到零点零八到零点一二毫米才算合格。臭小子，这几年没少偷翻我的机车检修笔记。		
+ch06.S2.022	prologue_06_team	d	王小弟	excited	我今晚就搬被褥住机车棚！煤油和干净棉纱我都码在台虎钳旁边了，明早五点半我就把油盆打满，绝不耽搁一分钟！		
+ch06.S2.023	prologue_06_team	n			赵师傅把断道钉在桌角排成一排。		
+ch06.S2.024	prologue_06_team	d	赵师傅	serious	工务这边，三点五公里的淘空面是最扎手的硬骨头。单靠人力搬石头，重车一压道床就得下沉脱轨。		
+ch06.S2.025	prologue_06_team	d	赵师傅	serious	车站废弃的二号装卸线旁边，还存着两翻斗车的旧青石道砟。明天我和站长推平板车去运，手推三趟够填饱底子。		
+ch06.S2.026	prologue_06_team	d	赵师傅	serious	烂木枕的道钉孔不能光塞木塞。得用松木烘干切方，抹上热沥青砸进孔里，再拿洋镐把枕木间距调匀到六十公分。		
+ch06.S2.027	prologue_06_team	d	赵师傅	serious	老鸦峡那段绝不能省石料。道砟颗粒得卡在二十到四十毫米，细碎石一轧就成泥，大块石捣不进枕底。		
+ch06.S2.028	prologue_06_team	d	赵师傅	serious	捣固的时候必须两人对向站立，镐尖同时朝枕木底下扒砟，打实承轨槽底下八十厘米的基床，绝对不能空捣！		
+ch06.S2.029	prologue_06_team	d	林彪悍	serious	明白。起道机顶升两厘米后，先捣固两头的八根枕木锁定标高，再中间逐根排查，保证两股钢轨水平误差控制在两毫米以内。		
+ch06.S2.030	prologue_06_team	d	林彪悍	serious	五点二公里的弯道接头螺栓，明早带上重型棘轮套筒和加长力臂杆，我跟您逐根复紧到四百牛米标准扭矩。		
+ch06.S2.031	prologue_06_team	n			李阿姨飞快翻开红蓝双色记账簿。		
+ch06.S2.032	prologue_06_team	n			算盘珠子在她粗糙指尖下噼啪翻飞。		
+ch06.S2.033	prologue_06_team	d	李阿姨	serious	账上这两千零四十沙币，我当场批成两份。五百沙币先预留作备件款，等明早检查完再拍板。		
+ch06.S2.034	prologue_06_team	d	李阿姨	serious	剩下一千五百四十，打入保险柜封存。这是首发试车要用的柴油定金，谁敢动我跟谁拼命。		
+ch06.S2.035	prologue_06_team	d	李阿姨	serious	站台电费我明天拿自家的老母鸡去抵给供电所所长，先保住调度室的信号电源不被断电。		
+ch06.S2.036	prologue_06_team	d	小芳	serious	臂板信号机的拉线我试过，重锤配重完好。断线时臂板会自动靠自重下落到水平停车位，重力防溜逸保护有效！		
+ch06.S2.037	prologue_06_team	d	小芳	smile	我负责把进站信号机和预告信号机的灯罩拆下来彻底用酒精洗净！还有客票……我今晚手写首批二十四张试运行乘车证！		
+ch06.S2.038	prologue_06_team	d	小芳	excited	油墨印章和毛笔全在抽屉里锁着！盖上‘雾峰站试运行客票’的大红方印，二十四张，一张不少！		
+ch06.S2.039	prologue_06_team	n			每个人的任务像铁枕木密密排开。		
+ch06.S2.040	prologue_06_team	n			四道工序咬合得严丝合缝没有空隙。		
+ch06.S2.041	prologue_06_team	d	李阿姨	calm	二十年前老站长立的规章，全在这铁皮夹子里。安全第一、预防为主，这八个大字，谁也不能砸了招牌。		
+ch06.S2.042	prologue_06_team	d	老陈	smile	当年雾峰线通车前的队伍，也是在这张桌子上排班的。人还在，铁道的章程就倒不了。		
+ch06.S2.043	prologue_06_team	thought	林彪悍	serious	[七个人，一条命。散落四年的零件终于重新组装成了机器。]		
+ch06.S3.000	prologue_06_team	loc			雾峰村车站 · 机车棚前 · 0km		
+ch06.S3.001	prologue_06_team	n			小会开完时已是深夜十一点四十分。		
+ch06.S3.002	prologue_06_team	n			张工和赵师傅披着旧棉大衣走下台阶。		
+ch06.S3.003	prologue_06_team	n			厚底胶鞋踩在道砟上发出扎实喀嚓声。		
+ch06.S3.004	prologue_06_team	n			夜雾在站台边缘缓缓沉降。		
+ch06.S3.005	prologue_06_team	n			车棚门口的小煤炉里燃着暗红柴炭。		
+ch06.S3.006	prologue_06_team	n			架在炉上的黑铝锅咕嘟咕嘟冒白气。		
+ch06.S3.007	prologue_06_team	d	老陈	normal	手上的伤口别沾生水。自己拿筷子，面煮透了。		
+ch06.S3.008	prologue_06_team	n			老陈用漏勺捞出大半碗挂面。		
+ch06.S3.009	prologue_06_team	n			面条上淋着老酱油和熟猪油。		
+ch06.S3.010	prologue_06_team	n			面汤里还卧着半只腌透的咸鸭蛋。		
+ch06.S3.011	prologue_06_team	n			老黑狗迈着步子凑过来。		
+ch06.S3.012	prologue_06_team	n			把热乎乎的下巴轻轻搭在我膝盖上。		
+ch06.S3.013	prologue_06_team	d	林彪悍	gentle	黑子，坐好。老陈说了，你晚上已经吃过碎苞谷饭了。		
+ch06.S3.014	prologue_06_team	n			我偷偷挑出两根挂面塞进它嘴里。		
+ch06.S3.015	prologue_06_team	n			黑狗喉咙里发出舒服的呼噜声。		
+ch06.S3.016	prologue_06_team	n			粗尾巴把地上的尘土扫得沙沙响。		
+ch06.S3.017	prologue_06_team	d	老陈	smile	你刚才站在站台上跟他们对峙那副做派……跟你爷爷当年一模一样。		
+ch06.S3.018	prologue_06_team	d	林彪悍	curious	我爷爷当年也像我一样，把话说得这么不留退路？		
+ch06.S3.019	prologue_06_team	d	老陈	smile	不是不留退路。是他眼里除了两条铁轨和车头，根本装不下虚头巴脑的客套。		
+ch06.S3.020	prologue_06_team	d	老陈	calm	当年分局开着高级轿车来摘雾峰站的铜牌。你爷爷也是一个人，把道尺和欠款单直接摔在人家轿车前盖上。		
+ch06.S3.021	prologue_06_team	d	老陈	gentle	他当时手也死死插在工作服兜里，生怕别人看出来他掌心里全是冷汗。		
+ch06.S3.022	prologue_06_team	n			老陈眼里映着小煤炉的炭火。		
+ch06.S3.023	prologue_06_team	n			火星在铁盖缝隙里噼啪爆响。		
+ch06.S3.024	prologue_06_team	d	老陈	calm	你爷爷当年常说，机车是有骨头有心跳的活物。进气门漏气像人哮喘，轴瓦拉伤像骨头摩擦。		
+ch06.S3.025	prologue_06_team	d	老陈	gentle	他手里总攥着一根半米长的圆钢听音棒。一头顶在气缸盖螺栓上，一头贴紧耳骨，闭着眼睛听气门脚敲击。		
+ch06.S3.026	prologue_06_team	d	老陈	smile	哪一缸提前喷了千分之三秒，哪一缸机油压力差了半个压，他一耳朵就能给你切出来。		
+ch06.S3.027	prologue_06_team	d	老陈	gentle	当年他手把手教我摸高压油管脉动。指肚搭在铜管上，油管嘭嘭嘭地跳，跟摸大动脉一模一样。		
+ch06.S3.028	prologue_06_team	d	林彪悍	gentle	我小时候坐在他膝盖上，他也握着我的手摸过管子。那时候只觉得烫，不懂那是在摸命。		
+ch06.S3.029	prologue_06_team	n			老黑狗舒舒服服地伸了个长懒腰。		
+ch06.S3.030	prologue_06_team	n			下巴沉甸甸地陷在棉裤褶皱里。		
+ch06.S3.031	prologue_06_team	n			老陈从贴胸口袋里摸出一块老怀表。		
+ch06.S3.032	prologue_06_team	n			镀镍表壳磨得露出底下微黄的黄铜。		
+ch06.S3.033	prologue_06_team	n			拧动发条发出清脆匀速的嗒嗒声。		
+ch06.S3.034	prologue_06_team	d	老陈	calm	这是你爷爷开第一趟车下线时局里发的。二十年前他就挂在驾驶室操纵台正中间，每天看它发车。		
+ch06.S3.035	prologue_06_team	d	老陈	gentle	这只表搁在抽屉里四年，早停了。今晚听完你的话，我取出来擦净、上了发条。听听，又走起来了。		
+ch06.S3.036	prologue_06_team	n			秒针在表盘上稳稳跳动着。		
+ch06.S3.037	prologue_06_team	n			每一声都像铁道轮对撞击轨缝。		
+ch06.S3.038	prologue_06_team	d	老陈	calm	二〇六八年那场大暴雪，停机坪结冰，沙能飞行器一架架停了。山里的物资，全等着地面运输。		
+ch06.S3.039	prologue_06_team	d	老陈	calm	全县唯一的救命药和救灾口粮，全靠你爷爷领着我们，开着耕牛顶着两米深的雪崩堆硬生生撞过去的。		
+ch06.S3.040	prologue_06_team	d	老陈	gentle	机车不撒谎。你对它省一颗螺栓的功夫，它就会在大坡道上停下来瞪着你；你把它当命，它就能在绝路上替你撞开一条生路。		
+ch06.S3.041	prologue_06_team	n			我握着筷子的手微微一僵。		
+ch06.S3.042	prologue_06_team	n			低头看向自己右手缠着的粗布。		
+ch06.S3.043	prologue_06_team	n			布条里层确实早被冷汗洇得湿透冰凉。		
+ch06.S3.044	prologue_06_team	d	林彪悍	calm	……您怎么一眼就看穿了？		
+ch06.S3.045	prologue_06_team	d	老陈	smile	因为他是我师傅，我是你亲师叔。换洗的工装和胶鞋在里屋条凳上，赶紧回去睡四个小时。		
+ch06.S3.046	prologue_06_team	n			我端起大粗瓷碗呼噜呼噜吸完面汤。		
+ch06.S3.047	prologue_06_team	n			滚烫的油脂和面香直冲胃里。		
+ch06.S3.048	prologue_06_team	n			疲惫的四肢百骸终于泛起一阵暖意。		
+ch06.S3.049	prologue_06_team	n			夜风掠过车棚瓦楞铁皮。		
+ch06.S3.050	prologue_06_team	n			吹散了一整天的焦铁味。		
+ch06.S3.051	prologue_06_team	n			耕牛·改庞大沉稳的铸铁车头。		
+ch06.S3.052	prologue_06_team	n			静静伏在幽暗冷冽的月光下。		
+ch06.S3.053	prologue_06_team	thought	林彪悍	serious	[明早六点，车棚。先把泵拆开，把喷油嘴取出来。]		
+ch07.S0.000	prologue_07_first_repair	n			Day 6 早晨		
+ch07.S0.001	prologue_07_first_repair	loc			雾峰村车站 · 铁路机车棚 · 0km		
+ch07.S0.002	prologue_07_first_repair	n			晨雾从破损的瓦楞铁皮缝钻进来。		
+ch07.S0.003	prologue_07_first_repair	n			机库里弥漫着重油与铁锈的腥气。		
+ch07.S0.004	prologue_07_first_repair	n			冰冷的晨光斜照在铸铁车体上。		
+ch07.S0.005	prologue_07_first_repair	n			耕牛·改庞大的柴油机舱已被掀开。		
+ch07.S0.006	prologue_07_first_repair	n			直列六缸庞大的铸铁缸盖横亘在眼前。		
+ch07.S0.007	prologue_07_first_repair	n			三号气缸顶部的喷油嘴座孔周围发黑。		
+ch07.S0.008	prologue_07_first_repair	n			焦结的积碳像黑沥青把法兰死死咬住。		
+ch07.S0.009	prologue_07_first_repair	n			高压油管接头早已被油泥糊成死疙瘩。		
+ch07.S0.010	prologue_07_first_repair	n			张工双手攥着一把三尺长的大力撬杠。		
+ch07.S0.011	prologue_07_first_repair	n			撬杠尖端狠狠顶在喷油嘴压板缝隙里。		
+ch07.S0.012	prologue_07_first_repair	d	张工	serious	小王，拿八磅大锤垫上紫铜棒！听我号子，我数一二三，你往死里砸！		
+ch07.S0.013	prologue_07_first_repair	d	张工	serious	锈死了，不拿震劲把丝牙震松，拿神仙水泡三天它也纹丝不动！		
+ch07.S0.014	prologue_07_first_repair	n			老陈提着煤油壶从车梯上猛冲过来。		
+ch07.S0.015	prologue_07_first_repair	n			布满老茧的大手一把按住大锤锤柄。		
+ch07.S0.016	prologue_07_first_repair	d	老陈	angry	老张，住手！这一锤子要是偏了半寸，整面合金铸铁缸盖当场就得炸裂！		
+ch07.S0.017	prologue_07_first_repair	d	老陈	serious	这面缸盖是六十年代的高镍蠕墨铸铁，最怕剧烈冲击！要是震裂了缸壁水套，冷却水倒灌进燃烧室，这台机车当场就得报废！		
+ch07.S0.018	prologue_07_first_repair	d	老陈	serious	二十年前老站长立的规矩你全就着酒喝了？柴油机精密偶件，严禁生拉硬砸！		
+ch07.S0.019	prologue_07_first_repair	d	张工	serious	规矩是死的人是活的！霜降前这批茶等不得，今天连喷油嘴都拔不下来，后头还有六个缸的调校！		
+ch07.S0.020	prologue_07_first_repair	d	张工	serious	下河村的茶农天天在路口巴望，难道我们天天守在机棚里给死铁烧香磕头？		
+ch07.S0.021	prologue_07_first_repair	n			两个加起来一百二十岁的老人脸红脖子粗。		
+ch07.S0.022	prologue_07_first_repair	n			大力撬杠在铸铁机体上压得吱呀作响。		
+ch07.S0.023	prologue_07_first_repair	n			冰冷的火星在晨光中微微迸溅。		
+ch07.S0.024	prologue_07_first_repair	n			王小弟举着八磅铁锤僵在半空。		
+ch07.S0.025	prologue_07_first_repair	n			额头上渗出大颗大颗的冷汗。		
+ch07.S0.026	prologue_07_first_repair	d	王小弟	worried	张师傅……陈叔……这锤子我到底砸还是不砸啊？手心全是冷汗，快拿不住了！		
+ch07.S0.027	prologue_07_first_repair	d	岁月	serious	检测到高压共振与违规冲击风险！机体材质存在低温脆断可能，建议立即终止蛮力拆卸！		
+ch07.S0.028	prologue_07_first_repair	d	岁月	normal	铭牌读到了。NF-5K，耕牛·改。旧档案里那台 NF-5027 是它的前任。		
+ch07.S0.029	prologue_07_first_repair	d	岁月	normal	它从 NF-5 改制而来，驾驶和客运空间合在一节头车里。档案上的标称轴功率是两千千瓦。		
+ch07.S0.030	prologue_07_first_repair	d	岁月	excited	二〇五五年配属雾峰村线，是林站长任内接回来的车。		
+ch07.S0.031	prologue_07_first_repair	d	林彪悍	serious	岁月，停下参数播报。现场不是历史课堂，现在的问题是三号缸喷油器法兰与座孔被热结焦咬死。		
+ch07.S0.032	prologue_07_first_repair	d	张工	serious	大学生，光嘴上知道结焦有什么用？喷油嘴座孔深度一百八十毫米，丝牙在最底下，拿什么夹？		
+ch07.S0.033	prologue_07_first_repair	d	林彪悍	serious	座孔铸铁与铜套的热膨胀系数相差三倍。张工，把撬杠卸下来，用煤油喷灯对缸盖外围座孔均匀烘烤五分钟。		
+ch07.S0.034	prologue_07_first_repair	d	林彪悍	serious	王小弟，把冰镇的柴油浸湿棉纱，包裹在喷油嘴芯轴上。内冷外热，温差一旦拉开四十度，收缩间隙就会出现！		
+ch07.S0.035	prologue_07_first_repair	n			张工手里的撬杠猛地一滞。		
+ch07.S0.036	prologue_07_first_repair	n			他眯缝着眼睛上下打量着我。		
+ch07.S0.037	prologue_07_first_repair	d	张工	curious	热胀冷缩倒是个门道……小王，拿喷灯来！火头调蓝，别燎着橡胶密封圈！		
+ch07.S0.038	prologue_07_first_repair	n			王小弟麻利地搬来铜皮喷灯。		
+ch07.S0.039	prologue_07_first_repair	n			泵动加压气筒发出滋滋的进气声。		
+ch07.S0.040	prologue_07_first_repair	n			蓝色的火焰沿着铸铁基座缓缓游走。		
+ch07.S0.041	prologue_07_first_repair	n			冰凉的柴油棉纱腾起刺鼻的白雾。		
+ch07.S0.042	prologue_07_first_repair	n			金属受热发出极轻微的噼啪裂响。		
+ch07.S0.043	prologue_07_first_repair	n			我将自制的丝杠拉拔器旋入压板螺孔。		
+ch07.S0.044	prologue_07_first_repair	n			双臂抵住气门摇臂座的坚实铸铁边缘。		
+ch07.S0.045	prologue_07_first_repair	n			我在摇臂座支点垫上厚毛毡。		
+ch07.S0.046	prologue_07_first_repair	n			游标卡尺卡在拉拔器顶丝的螺母端面。		
+ch07.S0.047	prologue_07_first_repair	d	林彪悍	serious	每旋紧四分之一圈，停顿十秒钟，等待炭化胶质在微观上受拉破裂！		
+ch07.S0.048	prologue_07_first_repair	n			加力杆在掌心里沉甸甸地发紧。		
+ch07.S0.049	prologue_07_first_repair	n			皮肉上的裂口被铁柄硌得生疼。		
+ch07.S0.050	prologue_07_first_repair	n			我屏住呼吸，双臂腰腹同时发力。		
+ch07.S0.051	prologue_07_first_repair	n			螺纹受力发出极其沉闷的摩擦声。		
+ch07.S0.052	prologue_07_first_repair	n			伴随着一声清脆的嗒声。		
+ch07.S0.053	prologue_07_first_repair	n			咬死的喷油嘴总成向上拔起两公分。		
+ch07.S0.054	prologue_07_first_repair	n			黏稠发黑的焦油顺着缝隙慢慢淌出。		
+ch07.S0.055	prologue_07_first_repair	n			浓重的硫磺焦糊味在空气中弥漫开来。		
+ch07.S0.056	prologue_07_first_repair	d	老陈	smile	拔出来了！真拔出来了！好小子，这手温差借力法比大锤管用多了！		
+ch07.S0.057	prologue_07_first_repair	d	张工	smile	哼，算你小子有两把刷子。不过拔出来只是第一步，看看这针阀，黑得跟从煤堆里刨出来一样。		
+ch07.S0.058	prologue_07_first_repair	n			喷油嘴总成被小心翼翼平放在长凳上。		
+ch07.S0.059	prologue_07_first_repair	n			喷孔表面结着一层坚硬的深褐色油泥。		
+ch07.S0.060	prologue_07_first_repair	n			喷孔小得几乎肉眼难辨。		
+ch07.S0.061	prologue_07_first_repair	n			王小弟凑上前，眼睛瞪得滚圆。		
+ch07.S0.062	prologue_07_first_repair	d	王小弟	curious	张师傅，这上面总共有几个喷眼啊？我拿手电照着怎么一个孔都看不见？		
+ch07.S0.063	prologue_07_first_repair	d	张工	serious	看不见就对了！原厂六孔喷嘴，每个孔径才零点二五毫米，跟头发丝差不多粗细！		
+ch07.S0.064	prologue_07_first_repair	d	张工	serious	常年烧重柴油，劣质油里的沥青质全烤在喷孔上了，不彻底通透，发动机一打火就得呛死。		
+ch07.S0.065	prologue_07_first_repair	d	老陈	serious	高压油管里两百个大气压的油锤，每分钟一千两百次冲击，喷孔哪怕堵了半个，缸温瞬间就会冲上六百度！		
+ch07.S0.066	prologue_07_first_repair	d	老陈	gentle	你爷爷当年常说，听柴油机声音就像听老母亲喘气。哪一处杂音不顺，就是哪个部件在哭！		
+ch07.S0.067	prologue_07_first_repair	d	岁月	serious	补充数据：NF-5 采用开式直喷燃烧室与浅ω型活塞顶，对燃油雾化细度极其敏感。喷雾不匀将直接导致拉缸！		
+ch07.S0.068	prologue_07_first_repair	n			我伸手轻轻触碰冰凉坚硬的金属外壳。		
+ch07.S0.069	prologue_07_first_repair	n			外壳上还印着模糊的红星厂徽。		
+ch07.S0.070	prologue_07_first_repair	n			历经风霜的钢印依旧坚毅清晰。		
+ch07.S0.071	prologue_07_first_repair	d	老陈	gentle	这是当年的好钢材，耐磨耐温。当年你爷爷为了挑这批机车，在厂里盯了整整三个月。		
+ch07.S0.072	prologue_07_first_repair	d	老陈	calm	走，进里屋检修台。那张木桌平稳，没风沙，咱们细细把脉。		
+ch07.S0.073	prologue_07_first_repair	thought	林彪悍	serious	[真正的硬仗在后头。孔径零点二五毫米，容不得半点砂砾。]		
+ch07.S1.000	prologue_07_first_repair	loc			雾峰村车站 · 检修工位 · 0km		
+ch07.S1.001	prologue_07_first_repair	n			破旧的工作台上铺着一块干净白帆布。		
+ch07.S1.002	prologue_07_first_repair	n			喷油嘴的零件被逐一拆解摊开。		
+ch07.S1.003	prologue_07_first_repair	n			针阀体、调压弹簧、顶杆与锁紧螺母。		
+ch07.S1.004	prologue_07_first_repair	n			每一枚零件都沾着厚重的胶质污垢。		
+ch07.S1.005	prologue_07_first_repair	n			晨光照亮了零件表面极细的拉痕。		
+ch07.S1.006	prologue_07_first_repair	n			老陈从柜子底下拖出一只古旧红木箱。		
+ch07.S1.007	prologue_07_first_repair	n			箱角包着厚厚的黄铜护角。		
+ch07.S1.008	prologue_07_first_repair	n			铜锁已经被岁月磨成了温润哑光。		
+ch07.S1.009	prologue_07_first_repair	n			箱盖顶端刻着两行苍劲工整的行楷。		
+ch07.S1.010	prologue_07_first_repair	n			差之一厘失之千里，心存敬畏方驭铁龙。		
+ch07.S1.011	prologue_07_first_repair	d	老陈	gentle	这是你爷爷当年在机务段用的工具箱。他走后这四年，我隔些日子就擦一回，量具也按册子保养着。今天拿出来，你跟张工一起用。		
+ch07.S1.012	prologue_07_first_repair	d	老陈	calm	里面有全套千分表、原厂外径千分尺、还有六根德国进口的针阀通孔通针。今天交给你。		
+ch07.S1.013	prologue_07_first_repair	n			沉甸甸的铜钥匙落入我的掌心。		
+ch07.S1.014	prologue_07_first_repair	n			钥匙牙口被汗水浸润得冰凉滑腻。		
+ch07.S1.015	prologue_07_first_repair	n			我咔哒一声拧开黄铜锁扣。		
+ch07.S1.016	prologue_07_first_repair	n			箱内绒布凹槽里整齐码放着银白仪器。		
+ch07.S1.017	prologue_07_first_repair	n			底衬下压着发黄的机车检修记录手迹。		
+ch07.S1.018	prologue_07_first_repair	d	老陈	gentle	你看这页，你爷爷当年写的：针阀偶件间隙三微米，手指沾柴油轻推，滑落如抽丝，方为上品。		
+ch07.S1.019	prologue_07_first_repair	d	老陈	calm	柴油机是铁打的肺叶。气门是它的喉咙，油泵是它的心脏，而喷油嘴就是它的声带。声带哑了，整条铁路就没声没息了。		
+ch07.S1.020	prologue_07_first_repair	d	老陈	calm	那年大暴雨，铁轨泡在水里三天。你爷爷先带人清沟、复查线路，我和张工在棚里清洗、试验喷油器。车和路都查过了，才放那趟粮车走。		
+ch07.S1.021	prologue_07_first_repair	d	张工	smile	那年头手头紧，全凭两手和半罐研磨膏，手指肚磨破皮被柴油杀得钻心疼。可车头一响，谁也不觉得疼了。		
+ch07.S1.022	prologue_07_first_repair	n			晨风吹拂着发黄的纸页。		
+ch07.S1.023	prologue_07_first_repair	n			蓝色墨水字迹力透纸背。		
+ch07.S1.024	prologue_07_first_repair	n			每一笔都是当年老工匠的誓言。		
+ch07.S1.025	prologue_07_first_repair	n			银白千分尺在掌心沉甸甸发烫。		
+ch07.S1.026	prologue_07_first_repair	n			王小弟气喘吁吁地从站房跑过来。		
+ch07.S1.027	prologue_07_first_repair	n			手里捏着一张李阿姨盖章的蓝格账单。		
+ch07.S1.028	prologue_07_first_repair	d	王小弟	serious	站长，李阿姨让我把这张财务底单送来。她说站里的账本全记在上面，每一分钱都要见响动！		
+ch07.S1.029	prologue_07_first_repair	d	林彪悍	serious	陈叔，做决定前，我们必须把人、钱、料、技的底子全盘清点一次。一步走错，全盘皆输。		
+ch07.S1.030	prologue_07_first_repair	d	老陈	serious	你说，我听着。机务的大主意你拿。		
+ch07.S1.031	prologue_07_first_repair	d	林彪悍	serious	第一是人。张工是退休机车检修技师，有二十八年维修经验，但他右腕有风湿老伤；小王手脚麻利，没做过精密偶件检查；我懂理论，实车经验却远不如张工。		
+ch07.S1.032	prologue_07_first_repair	d	张工	serious	老陈，我虽然手抖，但老辈子的手感还在。只要有人在旁边看表对刻度，我张某人绝对不拖后腿。		
+ch07.S1.033	prologue_07_first_repair	d	林彪悍	serious	第二是钱。李阿姨昨晚核过账，站里可用现金总共两千零四十沙币。这是我们全站唯一的活命钱。		
+ch07.S1.034	prologue_07_first_repair	d	老陈	serious	除去试运行必须预留的一千五百沙币柴油定金，我们最多只能动用五百沙币的机动费。多花一分，试车时连油都加不起！		
+ch07.S1.035	prologue_07_first_repair	d	林彪悍	serious	第三是料。沙能公司垄断交通后，传统机械备件厂全部停产或转产飞行器气阀。平壤铁道二厂是全国唯一保留老针阀翻新模具的小厂，副厂件加急邮寄就要五百沙币，至少要等整整三天。		
+ch07.S1.036	prologue_07_first_repair	d	林彪悍	serious	如果本地修复，我们手里只有半罐氧化铬抛光膏、六根通针，以及老陈箱子里这套祖传量具。		
+ch07.S1.037	prologue_07_first_repair	d	林彪悍	serious	第四是技。喷雾锥角一百五十度，喷孔孔径零点二五毫米。针阀座面密封带宽度零点二毫米，跳动误差不能超过三微米！启喷压力必须精准咬死在一百八十个大气压！		
+ch07.S1.038	prologue_07_first_repair	d	林彪悍	serious	油雾颗粒索特平均直径必须小于二十五微米。油滴稍微粗一点，燃油就会喷射在冷气缸套内壁上，把润滑油膜冲刷干净造成恶性拉缸！		
+ch07.S1.039	prologue_07_first_repair	d	张工	serious	说得全在点子上！先查这套高压柱塞泵，再测喷油器的启喷压力和回油量。漏不漏、雾化好不好，都得在台架上看清楚，不能等上了坡才发现供油不对！		
+ch07.S1.040	prologue_07_first_repair	d	老陈	serious	下河村的秋茶经不起折腾。霜降前如果车头挂不上闷棚车，茶农辛苦一年的血汗就全泡汤了。		
+ch07.S1.041	prologue_07_first_repair	d	老陈	gentle	当年老站长在冰天雪地里听机车心跳，半边耳朵冻起厚厚冻疮。今天咱们把这份基业重新立起来，绝不能砸在手里！		
+ch07.S1.042	prologue_07_first_repair	n			冰冷的指标像一副副沉重的钢轨夹板。		
+ch07.S1.043	prologue_07_first_repair	n			房间里的呼吸声渐渐变得清晰粗重。		
+ch07.S1.044	prologue_07_first_repair	n			王小弟紧张地攥着棉纱不敢出声。		
+ch07.S1.045	prologue_07_first_repair	n			老陈将那柄发亮的红木箱钥匙推进我手里。		
+ch07.S1.046	prologue_07_first_repair	d	老陈	gentle	彪悍，林站长当年常讲：当机务段长，不是坐在办公室里签派发车单，是要在死局里替所有人掌舵。		
+ch07.S1.047	prologue_07_first_repair	d	老陈	serious	这副喷油嘴到底怎么修，五百块钱怎么花，全车人的前途和耕牛的命，今天由你拍板！		
+ch07.S1.048	prologue_07_first_repair	n			我握紧那柄温润沉重的黄铜钥匙。		
+ch07.S1.049	prologue_07_first_repair	n			指尖仿佛还残留着老站长当年的体温。		
+ch07.S1.050	prologue_07_first_repair	thought	林彪悍	serious	[把舵打死，就没有回头的浪。每一分力都要用在刀刃上。]		
+ch07.S1.051	prologue_07_first_repair	c			柴油机喷油系统已拆开，先怎么处理？		
+ch07.S1.051.o1	prologue_07_first_repair	opt			请张工主修，先检查库存里的备用偶件		
+ch07.S1.051.o2	prologue_07_first_repair	opt			我来手工研磨，把钱留作柴油储备		
+ch07.S1.051.o3	prologue_07_first_repair	opt			先用热煤油高压浸洗，再检查偶件损伤		
+ch07.S2.000	prologue_07_first_repair	loc			雾峰村车站 · 零件洗涤工位 · 0km		
+ch07.S2.001	prologue_07_first_repair	n			决定既下，机车棚内的空气骤然紧绷。		
+ch07.S2.002	prologue_07_first_repair	n			煤油盆在方桌正中冒着淡淡的油烟。		
+ch07.S2.003	prologue_07_first_repair	n			三只白瓷托盘里整齐码放着清洗工具。		
+ch07.S2.004	prologue_07_first_repair	n			张工戴上厚皮手套，眼神沉稳如铁。		
+ch07.S2.005	prologue_07_first_repair	d	张工	serious	小王，把柜子里封存的那副原厂备用偶件拿来。先上试验台，过了试验才准装车。		
+ch07.S2.006	prologue_07_first_repair	d	张工	serious	老陈，把煤油槽升温到六十度！在备用偶件试验的时候，我先把喷油器壳体内部的积碳和结焦油泥全掏干净！		
+ch07.S2.007	prologue_07_first_repair	d	张工	serious	这副是上次检修留下的。封存记录还在，型号也对得上，但光看记录不算数。		
+ch07.S2.008	prologue_07_first_repair	n			王小弟从柜里取出油纸包，双手捧到试验台上。		
+ch07.S2.009	prologue_07_first_repair	n			油纸揭开，露出完整的配对编号。		
+ch07.S2.010	prologue_07_first_repair	d	岁月	smile	备用件出库已登记。本次没有外购支出，预留款仍在账上。		
+ch07.S2.011	prologue_07_first_repair	d	岁月	excited	备用偶件通过试验台的密封与雾化检查，可以装车复测。		
+ch07.S2.012	prologue_07_first_repair	n			张工用铜刮刀小心刮除壳体缝隙油垢。		
+ch07.S2.013	prologue_07_first_repair	n			六十度的热煤油蒸腾起呛鼻的青烟。		
+ch07.S2.014	prologue_07_first_repair	d	张工	smile	备用件能用。装好以后还得过整机检查，坡上能不能跑，不能现在打包票。		
+ch07.S2.015	prologue_07_first_repair	d	老陈	smile	好！张师傅出手，稳妥如磐石。小王，跟着你师傅把壳体座孔刷出镜面光泽来！		
+ch07.S2.016	prologue_07_first_repair	n			我解开袖口扣子，挽起深蓝工装袖管。		
+ch07.S2.017	prologue_07_first_repair	n			我从红木箱取出那支进口的千分表。		
+ch07.S2.018	prologue_07_first_repair	d	林彪悍	serious	我来处理旧偶件。先做检查，能修再修，不能修就请张工换上合格备件。		
+ch07.S2.019	prologue_07_first_repair	d	老陈	worried	彪悍，这副偶件得按原配编号放好。先让张工看座面，别拿抛光膏上来就磨。		
+ch07.S2.020	prologue_07_first_repair	d	林彪悍	serious	我在学校做过类似的检查，但实车我经验少。您帮我记读数，张工看着，超出修复范围就停手。		
+ch07.S2.021	prologue_07_first_repair	n			我把两只零件的配对编号抄进记录簿。		
+ch07.S2.022	prologue_07_first_repair	n			清洗后的针阀和阀体分放在同一只托盘里。		
+ch07.S2.023	prologue_07_first_repair	n			张工挪过台灯，把放大镜压低。		
+ch07.S2.024	prologue_07_first_repair	n			我沿着他指的方向缓缓转动零件。		
+ch07.S2.025	prologue_07_first_repair	n			一道暗痕转到灯下，我停住，没有再往下磨。		
+ch07.S2.026	prologue_07_first_repair	n			张工用指甲隔着棉纱点了点那处痕迹。		
+ch07.S2.027	prologue_07_first_repair	n			换个角度，才看清那是没洗净的附着物。		
+ch07.S2.028	prologue_07_first_repair	n			他让我重新清洗，再检查配合面有没有拉伤。		
+ch07.S2.029	prologue_07_first_repair	n			我用洗液冲净通道，把残液接进废液盘。		
+ch07.S2.030	prologue_07_first_repair	n			黑色碎屑落到盘底，露出下面的金属光泽。		
+ch07.S2.031	prologue_07_first_repair	n			新铺的白纸上，我重新摆好这副旧偶件。		
+ch07.S2.032	prologue_07_first_repair	d	老陈	gentle	你爷爷以前也这样。看不清就再洗一遍，不拿猜的往车上装。		
+ch07.S2.033	prologue_07_first_repair	d	林彪悍	smile	清洗完滑动顺了，配合面也没看到拉伤。张工，下一步上台架吗？		
+ch07.S2.034	prologue_07_first_repair	d	岁月	excited	清洗和外观检查已记录。是否留用，还要看台架上的密封、回油和雾化结果。		
+ch07.S2.035	prologue_07_first_repair	d	岁月	smile	本次没有外购偶件。清洗耗材照实登记，不能因为用了旧件就记作零成本。		
+ch07.S2.036	prologue_07_first_repair	d	张工	smile	台架也过关了，这副旧件可以留用。记住，是试验结果过关，不是擦亮了就算修好。备用件重新封存。		
+ch07.S2.037	prologue_07_first_repair	n			我端平清洗托盘，把两副偶件分开放好。		
+ch07.S2.038	prologue_07_first_repair	d	林彪悍	serious	先检查旧件。清洗后再看座面，能继续用的留用，损伤超限就换合格备件。		
+ch07.S2.039	prologue_07_first_repair	d	张工	serious	对，先看伤情再下药！小王，把手动高压试验泵搬过来，加满轻柴油！		
+ch07.S2.040	prologue_07_first_repair	n			喷油器被固定在铸铁试验台夹具上。		
+ch07.S2.041	prologue_07_first_repair	n			热煤油浸泡透析溶解掉了表面硬垢。		
+ch07.S2.042	prologue_07_first_repair	n			压力表指针伴随着手柄压下猛烈跳动。		
+ch07.S2.043	prologue_07_first_repair	n			一百八十个大气压瞬间建立！		
+ch07.S2.044	prologue_07_first_repair	n			空气中爆发出清脆的高频蜂鸣声。		
+ch07.S2.045	prologue_07_first_repair	n			六道雾化油束犹如银白伞花骤然喷开。		
+ch07.S2.046	prologue_07_first_repair	n			试验罩内的白滤纸留下六团匀润的油印。		
+ch07.S2.047	prologue_07_first_repair	n			六芒星般的对称印痕显示雾化极其均匀。		
+ch07.S2.048	prologue_07_first_repair	d	张工	smile	听这清脆的吱吱蜂鸣声！只有针阀座面严丝合缝才能切出这种断油动静！		
+ch07.S2.049	prologue_07_first_repair	d	老陈	shocked	没有滴油，断油也干脆。再查一遍配合面，这副旧件还能用。		
+ch07.S2.050	prologue_07_first_repair	d	岁月	excited	高压喷射形态测定完毕！雾化锥角一百五十点二度，启喷压力误差零点五兆帕，工况完全处于健康绿区！		
+ch07.S2.051	prologue_07_first_repair	d	岁月	smile	清洗与密封检查通过。装复后仍需整机复检，确认后才能安排试车。		
+ch07.S2.052	prologue_07_first_repair	d	林彪悍	smile	先把伤情看清，再决定怎么修。这次总算没有上来就硬拧。		
+ch07.S2.053	prologue_07_first_repair	n			原件与备用件分别登记，合格的喷油器装复后，大家一起核对紧固和接线。		
+ch07.S2.054	prologue_07_first_repair	n			煤油池里的黑色油泥被棉纱彻底吸净。		
+ch07.S2.055	prologue_07_first_repair	n			正午的燥热不知何时已悄悄散去。		
+ch07.S2.056	prologue_07_first_repair	n			铁棚外的秋风送来山林清冽的草木香。		
+ch07.S2.057	prologue_07_first_repair	n			张工长长地舒了一口气。		
+ch07.S2.058	prologue_07_first_repair	n			他重重坐在倒扣的空木桶上。		
+ch07.S2.059	prologue_07_first_repair	n			他从怀里摸出一只泛着锡光的扁铁盒。		
+ch07.S2.060	prologue_07_first_repair	n			粗糙长茧的手指揉了揉酸痛的后腰。		
+ch07.S2.061	prologue_07_first_repair	d	张工	calm	呼……老骨头真是不顶用了。当年在段里，一天连拆三台机车，腰板挺得跟道钉一样直。		
+ch07.S2.062	prologue_07_first_repair	n			老陈端着一只大黑搪瓷茶缸走过来。		
+ch07.S2.063	prologue_07_first_repair	n			茶缸口冒着热气腾腾的大麦茶香。		
+ch07.S2.064	prologue_07_first_repair	d	老陈	gentle	喝口热大麦茶。厨房锅里还蒸着两棒老苞谷，小王，去给你师傅掰半截垫垫肚子。		
+ch07.S2.065	prologue_07_first_repair	d	王小弟	excited	好嘞！张师傅，茶水烫，我给您放在平木板上晾着！		
+ch07.S2.066	prologue_07_first_repair	n			张工捧着滚烫的茶缸抿了一小口。		
+ch07.S2.067	prologue_07_first_repair	n			浑浊的眼神望向车棚外起伏的远山。		
+ch07.S2.068	prologue_07_first_repair	d	张工	gentle	二十年前大修机车，工棚里通宵点着汽灯。一身油泥洗不脱，回到家老婆孩子都嫌弃身上有股柴油烟子味。		
+ch07.S2.069	prologue_07_first_repair	d	张工	smile	可只要听见那柴油机轰隆一声喷出黑烟点着了火，那动静……比过年放一百响大鞭炮还要提气。		
+ch07.S2.070	prologue_07_first_repair	d	林彪悍	smile	张工，明早整机检查过关，咱们就去试车。		
+ch07.S2.071	prologue_07_first_repair	d	张工	smile	借你吉言，大学生。今天这一仗，你没辱没你爷爷的名声。		
+ch07.S2.072	prologue_07_first_repair	d	老陈	gentle	老伙计，守了这么些年，今天总算又把这台车拾掇妥当了。		
+ch07.S2.073	prologue_07_first_repair	d	老陈	gentle	二十年前老站长总说，机车跑起来像一条铁打的长龙，可伺候它的人，心肠得比绣花还要细。		
+ch07.S2.074	prologue_07_first_repair	d	老陈	calm	等明天柴油一注进箱，我亲自去把机车棚顶那盏防爆挂灯擦亮。		
+ch07.S2.075	prologue_07_first_repair	n			王小弟啃着香甜的黄苞谷。		
+ch07.S2.076	prologue_07_first_repair	n			嘴角沾着金黄的苞谷须。		
+ch07.S2.077	prologue_07_first_repair	n			脸上露出发自内心的憨厚笑容。		
+ch07.S2.078	prologue_07_first_repair	d	王小弟	excited	张师傅，等机车点火修通了，我头一个买票上车给您打下手！		
+ch07.S2.079	prologue_07_first_repair	d	张工	smile	臭小子，内燃机不用铲煤！你给我老老实实盯紧润滑油压和水温表！		
+ch07.S2.080	prologue_07_first_repair	n			太阳缓缓沉入西侧的山梁。		
+ch07.S2.081	prologue_07_first_repair	n			傍晚金红色的斜阳穿透破损的木百叶。		
+ch07.S2.082	prologue_07_first_repair	n			一道温暖的光柱正好洒在工作台中央。		
+ch07.S2.083	prologue_07_first_repair	n			那具被擦拭得光洁如镜的喷油嘴。		
+ch07.S2.084	prologue_07_first_repair	n			在金色的光晕中反射出冷峻的金芒。		
+ch07.S2.085	prologue_07_first_repair	n			老陈递给我一块干净的白棉布。		
+ch07.S2.086	prologue_07_first_repair	n			我小心翼翼擦掉金属表面最后一滴油。		
+ch07.S2.087	prologue_07_first_repair	n			耕牛·改庞大沉稳的铸铁身躯立在暮色中。		
+ch07.S2.088	prologue_07_first_repair	n			像一头终于抬起头来的老牛。		
+ch07.S2.089	prologue_07_first_repair	n			机棚外的夜空已经挂上了几颗寒星。		
+ch07.S2.090	prologue_07_first_repair	n			秋风吹过铁道，带起一阵清脆的风鸣。		
+ch07.S2.091	prologue_07_first_repair	thought	林彪悍	excited	[明早先把检查做完，再听它的汽笛。]		
+ch08.S0.000	prologue_08_first_run	n			十二张手撕纸票。		
+ch08.S0.001	prologue_08_first_run	n			被汗津津的手指攥出了褶皱。		
+ch08.S0.002	prologue_08_first_run	n			发黄的毛边牛皮纸边缘。		
+ch08.S0.003	prologue_08_first_run	n			已被粗糙的指腹磨得泛出白毛。		
+ch08.S0.004	prologue_08_first_run	n			上面盖着二十年前的紫黑铁道印泥。		
+ch08.S0.005	prologue_08_first_run	n			雾峰村—矿区站，当日车票。		
+ch08.S0.006	prologue_08_first_run	n			碎石铺就的月台边。		
+ch08.S0.007	prologue_08_first_run	n			十几双沾泥的千层底布鞋来回踱步。		
+ch08.S0.008	prologue_08_first_run	n			挑着毛茶青叶的竹箩沉甸甸压在扁担两头。		
+ch08.S0.009	prologue_08_first_run	n			压得青竹扁担发出极有韧劲的吱呀轻响。		
+ch08.S0.010	prologue_08_first_run	n			背着厚帆布工具袋的老矿工蹲在锈轨旁。		
+ch08.S0.011	prologue_08_first_run	n			粗糙如松树皮的大手摩挲着冰凉轨面。		
+ch08.S0.012	prologue_08_first_run	n			扎着羊角辫的小女孩紧攥着母亲的围裙。		
+ch08.S0.013	prologue_08_first_run	n			不停踮起沾着晨露的红布鞋张望。		
+ch08.S0.014	prologue_08_first_run	n			机库深处传来柴油机的低鸣。		
+ch08.S0.015	prologue_08_first_run	n			沉闷而富有节奏地穿透地底。		
+ch08.S0.016	prologue_08_first_run	n			停运后安静下来的山谷。		
+ch08.S0.017	prologue_08_first_run	n			正被这沉稳的金属心跳唤醒。		
+ch08.S0.018	prologue_08_first_run	n			Day 7 上午		
+ch08.S0.019	prologue_08_first_run	n			Day 7 上午		
+ch08.S0.020	prologue_08_first_run	loc			雾峰村车站 · 铁路客车候车棚 · 0km		
+ch08.S0.021	prologue_08_first_run	d	老陈	excited	听听这动静！六个气缸全在平稳喘气，低音沉得像老黄牛在胸口打呼噜！		
+ch08.S0.022	prologue_08_first_run	d	老陈	smile	停了快一个月，这条线总算又听见汽笛了！		
+ch08.S0.023	prologue_08_first_run	d	李阿姨	smile	昨晚我挨家挨户敲门，嗓子都喊哑了。乡亲们天不亮就聚在月台上了！		
+ch08.S0.024	prologue_08_first_run	d	李阿姨	smile	你看这十二张票，一文没欠，全是大家掏底攒出来的硬币！		
+ch08.S0.025	prologue_08_first_run	n			李阿姨将一个沉甸甸的铁皮饼干盒递到我面前。		
+ch08.S0.026	prologue_08_first_run	n			里面整整齐齐码放着铜分币与旧沙币。		
+ch08.S0.027	prologue_08_first_run	n			阳光透过树冠，在金属盒盖上折射出斑驳光晕。		
+ch08.S0.028	prologue_08_first_run	n			每一枚硬币的凹槽里都嵌着劳作积攒的泥渍。		
+ch08.S0.029	prologue_08_first_run	n			那是泥土里刨出来的汗水，也是山里乡亲最朴素的信任。		
+ch08.S0.030	prologue_08_first_run	d	茶农	excited	前两天塌方把山路堵了，骡马过不去，我这两筐毛茶眼看就要捂烂在屋里！		
+ch08.S0.031	prologue_08_first_run	d	茶农	smile	今儿只要火车一开，半个钟头就能进镇，全家半年的嚼裹全保住了！		
+ch08.S0.032	prologue_08_first_run	d	矿工	gentle	老汉我今天不为运货，就为带小孙子坐一回这铁家伙，让他看看爷爷当年的铁道！		
+ch08.S0.033	prologue_08_first_run	thought	林彪悍	serious	[开弓没有回头箭。挂上客车前，必须逐项核清家底。]		
+ch08.S0.034	prologue_08_first_run	d	林彪悍	serious	岁月，调出发车前整备状态核验清单。人、钱、料、技，逐一核销！		
+ch08.S0.035	prologue_08_first_run	d	岁月	normal	指令确认！乘务与运行参数数据库已锁定，正在生成首发核准报表！		
+ch08.S0.036	prologue_08_first_run	d	岁月	normal	第一项，【人】。首班登记乘客共十二人：下河村茶农四名、松桥矿务局退休矿工三名、就医家属两对及儿童一名。		
+ch08.S0.037	prologue_08_first_run	d	岁月	normal	下河村茶农携带毛茶两百斤，属于极易变质时效货源；就医群众携带急重症病历，对准点率要求极高。		
+ch08.S0.038	prologue_08_first_run	d	岁月	smile	乘务编组完成：老陈担任本务司机，张工跟车添乘监控机械间，王小弟负责车门闭锁与制动风管巡视！		
+ch08.S0.039	prologue_08_first_run	d	张工	serious	机舱里六个缸的排温表我都拿粉笔标了红线，稍有窜烟，我亲手拉紧急制动阀！		
+ch08.S0.040	prologue_08_first_run	d	岁月	normal	第二项，【钱】。首班客运票价执行保民生基准费率，每张全票三十五沙币（老票价作废，一律改收沙币），首发客票实收四百二十沙币！		
+ch08.S0.041	prologue_08_first_run	d	岁月	calm	站内现金仍按李阿姨的收支簿逐项核对。柴油预付款已经占款，垫圈和润滑脂也有领用记录，未动用的黑卡额度不计入余额。		
+ch08.S0.042	prologue_08_first_run	d	林彪悍	serious	四百二十沙币虽然连一桶原装机油都买不起，但这是停运以来铁路上见到的第一笔回头钱。		
+ch08.S0.043	prologue_08_first_run	d	岁月	normal	第三项，【料】。燃油主箱注入零号轻柴油三百升，副油箱储油一百五十升，储备系数达到一点八！		
+ch08.S0.044	prologue_08_first_run	d	岁月	normal	按每百公里综合燃耗一百二十升测算，当前储备油料足以支撑单程往返三次以上。		
+ch08.S0.045	prologue_08_first_run	d	岁月	normal	冷却软水箱加注完毕，液位达到溢流管标高；各轴箱及牵引电机齿轮箱已加注润滑滑脂六十公斤！		
+ch08.S0.046	prologue_08_first_run	d	王小弟	excited	站长！四个撒砂箱全拿干河沙筛得干干净净，一粒大石子都没有，雨天爬坡绝不打滑！		
+ch08.S0.047	prologue_08_first_run	d	岁月	normal	第四项，【技】。三号缸喷油器已装复，密封和雾化复检均通过。		
+ch08.S0.048	prologue_08_first_run	d	岁月	normal	六孔喷孔雾化角一百五十度，断油利落，喷射后无任何挂滴滴油现象。		
+ch08.S0.049	prologue_08_first_run	d	岁月	excited	六缸怠速转速稳定在每分钟四百转，机油循环压力零点三五兆帕，冷却水温六十五度，全系统具备动车条件！		
+ch08.S0.050	prologue_08_first_run	n			老陈站在机车驾驶室踏板上。		
+ch08.S0.051	prologue_08_first_run	n			清晨的山风吹拂着他斑白的鬓角。		
+ch08.S0.052	prologue_08_first_run	n			他从洗得发白的深蓝工作服内袋里摸出一把铜钥匙。		
+ch08.S0.053	prologue_08_first_run	n			那是NF-5型内燃机车主操纵台的电气闭锁钥匙。		
+ch08.S0.054	prologue_08_first_run	n			铜钥匙的齿棱早被几十万公里的行程磨得圆润发亮。		
+ch08.S0.055	prologue_08_first_run	d	老陈	gentle	彪悍，当年你爷爷退下来的时候，就是把这把主匙压在调度台抽屉底下的。		
+ch08.S0.056	prologue_08_first_run	d	老陈	calm	他说，车轮只要还能转，山里的人就有一条活路。车轮要是停了，村里的年轻人就只能一辈子困死在大山里。		
+ch08.S0.057	prologue_08_first_run	d	老陈	gentle	老汉我守着这条线撑了四年，终于等到了能把这钥匙交出来的人。		
+ch08.S0.058	prologue_08_first_run	n			粗糙宽厚的手掌将冰凉的铜匙紧紧按进我的掌心。		
+ch08.S0.059	prologue_08_first_run	n			手心里满是坚硬的老茧与淡淡的机油味。		
+ch08.S0.060	prologue_08_first_run	thought	林彪悍	serious	[这是沉甸甸的托付。不再是纸面计算，而是眼前鲜活的生计。]		
+ch08.S0.061	prologue_08_first_run	d	林彪悍	smile	陈叔，今天这第一声笛、第一把闸，必须由您这位四十年驾龄的老机长亲自来推。		
+ch08.S0.062	prologue_08_first_run	d	林彪悍	smile	我坐在副司机座上，负责监视仪表与线路，为您保驾护航！		
+ch08.S0.063	prologue_08_first_run	d	老陈	excited	好！好孩子！老汉我今天就让这山里的鸟雀，重新听听咱铁路的大嗓门！		
+ch08.S0.064	prologue_08_first_run	n			候车棚下的乡亲们纷纷站起身来。		
+ch08.S0.065	prologue_08_first_run	n			挑担的茶农整了整草帽，眼里满是激动的光彩。		
+ch08.S0.066	prologue_08_first_run	n			大家互相搀扶着，井然有序地朝着客车车门走去。		
+ch08.S1.000	prologue_08_first_run	loc			雾峰村车站 · 铁路机车司机室 · 0km		
+ch08.S1.001	prologue_08_first_run	n			狭窄的司机室里弥漫着仪表板烘热的清漆香气。		
+ch08.S1.002	prologue_08_first_run	n			双针双管压力表的红色指针稳稳咬住五百千帕定压。		
+ch08.S1.003	prologue_08_first_run	n			窗外的月台边。		
+ch08.S1.004	prologue_08_first_run	n			李阿姨还在挨个核对搭乘须知。		
+ch08.S1.005	prologue_08_first_run	n			赵师傅拎着沉重的八磅检查锤跨上登车铁梯。		
+ch08.S1.006	prologue_08_first_run	d	赵师傅	serious	站长，老陈，刚才我徒步复检了出站到三点五公里险点。昨晚补过的道床已经压实，排洪沟也通了。那一段按现场标记限速通过。		
+ch08.S1.007	prologue_08_first_run	d	赵师傅	serious	二号弯道的外轨超高正常，道钉松动的枕木我都拿锤头狠砸敲实了。		
+ch08.S1.008	prologue_08_first_run	d	赵师傅	calm	全线四十公斤轻轨的轨缝均在六毫米安全膨胀限度内，线路条件满足首发要求！		
+ch08.S1.009	prologue_08_first_run	d	赵师傅	curious	不过下河村那边听说咱们今天开行，好几家挑着晚茶的农户也在往车站赶，托人捎信问下午还有没有车！		
+ch08.S1.010	prologue_08_first_run	d	老陈	curious	下午还有新茶？可今天这趟车先得跑稳当。李阿姨，帮他们把货主和数量记下来。		
+ch08.S1.011	prologue_08_first_run	d	张工	serious	老陈，你别脑子一热就什么都敢揽！这台机车才刚通开一个喷油嘴，整机磨合期还没过！		
+ch08.S1.012	prologue_08_first_run	d	张工	serious	单程二十三公里，往返就是四十六公里。要是连轴转跑两趟，九十多公里的重负荷，万一轴瓦温升过高怎么办？		
+ch08.S1.013	prologue_08_first_run	d	张工	serious	车刚修好，第一次运行得把温度和油压盯牢。回站后再复检，不能拿第二趟去赌。		
+ch08.S1.014	prologue_08_first_run	n			张工抬手指着驾驶台下方的机械间观察孔。		
+ch08.S1.015	prologue_08_first_run	n			他的手指骨节粗大，上面布满经年累月的烫伤与油污。		
+ch08.S1.016	prologue_08_first_run	d	张工	serious	这台机器的活塞裙部与缸套间隙，冷态下只有零点一二毫米！		
+ch08.S1.017	prologue_08_first_run	d	张工	serious	水温不到八十度就猛拉高转速，铝活塞受热膨胀比铸铁缸壁快三倍，瞬间就会把润滑油膜刮得干干净净！		
+ch08.S1.018	prologue_08_first_run	d	老陈	serious	老张，你说的机械规矩我都懂。可你没蹲在路边看过茶农掉眼泪！		
+ch08.S1.019	prologue_08_first_run	d	老陈	gentle	山里的高山毛茶搁一晚上就发酵泛红，明天的收购价直接得腰斩！那是人家全家过冬的口粮钱！		
+ch08.S1.020	prologue_08_first_run	d	老陈	excited	以前全盛的时候，咱们这条线上午一趟小票客车，下午一趟混跑货车，刮风下雨哪天停过？		
+ch08.S1.021	prologue_08_first_run	d	老陈	serious	这台 NF-5K 我开了二十来年。可知道它的脾气，也得按检查结果说话。		
+ch08.S1.022	prologue_08_first_run	n			王小弟提着手摇储压输油泵，满头大汗地钻进驾驶室。		
+ch08.S1.023	prologue_08_first_run	d	王小弟	excited	张师傅！副油管的空气全排空了，输油泵手柄压下去硬邦邦的，阻力非常扎实！		
+ch08.S1.024	prologue_08_first_run	d	王小弟	curious	李阿姨在窗口招手呢，问回程的乘客和茶篓怎么登记。		
+ch08.S1.025	prologue_08_first_run	d	岁月	normal	热工动态模拟与运营负荷评估介入，测算模型已构建完毕——		
+ch08.S1.026	prologue_08_first_run	d	岁月	normal	今天按一个往返安排，全程四十六公里。预计耗油五十八升，首班客票实收四百二十沙币。		
+ch08.S1.027	prologue_08_first_run	d	岁月	calm	途中记录温度和油压，回站复检。下午新来的货先登记，下一班的安排等检查结果。		
+ch08.S1.028	prologue_08_first_run	d	岁月	normal	下河村的需求我已另建清单，回程还有装载位置的话，可以按核定限额捎带。		
+ch08.S1.029	prologue_08_first_run	d	岁月	worried	请李阿姨确认货物重量和站点。今天先把这一趟往返做好。		
+ch08.S1.030	prologue_08_first_run	n			老陈伸手握住自阀制动手柄。		
+ch08.S1.031	prologue_08_first_run	n			轻轻向常用制动位推移半格。		
+ch08.S1.032	prologue_08_first_run	n			中继阀排气孔喷出一股压缩空气。		
+ch08.S1.033	prologue_08_first_run	n			列车制动主管平稳降压五十千帕。		
+ch08.S1.034	prologue_08_first_run	d	老陈	calm	制动主管贯通试验良好，全列闸瓦压紧自保。随时可以开闸放气动车！		
+ch08.S1.035	prologue_08_first_run	n			司机室仪表板上的白炽灯泡亮起微黄的光芒。		
+ch08.S1.036	prologue_08_first_run	n			指针在刻度盘上微微颤动，记录着各系统的细微变化。		
+ch08.S1.037	prologue_08_first_run	n			老陈转头看向副驾驶席上的我。		
+ch08.S1.038	prologue_08_first_run	d	老陈	calm	彪悍，这趟往返定下了。你先交代车况检查，还是先交代乡亲们的回程安排？		
+ch08.S1.039	prologue_08_first_run	d	张工	calm	都得办。你先说，我和小王把机舱这边的记录备好。		
+ch08.S1.040	prologue_08_first_run	n			所有人的目光都汇聚在主驾驶座前。		
+ch08.S1.041	prologue_08_first_run	n			铜质的主控手柄在晨光中反射出冷冽的金属质感。		
+ch08.S1.042	prologue_08_first_run	n			柴油机低速运转的震颤顺着金属踏板传到脚底。		
+ch08.S1.043	prologue_08_first_run	n			空压机有节奏地吞吐着空气，气泵排气声清脆而坚决。		
+ch08.S1.044	prologue_08_first_run	thought	林彪悍	serious	[车得跑稳，等车的人也得有个准信。]		
+ch08.S1.045	prologue_08_first_run	thought	林彪悍	calm	[先说哪一件都一样，两边都得交代到人。]		
+ch08.S1.046	prologue_08_first_run	n			我深吸一口气。		
+ch08.S1.047	prologue_08_first_run	n			目光逐一扫过机车每一个监视表头。		
+ch08.S1.048	prologue_08_first_run	n			老陈的手紧紧搭在大闸手柄上。		
+ch08.S1.049	prologue_08_first_run	n			等待着最后的开车号令。		
+ch08.S1.050	prologue_08_first_run	n			窗外的月台上，村民们安静地等待着最后的决定。		
+ch08.S1.051	prologue_08_first_run	c			发车前，先向大家交代哪一件事？		
+ch08.S1.051.o1	prologue_08_first_run	opt			先交代车况检查		
+ch08.S1.051.o2	prologue_08_first_run	opt			先交代回程与货运安排		
+ch08.S2.000	prologue_08_first_run	cg			cg_first_run		
+ch08.S2.001	prologue_08_first_run	loc			雾峰支线 · 0km至12km · 峡谷沿线区间		
+ch08.S2.002	prologue_08_first_run	d	林彪悍	calm	今天只跑一趟往返，限速按沿线放行记录执行。全员重点监视各缸排气与轴箱温升，回程安排也向乘客交代清楚。		
+ch08.S2.003	prologue_08_first_run	d	老陈	smile	明白！稳扎稳打好，饭要一口一口吃，路要一步一步走！		
+ch08.S2.004	prologue_08_first_run	d	张工	smile	车况和回程安排都交代了，那就按清单办。我和小王去机械间盯着油压、水温。		
+ch08.S2.005	prologue_08_first_run	n			老陈沉稳地握住风笛阀手柄，向下用力拉动。		
+ch08.S2.006	prologue_08_first_run	n			汽笛发出两长一短的嘹亮长鸣。		
+ch08.S2.007	prologue_08_first_run	n			浑厚的声浪在整座雾峰山谷中回荡。		
+ch08.S2.008	prologue_08_first_run	n			老陈将主控手柄轻轻推上一档，电流表指针平稳跃升。		
+ch08.S2.009	prologue_08_first_run	n			车轮缓缓滚动，钢轨在脚下发出有节奏的节拍。		
+ch08.S2.010	prologue_08_first_run	n			老机长目光专注，指尖轻轻感受着手柄传来的微颤。		
+ch08.S2.011	prologue_08_first_run	d	老陈	calm	老伙计，慢慢来。一档起步，不急不躁，把筋骨彻底活动开。		
+ch08.S2.012	prologue_08_first_run	n			列车以极其沉稳的姿态驶出站台，切入峡谷主线。		
+ch08.S2.013	prologue_08_first_run	d	林彪悍	excited	先把回程要坐车的人和待运茶篓登记清楚。今天只跑这一趟往返，车况检查也按张工的清单办。		
+ch08.S2.014	prologue_08_first_run	d	老陈	excited	明白。这趟先跑稳当，也让等车的乡亲知道咱们怎么安排。		
+ch08.S2.015	prologue_08_first_run	d	李阿姨	happy	我去登记，连着重量和站点一起记，不让大家白等。		
+ch08.S2.016	prologue_08_first_run	d	张工	serious	机舱交给我和小王。沿途照样测温，回站再复检。		
+ch08.S2.017	prologue_08_first_run	n			老陈用力拉下风笛，汽笛声高亢而急促。		
+ch08.S2.018	prologue_08_first_run	n			老陈看过油压和水温，才把手柄推上一档。		
+ch08.S2.019	prologue_08_first_run	n			客车缓缓切入主线。		
+ch08.S2.020	prologue_08_first_run	n			机车主发电机发出低沉的轰鸣。		
+ch08.S2.021	prologue_08_first_run	n			澎湃的动力灌注入六台牵引电机。		
+ch08.S2.022	prologue_08_first_run	n			老陈稳住手柄，等电流平稳后才继续加档。		
+ch08.S2.023	prologue_08_first_run	n			列车迎着晨雾，沿着峡谷慢慢前行。		
+ch08.S2.024	prologue_08_first_run	n			老陈熟练地将主操纵手柄依次推入二档与三档。		
+ch08.S2.025	prologue_08_first_run	n			齿轮啮合的顿挫感顺着车底坚实地传递上来。		
+ch08.S2.026	prologue_08_first_run	n			车轮与鱼尾板接头反复撞击，发出富有韵律的咔哒声。		
+ch08.S2.027	prologue_08_first_run	n			标准的十二点五米钢轨缝隙在车下弹奏出熟悉的节拍。		
+ch08.S2.028	prologue_08_first_run	n			车窗外的晨雾被疾驰的车头撕裂成翻滚的白絮。		
+ch08.S2.029	prologue_08_first_run	n			重新整修过的道床在重载车轮下被重新压实。		
+ch08.S2.030	prologue_08_first_run	n			两旁废弃已久的黄色水泥里程标在窗外急速后退。		
+ch08.S2.031	prologue_08_first_run	n			山风顺着半掩的车顶通风小窗灌进车厢。		
+ch08.S2.032	prologue_08_first_run	n			列车呼啸着冲上五号高架钢梁桥。		
+ch08.S2.033	prologue_08_first_run	n			脚下五十米深的山涧激流奔涌，激起阵阵水雾。		
+ch08.S2.034	prologue_08_first_run	n			巨大的钢桁梁在车轮碾压下震颤。		
+ch08.S2.035	prologue_08_first_run	n			发出沉重而威严的回响。		
+ch08.S2.036	prologue_08_first_run	d	岁月	excited	机车运行速度稳定在每小时三十八公里！正顺利通过龙牙峡险桥！		
+ch08.S2.037	prologue_08_first_run	d	岁月	normal	轮轨动态受力波形平缓，六组走行部无任何异常蛇行震荡！各传感器参数全绿！		
+ch08.S2.038	prologue_08_first_run	n			列车顺着半月崖曲线平稳拐弯。		
+ch08.S2.039	prologue_08_first_run	n			外轨超高将离心力化解无形。		
+ch08.S2.040	prologue_08_first_run	n			阳光穿透薄雾，斜斜打在被磨得雪亮的钢轨顶面上。		
+ch08.S2.041	prologue_08_first_run	n			两条闪烁着银光的钢带向着峡谷深处无限延展。		
+ch08.S2.042	prologue_08_first_run	n			过了八公里，茶山站的歪站牌从窗口晃过去。		
+ch08.S2.043	prologue_08_first_run	n			井台上，穿白背心的康叔举着一枚棋子，三个背书包的孩子蹦着脚朝车头挥手。		
+ch08.S2.044	prologue_08_first_run	d	孩子们	excited	火车！是真火车！		
+ch08.S2.045	prologue_08_first_run	d	林彪悍	smile	蝙蝠的事，回程我告诉你们！		
+ch08.S2.046	prologue_08_first_run	d	康叔	smile	悔棋的老东西，总算把车开出来了！		
+ch08.S2.047	prologue_08_first_run	n			老陈没回头，只把汽笛又拉了长长一声。		
+ch08.S2.048	prologue_08_first_run	loc			雾峰支线 · 首班客车车厢内部 · 8km		
+ch08.S2.049	prologue_08_first_run	n			客车车厢里，过道两侧的青绿色软座上坐得满满当当。		
+ch08.S2.050	prologue_08_first_run	n			空气中弥漫着清冽的鲜茶甘香与晒干青草的泥土气。		
+ch08.S2.051	prologue_08_first_run	n			几位茶农双手死死抓着窗框，激动地把头探向窗外。		
+ch08.S2.052	prologue_08_first_run	d	茶农	excited	动了……真动了！以前挑着担子走到矿区镇，脚底都要磨起泡！		
+ch08.S2.053	prologue_08_first_run	d	茶农	smile	两只脚底全磨出大血泡，扁担把肩膀压得脱皮！如今半小时就能顺顺当当赶到！		
+ch08.S2.054	prologue_08_first_run	d	茶农	gentle	茶叶最怕热捂。路上多耽搁两个钟头，香气就全跑光了。有了这火车，今年能多收两季茶！		
+ch08.S2.055	prologue_08_first_run	n			老茶农从怀里小心翼翼摸出一个温热的竹筒。		
+ch08.S2.056	prologue_08_first_run	n			里面盛着刚刚用山泉水冲泡好的高山老树野茶。		
+ch08.S2.057	prologue_08_first_run	n			他双手托着竹筒，颤巍巍递到我面前。		
+ch08.S2.058	prologue_08_first_run	d	茶农	gentle	站长小伙子，尝尝！这是今天头一茬枪旗嫩芽，咱们山里人最干净的心意！		
+ch08.S2.059	prologue_08_first_run	d	林彪悍	smile	谢谢大叔。这趟车开通，以后您的高山毛茶每天都能准时运到镇上，再也不用烂在深山里了。		
+ch08.S2.060	prologue_08_first_run	n			温热清香的茶汤滑入喉咙。		
+ch08.S2.061	prologue_08_first_run	n			带着一丝高山独有的甘甜与栗香。		
+ch08.S2.062	prologue_08_first_run	n			连日熬夜检修机车的疲惫，在这一刻彻底烟消云散。		
+ch08.S2.063	prologue_08_first_run	n			车厢另一侧，扎羊角辫的小女孩紧紧抱着母亲的胳膊。		
+ch08.S2.064	prologue_08_first_run	n			大眼睛骨碌碌盯着车窗外飞速倒退的翠绿松林。		
+ch08.S2.065	prologue_08_first_run	n			小手怯生生地摸着车厢内壁掉漆的铁皮护板。		
+ch08.S2.066	prologue_08_first_run	d	孩子	curious	妈妈，火车会飞吗？它跑得比山里的野兔子还要快好多！		
+ch08.S2.067	prologue_08_first_run	n			女孩母亲眼里噙着泪花，轻轻抚摸着孩子的头发。		
+ch08.S2.068	prologue_08_first_run	n			老陈不知何时从机械间巡视归来。		
+ch08.S2.069	prologue_08_first_run	n			满脸油泥的老司机在粗布围裙上使劲擦了擦手。		
+ch08.S2.070	prologue_08_first_run	n			他蹲下身子。		
+ch08.S2.071	prologue_08_first_run	n			从口袋摸出一粒红玻璃纸水果硬糖。		
+ch08.S2.072	prologue_08_first_run	d	老陈	gentle	小丫头，火车不会飞，但火车的铁轮子能在地上画出通往大世界的路。		
+ch08.S2.073	prologue_08_first_run	d	老陈	smile	眼前这台是后来接替老车的耕牛·改。四十年前拉石头和钢筋进山的，是它的前辈。		
+ch08.S2.074	prologue_08_first_run	d	老陈	gentle	拿着吃，甜的。以后长大了，坐着这趟车去省城读书，去看看外面的大天地！		
+ch08.S2.075	prologue_08_first_run	n			小女孩接过糖果，脸上绽放出灿烂的笑脸。		
+ch08.S2.076	prologue_08_first_run	n			车厢里爆发出善意而温暖的笑声。		
+ch08.S2.077	prologue_08_first_run	n			小小的车厢内，流淌着久违的安心与希望。		
+ch08.S2.078	prologue_08_first_run	n			张工斜靠在车厢连接处的钢板风挡门边。		
+ch08.S2.079	prologue_08_first_run	n			手里紧紧握着一根细长的紫铜听针。		
+ch08.S2.080	prologue_08_first_run	n			听针的一端抵在三号缸机体上。		
+ch08.S2.081	prologue_08_first_run	n			另一端紧紧贴着他的耳垂。		
+ch08.S2.082	prologue_08_first_run	d	王小弟	curious	张师傅，听出什么门道没有？三号缸没掉链子吧？		
+ch08.S2.083	prologue_08_first_run	d	张工	calm	听音纯正，连杆小头衬套没有半点敲击杂音。喷油嘴的雾化比我想象的还要透。		
+ch08.S2.084	prologue_08_first_run	d	张工	smile	旧件、备件都验过，装复也复查了。今天这一趟还得看完整记录，不能只听发动机响得好不好。		
+ch08.S2.085	prologue_08_first_run	thought	林彪悍	smile	[这位老技师肯在检修记录上签字，比一句夸奖更让我踏实。]		
+ch08.S2.086	prologue_08_first_run	n			十五公里，松桥站。车速降到最慢，歪着的站牌擦着车窗退过去。		
+ch08.S2.087	prologue_08_first_run	n			石墩上的老人拄着拐站了起来，把没点着的烟袋锅高高举过头顶。		
+ch08.S2.088	prologue_08_first_run	d	老人	gentle	今天，有车！		
+ch08.S2.089	prologue_08_first_run	n			汽笛长鸣了一声，替我答了他。		
+ch08.S2.090	prologue_08_first_run	n			前面隧道口张着黑洞洞的嘴。白天，蝙蝠都睡着，没有一只飞出来。		
+ch08.S3.000	prologue_08_first_run	loc			矿区站 · 终点站台 · 23km		
+ch08.S3.001	prologue_08_first_run	n			前方轨道逐渐分岔成两条到达线。		
+ch08.S3.002	prologue_08_first_run	n			斑驳红砖砌成的矿区站老雨棚映入眼帘。		
+ch08.S3.003	prologue_08_first_run	n			屋檐下悬挂着的那口老铜钟，正在晨风中微微晃动。		
+ch08.S3.004	prologue_08_first_run	n			站房墙上停运后就没再上弦的老挂钟，秒针在震动中微微颤动。		
+ch08.S3.005	prologue_08_first_run	n			列车制动闸瓦压紧踏面，发出刺耳而沉稳的尖啸。		
+ch08.S3.006	prologue_08_first_run	n			白色的压缩空气从排风阀中猛烈喷薄而出。		
+ch08.S3.007	prologue_08_first_run	n			列车平稳而精准地停靠在矿区站一号站台。		
+ch08.S3.008	prologue_08_first_run	d	老陈	excited	二十三公里，用时四十二分钟！准点到达，一秒不差！		
+ch08.S3.009	prologue_08_first_run	d	老陈	smile	老伙计，咱们今天没给铁路丢人！		
+ch08.S3.010	prologue_08_first_run	n			站台上早已站满了闻讯赶来的矿工与镇民。		
+ch08.S3.011	prologue_08_first_run	n			一位白发苍苍的老巡线工用力拉动老铜钟的绳索。		
+ch08.S3.012	prologue_08_first_run	n			悠扬沉稳的钟声铛铛回荡，传到矿区站外的街上。		
+ch08.S3.013	prologue_08_first_run	n			几十个戴着铝盔的矿工站在煤堆旁用力挥舞毛巾。		
+ch08.S3.014	prologue_08_first_run	n			杂货铺老板端着热腾腾的茶水壶冲到车窗下。		
+ch08.S3.015	prologue_08_first_run	d	矿工	excited	火车真的又通了！我的老天爷，可算又听见这动静了！		
+ch08.S3.016	prologue_08_first_run	d	矿工	excited	以后我们矿上的副业土特产，再也不用靠手推车翻山越岭了！		
+ch08.S3.017	prologue_08_first_run	n			车门打开，茶农们挑着担子轻快地迈上站台。		
+ch08.S3.018	prologue_08_first_run	n			青绿的茶叶在晨光中散发出诱人的清香。		
+ch08.S3.019	prologue_08_first_run	n			镇上的茶庄掌柜一路小跑着迎了上来，当场开始过秤。		
+ch08.S3.020	prologue_08_first_run	n			两百斤高山毛茶验出头等成色。		
+ch08.S3.021	prologue_08_first_run	n			当场点清货款交到茶农手里。		
+ch08.S3.022	prologue_08_first_run	n			站外，茶嫂那辆小货车歪歪斜斜地停着。她没挤进人堆，只踮脚望着掌柜过秤。		
+ch08.S3.023	prologue_08_first_run	d	茶嫂	smile	小站长，两百斤，头等。铁路一车茶的运费，只有我这车的三分之一。往后我的茶，都走你这条线。		
+ch08.S3.024	prologue_08_first_run	d	林彪悍	smile	按您说的算。下河村那三十袋柴油的升数，我明早一起跟您核。		
+ch08.S3.025	prologue_08_first_run	d	茶嫂	smile	行。肯把账摊开说的人，我信。		
+ch08.S3.026	prologue_08_first_run	n			就医的母亲抱着孩子快步走下车梯。		
+ch08.S3.027	prologue_08_first_run	n			老陈伸手稳稳护住车门。		
+ch08.S3.028	prologue_08_first_run	n			站台上瞬间充满了久违的吆喝声与市井烟火气。		
+ch08.S3.029	prologue_08_first_run	d	矿工	gentle	当年林老站长在的时候，这站台上天天都是这么热闹。四年了，终于又见着人情味了！		
+ch08.S3.030	prologue_08_first_run	d	矿工	excited	下个月我们矿区蜂窝煤厂有四十吨冬煤要外运，要是你们这车能拉，全镇今年过冬都不挨冻了！		
+ch08.S3.031	prologue_08_first_run	d	林彪悍	smile	师傅放心，回程我们就开始整备二号敞车，一定赶在落雪前把煤炭运力排出来！		
+ch08.S3.032	prologue_08_first_run	d	岁月	excited	首班列车开行任务顺利达成！客运收入与财务账目已完成自动核对！		
+ch08.S3.033	prologue_08_first_run	d	岁月	normal	本班次实际运送旅客十二人次，实现客票收益四百二十沙币，柴油净消耗五十八升！机车工况优良！		
+ch08.S3.034	prologue_08_first_run	d	岁月	normal	本班次实际运送旅客十二人次，客票实收四百二十沙币，柴油消耗五十八升。回站后按同一张清单复检。		
+ch08.S3.035	prologue_08_first_run	n			李阿姨与几位年长的乡亲快步穿过人群走上前来。		
+ch08.S3.036	prologue_08_first_run	n			李阿姨双手捧着一本用蓝布包好的登记册。		
+ch08.S3.037	prologue_08_first_run	n			布包上还缠着粗红毛线。		
+ch08.S3.038	prologue_08_first_run	d	李阿姨	gentle	彪悍，下河村、青石坎的茶农托我问问，站里能不能收一笔周转借款。		
+ch08.S3.039	prologue_08_first_run	d	李阿姨	gentle	有人想凑几十，有人还要回家商量，合起来估摸有八千。只是认捐，还没收齐，不能先记进现金账。		
+ch08.S3.040	prologue_08_first_run	n			李阿姨解开毛线，翻开登记册。		
+ch08.S3.041	prologue_08_first_run	n			纸上写着姓名、拟借金额，旁边还留着实交和签收两栏。		
+ch08.S3.042	prologue_08_first_run	n			下河村林老栓那一栏，只写了名字，金额还空着。		
+ch08.S3.043	prologue_08_first_run	n			青石坎几户人家写在后页，说好今晚再核实。		
+ch08.S3.044	prologue_08_first_run	d	李阿姨	smile	大伙说，这钱先借给车站周转，不是入股。你要收，就得写清楚谁交了多少、以后怎么还。		
+ch08.S3.045	prologue_08_first_run	d	李阿姨	gentle	过去这些天没火车，咱们这里就是与世隔绝的死谷。这趟车，就是大家的命脉！		
+ch08.S3.046	prologue_08_first_run	d	岁月	happy	认捐名单已登记，待实际清点后再入账。今天这笔还不能用于付款。		
+ch08.S3.047	prologue_08_first_run	n			镇邮电所的绿皮邮车也顺着石板路骑到了站台边。		
+ch08.S3.048	prologue_08_first_run	d	矿工	curious	小伙子，以后这趟车能不能给咱们矿上捎带报纸和汇款单？		
+ch08.S3.049	prologue_08_first_run	d	矿工	smile	以前没火车，家信从省城寄进山里要颠簸半个月，有时候信到了人都急病了！		
+ch08.S3.050	prologue_08_first_run	d	林彪悍	smile	没问题！行李车厢特意预留了邮政专柜，只要列车开行，信件当天进山！		
+ch08.S3.051	prologue_08_first_run	n			我双手接过登记册，翻到最后一页。		
+ch08.S3.052	prologue_08_first_run	n			拟借金额下面，还留着大片空白。		
+ch08.S3.053	prologue_08_first_run	n			这张纸不能拿去买油，纸上的名字却让我不敢轻慢。		
+ch08.S3.054	prologue_08_first_run	d	林彪悍	serious	李阿姨，先请大家留够自家的生活钱。愿意借的，明早一起清点、开收据，把还款条件也写明白。		
+ch08.S3.055	prologue_08_first_run	d	林彪悍	serious	实收多少、用在哪里，都贴到公告栏。未收齐的，绝不提前算进来。		
+ch08.S3.056	prologue_08_first_run	d	林彪悍	smile	往后的班次先按车况排，能开几趟、什么时候开，我给大家一个准信。		
+ch08.S3.057	prologue_08_first_run	n			我从胸口口袋里取出公文夹。		
+ch08.S3.058	prologue_08_first_run	n			在登记册后面列下明早清点所需的凭证。		
+ch08.S3.059	prologue_08_first_run	n			实收、签名、还款约定，每一项都留出了位置。		
+ch08.S3.060	prologue_08_first_run	n			我将存根第一联撕下，郑重交到李阿姨颤抖的手中。		
+ch08.S3.061	prologue_08_first_run	d	李阿姨	happy	好！好！回村我就贴在老银杏树下的黑板上，让每家每户都看得清清楚楚！		
+ch08.S3.062	prologue_08_first_run	n			张工弯腰仔细检查着各组转向架的车轮踏面。		
+ch08.S3.063	prologue_08_first_run	n			他伸出食指指节，轻轻碰了碰一号轴箱外壳。		
+ch08.S3.064	prologue_08_first_run	d	张工	smile	微温，不超过四十度。油膜完好，散热彻底，回程不用操心了！		
+ch08.S3.065	prologue_08_first_run	n			赵师傅手里的检车锤敲击着最后一组车轮踏面。		
+ch08.S3.066	prologue_08_first_run	n			清脆悠长的金石声回荡在空旷的站场上。		
+ch08.S3.067	prologue_08_first_run	d	赵师傅	smile	轮对踏面无剥离，轮缘厚度标准！这副铁骨头，还能再跑二十年！		
+ch08.S3.068	prologue_08_first_run	d	王小弟	excited	站长！返程旅客已经开始在窗口排队买票了！		
+ch08.S3.069	prologue_08_first_run	n			老陈站在驾驶室门口。		
+ch08.S3.070	prologue_08_first_run	n			仔细擦拭挡风玻璃上的飞虫痕迹。		
+ch08.S3.071	prologue_08_first_run	n			赵师傅在车尾逐一悬挂好红色的列车尾部标志牌。		
+ch08.S3.072	prologue_08_first_run	n			夕阳的余晖把整条股道染成了耀眼的熔金之色。		
+ch08.S3.073	prologue_08_first_run	d	老陈	smile	该回程了。天黑前，咱们把这批乡亲平平安安送回雾峰村！		
+ch08.S3.074	prologue_08_first_run	n			站台边几棵老槐树的落叶。		
+ch08.S3.075	prologue_08_first_run	n			在车轮卷起的晚风中盘旋飞舞。		
+ch08.S3.076	prologue_08_first_run	n			列车返程整备完毕，迎着晚霞缓缓起步。		
+ch08.S3.077	prologue_08_first_run	n			橘红色的余晖洒在铸铁机体与斑驳铁轨上。		
+ch08.S3.078	prologue_08_first_run	n			站台上的乡亲们三三两两伫立在暮色中。		
+ch08.S3.079	prologue_08_first_run	n			有人脱下草帽用力挥舞，有人朝着车尾不断挥手致意。		
+ch08.S3.080	prologue_08_first_run	n			十二张手撕纸票，换来了这条线重新有票根的日子。		
+ch08.S3.081	prologue_08_first_run	n			这几百枚硬币还远远不够发齐大家的薪水。		
+ch08.S3.082	prologue_08_first_run	n			但沉寂了近一个月的铁轨，已经在车轮下重新发烫。		
+ch08.S3.083	prologue_08_first_run	n			返程驶出矿区，过松桥隧道时，天色刚好暗下来。		
+ch08.S3.084	prologue_08_first_run	n			三百多米的洞里，先是一阵翅膀拍打空气的簌簌声，接着头顶黑压压地掠过一大片。		
+ch08.S3.085	prologue_08_first_run	d	王小弟	excited	蝙蝠！真有蝙蝠！		
+ch08.S3.086	prologue_08_first_run	n			我在本子上把『蝙蝠，待查』划掉，改写：『有。成群。』		
+ch08.S3.087	prologue_08_first_run	n			经过茶山站时，井台边两个背书包的身影蹦得老高。我探出窗外，只喊了一个字：『有！』		
+ch08.S3.088	prologue_08_first_run	thought	林彪悍	serious	[停运近一个月的支线又开了……第一声汽笛既已鸣响，这条路就绝不会再停下来。]		
+ch09.S0.000	prologue_09_funding	n			红铅笔的笔尖重重压在发黄的账页上。		
+ch09.S0.001	prologue_09_funding	n			在油料存量那一栏底下。		
+ch09.S0.002	prologue_09_funding	n			划出了一道刺目而沉重的粗红杠。		
+ch09.S0.003	prologue_09_funding	n			主油箱剩余轻柴油：一百八十四升。		
+ch09.S0.004	prologue_09_funding	n			副油箱备用油料：七十二升。		
+ch09.S0.005	prologue_09_funding	n			昨夜全村庆祝首通的爆竹碎屑。		
+ch09.S0.006	prologue_09_funding	n			还零零碎碎黏在办公室窗台的红砖缝里。		
+ch09.S0.007	prologue_09_funding	n			但冰冷的数字不会为掌声让步。		
+ch09.S0.008	prologue_09_funding	n			这点燃料，按满载工况只够机车跑三天。		
+ch09.S0.009	prologue_09_funding	n			三天之后，铁轨就会重新陷入死寂。		
+ch09.S0.010	prologue_09_funding	n			Day 8 早晨		
+ch09.S0.011	prologue_09_funding	loc			雾峰村车站 · 站长办公室 · 0km		
+ch09.S0.012	prologue_09_funding	n			桌面上摊开着厚厚一沓牛皮纸结算单。		
+ch09.S0.013	prologue_09_funding	n			清晨的穿堂风吹得纸角哗啦作响。		
+ch09.S0.014	prologue_09_funding	n			算盘上的红木算珠被反复拨动。		
+ch09.S0.015	prologue_09_funding	n			发出清脆而密集的嗒嗒声。		
+ch09.S0.016	prologue_09_funding	n			老陈双手搭在膝盖上，安静地坐在长木椅上。		
+ch09.S0.017	prologue_09_funding	n			他身上的洗白工作服还沾着淡淡的柴油味。		
+ch09.S0.018	prologue_09_funding	d	老陈	calm	彪悍，一整夜没合眼吧？我看这屋里的煤油灯亮到了大天亮。		
+ch09.S0.019	prologue_09_funding	d	林彪悍	serious	陈叔，昨晚我把第一个月的刚性运营成本全盘算了一遍。		
+ch09.S0.020	prologue_09_funding	d	林彪悍	serious	第一个月得逐步恢复每天一趟往返，至少开二十七趟。油料、养护、生活补贴和备件要一起备，周转预算先按两万沙币控制。		
+ch09.S0.021	prologue_09_funding	d	老陈	surprise	两万？		
+ch09.S0.022	prologue_09_funding	n			老陈搭在膝头的大手微微一颤。		
+ch09.S0.023	prologue_09_funding	n			他花白的眉毛紧紧拧成了一个结。		
+ch09.S0.024	prologue_09_funding	d	老陈	serious	咱们当年全盛的时候，全段一个月流动金也就万把块。两万……这不是个小数目啊。		
+ch09.S0.025	prologue_09_funding	d	林彪悍	serious	两万是本月支出预算，不是说手里一分钱都没有。旧账余额和昨天票款另列，先看这些新筹的钱各能用在哪儿。		
+ch09.S0.026	prologue_09_funding	d	林彪悍	serious	先按昨天十二人、四百二十票款估算，二十七趟也只有一万一千三百四十。票款不是利润，不能当成这笔周转钱已经收回来了。		
+ch09.S0.027	prologue_09_funding	d	老陈	calm	是啊，当年小支线全靠矿务局运煤大列贴补。光拉客车，自古以来就没有不亏本的。		
+ch09.S0.028	prologue_09_funding	n			我拿出身旁测油用的黄铜量油尺。		
+ch09.S0.029	prologue_09_funding	n			尺身刻度上的油污还带着刺鼻的硫黄味。		
+ch09.S0.030	prologue_09_funding	d	林彪悍	serious	零号轻柴油的黏度高，清晨冷车预热怠速半小时，就要白白耗去八升油。		
+ch09.S0.031	prologue_09_funding	d	林彪悍	serious	要是油路供不上，机车停在半道坡上，不仅砸了招牌，连机件都会被拖垮。		
+ch09.S0.032	prologue_09_funding	d	岁月	normal	刚性支出测算模型调出：三十天周期内，零号柴油按基准价核算需八千四百沙币；高压柴机油与润滑脂损耗需一千六百沙币。		
+ch09.S0.033	prologue_09_funding	d	岁月	normal	二号弯道枕木防腐注油与道钉垫片更替需两千沙币；六组制动闸瓦磨耗更替需一千五百沙币；乘务与站务人员基础生活补贴需四千沙币。		
+ch09.S0.034	prologue_09_funding	d	岁月	calm	加上两千沙币应急备件储备，计划支出合计一万九千五百；另留五百机动额度，预算上限两万。		
+ch09.S0.035	prologue_09_funding	n			办公室木门发出哐当一声响。		
+ch09.S0.036	prologue_09_funding	n			张工推门大步跨进办公室。		
+ch09.S0.037	prologue_09_funding	n			手里拎着一块断裂发黑的高磷铸铁闸瓦。		
+ch09.S0.038	prologue_09_funding	n			铁瓦重重砸在办公桌角的废报纸上。		
+ch09.S0.039	prologue_09_funding	d	张工	serious	看看这副闸瓦！昨天跑完下山道，摩擦面厚度只剩八毫米了！		
+ch09.S0.040	prologue_09_funding	d	张工	serious	按规程低于十毫米必须强制报废！全车十六块闸瓦，再不换新，下回下坡就得拿铁轮直接刮钢轨！		
+ch09.S0.041	prologue_09_funding	d	张工	serious	昨天新装的喷油器密封复检没漏。这次把同型号密封件备一套，下回检修不用临时到处找。		
+ch09.S0.042	prologue_09_funding	d	张工	calm	这台 NF-5K 标称轴功率两千千瓦，拉一节客车那是大马拉小车！必须尽早挂敞车拉煤拉木材，货运才能养活客运！		
+ch09.S0.043	prologue_09_funding	n			赵师傅也从门外快步走进来。		
+ch09.S0.044	prologue_09_funding	n			他手里拿着一本磨损的线路台账。		
+ch09.S0.045	prologue_09_funding	n			帆布工装裤腿上沾满了新鲜的红泥。		
+ch09.S0.046	prologue_09_funding	d	赵师傅	serious	二号弯道那三十根劣化木枕，已经标进更换清单。限速放行不等于就此不管，得按计划换新。		
+ch09.S0.047	prologue_09_funding	d	赵师傅	serious	北段三号涵洞已经补砟捣实，今天复测还要看沉降。不能因为试车过了一趟，就把观察记录停了。		
+ch09.S0.048	prologue_09_funding	d	赵师傅	serious	要恢复日常货运，这些处所都得按复核意见逐项销号。安全条件不够，宁可少开，也不能硬压重车。		
+ch09.S0.049	prologue_09_funding	d	老陈	smile	……老张和老赵说得都对，机器跟人一样，饿着肚子干活早晚得出大险情。		
+ch09.S0.050	prologue_09_funding	d	老陈	calm	这些年我在这破车站里守着，能省一分是一分。但铁道上的安全钱，一文钱都省不得！		
+ch09.S0.051	prologue_09_funding	d	老陈	calm	当年矿务局还在，每个月都给拨专项运营款。如今矿务局撤了，咱们这铁道必须自己找饭吃！		
+ch09.S0.052	prologue_09_funding	n			老陈从胸前解开洗得泛白的工装纽扣。		
+ch09.S0.053	prologue_09_funding	n			他神情郑重地拍了拍怀口。		
+ch09.S0.054	prologue_09_funding	d	老陈	gentle	彪悍，其实昨天首班车一通，好几路老熟人都托人往站里带话了。		
+ch09.S0.055	prologue_09_funding	d	老陈	calm	他们知道咱们底子薄、缺口大。这不，几份实打实的心意全送到了，就看你怎么安排先后！		
+ch09.S0.056	prologue_09_funding	n			办公室木桌被晨光照得透亮。		
+ch09.S0.057	prologue_09_funding	n			三条不同的资金渠道，正摆在调度台上。		
+ch09.S0.058	prologue_09_funding	thought	林彪悍	serious	[每一笔钱背后，都系着一份沉甸甸的期盼与责任。]		
+ch09.S0.059	prologue_09_funding	thought	林彪悍	calm	[绝不能盲目接纳，必须摸清每一笔款项的来路与约束。]		
+ch09.S0.060	prologue_09_funding	c			三笔资金都要核清，先去哪一处？		
+ch09.S0.060.o1	prologue_09_funding	opt			先清点老陈带来的乡亲筹款		
+ch09.S0.060.o2	prologue_09_funding	opt			先落实市里的扶持基金		
+ch09.S0.060.o3	prologue_09_funding	opt			先与铁路之友核对维护金		
+ch09.S1.000	prologue_09_funding	loc			雾峰村车站 · 站长办公室 · 0km		
+ch09.S1.001	prologue_09_funding	n			老陈从贴身内袋里掏出一个沉甸甸的蓝布包。		
+ch09.S1.002	prologue_09_funding	n			蓝布是耐磨的粗斜纹布。		
+ch09.S1.003	prologue_09_funding	n			布角被山道晨露和汗水浸出了几圈灰白盐花。		
+ch09.S1.004	prologue_09_funding	n			包袱被粗红毛线横竖扎了三道死结。		
+ch09.S1.005	prologue_09_funding	n			他布满老茧的手指略微颤抖地解开绳扣。		
+ch09.S1.006	prologue_09_funding	n			布包摊开在桌面上。		
+ch09.S1.007	prologue_09_funding	n			里面整齐码放着一叠叠皱巴巴的纸币与铜分币。		
+ch09.S1.008	prologue_09_funding	n			面额从一沙币、五角到两分不等。		
+ch09.S1.009	prologue_09_funding	n			有些纸币上还沾着炒茶留下的茶油痕迹。		
+ch09.S1.010	prologue_09_funding	n			有些被透明胶纸细心粘贴好了裂口。		
+ch09.S1.011	prologue_09_funding	n			有些铜币被红棉线仔细串成了整串。		
+ch09.S1.012	prologue_09_funding	n			每一叠钱上都用铅笔写着细细的名字纸条。		
+ch09.S1.013	prologue_09_funding	d	老陈	gentle	这是下河村、青石坎六十多户茶农的周转借款。昨天先报认捐，昨晚才按家把钱收齐、清点。		
+ch09.S1.014	prologue_09_funding	n			我伸出手指轻轻触碰那叠纸币。		
+ch09.S1.015	prologue_09_funding	n			纸角上还带着粗糙的泥垢与茶青的清香。		
+ch09.S1.016	prologue_09_funding	d	林彪悍	surprise	陈叔……秋茶才开始出手，大家自己也等着用钱。我们得先确认，他们家里的开销留够了。		
+ch09.S1.017	prologue_09_funding	d	老陈	smile	傻孩子，千万别推辞。当年你爷爷在这儿当站长，谁家断了粮、生了急病，哪次不是他从兜里掏钱垫上？		
+ch09.S1.018	prologue_09_funding	d	老陈	calm	我挨家问过，生活钱都留了。这是大家愿意借给车站的底垫，不是捐款，更不是买股份。还款的日子和办法，你给大伙写明白。		
+ch09.S1.019	prologue_09_funding	d	老陈	gentle	前年下河村张大娘摔断了腿，山路滑，四个汉子抬着滑竿在大雨里颠簸了八个钟头，差点没救过来！		
+ch09.S1.020	prologue_09_funding	d	老陈	gentle	大伙听说林家的后人回来了，机车又能响了，天不亮就把看家的积蓄拿出来了！		
+ch09.S1.021	prologue_09_funding	d	老陈	gentle	下河村林老栓把家里准备开春卖的两头半大山羊牵去集市，换了四十六块五毛，全送来了！		
+ch09.S1.022	prologue_09_funding	d	老陈	gentle	采茶的张大娘昨晚把装铜板的陶罐砸了，数出三十二块四毛二分，全串在红线上！		
+ch09.S1.023	prologue_09_funding	d	老陈	calm	大伙也说了，别为了多开几趟硬撑。先把班次排准，让送茶的、上学的知道哪天能坐车。		
+ch09.S1.024	prologue_09_funding	d	老陈	smile	六十多户人家挨个清点，毛票分币全算上，一共是八千零四十六块三毛！		
+ch09.S1.025	prologue_09_funding	d	老陈	gentle	山里人没多少整钞，这八千零四十六块三毛，连毛带分全都在这儿了，一厘都没落！		
+ch09.S1.026	prologue_09_funding	d	老陈	gentle	按咱们商量的，借一年、免息；每季把收支贴出来，有结余可以提前还。谁家遇急事，先来站里商量，不能只让乡亲等着。		
+ch09.S1.027	prologue_09_funding	d	岁月	happy	清点完毕！收到乡亲互助启动资金：实收八千零四十六沙币三十铜分！入账编号：VF-001。		
+ch09.S1.028	prologue_09_funding	n			我小心翼翼翻看着纸条上的名单。		
+ch09.S1.029	prologue_09_funding	n			下河村林老栓：四十六块五毛。		
+ch09.S1.030	prologue_09_funding	n			青石坎张大娘：三十二块四毛二分。		
+ch09.S1.031	prologue_09_funding	n			老烧炭工周老伯：一十八块六毛。		
+ch09.S1.032	prologue_09_funding	n			周老伯天没亮走五里石子路送来这把炭钱。		
+ch09.S1.033	prologue_09_funding	n			硬币在布包里还留着他手心的余温。		
+ch09.S1.034	prologue_09_funding	n			甚至还有学童包在糖纸里的三枚一分硬币。		
+ch09.S1.035	prologue_09_funding	n			歪斜的笔迹后面全是庄稼人的零碎血汗。		
+ch09.S1.036	prologue_09_funding	d	林彪悍	serious	八千零四十六块三毛……先按实际油耗和养护计划分配，不能把这笔钱全当成能烧掉的柴油。		
+ch09.S1.037	prologue_09_funding	d	林彪悍	gentle	陈叔，请大家放心，每一枚分币我都会记在明细账上，决不辜负乡亲们的信赖。		
+ch09.S1.038	prologue_09_funding	thought	林彪悍	serious	[八千零四十六块三毛，这是六十户人家咬着牙省下来的买油钱。]		
+ch09.S1.039	prologue_09_funding	thought	林彪悍	calm	[必须用最严密的财务制度，守护每一分泥土里的汗水。]		
+ch09.S1.040	prologue_09_funding	d	林彪悍	serious	一年免息、每季公开收支，我记下了。每户的金额和约定都单独开收据，急用钱也留好联系办法。		
+ch09.S1.041	prologue_09_funding	n			我扯出带有红蓝复写纸的三联收据簿。		
+ch09.S1.042	prologue_09_funding	n			钢笔尖在受款凭证上郑重划落每一笔。		
+ch09.S1.043	prologue_09_funding	n			盖上带有齿轮暗纹的铜质车站业务印章。		
+ch09.S1.044	prologue_09_funding	n			我将存根撕下一联递给老陈，请他带回村里张贴。		
+ch09.S1.045	prologue_09_funding	n			将写着乡亲名字的纸条抚平整齐。		
+ch09.S1.046	prologue_09_funding	n			端端正正压在调度办公桌厚重的玻璃板下。		
+ch09.S1.047	prologue_09_funding	c			核清乡亲们筹集的八千零四十六块三毛后，后续资金线索随之浮现——		
+ch09.S1.047.o1	prologue_09_funding	opt			市里扶持基金有消息了，去落实审批文件		
+ch09.S1.047.o2	prologue_09_funding	opt			李阿姨在站台组织协会，过去查收互助款		
+ch09.S2.000	prologue_09_funding	loc			雾峰村车站 · 站长办公室 · 0km		
+ch09.S2.001	prologue_09_funding	n			木门被笃笃敲响两声。		
+ch09.S2.002	prologue_09_funding	n			赵师傅腋下夹着一个带红印的牛皮纸文件袋走进来。		
+ch09.S2.003	prologue_09_funding	n			他头上还顶着巡线的晨雾湿气。		
+ch09.S2.004	prologue_09_funding	n			帆布工装的袖口磨损得露出了线头。		
+ch09.S2.005	prologue_09_funding	d	赵师傅	smile	站长，市交通局和铁路振兴专班的批复终于落下来了！		
+ch09.S2.006	prologue_09_funding	n			赵师傅将文件袋小心翼翼放在桌上。		
+ch09.S2.007	prologue_09_funding	n			大红公章下附着财政拨款凭证，金额和收款账户一项项列着。		
+ch09.S2.008	prologue_09_funding	n			封面上印着加粗仿宋标题：		
+ch09.S2.009	prologue_09_funding	n			边缘支线公益性试点扶持资金审批表。		
+ch09.S2.010	prologue_09_funding	d	赵师傅	excited	一万五千沙币扶持款，银行回单也到了。批复准许按预算列支油料、基础养护和生活补贴，另做专账。		
+ch09.S2.011	prologue_09_funding	d	岁月	excited	政府专项扶持资金到账确认！流动资金账面增加一万五千沙币整！入账编号：CG-0902。		
+ch09.S2.012	prologue_09_funding	d	岁月	normal	该款按批复用途单列核算，支出凭证需留存；不是随意调用的现金。		
+ch09.S2.013	prologue_09_funding	d	林彪悍	surprise	先把预算里的油料、闸瓦和线路养护保住。道岔、蓄电池这些新增改造，另列方案报批，不挤这笔钱。		
+ch09.S2.014	prologue_09_funding	n			赵师傅擦了一把额头上的冷汗。		
+ch09.S2.015	prologue_09_funding	n			端起桌上的粗瓷茶碗喝了一大口热浓茶。		
+ch09.S2.016	prologue_09_funding	d	赵师傅	calm	市交通局专班里几个年轻科长，原先嫌咱们这条支线落后，想把铁轨全扒了修公路。		
+ch09.S2.017	prologue_09_funding	d	赵师傅	calm	还是老周局长拍了桌子，说山区雨季塌方多，没有铁道托底，老百姓断了粮连神仙都救不了！		
+ch09.S2.018	prologue_09_funding	n			赵师傅从口袋里摸出老花镜戴上。		
+ch09.S2.019	prologue_09_funding	n			指着文件末尾的一行加粗红字。		
+ch09.S2.020	prologue_09_funding	d	赵师傅	serious	这份批复同时准许附条件恢复开行，原拆轨程序暂缓。九十天考核从今天、四月二十六日开始，不是说拆轨决定已经永久撤销。		
+ch09.S2.021	prologue_09_funding	d	赵师傅	serious	每个三十天周期至少开行一千二百公里，正点率不低于百分之九十五。按这条线往返四十六公里算，至少得开二十七趟。		
+ch09.S2.022	prologue_09_funding	d	赵师傅	serious	第九十天督查组来查台账、运量和设备。刚才我把试车记录、线路复核单和茶农的货运登记一并交了回执，文件都在袋里。		
+ch09.S2.023	prologue_09_funding	d	赵师傅	serious	原则上恢复每天一趟往返，也就是两个单程班次；遇到安全条件不够必须停开并记录。考核不达标，后续补贴暂停，已拨款按批复核查处理。		
+ch09.S2.024	prologue_09_funding	d	赵师傅	serious	这三个月，哪怕咱们全员脱一层皮，也得把开行记录和正点台账做得干干净净！		
+ch09.S2.025	prologue_09_funding	d	老陈	serious	先过眼前的复核，再接这九十天。总算不是一边修，一边担心明天有人来拆轨了。		
+ch09.S2.026	prologue_09_funding	d	张工	calm	给钱就得担责，自古以来都是这个规矩！		
+ch09.S2.027	prologue_09_funding	d	张工	smile	有一万五千块买零件，老汉我能把全列车的空气分配阀全拆开清洗一遍！只要机件不掉链子，考核老汉我替你扛！		
+ch09.S2.028	prologue_09_funding	d	赵师傅	calm	我也能把一号进站信号机的钢丝导线全换成镀锌绳，雨雪天绝对不卡阻！		
+ch09.S2.029	prologue_09_funding	thought	林彪悍	serious	[天下没有免费的午餐。拿了官款，就必须立下军令状。]		
+ch09.S2.030	prologue_09_funding	thought	林彪悍	calm	[三个月考核期，正是倒逼我们建立正规化运营体系的契机。]		
+ch09.S2.031	prologue_09_funding	d	林彪悍	smile	赵师傅，陈叔，张工，三个月足够了。只要机车正常跑起来，运量绝不会输给公路！		
+ch09.S2.032	prologue_09_funding	n			我提笔在责任承诺书上签下名字。		
+ch09.S2.033	prologue_09_funding	n			盖上雾峰村车站的业务专用章。		
+ch09.S2.034	prologue_09_funding	n			将红头批复平整压在桌面玻璃板右下角。		
+ch09.S2.035	prologue_09_funding	c			市级专项资金与考核红线交接完毕，盘点其余资金动向——		
+ch09.S2.035.o1	prologue_09_funding	opt			回办公室，老陈带来的乡亲心意还没认领		
+ch09.S2.035.o2	prologue_09_funding	opt			去站台，李阿姨组织了铁路之友维护金		
+ch09.S2.035.o3	prologue_09_funding	opt			三笔资金全部齐备，汇聚办公室开始对账		
+ch09.S3.000	prologue_09_funding	loc			雾峰村车站 · 车站候车月台 · 0km		
+ch09.S3.001	prologue_09_funding	n			清晨的月台上聚着十几位沿线商户。		
+ch09.S3.002	prologue_09_funding	n			车站的老猫蜷在空行包车轮边打盹。		
+ch09.S3.003	prologue_09_funding	n			李阿姨胸前挂着巡道哨，手里抱着一个木制公募箱。		
+ch09.S3.004	prologue_09_funding	n			箱子上用红漆刷着“铁路之友”四个大字。		
+ch09.S3.005	prologue_09_funding	n			木箱四角包着磨亮的白铁皮包角。		
+ch09.S3.006	prologue_09_funding	d	李阿姨	smile	彪悍，这是镇上杂货铺和几家收购点凑的铁路之友维护金。跟茶农的周转借款不是一拨人，名册我分开带来了。		
+ch09.S3.007	prologue_09_funding	d	李阿姨	happy	王老板先拿出一百九十四块八毛，还领着我去问了几家店。每家出多少，都签在这张单子上。		
+ch09.S3.008	prologue_09_funding	d	李阿姨	gentle	杂货铺、茶叶收购点和山货栈合起来，捐了五千一百三十六块四毛，约定专门补贴油料和日常维护。		
+ch09.S3.009	prologue_09_funding	n			李阿姨打开公募箱的铁搭扣。		
+ch09.S3.010	prologue_09_funding	n			里面满是铜铝硬币与角票。		
+ch09.S3.011	prologue_09_funding	n			箱扣上还用红棉绳系着一枚发亮的一分钱。		
+ch09.S3.012	prologue_09_funding	d	李阿姨	smile	搭扣上那枚多出的一分铜板，是小芳给串上去保平安的彩头！		
+ch09.S3.013	prologue_09_funding	d	岁月	happy	民间护路协会互助金清点完毕！实收五千一百三十六沙币四十铜分！入账编号：AF-103。		
+ch09.S3.014	prologue_09_funding	d	林彪悍	surprise	李阿姨，昨天才首发，商户这边也收齐了？名册得和茶农那笔分开核，不能记重。		
+ch09.S3.015	prologue_09_funding	d	李阿姨	gentle	分开了。昨天回程先带出一批茶，收购点也看到了装卸记录。这还不是全村茶都卖了，但他们愿意先支持一笔。		
+ch09.S3.016	prologue_09_funding	d	李阿姨	smile	昨晚几家商户约好先组个筹备小组，章程还要商量。先把这笔定向捐款的用途写清，别急着许一堆以后都得兑现的事。		
+ch09.S3.017	prologue_09_funding	d	李阿姨	gentle	这笔是定向捐款，不用还，也不抵运费。往后再筹不筹，由大家自愿，不能当成每月固定收入。		
+ch09.S3.018	prologue_09_funding	n			小卖部的王老板走上前，用力拍了拍我的肩膀。		
+ch09.S3.019	prologue_09_funding	n			他的脸上洋溢着实实在在的喜悦。		
+ch09.S3.020	prologue_09_funding	d	王小弟	excited	站长！王叔说以后他们进货全走咱们列车的行包房，昨天两箱食盐运费才花了十块钱！		
+ch09.S3.021	prologue_09_funding	d	王小弟	excited	要是雇骡马翻山，光运费就得八十块，省下来的钱全算在进货本钱里了！		
+ch09.S3.022	prologue_09_funding	n			小芳捧着厚厚一叠油墨未干的硬卡纸走过来。		
+ch09.S3.023	prologue_09_funding	d	小芳	smile	站长，学生减免和茶农月票我先列了草案，等核过成本再请大家商量，现在还不能按草案收费。		
+ch09.S3.024	prologue_09_funding	d	李阿姨	smile	是。先按已经公布的票价开票。维护金、票款和茶农借款各记各的，不能一个数收三次。		
+ch09.S3.025	prologue_09_funding	n			月台旁的一株老桂树正迎着秋阳吐着碎花。		
+ch09.S3.026	prologue_09_funding	n			空气里弥漫着清甜的香气与机油的醇厚。		
+ch09.S3.027	prologue_09_funding	n			延伸向远方的钢轨在日光下反射着耀眼的银光。		
+ch09.S3.028	prologue_09_funding	thought	林彪悍	serious	[茶农借的是底垫，商户捐的是维护钱。名字写在不同的单子上，钱也得守住各自的去处。]		
+ch09.S3.029	prologue_09_funding	thought	林彪悍	smile	[民意即天意。有了百姓的托举，没有翻不过去的高山。]		
+ch09.S3.030	prologue_09_funding	d	林彪悍	smile	请转告大家，维护支出会按月公开。先把这一笔用清楚，再谈下一步。		
+ch09.S3.031	prologue_09_funding	n			小芳和王小弟麻利地搬出木钱盘。		
+ch09.S3.032	prologue_09_funding	n			在月台石凳上将各色角票与硬币分类堆放。		
+ch09.S3.033	prologue_09_funding	n			站台上的村民们纷纷挥手致意。		
+ch09.S3.034	prologue_09_funding	n			晨光将青石板路面照得一片金黄。		
+ch09.S3.035	prologue_09_funding	c			协会的五千一百三十六块四毛清点完毕，决定下一步行程——		
+ch09.S3.035.o1	prologue_09_funding	opt			回办公室，老陈还在等着交接乡亲的布包		
+ch09.S3.035.o2	prologue_09_funding	opt			三笔资金全部到位，回办公室进行总账清点		
+ch09.S4.000	prologue_09_funding	loc			雾峰村车站 · 站长办公室 · 0km		
+ch09.S4.001	prologue_09_funding	n			厚重的实木办公桌上。		
+ch09.S4.002	prologue_09_funding	n			三笔资金的明细凭证整齐排开。		
+ch09.S4.003	prologue_09_funding	n			茶农免息周转借款八千零四十六块三毛。		
+ch09.S4.004	prologue_09_funding	n			市专班的扶持基金一万五千沙币整。		
+ch09.S4.005	prologue_09_funding	n			沿线商户定向维护捐款五千一百三十六块四毛。		
+ch09.S4.006	prologue_09_funding	d	岁月	excited	本轮新增实收两万八千一百八十二沙币七十铜分，不含原有余额和昨天票款，也不含未支用授信、尚未报销的考察费。		
+ch09.S4.007	prologue_09_funding	d	岁月	smile	按批复用途安排两万预算后，本轮新增款尚余八千一百八十二沙币七十铜分；未归还借款仍需单列，不能把余额全当作净资产。		
+ch09.S4.008	prologue_09_funding	d	岁月	smile	首月周转暂时接上了。借款、限定用途款和日常票货收入，继续分别记账。		
+ch09.S4.009	prologue_09_funding	n			老陈站在桌旁，如释重负地长长舒了一口气。		
+ch09.S4.010	prologue_09_funding	n			布满皱纹的脸上终于露出了舒展的笑容。		
+ch09.S4.011	prologue_09_funding	d	老陈	smile	先把这个月稳稳当当跑下来。乡亲借的钱要还，专款要对账，可不能觉得兜里有了钱就松手。		
+ch09.S4.012	prologue_09_funding	d	张工	smile	我去按预算订十六块闸瓦，再备一套同型号喷油器密封件。到货验过才装。		
+ch09.S4.013	prologue_09_funding	d	李阿姨	happy	候车室的炉子我也买上焦炭了，保管让进站的乡亲们喝上滚烫的热茶水！		
+ch09.S4.014	prologue_09_funding	n			我拉开办公桌中间沉重的樟木抽屉。		
+ch09.S4.015	prologue_09_funding	n			抽屉深处飘散出陈年樟脑与干松香的清苦气味。		
+ch09.S4.016	prologue_09_funding	n			我把沉甸甸的蓝布包郑重塞进最深处。		
+ch09.S4.017	prologue_09_funding	n			紧紧挨着爷爷当年留下的红色行车安全手册。		
+ch09.S4.018	prologue_09_funding	n			手册泛黄的扉页上，工工整整写着爷爷当年的毛笔题字：		
+ch09.S4.019	prologue_09_funding	n			轨为民设，车为民行。		
+ch09.S4.020	prologue_09_funding	n			厚玻璃板底下。		
+ch09.S4.021	prologue_09_funding	n			平平整整压着三张签满名字的借据与公函。		
+ch09.S4.022	prologue_09_funding	n			一张是六十户茶农带着分厘零头的按手印账单。		
+ch09.S4.023	prologue_09_funding	n			一张是市专班加盖红印的一万五千元考核军令状。		
+ch09.S4.024	prologue_09_funding	n			一张是商户签名的维护捐款明细。		
+ch09.S4.025	prologue_09_funding	n			这里没有被强行抹平的整数。		
+ch09.S4.026	prologue_09_funding	n			只有带着毛分角厘的真实重量。		
+ch09.S4.027	prologue_09_funding	n			晨光透过玻璃，折射出坚实而温暖的色泽。		
+ch09.S4.028	prologue_09_funding	n			老式摆钟在墙角沉稳地摆动，秒针滴答作响。		
+ch09.S4.029	prologue_09_funding	d	林彪悍	calm	陈叔，张工，赵师傅，咱们机务段做晨检去。新的一天，正从这三笔资金开始运转！		
+ch09.S4.030	prologue_09_funding	thought	林彪悍	serious	[第一笔启动的火种已经攒齐……接下来，是让铁轮和数字自己滚起来。]		
+ch10.S0.000	prologue_10_transition	n			首发后一周 · 傍晚		
+ch10.S0.001	prologue_10_transition	loc			雾峰村车站 · 站长办公室与调度台 · 0km		
+ch10.S0.002	prologue_10_transition	n			斜阳将窗框的黑影长长斜拉在调度桌上。		
+ch10.S0.003	prologue_10_transition	n			桌角的老式煤油灯芯散发着温润的微光。		
+ch10.S0.004	prologue_10_transition	n			桌面上摊开着复兴试运营整整一周的行车台账。		
+ch10.S0.005	prologue_10_transition	n			牛皮纸封皮上用红蓝铅笔密密麻麻标满记号。		
+ch10.S0.006	prologue_10_transition	n			算盘上的红木算珠被反复拨动。		
+ch10.S0.007	prologue_10_transition	n			发出清脆而富有韵律的嗒嗒声。		
+ch10.S0.008	prologue_10_transition	n			老陈双手捧着大号搪瓷茶缸，安静地坐在对面。		
+ch10.S0.009	prologue_10_transition	n			他眼角泛着深深的笑纹，目光落在我手中的铅笔上。		
+ch10.S0.010	prologue_10_transition	d	老陈	smile	算到第几笔了？看你眉头皱了一整天，茶水凉了三回都顾不上喝。		
+ch10.S0.011	prologue_10_transition	d	林彪悍	serious	陈叔，首发后这一周的客票和货运收入刚核对完，正在汇总柴油单耗。		
+ch10.S0.012	prologue_10_transition	d	老陈	gentle	不着急，慢慢核。当年你爷爷当站长，也是每晚收工在这盏灯下对一遍账。		
+ch10.S0.013	prologue_10_transition	d	老陈	calm	这本子上的一笔一划，不是冷冰冰的数字，是全村老小的柴米油盐。		
+ch10.S0.014	prologue_10_transition	d	岁月	normal	本周完成七趟往返，共十四个单程班次，累计运行三百二十二公里。		
+ch10.S0.015	prologue_10_transition	d	岁月	happy	正点率保持百分之九十八点五！客运总量累计一百四十二人次！		
+ch10.S0.016	prologue_10_transition	d	岁月	normal	客票实收四千九百七十沙币，行包与农产品货运实收一千二百六十沙币。		
+ch10.S0.017	prologue_10_transition	d	岁月	calm	客货收入合计六千二百三十沙币。扣除已付油料和本周耗材，还没算生活补贴、折旧和借款偿还，暂时不能叫净利润。		
+ch10.S0.018	prologue_10_transition	n			我放下手里的红铅笔，揉了揉发酸的手腕。		
+ch10.S0.019	prologue_10_transition	n			账页上清晰记着每一趟列车的收支曲线。		
+ch10.S0.020	prologue_10_transition	d	林彪悍	calm	首班车虽然只有十二个人，但这七天下来，客流稳步攀升到了单趟二十八人。		
+ch10.S0.021	prologue_10_transition	d	林彪悍	smile	青石坎学堂的娃娃每天准点进校，老王杂货铺的食盐和火柴没断过供。		
+ch10.S0.022	prologue_10_transition	d	老陈	gentle	可不是么。昨天林老栓特意从山里带来一兜刚炒出来的野毛茶。		
+ch10.S0.023	prologue_10_transition	d	老陈	smile	老汉拉着我的手，说自打火车复开，山里的茶叶比往年多卖了三成的好价钱。		
+ch10.S0.024	prologue_10_transition	d	老陈	gentle	今天下午，张大娘又把一篮热腾腾的苞谷馍悄悄搁在站台长椅上。		
+ch10.S0.025	prologue_10_transition	d	老陈	gentle	连声招呼都没打，生怕咱们不收她的心意。		
+ch10.S0.026	prologue_10_transition	d	老陈	calm	当年矿务局撤走，全村人都以为这条钢轨彻底死了，只能眼睁睁看着好东西烂在山里。		
+ch10.S0.027	prologue_10_transition	d	老陈	gentle	如今车轮一响，山里人的心气儿全被这声汽笛给唤回来了。		
+ch10.S0.028	prologue_10_transition	n			我翻开记录簿的设备运维分册。		
+ch10.S0.029	prologue_10_transition	n			上面记录着机车七天来的运行参数。		
+ch10.S0.030	prologue_10_transition	n			各缸温度与机油压力曲线工整清晰。		
+ch10.S0.031	prologue_10_transition	d	林彪悍	calm	柴油机平均油耗比预期低了百分之五，三号气缸的喷油嘴密封也顶住了负荷。		
+ch10.S0.032	prologue_10_transition	d	老陈	smile	当年大雪封山，机车差点冻裂缸体，你爷爷整夜带着大家用喷灯暖油底壳。		
+ch10.S0.033	prologue_10_transition	d	老陈	gentle	机器是有脾气的，你待它亲，它在险道上就绝不会给你撂挑子。		
+ch10.S0.034	prologue_10_transition	d	老陈	calm	眼下秋凉了，再过两个月就是严冬，得提前备好防冻柴油和水鹤保温草绳。		
+ch10.S0.035	prologue_10_transition	d	老陈	smile	你爷爷常说，账目清爽，行车才能心安。每一枚铜币，都得对得起老百姓买的那张硬卡票。		
+ch10.S0.036	prologue_10_transition	d	林彪悍	serious	陈叔，今天刚核过：拆轨仍按批复暂缓，九十天考核从四月二十六日起算。行车、支出和复测记录，我每天收班都归档。		
+ch10.S0.037	prologue_10_transition	n			门外传来笃笃的敲门声。		
+ch10.S0.038	prologue_10_transition	n			张工和赵师傅大步迈进调度室。		
+ch10.S0.039	prologue_10_transition	n			张工手里捏着一本满是机油手印的履历簿。		
+ch10.S0.040	prologue_10_transition	d	张工	smile	报告站长！NF-5K周检完毕，闸瓦和喷油系统复查正常。明天按核准班次开行，不能因为周检过了就擅自加车。		
+ch10.S0.041	prologue_10_transition	d	赵师傅	smile	工务这边也排查完了，一号道岔镀锌导线状态良好，二号弯道三十根注油新枕木沉降量在两毫米内！		
+ch10.S0.042	prologue_10_transition	d	赵师傅	calm	咱们这条老骨头轨道，如今比市郊的主干线还要扎实可靠！		
+ch10.S0.043	prologue_10_transition	d	老陈	smile	大伙都看在眼里呢。机器伺候得好，路基打得牢，铁道就不会辜负老百姓。		
+ch10.S0.044	prologue_10_transition	thought	林彪悍	calm	[七天平稳试跑，证明了这套基层协作体系的坚韧生命力。]		
+ch10.S0.045	prologue_10_transition	thought	林彪悍	serious	[但这只是站稳脚跟的第一步，后续的自主经营才是真正的试金石。]		
+ch10.S0.046	prologue_10_transition	d	林彪悍	smile	张工，赵师傅，这一周大伙辛苦了。今晚早点歇着，明天咱们照常出车。		
+ch10.S0.047	prologue_10_transition	n			张工和赵师傅笑着摆了摆手，转身走出站舍。		
+ch10.S0.048	prologue_10_transition	n			屋里的油灯灯芯轻轻爆出一朵灯花。		
+ch10.S0.049	prologue_10_transition	n			老陈把手里的搪瓷茶缸慢慢搁在木桌上。		
+ch10.S0.050	prologue_10_transition	d	老陈	gentle	走，彪悍，陪陈叔到站台上吹吹晚风。		
+ch10.S1.000	prologue_10_transition	loc			雾峰村车站 · 车站候车月台 · 0km		
+ch10.S1.001	prologue_10_transition	n			夕阳的余晖将整座站台涂抹成温暖的暗红色。		
+ch10.S1.002	prologue_10_transition	n			远处山梁上的杂木林在晚风中泛着微澜。		
+ch10.S1.003	prologue_10_transition	n			站台边两根平行的钢轨延伸向暮色深处。		
+ch10.S1.004	prologue_10_transition	n			宛如两道沉静而坚定的银弦。		
+ch10.S1.005	prologue_10_transition	n			老陈背着双手，一步一步沿着月台石阶慢慢踱步。		
+ch10.S1.006	prologue_10_transition	n			脚下的碎石道渣发出沙沙的轻响。		
+ch10.S1.007	prologue_10_transition	d	老陈	calm	四年前撤掉定期班次那晚，我也是这么一个人在站台上走来走去。		
+ch10.S1.008	prologue_10_transition	d	老陈	sad	那时候钢轨生锈，道渣里长满半人高的野蒿草，候车室连盏亮着的灯都没有。		
+ch10.S1.009	prologue_10_transition	d	老陈	calm	大伙都说铁路时代已经到头了，沙能飞行器一天能跑几千里，谁还稀罕这笨重的铁家伙。		
+ch10.S1.010	prologue_10_transition	n			老陈在木制站牌旁停下脚步。		
+ch10.S1.011	prologue_10_transition	n			他抬起粗糙的手掌，轻轻拂去站牌边角上的干苔藓。		
+ch10.S1.012	prologue_10_transition	n			站牌上黑漆手书的“雾峰村”三个大字依然苍劲。		
+ch10.S1.013	prologue_10_transition	d	老陈	gentle	但我心里始终不服气。公路塌方泥石流，天一阴飞行器就得躲风暴。		
+ch10.S1.014	prologue_10_transition	d	老陈	smile	只有这铁轮压着钢轨，风雨无阻，能把几千吨粮食、沿线几万人的希望实打实从山外拉进来。		
+ch10.S1.015	prologue_10_transition	n			老陈弯下腰，用手掌抚摸着钢轨冰凉的轨面。		
+ch10.S1.016	prologue_10_transition	n			轨面上还留着傍晚最后一班列车滚过的微温。		
+ch10.S1.017	prologue_10_transition	d	老陈	gentle	当年你爷爷领着我们通车时说，钢轨铺到哪儿，人烟和希望就扎根到哪儿。		
+ch10.S1.018	prologue_10_transition	d	老陈	smile	这么多年，山林换了树木，村里换了辈分，铺路时留下的这条走向还在。		
+ch10.S1.019	prologue_10_transition	n			晚风吹拂着月台边的一株老洋槐树。		
+ch10.S1.020	prologue_10_transition	n			枯黄的槐树叶在风中沙沙作响。		
+ch10.S1.021	prologue_10_transition	d	老陈	smile	当年松桥站刚通车，全乡男女老少全跑去挤站台，那场面比过年还热闹！		
+ch10.S1.022	prologue_10_transition	d	老陈	gentle	只要咱们脚下的步子不乱，往后这站台上的人，只会比当年更多！		
+ch10.S1.023	prologue_10_transition	n			老陈弯下腰，用脚尖轻轻踢了踢正线的一号手扳道岔。		
+ch10.S1.024	prologue_10_transition	n			道岔滑床板上涂抹着厚厚的润滑油脂。		
+ch10.S1.025	prologue_10_transition	n			在夕阳下折射出乌黑油润的金属光泽。		
+ch10.S1.026	prologue_10_transition	d	老陈	calm	这四年里，我每隔三天就来给道岔注一遍废机油，拔一遍正线上的荒草。		
+ch10.S1.027	prologue_10_transition	d	老陈	gentle	村里人都笑我魔怔了，说守着废铁能守出金子来吗？		
+ch10.S1.028	prologue_10_transition	d	老陈	smile	我说我不求金子，我只要这条路随时能迎回懂它的人。这不，把你等回来了。		
+ch10.S1.029	prologue_10_transition	n			远处村落里升起袅袅的暮烟。		
+ch10.S1.030	prologue_10_transition	n			晚风送来山林深处淡淡的柴烟与松针清香。		
+ch10.S1.031	prologue_10_transition	d	老陈	gentle	彪悍，这一周你做得比你爷爷当年还要沉稳、还要细致。		
+ch10.S1.032	prologue_10_transition	d	老陈	serious	从今天开始，这条线……就正式交到你的手里了。		
+ch10.S1.033	prologue_10_transition	d	老陈	gentle	有什么不懂的，随时问我。我们这些老家伙只要还能喘气，就一直在你身后给你顶着。		
+ch10.S1.034	prologue_10_transition	n			晚风轻轻拂过站台木柱。		
+ch10.S1.035	prologue_10_transition	n			暮色中，老人的目光坚定而温厚。		
+ch10.S1.036	prologue_10_transition	thought	林彪悍	serious	[接过这条线，便是接过沿线几万百姓对铁道的重托。]		
+ch10.S1.037	prologue_10_transition	thought	林彪悍	calm	[无论前路有多少险滩与风浪，我绝不能退缩半步。]		
+ch10.S1.038	prologue_10_transition	c			老陈还在等我的回答。		
+ch10.S1.038.o1	prologue_10_transition	opt			我会让这条铁路重新活过来		
+ch10.S1.038.o2	prologue_10_transition	opt			我尽力而为，脚踏实地走好每一步		
+ch10.S2.000	prologue_10_transition	loc			雾峰村车站 · 车站候车月台 · 0km		
+ch10.S2.001	prologue_10_transition	d	老陈	excited	好小子！有这股横劲！当年你爷爷指着荒山说要通车的时候，全段上下也说他是疯子！		
+ch10.S2.002	prologue_10_transition	d	老陈	smile	铁轨是硬的，干铁道的人骨头更得硬！只要你胸膛里这团火不灭，谁也压不垮咱们！		
+ch10.S2.003	prologue_10_transition	d	老陈	gentle	放手去干，把机车的手柄推到位，把每一站的信号灯全点亮！		
+ch10.S2.004	prologue_10_transition	d	老陈	smile	好！踏实！干铁道的，嘴上跑火车最要不得。多踩一颗碎石子，多拧紧半圈道钉，比喊破嗓子都管用！		
+ch10.S2.005	prologue_10_transition	d	老陈	gentle	一步一个脚印，车轮滚得稳，大伙心里才亮堂。你爷爷泉下有知，听了你这句话也安心！		
+ch10.S2.006	prologue_10_transition	d	老陈	calm	大山里的日子长着呢，只要耐得住寂寞、守得住规矩，这铁轨就能陪咱们一辈子。		
+ch10.S2.007	prologue_10_transition	n			老陈从贴身工装内袋里解下一个发白的红绒布袋。		
+ch10.S2.008	prologue_10_transition	n			他粗糙的手指拉开抽绳，倒出一柄古旧的黄铜总钥匙。		
+ch10.S2.009	prologue_10_transition	n			钥匙柄上工整刻着：雾峰支线 · 调度总钥 01。		
+ch10.S2.010	prologue_10_transition	n			钥匙的齿口被几十年的摩挲磨得圆润发亮。		
+ch10.S2.011	prologue_10_transition	n			旁边还配着一个用厚帆布包边的手持路签筒。		
+ch10.S2.012	prologue_10_transition	n			路签筒的黄铜搭扣上刻着醒目的正线安全印鉴。		
+ch10.S2.013	prologue_10_transition	d	老陈	gentle	这是全站二十四处道岔锁和机械室的总钥匙，也是你爷爷当年交到我手里的。		
+ch10.S2.014	prologue_10_transition	d	老陈	calm	从你爷爷走后，这把钥匙跟了我四年。现在，我把它交给你。		
+ch10.S2.015	prologue_10_transition	n			老陈拉开我的右手掌心。		
+ch10.S2.016	prologue_10_transition	n			将沉甸甸的黄铜钥匙稳稳拍进我手里。		
+ch10.S2.017	prologue_10_transition	n			金属带着山风的清凉，又残留着老人手心的余温。		
+ch10.S2.018	prologue_10_transition	n			钥匙沉甸甸地压在手心里，宛如一整条铁路的分量。		
+ch10.S2.019	prologue_10_transition	d	林彪悍	serious	陈叔，只要我还在这个调度台上，这把钥匙绝不离身，信号机绝不熄灭！		
+ch10.S2.020	prologue_10_transition	d	老陈	smile	好，好。好孩子，有你这句话，陈叔今晚能睡个踏实觉了。		
+ch10.S2.021	prologue_10_transition	n			西方的晚霞终于完全褪去了最后的艳色。		
+ch10.S2.022	prologue_10_transition	n			墨蓝色的夜幕悄然垂挂在山峰之巅。		
+ch10.S2.023	prologue_10_transition	n			老陈摘下戴了大半辈子的大盖帽。		
+ch10.S2.024	prologue_10_transition	n			轻轻掸了掸帽檐上的积灰。		
+ch10.S2.025	prologue_10_transition	n			他背着双手，踏着月台的石阶。		
+ch10.S2.026	prologue_10_transition	n			一步一步走向山村暮色中的归途。		
+ch10.S2.027	prologue_10_transition	n			山间亮起星星点点的橘黄色灯火。		
+ch10.S2.028	prologue_10_transition	n			站房远处，机务车库亮着一盏昏黄的巡检灯。		
+ch10.S2.029	prologue_10_transition	n			站台上重新归于一片安宁的静谧。		
+ch10.S2.030	prologue_10_transition	n			唯有夜风掠过钢轨，泛起微弱而清越的共鸣。		
+ch10.S2.031	prologue_10_transition	n			黑子不知什么时候溜上了站台，趴在石阶边，下巴搁在冰凉的水泥缘上。		
+ch10.S2.032	prologue_10_transition	n			它抬眼看了看我，尾巴在地上扫了两下，像在替石墩上的那位老人回答：今天，有车。		
+ch10.S2.033	prologue_10_transition	n			身旁的岁月轻轻眨了眨明亮的眼眸。		
+ch10.S2.034	prologue_10_transition	d	岁月	gentle	全线数据基线已锁定。明日运营计划已自动就绪，随时等待站长指令。		
+ch10.S2.035	prologue_10_transition	thought	林彪悍	serious	[明早六点整，先把手写的新运行时刻表钉上站台木柱。]		
+ch10.S2.036	prologue_10_transition	n			《铁路复兴：沙能冲击》。		
+ch10.S2.037	prologue_10_transition	n			第一章·启程。		
+ch10.S2.038	prologue_10_transition	n			点击任意位置开始经营。		
+ch10.S2.039	prologue_10_transition	special			TRANSITION_TO_GAMEPLAY		

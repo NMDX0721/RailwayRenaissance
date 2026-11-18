@@ -21,6 +21,7 @@ public class BackgroundManager : MonoBehaviour
         bgContainer.style.right = 0;
         bgContainer.style.bottom = 0;
         bgContainer.style.overflow = Overflow.Hidden;
+        bgContainer.style.backgroundColor = new Color(0.04f, 0.03f, 0.05f, 1f);   // 兜底深色底：任何过渡帧都不露出清屏紫
         root.Add(bgContainer);
 
         bgOld = CreateBgLayer("vn-bg-old");
@@ -152,6 +153,7 @@ public class BackgroundManager : MonoBehaviour
             StopCoroutine(transitionCoroutine);
             transitionCoroutine = null;
         }
+        SettleInterruptedTransition();
 
         switch (transition)
         {
@@ -183,6 +185,7 @@ public class BackgroundManager : MonoBehaviour
     /// <summary>纯色背景（black 专用），用 1x1 纹理确保渲染。</summary>
     private void ApplySolidColor(Color color)
     {
+        CancelTransition();
         var tex = GetSolidBlack();
         bgOld.style.backgroundImage = new StyleBackground(tex);
         bgOld.style.unityBackgroundImageTintColor = color;
@@ -190,9 +193,19 @@ public class BackgroundManager : MonoBehaviour
         bgNew.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0);
     }
 
+    /// <summary>跳转/读档的即时换背景：先终止进行中的过渡，否则协程会在下一帧把旧过渡的图盖回来。</summary>
+    private void CancelTransition()
+    {
+        if (transitionCoroutine != null) { StopCoroutine(transitionCoroutine); transitionCoroutine = null; }
+        isTransitioning = false;
+        bgNew.style.translate = new Translate(0, 0);
+        bgOld.style.translate = new Translate(0, 0);
+    }
+
     public void SetBackgroundImmediate(string bgName)
     {
         if (string.IsNullOrEmpty(bgName)) return;
+        CancelTransition();
 
         // 纯黑 / 缺图标题卡：用 1x1 纹理纯色（image=null + tint 不渲染，会透出清屏紫）
         if (bgName == "black")
@@ -224,30 +237,30 @@ public class BackgroundManager : MonoBehaviour
         bgNew.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
     }
 
+    /// <summary>被打断的过渡收尾：新层已显出过半就把它定为当前背景，避免换图瞬间跳回旧图。</summary>
+    private void SettleInterruptedTransition()
+    {
+        if (!isTransitioning) return;
+        if (bgNew.style.backgroundImage.value.texture != null && bgNew.style.unityBackgroundImageTintColor.value.a >= 0.5f)
+            bgOld.style.backgroundImage = bgNew.style.backgroundImage;
+        bgOld.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 1);
+        bgNew.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
+        bgNew.style.translate = new Translate(0, 0);
+        bgOld.style.translate = new Translate(0, 0);
+        isTransitioning = false;
+    }
+
     private IEnumerator TransitionFade(Texture2D newTex)
     {
         if (newTex == null) { isTransitioning = false; yield break; }
         isTransitioning = true;
 
-        // Fade out old
-        float duration = 0.4f;
-        float elapsed = 0f;
-        float startAlpha = bgOld.style.unityBackgroundImageTintColor.value.a;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / duration);
-            bgOld.style.unityBackgroundImageTintColor = new Color(1, 1, 1, alpha);
-            yield return null;
-        }
-
-        // Swap
+        // 交叉淡入：旧图全程保持不透明，新图叠在上面渐显——中间任何一帧都不会露出清屏色
         bgNew.style.backgroundImage = new StyleBackground(newTex);
         bgNew.style.unityBackgroundImageTintColor = new Color(1, 1, 1, 0);
 
-        // Fade in new
-        elapsed = 0f;
+        float duration = 0.4f;
+        float elapsed = 0f;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
