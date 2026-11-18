@@ -260,7 +260,23 @@ public static class TabletSettingsControlReview
                 case 2:
                     // Stage 2: Activate all Control Center quick tiles and verify state mutation
                     var btnQ = root.Q<Button>("tablet-quiet-toggle");
-                    ClickElement(btnQ);
+                    bool releasedOnTile = false;
+                    EventCallback<PointerUpEvent> observeRelease = _ => releasedOnTile = true;
+                    btnQ.RegisterCallback(observeRelease, TrickleDown.TrickleDown);
+                    Vector2 tileCenter = btnQ.worldBound.center;
+                    using (var down = PointerDownEvent.GetPooled(new Event { type = EventType.MouseDown, button = 0, mousePosition = tileCenter }))
+                    {
+                        down.target = btnQ;
+                        btnQ.SendEvent(down);
+                    }
+                    using (var up = PointerUpEvent.GetPooled(new Event { type = EventType.MouseUp, button = 0, mousePosition = tileCenter }))
+                    {
+                        up.target = btnQ;
+                        btnQ.SendEvent(up);
+                    }
+                    btnQ.UnregisterCallback(observeRelease, TrickleDown.TrickleDown);
+                    Assert(releasedOnTile, "control center pager swallowed the tile's pointer release");
+                    if (!state.QuietMode) ClickElement(btnQ);
                     Assert(state.QuietMode, "tablet-quiet-toggle click failed to toggle QuietMode");
 
                     var btnHC = root.Q<Button>("tablet-high-contrast-toggle");

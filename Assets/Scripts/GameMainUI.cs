@@ -2215,6 +2215,19 @@ public class GameMainUI : MonoBehaviour
         public void OnClosed(VisualElement view) => TabletMusicAppUI.CloseTaskView(view);
     }
 
+    private sealed class ExploreTabletTaskLifecycle : ITabletTaskLifecycle
+    {
+        internal ExploreMapView.SessionState SavedState { get; private set; }
+        public void OnViewCreated(VisualElement view, bool restored) => SavedState = null;
+        public void OnForeground(VisualElement view) => view.Q<ExploreMapView>()?.SetForeground(true);
+        public void OnBackground(VisualElement view) => view.Q<ExploreMapView>()?.SetForeground(false);
+        public void OnViewReclaimed(VisualElement view)
+        {
+            SavedState = view.Q<ExploreMapView>()?.CaptureSession() ?? SavedState;
+        }
+        public void OnClosed(VisualElement view) => SavedState = null;
+    }
+
     private static bool NotifyTaskLifecycle(System.Action callback)
     {
         try { callback(); return true; }
@@ -2892,13 +2905,12 @@ public class GameMainUI : MonoBehaviour
 
     private void RefreshProgressDependentTask(TabletTaskSession task)
     {
-        if (task?.Root == null || (task.AppId != "归途" && task.AppId != "RDA") || task.Root.childCount == 0) return;
+        if (task?.Root == null || task.AppId != "归途" || task.Root.childCount == 0) return;
         var content = task.Root[0].Q<VisualElement>("app-content");
         if (content == null) return;
         var snapshot = TabletViewStateSnapshot.Capture(content);
         content.Clear();
-        if (task.AppId == "归途") BuildReturnJourneyApp(content);
-        else BuildExploreApp(content);
+        BuildReturnJourneyApp(content);
         snapshot.Restore(content);
     }
 
@@ -3860,6 +3872,7 @@ public class GameMainUI : MonoBehaviour
 
     private void LaunchApp(string name)
     {
+        if (name == "巡线") name = "RDA";
         if (name == "驾驶台")
         {
             ReturnToTabletHome();
@@ -3873,6 +3886,7 @@ public class GameMainUI : MonoBehaviour
             task = new TabletTaskSession(name, name);
             if (name == "音乐") task.Lifecycle = new MusicTabletTaskLifecycle();
             if (name == "笔记") task.Lifecycle = new NotesTabletTaskLifecycle();
+            if (name == "RDA") task.Lifecycle = new ExploreTabletTaskLifecycle();
             tabletTasks.Add(task);
         }
 
@@ -3907,7 +3921,6 @@ public class GameMainUI : MonoBehaviour
         {
             case "五线态势": RailwayRenaissance.UI.TabletTrendDashboardUI.Build(win); break;
             case "RDA": BuildExploreApp(win); break;
-            case "巡线": BuildExploreApp(win); break;
             case "归途": BuildReturnJourneyApp(win); break;
             case "媒姬百科": BuildWikiApp(win); break;
             case "岁月 · AI对话": BuildSuiyueDialogue(win); break;
@@ -4061,7 +4074,14 @@ public class GameMainUI : MonoBehaviour
     private void BuildRDAApp(VisualElement win) => TabletRDAAppUI.BuildRDAApp(win, LaunchApp, ShowStoryPage, ShowAffairsPage, ShowBackupToast);
 
     // ============ App: 巡线（星露谷式 2D 俯视探索层，灰盒毛坯）============
-    private void BuildExploreApp(VisualElement win) => TabletExploreAppUI.Build(win, OnExploreAction, OnExploreEndDay, ShowBackupToast, LaunchApp, ShowStoryPage, ShowAffairsPage);
+    private void BuildExploreApp(VisualElement win)
+    {
+        var task = activeTabletTask;
+        var state = (task.Lifecycle as ExploreTabletTaskLifecycle)?.SavedState;
+        TabletExploreAppUI.Build(win, OnExploreAction, OnExploreEndDay, ShowBackupToast, LaunchApp, ShowStoryPage,
+            ShowAffairsPage, state, () => activeTabletTask == task && unlocked && root.style.display != DisplayStyle.None &&
+                !recentsOpen && tabletShellState.Panel == TabletSystemPanel.None && task.Pages.Count == 0);
+    }
 
     private void OnExploreAction(string id)
     {

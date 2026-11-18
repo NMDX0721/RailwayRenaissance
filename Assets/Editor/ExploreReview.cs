@@ -378,7 +378,33 @@ public static class ExploreReview
                     Capture("12-explore-morning-fog");
                     GameData.DecayGrade = 0; GameData.PoliticalTier = 0;
                     ExploreFixtures.ResetAll(); ExploreFlyers.Clear();
-                    Debug.Log("EXPLORE_REVIEW_OK: map rendered, collision enforced, interactions fire, railway shop + east crossing + fixtures + quests + time + A* + sprint ok");
+                    var tick = typeof(ExploreMapView).GetMethod("Tick", Hidden);
+                    Assert(tick != null, "world tick missing");
+                    view.TeleportToSpot("ticket_window");
+                    view.SetMinutesForTests(525f);
+                    var savedPosition = view.PlayerPos;
+                    float savedStamina = view.Stamina;
+                    view.OpenRdaRequested?.Invoke(0, 0);
+                    view.JoyDir = Vector2.right;
+                    tick.Invoke(view, null);
+                    Assert(view.PlayerPos == savedPosition && view.Minutes == 525f && view.JoyDir == Vector2.zero,
+                        "world input remained live under the management panel");
+
+                    Call("ReturnToTabletHome");
+                    view.JoyDir = Vector2.right;
+                    tick.Invoke(view, null);
+                    Assert(view.PlayerPos == savedPosition && view.Minutes == 525f && view.JoyDir == Vector2.zero,
+                        "world input remained live in the background");
+                    GameMainUI.OpenTabletApp("巡线");
+                    Assert(TabletExploreAppUI.ActiveView == view, "RDA alias rebuilt the active map");
+
+                    Call("ReturnToTabletHome");
+                    Call("ReclaimInactiveTabletTasks", true);
+                    GameMainUI.OpenTabletApp("RDA");
+                    var restored = TabletExploreAppUI.ActiveView;
+                    Assert(restored != null && restored != view && restored.Indoors && restored.PlayerPos == savedPosition &&
+                        restored.Minutes == 525f && restored.Stamina == savedStamina, "reclaimed map did not restore session state");
+                    Debug.Log("EXPLORE_REVIEW_OK: map, collisions, shop, crossing, fixtures, quests, time, A*, sprint, input gating and task restoration");
                     SessionState.SetBool(PendingKey, false);
                     EditorApplication.isPlaying = false;
                     EditorApplication.Exit(0);

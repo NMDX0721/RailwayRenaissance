@@ -239,9 +239,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             l4.Add(Lbl("预期客流", 14, InkSoft));
             c4.Add(l4);
             c4.Add(Lbl(GameData.GetExpectedPassengers() + " 人次/日", 24, Ink, true, 4));
-            int cap = Mathf.Max(1, GameData.CarCount * 30 * (GameData.SelectedDispatchPlanIndex + 1)); // 近似：每节 30 座 × 当日趟数
-            c4.Add(Bar(GameData.GetExpectedPassengers() / (float)cap, Accent, 8f));
-            c4.Add(Lbl($"运力约 {cap} 座 · 第 {GameData.GetDay()} 天", 12, InkMuted, false, 4));
+            int cap = GameData.GetDailyCapacity();
+            c4.Add(Bar(GameData.GetExpectedPassengers() / (float)Mathf.Max(1, cap), Accent, 8f));
+            c4.Add(Lbl($"计划运力 {cap} 座 · 第 {GameData.GetDay()} 天", 12, InkMuted, false, 4));
             row.Add(c4);
             return row;
         }

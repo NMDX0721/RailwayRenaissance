@@ -794,6 +794,8 @@ public static class GameData
     }
 
     /// <summary>计算今日最大可承运客流（A3：车厢容量约束）。</summary>
+    public static int GetDailyCapacity() => GetDailyCapacity(GetTripsForDispatchPlan());
+
     private static int GetDailyCapacity(int trips)
     {
         return CarCount * CapacityPerCar * trips;
