@@ -57,8 +57,10 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             var card = new VisualElement { name = banner ? "tablet-notify-banner-card" : "tablet-notify-card-" + n.Id };
             card.style.backgroundColor = highContrast ? Color.white : (banner ? new Color(1f, 1f, 1f, 0.96f) : TabletTheme.GlassCardLight);
-            Round(card, banner ? 26 : 22);
-            card.style.paddingTop = 12; card.style.paddingBottom = 14;
+            Round(card, banner ? 26 : 24);
+            card.style.flexDirection = FlexDirection.Row;
+            card.style.alignItems = Align.Center;
+            card.style.paddingTop = 14; card.style.paddingBottom = 14;
             card.style.paddingLeft = 16; card.style.paddingRight = 16;
             if (banner)
             {
@@ -67,71 +69,74 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 card.style.borderTopColor = card.style.borderBottomColor = card.style.borderLeftColor = card.style.borderRightColor = bc;
             }
 
-            // 第一行：应用角标 + 应用名 · 时间 ……… 关闭
+            // 左：应用图标；右：标题 + 时间一行，下面是正文
+            var badge = BuildAppBadge(ch, 44);
+            badge.style.marginRight = 14;
+            badge.style.alignSelf = Align.FlexStart;
+            card.Add(badge);
+
+            var column = new VisualElement { pickingMode = PickingMode.Ignore };
+            column.style.flexGrow = 1; column.style.flexShrink = 1;
+            card.Add(column);
+
             var head = new VisualElement { pickingMode = PickingMode.Ignore };
             head.style.flexDirection = FlexDirection.Row;
             head.style.alignItems = Align.Center;
-            head.style.height = 24;
-            head.Add(BuildAppBadge(ch, 20));
+            head.style.minHeight = 22;
 
-            var appName = new Label(ch.AppName) { pickingMode = PickingMode.Ignore };
-            appName.style.fontSize = TabletType.Small;
-            appName.style.color = TabletTheme.InkOnGlassSoft;
-            appName.style.unityFontDefinition = Fd();
-            appName.style.marginLeft = 8; appName.style.marginTop = 0; appName.style.marginBottom = 0;
-            appName.AddToClassList("shell-dark");
-            head.Add(appName);
-
-            var time = new Label("·  " + TabletNotify.RelativeTime(n.CreatedAt)) { pickingMode = PickingMode.Ignore, name = "tablet-notify-time" };
-            time.style.fontSize = TabletType.Small;
-            time.style.color = TabletTheme.InkOnGlassSoft;
-            time.style.unityFontDefinition = Fd();
-            time.style.marginLeft = 6; time.style.marginTop = 0; time.style.marginBottom = 0;
-            time.AddToClassList("shell-dark");
-            head.Add(time);
-
-            var spacer = new VisualElement { pickingMode = PickingMode.Ignore };
-            spacer.style.flexGrow = 1;
-            head.Add(spacer);
-
-            if (dismiss != null)
-            {
-                var x = new Button(dismiss) { name = "tablet-notification-dismiss-" + n.Id };
-                x.AddToClassList("shell-keep");
-                x.style.width = 44; x.style.height = 44;
-                x.style.marginTop = -10; x.style.marginBottom = -10; x.style.marginRight = -14; x.style.marginLeft = 0;
-                x.style.backgroundColor = Color.clear;
-                x.style.borderTopWidth = x.style.borderBottomWidth = x.style.borderLeftWidth = x.style.borderRightWidth = 0;
-                SetButtonIcon(x, TabletIconKind.Close, 14, TabletTheme.InkOnGlassSoft);
-                head.Add(x);
-            }
-            card.Add(head);
-
-            // 标题 + 正文
             var title = new Label(n.Title) { pickingMode = PickingMode.Ignore, name = "tablet-notify-title" };
             title.style.fontSize = TabletType.Title;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = TabletTheme.InkOnGlass;
             title.style.unityFontDefinition = Fd();
-            title.style.whiteSpace = WhiteSpace.Normal;
-            title.style.marginLeft = 0; title.style.marginRight = 0; title.style.marginTop = 6; title.style.marginBottom = 0;
+            title.style.whiteSpace = WhiteSpace.NoWrap;
+            title.style.overflow = Overflow.Hidden;
+            title.style.textOverflow = TextOverflow.Ellipsis;
+            title.style.flexShrink = 1;
+            title.style.marginLeft = 0; title.style.marginRight = 0; title.style.marginTop = 0; title.style.marginBottom = 0;
             title.style.paddingLeft = 0; title.style.paddingRight = 0;
             title.AddToClassList("shell-dark");
-            card.Add(title);
+            head.Add(title);
+
+            var spacer = new VisualElement { pickingMode = PickingMode.Ignore };
+            spacer.style.flexGrow = 1; spacer.style.minWidth = 8;
+            head.Add(spacer);
+
+            var time = new Label(TabletNotify.RelativeTime(n.CreatedAt)) { pickingMode = PickingMode.Ignore, name = "tablet-notify-time" };
+            time.style.fontSize = TabletType.Small;
+            time.style.color = new Color(0.55f, 0.55f, 0.60f, 1f);
+            time.style.unityFontDefinition = Fd();
+            time.style.marginLeft = 0; time.style.marginTop = 0; time.style.marginBottom = 0;
+            time.style.flexShrink = 0;
+            time.AddToClassList("shell-dark");
+            head.Add(time);
+
+            if (dismiss != null)
+            {
+                var x = new Button(dismiss) { name = "tablet-notification-dismiss-" + n.Id };
+                x.AddToClassList("shell-keep");
+                x.style.width = 36; x.style.height = 36;
+                x.style.marginTop = -8; x.style.marginBottom = -8; x.style.marginRight = -10; x.style.marginLeft = 2;
+                x.style.backgroundColor = Color.clear;
+                x.style.borderTopWidth = x.style.borderBottomWidth = x.style.borderLeftWidth = x.style.borderRightWidth = 0;
+                SetButtonIcon(x, TabletIconKind.Close, 12, new Color(0.55f, 0.55f, 0.60f, 1f));
+                head.Add(x);
+            }
+            column.Add(head);
 
             if (!string.IsNullOrEmpty(n.Body))
             {
                 var body = new Label(n.Body) { pickingMode = PickingMode.Ignore, name = "tablet-notify-body" };
-                body.style.fontSize = TabletType.Body;
+                body.style.fontSize = TabletType.Body + 1;
                 body.style.color = TabletTheme.InkOnGlassSoft;
                 body.style.unityFontDefinition = Fd();
                 body.style.whiteSpace = WhiteSpace.Normal;
-                body.style.marginLeft = 0; body.style.marginRight = 0; body.style.marginTop = 2; body.style.marginBottom = 0;
+                body.style.marginLeft = 0; body.style.marginRight = 0; body.style.marginTop = 3; body.style.marginBottom = 0;
                 body.style.paddingLeft = 0; body.style.paddingRight = 0;
-                body.style.maxHeight = banner ? 38 : 56;
+                body.style.maxHeight = banner ? 38 : 40;
                 body.style.overflow = Overflow.Hidden;
                 body.AddToClassList("shell-dark");
-                card.Add(body);
+                column.Add(body);
             }
 
             if (n.Progress >= 0f)
@@ -139,7 +144,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 var bar = BuildProgressBar(n.Progress, ch.AccentColor, 4f, new Color(0f, 0f, 0f, 0.08f));
                 bar.style.marginTop = 8;
                 bar.pickingMode = PickingMode.Ignore;
-                card.Add(bar);
+                column.Add(bar);
             }
 
             if (n.Request != null && n.Request.Actions.Count > 0)
@@ -148,7 +153,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 row.style.flexDirection = FlexDirection.Row;
                 row.style.marginTop = 10;
                 foreach (var a in n.Request.Actions) row.Add(BuildActionButton(a, ch, afterAction));
-                card.Add(row);
+                column.Add(row);
             }
             return card;
         }

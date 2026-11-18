@@ -16,6 +16,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
         public string salt;
         public string passwordHash;
         public int avatar;
+        public string avatarImage;   // 自定义头像的文件名（persistentDataPath 下）；空 = 用预设头像
         public string registeredAt;
         public int passwordChangedCount;
     }
@@ -87,6 +88,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
         /// <summary>仅供测试：清除全部账号数据与向导状态。</summary>
         public static void ResetForTests()
         {
+            if (Profile != null) TabletAvatar.DeleteFile(Profile.avatarImage);
             PlayerPrefs.DeleteKey(ProfileKey);
             PlayerPrefs.DeleteKey(SetupDoneKey);
             s_cached = null;
@@ -271,7 +273,21 @@ namespace RailwayRenaissance.UI.Tablet.Account
             var p = Profile;
             if (p == null) return;
             p.avatar = Mathf.Clamp(index, 0, 5);
+            if (!string.IsNullOrEmpty(p.avatarImage)) { TabletAvatar.DeleteFile(p.avatarImage); p.avatarImage = null; }
             Save(p);
+        }
+
+        /// <summary>用一张本地图片做头像（裁成正方形、缩小后存进本机）。返回 null 为成功，否则为错误文案。</summary>
+        public static string SetCustomAvatar(string sourcePath)
+        {
+            var p = Profile;
+            if (p == null) return "尚未登录小米账号";
+            var tex = TabletAvatar.LoadAndCrop(sourcePath, out string err);
+            if (tex == null) return err ?? "读取图片失败";
+            p.avatarImage = TabletAvatar.SavePng(tex, p.xiaomiId);
+            UnityEngine.Object.Destroy(tex);
+            Save(p);
+            return null;
         }
 
         /// <summary>手机号脱敏显示，如 +850 123****8848。</summary>

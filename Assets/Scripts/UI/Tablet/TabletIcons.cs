@@ -9,7 +9,7 @@ namespace RailwayRenaissance.UI.Tablet
         Train, Hourglass, Cloud, Close, Drop, Eye, Camera, Folder, Image, Flag, Ruler, Mic,
         Note, Clock, Calendar, Calc, Map, Star,
         Rails, Bulb, Save, Rain, PartlyCloudy, Bookmark, Chart, Trophy, Check, Pin, Trash,
-        Back, Circle, Square, Play, Pause }
+        Back, Circle, Square, Play, Pause, Airplane, EyeOff, Encyclopedia }
 
     /// <summary>
     /// 平板系统图标：用 Painter2D 绘制的矢量图标，替代 emoji。在 24×24 的设计网格内描述，按元素尺寸缩放，颜色可随状态更新。
@@ -49,6 +49,35 @@ namespace RailwayRenaissance.UI.Tablet
             if (string.IsNullOrEmpty(glyph)) return false;
             if (Map.TryGetValue(glyph, out kind)) return true;
             return Map.TryGetValue(glyph.Replace("️", string.Empty), out kind);
+        }
+    }
+
+    /// <summary>密码框右侧的小眼睛：点一下在明文 / 掩码之间切换。同组的几个密码框一起切换，每个框里都有一枚眼睛。</summary>
+    public static class TabletPasswordEye
+    {
+        public static void Attach(Color ink, params TextField[] group)
+        {
+            bool shown = false;
+            var icons = new List<TabletIconElement>();
+            foreach (var tf in group)
+            {
+                tf.style.paddingRight = 52;
+                var icon = new TabletIconElement(TabletIconKind.EyeOff, 24f, ink) { pickingMode = PickingMode.Ignore };
+                icons.Add(icon);
+                var hit = new VisualElement { name = "password-eye" };
+                hit.pickingMode = PickingMode.Position;
+                hit.style.position = Position.Absolute;
+                hit.style.right = 4; hit.style.top = 4; hit.style.width = 44; hit.style.height = 44;
+                hit.style.alignItems = Align.Center; hit.style.justifyContent = Justify.Center;
+                hit.Add(icon);
+                hit.RegisterCallback<ClickEvent>(_ =>
+                {
+                    shown = !shown;
+                    foreach (var f in group) f.isPasswordField = !shown;
+                    foreach (var i in icons) i.Kind = shown ? TabletIconKind.Eye : TabletIconKind.EyeOff;
+                });
+                tf.Add(hit);
+            }
         }
     }
 
@@ -245,6 +274,7 @@ namespace RailwayRenaissance.UI.Tablet
                 }
 
                 case TabletIconKind.Eye:
+                case TabletIconKind.EyeOff:
                 {
                     var eye = new List<Vector2>();
                     for (int i = 0; i <= 16; i++) { float t = i / 16f; eye.Add(P(2.5f + 19f * t, 12 - 6.5f * Mathf.Sin(t * Mathf.PI))); }
@@ -255,6 +285,13 @@ namespace RailwayRenaissance.UI.Tablet
                     p.ClosePath();
                     p.Stroke();
                     DrawDot(p, P(12, 12), 3f * k);
+                    if (_kind == TabletIconKind.EyeOff)
+                    {
+                        p.BeginPath();
+                        p.MoveTo(P(4.5f, 4.5f));
+                        p.LineTo(P(19.5f, 19.5f));
+                        p.Stroke();
+                    }
                     break;
                 }
 
@@ -411,6 +448,20 @@ namespace RailwayRenaissance.UI.Tablet
                     break;
                 }
 
+                case TabletIconKind.Encyclopedia:
+                {
+                    // 摊开的百科全书：两页共用书脊，左页两行字，右页垂下一条书签
+                    p.BeginPath();
+                    p.MoveTo(P(12, 6.5f)); p.LineTo(P(3.5f, 5f)); p.LineTo(P(3.5f, 18.5f)); p.LineTo(P(12, 20f));
+                    p.LineTo(P(20.5f, 18.5f)); p.LineTo(P(20.5f, 5f)); p.LineTo(P(12, 6.5f));
+                    p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(12, 6.5f)); p.LineTo(P(12, 20f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(6f, 9f)); p.LineTo(P(9.5f, 9.6f)); p.Stroke();
+                    p.BeginPath(); p.MoveTo(P(6f, 12.4f)); p.LineTo(P(9.5f, 13f)); p.Stroke();
+                    FillPolygon(p, new List<Vector2> { P(14.6f, 6.1f), P(17.6f, 5.6f), P(17.6f, 11.6f), P(16.1f, 10.4f), P(14.6f, 11.6f) });
+                    break;
+                }
+
                 case TabletIconKind.Bookmark:
                     FillPolygon(p, new List<Vector2> { P(6.5f, 3), P(17.5f, 3), P(17.5f, 21), P(12, 16.5f), P(6.5f, 21) });
                     break;
@@ -457,6 +508,10 @@ namespace RailwayRenaissance.UI.Tablet
                 case TabletIconKind.Square:
                     RoundRectPath(p, 5f * k, 5f * k, 14f * k, 14f * k, 3.4f * k);
                     p.Stroke();
+                    break;
+
+                case TabletIconKind.Airplane:
+                    FillPolygon(p, new List<Vector2> { P(12, 2.5f), P(14, 3.8f), P(14, 9.5f), P(21.5f, 14f), P(21.5f, 16.2f), P(14, 13.8f), P(14, 18.5f), P(16.5f, 20.2f), P(16.5f, 21.8f), P(12, 20.6f), P(7.5f, 21.8f), P(7.5f, 20.2f), P(10, 18.5f), P(10, 13.8f), P(2.5f, 16.2f), P(2.5f, 14f), P(10, 9.5f), P(10, 3.8f) });
                     break;
 
                 case TabletIconKind.Play:

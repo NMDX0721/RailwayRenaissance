@@ -38,7 +38,7 @@ public sealed class VNVoicePlayer : MonoBehaviour
         if (entry.s == "林彪悍" || entry.s == "男大学生" || entry.s == "lin_biaohan" || entry.s.StartsWith("林彪悍（")) return false;
         return !string.IsNullOrWhiteSpace(entry.text) && !entry.text.TrimStart().StartsWith("[");
     }
-    public void Bind(string script, int scene, int dialogue, DialogueEntry entry)
+    public void Bind(string script, int scene, int dialogue, DialogueEntry entry, bool autoPlay = true)
     {
         Clear();
         string language = Language;
@@ -70,7 +70,7 @@ public sealed class VNVoicePlayer : MonoBehaviour
         if (!clips.TryGetValue(clipPath, out var clip)) clips[clipPath] = clip = Resources.Load<AudioClip>(clipPath);
         if (clip == null) return;
         source.clip = clip;
-        Replay();
+        if (autoPlay) Replay();
     }
     public void Replay()
     {

@@ -9,6 +9,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
     public sealed class MusicReactiveStageView : VisualElement
     {
         static readonly Dictionary<Texture2D, Color[]> Palettes = new Dictionary<Texture2D, Color[]>();
+        public static long BackdropBytes;   // bytes of the live backdrop render textures (summed over open stage views)
+        public static void TrimPalettes() => Palettes.Clear();
         readonly float[] output = new float[512];
         float[] decoded;
         Color primary, secondary, fromPrimary, fromSecondary, targetPrimary, targetSecondary;
@@ -30,11 +32,39 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         public float BandHigh => bandHigh;
         readonly float[] spectrum = new float[512];
         float bandLow, bandMid, bandHigh;
+        // What the audio analysis last measured (30 times a second); the shown levels glide to these on every frame, so the motion never steps.
+        float lowTarget, midTarget, highTarget, rawTarget, transientTarget, lastTick;
 
         // The backdrop is drawn by a shader into a small RenderTexture (see Resources/Shaders/MusicStageBackdrop.shader); when the shader
         // cannot be used the older painter fields below are the whole backdrop.
         static Shader backdropShader;
-        Material backdropMaterial; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        Material backdropMaterial; long backdropBytes; RenderTexture backdropTexture; bool backdropFailed; float flowClock;
+        // Each lyric style has its own backdrop look (flow speed, swirl, dust, wandering lights, brightness); switching eases between them.
+        struct Look { public float flow, warp, dust, lights, bright; public Look(float f, float w, float d, float l, float b) { flow = f; warp = w; dust = d; lights = l; bright = b; } }
+        Look look = new Look(1, 1, 1, 1, 1), lookTarget = new Look(1, 1, 1, 1, 1); bool lookSet;
+        static Look LookOf(string key)
+        {
+            switch (key)
+            {
+                case "static": return new Look(.35f, .7f, .25f, .45f, .82f);
+                case "follow": return new Look(.7f, 1.1f, .6f, .8f, .95f);
+                case "luminous": return new Look(1.25f, 1.5f, 1.2f, 1.3f, 1.12f);
+                case "partita": return new Look(.8f, 1f, .6f, .7f, 1f);
+                case "tilt": return new Look(1.05f, 1.3f, .9f, 1f, 1.02f);
+                case "claddagh": return new Look(.9f, 2.1f, .7f, 1f, 1f);
+                case "cadenza": return new Look(.6f, 1.8f, 1.5f, .6f, .95f);
+                case "cappella": return new Look(.5f, .7f, .3f, .5f, .85f);
+                case "pendolo": return new Look(1f, 1f, .5f, 1.5f, 1.05f);
+                default: return new Look(.35f, .7f, .25f, .45f, .82f);
+            }
+        }
+        /// <summary>The look of the lyric style now on show: "static", "follow" or a stage style id.</summary>
+        public void SetLook(string key) { lookTarget = LookOf(key); if (!lookSet) { look = lookTarget; lookSet = true; } MarkDirtyRepaint(); }
+        void GlideLook(float dt)
+        {
+            float k = 1 - Mathf.Exp(-dt * 3.2f);
+            look = new Look(Mathf.Lerp(look.flow, lookTarget.flow, k), Mathf.Lerp(look.warp, lookTarget.warp, k), Mathf.Lerp(look.dust, lookTarget.dust, k), Mathf.Lerp(look.lights, lookTarget.lights, k), Mathf.Lerp(look.bright, lookTarget.bright, k));
+        }
         public bool HasShaderBackdrop => backdropTexture != null;
 
         void EnsureBackdrop()
@@ -46,7 +76,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 if (backdropShader == null || !backdropShader.isSupported) { backdropFailed = true; return; }
                 backdropMaterial = new Material(backdropShader) { hideFlags = HideFlags.HideAndDontSave };
                 backdropTexture = new RenderTexture(512, 320, 0, RenderTextureFormat.ARGB32) { name = "MusicStageBackdrop", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
-                backdropTexture.Create();
+                backdropTexture.Create(); BackdropBytes += MusicMemory.Bytes(backdropTexture); backdropBytes = MusicMemory.Bytes(backdropTexture);
                 style.backgroundImage = new StyleBackground(Background.FromRenderTexture(backdropTexture));
             }
             catch (Exception) { backdropFailed = true; ReleaseBackdrop(); }
@@ -54,7 +84,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         void ReleaseBackdrop()
         {
-            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; }
+            if (backdropTexture != null) { style.backgroundImage = new StyleBackground(StyleKeyword.None); backdropTexture.Release(); UnityEngine.Object.Destroy(backdropTexture); backdropTexture = null; BackdropBytes -= backdropBytes; backdropBytes = 0; }
             if (backdropMaterial != null) { UnityEngine.Object.Destroy(backdropMaterial); backdropMaterial = null; }
         }
 
@@ -65,8 +95,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (!backdropTexture.IsCreated()) backdropTexture.Create();
             var m = backdropMaterial; float w = Mathf.Max(contentRect.width, 1f), h = Mathf.Max(contentRect.height, 1f);
             m.SetColor("_ColA", primary); m.SetColor("_ColB", secondary); m.SetColor("_Base", new Color(.035f, .042f, .05f));
-            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh);
+            m.SetFloat("_Clock", flowClock); m.SetFloat("_Low", bandLow); m.SetFloat("_Mid", bandMid); m.SetFloat("_High", bandHigh); m.SetFloat("_Beat", transient);
             m.SetFloat("_Energy", Mathf.Clamp01(energy + ChorusBoost * .25f)); m.SetFloat("_Aspect", w / h); m.SetFloat("_Seed", seed);
+            m.SetFloat("_Warp", look.warp); m.SetFloat("_DustAmt", look.dust); m.SetFloat("_Lights", look.lights); m.SetFloat("_Bright", look.bright);
             Graphics.Blit(null, backdropTexture, m);
         }
 
@@ -180,7 +211,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         // Bins are ~43 Hz wide at 44.1 kHz: low ≈ 40–260 Hz, mid ≈ 260 Hz–3 kHz, high ≈ 3–11 kHz. When the engine hands out no spectrum
         // (decoded-only fallback) the bands follow the measured power instead, so they never invent a level.
-        void ReadBands(AudioSource source, float dt)
+        void MeasureBands(AudioSource source)
         {
             float low = 0, mid = 0, high = 0;
             source.GetSpectrumData(spectrum, 0, FFTWindow.Hanning);
@@ -192,17 +223,23 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             mid = Mathf.Clamp01(Mathf.Sqrt((float)(sumMid / 64)) * 22f);
             high = Mathf.Clamp01(Mathf.Sqrt((float)(sumHigh / 185)) * 60f);
             if (low + mid + high <= 0.0001f) { low = mid = high = Mathf.Clamp01(MeasuredPower * 4); }
-            float rise = 1 - Mathf.Exp(-dt * 16), fall = 1 - Mathf.Exp(-dt * 5);
-            bandLow = Mathf.Lerp(bandLow, low, low > bandLow ? rise : fall);
-            bandMid = Mathf.Lerp(bandMid, mid, mid > bandMid ? rise : fall);
-            bandHigh = Mathf.Lerp(bandHigh, high, high > bandHigh ? rise : fall);
+            lowTarget = low; midTarget = mid; highTarget = high;
+        }
+
+        void GlideBands(float dt)
+        {
+            float rise = 1 - Mathf.Exp(-dt * 14), fall = 1 - Mathf.Exp(-dt * 4);
+            bandLow = Mathf.Lerp(bandLow, lowTarget, lowTarget > bandLow ? rise : fall);
+            bandMid = Mathf.Lerp(bandMid, midTarget, midTarget > bandMid ? rise : fall);
+            bandHigh = Mathf.Lerp(bandHigh, highTarget, highTarget > bandHigh ? rise : fall);
         }
 
         public void Tick(AudioSource source, bool playing, bool reducedMotion)
         {
-            if (Time.unscaledTime < nextFrame) return;
-            float dt = Mathf.Clamp(Time.unscaledTime - (nextFrame - 1f / 30), .001f, .1f);
-            nextFrame = Time.unscaledTime + 1f / 30;
+            // Every frame: colours, glide and the flow clock (smooth). Thirty times a second: the audio measurements (cheap enough, and plenty).
+            float now = Time.unscaledTime;
+            float dt = Mathf.Clamp(now - lastTick, .0005f, .1f); lastTick = now;
+            bool measure = now >= nextFrame; if (measure) nextFrame = now + 1f / 30;
             bool changed = blend < 1;
             blend = reducedMotion ? 1 : Mathf.Min(1, blend + dt / .9f);
             seed = reducedMotion ? seedTarget : Mathf.MoveTowards(seed, seedTarget, dt / 1.4f);
@@ -215,32 +252,42 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 changed |= energy != 0 || clock != 0;
                 clock = energy = transient = 0;
-                bandLow = bandMid = bandHigh = 0;
+                bandLow = bandMid = bandHigh = lowTarget = midTarget = highTarget = 0;
             }
             else if (playing && source != null && source.clip != null)
             {
-                MeasuredPower = ReadPower(source);
-                float raw = Mathf.Clamp01(MeasuredPower * 4);
-                energy = Mathf.Lerp(energy, raw, 1 - Mathf.Exp(-dt * (raw > energy ? 15 : 4)));
-                transient = Mathf.Lerp(transient, Mathf.Clamp01((raw - lastRaw) * 5), 1 - Mathf.Exp(-dt * 12));
-                lastRaw = raw; clock = source.time; changed = true;
-                ReadBands(source, dt);
+                if (measure)
+                {
+                    MeasuredPower = ReadPower(source);
+                    rawTarget = Mathf.Clamp01(MeasuredPower * 4);
+                    transientTarget = Mathf.Clamp01((rawTarget - lastRaw) * 5); lastRaw = rawTarget;
+                    MeasureBands(source);
+                }
+                energy = Mathf.Lerp(energy, rawTarget, 1 - Mathf.Exp(-dt * (rawTarget > energy ? 14 : 3.5f)));
+                transient = Mathf.Lerp(transient, transientTarget, 1 - Mathf.Exp(-dt * 10));
+                clock = source.time; changed = true;
+                GlideBands(dt);
             }
             else if (bandLow + bandMid + bandHigh > 0)
             {
                 // Paused: let the bands settle instead of freezing mid-pulse.
-                float fall = 1 - Mathf.Exp(-dt * 6);
-                bandLow = Mathf.Lerp(bandLow, 0, fall); bandMid = Mathf.Lerp(bandMid, 0, fall); bandHigh = Mathf.Lerp(bandHigh, 0, fall);
+                lowTarget = midTarget = highTarget = 0; transientTarget = 0;
+                float fall = 1 - Mathf.Exp(-dt * 5);
+                transient = Mathf.Lerp(transient, 0, fall);
+                GlideBands(dt);
             }
-            if (!reducedMotion) { flowClock += dt; changed = true; }
+            // The flow runs a little faster when the music is loud, so the picture breathes with the song instead of looping at one speed.
+            if (!reducedMotion) { GlideLook(dt); flowClock += dt * look.flow * (1f + energy * .8f + bandLow * .5f); changed = true; }
             if (changed || backdropTexture == null) RenderBackdrop();
-            if (changed) MarkDirtyRepaint();
+            // With the shader backdrop the texture is read at draw time; the mesh only needs rebuilding for the painter fallback.
+            if (changed && backdropTexture == null) MarkDirtyRepaint();
         }
 
         void Draw(MeshGenerationContext context)
         {
             float w = contentRect.width, h = contentRect.height;
             if (w < 2 || h < 2) return;
+            if (backdropTexture != null) return;
             var painter = context.painter2D;
             float t = clock * .06f + seed * 6;
             float pulse = 1 + energy * .13f + transient * .05f;

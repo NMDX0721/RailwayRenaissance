@@ -25,6 +25,8 @@ public class VNBacklog : MonoBehaviour
     }
 
     public Action<int, int> OnEntryClicked;
+    public Action<int, int> OnEntryBookmark, OnEntryVoice;
+    public Func<int, int, bool> HasVoice;   // 该句是否有已审配音（决定是否显示重放图标）
 
     public void Init(UIDocument document)
     {
@@ -1719,45 +1721,43 @@ public class VNBacklog : MonoBehaviour
         contentBox.Add(textLabel);
         entryRow.Add(contentBox);
 
-        // 右侧"跳转"按钮（黑底金边圆角药丸按钮）
-        var jumpBtn = new UnityEngine.UIElements.Button(() => JumpToEntry(entry.sceneIndex, entry.dialogueIndex)) { text = "跳转" };
-        jumpBtn.style.width = 78;
-        jumpBtn.style.height = 36;
-        jumpBtn.style.alignSelf = Align.Center;
-        jumpBtn.style.flexShrink = 0;
-        jumpBtn.style.marginLeft = 8;
-        jumpBtn.style.fontSize = 20;
-        jumpBtn.style.color = new Color(1f, 0.92f, 0.80f, 0.95f);
-        jumpBtn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.85f);
-        jumpBtn.style.unityTextAlign = TextAnchor.MiddleCenter;
-        jumpBtn.style.unityFontDefinition = fontDef;
-        jumpBtn.style.borderTopWidth = 1;
-        jumpBtn.style.borderBottomWidth = 1;
-        jumpBtn.style.borderLeftWidth = 1;
-        jumpBtn.style.borderRightWidth = 1;
-        var btnBorder = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.5f);
-        jumpBtn.style.borderTopColor = btnBorder;
-        jumpBtn.style.borderBottomColor = btnBorder;
-        jumpBtn.style.borderLeftColor = btnBorder;
-        jumpBtn.style.borderRightColor = btnBorder;
-        jumpBtn.style.borderTopLeftRadius = 6;
-        jumpBtn.style.borderTopRightRadius = 6;
-        jumpBtn.style.borderBottomLeftRadius = 6;
-        jumpBtn.style.borderBottomRightRadius = 6;
-        jumpBtn.RegisterCallback<PointerEnterEvent>(e =>
-        {
-            jumpBtn.style.backgroundColor = new Color(0.32f, 0.18f, 0.10f, 0.95f);
-            jumpBtn.style.color = new Color(1f, 200f / 255f, 100f / 255f, 1f);
-            UiCursor.ShowHand();
-        });
-        jumpBtn.RegisterCallback<PointerLeaveEvent>(e =>
-        {
-            jumpBtn.style.backgroundColor = new Color(0.14f, 0.09f, 0.05f, 0.85f);
-            jumpBtn.style.color = new Color(1f, 0.92f, 0.80f, 0.95f);
-            UiCursor.ShowArrow();
-        });
-        entryRow.Add(jumpBtn);
+        // 右侧图标按钮组：配音重放（有配音才显示）/ 书签 / 跳转
+        var actions = new VisualElement();
+        actions.style.flexDirection = FlexDirection.Row;
+        actions.style.alignSelf = Align.Center;
+        actions.style.flexShrink = 0;
+        actions.style.marginLeft = 8;
+        int si = entry.sceneIndex, di = entry.dialogueIndex;
+        if (HasVoice != null && HasVoice(si, di))
+            actions.Add(MakeIconButton(VNArtIcon.Replay, "重播本句配音", () => OnEntryVoice?.Invoke(si, di)));
+        actions.Add(MakeIconButton(VNArtIcon.Bookmark, "收藏这句台词", () => OnEntryBookmark?.Invoke(si, di)));
+        actions.Add(MakeIconButton(VNArtIcon.Jump, "跳转到这句", () => JumpToEntry(si, di)));
+        entryRow.Add(actions);
         return entryRow;
+    }
+
+    /// <summary>回顾行右侧的黑底金边圆角图标按钮（图标为 VNInkIcon 矢量，不依赖字体）。</summary>
+    private static UnityEngine.UIElements.Button MakeIconButton(VNArtIcon kind, string hint, Action clicked)
+    {
+        var normalBg = new Color(0.14f, 0.09f, 0.05f, 0.85f);
+        var hoverBg = new Color(0.32f, 0.18f, 0.10f, 0.95f);
+        var btn = new UnityEngine.UIElements.Button(() => clicked()) { tooltip = hint, focusable = false };
+        btn.style.width = 44;
+        btn.style.height = 44;
+        btn.style.marginLeft = 8;
+        btn.style.paddingLeft = btn.style.paddingRight = 8;
+        btn.style.paddingTop = btn.style.paddingBottom = 8;
+        btn.style.backgroundColor = normalBg;
+        btn.style.borderTopWidth = btn.style.borderBottomWidth = btn.style.borderLeftWidth = btn.style.borderRightWidth = 1;
+        var edge = new Color(200f / 255f, 150f / 255f, 80f / 255f, 0.5f);
+        btn.style.borderTopColor = btn.style.borderBottomColor = btn.style.borderLeftColor = btn.style.borderRightColor = edge;
+        btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 6;
+        var icon = new VNInkIcon(kind);
+        icon.style.flexGrow = 1;
+        btn.Add(icon);
+        btn.RegisterCallback<PointerEnterEvent>(e => { btn.style.backgroundColor = hoverBg; UiCursor.ShowHand(); });
+        btn.RegisterCallback<PointerLeaveEvent>(e => { btn.style.backgroundColor = normalBg; UiCursor.ShowArrow(); });
+        return btn;
     }
 
     private void JumpToEntry(int sceneIndex, int dialogueIndex)

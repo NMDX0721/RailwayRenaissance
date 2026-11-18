@@ -126,12 +126,11 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             Panel = panel;
-            if (Panel == TabletSystemPanel.Notifications)
-            {
-                MarkAllAsReadInternal();
-            }
             Changed?.Invoke();
         }
+
+        /// <summary>界面自己的展开/折叠等状态变了，通知视图重画（数据本身没变）。</summary>
+        public void NotifyChanged() => Changed?.Invoke();
 
         public bool ClosePanel()
         {
@@ -199,7 +198,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             }
 
             long id = _nextId++;
-            var notification = new TabletNotification(id, cleanTitle, cleanBody, DateTime.Now, isRead: false, channelId: channelId, request: request);
+            var notification = new TabletNotification(id, cleanTitle, cleanBody, TabletDateTime.Now, isRead: false, channelId: channelId, request: request);
             _notifications.Insert(0, notification);
 
             while (_notifications.Count > MaxCapacity)

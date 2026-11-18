@@ -483,7 +483,12 @@ public partial class DialogueBox : MonoBehaviour
         termCard.style.paddingRight = 16;
         termCard.style.paddingTop = 12;
         termCard.style.paddingBottom = 14;
-        termCard.style.bottom = 146f; // 固定在下方（对话框正上方），杜绝跳到屏幕顶部
+        // 锚在整个对话框上沿之上：小卡永远不压住台词文字（含被点的术语本身）
+        float rootH = rootVisual.layout.height > 0f ? rootVisual.layout.height : 1080f;
+        float boxTop = rootH - 146f;
+        if (dialogueBox != null && !float.IsNaN(dialogueBox.worldBound.y) && dialogueBox.worldBound.height > 0f)
+            boxTop = dialogueBox.worldBound.y - rootVisual.worldBound.y;
+        termCard.style.bottom = Mathf.Max(12f, rootH - boxTop + 10f);
         termCard.pickingMode = PickingMode.Position;
         termCard.RegisterCallback<PointerDownEvent>(ev =>
         {

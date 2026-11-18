@@ -91,7 +91,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 // Entering: a short rise and fade from when the line starts; earlier messages are already settled.
                 float enter = m.lineIndex < 0 ? 1f : c.calm ? 1f : Mathf.Clamp01((float)((c.clock - m.start + .05) / motion.enterDuration));
                 float ease = 1 - (1 - enter) * (1 - enter);
-                float targetScale = state == 1 ? motion.activeScale : motion.passedScale, targetOpacity = state == 1 ? 1f : motion.passedOpacity;
+                float targetScale = state == 1 ? 1f + (motion.activeScale - 1f) * .25f : 1f + (motion.passedScale - 1f) * .25f, targetOpacity = state == 1 ? 1f : motion.passedOpacity;
                 m.scale = c.calm ? 1f : Mathf.Lerp(m.scale, targetScale, 1 - Mathf.Exp(-dt * 10f)); m.opacity = Mathf.Lerp(m.opacity, targetOpacity, 1 - Mathf.Exp(-dt * 8f));
                 m.row.style.opacity = m.opacity * ease;
                 m.row.style.translate = new Translate(0, c.calm ? 0 : (1 - ease) * motion.enterY);

@@ -155,6 +155,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                     }
                 }
             }
+            else if (action == "生涯") { Line(new Vector2(3, 17), new Vector2(17, 17)); Line(new Vector2(3, 13), new Vector2(7, 8), new Vector2(11, 11), new Vector2(17, 4)); }
             else if (action == "倍速") { Line(new Vector2(3, 4), new Vector2(9, 10), new Vector2(3, 16)); Line(new Vector2(10, 4), new Vector2(16, 10), new Vector2(10, 16)); }
             else if (action == "全选") { Rect(3, 3, 14, 14); Line(new Vector2(6, 10), new Vector2(9, 13), new Vector2(14, 6)); }
             else if (action == "移到最前") { Line(new Vector2(4, 3), new Vector2(16, 3)); Line(new Vector2(10, 17), new Vector2(10, 7)); Line(new Vector2(6, 10), new Vector2(10, 6), new Vector2(14, 10)); }
@@ -171,14 +172,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             else if (action == "首页") { Line(new Vector2(2, 9), new Vector2(10, 2), new Vector2(18, 9)); Line(new Vector2(4, 8), new Vector2(4, 18), new Vector2(16, 18), new Vector2(16, 8)); Rect(8, 12, 4, 6); }
             else if (action.Contains("搜索")) { Circle(8, 8, 5); Line(new Vector2(12, 12), new Vector2(18, 18)); }
             else if (action == "本地音乐") { Rect(2, 4, 16, 12); Circle(6, 9, 2); Circle(14, 9, 2); Line(new Vector2(5, 14), new Vector2(15, 14)); }
+            else if (action == "我的") { Circle(10, 7, 3); p.BeginPath(); p.MoveTo(new Vector2(3.5f, 17)); p.BezierCurveTo(new Vector2(3.5f, 11), new Vector2(16.5f, 11), new Vector2(16.5f, 17)); p.Stroke(); }
+            else if (action == "缩小播放栏") { Line(new Vector2(4, 4), new Vector2(10, 10)); Line(new Vector2(4, 10), new Vector2(10, 10), new Vector2(10, 4)); Line(new Vector2(16, 16), new Vector2(10, 10)); Line(new Vector2(16, 10), new Vector2(10, 10), new Vector2(10, 16)); }
+            else if (action == "展开播放栏") { Line(new Vector2(10, 10), new Vector2(4, 4)); Line(new Vector2(4, 9), new Vector2(4, 4), new Vector2(9, 4)); Line(new Vector2(10, 10), new Vector2(16, 16)); Line(new Vector2(16, 11), new Vector2(16, 16), new Vector2(11, 16)); }
             else if (action == "云端")
             {
-                p.BeginPath(); p.MoveTo(new Vector2(4, 15)); p.BezierCurveTo(new Vector2(-2, 12), new Vector2(2, 6), new Vector2(6, 8));
-                p.BezierCurveTo(new Vector2(6, 0), new Vector2(17, 0), new Vector2(17, 9)); p.BezierCurveTo(new Vector2(22, 9), new Vector2(21, 15), new Vector2(17, 15)); p.ClosePath(); p.Stroke();
+                // Kept inside the 20 px icon box (the old outline ran to x = 22 and lost its right side).
+                p.BeginPath(); p.MoveTo(new Vector2(5, 15)); p.BezierCurveTo(new Vector2(1.5f, 15), new Vector2(1, 9.5f), new Vector2(5, 9));
+                p.BezierCurveTo(new Vector2(5, 4), new Vector2(13, 3), new Vector2(14, 8)); p.BezierCurveTo(new Vector2(18.5f, 8), new Vector2(18.5f, 15), new Vector2(15, 15)); p.ClosePath(); p.Stroke();
             }
             else if (action == "电台") { Rect(2, 7, 16, 10); Circle(7, 12, 2.5f); Line(new Vector2(12, 10), new Vector2(16, 10)); Line(new Vector2(12, 13), new Vector2(16, 13)); Line(new Vector2(5, 7), new Vector2(14, 3)); }
             else if (action == "榜单") { Rect(3, 11, 3, 6); Rect(8, 4, 3, 13); Rect(13, 8, 3, 9); }
-            else if (action.Contains("原声")) { Rect(3, 3, 5, 14); Rect(11, 3, 5, 14); Line(new Vector2(5, 6), new Vector2(6, 6)); Line(new Vector2(13, 6), new Vector2(14, 6)); }
+            else if (action.Contains("原声") || action == "曲库") { Rect(3, 3, 5, 14); Rect(11, 3, 5, 14); Line(new Vector2(5, 6), new Vector2(6, 6)); Line(new Vector2(13, 6), new Vector2(14, 6)); }
             else { Circle(10, 10, 7); Circle(10, 10, 2); Line(new Vector2(4, 10), new Vector2(7, 10)); }
         }
     }

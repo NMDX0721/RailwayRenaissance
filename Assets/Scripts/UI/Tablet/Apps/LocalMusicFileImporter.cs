@@ -106,7 +106,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (req.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
                 {
+                    var decode = System.Diagnostics.Stopwatch.StartNew();
                     AudioClip clip = UnityEngine.Networking.DownloadHandlerAudioClip.GetContent(req);
+                    if (decode.ElapsedMilliseconds > 50) Debug.Log("MUSIC_LOAD_SLOW: decoding " + Path.GetFileName(filePath) + " blocked the main thread for " + decode.ElapsedMilliseconds + " ms");
                     if (clip != null)
                     {
                         onSuccess?.Invoke(clip);

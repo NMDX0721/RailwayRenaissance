@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum VNArtIcon { Bookmark, Replay, Speed, Train, Signal }
+public enum VNArtIcon { Bookmark, Replay, Speed, Train, Signal, Jump }
 public enum VNSignalAspect { Proceed, Reduced, Caution, Restricted, Stop }
 
 public sealed class VNInkIcon : VisualElement
@@ -29,6 +29,11 @@ public sealed class VNInkIcon : VisualElement
             Path(V(.13f,.38f),V(.31f,.38f),V(.53f,.19f),V(.53f,.81f),V(.31f,.62f),V(.13f,.62f),V(.13f,.38f));
             p.BeginPath();p.Arc(V(.52f,.5f),w*.22f,-48,48);p.Stroke();
             p.BeginPath();p.Arc(V(.52f,.5f),w*.34f,-46,46);p.Stroke();
+        }
+        else if (kind == VNArtIcon.Jump)
+        {
+            // Play triangle: "continue from this line".
+            Path(V(.3f,.2f),V(.3f,.8f),V(.76f,.5f),V(.3f,.2f));
         }
         else if (kind == VNArtIcon.Speed)
         {

@@ -710,8 +710,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
         if (AccountService.IsRegistered)
         {
-            avatar.style.color = Color.white;
-            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+            TabletAvatar.Decorate(avatar, AccountService.Profile, 76);
         }
         else
         {
@@ -1054,18 +1053,18 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         rightPane.Add(page);
     }
 
-    // 4 WLAN：车载内网沙箱只读说明
+    // 4 WLAN：当前网络状态（开关在控制中心）
     private static void RenderWlanSettings(ScrollView rightPane)
     {
         var page = new VisualElement { name = "settings-wlan-page" };
         AddCenterHeader(page, "WLAN");
 
-        AddSectionHeader(page, "网络接入范围");
+        AddSectionHeader(page, "当前网络");
         var card = BuildWhiteCard();
         card.name = "settings-wlan-card";
-        card.Add(BuildWhiteRow("车载网络范围", "本终端运行于车载内网沙箱，不提供公共 Wi-Fi 接入，也不显示可扫描的无线网络", null, false));
-        card.Add(BuildWhiteRow("热点与共享", "此页面没有热点广播或网络共享入口", null, false));
-        card.Add(BuildWhiteRow("连接状态", "无线链路状态不在此页显示；请以机车行车设备的指示为准", null, false));
+        card.Add(BuildWhiteRow("无线局域网", TabletConnectivity.WifiOn ? "已连接到“" + TabletConnectivity.WifiName + "”" : (TabletConnectivity.Airplane ? "飞行模式下已关闭" : "已关闭"), null, false));
+        card.Add(BuildWhiteRow("移动网络", TabletConnectivity.MobileOn ? TabletConnectivity.CarrierName + " " + TabletConnectivity.CarrierNetwork + " 已连接" : "已关闭", null, false));
+        card.Add(BuildWhiteRow("开关位置", "Wi-Fi、移动网络与飞行模式在控制中心里开关", null, false));
         page.Add(card);
 
         rightPane.Add(page);
@@ -1080,9 +1079,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         AddSectionHeader(page, "设备发现与配对");
         var card = BuildWhiteCard();
         card.name = "settings-bluetooth-card";
-        card.Add(BuildWhiteRow("蓝牙设备", "本终端不提供蓝牙扫描、发现或配对入口", null, false));
-        card.Add(BuildWhiteRow("驾驶台设备", "操纵与仪表设备不通过此页面进行无线配对", null, false));
-        card.Add(BuildWhiteRow("附近设备", "未配对设备不会显示在此页面", null, false));
+        card.Add(BuildWhiteRow("蓝牙", TabletConnectivity.BluetoothOn ? "已开启" : (TabletConnectivity.Airplane ? "飞行模式下已关闭" : "已关闭"), null, false));
+        card.Add(BuildWhiteRow("驾驶台设备", "操纵与仪表设备不通过蓝牙配对", null, false));
+        card.Add(BuildWhiteRow("附近设备", "暂无可配对的设备", null, false));
         page.Add(card);
 
         rightPane.Add(page);
@@ -1136,10 +1135,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         engineCard.Add(BuildInfoRow("对话方式", "预设台词", "岁月目前的回应来自本地预设台词"));
         page.Add(engineCard);
 
-        AddSectionHeader(page, "车载内网");
+        AddSectionHeader(page, "联网能力");
         var interactionCard = BuildWhiteCard();
         interactionCard.name = "settings-ai-interaction-card";
-        interactionCard.Add(BuildInfoRow("在线推理", "未接入", "内网沙箱内没有外部大模型服务"));
+        interactionCard.Add(BuildInfoRow("在线推理", "未接入", "本机没有接入外部大模型服务"));
         interactionCard.Add(BuildInfoRow("语音输入", "未提供", "平板没有语音唤醒或麦克风输入"));
         page.Add(interactionCard);
 
@@ -1552,7 +1551,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         infoCard.name = "settings-notifications-info-card";
         infoCard.Add(BuildWhiteRow("通知收存机制", "通知均来自应用实际运行提示；最多收存 32 条，超限自动淘汰早期记录", null, false));
         infoCard.Add(BuildWhiteRow("勿扰模式策略", "开启勿扰后系统保留通知收存，仅静默屏蔽悬浮横幅；勿扰状态持久化保存", null, false));
-        infoCard.Add(BuildWhiteRow("系统连接说明", "车载平板处于内网沙箱运行；状态栏不虚拟 Wi-Fi / 蓝牙 / 电池连接状态", null, false));
+        infoCard.Add(BuildWhiteRow("系统连接说明", "Wi-Fi、移动网络、蓝牙与飞行模式在控制中心里开关，状态图标显示在控制中心顶部", null, false));
         rightPane.Add(infoCard);
     }
 
@@ -2837,7 +2836,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         var storageCard = BuildWhiteCard();
         storageCard.name = "settings-privacy-storage-card";
         storageCard.Add(BuildInfoRow("终端防御", "白头疫苗", "安全服务由白头疫苗统一管理，可在“白头疫苗”应用中查看防护状态"));
-        storageCard.Add(BuildInfoRow("外部网络", "受限", "车载内网沙箱默认不连接公共网络；音乐页的账号与在线曲库只在你操作时联网"));
+        storageCard.Add(BuildInfoRow("外部网络", "受限", "联网时只有音乐页的账号与在线曲库会访问外部服务，且只在你操作时发生"));
         storageCard.Add(BuildInfoRow("应用权限", "沙箱隔离", "22 个应用运行在系统沙箱内"));
         page.Add(storageCard);
 
@@ -3781,8 +3780,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         avatar.style.alignItems = Align.Center; avatar.style.justifyContent = Justify.Center;
         if (AccountService.IsRegistered)
         {
-            avatar.style.color = Color.white;
-            avatar.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(AccountService.Profile.avatar, 0, AccountAvatarColors.Length - 1)];
+            TabletAvatar.Decorate(avatar, AccountService.Profile, 58);
         }
         else avatar.Add(new TabletIconElement(TabletIconKind.Person, 36, new Color(0.62f, 0.64f, 0.70f, 1f)));
         avatar.style.width = 58; avatar.style.height = 58; avatar.style.flexShrink = 0;

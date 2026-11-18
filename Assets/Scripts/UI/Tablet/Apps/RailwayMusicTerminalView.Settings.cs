@@ -94,6 +94,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         }
 
         // A row with a title and a note, and below it a group of chips to choose from.
+        // A row with a title and a note on the left and a text box on the right; the change counts when the box is left or Enter is pressed.
+        void TextRow(VisualElement group, string key, string title, string note, string value, Action<string> changed)
+        {
+            var row = Box(group, "music-settings-row"); row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
+            var text = Box(row, "music-setting-text"); Text(text, title, "music-setting-title");
+            if (!string.IsNullOrEmpty(note)) Text(text, note, "music-setting-note");
+            var field = new TextField { value = value ?? "", isDelayed = true, name = "music-set-" + key }; field.AddToClassList("music-settings-textfield"); row.Add(field);
+            field.RegisterValueChangedCallback(e => { if (e.target == field) changed(e.newValue); });
+        }
+
+        // A row with a title and a note on the left and a slider on the right.
+        void SliderRow(VisualElement group, string key, string title, string note, float min, float max, float value, Action<float> changed)
+        {
+            var row = Box(group, "music-settings-row"); row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center;
+            var text = Box(row, "music-setting-text"); Text(text, title, "music-setting-title");
+            if (!string.IsNullOrEmpty(note)) Text(text, note, "music-setting-note");
+            var slider = new Slider(min, max) { value = value, name = "music-set-" + key }; slider.AddToClassList("music-horizontal-slider"); slider.AddToClassList("music-settings-slider"); row.Add(slider);
+            slider.RegisterValueChangedCallback(e => { changed(e.newValue); MusicLibrarySession.Save(); });
+        }
+
         void ChipsRow(VisualElement group, string key, string title, string note, IList<string> options, int current, Action<int> pick)
         {
             int letters = 0; foreach (string option in options) letters += option.Length;
@@ -245,11 +265,24 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             var state = MusicLibrarySession.State;
             var group = Group("歌词显示");
-            SwitchRow(group, "filter", "过滤制作信息", "去掉作词、作曲、版权等行（额外过滤词在歌词页）", state.lyricFilter, () => state.lyricFilter = !state.lyricFilter);
-            SwitchRow(group, "translation", "显示翻译", "有翻译时显示在原词下方", state.lyricTranslation, () => state.lyricTranslation = !state.lyricTranslation);
-            SwitchRow(group, "estimate", "估算逐字时间", "没有逐字时间的歌词按字数估算", state.estimateWords, () => state.estimateWords = !state.estimateWords);
+            SwitchRow(group, "filter", "过滤制作信息", "去掉作词、作曲、版权等行", state.lyricFilter, () => { state.lyricFilter = !state.lyricFilter; MusicLyricsView.Refresh(true); });
+            TextRow(group, "filter-words", "额外过滤词", "包含这些词的歌词行会被去掉，用逗号隔开", state.lyricFilterWords, text => { state.lyricFilterWords = text ?? ""; MusicLibrarySession.Save(); MusicLyricsView.Refresh(true); });
+            SwitchRow(group, "translation", "显示翻译", "有翻译时显示在原词下方", state.lyricTranslation, () => { state.lyricTranslation = !state.lyricTranslation; MusicLyricsView.Refresh(false); });
+            SwitchRow(group, "estimate", "估算逐字时间", "没有逐字时间的歌词按字数估算", state.estimateWords, () => { state.estimateWords = !state.estimateWords; MusicLyricsView.Refresh(false); });
             int[] sizes = { 20, 24, 28, 32 };
-            ChipsRow(group, "size", "字号", null, sizes.Select(x => x + " px").ToList(), Array.IndexOf(sizes, state.lyricFontSize), i => state.lyricFontSize = sizes[i]);
+            ChipsRow(group, "size", "字号", null, sizes.Select(x => x + " px").ToList(), Array.IndexOf(sizes, state.lyricFontSize), i => { state.lyricFontSize = sizes[i]; MusicLyricsView.Refresh(false); });
+
+            // The stage look, with everything that shapes it, in one place.
+            var stage = Group("舞台");
+            var titles = new List<string>(); int currentStyle = 0;
+            for (int i = 0; i < StageStyles.Count; i++) { titles.Add(StageStyles.TitleOf(StageStyles.IdAt(i))); if (StageStyles.IdAt(i) == state.stageStyle) currentStyle = i; }
+            ChipsRow(stage, "stage-style", "样式", "在歌词页选「舞台」时使用", titles, currentStyle, i => { state.stageStyle = StageStyles.IdAt(i); });
+            string[] intensityNames = { "平静", "正常", "狂放" };
+            ChipsRow(stage, "stage-intensity", "散布", "词的散开与旋转幅度", intensityNames, Mathf.Clamp(state.stageIntensity, 0, 2), i => { state.stageIntensity = i; MusicLyricsView.InvalidateStage(); });
+            SwitchRow(stage, "stage-rotation", "词旋转", null, state.stageRotation, () => { state.stageRotation = !state.stageRotation; MusicLyricsView.InvalidateStage(); });
+            SliderRow(stage, "stage-breathing", "呼吸浮动", "整句缓慢起伏的幅度，0 为不动", 0, 2, state.stageBreathing, v => { state.stageBreathing = v; });
+            SliderRow(stage, "stage-spacing", "词间距", "词与词之间按实际宽度计算的间距倍率", 0, 2, state.stageSpacing, v => { state.stageSpacing = v; MusicLyricsView.InvalidateStage(); });
+            SwitchRow(stage, "stage-legacy", "旧版布局", "按字幕原有的词切分，不做语义分组", state.stageLegacyLayout, () => { state.stageLegacyLayout = !state.stageLegacyLayout; MusicLyricsView.InvalidateStage(); });
             var timing = FoldGroup("时间校准");
             var row = Box(timing, "music-settings-row"); row.AddToClassList("music-settings-chiprow");
             Text(row, "全局偏移", "music-setting-title").style.flexGrow = 0;

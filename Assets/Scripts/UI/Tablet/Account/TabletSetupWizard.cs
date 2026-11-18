@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RailwayRenaissance.UI.Tablet.SystemShell;
 
 namespace RailwayRenaissance.UI.Tablet.Account
 {
@@ -40,10 +41,13 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         // 向导内收集的数据
         private string _phone = string.Empty;
+        private int _codeFails; // 当前这条验证码连续输错的次数
         private string _verifiedPhone; // 已通过验证码校验的手机号：回退再前进时不必重新消耗验证码
         private string _password = string.Empty;
         private string _nickname = "旅人";
         private int _avatar;
+        private string _avatarImage;      // 注册时选的自定义头像（原图路径）
+        private Texture2D _avatarPreview; // 裁好的预览
         private bool _agreedDevice;
         private bool _agreedAccount;
         private float _resendReadyAt;
@@ -253,8 +257,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
             var inner = new ScrollView(ScrollViewMode.Vertical);
             inner.verticalScrollerVisibility = ScrollerVisibility.Hidden;
             inner.style.maxHeight = 240;
-            inner.Add(Body("《小米用户协议》摘要：本设备及其系统软件由嘉颖徐铁路基金配发，供铁路运营与调度工作使用。使用本设备即表示你同意遵守车载内网的使用规范。"));
-            inner.Add(Body("《隐私政策》摘要：本设备运行在车载内网沙箱中，不连接公共网络。你在本设备上创建的账号与资料只保存在本机；音乐应用的在线账号由对应服务独立处理。"));
+            inner.Add(Body("《小米用户协议》摘要：本设备及其系统软件由嘉颖徐铁路基金配发，供铁路运营与调度工作使用。使用本设备即表示你同意遵守铁路内部网络的使用规范。"));
+            inner.Add(Body("《隐私政策》摘要：你在本设备上创建的账号与资料只保存在本机；联网时，音乐应用的在线账号由对应服务独立处理。"));
             inner.Add(Body("以上为游戏内虚构条款，仅用于营造设备首次使用的氛围。"));
             card.Add(inner);
             _body.Add(card);
@@ -273,11 +277,12 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         private void BuildNetwork()
         {
-            _body.Add(Title("连接网络", "本设备使用车载内网"));
+            _body.Add(Title("连接网络", "可连接 Wi-Fi，也可使用移动网络"));
             var card = Card();
-            card.Add(InfoRow("阿里郎内网", "已连接"));
+            card.Add(InfoRow(TabletConnectivity.WifiName, TabletConnectivity.WifiOn ? "已连接" : "已关闭"));
+            card.Add(InfoRow(TabletConnectivity.CarrierName + " " + TabletConnectivity.CarrierNetwork, TabletConnectivity.MobileOn ? "已连接" : "已关闭"));
             _body.Add(card);
-            _body.Add(Body("此终端运行在车载内网沙箱中，没有公共 Wi-Fi 与蜂窝网络，无需手动配置。"));
+            _body.Add(Body("已自动接入“铁路职工网”和高丽联移动网络，无需手动配置；之后可在控制中心随时开关。"));
             _body.Add(Primary("下一步", () => Go(_index + 1)));
         }
 
@@ -399,7 +404,20 @@ namespace RailwayRenaissance.UI.Tablet.Account
             _body.Add(Primary("下一步", () =>
             {
                 string e = AccountService.VerifyCode(_phone, codeField.value);
-                if (e != null) { err.text = e; return; }
+                if (e != null)
+                {
+                    // 连续输错 3 次：不再卡在这一步，直接放行（本机模拟账号，验证码不涉及真实安全）
+                    if (e == "验证码错误" && ++_codeFails >= 3)
+                    {
+                        _codeFails = 0;
+                        _verifiedPhone = _phone;
+                        Go(_index + 1);
+                        return;
+                    }
+                    err.text = e;
+                    return;
+                }
+                _codeFails = 0;
                 _verifiedPhone = _phone;
                 err.text = string.Empty;
                 Go(_index + 1);
@@ -422,33 +440,26 @@ namespace RailwayRenaissance.UI.Tablet.Account
             strengthRow.style.flexDirection = FlexDirection.Row;
             strengthRow.style.alignItems = Align.Center;
             strengthRow.style.marginTop = 12;
-            var bars = new VisualElement[3];
-            for (int i = 0; i < 3; i++)
-            {
-                bars[i] = new VisualElement();
-                bars[i].style.height = 6; bars[i].style.flexGrow = 1;
-                bars[i].style.marginRight = 6;
-                RoundAll(bars[i], 3);
-                strengthRow.Add(bars[i]);
-            }
+            // 一条连续的强度条（不再切成三段），强度文字紧贴条右侧
+            var track = new VisualElement();
+            track.style.height = 6; track.style.flexGrow = 1;
+            track.style.backgroundColor = new Color(0, 0, 0, 0.10f);
+            track.style.overflow = Overflow.Hidden;
+            RoundAll(track, 3);
+            var fill = new VisualElement();
+            fill.style.height = Length.Percent(100);
+            fill.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("width"), new StylePropertyName("background-color") };
+            fill.style.transitionDuration = new List<TimeValue> { new TimeValue(180, TimeUnit.Millisecond) };
+            track.Add(fill);
+            strengthRow.Add(track);
             var strengthLabel = Text("", 13, new Color(0.45f, 0.45f, 0.5f));
-            strengthLabel.style.width = 64; strengthLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+            strengthLabel.style.marginLeft = 10; strengthLabel.style.minWidth = 18;
             strengthRow.Add(strengthLabel);
             _body.Add(strengthRow);
 
             _body.Add(Body($"{AccountService.MinPasswordLength}–{AccountService.MaxPasswordLength} 位，需同时包含字母和数字。"));
 
-            var showBtn = MakeTextButton("显示密码", () => { });
-            showBtn.style.alignSelf = Align.FlexStart;
-            bool shown = false;
-            showBtn.clicked += () =>
-            {
-                shown = !shown;
-                pw.isPasswordField = !shown;
-                confirm.isPasswordField = !shown;
-                showBtn.text = shown ? "隐藏密码" : "显示密码";
-            };
-            _body.Add(showBtn);
+            TabletPasswordEye.Attach(new Color(0.45f, 0.45f, 0.50f), pw, confirm);
 
             var err = ErrorLabel();
             _body.Add(err);
@@ -457,8 +468,8 @@ namespace RailwayRenaissance.UI.Tablet.Account
             {
                 int level = string.IsNullOrEmpty(pw.value) ? -1 : AccountService.PasswordStrength(pw.value);
                 Color[] palette = { new Color(0.93f, 0.35f, 0.30f), new Color(0.97f, 0.70f, 0.20f), new Color(0.25f, 0.75f, 0.45f) };
-                for (int i = 0; i < 3; i++)
-                    bars[i].style.backgroundColor = i <= level ? palette[Mathf.Max(level, 0)] : new Color(0, 0, 0, 0.10f);
+                fill.style.width = Length.Percent(level < 0 ? 0f : (level + 1) * 100f / 3f);
+                fill.style.backgroundColor = palette[Mathf.Max(level, 0)];
                 strengthLabel.text = level < 0 ? string.Empty : level == 0 ? "弱" : level == 1 ? "中" : "强";
             };
             pw.RegisterValueChangedCallback(_ => { refresh(); err.text = string.Empty; });
@@ -489,34 +500,44 @@ namespace RailwayRenaissance.UI.Tablet.Account
             nameField.name = "wizard-nickname";
 
             Action refreshAvatars = null;
-            for (int i = 0; i < AvatarColors.Length; i++)
+            Color ringCol = new Color(0.1f, 0.1f, 0.12f, 0.85f);
+            for (int i = 0; i < TabletAvatar.PresetCount; i++)
             {
                 int idx = i;
-                var c = new Label();
-                c.style.width = 56; c.style.height = 56;
+                var c = TabletAvatar.BuildPreset(i, 56);
                 c.style.marginLeft = 6; c.style.marginRight = 6;
-                c.style.unityTextAlign = TextAnchor.MiddleCenter;
-                Style(c, 24, Color.white, true);
-                RoundAll(c, 28);
-                c.style.backgroundColor = AvatarColors[i];
-                c.RegisterCallback<ClickEvent>(_ => { _avatar = idx; refreshAvatars(); });
+                c.RegisterCallback<ClickEvent>(_ => { _avatar = idx; _avatarImage = null; refreshAvatars(); });
                 circles.Add(c);
                 avatarRow.Add(c);
             }
+            // 最后一格：从电脑选图片
+            var customHolder = new VisualElement { name = "wizard-avatar-custom" };
+            customHolder.style.marginLeft = 6; customHolder.style.marginRight = 6;
+            customHolder.style.width = 56; customHolder.style.height = 56;
+            RoundAll(customHolder, 28);
+            customHolder.RegisterCallback<ClickEvent>(_ =>
+            {
+                if (!TabletFilePicker.Available) { Toast("当前平台不支持选择本地图片"); return; }
+                string path = TabletFilePicker.PickImage("选择头像图片");
+                if (string.IsNullOrEmpty(path)) return;
+                var tex = TabletAvatar.LoadAndCrop(path, out string perr);
+                if (tex == null) { Toast(perr ?? "读取图片失败"); return; }
+                if (_avatarPreview != null) UnityEngine.Object.Destroy(_avatarPreview);
+                _avatarPreview = tex; _avatarImage = path;
+                refreshAvatars();
+            });
+            avatarRow.Add(customHolder);
             refreshAvatars = () =>
             {
-                string initial = string.IsNullOrWhiteSpace(nameField.value) ? "旅" : nameField.value.Trim().Substring(0, 1);
                 for (int i = 0; i < circles.Count; i++)
-                {
-                    var lab = (Label)circles[i];
-                    lab.text = i == _avatar ? initial : string.Empty;
-                    float w = i == _avatar ? 3f : 0f;
-                    lab.style.borderTopWidth = lab.style.borderBottomWidth = lab.style.borderLeftWidth = lab.style.borderRightWidth = w;
-                    Color bc = new Color(0.1f, 0.1f, 0.12f, 0.85f);
-                    lab.style.borderTopColor = lab.style.borderBottomColor = lab.style.borderLeftColor = lab.style.borderRightColor = bc;
-                }
+                    SetRing(circles[i], string.IsNullOrEmpty(_avatarImage) && i == _avatar, ringCol);
+                bool hasCustom = !string.IsNullOrEmpty(_avatarImage) && _avatarPreview != null;
+                customHolder.Clear();
+                var tile = TabletAvatar.BuildCustomTile(56, hasCustom ? _avatarPreview : null);
+                tile.pickingMode = PickingMode.Ignore;
+                customHolder.Add(tile);
+                SetRing(customHolder, hasCustom, ringCol);
             };
-            nameField.RegisterValueChangedCallback(_ => refreshAvatars());
             refreshAvatars();
             _body.Add(avatarRow);
             _body.Add(nameField);
@@ -531,6 +552,7 @@ namespace RailwayRenaissance.UI.Tablet.Account
                 _nickname = nameField.value.Trim();
                 e = AccountService.Register(_phone, _password, _nickname, _avatar);
                 if (e != null) { err.text = e; return; }
+                if (!string.IsNullOrEmpty(_avatarImage)) AccountService.SetCustomAvatar(_avatarImage);
                 Go(_index + 1);
             }));
         }
@@ -563,11 +585,13 @@ namespace RailwayRenaissance.UI.Tablet.Account
 
         private void SendCode()
         {
+            _codeFails = 0;
             string code = AccountService.IssueCode(_phone);
-            _resendReadyAt = Time.realtimeSinceStartup + 60f;
+            _resendReadyAt = Time.realtimeSinceStartup + 30f;
             string body = $"【小米】你的验证码是 {code}，5 分钟内有效。请勿向他人泄露。";
-            ShowSms(body);
-            _smsSink?.Invoke("短信", body);
+            // 有系统通知可用时，验证码只走系统横幅；向导自带的深色短信条只在没有通知出口时兜底，避免两个弹窗叠在一起
+            if (_smsSink != null) _smsSink("短信", body);
+            else ShowSms(body);
         }
 
         private void ShowSms(string text)
@@ -768,6 +792,13 @@ namespace RailwayRenaissance.UI.Tablet.Account
         private void Toast(string message)
         {
             ShowSms(message);   // 复用顶部提示条
+        }
+
+        private static void SetRing(VisualElement e, bool on, Color color)
+        {
+            float w = on ? 3f : 0f;
+            e.style.borderTopWidth = e.style.borderBottomWidth = e.style.borderLeftWidth = e.style.borderRightWidth = w;
+            e.style.borderTopColor = e.style.borderBottomColor = e.style.borderLeftColor = e.style.borderRightColor = color;
         }
 
         private static void RoundAll(VisualElement e, float r)

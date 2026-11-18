@@ -1173,3 +1173,188 @@
 .music-button:hover { border-color: rgba(205, 176, 112, 0.7); }
 .music-button:active { border-color: rgba(205, 176, 112, 0.45); }
 .music-button:focus { border-color: rgba(222, 190, 125, 0.85); }
+
+/* The player card floats over the content only: it starts to the right of the sidebar (and follows it when the sidebar folds), so the playlists and settings at the foot of the sidebar are never covered. */
+.music-player { left: 192px; transition-property: left; transition-duration: 220ms; transition-timing-function: ease-out; }
+.music-compact .music-player { left: 156px; }
+.music-nav-collapsed .music-player { left: 94px; }
+.music-reduce-motion .music-player { transition-duration: 0s; }
+.music-navigation { padding-bottom: 16px; }
+.music-nav-collapsed .music-navigation { padding-bottom: 12px; }
+
+/* Official chart covers already carry the chart's name in big letters: once the cover is in, the card shows only the update note, on a slimmer shade, so nothing is written twice. */
+.music-big-named .music-big-title { display: none; }
+.music-big-named .music-big-shade { height: 52px; background-color: rgba(14, 16, 12, 0.6); }
+.music-big-named .music-big-text { bottom: 17px; }
+.music-big-named .music-big-subtitle { font-size: 12px; margin: 0; color: rgb(226, 219, 190); }
+
+/* lyrics page: soft fade into the tablet's status strip, and the quick stage-style button in the header */
+.music-lyrics-topfade { position: absolute; left: 0; right: 0; top: 0; height: 76px; -unity-background-scale-mode: stretch-to-fill; }
+.music-lyrics-header .music-lyrics-style-button { display: flex; }
+
+/* lyric settings: a sheet over the lyrics page */
+.music-lyrics-sheet { position: absolute; left: 0; top: 0; right: 0; bottom: 0; align-items: center; justify-content: center; background-color: rgba(8, 10, 8, 0.55); }
+.music-lyrics-sheet .music-lyrics-sheet-panel.music-lyrics-art, .music-compact .music-lyrics-sheet .music-lyrics-sheet-panel.music-lyrics-art { width: 440px; max-width: 92%; max-height: 88%; flex-shrink: 1; padding: 18px 20px 14px 20px; border-radius: 22px; border-right-width: 0; background-color: rgb(36, 41, 34); display: flex; }
+.music-lyrics-sheet-panel > .music-modal-header { flex-shrink: 0; }
+.music-lyrics-sheet-panel > .music-lyrics-sheet-scroll { flex-shrink: 1; min-height: 0; }
+.music-lyrics-more-open > .unity-foldout__toggle { display: none; }
+.music-lyrics-more-open .unity-foldout__content { margin-left: 0; }
+.music-lyrics-cover { background-color: rgba(0, 0, 0, 0); }
+
+/* settings: text box and slider rows */
+.music-settings-textfield { width: 170px; flex-shrink: 0; margin: 0; }
+.music-settings-slider { width: 170px; flex-shrink: 0; margin: 0; }
+.music-lyrics-hint { font-size: 11px; color: rgb(150, 150, 128); white-space: normal; margin: 8px 0 0 0; }
+
+/* scroll bars float over the page's right edge instead of reserving an empty column beside the content */
+.music-terminal .unity-scroller--vertical { position: absolute; right: 3px; top: 6px; bottom: 6px; width: 8px; min-width: 8px; margin: 0; padding: 0; background-color: rgba(0, 0, 0, 0); border-left-width: 0; border-radius: 4px; overflow: hidden; }
+.music-terminal .unity-scroller--vertical .unity-slider { width: 100%; min-width: 0; max-width: 100%; }
+.music-terminal .unity-scroller--vertical .unity-base-slider__drag-container { width: 100%; min-width: 0; max-width: 100%; }
+.music-terminal .unity-scroller--vertical .unity-base-slider__tracker { opacity: 0; }
+.music-terminal .unity-scroller--vertical .unity-base-slider__dragger { width: auto; min-width: 0; margin: 0; left: 0; right: 0; border-width: 0; border-radius: 4px; background-color: rgba(205, 176, 112, 0.35); }
+.music-terminal .unity-scroller--vertical:hover .unity-base-slider__dragger { background-color: rgba(205, 176, 112, 0.6); }
+.music-terminal .unity-scroller--vertical .unity-base-slider__dragger:hover, .music-terminal .unity-scroller--vertical .unity-base-slider__dragger:active { background-color: rgba(232, 204, 144, 0.9); }
+
+/* one button family: labelled buttons are pills of one height, icon-only buttons are circles */
+.music-section-actions .music-button, .music-list-actions .music-button, .music-drawer .music-list-actions .music-button { height: 36px; min-height: 36px; padding: 0 16px; border-radius: 18px; }
+.music-terminal .music-icon-button { border-radius: 50%; }
+.music-modal .music-button { border-radius: 18px; }
+.music-modal .music-icon-button { border-radius: 50%; }
+
+/* search pill: the clear and search buttons live inside it */
+.music-header .music-search .unity-base-text-field__input { padding-right: 78px; }
+.music-search-clear, .music-search-go { position: absolute; top: 3px; bottom: 3px; width: 32px; min-width: 32px; height: auto; min-height: 0; margin: 0; padding: 0; border-width: 0; border-radius: 50%; background-color: rgba(0, 0, 0, 0); }
+.music-search-go { right: 6px; top: 50%; bottom: auto; margin-top: -14px; width: 28px; min-width: 28px; height: 28px; background-color: rgba(0, 0, 0, 0); border-width: 1px; border-color: rgba(255, 255, 255, 0.28); }
+.music-search-clear { right: 40px; top: 50%; bottom: auto; margin-top: -14px; width: 28px; min-width: 28px; height: 28px; }
+.music-search-clear:hover { background-color: rgba(255, 255, 255, 0.08); }
+.music-search-go:hover { background-color: rgba(0, 0, 0, 0); border-color: rgba(205, 176, 112, 0.8); }
+
+/* career page */
+.music-career-cards { flex-direction: row; margin: 6px 0 10px 0; }
+.music-career-card { min-width: 150px; margin-right: 12px; padding: 14px 18px; border-radius: 16px; background-color: rgba(0, 0, 0, 0.2); border-width: 1px; border-color: rgba(255, 255, 255, 0.05); }
+.music-career-value { font-size: 30px; -unity-font-style: bold; color: rgb(236, 214, 160); margin: 0; padding: 0; }
+.music-career-label { font-size: 12px; color: rgb(158, 159, 138); margin: 2px 0 0 0; padding: 0; }
+.music-career-row { flex-direction: row; align-items: center; height: 64px; margin: 0 0 4px 0; padding: 0 14px; border-width: 0; border-radius: 14px; background-color: rgba(255, 255, 255, 0.04); justify-content: flex-start; }
+.music-career-row:hover { background-color: rgba(205, 176, 112, 0.12); }
+.music-career-row .music-track-info { flex-grow: 1; flex-basis: 0; min-width: 0; }
+.music-career-bar { width: 120px; height: 4px; margin: 0 14px; border-radius: 2px; background-color: rgba(255, 255, 255, 0.08); }
+.music-career-fill { height: 4px; border-radius: 2px; background-color: rgba(205, 176, 112, 0.7); }
+.music-career-count { width: 54px; font-size: 13px; color: rgb(214, 206, 180); -unity-text-align: middle-right; }
+.music-search-clear .music-vector-icon, .music-search-go .music-vector-icon { margin: 0; }
+.music-search-clear, .music-search-go { align-items: center; justify-content: center; }
+
+/* icon-only buttons are outlined circles, no inner fill (the play button and the borderless utility bar keep their look) */
+.music-terminal .music-icon-button, .music-modal .music-icon-button { background-color: rgba(0, 0, 0, 0); border-width: 1px; border-color: rgba(255, 255, 255, 0.24); }
+.music-terminal .music-icon-button:hover, .music-modal .music-icon-button:hover { background-color: rgba(255, 255, 255, 0.06); border-color: rgba(205, 176, 112, 0.7); }
+.music-terminal .music-icon-button.is-active { border-color: rgba(205, 176, 112, 0.8); background-color: rgba(0, 0, 0, 0); }
+.music-terminal .music-utility-buttons .music-icon-button { border-width: 0; }
+.music-terminal .music-icon-button.music-primary { border-width: 0; background-color: rgb(98, 142, 214); }
+.music-terminal .music-search-clear.music-icon-button, .music-terminal .music-search-clear.music-icon-button:hover { border-width: 0; }
+
+/* no outlines: icon buttons are bare glyphs that gain a soft glass disc on hover and when active */
+.music-terminal .music-icon-button, .music-modal .music-icon-button, .music-terminal .music-search-go.music-icon-button { border-width: 0; }
+.music-terminal .music-icon-button:hover, .music-modal .music-icon-button:hover, .music-terminal .music-search-go.music-icon-button:hover, .music-terminal .music-search-clear.music-icon-button:hover { border-width: 0; background-color: rgba(255, 255, 255, 0.09); }
+.music-terminal .music-icon-button.is-active { border-width: 0; background-color: rgba(205, 176, 112, 0.2); }
+.music-header .music-search .music-search-clear, .music-header .music-search .music-search-go { top: 5px; margin-top: 0; }
+.music-header .music-search .music-search-clear.music-icon-button, .music-header .music-search .music-search-go.music-icon-button { top: 5px; margin: 0; width: 28px; min-width: 28px; height: 28px; min-height: 28px; padding: 5px; }
+
+/* sidebar: one scrolling column with a floating scrollbar */
+.music-navigation .music-nav-scroll { flex-grow: 1; flex-shrink: 1; min-height: 0; }
+.music-navigation .music-nav-scroll > .unity-scroll-view__content-viewport { margin-right: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical { position: absolute; right: -6px; top: 0; bottom: 0; width: 8px; background-color: rgba(0, 0, 0, 0); border-width: 0; margin: 0; padding: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__tracker { opacity: 0; }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__dragger { width: 4px; margin-left: 2px; border-width: 0; border-radius: 2px; background-color: rgba(205, 176, 112, 0.35); }
+.music-navigation .music-nav-scroll .unity-scroller--vertical .unity-base-slider__drag-container, .music-navigation .music-nav-scroll .unity-scroller--vertical .unity-slider { width: 8px; }
+.music-navigation .music-nav-scroll .unity-scroller__low-button, .music-navigation .music-nav-scroll .unity-scroller__high-button { display: none; }
+.music-navigation .music-playlists { flex-grow: 0; flex-shrink: 0; min-height: 0; }
+
+/* settings cards: everything inside is clipped to the card's rounded corners; the focus/hover fill never shows square corners */
+.music-settings-group { overflow: hidden; }
+.music-settings-group > .music-settings-row, .music-settings-group > .music-setting-row { border-radius: 0; }
+.music-settings-group > .music-setting-row:hover, .music-settings-group > .music-setting-row:focus { background-color: rgba(255, 255, 255, 0.05); }
+
+/* lyrics page column: record archive and lyric settings are small icon buttons */
+.music-lyrics-quick { flex-direction: row; flex-shrink: 0; margin: 8px 0 4px 0; }
+.music-lyrics-art .music-lyrics-quick > .music-button { width: 36px; min-width: 36px; height: 36px; min-height: 36px; padding: 7px; margin: 0 8px 0 0; border-radius: 18px; background-color: rgba(255, 255, 255, 0.06); border-width: 0; justify-content: center; }
+.music-lyrics-art .music-lyrics-quick > .music-button:hover { background-color: rgba(255, 255, 255, 0.14); }
+
+/* chat stage: rows never squash into each other; the active bubble grows by font and padding, with only a small scale on top */
+.music-stage-cappella-row { flex-shrink: 0; margin-bottom: 20px; }
+.music-stage-cappella-list { flex-shrink: 0; }
+.music-stage-cappella-bubble { overflow: visible; flex-shrink: 0; }
+.music-stage-cappella-stamp { margin-top: 6px; }
+
+/* search pill: a complete 1px outline on every side, and the field never clips its own border */
+.music-header .music-search { overflow: visible; }
+.music-header .music-search .unity-base-text-field__input, .music-header .unity-text-field__input { border-width: 1px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-color: rgba(255, 255, 255, 0.2); border-radius: 19px; }
+.music-header .music-search .unity-base-text-field__input:focus { border-color: rgba(205, 176, 112, 0.75); }
+.music-header { overflow: visible; }
+
+/* list pages: the heading and its action buttons fold away while scrolling; a small button returns to the top */
+.music-list-collapsed > .music-library-heading, .music-list-collapsed > .music-list-actions { display: none; }
+.music-scroll-top { position: absolute; right: 26px; bottom: 120px; width: 38px; height: 38px; min-width: 38px; min-height: 38px; padding: 9px; border-radius: 19px; border-width: 1px; border-color: rgba(255, 255, 255, 0.18); background-color: rgba(34, 38, 31, 0.92); }
+.music-scroll-top:hover { background-color: rgba(60, 66, 52, 0.96); border-color: rgba(205, 176, 112, 0.7); }
+
+/* library tabs: all / soundtrack / local / cloud / charts, one row at the top of every library page */
+.music-lib-tabs { flex-direction: row; flex-shrink: 0; margin: 2px 0 10px 0; padding: 3px; align-self: flex-start; border-radius: 18px; background-color: rgba(0, 0, 0, 0.22); }
+.music-lib-tab { height: 32px; min-height: 32px; margin: 0 2px; padding: 0 16px; border-radius: 16px; border-width: 0; background-color: rgba(0, 0, 0, 0); font-size: 13px; color: rgb(190, 184, 156); }
+.music-lib-tab .music-vector-icon { display: none; }
+.music-lib-tab:hover { background-color: rgba(255, 255, 255, 0.07); }
+.music-lib-tab.is-active { background-color: rgba(205, 176, 112, 0.24); color: rgb(246, 226, 176); }
+
+/* Layout: the page ends above the player card, so nothing hides behind it and a scrollbar appears only when the content really overflows;
+   the scrollbar sits at the very right edge of the window area. */
+.music-track-list .unity-scroll-view__content-container, .music-home-content { padding-bottom: 8px; }
+.music-column > .music-main { margin-bottom: 116px; }
+.music-player-is-mini .music-column > .music-main { margin-bottom: 76px; }
+.music-content > .unity-scroll-view { margin-right: -24px; }
+.music-content > .unity-scroll-view > .unity-scroll-view__content-viewport > .unity-scroll-view__content-container { padding-right: 24px; }
+.music-content .unity-scroller--vertical { right: 3px; }
+
+/* the player card as a small capsule at the bottom right */
+.music-player-resize { width: 30px; min-width: 30px; height: 30px; min-height: 30px; padding: 5px; margin-left: 6px; flex-shrink: 0; align-self: center; }
+.music-player.music-player-mini { left: auto; right: 14px; width: 212px; min-height: 60px; height: 60px; padding: 6px 10px; border-radius: 30px; }
+.music-nav-collapsed .music-player.music-player-mini, .music-compact .music-player.music-player-mini { left: auto; }
+.music-player-mini .music-player-info, .music-player-mini .music-player-extras, .music-player-mini .music-timeline, .music-player-mini .music-player-vu { display: none; }
+.music-player-mini .music-player-controls { flex-grow: 1; min-width: 0; padding-left: 0; }
+.music-player-mini .music-transport > .music-button { display: none; }
+.music-player-mini .music-transport > .music-primary { display: flex; }
+.music-player-mini .music-player-cover { width: 42px; height: 42px; min-width: 42px; margin-right: 8px; border-radius: 21px; }
+.music-player-mini .music-player-buttons.music-transport { justify-content: center; }
+
+/* custom speed: slider and number side by side */
+.music-speed-custom { flex-direction: row; align-items: center; padding: 8px 14px 6px 14px; }
+.music-speed-custom .music-setting-title { margin-right: 10px; }
+.music-speed-slider { flex-grow: 1; margin: 0 10px; }
+.music-speed-field { width: 64px; flex-shrink: 0; }
+.music-speed-custom .music-setting-note { margin: 0 0 0 4px; }
+.music-track-row { cursor: link; }
+
+/* 我的: account card */
+.music-mine-card { flex-direction: row; align-items: center; margin: 8px 0 14px 0; padding: 18px 20px; border-radius: 18px; background-color: rgba(0, 0, 0, 0.2); }
+.music-mine-avatar { width: 64px; height: 64px; border-radius: 32px; overflow: hidden; flex-shrink: 0; margin-right: 16px; }
+.music-mine-avatar .music-stage-cappella-shoulders { left: 12px; top: 40px; width: 40px; height: 40px; border-radius: 20px; }
+.music-mine-avatar .music-stage-cappella-head { left: 22px; top: 12px; width: 20px; height: 20px; border-radius: 10px; }
+.music-mine-who { flex-grow: 1; flex-shrink: 1; }
+.music-mine-name { font-size: 24px; -unity-font-style: bold; color: rgb(244, 237, 214); margin: 0; padding: 0; white-space: normal; }
+.music-mine-sub { font-size: 13px; color: rgb(170, 170, 146); margin: 4px 0 0 0; padding: 0; white-space: normal; }
+.music-mine-card .music-primary { margin-left: 12px; flex-shrink: 0; }
+
+.music-mine-card .music-mine-logout { margin-left: 12px; flex-shrink: 0; }
+.music-mine-tools { margin: 0 0 0 8px; padding: 0; flex-shrink: 0; flex-grow: 0; width: auto; min-width: 0; background-color: rgba(0, 0, 0, 0); border-width: 0; }
+
+/* Interaction motion: page entrance, press and hover feedback */
+.music-terminal .music-enter-anim { transition-property: opacity, translate; transition-duration: 280ms, 340ms; transition-timing-function: ease-out; }
+.music-terminal .music-enter { opacity: 0; translate: 0 14px; }
+.music-player-buttons .music-button { transition-property: background-color, border-color, scale, opacity; transition-duration: 140ms; }
+.music-player-buttons .music-button:hover { scale: 1.08 1.08; }
+.music-player-buttons .music-button:active { scale: 0.92 0.92; }
+.music-player-buttons .music-primary:hover { scale: 1.06 1.06; }
+.music-tools .music-button:hover, .music-track-row .music-button:hover { scale: 1.08 1.08; }
+.music-mine-tools .music-button { transition-property: background-color, border-color, scale, rotate; transition-duration: 160ms, 160ms, 160ms, 360ms; }
+.music-mine-tools .music-button:hover { rotate: 60deg; scale: 1.06 1.06; }
+.music-mine-card { transition-property: background-color, translate; transition-duration: 160ms; }
+.music-career-card { transition-property: background-color, translate; transition-duration: 160ms; transition-timing-function: ease-out; }
+.music-career-card:hover { translate: 0 -2px; background-color: rgba(255, 255, 255, 0.05); }
+.music-reduce-motion .music-player-buttons .music-button, .music-reduce-motion .music-mine-tools .music-button, .music-reduce-motion .music-career-card { transition-duration: 0s; scale: 1 1; rotate: 0deg; translate: 0 0; }
+.music-reduce-motion .music-enter { opacity: 1; translate: 0 0; }

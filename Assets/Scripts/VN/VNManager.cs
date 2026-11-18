@@ -366,6 +366,9 @@ public partial class VNManager : MonoBehaviour
         vnBacklog = gameObject.AddComponent<VNBacklog>();
         vnBacklog.Init(uiDoc);
         vnBacklog.OnEntryClicked += OnBacklogEntryClicked;
+        vnBacklog.OnEntryBookmark = AddBookmarkAt;
+        vnBacklog.OnEntryVoice = PlayBacklogVoice;
+        vnBacklog.HasVoice = BacklogEntryHasVoice;
         dialogueBox.OnProgressSeek = HandleProgressSeek; // 底部进度条点击/拖动跳转
         dialogueBox.OnProgressDragChanged = dragging =>
         {
@@ -912,19 +915,59 @@ public partial class VNManager : MonoBehaviour
     private void AddBookmark()
     {
         CloseMenuExpanded();
-        if (currentScript == null || string.IsNullOrEmpty(currentScriptName)) return;
-        var scene = currentScript.scenes[currentSceneIndex];
-        var entry = currentDialogueIndex < scene.d.Length ? scene.d[currentDialogueIndex] : null;
+        AddBookmarkAt(currentSceneIndex, currentDialogueIndex);
+    }
+
+    /// <summary>给指定句子加手动书签（回顾界面逐句收藏用）。</summary>
+    private void AddBookmarkAt(int sceneIndex, int dialogueIndex)
+    {
+        if (currentScript?.scenes == null || string.IsNullOrEmpty(currentScriptName)) return;
+        if (sceneIndex < 0 || sceneIndex >= currentScript.scenes.Length) return;
+        var scene = currentScript.scenes[sceneIndex];
+        var entry = scene?.d != null && dialogueIndex >= 0 && dialogueIndex < scene.d.Length ? scene.d[dialogueIndex] : null;
         string preview = entry != null ? entry.text : "(无文本)";
         BookmarkManager.AddManual(
             currentScriptName,
             GetEpisodeTitle(currentScriptName),
             GetEpisodeNumber(currentScriptName),
-            currentSceneIndex,
-            currentDialogueIndex,
+            sceneIndex,
+            dialogueIndex,
             preview);
         // 顶部浮层提示
         ShowBookmarkToast();
+    }
+
+    // ---- 回顾界面配音重放：独立播放器，不打断/污染当前句的 lineVoice ----
+    private VNVoicePlayer backlogVoice;
+
+    private DialogueEntry BacklogDialogue(int sceneIndex, int dialogueIndex)
+    {
+        var scenes = currentScript?.scenes;
+        if (scenes == null || sceneIndex < 0 || sceneIndex >= scenes.Length) return null;
+        var d = scenes[sceneIndex]?.d;
+        return d != null && dialogueIndex >= 0 && dialogueIndex < d.Length ? d[dialogueIndex] : null;
+    }
+
+    private bool BindBacklogVoice(int sceneIndex, int dialogueIndex, bool autoPlay)
+    {
+        var entry = BacklogDialogue(sceneIndex, dialogueIndex);
+        if (entry == null) return false;
+        if (backlogVoice == null) backlogVoice = gameObject.AddComponent<VNVoicePlayer>();
+        string script = !string.IsNullOrEmpty(currentScript?.id) ? currentScript.id : currentScriptName;
+        backlogVoice.Bind(script, sceneIndex, dialogueIndex, entry, autoPlay);
+        return backlogVoice.HasClip;
+    }
+
+    private bool BacklogEntryHasVoice(int sceneIndex, int dialogueIndex)
+    {
+        bool has = BindBacklogVoice(sceneIndex, dialogueIndex, false);
+        backlogVoice?.Clear();
+        return has;
+    }
+
+    private void PlayBacklogVoice(int sceneIndex, int dialogueIndex)
+    {
+        BindBacklogVoice(sceneIndex, dialogueIndex, true);
     }
 
     private void ShowBookmarkToast()
@@ -1430,6 +1473,9 @@ public partial class VNManager : MonoBehaviour
             if (!anyPanelOpen)
                 menuBar.style.display = DisplayStyle.Flex;
         }
+        // 回顾打开时无论从哪条路径进入，Auto/Menu 都不应盖在回顾页上
+        else if (menuBar != null && menuBar.style.display == DisplayStyle.Flex && vnBacklog != null && vnBacklog.IsOpen)
+            menuBar.style.display = DisplayStyle.None;
 
         // 开场/话标题卡分镜强制播放：期间屏蔽一切输入（点击/按键均不跳过，播完自动进入）
         if (IsCinematicBlocking())

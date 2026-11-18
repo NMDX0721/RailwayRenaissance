@@ -98,16 +98,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private static VisualElement BuildAvatarCircle(AccountProfile p, float size)
         {
-            var c = new Label(string.IsNullOrEmpty(p.nickname) ? "旅" : p.nickname.Substring(0, 1));
-            c.style.width = size; c.style.height = size;
-            c.style.unityTextAlign = TextAnchor.MiddleCenter;
-            c.style.fontSize = Mathf.RoundToInt(size * 0.42f);
-            c.style.color = Color.white;
-            c.style.unityFontDefinition = FdBold();
-            c.style.backgroundColor = AccountAvatarColors[Mathf.Clamp(p.avatar, 0, AccountAvatarColors.Length - 1)];
-            c.style.borderTopLeftRadius = c.style.borderTopRightRadius = size / 2f;
-            c.style.borderBottomLeftRadius = c.style.borderBottomRightRadius = size / 2f;
-            return c;
+            return TabletAvatar.Build(p, size);
         }
 
         // ---------- 通用表单控件 ----------
@@ -187,25 +178,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             row.style.flexDirection = FlexDirection.Row;
             row.style.alignItems = Align.Center;
             row.style.marginTop = 12;
-            var bars = new VisualElement[3];
-            for (int i = 0; i < 3; i++)
-            {
-                bars[i] = new VisualElement();
-                bars[i].style.height = 6; bars[i].style.flexGrow = 1; bars[i].style.marginRight = 6;
-                bars[i].style.borderTopLeftRadius = bars[i].style.borderTopRightRadius = 3;
-                bars[i].style.borderBottomLeftRadius = bars[i].style.borderBottomRightRadius = 3;
-                row.Add(bars[i]);
-            }
+            var track = new VisualElement();
+            track.style.height = 6; track.style.flexGrow = 1;
+            track.style.backgroundColor = new Color(0, 0, 0, 0.10f);
+            track.style.overflow = Overflow.Hidden;
+            track.style.borderTopLeftRadius = track.style.borderTopRightRadius = 3;
+            track.style.borderBottomLeftRadius = track.style.borderBottomRightRadius = 3;
+            var fill = new VisualElement();
+            fill.style.height = Length.Percent(100);
+            track.Add(fill);
+            row.Add(track);
             var label = new Label(string.Empty);
-            label.style.width = 64; label.style.fontSize = 13; label.style.color = InkSecondary;
-            label.style.unityTextAlign = TextAnchor.MiddleRight; label.style.unityFontDefinition = Fd();
+            label.style.marginLeft = 10; label.style.minWidth = 18; label.style.fontSize = 13; label.style.color = InkSecondary;
+            label.style.unityFontDefinition = Fd();
             row.Add(label);
             Action refresh = () =>
             {
                 int level = string.IsNullOrEmpty(pw.value) ? -1 : AccountService.PasswordStrength(pw.value);
                 Color[] palette = { new Color(0.93f, 0.35f, 0.30f), new Color(0.97f, 0.70f, 0.20f), new Color(0.25f, 0.75f, 0.45f) };
-                for (int i = 0; i < 3; i++)
-                    bars[i].style.backgroundColor = i <= level ? palette[Mathf.Max(level, 0)] : new Color(0, 0, 0, 0.10f);
+                fill.style.width = Length.Percent(level < 0 ? 0f : (level + 1) * 100f / 3f);
+                fill.style.backgroundColor = palette[Mathf.Max(level, 0)];
                 label.text = level < 0 ? string.Empty : level == 0 ? "弱" : level == 1 ? "中" : "强";
             };
             pw.RegisterValueChangedCallback(_ => refresh());
@@ -251,28 +243,26 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             if (win == null) return;
             var p = AccountService.Profile;
             if (p == null) return;
-            win.Add(AccountHint("选择一个头像颜色，头像上显示昵称的第一个字。"));
+            win.Add(AccountHint("选一个头像，或者从电脑里选一张图片。"));
             var grid = new VisualElement();
+            grid.name = "account-avatar-grid";
             grid.style.flexDirection = FlexDirection.Row;
             grid.style.flexWrap = Wrap.Wrap;
             grid.style.marginTop = 16;
-            for (int i = 0; i < AccountAvatarColors.Length; i++)
+            bool custom = !string.IsNullOrEmpty(p.avatarImage);
+            Action<VisualElement, bool> ring = (e, on) =>
+            {
+                float w = on ? 4f : 0f;
+                e.style.borderTopWidth = e.style.borderBottomWidth = e.style.borderLeftWidth = e.style.borderRightWidth = w;
+                Color bc = new Color(0.1f, 0.1f, 0.12f, 0.85f);
+                e.style.borderTopColor = e.style.borderBottomColor = e.style.borderLeftColor = e.style.borderRightColor = bc;
+            };
+            for (int i = 0; i < TabletAvatar.PresetCount; i++)
             {
                 int idx = i;
-                var c = new Label(i == p.avatar ? p.nickname.Substring(0, 1) : string.Empty);
-                c.style.width = 80; c.style.height = 80;
+                var c = TabletAvatar.BuildPreset(i, 80);
                 c.style.marginRight = 14; c.style.marginBottom = 14;
-                c.style.unityTextAlign = TextAnchor.MiddleCenter;
-                c.style.fontSize = 32; c.style.color = Color.white; c.style.unityFontDefinition = FdBold();
-                c.style.backgroundColor = AccountAvatarColors[i];
-                c.style.borderTopLeftRadius = c.style.borderTopRightRadius = 40;
-                c.style.borderBottomLeftRadius = c.style.borderBottomRightRadius = 40;
-                if (i == p.avatar)
-                {
-                    c.style.borderTopWidth = c.style.borderBottomWidth = c.style.borderLeftWidth = c.style.borderRightWidth = 4;
-                    Color bc = new Color(0.1f, 0.1f, 0.12f, 0.85f);
-                    c.style.borderTopColor = c.style.borderBottomColor = c.style.borderLeftColor = c.style.borderRightColor = bc;
-                }
+                ring(c, !custom && i == p.avatar);
                 c.RegisterCallback<ClickEvent>(_ =>
                 {
                     AccountService.SetAvatar(idx);
@@ -280,7 +270,27 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 });
                 grid.Add(c);
             }
+            var tile = TabletAvatar.BuildCustomTile(80, custom ? TabletAvatar.LoadTexture(p) : null);
+            tile.style.marginRight = 14; tile.style.marginBottom = 14;
+            ring(tile, custom);
+            tile.RegisterCallback<ClickEvent>(_ => PickCustomAvatar());
+            grid.Add(tile);
             win.Add(grid);
+
+            var pick = AccountLinkButton("从电脑选择图片…", PickCustomAvatar);
+            pick.name = "account-avatar-pick";
+            pick.style.alignSelf = Align.FlexStart;
+            win.Add(pick);
+        }
+
+        private static void PickCustomAvatar()
+        {
+            if (!TabletFilePicker.Available) { ShowToast("当前平台不支持选择本地图片"); return; }
+            string path = TabletFilePicker.PickImage("选择头像图片");
+            if (string.IsNullOrEmpty(path)) return;
+            string err = AccountService.SetCustomAvatar(path);
+            if (err != null) { ShowToast(err); return; }
+            FinishAccountSubPage("头像已更新");
         }
 
         // ---------- 修改密码 ----------
@@ -304,16 +314,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             win.Add(confirm);
             win.Add(BuildStrengthBar(newPw));
 
-            var show = AccountLinkButton("显示密码", () => { });
-            show.style.alignSelf = Align.FlexStart;
-            bool shown = false;
-            show.clicked += () =>
-            {
-                shown = !shown;
-                oldPw.isPasswordField = newPw.isPasswordField = confirm.isPasswordField = !shown;
-                show.text = shown ? "隐藏密码" : "显示密码";
-            };
-            win.Add(show);
+            TabletPasswordEye.Attach(InkSecondary, oldPw, newPw, confirm);
 
             var err = AccountErrorLabel();
             win.Add(err);
@@ -355,7 +356,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 if (Time.realtimeSinceStartup < readyAt) return;
                 string c = AccountService.IssueCode(p.phone);
-                readyAt = Time.realtimeSinceStartup + 60f;
+                readyAt = Time.realtimeSinceStartup + 30f;
                 long notification = RailwayRenaissance.UI.Tablet.SystemShell.TabletNotify.PostNotice("短信", "【小米】你的验证码是 " + c + "，5 分钟内有效。请勿向他人泄露。");
                 bool delivered = notification >= 0;
                 delivery.text = delivered ? string.Empty : "本地验证码为 " + c + "，5 分钟内有效。";
@@ -377,6 +378,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             win.Add(newPw);
             win.Add(confirm);
             win.Add(BuildStrengthBar(newPw));
+            TabletPasswordEye.Attach(InkSecondary, newPw, confirm);
 
             var err = AccountErrorLabel();
             win.Add(err);

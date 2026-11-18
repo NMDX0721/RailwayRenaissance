@@ -416,6 +416,7 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
             bool targetExpanded = expanded && (_currentPrimaryType != IslandAppType.None);
             if (_isExpanded == targetExpanded && _expandedCard.style.display == (_isExpanded ? DisplayStyle.Flex : DisplayStyle.None)) return;
             _isExpanded = targetExpanded;
+            if (!_isExpanded) _musicOutputOpen = false;
             VisualStateChanged?.Invoke();
             int token = ++_morphToken;
             int ms = TabletTheme.MotionMs(340);
@@ -624,7 +625,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                 }
                 else if (!_morphing)
                 {
-                    RenderExpandedContent();
+                    if (_currentPrimaryType == IslandAppType.Music && _musicFill != null) UpdateMusicProgress();
+                    else RenderExpandedContent();
                 }
             }
         }
@@ -887,6 +889,8 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         {
             if (!_activeSessions.TryGetValue(_primaryKey, out var s)) return;
             _expandedCard.Clear();
+            _expandedCard.style.backgroundColor = TabletTheme.IslandBlack;
+            _musicFill = null; _musicKnob = null; _musicElapsed = null; _musicTotal = null;
             if (_expandedGrab != null) _expandedCard.Add(_expandedGrab);
 
             var topRow = new VisualElement();
@@ -910,56 +914,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
 
             switch (s.AppType)
             {
-                // ---------- 1. 音乐大岛 ----------
+                // ---------- 1. 音乐大岛：封面 + 歌名 + 输出按钮；传输控制；进度；点输出按钮切到音量与输出设备 ----------
                 case IslandAppType.Music:
-                    var musicHeader = CreatePillLabel("车载随身听 · 正在播放", 11, false);
-                    musicHeader.style.color = TabletTheme.TextSecondary;
-                    topRow.Add(musicHeader);
-                    topRow.Add(closeBtn);
-
-                    var musicBody = new VisualElement();
-                    musicBody.style.flexDirection = FlexDirection.Row;
-                    musicBody.style.alignItems = Align.Center;
-                    musicBody.style.justifyContent = Justify.SpaceBetween;
-                    _expandedCard.Add(musicBody);
-
-                    // 唱片徽标 + 歌名/歌手
-                    var leftMusic = new VisualElement();
-                    leftMusic.style.flexDirection = FlexDirection.Row;
-                    leftMusic.style.alignItems = Align.Center;
-                    leftMusic.style.flexGrow = 1;
-                    musicBody.Add(leftMusic);
-
-                    var discLarge = CreateMicroDisc(s.AccentColor, 44);
-                    discLarge.style.marginRight = 10;
-                    leftMusic.Add(discLarge);
-
-                    var musicText = new VisualElement();
-                    leftMusic.Add(musicText);
-
-                    var titleLbl = CreatePillLabel(s.Title ?? "铁道原声", 14, true);
-                    musicText.Add(titleLbl);
-
-                    var subLbl = CreatePillLabel(s.Subtitle ?? "高品质车厢广播音频", 11, false);
-                    subLbl.style.color = TabletTheme.TextMuted;
-                    subLbl.style.marginTop = 2;
-                    musicText.Add(subLbl);
-
-                    // 播控胶囊按键
-                    var controls = new VisualElement();
-                    controls.style.flexDirection = FlexDirection.Row;
-                    controls.style.alignItems = Align.Center;
-                    musicBody.Add(controls);
-
-                    var prevBtn = CreateIconActionBtn(TabletIconKind.Back, () => s.OnSecondaryAction?.Invoke());
-                    var playBtn = CreateIconActionBtn(TabletIconKind.Play, () => s.OnPrimaryAction?.Invoke(), isAccent: true);
-                    playBtn.style.width = 36; playBtn.style.height = 36;
-                    playBtn.style.marginLeft = 6; playBtn.style.marginRight = 6;
-                    var appBtn = CreateIconActionBtn(TabletIconKind.Apps, () => { SetExpanded(false); _onLaunchApp?.Invoke("音乐"); });
-
-                    controls.Add(prevBtn);
-                    controls.Add(playBtn);
-                    controls.Add(appBtn);
+                    BuildMusicCard(s, topRow);
                     break;
 
                 // ---------- 2. 列控遥测大岛 ----------
@@ -1200,6 +1157,344 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
                     alActions.Add(ackBtn);
                     break;
             }
+        }
+
+        // ==================== 音乐大岛 ====================
+        private bool _musicOutputOpen;
+        private bool _musicSeeking;
+        private VisualElement _musicFill, _musicKnob;
+        private Label _musicElapsed, _musicTotal;
+
+        private static float MusicNorm(out float pos, out float dur)
+        {
+            pos = 0f; dur = 0f;
+            var clip = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentClip;
+            if (clip != null) dur = clip.length;
+            RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.TryGetCurrentPosition(out pos);
+            return dur > 0.1f ? Mathf.Clamp01(pos / dur) : 0f;
+        }
+
+        private void UpdateMusicProgress()
+        {
+            if (_musicSeeking || _musicFill == null) return;
+            float norm = MusicNorm(out float pos, out float dur);
+            _musicFill.style.width = Length.Percent(norm * 100f);
+            if (_musicKnob != null) _musicKnob.style.left = Length.Percent(norm * 100f);
+            if (_musicElapsed != null) _musicElapsed.text = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(pos);
+            if (_musicTotal != null) _musicTotal.text = dur > 0.1f ? RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(dur) : "--:--";
+        }
+
+        private Button TransportButton(TabletTransportKind kind, float iconSize, Action onClick)
+        {
+            var btn = new Button(onClick);
+            btn.style.width = 64; btn.style.height = 44;
+            btn.style.backgroundColor = Color.clear;
+            btn.style.borderTopWidth = 0; btn.style.borderBottomWidth = 0; btn.style.borderLeftWidth = 0; btn.style.borderRightWidth = 0;
+            btn.style.paddingLeft = 0; btn.style.paddingRight = 0; btn.style.paddingTop = 0; btn.style.paddingBottom = 0;
+            btn.style.marginLeft = 0; btn.style.marginRight = 0; btn.style.marginTop = 0; btn.style.marginBottom = 0;
+            btn.style.alignItems = Align.Center; btn.style.justifyContent = Justify.Center;
+            btn.Add(new TabletTransportIcon(kind, iconSize, Color.white));
+            btn.style.transitionProperty = new List<StylePropertyName> { new StylePropertyName("scale") };
+            btn.style.transitionDuration = new List<TimeValue> { new TimeValue(TabletTheme.MotionMs(110), TimeUnit.Millisecond) };
+            btn.RegisterCallback<PointerDownEvent>(_ => btn.style.scale = new Scale(new Vector3(0.86f, 0.86f, 1f)));
+            btn.RegisterCallback<PointerUpEvent>(_ => btn.style.scale = new Scale(Vector3.one));
+            btn.RegisterCallback<PointerLeaveEvent>(_ => btn.style.scale = new Scale(Vector3.one));
+            return btn;
+        }
+
+        private VisualElement MusicCover(float size, string trackId, string category, Color accent)
+        {
+            var box = new VisualElement();
+            box.style.width = size; box.style.height = size; box.style.flexShrink = 0;
+            box.style.borderTopLeftRadius = box.style.borderTopRightRadius = size * 0.22f;
+            box.style.borderBottomLeftRadius = box.style.borderBottomRightRadius = size * 0.22f;
+            box.style.backgroundColor = new Color(1f, 1f, 1f, 0.08f);
+            box.style.overflow = Overflow.Hidden;
+            box.style.alignItems = Align.Center; box.style.justifyContent = Justify.Center;
+            Texture2D cover = null;
+            try { cover = RailwayRenaissance.UI.Tablet.Apps.MusicAlbumArtResolver.GetAlbumCover(trackId, category); } catch { }
+            if (cover != null)
+            {
+                box.style.backgroundImage = new StyleBackground(cover);
+                box.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Cover);
+            }
+            else
+            {
+                box.Add(CreateMicroDisc(accent, size * 0.62f));
+            }
+            return box;
+        }
+
+        private void BuildMusicCard(IslandSession s, VisualElement topRow)
+        {
+            _expandedCard.Remove(topRow);
+            string trackId = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackId;
+            string category = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletCurrentTrackCategory;
+            // 卡片底色随封面主色染一点（深色基底 + 30% 主色）
+            try
+            {
+                Color dom = RailwayRenaissance.UI.Tablet.Apps.MusicAlbumArtResolver.GetDominantColor(trackId, category);
+                Color tinted = Color.Lerp(TabletTheme.IslandBlack, dom, 0.30f);
+                tinted.a = 1f;
+                _expandedCard.style.backgroundColor = tinted;
+            }
+            catch { }
+
+            bool outMode = _musicOutputOpen;
+            float coverSize = outMode ? 52f : 64f;
+
+            // ---- 头部：封面 | 歌名 + 来源 | 输出按钮 ----
+            var head = new VisualElement();
+            head.style.flexDirection = FlexDirection.Row;
+            head.style.alignItems = Align.Center;
+            _expandedCard.Add(head);
+
+            var coverWrap = new VisualElement();
+            coverWrap.style.width = coverSize; coverWrap.style.height = coverSize; coverWrap.style.flexShrink = 0;
+            coverWrap.Add(MusicCover(coverSize, trackId, category, s.AccentColor));
+            var badge = new VisualElement();
+            badge.style.position = Position.Absolute;
+            badge.style.right = -4; badge.style.bottom = -4;
+            badge.style.width = 20; badge.style.height = 20;
+            badge.style.borderTopLeftRadius = badge.style.borderTopRightRadius = 10;
+            badge.style.borderBottomLeftRadius = badge.style.borderBottomRightRadius = 10;
+            badge.style.backgroundColor = TabletTheme.Brass;
+            badge.style.alignItems = Align.Center; badge.style.justifyContent = Justify.Center;
+            badge.Add(new TabletIconElement(TabletIconKind.MusicNote, 12, Color.black));
+            coverWrap.Add(badge);
+            head.Add(coverWrap);
+
+            var textCol = new VisualElement();
+            textCol.style.flexGrow = 1; textCol.style.flexShrink = 1;
+            textCol.style.marginLeft = 16; textCol.style.marginRight = 10;
+            var title = CreatePillLabel(s.Title ?? "铁道原声", outMode ? 16 : 18, true);
+            title.style.whiteSpace = WhiteSpace.NoWrap; title.style.overflow = Overflow.Hidden; title.style.textOverflow = TextOverflow.Ellipsis;
+            textCol.Add(title);
+            var source = CreatePillLabel(string.IsNullOrEmpty(s.Subtitle) ? "车载随身听" : s.Subtitle, 12, false);
+            source.style.color = TabletTheme.TextSecondary;
+            source.style.whiteSpace = WhiteSpace.NoWrap; source.style.overflow = Overflow.Hidden;
+            source.style.marginTop = 3;
+            textCol.Add(source);
+            head.Add(textCol);
+
+            var outBtn = new Button(ToggleMusicOutput) { name = "super-island-music-output" };
+            outBtn.tooltip = outMode ? "返回播放" : "输出设备与音量";
+            outBtn.style.width = 40; outBtn.style.height = 40; outBtn.style.flexShrink = 0;
+            outBtn.style.borderTopLeftRadius = outBtn.style.borderTopRightRadius = 20;
+            outBtn.style.borderBottomLeftRadius = outBtn.style.borderBottomRightRadius = 20;
+            outBtn.style.backgroundColor = outMode ? new Color(1f, 1f, 1f, 0.24f) : TabletTheme.OverlaySoft;
+            outBtn.style.borderTopWidth = 0; outBtn.style.borderBottomWidth = 0; outBtn.style.borderLeftWidth = 0; outBtn.style.borderRightWidth = 0;
+            outBtn.style.paddingLeft = 0; outBtn.style.paddingRight = 0; outBtn.style.paddingTop = 0; outBtn.style.paddingBottom = 0;
+            outBtn.style.marginLeft = 0; outBtn.style.marginRight = 0; outBtn.style.marginTop = 0; outBtn.style.marginBottom = 0;
+            outBtn.style.alignItems = Align.Center; outBtn.style.justifyContent = Justify.Center;
+            outBtn.Add(new TabletIconElement(TabletIconKind.Speaker, 20, Color.white));
+            head.Add(outBtn);
+
+            // ---- 传输控制：上一首 / 暂停 / 下一首，横向铺开 ----
+            var controls = new VisualElement();
+            controls.style.flexDirection = FlexDirection.Row;
+            controls.style.justifyContent = Justify.SpaceAround;
+            controls.style.alignItems = Align.Center;
+            controls.style.marginTop = outMode ? 6 : 10;
+            controls.Add(TransportButton(TabletTransportKind.Prev, 26, () => RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.PlayPrevTabletTrack()));
+            controls.Add(TransportButton(TabletTransportKind.Pause, 32, () => s.OnPrimaryAction?.Invoke()));
+            controls.Add(TransportButton(TabletTransportKind.Next, 26, () => s.OnSecondaryAction?.Invoke()));
+            _expandedCard.Add(controls);
+
+            // ---- 进度：已播 | 进度条（可拖动）| 总长 ----
+            float norm = MusicNorm(out float pos, out float dur);
+            var prog = new VisualElement();
+            prog.style.flexDirection = FlexDirection.Row;
+            prog.style.alignItems = Align.Center;
+            prog.style.marginTop = 2;
+            _expandedCard.Add(prog);
+            _musicElapsed = CreatePillLabel(RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(pos), 11, false);
+            _musicElapsed.style.color = TabletTheme.TextMuted; _musicElapsed.style.width = 40;
+            prog.Add(_musicElapsed);
+            var hit = new VisualElement { name = "super-island-music-seek" };
+            hit.style.flexGrow = 1; hit.style.height = 24; hit.style.justifyContent = Justify.Center;
+            hit.style.marginLeft = 6; hit.style.marginRight = 6;
+            var bar = new VisualElement { pickingMode = PickingMode.Ignore };
+            bar.style.height = 5;
+            bar.style.borderTopLeftRadius = bar.style.borderTopRightRadius = 2.5f;
+            bar.style.borderBottomLeftRadius = bar.style.borderBottomRightRadius = 2.5f;
+            bar.style.backgroundColor = new Color(1f, 1f, 1f, 0.22f);
+            bar.style.overflow = Overflow.Hidden;
+            _musicFill = new VisualElement { pickingMode = PickingMode.Ignore };
+            _musicFill.style.height = Length.Percent(100);
+            _musicFill.style.width = Length.Percent(norm * 100f);
+            _musicFill.style.backgroundColor = new Color(1f, 1f, 1f, 0.92f);
+            bar.Add(_musicFill);
+            hit.Add(bar);
+            _musicKnob = new VisualElement { pickingMode = PickingMode.Ignore };
+            _musicKnob.style.position = Position.Absolute;
+            _musicKnob.style.top = 6; _musicKnob.style.width = 12; _musicKnob.style.height = 12;
+            _musicKnob.style.left = Length.Percent(norm * 100f);
+            _musicKnob.style.translate = new Translate(Length.Percent(-50), 0);
+            _musicKnob.style.borderTopLeftRadius = _musicKnob.style.borderTopRightRadius = 6;
+            _musicKnob.style.borderBottomLeftRadius = _musicKnob.style.borderBottomRightRadius = 6;
+            _musicKnob.style.backgroundColor = Color.white;
+            hit.Add(_musicKnob);
+            AttachMusicSeek(hit);
+            prog.Add(hit);
+            _musicTotal = CreatePillLabel(dur > 0.1f ? RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(dur) : "--:--", 11, false);
+            _musicTotal.style.color = TabletTheme.TextMuted; _musicTotal.style.width = 40; _musicTotal.style.unityTextAlign = TextAnchor.MiddleRight;
+            prog.Add(_musicTotal);
+
+            if (!outMode) return;
+
+            // ---- 输出模式：音量条 + 输出设备 ----
+            var vol = BuildVolumeSlider();
+            vol.style.marginTop = 12;
+            _expandedCard.Add(vol);
+
+            var thisDevice = new VisualElement();
+            thisDevice.style.flexDirection = FlexDirection.Row;
+            thisDevice.style.alignItems = Align.Center;
+            thisDevice.style.height = 46; thisDevice.style.marginTop = 10;
+            thisDevice.style.paddingLeft = 16; thisDevice.style.paddingRight = 16;
+            thisDevice.style.borderTopLeftRadius = thisDevice.style.borderTopRightRadius = 16;
+            thisDevice.style.borderBottomLeftRadius = thisDevice.style.borderBottomRightRadius = 16;
+            thisDevice.style.backgroundColor = new Color(1f, 1f, 1f, 0.20f);
+            thisDevice.Add(new TabletIconElement(TabletIconKind.Tablet, 20, Color.white));
+            var thisLbl = CreatePillLabel("此设备", 15, false);
+            thisLbl.style.marginLeft = 14; thisLbl.style.flexGrow = 1;
+            thisDevice.Add(thisLbl);
+            thisDevice.Add(new TabletIconElement(TabletIconKind.Check, 18, Color.white));
+            _expandedCard.Add(thisDevice);
+
+            // 目前没有任何可配对的外接输出设备，如实说明，不伪造耳机
+            var noOther = new VisualElement();
+            noOther.style.minHeight = 52; noOther.style.marginTop = 8; noOther.style.paddingTop = 8; noOther.style.paddingBottom = 8;
+            noOther.style.justifyContent = Justify.Center;
+            noOther.style.paddingLeft = 16; noOther.style.paddingRight = 16;
+            noOther.style.borderTopLeftRadius = noOther.style.borderTopRightRadius = 16;
+            noOther.style.borderBottomLeftRadius = noOther.style.borderBottomRightRadius = 16;
+            noOther.style.backgroundColor = new Color(1f, 1f, 1f, 0.07f);
+            var noLbl = CreatePillLabel("没有其他可用的输出设备", 13, false);
+            noLbl.style.color = TabletTheme.TextMuted;
+            noOther.Add(noLbl);
+            var noSub = CreatePillLabel("附近没有可配对的蓝牙或外接设备", 10, false);
+            noSub.style.color = TabletTheme.TextMuted; noSub.style.opacity = 0.8f; noSub.style.marginTop = 1;
+            noOther.Add(noSub);
+            _expandedCard.Add(noOther);
+        }
+
+        private VisualElement BuildVolumeSlider()
+        {
+            float current = 0.65f;
+            var src = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletMusicSource;
+            if (src != null) current = Mathf.Clamp01(src.volume);
+
+            var track = new VisualElement { name = "super-island-music-volume" };
+            track.style.height = 40;
+            track.style.borderTopLeftRadius = track.style.borderTopRightRadius = 20;
+            track.style.borderBottomLeftRadius = track.style.borderBottomRightRadius = 20;
+            track.style.backgroundColor = new Color(1f, 1f, 1f, 0.16f);
+            track.style.overflow = Overflow.Hidden;
+            track.style.justifyContent = Justify.Center;
+
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore };
+            fill.style.position = Position.Absolute;
+            fill.style.left = 0; fill.style.top = 0; fill.style.bottom = 0;
+            fill.style.width = Length.Percent(current * 100f);
+            fill.style.backgroundColor = new Color(1f, 1f, 1f, 0.94f);
+            track.Add(fill);
+            var icon = new TabletIconElement(TabletIconKind.Speaker, 20, new Color(0.30f, 0.32f, 0.36f, 1f)) { pickingMode = PickingMode.Ignore };
+            icon.style.position = Position.Absolute;
+            icon.style.left = 16;
+            track.Add(icon);
+
+            bool dragging = false;
+            void Set(float x)
+            {
+                float v = Mathf.Clamp01(x / Mathf.Max(1f, track.layout.width));
+                fill.style.width = Length.Percent(v * 100f);
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.ConfigurePlayback(v, (int)RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.tabletPlayMode);
+            }
+            track.RegisterCallback<PointerDownEvent>(e => { dragging = true; track.CapturePointer(e.pointerId); Set(e.localPosition.x); e.StopPropagation(); });
+            track.RegisterCallback<PointerMoveEvent>(e => { if (dragging) { Set(e.localPosition.x); e.StopPropagation(); } });
+            track.RegisterCallback<PointerUpEvent>(e =>
+            {
+                if (!dragging) return;
+                dragging = false;
+                track.ReleasePointer(e.pointerId);
+                float v = Mathf.Clamp01(e.localPosition.x / Mathf.Max(1f, track.layout.width));
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.SetVolume(v);   // 松手时才写入曲库设置
+                e.StopPropagation();
+            });
+            return track;
+        }
+
+        private void AttachMusicSeek(VisualElement hit)
+        {
+            void Preview(float x)
+            {
+                float n = Mathf.Clamp01(x / Mathf.Max(1f, hit.layout.width));
+                if (_musicFill != null) _musicFill.style.width = Length.Percent(n * 100f);
+                if (_musicKnob != null) _musicKnob.style.left = Length.Percent(n * 100f);
+                if (_musicElapsed != null)
+                {
+                    MusicNorm(out _, out float dur);
+                    _musicElapsed.text = RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.FormatAudioTime(n * dur);
+                }
+            }
+            hit.RegisterCallback<PointerDownEvent>(e => { _musicSeeking = true; hit.CapturePointer(e.pointerId); Preview(e.localPosition.x); e.StopPropagation(); });
+            hit.RegisterCallback<PointerMoveEvent>(e => { if (_musicSeeking) { Preview(e.localPosition.x); e.StopPropagation(); } });
+            hit.RegisterCallback<PointerUpEvent>(e =>
+            {
+                if (!_musicSeeking) return;
+                hit.ReleasePointer(e.pointerId);
+                float n = Mathf.Clamp01(e.localPosition.x / Mathf.Max(1f, hit.layout.width));
+                RailwayRenaissance.UI.Tablet.Apps.TabletMusicAppUI.SeekTabletMusic(n);
+                _musicSeeking = false;
+                e.StopPropagation();
+            });
+            hit.RegisterCallback<PointerCancelEvent>(_ => _musicSeeking = false);
+        }
+
+        /// <summary>播放 ⇄ 输出设备：卡片高度平滑过渡，新内容在高度到位的过程中淡入。</summary>
+        public void ToggleMusicOutput()
+        {
+            float oldH = _expandedCard.layout.height;
+            _musicOutputOpen = !_musicOutputOpen;
+            int ms = TabletTheme.MotionMs(280);
+            if (ms <= 0 || oldH < 1f || _morphing)
+            {
+                RenderExpandedContent();
+                return;
+            }
+            int token = ++_morphToken;
+            _morphing = true;
+            RenderExpandedContent();
+            foreach (var c in _expandedCard.Children())
+            {
+                if (c == _expandedGrab) continue;
+                c.style.transitionDuration = new List<TimeValue> { new TimeValue(0, TimeUnit.Millisecond) };
+                c.style.opacity = 0f;
+            }
+            _expandedCard.schedule.Execute(() =>
+            {
+                if (token != _morphToken) return;
+                float newH = _expandedCard.layout.height;
+                SetCardTransition(0, EasingMode.Linear);
+                _expandedCard.style.height = oldH;
+                _expandedCard.schedule.Execute(() =>
+                {
+                    if (token != _morphToken) return;
+                    SetCardTransition(ms, EasingMode.EaseOutCubic);
+                    _expandedCard.style.height = newH;
+                    FadeChildren(1f, 200, 70);
+                }).ExecuteLater(16);
+                _expandedCard.schedule.Execute(() =>
+                {
+                    if (token != _morphToken) return;
+                    SetCardTransition(0, EasingMode.Linear);
+                    _expandedCard.style.height = StyleKeyword.Auto;
+                    UnpinChildren();
+                    _morphing = false;
+                }).ExecuteLater(ms + 60);
+            }).ExecuteLater(16);
         }
 
         // ==================== 微型图形组件 Helpers ====================

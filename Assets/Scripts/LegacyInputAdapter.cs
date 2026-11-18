@@ -98,6 +98,12 @@ public static class LegacyInputAdapter
         if (System.Enum.TryParse(n, out Key k)) return k;
         return Key.None;
     }
+    /// <summary>Places the IME candidate window (screen pixels, origin bottom-left).</summary>
+    public static void SetImeCursor(Vector2 screenPosition)
+    {
+        var kb = Keyboard.current;
+        if (kb != null) kb.SetIMECursorPosition(screenPosition);
+    }
 #else
     // ---- UnityEngine.Input（旧版 / Both 过渡期）----
 
@@ -106,5 +112,6 @@ public static class LegacyInputAdapter
     public static bool GetMouseButtonDown(int button) => Input.GetMouseButtonDown(button);
     public static bool GetMouseButton(int button) => Input.GetMouseButton(button);
     public static Vector3 MousePosition => Input.mousePosition;
+    public static void SetImeCursor(Vector2 screenPosition) { Input.compositionCursorPos = screenPosition; }
 #endif
 }

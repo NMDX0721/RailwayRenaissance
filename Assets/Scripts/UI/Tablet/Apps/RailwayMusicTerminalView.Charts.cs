@@ -77,7 +77,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 foreach (var chart in charts.Take(10))
                 {
                     string id = chart.id, title = chart.title;
-                    BigCard(row, title, string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title));
+                    BigCard(row, title, string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title, chart.cover));
                 }
             }
             HotSearchChips(parent);
@@ -87,7 +87,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             string id = chart.id, title = chart.title;
             string caption = string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle;
-            var card = CollectionCard(grid, title, caption, () => OpenOnlinePlaylist("netease", id, title), null, "chart:" + id, chart.cover);
+            var card = CollectionCard(grid, title, caption, () => OpenOnlinePlaylist("netease", id, title, chart.cover), null, "chart:" + id, chart.cover);
             if (chart.preview != null && chart.preview.Length > 0) card.tooltip = title + "\n" + string.Join("\n", chart.preview);
         }
 
@@ -123,7 +123,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             {
                 string id = chart.id, title = chart.title;
                 string caption = string.IsNullOrEmpty(chart.subtitle) ? chart.count + " 首" : chart.subtitle + " · " + chart.count + " 首";
-                var card = BigCard(grid, title, caption, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title));
+                var card = BigCard(grid, title, caption, "chart:" + id, chart.cover, null, () => OpenOnlinePlaylist("netease", id, title, chart.cover));
                 if (chart.preview != null && chart.preview.Length > 0) card.tooltip = title + "\n" + string.Join("\n", chart.preview);
             }
         }

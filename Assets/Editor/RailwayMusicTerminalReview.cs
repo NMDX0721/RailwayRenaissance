@@ -272,7 +272,33 @@ public static class RailwayMusicTerminalReview
         Assert(button != null && button.enabledInHierarchy, "Missing or disabled button");
         using var evt = NavigationSubmitEvent.GetPooled(); evt.target = button; button.SendEvent(evt);
     }
-    static Button FindButton(string text) => root.Query<Button>().ToList().FirstOrDefault(b => b.tooltip == text);
+    static bool reviewHadAccount; static string reviewGrants = "";
+    // Settings live on the 我的 page now, not in the sidebar.
+    static Button CareerButton()
+    {
+        if (root.Q<Button>("music-mine-career") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-mine-career");
+    }
+    static Button SettingsButton()
+    {
+        if (root.Q<Button>("music-mine-settings") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-mine-settings");
+    }
+    static Button NewPlaylistButton()
+    {
+        if (root.Q<Button>("music-new-playlist") == null) Submit(root.Q<Button>("music-nav-我的"));
+        return root.Q<Button>("music-new-playlist");
+    }
+    static Button FindButton(string text)
+    {
+        Button Find() => root.Query<Button>().ToList().FirstOrDefault(b => b.tooltip == text);
+        var found = Find();
+        // The channel pages are tabs of the library page now: reach the library first when the tab is not on screen.
+        if (found == null && (text == "原声" || text == "本地音乐" || text == "云端" || text == "榜单")) { Submit(root.Q<Button>("music-nav-曲库")); found = Find(); }
+        // Private playlists are on the 我的 page now, not in the sidebar.
+        if (found == null) { Submit(root.Q<Button>("music-nav-我的")); found = Find(); }
+        return found;
+    }
     static void Setup()
     {
         if (UnityEngine.Object.FindAnyObjectByType<AudioListener>() == null)
@@ -452,7 +478,7 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_LOCAL_EMPTY_GUIDANCE_OK: import instruction shown");
                     var locked = MusicLibrarySession.Tracks.FirstOrDefault(t => !MusicLibrarySession.Unlocked(t));
                     if (locked != null) { string before = TabletMusicAppUI.tabletCurrentTrackId; MusicLibrarySession.Play(locked.id); Assert(TabletMusicAppUI.tabletCurrentTrackId == before, "Story lock was bypassed"); }
-                    Submit(root.Q<Button>("music-new-playlist"));
+                    Submit(NewPlaylistButton());
                     root.Q(className: "music-modal").Q<TextField>().value = "雾峰沿线收藏";
                     Submit(root.Q<Button>("music-save-playlist"));
                     var list = MusicLibrarySession.State.playlists.Single();
@@ -632,7 +658,7 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q("music-player").worldBound.yMax <= root.worldBound.yMax + 1, "Compact player outside screen");
                     Assert(root.Q<Button>("music-play-toggle").text == "" && root.Q<Button>("music-play-toggle").Q(className: "music-vector-icon") != null, "Playback button is still plain text");
                     Assert(root.Q<Button>("music-queue").tooltip.StartsWith("队列"), "Icon button lost its tooltip");
-                    Submit(root.Q<Button>("music-new-playlist"));
+                    Submit(NewPlaylistButton());
                     root.Q(className: "music-modal").Q<TextField>().value = "临时歌单";
                     Submit(root.Q<Button>("music-save-playlist"));
                     Submit(FindButton("重命名")); root.Q(className: "music-modal").Q<TextField>().value = "改名后的歌单";
@@ -696,7 +722,7 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-lyrics-earlier"));
                     Submit(root.Q<Button>("music-lyric-line-1"));
                     Assert(MusicTimedText.Preference("platform").offsetMs == 100 && Math.Abs(TabletMusicAppUI.CurrentPosition - 1.9) < .15, "Per-song offset was not applied to lyric seek");
-                    root.Q<Slider>("music-lyrics-font").value = 30;
+                    MusicLibrarySession.State.lyricFontSize = 30; MusicLyricsView.Refresh(false);
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 10:
@@ -719,7 +745,7 @@ public static class RailwayMusicTerminalReview
                         var probeFont = fontProbe?.resolvedStyle.unityFontDefinition.font;
                         Assert(probeFont != null && probeFont.name.ToLowerInvariant().Contains("zpix"), "Lyric subtitles are not set in the pixel font (got " + (probeFont != null ? probeFont.name : "none") + ")");
                         Assert(stageHost.Q(className: "music-stage-word") != null && stageHost.Q(className: "music-stage-glow") != null, "Luminous did not build word and glow layers");
-                        Assert(root.Q("music-lyrics-stage-tuning").resolvedStyle.display != DisplayStyle.None, "Stage tuning controls are hidden in stage mode");
+                        Assert(root.Q<Button>("music-lyrics-style").resolvedStyle.display != DisplayStyle.None, "The stage style button is hidden in stage mode");
                     }
                     // Luminous poses are a function of the audio clock: step the clock forward and the words must actually move.
                     if (lumiSeq < 10)
@@ -902,10 +928,10 @@ public static class RailwayMusicTerminalReview
                             // The sheet is a modal and replaces the lyrics page by design; close it and reopen the lyrics for the steps that follow.
                             Assert(root.Q(className: "music-record-sheet") != null, "The record archive did not open from the lyrics page");
                             // The lyrics page is found by its name; it has no such class, so a class query would find nothing whether or not it is open.
-                            Assert(root.Q("music-lyrics-overlay") == null, "The record archive should replace the lyrics page, but the lyrics page is still open");
+                            Assert(root.Q("music-lyrics-overlay") != null, "The lyrics page should stay open behind the record archive sheet");
                             Assert(RailwayMusicTerminalView.RecordReturnsToLyrics, "The record archive opened from the lyrics page did not remember to return to it");
                             Capture("08-record-from-lyrics");
-                            Submit(root.Q(className: "music-modal-header").Q<Button>());
+                            Submit(root.Q(className: "music-record-sheet").Q(className: "music-modal-header").Q<Button>());
                         }
                         else if (styleStep == 16 + StressStyles.Length)
                         {
@@ -972,17 +998,13 @@ public static class RailwayMusicTerminalReview
                     Capture("06-lyrics-compact");
                     // Stage tuning is saved with the library and rebuilds the line; restore the defaults afterwards.
                     int intensityBefore = MusicLibrarySession.State.stageIntensity;
-                    Submit(root.Q<Button>("music-stage-intensity"));
-                    Assert(MusicLibrarySession.State.stageIntensity == (intensityBefore + 1) % 3, "Stage intensity button did not change the saved tuning");
-                    root.Q<Toggle>("music-stage-rotation").value = false;
-                    root.Q<Slider>("music-stage-spacing").value = 1.4f;
+                    MusicLibrarySession.State.stageIntensity = (intensityBefore + 1) % 3; MusicLyricsView.InvalidateStage();
+                    MusicLibrarySession.State.stageRotation = false; MusicLibrarySession.State.stageSpacing = 1.4f; MusicLyricsView.InvalidateStage();
                     Assert(!MusicLibrarySession.State.stageRotation && Mathf.Approximately(MusicLibrarySession.State.stageSpacing, 1.4f), "Stage rotation/spacing were not saved");
                     MusicLibrarySession.State.stageIntensity = intensityBefore; MusicLibrarySession.State.stageRotation = true; MusicLibrarySession.State.stageSpacing = .7f;
-                    root.Q<Toggle>("music-stage-rotation").SetValueWithoutNotify(true); root.Q<Slider>("music-stage-spacing").SetValueWithoutNotify(.7f);
+                    MusicLyricsView.InvalidateStage();
                     Assert(root.Q<Button>("music-lyrics-reset").worldBound.yMax < root.Q("music-lyrics-progress").worldBound.yMin, "Compact lyric settings overlap playback controls");
                     Assert(root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None, "The follow banner must not cover the stage, which never scrolls");
-                    var settingsLabel = root.Q<Foldout>("music-lyrics-more").Q(className: "unity-foldout__text");
-                    Assert(settingsLabel != null && settingsLabel.resolvedStyle.width > 36f, "The settings foldout title is squeezed out by the switch styling");
                     Submit(root.Q<Button>("music-lyrics-follow"));
                     using (var escape = KeyDownEvent.GetPooled('\0', KeyCode.Escape, EventModifiers.None))
                     { escape.target = root.Q("music-lyrics-overlay"); root.SendEvent(escape); }
@@ -1023,7 +1045,7 @@ public static class RailwayMusicTerminalReview
                     Assert(root.Q<Button>("music-lyric-line-0") == null && root.Q<Button>("music-lyrics-follow").resolvedStyle.display == DisplayStyle.None,
                         "Untimed sheet offered fake seeking or auto-follow");
                     Capture("07-original-lyrics");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     break;
                 case 13:
                     Assert(root.ClassListContains("music-reduce-motion"), "Reduce-motion setting did not reach terminal effects");
@@ -1092,13 +1114,13 @@ public static class RailwayMusicTerminalReview
                     Submit(root.Q<Button>("music-lyrics-motion"));
                     Assert(MusicLibrarySession.State.lyricMotion == 1, "Follow mode cycle failed");
                     Submit(root.Q<Button>("music-lyrics-motion"));
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     TabletMusicAppUI.SeekTabletMusic(3f / TabletMusicAppUI.tabletCurrentClip.length);
                     break;
                 case 20:
                     Assert(Mathf.Abs(root.Q("music-lyric-line-1").Q(className: "music-lyric-word-span").style.translate.value.y.value) < .01f,
                         "Reduced motion retained word lift");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = false;
+                    MusicLibrarySession.State.reduceMotion = false; MusicLibrarySession.Save();
                     Submit(root.Q<Button>("music-lyrics-close"));
                     TabletMusicAppUI.SeekTabletMusic(.15f);
                     MusicLibrarySession.Save();
@@ -1174,7 +1196,7 @@ public static class RailwayMusicTerminalReview
                 case 27:
                     var pausedStage = root.Q<MusicReactiveStageView>();
                     Assert(pausedStage.RenderClock == pausedStageClock && pausedStage.VisualEnergy == pausedStageEnergy, "Paused stage kept moving");
-                    root.Q<Toggle>("music-lyrics-reduce-motion").value = true;
+                    MusicLibrarySession.State.reduceMotion = true; MusicLibrarySession.Save();
                     break;
                 case 28:
                     Assert(root.Q<MusicReactiveStageView>().RenderClock == 0 && root.Q<MusicReactiveStageView>().VisualEnergy == 0, "Reduce motion did not stop stage geometry");
@@ -1210,7 +1232,8 @@ public static class RailwayMusicTerminalReview
                     break;
                 case 31:
                     // Collapsed sidebar must not hide the labels of the page content, and the help dialog stays readable.
-                    Submit(root.Q<Button>("music-nav-云端"));
+                    Submit(root.Q<Button>("music-nav-曲库"));
+                    Submit(root.Q<Button>("music-lib-tab-云端"));
                     break;
                 case 32:
                     // The narrow rail is the default; start from the wide sidebar so the toggle below still collapses it.
@@ -1234,7 +1257,8 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_NAV_HELP_OK: sidebar collapse keeps content labels, help dialog uses grouped rows");
                     root.Q<Button>("music-help")?.Focus(); CloseHelpForReview();
                     chartDeadline = EditorApplication.timeSinceStartup + 25;
-                    Submit(root.Q<Button>("music-nav-榜单"));
+                    Submit(root.Q<Button>("music-nav-曲库"));
+                    Submit(root.Q<Button>("music-lib-tab-榜单"));
                     break;
                 case 36:
                     // The charts are read from the network; wait for the answer (or a failure) rather than a fixed time.
@@ -1313,7 +1337,7 @@ public static class RailwayMusicTerminalReview
                     Debug.Log("MUSIC_MATCH_ROWS: " + root.Query(className: "music-replace-row").ToList().Count);
                     Capture("22-match");
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
-                    Submit(root.Q<Button>("music-settings"));
+                    RailwayMusicTerminalView.OpenControlsList();
                     break;
                 case 45:
                     Assert(root.Q(className: "music-controls-panel") != null, "The playback settings panel did not open");
@@ -1352,7 +1376,7 @@ public static class RailwayMusicTerminalReview
                     MusicLibrarySession.State.toneMode = 0; MusicLibrarySession.State.barSlots = "";
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     Debug.Log("MUSIC_CONTROLS_PANEL_OK: three levels, speed and tone applied, pinning, back");
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 53:
                     Assert(root.Q("music-settings-scroll") != null, "The settings page did not open from the rail");
@@ -1549,7 +1573,7 @@ public static class RailwayMusicTerminalReview
                 case 85:
                     Capture("42-queue-count-5");
                     MusicLibrarySession.State.queue.Clear(); MusicLibrarySession.Commit();
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 86:
                     Submit(root.Q<Button>("music-settings-tab-bar"));
@@ -1573,7 +1597,7 @@ public static class RailwayMusicTerminalReview
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                     MusicLibrarySession.State.barFolded = ""; MusicLibrarySession.Save();
-                    Submit(root.Q<Button>("music-nav-settings"));
+                    Submit(SettingsButton());
                     break;
                 case 91:
                     Submit(root.Q<Button>("music-settings-tab-bar"));
@@ -1596,8 +1620,65 @@ public static class RailwayMusicTerminalReview
                         MusicLibrarySession.State.barOrder = ""; MusicLibrarySession.Save();
                         root.Query(className: "music-overlay").ToList().ForEach(o => o.RemoveFromHierarchy());
                         Debug.Log("MUSIC_BAR_FOLD_OK: bar buttons fold into the more menu and can be reordered");
-                        Finish(); return;
+                        Submit(CareerButton());
                     }
+                    break;
+                case 94:
+                    Assert(root.Q<Button>("music-clear-search").resolvedStyle.display == DisplayStyle.None, "The clear button is shown with an empty search");
+                    Assert(root.Q("music-career-total") != null || root.Q(className: "music-empty") != null, "The career page did not open");
+                    Capture("46-career");
+                    root.Q<TextField>("music-search").value = "Platform";
+                    break;
+                case 95:
+                    Capture("47-search-results");
+                    { var go = root.Q<Button>("music-search-go"); var bar = root.Q("music-search"); Assert(Mathf.Abs(go.worldBound.center.y - bar.worldBound.center.y) < 1.5f, "The search button is not vertically centred in the search pill"); }
+                    Assert(root.Q<Button>("music-clear-search").resolvedStyle.display != DisplayStyle.None, "The clear button is not shown while the search has text");
+                    Debug.Log("MUSIC_CAREER_SEARCH_OK: career page and the search pill with its clear and search buttons");
+                    root.Q<TextField>("music-search").value = "";
+                    Submit(root.Q<Button>("music-nav-我的"));
+                    break;
+                case 96:
+                    Assert(root.Q("music-mine-name") != null && root.Q<Button>("music-new-playlist") != null, "The 我的 page is missing its name or the new-playlist button");
+                    Capture("49-mine");
+                    Submit(root.Q<Button>("music-player-resize"));
+                    break;
+                case 97:
+                    Assert(MusicLibrarySession.State.playerMini && root.Q("music-player").ClassListContains("music-player-mini"), "The player did not shrink to a capsule");
+                    Assert(root.Q("music-player").worldBound.width < 260, "The capsule is still wide");
+                    Capture("48-player-mini");
+                    Submit(root.Q<Button>("music-player-resize"));
+                    break;
+                case 98:
+                    Assert(!MusicLibrarySession.State.playerMini && root.Q("music-player").worldBound.width > 600, "The player did not expand again");
+                    var mainBox = root.Q(className: "music-main"); var playerBox = root.Q("music-player");
+                    Assert(mainBox.worldBound.yMax <= playerBox.worldBound.yMin + 1f, "The page runs under the player card: main " + mainBox.worldBound + " player " + playerBox.worldBound + " root " + root.worldBound);
+                    Debug.Log("MUSIC_PLAYER_MINI_OK: capsule and page reserve");
+                    // Signed-in look: a throwaway account, only when this machine has none, removed again in the next step.
+                    reviewHadAccount = RailwayRenaissance.UI.Tablet.Account.AccountService.IsRegistered;
+                    reviewGrants = PlayerPrefs.GetString("TabletXiaomiSignInApps", "");
+                    if (!reviewHadAccount) RailwayRenaissance.UI.Tablet.Account.AccountService.Register("13800138000", "Review#2468ab", "审查员", 2);
+                    PlayerPrefs.SetString("TabletXiaomiSignInApps", "music");
+                    Submit(root.Q<Button>("music-nav-首页"));
+                    break;
+                case 99:
+                    if (root.Q("music-queue-drawer") != null || root.Q(className: "music-drawer") != null) Submit(root.Q<Button>("music-queue"));
+                    Submit(root.Q<Button>("music-nav-我的"));
+                    break;
+                case 100:
+                    Assert(root.Q<Button>("music-mine-logout") != null, "The 我的 page has no logout button while signed in");
+                    Capture("50-mine-signed-in");
+                    Debug.Log("MUSIC_MINE_SIGNED_IN_OK: avatar, name and logout button");
+                    {
+                        var before = RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Measure();
+                        Assert(before.coverCount > 0 && before.covers > 0, "No cover memory is measured although covers are shown");
+                        RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Trim();
+                        var after = RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Measure();
+                        Assert(after.coverCount == 0, "Trim left covers in the cache");
+                        Debug.Log("MUSIC_MEMORY_OK: covers " + before.coverCount + " = " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.covers) + ", audio " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.audio) + ", stage " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.stage) + ", icons " + RailwayRenaissance.UI.Tablet.Apps.MusicMemory.Format(before.icons) + "; after trim " + after.coverCount);
+                    }
+                    if (!reviewHadAccount) RailwayRenaissance.UI.Tablet.Account.AccountService.ResetForTests();
+                    PlayerPrefs.SetString("TabletXiaomiSignInApps", reviewGrants); PlayerPrefs.Save();
+                    Finish(); return;
             }
             stage++; frame = Time.frameCount;
             // Batch frames can advance before a 180ms entrance transition has finished.

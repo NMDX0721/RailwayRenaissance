@@ -14,7 +14,8 @@ Shader "Hidden/RailwayRenaissance/MusicStageBackdrop"
             #include "UnityCG.cginc"
 
             float4 _ColA, _ColB, _Base;
-            float _Clock, _Low, _Mid, _High, _Energy, _Aspect, _Seed;
+            float _Clock, _Low, _Mid, _High, _Energy, _Aspect, _Seed, _Beat;
+            float _Warp, _DustAmt, _Lights, _Bright;   // the backdrop look of the current lyric style
 
             float hash21(float2 p) { p = frac(p * float2(123.34, 456.21)); p += dot(p, p + 45.32); return frac(p.x * p.y); }
             float noise(float2 p)
@@ -49,7 +50,7 @@ Shader "Hidden/RailwayRenaissance/MusicStageBackdrop"
                 float2 uv = i.uv;
                 float2 p = float2(uv.x * _Aspect, uv.y) * 1.5 + _Seed * 9.0;
                 float t = _Clock * .045;
-                float warp = 1.6 + _Low * 1.4;
+                float warp = (1.6 + _Low * 1.4) * _Warp;
                 float2 q = float2(fbm(p + t), fbm(p + float2(5.2, 1.3) - t * .8));
                 float2 r = float2(fbm(p + warp * q + float2(1.7, 9.2) + t * .6), fbm(p + warp * q + float2(8.3, 2.8) - t * .5));
                 float f = fbm(p + warp * r);
@@ -64,15 +65,26 @@ Shader "Hidden/RailwayRenaissance/MusicStageBackdrop"
                 float glow = exp(-dot((uv - c) * float2(1.0, 1.7), (uv - c) * float2(1.0, 1.7)) * 5.0);
                 col += lerp(_ColA.rgb, _ColB.rgb, .4) * glow * (.12 + _Low * .3);
 
+                // Two broad lights wander on slow, unequal paths (about a minute a lap), so no two moments of the song look alike; a beat lifts them.
+                float tl = _Clock * .11;
+                float2 l1 = float2(.5 + .36 * sin(tl * 1.0 + _Seed * 6.0), .5 + .28 * cos(tl * .83 + _Seed * 3.0));
+                float2 l2 = float2(.5 + .4 * cos(tl * .71 + 2.0 + _Seed * 5.0), .5 + .32 * sin(tl * 1.13 + 1.0 + _Seed * 2.0));
+                float2 d1 = (uv - l1) * float2(_Aspect, 1.0), d2 = (uv - l2) * float2(_Aspect, 1.0);
+                col += _ColA.rgb * exp(-dot(d1, d1) * 5.5) * (.10 + _Mid * .22 + _Beat * .22) * _Lights;
+                col += _ColB.rgb * exp(-dot(d2, d2) * 5.5) * (.10 + _Low * .2 + _Beat * .2) * _Lights;
+                // The mix of the two cover colours drifts over time.
+                float drift = .5 + .5 * sin(_Clock * .05 + _Seed * 6.0);
+                col = lerp(col, lerp(_ColA.rgb, _ColB.rgb, drift) * (.5 + f * .7), smoothstep(.35, .9, f) * .22);
+
                 // Dust in two depths; the high band makes it twinkle.
                 float2 duv = float2(uv.x * _Aspect, uv.y);
                 float d = dust(duv, 9.0, .035, _Seed, _High * 2.5) * .9 + dust(duv, 17.0, .06, _Seed + 11.0, _High * 3.5) * .6;
-                col += lerp(float3(1, 1, 1), _ColA.rgb, .35) * d * (.25 + _High * .5);
+                col += lerp(float3(1, 1, 1), _ColA.rgb, .35) * d * (.25 + _High * .5) * _DustAmt;
 
                 // Vignette and a ceiling so lyrics on top stay readable.
                 float2 v = uv - .5;
                 col *= saturate(1.15 - dot(v, v) * 1.5);
-                col *= 1.3; col = col / (1.0 + col * .55);
+                col *= 1.3 * _Bright; col = col / (1.0 + col * .55);
                 return fixed4(col, 1);
             }
             ENDCG
