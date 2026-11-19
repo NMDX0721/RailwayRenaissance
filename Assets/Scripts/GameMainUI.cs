@@ -210,6 +210,7 @@ public class GameMainUI : MonoBehaviour
 
     public void Hide()
     {
+        ClearVnTipsOrigin();
         if (activeTabletTask?.Root != null)
             NotifyTaskLifecycle(() => activeTabletTask.Lifecycle.OnBackground(activeTabletTask.Root));
         ResetSystemGesture();
@@ -2729,9 +2730,8 @@ public class GameMainUI : MonoBehaviour
     private void ReturnToTabletHome()
     {
         // 从 VN 术语小卡进入百科：退出百科直接回到 VN
-        bool backToVn = tipsOpenedFromVN && activeTabletTask != null && activeTabletTask.AppId == "媒姬百科";
-        tipsOpenedFromVN = false;
-        TabletWikiAppUI.ClearVnOrigin();
+        bool backToVn = tipsOpenedFromVN;
+        ClearVnTipsOrigin();
         ResetSystemGesture();
         CancelTabletRebind();
         tabletShellState.ClosePanel();
@@ -4060,9 +4060,9 @@ public class GameMainUI : MonoBehaviour
         if (Instance.desktop != null) Instance.desktop.style.display = DisplayStyle.Flex;
         Instance.root.style.display = DisplayStyle.Flex;
         Instance.tabletShellView?.SetVisible(true);
+        Instance.tipsOpenedFromVN = true;
         TabletWikiAppUI.OpenFromVN(termId, () => { if (Instance != null) Instance.ReturnToTabletHome(); });
         Instance.LaunchApp("媒姬百科");
-        Instance.tipsOpenedFromVN = true;
     }
 
     /// <summary>同步补建桌面/App层（后台错帧协程可能还没跑）；只补缺的部分，避免与协程重复构建。</summary>
@@ -4193,6 +4193,20 @@ public class GameMainUI : MonoBehaviour
     }
 
     private bool tipsOpenedFromVN;
+    private int vnTipsClosedFrame = -1;
+
+    internal static bool VnTipsBlockStory => Instance != null &&
+        (Instance.vnTipsClosedFrame == Time.frameCount ||
+         (Instance.tipsOpenedFromVN && Instance.isActiveAndEnabled &&
+          Instance.root != null && Instance.root.style.display != DisplayStyle.None));
+
+    private void ClearVnTipsOrigin()
+    {
+        if (!tipsOpenedFromVN) return;
+        tipsOpenedFromVN = false;
+        vnTipsClosedFrame = Time.frameCount;
+        TabletWikiAppUI.ClearVnOrigin();
+    }
 
     private void Update()
     {

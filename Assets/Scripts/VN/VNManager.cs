@@ -1544,10 +1544,11 @@ public partial class VNManager : MonoBehaviour
         clickedButtonThisFrame = false; // 每帧重置按钮标记
 
         // 应用失焦（如 Win+S 截图、切窗口）时不处理键鼠，避免 Shift 被系统快捷键误触发倍速
-        if (!Application.isFocused)
+        if (!Application.isFocused || GameMainUI.VnTipsBlockStory)
         {
             spaceHeld = false;
             spaceSpeedActive = false;
+            ffNextAt = 0f;
             if (fastFwdBadge != null) fastFwdBadge.style.display = DisplayStyle.None;
             return;
         }
@@ -1759,6 +1760,7 @@ public partial class VNManager : MonoBehaviour
 
     private bool AdvanceBlockedByPanels()
     {
+        if (GameMainUI.VnTipsBlockStory) return true;
         if (IsCinematicBlocking()) return true; // 分镜强制播放：空格/长按/点击不可穿透
         if (tabletSetupOpen) return true;       // 平板激活向导打开时，键盘/点击不得推进剧情
         if (confirmDialog != null && confirmDialog.style.display == DisplayStyle.Flex) return true;
@@ -1779,7 +1781,7 @@ public partial class VNManager : MonoBehaviour
 
     private void OnRootClick(ClickEvent evt)
     {
-        if (evt.button != 0) return; // 仅左键
+        if (evt.button != 0 || GameMainUI.VnTipsBlockStory) return; // 仅左键，百科期间不穿透
 
         // 开场/话标题卡分镜强制播放：左键点击冒泡到这里也不推进
         if (IsCinematicBlocking()) return;

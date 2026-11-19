@@ -24,6 +24,7 @@ namespace RailwayRenaissance.Editor
         private static VisualElement root;
         private static RenderTexture target;
         private static GameMainUI ui;
+        private static VNManager wikiPauseVn;
         private static string pendingCapture;
 
         static TabletWikiReview()
@@ -283,12 +284,36 @@ namespace RailwayRenaissance.Editor
                             else PlayerPrefs.DeleteKey(key);
                         }
                         VerifyGuestWatchMerge();
-                        Teardown(true, "all stages, foreground unlock refresh and guest watch merge"); break;
+                        Next(); break;
                     }
+                    case 79:
+                    {
+                        var host = new GameObject("VN Wiki pause review");
+                        host.SetActive(false);
+                        wikiPauseVn = host.AddComponent<VNManager>();
+                        typeof(VNManager).GetField("isAutoPlay", Hidden).SetValue(wikiPauseVn, true);
+                        typeof(VNManager).GetField("isScriptRunning", Hidden).SetValue(wikiPauseVn, true);
+                        GameMainUI.OpenTipsPage("rail_ballast");
+                        Assert(StoryAdvanceBlocked(), "VN input was not blocked by Wiki");
+                        var timer = (System.Collections.IEnumerator)typeof(VNManager).GetMethod("AutoPlayTimer", Hidden)
+                            .Invoke(wikiPauseVn, null);
+                        Assert(timer.MoveNext() && timer.Current is WaitForSeconds, "VN Auto did not start its normal delay");
+                        Assert(timer.MoveNext() && timer.Current == null, "VN Auto did not wait while Wiki was open");
+                        typeof(GameMainUI).GetMethod("ReturnToTabletHome", Hidden).Invoke(ui, null);
+                        Assert(StoryAdvanceBlocked(), "the Wiki return frame leaked through to VN");
+                        Next(); break;
+                    }
+                    case 80:
+                        Assert(!StoryAdvanceBlocked(), "VN stayed paused after returning from Wiki");
+                        UnityEngine.Object.Destroy(wikiPauseVn.gameObject);
+                        Teardown(true, "all stages, unlock refresh, guest watch merge and VN playback pause"); break;
                 }
             }
             catch (Exception ex) { Teardown(false, "Exception at stage " + stage + ": " + ex.Message + "\n" + ex.StackTrace); }
         }
+
+        private static bool StoryAdvanceBlocked() =>
+            (bool)typeof(VNManager).GetMethod("AdvanceBlockedByPanels", Hidden).Invoke(wikiPauseVn, null);
 
         private static void VerifyGuestWatchMerge()
         {
