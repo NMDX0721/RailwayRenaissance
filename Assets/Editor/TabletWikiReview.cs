@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -255,11 +256,70 @@ namespace RailwayRenaissance.Editor
                             if (hadKey) PlayerPrefs.SetInt(key, previous);
                             else PlayerPrefs.DeleteKey(key);
                         }
-                        Teardown(true, "all stages and foreground unlock refresh"); break;
+                        Next(); break;
+                    }
+                    case 78:
+                    {
+                        var track = Array.Find(StoryArchiveCatalog.MusicEntries, item => item.id == "cloud_rail");
+                        string key = "ArchiveMusic_" + track.id;
+                        bool hadKey = PlayerPrefs.HasKey(key);
+                        int previous = PlayerPrefs.GetInt(key);
+                        try
+                        {
+                            PlayerPrefs.SetInt(key, 0);
+                            TabletWikiAppUI.OpenArticle("col_music");
+                            var articleView = root.Q<ScrollView>("wiki-main");
+                            bool HasTrack() => articleView.Query<Label>().ToList().Exists(label => label.text.Contains(track.title));
+                            Assert(!HasTrack(), "locked track appeared in the music collection");
+                            GameMainUI.OpenTabletApp("设置");
+                            PlayerPrefs.SetInt(key, 1);
+                            GameMainUI.OpenTabletApp("媒姬百科");
+                            Assert(root.Q<ScrollView>("wiki-main") == articleView && HasTrack(),
+                                "returning to Wiki did not refresh the cached music collection");
+                        }
+                        finally
+                        {
+                            if (hadKey) PlayerPrefs.SetInt(key, previous);
+                            else PlayerPrefs.DeleteKey(key);
+                        }
+                        VerifyGuestWatchMerge();
+                        Teardown(true, "all stages, foreground unlock refresh and guest watch merge"); break;
                     }
                 }
             }
             catch (Exception ex) { Teardown(false, "Exception at stage " + stage + ": " + ex.Message + "\n" + ex.StackTrace); }
+        }
+
+        private static void VerifyGuestWatchMerge()
+        {
+            const string guest = "WikiWatch_local";
+            string account = "WikiWatch_review_" + Guid.NewGuid().ToString("N");
+            var flags = BindingFlags.Static | BindingFlags.NonPublic;
+            var load = typeof(TabletWikiAppUI).GetMethod("LoadList", flags);
+            var save = typeof(TabletWikiAppUI).GetMethod("SaveList", flags);
+            var merge = typeof(TabletWikiAppUI).GetMethod("MergeLocalWatch", flags);
+            var cache = (Dictionary<string, List<string>>)typeof(TabletWikiAppUI).GetField("s_listCache", flags).GetValue(null);
+            bool hadGuest = PlayerPrefs.HasKey(guest);
+            string previous = PlayerPrefs.GetString(guest);
+            List<string> Load(string key) => (List<string>)load.Invoke(null, new object[] { key });
+            void Save(string key, List<string> list) => save.Invoke(null, new object[] { key, list });
+            try
+            {
+                Save(guest, new List<string> { "laochen" });
+                merge.Invoke(null, new object[] { account });
+                Assert(Load(account).Contains("laochen") && Load(guest).Count == 0, "guest watch was not consumed");
+                Save(account, new List<string>());
+                merge.Invoke(null, new object[] { account });
+                Assert(Load(account).Count == 0, "second sign-in resurrected a removed watch");
+            }
+            finally
+            {
+                if (hadGuest) PlayerPrefs.SetString(guest, previous); else PlayerPrefs.DeleteKey(guest);
+                PlayerPrefs.DeleteKey(account);
+                cache.Remove(guest);
+                cache.Remove(account);
+                PlayerPrefs.Save();
+            }
         }
 
         private static void Teardown(bool ok, string reason)

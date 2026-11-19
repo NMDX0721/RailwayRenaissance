@@ -263,6 +263,7 @@ public partial class VNManager : MonoBehaviour
     private void StartScriptAt(string scriptName, int sceneIndex, int dialogueIndex)
     {
         if (string.IsNullOrEmpty(scriptName)) return;
+        ClearJumpUndo();
         currentScript = jsonParser.LoadScript(scriptName);
         if (currentScript == null) { Debug.LogError("Failed to load: " + scriptName); return; }
         if (sceneIndex < 0 || sceneIndex >= currentScript.scenes.Length || dialogueIndex < 0 ||
@@ -1317,6 +1318,7 @@ public partial class VNManager : MonoBehaviour
     private void CleanupForTablet()
     {
         Debug.Log("[VN] ReturnToTitle step: cleanup-start");
+        ClearJumpUndo();
         StopAutoPlay();
         isScriptRunning = false;
         currentScript = null;
@@ -1486,6 +1488,7 @@ public partial class VNManager : MonoBehaviour
 
     private void LoadFromSave(VNSaveData saveData)
     {
+        ClearJumpUndo();
         StopAutoPlay();
 
         currentScriptName = saveData.scriptName;
@@ -1859,6 +1862,7 @@ public partial class VNManager : MonoBehaviour
             Debug.LogError("[VN] jsonParser is null — cannot start " + scriptName);
             return;
         }
+        ClearJumpUndo();
         currentScript = jsonParser.LoadScript(scriptName);
         if (currentScript == null) { Debug.LogError("Failed to load: " + scriptName); return; }
         currentScriptName = scriptName;
@@ -2705,6 +2709,7 @@ public partial class VNManager : MonoBehaviour
 
     private void EndScript()
     {
+        ClearJumpUndo();
         ResetLineVoice();
         StoryArchiveProgress.CompleteEpisode(currentScriptName);
         StopAutoPlay();
@@ -3395,7 +3400,13 @@ public partial class VNManager : MonoBehaviour
     }
 
     // ---- 跳转撤销：进度条/回顾跳走后 3 秒内可撤回（右下角弹窗 或 Ctrl+Z）----
-    private struct JumpOrigin { public bool valid; public int scene, dlg; public float frontier; }
+    private struct JumpOrigin
+    {
+        public ScriptData script;
+        public bool valid;
+        public int scene, dlg;
+        public float frontier;
+    }
     private JumpOrigin dragOrigin, pendingUndo;
     private bool applyingUndo;
     private VisualElement undoToast;
@@ -3403,11 +3414,11 @@ public partial class VNManager : MonoBehaviour
     private int undoToastToken;
 
     private JumpOrigin CaptureJumpOrigin() =>
-        new JumpOrigin { valid = isScriptRunning && currentScript != null, scene = currentSceneIndex, dlg = currentDialogueIndex, frontier = progressFrontier };
+        new JumpOrigin { script = currentScript, valid = isScriptRunning && currentScript != null, scene = currentSceneIndex, dlg = currentDialogueIndex, frontier = progressFrontier };
 
     private void CommitJumpUndo(JumpOrigin origin)
     {
-        if (!origin.valid || applyingUndo) return;
+        if (!origin.valid || origin.script != currentScript || applyingUndo) return;
         if (origin.scene == currentSceneIndex && origin.dlg == currentDialogueIndex) return; // 没动
         pendingUndo = origin;
         ShowUndoToast();
@@ -3415,7 +3426,7 @@ public partial class VNManager : MonoBehaviour
 
     private bool UndoJump()
     {
-        if (!pendingUndo.valid || !isScriptRunning || currentScript == null) return false;
+        if (!pendingUndo.valid || pendingUndo.script != currentScript || !isScriptRunning) return false;
         var o = pendingUndo;
         pendingUndo = default;
         HideUndoToast();
@@ -3427,6 +3438,14 @@ public partial class VNManager : MonoBehaviour
         }
         finally { applyingUndo = false; }
         return true;
+    }
+
+    private void ClearJumpUndo()
+    {
+        dragOrigin = default;
+        pendingUndo = default;
+        progressSeeking = false;
+        HideUndoToast();
     }
 
     private void ShowUndoToast()

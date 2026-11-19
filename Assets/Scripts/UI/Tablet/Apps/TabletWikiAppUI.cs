@@ -163,16 +163,16 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         {
             if (!Alive()) return;
             var locked = LockedArticles();
-            if (s_lockedArticles.SetEquals(locked)) return;
-            s_lockedArticles = locked;
-            s_listCache.Clear();
-            Render();
+            bool unlockChanged = !s_lockedArticles.SetEquals(locked);
+            if (unlockChanged) s_lockedArticles = locked;
+            bool dynamicArticle = s_cur.Kind == Kind.Article && TabletWikiData.Get(s_cur.Arg)?.DynamicSections != null;
+            if (unlockChanged || dynamicArticle) Render();
         }
 
         private static void OnAccountChanged()
         {
             if (!Alive()) return;
-            MergeLocalWatch();
+            if (Signed) MergeLocalWatch(WatchKey());
             RefreshAccount();
             Render();
         }
@@ -614,16 +614,20 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         private const string LocalWatchKey = "WikiWatch_local";
         private static string WatchKey() => Signed ? "WikiWatch_" + AccountService.Profile.xiaomiId : LocalWatchKey;
 
-        private static void MergeLocalWatch()
+        private static void MergeLocalWatch(string accountKey)
         {
-            if (!Signed) return;
             var local = LoadList(LocalWatchKey);
             if (local.Count == 0) return;
-            string key = WatchKey();
-            var list = LoadList(key);
+            var list = LoadList(accountKey);
             for (int i = local.Count - 1; i >= 0; i--) if (!list.Contains(local[i])) list.Insert(0, local[i]);
-            SaveList(key, list);
-            try { PlayerPrefs.DeleteKey(LocalWatchKey); PlayerPrefs.Save(); } catch { }
+            SaveList(accountKey, list);
+            try
+            {
+                PlayerPrefs.DeleteKey(LocalWatchKey);
+                s_listCache.Remove(LocalWatchKey);
+                PlayerPrefs.Save();
+            }
+            catch { }
         }
 
         private static List<string> LoadList(string key)
