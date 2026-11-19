@@ -1,0 +1,11 @@
+{
+    "poses": 31,
+    "parts": 140,
+    "conflicts": [
+        "stowed: Mount_Washer / Continuous_Underframe 0.0030",
+        "stowed: Mount_Head / Continuous_Underframe 0.0080",
+        "service: Mount_Washer / Continuous_Underframe 0.0030",
+        "service: Mount_Head / Continuous_Underframe 0.0080"
+    ],
+    "scope": "Candidate visual construction; no capacity, structural, ventilation or electrical certification"
+}

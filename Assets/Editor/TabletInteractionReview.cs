@@ -328,24 +328,16 @@ public static class TabletInteractionReview
                    settings.Root[0].style.display.value == DisplayStyle.Flex && settings.Root.childCount == 1,
                    "back removes page wrapper and shows prior app page");
 
-            TabletSettingsAppUI.ShowTipsPage(null);
+            TabletSettingsAppUI.ShowAffairsPage();
             var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", instance).GetValue(settings);
-            Assert(pages.Count == 1, "real tips subpage opens");
-            var term = settings.Root.Q<Label>("tips-term-rail_ballast");
-            Assert(term != null, "glossary term exists");
-            bool clickDelivered = false;
-            term.RegisterCallback<ClickEvent>(_ => clickDelivered = true);
-            using (ClickEvent click = ClickEvent.GetPooled()) { click.target = term; term.SendEvent(click); }
-            Debug.Log($"TABLET_TIPS_CLICK attached={term.panel != null} delivered={clickDelivered} title={settings.Root.Q<Label>("tips-detail-title")?.text}");
-            Assert(settings.Root.Q<Label>("tips-detail-title")?.text == "道砟", "glossary selection opens");
+            Assert(pages.Count == 1, "real subpage opens");
             launch.Invoke(host, new object[] { "验收占位" });
             typeof(GameMainUI).GetMethod("ReclaimInactiveTabletTasks", instance).Invoke(host, new object[] { false });
-            Assert(settings.IsSuspended, "real tips subpage evicted");
+            Assert(settings.IsSuspended, "real subpage evicted");
             activate.Invoke(host, new object[] { settings });
-            Assert(!settings.IsSuspended && pages.Count == 1 &&
-                   settings.Root.Q<Label>("tips-detail-title")?.text == "道砟", "real tips selection rebuilt");
+            Assert(!settings.IsSuspended && pages.Count == 1, "real subpage rebuilt");
             typeof(GameMainUI).GetMethod("RequestSystemBack", instance).Invoke(host, null);
-            Assert(pages.Count == 0, "real tips back returns to settings");
+            Assert(pages.Count == 0, "real subpage back returns to settings");
 
             host.BuildInnerPanel("不可重建子页");
             launch.Invoke(host, new object[] { "验收占位" });
@@ -366,11 +358,11 @@ public static class TabletInteractionReview
 
             typeof(GameMainUI).GetField("desktopBuilt", instance).SetValue(host, true);
             GameMainUI.OpenTipsPage("rail_ballast");
-            var linkedSettings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
-            Assert(linkedSettings != null && linkedSettings.Root.Q<Label>("tips-detail-title")?.text == "道砟",
-                   "glossary deep link opens a task and selected term");
+            var linkedWiki = (TabletTaskSession)find.Invoke(host, new object[] { "媒姬百科" });
+            Assert(linkedWiki != null && linkedWiki.Root.Q<Label>("wiki-article-title")?.text == "道砟",
+                   "glossary deep link opens the wiki task and selected term");
             typeof(GameMainUI).GetMethod("ReturnToTabletHome", instance).Invoke(host, null);
-            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "设置" });
+            typeof(GameMainUI).GetMethod("CloseTabletTask", instance).Invoke(host, new object[] { "媒姬百科" });
             typeof(GameMainUI).GetMethod("ShowSuiyueDialogue", instance).Invoke(host, null);
             var sui = (TabletTaskSession)find.Invoke(host, new object[] { "岁月 · AI对话" });
             Assert(sui != null && sui.Root != null,
@@ -827,7 +819,7 @@ public static class TabletInteractionReview
             // B. 设置图鉴在全部任务关闭（CloseAllTabletTasks）后旧控件引用释放
             launch.Invoke(host, new object[] { "设置" });
             var settings = (TabletTaskSession)find.Invoke(host, new object[] { "设置" });
-            TabletSettingsAppUI.ShowTipsPage("rail_ballast");
+            TabletSettingsAppUI.ShowAffairsPage();
             var pages = (System.Collections.IList)typeof(TabletTaskSession).GetField("Pages", instance).GetValue(settings);
             VisualElement tipsView = null;
             if (pages.Count > 0)
@@ -835,7 +827,7 @@ public static class TabletInteractionReview
                 var pageEntry = pages[0];
                 tipsView = (VisualElement)pageEntry.GetType().GetField("View", instance).GetValue(pageEntry);
             }
-            var termLabel = settings.Root.Q<Label>("tips-term-rail_ballast");
+            var termLabel = tipsView?.Q<Label>();
             weakSettingsRoot = new WeakReference(settings.Root);
             weakTipsPage = new WeakReference(tipsView);
             weakTerm = new WeakReference(termLabel);

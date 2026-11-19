@@ -727,8 +727,9 @@ namespace RailwayRenaissance.UI.Tablet.SystemShell
         private void OnPagerUp(PointerUpEvent e)
         {
             if (e.pointerId != _pagerPointer) return;
+            bool wasDragging = _pagerDragging;
             EndPagerGesture(true);
-            e.StopPropagation();
+            if (wasDragging) e.StopPropagation();
         }
 
         private void EndPagerGesture(bool commit)

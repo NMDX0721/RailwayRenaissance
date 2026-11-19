@@ -55,7 +55,7 @@ public static class NF5KEquipmentInstallation
             File.WriteAllText(Output+"acceptance.json",JsonUtility.ToJson(new Report{scenes=Scenes.Length,poses=poses,conflicts=conflicts.ToArray()},true));
             EditorSceneManager.OpenScene("Assets/Scenes/CabRailMotionReview.unity");var vehicle=GameObject.Find("CabInterior_Blockout").transform;
             var rail=UnityEngine.Object.FindAnyObjectByType<CabRailMotion>();rail.Apply(0,0,0,0,0,20261021,true);
-            foreach(var renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))if(!renderer.transform.IsChildOf(vehicle))renderer.enabled=false;
+            foreach(var renderer in UnityEngine.Object.FindObjectsByType<Renderer>())if(!renderer.transform.IsChildOf(vehicle))renderer.enabled=false;
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=6.8f;camera.farClipPlane=100;
             var light=new GameObject("Equipment_Review_Fill").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1;light.transform.rotation=Quaternion.Euler(15,65,0);
             camera.transform.position=vehicle.TransformPoint(new Vector3(18,6,-8));camera.transform.LookAt(vehicle.TransformPoint(new Vector3(0,.3f,8)));Shot(camera,"train.png");

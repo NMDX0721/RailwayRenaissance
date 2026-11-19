@@ -521,6 +521,8 @@ namespace RailwayRenaissance.Editor
                             {
                                 TabletSettingsAppUI.ShowCategory(98);
                                 Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_storage");
+                                TabletSettingsAppUI.ShowCategory(95);
+                                Capture("09_" + (char)('a' + settingsSubPage - 1) + "_settings_memory");
                                 settingsSubPage++;
                                 frame = Time.frameCount;
                                 break;
@@ -594,11 +596,11 @@ namespace RailwayRenaissance.Editor
                         frame = Time.frameCount;
                         break;
 
-                    // ==================== Stage 10: 媒姬百科 Master-Detail 图鉴网格 ====================
+                    // ==================== Stage 10: 媒姬百科 百科全书版式 ====================
                     case 10:
                         Call("LaunchApp", "媒姬百科");
-                        var wikiGrid = root.Q("wiki-grid-container");
-                        Assert(wikiGrid != null, "wiki-grid-container should exist in Wiki App");
+                        var wikiGrid = root.Q("wiki-root");
+                        Assert(wikiGrid != null, "wiki-root should exist in Wiki App");
 
                         Capture("10_app_wiki_knowledge_grid");
                         stage++;

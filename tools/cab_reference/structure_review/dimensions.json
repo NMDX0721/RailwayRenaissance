@@ -1,0 +1,1886 @@
+{
+    "scene": "Assets/Scenes/CabInteriorBlockout.unity",
+    "scope": "Saved geometry in body-local metres; no engineering certification or dynamic clearance claim",
+    "seats": 48,
+    "sideDoorControllers": 4,
+    "armrestAisleM": 0.6639999747276306,
+    "partitionOpeningM": 0.6199999451637268,
+    "parts": [
+        {
+            "path": "CabInterior_Blockout/Floor",
+            "localMin": {
+                "x": -1.399999976158142,
+                "y": -0.09000000357627869,
+                "z": -0.5000000596046448
+            },
+            "localMax": {
+                "x": 1.399999976158142,
+                "y": 0.0,
+                "z": 1.9000000953674317
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Right_Rear_Entry_Threshold",
+            "localMin": {
+                "x": -1.6749999523162842,
+                "y": -0.02500000037252903,
+                "z": 16.049999237060548
+            },
+            "localMax": {
+                "x": -1.4449999332427979,
+                "y": 0.02500000037252903,
+                "z": 16.950000762939454
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Left_Rear_Entry_Threshold",
+            "localMin": {
+                "x": 1.4449999332427979,
+                "y": -0.02500000037252903,
+                "z": 16.049999237060548
+            },
+            "localMax": {
+                "x": 1.6749999523162842,
+                "y": 0.02500000037252903,
+                "z": 16.950000762939454
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Rear_Gangway_Door",
+            "localMin": {
+                "x": -0.4399999976158142,
+                "y": 0.0,
+                "z": 17.482500076293947
+            },
+            "localMax": {
+                "x": 0.4399999976158142,
+                "y": 1.1200000047683716,
+                "z": 17.537500381469728
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Rear_Assembly/Rear_Passenger_Partition",
+            "localMin": {
+                "x": -1.4000000953674317,
+                "y": 0.0,
+                "z": 1.8700000047683716
+            },
+            "localMax": {
+                "x": -0.309999942779541,
+                "y": 2.0999999046325685,
+                "z": 1.9499999284744263
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Rear_Assembly/Rear_Passenger_Partition",
+            "localMin": {
+                "x": 0.3100000023841858,
+                "y": 0.0,
+                "z": 1.8700000047683716
+            },
+            "localMax": {
+                "x": 1.4000000953674317,
+                "y": 2.0999999046325685,
+                "z": 1.9499999284744263
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Rear_Assembly/Passenger_Passage_Door_Pivot/Passenger_Passage_Door_Lower",
+            "localMin": {
+                "x": -0.28999999165534975,
+                "y": 0.019999980926513673,
+                "z": 1.8874999284744263
+            },
+            "localMax": {
+                "x": 0.2900000512599945,
+                "y": 0.9800000190734863,
+                "z": 1.9325000047683716
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 2.592581272125244
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 3.077418804168701
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 2.592581272125244
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 3.077418804168701
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 3.6925811767578127
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 4.177418231964111
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 3.6925811767578127
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 4.177418231964111
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 4.792581558227539
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 5.277419090270996
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 4.792581558227539
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 5.277419090270996
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 5.892581939697266
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 6.377418518066406
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 5.892581939697266
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 6.377418518066406
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 6.992581367492676
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 7.477418899536133
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 6.992581367492676
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 7.477418899536133
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 8.092581748962403
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 8.577418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 8.092581748962403
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 8.577418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 9.192581176757813
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 9.677417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 9.192581176757813
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 9.677417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 10.292581558227539
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 10.77741813659668
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 10.292581558227539
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 10.77741813659668
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 11.39258098602295
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 11.87741756439209
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 11.39258098602295
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 11.87741756439209
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 12.492581367492676
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 12.977417945861817
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 12.492581367492676
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 12.977417945861817
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 13.592581748962403
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 14.077418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 13.592581748962403
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 14.077418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -0.8250000476837158,
+                "y": 0.41001129150390627,
+                "z": 14.692581176757813
+            },
+            "localMax": {
+                "x": -0.375,
+                "y": 0.5399886965751648,
+                "z": 15.177417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": -1.3000000715255738,
+                "y": 0.41001129150390627,
+                "z": 14.692581176757813
+            },
+            "localMax": {
+                "x": -0.8500000238418579,
+                "y": 0.5399886965751648,
+                "z": 15.177417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.36800000071525576,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": -0.3319999873638153,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -0.8680000305175781,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": -0.8320000171661377,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": -1.3330000638961793,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": -1.2970000505447388,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 2.592581272125244
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 3.077418804168701
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 2.592581272125244
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 3.077418804168701
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 2.694999933242798
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 3.0350000858306886
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 3.6925811767578127
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 4.177418231964111
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 3.6925811767578127
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 4.177418231964111
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 3.794999599456787
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 4.134999752044678
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 4.792581558227539
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 5.277419090270996
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 4.792581558227539
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 5.277419090270996
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 4.894999980926514
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 5.235000133514404
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 5.892581939697266
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 6.377418518066406
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 5.892581939697266
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 6.377418518066406
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 5.994999885559082
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 6.335000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 6.992581367492676
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 7.477418899536133
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 6.992581367492676
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 7.477418899536133
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 7.09499979019165
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 7.434999942779541
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 8.092581748962403
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 8.577418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 8.092581748962403
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 8.577418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 8.195000648498536
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 8.535000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 9.192581176757813
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 9.677417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 9.192581176757813
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 9.677417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 9.295000076293946
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 9.635000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 10.292581558227539
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 10.77741813659668
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 10.292581558227539
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 10.77741813659668
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 10.395000457763672
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 10.735000610351563
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 11.39258098602295
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 11.87741756439209
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 11.39258098602295
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 11.87741756439209
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 11.494999885559082
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 11.835000038146973
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 12.492581367492676
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 12.977417945861817
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 12.492581367492676
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 12.977417945861817
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 12.595000267028809
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 12.9350004196167
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 13.592581748962403
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 14.077418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 13.592581748962403
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 14.077418327331543
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 13.695000648498536
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 14.035000801086426
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.375,
+                "y": 0.41001129150390627,
+                "z": 14.692581176757813
+            },
+            "localMax": {
+                "x": 0.8250000476837158,
+                "y": 0.5399886965751648,
+                "z": 15.177417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Seat_Cushion",
+            "localMin": {
+                "x": 0.8500000238418579,
+                "y": 0.41001129150390627,
+                "z": 14.692581176757813
+            },
+            "localMax": {
+                "x": 1.3000000715255738,
+                "y": 0.5399886965751648,
+                "z": 15.177417755126954
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.3319999873638153,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": 0.36800000071525576,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 0.8320000171661377,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": 0.8680000305175781,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Integrated_Passenger_Bay_Blockout/Passenger_Interior_Fittings/Passenger_Armrest",
+            "localMin": {
+                "x": 1.2970000505447388,
+                "y": 0.6775000095367432,
+                "z": 14.795000076293946
+            },
+            "localMax": {
+                "x": 1.3330000638961793,
+                "y": 0.7224999666213989,
+                "z": 15.135000228881836
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/MainConsoleStudy/Controller_Mount/Controller_Handwheel_Study/Socket_Dark_Floor",
+            "localMin": {
+                "x": 0.5462999939918518,
+                "y": 0.8402498960494995,
+                "z": 0.18529987335205079
+            },
+            "localMax": {
+                "x": 0.5717000365257263,
+                "y": 0.841749906539917,
+                "z": 0.21069985628128053
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/MainConsoleStudy/Switches_Mount/PianoSwitches_10Gang/Recess_Floor",
+            "localMin": {
+                "x": 0.07657504081726074,
+                "y": 0.7947499752044678,
+                "z": 0.17724990844726563
+            },
+            "localMax": {
+                "x": 0.2834250032901764,
+                "y": 0.7992500066757202,
+                "z": 0.26274991035461428
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/MainConsoleStudy/StartupControlsWithoutKey/Keyway_Dark_Floor",
+            "localMin": {
+                "x": 0.24500000476837159,
+                "y": 0.8774998784065247,
+                "z": 0.05199998617172241
+            },
+            "localMax": {
+                "x": 0.26100003719329836,
+                "y": 0.8784999251365662,
+                "z": 0.06800001859664917
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Running_Gear/Continuous_Underframe",
+            "localMin": {
+                "x": -1.225000023841858,
+                "y": -0.3149999976158142,
+                "z": -0.25
+            },
+            "localMax": {
+                "x": 1.225000023841858,
+                "y": -0.06499999761581421,
+                "z": 17.5
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Running_Gear/Underfloor_Equipment_Cabinet",
+            "localMin": {
+                "x": -0.949999988079071,
+                "y": -0.8299999833106995,
+                "z": 5.275000095367432
+            },
+            "localMax": {
+                "x": 0.949999988079071,
+                "y": -0.3100000023841858,
+                "z": 6.724999904632568
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Running_Gear/Underfloor_Equipment_Cabinet",
+            "localMin": {
+                "x": -0.949999988079071,
+                "y": -0.8299999833106995,
+                "z": 7.274999618530273
+            },
+            "localMax": {
+                "x": 0.949999988079071,
+                "y": -0.3100000023841858,
+                "z": 8.725000381469727
+            },
+            "hasDoorController": false
+        },
+        {
+            "path": "CabInterior_Blockout/Running_Gear/Underfloor_Equipment_Cabinet",
+            "localMin": {
+                "x": -0.949999988079071,
+                "y": -0.8299999833106995,
+                "z": 9.375
+            },
+            "localMax": {
+                "x": 0.949999988079071,
+                "y": -0.3100000023841858,
+                "z": 10.825000762939454
+            },
+            "hasDoorController": false
+        }
+    ]
+}

@@ -94,6 +94,10 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         void Build()
         {
             openView = this;
+            host.RegisterCallback<DetachFromPanelEvent>(evt =>
+            {
+                if (evt.target == host && openView == this) openView = null;
+            });
             var previousStage = reactiveStage;
             previousStage?.RemoveFromHierarchy();
             host.Clear();

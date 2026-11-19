@@ -86,7 +86,7 @@ public static class NF5KFuelTankReview
             motion.Apply(0,0,0,0,0,20261021,true);var original=root.localPosition;
             for(int i=1;i<=10;i++){root.localPosition=original+Vector3.down*(i*.035f);Check("lowering");poses++;}root.localPosition=original;
             AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);File.WriteAllText(Output+"acceptance.json",JsonUtility.ToJson(new Report{poses=poses,parts=root.GetComponentsInChildren<MeshFilter>().Length,conflicts=conflicts.ToArray()},true));
-            foreach(var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))if(!r.transform.IsChildOf(body)||r is LineRenderer)r.enabled=false;
+            foreach(var r in UnityEngine.Object.FindObjectsByType<Renderer>())if(!r.transform.IsChildOf(body)||r is LineRenderer)r.enabled=false;
             var camera=Camera.main;camera.orthographic=true;camera.orthographicSize=.78f;camera.farClipPlane=100;camera.transform.position=root.TransformPoint(new Vector3(3f,-.4f,.40f));camera.transform.LookAt(root.position);
             var light=new GameObject("Fuel_Inspection_Light").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.3f;light.transform.rotation=Quaternion.LookRotation(root.position-camera.transform.position);
             Shot(camera,"installed.png");

@@ -5,12 +5,20 @@
 | 文件 | 实测像素 | 观察 |
 |---|---:|---|
 | `station_layout_concept_v1.png` | 1619×971 | 建筑、站台、双股道、茶田、水塘关系可参考；与现有 40×24 碰撞网格不对齐。 |
-| `player_walk_down_concept_v1.png` | 2048×768，透明 | 四个向下姿态可参考；需重绘/裁切成独立的 32×48 帧并核对脚底锚点。 |
+| `player_walk_down_concept_v1.png` | 2048×768，透明 | 旧男主探索稿已废弃；不可再作为新造型或动画参考。 |
 | `train_0721_parked_concept_v1.png` | 2172×724，透明 | 车辆身份错误的探索稿，不能作为正式车辆参考。 |
 | `station_layout_wufeng_nf5k_concept_v2.png` | 1620×971 | 对照雾峰站既有背景修订的站区构图；仍不与游戏网格对齐。 |
 | `train_nf5k_korean_livery_concept_v2.png` | 2172×724，透明 | 对照 NF-5K 外形与雾峰站深蓝朝鲜涂装修订的车辆造型；仍非可导入 Sprite。 |
 
-**选用 v2 作当前画风参考。** v1 的 0721 停靠列车概念身份错误：0721「沙子飞猪」是沙能飞行载具，巡线地图停靠车辆是 NF-5K「耕牛」朝鲜原厂涂装。v1 保留作探索记录，不用于正式制作。主角 v1 姿态图不锁定主角面容。
+**高清像素视觉参考以 2026-11-17 的 imagegen 新稿为准**：`wufeng_station_nf5k_hd_art_board_v3.png`（站房、站台与编组美术板，1774×887）、`dispatch_room_hd_art_direction_v2.png`（调度室整体画风，1619×971）、`nf5k_integrated_headcar_consist_concept_v8.png`（驾驶室与客室同在头车的直向左行编组，透明底，2172×724）。v3–v7 是车头朝向、投影、背景及头车构型迭代稿。v8 仍需切层、校正精确 7 格占位、核对车牌与宣传位及角色遮挡后才能成为运行时资产。v1 的 0721 停靠列车概念身份错误：0721「沙子飞猪」是沙能飞行载具，巡线地图停靠车辆是 NF-5K「耕牛」朝鲜原厂涂装。
+
+同期新增 `wufeng_buildings_hd_art_board_v1.png`：大厅、调度室、候车室、车库、茶摊五栋独立建筑的材质与门向参考。**`lin_biaohan_four_direction_hd_concept_v2.png` 已废弃**：它照旧画像定脸、带特征性配件，不符合用户最新要求。新探索男主参考为 `player_anonymous_four_direction_concept_v1.png`，普通深蓝工装、弱面容、无固定标志，四向完整透明；仍未按网格拆分或提供行走帧，不接入运行时，也不用于 VN。
+用户随后要求男主更纤细柔和、带正太感的年轻观感；保持设定中的 25 岁成年人。当前探索造型参考更新为 `player_soft_youthful_four_direction_concept_v2.png`（四向完整透明），`player_anonymous_four_direction_concept_v1.png` 退为过程稿。人物性取向不靠服饰符号推断或视觉刻板印象表达，VN 仍不用男主画像。v2 仍非 128×192 独立帧或行走动画。
+用户再追加彩虹旗与表情要求，当前探索造型参考改为 `player_pride_four_direction_concept_v3.png`：左胸小型六色彩虹旗布章、柔和俏皮的微笑；v2 转为过程稿。此图仍是四向概念，不是独立游戏帧，也不用于 VN。
+用户反馈 v3 的彩虹旗像贴纸，表情仍需加强；当前参考更新为 `player_pride_sleeve_four_direction_concept_v4.png`：上臂外侧缝制布章，浅紫衬衫与更收身工装，温柔自信的表情；v3 转为过程稿。仍未提供逐帧游戏资源。
+`player_pride_soft_youthful_concept_v5.png` 记录轻微闭口笑、朴素工装和上臂小布章的前一版造型。
+
+**当前探索男主造型参考为 `player_photo_reference_four_direction_concept_v7.png`。** 用内置 imagegen 参考用户提供的两张照片，绘制短直黑发、深蓝绗缝马甲、低对比纹理长袖和浅灰长裤。在 v6 基础上提亮眼神，调整为自然闭口微笑，并增强左上臂六色彩虹布章的辨识度。透明四向立姿供地图美术参考，行走帧另行制作。
 
 ## 生成提示词
 

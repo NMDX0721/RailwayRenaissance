@@ -10,7 +10,7 @@
 
 ## VN and tablet archive migration (2026-11-03)
 
-`TitleArchiveUI` and `MainStoryUI` and their meta files are removed. Do not recreate the old archive UI. Existing archive, bookmark, achievement and statistics PlayerPrefs keys remain authoritative. `StoryArchiveProgress`, `StoryArchiveCatalog` and `StoryReplayService` own progress/catalogue/replay; tablet destinations are Return Journey (story/bookmarks), Gallery (CG/scenes), Music, Wiki (people/trains), Notes (achievements) and RDA (statistics). `GameMainUI.OpenTabletApp` is the common launcher. VN targets Windows and Android tablets; phone screenshots do not substitute for tablet acceptance. Audio volume getters are cached; external preference writes must call `GameData.ApplyVolume`. Missing portrait paths are negatively cached; use `ClearSpriteCache` after runtime asset changes. See `docs/for-ai/VN_FINAL_TABLET_ACCEPTANCE_20261103.md` for evidence and device/build limits.
+`TitleArchiveUI` and `MainStoryUI` and their meta files are removed. Do not recreate the old archive UI. Existing archive, bookmark, achievement and statistics PlayerPrefs keys remain authoritative. `StoryArchiveProgress`, `StoryArchiveCatalog` and `StoryReplayService` own progress/catalogue/replay; tablet destinations are Return Journey (story/bookmarks), Gallery (CG/scenes), Music, Wiki (people/trains/places/lore/terms/chapters — the only encyclopedia; the old character/train 图鉴 and the settings TIPS 图鉴 page are retired as of 2026-11-15, do not recreate them), Notes (achievements) and RDA (statistics). VN term tips come from `Resources/Terms.json` plus the `tips` field of `Resources/Wiki/wiki_articles.json`. `GameMainUI.OpenTabletApp` is the common launcher. VN targets Windows and Android tablets; phone screenshots do not substitute for tablet acceptance. Audio volume getters are cached; external preference writes must call `GameData.ApplyVolume`. Missing portrait paths are negatively cached; use `ClearSpriteCache` after runtime asset changes. See `docs/for-ai/VN_FINAL_TABLET_ACCEPTANCE_20261103.md` for evidence and device/build limits.
 
 ## ATO research prototype (2026-10-25)
 
@@ -313,3 +313,13 @@ Complete elimination of legacy "Old Android" visual artifacts (Holo dark blocks,
 ## VN reading chrome and voice (2026-11-03)
 
 `VNManager.Presentation` wires icon-only menus, speaker-adjacent bookmarking, optional five-aspect atmosphere signals and `VNVoicePlayer`. Reviewed voice catalogues live under `Resources/Voice/{locale}/{script}/`; both Chinese source and translated display text hashes must match, and protagonist/narration/thought lines stay unvoiced. `DialogueBox.Presentation` and `VNRailwayArt` own original vector chapter scenery and train progress. Settings include voice language/volume and signal visibility. See `docs/for-ai/VN_READING_PRESENTATION.md` for delivery schema and actual verification boundaries.
+
+## VN Live2D evaluation (2026-11-05)
+
+Official Cubism R6.1 Ren sample passed isolated offline Unity 6000.5.8 / cached URP 17.5.0 Play checks at 2560×1440: blink, real AudioSource mouth input, pause/mute/stop and expression-to-neutral restoration. Sources and evidence are under `tools/vn/live2d_integration_20261105`; production VN remains PNG-based and character model catalogue entries remain disabled. Normal UPM import, custom PSD/cmo3/moc3, VN portrait rendering and device acceptance remain pending. Do not copy official samples or the offline package workaround into release content. See `docs/for-ai/VN_LIVE2D_INTEGRATION.md` for the SDK compatibility guard, update order and verification limits.
+
+## RDA UI「站台纸本」设计系统与信息架构 (2026-11-13)
+
+RDA 主体是 2D 俯视探索场景（`TabletExploreAppUI`）；经营页（调度/人员/订单/市场/财务）按功能分开，部分必须在地图指定位置交互，不得合并成一个总页。所有新 UI 使用 `Assets/Scripts/UI/Tablet/Paper/`（`PaperTokens/PaperDraw/PaperUI`），Painter2D 精绘、浅色纸面、禁止纯色块。`TabletRDAAppUI` 已换装；探索场景 HUD 待迁移。详见 `docs/for-ai/UI_PAPER_DESIGN_SYSTEM.md`。
+
+美术分工：像素美术（Tileset/角色/NPC/车辆）由 GPT 出，规格以 `Assets/Resources/Art/EXPLORE_ASSET_SPEC.md` 为准；代码与 UI 由 Claude。统一口径（3/4 俯视、32px 网格、NF-5K 停靠编组 7 格、0721 非停靠机车、概念图不接入运行时）见 `docs/for-ai/UI_PAPER_DESIGN_SYSTEM.md` §7。

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460">
+<rect width="1400" height="460" fill="#f3f0e8"/><g font-family="Microsoft YaHei, sans-serif" fill="#243340">
+<text x="50" y="50" font-size="27">NF-5K 现状纵向布局 · 2026-11-01</text>
+<text x="50" y="82" font-size="16">源码尺寸示意（m）· 非工程图 · 未经本轮 Unity 场景量测 · 前方为 -Z</text>
+<rect x="60" y="130" width="169" height="130" fill="#a8bdce" stroke="#26384b"/>
+<rect x="229" y="130" width="929" height="130" fill="#d0dccc" stroke="#26384b"/>
+<rect x="1158" y="130" width="100" height="130" fill="#e4d6b5" stroke="#26384b"/>
+<path d="M229 120v155 M1258 120v155" stroke="#bd453a" stroke-width="5"/>
+<text x="90" y="170" font-size="22">驾驶室</text><text x="77" y="203" font-size="16">地板 -0.50~1.90</text>
+<text x="490" y="170" font-size="22">客席中心 2.85~14.95 · 12排 × 4席</text>
+<text x="485" y="205" font-size="17">中间扶手净距约 0.664 · 隔墙开口 0.620</text>
+<text x="1165" y="172" font-size="17">后门区</text><text x="1165" y="204" font-size="16">16.50</text>
+<text x="182" y="108" font-size="16">1.91 隔门静态</text><text x="1160" y="108" font-size="16">17.50 贯通门静态</text>
+<text x="50" y="290" font-size="16">车壳起点 -0.65</text><text x="1140" y="290" font-size="16">车壳终点 17.50</text>
+<rect x="510" y="312" width="96" height="42" fill="#8e9a9d"/><rect x="642" y="312" width="96" height="42" fill="#8e9a9d"/><rect x="781" y="312" width="96" height="42" fill="#8e9a9d"/>
+<text x="510" y="339" font-size="16">柜 6.00</text><text x="642" y="339" font-size="16">柜 8.00</text><text x="781" y="339" font-size="16">柜 10.10</text>
+<g fill="#344450"><circle cx="195" cy="334" r="19"/><circle cx="340" cy="334" r="19"/><circle cx="1000" cy="334" r="19"/><circle cx="1145" cy="334" r="19"/></g>
+<text x="170" y="385" font-size="17">前转向架中心 2.50</text><text x="975" y="385" font-size="17">后转向架中心 14.70</text>
+<text x="50" y="430" font-size="17" fill="#a53b32">优先缺口：可动隔门 / 后贯通门、动力设备与检修包络、梯子收纳及动态限界。</text>
+</g></svg>

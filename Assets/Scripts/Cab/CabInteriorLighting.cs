@@ -27,10 +27,12 @@ namespace RailwayRenaissance.Cab
         [SerializeField] float lastInstrumentDimmer = .25f;
         [SerializeField] bool mainPower = true, batteryPower = true;
         [SerializeField] bool reviewControls = true;
+        [SerializeField, Range(1,4)] float lampGain = 1.35f;   // scene fixtures were tuned for a bright review room; at dusk/night they read too weak
         Rect ReviewPanelRect => new Rect(Mathf.Max(250, Screen.width - 260),16,244,400);
         MaterialPropertyBlock properties;
         bool previousLegacy;
         Font reviewFont;
+        int passengerFrontCommand, passengerRearCommand;
         public bool CabCeilingOn => cabCeiling;
         public bool TaskOn => task;
         public bool AssistantTaskOn => assistantTask;
@@ -46,6 +48,7 @@ namespace RailwayRenaissance.Cab
             if (zone < 0 || zone > 1) throw new ArgumentOutOfRangeException(nameof(zone));
             return zone == 0 ? passengerFront : passengerRear;
         }
+        internal int PassengerZoneCommand(int zone) => zone == 0 ? passengerFrontCommand : passengerRearCommand;
         public void Configure(CabEngineState state, Fixture[] bindings)
         {
             engineState = state; fixtures = bindings ?? throw new ArgumentNullException(nameof(bindings));
@@ -72,7 +75,8 @@ namespace RailwayRenaissance.Cab
         public void SetPassengerZone(int zone, bool on)
         {
             if (zone < 0 || zone > 1) throw new ArgumentOutOfRangeException(nameof(zone));
-            if (zone == 0) passengerFront = on; else passengerRear = on;
+            if (zone == 0) { passengerFront = on; passengerFrontCommand++; }
+            else { passengerRear = on; passengerRearCommand++; }
             Apply();
         }
         public void SetInstrumentDimmer(float level)
@@ -85,6 +89,8 @@ namespace RailwayRenaissance.Cab
         public void SetSupply(bool normal, bool backup) { mainPower = normal; batteryPower = backup; Apply(); }
         public void AllOff()
         {
+            passengerFrontCommand++;
+            passengerRearCommand++;
             cabCeiling = task = passengerFront = passengerRear = assistantTask = access = false; instrumentDimmer = 0; Apply();
         }
         float Level(InteriorLightCircuit circuit)
@@ -113,13 +119,15 @@ namespace RailwayRenaissance.Cab
             foreach (var fixture in fixtures)
             {
                 float level = Level(fixture.circuit);
-                if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level; }
-                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = fixture.bounceIntensity * level; }
-                if (fixture.lowerBounce != null) { fixture.lowerBounce.enabled = level > 0; fixture.lowerBounce.intensity = fixture.lowerBounceIntensity * level; }
+                bool saloon = fixture.circuit == InteriorLightCircuit.PassengerFront || fixture.circuit == InteriorLightCircuit.PassengerRear;
+                float gain = saloon ? lampGain * .7f : lampGain;   // the saloon has many luminaires close to a low ceiling: less each, or the ceiling washes out
+                if (fixture.light != null) { fixture.light.enabled = level > 0; fixture.light.intensity = fixture.intensity * level * gain; }
+                if (fixture.bounce != null) { fixture.bounce.enabled = level > 0; fixture.bounce.intensity = fixture.bounceIntensity * level * gain; }
+                if (fixture.lowerBounce != null) { fixture.lowerBounce.enabled = level > 0; fixture.lowerBounce.intensity = fixture.lowerBounceIntensity * level * gain; }
                 if (fixture.diffuser == null) continue;
                 fixture.diffuser.GetPropertyBlock(properties);
                 var tint = fixture.light != null ? fixture.light.color : Color.white;
-                properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : .65f));
+                properties.SetColor("_EmissionColor", tint * level * (fixture.circuit == InteriorLightCircuit.Emergency ? .35f : saloon ? .38f : .65f));
                 fixture.diffuser.SetPropertyBlock(properties);
             }
             GetComponent<CabDiffuseFill>()?.Refresh();

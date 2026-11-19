@@ -35,7 +35,9 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             new Item { name = "茶叶",   icon = TabletIconKind.Sprout,   count = 0, color = new Color(0.28f, 0.58f, 0.26f) },
         };
 
-        public static void Build(VisualElement win, Action<string> onAction, Action onEndDay, Action<string> toast, Action<string> launchApp = null, Action openStory = null, Action openAffairs = null)
+        internal static void Build(VisualElement win, Action<string> onAction, Action onEndDay, Action<string> toast,
+            Action<string> launchApp, Action openStory, Action openAffairs, ExploreMapView.SessionState session,
+            Func<bool> isTaskInteractive)
         {
             win.style.flexDirection = FlexDirection.Column;
 
@@ -46,9 +48,13 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             win.Add(host);
 
             var view = new ExploreMapView();
+            view.RestoreSession(session);
             view.OnAction = onAction;
             host.Add(view);
-            ActiveView = view;
+            host.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                if (ActiveView == view) ActiveView = null;
+            });
 
             var status = BuildStatus(view, out var updateStatus);
             Fade(status, 0.3f);
@@ -58,8 +64,6 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             actions.style.position = Position.Absolute;
             actions.style.top = 46; actions.style.right = 18;
             actions.style.flexDirection = FlexDirection.Row;
-            actions.Add(IconButton(TabletIconKind.Map, "地图", () => ToggleMapRef?.Invoke()));
-            actions.Add(IconButton(TabletIconKind.Gear, "系统", () => ToggleMenuRef?.Invoke()));
             host.Add(actions);
 
             // ===== 面板（地图 / 菜单）=====
@@ -87,7 +91,8 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             void CloseAll() { HidePanel(mapOverlay); HidePanel(menuOverlay); if (journalOverlay != null) HidePanel(journalOverlay); }
             void ToggleMap() { bool was = IsOpen(mapOverlay); CloseAll(); if (!was) { ShowPanel(mapOverlay); (mapOverlay.userData as Action)?.Invoke(); } }
             void ToggleMenu() { bool was = IsOpen(menuOverlay); CloseAll(); if (!was) ShowPanel(menuOverlay); }
-            ToggleMapRef = ToggleMap; ToggleMenuRef = ToggleMenu;
+            actions.Add(IconButton(TabletIconKind.Map, "地图", ToggleMap));
+            actions.Add(IconButton(TabletIconKind.Gear, "系统", ToggleMenu));
             mapOverlay.Q<VisualElement>("map-pick-close")?.RegisterCallback<ClickEvent>(_ => CloseAll());
             view.OpenMapRequested += ToggleMap;
             view.OnMapPicked = CloseAll;
@@ -280,6 +285,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             void Select(int i)
             {
                 selected = i;
+                view.SelectedSlot = i;
                 for (int k = 0; k < slots.Count; k++) SetSlotSelected(slots[k], k == i);
                 itemName.text = i < Items.Length ? Items[i].name : "空";
                 view.SelectedItem = i < Items.Length ? Items[i].name : "";
@@ -295,7 +301,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 slots.Add(slot);
             }
             hotbar.Insert(0, itemName);
-            Select(0);
+            Select(view.SelectedSlot);
 
             // ===== 右下：能量条 + 加速键 =====
             var energy = new VisualElement { name = "explore-energy" };
@@ -413,6 +419,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
             // 大面板盖在所有常驻 HUD 之上
             mapOverlay.BringToFront(); rdaOverlay.BringToFront(); menuOverlay.BringToFront(); journalOverlay.BringToFront();
+            view.IsInputAllowed = () => isTaskInteractive() &&
+                mapOverlay.style.display != DisplayStyle.Flex &&
+                rdaOverlay.style.display != DisplayStyle.Flex &&
+                menuOverlay.style.display != DisplayStyle.Flex &&
+                journalOverlay.style.display != DisplayStyle.Flex;
 
             host.schedule.Execute(() =>
             {
@@ -685,7 +696,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
             return l;
         }
 
-        private static Action ToggleMapRef, ToggleMenuRef;
+        internal static void SetActiveView(ExploreMapView view) => ActiveView = view;
 
         /// <summary>打卡机工牌卡：顶部穿孔条 + 头像窗 + 姓名/地点 + 大号时间 + 日程刻度条 + 资金/信任。</summary>
         private static VisualElement BuildStatus(ExploreMapView view, out Action update)
@@ -964,7 +975,79 @@ namespace RailwayRenaissance.UI.Tablet.Apps
         /// <summary>世界坐标 → 视图局部坐标（悬浮 UI 跟随世界物体用）。</summary>
         public Vector2 WorldToView(Vector2 w) { float s = Scale; return (w - CameraOrigin(s)) * s; }
         public string SelectedItem = "";
+        internal int SelectedSlot { get; set; }
         public void RequestMap() => OpenMapRequested?.Invoke();
+
+        internal Func<bool> IsInputAllowed { private get; set; }
+        private bool foreground;
+
+        internal void SetForeground(bool active)
+        {
+            foreground = active;
+            if (active) TabletExploreAppUI.SetActiveView(this);
+            else StopWorldInput();
+        }
+
+        private void StopWorldInput()
+        {
+            JoyDir = Vector2.zero;
+            SprintHeld = false;
+            IsMoving = false;
+        }
+
+        private bool CanUseWorldInput()
+        {
+            if (!foreground || panel == null || IsInputAllowed?.Invoke() != true) return false;
+            for (var focused = panel.focusController.focusedElement as VisualElement; focused != null; focused = focused.parent)
+                if (focused is TextField) return false;
+            return true;
+        }
+
+        internal sealed class SessionState
+        {
+            internal string Area;
+            internal Vector2 Player, Facing, ReturnPosition;
+            internal float Minutes, Stamina, RegenDelay;
+            internal bool SprintLocked, LateNotified, PondFound;
+            internal int TrustDay, NailsFound, BlossomDay, SelectedSlot;
+        }
+
+        internal SessionState CaptureSession() => new SessionState
+        {
+            Area = AreaId,
+            Player = player,
+            Facing = facing,
+            ReturnPosition = returnPos,
+            Minutes = Minutes,
+            Stamina = Stamina,
+            RegenDelay = regenDelay,
+            SprintLocked = SprintLocked,
+            LateNotified = lateNotified,
+            PondFound = pondFound,
+            TrustDay = trustDay,
+            NailsFound = nailsFound,
+            BlossomDay = blossomDay,
+            SelectedSlot = SelectedSlot
+        };
+
+        internal void RestoreSession(SessionState state)
+        {
+            if (state == null) return;
+            if (areas.TryGetValue(state.Area, out var area)) UseArea(area);
+            player = state.Player;
+            facing = state.Facing;
+            returnPos = state.ReturnPosition;
+            Minutes = state.Minutes;
+            Stamina = state.Stamina;
+            regenDelay = state.RegenDelay;
+            SprintLocked = state.SprintLocked;
+            lateNotified = state.LateNotified;
+            pondFound = state.PondFound;
+            trustDay = state.TrustDay;
+            nailsFound = state.NailsFound;
+            blossomDay = state.BlossomDay;
+            SelectedSlot = state.SelectedSlot;
+        }
 
         private string lastPrompt = "";
         private bool lateNotified;
@@ -1328,7 +1411,11 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private void Tick()
         {
-            if (panel == null) return;
+            if (!CanUseWorldInput())
+            {
+                StopWorldInput();
+                return;
+            }
             float dt = Mathf.Min(Time.unscaledDeltaTime, 0.05f);
             Vector2 dir = Vector2.zero;
             bool shift = false;
@@ -1342,6 +1429,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
                 shift = k.leftShiftKey.isPressed || k.rightShiftKey.isPressed;
                 if (k.eKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame || k.spaceKey.wasPressedThisFrame) Interact();
                 if (k.mKey.wasPressedThisFrame) OpenMapRequested?.Invoke();
+                if (!CanUseWorldInput()) return;
             }
             if (JoyDir.sqrMagnitude > 0.04f) dir += JoyDir;
             bool sprint = shift || SprintHeld;
@@ -1483,6 +1571,7 @@ namespace RailwayRenaissance.UI.Tablet.Apps
 
         private void OnPointerDown(PointerDownEvent e)
         {
+            if (!CanUseWorldInput()) return;
             queuedAfterSwitch = null;
             Vector2 world = ScreenToWorld(e.localPosition);
             // 点中交互点 / NPC：走过去并自动交互

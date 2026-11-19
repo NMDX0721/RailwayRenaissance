@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class FullScreenNews : MonoBehaviour
 {
     private UIDocument uiDoc;
-    private Font gameFont;
+    private Font gameFont => VNFonts.Game;   // 随「剧情字体」设置实时变化
     private VisualElement newsPanel;
     private ScrollView newsScroll;
     private Label newsContent;
@@ -20,7 +20,6 @@ public class FullScreenNews : MonoBehaviour
     public void Init(UIDocument document)
     {
         uiDoc = document;
-        gameFont = Resources.Load<Font>("Fonts/zpix");
         BuildUI();
     }
 

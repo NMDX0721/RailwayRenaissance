@@ -1,10 +1,50 @@
 # 铁路复兴：沙能冲击 — 代码地图
 
+2026-11-19 VN 术语百科暂停。从正文或回顾打开百科时，`GameMainUI.VnTipsBlockStory` 暂停 VN 自动推进并屏蔽键鼠输入，直到平板关闭。返回剧情当帧仍屏蔽推进，避免系统返回键同时被 VN 接收。
+
+2026-11-19 PR #13 复审跟进。百科切回前台时重新生成已打开的动态合集，游客关注并入账号后清除本地缓存。VN 跳转撤销绑定原剧本实例，换章、读档或退出时清理撤销状态和提示。
+
+2026-11-18 PR #13 审核跟进。媒姬百科在前台检测词条解锁变化并刷新当前页，保留导航与滚动位置。`VNManager` 在回顾跳转、书签重放与无曲名的旧存档中恢复目标句之前最近一条生效的场景内配乐。自动照明分别记录两个客室灯区和近光灯的命令版本，白天只撤销自入夜以来未被其他命令接管的自动设置。
+
+2026-11-18 PR #12 审核跟进。RDA 和巡线共用平板任务，切换应用保留巡线视图，回收视图时保存区域、位置、时间、精力和发现奖励状态。巡线仅在前台且系统面板、子页或地图内面板关闭时处理世界输入。经营 HUD 通过 `GameData.GetDailyCapacity()` 显示计划运力。控制中心分页只消费横拖的松手事件，歌词页从面板卸载时解除静态引用。
+
 2026-11-18 巡线室外 56×24 格。`ExploreMapView.DrawOutdoorArt` 将 `Scenes/scene_wufeng_station_v2` 和 `Scenes/scene_wufeng_east` 按黄线与四条钢轨接合。逻辑网格负责通行、小地图、铁路商店、东端道口及货运栈台交互。`DrawTrain` 单独叠绘 v8 编组 `Vehicles/train_nf5k_parked`。`TabletExploreAppUI.BuildStatus` 提供紧凑状态卡。`ExploreReview.Batch` 包含商店柜台和东段寻路验证。见[室外美术单](../../Assets/Resources/Art/EXPLORE_MAIN_SCENE_ART_BRIEF.md)。
 
 2026-11-18 巡线地图角色。`ExploreCharacters.TrySprite` 加载男主四向待机与行走帧。`ExploreMapView.DrawChar` 以脚底为锚将男主位图绘制为 34×51 世界像素。其他角色尺寸、逻辑位置与碰撞沿用原有地图规则。见[探索美术规格](../../Assets/Resources/Art/EXPLORE_ASSET_SPEC.md)。
 
-2026-11-18 平板入口与手势。GameMainUI 的 RDA 和巡线入口打开雾峰站，返回桌面走统一导航，回站休息通过 DayLoopController 结算并排队日报。桌面退出确认和按键重绑取消各自独立，底边手势在松手或长按打开最近任务时结束跟手预览。
+2026-11-13 巡线/RDA 车辆身份校正：`UI/Tablet/Apps/TabletExploreAppUI.cs` 的站台交互、7 格停靠灰盒和 `TabletRDAAppUI.cs` 的机车卡现在指向 NF-5K「耕牛」朝鲜原厂涂装；0721「沙子飞猪」仍是独立沙能飞行载具。探索层正式图块、车辆和角色素材尚未接入，首批美术参考与尺寸限制见 `Assets/Resources/Art/EXPLORE_ASSET_SPEC.md`。
+
+Cubism Java 控件探测。 `tools/vn/cubism_jab_probe.py` 通过随编辑器提供的 Java Access Bridge 枚举窗口、控件和可用动作；指定已核对的窗口、路径和控件名时可调用公开动作。`tools/vn/suiyue_cubism_head_import/src/SuiyuePrototypeReview.cs` 在隔离 Unity 工程分别验证静态基线、双眼透明度眨眼原型和 SDK 眼部控制器的参数、渲染器、透明画面与重新睁眼还原；同目录的 `SuiyueBlinkLoop.cs`、`SuiyueAutoBlinkReview.cs` 实现并验证定时循环及暂停恢复。`tools/vn/repair_suiyue_eye_underlay.py` 生成眼部旧轮廓清理 PSD 候选，当前 cmo3/moc3 仍有重影，见[接入记录](VN_LIVE2D_INTEGRATION.md)。
+
+岁月头部样机导入。 `tools/vn/prepare_suiyue_cubism_import.py` 将校色工作稿整理为独立 RGB PSD，生成眼睛遮罩映射和 2.5K 静态对照。见[接入记录](VN_LIVE2D_INTEGRATION.md)。
+
+岁月耳廓和颈部校色。 `tools/vn/calibrate_suiyue_ear_neck.py` 按参考图七组色样调整局部肤色，输出独立 PSD 和前后对照。见[分层记录](VN_LIVE2D_LAYERING.md)。
+
+岁月耳廓补画。 `tools/vn/rebuild_suiyue_ear_occlusion.py` 对生成素材做双耳独立配准，将补画置于前发下方，并输出独立 PSD 与两类位移对照。见[分层记录](VN_LIVE2D_LAYERING.md)。
+
+岁月接触边打磨。 `tools/vn/polish_suiyue_contact_edges.py` 复用轮廓重拆流程，输出独立工作 PSD、刚性位移对照和固定发根的栅格预览。见[分层记录](VN_LIVE2D_LAYERING.md)。
+
+2026-11-10 岁月轮廓重拆。 `tools/vn/rebuild_suiyue_head_contours.py` 按原画重分眉毛、刘海和耳前交界，输出 77 层工作 PSD 与左右位移对照。检查范围见[分层记录](VN_LIVE2D_LAYERING.md)。
+
+2026-11-06 发束内部接缝：`tools/vn/refine_suiyue_hair_seams.py`输出66层独立工作PSD、位移对照及待重拆轮廓图。默认合成保持在1/255内，眉毛交叉与耳前残边仍未通过视觉验收；见[分层范围](VN_LIVE2D_LAYERING.md)。
+
+2026-11-06 额头遮挡层：`prepare_suiyue_head_underlay.py`输出独立头部补画PSD，前发材质重分类、边缘颜色分离和±2px位移检查。默认图保持在1/255误差内，但细碎接缝未通过视觉验收；见[分层范围](VN_LIVE2D_LAYERING.md)。
+
+
+2026-11-06 眼部与肤色：`polish_suiyue_eye_layers.py`局部清理虹膜外圈残留；`calibrate_suiyue_skin.py`按用户原立绘的四组材质取样校准面部肤色，输出独立工作PSD。最新路径与边界见[分层记录](VN_LIVE2D_LAYERING.md)。
+
+
+2026-11-06 面部分层第二轮：`tools/vn/refine_suiyue_face_layers.py`生成独立PSD、完整虹膜裁切、开口分件和闭眼参考；小幅视线检查属于栅格素材验证，不是Live2D运行。见[分层进展](VN_LIVE2D_LAYERING.md)。
+
+
+2026-11-06 岁月分层：`tools/vn/build_suiyue_layers.py`输出同画布PNG、蒙版和首轮PSD，并做原像素还原与PSD重读验证；补画层默认关闭，未进入Cubism绑定。见[分层范围](VN_LIVE2D_LAYERING.md)。
+
+
+2026-11-05 ATO 3D 试验线：`tools/ato_track/build_track_module.py`（Blender）生成 25/5 米平直及 ±10/±20‰ 坡度模块、贴图和表层碎石；`AtoTestLineBuilder` 做材质、预制体（含 LOD）并按片段表拼线，同一片段表经 `TrackFor` 转成 `CabReviewTrack.Straight(...)`。`CabReviewTrack` 默认仍是旧 180 米半径检查线，Straight 模式为直线加分段坡度，`HeightAt/GradePermilleAt` 给出轨高与坡度。`CabRailMotion.UseTrack` 换线并把坡度接到 `CabSimulationDriver.RouteGradePermille`，坡度线上车体与转向架随坡俯仰；末端保护改按线路 `RangeEnd/RangeStart`，判断封装为 `RouteEndBrakeRequired`。`AtoLineReview.Batch` 做验收，见 [ATO_ROUTE_3D.md](ATO_ROUTE_3D.md)。
+
+2026-11-05 Live2D准备：`VNPortraitStoryStage`从播放游标重建岁月平板阶段，`VNManager`在正常显示和回看恢复前传给`CharacterSpriteManager`；前期缺表情只回退无平板常态。`VNVoicePlayer.PlaybackSource/Speaker/IsAudible`提供未来口型桥输入。`Resources/VNPortraits/catalogue.json`记录disabled的模型配置，`tools/vn/live2d_readiness.py`检查真实交付缺件。官方SDK已在独立离线工程通过真实模型2.5K Play检查，见[Live2D运行验证](VN_LIVE2D_INTEGRATION.md)；主工程SDK、角色模型与动态渲染尚未接入。制作约定见[制作交付与验证](../../参考资料/资产/Live2D制作交付清单.md)。
+
+2026-11-05 序章连续性复查：第08章首发标志改为 `first_run_briefing_vehicle` / `first_run_briefing_return`，只控制说明台词；`VNManager.GetVariable` 兼容旧存档 `first_run_conservative` / `first_run_aggressive`，新键显式值优先。正文资金、期限、称谓与修订验证边界见 [连续性记录](VN_PROLOGUE_CONTINUITY_20261105.md)。
 
 2026-11-04 冷却模块：`NF5KCoolingReview` 在独立 CabCoolingReview 中生成车底散热芯、百叶、双轴流风扇、罩壳与接口，复用原动力包络。见 [冷却模块](NF5K_COOLING_DETAIL.md)。
 
@@ -23,6 +63,8 @@
 2026-11-03字幕语言修订：`VNSubtitleSettings`管理主/副字幕语言与副字幕字号，默认中文＋副字幕关闭；平板显示设置新增语言选择和实时预览。`DialogueBox`移除框外日文条，主副文字统一在同一对白框中分层显示、按内容扩高；主语言日文缺译回退中文且不重复副字幕。旧布尔偏好仅做显式迁移。详见[字幕语言与排版修订](VN_JAPANESE_SUBTITLES_20261103.md)。
 
 2026-11-03日语副字幕：`DialogueEntry.textJa`保存审校后的日文字幕，`VNManager`传到`DialogueBox`独立日文标签；平板显示设置增加即时生效的`VNJapaneseSubtitles`开关。旧JSON缺字段自动隐藏，主中文打字机保持原逻辑。另修回顾立绘恢复中两处局部类型不匹配。功能范围、验证入口和翻译先行流程见[日语副字幕](VN_JAPANESE_SUBTITLES_20261103.md)；岁月正文225条发言的声音设计依据见[音色基准](../../参考资料/资产/岁月_日语音色与配音基准.md)。
+
+2026-11-15 图鉴归档：旧图鉴（`TitleArchiveUI` 的角色/列车图鉴、设置里的 TIPS 术语图鉴页）已全部由媒姬百科（`TabletWikiAppUI`/`TabletWikiData`/`TabletWikiBlocks`）取代，代码里不再有图鉴界面。`StoryArchiveCatalog`/`StoryArchiveProgress` 仍是解锁进度与目录的数据层（百科、相册、音乐、归途共用），不能删。VN tips：铁路术语来自 `Resources/Terms.json`，世界观/线路/车辆类 tips 来自 `Resources/Wiki/wiki_articles.json` 条目的 `tips` 字段，id 与百科条目一致（`TermHighlightSystem.Initialize`）。「雾峰村」「沙能」「沙币」按用户决定不做 tips。
 
 2026-11-03最终收尾：旧`TitleArchiveUI`、`MainStoryUI`与meta已删除。`StoryArchiveProgress`承接解锁、`StoryArchiveCatalog`承接目录、`StoryReplayService`承接回放；归途新增`TabletBookmarksUI`，相册补CG/场景，百科补人物/列车，笔记与RDA通过`TabletHistoryUI`呈现成就/统计。`GameMainUI.OpenTabletApp`统一入口，保留原Prefs键。`BookmarkManager`新增分支快照、单调更新时间与安全跳转；`VNViewportLayout`支持Windows及Android平板安全区。`GameData`音量getter缓存，`CharacterSpriteManager`增加查空缓存和显式清理。接口、证据和平台限制见 [最终平板验收](VN_FINAL_TABLET_ACCEPTANCE_20261103.md)。
 
@@ -394,9 +436,12 @@ GameMainUI.cs (Tablet OS Shell, ~2,000行)
         ├── MusicCloudSyncEngine.cs    (云端多源对齐引擎：全量支持Folia 4大阵营9大平台/协议[网易云扫码、B站音频、Spotify开放生态、QQ音乐绿钻、酷狗音乐KRC歌词、波点音乐极简流媒体、YouTube Music全球Remix、Navidrome/Subsonic私人NAS无损云、AMLL社区逐字歌词引擎及万能直链穿透]，所有平台表单全面升级为深炭黑工业风+琥珀金焦点反馈)
         ├── SimpleQrCodeGenerator.cs   (纯C#轻量级调频二维码矩阵生成器：脱机高对比度渲染 + 在线高清通道兜底)
         ├── TabletGalleryAppUI.cs      (相册：回忆画廊/全屏大图灯箱)
-        ├── TabletSettingsAppUI.cs     (设置：24截图分类/TIPS图鉴/按键映射/开发者)
+        ├── TabletSettingsAppUI.cs     (设置：24截图分类/媒姬百科入口/按键映射/开发者；旧「TIPS 术语图鉴」页已删除，`ShowTipsPage` 只跳转百科)
         ├── TabletRDAAppUI.cs          (RDA：调度助手/线路车况/五线态势胶囊入口/T304联动)
-        ├── TabletNotesAppUI.cs        (百科与便签：HyperOS Master-Detail 图鉴网格/搜索筛选/Squircle徽章/三栏便签/超级岛语音速记与置顶)
+        ├── TabletWikiAppUI.cs         (媒姬百科界面：首页/关注/搜索/足迹/更多五个标签、词条页、VN 进入态「返回剧情」；2026-11 重做，取代旧图鉴)
+        ├── TabletWikiData.cs          (媒姬百科数据层：合并 Resources/Wiki/wiki_articles.json 手写词条、Terms.json 术语、StoryArchiveCatalog 的章节/场景/CG/音乐目录)
+        ├── TabletWikiBlocks.cs        (媒姬百科正文块：图表、@draw 代码示意图、@talk 对话块)
+        ├── TabletNotesAppUI.cs        (便签与成就：三栏便签/超级岛语音速记与置顶；人物/列车图鉴已移到媒姬百科)
         └── TabletSystemToolsAppUI.cs  (系统工具集：Hero气象+水文量规/米家机车IoT遥测与超级岛挂载/文件管理多色分段条/图形拓扑铁道路线图/触觉圆角计算器等)
 ```
 

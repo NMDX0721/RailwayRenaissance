@@ -282,9 +282,9 @@ public static class VNFinalAcceptanceReview
         foreach(var entry in StoryArchiveCatalog.Trains)PlayerPrefs.SetInt(entry.prefsKey,1);
         var view=new VisualElement();
         document.rootVisualElement.Add(view);
-        TabletNotesAppUI.BuildWikiApp(view);
-        var labels=view.Query<Label>().ToList();
-        foreach(var item in StoryArchiveCatalog.Characters.Concat(StoryArchiveCatalog.Trains))Require(labels.Any(label=>label.text==item.name),"Encyclopedia record missing: "+item.name);
+        TabletWikiAppUI.BuildWikiApp(view);
+        Require(view.Q("wiki-root")!=null,"Wiki root missing");
+        foreach(var item in StoryArchiveCatalog.Characters.Concat(StoryArchiveCatalog.Trains)){var article=TabletWikiData.Get(item.id);Require(article!=null&&article.Unlocked,"Encyclopedia record missing: "+item.name);}
         TabletNotesAppUI.BuildNotesApp(view);
         Submit(view.Q<Button>("notes-achievements"));
         foreach(var achievement in AchievementManager.GetAll())Require(view.Q("achievement-"+achievement.id)!=null,"Achievement missing");

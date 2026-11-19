@@ -19,6 +19,7 @@ namespace RailwayRenaissance.Cab
         bool lastLegacySwitch;
         [SerializeField] ExteriorLightMode previousOnMode = ExteriorLightMode.Dim;
         public ExteriorLightMode Mode => mode;
+        internal int ModeCommand { get; private set; }
         public bool BlocksPointer(Vector2 guiPoint) => isActiveAndEnabled && reviewControls && ReviewPanelRect.Contains(guiPoint);
         public bool PowerAvailable => powerAvailable;
         public Light[] Beams => beams;
@@ -41,6 +42,7 @@ namespace RailwayRenaissance.Cab
         public void CycleMode() { SetMode((ExteriorLightMode)(((int)mode + 1) % 5)); }
         public void SetMode(ExteriorLightMode value)
         {
+            ModeCommand++;
             mode = value;
             if (value != ExteriorLightMode.Off) previousOnMode = value;
             Apply();

@@ -79,18 +79,8 @@
           "text": "正被这沉稳的金属心跳唤醒。"
         },
         {
-          "t": "n",
-          "text": "Day 7 上午",
-          "condition": "repair_choice_zhang"
-        },
-        {
-          "t": "n",
-          "text": "Day 7 上午",
-          "condition": "!repair_choice_zhang"
-        },
-        {
           "t": "loc",
-          "text": "雾峰村车站 · 铁路客车候车棚 · 0km"
+          "text": "Day 7 上午 · 雾峰村车站 · 铁路客车候车棚 · 0km"
         },
         {
           "t": "d",
@@ -176,7 +166,7 @@
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "text": "第一项，【人】。首班登记乘客共十二人：下河村茶农四名、松桥矿务局退休矿工三名、就医家属两对及儿童一名。"
+          "text": "第一项，「人」。首班登记乘客共十二人：下河村茶农四名、松桥矿务局退休矿工三名、就医家属两对及儿童一名。"
         },
         {
           "t": "d",
@@ -200,13 +190,13 @@
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "text": "第二项，【钱】。首班客运票价执行保民生基准费率，每张全票三十五沙币，首发客票实收四百二十沙币！"
+          "text": "第二项，「钱」。首班客运票价执行保民生基准费率，每张全票三十五沙币（老票价作废，一律改收沙币），首发客票实收四百二十沙币！"
         },
         {
           "t": "d",
           "s": "岁月",
           "e": "calm",
-          "text": "扣除昨夜更换喷油嘴密封紫铜垫圈与润滑脂损耗，当前站内流动运营金剩余七千五百八十沙币。"
+          "text": "站内现金仍按李阿姨的收支簿逐项核对。柴油预付款已经占款，垫圈和润滑脂也有领用记录，未动用的黑卡额度不计入余额。"
         },
         {
           "t": "d",
@@ -218,7 +208,7 @@
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "text": "第三项，【料】。燃油主箱注入零号轻柴油三百升，副油箱储油一百五十升，储备系数达到一点八！"
+          "text": "第三项，「料」。燃油主箱注入零号轻柴油三百升，副油箱储油一百五十升，储备系数达到一点八！"
         },
         {
           "t": "d",
@@ -242,7 +232,7 @@
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "text": "第四项，【技】。三号缸喷油器已装复，密封和雾化复检均通过。"
+          "text": "第四项，「技」。三号缸喷油器已装复，密封和雾化复检均通过。"
         },
         {
           "t": "d",
@@ -527,7 +517,7 @@
           "t": "d",
           "s": "老陈",
           "e": "calm",
-          "text": "制动主管贯通试验良好，全列闸瓦抱死自锁。随时可以开闸放气动车！"
+          "text": "制动主管贯通试验良好，全列闸瓦压紧自保。随时可以开闸放气动车！"
         },
         {
           "t": "n",
@@ -599,6 +589,7 @@
         },
         {
           "t": "n",
+          "sig": "stop",
           "text": "窗外的月台上，村民们安静地等待着最后的决定。"
         },
         {
@@ -608,12 +599,12 @@
             {
               "text": "先交代车况检查",
               "next": 2,
-              "setValue": "first_run=conservative"
+              "setValue": "first_run_briefing_vehicle=true,first_run_briefing_return=false"
             },
             {
               "text": "先交代回程与货运安排",
               "next": 2,
-              "setValue": "first_run=aggressive"
+              "setValue": "first_run_briefing_vehicle=false,first_run_briefing_return=true"
             }
           ]
         }
@@ -637,126 +628,127 @@
           "t": "d",
           "s": "林彪悍",
           "e": "calm",
-          "condition": "first_run_conservative",
-          "text": "今天执行单趟试验性运营。限速三十五公里，全员重点监视各缸排气与轴箱温升！"
+          "condition": "first_run_briefing_vehicle",
+          "text": "今天只跑一趟往返，限速按沿线放行记录执行。全员重点监视各缸排气与轴箱温升，回程安排也向乘客交代清楚。"
         },
         {
           "t": "d",
           "s": "老陈",
           "e": "smile",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "明白！稳扎稳打好，饭要一口一口吃，路要一步一步走！"
         },
         {
           "t": "d",
           "s": "张工",
           "e": "smile",
-          "condition": "first_run_conservative",
-          "text": "算你小子头脑清醒，没被掌声冲昏头脑。我这就去机械间盯着巡检油窗！"
+          "condition": "first_run_briefing_vehicle",
+          "text": "车况和回程安排都交代了，那就按清单办。我和小王去机械间盯着油压、水温。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "老陈沉稳地握住风笛阀手柄，向下用力拉动。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "汽笛发出两长一短的嘹亮长鸣。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "浑厚的声浪在整座雾峰山谷中回荡。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "老陈将主控手柄轻轻推上一档，电流表指针平稳跃升。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "车轮缓缓滚动，钢轨在脚下发出有节奏的节拍。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "老机长目光专注，指尖轻轻感受着手柄传来的微颤。"
         },
         {
           "t": "d",
           "s": "老陈",
           "e": "calm",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
+          "sig": "stop",
           "text": "老伙计，慢慢来。一档起步，不急不躁，把筋骨彻底活动开。"
         },
         {
           "t": "n",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "列车以极其沉稳的姿态驶出站台，切入峡谷主线。"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "e": "excited",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "先把回程要坐车的人和待运茶篓登记清楚。今天只跑这一趟往返，车况检查也按张工的清单办。"
         },
         {
           "t": "d",
           "s": "老陈",
           "e": "excited",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "明白。这趟先跑稳当，也让等车的乡亲知道咱们怎么安排。"
         },
         {
           "t": "d",
           "s": "李阿姨",
           "e": "happy",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "我去登记，连着重量和站点一起记，不让大家白等。"
         },
         {
           "t": "d",
           "s": "张工",
           "e": "serious",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "机舱交给我和小王。沿途照样测温，回站再复检。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "老陈用力拉下风笛，汽笛声高亢而急促。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "老陈看过油压和水温，才把手柄推上一档。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "客车缓缓切入主线。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "机车主发电机发出低沉的轰鸣。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "澎湃的动力灌注入六台牵引电机。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "老陈稳住手柄，等电流平稳后才继续加档。"
         },
         {
           "t": "n",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "列车迎着晨雾，沿着峡谷慢慢前行。"
         },
         {
@@ -834,6 +826,36 @@
         {
           "t": "n",
           "text": "两条闪烁着银光的钢带向着峡谷深处无限延展。"
+        },
+        {
+          "t": "n",
+          "text": "过了八公里，茶山站的歪站牌从窗口晃过去。"
+        },
+        {
+          "t": "n",
+          "text": "井台上，穿白背心的康叔举着一枚棋子，三个背书包的孩子蹦着脚朝车头挥手。"
+        },
+        {
+          "t": "d",
+          "s": "孩子们",
+          "text": "火车！是真火车！",
+          "e": "excited"
+        },
+        {
+          "t": "d",
+          "s": "林彪悍",
+          "text": "蝙蝠的事，回程我告诉你们！",
+          "e": "smile"
+        },
+        {
+          "t": "d",
+          "s": "康叔",
+          "text": "悔棋的老东西，总算把车开出来了！",
+          "e": "smile"
+        },
+        {
+          "t": "n",
+          "text": "老陈没回头，只把汽笛又拉了长长一声。"
         },
         {
           "t": "loc",
@@ -983,7 +1005,7 @@
         },
         {
           "t": "n",
-          "text": "听针的一端抵在底架牵引销上。"
+          "text": "听针的一端抵在三号缸机体上。"
         },
         {
           "t": "n",
@@ -1005,13 +1027,35 @@
           "t": "d",
           "s": "张工",
           "e": "smile",
-          "text": "大学生手工研磨的底子还算扎实。这台老机器，算是真正缓过这口气了。"
+          "text": "旧件、备件都验过，装复也复查了。今天这一趟还得看完整记录，不能只听发动机响得好不好。"
         },
         {
           "t": "thought",
           "s": "林彪悍",
           "e": "smile",
-          "text": "[能得到这位八级工的一句首肯，比任何荣誉证书都要实在。]"
+          "text": "[这位老技师肯在检修记录上签字，比一句夸奖更让我踏实。]"
+        },
+        {
+          "t": "n",
+          "text": "十五公里，松桥站。车速降到最慢，歪着的站牌擦着车窗退过去。"
+        },
+        {
+          "t": "n",
+          "text": "石墩上的老人拄着拐站了起来，把没点着的烟袋锅高高举过头顶。"
+        },
+        {
+          "t": "d",
+          "s": "老人",
+          "text": "今天，有车！",
+          "e": "gentle"
+        },
+        {
+          "t": "n",
+          "text": "汽笛长鸣了一声，替我答了他。"
+        },
+        {
+          "t": "n",
+          "text": "前面隧道口张着黑洞洞的嘴。白天，蝙蝠都睡着，没有一只飞出来。"
         }
       ]
     },
@@ -1038,11 +1082,12 @@
         },
         {
           "t": "n",
+          "sig": "stop",
           "text": "站房墙上停运后就没再上弦的老挂钟，秒针在震动中微微颤动。"
         },
         {
           "t": "n",
-          "text": "列车制动闸瓦抱死踏面，发出刺耳而沉稳的尖啸。"
+          "text": "列车制动闸瓦压紧踏面，发出刺耳而沉稳的尖啸。"
         },
         {
           "t": "n",
@@ -1118,6 +1163,28 @@
         },
         {
           "t": "n",
+          "text": "站外，茶嫂那辆小货车歪歪斜斜地停着。她没挤进人堆，只踮脚望着掌柜过秤。"
+        },
+        {
+          "t": "d",
+          "s": "茶嫂",
+          "text": "小站长，两百斤，头等。铁路一车茶的运费，只有我这车的三分之一。往后我的茶，都走你这条线。",
+          "e": "smile"
+        },
+        {
+          "t": "d",
+          "s": "林彪悍",
+          "text": "按您说的算。下河村那三十袋柴油的升数，我明早一起跟您核。",
+          "e": "smile"
+        },
+        {
+          "t": "d",
+          "s": "茶嫂",
+          "text": "行。肯把账摊开说的人，我信。",
+          "e": "smile"
+        },
+        {
+          "t": "n",
           "text": "就医的母亲抱着孩子快步走下车梯。"
         },
         {
@@ -1156,14 +1223,14 @@
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "condition": "first_run_conservative",
+          "condition": "first_run_briefing_vehicle",
           "text": "本班次实际运送旅客十二人次，实现客票收益四百二十沙币，柴油净消耗五十八升！机车工况优良！"
         },
         {
           "t": "d",
           "s": "岁月",
           "e": "normal",
-          "condition": "first_run_aggressive",
+          "condition": "first_run_briefing_return",
           "text": "本班次实际运送旅客十二人次，客票实收四百二十沙币，柴油消耗五十八升。回站后按同一张清单复检。"
         },
         {
@@ -1172,45 +1239,45 @@
         },
         {
           "t": "n",
-          "text": "李阿姨双手捧着一个沉甸甸的蓝布包裹。"
+          "text": "李阿姨双手捧着一本用蓝布包好的登记册。"
         },
         {
           "t": "n",
-          "text": "布包用红毛线扎得结结实实。"
+          "text": "布包上还缠着粗红毛线。"
         },
         {
           "t": "d",
           "s": "李阿姨",
           "e": "gentle",
-          "text": "彪悍，这是沿线三个村子六十多户人家凑的心意。"
+          "text": "彪悍，下河村、青石坎的茶农托我问问，站里能不能收一笔周转借款。"
         },
         {
           "t": "d",
           "s": "李阿姨",
           "e": "gentle",
-          "text": "听说你们为了修车把底垫全掏空了。大家每家出几十块，凑了整整八千沙币。"
+          "text": "有人想凑几十，有人还要回家商量，合起来估摸有八千。只是认捐，还没收齐，不能先记进现金账。"
         },
         {
           "t": "n",
-          "text": "李阿姨轻轻掀开蓝布的一角。"
+          "text": "李阿姨解开毛线，翻开登记册。"
         },
         {
           "t": "n",
-          "text": "里面整齐叠放着各家各户用铅笔写着名字的红纸包。"
+          "text": "纸上写着姓名、拟借金额，旁边还留着实交和签收两栏。"
         },
         {
           "t": "n",
-          "text": "下河村林老栓五十元。"
+          "text": "下河村林老栓那一栏，只写了名字，金额还空着。"
         },
         {
           "t": "n",
-          "text": "松桥矿工互助会四千元，字迹歪扭。"
+          "text": "青石坎几户人家写在后页，说好今晚再核实。"
         },
         {
           "t": "d",
           "s": "李阿姨",
           "e": "smile",
-          "text": "大伙说了，这钱不是施舍，是乡亲们入的股！请你一定收下，把这条铁路长长久久开下去！"
+          "text": "大伙说，这钱先借给车站周转，不是入股。你要收，就得写清楚谁交了多少、以后怎么还。"
         },
         {
           "t": "d",
@@ -1222,7 +1289,7 @@
           "t": "d",
           "s": "岁月",
           "e": "happy",
-          "text": "收到沿线群众自发集资捐助：流动资金增加八千沙币！车站经营信用评级已大幅跃升！"
+          "text": "认捐名单已登记，待实际清点后再入账。今天这笔还不能用于付款。"
         },
         {
           "t": "n",
@@ -1248,33 +1315,33 @@
         },
         {
           "t": "n",
-          "text": "我双手接过那包沉甸甸的布包。"
+          "text": "我双手接过登记册，翻到最后一页。"
         },
         {
           "t": "n",
-          "text": "掌心里传来的不仅是铜币的重量。"
+          "text": "拟借金额下面，还留着大片空白。"
         },
         {
           "t": "n",
-          "text": "更是几十户人家重新燃起的全部指望。"
+          "text": "这张纸不能拿去买油，纸上的名字却让我不敢轻慢。"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "e": "serious",
-          "text": "李阿姨，乡亲们。这八千沙币我收下，全部入站内公账，作为便民运营互助基金。"
+          "text": "李阿姨，先请大家留够自家的生活钱。愿意借的，明早一起清点、开收据，把还款条件也写明白。"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "e": "serious",
-          "text": "每一分钱的去向都会张贴在候车室公告栏上，一厘都不会乱花。"
+          "text": "实收多少、用在哪里，都贴到公告栏。未收齐的，绝不提前算进来。"
         },
         {
           "t": "d",
           "s": "林彪悍",
           "e": "smile",
-          "text": "只要我还在雾峰站一天，这趟车就会按时发车！"
+          "text": "往后的班次先按车况排，能开几趟、什么时候开，我给大家一个准信。"
         },
         {
           "t": "n",
@@ -1282,11 +1349,11 @@
         },
         {
           "t": "n",
-          "text": "工工整整写下一张收据存根。"
+          "text": "在登记册后面列下明早清点所需的凭证。"
         },
         {
           "t": "n",
-          "text": "上面郑重盖下雾峰村车站的红印，写上经办人签名。"
+          "text": "实收、签名、还款约定，每一项都留出了位置。"
         },
         {
           "t": "n",
@@ -1389,6 +1456,28 @@
         {
           "t": "n",
           "text": "但沉寂了近一个月的铁轨，已经在车轮下重新发烫。"
+        },
+        {
+          "t": "n",
+          "text": "返程驶出矿区，过松桥隧道时，天色刚好暗下来。"
+        },
+        {
+          "t": "n",
+          "text": "三百多米的洞里，先是一阵翅膀拍打空气的簌簌声，接着头顶黑压压地掠过一大片。"
+        },
+        {
+          "t": "d",
+          "s": "王小弟",
+          "text": "蝙蝠！真有蝙蝠！",
+          "e": "excited"
+        },
+        {
+          "t": "n",
+          "text": "我在本子上把『蝙蝠，待查』划掉，改写：『有。成群。』"
+        },
+        {
+          "t": "n",
+          "text": "经过茶山站时，井台边两个背书包的身影蹦得老高。我探出窗外，只喊了一个字：『有！』"
         },
         {
           "t": "thought",
